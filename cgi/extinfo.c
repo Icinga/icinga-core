@@ -2,8 +2,8 @@
  *
  * EXTINFO.C -  Nagios Extended Information CGI
  *
- * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 01-05-2003
+ * Copyright (c) 1999-2004 Ethan Galstad (nagios@nagios.org)
+ * Last Modified: 01-20-2004
  *
  * License:
  * 
@@ -131,7 +131,7 @@ int main(void){
 	reset_cgi_vars();
 
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		document_header(FALSE);
 		cgi_config_file_error(main_config_file);
@@ -158,7 +158,7 @@ int main(void){
                 }
 
 	/* read all status data */
-	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
+	result=read_all_status_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_STATUS_DATA);
 	if(result==ERROR){
 		document_header(FALSE);
 		status_data_error();
@@ -170,7 +170,7 @@ int main(void){
 	document_header(TRUE);
 
 	/* read in extended host information */
-	read_extended_object_config_data(get_cgi_config_location(),READ_ALL_EXTENDED_DATA);
+	read_extended_object_config_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_EXTENDED_DATA);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -205,22 +205,8 @@ int main(void){
 		display_info_table(temp_buffer,TRUE,&current_authdata);
 
 		/* find the host */
-		if(display_type==DISPLAY_HOST_INFO || display_type==DISPLAY_SERVICE_INFO){
-
-			temp_host=find_host(host_name);
-
-			/* write some Javascript helper functions */
-			if(temp_host!=NULL){
-				printf("<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n");
-				printf("function nagios_get_host_name()\n{\n");
-				printf("return \"%s\";\n",temp_host->name);
-				printf("}\n");
-				printf("function nagios_get_host_address()\n{\n");
-				printf("return \"%s\";\n",temp_host->address);
-				printf("}\n");
-				printf("//-->\n</SCRIPT>\n");
-			        }
-		        }
+		if(display_type==DISPLAY_HOST_INFO || display_type==DISPLAY_SERVICE_INFO)
+			temp_host=find_host(host_name,NULL);
 
 		/* find the hostgroup */
 		else if(display_type==DISPLAY_HOSTGROUP_INFO)
@@ -807,7 +793,7 @@ void show_host_info(void){
 
 
 	/* get host info */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 
 	/* make sure the user has rights to view host information */
 	if(is_authorized_for_host(temp_host,&current_authdata)==FALSE){
@@ -1086,7 +1072,7 @@ void show_service_info(void){
 	int duration_error=FALSE;
 
 	/* find the service */
-	temp_service=find_service(host_name,service_desc);
+	temp_service=find_service(host_name,service_desc,NULL);
 
 	/* make sure the user has rights to view service information */
 	if(is_authorized_for_service(temp_service,&current_authdata)==FALSE){
@@ -1190,7 +1176,7 @@ void show_service_info(void){
 			printf("N/A");
 		printf("</TD></TR>\n");
 
-		printf("<TR><TD CLASS='dataVar'>Check Duration:</TD><TD CLASS='dataVal'>%lf seconds</TD></TR>\n",temp_svcstatus->execution_time);
+		printf("<TR><TD CLASS='dataVar'>Check Duration:</TD><TD CLASS='dataVal'>%s%d second%s</TD></TR>\n",(temp_svcstatus->execution_time==0)?"&lt; ":"",(temp_svcstatus->execution_time==0)?1:temp_svcstatus->execution_time,(temp_svcstatus->execution_time>1)?"s":"");
 
 		get_time_string(&temp_svcstatus->last_state_change,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<TR><TD CLASS='dataVar'>Last State Change:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",(temp_svcstatus->last_state_change==(time_t)0)?"N/A":date_time);
@@ -1502,7 +1488,7 @@ void show_all_comments(void){
 
 
 	/* read in all comments */
-	read_comment_data(get_cgi_config_location());
+	read_comment_data(DEFAULT_CGI_CONFIG_FILE);
 
 	printf("<P>\n");
 	printf("<DIV CLASS='commentNav'>[&nbsp;<A HREF='#HOSTCOMMENTS' CLASS='commentNav'>Host Comments</A>&nbsp;|&nbsp;<A HREF='#SERVICECOMMENTS' CLASS='commentNav'>Service Comments</A>&nbsp;]</DIV>\n");
@@ -1526,7 +1512,7 @@ void show_all_comments(void){
 		if(temp_comment->comment_type!=HOST_COMMENT)
 			continue;
 
-		temp_host=find_host(temp_comment->host_name);
+		temp_host=find_host(temp_comment->host_name,NULL);
 
 		/* make sure the user has rights to view host information */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
@@ -1578,7 +1564,7 @@ void show_all_comments(void){
 		if(temp_comment->comment_type!=SERVICE_COMMENT)
 			continue;
 
-		temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
+		temp_service=find_service(temp_comment->host_name,temp_comment->service_description,NULL);
 
 		/* make sure the user has rights to view service information */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
@@ -1621,9 +1607,9 @@ void show_performance_data(void){
 	servicestatus *temp_servicestatus=NULL;
 	int total_active_checks=0;
 	int total_passive_checks=0;
-	double min_execution_time=0.0;
-	double max_execution_time=0.0;
-	double total_execution_time=0.0;
+	int min_execution_time=0;
+	int max_execution_time=0;
+	unsigned long total_execution_time=0L;
 	int have_min_execution_time=FALSE;
 	int have_max_execution_time=FALSE;
 	int min_latency=0;
@@ -1662,7 +1648,7 @@ void show_performance_data(void){
 	for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
 
 		/* find the service */
-		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
+		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description,NULL);
 		
 		/* make sure the user has rights to view service information */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
@@ -1784,7 +1770,7 @@ void show_performance_data(void){
 	printf("<TABLE BORDER=0>\n");
 
 	printf("<tr class='data'><th class='data'>Metric</th><th class='data'>Min.</th><th class='data'>Max.</th><th class='data'>Average</th></tr>\n");
-	printf("<tr><td class='dataVar'>Check Execution Time:&nbsp;&nbsp;</td><td class='dataVal'>%.2f sec</td><td class='dataVal'>%.2f sec</td><td class='dataVal'>%.3f sec</td></tr>\n",min_execution_time,max_execution_time,(double)((double)total_execution_time/(double)total_active_checks));
+	printf("<tr><td class='dataVar'>Check Execution Time:&nbsp;&nbsp;</td><td class='dataVal'>%s%d sec</td><td class='dataVal'>%s%d sec</td><td class='dataVal'>%.3f sec</td></tr>\n",(min_execution_time==0)?"&lt; ":"",(min_execution_time==0)?1:min_execution_time,(max_execution_time==0)?"&lt; ":"",(max_execution_time==0)?1:max_execution_time,(double)((double)total_execution_time/(double)total_active_checks));
 	printf("<tr><td class='dataVar'>Check Latency:</td><td class='dataVal'>%s%d sec</td><td class='dataVal'>%s%d sec</td><td class='dataVal'>%.3f sec</td></tr>\n",(min_latency==0)?"&lt; ":"",(min_latency==0)?1:min_latency,(max_latency==0)?"&lt; ":"",(max_latency==0)?1:max_latency,(double)((double)total_latency/(double)total_active_checks));
 	printf("<tr><td class='dataVar'>Percent State Change:</td><td class='dataVal'>%.2f%%</td><td class='dataVal'>%.2f%%</td><td class='dataVal'>%.2f%%</td></tr>\n",min_percent_change_a,max_percent_change_a,(double)((double)total_percent_change_a/(double)total_active_checks));
 
@@ -1861,18 +1847,18 @@ void display_comments(int type){
 
 	/* find the host or service */
 	if(type==HOST_COMMENT){
-		temp_host=find_host(host_name);
+		temp_host=find_host(host_name,NULL);
 		if(temp_host==NULL)
 			return;
 	        }
 	else{
-		temp_service=find_service(host_name,service_desc);
+		temp_service=find_service(host_name,service_desc,NULL);
 		if(temp_service==NULL)
 			return;
 	        }
 
 
-	printf("<A NAME=COMMENTS></A>\n");
+	printf("<A NAME=comment></A>\n");
 	printf("<DIV CLASS='commentTitle'>%s Comments</DIV>\n",(type==HOST_COMMENT)?"Host":"Service");
 	printf("<TABLE BORDER=0>\n");
 
@@ -1905,7 +1891,7 @@ void display_comments(int type){
 	printf("<TR CLASS='comment'><TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Actions</TH></TR>\n");
 
 	/* read in all comments */
-	read_comment_data(get_cgi_config_location());
+	read_comment_data(DEFAULT_CGI_CONFIG_FILE);
 
 	/* check all the comments to see if they apply to this host or service */
 	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=temp_comment->next){
@@ -1969,7 +1955,7 @@ void show_all_downtime(void){
 
 
 	/* read in all downtime */
-	read_downtime_data(get_cgi_config_location());
+	read_downtime_data(DEFAULT_CGI_CONFIG_FILE);
 
 	printf("<P>\n");
 	printf("<DIV CLASS='downtimeNav'>[&nbsp;<A HREF='#HOSTDOWNTIME' CLASS='downtimeNav'>Host Downtime</A>&nbsp;|&nbsp;<A HREF='#SERVICEDOWNTIME' CLASS='downtimeNav'>Service Downtime</A>&nbsp;]</DIV>\n");
@@ -1993,7 +1979,7 @@ void show_all_downtime(void){
 		if(temp_downtime->type!=HOST_DOWNTIME)
 			continue;
 
-		temp_host=find_host(temp_downtime->host_name);
+		temp_host=find_host(temp_downtime->host_name,NULL);
 
 		/* make sure the user has rights to view host information */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
@@ -2054,7 +2040,7 @@ void show_all_downtime(void){
 		if(temp_downtime->type!=SERVICE_DOWNTIME)
 			continue;
 
-		temp_service=find_service(temp_downtime->host_name,temp_downtime->service_description);
+		temp_service=find_service(temp_downtime->host_name,temp_downtime->service_description,NULL);
 
 		/* make sure the user has rights to view service information */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
