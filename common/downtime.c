@@ -2,8 +2,8 @@
  *
  * DOWNTIME.C - Scheduled downtime functions for Nagios
  *
- * Copyright (c) 2000-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   01-01-2003
+ * Copyright (c) 2000-2004 Ethan Galstad (nagios@nagios.org)
+ * Last Modified:   10-24-2004
  *
  * License:
  *
@@ -28,7 +28,6 @@
 #include "comments.h"
 #include "downtime.h"
 #include "objects.h"
-#include "statusdata.h"
 
 /***** IMPLEMENTATION-SPECIFIC INCLUDES *****/
 
@@ -37,6 +36,7 @@
 #endif
 
 #ifdef NSCORE
+#include "statusdata.h"
 #include "../base/nagios.h"
 #endif
 
@@ -125,8 +125,8 @@ int unschedule_downtime(int type,int downtime_id){
 	scheduled_downtime *temp_downtime;
 	scheduled_downtime *temp2_downtime;
 	scheduled_downtime *event_downtime;
-	host *hst;
-	service *svc;
+	host *hst=NULL;
+	service *svc=NULL;
 	timed_event *temp_event;
 	char temp_buffer[MAX_INPUT_BUFFER];
 	
@@ -150,12 +150,12 @@ int unschedule_downtime(int type,int downtime_id){
 
 	/* find the host or service associated with this downtime */
 	if(temp_downtime->type==HOST_DOWNTIME){
-		hst=find_host(temp_downtime->host_name);
+		hst=find_host(temp_downtime->host_name,NULL);
 		if(hst==NULL)
 			return ERROR;
 	        }
 	else{
-		svc=find_service(temp_downtime->host_name,temp_downtime->service_description);
+		svc=find_service(temp_downtime->host_name,temp_downtime->service_description,NULL);
 		if(svc==NULL)
 			return ERROR;
 	        }
@@ -242,8 +242,8 @@ int register_downtime(int type, int downtime_id){
 	char end_time_string[MAX_DATETIME_LENGTH];
 	scheduled_downtime *temp_downtime;
 	timed_event *new_event;
-	host *hst;
-	service *svc;
+	host *hst=NULL;
+	service *svc=NULL;
 	int hours;
 	int minutes;
 
@@ -259,12 +259,12 @@ int register_downtime(int type, int downtime_id){
 
 	/* find the host or service associated with this downtime */
 	if(temp_downtime->type==HOST_DOWNTIME){
-		hst=find_host(temp_downtime->host_name);
+		hst=find_host(temp_downtime->host_name,NULL);
 		if(hst==NULL)
 			return ERROR;
 	        }
 	else{
-		svc=find_service(temp_downtime->host_name,temp_downtime->service_description);
+		svc=find_service(temp_downtime->host_name,temp_downtime->service_description,NULL);
 		if(svc==NULL)
 			return ERROR;
 	        }
@@ -331,12 +331,12 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime){
 
 	/* find the host or service associated with this downtime */
 	if(temp_downtime->type==HOST_DOWNTIME){
-		hst=find_host(temp_downtime->host_name);
+		hst=find_host(temp_downtime->host_name,NULL);
 		if(hst==NULL)
 			return ERROR;
 	        }
 	else{
-		svc=find_service(temp_downtime->host_name,temp_downtime->service_description);
+		svc=find_service(temp_downtime->host_name,temp_downtime->service_description,NULL);
 		if(svc==NULL)
 			return ERROR;
 	        }
@@ -536,7 +536,7 @@ int check_pending_flex_host_downtime(host *hst,int state){
 			continue;
 
 		/* this entry matches our host! */
-		if(find_host(temp_downtime->host_name)==hst){
+		if(find_host(temp_downtime->host_name,NULL)==hst){
 			
 			/* if the time boundaries are okay, start this scheduled downtime */
 			if(temp_downtime->start_time<=current_time && current_time<=temp_downtime->end_time){
@@ -585,7 +585,7 @@ int check_pending_flex_service_downtime(service *svc){
 			continue;
 
 		/* this entry matches our service! */
-		if(find_service(temp_downtime->host_name,temp_downtime->service_description)==svc){
+		if(find_service(temp_downtime->host_name,temp_downtime->service_description,NULL)==svc){
 
 			/* if the time boundaries are okay, start this scheduled downtime */
 			if(temp_downtime->start_time<=current_time && current_time<=temp_downtime->end_time){
@@ -667,9 +667,9 @@ int save_downtime(int type, char *host_name, char *service_description, time_t e
 	int result;
 
 	if(type==HOST_DOWNTIME)
-		save_host_downtime(host_name,entry_time,author,comment,start_time,end_time,fixed,duration,downtime_id);
+		result=save_host_downtime(host_name,entry_time,author,comment,start_time,end_time,fixed,duration,downtime_id);
 	else
-		save_service_downtime(host_name,service_description,entry_time,author,comment,start_time,end_time,fixed,duration,downtime_id);
+		result=save_service_downtime(host_name,service_description,entry_time,author,comment,start_time,end_time,fixed,duration,downtime_id);
 
 	return result;
         }

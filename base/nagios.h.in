@@ -2,7 +2,7 @@
  *
  * Nagios Main Header File
  * Written By: Ethan Galstad (nagios@nagios.org)
- * Last Modified: 01-05-2003
+ * Last Modified: 10-24-2004
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "../common/config.h"
 #include "../common/objects.h"
 
+#undef HAVE_SYSLOG_H
 #ifdef HAVE_SYSLOG_H
 #include <syslog.h>
 #endif
@@ -44,45 +45,6 @@
 #define MAX_ATTEMPT_LENGTH			8
 #define MAX_EXECUTIONTIME_LENGTH		10
 #define MAX_LATENCY_LENGTH			10
-#define MAX_DURATION_LENGTH			9
-#define MAX_DOWNTIME_LENGTH			3
-
-#define MACRO_X_COUNT				32	/* size of macro_x[] array */
-
-#define MACRO_HOSTNAME				0
-#define MACRO_HOSTALIAS				1
-#define MACRO_HOSTADDRESS			2
-#define MACRO_SERVICEDESC			3
-#define MACRO_SERVICESTATE			4
-#define MACRO_SERVICEATTEMPT			5
-#define MACRO_LONGDATETIME			6
-#define MACRO_SHORTDATETIME			7
-#define MACRO_DATE				8
-#define MACRO_TIME				9
-#define MACRO_TIMET				10
-#define MACRO_LASTCHECK				11
-#define MACRO_LASTSTATECHANGE			12
-#define MACRO_OUTPUT				13
-#define MACRO_PERFDATA				14
-#define MACRO_CONTACTNAME			15
-#define MACRO_CONTACTALIAS			16
-#define MACRO_CONTACTEMAIL			17
-#define MACRO_CONTACTPAGER			18
-#define MACRO_ADMINEMAIL			19
-#define MACRO_ADMINPAGER			20
-#define MACRO_HOSTSTATE				21
-#define MACRO_HOSTATTEMPT			22
-#define MACRO_NOTIFICATIONTYPE			23
-#define MACRO_NOTIFICATIONNUMBER		24
-#define MACRO_EXECUTIONTIME			25
-#define MACRO_LATENCY				26
-#define MACRO_DURATION				27
-#define MACRO_DURATIONSEC			28
-#define MACRO_HOSTDOWNTIME			29
-#define MACRO_SERVICEDOWNTIME			30
-#define MACRO_STATETYPE				31
-
-
 
 #define DEFAULT_LOG_LEVEL			1	/* log all events to main log file */
 #define DEFAULT_USE_SYSLOG			1	/* log events to syslog? 1=yes, 0=no */
@@ -92,7 +54,7 @@
 
 #define DEFAULT_INTER_CHECK_DELAY		5.0	/* seconds between initial service check scheduling */
 #define DEFAULT_INTERLEAVE_FACTOR      		1       /* default interleave to use when scheduling checks */
-#define DEFAULT_SLEEP_TIME      		0.5    	/* seconds between event run checks */
+#define DEFAULT_SLEEP_TIME      		1      	/* seconds between event run checks */
 #define DEFAULT_INTERVAL_LENGTH 		60     	/* seconds per interval unit for check scheduling */
 #define DEFAULT_RETRY_INTERVAL  		30	/* services are retried in 30 seconds if they're not OK */
 #define DEFAULT_COMMAND_CHECK_INTERVAL		-1	/* interval to check for external commands (default = as often as possible) */
@@ -129,8 +91,6 @@
 #define DEFAULT_HIGH_SERVICE_FLAP_THRESHOLD	30.0	/* high threshold for detection of service flapping */
 #define DEFAULT_LOW_HOST_FLAP_THRESHOLD		20.0	/* low threshold for detection of host flapping */
 #define DEFAULT_HIGH_HOST_FLAP_THRESHOLD	30.0	/* high threshold for detection of host flapping */
-
-#define DEFAULT_MAX_EMBEDDED_PERL_CALLS		1000    /* number of times to use embedded perl interpreter before reloading it */
 
 
 
@@ -202,35 +162,15 @@
 #define EVENT_LOG_ROTATION		2	/* log file rotation */
 #define EVENT_PROGRAM_SHUTDOWN		3	/* program shutdown */
 #define EVENT_PROGRAM_RESTART		4	/* program restart */
-#define EVENT_SERVICE_REAPER		5	/* reaps results from service checks */
-#define EVENT_ORPHAN_CHECK		6	/* checks for orphaned service checks */
-#define EVENT_RETENTION_SAVE		7	/* save (dump) retention data */
-#define EVENT_STATUS_SAVE		8	/* save (dump) status data */
-#define EVENT_SCHEDULED_DOWNTIME	9	/* scheduled host or service downtime */
-#define EVENT_FRESHNESS_CHECK           10      /* checks service result "freshness" */
-#define EVENT_EXPIRE_DOWNTIME		11      /* checks for (and removes) expired scheduled downtime */
-
-
-
-/*************** EVENT BROKER OPTIONS *****************/
-
-#define BROKER_NOTHING                  0
-#define BROKER_EVERYTHING	 	8191
-
-#define BROKER_PROGRAM_STATE            1
-#define BROKER_TIMED_EVENTS             2
-#define BROKER_SERVICE_CHECKS           4
-#define BROKER_HOST_CHECKS              8
-#define BROKER_EVENT_HANDLERS   	16
-#define BROKER_LOGGED_DATA              32
-#define BROKER_NOTIFICATIONS    	64
-#define BROKER_FLAPPING   	        128
-#define BROKER_COMMENTS         	256
-#define BROKER_DOWNTIME			512
-#define BROKER_SYSTEM_COMMANDS          1024
-#define BROKER_RETENTION_DATA           2048
-#define BROKER_CONFIG_DATA              4096
-
+#define EVENT_ENABLE_NOTIFICATIONS	5	/* enable notifications */
+#define EVENT_DISABLE_NOTIFICATIONS	6	/* disable notifications */
+#define EVENT_SERVICE_REAPER		7	/* reaps results from service checks */
+#define EVENT_ORPHAN_CHECK		8	/* checks for orphaned service checks */
+#define EVENT_RETENTION_SAVE		9	/* save (dump) retention data */
+#define EVENT_STATUS_SAVE		10	/* save (dump) status data */
+#define EVENT_SCHEDULED_DOWNTIME	11	/* scheduled host or service downtime */
+#define EVENT_FRESHNESS_CHECK           12      /* checks service result "freshness" */
+#define EVENT_EXPIRE_DOWNTIME		13      /* checks for (and removes) expired scheduled downtime */
 
 
 /******* INTER-CHECK DELAY CALCULATION TYPES **********/
@@ -257,6 +197,17 @@
 
 #define ACTIVE_DOWNTIME                 0       /* active downtime - currently in effect */
 #define PENDING_DOWNTIME                1       /* pending downtime - scheduled for the future */
+
+
+/************** DATE/TIME MACRO TYPES *****************/
+
+#define MACRO_DATETIME_LONGDATE		0
+#define MACRO_DATETIME_SHORTDATE	1
+#define MACRO_DATETIME_DATE		2
+#define MACRO_DATETIME_TIME		3
+#define MACRO_DATETIME_TIMET		4
+#define MACRO_DATETIME_LASTCHECK	5  	/* time_t format */
+#define MACRO_DATETIME_LASTSTATECHANGE	6	/* time_t format */
 
 
 /************* MACRO CLEANING OPTIONS *****************/
@@ -293,8 +244,8 @@ typedef struct service_message_struct{
 	int exited_ok;					/* did the plugin check return okay? */
 	int check_type;					/* was this an active or passive service check? */
 	int parallelized;                               /* was this check run in parallel? */
-	struct timeb start_time;			/* time the service check was initiated */
-	struct timeb finish_time;			/* time the service check was completed */
+	time_t check_time;				/* time the service was checked */
+	time_t finish_time;				/* time the service check completed */
 	char output[MAX_PLUGINOUTPUT_LENGTH];		/* plugin output */
 	}service_message;
 
@@ -338,30 +289,6 @@ typedef struct scheduled_downtime_entry_struct{
 	}scheduled_downtime_entry;
 
 
-/* CIRCULAR_BUFFER structure - used by worker threads */
-typedef struct circular_buffer_struct{
-	void            **buffer;
-	int             tail;
-	int             head;
-	int             items;
-	unsigned long   overflow;
-	pthread_mutex_t buffer_lock;
-        }circular_buffer;
-
-
-/* slots in circular buffers */
-#define COMMAND_BUFFER_SLOTS              512
-#define SERVICE_BUFFER_SLOTS		  512
-#define EVENT_BUFFER_SLOTS		  2048
-
-/* worker threads */
-#define TOTAL_WORKER_THREADS              3
-
-#define COMMAND_WORKER_THREAD		  0
-#define SERVICE_WORKER_THREAD  		  1
-#define EVENT_WORKER_THREAD		  2
-
-
 /******************** FUNCTIONS **********************/
 
 /**** Configuration Functions ****/
@@ -380,6 +307,7 @@ void reset_sighandler(void);                         	/* reset signals to defaul
 int daemon_init(void);				     	/* switches to daemon mode */
 int drop_privileges(char *,char *);			/* drops priveleges before startup */
 void display_scheduling_info(void);			/* displays service check scheduling information */
+void display_xdata_modules(void);			/* displays which external data modules are compiled in */
 
 
 /**** IPC Functions ****/
@@ -392,6 +320,7 @@ int close_command_file(void);				/* closes and deletes the external command file
 /**** Monitoring/Event Handler Functions ****/
 void schedule_event(timed_event *,timed_event **);   	/* schedule or reschedule an event */
 void remove_event(timed_event *,timed_event **);     	/* remove and event from the execution queue */
+void add_event(timed_event *,timed_event **);     	/* adds an event to the execution queue */
 int event_execution_loop(void);                      	/* main monitoring/event handler loop */
 int handle_timed_event(timed_event *);		     	/* top level handler for timed events */
 void run_service_check(service *);			/* parallelized service check routine */
@@ -400,8 +329,10 @@ int check_service_dependencies(service *,int);          /* checks service depend
 int check_host_dependencies(host *,int);                /* checks host dependencies */
 void check_for_orphaned_services(void);			/* checks for orphaned services */
 void check_service_result_freshness(void);              /* checks the "freshness" of service check results */
-int my_system(char *,int,int *,double *,char *,int);            	/* executes a command via popen(), but also protects against timeouts */
+int my_system(char *,int,int *,char *,int);            	/* executes a command via popen(), but also protects against timeouts */
 void compensate_for_system_time_change(unsigned long,unsigned long);	/* attempts to compensate for a change in the system time */
+void adjust_timestamp_for_time_change(time_t,time_t,unsigned long,time_t *); /* adjusts a timestamp variable for a system time change */
+void resort_event_list(timed_event **);                 /* resorts event list by event run time for system time changes */
 
 
 /**** Flap Detection Functions ****/
@@ -429,11 +360,13 @@ int handle_host_state(host *,int,int);               	/* top level host state ha
 /**** Event Handler Functions ****/
 int obsessive_compulsive_service_check_processor(service *,int);	/* distributed monitoring craziness... */
 int handle_service_event(service *,int);			/* top level service event logic */
-int run_service_event_handler(service *,int);			/* runs the event handler for a specific service */
+int run_service_event_handler(service *,command *,int);		/* runs the event handler for a specific service */
 int run_global_service_event_handler(service *,int);		/* runs the global service event handler */
 int handle_host_event(host *,int,int);				/* top level host event logic */
-int run_host_event_handler(host *,int,int);			/* runs the event handler for a specific host */
+int run_host_event_handler(host *,command *,int,int);		/* runs the event handler for a specific host */
 int run_global_host_event_handler(host *,int,int);		/* runs the global host event handler */
+void update_service_state_times(service *);	     	     	/* updates service state times */
+void update_host_state_times(host *);	     	     	     	/* updates host state times */
 
 
 /**** Notification Functions ****/
@@ -445,6 +378,7 @@ int check_contact_service_notification_viability(contact *, service *);	/* check
 int notify_contact_of_service(contact *,service *,char *);        	/* notify a single contact about a service */
 int check_host_notification_viability(host *,int,char *);		/* checks viability of notifying all contacts about a host */
 int is_valid_host_escalation_for_host_notification(host *,int,hostescalation *);	/* checks if an escalation entry is valid for a particular host notification */
+int is_valid_hostgroup_escalation_for_host_notification(host *,int,hostgroupescalation *);	/* checks if an escalation entry is valid for a particular host notification */
 int should_host_notification_be_escalated(host *,int);			/* checks if a host notification should be escalated */
 int host_notification(host *,int, char *);                           	/* notify all contacts about a host (problem or recovery) */
 int check_contact_host_notification_viability(contact *, host *, int);	/* checks viability of notifying a contact about a host */ 
@@ -488,9 +422,6 @@ int check_time_against_period(time_t,char *);		/* check to see if a specific tim
 void get_next_valid_time(time_t, time_t *,char *);	/* get the next valid time in a time period */
 void get_datetime_string(time_t *,char *,int,int);	/* get a date/time string for use in output */
 void get_next_log_rotation_time(time_t *);	     	/* determine the next time to schedule a log rotation */
-int init_embedded_perl(void);	 			/* initialized embedded perl interpreter */
-int deinit_embedded_perl(void);				/* cleans up embedded perl */
-int reinit_embedded_perl(void);				/* reinitialized embedded perl during runtime */
 
 
 /**** Macro Functions ****/
@@ -500,7 +431,6 @@ int grab_service_macros(service *);                  	/* updates the service mac
 int grab_host_macros(host *);                        	/* updates the host macro data */
 int grab_contact_macros(contact *);                  	/* updates the contact macro data */
 int grab_datetime_macros(void);				/* updates date/time macros */
-int clear_argv_macros(void);                            /* clear all argv macros used in commands */
 int clear_volatile_macros(void);                     	/* clear all "volatile" macros that change between service/host checks */
 int clear_nonvolatile_macros(void);                  	/* clear all "nonvolatile" macros which remain relatively constant */
 
@@ -517,20 +447,19 @@ int cmd_delete_all_comments(int,char *);		/* delete all comments associated with
 int cmd_delay_notification(int,char *);			/* delay a service or host notification */
 int cmd_schedule_service_check(int,char *,int);		/* schedule an immediate or delayed service check */
 int cmd_schedule_host_service_checks(int,char *,int);	/* schedule an immediate or delayed check of all services on a host */
-int cmd_enable_disable_service_check(int,char *);		/* enable/disable a service check */
-int cmd_enable_disable_host_service_checks(int,char *);		/* enable/disable all service checks associated with a host */
-int cmd_signal_process(int,char *);				/* schedules a program shutdown or restart */
-int cmd_enable_disable_notifications(int,char *);		/* enables/disables notifications */
-int cmd_enable_disable_service_notifications(int,char *);	/* enables/disables notifications for a service */
-int cmd_enable_disable_host_notifications(int,char *);		/* enables/disables notifications for a host */
+int cmd_enable_disable_service_check(int,char *);			/* enable/disable a service check */
+int cmd_enable_disable_host_service_checks(int,char *);			/* enable/disable all service checks associated with a host */
+int cmd_signal_process(int,char *);					/* schedules a program shutdown or restart */
+int cmd_enable_disable_notifications(int,char *);			/* enables/disables notifications */
+int cmd_enable_disable_service_notifications(int,char *);		/* enables/disables notifications for a service */
+int cmd_enable_disable_host_notifications(int,char *);			/* enables/disables notifications for a host */
 int cmd_enable_disable_and_propagate_notifications(int, char *);	/* enables/disables notifications for all hosts and services beyond a given host */
-int cmd_process_service_check_result(int,time_t,char *);	/* processes a passive service check */
-int cmd_process_host_check_result(int,time_t,char *);		/* processes a passive host check */
-int cmd_enable_disable_host_service_notifications(int,char *);	/* enables/disables notifications for all services on a host */
+int cmd_process_service_check_result(int,time_t,char *);		/* processes a passive service check */
+int cmd_enable_disable_host_service_notifications(int,char *);		/* enables/disables notifications for all services on a host */
 int cmd_acknowledge_problem(int,char *);			/* acknowledges a host or service problem */
 int cmd_remove_acknowledgement(int,char *);			/* removes a host or service acknowledgement */
 int cmd_start_stop_executing_service_checks(int);		/* starts or stops executing service checks */
-int cmd_start_stop_accepting_passive_service_checks(int);	/* starts or stops accepting passive service check results */
+int cmd_start_stop_accepting_passive_checks(int);		/* starts or stops accepting passive service check results */
 int cmd_enable_disable_passive_service_checks(int,char *);	/* enables/disables passive checks for a particular service */
 int cmd_enable_disable_service_event_handler(int,char *);	/* enables/disables the event handler for a particular service */
 int cmd_enable_disable_host_event_handler(int,char *);		/* enables/disables the event handler for a particular host */
@@ -541,9 +470,7 @@ int cmd_enable_disable_host_flap_detection(int, char *);	/* enables/disables fla
 int cmd_enable_disable_service_flap_detection(int, char *);	/* enables/disables flap detection for a particular service */
 int cmd_delete_downtime(int, char *);				/* cancels active/pending host or service scheduled downtime */
 int cmd_schedule_host_service_downtime(int,time_t,char *);      /* schedules downtimes for all services on a particular host */
-int cmd_start_stop_executing_host_checks(int);			/* enables/disables active host checks */
-int cmd_start_stop_accepting_passive_host_checks(int);		/* enables/disables passive host checks */
-int cmd_enable_disable_passive_host_checks(int ,char *);	/* enables/disables passive checks for a particular host */
+
 
 /**** Internal Command Implementations ****/
 void disable_service_check(service *);			/* disables a service check */
@@ -582,39 +509,6 @@ void enable_all_failure_prediction(void);               /* enables failure predi
 void disable_all_failure_prediction(void);              /* disables failure prediction on a program-wide basis */
 void enable_performance_data(void);                     /* enables processing of performance data on a program-wide basis */
 void disable_performance_data(void);                    /* disables processing of performance data on a program-wide basis */
-void start_executing_host_checks(void);			/* starts executing host checks */
-void stop_executing_host_checks(void);			/* stops executing host checks */
-void start_accepting_passive_host_checks(void);		/* starts accepting passive host check results */
-void stop_accepting_passive_host_checks(void);		/* stops accepting passive host check results */
-void enable_passive_host_checks(host *);	        /* enables passive host checks for a particular host */
-void disable_passive_host_checks(host *);         	/* disables passive host checks for a particular host */
-
-int init_service_result_worker_thread(void);
-int shutdown_service_result_worker_thread(void);
-void * service_result_worker_thread(void *);
-void * cleanup_service_result_worker_thread(void *);
-
-int init_command_file_worker_thread(void);
-int shutdown_command_file_worker_thread(void);
-void * command_file_worker_thread(void *);
-void * cleanup_command_file_worker_thread(void *);
-
-
-/**** Event Broker Functions ****/
-#ifdef USE_EVENT_BROKER
-int init_event_broker_worker_thread(void);
-int shutdown_event_broker_worker_thread(void);
-void * cleanup_event_broker_worker_thread(void *);
-int send_event_data_to_broker(char *);
-void * event_broker_worker_thread(void *);
-void broker_program_state(int,int,int,struct timeb *);
-void broker_timed_event(int,int,int,timed_event *event,void *,struct timeb *);
-void broker_log_data(int,int,int,char *,unsigned long,struct timeb *);
-void broker_event_handler(int,int,int,void *,int,int,double,struct timeb *);
-void broker_system_command(int,int,int,int,double,int,char *,char *,struct timeb *);
-void broker_host_check(int,int,int,host *,int,double,struct timeb *);
-void broker_service_check(int,int,int,service *,struct timeb *);
-#endif
 
 #endif
 

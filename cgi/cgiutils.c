@@ -2,8 +2,8 @@
  *
  * CGIUTILS.C - Common utilities for Nagios CGIs
  * 
- * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 12-05-2002
+ * Copyright (c) 1999-2004 Ethan Galstad (nagios@nagios.org)
+ * Last Modified: 10-24-2004
  *
  * License:
  *
@@ -103,6 +103,7 @@ int             timeperiods_have_been_read=FALSE;
 int             commands_have_been_read=FALSE;
 int             servicedependencies_have_been_read=FALSE;
 int             serviceescalations_have_been_read=FALSE;
+int             hostgroupescalations_have_been_read=FALSE;
 int             hostdependencies_have_been_read=FALSE;
 int             hostescalations_have_been_read=FALSE;
 
@@ -116,11 +117,14 @@ int             default_statusmap_layout_method=0;
 int             default_statuswrl_layout_method=0;
 
 extern hostgroup       *hostgroup_list;
+extern host            *host_list;
+extern service         *service_list;
 extern contactgroup    *contactgroup_list;
 extern command         *command_list;
 extern timeperiod      *timeperiod_list;
 extern contact         *contact_list;
 extern serviceescalation *serviceescalation_list;
+extern hostgroupescalation *hostgroupescalation_list;
 
 extern hoststatus      *hoststatus_list;
 extern servicestatus   *servicestatus_list;
@@ -166,7 +170,7 @@ void reset_cgi_vars(void){
 	strcpy(log_archive_path,DEFAULT_LOG_ARCHIVE_PATH);
 	if(log_archive_path[strlen(log_archive_path)-1]!='/' && strlen(log_archive_path)<sizeof(log_archive_path)-2)
 		strcat(log_archive_path,"/");
-	strcpy(command_file,get_cmd_file_location());
+	strcpy(command_file,DEFAULT_COMMAND_FILE);
 
 	strcpy(nagios_check_command,"");
 	strcpy(nagios_process_info,"");
@@ -233,34 +237,8 @@ void free_memory(void){
  *************** CONFIG FILE FUNCTIONS ********************
  **********************************************************/
 
-/* read the CGI config file location from an environment variable */
-char * get_cgi_config_location(void){
-        static char *cgiloc=NULL;
 
-        if(!cgiloc){
-                cgiloc=getenv("NAGIOS_CGI_CONFIG");
-                if(!cgiloc)
-                        cgiloc=DEFAULT_CGI_CONFIG_FILE;
-                }
-
-        return cgiloc;
-        }
-
-
-/* read the command file location from an environment variable */
-char * get_cmd_file_location(void){
-        static char *cmdloc=NULL;
-
-        if(!cmdloc){
-                cmdloc=getenv("NAGIOS_COMMAND_FILE");
-                if(!cmdloc)
-                        cmdloc=DEFAULT_COMMAND_FILE;
-                }
-        return cmdloc;
-        }
-
-
-/*read the CGI configuration file */
+/* read the CGI configuration file */
 int read_cgi_config_file(char *filename){
 	char input_buffer[MAX_INPUT_BUFFER];
 	char *temp_buffer;
@@ -585,6 +563,8 @@ int read_all_object_configuration_data(char *config_file,int options){
 		options-=READ_SERVICEDEPENDENCIES;
 	if(serviceescalations_have_been_read==TRUE && (options & READ_SERVICEESCALATIONS))
 		options-=READ_SERVICEESCALATIONS;
+	if(hostgroupescalations_have_been_read==TRUE && (options & READ_HOSTGROUPESCALATIONS))
+		options-=READ_HOSTGROUPESCALATIONS;
 	if(hostdependencies_have_been_read==TRUE && (options & READ_HOSTDEPENDENCIES))
 		options-=READ_HOSTDEPENDENCIES;
 	if(hostescalations_have_been_read==TRUE && (options & READ_HOSTESCALATIONS))
@@ -616,6 +596,8 @@ int read_all_object_configuration_data(char *config_file,int options){
 		servicedependencies_have_been_read=TRUE;
 	if(options & READ_SERVICEESCALATIONS)
 		serviceescalations_have_been_read=TRUE;
+	if(options & READ_HOSTGROUPESCALATIONS)
+		hostgroupescalations_have_been_read=TRUE;
 	if(options & READ_HOSTDEPENDENCIES)
 		hostdependencies_have_been_read=TRUE;
 	if(options & READ_HOSTESCALATIONS)
@@ -998,8 +980,8 @@ char * url_encode(char *input){
 			break;
 		        }
 
-		/* alpha-numeric characters don't get encoded */
-		else if(((char)input[x]>='0' && (char)input[x]<='9') || ((char)input[x]>='A' && (char)input[x]<='Z') || ((char)input[x]>=(char)'a' && (char)input[x]<=(char)'z')){
+		/* alpha-numeric characters and dots don't get encoded */
+		else if(((char)input[x]>='0' && (char)input[x]<='9') || ((char)input[x]>='A' && (char)input[x]<='Z') || ((char)input[x]>=(char)'a' && (char)input[x]<=(char)'z') || (char)input[x]==(char)'.'){
 			encoded_url_string[y]=input[x];
 			y++;
 		        }
@@ -1579,7 +1561,7 @@ void print_host_notes_url(hostextinfo *temp_hostextinfo){
 	if(temp_hostextinfo->notes_url==NULL)
 		return;
 
-	temp_host=find_host(temp_hostextinfo->host_name);
+	temp_host=find_host(temp_hostextinfo->host_name,NULL);
 	if(temp_host==NULL){
 		printf("%s",temp_hostextinfo->notes_url);
 		return;
@@ -1634,13 +1616,13 @@ void print_service_notes_url(serviceextinfo *temp_serviceextinfo){
 	if(temp_serviceextinfo->notes_url==NULL)
 		return;
 
-	temp_service=find_service(temp_serviceextinfo->host_name,temp_serviceextinfo->description);
+	temp_service=find_service(temp_serviceextinfo->host_name,temp_serviceextinfo->description,NULL);
 	if(temp_service==NULL){
 		printf("%s",temp_serviceextinfo->notes_url);
 		return;
 	        }
 
-	temp_host=find_host(temp_serviceextinfo->host_name);
+	temp_host=find_host(temp_serviceextinfo->host_name,NULL);
 
 	strncpy(input_buffer,temp_serviceextinfo->notes_url,sizeof(input_buffer)-1);
 	input_buffer[sizeof(input_buffer)-1]='\x0';
