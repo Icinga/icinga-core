@@ -1,9 +1,9 @@
  package Embed::Persistent;
 
-# $Id: p1.pl,v 1.5 2005/01/20 02:12:12 egalstad Exp $
+# $Id: p1.pl,v 1.1 2005/01/20 02:12:13 egalstad Exp $
 
 # $Log: p1.pl,v $
-# Revision 1.5  2005/01/20 02:12:12  egalstad
+# Revision 1.1  2005/01/20 02:12:13  egalstad
 # Core dump fixes, embedded Perl changes, new mini_epn
 #
 # Revision 1.5  2005-01-18 13:52:15+11  anwsmh
