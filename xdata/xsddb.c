@@ -2,8 +2,8 @@
  *
  * XSDDB.C - Database routines for status data
  *
- * Copyright (c) 2000-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   01-04-2003
+ * Copyright (c) 2000-2002 Ethan Galstad (nagios@nagios.org)
+ * Last Modified:   11-13-2002
  *
  * License:
  *
