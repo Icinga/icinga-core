@@ -1,17 +1,12 @@
 dnl Process this -*-m4-*- file with autoconf to produce a configure script.
-
-dnl Disable caching
-define([AC_CACHE_LOAD],)
-define([AC_CACHE_SAVE],)
-
 AC_INIT(base/nagios.c)
 AC_CONFIG_HEADER(common/config.h common/snprintf.h base/nagios.h cgi/cgiutils.h)
 AC_PREFIX_DEFAULT(/usr/local/nagios)
 
 PKG_NAME=nagios
-PKG_VERSION="2.0-very-pre-alpha"
+PKG_VERSION="1.1"
 PKG_HOME_URL="http://www.nagios.org/"
-PKG_REL_DATE="12-01-2002"
+PKG_REL_DATE="05-30-2003"
 
 dnl Figure out how to invoke "install" and what install options to use.
 AC_PROG_INSTALL
@@ -27,7 +22,7 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(ctype.h dirent.h errno.h fcntl.h getopt.h grp.h limits.h math.h pthread.h pthreads.h pwd.h regex.h signal.h strings.h string.h syslog.h unistd.h uio.h sys/types.h sys/time.h sys/resource.h sys/wait.h sys/stat.h sys/timeb.h sys/ipc.h sys/msg.h)
+AC_CHECK_HEADERS(ctype.h dirent.h errno.h fcntl.h getopt.h grp.h limits.h math.h pwd.h signal.h strings.h string.h syslog.h unistd.h uio.h sys/types.h sys/time.h sys/resource.h sys/wait.h sys/stat.h sys/ipc.h sys/msg.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -51,75 +46,6 @@ AC_TRY_COMPILE([#include <stdlib.h>
 [AC_DEFINE(SOCKET_SIZE_TYPE, size_t) AC_MSG_RESULT(size_t)],
 [AC_DEFINE(SOCKET_SIZE_TYPE, int) AC_MSG_RESULT(int)])
 
-
-dnl Test for pthreads support - taken from ICU FreeBSD Port configure script
-THREADLIBS=""
-have_pthreads="no"
-
-dnl FreeBSD -pthread check - Jonathan McDowell <noodles@earth.li>
-AC_DEFUN(AC_PTHREAD_FREEBSD,[
-	AC_MSG_CHECKING([if we need -pthread for threads])
-	AC_CACHE_VAL(ac_ldflag_pthread,[
-		ac_save_LDFLAGS="$LDFLAGS"
-		LDFLAGS="-pthread $LDFLAGS"
-		AC_TRY_LINK([
-			char pthread_create();
-			],
-			pthread_create();,
-			eval "ac_ldflag_pthread=yes",
-			eval "ac_ldflag_pthread=no"
-			),
-		THREADLIBS="$ac_save_LDFLAGS"
-		])
-	if eval "test \"`echo $ac_ldflag_pthread`\" = yes"; then
-		AC_MSG_RESULT(yes)
-	else
-		AC_MSG_RESULT(no)
-	fi
-	])
-
-dnl Test for HPUX cma threads first..
-AC_CHECK_LIB(cma,pthread_create,
-	THREADLIBS="$THREADLIBS -lpthread"
-	])
-if test $ac_cv_lib_cma_pthread_create = yes; then
-	have_pthreads="yes"
-fi
-
-dnl special pthread handling 
-dnl AIX uses pthreads instead of pthread, and HP/UX uses cma
-dnl FreeBSD users -pthread
-AC_CHECK_LIB(pthread,pthread_create,[
-	THREADLIBS="$THREADLIBS -lpthread"
-	])
-if test $ac_cv_lib_pthread_pthread_create = yes; then
-	have_pthreads="yes"
-else
-	dnl For HP 11
-	AC_CHECK_LIB(pthread,pthread_mutex_init,[
-		THREADLIBS="$THREADLIBS -lpthread"
-		])
-	if test $ac_cv_lib_pthread_pthread_mutex_init = yes; then
-		have_pthreads="yes"
-	fi
-fi
-
-dnl AIX uses pthreads instead of pthread
-if test $have_pthreads = "no"; then
-	AC_CHECK_LIB(pthreads,pthread_create,[
-		THREADLIBS="$THREADLIBS -lpthreads"
-		])
-	if test $ac_cv_lib_pthreads_pthread_create = yes; then
-		have_pthreads="yes"
-	fi
-fi
-
-dnl all other thread tests fail, try BSD's -pthread
-if test $have_pthreads = "no"; then
-	AC_PTHREAD_FREEBSD
-fi
-
-AC_SUBST(THREADLIBS)
 
 
 
@@ -194,18 +120,22 @@ USE_MYSQL=no
 USE_PGSQL=no
 
 dnl Should we use all MySQL xdata routines?
-AC_ARG_WITH(mysql-xdata,--with-mysql-xdata enables use of MySQL database for comment/downtime/status data,[
+AC_ARG_WITH(mysql-xdata,--with-mysql-xdata enables use of MySQL database for all external data types except objects,[
 	XDATATYPE=mysql
 	XSDTYPE=mysql
 	XCDTYPE=mysql
+	XEDTYPE=mysql
+	XRDTYPE=mysql
 	XDDTYPE=mysql
 	])
 
 dnl Should we use all PostgreSQL xdata routines?
-AC_ARG_WITH(pgsql-xdata,--with-pgsql-xdata enables use of PostgreSQL database for comment/downtime/status data,[
+AC_ARG_WITH(pgsql-xdata,--with-pgsql-xdata enables use of PostgreSQL database for all external data types except objects,[
 	XDATATYPE=pgsql
 	XSDTYPE=pgsql
 	XCDTYPE=pgsql
+	XEDTYPE=pgsql
+	XRDTYPE=pgsql
 	XDDTYPE=pgsql
 	])
 
@@ -272,25 +202,64 @@ AC_SUBST(XCDH)
 
 
 dnl What extended data I/O implementation should we use?
-dnl AC_ARG_WITH(mysql-extinfo,--with-mysql-extinfo enables use of MySQL database for storage of extended data,XEDTYPE=mysql)
-dnl AC_ARG_WITH(pgsql-extinfo,--with-pgsql-extinfo enables use of PostgreSQL database for storage of extended data,XEDTYPE=pgsql)
-dnl AC_ARG_WITH(template-extinfo,--with-template-extinfo enables use of template-based extended info data routines,XEDTYPE=template)
+AC_ARG_WITH(mysql-extinfo,--with-mysql-extinfo enables use of MySQL database for storage of extended data,XEDTYPE=mysql)
+AC_ARG_WITH(pgsql-extinfo,--with-pgsql-extinfo enables use of PostgreSQL database for storage of extended data,XEDTYPE=pgsql)
+AC_ARG_WITH(default-extinfo,--with-default-extinfo enables use of default extended data routines,XEDTYPE=default)
+AC_ARG_WITH(template-extinfo,--with-template-extinfo enables use of template-based extended info data routines,XEDTYPE=template)
 if test $XEDTYPE = template; then
 	AC_DEFINE_UNQUOTED(USE_XEDTEMPLATE)
 	XEDC="xedtemplate.c"
 	XEDH="xedtemplate.h"
 	XEDCOMMENT="Template-based (text file)"
 	echo "We'll use template-based routines (in xdata/xedtemplate.*) for extended data I/O..."
+elif test $XEDTYPE = mysql; then
+	AC_DEFINE_UNQUOTED(USE_XEDDB)
+	AC_DEFINE_UNQUOTED(USE_XEDMYSQL)
+	USE_MYSQL=yes
+	XEDC="xeddb.c"
+	XEDH="xeddb.h"
+	XEDCOMMENT="Database (MySQL)"
+	echo "We'll use MySQL database routines (in xdata/xeddb.*) for extended data I/O..."
+elif test $XEDTYPE = pgsql; then
+	AC_DEFINE_UNQUOTED(USE_XEDDB)
+	AC_DEFINE_UNQUOTED(USE_XEDPGSQL)
+	USE_PGSQL=yes
+	XEDC="xeddb.c"
+	XEDH="xeddb.h"
+	XEDCOMMENT="Database (PostgreSQL)"
+	echo "We'll use PostgreSQL database routines (in xdata/xeddb.*) for extended data I/O..."
+else
+	AC_DEFINE_UNQUOTED(USE_XEDDEFAULT)
+	XEDC="xeddefault.c"
+	XEDH="xeddefault.h"
+	XEDCOMMENT="Default (text file)"
+	echo "We'll use default routines (in xdata/xeddefault.*) for extended data I/O..."
 fi
 AC_SUBST(XEDC)
 AC_SUBST(XEDH)
 
 
 dnl What retention data I/O implementation should we use?
-dnl AC_ARG_WITH(mysql-retention,--with-mysql-retention enables use of MySQL database for storage of retention data,XRDTYPE=mysql)
-dnl AC_ARG_WITH(pgsql-retention,--with-pgsql-retention enables use of PostgresSQL database for storage of retention data,XRDTYPE=pgsql)
-dnl AC_ARG_WITH(default-retention,--with-default-retention enables use of default retention data routines,XRDTYPE=default)
-if test $XRDTYPE = default; then
+AC_ARG_WITH(mysql-retention,--with-mysql-retention enables use of MySQL database for storage of retention data,XRDTYPE=mysql)
+AC_ARG_WITH(pgsql-retention,--with-pgsql-retention enables use of PostgresSQL database for storage of retention data,XRDTYPE=pgsql)
+AC_ARG_WITH(default-retention,--with-default-retention enables use of default retention data routines,XRDTYPE=default)
+if test $XRDTYPE = mysql; then
+	AC_DEFINE_UNQUOTED(USE_XRDDB)
+	AC_DEFINE_UNQUOTED(USE_XRDMYSQL)
+	USE_MYSQL=yes
+	XRDC="xrddb.c"
+	XRDH="xrddb.h"
+	XRDCOMMENT="Database (MySQL)"
+	echo "We'll use MySQL database routines (in xdata/xrddb.*) for retention data I/O..."
+elif test $XRDTYPE = pgsql; then
+	AC_DEFINE_UNQUOTED(USE_XRDDB)
+	AC_DEFINE_UNQUOTED(USE_XRDPGSQL)
+	USE_PGSQL=yes
+	XRDC="xrddb.c"
+	XRDH="xrddb.h"
+	XRDCOMMENT="Database (PostgreSQL)"
+	echo "We'll use PostgreSQL database routines (in xdata/xrddb.*) for retention data I/O..."
+else
 	AC_DEFINE_UNQUOTED(USE_XRDDEFAULT)
 	XRDC="xrddefault.c"
 	XRDH="xrddefault.h"
@@ -302,14 +271,38 @@ AC_SUBST(XRDH)
 
 
 dnl What object data I/O implementation should we use?
-dnl AC_ARG_WITH(default-objects,--with-default-objects enables use of default object data routines,XODTYPE=default)
-dnl AC_ARG_WITH(template-objects,--with-template-objects enables use of template-based object data routines,XODTYPE=template)
+dnl AC_ARG_WITH(mysql-objects,--with-mysql-objects enables use of MySQL database for object data,XODTYPE=mysql)
+dnl AC_ARG_WITH(pgsql-objects,--with-pgsql-objects enables use of PostgreSQL database for object data,XODTYPE=pgsql)
+AC_ARG_WITH(default-objects,--with-default-objects enables use of default object data routines,XODTYPE=default)
+AC_ARG_WITH(template-objects,--with-template-objects enables use of template-based object data routines,XODTYPE=template)
 if test $XODTYPE = template; then
 	AC_DEFINE_UNQUOTED(USE_XODTEMPLATE)
 	XODC="xodtemplate.c"
 	XODH="xodtemplate.h"
 	XODCOMMENT="Template-based (text file)"
 	echo "We'll use template-based routines (in xdata/xodtemplate.*) for object data I/O..."
+elif test $XODTYPE = mysql; then
+	AC_DEFINE_UNQUOTED(USE_XODDB)
+	AC_DEFINE_UNQUOTED(USE_XODMYSQL)
+	USE_MYSQL=yes
+	XODC="xoddb.c"
+	XODH="xoddb.h"
+	XODCOMMENT="Database (MySQL)"
+	echo "We'll use MySQL database routines (in xdata/xoddb.*) for object data I/O..."
+elif test $XODTYPE = pgsql; then
+	AC_DEFINE_UNQUOTED(USE_XODDB)
+	AC_DEFINE_UNQUOTED(USE_XODPGSQL)
+	USE_PGSQL=yes
+	XODC="xoddb.c"
+	XODH="xoddb.h"
+	XODCOMMENT="Database (PostgreSQL)"
+	echo "We'll use PostgreSQL database routines (in xdata/xoddb.*) for object data I/O..."
+else
+	AC_DEFINE_UNQUOTED(USE_XODDEFAULT)
+	XODC="xoddefault.c"
+	XODH="xoddefault.h"
+	XODCOMMENT="Default (text file)"
+	echo "We'll use default routines (in xdata/xoddefault.*) for object data I/O..."
 fi
 AC_SUBST(XODC)
 AC_SUBST(XODH)
@@ -629,9 +622,6 @@ AC_ARG_ENABLE(DEBUG3,--enable-DEBUG3 shows scheduled events (service and host ch
 AC_ARG_ENABLE(DEBUG4,--enable-DEBUG4 shows service and host notifications,AC_DEFINE_UNQUOTED(DEBUG4))
 AC_ARG_ENABLE(DEBUG5,--enable-DEBUG5 shows SQL queries,AC_DEFINE_UNQUOTED(DEBUG5))
 
-AC_ARG_ENABLE(event-broker,--enable-event-broker enables integration with Nagios Event Broker,AC_DEFINE_UNQUOTED(USE_EVENT_BROKER))
-AC_ARG_ENABLE(regexp-matching,--enable-regexp-matching enables regular expression matching in config files,AC_DEFINE_UNQUOTED(USE_REGEXP_MATCHING))
-
 USEPERL=no;
 INSTALLPERLSTUFF=no;
 AC_ARG_ENABLE(embedded-perl,--enable-embedded-perl will enable embedded Perl interpreter,[
@@ -802,12 +792,12 @@ echo " External Data Routines:"
 echo " ------------------------"
 
 AC_MSG_RESULT([              Status data:  $XSDCOMMENT])
-dnl AC_MSG_RESULT([              Object data:  $XODCOMMENT])
+AC_MSG_RESULT([              Object data:  $XODCOMMENT])
 AC_MSG_RESULT([             Comment data:  $XCDCOMMENT])
 AC_MSG_RESULT([            Downtime data:  $XDDCOMMENT])
-dnl AC_MSG_RESULT([           Retention data:  $XRDCOMMENT])
+AC_MSG_RESULT([           Retention data:  $XRDCOMMENT])
 AC_MSG_RESULT([          Peformance data:  $XPDCOMMENT])
-dnl AC_MSG_RESULT([       Extended info data:  $XEDCOMMENT])
+AC_MSG_RESULT([       Extended info data:  $XEDCOMMENT])
 
 
 echo ""

@@ -2,7 +2,7 @@
  *
  * Nagios Common Header File
  * Written By: Ethan Galstad (nagios@nagios.org)
- * Last Modified: 12-04-2002
+ * Last Modified: 04-20-2002
  *
  * License:
  *
@@ -22,8 +22,8 @@
  ************************************************************************/
 
 
-#define PROGRAM_VERSION "2.0-very-pre-alpha"
-#define PROGRAM_MODIFICATION_DATE "12-01-2002"
+#define PROGRAM_VERSION "1.1"
+#define PROGRAM_MODIFICATION_DATE "05-30-2003"
 
 
 /***************************** COMMANDS *********************************/
@@ -156,17 +156,6 @@
 #define CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME             85 /* not internally implemented */
 #define CMD_SCHEDULE_HOST_SVC_DOWNTIME                  86
 
-#define CMD_PROCESS_HOST_CHECK_RESULT		        87
-
-#define CMD_START_EXECUTING_HOST_CHECKS			88
-#define CMD_STOP_EXECUTING_HOST_CHECKS			89
-
-#define CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS		90
-#define CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS		91
-
-#define CMD_ENABLE_PASSIVE_HOST_CHECKS			92
-#define CMD_DISABLE_PASSIVE_HOST_CHECKS			93
-
 
 
 /************************ SERVICE CHECK TYPES ****************************/
@@ -233,14 +222,12 @@
 #define READ_COMMANDS			32
 #define READ_TIMEPERIODS		64
 #define READ_SERVICEESCALATIONS		128
-#define READ_HOSTGROUPESCALATIONS	256     /* no longer implemented */
+#define READ_HOSTGROUPESCALATIONS	256
 #define READ_SERVICEDEPENDENCIES        512
 #define READ_HOSTDEPENDENCIES           1024
 #define READ_HOSTESCALATIONS            2048
 
-#define CACHE_OBJECT_DATA               4096    /* used by daemon only */
-
-#define READ_ALL_OBJECT_DATA            READ_HOSTS | READ_HOSTGROUPS | READ_CONTACTS | READ_CONTACTGROUPS | READ_SERVICES | READ_COMMANDS | READ_TIMEPERIODS | READ_SERVICEESCALATIONS | READ_SERVICEDEPENDENCIES | READ_HOSTDEPENDENCIES | READ_HOSTESCALATIONS
+#define READ_ALL_OBJECT_DATA            READ_HOSTS | READ_HOSTGROUPS | READ_CONTACTS | READ_CONTACTGROUPS | READ_SERVICES | READ_COMMANDS | READ_TIMEPERIODS | READ_SERVICEESCALATIONS | READ_HOSTGROUPESCALATIONS | READ_SERVICEDEPENDENCIES | READ_HOSTDEPENDENCIES | READ_HOSTESCALATIONS
 
 
 /************************** DATE/TIME TYPES *****************************/
