@@ -3,40 +3,10 @@ Nagios Change Log
 ###################
 
 
-2.0a1 - ??/??/????
-------------------
-* Added regexp matching in object config files (with --enable-regexp-matching
-  option to configure script)
-* Changed default name of status, comment, downtime, and retention files
-* Removed DB support for extended data and retention data
-* Multiple service descriptions can be used in both service dependency
-  and service escalation definitions
-* Moved contact groups directive from hostgroup definitions to host
-  definitions
-* Added worker thread to increase buffer size of external command file
-* Added object_cache_file directive to allow CGI to read cached copy of
-  object definitions
-* Added DURATION, DURATIONSEC, HOSTDOWNTIME, and SERVICEDOWNTIME macros
-* Removed hostgroup escalations
-* Added passive host checks
-* Event handler commands can now contain arguments
-* Contact notification commands can now contain arguments (Greg Vickers)
-* Support for multiple members directives in hostgroup definitions
-* Directory recursion support added to cfg_dir directives for object data
-* Extended info can now be specified by directories with xedtemplate_config_dir
-  directive (directory recursion is supported)
-* Host check command can now contain arguments (! separator) (Daniel Riek)
-* Removed support for "vanilla" command definitions (I doubt they were used)
-* Added p1_file directive to main config file to specify location
-  of p1.pl (Russell Scibetti)
-* Added option to reload embedded Perl interpreter after X calls
-  during runtime - useful if you notice embedded Perl leaking memory
-* Removed older object config support
-* Removed older extended info config support
-* CGIs can now determine config file and external command file locations
-  from environment variables (Russell Scibetti)
-* Host and services use chained hash for faster lookups (Daniel Drown)
-	###### CH may disappear from xodtemplate before release (not sure though)
+
+1.1 - ??/??/2003
+----------------
+* Minor bug fixes
 
 
 1.0 - 11/24/2002
