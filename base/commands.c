@@ -3,7 +3,7 @@
  * COMMANDS.C - External command functions for Nagios
  *
  * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   01-05-2003
+ * Last Modified:   07-01-2003
  *
  * License:
  *
@@ -26,17 +26,15 @@
 #include "../common/config.h"
 #include "../common/common.h"
 #include "../common/comments.h"
-#include "../common/downtime.h"
 #include "../common/statusdata.h"
-#include "perfdata.h"
 #include "sretention.h"
-#include "broker.h"
 #include "nagios.h"
 
-extern char     *config_file;
-extern char	*log_file;
-extern char     *command_file;
-extern char     *temp_file;
+extern char     config_file[MAX_FILENAME_LENGTH];
+extern char	log_file[MAX_FILENAME_LENGTH];
+extern char     command_file[MAX_FILENAME_LENGTH];
+extern char     temp_file[MAX_FILENAME_LENGTH];
+extern char     comment_file[MAX_FILENAME_LENGTH];
 
 extern int      sigshutdown;
 extern int      sigrestart;
@@ -50,8 +48,6 @@ extern time_t   last_command_check;
 extern int      enable_notifications;
 extern int      execute_service_checks;
 extern int      accept_passive_service_checks;
-extern int      execute_host_checks;
-extern int      accept_passive_host_checks;
 extern int      enable_event_handlers;
 extern int      obsess_over_services;
 extern int      enable_failure_prediction;
@@ -62,21 +58,19 @@ extern int      log_passive_checks;
 
 extern timed_event      *event_list_high;
 extern timed_event      *event_list_low;
+extern service          *service_list;
+extern host             *host_list;
 
 extern FILE     *command_file_fp;
-extern int      command_file_fd;
 
 passive_check_result    *passive_check_result_list;
 
-extern pthread_t       worker_threads[TOTAL_WORKER_THREADS];
-extern circular_buffer external_command_buffer;
-
+int             flush_pending_commands=FALSE;
 
 
 /******************************************************************/
 /****************** EXTERNAL COMMAND PROCESSING *******************/
 /******************************************************************/
-
 
 /* checks for the existence of the external command file and processes all
    commands found in it */
@@ -92,7 +86,6 @@ void check_for_external_commands(void){
 	printf("check_for_external_commands() start\n");
 #endif
 
-
 	/* bail out if we shouldn't be checking for external commands */
 	if(check_external_commands==FALSE)
 		return;
@@ -106,25 +99,18 @@ void check_for_external_commands(void){
 	/* reset passive check result list pointer */
 	passive_check_result_list=NULL;
 
-	/* get a lock on the buffer */
-	pthread_mutex_lock(&external_command_buffer.buffer_lock);
+	/* reset flush flag */
+	flush_pending_commands=FALSE;
 
-	/* process all commands found in the buffer */
-	while(external_command_buffer.items>0){
+	/* clear EOF condition from prior run (FreeBSD fix) */
+	clearerr(command_file_fp);
 
-		if(external_command_buffer.buffer[external_command_buffer.head]){
-			strncpy(buffer,((char **)external_command_buffer.buffer)[external_command_buffer.head],sizeof(buffer)-1);
-			buffer[sizeof(buffer)-1]='\x0';
-		        }
-		else
-			strcpy(buffer,"");
+	/* process all commands in the file (now implemented as a named pipe) */
+	while(fgets(buffer,(int)(sizeof(buffer)-1),command_file_fp)!=NULL){
 
-		/* free memory allocated for buffer slot */
-		free(((char **)external_command_buffer.buffer)[external_command_buffer.head]);
-
-		/* adjust head counter and number of items */
-		external_command_buffer.head=(external_command_buffer.head + 1) % COMMAND_BUFFER_SLOTS;
-		external_command_buffer.items--;
+		/* we're flushing all remaining commands from the file */
+		if(flush_pending_commands==TRUE)
+			continue;
 
 		/* strip the buffer of newlines and carriage returns */
 		strip(buffer);
@@ -234,8 +220,6 @@ void check_for_external_commands(void){
 
 		else if(!strcmp(command_id,"PROCESS_SERVICE_CHECK_RESULT"))
 			command_type=CMD_PROCESS_SERVICE_CHECK_RESULT;
-		else if(!strcmp(command_id,"PROCESS_HOST_CHECK_RESULT"))
-			command_type=CMD_PROCESS_HOST_CHECK_RESULT;
 
 		else if(!strcmp(command_id,"SAVE_STATE_INFORMATION"))
 			command_type=CMD_SAVE_STATE_INFORMATION;
@@ -333,21 +317,6 @@ void check_for_external_commands(void){
 		else if(!strcmp(command_id,"SCHEDULE_HOST_SVC_DOWNTIME"))
 			command_type=CMD_SCHEDULE_HOST_SVC_DOWNTIME;
 
-		else if(!strcmp(command_id,"START_EXECUTING_HOST_CHECKS"))
-			command_type=CMD_START_EXECUTING_HOST_CHECKS;
-		else if(!strcmp(command_id,"STOP_EXECUTING_HOST_CHECKS"))
-			command_type=CMD_STOP_EXECUTING_HOST_CHECKS;
-
-		else if(!strcmp(command_id,"START_ACCEPTING_PASSIVE_HOST_CHECKS"))
-			command_type=CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS;
-		else if(!strcmp(command_id,"STOP_ACCEPTING_PASSIVE_HOST_CHECKS"))
-			command_type=CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS;
-
-		else if(!strcmp(command_id,"ENABLE_PASSIVE_HOST_CHECKS"))
-			command_type=CMD_ENABLE_PASSIVE_HOST_CHECKS;
-		else if(!strcmp(command_id,"DISABLE_PASSIVE_HOST_CHECKS"))
-			command_type=CMD_DISABLE_PASSIVE_HOST_CHECKS;
-
 		else{
 			/* log the bad external command */
 			snprintf(buffer,sizeof(buffer),"Warning: Unrecognized external command -> %s;%s\n",command_id,args);
@@ -373,8 +342,9 @@ void check_for_external_commands(void){
 		process_external_command(command_type,entry_time,args);
 	        }
 
-	/* release the lock on the buffer */
-	pthread_mutex_unlock(&external_command_buffer.buffer_lock);
+	/* rewind file pointer (fix for FreeBSD, may already be taken care of due to clearerr() call before reading begins) */
+	rewind(command_file_fp);
+
 
 	/**** PROCESS ALL PASSIVE CHECK RESULTS AT ONE TIME ****/
 	if(passive_check_result_list!=NULL)
@@ -482,10 +452,6 @@ void process_external_command(int cmd,time_t entry_time,char *args){
 		cmd_process_service_check_result(cmd,entry_time,args);
 		break;
 
-	case CMD_PROCESS_HOST_CHECK_RESULT:
-		cmd_process_host_check_result(cmd,entry_time,args);
-		break;
-
 	case CMD_SAVE_STATE_INFORMATION:
 		save_state_information(config_file,FALSE);
 		break;
@@ -506,7 +472,7 @@ void process_external_command(int cmd,time_t entry_time,char *args){
 
 	case CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS:
 	case CMD_STOP_ACCEPTING_PASSIVE_SVC_CHECKS:
-		cmd_start_stop_accepting_passive_service_checks(cmd);
+		cmd_start_stop_accepting_passive_checks(cmd);
 		break;
 
 	case CMD_ENABLE_PASSIVE_SVC_CHECKS:
@@ -579,6 +545,10 @@ void process_external_command(int cmd,time_t entry_time,char *args){
 	case CMD_CANCEL_PENDING_HOST_SVC_DOWNTIME:
 		break;
 
+	case CMD_FLUSH_PENDING_COMMANDS:
+		flush_pending_commands=TRUE;
+		break;
+
 	case CMD_ENABLE_FAILURE_PREDICTION:
 		enable_all_failure_prediction();
 		break;
@@ -597,21 +567,6 @@ void process_external_command(int cmd,time_t entry_time,char *args){
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 		cmd_schedule_host_service_downtime(cmd,entry_time,args);
-		break;
-
-	case CMD_START_EXECUTING_HOST_CHECKS:
-	case CMD_STOP_EXECUTING_HOST_CHECKS:
-		cmd_start_stop_executing_host_checks(cmd);
-		break;
-
-	case CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS:
-	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
-		cmd_start_stop_accepting_passive_host_checks(cmd);
-		break;
-
-	case CMD_ENABLE_PASSIVE_HOST_CHECKS:
-	case CMD_DISABLE_PASSIVE_HOST_CHECKS:
-		cmd_enable_disable_passive_host_checks(cmd,args);
 		break;
 
 	default:
@@ -661,13 +616,13 @@ int cmd_add_comment(int cmd,time_t entry_time,char *args){
 			return ERROR;
 
 		/* verify that the service is valid */
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,svc_description,NULL);
 		if(temp_service==NULL)
 			return ERROR;
 	        }
 
 	/* else verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -754,13 +709,13 @@ int cmd_delete_all_comments(int cmd,char *args){
 			return ERROR;
 
 		/* verify that the service is valid */
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,svc_description,NULL);
 		if(temp_service==NULL)
 			return ERROR;
 	        }
 
 	/* else verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -802,7 +757,7 @@ int cmd_delay_notification(int cmd,char *args){
 			return ERROR;
 
 		/* verify that the service is valid */
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,svc_description,NULL);
 		if(temp_service==NULL)
 			return ERROR;
 	        }
@@ -810,7 +765,7 @@ int cmd_delay_notification(int cmd,char *args){
 	/* else verify that the host is valid */
 	else{
 
-		temp_host=find_host(host_name);
+		temp_host=find_host(host_name,NULL);
 		if(temp_host==NULL)
 			return ERROR;
 	        }
@@ -858,7 +813,7 @@ int cmd_schedule_service_check(int cmd,char *args, int force){
 		return ERROR;
 
 	/* verify that the service is valid */
-	temp_service=find_service(host_name,svc_description);
+	temp_service=find_service(host_name,svc_description,NULL);
 	if(temp_service==NULL)
 		return ERROR;
 
@@ -897,7 +852,7 @@ int cmd_schedule_host_service_checks(int cmd,char *args, int force){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -908,14 +863,12 @@ int cmd_schedule_host_service_checks(int cmd,char *args, int force){
 	delay_time=strtoul(temp_ptr,NULL,10);
 
 	/* reschedule all services on the specified host */
-	if(find_all_services_by_host(host_name)) {
-		while(temp_service=get_next_service_by_host()) {
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+
 		/* schedule a delayed service check */
+		if(!strcmp(host_name,temp_service->host_name))
 			schedule_service_check(temp_service,delay_time,force);
 	        }
-	} else {
-		return ERROR;
-	}
 
 
 #ifdef DEBUG0
@@ -947,7 +900,7 @@ int cmd_enable_disable_service_check(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the service is valid */
-	temp_service=find_service(host_name,svc_description);
+	temp_service=find_service(host_name,svc_description,NULL);
 	if(temp_service==NULL)
 		return ERROR;
 
@@ -980,20 +933,19 @@ int cmd_enable_disable_host_service_checks(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
 	/* disable all services associated with this host... */
-	if(find_all_services_by_host(temp_host->name)) {
-		while(temp_service=get_next_service_by_host()) {
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+
+		if(!strcmp(temp_service->host_name,temp_host->name)){
 			if(cmd==CMD_ENABLE_HOST_SVC_CHECKS)
 				enable_service_check(temp_service);
 			else
 				disable_service_check(temp_service);
 		        }
-	} else {
-		return ERROR;
 	        }
 
 #ifdef DEBUG0
@@ -1042,17 +994,43 @@ int cmd_signal_process(int cmd, char *args){
 
 
 int cmd_enable_disable_notifications(int cmd, char *args){
+	timed_event *new_event=NULL;
+	time_t scheduled_time;
+	char *temp_ptr;
 
 #ifdef DEBUG0
 	printf("cmd_enable_disable_notifications() start\n");
 #endif
 
-	/* scheduled time is now ignored... */
-
-	if(cmd==CMD_ENABLE_NOTIFICATIONS)
-		enable_all_notifications();
+	/* get the time to schedule the event */
+	temp_ptr=my_strtok(args,"\n");
+	if(temp_ptr==NULL)
+		scheduled_time=0L;
 	else
-		disable_all_notifications();
+		scheduled_time=strtoul(temp_ptr,NULL,10);
+
+	/* no need to schedule a future change, just do it now */
+	if(scheduled_time==0L){
+		if(cmd==CMD_ENABLE_NOTIFICATIONS)
+			enable_all_notifications();
+		else
+			disable_all_notifications();
+	        }
+
+	/* else add a scheduled notification change */
+	else{
+
+		new_event=malloc(sizeof(timed_event));
+		if(new_event!=NULL){
+			new_event->event_type=(cmd==CMD_ENABLE_NOTIFICATIONS)?EVENT_ENABLE_NOTIFICATIONS:EVENT_DISABLE_NOTIFICATIONS;
+			new_event->event_data=(void *)NULL;
+			new_event->run_time=scheduled_time;
+			new_event->recurring=FALSE;
+			schedule_event(new_event,&event_list_high);
+	                }
+		else
+			return ERROR;
+	        }
 
 #ifdef DEBUG0
 	printf("cmd_enable_disable_notifications() end\n");
@@ -1083,7 +1061,7 @@ int cmd_enable_disable_service_notifications(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the service is valid */
-	temp_service=find_service(host_name,svc_description);
+	temp_service=find_service(host_name,svc_description,NULL);
 	if(temp_service==NULL)
 		return ERROR;
 
@@ -1114,7 +1092,7 @@ int cmd_enable_disable_host_notifications(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1147,20 +1125,19 @@ int cmd_enable_disable_host_service_notifications(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
 	/* find all services for this host... */
-	if(find_all_services_by_host(host_name)) {
-		while(temp_service=get_next_service_by_host()) {
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+
+		if(!strcmp(temp_service->host_name,host_name)){
 			if(cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)
 				enable_service_notifications(temp_service);
 			else
 				disable_service_notifications(temp_service);
 		        }
-	} else {
-		return ERROR;
 	        }
 
 #ifdef DEBUG0
@@ -1185,7 +1162,7 @@ int cmd_enable_disable_and_propagate_notifications(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1208,7 +1185,6 @@ int cmd_process_service_check_result(int cmd,time_t check_time,char *args){
 	passive_check_result *new_pcr;
 	passive_check_result *temp_pcr;
 	host *temp_host;
-	void *host_cursor;
 
 #ifdef DEBUG0
 	printf("cmd_process_service_check_result() start\n");
@@ -1220,17 +1196,19 @@ int cmd_process_service_check_result(int cmd,time_t check_time,char *args){
 
 	/* get the host name */
 	temp_ptr=my_strtok(args,";");
+	if(temp_ptr==NULL){
+		free(new_pcr);
+		return ERROR;
+	        }
 
 	/* if this isn't a host name, mabye its a host address */
-	if(find_host(temp_ptr)==NULL){
-		host_cursor=get_host_cursor();
-		while(temp_host=get_next_host_cursor(host_cursor)){
+	if(find_host(temp_ptr,NULL)==NULL){
+		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 			if(!strcmp(temp_ptr,temp_host->address)){
 				temp_ptr=temp_host->name;
 				break;
 			        }
 		        }
-		free_host_cursor(host_cursor);
 	        }
 
 	if(temp_ptr==NULL){
@@ -1270,7 +1248,7 @@ int cmd_process_service_check_result(int cmd,time_t check_time,char *args){
 	new_pcr->return_code=atoi(temp_ptr);
 
 	/* make sure the return code is within bounds */
-	if(new_pcr->return_code<-1 || new_pcr->return_code>2)
+	if(new_pcr->return_code<0 || new_pcr->return_code>3)
 		new_pcr->return_code=STATE_UNKNOWN;
 
 	/* get the plugin output */
@@ -1309,196 +1287,6 @@ int cmd_process_service_check_result(int cmd,time_t check_time,char *args){
         }
 
 
-
-/* process passive host check result */
-/* this function is a bit more involved than for passive service checks, as we need to replicate most function performed by check_route_to_host() */
-int cmd_process_host_check_result(int cmd,time_t check_time,char *args){
-	char *temp_ptr;
-	host *temp_host;
-	host *this_host;
-	char temp_plugin_output[MAX_PLUGINOUTPUT_LENGTH]="";
-	int return_code;
-	time_t current_time;
-	int old_state=HOST_UP;
-	char old_plugin_output[MAX_PLUGINOUTPUT_LENGTH]="";
-	void *host_cursor;
-	char temp_buffer[MAX_INPUT_BUFFER];
-
-#ifdef DEBUG0
-	printf("cmd_process_passive_host_check_result() start\n");
-#endif
-
-
-	/* skip this host check result if we aren't accepting passive check results */
-	if(accept_passive_host_checks==FALSE)
-		return ERROR;
-
-
-	/**************** GET THE INFO ***************/
-
-	time(&current_time);
-
-	/* get the host name */
-	temp_ptr=my_strtok(args,";");
-	if(temp_ptr==NULL)
-		return ERROR;
-
-	/* find the host by name or address */
-	if((this_host=find_host(temp_ptr))==NULL){
-		host_cursor=get_host_cursor();
-		while(temp_host=get_next_host_cursor(host_cursor)){
-			if(!strcmp(temp_ptr,temp_host->address)){
-				this_host=temp_host;
-				break;
-			        }
-		        }
-		free_host_cursor(host_cursor);
-	        }
-
-	/* bail if we coulnd't find a matching host by name or address */
-	if(this_host==NULL){
-
-		snprintf(temp_buffer,sizeof(temp_buffer),"Warning:  Passive check result was received for host '%s', but the host could not be found!\n",temp_ptr);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_RUNTIME_WARNING,TRUE);
-
-		return ERROR;
-	        }
-
-	/* get the host check return code */
-	temp_ptr=my_strtok(NULL,";");
-	if(temp_ptr==NULL)
-		return ERROR;
-	return_code=atoi(temp_ptr);
-
-	/* make sure the return code is within bounds */
-	if(return_code<0 || return_code>2)
-		return ERROR;
-
-	/* get the plugin output */
-	temp_ptr=my_strtok(NULL,"\n");
-	if(temp_ptr==NULL)
-		return ERROR;
-	snprintf(temp_plugin_output,MAX_PLUGINOUTPUT_LENGTH-1,"%s",temp_ptr);
-	temp_plugin_output[MAX_PLUGINOUTPUT_LENGTH-1]='\x0';
-
-
-	/********* LET'S DO IT (SUBSET OF NORMAL HOST CHECK OPERATIONS) ********/
-
-	/* ignore passive host check results if we're not accepting them for this host */
-	if(this_host->accept_passive_host_checks==FALSE)
-		return ERROR;
-
-	/* set the checked flag */
-	this_host->has_been_checked=TRUE;
-
-	/* set the current attempt */
-	this_host->current_attempt=1;
-
-	/* save the old plugin output and host state for use with state stalking routines */
-	old_state=this_host->status;
-	strncpy(old_plugin_output,(this_host->plugin_output==NULL)?"":this_host->plugin_output,sizeof(old_plugin_output)-1);
-	old_plugin_output[sizeof(old_plugin_output)-1]='\x0';
-
-	/* set the last host check time */
-	this_host->last_check=check_time;
-
-	/* clear plugin output and performance data buffers */
-	strcpy(this_host->plugin_output,"");
-	strcpy(this_host->perf_data,"");
-
-	/* calculate total execution time */
-	this_host->execution_time=(double)(current_time-check_time);
-	if(this_host->execution_time<0.0)
-		this_host->execution_time=0.0;
-
-	/* check for empty plugin output */
-	if(!strcmp(temp_plugin_output,""))
-		strcpy(temp_plugin_output,"(No Information Returned From Host Check)");
-
-	/* first part of plugin output (up to pipe) is status info */
-	temp_ptr=strtok(temp_plugin_output,"|\n");
-
-	/* make sure the plugin output isn't NULL */
-	if(temp_ptr==NULL){
-		strncpy(this_host->plugin_output,"(No output returned from host check)",MAX_PLUGINOUTPUT_LENGTH-1);
-		this_host->plugin_output[MAX_PLUGINOUTPUT_LENGTH-1]='\x0';
-	        }
-
-	else{
-
-		strip(temp_ptr);
-		if(!strcmp(temp_ptr,"")){
-			strncpy(this_host->plugin_output,"(No output returned from host check)",MAX_PLUGINOUTPUT_LENGTH-1);
-			this_host->plugin_output[MAX_PLUGINOUTPUT_LENGTH-1]='\x0';
-                        }
-		else{
-			strncpy(this_host->plugin_output,temp_ptr,MAX_PLUGINOUTPUT_LENGTH-1);
-			this_host->plugin_output[MAX_PLUGINOUTPUT_LENGTH-1]='\x0';
-                        }
-	        }
-
-	/* second part of plugin output (after pipe) is performance data (which may or may not exist) */
-	temp_ptr=strtok(NULL,"\n");
-
-	/* grab performance data if we found it available */
-	if(temp_ptr!=NULL){
-		strip(temp_ptr);
-		strncpy(this_host->perf_data,temp_ptr,MAX_PLUGINOUTPUT_LENGTH-1);
-		this_host->perf_data[MAX_PLUGINOUTPUT_LENGTH-1]='\x0';
-	        }
-
-	/* replace semicolons in plugin output (but not performance data) with colons */
-	temp_ptr=this_host->plugin_output;
-	while((temp_ptr=strchr(temp_ptr,';')))
-	      *temp_ptr=':';
-
-
-	/***** PROCESS PERFORMANCE DATA *****/
-	update_host_performance_data(this_host,return_code,HARD_STATE);
-
-
-	/***** HAS A HOST STATE CHANGE OCCURRED? *****/
-	if(return_code!=old_state)
-		handle_host_state(this_host,return_code,HARD_STATE);
-
-
-	/***** UPDATE HOST STATUS *****/
-	update_host_status(this_host,FALSE);
-
-
-	/****** STALKING STUFF *****/
-	/* if the host didn't change state and the plugin output differs from the last time it was checked, log the current state/output if state stalking is enabled */
-	if(old_state==return_code && strcmp(old_plugin_output,this_host->plugin_output)){
-
-		if(return_code==HOST_UP && this_host->stalk_on_up==TRUE)
-			log_host_event(this_host,HOST_UP,HARD_STATE);
-
-		if(return_code==HOST_DOWN && this_host->stalk_on_down==TRUE)
-			log_host_event(this_host,HOST_DOWN,HARD_STATE);
-
-		if(return_code==HOST_UNREACHABLE && this_host->stalk_on_unreachable==TRUE)
-			log_host_event(this_host,HOST_UNREACHABLE,HARD_STATE);
-	        }
-
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	broker_host_check(NEBTYPE_HOSTCHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_HOSTCHECK_PASSIVE,this_host,return_code,0.0,NULL);
-#endif
-
-	/***** CHECK FOR FLAPPING *****/
-	check_for_host_flapping(this_host);
-
-
-#ifdef DEBUG0
-	printf("cmd_process_passive_host_check_result() end\n");
-#endif
-
-	return OK;
-        }
-
-
-
 /* acknowledges a host or service problem */
 int cmd_acknowledge_problem(int cmd,char *args){
 	service *temp_service=NULL;
@@ -1519,7 +1307,7 @@ int cmd_acknowledge_problem(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1532,7 +1320,7 @@ int cmd_acknowledge_problem(int cmd,char *args){
 			return ERROR;
 
 		/* verify that the service is valid */
-		temp_service=find_service(temp_host->name,svc_description);
+		temp_service=find_service(temp_host->name,svc_description,NULL);
 		if(temp_service==NULL)
 			return ERROR;
 	        }
@@ -1582,7 +1370,7 @@ int cmd_remove_acknowledgement(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1595,7 +1383,7 @@ int cmd_remove_acknowledgement(int cmd,char *args){
 			return ERROR;
 
 		/* verify that the service is valid */
-		temp_service=find_service(temp_host->name,svc_description);
+		temp_service=find_service(temp_host->name,svc_description,NULL);
 		if(temp_service==NULL)
 			return ERROR;
 	        }
@@ -1638,10 +1426,10 @@ int cmd_start_stop_executing_service_checks(int cmd){
 
 
 /* starts or stops accepting passive service checks */
-int cmd_start_stop_accepting_passive_service_checks(int cmd){
+int cmd_start_stop_accepting_passive_checks(int cmd){
 
 #ifdef DEBUG0
-	printf("cmd_start_stop_accepting_passive_service_checks() start\n");
+	printf("cmd_start_stop_accepting_passive_checks() start\n");
 #endif
 
 	if(cmd==CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS)
@@ -1650,7 +1438,7 @@ int cmd_start_stop_accepting_passive_service_checks(int cmd){
 		stop_accepting_passive_service_checks();
 
 #ifdef DEBUG0
-	printf("cmd_start_stop_accepting_passive_service_checks() end\n");
+	printf("cmd_start_stop_accepting_passive_checks() end\n");
 #endif
 
 	return OK;
@@ -1678,7 +1466,7 @@ int cmd_enable_disable_passive_service_checks(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the service is valid */
-	temp_service=find_service(host_name,svc_description);
+	temp_service=find_service(host_name,svc_description,NULL);
 	if(temp_service==NULL)
 		return ERROR;
 
@@ -1694,77 +1482,6 @@ int cmd_enable_disable_passive_service_checks(int cmd,char *args){
 
 	return OK;
         }
-
-
-
-/* starts or stops executing host checks */
-int cmd_start_stop_executing_host_checks(int cmd){
-
-#ifdef DEBUG0
-	printf("cmd_start_stop_executing_host_checks() start\n");
-#endif
-
-	if(cmd==CMD_START_EXECUTING_HOST_CHECKS)
-		start_executing_host_checks();
-	else
-		stop_executing_host_checks();
-
-#ifdef DEBUG0
-	printf("cmd_start_stop_executing_host_checks() end\n");
-#endif
-
-	return OK;
-        }
-
-
-
-/* starts or stops accepting passive host checks */
-int cmd_start_stop_accepting_passive_host_checks(int cmd){
-
-#ifdef DEBUG0
-	printf("cmd_start_stop_accepting_passive_host_checks() start\n");
-#endif
-
-	if(cmd==CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS)
-		start_accepting_passive_host_checks();
-	else
-		stop_accepting_passive_host_checks();
-
-#ifdef DEBUG0
-	printf("cmd_start_stop_accepting_passive_host_checks() end\n");
-#endif
-
-	return OK;
-        }
-
-
-
-/* enables/disables passive checks for a particular host */
-int cmd_enable_disable_passive_host_checks(int cmd,char *args){
-	host *temp_host=NULL;
-
-#ifdef DEBUG0
-	printf("cmd_enable_disable_passive_host_checks() start\n");
-#endif
-
-	/* verify that the host is valid */
-	temp_host=find_host(args);
-	if(temp_host==NULL)
-		return ERROR;
-
-	/* enable or disable passive checks for this host */
-	if(cmd==CMD_ENABLE_PASSIVE_HOST_CHECKS)
-		enable_passive_host_checks(temp_host);
-	else
-		disable_passive_host_checks(temp_host);
-
-#ifdef DEBUG0
-	printf("cmd_enable_disable_passive_host_checks() end\n");
-#endif
-
-	return OK;
-        }
-
 
 
 /* enables/disables the event handler for a particular service */
@@ -1784,7 +1501,7 @@ int cmd_enable_disable_service_event_handler(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1794,7 +1511,7 @@ int cmd_enable_disable_service_event_handler(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the service is valid */
-	temp_service=find_service(host_name,svc_description);
+	temp_service=find_service(host_name,svc_description,NULL);
 	if(temp_service==NULL)
 		return ERROR;
 
@@ -1828,7 +1545,7 @@ int cmd_enable_disable_host_event_handler(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1861,7 +1578,7 @@ int cmd_enable_disable_host_check(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1915,7 +1632,7 @@ int cmd_enable_disable_host_flap_detection(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1950,7 +1667,7 @@ int cmd_enable_disable_service_flap_detection(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -1960,7 +1677,7 @@ int cmd_enable_disable_service_flap_detection(int cmd,char *args){
 		return ERROR;
 
 	/* verify that the service is valid */
-	temp_service=find_service(host_name,svc_description);
+	temp_service=find_service(host_name,svc_description,NULL);
 	if(temp_service==NULL)
 		return ERROR;
 
@@ -2003,7 +1720,7 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -2016,7 +1733,7 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args){
 			return ERROR;
 
 		/* verify that the service is valid */
-		temp_service=find_service(temp_host->name,svc_description);
+		temp_service=find_service(temp_host->name,svc_description,NULL);
 		if(temp_service==NULL)
 			return ERROR;
 	        }
@@ -2125,7 +1842,7 @@ int cmd_schedule_host_service_downtime(int cmd, time_t entry_time, char *args){
 		return ERROR;
 
 	/* verify that the host is valid */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 	if(temp_host==NULL)
 		return ERROR;
 
@@ -2168,13 +1885,10 @@ int cmd_schedule_host_service_downtime(int cmd, time_t entry_time, char *args){
 		duration=(unsigned long)(end_time-start_time);
 
 	/* schedule downtime */
-	if(find_all_services_by_host(host_name)) {
-		while(temp_service=get_next_service_by_host()) {
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+		if(!strcmp(temp_service->host_name,host_name))
 			schedule_downtime(SERVICE_DOWNTIME,host_name,temp_service->description,entry_time,author,comment,start_time,end_time,fixed,duration);
 	        }
-	} else {
-		return ERROR;
-	}
 
 #ifdef DEBUG0
 	printf("cmd_schedule_host_service_downtime() end\n");
@@ -2463,15 +2177,14 @@ void disable_host_notifications(host *hst){
 void enable_and_propagate_notifications(host *hst){
 	host *temp_host;
 	service *temp_service;
-	void *host_cursor;
 
 #ifdef DEBUG0
 	printf("enable_and_propagate_notifications() start\n");
 #endif
 
 	/* check all child hosts... */
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		if(is_host_immediate_child_of_host(hst,temp_host)==TRUE){
 
 			/* recurse... */
@@ -2481,15 +2194,13 @@ void enable_and_propagate_notifications(host *hst){
 			enable_host_notifications(temp_host);
 
 			/* enable notifications for all services on this host... */
-			if(find_all_services_by_host(temp_host->name)) {
-				while(temp_service=get_next_service_by_host()) {
+			for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+				if(!strcmp(temp_host->name,temp_service->host_name))
 					enable_service_notifications(temp_service);
 			        }
 		        }
 
 	        }
-	}
-	free_host_cursor(host_cursor);
 
 #ifdef DEBUG0
 	printf("enable_and_propagate_notifications() end\n");
@@ -2503,15 +2214,14 @@ void enable_and_propagate_notifications(host *hst){
 void disable_and_propagate_notifications(host *hst){
 	host *temp_host;
 	service *temp_service;
-	void *host_cursor;
 
 #ifdef DEBUG0
 	printf("disable_and_propagate_notifications() start\n");
 #endif
 
 	/* check all child hosts... */
-	host_cursor = get_host_cursor();
-	while(temp_host=get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		if(is_host_immediate_child_of_host(hst,temp_host)==TRUE){
 
 			/* recurse... */
@@ -2521,15 +2231,13 @@ void disable_and_propagate_notifications(host *hst){
 			disable_host_notifications(temp_host);
 
 			/* disable notifications for all services on this host... */
-			if(find_all_services_by_host(temp_host->name)) {
-				while(temp_service=get_next_service_by_host()) {
+			for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+				if(!strcmp(temp_host->name,temp_service->host_name))
 					disable_service_notifications(temp_service);
 			        }
 		        }
 
 	        }
-	}
-	free_host_cursor(host_cursor);
 
 #ifdef DEBUG0
 	printf("disable_and_propagate_notifications() end\n");
@@ -2773,155 +2481,6 @@ void disable_passive_service_checks(service *svc){
 
 #ifdef DEBUG0
 	printf("disable_passive_service_checks() end\n");
-#endif
-
-	return;
-        }
-
-
-
-/* starts executing host checks */
-void start_executing_host_checks(void){
-
-#ifdef DEBUG0
-	printf("start_executing_host_checks() start\n");
-#endif
-
-	/* bail out if we're already executing hosts */
-	if(execute_host_checks==TRUE)
-		return;
-
-	/* set the host check execution flag */
-	execute_host_checks=TRUE;
-
-	/* update the status log with the program info */
-	update_program_status(FALSE);
-
-#ifdef DEBUG0
-	printf("start_executing_host_checks() end\n");
-#endif
-
-	return;
-        }
-
-
-
-
-/* stops executing host checks */
-void stop_executing_host_checks(void){
-
-#ifdef DEBUG0
-	printf("stop_executing_host_checks() start\n");
-#endif
-
-	/* bail out if we're already not executing hosts */
-	if(execute_host_checks==FALSE)
-		return;
-
-	/* set the host check execution flag */
-	execute_host_checks=FALSE;
-
-	/* update the status log with the program info */
-	update_program_status(FALSE);
-
-#ifdef DEBUG0
-	printf("stop_executing_host_checks() end\n");
-#endif
-
-	return;
-        }
-
-
-
-/* starts accepting passive host checks */
-void start_accepting_passive_host_checks(void){
-
-#ifdef DEBUG0
-	printf("start_accepting_passive_host_checks() start\n");
-#endif
-
-	/* bail out if we're already accepting passive hosts */
-	if(accept_passive_host_checks==TRUE)
-		return;
-
-	/* set the host check flag */
-	accept_passive_host_checks=TRUE;
-
-	/* update the status log with the program info */
-	update_program_status(FALSE);
-
-#ifdef DEBUG0
-	printf("start_accepting_passive_host_checks() end\n");
-#endif
-
-	return;
-        }
-
-
-
-/* stops accepting passive host checks */
-void stop_accepting_passive_host_checks(void){
-
-#ifdef DEBUG0
-	printf("stop_accepting_passive_host_checks() start\n");
-#endif
-
-	/* bail out if we're already not accepting passive hosts */
-	if(accept_passive_host_checks==FALSE)
-		return;
-
-	/* set the host check flag */
-	accept_passive_host_checks=FALSE;
-
-	/* update the status log with the program info */
-	update_program_status(FALSE);
-
-#ifdef DEBUG0
-	printf("stop_accepting_passive_host_checks() end\n");
-#endif
-
-	return;
-        }
-
-
-
-/* enables passive host checks for a particular host */
-void enable_passive_host_checks(host *hst){
-
-#ifdef DEBUG0
-	printf("enable_passive_host_checks() start\n");
-#endif
-
-	/* set the passive check flag */
-	hst->accept_passive_host_checks=TRUE;
-
-	/* update the status log with the host info */
-	update_host_status(hst,FALSE);
-
-#ifdef DEBUG0
-	printf("enable_passive_host_checks() end\n");
-#endif
-
-	return;
-        }
-
-
-
-/* disables passive host checks for a particular host */
-void disable_passive_host_checks(host *hst){
-
-#ifdef DEBUG0
-	printf("disable_passive_host_checks() start\n");
-#endif
-
-	/* set the passive check flag */
-	hst->accept_passive_host_checks=FALSE;
-
-	/* update the status log with the host info */
-	update_host_status(hst,FALSE);
-
-#ifdef DEBUG0
-	printf("disable_passive_host_checks() end\n");
 #endif
 
 	return;
@@ -3246,15 +2805,11 @@ void process_passive_service_checks(void){
 	passive_check_result *temp_pcr;
 	passive_check_result *this_pcr;
 	passive_check_result *next_pcr;
-	struct timeb end_time;
 
 
 #ifdef DEBUG0
 	printf("process_passive_service_checks() start\n");
 #endif
-
-	/* get the "end" time of the check */
-	ftime(&end_time);
 
 	/* fork... */
 	pid=fork();
@@ -3297,9 +2852,8 @@ void process_passive_service_checks(void){
 				svc_msg.parallelized=FALSE;
 				svc_msg.exited_ok=TRUE;
 				svc_msg.check_type=SERVICE_CHECK_PASSIVE;
-				svc_msg.start_time.time=temp_pcr->check_time;
-				svc_msg.start_time.millitm=0;
-				svc_msg.finish_time=end_time;
+				svc_msg.check_time=temp_pcr->check_time;
+				svc_msg.finish_time=time(NULL);
 
 				/* write the service check results... */
 				write_svc_message(&svc_msg);
