@@ -2,8 +2,8 @@
  *
  * STATUS.C -  Nagios Status CGI
  *
- * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 07-30-2002
+ * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
+ * Last Modified: 04-14-2003
  *
  * License:
  * 
@@ -58,6 +58,8 @@ extern int suppress_alert_window;
 extern hostgroup *hostgroup_list;
 extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
+extern service *service_list;
+extern host *host_list;
 
 
 #define MAX_MESSAGE_BUFFER		4096
@@ -174,10 +176,10 @@ int main(void){
 	reset_cgi_vars();
 
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		document_header(FALSE);
-		cgi_config_file_error(get_cgi_config_location());
+		cgi_config_file_error(DEFAULT_CGI_CONFIG_FILE);
 		document_footer();
 		return ERROR;
 	        }
@@ -201,7 +203,7 @@ int main(void){
                 }
 
 	/* read all status data */
-	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
+	result=read_all_status_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_STATUS_DATA);
 	if(result==ERROR){
 		document_header(FALSE);
 		status_data_error();
@@ -213,10 +215,10 @@ int main(void){
 	document_header(TRUE);
 
 	/* read in all host and service comments */
-	read_comment_data(get_cgi_config_location());
+	read_comment_data(DEFAULT_CGI_CONFIG_FILE);
 
 	/* read in extended host information */
-	read_extended_object_config_data(get_cgi_config_location(),READ_ALL_EXTENDED_DATA);
+	read_extended_object_config_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_EXTENDED_DATA);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -612,8 +614,8 @@ void show_service_status_totals(void){
 	for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
 
 		/* find the host and service... */
-		temp_host=find_host(temp_servicestatus->host_name);
-		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
+		temp_host=find_host(temp_servicestatus->host_name,NULL);
+		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description,NULL);
 
 		/* make sure user has rights to see this service... */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
@@ -802,7 +804,7 @@ void show_host_status_totals(void){
 	for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
 
 		/* find the host... */
-		temp_host=find_host(temp_hoststatus->host_name);
+		temp_host=find_host(temp_hoststatus->host_name,NULL);
 
 		/* make sure user has rights to view this host */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
@@ -1178,14 +1180,14 @@ void show_service_detail(void){
 		first_entry=FALSE;
 
 		/* find the service  */
-		temp_service=find_service(temp_status->host_name,temp_status->description);
+		temp_service=find_service(temp_status->host_name,temp_status->description,NULL);
 
 		/* if we couldn't find the service, go to the next service */
 		if(temp_service==NULL)
 			continue;
 
 		/* find the host */
-		temp_host=find_host(temp_service->host_name);
+		temp_host=find_host(temp_service->host_name,NULL);
 
 		/* make sure user has rights to see this... */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
@@ -1390,7 +1392,7 @@ void show_service_detail(void){
 						printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s'>",url_logo_images_path,temp_hostextinfo->icon_image,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_hostextinfo->icon_image_alt==NULL)?"":temp_hostextinfo->icon_image_alt);
 						if(temp_hostextinfo->notes_url!=NULL)
 							printf("</A>");
-						printf("<TD>\n");
+						printf("</TD>\n");
 					        }
 				        }
 				printf("</TR>\n");
@@ -1679,7 +1681,7 @@ void show_host_detail(void){
 		first_entry=FALSE;
 
 		/* find the host  */
-		temp_host=find_host(temp_status->host_name);
+		temp_host=find_host(temp_status->host_name,NULL);
 
 		/* if we couldn't find the host, go to the next status entry */
 		if(temp_host==NULL)
@@ -1810,7 +1812,7 @@ void show_host_detail(void){
 					printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s'>",url_logo_images_path,temp_hostextinfo->icon_image,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_hostextinfo->icon_image_alt==NULL)?"":temp_hostextinfo->icon_image_alt);
 					if(temp_hostextinfo->notes_url!=NULL)
 						printf("</A>");
-					printf("<TD>\n");
+					printf("</TD>\n");
 				        }
 			        }
 			printf("<TD><a href='%s?host=%s'><img src='%s%s' border=0 alt='View Service Details For This Host'></a></TD>\n",STATUS_CGI,url_encode(temp_status->host_name),url_images_path,STATUS_DETAIL_ICON);
@@ -2044,7 +2046,7 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 	for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
 
 		/* find the host... */
-		temp_host=find_host(temp_hoststatus->host_name);
+		temp_host=find_host(temp_hoststatus->host_name,NULL);
 
 		/* make sure this host a member of the hostgroup */
 		if(!is_host_member_of_hostgroup(hstgrp,temp_host))
@@ -2175,7 +2177,7 @@ void show_hostgroup_member_service_status_totals(char *host_name){
 		if(!strcmp(host_name,temp_servicestatus->host_name)){
 
 			/* make sure the user is authorized to see this service... */
-			temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
+			temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description,NULL);
 			if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 				continue;
 
@@ -2388,7 +2390,7 @@ void show_hostgroup_host_totals_summary(hostgroup *temp_hostgroup){
 	for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
 
 		/* make sure the user is authorized to see this host... */
-		temp_host=find_host(temp_hoststatus->host_name);
+		temp_host=find_host(temp_hoststatus->host_name,NULL);
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
@@ -2452,12 +2454,12 @@ void show_hostgroup_service_totals_summary(hostgroup *temp_hostgroup){
 	for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
 
 		/* make sure the user is authorized to see this service... */
-		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
+		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description,NULL);
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
 
 		/* find the host this service is associated with */
-		temp_host=find_host(temp_servicestatus->host_name);
+		temp_host=find_host(temp_servicestatus->host_name,NULL);
 		if(temp_host==NULL)
 			continue;
 
@@ -2633,6 +2635,7 @@ void show_hostgroup_grids(void){
         }
 
 
+
 /* displays status grid for a specific hostgroup */
 void show_hostgroup_grid(hostgroup *temp_hostgroup){
 	char *status_bg_class="";
@@ -2657,8 +2660,8 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 	printf("<TR><TH CLASS='status'>Host</TH><TH CLASS='status'>Services</a></TR>\n");
 
 	/* display info for all hosts in the hostgroup */
-	move_first_host();
-	while(temp_host = get_next_host()) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		/* is this host a member of the hostgroup? */
 		if(is_host_member_of_hostgroup(temp_hostgroup,temp_host)==FALSE)
 			continue;
@@ -2734,17 +2737,21 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 
 		/* display all services on the host */
 		current_item=1;
-		if(find_all_services_by_host(temp_host->name)) {
-			while(temp_service = get_next_service_by_host()) {
-				/* is user authorized for this service? */
-				if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
-					continue;
+		for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
 			if(current_item>max_grid_width && max_grid_width>0){
 				printf("<BR>\n");
 				current_item=1;
 			        }
 
+			/* skip services that don't belong to this host */
+			if(strcmp(temp_service->host_name,temp_host->name))
+				continue;
+
+			/* is user authorized for this service? */
+			if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
+				continue;
+			
 			/* get the status of the service */
 			temp_servicestatus=find_servicestatus(temp_service->host_name,temp_service->description);
 			if(temp_servicestatus==NULL)
@@ -2769,7 +2776,6 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		printf("</TD>\n");
 		printf("</TR>\n");
 	        }
-		}
 
 	printf("</TABLE>\n");
 	printf("</DIV>\n");
@@ -2777,6 +2783,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 
 	return;
         }
+
 
 
 
