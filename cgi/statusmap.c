@@ -2,8 +2,8 @@
  *
  * STATUSMAP.C - Nagios Network Status Map CGI
  *
- * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 10-23-2002
+ * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
+ * Last Modified: 06-24-2003
  *
  * Description:
  *
@@ -58,7 +58,9 @@ extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
 
 extern hostgroup *hostgroup_list;
 extern hoststatus *hoststatus_list;
+extern host *host_list;
 extern servicestatus *servicestatus_list;
+extern service *service_list;
 
 extern char *statusmap_background_image;
 
@@ -215,6 +217,7 @@ int nagios_icon_x=0;           /* coords of Nagios icon */
 int nagios_icon_y=0;
 
 extern hostextinfo *hostextinfo_list;
+extern host *host_list;
 extern hoststatus *hoststatus_list;
 
 extern time_t program_start;
@@ -234,11 +237,11 @@ int main(int argc, char **argv){
 	reset_cgi_vars();
 
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		document_header(FALSE);
 		if(create_type==CREATE_HTML)
-			cgi_config_file_error(get_cgi_config_location());
+			cgi_config_file_error(DEFAULT_CGI_CONFIG_FILE);
 		document_footer();
 		return ERROR;
 	        }
@@ -270,7 +273,7 @@ int main(int argc, char **argv){
                 }
 
 	/* read all status data */
-	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
+	result=read_all_status_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_STATUS_DATA);
 	if(result==ERROR){
 		document_header(FALSE);
 		if(create_type==CREATE_HTML)
@@ -287,7 +290,7 @@ int main(int argc, char **argv){
 	get_authentication_information(&current_authdata);
 
 	/* read in extended host information */
-	read_extended_object_config_data(get_cgi_config_location(),READ_EXTENDED_HOST_INFO);
+	read_extended_object_config_data(DEFAULT_CGI_CONFIG_FILE,READ_EXTENDED_HOST_INFO);
 
 	/* display the network map... */
 	display_map();
@@ -654,6 +657,8 @@ void display_page_header(void){
 			printf("<p><div align=center>\n");
 
 			zoom_width_granularity=((total_image_width-MINIMUM_PROXIMITY_WIDTH)/11);
+			if(zoom_width_granularity==0)
+				zoom_width_granularity=1;
 			zoom_height_granularity=((total_image_height-MINIMUM_PROXIMITY_HEIGHT)/11);
 
 			if(proximity_width<=0)
@@ -893,8 +898,8 @@ void calculate_host_coords(void){
 	/*****************************/
 
 	/* add empty extended host info entries for all hosts that don't have any */
-	move_first_host();
-	while(temp_host = get_next_host()) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		/* find the corresponding hostextinfo definition */
 		temp_hostextinfo=find_hostextinfo(temp_host->name);
 
@@ -911,7 +916,7 @@ void calculate_host_coords(void){
 		if(show_all_hosts==TRUE)
 			this_host=NULL;
 		else
-			this_host=find_host(host_name);
+			this_host=find_host(host_name,NULL);
 
 		/* find total number of immediate parents/children for this host */
 		child_hosts=number_of_immediate_child_hosts(this_host);
@@ -942,7 +947,7 @@ void calculate_host_coords(void){
 		for(temp_hostextinfo=hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
 			/* find the host that matches this entry */
-			temp_host=find_host(temp_hostextinfo->host_name);
+			temp_host=find_host(temp_hostextinfo->host_name,NULL);
 
 			if(temp_host==NULL)
 				continue;
@@ -998,7 +1003,7 @@ void calculate_host_coords(void){
 		if(show_all_hosts==TRUE)
 			this_host=NULL;
 		else
-			this_host=find_host(host_name);
+			this_host=find_host(host_name,NULL);
 		*/
 
 		/* always use NULL as the "main" host, screen coords/dimensions are adjusted automatically */
@@ -1032,7 +1037,7 @@ void calculate_host_coords(void){
 		for(temp_hostextinfo=hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
 			/* find the host that matches this entry */
-			temp_host=find_host(temp_hostextinfo->host_name);
+			temp_host=find_host(temp_hostextinfo->host_name,NULL);
 
 			if(temp_host==NULL)
 				continue;
@@ -1079,7 +1084,7 @@ void calculate_host_coords(void){
 			for(temp_hostextinfo=hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
 				/* find the host that matches this entry */
-				temp_host=find_host(temp_hostextinfo->host_name);
+				temp_host=find_host(temp_hostextinfo->host_name,NULL);
 
 				if(temp_host==NULL)
 					continue;
@@ -1109,7 +1114,7 @@ void calculate_host_coords(void){
 		if(show_all_hosts==TRUE)
 			this_host=NULL;
 		else
-			this_host=find_host(host_name);
+			this_host=find_host(host_name,NULL);
 		*/
 		
 		/* always use NULL as the "main" host, screen coords/dimensions are adjusted automatically */
@@ -1143,7 +1148,7 @@ void calculate_host_coords(void){
 		for(temp_hostextinfo=hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
 			/* find the host that matches this entry */
-			temp_host=find_host(temp_hostextinfo->host_name);
+			temp_host=find_host(temp_hostextinfo->host_name,NULL);
 
 			if(temp_host==NULL)
 				continue;
@@ -1357,7 +1362,7 @@ void find_eligible_hosts(void){
 	for(temp_hostextinfo=hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
 		/* find the host */
-		temp_host=find_host(temp_hostextinfo->host_name);
+		temp_host=find_host(temp_hostextinfo->host_name,NULL);
 
 		if(temp_host==NULL)
 			temp_hostextinfo->should_be_drawn=FALSE;
@@ -1491,7 +1496,7 @@ void draw_host_links(void){
 		return;
 
 	/* find the "main" host we're drawing */
-	main_host=find_host(host_name);
+	main_host=find_host(host_name,NULL);
 	if(show_all_hosts==TRUE)
 		main_host=NULL;
 
@@ -1499,7 +1504,7 @@ void draw_host_links(void){
 	for(temp_hostextinfo=hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
 		/* find the config entry for this host */
-		this_host=find_host(temp_hostextinfo->host_name);
+		this_host=find_host(temp_hostextinfo->host_name,NULL);
 		if(this_host==NULL)
 			continue;
 
@@ -1565,7 +1570,7 @@ void draw_host_links(void){
 				continue;
 
 			/* find the parent host config entry */
-			parent_host=find_host(temp_parent_hostextinfo->host_name);
+			parent_host=find_host(temp_parent_hostextinfo->host_name,NULL);
 			if(parent_host==NULL)
 				continue;
 
@@ -1692,7 +1697,7 @@ void draw_hosts(void){
 			continue;
 
 		/* find the host */
-		temp_host=find_host(temp_hostextinfo->host_name);
+		temp_host=find_host(temp_hostextinfo->host_name,NULL);
 
 		/* is this host in the layer inclusion/exclusion list? */
 		in_layer_list=is_host_in_layer_list(temp_host);
@@ -1874,7 +1879,7 @@ void draw_hosts(void){
 			if(display_popups==TRUE){
 
 				printf("onMouseOver='showPopup(\"");
-				write_host_popup_text(find_host(temp_hostextinfo->host_name));
+				write_host_popup_text(find_host(temp_hostextinfo->host_name,NULL));
 				printf("\",event)' onMouseOut='hidePopup()'");
 			        }
 
@@ -2461,7 +2466,6 @@ int host_child_depth_separation(host *parent, host *child){
 	int min_depth=0;
 	int have_min_depth=FALSE;
 	host *temp_host;
-	void *host_cursor;
 
 	if(child==NULL)
 		return -1;
@@ -2472,8 +2476,8 @@ int host_child_depth_separation(host *parent, host *child){
 	if(is_host_immediate_child_of_host(parent,child)==TRUE)
 		return 1;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		if(is_host_immediate_child_of_host(parent,temp_host)==TRUE){
 
 			this_depth=host_child_depth_separation(temp_host,child);
@@ -2484,7 +2488,6 @@ int host_child_depth_separation(host *parent, host *child){
 			        }
 		        }
 	        }
-	free_host_cursor(host_cursor);
 
 	if(have_min_depth==FALSE)
 		return -1;
@@ -2499,10 +2502,9 @@ int number_of_host_layer_members(host *parent, int layer){
 	int current_layer;
 	int layer_members=0;
 	host *temp_host;
-	void *host_cursor;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+		
 		current_layer=host_child_depth_separation(parent,temp_host);
 
 		if(current_layer==layer)
@@ -2540,10 +2542,8 @@ int max_child_host_layer_members(host *parent){
 int max_child_host_drawing_width(host *parent){
 	host *temp_host;
 	int child_width=0;
-	void *host_cursor;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		
 		if(is_host_immediate_child_of_host(parent,temp_host)==TRUE)
 			child_width+=max_child_host_drawing_width(temp_host);
@@ -2568,11 +2568,10 @@ int number_of_host_services(host *hst){
 		return 0;
 
 	/* check all the services */
-	if(find_all_services_by_host(hst->name)) {
-		while(temp_service=get_next_service_by_host()) {
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+		if(!strcmp(temp_service->host_name,hst->name))
 			total_services++;
 	        }
-	}
 
 	return total_services;
         }
@@ -2601,8 +2600,8 @@ void calculate_balanced_tree_coords(host *parent, int x, int y){
 
 
 	/* calculate coords for children */
-	move_first_host();
-	while(temp_host = get_next_host()) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		temp_hostextinfo=find_hostextinfo(temp_host->name);
 		if(temp_hostextinfo==NULL)
 			continue;
@@ -2694,7 +2693,6 @@ void calculate_circular_layer_coords(host *parent, double start_angle, double us
 	double y_coord=0.0;
 	host *temp_host;
 	hostextinfo *temp_hostextinfo;
-	void *host_cursor;
 
 
 	/* get the total number of immediate children to this host */
@@ -2715,8 +2713,8 @@ void calculate_circular_layer_coords(host *parent, double start_angle, double us
 
 
 	/* calculate coords for children */
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		temp_hostextinfo=find_hostextinfo(temp_host->name);
 		if(temp_hostextinfo==NULL)
 			continue;
@@ -2760,7 +2758,6 @@ void calculate_circular_layer_coords(host *parent, double start_angle, double us
 			current_drawing_angle+=available_angle;
 		        }
 	        }
-	free_host_cursor(host_cursor);
 
 	return;
         }
@@ -2800,7 +2797,6 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 	double arc_end_angle=0.0;
 	int translated_x=0;
 	int translated_y=0;
-	void *host_cursor;
 
 	/* get the total number of immediate children to this host */
 	immediate_children=number_of_immediate_child_hosts(parent);
@@ -2819,8 +2815,8 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 	current_drawing_angle=start_angle;
 
 	/* calculate coords for children */
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		temp_hostextinfo=find_hostextinfo(temp_host->name);
 		if(temp_hostextinfo==NULL)
 			continue;
@@ -2905,7 +2901,6 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 			current_drawing_angle+=available_angle;
 		        }
 	        }
-	free_host_cursor(host_cursor);
 
 	return;
         }
