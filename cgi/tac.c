@@ -3,7 +3,7 @@
  * TAC.C - Nagios Tactical Monitoring Overview CGI
  *
  * Copyright (c) 2001-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 01-05-2003
+ * Last Modified: 05-11-2002
  *
  * This CGI program will display the contents of the Nagios
  * log file.
@@ -65,6 +65,8 @@ extern char *normal_sound;
 extern hostgroup *hostgroup_list;
 extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
+extern host *host_list;
+extern service *service_list;
 
 extern int enable_notifications;
 extern int execute_service_checks;
@@ -113,9 +115,9 @@ int total_services=0;
 int total_active_checks=0;
 int total_passive_checks=0;
 
-double min_execution_time=-1.0;
-double max_execution_time=-1.0;
-double total_execution_time=0.0;
+int min_execution_time=-1;
+int max_execution_time=-1;
+unsigned long total_execution_time=0L;
 double average_execution_time=-1.0;
 int min_latency=-1;
 int max_latency=-1;
@@ -188,10 +190,10 @@ int main(void){
 	reset_cgi_vars();
 
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		document_header(FALSE);
-		cgi_config_file_error(get_cgi_config_location());
+		cgi_config_file_error(DEFAULT_CGI_CONFIG_FILE);
 		document_footer();
 		return ERROR;
 	        }
@@ -215,7 +217,7 @@ int main(void){
                 }
 
 	/* read all status data */
-	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
+	result=read_all_status_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_STATUS_DATA);
 	if(result==ERROR){
 		document_header(FALSE);
 		status_data_error();
@@ -399,7 +401,7 @@ void analyze_status_data(void){
 	for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
 
 		/* see if user is authorized to view this service */
-		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
+		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description,NULL);
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
 
@@ -537,9 +539,9 @@ void analyze_status_data(void){
 			if(max_latency==-1 || temp_servicestatus->latency>max_latency)
 				max_latency=temp_servicestatus->latency;
 
-			if(min_execution_time==-1.0 || temp_servicestatus->execution_time<min_execution_time)
+			if(min_execution_time==-1 || temp_servicestatus->execution_time<min_execution_time)
 				min_execution_time=temp_servicestatus->execution_time;
-			if(max_execution_time==-1.0 || temp_servicestatus->execution_time>max_execution_time)
+			if(max_execution_time==-1 || temp_servicestatus->execution_time>max_execution_time)
 				max_execution_time=temp_servicestatus->execution_time;
 
 			total_latency+=temp_servicestatus->latency;
@@ -558,7 +560,7 @@ void analyze_status_data(void){
 	for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
 
 		/* see if user is authorized to view this host */
-		temp_host=find_host(temp_hoststatus->host_name);
+		temp_host=find_host(temp_hoststatus->host_name,NULL);
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
@@ -667,7 +669,7 @@ void analyze_status_data(void){
 		average_latency=((double)total_latency/(double)total_active_checks);
 
 	/* calculate execution time */
-	if(total_execution_time==0.0)
+	if(total_execution_time==0L)
 		average_execution_time=0.0;
 	else
 		average_execution_time=((double)total_execution_time/(double)total_active_checks);
@@ -695,7 +697,7 @@ void find_hosts_causing_outages(void){
 		if(temp_hoststatus->status!=HOST_UP && temp_hoststatus->status!=HOST_PENDING){
 
 			/* find the host entry */
-			temp_host=find_host(temp_hoststatus->host_name);
+			temp_host=find_host(temp_hoststatus->host_name,NULL);
 
 			if(temp_host==NULL)
 				continue;
@@ -769,12 +771,11 @@ void calculate_outage_effect_of_host(host *hst, int *affected_hosts){
 	int total_child_hosts_affected=0;
 	int temp_child_hosts_affected=0;
 	host *temp_host;
-	void *host_cursor;
 
 
 	/* find all child hosts of this host */
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
 		/* skip this host if it is not a child */
 		if(is_host_immediate_child_of_host(hst,temp_host)==FALSE)
 			continue;
@@ -785,7 +786,6 @@ void calculate_outage_effect_of_host(host *hst, int *affected_hosts){
 		/* keep a running total of outage effects */
 		total_child_hosts_affected+=temp_child_hosts_affected;
 	        }
-	free_host_cursor(host_cursor);
 
 	*affected_hosts=total_child_hosts_affected+1;
 
@@ -873,7 +873,7 @@ void display_tac_overview(void){
 	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
 	printf("<tr>\n");
 	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Check Execution Time:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_execution_time,max_execution_time,average_execution_time);
+	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%2d / %d / %2.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_execution_time,max_execution_time,average_execution_time);
 	printf("</tr>\n");
 	printf("<tr>\n");
 	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Check Latency:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
@@ -1220,8 +1220,11 @@ void display_tac_overview(void){
 	printf("</table>\n");
 	printf("</td>\n");
 
+	/*
 	printf("</tr>\n");
 	printf("</table>\n");
+	*/
+
 	printf("</td>\n");
 
 
