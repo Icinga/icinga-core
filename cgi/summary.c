@@ -40,6 +40,8 @@ extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
 
 extern hostgroup *hostgroup_list;
+extern host *host_list;
+extern service *service_list;
 
 extern int       log_rotation_method;
 
@@ -212,16 +214,15 @@ int main(int argc, char **argv){
 	time_t current_time;
 	struct tm *t;
 	int x;
-	void *host_cursor;
 
 	/* reset internal CGI variables */
 	reset_cgi_vars();
 	
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		document_header(FALSE);
-		cgi_config_file_error(get_cgi_config_location());
+		cgi_config_file_error(DEFAULT_CGI_CONFIG_FILE);
 		document_footer();
 		return ERROR;
 	        }
@@ -596,13 +597,10 @@ int main(int argc, char **argv){
 		printf("<tr><td class='reportSelectSubTitle' valign=center>Limit To Host:</td><td align=left valign=center class='reportSelectItem'>\n");
 		printf("<select name='host'>\n");
 		printf("<option value='all'>** ALL HOSTS **\n");
-
-		host_cursor = get_host_cursor();
-		while(temp_host = get_next_host_cursor(host_cursor)) {
+		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 			if(is_authorized_for_host(temp_host,&current_authdata)==TRUE)
 				printf("<option value='%s'>%s\n",temp_host->name,temp_host->name);
 		        }
-		free_host_cursor(host_cursor);
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
@@ -1151,7 +1149,7 @@ int process_cgivars(void){
 				show_all_hosts=TRUE;
 			else{
 				show_all_hosts=FALSE;
-				target_host=find_host(target_host_name);
+				target_host=find_host(target_host_name,NULL);
 			        }
 		        }
 	        }
@@ -1484,7 +1482,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 	        }
 		
 	/* find the host this entry is associated with */
-	temp_host=find_host(host_name);
+	temp_host=find_host(host_name,NULL);
 
 	/* check hostgroup match (valid filter for all reports) */
 	if(show_all_hostgroups==FALSE && is_host_member_of_hostgroup(target_hostgroup,temp_host)==FALSE)
@@ -1500,7 +1498,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 
 	/* check authorization */
 	if(event_type==AE_SERVICE_ALERT){
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,svc_description,NULL);
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			return;
 	        }
@@ -1966,7 +1964,7 @@ void display_specific_hostgroup_alert_totals(hostgroup *grp){
 	/* process all events */
 	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
 
-		temp_host=find_host(temp_event->host_name);
+		temp_host=find_host(temp_event->host_name,NULL);
 		if(is_host_member_of_hostgroup(grp,temp_host)==FALSE)
 			continue;
 
@@ -2084,7 +2082,6 @@ void display_specific_hostgroup_alert_totals(hostgroup *grp){
 /* displays host alert totals  */
 void display_host_alert_totals(void){
 	host *temp_host;
-	void *host_cursor;
 
 	/*********************/
 	/**** HOST TOTALS ****/
@@ -2097,13 +2094,10 @@ void display_host_alert_totals(void){
 
 	if(show_all_hosts==FALSE)
 		display_specific_host_alert_totals(target_host);
-	else {
-		host_cursor = get_host_cursor();
-		while(temp_host = get_next_host_cursor(host_cursor)) {
+	else{
+		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next)
 			display_specific_host_alert_totals(temp_host);
 	        }
-		free_host_cursor(host_cursor);
-	}
 
 	printf("</DIV>\n");
 	
@@ -2267,8 +2261,7 @@ void display_service_alert_totals(void){
 	printf("<DIV ALIGN=CENTER>\n");
 	printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Totals By Service</DIV>\n");
 
-	move_first_service();
-	while(temp_service = get_next_service())
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next)
 		display_specific_service_alert_totals(temp_service);
 
 	printf("</DIV>\n");
@@ -2298,7 +2291,7 @@ void display_specific_service_alert_totals(service *svc){
 		return;
 
 	if(show_all_hostgroups==FALSE && target_hostgroup!=NULL){
-		temp_host=find_host(svc->host_name);
+		temp_host=find_host(svc->host_name,NULL);
 		if(is_host_member_of_hostgroup(target_hostgroup,temp_host)==FALSE)
 			return;
 	        }
