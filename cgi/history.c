@@ -2,8 +2,8 @@
  *
  * HISTORY.C - Nagios History CGI
  *
- * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 07-28-2002
+ * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
+ * Last Modified: 05-05-2003
  *
  * This CGI program will display the history for the specified host.
  * If no host is specified, the history for all hosts will be displayed.
@@ -74,6 +74,8 @@ int use_lifo=TRUE;
 int history_options=HISTORY_ALL;
 int state_options=STATE_ALL;
 
+extern host *host_list;
+
 int embedded=FALSE;
 int display_header=TRUE;
 int display_frills=TRUE;
@@ -95,10 +97,10 @@ int main(void){
 	reset_cgi_vars();
 
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		document_header(FALSE);
-		cgi_config_file_error(get_cgi_config_location());
+		cgi_config_file_error(DEFAULT_CGI_CONFIG_FILE);
 		document_footer();
 		return ERROR;
 	        }
@@ -840,6 +842,15 @@ void get_history(void){
 				if(strstr(temp_buffer,match1))
 					display_line=TRUE;
 
+				if(display_line==TRUE){
+					if(history_options==HISTORY_ALL || history_options==HISTORY_SERVICE_ALL)
+						display_line=TRUE;
+					else if(history_options & history_detail_type)
+						display_line=TRUE;
+					else 
+						display_line=FALSE;
+			                }
+
 				/* check alert state type */
 				if(display_line==TRUE && history_type==SERVICE_HISTORY){
 
@@ -861,13 +872,13 @@ void get_history(void){
 			if(system_message==FALSE){
 
 				if(history_type==HOST_HISTORY || history_type==HOST_FLAPPING_HISTORY || history_type==HOST_DOWNTIME_HISTORY){
-					temp_host=find_host(entry_host_name);
+					temp_host=find_host(entry_host_name,NULL);
 					if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 						display_line=FALSE;
 					
 				        }
 				else{
-					temp_service=find_service(entry_host_name,entry_service_desc);
+					temp_service=find_service(entry_host_name,entry_service_desc,NULL);
 					if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 						display_line=FALSE;
 				        }
