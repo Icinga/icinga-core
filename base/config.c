@@ -3,7 +3,7 @@
  * CONFIG.C - Configuration input and verification routines for Nagios
  *
  * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   12-15-2002
+ * Last Modified:   08-06-2002
  *
  * License:
  *
@@ -29,14 +29,13 @@
 #include "nagios.h"
 
 
-extern char	*log_file;
-extern char     *command_file;
-extern char     *temp_file;
-extern char     *lock_file;
-extern char	*log_archive_path;
-extern char     *auth_file;
-extern char	*p1_file;
-extern char     *event_broker_file;
+extern char	log_file[MAX_FILENAME_LENGTH];
+extern char     command_file[MAX_FILENAME_LENGTH];
+extern char     temp_file[MAX_FILENAME_LENGTH];
+extern char     comment_file[MAX_FILENAME_LENGTH];
+extern char     lock_file[MAX_FILENAME_LENGTH];
+extern char     log_archive_path[MAX_FILENAME_LENGTH];
+extern char     auth_file[MAX_FILENAME_LENGTH];
 
 extern char     *nagios_user;
 extern char     *nagios_group;
@@ -71,9 +70,8 @@ extern int      log_initial_states;
 
 extern int      daemon_mode;
 extern int      verify_config;
-extern int      test_scheduling;
 
-extern double   sleep_time;
+extern int      sleep_time;
 extern int      interval_length;
 extern int      inter_check_delay_method;
 extern int      interleave_factor_method;
@@ -105,8 +103,6 @@ extern int      log_rotation_method;
 extern int      enable_notifications;
 extern int      execute_service_checks;
 extern int      accept_passive_service_checks;
-extern int      execute_host_checks;
-extern int      accept_passive_host_checks;
 extern int      enable_event_handlers;
 extern int      obsess_over_services;
 extern int      enable_failure_prediction;
@@ -115,8 +111,6 @@ extern int      aggregate_status_updates;
 extern int      status_update_interval;
 
 extern int      time_change_threshold;
-
-extern int      event_broker_options;
 
 extern int      process_performance_data;
 
@@ -129,17 +123,16 @@ extern double   high_host_flap_threshold;
 
 extern int      date_format;
 
-extern int      max_embedded_perl_calls;
-
 extern contact		*contact_list;
 extern contactgroup	*contactgroup_list;
-extern host		**host_list;
+extern host		*host_list;
 extern hostgroup	*hostgroup_list;
-extern service		**service_list;
+extern service		*service_list;
 extern notification     *notification_list;
 extern command          *command_list;
 extern timeperiod       *timeperiod_list;
 extern serviceescalation *serviceescalation_list;
+extern hostgroupescalation *hostgroupescalation_list;
 extern servicedependency *servicedependency_list;
 extern hostdependency   *hostdependency_list;
 extern hostescalation   *hostescalation_list;
@@ -155,7 +148,6 @@ extern hostescalation   *hostescalation_list;
 /* read all configuration data */
 int read_all_config_data(char *main_config_file){
 	int result=OK;
-	int options;
 
 #ifdef DEBUG0
 	printf("read_all_config_data() start\n");
@@ -166,14 +158,8 @@ int read_all_config_data(char *main_config_file){
 	if(result!=OK)
 		return ERROR;
 
-	options=READ_TIMEPERIODS|READ_HOSTS|READ_HOSTGROUPS|READ_CONTACTS|READ_CONTACTGROUPS|READ_SERVICES|READ_COMMANDS|READ_SERVICEESCALATIONS|READ_HOSTGROUPESCALATIONS|READ_SERVICEDEPENDENCIES|READ_HOSTDEPENDENCIES|READ_HOSTESCALATIONS;
-
-	/* cache object definitions if we're up and running */
-	if(verify_config==FALSE && test_scheduling==FALSE)
-		options+=CACHE_OBJECT_DATA;
-
 	/* read in all host configuration data from external sources */
-	result=read_object_config_data(main_config_file,options);
+	result=read_object_config_data(main_config_file,READ_TIMEPERIODS|READ_HOSTS|READ_HOSTGROUPS|READ_CONTACTS|READ_CONTACTGROUPS|READ_SERVICES|READ_COMMANDS|READ_SERVICEESCALATIONS|READ_HOSTGROUPESCALATIONS|READ_SERVICEDEPENDENCIES|READ_HOSTDEPENDENCIES|READ_HOSTESCALATIONS);
 	if(result!=OK)
 		return ERROR;
 
@@ -246,7 +232,7 @@ int read_main_config_file(char *main_config_file){
 		variable[sizeof(variable)-1]='\x0';
 
 		/* get the value */
-		temp=my_strtok(NULL,"=");
+		temp=my_strtok(NULL,"\n");
 
 		/* if no value exists, return error */
 		if(temp==NULL){
@@ -275,9 +261,8 @@ int read_main_config_file(char *main_config_file){
 				break;
 				}
 
-			if(log_file!=NULL)
-				free(log_file);
-			log_file=(char *)strdup(value);
+			strncpy(log_file,value,sizeof(log_file));
+			log_file[sizeof(log_file)-1]='\x0';
 			strip(log_file);
 
 #ifdef DEBUG1
@@ -291,9 +276,8 @@ int read_main_config_file(char *main_config_file){
 				break;
 				}
 
-			if(command_file!=NULL)
-				free(command_file);
-			command_file=(char *)strdup(value);
+			strncpy(command_file,value,sizeof(command_file));
+			command_file[sizeof(command_file)-1]='\x0';
 			strip(command_file);
 
 #ifdef DEBUG1
@@ -307,9 +291,8 @@ int read_main_config_file(char *main_config_file){
 				break;
 				}
 
-			if(temp_file!=NULL)
-				free(temp_file);
-			temp_file=(char *)strdup(value);
+			strncpy(temp_file,value,sizeof(temp_file));
+			temp_file[sizeof(temp_file)-1]='\x0';
 			strip(temp_file);
 
 #ifdef DEBUG1
@@ -323,9 +306,8 @@ int read_main_config_file(char *main_config_file){
 				break;
 				}
 
-			if(lock_file!=NULL)
-				free(lock_file);
-			lock_file=(char *)strdup(value);
+			strncpy(lock_file,value,sizeof(lock_file));
+			lock_file[sizeof(lock_file)-1]='\x0';
 			strip(lock_file);
 
 #ifdef DEBUG1
@@ -333,14 +315,14 @@ int read_main_config_file(char *main_config_file){
 #endif
 			}
 		else if(!strcmp(variable,"global_host_event_handler")){
-			if(global_host_event_handler!=NULL)
-				free(global_host_event_handler);
-			global_host_event_handler=(char *)strdup(value);
+			global_host_event_handler=(char *)malloc(strlen(value)+1);
 			if(global_host_event_handler==NULL){
 				strcpy(error_message,"Could not allocate memory for global host event handler");
 				error=TRUE;
 				break;
 			        }
+
+			strcpy(global_host_event_handler,value);
 			strip(global_host_event_handler);
 
 #ifdef DEBUG1
@@ -348,15 +330,14 @@ int read_main_config_file(char *main_config_file){
 #endif
 		        }
 		else if(!strcmp(variable,"global_service_event_handler")){
-			if(global_service_event_handler!=NULL)
-				free(global_service_event_handler);
-			global_service_event_handler=(char *)strdup(value);
+			global_service_event_handler=(char *)malloc(strlen(value)+1);
 			if(global_service_event_handler==NULL){
 				strcpy(error_message,"Could not allocate memory for global service event handler");
 				error=TRUE;
 				break;
 			        }
 
+			strcpy(global_service_event_handler,value);
 			strip(global_service_event_handler);
 
 #ifdef DEBUG1
@@ -364,15 +345,14 @@ int read_main_config_file(char *main_config_file){
 #endif
 		        }
 		else if(!strcmp(variable,"ocsp_command")){
-			if(ocsp_command!=NULL)
-				free(ocsp_command);
-			ocsp_command=(char *)strdup(value);
+			ocsp_command=(char *)malloc(strlen(value)+1);
 			if(ocsp_command==NULL){
 				strcpy(error_message,"Could not allocate memory for obsessive compulsive service processor command");
 				error=TRUE;
 				break;
 			        }
 
+			strcpy(ocsp_command,value);
 			strip(ocsp_command);
 
 #ifdef DEBUG1
@@ -382,13 +362,14 @@ int read_main_config_file(char *main_config_file){
 		else if(!strcmp(variable,"nagios_user")){
 			if(nagios_user!=NULL)
 				free(nagios_user);
-			nagios_user=(char *)strdup(value);
+			nagios_user=(char *)malloc(strlen(value)+1);
 			if(nagios_user==NULL){
 				strcpy(error_message,"Could not allocate memory for nagios user");
 				error=TRUE;
 				break;
 			        }
 
+			strcpy(nagios_user,value);
 			strip(nagios_user);
 
 #ifdef DEBUG1
@@ -398,13 +379,14 @@ int read_main_config_file(char *main_config_file){
 		else if(!strcmp(variable,"nagios_group")){
 			if(nagios_group!=NULL)
 				free(nagios_group);
-			nagios_group=(char *)strdup(value);
+			nagios_group=(char *)malloc(strlen(value)+1);
 			if(nagios_group==NULL){
 				strcpy(error_message,"Could not allocate memory for nagios group");
 				error=TRUE;
 				break;
 			        }
 
+			strcpy(nagios_group,value);
 			strip(nagios_group);
 
 #ifdef DEBUG1
@@ -412,15 +394,14 @@ int read_main_config_file(char *main_config_file){
 #endif
 		        }
 		else if(!strcmp(variable,"admin_email")){
-			if(macro_admin_email!=NULL)
-				free(macro_admin_email);
-			macro_admin_email=(char *)strdup(value);
+			macro_admin_email=(char *)malloc(strlen(value)+1);
 			if(macro_admin_email==NULL){
 				strcpy(error_message,"Could not allocate memory for admin email address");
 				error=TRUE;
 				break;
 			        }
 
+			strcpy(macro_admin_email,value);
 			strip(macro_admin_email);
 
 #ifdef DEBUG1
@@ -428,15 +409,14 @@ int read_main_config_file(char *main_config_file){
 #endif
 		        }
 		else if(!strcmp(variable,"admin_pager")){
-			if(macro_admin_pager!=NULL)
-				free(macro_admin_pager);
-			macro_admin_pager=(char *)strdup(value);
+			macro_admin_pager=(char *)malloc(strlen(value)+1);
 			if(macro_admin_pager==NULL){
 				strcpy(error_message,"Could not allocate memory for admin pager");
 				error=TRUE;
 				break;
 			        }
 
+			strcpy(macro_admin_pager,value);
 			strip(macro_admin_pager);
 
 #ifdef DEBUG1
@@ -736,7 +716,8 @@ int read_main_config_file(char *main_config_file){
 				break;
 				}
 
-			log_archive_path=(char *)strdup(value);
+			strncpy(log_archive_path,value,sizeof(log_archive_path));
+			log_archive_path[sizeof(log_archive_path)-1]='\x0';
 			strip(log_archive_path);
 
 #ifdef DEBUG1
@@ -769,20 +750,6 @@ int read_main_config_file(char *main_config_file){
 			accept_passive_service_checks=(atoi(value)>0)?TRUE:FALSE;
 #ifdef DEBUG1
 			printf("\t\taccept_passive_service_checks set to %s\n",(accept_passive_service_checks==TRUE)?"TRUE":"FALSE");
-#endif
-		        }
-		else if(!strcmp(variable,"execute_host_checks")){
-			strip(value);
-			execute_host_checks=(atoi(value)>0)?TRUE:FALSE;
-#ifdef DEBUG1
-			printf("\t\texecute_host_checks set to %s\n",(execute_host_checks==TRUE)?"TRUE":"FALSE");
-#endif
-		        }
-		else if(!strcmp(variable,"accept_passive_host_checks")){
-			strip(value);
-			accept_passive_host_checks=(atoi(value)>0)?TRUE:FALSE;
-#ifdef DEBUG1
-			printf("\t\taccept_passive_host_checks set to %s\n",(accept_passive_host_checks==TRUE)?"TRUE":"FALSE");
 #endif
 		        }
 		else if(!strcmp(variable,"inter_check_delay_method")){
@@ -843,14 +810,15 @@ int read_main_config_file(char *main_config_file){
 		        }
 		else if(!strcmp(variable,"sleep_time")){
 			strip(value);
-			sleep_time=atof(value);
-			if(sleep_time<=0.0){
+			sleep_time=atoi(value);
+			if(sleep_time<1){
 				strcpy(error_message,"Illegal value for sleep_time");
 				error=TRUE;
 				break;
 			        }
+
 #ifdef DEBUG1
-			printf("\t\tsleep_time set to %f\n",sleep_time);
+			printf("\t\tsleep_time set to %d\n",sleep_time);
 #endif
 		        }
 		else if(!strcmp(variable,"interval_length")){
@@ -1049,61 +1017,6 @@ int read_main_config_file(char *main_config_file){
 			printf("\t\tdate_format set to %d\n",date_format);
 #endif
 		        }
-		else if(!strcmp(variable,"max_embedded_perl_calls")){
-			strip(value);
-			max_embedded_perl_calls=atoi(value);
-
-			if(max_embedded_perl_calls<=0){
-				strcpy(error_message,"Illegal value for max_embedded_perl_calls");
-				error=TRUE;
-				break;
-			        }
-
-#ifdef DEBUG1
-			printf("\t\tmax_embedded_perl_calls set to %d\n",max_embedded_perl_calls);
-#endif
-		        }
-		else if(!strcmp(variable,"p1_file")){
-			if(strlen(value)>MAX_FILENAME_LENGTH-1){
-				strcpy(error_message,"P1 file is too long");
-				error=TRUE;
-				break;
-				}
-
-			if(p1_file!=NULL)
-				free(p1_file);
-			p1_file=(char *)strdup(value);
-			strip(p1_file);
-
-#ifdef DEBUG1
-			printf("\t\tp1_file set to '%s'\n",p1_file);
-#endif
-			}
-		else if(!strcmp(variable,"event_broker_file")){
-			if(strlen(value)>MAX_FILENAME_LENGTH-1){
-				strcpy(error_message,"Event broker file is too long");
-				error=TRUE;
-				break;
-				}
-
-			if(event_broker_file!=NULL)
-				free(event_broker_file);
-			event_broker_file=(char *)strdup(value);
-			strip(event_broker_file);
-
-#ifdef DEBUG1
-			printf("\t\tevent_broker_file set to '%s'\n",event_broker_file);
-#endif
-			}
-		else if(!strcmp(variable,"event_broker_options")){
-			strip(value);
-			event_broker_options=atoi(value);
-			if(event_broker_options<0)
-				event_broker_options=BROKER_EVERYTHING;
-#ifdef DEBUG1
-			printf("\t\tevent_broker_options set to %d\n",event_broker_options);
-#endif
-		        }
 		else if(!strcmp(variable,"illegal_object_name_chars")){
 			illegal_object_chars=strdup(value);
 #ifdef DEBUG1
@@ -1125,16 +1038,15 @@ int read_main_config_file(char *main_config_file){
 				break;
 			        }
 
-			if(auth_file!=NULL)
-				free(auth_file);
-			auth_file=(char *)strdup(value);
+			strncpy(auth_file,value,sizeof(auth_file));
+			auth_file[sizeof(auth_file)-1]='\x0';
 			strip(auth_file);
 #ifdef DEBUG1
 			printf("\t\tauth_file set to '%s'\n",auth_file);
 #endif
 		        }
 
-		/* ignore old/external variables */
+		/* ignore old variables */
 		else if(!strcmp(variable,"status_file"))
 			continue;
 		else if(!strcmp(variable,"comment_file"))
@@ -1150,8 +1062,6 @@ int read_main_config_file(char *main_config_file){
 		else if(strstr(input,"cfg_file=")==input || strstr(input,"cfg_dir=")==input)
 			continue;
 		else if(strstr(input,"state_retention_file=")==input)
-			continue;
-		else if(strstr(input,"object_cache_file=")==input)
 			continue;
 
 		/* we don't know what this variable is... */
@@ -1247,7 +1157,7 @@ int read_resource_file(char *resource_file){
 		variable[sizeof(variable)-1]='\x0';
 
 		/* get the value */
-		temp_ptr=my_strtok(NULL,"=");
+		temp_ptr=my_strtok(NULL,"\n");
 
 		/* if no value exists, return error */
 		if(temp_ptr==NULL){
@@ -1325,6 +1235,7 @@ int pre_flight_check(void){
 	timeperiod *temp_timeperiod;
 	serviceescalation *temp_se;
 	hostescalation *temp_he;
+	hostgroupescalation *temp_hge;
 	servicedependency *temp_sd;
 	servicedependency *temp_sd2;
 	hostdependency *temp_hd;
@@ -1353,17 +1264,22 @@ int pre_flight_check(void){
 		write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 		errors++;
 	        }
-	total_objects=0;
-	move_first_service();
-	while(temp_service=get_next_service()) {
-		total_objects++;
+	for(temp_service=service_list,total_objects=0;temp_service!=NULL;temp_service=temp_service->next,total_objects++){
+
 		found=FALSE;
 
 		/* check for a valid host */
-		temp_host = find_host(temp_service->host_name);
+		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
+			/* we found the host! */
+			if(!strcmp(temp_service->host_name,temp_host->name)){
+				found=TRUE;
+				break;
+				}
+			}
 
 		/* we couldn't find an associated host! */
-		if(!temp_host){
+		if(found==FALSE){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host '%s' specified in service '%s' not defined anywhere!",temp_service->host_name,temp_service->description);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
@@ -1372,17 +1288,9 @@ int pre_flight_check(void){
 
 		/* check the event handler command */
 		if(temp_service->event_handler!=NULL){
-
-			/* check the event handler command */
-			strncpy(temp_buffer,temp_service->event_handler,sizeof(temp_buffer));
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-			/* get the command name, leave any arguments behind */
-			temp_command_name=my_strtok(temp_buffer,"!");
-
-			temp_command=find_command(temp_command_name,NULL);
+			temp_command=find_command(temp_service->event_handler,NULL);
 			if(temp_command==NULL){
-				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Event handler command '%s' specified in service '%s' for host '%s' not defined anywhere",temp_command_name,temp_service->description,temp_service->host_name);
+				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Event handler command '%s' specified in service '%s' for host '%s' not defined anywhere",temp_service->event_handler,temp_service->description,temp_service->host_name);
 				temp_buffer[sizeof(temp_buffer)-1]='\x0';
 				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 				errors++;
@@ -1392,6 +1300,10 @@ int pre_flight_check(void){
 		/* check the service check_command */
 		strncpy(temp_buffer,temp_service->service_check_command,sizeof(temp_buffer));
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+
+		/* raw command lines shouldn't be checked */
+		if(temp_buffer[0]=='"')
+			continue;
 
 		/* get the command name, leave any arguments behind */
 		temp_command_name=my_strtok(temp_buffer,"!");
@@ -1509,17 +1421,17 @@ int pre_flight_check(void){
 		write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 		errors++;
 	        }
-	total_objects=0;
-	move_first_host();
-	while(temp_host = get_next_host()) {
-		total_objects++;
+	for(temp_host=host_list,total_objects=0;temp_host!=NULL;temp_host=temp_host->next,total_objects++){
 
 		found=FALSE;
 
 		/* make sure each host has at least one service associated with it */
-		if(find_all_services_by_host(temp_host->name)) {
-			if(get_next_service_by_host()) {
+		for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+
+			/* we found a service! */
+			if(!strcmp(temp_host->name,temp_service->host_name)){
 				found=TRUE;
+				break;
 				}
 			}
 
@@ -1552,17 +1464,9 @@ int pre_flight_check(void){
 
 		/* check the event handler command */
 		if(temp_host->event_handler!=NULL){
-
-			/* check the event handler command */
-			strncpy(temp_buffer,temp_host->event_handler,sizeof(temp_buffer));
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-			/* get the command name, leave any arguments behind */
-			temp_command_name=my_strtok(temp_buffer,"!");
-
-			temp_command=find_command(temp_command_name,NULL);
+			temp_command=find_command(temp_host->event_handler,NULL);
 			if(temp_command==NULL){
-				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Event handler command '%s' specified for host '%s' not defined anywhere",temp_command_name,temp_host->name);
+				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Event handler command '%s' specified for host '%s' not defined anywhere",temp_host->event_handler,temp_host->name);
 				temp_buffer[sizeof(temp_buffer)-1]='\x0';
 				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 				errors++;
@@ -1572,40 +1476,13 @@ int pre_flight_check(void){
 		/* hosts that don't have check commands defined shouldn't ever be checked... */
 		if(temp_host->host_check_command!=NULL){
 
-			/* check the host check_command */
-			strncpy(temp_buffer,temp_host->host_check_command,sizeof(temp_buffer));
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-			/* get the command name, leave any arguments behind */
-			temp_command_name=my_strtok(temp_buffer,"!");
-
-			temp_command=find_command(temp_command_name,NULL);
+			temp_command=find_command(temp_host->host_check_command,NULL);
 			if(temp_command==NULL){
-				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host check command '%s' specified for host '%s' is not defined anywhere!",temp_command_name,temp_host->name);
+				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host check command '%s' specified for host '%s' is not defined anywhere!",temp_host->host_check_command,temp_host->name);
 				temp_buffer[sizeof(temp_buffer)-1]='\x0';
 				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 				errors++;
 		                }
-		        }
-
-		/* check all contact groups */
-		for(temp_contactgroupsmember=temp_host->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
-
-			temp_contactgroup=find_contactgroup(temp_contactgroupsmember->group_name,NULL);
-
-			if(temp_contactgroup==NULL){
-				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Contact group '%s' specified in host '%s' is not defined anywhere!",temp_contactgroupsmember->group_name,temp_host->name);
-				temp_buffer[sizeof(temp_buffer)-1]='\x0';
-				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
-				errors++;
-			        }
-			}
-		/* check to see if there is at least one contact group */
-		if(temp_host->contact_groups==NULL){
-			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host '%s'  has no default contact group(s) defined!",temp_host->name);
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-			write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
-			errors++;
 		        }
 
 		/* check notification timeperiod */
@@ -1622,7 +1499,7 @@ int pre_flight_check(void){
 		/* check all parent parent host */
 		for(temp_hostsmember=temp_host->parent_hosts;temp_hostsmember!=NULL;temp_hostsmember=temp_hostsmember->next){
 
-			if(find_host(temp_hostsmember->host_name)==NULL){
+			if(find_host(temp_hostsmember->host_name,NULL)==NULL){
 				snprintf(temp_buffer,sizeof(temp_buffer),"Error: '%s' is not a valid parent for host '%s'!",temp_hostsmember->host_name,temp_host->name);
 				temp_buffer[sizeof(temp_buffer)-1]='\x0';
 				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
@@ -1672,7 +1549,7 @@ int pre_flight_check(void){
 		/* check all group members */
 		for(temp_hostgroupmember=temp_hostgroup->members;temp_hostgroupmember!=NULL;temp_hostgroupmember=temp_hostgroupmember->next){
 
-			temp_host=find_host(temp_hostgroupmember->host_name);
+			temp_host=find_host(temp_hostgroupmember->host_name,NULL);
 			if(temp_host==NULL){
 				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host '%s' specified in host group '%s' is not defined anywhere!",temp_hostgroupmember->host_name,temp_hostgroup->group_name);
 				temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -1680,6 +1557,28 @@ int pre_flight_check(void){
 				errors++;
 			        }
 
+		        }
+
+		found=FALSE;
+
+		/* check all contact groups */
+		for(temp_contactgroupsmember=temp_hostgroup->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
+
+			temp_contactgroup=find_contactgroup(temp_contactgroupsmember->group_name,NULL);
+
+			if(temp_contactgroup==NULL){
+				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Contact group '%s' specified in host group '%s' is not defined anywhere!",temp_contactgroupsmember->group_name,temp_hostgroup->group_name);
+				temp_buffer[sizeof(temp_buffer)-1]='\x0';
+				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
+				errors++;
+			        }
+			}
+		/* check to see if there is at least one contact group */
+		if(temp_hostgroup->contact_groups==NULL){
+			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host group '%s'  has no default contact group(s) defined!",temp_hostgroup->group_name);
+			temp_buffer[sizeof(temp_buffer)-1]='\x0';
+			write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
+			errors++;
 		        }
 
 		/* check for illegal characters in hostgroup name */
@@ -1720,17 +1619,9 @@ int pre_flight_check(void){
 			errors++;
 		        }
 		else for(temp_commandsmember=temp_contact->service_notification_commands;temp_commandsmember!=NULL;temp_commandsmember=temp_commandsmember->next){
-
-			/* check the host notification command */
-			strncpy(temp_buffer,temp_commandsmember->command,sizeof(temp_buffer));
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-			/* get the command name, leave any arguments behind */
-			temp_command_name=my_strtok(temp_buffer,"!");
-
-			temp_command=find_command(temp_command_name,NULL);
+		        temp_command=find_command(temp_commandsmember->command,NULL);
 			if(temp_command==NULL){
-				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Service notification command '%s' specified for contact '%s' is not defined anywhere!",temp_command_name,temp_contact->name);
+				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Service notification command '%s' specified for contact '%s' is not defined anywhere!",temp_commandsmember->command,temp_contact->name);
 				temp_buffer[sizeof(temp_buffer)-1]='\x0';
 				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 				errors++;
@@ -1745,17 +1636,9 @@ int pre_flight_check(void){
 			errors++;
 		        }
 		else for(temp_commandsmember=temp_contact->host_notification_commands;temp_commandsmember!=NULL;temp_commandsmember=temp_commandsmember->next){
-
-			/* check the host notification command */
-			strncpy(temp_buffer,temp_commandsmember->command,sizeof(temp_buffer));
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-			/* get the command name, leave any arguments behind */
-			temp_command_name=my_strtok(temp_buffer,"!");
-
-			temp_command=find_command(temp_command_name,NULL);
+			temp_command=find_command(temp_commandsmember->command,NULL);
 			if(temp_command==NULL){
-				sprintf(temp_buffer,"Error: Host notification command '%s' specified for contact '%s' is not defined anywhere!",temp_command_name,temp_contact->name);
+				sprintf(temp_buffer,"Error: Host notification command '%s' specified for contact '%s' is not defined anywhere!",temp_commandsmember->command,temp_contact->name);
 				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 				errors++;
 			        }
@@ -1865,30 +1748,44 @@ int pre_flight_check(void){
 
 		found=FALSE;
 
-		/* make sure each contactgroup is used in at least one host or service definition or escalation */
-		move_first_host();
-		while((temp_host=get_next_host()) && found==FALSE) {
-			for(temp_contactgroupsmember=temp_host->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
+		/* make sure each contactgroup is used in at least one hostgroup or service definition or escalation */
+		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
+			for(temp_contactgroupsmember=temp_hostgroup->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
 				if(!strcmp(temp_contactgroup->group_name,temp_contactgroupsmember->group_name)){
 					found=TRUE;
 					break;
-			                }
-		                 }
-		        }
+				        }
+			        }
+			if(found==TRUE)
+				break;
+			}
 		if(found==FALSE){
-			move_first_service();
-			while((temp_service=get_next_service()) && found==FALSE) {
+			for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 				for(temp_contactgroupsmember=temp_service->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
 					if(!strcmp(temp_contactgroup->group_name,temp_contactgroupsmember->group_name)){
 						found=TRUE;
 						break;
 				                }
 			                 }
+				if(found==TRUE)
+					break;
 			        }
 		        }
 		if(found==FALSE){
 			for(temp_se=serviceescalation_list;temp_se!=NULL;temp_se=temp_se->next){
 				for(temp_contactgroupsmember=temp_se->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
+					if(!strcmp(temp_contactgroup->group_name,temp_contactgroupsmember->group_name)){
+						found=TRUE;
+						break;
+				                }
+			                 }
+				if(found==TRUE)
+					break;
+			        }
+		        }
+		if(found==FALSE){
+			for(temp_hge=hostgroupescalation_list;temp_hge!=NULL;temp_hge=temp_hge->next){
+				for(temp_contactgroupsmember=temp_hge->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
 					if(!strcmp(temp_contactgroup->group_name,temp_contactgroupsmember->group_name)){
 						found=TRUE;
 						break;
@@ -1959,7 +1856,7 @@ int pre_flight_check(void){
 	for(temp_se=serviceescalation_list,total_objects=0;temp_se!=NULL;temp_se=temp_se->next,total_objects++){
 
 		/* find the service */
-		temp_service=find_service(temp_se->host_name,temp_se->description);
+		temp_service=find_service(temp_se->host_name,temp_se->description,NULL);
 		if(temp_service==NULL){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Service escalation for service '%s' on host '%s' is not defined anywhere!",temp_se->description,temp_se->host_name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -1990,6 +1887,46 @@ int pre_flight_check(void){
 
 
 
+ 
+	/*****************************************/
+	/* check all hostgroup escalations...    */
+	/*****************************************/
+	if(verify_config==TRUE)
+		printf("Checking host group escalations...\n");
+
+	for(temp_hge=hostgroupescalation_list,total_objects=0;temp_hge!=NULL;temp_hge=temp_hge->next,total_objects++){
+
+		/* find the hostgroup */
+		temp_hostgroup=find_hostgroup(temp_hge->group_name,NULL);
+		if(temp_hostgroup==NULL){
+			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Hostgroup escalation for hostgroup '%s' is invalid because the hostgroup is not defined anywhere!",temp_hge->group_name);
+			temp_buffer[sizeof(temp_buffer)-1]='\x0';
+			write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
+			errors++;
+		        }
+
+		/* find the contact groups */
+		for(temp_contactgroupsmember=temp_hge->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
+			
+			/* find the contact group */
+			temp_contactgroup=find_contactgroup(temp_contactgroupsmember->group_name,NULL);
+			if(temp_contactgroup==NULL){
+				snprintf(temp_buffer,sizeof(temp_buffer),"Error: Contact group '%s' specified in hostgroup escalation for hostgroup '%s' is not defined anywhere!",temp_contactgroupsmember->group_name,temp_hge->group_name);
+				temp_buffer[sizeof(temp_buffer)-1]='\x0';
+				write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
+				errors++;
+			        }
+		        }
+	        }
+
+	if(verify_config==TRUE)
+		printf("\tChecked %d host group escalations.\n",total_objects);
+ 
+#ifdef DEBUG1
+	printf("\tCompleted hostgroup escalation checks\n");
+#endif
+
+
 	/*****************************************/
 	/* check all service dependencies...     */
 	/*****************************************/
@@ -1999,7 +1936,7 @@ int pre_flight_check(void){
 	for(temp_sd=servicedependency_list,total_objects=0;temp_sd!=NULL;temp_sd=temp_sd->next,total_objects++){
 
 		/* find the dependent service */
-		temp_service=find_service(temp_sd->dependent_host_name,temp_sd->dependent_service_description);
+		temp_service=find_service(temp_sd->dependent_host_name,temp_sd->dependent_service_description,NULL);
 		if(temp_service==NULL){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Dependent service specified in service dependency for service '%s' on host '%s' is not defined anywhere!",temp_sd->dependent_service_description,temp_sd->dependent_host_name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2008,7 +1945,7 @@ int pre_flight_check(void){
 		        }
 
 		/* find the service we're depending on */
-		temp_service2=find_service(temp_sd->host_name,temp_sd->service_description);
+		temp_service2=find_service(temp_sd->host_name,temp_sd->service_description,NULL);
 		if(temp_service2==NULL){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Service specified in service dependency for service '%s' on host '%s' is not defined anywhere!",temp_sd->dependent_service_description,temp_sd->dependent_host_name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2043,7 +1980,7 @@ int pre_flight_check(void){
 	for(temp_he=hostescalation_list,total_objects=0;temp_he!=NULL;temp_he=temp_he->next,total_objects++){
 
 		/* find the host */
-		temp_host=find_host(temp_he->host_name);
+		temp_host=find_host(temp_he->host_name,NULL);
 		if(temp_host==NULL){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host escalation for host '%s' is not defined anywhere!",temp_he->host_name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2082,7 +2019,7 @@ int pre_flight_check(void){
 	for(temp_hd=hostdependency_list,total_objects=0;temp_hd!=NULL;temp_hd=temp_hd->next,total_objects++){
 
 		/* find the dependent host */
-		temp_host=find_host(temp_hd->dependent_host_name);
+		temp_host=find_host(temp_hd->dependent_host_name,NULL);
 		if(temp_host==NULL){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Dependent host specified in host dependency for host '%s' is not defined anywhere!",temp_hd->dependent_host_name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2091,7 +2028,7 @@ int pre_flight_check(void){
 		        }
 
 		/* find the host we're depending on */
-		temp_host2=find_host(temp_hd->host_name);
+		temp_host2=find_host(temp_hd->host_name,NULL);
 		if(temp_host2==NULL){
 			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Host specified in host dependency for host '%s' is not defined anywhere!",temp_hd->dependent_host_name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2175,8 +2112,7 @@ int pre_flight_check(void){
 	/* check routes between all hosts */
 	found=FALSE;
 	result=OK;
-	move_first_host();
-	while(temp_host = get_next_host()) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		found=check_for_circular_path(temp_host,temp_host);
 		if(found==TRUE){
 			sprintf(temp_buffer,"Error: There is a circular parent/child path that exists for host '%s'!",temp_host->name);
@@ -2226,16 +2162,9 @@ int pre_flight_check(void){
 		printf("Checking global event handlers...\n");
 	if(global_host_event_handler!=NULL){
 
-		/* check the event handler command */
-		strncpy(temp_buffer,global_host_event_handler,sizeof(temp_buffer));
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-		/* get the command name, leave any arguments behind */
-		temp_command_name=my_strtok(temp_buffer,"!");
-
-		temp_command=find_command(temp_command_name,NULL);
+	        temp_command=find_command(global_host_event_handler,NULL);
 		if(temp_command==NULL){
-			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Global host event handler command '%s' is not defined anywhere!",temp_command_name);
+			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Global host event handler command '%s' is not defined anywhere!",global_host_event_handler);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 			errors++;
@@ -2243,16 +2172,9 @@ int pre_flight_check(void){
 	        }
 	if(global_service_event_handler!=NULL){
 
-		/* check the event handler command */
-		strncpy(temp_buffer,global_service_event_handler,sizeof(temp_buffer));
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-
-		/* get the command name, leave any arguments behind */
-		temp_command_name=my_strtok(temp_buffer,"!");
-
-		temp_command=find_command(temp_command_name,NULL);
+	        temp_command=find_command(global_service_event_handler,NULL);
 		if(temp_command==NULL){
-			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Global service event handler command '%s' is not defined anywhere!",temp_command_name);
+			snprintf(temp_buffer,sizeof(temp_buffer),"Error: Global service event handler command '%s' is not defined anywhere!",global_service_event_handler);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			write_to_logs_and_console(temp_buffer,NSLOG_VERIFICATION_ERROR,TRUE);
 			errors++;
@@ -2296,9 +2218,9 @@ int pre_flight_check(void){
 	        }
 
 	/* count number of services associated with each host (we need this for flap detection)... */
-	move_first_service();
-	while(temp_service = get_next_service()) {
-		if(temp_host=find_host(temp_service->host_name)) {
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
+		temp_host=find_host(temp_service->host_name,NULL);
+		if(temp_host!=NULL){
 			temp_host->total_services++;
 			temp_host->total_service_check_interval+=temp_service->check_interval;
 		        }
