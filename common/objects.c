@@ -3,7 +3,7 @@
  * OBJECTS.C - Object addition and search functions for Nagios
  *
  * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   01-01-2003
+ * Last Modified:   06-30-2003
  *
  * License:
  *
@@ -36,6 +36,9 @@
 #endif
 
 /**** IMPLEMENTATION-SPECIFIC HEADER FILES ****/
+#ifdef USE_XODDEFAULT
+#include "../xdata/xoddefault.h"		/* default host config data routines (text file) */
+#endif
 #ifdef USE_XODTEMPLATE                          /* template-based routines */
 #include "../xdata/xodtemplate.h"
 #endif
@@ -46,22 +49,16 @@
 
 contact		*contact_list=NULL;
 contactgroup	*contactgroup_list=NULL;
-host		**host_list=NULL;
+host		*host_list=NULL;
 hostgroup	*hostgroup_list=NULL;
-service		**service_list=NULL;
+service		*service_list=NULL;
 command         *command_list=NULL;
 timeperiod      *timeperiod_list=NULL;
 serviceescalation       *serviceescalation_list=NULL;
+hostgroupescalation     *hostgroupescalation_list=NULL;
 servicedependency       *servicedependency_list=NULL;
 hostdependency          *hostdependency_list=NULL;
 hostescalation          *hostescalation_list=NULL;
-
-
-static host_cursor *static_host_cursor=NULL;
-static int service_hashchain_iterator;
-static service *current_service_pointer;
-static char *services_by_host;
-
 
 
 
@@ -79,6 +76,12 @@ int read_object_config_data(char *main_config_file,int options){
 #endif
 
 	/********* IMPLEMENTATION-SPECIFIC INPUT FUNCTION ********/
+#ifdef USE_XODDEFAULT
+	/* read in data from all text host config files (only method implemented by default) */
+	result=xoddefault_read_config_data(main_config_file,options);
+	if(result!=OK)
+		return ERROR;
+#endif
 #ifdef USE_XODTEMPLATE
 	/* read in data from all text host config files (template-based) */
 	result=xodtemplate_read_config_data(main_config_file,options);
@@ -97,221 +100,6 @@ int read_object_config_data(char *main_config_file,int options){
 #endif
 
 	return result;
-        }
-
-
-
-/******************************************************************/
-/********************** HASH FUNCTIONS ****************************/
-/******************************************************************/
-
-/* host hash function */
-int hashfunc1(const char *name1,int hashslots){
-	unsigned int i,result;
-
-	result=0;
-
-	if(name1)
-		for(i=0;i<strlen(name1);i++)
-			result+=name1[i];
-
-	result=result%hashslots;
-
-	return result;
-        }
-
-
-/* service hash function */
-int hashfunc2(const char *name1,const char *name2,int hashslots){
-	unsigned int i,result;
-
-	result=0;
-	if(name1)
-		for(i=0;i<strlen(name1);i++)
-			result+=name1[i];
-
-	if(name2)
-		for(i=0;i<strlen(name2);i++)
-			result+=name2[i];
-
-	result=result%SERVICES_HASHSLOTS;
-
-	return result;
-        }
-
-
-int compare_host(host *testhost,const char *host_name){
-	
-	return strcmp(testhost->name,host_name);
-        }
-
-
-int host_comes_after(host *testhost,const char *host_name){
-
-	return compare_host(testhost,host_name)<0;
-        }
-
-
-int add_host_allocated(host *new_host){
-	host *temphost, *lastpointer;
-	int hashslot=hashfunc1(new_host->name,HOSTS_HASHSLOTS);
-
-	/* initialize hash list */
-	if(host_list==NULL){
-		int i;
-
-		host_list=(host **)malloc(sizeof(host *)*HOSTS_HASHSLOTS);
-		if(host_list==NULL)
-			return 0;
-		
-		for(i=0;i<HOSTS_HASHSLOTS;i++)
-			host_list[i]=NULL;
-	        }
-
-	if(!new_host)
-		return 0;
-
-	lastpointer=NULL;
-	for(temphost=host_list[hashslot];temphost && host_comes_after(temphost,new_host->name);temphost=temphost->next)
-		lastpointer=temphost;
-
-	if(!temphost || (compare_host(temphost,new_host->name)!=0)){
-		if(lastpointer)
-			lastpointer->next=new_host;
-		else
-			host_list[hashslot]=new_host;
-		new_host->next=temphost;
-
-		return 1;
-	        }
-
-	/* else already exists */
-	return 0;
-        }
-
-
-int compare_service(service *testsvc,const char *host_name,const char *service_name){
-	int result;
-
-	result=strcmp(testsvc->host_name,host_name);
-	if(result>0)
-		return 1;
-	else if(result<0)
-		return -1;
-	else
-		return strcmp(testsvc->description,service_name);
-        }
-
-
-/* host_name & service_name come after testsvc */
-int service_comes_after(service *testsvc,const char *host_name,const char *service_name){
-
-	return compare_service(testsvc,host_name,service_name)<0;
-        }
-
-
-int add_service_allocated(service *new_service){
-	service *tempsvc, *lastpointer;
-	int hashslot=hashfunc2(new_service->host_name,new_service->description,SERVICES_HASHSLOTS);
-
-	/* initialize hash list */
-	if(service_list==NULL){
-		int i;
-
-		service_list=(service **)malloc(sizeof(service *)*SERVICES_HASHSLOTS);
-		if(service_list==NULL)
-			return 0;
-		
-		for(i=0;i< SERVICES_HASHSLOTS;i++)
-			service_list[i]=NULL;
-	        }
-
-	if(!new_service)
-		return 0;
-
-	lastpointer=NULL;
-	for(tempsvc=service_list[hashslot];tempsvc && service_comes_after(tempsvc,new_service->host_name,new_service->description);tempsvc=tempsvc->next)
-		lastpointer=tempsvc;
-
-	if(!tempsvc || (compare_service(tempsvc,new_service->host_name,new_service->description)!=0)){
-		if(lastpointer)
-			lastpointer->next=new_service;
-		else
-			service_list[hashslot]=new_service;
-		new_service->next=tempsvc;
-
-		return 1;
-	        }
-
-	/* else already exists */
-	return 0;
-        }
-
-
-void *get_next_N(void **hashchain, int hashslots, int *iterator, void *current, void *next){
-
-	/* hashchain hasn't been setup yet */
-	if(!hashchain)
-		return NULL;
-
-	/* went past end */
-	if((*iterator)>=hashslots)
-		return NULL;
-
-	if(current && next){
-		
-		/* next is valid - return that value */
-		current=next;
-	        }
-	else{
-
-		/* next isn't valid, find the first hashchain entry that is defined */
-
-		/* we already went through this hashchain entry */
-		if(current)
-			(*iterator)++;
-
-		for(;!hashchain[(*iterator)] && ((*iterator)<hashslots);(*iterator)++);
-
-		if((*iterator)<hashslots)
-			current=hashchain[(*iterator)];
-		else
-			current=NULL;
-	        }
-
-	return current;
-        }
-
-
-void *get_host_cursor(void){
-	host_cursor *retval;
-
-	if(!(retval=malloc(sizeof(host_cursor))))
-		return NULL;
-
-	retval->current_host_pointer=NULL;
-	retval->host_hashchain_iterator=0;
-
-	return retval;
-        }
-
-
-host *get_next_host_cursor(void *v_cursor){
-	host_cursor *cursor=v_cursor;
-
-	if(!cursor)
-		return NULL;
-
-	cursor->current_host_pointer=get_next_N((void **)host_list,HOSTS_HASHSLOTS,&(cursor->host_hashchain_iterator),cursor->current_host_pointer,(cursor->current_host_pointer?cursor->current_host_pointer->next:NULL));
-
-	return cursor->current_host_pointer;
-        }
-
-
-void free_host_cursor(void *cursor){
-
-	if(cursor)
-		free(cursor);
         }
 
 
@@ -503,10 +291,12 @@ timerange *add_timerange_to_timeperiod(timeperiod *period, int day, unsigned lon
         }
 
 
+
 /* add a new host definition */
-host *add_host(char *name, char *alias, char *address, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notification_interval, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int stalk_up, int stalk_down, int stalk_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int retain_status_information, int retain_nonstatus_information){
+host *add_host(char *name, char *alias, char *address, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notification_interval, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int stalk_up, int stalk_down, int stalk_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int retain_status_information, int retain_nonstatus_information){
 	host *temp_host;
 	host *new_host;
+	host *last_host;
 #ifdef NSCORE
 	char temp_buffer[MAX_INPUT_BUFFER];
 	int x;
@@ -543,7 +333,7 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 	        }
 
 	/* make sure there isn't a host by this name already added */
-	temp_host=find_host(name);
+	temp_host=find_host(name,NULL);
 	if(temp_host!=NULL){
 #ifdef NSCORE
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Host '%s' has already been defined\n",name);
@@ -612,14 +402,6 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 #endif
 		return NULL;
 	        }
-	if(accept_passive_checks<0 || accept_passive_checks>1){
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Invalid accept_passive_checks value for host '%s'\n",name);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
-#endif
-		return NULL;
-	        }
 	if(notifications_enabled<0 || notifications_enabled>1){
 #ifdef NSCORE
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Invalid notifications_enabled value for host '%s'\n",name);
@@ -644,7 +426,7 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 #endif
 		return NULL;
 	        }
-	if(stalk_up<0 || stalk_up>0){
+	if(stalk_up<0 || stalk_up>1){
 #ifdef NSCORE
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Invalid stalk_up value for host '%s'\n",name);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -652,7 +434,7 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 #endif
 		return NULL;
 	        }
-	if(stalk_down<0 || stalk_down>0){
+	if(stalk_down<0 || stalk_down>1){
 #ifdef NSCORE
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Invalid stalk_warning value for host '%s'\n",name);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -660,7 +442,7 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 #endif
 		return NULL;
 	        }
-	if(stalk_unreachable<0 || stalk_unreachable>0){
+	if(stalk_unreachable<0 || stalk_unreachable>1){
 #ifdef NSCORE
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Invalid stalk_unknown value for host '%s'\n",name);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -829,7 +611,6 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 	
 	new_host->parent_hosts=NULL;
 	new_host->max_attempts=max_attempts;
-	new_host->contact_groups=NULL;
 	new_host->notification_interval=notification_interval;
 	new_host->notify_on_recovery=(notify_up>0)?TRUE:FALSE;
 	new_host->notify_on_down=(notify_down>0)?TRUE:FALSE;
@@ -841,7 +622,6 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 	new_host->stalk_on_down=(stalk_down>0)?TRUE:FALSE;
 	new_host->stalk_on_unreachable=(stalk_unreachable>0)?TRUE:FALSE;
 	new_host->process_performance_data=(process_perfdata>0)?TRUE:FALSE;
-	new_host->accept_passive_host_checks=(accept_passive_checks>0)?TRUE:FALSE;
 	new_host->event_handler_enabled=(event_handler_enabled>0)?TRUE:FALSE;
 	new_host->failure_prediction_enabled=(failure_prediction_enabled>0)?TRUE:FALSE;
 	new_host->retain_status_information=(retain_status_information>0)?TRUE:FALSE;
@@ -856,6 +636,9 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 	new_host->execution_time=0;
 	new_host->last_state_change=(time_t)0;
 	new_host->has_been_checked=FALSE;
+	new_host->time_up=0L;
+	new_host->time_down=0L;
+	new_host->time_unreachable=0L;
 	new_host->problem_has_been_acknowledged=FALSE;
 	new_host->has_been_down=FALSE;
 	new_host->has_been_unreachable=FALSE;
@@ -928,32 +711,28 @@ host *add_host(char *name, char *alias, char *address, int max_attempts, int not
 #endif
 
 	/* add new host to host list, sorted by host name */
-	if(!add_host_allocated(new_host)) {
-		/* Failure */
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for host list to add host '%s'\n",name);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+	last_host=host_list;
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+		if(strcmp(new_host->name,temp_host->name)<0){
+			new_host->next=temp_host;
+			if(temp_host==host_list)
+				host_list=new_host;
+			else
+				last_host->next=new_host;
+			break;
+		        }
+		else
+			last_host=temp_host;
+	        }
+	if(host_list==NULL){
+		new_host->next=NULL;
+		host_list=new_host;
+	        }
+	else if(temp_host==NULL){
+		new_host->next=NULL;
+		last_host->next=new_host;
+	        }
 		
-		free(new_host->plugin_output);
-		if(new_host->perf_data)
-			free(new_host->perf_data);
-#endif
-
-		if(new_host->failure_prediction_options!=NULL)
-			free(new_host->failure_prediction_options);
-		if(new_host->event_handler!=NULL)
-			free(new_host->event_handler);
-		if(new_host->host_check_command!=NULL)
-			free(new_host->host_check_command);
-		if(new_host->notification_period!=NULL)
-			free(new_host->notification_period);
-		free(new_host->address);
-		free(new_host->alias);
-		free(new_host->name);
-		free(new_host);
-		return NULL;
-	}
 
 #ifdef DEBUG1
 	printf("\tHost Name:                %s\n",new_host->name);
@@ -1052,72 +831,6 @@ hostsmember *add_parent_host_to_host(host *hst,char *host_name){
         }
 
 
-/* add a new contactgroup to a host */
-contactgroupsmember *add_contactgroup_to_host(host *hst, char *group_name){
-	contactgroupsmember *new_contactgroupsmember;
-#ifdef NSCORE
-	char temp_buffer[MAX_INPUT_BUFFER];
-#endif
-
-#ifdef DEBUG0
-	printf("add_contactgroup_to_host() start\n");
-#endif
-
-	/* make sure we have the data we need */
-	if(hst==NULL || group_name==NULL){
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Host or contactgroup member is NULL\n");
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
-#endif
-		return NULL;
-	        }
-
-	strip(group_name);
-
-	if(!strcmp(group_name,"")){
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Host '%s' contactgroup member is NULL\n",hst->name);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
-#endif
-		return NULL;
-	        }
-
-	/* allocate memory for a new member */
-	new_contactgroupsmember=malloc(sizeof(contactgroupsmember));
-	if(new_contactgroupsmember==NULL){
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for host '%s' contactgroup member '%s'\n",hst->name,group_name);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
-#endif
-		return NULL;
-	        }
-	new_contactgroupsmember->group_name=strdup(group_name);
-	if(new_contactgroupsmember->group_name==NULL){
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for host '%s' contactgroup member '%s' name\n",hst->name,group_name);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
-#endif
-		free(new_contactgroupsmember);
-		return NULL;
-	        }
-
-	
-	/* add the new member to the head of the member list */
-	new_contactgroupsmember->next=hst->contact_groups;
-	hst->contact_groups=new_contactgroupsmember;;
-
-#ifdef DEBUG0
-	printf("add_host_to_host() end\n");
-#endif
-
-	return new_contactgroupsmember;
-        }
-
-
 /* add a new host group to the list in memory */
 hostgroup *add_hostgroup(char *name,char *alias){
 	hostgroup *temp_hostgroup;
@@ -1196,6 +909,7 @@ hostgroup *add_hostgroup(char *name,char *alias){
 		return NULL;
 	        }
 
+	new_hostgroup->contact_groups=NULL;
 	new_hostgroup->members=NULL;
 
 	/* add new hostgroup to hostgroup list, sorted by hostgroup name */
@@ -1297,6 +1011,72 @@ hostgroupmember *add_host_to_hostgroup(hostgroup *grp, char *host_name){
 #endif
 
 	return new_hostgroupmember;
+        }
+
+
+/* add a new contactgroup to a host group */
+contactgroupsmember *add_contactgroup_to_hostgroup(hostgroup *grp, char *group_name){
+	contactgroupsmember *new_contactgroupsmember;
+#ifdef NSCORE
+	char temp_buffer[MAX_INPUT_BUFFER];
+#endif
+
+#ifdef DEBUG0
+	printf("add_contactgroup_to_hostgroup() start\n");
+#endif
+
+	/* make sure we have the data we need */
+	if(grp==NULL || group_name==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Hostgroup or contactgroup member is NULL\n");
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+
+	strip(group_name);
+
+	if(!strcmp(group_name,"")){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Hostgroup '%s' contactgroup member is NULL\n",grp->group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+
+	/* allocate memory for a new member */
+	new_contactgroupsmember=malloc(sizeof(contactgroupsmember));
+	if(new_contactgroupsmember==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for hostgroup '%s' contactgroup member '%s'\n",grp->group_name,group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+	new_contactgroupsmember->group_name=strdup(group_name);
+	if(new_contactgroupsmember->group_name==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for hostgroup '%s' contactgroup member '%s' name\n",grp->group_name,group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		free(new_contactgroupsmember);
+		return NULL;
+	        }
+
+	
+	/* add the new member to the head of the member list */
+	new_contactgroupsmember->next=grp->contact_groups;
+	grp->contact_groups=new_contactgroupsmember;;
+
+#ifdef DEBUG0
+	printf("add_host_to_hostgroup() end\n");
+#endif
+
+	return new_contactgroupsmember;
         }
 
 
@@ -1901,6 +1681,7 @@ contactgroupmember *add_contact_to_contactgroup(contactgroup *grp,char *contact_
 service *add_service(char *host_name, char *description, char *check_period, int max_attempts, int parallelize, int accept_passive_checks, int check_interval, int retry_interval, int notification_interval, char *notification_period, int notify_recovery, int notify_unknown, int notify_warning, int notify_critical, int notifications_enabled, int is_volatile, char *event_handler, int event_handler_enabled, char *check_command, int checks_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int stalk_ok, int stalk_warning, int stalk_unknown, int stalk_critical, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, int retain_status_information, int retain_nonstatus_information, int obsess_over_service){
 	service *temp_service;
 	service *new_service;
+	service *last_service;
 #ifdef NSCORE
 	char temp_buffer[MAX_INPUT_BUFFER];
 	int x;
@@ -1947,7 +1728,7 @@ service *add_service(char *host_name, char *description, char *check_period, int
 	        }
 
 	/* make sure there isn't a service by this name added already */
-	temp_service=find_service(host_name,description);
+	temp_service=find_service(host_name,description,NULL);
 	if(temp_service!=NULL){
 #ifdef NSCORE
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Service '%s' on host '%s' has already been defined\n",description,host_name);
@@ -2325,6 +2106,10 @@ service *add_service(char *host_name, char *description, char *check_period, int
 	new_service->last_state_change=(time_t)0;
 	new_service->has_been_checked=FALSE;
 	new_service->is_being_freshened=FALSE;
+	new_service->time_ok=0L;
+	new_service->time_unknown=0L;
+	new_service->time_warning=0L;
+	new_service->time_critical=0L;
 	new_service->has_been_unknown=FALSE;
 	new_service->has_been_warning=FALSE;
 	new_service->has_been_critical=FALSE;
@@ -2389,31 +2174,37 @@ service *add_service(char *host_name, char *description, char *check_period, int
 
 #endif
 	/* add new service to service list, sorted by host name then service description */
-	if(!add_service_allocated(new_service)) {
-#ifdef NSCORE
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not add new service '%s' on host '%s' (out of memory?)\n",description,host_name);
-		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+	last_service=service_list;
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
-		if(new_service->perf_data!=NULL)
-			free(new_service->perf_data);
-		if(new_service->plugin_output)
-			free(new_service->plugin_output);
-#endif
-		if(new_service->failure_prediction_options!=NULL)
-			free(new_service->failure_prediction_options);
-		if(new_service->notification_period!=NULL)
-			free(new_service->notification_period);
-		if(new_service->event_handler!=NULL)
-			free(new_service->event_handler);
-		if(new_service->service_check_command)
-			free(new_service->service_check_command);
-		if(new_service->description)
-			free(new_service->description);
-		if(new_service->host_name)
-			free(new_service->host_name);
-		free(new_service);
-		return NULL;
+		if(strcmp(new_service->host_name,temp_service->host_name)<0){
+			new_service->next=temp_service;
+			if(temp_service==service_list)
+				service_list=new_service;
+			else
+				last_service->next=new_service;
+			break;
+		        }
+
+		else if(strcmp(new_service->host_name,temp_service->host_name)==0 && strcmp(new_service->description,temp_service->description)<0){
+			new_service->next=temp_service;
+			if(temp_service==service_list)
+				service_list=new_service;
+			else
+				last_service->next=new_service;
+			break;
+		        }
+
+		else
+			last_service=temp_service;
+	        }
+	if(service_list==NULL){
+		new_service->next=NULL;
+		service_list=new_service;
+	        }
+	else if(temp_service==NULL){
+		new_service->next=NULL;
+		last_service->next=new_service;
 	        }
 		
 #ifdef DEBUG1
@@ -2779,6 +2570,152 @@ contactgroupsmember *add_contactgroup_to_serviceescalation(serviceescalation *se
 	return new_contactgroupsmember;
 	}
 
+
+
+/* add a new hostgroup escalation to the list in memory */
+hostgroupescalation *add_hostgroupescalation(char *group_name,int first_notification,int last_notification, int notification_interval){
+	hostgroupescalation *new_hostgroupescalation;
+#ifdef NSCORE
+	char temp_buffer[MAX_INPUT_BUFFER];
+#endif
+
+#ifdef DEBUG0
+	printf("add_hostgroupescalation() start\n");
+#endif
+
+	/* make sure we have the data we need */
+	if(group_name==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Hostgroup escalation group name is NULL\n");
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+
+	strip(group_name);
+
+	if(!strcmp(group_name,"")){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Hostgroup escalation group name is NULL\n");
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+
+	/* allocate memory for a new hostgroup escalation entry */
+	new_hostgroupescalation=malloc(sizeof(hostgroupescalation));
+	if(new_hostgroupescalation==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for hostgroup '%s' escalation\n",group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+	new_hostgroupescalation->group_name=strdup(group_name);
+	if(new_hostgroupescalation->group_name==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for hostgroup '%s' escalation group name\n",group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		free(new_hostgroupescalation);
+		return NULL;
+	        }
+
+
+	new_hostgroupescalation->first_notification=first_notification;
+	new_hostgroupescalation->last_notification=last_notification;
+	new_hostgroupescalation->notification_interval=(notification_interval<=0)?0:notification_interval;
+	new_hostgroupescalation->contact_groups=NULL;
+
+	/* add new hostgroup escalation to the head of the hostgroup escalation list (unsorted) */
+	new_hostgroupescalation->next=hostgroupescalation_list;
+	hostgroupescalation_list=new_hostgroupescalation;
+		
+
+#ifdef DEBUG1
+	printf("\tHostgroup name:        %s\n",new_hostgroupescalation->group_name);
+	printf("\tFirst notification:    %d\n",new_hostgroupescalation->first_notification);
+	printf("\tLast notification:     %d\n",new_hostgroupescalation->last_notification);
+	printf("\tNotification interval: %d\n",new_hostgroupescalation->notification_interval);
+#endif
+
+#ifdef DEBUG0
+	printf("add_hostgroupescalation() end\n");
+#endif
+
+	return new_hostgroupescalation;
+	}
+
+
+
+
+/* adds a contact group to a hostgroup escalation */
+contactgroupsmember *add_contactgroup_to_hostgroupescalation(hostgroupescalation *hge,char *group_name){
+	contactgroupsmember *new_contactgroupsmember;
+#ifdef NSCORE
+	char temp_buffer[MAX_INPUT_BUFFER];
+#endif
+
+#ifdef DEBUG0
+	printf("add_contactgroup_to_hostgroupescalation() start\n");
+#endif
+
+	/* bail out if we weren't given the data we need */
+	if(hge==NULL || group_name==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Hostgroup escalation or contactgroup name is NULL\n");
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+
+	strip(group_name);
+
+	if(!strcmp(group_name,"")){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Contactgroup name is NULL\n");
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+
+	/* allocate memory for the contactgroups member */
+	new_contactgroupsmember=malloc(sizeof(contactgroupsmember));
+	if(new_contactgroupsmember==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for contact group '%s' for hostgroup '%s' escalation\n",group_name,hge->group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		return NULL;
+	        }
+	new_contactgroupsmember->group_name=strdup(group_name);
+	if(new_contactgroupsmember->group_name==NULL){
+#ifdef NSCORE
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Error: Could not allocate memory for contact group '%s' name for hostgroup '%s' escalation\n",group_name,hge->group_name);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		write_to_logs_and_console(temp_buffer,NSLOG_CONFIG_ERROR,TRUE);
+#endif
+		free(new_contactgroupsmember);
+		return NULL;
+	        }
+
+	/* add this contactgroup to the hostgroup escalation */
+	new_contactgroupsmember->next=hge->contact_groups;
+	hge->contact_groups=new_contactgroupsmember;
+
+#ifdef DEBUG0
+	printf("add_contactgroup_to_hostgroupescalation() end\n");
+#endif
+
+	return new_contactgroupsmember;
+	}
 
 
 /* adds a service dependency definition */
@@ -3277,39 +3214,44 @@ timeperiod * find_timeperiod(char *name,timeperiod *period){
 	}
 
 
-/* given a host name, find it in the list in memory */
-host * find_host(char *name){
-	host *iptr;
+/* given a host name and a starting point, find a host from the list in memory */
+host * find_host(char *name,host *hst){
+	host *temp_host;
+	int result;
 
-	if(name==NULL || host_list==NULL)
+#ifdef DEBUG0
+	printf("find_host() start\n");
+#endif
+
+	if(name==NULL)
 		return NULL;
 
-	for(iptr=host_list[hashfunc1(name,HOSTS_HASHSLOTS)];iptr && host_comes_after(iptr,name);iptr=iptr->next);
+	if(hst==NULL)
+		temp_host=host_list;
+	else
+		temp_host=hst->next;
+	while(temp_host!=NULL){
 
-	if(iptr && (compare_host(iptr,name)==0))
-		return iptr;
+		result=strcmp(temp_host->name,name);
 
-	/* Couldn't find matching host */
+		/* we found a matching host */
+       	        if(result==0)
+		       return temp_host;
+
+		/* we already passed any potential matches */
+		if(result>0)
+			return NULL;
+
+		temp_host=temp_host->next;
+		}
+
+#ifdef DEBUG0
+	printf("find_host() end\n");
+#endif
+
+	/* we couldn't find a matching host */
 	return NULL;
-        }
-
-
-/* move pointer to first host in chained hash */
-void move_first_host(void){
-
-	if(static_host_cursor)
-		free_host_cursor(static_host_cursor);
-	static_host_cursor=get_host_cursor();
-
-	return;
-        }
-
-
-/* gets next host in chained hash */
-host * get_next_host(void){
-
-	return get_next_host_cursor(static_host_cursor);
-        }
+	}
 
 
 /* given a name and starting point, find a hostgroup from the list in memory */
@@ -3542,74 +3484,50 @@ command * find_command(char *name,command *cmd){
 
 	/* we couldn't find a matching command */
 	return NULL;
-}
+        }
 
 
-/* given a host/service name, find the service in the list in memory */
-service * find_service(char *host_name,char *svc_desc){
-	service *iptr;
 
-	if(host_name==NULL || svc_desc==NULL || service_list==NULL)
+/* given a host/service name and a starting point, find a service from the list in memory */
+service * find_service(char *host_name,char *svc_desc,service *svcptr){
+	service *temp_service;
+	int result;
+
+#ifdef DEBUG0
+	printf("find_service() start\n");
+#endif
+
+	if(host_name==NULL || svc_desc==NULL)
 		return NULL;
 
-	for(iptr=service_list[hashfunc2(host_name,svc_desc,SERVICES_HASHSLOTS)];iptr && service_comes_after(iptr,host_name,svc_desc);iptr=iptr->next);
+	if(svcptr==NULL)
+		temp_service=service_list;
+	else
+		temp_service=svcptr->next;
 
-	if(iptr && (compare_service(iptr,host_name,svc_desc)==0))
-		return iptr;
+	while(temp_service!=NULL){
+
+		result=strcmp(temp_service->host_name,host_name);
+
+		/* we already passed any potential matches (services are sorted by host name) */
+		if(result>0)
+			return NULL;
+
+		/* we found a matching host name and service description */
+       	        if(result==0 && !strcmp(temp_service->description,svc_desc))
+		       return temp_service;
+
+		temp_service=temp_service->next;
+		}
+
+#ifdef DEBUG0
+	printf("find_service() end\n");
+#endif
 
 	/* we couldn't find a matching service */
 	return NULL;
-        }
+	}
 
-
-/* resets pointer to first service in memory */
-void move_first_service(void){
-
-	service_hashchain_iterator=0;
-	current_service_pointer=NULL;
-
-	return;
-        }
-
-/* returns the next service, NULL upon end of list
- * uses a static memory area, call move_first_service before your first call to this function
- */
-service * get_next_service(void){
-
-	current_service_pointer=get_next_N((void **)service_list,SERVICES_HASHSLOTS,&service_hashchain_iterator,current_service_pointer,(current_service_pointer?current_service_pointer->next:NULL));
-
-	return current_service_pointer;
-        }
-
-
-/* setup static memory area for get_next_service_by_host()
- * return 0 on failure 
- * calls move_first_service/get_next_service
- * do not de-allocate the memory pointed to *host till you are done calling get_next_service_by_host
- */
-int find_all_services_by_host(char *host){
-
-	if(!host)
-		return 0;
-
-	services_by_host=host;
-
-	move_first_service();
-
-	return 1;
-        }
-
-
-service *get_next_service_by_host(void){
-	service *tmp;
-
-	while(tmp=get_next_service()){
-		if(strcmp(tmp->host_name,services_by_host)==0)
-			return tmp;
-	        }
-
-	return NULL;
-        }
 
 
 
@@ -3682,14 +3600,11 @@ int is_host_immediate_parent_of_host(host *child_host,host *parent_host){
 int number_of_immediate_child_hosts(host *hst){
 	int children=0;
 	host *temp_host;
-	void *host_cursor;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		if(is_host_immediate_child_of_host(hst,temp_host)==TRUE)
 			children++;
 		}
-	free_host_cursor(host_cursor);
 
 	return children;
 	}
@@ -3699,14 +3614,11 @@ int number_of_immediate_child_hosts(host *hst){
 int number_of_total_child_hosts(host *hst){
 	int children=0;
 	host *temp_host;
-	void *host_cursor;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		if(is_host_immediate_child_of_host(hst,temp_host)==TRUE)
 			children+=number_of_total_child_hosts(temp_host)+1;
 		}
-	free_host_cursor(host_cursor);
 
 	return children;
 	}
@@ -3716,16 +3628,13 @@ int number_of_total_child_hosts(host *hst){
 int number_of_immediate_parent_hosts(host *hst){
 	int parents=0;
 	host *temp_host;
-	void *host_cursor;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		if(is_host_immediate_parent_of_host(hst,temp_host)==TRUE){
 			parents++;
 			break;
 		        }
 	        }
-	free_host_cursor(host_cursor);
 
 	return parents;
         }
@@ -3735,16 +3644,13 @@ int number_of_immediate_parent_hosts(host *hst){
 int number_of_total_parent_hosts(host *hst){
 	int parents=0;
 	host *temp_host;
-	void *host_cursor;
 
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		if(is_host_immediate_parent_of_host(hst,temp_host)==TRUE){
 			parents+=number_of_total_parent_hosts(temp_host)+1;
 			break;
 		        }
 	        }
-	free_host_cursor(host_cursor);
 
 	return parents;
         }
@@ -3785,38 +3691,16 @@ int is_contact_member_of_contactgroup(contactgroup *group, contact *cntct){
         }
 
 
-/*  tests wether a contact is a member of a particular hostgroup - used only by the CGIs */
+/*  tests wether a contact is a member of a particular hostgroup */
 int is_contact_for_hostgroup(hostgroup *group, contact *cntct){
-	hostgroupmember *temp_hostgroupmember;
-	host *temp_host;
+	contactgroupsmember *temp_contactgroupsmember;
+	contactgroup *temp_contactgroup;
 
 	if(group==NULL || cntct==NULL)
 		return FALSE;
 
-	for(temp_hostgroupmember=group->members;temp_hostgroupmember!=NULL;temp_hostgroupmember=temp_hostgroupmember->next){
-		temp_host=find_host(temp_hostgroupmember->host_name);
-		if(temp_host==NULL)
-			continue;
-		if(is_contact_for_host(temp_host,cntct)==TRUE)
-			return TRUE;
-	        }
-
-	return FALSE;
-        }
-
-
-
-/*  tests whether a contact is a contact for a particular host */
-int is_contact_for_host(host *hst, contact *cntct){
-	contactgroupsmember *temp_contactgroupsmember;
-	contactgroup *temp_contactgroup;
-	
-	if(hst==NULL || cntct==NULL){
-		return FALSE;
-	        }
-
-	/* search all contact groups of this host */
-	for(temp_contactgroupsmember=hst->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
+	/* search all contact groups of this hostgroup */
+	for(temp_contactgroupsmember=group->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
 
 		/* find the contact group */
 		temp_contactgroup=find_contactgroup(temp_contactgroupsmember->group_name,NULL);
@@ -3832,10 +3716,35 @@ int is_contact_for_host(host *hst, contact *cntct){
 
 
 
+/*  tests whether a contact is a contact for a particular host */
+int is_contact_for_host(host *hst, contact *cntct){
+	hostgroup *temp_hostgroup;
+
+	if(hst==NULL || cntct==NULL){
+		return FALSE;
+	        }
+
+	/* check all host groups that the host is in */
+	for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
+		
+		if(is_host_member_of_hostgroup(temp_hostgroup,hst)==FALSE)
+			continue;
+
+		if(is_contact_for_hostgroup(temp_hostgroup,cntct)==TRUE)
+			return TRUE;
+	        }
+
+	return FALSE;
+        }
+
+
+
 /* tests whether or not a contact is an escalated contact for a particular host */
 int is_escalated_contact_for_host(host *hst, contact *cntct){
+	hostgroupescalation *temp_hostgroupescalation;
 	contactgroupsmember *temp_contactgroupsmember;
 	contactgroup *temp_contactgroup;
+	hostgroup *temp_hostgroup;
 	hostescalation *temp_hostescalation;
 
 	/* search all host escalations */
@@ -3858,6 +3767,32 @@ int is_escalated_contact_for_host(host *hst, contact *cntct){
 				return TRUE;
 		        }
 	         }
+
+	/* search all the hostgroup escalations */
+	for(temp_hostgroupescalation=hostgroupescalation_list;temp_hostgroupescalation!=NULL;temp_hostgroupescalation=temp_hostgroupescalation->next){
+
+		/* find the hostgroup */
+		temp_hostgroup=find_hostgroup(temp_hostgroupescalation->group_name,NULL);
+		if(temp_hostgroup==NULL)
+			continue;
+
+		/* see if this host is a member of the hostgroup */
+		if(is_host_member_of_hostgroup(temp_hostgroup,hst)==FALSE)
+			continue;
+
+		/* search all the contact groups in this escalation... */
+		for(temp_contactgroupsmember=temp_hostgroupescalation->contact_groups;temp_contactgroupsmember!=NULL;temp_contactgroupsmember=temp_contactgroupsmember->next){
+
+			/* find the contact group */
+			temp_contactgroup=find_contactgroup(temp_contactgroupsmember->group_name,NULL);
+			if(temp_contactgroup==NULL)
+				continue;
+
+			/* see if the contact is a member of this contact group */
+			if(is_contact_member_of_contactgroup(temp_contactgroup,cntct)==TRUE)
+				return TRUE;
+		        }
+	        }
 
 	return FALSE;
         }
@@ -3924,20 +3859,17 @@ int is_escalated_contact_for_service(service *svc, contact *cntct){
 /* checks to see if there exists a circular parent/child path for a host */
 int check_for_circular_path(host *root_hst, host *hst){
 	host *temp_host;
-	void *host_cursor;
 
 	/* check this hosts' parents to see if a circular path exists */
 	if(is_host_immediate_parent_of_host(root_hst,hst)==TRUE)
 		return TRUE;
 
 	/* check all immediate children for a circular path */
-	host_cursor = get_host_cursor();
-	while(temp_host = get_next_host_cursor(host_cursor)) {
+	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 		if(is_host_immediate_child_of_host(hst,temp_host)==TRUE)
 			if(check_for_circular_path(root_hst,temp_host)==TRUE)
 				return TRUE;
 	        }
-	free_host_cursor(host_cursor);
 
 	return FALSE;
         }
@@ -4028,6 +3960,8 @@ int free_object_data(void){
 	commandsmember *next_commandsmember=NULL;
 	serviceescalation *this_serviceescalation=NULL;
 	serviceescalation *next_serviceescalation=NULL;
+	hostgroupescalation *this_hostgroupescalation=NULL;
+	hostgroupescalation *next_hostgroupescalation=NULL;
 	servicedependency *this_servicedependency=NULL;
 	servicedependency *next_servicedependency=NULL;
 	hostdependency *this_hostdependency=NULL;
@@ -4035,7 +3969,6 @@ int free_object_data(void){
 	hostescalation *this_hostescalation=NULL;
 	hostescalation *next_hostescalation=NULL;
 	int day;
-	int i;
 
 #ifdef DEBUG0
 	printf("free_object_data() start\n");
@@ -4068,54 +4001,38 @@ int free_object_data(void){
 	printf("\ttimeperiod_list freed\n");
 #endif
 
-	/* free memory for the host list (chained hash) */
-	if(host_list){
-		for(i=0;i<HOSTS_HASHSLOTS;i++){
+	/* free memory for the host list */
+	this_host=host_list;
+	while(this_host!=NULL){
 
-			this_host=host_list[i];
-			while(this_host!=NULL){
-
-				next_host=this_host->next;
-
-				/* free memory for parent hosts */
-				this_hostsmember=this_host->parent_hosts;
-				while(this_hostsmember!=NULL){
-					next_hostsmember=this_hostsmember->next;
-					free(this_hostsmember->host_name);
-					free(this_hostsmember);
-					this_hostsmember=next_hostsmember;
-				        }
-
-				/* free memory for contact groups */
-				this_contactgroupsmember=this_host->contact_groups;
-				while(this_contactgroupsmember!=NULL){
-					next_contactgroupsmember=this_contactgroupsmember->next;
-					free(this_contactgroupsmember->group_name);
-					free(this_contactgroupsmember);
-					this_contactgroupsmember=next_contactgroupsmember;
-				        }
-
-				free(this_host->name);
-				free(this_host->alias);
-				free(this_host->address);
-
-#ifdef NSCORE
-				free(this_host->plugin_output);
-				free(this_host->perf_data);
-#endif
-				free(this_host->host_check_command);
-				free(this_host->event_handler);
-				free(this_host->failure_prediction_options);
-				free(this_host->notification_period);
-				free(this_host);
-				this_host=next_host;
-			        }
+		/* free memory for parent hosts */
+		this_hostsmember=this_host->parent_hosts;
+		while(this_hostsmember!=NULL){
+			next_hostsmember=this_hostsmember->next;
+			free(this_hostsmember->host_name);
+			free(this_hostsmember);
+			this_hostsmember=next_hostsmember;
 		        }
 
-		/* reset the host pointer */
-		free(host_list);
-		host_list=NULL;
-	        }
+		next_host=this_host->next;
+		free(this_host->name);
+		free(this_host->alias);
+		free(this_host->address);
+
+#ifdef NSCORE
+		free(this_host->plugin_output);
+		free(this_host->perf_data);
+#endif
+		free(this_host->host_check_command);
+		free(this_host->event_handler);
+		free(this_host->failure_prediction_options);
+		free(this_host->notification_period);
+		free(this_host);
+		this_host=next_host;
+		}
+
+	/* reset the host pointer */
+	host_list=NULL;
 
 #ifdef DEBUG1
 	printf("\thost_list freed\n");
@@ -4124,6 +4041,15 @@ int free_object_data(void){
 	/* free memory for the host group list */
 	this_hostgroup=hostgroup_list;
 	while(this_hostgroup!=NULL){
+
+		/* free memory for contact groups */
+		this_contactgroupsmember=this_hostgroup->contact_groups;
+		while(this_contactgroupsmember!=NULL){
+			next_contactgroupsmember=this_contactgroupsmember->next;
+			free(this_contactgroupsmember->group_name);
+			free(this_contactgroupsmember);
+			this_contactgroupsmember=next_contactgroupsmember;
+		        }
 
 		/* free memory for the group members */
 		this_hostgroupmember=this_hostgroup->members;
@@ -4213,44 +4139,37 @@ int free_object_data(void){
 	printf("\tcontactgroup_list freed\n");
 #endif
 
-	/* free memory for the service list (chained hash) */
-	if(service_list){
-		for(i=0;i<SERVICES_HASHSLOTS;i++){
+	/* free memory for the service list */
+	this_service=service_list;
+	while(this_service!=NULL){
 
-			this_service=service_list[i];
-			while(this_service!=NULL){
-
-				next_service=this_service->next;
-
-				/* free memory for contact groups */
-				this_contactgroupsmember=this_service->contact_groups;
-				while(this_contactgroupsmember!=NULL){
-					next_contactgroupsmember=this_contactgroupsmember->next;
-					free(this_contactgroupsmember->group_name);
-					free(this_contactgroupsmember);
-					this_contactgroupsmember=next_contactgroupsmember;
-				        }
-
-				free(this_service->host_name);
-				free(this_service->description);
-				free(this_service->service_check_command);
-#ifdef NSCORE
-				free(this_service->plugin_output);
-				free(this_service->perf_data);
-#endif
-				free(this_service->notification_period);
-				free(this_service->check_period);
-				free(this_service->event_handler);
-				free(this_service->failure_prediction_options);
-				free(this_service);
-				this_service=next_service;
-			        }
+		/* free memory for contact groups */
+		this_contactgroupsmember=this_service->contact_groups;
+		while(this_contactgroupsmember!=NULL){
+			next_contactgroupsmember=this_contactgroupsmember->next;
+			free(this_contactgroupsmember->group_name);
+			free(this_contactgroupsmember);
+			this_contactgroupsmember=next_contactgroupsmember;
 		        }
 
-		/* reset the service pointer */
-		free(service_list);
-		service_list=NULL;
-	        }
+		next_service=this_service->next;
+		free(this_service->host_name);
+		free(this_service->description);
+		free(this_service->service_check_command);
+#ifdef NSCORE
+		free(this_service->plugin_output);
+		free(this_service->perf_data);
+#endif
+		free(this_service->notification_period);
+		free(this_service->check_period);
+		free(this_service->event_handler);
+		free(this_service->failure_prediction_options);
+		free(this_service);
+		this_service=next_service;
+		}
+
+	/* reset the service pointer */
+	service_list=NULL;
 
 #ifdef DEBUG1
 	printf("\tservice_list freed\n");
@@ -4288,6 +4207,22 @@ int free_object_data(void){
 
 #ifdef DEBUG1
 	printf("\tserviceescalation_list freed\n");
+#endif
+
+	/* free memory for the hostgroup escalation list */
+	this_hostgroupescalation=hostgroupescalation_list;
+	while(this_hostgroupescalation!=NULL){
+		next_hostgroupescalation=this_hostgroupescalation->next;
+		free(this_hostgroupescalation->group_name);
+		free(this_hostgroupescalation);
+		this_hostgroupescalation=next_hostgroupescalation;
+	        }
+
+	/* reset the hostgroup escalation list */
+	hostgroupescalation_list=NULL;
+
+#ifdef DEBUG1
+	printf("\thostgroupescalation_list freed\n");
 #endif
 
 	/* free memory for the service dependency list */
