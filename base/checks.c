@@ -2,8 +2,8 @@
  *
  * CHECKS.C - Service and host check functions for Nagios
  *
- * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   01-05-2003
+ * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
+ * Last Modified:   11-14-2002
  *
  * License:
  *
@@ -28,7 +28,6 @@
 #include "../common/statusdata.h"
 #include "../common/downtime.h"
 #include "nagios.h"
-#include "broker.h"
 #include "perfdata.h"
 
 #ifdef EMBEDDEDPERL
@@ -37,7 +36,7 @@
 #include <fcntl.h>
 #endif
 
-extern char     *temp_file;
+extern char     temp_file[MAX_FILENAME_LENGTH];
 
 extern int      interval_length;
 
@@ -61,29 +60,21 @@ extern int      currently_running_service_checks;
 extern int      non_parallelized_check_running;
 
 extern int      accept_passive_service_checks;
-extern int      execute_host_checks;
 extern int      obsess_over_services;
 
 extern int      check_service_freshness;
 
 extern time_t   program_start;
 
-extern int      max_embedded_perl_calls;
-
 extern timed_event       *event_list_low;
 
+extern service           *service_list;
+extern host              *host_list;
 extern servicedependency *servicedependency_list;
 extern hostdependency    *hostdependency_list;
 
 extern service_message svc_msg;
 
-extern pthread_t       worker_threads[TOTAL_WORKER_THREADS];
-extern circular_buffer service_result_buffer;
-
-#ifdef EMBEDDEDPERL
-extern int      use_embedded_perl;
-extern int      embedded_perl_calls;
-#endif
 
 
 /******************************************************************/
@@ -97,7 +88,6 @@ void run_service_check(service *svc){
 	char plugin_output[MAX_PLUGINOUTPUT_LENGTH];
 	char temp_buffer[MAX_INPUT_BUFFER];
 	int check_service=TRUE;
-	struct timeb start_time,end_time;
 	time_t current_time;
 	time_t preferred_time=0L;
 	time_t next_valid_time;
@@ -165,7 +155,7 @@ void run_service_check(service *svc){
 		svc->check_options-=CHECK_OPTION_FORCE_EXECUTION;
 
 	/* find the host associated with this service */
-	temp_host=find_host(svc->host_name);
+	temp_host=find_host(svc->host_name,NULL);
 
 	/* don't check the service if we couldn't find the associated host */
 	if(temp_host==NULL)
@@ -210,11 +200,6 @@ void run_service_check(service *svc){
 	printf("\tChecking service '%s' on host '%s'...\n",svc->description,svc->host_name);
 #endif
 
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	broker_service_check(NEBTYPE_SERVICECHECK_INITIATE,NEBFLAG_NONE,NEBATTR_NONE,svc,NULL);
-#endif
-
 	/* increment number of parallel service checks currently out there... */
 	currently_running_service_checks++;
 
@@ -238,17 +223,14 @@ void run_service_check(service *svc){
 	process_macros(raw_command,processed_command,sizeof(processed_command),0);
 	strip(processed_command);
 
-	/* get the command start time */
-	ftime(&start_time);
-
 	/* save service info */
 	strncpy(svc_msg.host_name,svc->host_name,sizeof(svc_msg.host_name)-1);
 	svc_msg.host_name[sizeof(svc_msg.host_name)-1]='\x0';
 	strncpy(svc_msg.description,svc->description,sizeof(svc_msg.description)-1);
 	svc_msg.description[sizeof(svc_msg.description)-1]='\x0';
 	svc_msg.parallelized=svc->parallelize;
-	svc_msg.start_time=start_time;
-	svc_msg.finish_time=start_time;
+	svc_msg.check_time=current_time;
+	svc_msg.finish_time=current_time;
 
 #ifdef EMBEDDEDPERL
 	strncpy(fname,processed_command,strcspn(processed_command," "));
@@ -263,11 +245,11 @@ void run_service_check(service *svc){
 		fclose(fp);
 	        }
 
-	isperl=FALSE;
+	isperl=0;
 
 	if(strstr(raw_command,"/bin/perl")!=NULL){
 
-		isperl = TRUE;
+		isperl = 1;
 		args[0] = fname;
 		args[2] = tmpfname;
 
@@ -276,15 +258,8 @@ void run_service_check(service *svc){
 		else
 			args[3]=processed_command+strlen(fname)+1;
 
-		/* reinialize embedded perl if necessary */
-		if(use_embedded_perl==TRUE && max_embedded_perl_calls>0 && embedded_perl_calls>max_embedded_perl_calls)
-			reinit_embedded_perl();
-
-		embedded_perl_calls++;
-
 		/* call our perl interpreter to compile and optionally cache the command */
-		if(use_embedded_perl==TRUE)
-			perl_call_argv("Embed::Persistent::eval_file", G_DISCARD | G_EVAL, args);
+		perl_call_argv("Embed::Persistent::eval_file", G_DISCARD | G_EVAL, args);
 	        }
 #endif
 
@@ -329,7 +304,7 @@ void run_service_check(service *svc){
 
 			/******** BEGIN EMBEDDED PERL INTERPRETER EXECUTION ********/
 #ifdef EMBEDDEDPERL
-			if(isperl==TRUE && use_embedded_perl==TRUE){
+			if(isperl){
 
 				/* generate a temporary filename to which stdout can be redirected. */
 				snprintf(tmpfname,sizeof(tmpfname)-1,"/tmp/embeddedXXXXXX");
@@ -382,28 +357,31 @@ void run_service_check(service *svc){
 				/* reset the alarm */
 				alarm(0);
 
-				/* get the check finish time */
-				ftime(&end_time);
-
-				/* record check result info */
-				strncpy(svc_msg.output,plugin_output,sizeof(svc_msg.output)-1);
-				svc_msg.output[sizeof(svc_msg.output)-1]='\x0';
-				svc_msg.return_code=pclose_result;
-				svc_msg.exited_ok=TRUE;
-				svc_msg.check_type=SERVICE_CHECK_ACTIVE;
-				svc_msg.finish_time=end_time;
-
 				/* test for execution error */
 				if(pclose_result==-2){
-					pclose_result=STATE_UNKNOWN;
 					strncpy(svc_msg.output,"(Error returned by call to perl script)",sizeof(svc_msg.output)-1);
 					svc_msg.output[sizeof(svc_msg.output)-1]='\x0';
 					svc_msg.return_code=STATE_CRITICAL;
 					svc_msg.exited_ok=FALSE;
+					svc_msg.finish_time=time(NULL);
+					write_svc_message(&svc_msg);
+
+					/* close write end of IPC pipe */
+					close(ipc_pipe[1]);
+
+					_exit(STATE_UNKNOWN);
 			 	        }
 
-				/* write check results to message queue */
-				write_svc_message(&svc_msg);
+				/* else write plugin check results to message queue */
+				else{
+					strncpy(svc_msg.output,plugin_output,sizeof(svc_msg.output)-1);
+					svc_msg.output[sizeof(svc_msg.output)-1]='\x0';
+					svc_msg.return_code=pclose_result;
+					svc_msg.exited_ok=TRUE;
+					svc_msg.check_type=SERVICE_CHECK_ACTIVE;
+					svc_msg.finish_time=time(NULL);
+					write_svc_message(&svc_msg);
+				        }
 
 				/* close write end of IPC pipe */
 				close(ipc_pipe[1]);
@@ -435,28 +413,31 @@ void run_service_check(service *svc){
 			/* reset the alarm */
 			alarm(0);
 
-			/* get the check finish time */
-			ftime(&end_time);
-
-			/* record check result info */
-			strncpy(svc_msg.output,plugin_output,sizeof(svc_msg.output)-1);
-			svc_msg.output[sizeof(svc_msg.output)-1]='\x0';
-			svc_msg.return_code=pclose_result;
-			svc_msg.exited_ok=TRUE;
-			svc_msg.check_type=SERVICE_CHECK_ACTIVE;
-			svc_msg.finish_time=end_time;
-
 			/* test for execution error */
 			if(pclose_result==-1){
-				pclose_result=STATE_UNKNOWN;
 				strncpy(svc_msg.output,"(Error returned by call to pclose() function)",sizeof(svc_msg.output)-1);
 				svc_msg.output[sizeof(svc_msg.output)-1]='\x0';
 				svc_msg.return_code=STATE_CRITICAL;
 				svc_msg.exited_ok=FALSE;
+				svc_msg.finish_time=time(NULL);
+				write_svc_message(&svc_msg);
+
+				/* close write end of IPC pipe */
+				close(ipc_pipe[1]);
+
+				_exit(STATE_UNKNOWN);
 			        }
 
-			/* write check result to message queue */
-			write_svc_message(&svc_msg);
+			/* else write plugin check results to message queue */
+			else{
+				strncpy(svc_msg.output,plugin_output,sizeof(svc_msg.output)-1);
+				svc_msg.output[sizeof(svc_msg.output)-1]='\x0';
+				svc_msg.return_code=(int)WEXITSTATUS(pclose_result);
+				svc_msg.exited_ok=TRUE;
+				svc_msg.check_type=SERVICE_CHECK_ACTIVE;
+				svc_msg.finish_time=time(NULL);
+				write_svc_message(&svc_msg);
+			        }
 
 			/* close write end of IPC pipe */
 			close(ipc_pipe[1]);
@@ -579,7 +560,7 @@ void reap_service_checks(void){
 			queued_svc_msg.return_code=STATE_UNKNOWN;
 
 		/* find the service */
-		temp_service=find_service(queued_svc_msg.host_name,queued_svc_msg.description);
+		temp_service=find_service(queued_svc_msg.host_name,queued_svc_msg.description,NULL);
 		if(temp_service==NULL){
 
 			snprintf(temp_buffer,sizeof(temp_buffer),"Warning:  Message queue contained results for service '%s' on host '%s'.  The service could not be found!\n",queued_svc_msg.description,queued_svc_msg.host_name);
@@ -590,10 +571,10 @@ void reap_service_checks(void){
 		        }
 
 		/* update the execution time for this check */
-		if(queued_svc_msg.start_time.time>current_time || queued_svc_msg.finish_time.time>current_time || (queued_svc_msg.finish_time.time<queued_svc_msg.start_time.time))
-			temp_service->execution_time=0.0;
+		if(queued_svc_msg.check_time>current_time || queued_svc_msg.finish_time>current_time || (queued_svc_msg.finish_time<queued_svc_msg.check_time))
+			temp_service->execution_time=0;
 		else
-			temp_service->execution_time=(double)((double)(queued_svc_msg.finish_time.time-queued_svc_msg.start_time.time)+(double)((queued_svc_msg.finish_time.millitm-queued_svc_msg.start_time.millitm)/1000.0));
+			temp_service->execution_time=(int)(queued_svc_msg.finish_time-queued_svc_msg.check_time);
 
 		/* clear the freshening flag (it would have been set if this service was determined to be stale) */
 		temp_service->is_being_freshened=FALSE;
@@ -624,7 +605,7 @@ void reap_service_checks(void){
 			temp_service->is_executing=FALSE;
 
 		/* get the last check time */
-		temp_service->last_check=queued_svc_msg.start_time.time;
+		temp_service->last_check=queued_svc_msg.check_time;
 
 		/* was this check passive or active? */
 		temp_service->check_type=(queued_svc_msg.check_type==SERVICE_CHECK_ACTIVE)?SERVICE_CHECK_ACTIVE:SERVICE_CHECK_PASSIVE;
@@ -726,7 +707,7 @@ void reap_service_checks(void){
 		        }
 
 		/* get the host that this service runs on */
-		temp_host=find_host(temp_service->host_name);
+		temp_host=find_host(temp_service->host_name,NULL);
 
 		/* if the service check was okay... */
 		if(temp_service->current_state==STATE_OK){
@@ -801,8 +782,14 @@ void reap_service_checks(void){
 		/* reset last and next notification times and acknowledgement flag if necessary */
 		if(state_change==TRUE || hard_state_change==TRUE){
 
+			/* reset notification times */
 			temp_service->last_notification=(time_t)0;
 			temp_service->next_notification=(time_t)0;
+
+			/* reset notification supression option */
+			temp_service->no_more_notifications=FALSE;
+
+			/* reset acknowledgement flag */
 			temp_service->problem_has_been_acknowledged=FALSE;
 
 			/* do NOT reset current notification number!!! */
@@ -846,6 +833,9 @@ void reap_service_checks(void){
 				/* set the state type macro */
 				temp_service->state_type=HARD_STATE;
 
+				/* update service state times and last state change time */
+				update_service_state_times(temp_service);
+
 				/* log the service recovery */
 				log_service_event(temp_service,HARD_STATE);
 				state_was_logged=TRUE;
@@ -862,6 +852,9 @@ void reap_service_checks(void){
 
 				/* this is a soft recovery */
 				temp_service->state_type=SOFT_STATE;
+
+				/* update service state times and last state change time */
+				update_service_state_times(temp_service);
 
 				/* log the soft recovery */
 				log_service_event(temp_service,SOFT_STATE);
@@ -952,6 +945,10 @@ void reap_service_checks(void){
 				if(temp_service->last_hard_state!=temp_service->current_state)
 					hard_state_change=TRUE;
 
+				/* update service state times if necessary and last state change time */
+				if(hard_state_change==TRUE)
+					update_service_state_times(temp_service);
+
 				/* put service into a hard state without attempting check retries and don't send out notifications about it */
 				temp_service->host_problem_at_last_check=TRUE;
 				temp_service->state_type=HARD_STATE;
@@ -1017,6 +1014,10 @@ void reap_service_checks(void){
 					/* this is a soft state */
 					temp_service->state_type=SOFT_STATE;
 
+				        /* update service state times if necessary and last state change time */
+					if(state_change==TRUE)
+						update_service_state_times(temp_service);
+
 					/* log the service check retry */
 					log_service_event(temp_service,SOFT_STATE);
 					state_was_logged=TRUE;
@@ -1049,6 +1050,9 @@ void reap_service_checks(void){
 
 				/* if we've hard a hard state change... */
 				if(hard_state_change==TRUE){
+
+					/* update service state times and last state change time */
+					update_service_state_times(temp_service);
 
 					/* log the service problem (even if host is not up, which is new in 0.0.5) */
 					log_service_event(temp_service,HARD_STATE);
@@ -1119,11 +1123,6 @@ void reap_service_checks(void){
 				log_service_event(temp_service,HARD_STATE);
 		        }
 
-#ifdef USE_EVENT_BROKER
-		/* send data to event broker */
-		broker_service_check(NEBTYPE_SERVICECHECK_PROCESSED,NEBFLAG_NONE,(temp_service->check_type==SERVICE_CHECK_ACTIVE)?NEBATTR_SERVICECHECK_ACTIVE:NEBATTR_SERVICECHECK_PASSIVE,temp_service,NULL);
-#endif
-
 		/* set the checked flag */
 		temp_service->has_been_checked=TRUE;
 
@@ -1185,7 +1184,7 @@ int check_service_dependencies(service *svc,int dependency_type){
 		if(!strcmp(svc->host_name,temp_dependency->dependent_host_name) && !strcmp(svc->description,temp_dependency->dependent_service_description)){
 
 			/* find the service we depend on... */
-			temp_service=find_service(temp_dependency->host_name,temp_dependency->service_description);
+			temp_service=find_service(temp_dependency->host_name,temp_dependency->service_description,NULL);
 			if(temp_service==NULL)
 				continue;
 
@@ -1236,7 +1235,7 @@ int check_host_dependencies(host *hst,int dependency_type){
 		if(!strcmp(hst->name,temp_dependency->dependent_host_name)){
 
 			/* find the host we depend on... */
-			temp_host=find_host(temp_dependency->host_name);
+			temp_host=find_host(temp_dependency->host_name,NULL);
 			if(temp_host==NULL)
 				continue;
 
@@ -1274,8 +1273,7 @@ void check_for_orphaned_services(void){
 	time(&current_time);
 
 	/* check all services... */
-	move_first_service();
-	while(temp_service=get_next_service()){
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
 		/* skip services that are not currently executing */
 		if(temp_service->is_executing==FALSE)
@@ -1334,8 +1332,7 @@ void check_service_result_freshness(void){
 	time(&current_time);
 
 	/* check all services... */
-	move_first_service();
-	while(temp_service=get_next_service()){
+	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
 		/* skip services we shouldn't be checking for freshness */
 		if(temp_service->check_freshness==FALSE)
@@ -1373,7 +1370,7 @@ void check_service_result_freshness(void){
 		if(expiration_time<current_time){
 
 			/* log a warning */
-			snprintf(buffer,sizeof(buffer)-1,"Warning: The results of service '%s' on host '%s' are stale by %lu seconds (threshold=%d seconds).  I'm forcing an immediate check of the service.\n",temp_service->description,temp_service->host_name,(current_time-expiration_time),freshness_threshold);
+			snprintf(buffer,sizeof(buffer)-1,"Warning: The results of service '%s' on host '%s' are stale by %lu seconds (threshold=%lu seconds).  I'm forcing an immediate check of the service.\n",temp_service->description,temp_service->host_name,(current_time-expiration_time),freshness_threshold);
 			buffer[sizeof(buffer)-1]='\x0';
 			write_to_logs_and_console(buffer,NSLOG_RUNTIME_WARNING,TRUE);
 
@@ -1408,11 +1405,6 @@ int verify_route_to_host(host *hst){
 	printf("verify_route_to_host() start\n");
 #endif
 
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	broker_host_check(NEBTYPE_HOSTCHECK_INITIATE,NEBFLAG_NONE,NEBATTR_HOSTCHECK_ACTIVE,hst,hst->status,0.0,NULL);
-#endif
-
 	/* check route to the host (propagate problems and recoveries both up and down the tree) */
 	result=check_host(hst,PROPAGATE_TO_PARENT_HOSTS | PROPAGATE_TO_CHILD_HOSTS);
 
@@ -1437,7 +1429,6 @@ int check_host(host *hst,int propagation_options){
 	int route_blocked=TRUE;
 	int old_state=HOST_UP;
 	char old_plugin_output[MAX_PLUGINOUTPUT_LENGTH]="";
-	void *host_cursor;
 
 #ifdef DEBUG0
 	printf("check_host() start\n");
@@ -1487,7 +1478,7 @@ int check_host(host *hst,int propagation_options){
 					for(temp_hostsmember=hst->parent_hosts;temp_hostsmember!=NULL;temp_hostsmember=temp_hostsmember->next){
 
 						/* find the parent host */
-						parent_host=find_host(temp_hostsmember->host_name);
+						parent_host=find_host(temp_hostsmember->host_name,NULL);
 
 						/* check the parent host (and propagate upwards) if its not up */
 						if(parent_host!=NULL && parent_host->status!=HOST_UP)
@@ -1499,13 +1490,12 @@ int check_host(host *hst,int propagation_options){
 				if(propagation_options & PROPAGATE_TO_CHILD_HOSTS){
 
 					/* check all child hosts... */
-					host_cursor = get_host_cursor();
-					while(child_host = get_next_host_cursor(host_cursor)) {
+					for(child_host=host_list;child_host!=NULL;child_host=child_host->next){
+
 						/* if this is a child of the host, check it if it is not marked as UP */
 						if(is_host_immediate_child_of_host(hst,child_host)==TRUE && child_host->status!=HOST_UP)
 						        check_host(child_host,PROPAGATE_TO_CHILD_HOSTS);
 					        }
-					free_host_cursor(host_cursor);
 				        }
 
 				break;
@@ -1524,7 +1514,7 @@ int check_host(host *hst,int propagation_options){
 			for(temp_hostsmember=hst->parent_hosts;temp_hostsmember!=NULL;temp_hostsmember=temp_hostsmember->next){
 
 				/* find the parent host */
-				parent_host=find_host(temp_hostsmember->host_name);
+				parent_host=find_host(temp_hostsmember->host_name,NULL);
 
 				/* if at least one parent host is up, this host is no longer unreachable - it is now down instead */
 				if(parent_host->status==HOST_UP){
@@ -1560,7 +1550,7 @@ int check_host(host *hst,int propagation_options){
 				for(temp_hostsmember=hst->parent_hosts;temp_hostsmember!=NULL;temp_hostsmember=temp_hostsmember->next){
 
 					/* find the parent host */
-					parent_host=find_host(temp_hostsmember->host_name);
+					parent_host=find_host(temp_hostsmember->host_name,NULL);
 
 					/* check the parent host, assume its up if we can't find it, use the parent host's "old" status if we shouldn't propagate */
 					if(parent_host==NULL)
@@ -1593,13 +1583,12 @@ int check_host(host *hst,int propagation_options){
 				if(propagation_options & PROPAGATE_TO_CHILD_HOSTS){
 
 					/* check all child hosts... */
-					host_cursor=get_host_cursor();
-					while(child_host=get_next_host_cursor(host_cursor)) {
+					for(child_host=host_list;child_host!=NULL;child_host=child_host->next){
+
 						/* if this is a child of the host, check it if it is not marked as UP */
 						if(is_host_immediate_child_of_host(hst,child_host)==TRUE && child_host->status!=HOST_UP)
 						        check_host(child_host,PROPAGATE_TO_CHILD_HOSTS);
 					        }
-					free_host_cursor(host_cursor);
 				        }
 			        }
 
@@ -1642,10 +1631,6 @@ int check_host(host *hst,int propagation_options){
 			log_host_event(hst,HOST_UNREACHABLE,HARD_STATE);
 	        }
 
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	broker_host_check(NEBTYPE_HOSTCHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_HOSTCHECK_ACTIVE,hst,return_result,0.0,NULL);
-#endif
 
 	/* check to see if the associated host is flapping */
 	check_for_host_flapping(hst);
@@ -1653,6 +1638,7 @@ int check_host(host *hst,int propagation_options){
 	/* check for external commands if we're doing so as often as possible */
 	if(command_check_interval==-1)
 		check_for_external_commands();
+
 
 #ifdef DEBUG3
 	printf("\tHost Check Result: Host '%s' is ",hst->name);
@@ -1683,9 +1669,9 @@ int run_host_check(host *hst){
 	char temp_buffer[MAX_INPUT_BUFFER];
 	command *temp_command;
 	time_t start_time;
+	time_t finish_time;
 	char *temp_ptr;
 	int early_timeout=FALSE;
-	double exectime;
 	char temp_plugin_output[MAX_PLUGINOUTPUT_LENGTH];
 		
 
@@ -1694,14 +1680,14 @@ int run_host_check(host *hst){
 #endif
 
 	/* if checks are disabled, just return the last host state */
-	if(execute_host_checks==FALSE || hst->checks_enabled==FALSE)
+	if(hst->checks_enabled==FALSE)
 		return hst->status;
 
 	/* if there is no host check command, just return with no error */
 	if(hst->host_check_command==NULL){
 
 #ifdef DEBUG3
-		printf("\tNo host check command specified, so no check will be done (host state assumed to be unchanged)!\n");
+		printf("\tNo host check command specified, so no check will be done (host assumed to be up)!\n");
 #endif
 
 		return HOST_UP;
@@ -1746,7 +1732,7 @@ int run_host_check(host *hst){
 	strcpy(hst->perf_data,"");
 
 	/* run the host check command */
-	result=my_system(processed_check_command,host_check_timeout,&early_timeout,&exectime,temp_plugin_output,MAX_PLUGINOUTPUT_LENGTH-1);
+	result=my_system(processed_check_command,host_check_timeout,&early_timeout,temp_plugin_output,MAX_PLUGINOUTPUT_LENGTH-1);
 
 	/* if the check timed out, report an error */
 	if(early_timeout==TRUE){
@@ -1761,7 +1747,8 @@ int run_host_check(host *hst){
 	        }
 
 	/* calculate total execution time */
-	hst->execution_time=exectime;
+	time(&finish_time);
+	hst->execution_time=(int)(finish_time-start_time);
 
 	/* check for empty plugin output */
 	if(!strcmp(temp_plugin_output,""))
@@ -1814,11 +1801,6 @@ int run_host_check(host *hst){
 		return_result=HOST_UP;
 	else
 		return_result=HOST_DOWN;
-
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	broker_host_check(NEBTYPE_HOSTCHECK_RAW,NEBFLAG_NONE,NEBATTR_HOSTCHECK_ACTIVE,hst,return_result,exectime,NULL);
-#endif
 
 #ifdef DEBUG3
 	printf("\tHost Check Result: Host '%s' is ",hst->name);

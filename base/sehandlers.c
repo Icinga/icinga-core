@@ -3,7 +3,7 @@
  * SEHANDLERS.C - Service and host event and state handlers for Nagios
  *
  * Copyright (c) 1999-2003 Ethan Galstad (nagios@nagios.org)
- * Last Modified:   01-01-2003
+ * Last Modified:   12-04-2003
  *
  * License:
  *
@@ -28,7 +28,6 @@
 #include "../common/statusdata.h"
 #include "../common/downtime.h"
 #include "nagios.h"
-#include "broker.h"
 
 
 extern int             enable_event_handlers;
@@ -40,7 +39,11 @@ extern int             log_host_retries;
 extern int             event_handler_timeout;
 extern int             ocsp_timeout;
 
-extern char            *macro_x[MACRO_X_COUNT];
+extern char            *macro_current_service_attempt;
+extern char            *macro_current_host_attempt;
+extern char            *macro_host_state;
+extern char	       *macro_service_state;
+extern char            *macro_state_type;
 
 extern char            *global_host_event_handler;
 extern char            *global_service_event_handler;
@@ -64,7 +67,6 @@ int obsessive_compulsive_service_check_processor(service *svc,int state_type){
 	command *temp_command;
 	host *temp_host;
 	int early_timeout=FALSE;
-	double exectime;
 
 #ifdef DEBUG0
 	printf("obsessive_compulsive_service_check_processor() start\n");
@@ -77,7 +79,7 @@ int obsessive_compulsive_service_check_processor(service *svc,int state_type){
 		return OK;
 
 	/* find the associated host */
-	temp_host=find_host(svc->host_name);
+	temp_host=find_host(svc->host_name,NULL);
 
 	/* update service macros */
 	clear_volatile_macros();
@@ -85,18 +87,18 @@ int obsessive_compulsive_service_check_processor(service *svc,int state_type){
 	grab_service_macros(svc);
 
 	/* grab the service state type macro */
-	if(macro_x[MACRO_STATETYPE]!=NULL)
-		free(macro_x[MACRO_STATETYPE]);
-	macro_x[MACRO_STATETYPE]=(char *)malloc(MAX_STATETYPE_LENGTH);
-	if(macro_x[MACRO_STATETYPE]!=NULL)
-		strcpy(macro_x[MACRO_STATETYPE],(state_type==HARD_STATE)?"HARD":"SOFT");
+	if(macro_state_type!=NULL)
+		free(macro_state_type);
+	macro_state_type=(char *)malloc(MAX_STATETYPE_LENGTH);
+	if(macro_state_type!=NULL)
+		strcpy(macro_state_type,(state_type==HARD_STATE)?"HARD":"SOFT");
 
 	/* grab the current service check number macro */
-	if(macro_x[MACRO_SERVICEATTEMPT]!=NULL)
-		free(macro_x[MACRO_SERVICEATTEMPT]);
-	macro_x[MACRO_SERVICEATTEMPT]=(char *)malloc(MAX_ATTEMPT_LENGTH);
-	if(macro_x[MACRO_SERVICEATTEMPT]!=NULL)
-		sprintf(macro_x[MACRO_SERVICEATTEMPT],"%d",svc->current_attempt);
+	if(macro_current_service_attempt!=NULL)
+		free(macro_current_service_attempt);
+	macro_current_service_attempt=(char *)malloc(MAX_ATTEMPT_LENGTH);
+	if(macro_current_service_attempt!=NULL)
+		sprintf(macro_current_service_attempt,"%d",svc->current_attempt);
 
 	/* find the service processor command */
 	temp_command=find_command(ocsp_command,NULL);
@@ -121,7 +123,7 @@ int obsessive_compulsive_service_check_processor(service *svc,int state_type){
 #endif
 
 	/* run the command */
-	my_system(processed_command_line,ocsp_timeout,&early_timeout,&exectime,NULL,0);
+	my_system(processed_command_line,ocsp_timeout,&early_timeout,NULL,0);
 
 	/* check to see if the command timed out */
 	if(early_timeout==TRUE){
@@ -148,6 +150,7 @@ int obsessive_compulsive_service_check_processor(service *svc,int state_type){
 
 /* handles changes in the state of a service */
 int handle_service_event(service *svc,int state_type){
+	command *event_command;
 	host *temp_host;
 
 #ifdef DEBUG0
@@ -161,7 +164,7 @@ int handle_service_event(service *svc,int state_type){
 		return OK;
 
 	/* find the host */
-	temp_host=find_host(svc->host_name);
+	temp_host=find_host(svc->host_name,NULL);
 
 	/* update service macros */
 	clear_volatile_macros();
@@ -169,25 +172,31 @@ int handle_service_event(service *svc,int state_type){
 	grab_service_macros(svc);
 
 	/* grab the service state type macro */
-	if(macro_x[MACRO_STATETYPE]!=NULL)
-		free(macro_x[MACRO_STATETYPE]);
-	macro_x[MACRO_STATETYPE]=(char *)malloc(MAX_STATETYPE_LENGTH);
-	if(macro_x[MACRO_STATETYPE]!=NULL)
-		strcpy(macro_x[MACRO_STATETYPE],(state_type==HARD_STATE)?"HARD":"SOFT");
+	if(macro_state_type!=NULL)
+		free(macro_state_type);
+	macro_state_type=(char *)malloc(MAX_STATETYPE_LENGTH);
+	if(macro_state_type!=NULL)
+		strcpy(macro_state_type,(state_type==HARD_STATE)?"HARD":"SOFT");
 
 	/* grab the current service check number macro */
-	if(macro_x[MACRO_SERVICEATTEMPT]!=NULL)
-		free(macro_x[MACRO_SERVICEATTEMPT]);
-	macro_x[MACRO_SERVICEATTEMPT]=(char *)malloc(MAX_ATTEMPT_LENGTH);
-	if(macro_x[MACRO_SERVICEATTEMPT]!=NULL)
-		sprintf(macro_x[MACRO_SERVICEATTEMPT],"%d",svc->current_attempt);
+	if(macro_current_service_attempt!=NULL)
+		free(macro_current_service_attempt);
+	macro_current_service_attempt=(char *)malloc(MAX_ATTEMPT_LENGTH);
+	if(macro_current_service_attempt!=NULL)
+		sprintf(macro_current_service_attempt,"%d",svc->current_attempt);
 
 	/* run the global service event handler */
 	run_global_service_event_handler(svc,state_type);
 
+	/* find the service event handler command if there is one */
+	if(svc->event_handler==NULL)
+		event_command=NULL;
+	else
+		event_command=find_command(svc->event_handler,NULL);
+
 	/* run the event handler command if there is one */
-	if(svc->event_handler!=NULL)
-		run_service_event_handler(svc,state_type);
+	if(event_command!=NULL)
+		run_service_event_handler(svc,event_command,state_type);
 
 	/* check for external commands - the event handler may have given us some directives... */
 	check_for_external_commands();
@@ -206,9 +215,8 @@ int run_global_service_event_handler(service *svc,int state_type){
 	char raw_command_line[MAX_INPUT_BUFFER];
 	char processed_command_line[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
+	command *temp_command;
 	int early_timeout=FALSE;
-	double exectime;
-	int attr=NEBATTR_NONE;
 
 #ifdef DEBUG0
 	printf("run_global_service_event_handler() start\n");
@@ -222,12 +230,16 @@ int run_global_service_event_handler(service *svc,int state_type){
 	if(global_service_event_handler==NULL)
 		return ERROR;
 
-	/* clear command macros */
-	clear_argv_macros();
+	/* find the event handler command */
+	temp_command=find_command(global_service_event_handler,NULL);
 
-	/* get the raw command line */
-	get_raw_command_line(global_service_event_handler,raw_command_line,sizeof(raw_command_line));
-	strip(raw_command_line);
+	/* if there is no valid command, exit */
+	if(temp_command==NULL)
+		return ERROR;
+
+	/* get the raw command line to execute */
+	strncpy(raw_command_line,temp_command->command_line,sizeof(raw_command_line));
+	raw_command_line[sizeof(raw_command_line)-1]='\x0';
 
 #ifdef DEBUG3
 	printf("\tRaw global service event handler command line: %s\n",raw_command_line);
@@ -241,26 +253,20 @@ int run_global_service_event_handler(service *svc,int state_type){
 #endif
 
 	if(log_event_handlers==TRUE){
-		snprintf(temp_buffer,sizeof(temp_buffer),"GLOBAL SERVICE EVENT HANDLER: %s;%s;%s;%s;%s;%s\n",svc->host_name,svc->description,macro_x[MACRO_SERVICESTATE],macro_x[MACRO_STATETYPE],macro_x[MACRO_SERVICEATTEMPT],global_service_event_handler);
+		snprintf(temp_buffer,sizeof(temp_buffer),"GLOBAL SERVICE EVENT HANDLER: %s;%s;%s;%s;%s;%s\n",svc->host_name,svc->description,macro_service_state,macro_state_type,macro_current_service_attempt,global_service_event_handler);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER,FALSE);
 	        }
 
 	/* run the command */
-	my_system(processed_command_line,event_handler_timeout,&early_timeout,&exectime,NULL,0);
+	my_system(processed_command_line,event_handler_timeout,&early_timeout,NULL,0);
 
 	/* check to see if the event handler timed out */
 	if(early_timeout==TRUE){
 		snprintf(temp_buffer,sizeof(temp_buffer),"Warning: Global service event handler command '%s' timed out after %d seconds\n",global_service_event_handler,event_handler_timeout);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER | NSLOG_RUNTIME_WARNING,TRUE);
-		attr+=NEBATTR_EARLY_COMMAND_TIMEOUT;
 	        }
-
-#ifdef USE_EVENT_BROKER
-	/* send event data to broker */
-	broker_event_handler(NEBTYPE_EVENTHANDLER_GLOBAL_SERVICE,NEBFLAG_NONE,attr,(void *)svc,svc->current_state,state_type,exectime,NULL);
-#endif
 
 #ifdef DEBUG0
 	printf("run_global_service_event_handler() end\n");
@@ -272,24 +278,19 @@ int run_global_service_event_handler(service *svc,int state_type){
 
 
 /* runs a service event handler command */
-int run_service_event_handler(service *svc,int state_type){
+int run_service_event_handler(service *svc,command *cmd,int state_type){
 	char raw_command_line[MAX_INPUT_BUFFER];
 	char processed_command_line[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
 	int early_timeout=FALSE;
-	double exectime;
-	int attr=NEBATTR_NONE;
 
 #ifdef DEBUG0
 	printf("run_service_event_handler() start\n");
 #endif
 
-	/* clear command macros */
-	clear_argv_macros();
-
-	/* get the raw command line */
-	get_raw_command_line(svc->event_handler,raw_command_line,sizeof(raw_command_line));
-	strip(raw_command_line);
+	/* get the raw command line to execute */
+	strncpy(raw_command_line,cmd->command_line,sizeof(raw_command_line));
+	raw_command_line[sizeof(raw_command_line)-1]='\x0';
 
 #ifdef DEBUG3
 	printf("\tRaw service event handler command line: %s\n",raw_command_line);
@@ -303,27 +304,20 @@ int run_service_event_handler(service *svc,int state_type){
 #endif
 
 	if(log_event_handlers==TRUE){
-		snprintf(temp_buffer,sizeof(temp_buffer),"SERVICE EVENT HANDLER: %s;%s;%s;%s;%s;%s\n",svc->host_name,svc->description,macro_x[MACRO_SERVICESTATE],macro_x[MACRO_STATETYPE],macro_x[MACRO_SERVICEATTEMPT],svc->event_handler);
+		snprintf(temp_buffer,sizeof(temp_buffer),"SERVICE EVENT HANDLER: %s;%s;%s;%s;%s;%s\n",svc->host_name,svc->description,macro_service_state,macro_state_type,macro_current_service_attempt,svc->event_handler);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER,FALSE);
 	        }
 
 	/* run the command */
-	my_system(processed_command_line,event_handler_timeout,&early_timeout,&exectime,NULL,0);
+	my_system(processed_command_line,event_handler_timeout,&early_timeout,NULL,0);
 
 	/* check to see if the event handler timed out */
 	if(early_timeout==TRUE){
 		snprintf(temp_buffer,sizeof(temp_buffer),"Warning: Service event handler command '%s' timed out after %d seconds\n",svc->event_handler,event_handler_timeout);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER | NSLOG_RUNTIME_WARNING,TRUE);
-		attr+=NEBATTR_EARLY_COMMAND_TIMEOUT;
 	        }
-
-#ifdef USE_EVENT_BROKER
-	/* send event data to broker */
-	broker_event_handler(NEBTYPE_EVENTHANDLER_SERVICE,NEBFLAG_NONE,attr,(void *)svc,svc->current_state,state_type,exectime,NULL);
-#endif
-
 #ifdef DEBUG0
 	printf("run_service_event_handler() end\n");
 #endif
@@ -341,6 +335,7 @@ int run_service_event_handler(service *svc,int state_type){
 
 /* handles a change in the status of a host */
 int handle_host_event(host *hst,int state,int state_type){
+	command *event_command;
 
 #ifdef DEBUG0
 	printf("handle_host_event() start\n");
@@ -353,35 +348,40 @@ int handle_host_event(host *hst,int state,int state_type){
 		return OK;
 
 	/* update host macros */
-	clear_volatile_macros();
 	grab_host_macros(hst);
 
 	/* grab the host state type macro */
-	if(macro_x[MACRO_STATETYPE]!=NULL)
-		free(macro_x[MACRO_STATETYPE]);
-	macro_x[MACRO_STATETYPE]=(char *)malloc(MAX_STATETYPE_LENGTH);
-	if(macro_x[MACRO_STATETYPE]!=NULL)
-		strcpy(macro_x[MACRO_STATETYPE],(state_type==HARD_STATE)?"HARD":"SOFT");
+	if(macro_state_type!=NULL)
+		free(macro_state_type);
+	macro_state_type=(char *)malloc(MAX_STATETYPE_LENGTH);
+	if(macro_state_type!=NULL)
+		strcpy(macro_state_type,(state_type==HARD_STATE)?"HARD":"SOFT");
 
 	/* make sure the host state macro is correct */
-	if(macro_x[MACRO_HOSTSTATE]!=NULL)
-		free(macro_x[MACRO_HOSTSTATE]);
-	macro_x[MACRO_HOSTSTATE]=(char *)malloc(MAX_STATE_LENGTH);
-	if(macro_x[MACRO_HOSTSTATE]!=NULL){
+	if(macro_host_state!=NULL)
+		free(macro_host_state);
+	macro_host_state=(char *)malloc(MAX_STATE_LENGTH);
+	if(macro_host_state!=NULL){
 		if(state==HOST_DOWN)
-			strcpy(macro_x[MACRO_HOSTSTATE],"DOWN");
+			strcpy(macro_host_state,"DOWN");
 		else if(state==HOST_UNREACHABLE)
-			strcpy(macro_x[MACRO_HOSTSTATE],"UNREACHABLE");
+			strcpy(macro_host_state,"UNREACHABLE");
 		else
-			strcpy(macro_x[MACRO_HOSTSTATE],"UP");
+			strcpy(macro_host_state,"UP");
 	        }
 
 	/* run the global host event handler */
 	run_global_host_event_handler(hst,state,state_type);
 
+	/* find the host event handler command */
+	if(hst->event_handler==NULL)
+		event_command=NULL;
+	else
+		event_command=find_command(hst->event_handler,NULL);
+
 	/* run the event handler command if there is one */
-	if(hst->event_handler!=NULL)
-		run_host_event_handler(hst,state,state_type);
+	if(event_command!=NULL)
+		run_host_event_handler(hst,event_command,state,state_type);
 
 	/* check for external commands - the event handler may have given us some directives... */
 	check_for_external_commands();
@@ -399,9 +399,8 @@ int run_global_host_event_handler(host *hst,int state,int state_type){
 	char raw_command_line[MAX_INPUT_BUFFER];
 	char processed_command_line[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
+	command *temp_command;
 	int early_timeout=FALSE;
-	double exectime;
-	int attr=NEBATTR_NONE;
 
 #ifdef DEBUG0
 	printf("run_global_host_event_handler() start\n");
@@ -415,12 +414,16 @@ int run_global_host_event_handler(host *hst,int state,int state_type){
 	if(global_host_event_handler==NULL)
 		return ERROR;
 
-	/* clear command macros */
-	clear_argv_macros();
+	/* find the event handler command */
+	temp_command=find_command(global_host_event_handler,NULL);
 
-	/* get the raw command line */
-	get_raw_command_line(global_host_event_handler,raw_command_line,sizeof(raw_command_line));
-	strip(raw_command_line);
+	/* if there is no valid event handler command, exit */
+	if(temp_command==NULL)
+		return ERROR;
+
+	/* get the raw command line to execute */
+	strncpy(raw_command_line,temp_command->command_line,sizeof(raw_command_line)-1);
+	raw_command_line[sizeof(raw_command_line)-1]='\x0';
 
 #ifdef DEBUG3
 	printf("\tRaw global host event handler command line: %s\n",raw_command_line);
@@ -434,26 +437,20 @@ int run_global_host_event_handler(host *hst,int state,int state_type){
 #endif
 
 	if(log_event_handlers==TRUE){
-		snprintf(temp_buffer,sizeof(temp_buffer),"GLOBAL HOST EVENT HANDLER: %s;%s;%s;%s;%s\n",hst->name,macro_x[MACRO_HOSTSTATE],macro_x[MACRO_STATETYPE],macro_x[MACRO_HOSTATTEMPT],global_host_event_handler);
+		snprintf(temp_buffer,sizeof(temp_buffer),"GLOBAL HOST EVENT HANDLER: %s;%s;%s;%s;%s\n",hst->name,macro_host_state,macro_state_type,macro_current_host_attempt,global_host_event_handler);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER,FALSE);
 	        }
 
 	/* run the command */
-	my_system(processed_command_line,event_handler_timeout,&early_timeout,&exectime,NULL,0);
+	my_system(processed_command_line,event_handler_timeout,&early_timeout,NULL,0);
 
 	/* check for a timeout in the execution of the event handler command */
 	if(early_timeout==TRUE){
 		snprintf(temp_buffer,sizeof(temp_buffer),"Warning: Global host event handler command '%s' timed out after %d seconds\n",global_host_event_handler,event_handler_timeout);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER | NSLOG_RUNTIME_WARNING,TRUE);
-		attr+=NEBATTR_EARLY_COMMAND_TIMEOUT;
 	        }
-
-#ifdef USE_EVENT_BROKER
-	/* send event data to broker */
-	broker_event_handler(NEBTYPE_EVENTHANDLER_GLOBAL_HOST,NEBFLAG_NONE,attr,(void *)hst,state,state_type,exectime,NULL);
-#endif
 
 #ifdef DEBUG0
 	printf("run_global_host_event_handler() end\n");
@@ -464,24 +461,19 @@ int run_global_host_event_handler(host *hst,int state,int state_type){
 
 
 /* runs a host event handler command */
-int run_host_event_handler(host *hst,int state,int state_type){
+int run_host_event_handler(host *hst,command *cmd,int state,int state_type){
 	char raw_command_line[MAX_INPUT_BUFFER];
 	char processed_command_line[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
 	int early_timeout=FALSE;
-	double exectime;
-	int attr=NEBATTR_NONE;
 
 #ifdef DEBUG0
 	printf("run_host_event_handler() start\n");
 #endif
 
-	/* clear command macros */
-	clear_argv_macros();
-
-	/* get the raw command line */
-	get_raw_command_line(hst->event_handler,raw_command_line,sizeof(raw_command_line));
-	strip(raw_command_line);
+	/* get the raw command line to execute */
+	strncpy(raw_command_line,cmd->command_line,sizeof(raw_command_line)-1);
+	raw_command_line[sizeof(raw_command_line)-1]='\x0';
 
 #ifdef DEBUG3
 	printf("\tRaw host event handler command line: %s\n",raw_command_line);
@@ -495,32 +487,79 @@ int run_host_event_handler(host *hst,int state,int state_type){
 #endif
 
 	if(log_event_handlers==TRUE){
-		snprintf(temp_buffer,sizeof(temp_buffer),"HOST EVENT HANDLER: %s;%s;%s;%s;%s\n",hst->name,macro_x[MACRO_HOSTSTATE],macro_x[MACRO_STATETYPE],macro_x[MACRO_HOSTATTEMPT],hst->event_handler);
+		snprintf(temp_buffer,sizeof(temp_buffer),"HOST EVENT HANDLER: %s;%s;%s;%s;%s\n",hst->name,macro_host_state,macro_state_type,macro_current_host_attempt,hst->event_handler);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER,FALSE);
 	        }
 
 	/* run the command */
-	my_system(processed_command_line,event_handler_timeout,&early_timeout,&exectime,NULL,0);
+	my_system(processed_command_line,event_handler_timeout,&early_timeout,NULL,0);
 
 	/* check to see if the event handler timed out */
 	if(early_timeout==TRUE){
 		snprintf(temp_buffer,sizeof(temp_buffer),"Warning: Host event handler command '%s' timed out after %d seconds\n",hst->event_handler,event_handler_timeout);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		write_to_logs_and_console(temp_buffer,NSLOG_EVENT_HANDLER | NSLOG_RUNTIME_WARNING,TRUE);
-		attr+=NEBATTR_EARLY_COMMAND_TIMEOUT;
 	        }
-
-#ifdef USE_EVENT_BROKER
-	/* send event data to broker */
-	broker_event_handler(NEBTYPE_EVENTHANDLER_HOST,NEBFLAG_NONE,attr,(void *)hst,state,state_type,exectime,NULL);
-#endif
-
 #ifdef DEBUG0
 	printf("run_host_event_handler() end\n");
 #endif
 
 	return OK;
+        }
+
+
+
+
+/******************************************************************/
+/**************** SERVICE STATE HANDLER FUNCTIONS *****************/
+/******************************************************************/
+
+
+/* updates service state times */
+void update_service_state_times(service *svc){
+	unsigned long time_difference;
+	time_t current_time;
+
+#ifdef DEBUG0
+	printf("update_service_state_times() start\n");
+#endif
+
+	/* calculate the time since the last service state change */
+	time(&current_time);
+
+	/* if this is NOT the first time we've had a service check/state change.. */
+	if(svc->has_been_checked==TRUE){
+
+		if(svc->last_state_change<program_start)
+			time_difference=(unsigned long)current_time-program_start;
+		else
+			time_difference=(unsigned long)current_time-svc->last_state_change;
+
+		/* use last hard state... */
+		if(svc->last_hard_state==STATE_UNKNOWN)
+			svc->time_unknown+=time_difference;
+		else if(svc->last_hard_state==STATE_WARNING)
+			svc->time_warning+=time_difference;
+		else if(svc->last_hard_state==STATE_CRITICAL)
+			svc->time_critical+=time_difference;
+		else
+			svc->time_ok+=time_difference;
+	        }
+
+
+	/* update the last service state change time */
+	svc->last_state_change=current_time;
+
+	/* update status log with service information */
+	update_service_status(svc,FALSE);
+
+
+#ifdef DEBUG0
+	printf("update_service_state_times() end\n");
+#endif
+	
+	return;
         }
 
 
@@ -554,6 +593,9 @@ int handle_host_state(host *hst,int state,int state_type){
 		hst->last_host_notification=(time_t)0;
 		hst->next_host_notification=(time_t)0;
 
+		/* reset notification supression option */
+		hst->no_more_notifications=FALSE;
+
 		/* set the state flags in case we "float" between down and unreachable states before a recovery */
 		if(state_type==HARD_STATE){
 			if(state==HOST_DOWN)
@@ -561,6 +603,10 @@ int handle_host_state(host *hst,int state,int state_type){
 			else if(state==HOST_UNREACHABLE)
 				hst->has_been_unreachable=TRUE;
 		        }
+
+		/* update the host state times */
+		if(state_type==HARD_STATE)
+			update_host_state_times(hst);
 
 		/* the host just recovered, so reset the current host attempt number */
 		if(state==HOST_UP)
@@ -620,4 +666,48 @@ int handle_host_state(host *hst,int state,int state_type){
 	return OK;
         }
 
+
+
+
+/* updates host state times */
+void update_host_state_times(host *hst){
+	unsigned long time_difference;
+	time_t current_time;
+
+#ifdef DEBUG0
+	printf("update_host_state_times() start\n");
+#endif
+
+	/* get the current time */
+	time(&current_time);
+
+	/* if this is NOT the first time we've had a host check/state change... */
+	if(hst->has_been_checked==TRUE){
+
+		if(hst->last_state_change<program_start)
+			time_difference=(unsigned long)current_time-program_start;
+		else
+			time_difference=(unsigned long)current_time-hst->last_state_change;
+
+		if(hst->status==HOST_DOWN)
+			hst->time_down+=time_difference;
+		else if(hst->status==HOST_UNREACHABLE)
+			hst->time_unreachable+=time_difference;
+		else
+			hst->time_up+=time_difference;
+	        }
+
+	/* update the last host state change time */
+	hst->last_state_change=current_time;
+
+	/* update status log with host information */
+	update_host_status(hst,FALSE);
+
+
+#ifdef DEBUG0
+	printf("update_host_state_times() end\n");
+#endif
+	
+	return;
+        }
 
