@@ -3,7 +3,7 @@
  * TRENDS.C -  Nagios State Trends CGI
  *
  * Copyright (c) 1999-2002 Ethan Galstad (nagios@nagios.org)
- * Last Modified: 10-26-2002
+ * Last Modified: 11-22-2002
  *
  * License:
  * 
@@ -45,6 +45,9 @@ extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
 extern char physical_images_path[MAX_FILENAME_LENGTH];
+
+extern host *host_list;
+extern service *service_list;
 
 extern int     log_rotation_method;
 
@@ -253,18 +256,17 @@ int main(int argc, char **argv){
 	time_t t3;
 	time_t current_time;
 	struct tm *t;
-	void *host_cursor;
 
 
 	/* reset internal CGI variables */
 	reset_cgi_vars();
 	
 	/* read the CGI configuration file */
-	result=read_cgi_config_file(get_cgi_config_location());
+	result=read_cgi_config_file(DEFAULT_CGI_CONFIG_FILE);
 	if(result==ERROR){
 		if(mode==CREATE_HTML){
 			document_header(FALSE);
-			cgi_config_file_error(get_cgi_config_location());
+			cgi_config_file_error(DEFAULT_CGI_CONFIG_FILE);
 			document_footer();
 		        }
 		return ERROR;
@@ -323,7 +325,7 @@ int main(int argc, char **argv){
                 }
 
 	/* read all status data */
-	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
+	result=read_all_status_data(DEFAULT_CGI_CONFIG_FILE,READ_ALL_STATUS_DATA);
 	if(result==ERROR){
 		if(mode==CREATE_HTML){
 			document_header(FALSE);
@@ -550,12 +552,12 @@ int main(int argc, char **argv){
 #ifndef DEBUG
 	/* check authorization... */
 	if(display_type==DISPLAY_HOST_TRENDS){
-		temp_host=find_host(host_name);
+		temp_host=find_host(host_name,NULL);
 		if(temp_host==NULL || is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			is_authorized=FALSE;
 	        }
 	else if(display_type==DISPLAY_SERVICE_TRENDS){
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,svc_description,NULL);
 		if(temp_service==NULL || is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			is_authorized=FALSE;
 	        }
@@ -790,15 +792,13 @@ int main(int argc, char **argv){
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
 			printf("<tr><td class='reportSelectSubTitle' valign=center>Host</td>\n");
-			printf("<td class='reportSelectItem' valing=center>\n");
+			printf("<td class='reportSelectItem' valign=center>\n");
 			printf("<select name='host'>\n");
 
-			host_cursor = get_host_cursor();
-			while(temp_host = get_next_host_cursor(host_cursor)) {
+			for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 				if(is_authorized_for_host(temp_host,&current_authdata)==TRUE)
 					printf("<option value='%s'>%s\n",temp_host->name,temp_host->name);
 			        }
-			free_host_cursor(host_cursor);
 
 			printf("</select>\n");
 			printf("</td></tr>\n");
@@ -820,8 +820,7 @@ int main(int argc, char **argv){
 			printf("function gethostname(hostindex){\n");
 			printf("hostnames=[");
 
-			move_first_service();
-			while(temp_service=get_next_service()) {
+			for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 				if(is_authorized_for_service(temp_service,&current_authdata)==TRUE){
 					if(found==TRUE)
 						printf(",");
@@ -853,8 +852,7 @@ int main(int argc, char **argv){
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='service' onFocus='document.serviceform.host.value=gethostname(this.selectedIndex);' onChange='document.serviceform.host.value=gethostname(this.selectedIndex);'>\n");
 
-			move_first_service();
-			while(temp_service=get_next_service()) {
+			for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 				if(is_authorized_for_service(temp_service,&current_authdata)==TRUE)
 					printf("<option value='%s'>%s;%s\n",temp_service->description,temp_service->host_name,temp_service->description);
 		                }
