@@ -3,3 +3,5 @@ subst
 pkginfo
 Prototype
 nagios.SPARC.pkg.tar.gz
+autom4te.cache
+
