@@ -125,8 +125,8 @@ extern "C" {
 
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Nagios */
 
-#define DEFAULT_CHECK_FOR_UPDATES                               1       /* should we check for new Nagios releases? */
-#define DEFAULT_BARE_UPDATE_CHECK                               0       /* report current version and new installs */
+#define DEFAULT_CHECK_FOR_UPDATES                               0       /* should we check for new Nagios releases? */
+#define DEFAULT_BARE_UPDATE_CHECK                               1       /* report current version and new installs */
 #define MINIMUM_UPDATE_CHECK_INTERVAL                           60*60*22 /* 22 hours minimum between checks - please be kind to our servers! */
 #define BASE_UPDATE_CHECK_INTERVAL                              60*60*22 /* 22 hours base interval */
 #define UPDATE_CHECK_INTERVAL_WOBBLE                            60*60*4  /* 4 hour wobble on top of base interval */
