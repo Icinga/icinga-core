@@ -66,7 +66,7 @@ Nagios is licensed under the GNU General Public License and is provided AS IS wi
 
 <a href="http://www.nagios.org/" target="_blank"><img src="images/weblogo1.png" width="102" height="47" border="0" style="padding: 0 40px 0 40px;" title="Nagios.org"></a>
 
-<a href="http://sourceforge.net/projects/nagios"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=26589&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>
+<a href="http://sourceforge.net/projects/nagios"><img src="images/sflogo.png" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>
 </div>
 </div> 
 
