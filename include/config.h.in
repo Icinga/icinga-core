@@ -340,5 +340,11 @@
 # define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
 #endif
 
+/* Define to 1 if you have the <dbi/dbi.h> header file. */
+#undef HAVE_DBI_DBI_H
+#ifdef HAVE_DBI_DBI_H
+#include <dbi/dbi.h>
+#endif
+
 
 #endif

@@ -29,7 +29,7 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_TIME
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(arpa/inet.h ctype.h dirent.h errno.h fcntl.h getopt.h grp.h libgen.h limits.h math.h netdb.h netinet/in.h pthread.h pthreads.h pwd.h regex.h signal.h socket.h stdarg.h string.h strings.h sys/mman.h sys/types.h sys/time.h sys/resource.h sys/wait.h sys/socket.h sys/stat.h sys/timeb.h sys/un.h sys/ipc.h sys/msg.h sys/poll.h syslog.h uio.h unistd.h)
+AC_CHECK_HEADERS(arpa/inet.h ctype.h dirent.h errno.h fcntl.h getopt.h grp.h libgen.h limits.h math.h netdb.h netinet/in.h pthread.h pthreads.h pwd.h regex.h signal.h socket.h stdarg.h string.h strings.h sys/mman.h sys/types.h sys/time.h sys/resource.h sys/wait.h sys/socket.h sys/stat.h sys/timeb.h sys/un.h sys/ipc.h sys/msg.h sys/poll.h syslog.h uio.h unistd.h dbi/dbi.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -101,10 +101,19 @@ AC_SUBST(SNPRINTF_O)
 
 
 dnl Checks for library functions.
-dnl AC_CHECK_LIB(nsl,main,SOCKETLIBS="$SOCKETLIBS -lnsl")
-dnl AC_CHECK_LIB(socket,socket,SOCKETLIBS="$SOCKETLIBS -lsocket")
+AC_CHECK_LIB(nsl,main,SOCKETLIBS="$SOCKETLIBS -lnsl")
+AC_CHECK_LIB(socket,socket,SOCKETLIBS="$SOCKETLIBS -lsocket")
 AC_SUBST(SOCKETLIBS)
 AC_CHECK_FUNCS(initgroups setenv strdup strstr strtoul unsetenv)
+
+dnl Checks for libdbi
+AC_CHECK_LIB([dbi], [main],DBLIBS="$DBCFLAGS -ldbi" , [AC_MSG_ERROR([ERROR - We realy need a libdbi to link against])] )
+AC_SUBST(DBLIBS)
+
+dnl Check for getopt_long (Solaris)
+AC_CHECK_FUNCS([getopt_long],,AC_CHECK_LIB([iberty],[getopt_long],OTHERLIBS="$OTHERLIBS -liberty"))
+AC_SUBST(OTHERLIBS)
+
 
 AC_MSG_CHECKING(for type of socket size)
 AC_TRY_COMPILE([#include <stdlib.h>
@@ -763,7 +772,7 @@ AC_SUBST(INSTALLPERLSTUFF)
 AC_SUBST(USE_EVENTBROKER)
 
 AC_PATH_PROG(PERL,perl)
-AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile xdata/Makefile daemon-init)
+AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init module/idoutils/src/Makefile)
 
 
 perl subst include/locations.h

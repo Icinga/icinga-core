@@ -1,0 +1,44 @@
+###############################
+# Makefile for NDO
+#
+# Last Modified: 10-03-2007
+###############################
+
+
+# Source code directories
+SRC_BASE=./src/
+SRC_INCLUDE=./include/
+SRC_CONFIG=./config/
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+LOGDIR=@localstatedir@
+CFGDIR=@sysconfdir@
+BINDIR=@bindir@
+LIBEXECDIR=@libexecdir@
+CGIDIR=@sbindir@
+INSTALL=@INSTALL@
+
+all:
+	cd $(SRC_BASE) && $(MAKE)
+
+clean:
+	cd $(SRC_BASE) && $(MAKE) $@
+	rm -f core
+	rm -f *~ */*~ include/nagios-*/*~
+
+distclean: clean
+	cd $(SRC_BASE) && $(MAKE) $@
+	rm -f config.log config.status config.cache $(SRC_INCLUDE)/config.h
+	rm -f Makefile
+	rm -f init-script.suse subst
+	rm -f config/ndo2db.cfg-sample config/ndomod.cfg-sample config/nagios.cfg config/misccommands.cfg
+
+devclean: distclean
+
+install: 
+	cd $(SRC_BASE) && $(MAKE) $@
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndo2db.cfg-sample $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndomod.cfg-sample $(DESTDIR)$(CFGDIR)
+
