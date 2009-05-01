@@ -8622,6 +8622,10 @@ perl subst module/idoutils/config/icinga.cfg
 perl subst module/idoutils/config/ido2db.cfg-sample
 perl subst module/idoutils/config/idomod.cfg-sample
 
+perl subst module/idoutils/db/installdb
+perl subst module/idoutils/db/prepsql
+perl subst module/idoutils/db/upgradedb
+
 
 
 echo ""

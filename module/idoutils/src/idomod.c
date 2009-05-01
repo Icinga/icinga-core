@@ -1,11 +1,12 @@
 /*****************************************************************************
  *
- * NDOMOD.C - Nagios Data Output Event Broker Module
+ * IDOMOD.C - Icinga Data Output Event Broker Module
  *
  * Copyright (c) 2005-2007 Ethan Galstad
+ * Copyright (c) 2009 Hendrik Baecker
  *
  * First Written: 05-19-2005
- * Last Modified: 01-03-2009
+ * Last Modified: 05-01-2009
  *
  *****************************************************************************/
 
@@ -99,7 +100,7 @@ int nebmodule_init(int flags, char *args, void *handle){
 	ndomod_module_handle=handle;
 
 	/* log module info to the Nagios log file */
-	snprintf(temp_buffer,sizeof(temp_buffer)-1,"ndomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org)",NDOMOD_NAME,NDOMOD_VERSION,NDOMOD_DATE);
+	snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009 Hendrik Baecker (andurin@process-zero.de)",NDOMOD_NAME,NDOMOD_VERSION,NDOMOD_DATE);
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 
@@ -109,13 +110,13 @@ int nebmodule_init(int flags, char *args, void *handle){
 
 	/* process arguments */
 	if(ndomod_process_module_args(args)==NDO_ERROR){
-		ndomod_write_to_logs("ndomod: An error occurred while attempting to process module arguments.",NSLOG_INFO_MESSAGE);
+		ndomod_write_to_logs("idomod: An error occurred while attempting to process module arguments.",NSLOG_INFO_MESSAGE);
 		return -1;
 		}
 
 	/* do some initialization stuff... */
 	if(ndomod_init()==NDO_ERROR){
-		ndomod_write_to_logs("ndomod: An error occurred while attempting to initialize.",NSLOG_INFO_MESSAGE);
+		ndomod_write_to_logs("idomod: An error occurred while attempting to initialize.",NSLOG_INFO_MESSAGE);
 		return -1;
 		}
 
@@ -131,7 +132,7 @@ int nebmodule_deinit(int flags, int reason){
 	ndomod_deinit();
 
 	/* log a message to the Nagios log file */
-	snprintf(temp_buffer,sizeof(temp_buffer)-1,"ndomod: Shutdown complete.\n");
+	snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Shutdown complete.\n");
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
         ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 
@@ -150,7 +151,7 @@ int ndomod_check_nagios_object_version(void){
 
 	if(__nagios_object_structure_version!=CURRENT_OBJECT_STRUCTURE_VERSION){
 
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"ndomod: I've been compiled with support for revision %d of the internal Nagios object structures, but the Nagios daemon is currently using revision %d.  I'm going to unload so I don't cause any problems...\n",CURRENT_OBJECT_STRUCTURE_VERSION,__nagios_object_structure_version);
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: I've been compiled with support for revision %d of the internal Icinga object structures, but the Icinga daemon is currently using revision %d.  I'm going to unload so I don't cause any problems...\n",CURRENT_OBJECT_STRUCTURE_VERSION,__nagios_object_structure_version);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 
@@ -194,7 +195,7 @@ int ndomod_init(void){
 		if(ndomod_sink_rotation_command==NULL){
 
 			/* log an error message to the Nagios log file */
-			snprintf(temp_buffer,sizeof(temp_buffer)-1,"ndomod: Warning - No file rotation command defined.\n");
+			snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Warning - No file rotation command defined.\n");
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 		        }
@@ -634,14 +635,14 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			if(result==NDO_OK){
 
 				if(reconnect==NDO_TRUE){
-					asprintf(&temp_buffer,"ndomod: Successfully reconnected to data sink!  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
+					asprintf(&temp_buffer,"idomod: Successfully reconnected to data sink!  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
 					ndomod_hello_sink(TRUE,TRUE);
 				        }
 				else{
 					if(sinkbuf.overflow==0L)
-						asprintf(&temp_buffer,"ndomod: Successfully connected to data sink.  %lu queued items to flush.",sinkbuf.items);
+						asprintf(&temp_buffer,"idomod: Successfully connected to data sink.  %lu queued items to flush.",sinkbuf.items);
 					else
-						asprintf(&temp_buffer,"ndomod: Successfully connected to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
+						asprintf(&temp_buffer,"idomod: Successfully connected to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
 					ndomod_hello_sink(FALSE,FALSE);
 				        }
 
@@ -658,11 +659,11 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 
 				if((unsigned long)((unsigned long)current_time-ndomod_sink_reconnect_warning_interval)>(unsigned long)ndomod_sink_last_reconnect_warning){
 					if(reconnect==NDO_TRUE)
-						asprintf(&temp_buffer,"ndomod: Still unable to reconnect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
+						asprintf(&temp_buffer,"idomod: Still unable to reconnect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
 					else if(ndomod_sink_connect_attempt==1)
-						asprintf(&temp_buffer,"ndomod: Could not open data sink!  I'll keep trying, but some output may get lost...");
+						asprintf(&temp_buffer,"idomod: Could not open data sink!  I'll keep trying, but some output may get lost...");
 					else
-						asprintf(&temp_buffer,"ndomod: Still unable to connect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
+						asprintf(&temp_buffer,"idomod: Still unable to connect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
 					ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 					free(temp_buffer);
 					temp_buffer=NULL;
@@ -706,7 +707,7 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 					/* close the sink */
 					ndomod_close_sink();
 
-					asprintf(&temp_buffer,"ndomod: Error writing to data sink!  Some output may get lost.  %lu queued items to flush.",sinkbuf.items);
+					asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost.  %lu queued items to flush.",sinkbuf.items);
 					ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 					free(temp_buffer);
 					temp_buffer=NULL;
@@ -728,7 +729,7 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			ndomod_sink_buffer_pop(&sinkbuf);
 		        }
 
-		asprintf(&temp_buffer,"ndomod: Successfully flushed %lu queued items to data sink.",items_to_flush);
+		asprintf(&temp_buffer,"idomod: Successfully flushed %lu queued items to data sink.",items_to_flush);
 		ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 		free(temp_buffer);
 		temp_buffer=NULL;
@@ -754,7 +755,7 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			ndomod_sink_last_reconnect_attempt=current_time;
 			ndomod_sink_last_reconnect_warning=current_time;
 
-			asprintf(&temp_buffer,"ndomod: Error writing to data sink!  Some output may get lost...");
+			asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost...");
 			ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 			free(temp_buffer);
 			temp_buffer=NULL;
@@ -1271,7 +1272,7 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,procdata->timestamp.tv_sec
 			 ,procdata->timestamp.tv_usec
 			 ,NDO_DATA_PROGRAMNAME
-			 ,"Nagios"
+			 ,"Icinga"
 			 ,NDO_DATA_PROGRAMVERSION
 			 ,get_program_version()
 			 ,NDO_DATA_PROGRAMDATE

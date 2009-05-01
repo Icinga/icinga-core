@@ -109,7 +109,7 @@ db_pass=idopassword
 
 
 ## TABLE TRIMMING OPTIONS
-# Several database tables containing Nagios event data can become quite large
+# Several database tables containing Icinga event data can become quite large
 # over time.  Most admins will want to trim these tables and keep only a
 # certain amount of data in them.  The options below are used to specify the
 # age (in MINUTES) that data should be allowd to remain in various tables

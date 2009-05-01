@@ -1,7 +1,7 @@
 ###############################
 # Makefile for IDOUtils 
 #
-# Last Modified: 05-10-2009
+# Last Modified: 05-01-2009
 ###############################
 
 
@@ -27,7 +27,7 @@ all:
 clean:
 	cd $(SRC_BASE) && $(MAKE) $@
 	rm -f core
-	rm -f *~ */*~ include/nagios-*/*~
+	rm -f *~ */*~
 
 distclean: clean
 	cd $(SRC_BASE) && $(MAKE) $@

@@ -807,6 +807,11 @@ perl subst module/idoutils/config/icinga.cfg
 perl subst module/idoutils/config/ido2db.cfg-sample
 perl subst module/idoutils/config/idomod.cfg-sample
 
+dnl Create IDOUtils Perl Scripts for DB Handling
+perl subst module/idoutils/db/installdb
+perl subst module/idoutils/db/prepsql
+perl subst module/idoutils/db/upgradedb
+
 
 
 dnl Review options

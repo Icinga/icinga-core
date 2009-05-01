@@ -93,7 +93,7 @@ int main(int argc, char **argv){
 		printf("Last Modified: %s\n",NDO2DB_DATE);
 		printf("License: GPL v2\n");
 		printf("\n");
-		printf("Stores Nagios event and configuration data to a database for later retrieval\n");
+		printf("Stores Icinga event and configuration data to a database for later retrieval\n");
 		printf("and processing.  Clients that are capable of sending data to the NDO2DB daemon\n");
 		printf("include the LOG2NDO utility and NDOMOD event broker module.\n");
 		printf("\n");
@@ -1625,7 +1625,7 @@ int ndo2db_end_input_data(ndo2db_idi *idi){
 		result=ndo2db_handle_logentry(idi);
 		break;
 
-	/* realtime Nagios data */
+	/* realtime Icinga data */
 	case NDO2DB_INPUT_DATA_PROCESSDATA:
 		result=ndo2db_handle_processdata(idi);
 		break;

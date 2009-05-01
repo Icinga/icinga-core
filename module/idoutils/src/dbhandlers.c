@@ -646,8 +646,8 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 		ndo2db_set_all_objects_as_inactive(idi);
 
 #ifdef BAD_IDEA
-		/* record a fake log entry to indicate that Nagios is starting - this normally occurs during the module's "blackout period" */
-		if(asprintf(&buf,"INSERT INTO %s SET instance_id='%lu', logentry_time=%s, logentry_type='%lu', logentry_data='Nagios %s starting... (PID=%lu)'"
+		/* record a fake log entry to indicate that Icinga is starting - this normally occurs during the module's "blackout period" */
+		if(asprintf(&buf,"INSERT INTO %s SET instance_id='%lu', logentry_time=%s, logentry_type='%lu', logentry_data='Icinga %s starting... (PID=%lu)'"
 						,ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES]
 						,idi->dbinfo.instance_id
 						,ts[0]
