@@ -1,8 +1,8 @@
 ###########################################################################
 #
-# RESOURCE.CFG - Sample Resource File for Nagios @VERSION@
+# RESOURCE.CFG - Sample Resource File for Icinga @VERSION@
 #
-# Last Modified: 09-10-2003
+# Last Modified: 05-01-2009
 #
 # You can define $USERx$ macros in this file, which can in turn be used
 # in command definitions in your host config file(s).  $USERx$ macros are
@@ -15,7 +15,7 @@
 # The CGIs will not attempt to read the contents of resource files, so
 # you can set restrictive permissions (600 or 660) on them.
 #
-# Nagios supports up to 32 $USERx$ macros ($USER1$ through $USER32$)
+# Icinga supports up to 32 $USERx$ macros ($USER1$ through $USER32$)
 #
 # Resource files may also be used to store configuration directives for
 # external data sources like MySQL...

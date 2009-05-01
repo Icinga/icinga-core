@@ -6,12 +6,12 @@ define([AC_CACHE_SAVE],)
 
 AC_INIT(base/nagios.c)
 AC_CONFIG_HEADER(include/config.h include/snprintf.h include/cgiutils.h)
-AC_PREFIX_DEFAULT(/usr/local/nagios)
+AC_PREFIX_DEFAULT(/usr/local/icinga)
 
-PKG_NAME=nagios
+PKG_NAME=icinga-core
 PKG_VERSION="3.1.0"
-PKG_HOME_URL="http://www.nagios.org/"
-PKG_REL_DATE="01-25-2009"
+PKG_HOME_URL="http://www.icinga.org/"
+PKG_REL_DATE="10-28-2009"
 
 dnl Figure out how to invoke "install" and what install options to use.
 AC_PROG_INSTALL
@@ -199,17 +199,19 @@ AC_SEARCH_LIBS(nanosleep,[rt posix4],,[
 	])
 
 
-AC_ARG_WITH(nagios_user,--with-nagios-user=<user> sets user name to run nagios,nagios_user=$withval,nagios_user=nagios)
-AC_ARG_WITH(nagios_group,--with-nagios-group=<grp> sets group name to run nagios,nagios_grp=$withval,nagios_grp=nagios)
-AC_SUBST(nagios_user)
-AC_SUBST(nagios_grp)
-AC_DEFINE_UNQUOTED(DEFAULT_NAGIOS_USER,"$nagios_user")
-AC_DEFINE_UNQUOTED(DEFAULT_NAGIOS_GROUP,"$nagios_grp")
-INSTALL_OPTS="-o $nagios_user -g $nagios_grp"
+AC_ARG_WITH(icinga_user,--with-icinga-user=<user> sets user name to run icinga,icinga_user=$withval,icinga_user=icinga)
+AC_ARG_WITH(icinga_group,--with-icinga-group=<grp> sets group name to run icinga,icinga_grp=$withval,icinga_grp=icinga)
+AC_SUBST(icinga_user)
+AC_SUBST(icinga_grp)
+AC_DEFINE_UNQUOTED(DEFAULT_ICINGA_USER,"$icinga_user")
+AC_DEFINE_UNQUOTED(DEFAULT_NAGIOS_USER,"$icinga_user")
+AC_DEFINE_UNQUOTED(DEFAULT_ICINGA_GROUP,"$icinga_grp")
+AC_DEFINE_UNQUOTED(DEFAULT_NAGIOS_GROUP,"$icinga_grp")
+INSTALL_OPTS="-o $icinga_user -g $icinga_grp"
 AC_SUBST(INSTALL_OPTS)
 
-AC_ARG_WITH(command_user,--with-command-user=<user> sets user name for command access,command_user=$withval,command_user=$nagios_user)
-AC_ARG_WITH(command_group,--with-command-group=<grp> sets group name for command access,command_grp=$withval,command_grp=$nagios_grp)
+AC_ARG_WITH(command_user,--with-command-user=<user> sets user name for command access,command_user=$withval,command_user=$icinga_user)
+AC_ARG_WITH(command_group,--with-command-group=<grp> sets group name for command access,command_grp=$withval,command_grp=$icinga_grp)
 AC_SUBST(command_user)
 AC_SUBST(command_grp)
 COMMAND_OPTS="-o $command_user -g $command_grp"
@@ -278,7 +280,7 @@ AC_ARG_WITH(init_dir,--with-init-dir=<path> sets directory to place init script 
 AC_SUBST(init_dir)
 
 dnl User can override lock file location
-AC_ARG_WITH(lockfile,--with-lockfile=<path> sets path and file name for lock file,lockfile=$withval,lockfile=$localstatedir/nagios.lock)
+AC_ARG_WITH(lockfile,--with-lockfile=<path> sets path and file name for lock file,lockfile=$withval,lockfile=$localstatedir/icinga.lock)
 AC_SUBST(lockfile)
 
 
@@ -539,8 +541,8 @@ if test "x$GLIB_LIBS" != x; then
 fi
 
 
-AC_ARG_WITH(cgiurl,--with-cgiurl=<local-url> sets URL for cgi programs (do not use a trailing slash),cgiurl=$withval,cgiurl=/nagios/cgi-bin)
-AC_ARG_WITH(htmurl,--with-htmurl=<local-url> sets URL for public html,htmurl=$withval,htmurl=/nagios)
+AC_ARG_WITH(cgiurl,--with-cgiurl=<local-url> sets URL for cgi programs (do not use a trailing slash),cgiurl=$withval,cgiurl=/icinga/cgi-bin)
+AC_ARG_WITH(htmurl,--with-htmurl=<local-url> sets URL for public html,htmurl=$withval,htmurl=/icinga)
 AC_SUBST(htmurl)
 AC_SUBST(cgiurl)
 
@@ -712,19 +714,19 @@ fi
 
 
 dnl Option for compiling under CYGWIN
-nagios_name=nagios
-nagiostats_name=nagiostats
+icinga_name=icinga
+icingastats_name=icingastats
 cygwin=no
 AC_ARG_ENABLE(cygwin,--enable-cygwin enables building under the CYGWIN environment,[
 	cygwin=$enableval
 	])
 if test x$cygwin = xyes; then
 	CFLAGS="${CFLAGS} -DCYGWIN" 
-	nagios_name=nagios.exe;
-	nagiostats_name=nagiostats.exe;
+	icinga_name=icinga.exe;
+	icingastats_name=icingastats.exe;
 fi
-AC_SUBST(nagios_name)
-AC_SUBST(nagiostats_name)
+AC_SUBST(icinga_name)
+AC_SUBST(icingastats_name)
 
 
 dnl Should predictive failure routines be compiled in?
@@ -782,7 +784,7 @@ perl subst html/config.inc.php
 echo ""
 echo "Creating sample config files in sample-config/ ..."
 
-perl subst sample-config/nagios.cfg
+perl subst sample-config/icinga.cfg
 perl subst sample-config/cgi.cfg
 perl subst sample-config/resource.cfg
 perl subst sample-config/httpd.conf
@@ -810,8 +812,8 @@ echo ""
 echo " General Options:"
 echo " -------------------------"
 
-AC_MSG_RESULT([        Nagios executable:  $nagios_name])
-AC_MSG_RESULT([        Nagios user/group:  $nagios_user,$nagios_grp])
+AC_MSG_RESULT([        Icinga executable:  $icinga_name])
+AC_MSG_RESULT([        Icinga user/group:  $icinga_user,$icinga_grp])
 AC_MSG_RESULT([       Command user/group:  $command_user,$command_grp])
 if test x$USEPERL = xyes; then
 if test x$PERLCACHE = xyes; then

@@ -1,6 +1,6 @@
 #################################################################
 #
-# CGI.CFG - Sample CGI Configuration File for Nagios @VERSION@
+# CGI.CFG - Sample CGI Configuration File for Icinga @VERSION@
 #
 # Last Modified: 11-30-2008
 #
@@ -12,12 +12,12 @@
 # The CGIs will read the main and host config files for any other
 # data they might need.
 
-main_config_file=@sysconfdir@/nagios.cfg
+main_config_file=@sysconfdir@/icinga.cfg
 
 
 
 # PHYSICAL HTML PATH
-# This is the path where the HTML files for Nagios reside.  This
+# This is the path where the HTML files for Icinga reside.  This
 # value is used to locate the logo images needed by the statusmap
 # and statuswrl CGIs.
 
@@ -27,10 +27,10 @@ physical_html_path=@datadir@
 
 # URL HTML PATH
 # This is the path portion of the URL that corresponds to the
-# physical location of the Nagios HTML files (as defined above).
+# physical location of the Icinga HTML files (as defined above).
 # This value is used by the CGIs to locate the online documentation
-# and graphics.  If you access the Nagios pages with an URL like
-# http://www.myhost.com/nagios, this value should be '/nagios'
+# and graphics.  If you access the Icinga pages with an URL like
+# http://www.myhost.com/icinga, this value should be '/icinga'
 # (without the quotes).
 
 url_html_path=@htmurl@
@@ -61,13 +61,13 @@ use_pending_states=1
 # AUTHENTICATION USAGE
 # This option controls whether or not the CGIs will use any 
 # authentication when displaying host and service information, as
-# well as committing commands to Nagios for processing.  
+# well as committing commands to Icinga for processing.  
 #
 # Read the HTML documentation to learn how the authorization works!
 #
 # NOTE: It is a really *bad* idea to disable authorization, unless
 # you plan on removing the command CGI (cmd.cgi)!  Failure to do
-# so will leave you wide open to kiddies messing with Nagios and
+# so will leave you wide open to kiddies messing with Icinga and
 # possibly hitting you with a denial of service attack by filling up
 # your drive by continuously writing to your command file!
 #
@@ -110,13 +110,13 @@ use_ssl_authentication=0
 
 # SYSTEM/PROCESS INFORMATION ACCESS
 # This option is a comma-delimited list of all usernames that
-# have access to viewing the Nagios process information as
+# have access to viewing the Icinga process information as
 # provided by the Extended Information CGI (extinfo.cgi).  By
 # default, *no one* has access to this unless you choose to
 # not use authorization.  You may use an asterisk (*) to
 # authorize any user who has authenticated to the web server.
 
-authorized_for_system_information=nagiosadmin
+authorized_for_system_information=icingaadmin
 
 
 
@@ -128,20 +128,20 @@ authorized_for_system_information=nagiosadmin
 # an asterisk (*) to authorize any user who has authenticated
 # to the web server.
 
-authorized_for_configuration_information=nagiosadmin
+authorized_for_configuration_information=icingaadmin
 
 
 
 # SYSTEM/PROCESS COMMAND ACCESS
 # This option is a comma-delimited list of all usernames that
-# can issue shutdown and restart commands to Nagios via the
+# can issue shutdown and restart commands to Icinga via the
 # command CGI (cmd.cgi).  Users in this list can also change
 # the program mode to active or standby. By default, *no one*
 # has access to this unless you choose to not use authorization.
 # You may use an asterisk (*) to authorize any user who has
 # authenticated to the web server.
 
-authorized_for_system_commands=nagiosadmin
+authorized_for_system_commands=icingaadmin
 
 
 
@@ -154,8 +154,8 @@ authorized_for_system_commands=nagiosadmin
 # to authorize any user who has authenticated to the web server.
 
 
-authorized_for_all_services=nagiosadmin
-authorized_for_all_hosts=nagiosadmin
+authorized_for_all_services=icingaadmin
+authorized_for_all_hosts=icingaadmin
 
 
 
@@ -168,8 +168,8 @@ authorized_for_all_hosts=nagiosadmin
 # authorization).  You may use an asterisk (*) to authorize any
 # user who has authenticated to the web server.
 
-authorized_for_all_service_commands=nagiosadmin
-authorized_for_all_host_commands=nagiosadmin
+authorized_for_all_service_commands=icingaadmin
+authorized_for_all_host_commands=icingaadmin
 
 
 
@@ -177,7 +177,7 @@ authorized_for_all_host_commands=nagiosadmin
 # STATUSMAP BACKGROUND IMAGE
 # This option allows you to specify an image to be used as a 
 # background in the statusmap CGI.  It is assumed that the image
-# resides in the HTML images path (i.e. /usr/local/nagios/share/images).
+# resides in the HTML images path (i.e. /usr/local/icinga/share/images).
 # This path is automatically determined by appending "/images"
 # to the path specified by the 'physical_html_path' directive.
 # Note:  The image file may be in GIF, PNG, JPEG, or GD2 format.
@@ -222,7 +222,7 @@ default_statuswrl_layout=4
 # STATUSWRL INCLUDE
 # This option allows you to include your own objects in the 
 # generated VRML world.  It is assumed that the file
-# resides in the HTML path (i.e. /usr/local/nagios/share).
+# resides in the HTML path (i.e. /usr/local/icinga/share).
 
 #statuswrl_include=myworld.wrl
 
@@ -277,7 +277,7 @@ escape_html_tags=1
 # <varname>=<sound_file>
 #
 # Note: All audio files must be placed in the /media subdirectory
-# under the HTML path (i.e. /usr/local/nagios/share/media/).
+# under the HTML path (i.e. /usr/local/icinga/share/media/).
 
 #host_unreachable_sound=hostdown.wav
 #host_down_sound=hostdown.wav
@@ -301,7 +301,7 @@ notes_url_target=_blank
 # LOCK AUTHOR NAMES OPTION
 # This option determines whether users can change the author name 
 # when submitting comments, scheduling downtime.  If disabled, the 
-# author names will be locked into their contact name, as defined in Nagios.
+# author names will be locked into their contact name, as defined in Icinga.
 # Values: 0 = allow editing author names
 #         1 = lock author names (disallow editing)
 

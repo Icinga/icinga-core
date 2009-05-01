@@ -1,5 +1,5 @@
 ############################
-# Makefile for Nagios
+# Makefile for Icinga
 #
 # Last Modified: 12-05-2008
 ############################
@@ -125,7 +125,7 @@ DDATADEPS=$(DDATALIBS)
 OBJS=$(BROKER_O) checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(DDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
 OBJDEPS=$(ODATADEPS) $(ODATADEPS) $(RDATADEPS) $(CDATADEPS) $(SDATADEPS) $(PDATADEPS) $(DDATADEPS) $(BROKER_H)
 
-all: nagios nagiostats
+all: icinga icingastats
 
 
 ######## REQUIRED FILES ##########
@@ -176,16 +176,16 @@ xretention-base.o: $(SRC_XDATA)/$(XRDC) $(SRC_XDATA)/$(XRDH)
 
 ########## NAGIOS ##########
 
-nagios: nagios.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/nagios.h $(SRC_INCLUDE)/locations.h
+icinga: nagios.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/nagios.h $(SRC_INCLUDE)/locations.h
 	$(CC) $(CFLAGS) -o $@ nagios.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
 
-nagiostats: nagiostats.c $(SRC_INCLUDE)/locations.h
+icingastats: nagiostats.c $(SRC_INCLUDE)/locations.h
 	$(CC) $(CFLAGS) -o $@ nagiostats.c $(LDFLAGS) $(MATHLIBS) $(LIBS)
 
 $(OBJS): $(SRC_INCLUDE)/locations.h
 
 clean:
-	rm -f nagios nagiostats core *.o gmon.out
+	rm -f icinga icingastats core *.o gmon.out
 	rm -f *~ *.*~
 
 distclean: clean
@@ -203,9 +203,9 @@ install-unstripped:
 
 install-basic:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) @nagios_name@ $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) @nagiostats_name@ $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) @icinga_name@ $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) @icingastats_name@ $(DESTDIR)$(BINDIR)
 
 strip-post-install:
-	$(STRIP) $(DESTDIR)$(BINDIR)/@nagios_name@
-	$(STRIP) $(DESTDIR)$(BINDIR)/@nagiostats_name@
+	$(STRIP) $(DESTDIR)$(BINDIR)/@icinga_name@
+	$(STRIP) $(DESTDIR)$(BINDIR)/@icingastats_name@

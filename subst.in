@@ -20,8 +20,8 @@ while ($f = shift @ARGV) {
 	open(OUT,">$TEMP") || die 'Cannot make temporary file $TEMP';
 
 	while (<IN>) {
-		s|\@nagios_user\@|@nagios_user@|g;
-		s|\@nagios_grp\@|@nagios_grp@|g;
+		s|\@icinga_user\@|@icinga_user@|g;
+		s|\@icinga_grp\@|@icinga_grp@|g;
 		s|\@lockfile\@|@lockfile@|g;
 		s|\@libexecdir\@|@libexecdir@|g; # put all --with-vars before directories
 		s|\@localstatedir\@|@localstatedir@|g;

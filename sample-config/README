@@ -2,7 +2,7 @@
 SAMPLE CONFIG FILE README
 =========================
 
-This directory contains *sample* configuration files for Nagios.
+This directory contains *sample* configuration files for Icinga.
 You should read the HTML documentation for information on
 customizing these config files to suit your needs.
 
@@ -16,7 +16,7 @@ CONTENTS:
 
 cgi.cfg           - This is a sample CGI config file
 
-nagios.cfg        - This is a sample main config file
+icinga.cfg        - This is a sample main config file
 
 resource.cfg      - This is a sample resource config file, used for definining
 		    custom macros, storing sensitive data, etc.

@@ -51,7 +51,7 @@ NDO_OBJS=db.o
 CP=@CP@
 
 
-all: file2sock log2ndo ndo2db ndomod.o sockdebug
+all: file2sock log2ndo ido2db idomod.o sockdebug
 
 file2sock: file2sock.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ file2sock.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -59,11 +59,11 @@ file2sock: file2sock.c $(COMMON_INC) $(COMMON_OBJS)
 log2ndo: log2ndo.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ log2ndo.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
-ndo2db: ndo2db.c $(NDO_INC) $(NDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o
-	$(CC) $(CFLAGS) $(DBCFLAGS) -o ndo2db ndo2db.c dbhandlers.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(MATHLIBS) $(OTHERLIBS)
+ido2db: ido2db.c $(NDO_INC) $(NDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o
+	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(MATHLIBS) $(OTHERLIBS)
 
-ndomod.o: ndomod.c $(COMMON_INC) $(COMMON_OBJS)
-	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o ndomod.o ndomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
+idomod.o: idomod.c $(COMMON_INC) $(COMMON_OBJS)
+	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o idomod.o idomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
 sockdebug: sockdebug.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ sockdebug.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -81,7 +81,7 @@ dbhandlers.o: dbhandlers.c $(SRC_INCLUDE)/dbhandlers.h
 	$(CC) $(CFLAGS) -c -o $@ dbhandlers.c
 
 clean:
-	rm -f core file2sock log2ndo ndo2db sockdebug *.o
+	rm -f core file2sock log2ndo ido2db sockdebug *.o
 	rm -f *~ */*~
 
 distclean: clean
@@ -91,6 +91,6 @@ devclean: distclean
 
 install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) ndo2db $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) ndomod.o $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) ido2db $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) idomod.o $(DESTDIR)$(BINDIR)
 

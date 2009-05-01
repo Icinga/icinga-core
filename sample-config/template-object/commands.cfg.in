@@ -1,5 +1,5 @@
 ###############################################################################
-# COMMANDS.CFG - SAMPLE COMMAND DEFINITIONS FOR NAGIOS @VERSION@
+# COMMANDS.CFG - SAMPLE COMMAND DEFINITIONS FOR ICINGA @VERSION@
 #
 # Last Modified: 05-31-2007
 #
@@ -27,13 +27,13 @@
 # 'notify-host-by-email' command definition
 define command{
 	command_name	notify-host-by-email
-	command_line	/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | @MAIL_PROG@ -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$
+	command_line	/usr/bin/printf "%b" "***** Icinga *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | @MAIL_PROG@ -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$
 	}
 
 # 'notify-service-by-email' command definition
 define command{
 	command_name	notify-service-by-email
-	command_line	/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | @MAIL_PROG@ -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+	command_line	/usr/bin/printf "%b" "***** Icinga *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | @MAIL_PROG@ -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
 	}
 
 
@@ -70,7 +70,7 @@ define command{
 # documentation on the plugins for examples of how to configure command definitions.
 #
 # NOTE:  The following 'check_local_...' functions are designed to monitor
-#        various metrics on the host that Nagios is running on (i.e. this one).
+#        various metrics on the host that Icinga is running on (i.e. this one).
 ################################################################################
 
 # 'check_local_disk' command definition

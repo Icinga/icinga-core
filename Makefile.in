@@ -1,7 +1,7 @@
 ###############################
-# Makefile for Nagios
+# Makefile for Icinga
 #
-# Last Modified: 04-13-2008
+# Last Modified: 05-01-2009
 ###############################
 
 
@@ -51,7 +51,7 @@ CP=@CP@
 
 none:
 		@echo "Please supply a command line argument (i.e. 'make all').  Other targets are:"
-		@echo "   nagios cgis contrib modules"
+		@echo "   icinga cgis contrib modules"
 		@echo "   clean"
 		@echo "   install install-base install-cgis install-html install-config install-init install-commandmode fullinstall"
 #		@echo "   uninstall"
@@ -70,7 +70,7 @@ all:
 	@echo "*** Compile finished ***"
 	@echo ""
 	@echo "If the main program and CGIs compiled without any errors, you"
-	@echo "can continue with installing Nagios as follows (type 'make'"
+	@echo "can continue with installing Icinga as follows (type 'make'"
 	@echo "without any arguments for a list of all possible options):"
 	@echo ""
 	@echo "  make install"
@@ -83,47 +83,51 @@ all:
 	@echo "     - This installs and configures permissions on the"
 	@echo "       directory for holding the external command file"
 	@echo ""
+        @echo "  make install-idoutils"
+        @echo "     - This installs the database addon IDOUtils into the"
+        @echo "       destination directory"
+	@echo ""
 	@echo "  make install-config"
 	@echo "     - This installs *SAMPLE* config files in $(DESTDIR)$(CFGDIR)"
 	@echo "       You'll have to modify these sample files before you can"
-	@echo "       use Nagios.  Read the HTML documentation for more info"
+	@echo "       use Icinga.  Read the HTML documentation for more info"
 	@echo "       on doing this.  Pay particular attention to the docs on"
 	@echo "       object configuration files, as they determine what/how"
 	@echo "       things get monitored!"
 	@echo ""
 	@echo "  make install-webconf"
-	@echo "     - This installs the Apache config file for the Nagios"
+	@echo "     - This installs the Apache config file for the Icinga"
 	@echo "       web interface"
 	@echo ""
 	@echo ""
 	@echo "*** Support Notes *******************************************"
 	@echo ""
-	@echo "If you have questions about configuring or running Nagios,"
+	@echo "If you have questions about configuring or running Icinga,"
 	@echo "please make sure that you:"
 	@echo ""
 	@echo "     - Look at the sample config files"
 	@echo "     - Read the HTML documentation"
-	@echo "     - Read the FAQs online at http://www.nagios.org/faqs"
+	@echo "     - Read the FAQs online at http://www.icinga.org/faqs"
 	@echo ""
 	@echo "before you post a question to one of the mailing lists."
 	@echo "Also make sure to include pertinent information that could"
 	@echo "help others help you.  This might include:"
 	@echo ""
-	@echo "     - What version of Nagios you are using"
+	@echo "     - What version of Icinga you are using"
 	@echo "     - What version of the plugins you are using"
 	@echo "     - Relevant snippets from your config files"
-	@echo "     - Relevant error messages from the Nagios log file"
+	@echo "     - Relevant error messages from the Icinga log file"
 	@echo ""
-	@echo "For more information on obtaining support for Nagios, visit:"
+	@echo "For more information on obtaining support for Icinga, visit:"
 	@echo ""
-	@echo "       http://www.nagios.org/support/"
+	@echo "       http://www.icinga.org/support/"
 	@echo ""
 	@echo "*************************************************************"
 	@echo ""
 	@echo "Enjoy."
 	@echo ""
 
-nagios:
+icinga:
 	cd $(SRC_BASE) && $(MAKE)
 
 config:
@@ -204,7 +208,7 @@ install-basic:
 	@echo ""
 	@echo "*** Main program, CGIs and HTML files installed ***"
 	@echo ""
-	@echo "You can continue with installing Nagios as follows (type 'make'"
+	@echo "You can continue with installing Icinga as follows (type 'make'"
 	@echo "without any arguments for a list of all possible options):"
 	@echo ""
 	@echo "  make install-init"
@@ -214,6 +218,10 @@ install-basic:
 	@echo "     - This installs and configures permissions on the"
 	@echo "       directory for holding the external command file"
 	@echo ""
+        @echo "  make install-idoutils"
+        @echo "     - This installs the database addon IDOUtils into the"
+        @echo "       destination directory"
+	@echo ""
 	@echo "  make install-config"
 	@echo "     - This installs sample config files in $(DESTDIR)$(CFGDIR)"
 	@echo ""
@@ -222,7 +230,7 @@ install-basic:
 install-config:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/objects
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/nagios.cfg $(DESTDIR)$(CFGDIR)/nagios.cfg
+	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
 	$(INSTALL) -b -m 660 $(INSTALL_OPTS) sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/templates.cfg $(DESTDIR)$(CFGDIR)/objects/templates.cfg
@@ -243,10 +251,10 @@ install-config:
 	@echo ""
 
 install-webconf:
-	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/nagios.conf
+	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf
 
 	@echo ""
-	@echo "*** Nagios/Apache conf file installed ***"
+	@echo "*** Icinga/Apache conf file installed ***"
 	@echo ""
 
 install-idoutils:
@@ -260,7 +268,7 @@ install-init: install-daemoninit
 
 install-daemoninit:
 	$(INSTALL) -m 755 -d $(INIT_OPTS) $(DESTDIR)$(INIT_DIR)
-	$(INSTALL) -m 755 $(INIT_OPTS) daemon-init $(DESTDIR)$(INIT_DIR)/nagios
+	$(INSTALL) -m 755 $(INIT_OPTS) daemon-init $(DESTDIR)$(INIT_DIR)/icinga
 
 	@echo ""
 	@echo "*** Init script installed ***"
@@ -280,7 +288,7 @@ fullinstall: install install-init install-commandmode install-webconf
 
 # Uninstall is too destructive if base install directory is /usr, etc.
 #uninstall:
-#	rm -rf $(DESTDIR)$(BINDIR)/nagios $(DESTDIR)$(CGIDIR)/*.cgi $(DESTDIR)$(CFGDIR)/*.cfg $(DESTDIR)$(HTMLDIR)
+#	rm -rf $(DESTDIR)$(BINDIR)/icinga $(DESTDIR)$(CGIDIR)/*.cgi $(DESTDIR)$(CFGDIR)/*.cfg $(DESTDIR)$(HTMLDIR)
 
 #
 # Targets for creating packages on various architectures
@@ -294,31 +302,31 @@ Prototype:
 	if [ ! -d $(PACKDIR) ] ; then mkdir $(PACKDIR); fi
 	if [ ! -d $(PACKDIR)/etc ] ; then mkdir $(PACKDIR)/etc; fi
 	if [ ! -d $(PACKDIR)/etc/init.d ] ; then mkdir $(PACKDIR)/etc/init.d; fi
-	if [ ! -d $(PACKDIR)/etc/nagios ] ; then mkdir $(PACKDIR)/etc/nagios; fi
+	if [ ! -d $(PACKDIR)/etc/icinga ] ; then mkdir $(PACKDIR)/etc/icinga; fi
 	$(MAKE) all
-	$(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' nagios_grp='' nagios_usr='' fullinstall
-	$(INSTALL) -m 644 sample-config/nagios.cfg $(PACKDIR)$(CFGDIR)/nagios.cfg.$(VERSION)
+	$(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' fullinstall
+	$(INSTALL) -m 644 sample-config/icinga.cfg $(PACKDIR)$(CFGDIR)/icinga.cfg.$(VERSION)
 	$(INSTALL) -m 644 sample-config/cgi.cfg $(PACKDIR)$(CFGDIR)/cgi.cfg.$(VERSION)
 	$(INSTALL) -m 640 sample-config/resource.cfg $(PACKDIR)$(CFGDIR)/resource.cfg.$(VERSION)
 	$(INSTALL) -m 664 sample-config/template-object/bigger.cfg $(PACKDIR)$(CFGDIR)/bigger.cfg.$(VERSION)
 	$(INSTALL) -m 664 sample-config/template-object/minimal.cfg $(PACKDIR)$(CFGDIR)/minimal.cfg.$(VERSION)
 	$(INSTALL) -m 664 sample-config/template-object/checkcommands.cfg $(PACKDIR)$(CFGDIR)/checkcommands.cfg.$(VERSION)
 	$(INSTALL) -m 664 sample-config/template-object/misccommands.cfg $(PACKDIR)$(CFGDIR)/misccommands.cfg.$(VERSION)
-	cd contrib; $(MAKE) all; $(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' nagios_grp='' nagios_usr='' install
+	cd contrib; $(MAKE) all; $(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' install
 	echo i pkginfo> Prototype
 	if [ -f checkinstall ] ; then echo i checkinstall>> Prototype; fi
 	if [ -f preinstall ] ; then echo i preinstall>> Prototype; fi
 	if [ -f postinstall ] ; then echo i postinstall>> Prototype; fi
 	pkgproto $(PACKDIR)=/ | sed -e "s|$(LOGNAME) $(GROUP)$$|root root|" | egrep -v "(s|d) none (/|/etc|/var|/usr|/usr/local) " >> Prototype
 
-pkg/nagios/pkgmap: Prototype
-	mkdir $(PACKDIR)/nagios
-	pkgmk -o -r / -f Prototype -d $(PACKDIR) nagios
+pkg/icinga/pkgmap: Prototype
+	mkdir $(PACKDIR)/icinga
+	pkgmk -o -r / -f Prototype -d $(PACKDIR) icinga
 
-nagios.SPARC.pkg.tar.gz: pkg/nagios/pkgmap
-	cd $(PACKDIR) && tar -cf - nagios | gzip -9 -c > ../nagios.SPARC.pkg.tar.gz
+icinga.SPARC.pkg.tar.gz: pkg/icinga/pkgmap
+	cd $(PACKDIR) && tar -cf - icinga | gzip -9 -c > ../icinga.SPARC.pkg.tar.gz
 
-pkgset: nagios.SPARC.pkg.tar.gz
+pkgset: icinga.SPARC.pkg.tar.gz
 
 pkgclean:
-	rm -rf pkg Prototype nagios.SPARC.pkg.tar.gz
+	rm -rf pkg Prototype icinga.SPARC.pkg.tar.gz

@@ -1,9 +1,9 @@
 #!/bin/sh
 # 
 # chkconfig: 345 99 01
-# description: Nagios network monitor
+# description: Icinga network monitor
 #
-# File : nagios
+# File : icinga
 #
 # Author : Jorge Sanchez Aymar (jsanchez@lanchile.cl)
 # 
@@ -12,34 +12,34 @@
 # 1999-07-09 Karl DeBisschop <kdebisschop@infoplease.com>
 #  - setup for autoconf
 #  - add reload function
-# 1999-08-06 Ethan Galstad <egalstad@nagios.org>
+# 1999-08-06 Ethan Galstad <egalstad@icinga.org>
 #  - Added configuration info for use with RedHat's chkconfig tool
 #    per Fran Boon's suggestion
 # 1999-08-13 Jim Popovitch <jimpop@rocketship.com>
-#  - added variable for nagios/var directory
-#  - cd into nagios/var directory before creating tmp files on startup
-# 1999-08-16 Ethan Galstad <egalstad@nagios.org>
+#  - added variable for icinga/var directory
+#  - cd into icinga/var directory before creating tmp files on startup
+# 1999-08-16 Ethan Galstad <egalstad@icinga.org>
 #  - Added test for rc.d directory as suggested by Karl DeBisschop
 # 2000-07-23 Karl DeBisschop <kdebisschop@users.sourceforge.net>
 #  - Clean out redhat macros and other dependencies
-# 2003-01-11 Ethan Galstad <egalstad@nagios.org>
+# 2003-01-11 Ethan Galstad <egalstad@icinga.org>
 #  - Updated su syntax (Gary Miller)
 #
-# Description: Starts and stops the Nagios monitor
+# Description: Starts and stops the Icinga monitor
 #              used to provide network services status.
 #
   
-status_nagios ()
+status_icinga ()
 {
 
-	if test -x $NagiosCGI/daemonchk.cgi; then
-		if $NagiosCGI/daemonchk.cgi -l $NagiosRunFile; then
+	if test -x $IcingaCGI/daemonchk.cgi; then
+		if $IcingaCGI/daemonchk.cgi -l $IcingaRunFile; then
 		        return 0
 		else
 			return 1
 		fi
 	else
-		if ps -p $NagiosPID > /dev/null 2>&1; then
+		if ps -p $IcingaPID > /dev/null 2>&1; then
 		        return 0
 		else
 			return 1
@@ -50,34 +50,34 @@ status_nagios ()
 }
 
 
-printstatus_nagios()
+printstatus_icinga()
 {
 
-	if status_nagios $1 $2; then
-		echo "nagios (pid $NagiosPID) is running..."
+	if status_icinga $1 $2; then
+		echo "icinga (pid $IcingaPID) is running..."
 	else
-		echo "nagios is not running"
+		echo "icinga is not running"
 	fi
 }
 
 
-killproc_nagios ()
+killproc_icinga ()
 {
 
-	kill $2 $NagiosPID
+	kill $2 $IcingaPID
 
 }
 
 
-pid_nagios ()
+pid_icinga ()
 {
 
-	if test ! -f $NagiosRunFile; then
-		echo "No lock file found in $NagiosRunFile"
+	if test ! -f $IcingaRunFile; then
+		echo "No lock file found in $IcingaRunFile"
 		exit 1
 	fi
 
-	NagiosPID=`head -n 1 $NagiosRunFile`
+	IcingaPID=`head -n 1 $IcingaRunFile`
 }
 
 
@@ -91,29 +91,29 @@ fi
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-NagiosBin=@bindir@/nagios
-NagiosCfgFile=@sysconfdir@/nagios.cfg
-NagiosStatusFile=@localstatedir@/status.dat
-NagiosRetentionFile=@localstatedir@/retention.dat
-NagiosCommandFile=@localstatedir@/rw/nagios.cmd
-NagiosVarDir=@localstatedir@
-NagiosRunFile=@lockfile@
-NagiosLockDir=/var/lock/subsys
-NagiosLockFile=nagios
-NagiosCGIDir=@sbindir@
-NagiosUser=@nagios_user@
-NagiosGroup=@nagios_grp@
+IcingaBin=@bindir@/icinga
+IcingaCfgFile=@sysconfdir@/icinga.cfg
+IcingaStatusFile=@localstatedir@/status.dat
+IcingaRetentionFile=@localstatedir@/retention.dat
+IcingaCommandFile=@localstatedir@/rw/icinga.cmd
+IcingaVarDir=@localstatedir@
+IcingaRunFile=@lockfile@
+IcingaLockDir=/var/lock/subsys
+IcingaLockFile=icinga
+IcingaCGIDir=@sbindir@
+IcingaUser=@icinga_user@
+IcingaGroup=@icinga_grp@
           
 
-# Check that nagios exists.
-if [ ! -f $NagiosBin ]; then
-    echo "Executable file $NagiosBin not found.  Exiting."
+# Check that icinga exists.
+if [ ! -f $IcingaBin ]; then
+    echo "Executable file $IcingaBin not found.  Exiting."
     exit 1
 fi
 
-# Check that nagios.cfg exists.
-if [ ! -f $NagiosCfgFile ]; then
-    echo "Configuration file $NagiosCfgFile not found.  Exiting."
+# Check that icinga.cfg exists.
+if [ ! -f $IcingaCfgFile ]; then
+    echo "Configuration file $IcingaCfgFile not found.  Exiting."
     exit 1
 fi
           
@@ -121,94 +121,94 @@ fi
 case "$1" in
 
 	start)
-		echo -n "Starting nagios:"
-		$NagiosBin -v $NagiosCfgFile > /dev/null 2>&1;
+		echo -n "Starting icinga:"
+		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
 		if [ $? -eq 0 ]; then
-			su - $NagiosUser -c "touch $NagiosVarDir/nagios.log $NagiosRetentionFile"
-			rm -f $NagiosCommandFile
-			touch $NagiosRunFile
-			chown $NagiosUser:$NagiosGroup $NagiosRunFile
-			$NagiosBin -d $NagiosCfgFile
-			if [ -d $NagiosLockDir ]; then touch $NagiosLockDir/$NagiosLockFile; fi
+			su - $IcingaUser -c "touch $IcingaVarDir/icinga.log $IcingaRetentionFile"
+			rm -f $IcingaCommandFile
+			touch $IcingaRunFile
+			chown $IcingaUser:$IcingaGroup $IcingaRunFile
+			$IcingaBin -d $IcingaCfgFile
+			if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
 			echo " done."
 			exit 0
 		else
-			echo "CONFIG ERROR!  Start aborted.  Check your Nagios configuration."
+			echo "CONFIG ERROR!  Start aborted.  Check your Icinga configuration."
 			exit 1
 		fi
 		;;
 
 	stop)
-		echo -n "Stopping nagios: "
+		echo -n "Stopping icinga: "
 
-		pid_nagios
-		killproc_nagios nagios
+		pid_icinga
+		killproc_icinga icinga
 
- 		# now we have to wait for nagios to exit and remove its
- 		# own NagiosRunFile, otherwise a following "start" could
- 		# happen, and then the exiting nagios will remove the
- 		# new NagiosRunFile, allowing multiple nagios daemons
+ 		# now we have to wait for icinga to exit and remove its
+ 		# own IcingaRunFile, otherwise a following "start" could
+ 		# happen, and then the exiting icinga will remove the
+ 		# new IcingaRunFile, allowing multiple icinga daemons
  		# to (sooner or later) run - John Sellens
-		#echo -n 'Waiting for nagios to exit .'
+		#echo -n 'Waiting for icinga to exit .'
  		for i in 1 2 3 4 5 6 7 8 9 10 ; do
- 		    if status_nagios > /dev/null; then
+ 		    if status_icinga > /dev/null; then
  			echo -n '.'
  			sleep 1
  		    else
  			break
  		    fi
  		done
- 		if status_nagios > /dev/null; then
+ 		if status_icinga > /dev/null; then
  		    echo ''
- 		    echo 'Warning - nagios did not exit in a timely manner'
+ 		    echo 'Warning - icinga did not exit in a timely manner'
  		else
  		    echo 'done.'
  		fi
 
-		rm -f $NagiosStatusFile $NagiosRunFile $NagiosLockDir/$NagiosLockFile $NagiosCommandFile
+		rm -f $IcingaStatusFile $IcingaRunFile $IcingaLockDir/$IcingaLockFile $IcingaCommandFile
 		;;
 
 	status)
-		pid_nagios
-		printstatus_nagios nagios
+		pid_icinga
+		printstatus_icinga icinga
 		;;
 
 	checkconfig)
 		printf "Running configuration check..."
-		$NagiosBin -v $NagiosCfgFile > /dev/null 2>&1;
+		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
 		if [ $? -eq 0 ]; then
 			echo " OK."
 		else
-			echo " CONFIG ERROR!  Check your Nagios configuration."
+			echo " CONFIG ERROR!  Check your Icinga configuration."
 			exit 1
 		fi
 		;;
 
 	restart)
 		printf "Running configuration check..."
-		$NagiosBin -v $NagiosCfgFile > /dev/null 2>&1;
+		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
 		if [ $? -eq 0 ]; then
 			echo "done."
 			$0 stop
 			$0 start
 		else
-			echo " CONFIG ERROR!  Restart aborted.  Check your Nagios configuration."
+			echo " CONFIG ERROR!  Restart aborted.  Check your Icinga configuration."
 			exit 1
 		fi
 		;;
 
 	reload|force-reload)
 		printf "Running configuration check..."
-		$NagiosBin -v $NagiosCfgFile > /dev/null 2>&1;
+		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
 		if [ $? -eq 0 ]; then
 			echo "done."
-			if test ! -f $NagiosRunFile; then
+			if test ! -f $IcingaRunFile; then
 				$0 start
 			else
-				pid_nagios
-				if status_nagios > /dev/null; then
-					printf "Reloading nagios configuration..."
-					killproc_nagios nagios -HUP
+				pid_icinga
+				if status_icinga > /dev/null; then
+					printf "Reloading icinga configuration..."
+					killproc_icinga icinga -HUP
 					echo "done"
 				else
 					$0 stop
@@ -216,13 +216,13 @@ case "$1" in
 				fi
 			fi
 		else
-			echo " CONFIG ERROR!  Reload aborted.  Check your Nagios configuration."
+			echo " CONFIG ERROR!  Reload aborted.  Check your Icinga configuration."
 			exit 1
 		fi
 		;;
 
 	*)
-		echo "Usage: nagios {start|stop|restart|reload|force-reload|status|checkconfig}"
+		echo "Usage: icinga {start|stop|restart|reload|force-reload|status|checkconfig}"
 		exit 1
 		;;
 

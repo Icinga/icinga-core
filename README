@@ -1,8 +1,8 @@
-Nagios 3.x README
+Icinga 3.x README
 -----------------
 
 
-Nagios is a host/service/network monitoring program written in C and
+Icinga is a host/service/network monitoring program written in C and
 released under the GNU General Public License.  CGI programs are
 included to allow you to view the current status, history, etc via
 a web interface if you so desire.
@@ -20,10 +20,8 @@ Features:
 For installation instructions, use a web browser to read the HTML documentation
 in the html/docs subdirectory.  
 
-Visit the Nagios homepage at http://www.nagios.org for online
+Visit the Icinga homepage at http://www.icinga.org for online
 documentation, new releases, bug reports, information on the mailing
 lists, etc.
-
-   -- Ethan Galstad (egalstad@nagios.org)
 
 

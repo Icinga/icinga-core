@@ -272,7 +272,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="base/nagios.c"
-ac_default_prefix=/usr/local/nagios
+ac_default_prefix=/usr/local/icinga
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA INSTALL build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT SET_MAKE STRIP CPP EGREP SNPRINTF_O SOCKETLIBS DBLIBS OTHERLIBS THREADLIBS nagios_user nagios_grp INSTALL_OPTS command_user command_grp COMMAND_OPTS MAIL_PROG HTTPD_CONF CHECKRESULTDIR TMPDIR init_dir lockfile XSDC XSDH XCDC XCDH XRDC XRDH XODC XODH XPDC XPDH XDDC XDDH GLIB_INCLUDE GLIB_LIBS htmurl cgiurl BROKER_LDFLAGS BROKERLIBS MOD_CFLAGS MOD_LDFLAGS BROKER_O BROKER_H nagios_name nagiostats_name PATH_TO_TRACEROUTE PACKDIR VERSION CGIEXTRAS GDLIBS PERLLIBS PERLDIR PERLXSI_O BASEEXTRALIBS INITDIR INSTALLPERLSTUFF USE_EVENTBROKER PERL LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA INSTALL build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT SET_MAKE STRIP CPP EGREP SNPRINTF_O SOCKETLIBS DBLIBS OTHERLIBS THREADLIBS icinga_user icinga_grp INSTALL_OPTS command_user command_grp COMMAND_OPTS MAIL_PROG HTTPD_CONF CHECKRESULTDIR TMPDIR init_dir lockfile XSDC XSDH XCDC XCDH XRDC XRDH XODC XODH XPDC XPDH XDDC XDDH GLIB_INCLUDE GLIB_LIBS htmurl cgiurl BROKER_LDFLAGS BROKERLIBS MOD_CFLAGS MOD_LDFLAGS BROKER_O BROKER_H icinga_name icingastats_name PATH_TO_TRACEROUTE PACKDIR VERSION CGIEXTRAS GDLIBS PERLLIBS PERLDIR PERLXSI_O BASEEXTRALIBS INITDIR INSTALLPERLSTUFF USE_EVENTBROKER PERL LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -855,8 +855,8 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
---with-nagios-user=<user> sets user name to run nagios
---with-nagios-group=<grp> sets group name to run nagios
+--with-icinga-user=<user> sets user name to run icinga
+--with-icinga-group=<grp> sets group name to run icinga
 --with-command-user=<user> sets user name for command access
 --with-command-group=<grp> sets group name for command access
 --with-mail=<path_to_mail> sets path to equivalent program to mail
@@ -1306,10 +1306,10 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-PKG_NAME=nagios
+PKG_NAME=icinga-core
 PKG_VERSION="3.1.0"
-PKG_HOME_URL="http://www.nagios.org/"
-PKG_REL_DATE="01-25-2009"
+PKG_HOME_URL="http://www.icinga.org/"
+PKG_REL_DATE="10-28-2009"
 
 ac_aux_dir=
 for ac_dir in $srcdir $srcdir/.. $srcdir/../..; do
@@ -5746,32 +5746,40 @@ fi
 
 
 
-# Check whether --with-nagios_user or --without-nagios_user was given.
-if test "${with_nagios_user+set}" = set; then
-  withval="$with_nagios_user"
-  nagios_user=$withval
+# Check whether --with-icinga_user or --without-icinga_user was given.
+if test "${with_icinga_user+set}" = set; then
+  withval="$with_icinga_user"
+  icinga_user=$withval
 else
-  nagios_user=nagios
+  icinga_user=icinga
 fi;
 
-# Check whether --with-nagios_group or --without-nagios_group was given.
-if test "${with_nagios_group+set}" = set; then
-  withval="$with_nagios_group"
-  nagios_grp=$withval
+# Check whether --with-icinga_group or --without-icinga_group was given.
+if test "${with_icinga_group+set}" = set; then
+  withval="$with_icinga_group"
+  icinga_grp=$withval
 else
-  nagios_grp=nagios
+  icinga_grp=icinga
 fi;
 
 
 cat >>confdefs.h <<_ACEOF
-#define DEFAULT_NAGIOS_USER "$nagios_user"
+#define DEFAULT_ICINGA_USER "$icinga_user"
 _ACEOF
 
 cat >>confdefs.h <<_ACEOF
-#define DEFAULT_NAGIOS_GROUP "$nagios_grp"
+#define DEFAULT_NAGIOS_USER "$icinga_user"
 _ACEOF
 
-INSTALL_OPTS="-o $nagios_user -g $nagios_grp"
+cat >>confdefs.h <<_ACEOF
+#define DEFAULT_ICINGA_GROUP "$icinga_grp"
+_ACEOF
+
+cat >>confdefs.h <<_ACEOF
+#define DEFAULT_NAGIOS_GROUP "$icinga_grp"
+_ACEOF
+
+INSTALL_OPTS="-o $icinga_user -g $icinga_grp"
 
 
 
@@ -5780,7 +5788,7 @@ if test "${with_command_user+set}" = set; then
   withval="$with_command_user"
   command_user=$withval
 else
-  command_user=$nagios_user
+  command_user=$icinga_user
 fi;
 
 # Check whether --with-command_group or --without-command_group was given.
@@ -5788,7 +5796,7 @@ if test "${with_command_group+set}" = set; then
   withval="$with_command_group"
   command_grp=$withval
 else
-  command_grp=$nagios_grp
+  command_grp=$icinga_grp
 fi;
 
 
@@ -5927,7 +5935,7 @@ if test "${with_lockfile+set}" = set; then
   withval="$with_lockfile"
   lockfile=$withval
 else
-  lockfile=$localstatedir/nagios.lock
+  lockfile=$localstatedir/icinga.lock
 fi;
 
 
@@ -6524,7 +6532,7 @@ if test "${with_cgiurl+set}" = set; then
   withval="$with_cgiurl"
   cgiurl=$withval
 else
-  cgiurl=/nagios/cgi-bin
+  cgiurl=/icinga/cgi-bin
 fi;
 
 # Check whether --with-htmurl or --without-htmurl was given.
@@ -6532,7 +6540,7 @@ if test "${with_htmurl+set}" = set; then
   withval="$with_htmurl"
   htmurl=$withval
 else
-  htmurl=/nagios
+  htmurl=/icinga
 fi;
 
 
@@ -7258,8 +7266,8 @@ _ACEOF
 fi
 
 
-nagios_name=nagios
-nagiostats_name=nagiostats
+icinga_name=icinga
+icingastats_name=icingastats
 cygwin=no
 # Check whether --enable-cygwin or --disable-cygwin was given.
 if test "${enable_cygwin+set}" = set; then
@@ -7270,8 +7278,8 @@ if test "${enable_cygwin+set}" = set; then
 fi;
 if test x$cygwin = xyes; then
 	CFLAGS="${CFLAGS} -DCYGWIN"
-	nagios_name=nagios.exe;
-	nagiostats_name=nagiostats.exe;
+	icinga_name=icinga.exe;
+	icingastats_name=icingastats.exe;
 fi
 
 
@@ -8040,8 +8048,8 @@ s,@SOCKETLIBS@,$SOCKETLIBS,;t t
 s,@DBLIBS@,$DBLIBS,;t t
 s,@OTHERLIBS@,$OTHERLIBS,;t t
 s,@THREADLIBS@,$THREADLIBS,;t t
-s,@nagios_user@,$nagios_user,;t t
-s,@nagios_grp@,$nagios_grp,;t t
+s,@icinga_user@,$icinga_user,;t t
+s,@icinga_grp@,$icinga_grp,;t t
 s,@INSTALL_OPTS@,$INSTALL_OPTS,;t t
 s,@command_user@,$command_user,;t t
 s,@command_grp@,$command_grp,;t t
@@ -8074,8 +8082,8 @@ s,@MOD_CFLAGS@,$MOD_CFLAGS,;t t
 s,@MOD_LDFLAGS@,$MOD_LDFLAGS,;t t
 s,@BROKER_O@,$BROKER_O,;t t
 s,@BROKER_H@,$BROKER_H,;t t
-s,@nagios_name@,$nagios_name,;t t
-s,@nagiostats_name@,$nagiostats_name,;t t
+s,@icinga_name@,$icinga_name,;t t
+s,@icingastats_name@,$icingastats_name,;t t
 s,@PATH_TO_TRACEROUTE@,$PATH_TO_TRACEROUTE,;t t
 s,@PACKDIR@,$PACKDIR,;t t
 s,@VERSION@,$VERSION,;t t
@@ -8591,7 +8599,7 @@ perl subst html/config.inc.php
 echo ""
 echo "Creating sample config files in sample-config/ ..."
 
-perl subst sample-config/nagios.cfg
+perl subst sample-config/icinga.cfg
 perl subst sample-config/cgi.cfg
 perl subst sample-config/resource.cfg
 perl subst sample-config/httpd.conf
@@ -8619,10 +8627,10 @@ echo ""
 echo " General Options:"
 echo " -------------------------"
 
-echo "$as_me:$LINENO: result:         Nagios executable:  $nagios_name" >&5
-echo "${ECHO_T}        Nagios executable:  $nagios_name" >&6
-echo "$as_me:$LINENO: result:         Nagios user/group:  $nagios_user,$nagios_grp" >&5
-echo "${ECHO_T}        Nagios user/group:  $nagios_user,$nagios_grp" >&6
+echo "$as_me:$LINENO: result:         Icinga executable:  $icinga_name" >&5
+echo "${ECHO_T}        Icinga executable:  $icinga_name" >&6
+echo "$as_me:$LINENO: result:         Icinga user/group:  $icinga_user,$icinga_grp" >&5
+echo "${ECHO_T}        Icinga user/group:  $icinga_user,$icinga_grp" >&6
 echo "$as_me:$LINENO: result:        Command user/group:  $command_user,$command_grp" >&5
 echo "${ECHO_T}       Command user/group:  $command_user,$command_grp" >&6
 if test x$USEPERL = xyes; then

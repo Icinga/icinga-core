@@ -9,21 +9,21 @@ case "$1" in
 	solaris)
 		LD_RUN_PATH=/usr/lib:/usr/local/lib
 		autoreconf
-		PATH=.:..:$PATH configure --with-cgiurl=/nagios/cgi-bin \
---with-htmurl=/nagios \
---with-lockfile=/var/run/nagios.pid \
---with-nagios-user=nagios \
---with-nagios-grp=nagios \
---with-command-user=nagios \
+		PATH=.:..:$PATH configure --with-cgiurl=/icinga/cgi-bin \
+--with-htmurl=/icinga \
+--with-lockfile=/var/run/icinga.pid \
+--with-icinga-user=icinga \
+--with-icinga-grp=icinga \
+--with-command-user=icinga \
 --with-command-grp=www \
 --prefix=/usr/local \
 --exec-prefix=/usr/local/sbin \
 --bindir=/usr/local/sbin \
---sbindir=/usr/local/lib/nagios/cgi \
---libexecdir=/usr/local/lib/nagios/plugins \
---datadir=/usr/local/share/nagios \
---sysconfdir=/etc/nagios \
---localstatedir=/var/log/nagios \
+--sbindir=/usr/local/lib/icinga/cgi \
+--libexecdir=/usr/local/lib/icinga/plugins \
+--datadir=/usr/local/share/icinga \
+--sysconfdir=/etc/icinga \
+--localstatedir=/var/log/icinga \
 --with-mail=/usr/bin/mailx
 		make pkgclean
 		make all

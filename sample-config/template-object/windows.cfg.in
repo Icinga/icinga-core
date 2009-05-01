@@ -4,7 +4,7 @@
 # Last Modified: 06-13-2007
 #
 # NOTES: This config file assumes that you are using the sample configuration
-#	 files that get installed with the Nagios quickstart guide.
+#	 files that get installed with the Icinga quickstart guide.
 #
 ###############################################################################
 

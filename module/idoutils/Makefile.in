@@ -1,7 +1,7 @@
 ###############################
-# Makefile for NDO
+# Makefile for IDOUtils 
 #
-# Last Modified: 10-03-2007
+# Last Modified: 05-10-2009
 ###############################
 
 
@@ -32,7 +32,7 @@ distclean: clean
 	rm -f config.log config.status config.cache $(SRC_INCLUDE)/config.h
 	rm -f Makefile
 	rm -f init-script.suse subst
-	rm -f config/ndo2db.cfg-sample config/ndomod.cfg-sample config/nagios.cfg config/misccommands.cfg
+	rm -f config/ido2db.cfg-sample config/idomod.cfg-sample config/icinga.cfg config/misccommands.cfg
 
 devclean: distclean
 
@@ -41,6 +41,6 @@ install-idoutils: install
 install: 
 	cd $(SRC_BASE) && $(MAKE) $@
 #	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
-#	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndo2db.cfg-sample $(DESTDIR)$(CFGDIR)
-#	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndomod.cfg-sample $(DESTDIR)$(CFGDIR)
+#	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ido2db.cfg-sample $(DESTDIR)$(CFGDIR)
+#	$(INSTALL) -m 774 $(INSTALL_OPTS) config/idomod.cfg-sample $(DESTDIR)$(CFGDIR)
 
