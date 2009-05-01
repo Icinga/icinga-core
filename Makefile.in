@@ -249,6 +249,13 @@ install-webconf:
 	@echo "*** Nagios/Apache conf file installed ***"
 	@echo ""
 
+install-idoutils:
+	cd $(SRC_MODULE)/idoutils/ && $(MAKE) install
+
+	@echo ""
+	@echo "*** IDOUtils installed ***"
+	@echo ""
+
 install-init: install-daemoninit
 
 install-daemoninit:

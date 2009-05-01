@@ -25,7 +25,8 @@ STRIP=@STRIP@
 
 CP=@CP@
 
-all:	helloworld.o idoutils
+all:	helloworld.o
+	cd idoutils && $(MAKE)
 
 helloworld.o: helloworld.c
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o helloworld.o helloworld.c $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS)

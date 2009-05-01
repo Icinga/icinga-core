@@ -17,6 +17,7 @@ BINDIR=@bindir@
 LIBEXECDIR=@libexecdir@
 CGIDIR=@sbindir@
 INSTALL=@INSTALL@
+INSTALL_OPTS=@INSTALL_OPTS@
 
 CC=@CC@
 

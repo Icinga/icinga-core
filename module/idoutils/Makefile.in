@@ -36,9 +36,11 @@ distclean: clean
 
 devclean: distclean
 
+install-idoutils: install
+
 install: 
 	cd $(SRC_BASE) && $(MAKE) $@
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndo2db.cfg-sample $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndomod.cfg-sample $(DESTDIR)$(CFGDIR)
+#	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
+#	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndo2db.cfg-sample $(DESTDIR)$(CFGDIR)
+#	$(INSTALL) -m 774 $(INSTALL_OPTS) config/ndomod.cfg-sample $(DESTDIR)$(CFGDIR)
 
