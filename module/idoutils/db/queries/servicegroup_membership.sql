@@ -1,0 +1,16 @@
+SELECT 
+icinga_instances.instance_id
+,icinga_instances.instance_name
+,icinga_servicegroups.servicegroup_id
+,icinga_servicegroups.servicegroup_object_id
+,obj1.name1 AS servicegroup_name
+,icinga_servicegroups.alias AS servicegroup_alias
+,icinga_services.service_object_id 
+,obj2.name1 AS host_name
+,obj2.name2 AS service_description
+FROM `icinga_servicegroups` 
+INNER JOIN icinga_servicegroup_members ON icinga_servicegroups.servicegroup_id=icinga_servicegroup_members.servicegroup_id 
+INNER JOIN icinga_services ON icinga_servicegroup_members.service_object_id=icinga_services.service_object_id
+INNER JOIN icinga_objects as obj1 ON icinga_servicegroups.servicegroup_object_id=obj1.object_id
+INNER JOIN icinga_objects as obj2 ON icinga_servicegroup_members.service_object_id=obj2.object_id
+INNER JOIN icinga_instances ON icinga_servicegroups.instance_id=icinga_instances.instance_id
