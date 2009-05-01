@@ -8615,6 +8615,12 @@ perl subst sample-config/template-object/windows.cfg
 perl subst sample-config/template-object/printer.cfg
 perl subst sample-config/template-object/switch.cfg
 
+echo ""
+echo "Creating sample config files in module/icoutils/config/ ..."
+
+perl subst module/idoutils/config/icinga.cfg
+perl subst module/idoutils/config/ido2db.cfg-sample
+perl subst module/idoutils/config/idomod.cfg-sample
 
 
 
