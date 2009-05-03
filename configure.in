@@ -107,7 +107,7 @@ AC_SUBST(SOCKETLIBS)
 AC_CHECK_FUNCS(initgroups setenv strdup strstr strtoul unsetenv)
 
 dnl Checks for libdbi
-AC_CHECK_LIB([dbi], [main],DBLIBS="$DBCFLAGS -ldbi" , [AC_MSG_ERROR([ERROR - We realy need a libdbi to link against])] )
+AC_CHECK_LIB([dbi], [main],DBLIBS="$DBCFLAGS -ldbi" , [AC_MSG_ERROR([ERROR - We really need a libdbi to link against])] )
 AC_SUBST(DBLIBS)
 
 dnl Check for getopt_long (Solaris)

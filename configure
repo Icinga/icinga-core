@@ -4927,8 +4927,8 @@ echo "${ECHO_T}$ac_cv_lib_dbi_main" >&6
 if test $ac_cv_lib_dbi_main = yes; then
   DBLIBS="$DBCFLAGS -ldbi"
 else
-  { { echo "$as_me:$LINENO: error: ERROR - We realy need a libdbi to link against" >&5
-echo "$as_me: error: ERROR - We realy need a libdbi to link against" >&2;}
+  { { echo "$as_me:$LINENO: error: ERROR - We really need a libdbi to link against" >&5
+echo "$as_me: error: ERROR - We really need a libdbi to link against" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
