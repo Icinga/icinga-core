@@ -198,7 +198,7 @@ CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" \
 	--bindir=%{_prefix}/sbin \
 	--sbindir=%{_prefix}/lib/icinga/cgi \
 	--libexecdir=%{_prefix}/lib/icinga/plugins \
-	--datadir=%{_prefix}/share/icinga \
+	--datarootdir=%{_prefix}/share/icinga \
 	--sysconfdir=/etc/icinga \
 	--localstatedir=/var/log/icinga \
 %if ! %{PERF_EXTERNAL}

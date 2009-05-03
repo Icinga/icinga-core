@@ -106,10 +106,6 @@ AC_CHECK_LIB(socket,socket,SOCKETLIBS="$SOCKETLIBS -lsocket")
 AC_SUBST(SOCKETLIBS)
 AC_CHECK_FUNCS(initgroups setenv strdup strstr strtoul unsetenv)
 
-dnl Checks for libdbi
-AC_CHECK_LIB([dbi], [main],DBLIBS="$DBCFLAGS -ldbi" , [AC_MSG_ERROR([ERROR - We really need a libdbi to link against])] )
-AC_SUBST(DBLIBS)
-
 dnl Check for getopt_long (Solaris)
 AC_CHECK_FUNCS([getopt_long],,AC_CHECK_LIB([iberty],[getopt_long],OTHERLIBS="$OTHERLIBS -liberty"))
 AC_SUBST(OTHERLIBS)
@@ -660,6 +656,18 @@ if test x$USE_EVENTBROKER = xyes; then
 	AC_SUBST(BROKER_H)
 fi
 
+dnl Configure IDOUtils
+USE_IDOUTILS=no
+AC_ARG_ENABLE(idoutils,--enable-idoutils enaables dataase connectivitiy using idoutils,USE_IDOUTILS=$enableval,USE_IDOUTILS=no)
+if test x$USE_IDOUTILS = xyes; then
+	if test x$USE_EVENTBROKER = xno; then
+		AC_MSG_ERROR([--enable-idoutils needs also --enable-event-broker])
+	fi
+	dnl Checks for libdbi
+	AC_MSG_CHECKING(for libdi)
+	AC_CHECK_LIB([dbi], [main],DBLIBS="$DBCFLAGS -ldbi" , [AC_MSG_ERROR([ERROR - We really need a libdbi to link against])] )
+	AC_SUBST(DBLIBS)
+fi
 
 USEPERL=no;
 INSTALLPERLSTUFF=no;
@@ -839,6 +847,11 @@ if test x$USE_EVENTBROKER = xyes; then
 AC_MSG_RESULT([             Event Broker:  yes])
 else
 AC_MSG_RESULT([             Event Broker:  no])
+fi
+if test x$USE_IDOUTILS = xyes; then
+AC_MSG_RESULT([           Build IDOUtils:  yes])
+else
+AC_MSG_RESULT([           Build IDOUtils:  no])
 fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
