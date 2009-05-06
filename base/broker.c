@@ -25,7 +25,7 @@
 #include "../include/config.h"
 #include "../include/common.h"
 
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 #include "../include/nebcallbacks.h"
 #include "../include/nebstructs.h"

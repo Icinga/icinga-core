@@ -19,7 +19,7 @@
 #include "../include/dbhandlers.h"
 
 /* Nagios header files */
-#include "../../../include/nagios.h"
+#include "../../../include/icinga.h"
 #include "../../../include/broker.h"
 #include "../../../include/comments.h"
 

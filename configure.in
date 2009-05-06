@@ -4,7 +4,7 @@ dnl Disable caching
 define([AC_CACHE_LOAD],)
 define([AC_CACHE_SAVE],)
 
-AC_INIT(base/nagios.c)
+AC_INIT(base/icinga.c)
 AC_CONFIG_HEADER(include/config.h include/snprintf.h include/cgiutils.h)
 AC_PREFIX_DEFAULT(/usr/local/icinga)
 

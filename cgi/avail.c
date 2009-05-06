@@ -1,9 +1,11 @@
 /**************************************************************************
  *
- * AVAIL.C -  Nagios Availability CGI
+ * AVAIL.C -  Icinga Availability CGI
  *
  * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-15-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified: 05-05-2009
  *
  * License:
  * 
@@ -1092,7 +1094,7 @@ void document_header(int use_stylesheet){
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<title>\n");
-	printf("Nagios Availability\n");
+	printf("%s Availability\n", PROGRAM_VERSION);
 	printf("</title>\n");
 
 	if(use_stylesheet==TRUE){
@@ -4047,7 +4049,7 @@ void display_host_availability(void){
 
 		/* indeterminate times */
 		printf("<tr CLASS='dataOdd'><td CLASS='dataOdd' rowspan=3>Undetermined</td>");
-		printf("<td CLASS='dataOdd'>Nagios Not Running</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n",time_indeterminate_notrunning_string,percent_time_indeterminate_notrunning);
+		printf("<td CLASS='dataOdd'>%s Not Running</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
 		printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Insufficient Data</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n",time_indeterminate_nodata_string,percent_time_indeterminate_nodata);
 		printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Total</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n",time_indeterminate_string,percent_time_indeterminate);
 
@@ -4550,7 +4552,7 @@ void display_service_availability(void){
 		printf("<td CLASS='dataEven'>Unscheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_unscheduled_string,percent_time_indeterminate_unscheduled);
 		printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Scheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_scheduled_string,percent_time_indeterminate_scheduled);
 		*/
-		printf("<td CLASS='dataEven'>Nagios Not Running</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_notrunning_string,percent_time_indeterminate_notrunning);
+		printf("<td CLASS='dataEven'>%s Not Running</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
 		printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Insufficient Data</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_nodata_string,percent_time_indeterminate_nodata);
 		printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Total</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_string,percent_time_indeterminate);
 

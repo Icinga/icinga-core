@@ -10,7 +10,7 @@ $link_target="main";
 
 <head>
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-<TITLE>Nagios</TITLE>
+<TITLE>Icinga</TITLE>
 <link href="stylesheets/common.css" type="text/css" rel="stylesheet">
 </head>
 
@@ -19,7 +19,7 @@ $link_target="main";
 
 
 <div class="navbarlogo">
-<a href="http://www.nagios.org" target="_blank"><img src="images/sblogo.png" border="0" alt="Nagios"></a>
+<center><a href="http://www.nagios.org" target="_blank"><img src="images/sblogo.png" border="0" alt="Icinga"></a></center>
 </div>
 
 <div class="navsection">

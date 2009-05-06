@@ -26,7 +26,7 @@
 #define _BROKER_H
 
 #include "config.h"
-#include "nagios.h"
+#include "icinga.h"
 
 #ifdef __cplusplus
   extern "C" {

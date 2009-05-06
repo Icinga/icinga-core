@@ -176,11 +176,11 @@ xretention-base.o: $(SRC_XDATA)/$(XRDC) $(SRC_XDATA)/$(XRDH)
 
 ########## NAGIOS ##########
 
-icinga: nagios.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/nagios.h $(SRC_INCLUDE)/locations.h
-	$(CC) $(CFLAGS) -o $@ nagios.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
+icinga: icinga.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/icinga.h $(SRC_INCLUDE)/locations.h
+	$(CC) $(CFLAGS) -o $@ icinga.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
 
-icingastats: nagiostats.c $(SRC_INCLUDE)/locations.h
-	$(CC) $(CFLAGS) -o $@ nagiostats.c $(LDFLAGS) $(MATHLIBS) $(LIBS)
+icingastats: icingastats.c $(SRC_INCLUDE)/locations.h
+	$(CC) $(CFLAGS) -o $@ icingastats.c $(LDFLAGS) $(MATHLIBS) $(LIBS)
 
 $(OBJS): $(SRC_INCLUDE)/locations.h
 

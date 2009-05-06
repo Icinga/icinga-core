@@ -1,9 +1,10 @@
 /*****************************************************************************
  *
- * LOGGING.C - Log file functions for use with Nagios
+ * LOGGING.C - Log file functions for use with Icinga
  *
  * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-28-2007
+ * Copyright (c) 2009 Hendrik Baecker (andurin@process-zero.de)
+ * Last Modified: 05-05-2009
  *
  * License:
  *
@@ -26,7 +27,7 @@
 #include "../include/common.h"
 #include "../include/statusdata.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 
 
@@ -156,7 +157,7 @@ int write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time
         }
 
 
-/* write something to the nagios log file */
+/* write something to the icinga log file */
 int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp){
 	FILE *fp=NULL;
 	time_t log_time=0L;
@@ -227,7 +228,7 @@ int write_to_syslog(char *buffer, unsigned long data_type){
 	}
 
 
-/* write a service problem/recovery to the nagios log file */
+/* write a service problem/recovery to the icinga log file */
 int log_service_event(service *svc){
 	char *temp_buffer=NULL;
 	char *processed_buffer=NULL;
@@ -393,7 +394,7 @@ int rotate_log_file(time_t rotation_time){
 	t=localtime(&rotation_time);
 
 	/* get the archived filename to use */
-	asprintf(&log_archive,"%s%snagios-%02d-%02d-%d-%02d.log",log_archive_path,(log_archive_path[strlen(log_archive_path)-1]=='/')?"":"/",t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
+	asprintf(&log_archive,"%s%s%s-%02d-%02d-%d-%02d.log", log_archive_path, (log_archive_path[strlen(log_archive_path)-1]=='/')?"":"/", PROGRAM_NAME, t->tm_mon+1, t->tm_mday, t->tm_year+1900, t->tm_hour);
 
 	/* rotate the log file */
 	rename_result=my_rename(log_file,log_archive);

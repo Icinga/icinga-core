@@ -27,7 +27,7 @@
 
 #include "config.h"
 #include "objects.h"
-#include "nagios.h"
+#include "icinga.h"
 
 #ifdef __cplusplus
   extern "C" {

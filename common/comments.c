@@ -34,7 +34,7 @@
 #endif
 
 #ifdef NSCORE
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 #endif
 

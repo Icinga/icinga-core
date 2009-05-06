@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-<title>Nagios</title>
+<title>Icinga</title>
 <link rel="shortcut icon" href="images/favicon.ico" type="image/ico">
 </head>
 
@@ -13,10 +13,11 @@
 
 <noframes>
 <!-- This page requires a web browser which supports frames. --> 
-<h2>Nagios</h2>
+<h2>Icinga</h2>
 <p align="center">
-<a href="http://www.nagios.org/">www.nagios.org</a><br>
+<a href="http://www.icinga.org/">www.icinga.org</a><br>
 Copyright (c) 1999-2009 Ethan Galstad<br>
+Copyright (c) 2009 Icinga Development Team <br>
 </p>
 <p>
 <i>Note: These pages require a browser which supports frames</i>

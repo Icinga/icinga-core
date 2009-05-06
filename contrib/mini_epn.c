@@ -5,7 +5,7 @@
 
 #include <EXTERN.h>
 #include <perl.h>
-#include "epn_nagios.h"
+#include "epn_icinga.h"
 
 static PerlInterpreter *my_perl = NULL;
 

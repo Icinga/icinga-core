@@ -1,9 +1,11 @@
 /*****************************************************************************
  *
- * STATUSWRL.C - Nagios 3-D (VRML) Network Status View
+ * STATUSWRL.C - Icinga 3-D (VRML) Network Status View
  *
  * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   07-16-2007
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified:   05-05-2009
  *
  * Description:
  *
@@ -790,7 +792,7 @@ void write_global_vrml_data(void){
 	/* write world information */
 	printf("\n");
 	printf("WorldInfo{\n");
-	printf("title \"Nagios 3-D Network Status View\"\n");
+	printf("title \"%s 3-D Network Status View\"\n", PROGRAM_NAME);
 	printf("info [\"Copyright (c) 1999-2002 Ethan Galstad\"\n");
         printf("\"egalstad@nagios.org\"]\n");
 	printf("}\n");
@@ -1136,7 +1138,7 @@ void draw_process_icon(void){
 	printf("}\n");
 
 	printf("]\n");
-	printf("description \"View Nagios Process Information\"\n");
+	printf("description \"View %s Process Information\"\n", PROGRAM_NAME);
 	printf("url \"%s?type=%d\"\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
 	printf("}\n");
 

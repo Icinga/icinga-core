@@ -1,9 +1,10 @@
 /**************************************************************************
  *
- * EXTINFO.C -  Nagios Extended Information CGI
+ * EXTINFO.C -  Icinga Extended Information CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 01-23-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ * Last Modified: 05-05-2009
  *
  * License:
  * 
@@ -219,7 +220,7 @@ int main(void){
 		else if(display_type==DISPLAY_SCHEDULING_QUEUE)
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Check Scheduling Queue");
 		else
-			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Nagios Process Information");
+			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Icinga Process Information");
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		display_info_table(temp_buffer,TRUE,&current_authdata);
 
@@ -820,7 +821,7 @@ void show_process_info(void){
 	printf("<TR><TD CLASS='dataVar'>Last Log File Rotation:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",(last_log_rotation==(time_t)0)?"N/A":date_time);
 
 	/* PID */
-	printf("<TR><TD CLASS='dataVar'>Nagios PID</TD><TD CLASS='dataval'>%d</TD></TR>\n",nagios_pid);
+	printf("<TR><TD CLASS='dataVar'>Icinga PID</TD><TD CLASS='dataval'>%d</TD></TR>\n",nagios_pid);
 
 	/* notifications enabled */
 	printf("<TR><TD CLASS='dataVar'>Notifications Enabled?</TD><TD CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(enable_notifications==TRUE)?"ENABLED":"DISABLED",(enable_notifications==TRUE)?"YES":"NO");
@@ -878,8 +879,8 @@ void show_process_info(void){
 		printf("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 CLASS='command'>\n");
 
 #ifndef DUMMY_INSTALL
-		printf("<TR CLASS='command'><TD><img src='%s%s' border=0 ALT='Shutdown the Nagios Process' TITLE='Shutdown the Nagios Process'></td><td CLASS='command'><a href='%s?cmd_typ=%d'>Shutdown the Nagios process</a></td></tr>\n",url_images_path,STOP_ICON,COMMAND_CGI,CMD_SHUTDOWN_PROCESS);
-		printf("<TR CLASS='command'><TD><img src='%s%s' border=0 ALT='Restart the Nagios Process' TITLE='Restart the Nagios Process'></td><td CLASS='command'><a href='%s?cmd_typ=%d'>Restart the Nagios process</a></td></tr>\n",url_images_path,RESTART_ICON,COMMAND_CGI,CMD_RESTART_PROCESS);
+		printf("<TR CLASS='command'><TD><img src='%s%s' border=0 ALT='Shutdown the Icinga Process' TITLE='Shutdown the Icinga Process'></td><td CLASS='command'><a href='%s?cmd_typ=%d'>Shutdown the Icinga process</a></td></tr>\n",url_images_path,STOP_ICON,COMMAND_CGI,CMD_SHUTDOWN_PROCESS);
+		printf("<TR CLASS='command'><TD><img src='%s%s' border=0 ALT='Restart the Icinga Process' TITLE='Restart the Icinga Process'></td><td CLASS='command'><a href='%s?cmd_typ=%d'>Restart the Icinga process</a></td></tr>\n",url_images_path,RESTART_ICON,COMMAND_CGI,CMD_RESTART_PROCESS);
 #endif
 
 		if(enable_notifications==TRUE)
@@ -941,11 +942,11 @@ void show_process_info(void){
 		printf("</TABLE>\n");
 	        }
 	else{
-		printf("<DIV ALIGN=CENTER CLASS='infoMessage'>It appears as though Nagios is not running, so commands are temporarily unavailable...\n");
+		printf("<DIV ALIGN=CENTER CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...\n");
 		if(!strcmp(nagios_check_command,"")){
 			printf("<BR><BR>\n");
 			printf("Hint: It looks as though you have not defined a command for checking the process state by supplying a value for the <b>nagios_check_command</b> option in the CGI configuration file.<BR>\n");
-			printf("Read the documentation for more information on checking the status of the Nagios process in the CGIs.\n");
+			printf("Read the documentation for more information on checking the status of the Icinga process in the CGIs.\n");
 		        }
 		printf("</DIV>\n");
 	        }
@@ -1280,8 +1281,8 @@ void show_host_info(void){
 		printf("</TABLE>\n");
 	        }
 	else{
-		printf("<DIV ALIGN=CENTER CLASS='infoMessage'>It appears as though Nagios is not running, so commands are temporarily unavailable...<br>\n");
-		printf("Click <a href='%s?type=%d'>here</a> to view Nagios process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
+		printf("<DIV ALIGN=CENTER CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
+		printf("Click <a href='%s?type=%d'>here</a> to view Icinga process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
 	        }
 	printf("</TD></TR></TABLE>\n");
 
@@ -1618,8 +1619,8 @@ void show_service_info(void){
 		printf("</table>\n");
 	        }
 	else{
-		printf("<DIV CLASS='infoMessage'>It appears as though Nagios is not running, so commands are temporarily unavailable...<br>\n");
-		printf("Click <a href='%s?type=%d'>here</a> to view Nagios process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
+		printf("<DIV CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
+		printf("Click <a href='%s?type=%d'>here</a> to view Icinga process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
 	        }
 
 	printf("</td></tr>\n");
@@ -1716,8 +1717,8 @@ void show_hostgroup_info(void){
 		printf("</TABLE>\n");
 	        }
 	else{
-		printf("<DIV CLASS='infoMessage'>It appears as though Nagios is not running, so commands are temporarily unavailable...<br>\n");
-		printf("Click <a href='%s?type=%d'>here</a> to view Nagios process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
+		printf("<DIV CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
+		printf("Click <a href='%s?type=%d'>here</a> to view Icinga process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
 	        }
 
 	printf("</TD></TR>\n");
@@ -1809,8 +1810,8 @@ void show_servicegroup_info(){
 		printf("</TABLE>\n");
 	        }
 	else{
-		printf("<DIV CLASS='infoMessage'>It appears as though Nagios is not running, so commands are temporarily unavailable...<br>\n");
-		printf("Click <a href='%s?type=%d'>here</a> to view Nagios process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
+		printf("<DIV CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
+		printf("Click <a href='%s?type=%d'>here</a> to view Icinga process information</DIV>\n",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
 	        }
 
 	printf("</TD></TR>\n");

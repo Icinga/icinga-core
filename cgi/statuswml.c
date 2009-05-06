@@ -1,9 +1,11 @@
 /**************************************************************************
  *
- * STATUSWML.C -  Nagios Status CGI for WAP-enabled devices
+ * STATUSWML.C -  Icinga Status CGI for WAP-enabled devices
  *
  * Copyright (c) 2001-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-15-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified: 05-05-2009
  *
  * License:
  * 
@@ -341,10 +343,10 @@ void display_index(void){
 
 
 	/**** MAIN MENU SCREEN (CARD 1) ****/
-	printf("<card id='card1' title='Nagios WAP Interface'>\n");
+	printf("<card id='card1' title='%s WAP Interface'>\n", PROGRAM_NAME);
 	printf("<p align='center' mode='nowrap'>\n");
 
-	printf("<b>Nagios</b><br/><b>WAP Interface</b><br/>\n");
+	printf("<b>%s</b><br/><b>WAP Interface</b><br/>\n", PROGRAM_NAME);
 
 	printf("<b><anchor title='Quick Stats'>Quick Stats<go href='%s'><postfield name='style' value='quickstats'/></go></anchor></b><br/>\n",STATUSWML_CGI);
 
@@ -388,7 +390,7 @@ void display_index(void){
 	printf("</p>\n");
 
 	printf("<p align='center' mode='wrap'>\n");
-	printf("<b>Nagios %s</b><br/><b>WAP Interface</b><br/>\n",PROGRAM_VERSION);
+	printf("<b>%s %s</b><br/><b>WAP Interface</b><br/>\n", PROGRAM_NAME, PROGRAM_VERSION);
 	printf("Copyright (C) 2001 Ethan Galstad<br/>\n");
 	printf("egalstad@nagios.org<br/><br/>\n");
 	printf("License: <b>GPL</b><br/><br/>\n");
@@ -458,9 +460,9 @@ void display_process(void){
 	        }
 
 	if(nagios_process_state==STATE_OK)
-		printf("Nagios process is running<br/>\n");
+		printf("%s process is running<br/>\n", PROGRAM_NAME);
 	else
-		printf("<b>Nagios process may not be running</b><br/>\n");
+		printf("<b>%s process may not be running</b><br/>\n", PROGRAM_NAME);
 
 	if(enable_notifications==TRUE)
 		printf("Notifications are enabled<br/>\n");

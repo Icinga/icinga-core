@@ -1,9 +1,11 @@
 /***********************************************************************
  *
- * CGIUTILS.C - Common utilities for Nagios CGIs
+ * CGIUTILS.C - Common utilities for Icinga CGIs
  * 
- * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 11-02-2008
+ * Copyright (c) 1999-2008 Ethan Galstad (egalstad@icinga.org)
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified: 05-05-2009
  *
  * License:
  *
@@ -1566,7 +1568,7 @@ void get_log_archive_to_use(int archive,char *buffer,int buffer_length){
 	t=localtime(&this_scheduled_log_rotation);
 
 	/* use the time that the log rotation occurred to figure out the name of the log file */
-	snprintf(buffer,buffer_length,"%snagios-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
+	snprintf(buffer,buffer_length,"%sicinga-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
 	buffer[buffer_length-1]='\x0';
 
 	return;
@@ -1729,7 +1731,7 @@ void display_info_table(char *title,int refresh, authdata *current_authdata){
 	if(refresh==TRUE)
 		printf("Updated every %d seconds<br>\n",refresh_rate);
 
-	printf("Nagios&reg; %s - <A HREF='http://www.nagios.org' TARGET='_new' CLASS='homepageURL'>www.nagios.org</A><BR>\n",PROGRAM_VERSION);
+	printf("%s&reg; %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);
 
 	if(current_authdata!=NULL)
 		printf("Logged in as <i>%s</i><BR>\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
@@ -1946,14 +1948,14 @@ void include_ssi_files(char *cgi_name, int type){
 		cgi_ssi_file[x]=tolower(cgi_ssi_file[x]);
 
 	if(type==SSI_HEADER){
-		printf("\n<!-- Produced by Nagios (http://www.nagios.org).  Copyright (c) 1999-2007 Ethan Galstad. -->\n");
+		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad.\nCopyright (c) 2009 Icinga Development Team (www.icinga.org) -->\n", PROGRAM_NAME, PROGRAM_NAME);
 		include_ssi_file(common_ssi_file);
 		include_ssi_file(cgi_ssi_file);
 	        }
 	else{
 		include_ssi_file(cgi_ssi_file);
 		include_ssi_file(common_ssi_file);
-		printf("\n<!-- Produced by Nagios (http://www.nagios.org).  Copyright (c) 1999-2007 Ethan Galstad. -->\n");
+		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad.\nCopyright (c) 2009 Icinga Development Team (www.icinga.org) -->\n", PROGRAM_NAME, PROGRAM_NAME);
 	        }
 
 	return;
@@ -2037,14 +2039,14 @@ void cgi_config_file_error(char *config_file){
 	printf("<P>\n");
 	printf("<OL>\n");
 
-	printf("<LI>Make sure you've installed a CGI config file in its proper location.  See the error message about for details on where the CGI is expecting to find the configuration file.  A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the Nagios source code distribution.\n");
+	printf("<LI>Make sure you've installed a CGI config file in its proper location.  See the error message about for details on where the CGI is expecting to find the configuration file.  A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
 	printf("<LI>Make sure the user your web server is running as has permission to read the CGI config file.\n");
 
 	printf("</OL>\n");
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing and configuring Nagios thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.nagios.org'>http://www.nagios.org</a>.\n");
+	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2066,14 +2068,14 @@ void main_config_file_error(char *config_file){
 	printf("<P>\n");
 	printf("<OL>\n");
 
-	printf("<LI>Make sure you've installed a main config file in its proper location.  See the error message about for details on where the CGI is expecting to find the configuration file.  A sample main configuration file (named <b>nagios.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the Nagios source code distribution.\n");
+	printf("<LI>Make sure you've installed a main config file in its proper location.  See the error message about for details on where the CGI is expecting to find the configuration file.  A sample main configuration file (named <b>icinga.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
 	printf("<LI>Make sure the user your web server is running as has permission to read the main config file.\n");
 
 	printf("</OL>\n");
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing and configuring Nagios thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.nagios.org'>http://www.nagios.org</a>.\n");
+	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2095,13 +2097,13 @@ void object_data_error(void){
 	printf("<OL>\n");
 
 	printf("<LI>Verify configuration options using the <b>-v</b> command-line option to check for errors.\n");
-	printf("<LI>Check the Nagios log file for messages relating to startup or status data errors.\n");
+	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
 
 	printf("</OL>\n");
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing, configuring and running Nagios thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.nagios.org'>http://www.nagios.org</a>.\n");
+	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2116,7 +2118,7 @@ void status_data_error(void){
 	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read host and service status information!</FONT></STRONG></P>\n");
 
 	printf("<P>\n");
-	printf("The most common cause of this error message (especially for new users), is the fact that Nagios is not actually running.  If Nagios is indeed not running, this is a normal error message.  It simply indicates that the CGIs could not obtain the current status of hosts and services that are being monitored.  If you've just installed things, make sure you read the documentation on starting Nagios.\n");
+	printf("The most common cause of this error message (especially for new users), is the fact that %s is not actually running.  If %s is indeed not running, this is a normal error message.  It simply indicates that the CGIs could not obtain the current status of hosts and services that are being monitored.  If you've just installed things, make sure you read the documentation on starting %s.\n", PROGRAM_NAME, PROGRAM_NAME, PROGRAM_NAME);
 	printf("</P>\n");
 
 	printf("<P>\n");
@@ -2126,14 +2128,14 @@ void status_data_error(void){
 	printf("<P>\n");
 	printf("<OL>\n");
 
-	printf("<LI>Check the Nagios log file for messages relating to startup or status data errors.\n");
-	printf("<LI>Always verify configuration options using the <b>-v</b> command-line option before starting or restarting Nagios!\n");
+	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
+	printf("<LI>Always verify configuration options using the <b>-v</b> command-line option before starting or restarting %s!\n", PROGRAM_NAME);
 
 	printf("</OL>\n");
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing, configuring and running Nagios thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.nagios.org'>http://www.nagios.org</a>.\n");
+	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;

@@ -116,19 +116,19 @@ status_update_interval=10
 
 
 
-# NAGIOS USER
+# ICINGA USER
 # This determines the effective user that Icinga should run as.  
 # You can either supply a username or a UID.
 
-nagios_user=@icinga_user@
+icinga_user=@icinga_user@
 
 
 
-# NAGIOS GROUP
+# ICINGA GROUP
 # This determines the effective group that Icinga should run as.  
 # You can either supply a group name or a GID.
 
-nagios_group=@icinga_grp@
+icinga_group=@icinga_grp@
 
 
 

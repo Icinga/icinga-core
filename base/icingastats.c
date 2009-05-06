@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * NAGIOSTATS.C - Displays Nagios Statistics
+ * ICINGASTATS.C - Displays Nagios Statistics
  *
  * Program: Nagiostats
  * Version: 3.1.0
@@ -28,7 +28,7 @@
 
 #include "../include/config.h"
 #include "../include/common.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/locations.h"
 
 #define STATUS_NO_DATA             0
@@ -154,7 +154,7 @@ int active_hosts_checked_last_1hour=0;
 
 int active_host_checks_last_1min=0;
 int active_host_checks_last_5min=0;
-int active_host_checks_last_15min=0;		
+int active_host_checks_last_15min=0;
 int active_ondemand_host_checks_last_1min=0;
 int active_ondemand_host_checks_last_5min=0;
 int active_ondemand_host_checks_last_15min=0;
@@ -176,7 +176,7 @@ int serial_host_checks_last_15min=0;
 
 int active_service_checks_last_1min=0;
 int active_service_checks_last_5min=0;
-int active_service_checks_last_15min=0;		
+int active_service_checks_last_15min=0;
 int active_ondemand_service_checks_last_1min=0;
 int active_ondemand_service_checks_last_5min=0;
 int active_ondemand_service_checks_last_15min=0;
@@ -248,7 +248,7 @@ int main(int argc, char **argv){
 			break;
 
 		switch(c){
-			
+
 		case '?':
 		case 'h':
 			display_help=TRUE;
@@ -284,8 +284,9 @@ int main(int argc, char **argv){
 	        }
 
 	if(mrtg_mode==FALSE){
-		printf("\nNagios Stats %s\n",PROGRAM_VERSION);
+		printf("\n%s Stats %s\n", PROGRAM_NAME, PROGRAM_VERSION);
 		printf("Copyright (c) 2003-2008 Ethan Galstad (www.nagios.org)\n");
+		printf("Copyright (c) 2009 Hendrik Baecker (andurin@process-zero.de)\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
 	        }
@@ -318,8 +319,8 @@ int main(int argc, char **argv){
 		printf(" -h, --help         display usage information and exit.\n");
 		printf("\n");
 		printf("Input file:\n");
-		printf(" -c, --config=FILE  specifies location of main Nagios config file.\n");
-		printf(" -s, --statsfile=FILE  specifies alternate location of file to read Nagios\n");
+		printf(" -c, --config=FILE  specifies location of main %s config file.\n", PROGRAM_NAME);
+		printf(" -s, --statsfile=FILE  specifies alternate location of file to read %s\n", PROGRAM_NAME);
 		printf("                       performance data from.\n");
 		printf("\n");
 		printf("Output:\n");
@@ -331,13 +332,13 @@ int main(int argc, char **argv){
 		printf("                    Defaults to a newline.\n");
 		printf("\n");
 		printf("MRTG DATA VARIABLES (-d option):\n");
-		printf(" PROGRUNTIME          string with time Nagios process has been running.\n");
-		printf(" PROGRUNTIMETT        time Nagios process has been running (time_t format).\n");
+		printf(" PROGRUNTIME          string with time %s process has been running.\n", PROGRAM_NAME);
+		printf(" PROGRUNTIMETT        time %s process has been running (time_t format).\n", PROGRAM_NAME);
 		printf(" STATUSFILEAGE        string with age of status data file.\n");
 		printf(" STATUSFILEAGETT      string with age of status data file (time_t format).\n");
-		printf(" NAGIOSVERSION        string with Nagios version.\n");
-		printf(" NAGIOSPID            pid number of Nagios deamon.\n");
-		printf(" NAGIOSVERPID         string with Nagios version and PID.\n");
+		printf(" %sVERSION        string with %s version.\n", PROGRAM_NAME_UC, PROGRAM_NAME);
+		printf(" %sPID            pid number of %s deamon.\n", PROGRAM_NAME_UC, PROGRAM_NAME);
+		printf(" %sVERPID         string with %s version and PID.\n", PROGRAM_NAME_UC, PROGRAM_NAME);
 		printf(" TOTCMDBUF            total number of external command buffer slots available.\n");
 		printf(" USEDCMDBUF           number of external command buffer slots currently in use.\n");
 		printf(" HIGHCMDBUF           highest number of external command buffer slots ever in use.\n");
@@ -473,12 +474,12 @@ int display_mrtg_values(void){
 			time_difference=(current_time-status_creation_date);
 			printf("%lu%s",time_difference,mrtg_delimiter);
 			}
-		else if(!strcmp(temp_ptr,"NAGIOSVERSION"))
+		else if(!strcmp(temp_ptr,"ICINGAVERSION"))
 			printf("%s%s",status_version,mrtg_delimiter);
-		else if(!strcmp(temp_ptr,"NAGIOSPID"))
+		else if(!strcmp(temp_ptr,"ICINGAPID"))
 			printf("%lu%s",nagios_pid,mrtg_delimiter);
-		else if(!strcmp(temp_ptr,"NAGIOSVERPID"))
-			printf("Nagios %s (pid=%lu)%s",status_version,nagios_pid,mrtg_delimiter);
+		else if(!strcmp(temp_ptr,"ICINGAVERPID"))
+			printf("%s %s (pid=%lu)%s", PROGRAM_NAME, status_version, nagios_pid, mrtg_delimiter);
 
 
 		else if(!strcmp(temp_ptr,"TOTCMDBUF"))
@@ -788,7 +789,7 @@ int display_stats(void){
 	time_difference=(current_time-program_start);
 	get_time_breakdown(time_difference,&days,&hours,&minutes,&seconds);
 	printf("Program Running Time:                   %dd %dh %dm %ds\n",days,hours,minutes,seconds);
-	printf("Nagios PID:                             %lu\n",nagios_pid);
+	printf("%s PID:                             %lu\n", PROGRAM_NAME, nagios_pid);
 	printf("Used/High/Total Command Buffers:        %d / %d / %d\n",used_external_command_buffer_slots,high_external_command_buffer_slots,total_external_command_buffer_slots);
 	printf("\n");
 	printf("Total Services:                         %d\n",status_service_entries);
@@ -889,7 +890,7 @@ int read_config_file(void){
 				free(status_file);
 			status_file=strdup(val);
 		        }
-			
+
 	        }
 
 	fclose(fp);
@@ -1222,7 +1223,7 @@ int read_status_file(void){
 					used_external_command_buffer_slots=atoi(val);
 				else if(!strcmp(var,"high_external_command_buffer_slots"))
 					high_external_command_buffer_slots=atoi(val);
-				else if(!strcmp(var,"nagios_pid"))
+				else if(!strcmp(var,"icinga_pid"))
 					nagios_pid=strtoul(val,NULL,10);
 				else if(!strcmp(var,"active_scheduled_host_check_stats")){
 					if((temp_ptr=strtok(val,",")))
@@ -1418,7 +1419,7 @@ int read_nagiostats_file(void){
 			used_external_command_buffer_slots=atoi(val);
 		else if(!strcmp(var,"high_external_command_buffer_slots"))
 			high_external_command_buffer_slots=atoi(val);
-		else if(!strcmp(var,"nagios_pid"))
+		else if(!strcmp(var,"icinga_pid"))
 			nagios_pid=strtoul(val,NULL,10);
 		else if(!strcmp(var,"active_scheduled_host_check_stats")){
 			if((temp_ptr=strtok(val,",")))

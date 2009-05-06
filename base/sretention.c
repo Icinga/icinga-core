@@ -28,7 +28,7 @@
 #include "../include/common.h"
 #include "../include/objects.h"
 #include "../include/statusdata.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/sretention.h"
 #include "../include/broker.h"
 

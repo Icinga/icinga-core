@@ -28,7 +28,7 @@
 #include "../include/statusdata.h"
 #include "../include/comments.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/netutils.h"
 #include "../include/broker.h"
 #include "../include/nebmods.h"
@@ -36,7 +36,7 @@
 
 
 #ifdef EMBEDDEDPERL
-#include "../include/epn_nagios.h"
+#include "../include/epn_icinga.h"
 static PerlInterpreter *my_perl=NULL;
 int use_embedded_perl=TRUE;
 #endif
@@ -153,7 +153,6 @@ extern int      bare_update_check;
 extern time_t   last_update_check;
 extern char     *last_program_version;
 extern int      update_available;
-extern char     *last_program_version;
 extern char     *new_program_version;
 
 extern int      use_aggressive_host_checking;
@@ -2060,7 +2059,7 @@ int daemon_init(void){
 	if(fcntl(lockfile,F_SETLK,&lock)<0){
 		if(errno==EACCES || errno==EAGAIN){
 			fcntl(lockfile,F_GETLK,&lock);
-			logit(NSLOG_RUNTIME_ERROR,TRUE,"Lockfile '%s' looks like its already held by another instance of Nagios (PID %d).  Bailing out...",lock_file,(int)lock.l_pid);
+			logit(NSLOG_RUNTIME_ERROR,TRUE,"Lockfile '%s' looks like its already held by another instance of %s (PID %d).  Bailing out...", PROGRAM_NAME, lock_file, (int)lock.l_pid);
 		        }
 		else
 			logit(NSLOG_RUNTIME_ERROR,TRUE,"Cannot lock lockfile '%s': %s. Bailing out...",lock_file,strerror(errno));
@@ -2885,7 +2884,7 @@ int open_command_file(void){
 		/* create the external command file as a named pipe (FIFO) */
 		if((result=mkfifo(command_file,S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP))!=0){
 
-			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Could not create external command file '%s' as named pipe: (%d) -> %s.  If this file already exists and you are sure that another copy of Nagios is not running, you should delete this file.\n",command_file,errno,strerror(errno));
+			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Could not create external command file '%s' as named pipe: (%d) -> %s.  If this file already exists and you are sure that another copy of %s is not running, you should delete this file.\n", command_file, errno, strerror(errno), PROGRAM_NAME);
 			return ERROR;
 		        }
 	        }
@@ -4419,7 +4418,7 @@ int check_for_nagios_updates(int force, int reschedule){
 
 /* checks for updates at api.nagios.org */
 int query_update_api(void){
-	char *api_server="api.nagios.org";
+	char *api_server="api.icinga.org";
 	char *api_path="/versioncheck/";
 	char *api_query=NULL;
 	char *api_query_opts=NULL;
@@ -4451,7 +4450,7 @@ int query_update_api(void){
 		}
 
 	/* generate the query */
-	asprintf(&api_query,"v=1&product=nagios&tinycheck=1&stableonly=1");
+	asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1");
 	if(bare_update_check==FALSE)
 		asprintf(&api_query,"%s&version=%s%s",api_query,PROGRAM_VERSION,(api_query_opts==NULL)?"":api_query_opts);
 
@@ -4720,8 +4719,8 @@ int reset_variables(void){
 	log_archive_path=(char *)strdup(DEFAULT_LOG_ARCHIVE_PATH);
 	debug_file=(char *)strdup(DEFAULT_DEBUG_FILE);
 
-	nagios_user=(char *)strdup(DEFAULT_NAGIOS_USER);
-	nagios_group=(char *)strdup(DEFAULT_NAGIOS_GROUP);
+	nagios_user=(char *)strdup(DEFAULT_ICINGA_USER);
+	nagios_group=(char *)strdup(DEFAULT_ICINGA_GROUP);
 
 	use_regexp_matches=FALSE;
 	use_true_regexp_matching=FALSE;

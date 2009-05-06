@@ -26,7 +26,7 @@
 #include "../include/common.h"
 #include "../include/nebmods.h"
 #include "../include/neberrors.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 
 
 #ifdef USE_EVENT_BROKER

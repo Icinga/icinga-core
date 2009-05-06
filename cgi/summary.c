@@ -1,9 +1,10 @@
 /**************************************************************************
  *
- * SUMMARY.C -  Nagios Alert Summary CGI
+ * SUMMARY.C -  Icinga Alert Summary CGI
  *
  * Copyright (c) 2002-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 01-23-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ * Last Modified: 05-05-2009
  *
  * License:
  * 
@@ -711,7 +712,7 @@ void document_header(int use_stylesheet){
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<title>\n");
-	printf("Nagios Event Summary\n");
+	printf("%s Event Summary\n", PROGRAM_VERSION);
 	printf("</title>\n");
 
 	if(use_stylesheet==TRUE){

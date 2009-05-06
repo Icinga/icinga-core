@@ -29,7 +29,7 @@
 #include "../include/statusdata.h"
 #include "../include/comments.h"
 #ifdef NSCORE
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #else
 #include "../include/cgiutils.h"
 #endif

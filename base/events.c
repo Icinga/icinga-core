@@ -27,7 +27,7 @@
 #include "../include/downtime.h"
 #include "../include/comments.h"
 #include "../include/statusdata.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 #include "../include/sretention.h"
 
@@ -626,7 +626,7 @@ void display_scheduling_info(void){
 
 	printf("Projected scheduling information for host and service checks\n");
 	printf("is listed below.  This information assumes that you are going\n");
-	printf("to start running Nagios with your current config files.\n\n");
+	printf("to start running %s with your current config files.\n\n", PROGRAM_NAME);
 
 	printf("HOST SCHEDULING INFORMATION\n");
 	printf("---------------------------\n");

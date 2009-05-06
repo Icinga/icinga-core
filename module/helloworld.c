@@ -33,7 +33,7 @@
 /* include some Nagios stuff as well */
 #include "../include/config.h"
 #include "../include/common.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 
 /* specify event broker API version (required) */
 NEB_API_VERSION(CURRENT_NEB_API_VERSION);

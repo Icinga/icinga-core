@@ -26,7 +26,7 @@
 
 /* include other Nagios header files for access to functions, data structs, etc. */
 #include "../../../include/common.h"
-#include "../../../include/nagios.h"
+#include "../../../include/icinga.h"
 #include "../../../include/downtime.h"
 #include "../../../include/comments.h"
 #include "../../../include/macros.h"

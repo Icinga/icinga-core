@@ -28,7 +28,7 @@
 #include "../include/statusdata.h"
 #include "../include/downtime.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 #include "../include/perfdata.h"
 
@@ -37,7 +37,7 @@
 
 
 #ifdef EMBEDDEDPERL
-#include "../include/epn_nagios.h"
+#include "../include/epn_icinga.h"
 #endif
 
 #ifdef USE_EVENT_BROKER

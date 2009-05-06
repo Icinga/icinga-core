@@ -2,7 +2,8 @@
  *
  * Nagios Common Header File
  * Written By: Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-22-2007
+ * Modified By: Hendrik Baecker (andurin@process-zero.de)
+ * Last Modified: 05-02-2009
  *
  * License:
  *
@@ -21,6 +22,8 @@
  ************************************************************************/
 
 
+#define PROGRAM_NAME "Icinga"
+#define PROGRAM_NAME_UC "ICINGA"
 #define PROGRAM_VERSION "3.1.0"
 #define PROGRAM_MODIFICATION_DATE "01-25-2009"
 

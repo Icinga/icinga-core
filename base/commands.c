@@ -30,7 +30,7 @@
 #include "../include/perfdata.h"
 #include "../include/sretention.h"
 #include "../include/broker.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 
 extern char     *config_file;
 extern char	*log_file;

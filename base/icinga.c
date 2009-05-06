@@ -42,7 +42,7 @@
 #include "../include/downtime.h"
 #include "../include/statusdata.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/sretention.h"
 #include "../include/perfdata.h"
 #include "../include/broker.h"
@@ -326,7 +326,7 @@ int main(int argc, char **argv){
 			break;
 
 		switch(c){
-			
+
 		case '?': /* usage */
 		case 'h':
 			display_help=TRUE;
@@ -383,8 +383,9 @@ int main(int argc, char **argv){
 #endif
 
 	if(daemon_mode==FALSE){
-		printf("\nNagios %s\n",PROGRAM_VERSION);
+		printf("\n%s %s\n", PROGRAM_NAME ,PROGRAM_VERSION);
 		printf("Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)\n");
+		printf("Copyright (c) 2009 Hendrik Baecker (http://www.icinga.org)\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
 	        }
@@ -424,11 +425,11 @@ int main(int argc, char **argv){
 		printf("  -x, --dont-verify-paths      Don't check for circular object paths - USE WITH CAUTION!\n");
 		printf("  -p, --precache-objects       Precache object configuration - use with -v or -s options\n");
 		printf("  -u, --use-precached-objects  Use precached object config file\n");
-		printf("  -d, --daemon                 Starts Nagios in daemon mode, instead of as a foreground process\n");
+		printf("  -d, --daemon                 Starts %s in daemon mode, instead of as a foreground process\n", PROGRAM_NAME);
 		printf("\n");
-		printf("Visit the Nagios website at http://www.nagios.org/ for bug fixes, new\n");
+		printf("Visit the %s website at http://www.icinga.org/ for bug fixes, new\n", PROGRAM_NAME);
 		printf("releases, online documentation, FAQs, information on subscribing to\n");
-		printf("the mailing lists, and commercial support options for Nagios.\n");
+		printf("the mailing lists, and commercial support options for %s.\n", PROGRAM_NAME);
 		printf("\n");
 
 		exit(ERROR);
@@ -503,19 +504,19 @@ int main(int argc, char **argv){
 		if(result!=OK){
 
 			/* if the config filename looks fishy, warn the user */
-			if(!strstr(config_file,"nagios.cfg")){
+			if(!strstr(config_file,"nagios.cfg") || !strstr(config_file,"icinga.cfg")){
 				printf("\n***> The name of the main configuration file looks suspicious...\n");
 				printf("\n");
 				printf("     Make sure you are specifying the name of the MAIN configuration file on\n");
 				printf("     the command line and not the name of another configuration file.  The\n");
-				printf("     main configuration file is typically '/usr/local/nagios/etc/nagios.cfg'\n");
+				printf("     main configuration file is typically '/usr/local/icinga/etc/icinga.cfg'\n");
 	                        }
 
 			printf("\n***> One or more problems was encountered while processing the config files...\n");
 			printf("\n");
 			printf("     Check your configuration file(s) to ensure that they contain valid\n");
 			printf("     directives and data defintions.  If you are upgrading from a previous\n");
-			printf("     version of Nagios, you should be aware that some variables/definitions\n");
+			printf("     version of %s, you should be aware that some variables/definitions\n", PROGRAM_NAME);
 			printf("     may have been removed or modified in this version.  Make sure to read\n");
 			printf("     the HTML documentation regarding the config files, as well as the\n");
 			printf("     'Whats New' section to find out what has changed.\n\n");
@@ -536,7 +537,7 @@ int main(int argc, char **argv){
 				printf("\n");
 				printf("     Check your configuration file(s) to ensure that they contain valid\n");
 				printf("     directives and data defintions.  If you are upgrading from a previous\n");
-				printf("     version of Nagios, you should be aware that some variables/definitions\n");
+				printf("     version of %s, you should be aware that some variables/definitions\n", PROGRAM_NAME);
 				printf("     may have been removed or modified in this version.  Make sure to read\n");
 				printf("     the HTML documentation regarding the config files, as well as the\n");
 				printf("     'Whats New' section to find out what has changed.\n\n");
@@ -652,7 +653,7 @@ int main(int argc, char **argv){
 #endif
 
 			/* this must be logged after we read config data, as user may have changed location of main log file */
-			logit(NSLOG_PROCESS_INFO,TRUE,"Nagios %s starting... (PID=%d)\n",PROGRAM_VERSION,(int)getpid());
+			logit(NSLOG_PROCESS_INFO, TRUE, "%s %s starting... (PID=%d)\n", PROGRAM_NAME, PROGRAM_VERSION, (int)getpid() );
 
 			/* log the local time - may be different than clock time due to timezone offset */
 			now=time(NULL);
@@ -679,18 +680,18 @@ int main(int argc, char **argv){
 
 			/* there was a problem reading the config files */
 			if(result!=OK)
-				logit(NSLOG_PROCESS_INFO | NSLOG_RUNTIME_ERROR | NSLOG_CONFIG_ERROR,TRUE,"Bailing out due to one or more errors encountered in the configuration files. Run Nagios from the command line with the -v option to verify your config before restarting. (PID=%d)",(int)getpid());
+				logit(NSLOG_PROCESS_INFO | NSLOG_RUNTIME_ERROR | NSLOG_CONFIG_ERROR,TRUE,"Bailing out due to one or more errors encountered in the configuration files. Run %s from the command line with the -v option to verify your config before restarting. (PID=%d)", PROGRAM_NAME ,(int)getpid());
 
 			else{
 
 				/* run the pre-flight check to make sure everything looks okay*/
 				if((result=pre_flight_check())!=OK)
-					logit(NSLOG_PROCESS_INFO | NSLOG_RUNTIME_ERROR | NSLOG_VERIFICATION_ERROR,TRUE,"Bailing out due to errors encountered while running the pre-flight check.  Run Nagios from the command line with the -v option to verify your config before restarting. (PID=%d)\n",(int)getpid());
+					logit(NSLOG_PROCESS_INFO | NSLOG_RUNTIME_ERROR | NSLOG_VERIFICATION_ERROR,TRUE,"Bailing out due to errors encountered while running the pre-flight check.  Run %s from the command line with the -v option to verify your config before restarting. (PID=%d)\n", PROGRAM_NAME ,(int)getpid());
 				}
 
 			/* an error occurred that prevented us from (re)starting */
 			if(result!=OK){
-				
+
 				/* if we were restarting, we need to cleanup from the previous run */
 				if(sigrestart==TRUE){
 
@@ -778,16 +779,16 @@ int main(int argc, char **argv){
 
 			/* initialize comment data */
 			initialize_comment_data(config_file);
-			
+
 			/* initialize scheduled downtime data */
 			initialize_downtime_data(config_file);
-			
+
 			/* initialize performance data */
 			initialize_performance_data(config_file);
 
 		        /* initialize the event timing loop */
 			init_timing_loop();
-			
+
 			/* initialize check statistics */
 			init_check_stats();
 
@@ -877,7 +878,7 @@ int main(int argc, char **argv){
 
 				/* log a shutdown message */
 				logit(NSLOG_PROCESS_INFO,TRUE,"Successfully shutdown... (PID=%d)\n",(int)getpid());
- 			        }
+				}
 
 			/* clean up after ourselves */
 			cleanup();

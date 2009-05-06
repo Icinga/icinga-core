@@ -29,7 +29,7 @@
 #include "../include/objects.h"
 #include "../include/comments.h"
 #include "../include/statusdata.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 
 extern int      interval_length;

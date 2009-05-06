@@ -26,7 +26,7 @@
 #include "../include/common.h"
 #include "../include/objects.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
@@ -489,12 +489,12 @@ int read_main_config_file(char *main_config_file){
 			ochp_command=(char *)strdup(value);
 		        }
 
-		else if(!strcmp(variable,"nagios_user")){
+		else if(!strcmp(variable,"icinga_user")){
 			my_free(nagios_user);
 			nagios_user=(char *)strdup(value);
 		        }
 
-		else if(!strcmp(variable,"nagios_group")){
+		else if(!strcmp(variable,"icinga_group")){
 			my_free(nagios_group);
 			nagios_group=(char *)strdup(value);
 		        }

@@ -28,7 +28,7 @@
 #include "../include/statusdata.h"
 #include "../include/downtime.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/perfdata.h"
 #include "../include/broker.h"
 

@@ -29,7 +29,7 @@
 #include "../include/common.h"
 #include "../include/objects.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 
 
 /**** DATA INPUT-SPECIFIC HEADER FILES ****/

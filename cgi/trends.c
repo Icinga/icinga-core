@@ -1,9 +1,11 @@
 /**************************************************************************
  *
- * TRENDS.C -  Nagios State Trends CGI
+ * TRENDS.C -  Icinga State Trends CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-15-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified: 05-05-2009
  *
  * License:
  * 
@@ -1123,7 +1125,7 @@ void document_header(int use_stylesheet){
 		printf("<head>\n");
 		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 		printf("<title>\n");
-		printf("Nagios Trends\n");
+		printf("%s Trends\n", PROGRAM_NAME);
 		printf("</title>\n");
 
 		if(use_stylesheet==TRUE){

@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * Nagios Main Header File
+ * Icinga Main Header File
  * Written By: Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 12-14-2008
  *
@@ -31,13 +31,13 @@
 #include "objects.h"
 
 #ifdef __cplusplus
-extern "C" { 
+extern "C" {
 #endif
 
 
 /************* MISC LENGTH/SIZE DEFINITIONS ***********/
 
-/* 
+/*
    NOTE: Plugin length is artificially capped at 8k to prevent runaway plugins from returning MBs/GBs of data
    back to Nagios.  If you increase the 8k cap by modifying this value, make sure you also increase the value
    of MAX_EXTERNAL_COMMAND_LENGTH in common.h to allow for passive checks results received through the external
@@ -199,7 +199,7 @@ extern "C" {
 
 #define HOST_UP				0
 #define HOST_DOWN			1
-#define HOST_UNREACHABLE		2	
+#define HOST_UNREACHABLE		2
 
 
 
@@ -361,7 +361,7 @@ typedef struct check_result_struct{
 	char *host_name;                                /* host name */
 	char *service_description;                      /* service description */
 	int check_type;					/* was this an active or passive service check? */
-	int check_options;         
+	int check_options;
 	int scheduled_check;                            /* was this a scheduled or an on-demand check? */
 	int reschedule_check;                           /* should we reschedule the next check */
 	char *output_file;                              /* what file is the output stored in? */
@@ -478,7 +478,7 @@ typedef struct check_stats_struct{
 /******************** FUNCTIONS **********************/
 
 /**** Configuration Functions ****/
-int read_main_config_file(char *);                     		/* reads the main config file (nagios.cfg) */
+int read_main_config_file(char *);                     		/* reads the main config file (icinga.cfg) */
 int read_resource_file(char *);					/* processes macros in resource file */
 int read_all_object_data(char *);				/* reads all object config data */
 
@@ -606,13 +606,13 @@ int check_service_notification_viability(service *,int,int);			/* checks viabili
 int is_valid_escalation_for_service_notification(service *,serviceescalation *,int);	/* checks if an escalation entry is valid for a particular service notification */
 int should_service_notification_be_escalated(service *);			/* checks if a service notification should be escalated */
 int service_notification(service *,int,char *,char *,int);                     	/* notify all contacts about a service (problem or recovery) */
-int check_contact_service_notification_viability(contact *,service *,int,int);	/* checks viability of notifying a contact about a service */ 
+int check_contact_service_notification_viability(contact *,service *,int,int);	/* checks viability of notifying a contact about a service */
 int notify_contact_of_service(contact *,service *,int,char *,char *,int,int);  	/* notify a single contact about a service */
 int check_host_notification_viability(host *,int,int);				/* checks viability of notifying all contacts about a host */
 int is_valid_escalation_for_host_notification(host *,hostescalation *,int);	/* checks if an escalation entry is valid for a particular host notification */
 int should_host_notification_be_escalated(host *);				/* checks if a host notification should be escalated */
 int host_notification(host *,int,char *,char *,int);                           	/* notify all contacts about a host (problem or recovery) */
-int check_contact_host_notification_viability(contact *,host *,int,int);	/* checks viability of notifying a contact about a host */ 
+int check_contact_host_notification_viability(contact *,host *,int,int);	/* checks viability of notifying a contact about a host */
 int notify_contact_of_host(contact *,host *,int,char *,char *,int,int);        	/* notify a single contact about a host */
 int create_notification_list_from_host(host *,int,int *);         		/* given a host, create list of contacts to be notified (remove duplicates) */
 int create_notification_list_from_service(service *,int,int *);    		/* given a service, create list of contacts to be notified (remove duplicates) */
@@ -661,7 +661,7 @@ void service_check_sighandler(int);                     /* handles timeouts when
 void host_check_sighandler(int);                        /* handles timeouts when executing host checks */
 void my_system_sighandler(int);				/* handles timeouts when executing commands via my_system() */
 void file_lock_sighandler(int);				/* handles timeouts while waiting for file locks */
-void strip(char *);                                  	/* strips whitespace from string */  
+void strip(char *);                                  	/* strips whitespace from string */
 char *my_strtok(char *,char *);                      	/* my replacement for strtok() function (doesn't skip consecutive tokens) */
 char *my_strsep(char **,const char *);		     	/* Solaris doesn't have strsep(), so I took this from the glibc source code */
 #ifdef REMOVED_10182007

@@ -5,7 +5,7 @@
 
 #include <EXTERN.h>
 #include <perl.h>
-#include "epn_nagios.h"
+#include "epn_icinga.h"
 
 										/*
 										 * DO_CLEAN must be a pointer to a char string

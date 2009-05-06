@@ -1,11 +1,13 @@
 /***********************************************************************
  *
- * SHOWLOG.C - Nagios Log File CGI
+ * SHOWLOG.C - Icinga Log File CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 01-08-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
  *
- * This CGI program will display the contents of the Nagios
+ * Last Modified: 05-05-2009
+ *
+ * This CGI program will display the contents of the Icinga
  * log file.
  *
  * License:
@@ -197,7 +199,7 @@ void document_header(int use_stylesheet){
 	printf("<HEAD>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<TITLE>\n");
-	printf("Nagios Log File\n");
+	printf("%s Log File\n", PROGRAM_NAME);
 	printf("</TITLE>\n");
 
 	if(use_stylesheet==TRUE){

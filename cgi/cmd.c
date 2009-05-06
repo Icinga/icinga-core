@@ -1,9 +1,11 @@
 /**************************************************************************
  *
- * CMD.C -  Nagios Command CGI
+ * CMD.C - Icinga Command CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 01-15-2009
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified: 05-05-2009
  *
  * License:
  * 
@@ -700,7 +702,7 @@ void request_command_data(int cmd){
 		
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
-		printf("%s the Nagios process",(cmd==CMD_SHUTDOWN_PROCESS)?"shutdown":"restart");
+		printf("%s the %s process",(cmd==CMD_SHUTDOWN_PROCESS)?"shutdown":"restart"), PROGRAM_NAME;
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
@@ -1815,7 +1817,7 @@ void commit_command_data(int cmd){
 			printf("<DIV CLASS='errorMessage'>Sorry Dave, I can't let you do that...</DIV><br>");
 			printf("<DIV CLASS='errorDescription'>");
 			printf("It seems that you have chosen to not use the authentication functionality of the CGIs.<br><br>");
-			printf("I don't want to be personally responsible for what may happen as a result of allowing unauthorized users to issue commands to Nagios,");
+			printf("I don't want to be personally responsible for what may happen as a result of allowing unauthorized users to issue commands to %s,", PROGRAM_NAME);
 			printf("so you'll have to disable this safeguard if you are really stubborn and want to invite trouble.<br><br>");
 			printf("<strong>Read the section on CGI authentication in the HTML documentation to learn how you can enable authentication and why you should want to.</strong>\n");
 			printf("</DIV>\n");
@@ -1849,9 +1851,9 @@ void commit_command_data(int cmd){
 	/* if Nagios isn't checking external commands, don't do anything... */
 	else if(check_external_commands==FALSE){
 		if(content_type==WML_CONTENT)
-			printf("<p>Error: Nagios is not checking external commands!</p>\n");
+			printf("<p>Error: %s is not checking external commands!</p>\n", PROGRAM_NAME);
 		else{
-			printf("<P><DIV CLASS='errorMessage'>Sorry, but Nagios is currently not checking for external commands, so your command will not be committed!</DIV></P>\n");
+			printf("<P><DIV CLASS='errorMessage'>Sorry, but %s is currently not checking for external commands, so your command will not be committed!</DIV></P>\n", PROGRAM_NAME);
 			printf("<P><DIV CLASS='errorDescription'>Read the documentation for information on how to enable external commands...<BR><BR>\n");
 			printf("<A HREF='javascript:window.history.go(-2)'>Return from whence you came</A></DIV></P>\n");
 		        }
@@ -1867,7 +1869,7 @@ void commit_command_data(int cmd){
 			if(content_type==WML_CONTENT)
 				printf("<p>Your command was submitted sucessfully...</p>\n");
 			else{
-				printf("<P><DIV CLASS='infoMessage'>Your command request was successfully submitted to Nagios for processing.<BR><BR>\n");
+				printf("<P><DIV CLASS='infoMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n", PROGRAM_NAME);
 				printf("Note: It may take a while before the command is actually processed.<BR><BR>\n");
 				printf("<A HREF='javascript:window.history.go(-2)'>Done</A></DIV></P>");
 			        }
@@ -2228,7 +2230,7 @@ int write_command_to_file(char *cmd){
 		else{
 			printf("<P><DIV CLASS='errorMessage'>Error: Could not stat() command file '%s'!</DIV></P>\n",command_file);
 			printf("<P><DIV CLASS='errorDescription'>");
-			printf("The external command file may be missing, Nagios may not be running, and/or Nagios may not be checking external commands.\n");
+			printf("The external command file may be missing, %s may not be running, and/or %s may not be checking external commands.\n", PROGRAM_NAME, PROGRAM_NAME);
 			printf("</DIV></P>\n");
 			}
 
@@ -2292,13 +2294,13 @@ void show_command_help(cmd){
 	case CMD_ADD_HOST_COMMENT:
 		printf("This command is used to add a comment for the specified host.  If you work with other administrators, you may find it useful to share information about a host\n");
 		printf("that is having problems if more than one of you may be working on it.  If you do not check the 'persistent' option, the comment will be automatically be deleted\n");
-		printf("the next time Nagios is restarted.\n");
+		printf("the next time %s is restarted.\n", PROGRAM_NAME);
 		break;
 		
 	case CMD_ADD_SVC_COMMENT:
 		printf("This command is used to add a comment for the specified service.  If you work with other administrators, you may find it useful to share information about a host\n");
 		printf("or service that is having problems if more than one of you may be working on it.  If you do not check the 'persistent' option, the comment will automatically be\n");
-		printf("deleted the next time Nagios is restarted.\n");
+		printf("deleted the next time %s is restarted.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DEL_HOST_COMMENT:
@@ -2320,8 +2322,8 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_SCHEDULE_SVC_CHECK:
-		printf("This command is used to schedule the next check of a particular service.  Nagios will re-queue the service to be checked at the time you specify.\n");
-		printf("If you select the <i>force check</i> option, Nagios will force a check of the service regardless of both what time the scheduled check occurs and whether or not checks are enabled for the service.\n");
+		printf("This command is used to schedule the next check of a particular service.  %s will re-queue the service to be checked at the time you specify.\n", PROGRAM_NAME);
+		printf("If you select the <i>force check</i> option, %s will force a check of the service regardless of both what time the scheduled check occurs and whether or not checks are enabled for the service.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_SVC_CHECK:
@@ -2341,12 +2343,12 @@ void show_command_help(cmd){
 		break;
 		
 	case CMD_SHUTDOWN_PROCESS:
-		printf("This command is used to shutdown the Nagios process. Note: Once the Nagios has been shutdown, it cannot be restarted via the web interface!\n");
+		printf("This command is used to shutdown the %s process. Note: Once the %s has been shutdown, it cannot be restarted via the web interface!\n", PROGRAM_NAME, PROGRAM_NAME);
 		break;
 
 	case CMD_RESTART_PROCESS:
-		printf("This command is used to restart the Nagios process.   Executing a restart command is equivalent to sending the process a HUP signal.\n");
-		printf("All information will be flushed from memory, the configuration files will be re-read, and Nagios will start monitoring with the new configuration information.\n");
+		printf("This command is used to restart the %s process.   Executing a restart command is equivalent to sending the process a HUP signal.\n", PROGRAM_NAME);
+		printf("All information will be flushed from memory, the configuration files will be re-read, and %s will start monitoring with the new configuration information.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
@@ -2354,13 +2356,13 @@ void show_command_help(cmd){
 		break;
 		
 	case CMD_DISABLE_HOST_SVC_CHECKS:
-		printf("This command is used to disable active checks of all services associated with the specified host.  When a service is disabled Nagios will not monitor the service.  Doing this will prevent any notifications being sent out for\n");
-		printf("the specified service while it is disabled.  In order to have Nagios check the service in the future you will have to re-enable the service.\n");
+		printf("This command is used to disable active checks of all services associated with the specified host.  When a service is disabled %s will not monitor the service.  Doing this will prevent any notifications being sent out for\n", PROGRAM_NAME);
+		printf("the specified service while it is disabled.  In order to have %s check the service in the future you will have to re-enable the service.\n", PROGRAM_NAME);
 		printf("Note that disabling service checks may not necessarily prevent notifications from being sent out about the host which those services are associated with.  This <i>does not</i> disable checks of the host unless you check the 'Disable for host too' option.\n");
 		break;
 		
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
-		printf("This command is used to scheduled the next check of all services on the specified host.  If you select the <i>force check</i> option, Nagios will force a check of all services on the host regardless of both what time the scheduled checks occur and whether or not checks are enabled for those services.\n");
+		printf("This command is used to scheduled the next check of all services on the specified host.  If you select the <i>force check</i> option, %s will force a check of all services on the host regardless of both what time the scheduled checks occur and whether or not checks are enabled for those services.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DEL_ALL_HOST_COMMENTS:
@@ -2394,12 +2396,12 @@ void show_command_help(cmd){
 
 	case CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
 		printf("This command is used to enable notifications for all hosts and services that lie \"beyond\" the specified host\n");
-		printf("(from the view of Nagios).\n");
+		printf("(from the view of %s).\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
 		printf("This command is used to temporarily prevent notifications from being sent out for all hosts and services that lie\n");
-		printf("\"beyone\" the specified host (from the view of Nagios).\n");
+		printf("\"beyone\" the specified host (from the view of %s).\n", PROGRAM_NAME);
 		break;
 		
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
@@ -2433,48 +2435,48 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_STOP_EXECUTING_SVC_CHECKS:
-		printf("This command is used to temporarily stop Nagios from actively executing any service checks.  This will have the side effect of preventing any notifications from being sent out (for any and all services and hosts).\n");
+		printf("This command is used to temporarily stop %s from actively executing any service checks.  This will have the side effect of preventing any notifications from being sent out (for any and all services and hosts).\n", PROGRAM_NAME);
 		printf("Service checks will not be executed again until you issue a command to resume service check execution.\n");
 		break;
 
 	case CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS:
-		printf("This command is used to make Nagios start accepting passive service check results that it finds in the external command file\n");
+		printf("This command is used to make %s start accepting passive service check results that it finds in the external command file\n", PROGRAM_NAME);
 		break;
 
 	case CMD_STOP_ACCEPTING_PASSIVE_SVC_CHECKS:
-		printf("This command is use to make Nagios stop accepting passive service check results that it finds in the external command file.  All passive check results that are found will be ignored.\n");
+		printf("This command is use to make %s stop accepting passive service check results that it finds in the external command file.  All passive check results that are found will be ignored.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_PASSIVE_SVC_CHECKS:
-		printf("This command is used to allow Nagios to accept passive service check results that it finds in the external command file for this particular service.\n");
+		printf("This command is used to allow %s to accept passive service check results that it finds in the external command file for this particular service.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DISABLE_PASSIVE_SVC_CHECKS:
-		printf("This command is used to stop Nagios accepting passive service check results that it finds in the external command file for this particular service.  All passive check results that are found for this service will be ignored.\n");
+		printf("This command is used to stop %s accepting passive service check results that it finds in the external command file for this particular service.  All passive check results that are found for this service will be ignored.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_EVENT_HANDLERS:
-		printf("This command is used to allow Nagios to run host and service event handlers.\n");
+		printf("This command is used to allow %s to run host and service event handlers.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DISABLE_EVENT_HANDLERS:
-		printf("This command is used to temporarily prevent Nagios from running any host or service event handlers.\n");
+		printf("This command is used to temporarily prevent %s from running any host or service event handlers.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_SVC_EVENT_HANDLER:
-		printf("This command is used to allow Nagios to run the service event handler for a particular service when necessary (if one is defined).\n");
+		printf("This command is used to allow %s to run the service event handler for a particular service when necessary (if one is defined).\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DISABLE_SVC_EVENT_HANDLER:
-		printf("This command is used to temporarily prevent Nagios from running the service event handler for a particular service.\n");
+		printf("This command is used to temporarily prevent %s from running the service event handler for a particular service.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_HOST_EVENT_HANDLER:
-		printf("This command is used to allow Nagios to run the host event handler for a particular service when necessary (if one is defined).\n");
+		printf("This command is used to allow %s to run the host event handler for a particular service when necessary (if one is defined).\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DISABLE_HOST_EVENT_HANDLER:
-		printf("This command is used to temporarily prevent Nagios from running the host event handler for a particular host.\n");
+		printf("This command is used to temporarily prevent %s from running the host event handler for a particular host.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_HOST_CHECK:
@@ -2482,15 +2484,15 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_DISABLE_HOST_CHECK:
-		printf("This command is used to temporarily prevent Nagios from actively checking the status of a particular host.  If Nagios needs to check the status of this host, it will assume that it is in the same state that it was in before checks were disabled.\n");
+		printf("This command is used to temporarily prevent %s from actively checking the status of a particular host.  If %s needs to check the status of this host, it will assume that it is in the same state that it was in before checks were disabled.\n", PROGRAM_NAME, PROGRAM_NAME);
 		break;
 
 	case CMD_START_OBSESSING_OVER_SVC_CHECKS:
-		printf("This command is used to have Nagios start obsessing over service checks.  Read the documentation on distributed monitoring for more information on this.\n");
+		printf("This command is used to have %s start obsessing over service checks.  Read the documentation on distributed monitoring for more information on this.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_STOP_OBSESSING_OVER_SVC_CHECKS:
-		printf("This command is used stop Nagios from obsessing over service checks.\n");
+		printf("This command is used stop %s from obsessing over service checks.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_REMOVE_HOST_ACKNOWLEDGEMENT:
@@ -2512,19 +2514,19 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_SCHEDULE_HOST_DOWNTIME:
-		printf("This command is used to schedule downtime for a particular host.  During the specified downtime, Nagios will not send notifications out about the host.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for this host as it normally would.  Scheduled downtimes are preserved\n");
+		printf("This command is used to schedule downtime for a particular host.  During the specified downtime, %s will not send notifications out about the host.\n", PROGRAM_NAME);
+		printf("When the scheduled downtime expires, %s will send out notifications for this host as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
 		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when the host goes down or becomes unreachable (sometime between the\n");
+		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when the host goes down or becomes unreachable (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
 		break;
 
 	case CMD_SCHEDULE_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for a particular service.  During the specified downtime, Nagios will not send notifications out about the service.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for this service as it normally would.  Scheduled downtimes are preserved\n");
+		printf("This command is used to schedule downtime for a particular service.  During the specified downtime, %s will not send notifications out about the service.\n", PROGRAM_NAME);
+		printf("When the scheduled downtime expires, %s will send out notifications for this service as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when the service enters a non-OK state (sometime between the\n");
+		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when the service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
 		break;
 
@@ -2605,20 +2607,20 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
-		printf("This command is used to schedule downtime for all hosts in a particular hostgroup.  During the specified downtime, Nagios will not send notifications out about the hosts.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for the hosts as it normally would.  Scheduled downtimes are preserved\n");
+		printf("This command is used to schedule downtime for all hosts in a particular hostgroup.  During the specified downtime, %s will not send notifications out about the hosts.\n", PROGRAM_NAME);
+		printf("When the scheduled downtime expires, %s will send out notifications for the hosts as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
 		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when a host goes down or becomes unreachable (sometime between the\n");
+		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a host goes down or becomes unreachable (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for all services in a particular hostgroup.  During the specified downtime, Nagios will not send notifications out about the services.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for the services as it normally would.  Scheduled downtimes are preserved\n");
+		printf("This command is used to schedule downtime for all services in a particular hostgroup.  During the specified downtime, %s will not send notifications out about the services.\n", PROGRAM_NAME);
+		printf("When the scheduled downtime expires, %s will send out notifications for the services as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
 		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when a service enters a non-OK state (sometime between the\n");
+		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
 		printf("Note that scheduling downtime for services does not automatically schedule downtime for the hosts those services are associated with.  If you want to also schedule downtime for all hosts in the hostgroup, check the 'Schedule downtime for hosts too' option.\n");
 		break;
@@ -2632,48 +2634,48 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS:
-		printf("This command is used to have Nagios start obsessing over host checks.  Read the documentation on distributed monitoring for more information on this.\n");
+		printf("This command is used to have %s start obsessing over host checks.  Read the documentation on distributed monitoring for more information on this.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
-		printf("This command is used to stop Nagios from obsessing over host checks.\n");
+		printf("This command is used to stop %s from obsessing over host checks.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_PASSIVE_HOST_CHECKS:
-		printf("This command is used to allow Nagios to accept passive host check results that it finds in the external command file for a particular host.\n");
+		printf("This command is used to allow %s to accept passive host check results that it finds in the external command file for a particular host.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_DISABLE_PASSIVE_HOST_CHECKS:
-		printf("This command is used to stop Nagios from accepting passive host check results that it finds in the external command file for a particular host.  All passive check results that are found for this host will be ignored.\n");
+		printf("This command is used to stop %s from accepting passive host check results that it finds in the external command file for a particular host.  All passive check results that are found for this host will be ignored.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
-		printf("This command is used to have Nagios start obsessing over host checks.  Read the documentation on distributed monitoring for more information on this.\n");
+		printf("This command is used to have %s start obsessing over host checks.  Read the documentation on distributed monitoring for more information on this.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		printf("This command is used to stop Nagios from obsessing over host checks.\n");
+		printf("This command is used to stop %s from obsessing over host checks.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_SCHEDULE_HOST_CHECK:
-		printf("This command is used to schedule the next check of a particular host.  Nagios will re-queue the host to be checked at the time you specify.\n");
-		printf("If you select the <i>force check</i> option, Nagios will force a check of the host regardless of both what time the scheduled check occurs and whether or not checks are enabled for the host.\n");
+		printf("This command is used to schedule the next check of a particular host. %s will re-queue the host to be checked at the time you specify.\n", PROGRAM_NAME);
+		printf("If you select the <i>force check</i> option, %s will force a check of the host regardless of both what time the scheduled check occurs and whether or not checks are enabled for the host.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_START_OBSESSING_OVER_SVC:
-		printf("This command is used to have Nagios start obsessing over a particular service.\n");
+		printf("This command is used to have %s start obsessing over a particular service.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_STOP_OBSESSING_OVER_SVC:
-		printf("This command is used to stop Nagios from obsessing over a particular service.\n");
+		printf("This command is used to stop %s from obsessing over a particular service.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_START_OBSESSING_OVER_HOST:
-		printf("This command is used to have Nagios start obsessing over a particular host.\n");
+		printf("This command is used to have %s start obsessing over a particular host.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_STOP_OBSESSING_OVER_HOST:
-		printf("This command is used to stop Nagios from obsessing over a particular host.\n");
+		printf("This command is used to stop %s from obsessing over a particular host.\n", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
@@ -2705,20 +2707,20 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
-		printf("This command is used to schedule downtime for all hosts in a particular servicegroup.  During the specified downtime, Nagios will not send notifications out about the hosts.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for the hosts as it normally would.  Scheduled downtimes are preserved\n");
+		printf("This command is used to schedule downtime for all hosts in a particular servicegroup.  During the specified downtime, %s will not send notifications out about the hosts.\n", PROGRAM_NAME);
+		printf("When the scheduled downtime expires, %s will send out notifications for the hosts as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
 		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when a host goes down or becomes unreachable (sometime between the\n");
+		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a host goes down or becomes unreachable (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
 		break;
 
 	case CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for all services in a particular servicegroup.  During the specified downtime, Nagios will not send notifications out about the services.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for the services as it normally would.  Scheduled downtimes are preserved\n");
+		printf("This command is used to schedule downtime for all services in a particular servicegroup.  During the specified downtime, %s will not send notifications out about the services.\n", PROGRAM_NAME);
+		printf("When the scheduled downtime expires, %s will send out notifications for the services as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
 		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when a service enters a non-OK state (sometime between the\n");
+		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
 		printf("Note that scheduling downtime for services does not automatically schedule downtime for the hosts those services are associated with.  If you want to also schedule downtime for all hosts in the servicegroup, check the 'Schedule downtime for hosts too' option.\n");
 		break;
@@ -2726,7 +2728,7 @@ void show_command_help(cmd){
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
 		printf("This command is used to send a custom notification about the specified %s.  Useful in emergencies when you need to notify admins of an issue regarding a monitored system or service.\n",(cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION)?"host":"service");
-		printf("Custom notifications normally follow the regular notification logic in Nagios.  Selecting the <i>Forced</i> option will force the notification to be sent out, regardless of the time restrictions, whether or not notifications are enabled, etc.  Selecting the <i>Broadcast</i> option causes the notification to be sent out to all normal (non-escalated) and escalated contacts.  These options allow you to override the normal notification logic if you need to get an important message out.\n");
+		printf("Custom notifications normally follow the regular notification logic in %s.  Selecting the <i>Forced</i> option will force the notification to be sent out, regardless of the time restrictions, whether or not notifications are enabled, etc.  Selecting the <i>Broadcast</i> option causes the notification to be sent out to all normal (non-escalated) and escalated contacts.  These options allow you to override the normal notification logic if you need to get an important message out.\n", PROGRAM_NAME);
 		break;
 
 	default:

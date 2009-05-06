@@ -28,7 +28,7 @@
 #include "../include/skiplist.h"
 
 #ifdef NSCORE
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #endif
 
 #ifdef NSCGI

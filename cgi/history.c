@@ -1,9 +1,11 @@
 /***********************************************************************
  *
- * HISTORY.C - Nagios History CGI
+ * HISTORY.C - Icinga History CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 06-23-2008
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
+ *
+ * Last Modified: 05-05-2009
  *
  * This CGI program will display the history for the specified host.
  * If no host is specified, the history for all hosts will be displayed.
@@ -324,7 +326,7 @@ void document_header(int use_stylesheet){
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<title>\n");
-	printf("Nagios History\n");
+	printf("%s History\n", PROGRAM_NAME);
 	printf("</title>\n");
 
 	if(use_stylesheet==TRUE){

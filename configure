@@ -576,7 +576,7 @@ PACKAGE_VERSION=
 PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
-ac_unique_file="base/nagios.c"
+ac_unique_file="base/icinga.c"
 ac_default_prefix=/usr/local/icinga
 # Factoring default headers for most tests.
 ac_includes_default="\

@@ -33,7 +33,7 @@
 
 #ifdef NSCORE
 #include "../include/objects.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #endif
 
 #ifdef NSCGI
