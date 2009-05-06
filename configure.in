@@ -669,6 +669,7 @@ if test x$USE_IDOUTILS = xyes; then
 	AC_SUBST(DBLIBS)
 fi
 
+
 USEPERL=no;
 INSTALLPERLSTUFF=no;
 AC_ARG_ENABLE(embedded-perl,--enable-embedded-perl will enable embedded Perl interpreter,[
@@ -780,6 +781,7 @@ AC_SUBST(BASEEXTRALIBS)
 AC_SUBST(INITDIR)
 AC_SUBST(INSTALLPERLSTUFF)
 AC_SUBST(USE_EVENTBROKER)
+AC_SUBST(USE_IDOUTILS)
 
 AC_PATH_PROG(PERL,perl)
 AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init module/idoutils/src/Makefile)

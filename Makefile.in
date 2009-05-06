@@ -14,6 +14,7 @@ SRC_INCLUDE=@srcdir@/include
 SRC_COMMON=@srcdir@/common
 SRC_XDATA=@srcdir@/xdata
 SRC_CONTRIB=@srcdir@/contrib
+SRC_IDOUTILS=@srcdir@/module/idoutils
 
 CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@
@@ -38,6 +39,7 @@ CGICFGDIR=$(CGIDIR)
 PERLDIR=@PERLDIR@
 
 USE_EVENTBROKER=@USE_EVENTBROKER@
+USE_IDOUTILS=@USE_IDOUTILS@
 
 INSTALLPERLSTUFF=@INSTALLPERLSTUFF@
 
@@ -62,8 +64,13 @@ all:
 	cd $(SRC_BASE) && $(MAKE)
 	cd $(SRC_CGI) && $(MAKE)
 	cd $(SRC_HTM) && $(MAKE)
+
 	if [ x$(USE_EVENTBROKER) = xyes ]; then \
 		cd $(SRC_MODULE) && $(MAKE); \
+	fi
+	
+	if [ x$(USE_IDOUTILS) = xyes ]; then \
+		cd $(SRC_IDOUTILS) && $(MAKE); \
 	fi
 
 	@echo ""
@@ -156,6 +163,7 @@ clean:
 	cd $(SRC_INCLUDE) && $(MAKE) $@
 	cd $(SRC_CONTRIB) && $(MAKE) $@
 	cd $(SRC_MODULE) && $(MAKE) $@
+	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	rm -f *.cfg core
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
 
@@ -168,6 +176,7 @@ distclean: clean
 	cd $(SRC_INCLUDE) && $(MAKE) $@
 	cd $(SRC_CONTRIB) && $(MAKE) $@
 	cd $(SRC_MODULE) && $(MAKE) $@
+	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	rm -f sample-config/*.cfg  sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo
 	rm -f Makefile subst
@@ -258,7 +267,7 @@ install-webconf:
 	@echo ""
 
 install-idoutils:
-	cd $(SRC_MODULE)/idoutils/ && $(MAKE) install
+	cd $(SRC_IDOUTILS) && $(MAKE) $@
 
 	@echo ""
 	@echo "*** IDOUtils installed ***"

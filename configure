@@ -728,6 +728,7 @@ BASEEXTRALIBS
 INITDIR
 INSTALLPERLSTUFF
 USE_EVENTBROKER
+USE_IDOUTILS
 PERL
 LIBOBJS
 LTLIBOBJS'
@@ -7688,6 +7689,7 @@ fi
 
 fi
 
+
 USEPERL=no;
 INSTALLPERLSTUFF=no;
 # Check whether --enable-embedded-perl was given.
@@ -7893,6 +7895,7 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
 
 
 
@@ -8659,12 +8662,13 @@ BASEEXTRALIBS!$BASEEXTRALIBS$ac_delim
 INITDIR!$INITDIR$ac_delim
 INSTALLPERLSTUFF!$INSTALLPERLSTUFF$ac_delim
 USE_EVENTBROKER!$USE_EVENTBROKER$ac_delim
+USE_IDOUTILS!$USE_IDOUTILS$ac_delim
 PERL!$PERL$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 20; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 21; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

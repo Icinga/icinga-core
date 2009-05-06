@@ -19,10 +19,12 @@ LIBEXECDIR=@libexecdir@
 CGIDIR=@sbindir@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
-
+USE_IDOUTILS=@USE_IDOUTILS@
 
 all:
-	cd $(SRC_BASE) && $(MAKE)
+	if [ x$(USE_IDOUTILS) = xyes ]; then \
+	    cd $(SRC_BASE) && $(MAKE); \
+	fi;
 
 clean:
 	cd $(SRC_BASE) && $(MAKE) $@
