@@ -1,5 +1,5 @@
 
-.tac { font-family: arial,serif;  background-color: black;  background: black;  color: white;  background-color: black; }
+.tac { font-family: arial,serif;  background-color: black;  background: black;  color: white;  background-color: #ffffff; }
 
 .errorMessage { font-family: arial;  font-weight: bold;  font-size: 12pt;  background-color: black;  color: white; }
 .errorDescription { font-family: arial,serif;  text-align: center;  font-weight: bold;  font-size: 12pt; }
