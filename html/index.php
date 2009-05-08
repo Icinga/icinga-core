@@ -7,7 +7,7 @@
 <link rel="shortcut icon" href="images/favicon.ico" type="image/ico">
 </head>
 
-<frameset cols="180,*">
+<frameset cols="190,*">
 <frame src="side.php" name="side" frameborder="0">
 <frame src="main.php" name="main" frameborder="0">
 
