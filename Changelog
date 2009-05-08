@@ -1,4 +1,20 @@
 #####################
+Icinga 0.7 Change Log
+#####################
+
+0.7 - 05/??/2009
+----------------
+* Almost biggest deal to rename the components
+* including IDOUtils (former NDOUtils) into the core code, updating configure & make to get in
+touch with it
+* changed database handling in IDOUtils from native database support to libdbi
+(libdbi.sourceforge.net) as a abstraction layer, enable compile try with
+"configure --enable-idoutils"
+
+
+
+
+#####################
 Nagios 3.x Change Log
 #####################
 

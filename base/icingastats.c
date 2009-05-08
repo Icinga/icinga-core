@@ -2,12 +2,12 @@
  *
  * ICINGASTATS.C - Displays Nagios Statistics
  *
- * Program: Nagiostats
- * Version: 3.1.0
+ * Program: Icingastats (based on Nagiostats)
+ * Version: 0.7 (based on Nagios 3.1.0)
  * License: GPL
  * Copyright (c) 2003-2008 Ethan Galstad (egalstad@nagios.org)
  *
- * Last Modified: 12-20-2008
+ * Last Modified: 05-08-2009
  *
  * License:
  *

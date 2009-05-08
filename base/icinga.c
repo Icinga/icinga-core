@@ -1,18 +1,18 @@
 /*****************************************************************************
  *
- * NAGIOS.C - Core Program Code For Nagios
+ * ICINGA.C - Core Program Code For Icinga
  *
- * Program: Nagios
- * Version: 3.1.0
+ * Program: Icinga (Nagios)
+ * Version: 0.7 (Nagios 3.1.0)
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  *
  * First Written:   01-28-1999 (start of development)
- * Last Modified:   01-25-2009
+ * Last Modified:   05-08-2009
  *
  * Description:
  *
- * Nagios is a network monitoring tool that will check hosts and services
+ * Icinga (Nagios) is a network monitoring tool that will check hosts and services
  * that you specify.  It has the ability to notify contacts via email, pager,
  * or other user-defined methods when a service or host goes down and
  * recovers.  Service and host monitoring is done through the use of external
