@@ -10,10 +10,10 @@ else
 fi
 
 # Current version number
-CURRENTVERSION=3.1.0
+CURRENTVERSION=0.7
 
 # Last date
-LASTDATE=01-25-2009
+LASTDATE=05-08-2009
 
 if [ "x$1" = "x" ]
 then
@@ -46,9 +46,9 @@ perl -i -p -e "s/MODIFICATION_DATE \".*\"/MODIFICATION_DATE \"$SHORTDATE\"/;" in
 
 # Update version number and release date in main code
 perl -i -p -e "s/Version: .*/Version: $newversion/;" base/nagios.c
-perl -i -p -e "s/Last Modified:   [0-9].*/Last Modified:   $SHORTDATE/;" base/nagios.c
-perl -i -p -e "s/Version: [0-9].*/Version: $newversion/;" base/nagiostats.c
-perl -i -p -e "s/Last Modified:   [0-9].*/Last Modified:   $SHORTDATE/;" base/nagiostats.c
+perl -i -p -e "s/Last Modified:   [0-9].*/Last Modified:   $SHORTDATE/;" base/icinga.c
+perl -i -p -e "s/Version: [0-9].*/Version: $newversion/;" base/icingastats.c
+perl -i -p -e "s/Last Modified:   [0-9].*/Last Modified:   $SHORTDATE/;" base/icingastats.c
 
 # Update version number and release date in configure script and configure.in
 perl -i -p -e "s/PKG_VERSION=.*/PKG_VERSION=\"$newversion\"/;" configure
@@ -57,7 +57,7 @@ perl -i -p -e "s/PKG_VERSION=.*/PKG_VERSION=\"$newversion\"/;" configure.in
 perl -i -p -e "s/PKG_REL_DATE=.*\"/PKG_REL_DATE=\"$SHORTDATE\"/;" configure.in
 
 # Update RPM spec file with version number
-perl -i -p -e "s/%define version .*/%define version $newversion/;" nagios.spec
+perl -i -p -e "s/%define version .*/%define version $newversion/;" icinga.spec
 
 # Update this file with version number and last date
 perl -i -p -e "s/^CURRENTVERSION=.*/CURRENTVERSION=$newversion/;" update-version
