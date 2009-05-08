@@ -1,5 +1,8 @@
+body * {
+	font-family: arial, verdana, sans-serif;
+}
+
 body {
-	font-family: arial, verdana, serif;
 	font-weight: normal;
 	font-size: 10pt;
 	}
@@ -7,24 +10,31 @@ body {
 
 /* navbar */
 body.navbar {
-	background-color: black;
-	color: white;
+	background-color: #fff;
+	color: #333;
 	font-family: verdana,arial,serif;
+	margin: 0px 0px 0px 0px;
 	}
 
 .navbarlogo {
-	margin: 0 0 10px 0;
+	border-bottom: 1px #000 solid;
+	padding: 5px;
 	}
+
+body.navbar div.navsection {
+	padding: 5px;	
+}
 
 .navsection {
 	margin: 5px 0 10px 0;
-	color: #DEE7C6;
+	color: #333;
 	}
 	
 .navsectiontitle {
 	font-size: 10pt;
 	font-weight: bold;
-	border:1px solid #DEE7C6;
+	background-color: #fff;
+	border: 1px #666 solid;
 	padding: 2px;
 	}
 
@@ -42,13 +52,13 @@ ul.navsectionlinks li {
 	}
 
 ul.navsectionlinks li a {
-	color: #DEE7C6;
-	font-weight: bold;
+	color: #333;
+	font-weight: normal;
 	font-size: 8pt;
 	text-decoration: none;	
 
 	padding: 0 0 0 15px;
-	background: transparent url(../images/greendot.gif) no-repeat scroll 0 0
+	/* background: transparent url(../images/greendot.gif) no-repeat scroll 0 0 */
 	}
 
 ul.navsectionlinks li ul {
@@ -58,15 +68,16 @@ ul.navsectionlinks li ul {
 	}
 
 ul.navsectionlinks li ul li {
+	list-style-type: none;
 	}
 
 ul.navsectionlinks li a:hover {
-	color: #FFC47F;
-	background: transparent url(../images/orangedot.gif) no-repeat scroll 0 0
+	color: #333;
+	/* background: transparent url(../images/orangedot.gif) no-repeat scroll 0 0 */
 	}
 
 ul.navsectionlinks li ul li a {
-	color: #DEE7C6;
+	color: #333;
 	background: none;
 	padding: 0;
 	}

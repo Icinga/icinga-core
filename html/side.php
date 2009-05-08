@@ -19,7 +19,7 @@ $link_target="main";
 
 
 <div class="navbarlogo">
-<center><a href="http://www.nagios.org" target="_blank"><img src="images/sblogo.png" border="0" alt="Icinga"></a></center>
+<center><a href="http://www.icinga.org" target="_blank"><img src="images/sblogo.png" border="0" alt="Icinga"></a></center>
 </div>
 
 <div class="navsection">
