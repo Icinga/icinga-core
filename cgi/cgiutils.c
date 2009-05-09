@@ -1573,12 +1573,12 @@ void get_log_archive_to_use(int archive,char *buffer,int buffer_length){
 	buffer[buffer_length-1]='\x0';
 
 	/* check if a icinga named archive logfile already exist. Otherwise change back to nagios syntax */
-	if((fd = open(buffer, "r")) == -1){
+	if((fd = fopen(buffer, "r")) == NULL){
 		snprintf(buffer,buffer_length,"%snagios-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
 		buffer[buffer_length-1]='\x0';
 	}
 	else {
-		close(fd);
+		fclose(fd);
 	}
 
 	return;
@@ -1741,7 +1741,10 @@ void display_info_table(char *title,int refresh, authdata *current_authdata){
 	if(refresh==TRUE)
 		printf("Updated every %d seconds<br>\n",refresh_rate);
 
-	printf("%s&reg; %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);
+
+	/* We shouldn't forget from where we come */
+	printf("(Credits to: Nagios&reg; - <A HREF='http://www.nagios.org' TARGET='_new' CLASS='homepageURL'>www.nagios.org</A>)<BR>");
 
 	if(current_authdata!=NULL)
 		printf("Logged in as <i>%s</i><BR>\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
