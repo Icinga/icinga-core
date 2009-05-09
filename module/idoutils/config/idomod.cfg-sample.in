@@ -1,7 +1,7 @@
 #####################################################################
 # IDOMOD CONFIG FILE
 #
-# Last Modified: 05-01-2009
+# Last Modified: 05-09-2009
 #####################################################################
 
 
@@ -35,9 +35,9 @@ output_type=unixsocket
 # of fully qualified domain name of the host that the module should
 # connect to for sending output.
 
-#output=@localstatedir@/ndo.dat
+#output=@localstatedir@/ido.dat
 #output=127.0.0.1
-output=@localstatedir@/ndo.sock
+output=@localstatedir@/ido.sock
 
 
 

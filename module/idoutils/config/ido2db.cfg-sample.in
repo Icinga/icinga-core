@@ -1,7 +1,7 @@
 #####################################################################
 # IDO2DB DAEMON CONFIG FILE
 #
-# Last Modified: 05-01-2009
+# Last Modified: 05-09-2009
 #####################################################################
 
 
@@ -41,7 +41,7 @@ socket_type=unix
 # This option is only valid if the socket type specified above
 # is "unix".
 
-socket_name=@localstatedir@/ndo.sock
+socket_name=@localstatedir@/ido.sock
 
 
 
