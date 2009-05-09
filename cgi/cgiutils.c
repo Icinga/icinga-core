@@ -1554,6 +1554,7 @@ char * escape_string(char *input){
 /* determines the log file we should use (from current time) */
 void get_log_archive_to_use(int archive,char *buffer,int buffer_length){
 	struct tm *t;
+	FILE *fd;
 
 	/* determine the time at which the log was rotated for this archive # */
 	determine_log_rotation_times(archive);
@@ -1570,6 +1571,15 @@ void get_log_archive_to_use(int archive,char *buffer,int buffer_length){
 	/* use the time that the log rotation occurred to figure out the name of the log file */
 	snprintf(buffer,buffer_length,"%sicinga-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
 	buffer[buffer_length-1]='\x0';
+
+	/* check if a icinga named archive logfile already exist. Otherwise change back to nagios syntax */
+	if((fd = open(buffer, "r")) == -1){
+		snprintf(buffer,buffer_length,"%snagios-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
+		buffer[buffer_length-1]='\x0';
+	}
+	else {
+		close(fd);
+	}
 
 	return;
         }
