@@ -2,7 +2,7 @@
  * NDO2DB.C - NDO To Database Daemon
  *
  * Copyright (c) 2005-2008 Ethan Galstad
- * Copyright (c) 2009 Hendrik Baecker
+ * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
  * Last Modified: 04-17-2009
@@ -89,7 +89,7 @@ int main(int argc, char **argv){
 		printf("\n");
 		printf("%s %s\n",NDO2DB_NAME,NDO2DB_VERSION);
 		printf("Copyright(c) 2005-2008 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Copyright(c) 2009 Hendrik Baecker (andurin@process-zero.de)\n");
+		printf("Copyright(c) 2009 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Last Modified: %s\n",NDO2DB_DATE);
 		printf("License: GPL v2\n");
 		printf("\n");

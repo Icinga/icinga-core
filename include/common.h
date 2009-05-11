@@ -2,8 +2,9 @@
  *
  * Nagios Common Header File
  * Written By: Ethan Galstad (egalstad@nagios.org)
- * Modified By: Hendrik Baecker (andurin@process-zero.de)
- * Last Modified: 05-02-2009
+ * Modified By: Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 05-11-2009
  *
  * License:
  *

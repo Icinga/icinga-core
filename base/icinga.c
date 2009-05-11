@@ -6,6 +6,7 @@
  * Version: 0.7 (Nagios 3.1.0)
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
+ * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
  *
  * First Written:   01-28-1999 (start of development)
  * Last Modified:   05-08-2009
@@ -385,7 +386,7 @@ int main(int argc, char **argv){
 	if(daemon_mode==FALSE){
 		printf("\n%s %s\n", PROGRAM_NAME ,PROGRAM_VERSION);
 		printf("Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)\n");
-		printf("Copyright (c) 2009 Hendrik Baecker (http://www.icinga.org)\n");
+		printf("Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
 	        }

@@ -2,8 +2,8 @@
  *
  * Nagios Locations Header File
  * Written By: Ethan Galstad (egalstad@nagios.org)
- * Written By: Hendrik Baecker (andurin@process-zero.de)
- * Last Modified: 05-03-2009
+ * Modified By: Icinga Development Team (http://www.icinga.org)
+ * Last Modified: 05-11-2009
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
