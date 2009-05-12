@@ -187,6 +187,9 @@ distclean: clean
 
 devclean: distclean
 
+test:
+	prove t/*.t
+
 install-html:
 	cd $(SRC_HTM) && $(MAKE) install
 
