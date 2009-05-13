@@ -45,7 +45,7 @@ perl -i -p -e "s/VERSION \".*\"/VERSION \"$newversion\"/;" include/common.h
 perl -i -p -e "s/MODIFICATION_DATE \".*\"/MODIFICATION_DATE \"$SHORTDATE\"/;" include/common.h
 
 # Update version number and release date in main code
-perl -i -p -e "s/Version: .*/Version: $newversion/;" base/nagios.c
+perl -i -p -e "s/Version: .*/Version: $newversion/;" base/icinga.c
 perl -i -p -e "s/Last Modified:   [0-9].*/Last Modified:   $SHORTDATE/;" base/icinga.c
 perl -i -p -e "s/Version: [0-9].*/Version: $newversion/;" base/icingastats.c
 perl -i -p -e "s/Last Modified:   [0-9].*/Last Modified:   $SHORTDATE/;" base/icingastats.c
