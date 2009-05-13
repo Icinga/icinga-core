@@ -1318,7 +1318,7 @@ Optional Features:
 --disable-statuswrl=disables compilation of statuswrl (VRML) CGI
 --enable-nanosleep enables use of nanosleep (instead sleep) in event timing
 --enable-event-broker enables integration of event broker routines
---enable-idoutils enables database connectivity using idoutils
+--enable-idoutils enaables dataase connectivitiy using idoutils
 --enable-embedded-perl will enable embedded Perl interpreter
 --enable-cygwin enables building under the CYGWIN environment
 
