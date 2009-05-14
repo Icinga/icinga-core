@@ -14,7 +14,7 @@
 #include "../include/io.h"
 #include "../include/utils.h"
 #include "../include/protoapi.h"
-#include "../include/ndo2db.h"
+#include "../include/ido2db.h"
 #include "../include/dbhandlers.h"
 #include "../include/db.h"
 

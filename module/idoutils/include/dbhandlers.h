@@ -9,7 +9,7 @@
 #ifndef _NDO2DB_DBHANDLERS_H
 #define _NDO2DB_DBHANDLERS_H
 
-#include "ndo2db.h"
+#include "ido2db.h"
 
 int ndo2db_get_object_id(ndo2db_idi *,int,char *,char *,unsigned long *);
 int ndo2db_get_object_id_with_insert(ndo2db_idi *,int,char *,char *,unsigned long *);

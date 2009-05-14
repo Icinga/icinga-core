@@ -2,15 +2,15 @@
  *
  * DB.H - NDO Database Include File
  * Copyright (c) 2005-2006 Ethan Galstad
- * Last Modified: 12-04-2006
+ * Last Modified: 05-14-2009
  *
  ************************************************************************/
 
-#ifndef _NDO2DB_DB_H
-#define _NDO2DB_DB_H
+#ifndef _IDO2DB_DB_H
+#define _IDO2DB_DB_H
 
 #include "../../../include/config.h"
-#include "ndo2db.h"
+#include "ido2db.h"
 
 typedef struct ndo2db_dbconfig_struct{
 	int server_type;
