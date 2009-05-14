@@ -334,6 +334,22 @@ int ndo2db_process_config_var(char *arg){
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_MYSQL;
 		else if(!strcmp(val,"pgsql"))
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_PGSQL;
+		else if(!strcmp(val,"db2"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_DB2;
+		else if(!strcmp(val,"firebird"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_FIREBIRD;
+		else if(!strcmp(val,"freetds"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_FREETDS;
+		else if(!strcmp(val,"ingres"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_INGRES;
+		else if(!strcmp(val,"msql"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_MSQL;
+		else if(!strcmp(val,"oracle"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_ORACLE;
+		else if(!strcmp(val,"sqlite"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_SQLITE;
+		else if(!strcmp(val,"sqlite3"))
+			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_SQLITE3;
 		else
 			return NDO_ERROR;
 	        }

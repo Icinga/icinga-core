@@ -119,6 +119,14 @@ typedef struct ndo2db_input_data_info_struct{
 #define NDO2DB_DBSERVER_NONE                            0
 #define NDO2DB_DBSERVER_MYSQL                           1
 #define NDO2DB_DBSERVER_PGSQL                           2
+#define NDO2DB_DBSERVER_DB2                             3
+#define NDO2DB_DBSERVER_FIREBIRD                        4
+#define NDO2DB_DBSERVER_FREETDS                         5
+#define NDO2DB_DBSERVER_INGRES                          6
+#define NDO2DB_DBSERVER_MSQL                            7
+#define NDO2DB_DBSERVER_ORACLE                          8
+#define NDO2DB_DBSERVER_SQLITE                          9
+#define NDO2DB_DBSERVER_SQLITE3                         10
 
 
 /*************** misc definitions **************/
