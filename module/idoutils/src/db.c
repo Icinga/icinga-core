@@ -193,7 +193,7 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		idi->dbinfo.dbi_conn = dbi_conn_new("mysql");
 		break;
 	case NDO2DB_DBSERVER_PGSQL:
-		idi->dbinfo.dbi_conn = dbi_conn_new("psql");
+		idi->dbinfo.dbi_conn = dbi_conn_new("pgsql");
 		break;
 	default:
 		break;
