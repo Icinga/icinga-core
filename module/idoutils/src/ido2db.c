@@ -55,6 +55,7 @@ FILE *ndo2db_debug_file_fp=NULL;
 unsigned long ndo2db_max_debug_file_size=0L;
 
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
+extern int ido2db_check_dbd_driver(void);
 
 int ndo2db_open_debug_log(void);
 int ndo2db_close_debug_log(void);
@@ -120,25 +121,11 @@ int main(int argc, char **argv){
 	        }
 
 	/* make sure we support the db option chosen... */
-	db_supported=NDO_TRUE;
-/* Thanks to LIBDBI -- all db should be supported
- *
- *#ifdef USE_MYSQL
-	if(ndo2db_db_settings.server_type==NDO2DB_DBSERVER_MYSQL)
-		db_supported=NDO_TRUE;
-#endif
-#ifdef USE_PGSQL
-	/* PostgreSQL support is not yet done... */
-	/*
-	if(ndo2db_db_settings.server_type==NDO2DB_DBSERVER_PGSQL)
-		db_supported=NDO_TRUE;
+	/* if(ido2db_check_dbd_driver()==NDO_FALSE){
+	*	printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
+	*	exit(1);
+	*        }
 	*/
-// */
-/* #endif*/
-	if(db_supported==NDO_FALSE){
-		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
-		exit(1);
-	        }
 
 	/* initialize signal handling */
 	signal(SIGQUIT,ndo2db_parent_sighandler);

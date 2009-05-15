@@ -190,10 +190,34 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 
 	switch (idi->dbinfo.server_type) {
 	case NDO2DB_DBSERVER_MYSQL:
-		idi->dbinfo.dbi_conn = dbi_conn_new("mysql");
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_MYSQL);
 		break;
 	case NDO2DB_DBSERVER_PGSQL:
-		idi->dbinfo.dbi_conn = dbi_conn_new("pgsql");
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_PGSQL);
+		break;
+	case NDO2DB_DBSERVER_DB2:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_DB2);
+		break;
+	case NDO2DB_DBSERVER_FIREBIRD:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_FIREBIRD);
+		break;
+	case NDO2DB_DBSERVER_FREETDS:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_FREETDS);
+		break;
+	case NDO2DB_DBSERVER_INGRES:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_INGRES);
+		break;
+	case NDO2DB_DBSERVER_MSQL:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_MSQL);
+		break;
+	case NDO2DB_DBSERVER_ORACLE:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_ORACLE);
+		break;
+	case NDO2DB_DBSERVER_SQLITE:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_SQLITE);
+		break;
+	case NDO2DB_DBSERVER_SQLITE3:
+		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_SQLITE3);
 		break;
 	default:
 		break;
@@ -473,7 +497,7 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_SQL, 0, "%s\n", buf);
 
 	if ((idi->dbinfo.dbi_result = dbi_conn_query(idi->dbinfo.dbi_conn, buf)) == NULL) {
-		syslog(LOG_USER | LOG_INFO, "Error: mysql_query() failed for '%s'\n", buf);
+		syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
 		result = NDO_ERROR;
 	}
 
@@ -618,4 +642,62 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 	}
 
 	return NDO_OK;
+}
+
+int ido2db_check_dbd_driver(void) {
+
+	int error = NDO_FALSE;
+	dbi_driver db_drv;
+
+	/* This is segfaulting... */
+//	while( (db_drv=dbi_driver_list(db_drv) ) ){
+//            printf("Driver Name: %s\n", dbi_driver_get_name(db_drv));
+//	}
+
+	switch (ndo2db_db_settings.server_type) {
+		case NDO2DB_DBSERVER_MYSQL:
+			if ( (db_drv = dbi_driver_open(IDO2DB_DBI_DRIVER_MYSQL)) != NULL)
+				return NDO_TRUE;
+			break;
+		case NDO2DB_DBSERVER_PGSQL:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_PGSQL) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_DB2:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_DB2) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_FIREBIRD:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_FIREBIRD) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_FREETDS:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_FREETDS) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_INGRES:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_INGRES) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_MSQL:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_MSQL) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_ORACLE:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_ORACLE) != NULL)
+				return NDO_TRUE;
+			break;
+		case NDO2DB_DBSERVER_SQLITE:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE) == NULL)
+				return NDO_FALSE;
+			break;
+		case NDO2DB_DBSERVER_SQLITE3:
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE3) == NULL)
+				return NDO_FALSE;
+			break;
+		default:
+			break;
+	}
+
+	return NDO_TRUE;
 }

@@ -18,8 +18,8 @@ lock_file=@localstatedir@/ido2db.lock
 # These options determine the user/group that the daemon should run as.
 # You can specify a number (uid/gid) or a name for either option.
 
-ndo2db_user=@ido2db_user@
-ndo2db_group=@ido2db_group@
+ndo2db_user=@icinga_user@
+ndo2db_group=@icinga_group@
 
 
 
@@ -58,8 +58,16 @@ tcp_port=5668
 # This option determines what type of DB server the daemon should
 # connect to.
 # Values:
-# 	mysql = MySQL
-#       pgsql = PostgreSQL
+# 	mysql    = MySQL
+#	pgsql    = PostgreSQL
+#	db2      = DB2
+#	firebird = Firebird
+#	freetds  = FreeTDS
+#	ingres   = Ingres
+#	msql     = MSSQL
+#	oracle   = Oracle
+#	sqlite   = SQLite
+#	sqlite3  = SQLite3
 
 db_servertype=mysql
 

@@ -128,6 +128,17 @@ typedef struct ndo2db_input_data_info_struct{
 #define NDO2DB_DBSERVER_SQLITE                          9
 #define NDO2DB_DBSERVER_SQLITE3                         10
 
+/*************** DBI Driver names **************/
+#define IDO2DB_DBI_DRIVER_MYSQL				"mysql"
+#define IDO2DB_DBI_DRIVER_PGSQL				"pgsql"
+#define IDO2DB_DBI_DRIVER_DB2				"db2l"
+#define IDO2DB_DBI_DRIVER_FIREBIRD			"firebird"
+#define IDO2DB_DBI_DRIVER_FREETDS			"freetds"
+#define IDO2DB_DBI_DRIVER_INGRES			"ingres"
+#define IDO2DB_DBI_DRIVER_MSQL				"msql"
+#define IDO2DB_DBI_DRIVER_ORACLE			"Oracle"
+#define IDO2DB_DBI_DRIVER_SQLITE			"sqlite"
+#define IDO2DB_DBI_DRIVER_SQLITE3			"sqlite3"
 
 /*************** misc definitions **************/
 #define NDO2DB_INPUT_BUFFER                             1024
