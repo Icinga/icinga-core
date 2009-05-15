@@ -145,6 +145,9 @@ config:
 cgis:
 	cd $(SRC_CGI) && $(MAKE)
 
+idoutils:
+	cd $(SRC_IDOUTILS) && $(MAKE)
+
 html:
 	cd $(SRC_HTM) && $(MAKE)
 
