@@ -2,8 +2,8 @@
  *
  * EXTINFO.C -  Icinga Extended Information CGI
  *
- * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 05-05-2009
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Last Modified: 05-15-2009
  *
  * License:
  * 
