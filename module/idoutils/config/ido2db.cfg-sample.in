@@ -19,7 +19,7 @@ lock_file=@localstatedir@/ido2db.lock
 # You can specify a number (uid/gid) or a name for either option.
 
 ndo2db_user=@icinga_user@
-ndo2db_group=@icinga_group@
+ndo2db_group=@icinga_grp@
 
 
 
