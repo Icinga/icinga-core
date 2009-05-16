@@ -645,55 +645,71 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 }
 
 int ido2db_check_dbd_driver(void) {
-
 	int error = NDO_FALSE;
-	dbi_driver db_drv;
+	dbi_driver driver = NULL;
 
-	/* This is segfaulting... */
-//	while( (db_drv=dbi_driver_list(db_drv) ) ){
-//            printf("Driver Name: %s\n", dbi_driver_get_name(db_drv));
-//	}
+	dbi_initialize(NULL);
 
 	switch (ndo2db_db_settings.server_type) {
 		case NDO2DB_DBSERVER_MYSQL:
-			if ( (db_drv = dbi_driver_open(IDO2DB_DBI_DRIVER_MYSQL)) != NULL)
-				return NDO_TRUE;
+			if ( (dbi_driver_open(IDO2DB_DBI_DRIVER_MYSQL)) == NULL){
+				dbi_shutdown();
+				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_PGSQL:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_PGSQL) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_PGSQL) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_DB2:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_DB2) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_DB2) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_FIREBIRD:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_FIREBIRD) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_FIREBIRD) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_FREETDS:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_FREETDS) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_FREETDS) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_INGRES:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_INGRES) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_INGRES) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_MSQL:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_MSQL) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_MSQL) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_ORACLE:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_ORACLE) != NULL)
-				return NDO_TRUE;
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_ORACLE) == NULL){
+				dbi_shutdown();
+				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_SQLITE:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		case NDO2DB_DBSERVER_SQLITE3:
-			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE3) == NULL)
+			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE3) == NULL){
+				dbi_shutdown();
 				return NDO_FALSE;
+				}
 			break;
 		default:
 			break;

@@ -60,7 +60,7 @@ extern int ido2db_check_dbd_driver(void);
 int ndo2db_open_debug_log(void);
 int ndo2db_close_debug_log(void);
 
-#define DEBUG_NDO2DB 1                         /* don't daemonize */
+/*#define DEBUG_NDO2DB 1*/                         /* don't daemonize */
 /*#define DEBUG_NDO2DB_EXIT_AFTER_CONNECTION 1*/    /* exit after first client disconnects */
 /*#define DEBUG_NDO2DB2 1 */
 /*#define NDO2DB_DEBUG_MBUF 1*/
@@ -121,11 +121,10 @@ int main(int argc, char **argv){
 	        }
 
 	/* make sure we support the db option chosen... */
-	/* if(ido2db_check_dbd_driver()==NDO_FALSE){
-	*	printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
-	*	exit(1);
-	*        }
-	*/
+	if(ido2db_check_dbd_driver()==NDO_FALSE){
+		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
+		exit(1);
+		}
 
 	/* initialize signal handling */
 	signal(SIGQUIT,ndo2db_parent_sighandler);
