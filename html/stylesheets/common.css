@@ -1,8 +1,5 @@
-body * {
-	font-family: arial, verdana, sans-serif;
-}
-
 body {
+	font-family: arial, verdana, serif;
 	font-weight: normal;
 	font-size: 10pt;
 	}
@@ -10,31 +7,24 @@ body {
 
 /* navbar */
 body.navbar {
-	background-color: #fff;
-	color: #333;
+	background-color: black;
+	color: white;
 	font-family: verdana,arial,serif;
-	margin: 0px 0px 0px 0px;
 	}
 
 .navbarlogo {
-	border-bottom: 1px #000 solid;
-	padding: 5px;
+	margin: 0 0 10px 0;
 	}
-
-body.navbar div.navsection {
-	padding: 5px;	
-}
 
 .navsection {
 	margin: 5px 0 10px 0;
-	color: #333;
+	color: #DEE7C6;
 	}
-	
+
 .navsectiontitle {
 	font-size: 10pt;
 	font-weight: bold;
-	background-color: #fff;
-	border: 1px #666 solid;
+	border:1px solid #DEE7C6;
 	padding: 2px;
 	}
 
@@ -51,16 +41,6 @@ ul.navsectionlinks {
 ul.navsectionlinks li {
 	}
 
-ul.navsectionlinks li a {
-	color: #333;
-	font-weight: normal;
-	font-size: 8pt;
-	text-decoration: none;	
-
-	padding: 0 0 0 15px;
-	background: transparent url(../images/arrow-menu.png) no-repeat scroll 0 center
-	}
-
 ul.navsectionlinks li ul {
 	margin: 0px;
 	padding: 0 0 0 30px;
@@ -68,23 +48,17 @@ ul.navsectionlinks li ul {
 	}
 
 ul.navsectionlinks li ul li {
-	list-style-type: none;
-	}
-
-ul.navsectionlinks li a:hover {
-	color: #333;
-	text-decoration: underline;
 	}
 
 ul.navsectionlinks li ul li a {
-	color: #333;
+	color: #DEE7C6;
 	background: none;
 	padding: 0;
 	}
 
 ul.navsectionlinks li ul li a:hover {
-	color: #333;
-	text-decoration: underline;
+	color: #FFC47F;
+	background: none;
 	}
 
 ul.navsectionlinks li ul li ul {
@@ -95,12 +69,11 @@ ul.navsectionlinks li ul li ul {
 
 
 .navbarsearch {
-	margin: 10px 0 0 0;
+	margin: 5px 0 0 0;
 	}
 
 .navbarsearch fieldset {
 	border: none;
-	margin: 0px 0px 0px 0px
 	}
 
 .navbarsearch fieldset legend {
@@ -111,19 +84,15 @@ ul.navsectionlinks li ul li ul {
 	font-size: 8pt;
 	color: black;
 	background-color: white;
-	border-top: 1px #666666 solid;
-	border-right: 1px #666666 solid;
-	border-bottom: 1px #999999 solid;
-	border-left: 1px #999999 solid;
 	}
 
-	
+
 
 /* main page */
 #splashpage{
 	text-align: center;
 	}
-	
+
 #mainbrandsplash{
 	font-size: 12pt;
 	font-weight: bold;
@@ -133,7 +102,7 @@ ul.navsectionlinks li ul li ul {
 #maincopy{
 	margin: 0 0 15px 0;
 	}
-	
+
 #currentversioninfo{
 	font-size: 12pt;
 	}
@@ -175,7 +144,7 @@ ul.navsectionlinks li ul li ul {
 	font-size: 12pt;
 	font-weight: bold;
 	}
-	
+
 #splashpage #mainfooter{
 	margin: 25px 0 0 0;
 	font-size: 8pt;

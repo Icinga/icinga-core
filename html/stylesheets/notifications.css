@@ -1,42 +1,45 @@
 
-.notifications { font-family: arial,serif;  background-color: white;  color: black; }
+.notifications { font-family: arial,serif; font-size: 8pt; background-color: #fff; color: #000; }
 
-.errorMessage { font-family: arial,serif;  text-align: center;  color: red;  font-weight: bold;  font-size: 12pt; }
-.errorDescription { font-family: arial,serif;  text-align: center;  font-weight: bold;  font-size: 12pt; }
-.warningMessage { font-family: arial,serif;  text-align: center;  color: red;  font-weight: bold;  font-size: 10pt; }
+a { color: #6e7475; text-decoration: none; }
+a:hover { color: #000; }
+th { text-align: left; font-size: 8pt; padding: 0 5px; border: 0; }
+td { font-size: 8pt; border: 0; }
 
-.infoBox { font-family: arial,serif;  font-size: 8pt;  background-color: #C4C2C2;  padding: 2; }
-.infoBoxTitle { font-family: arial,serif;  font-size: 10pt;  font-weight: bold; }
-.infoBoxBadProcStatus { color: red; }
-A.homepageURL:Hover { font-family: arial,serif;  color: red; }
+.errorMessage { text-align: center; color: #ff3300; font-weight: bold; font-size: 10pt; }
+.errorDescription { text-align: center; font-weight: bold; font-size: 10pt; }
+.warningMessage { text-align: center; color: #ff3300; font-weight: bold; font-size: 10pt; }
 
-.linkBox { font-family: arial,serif;  font-size: 8pt;  background-color: #DBDBDB;  padding: 1; }
+.infoBox { color: #000; padding: 2; border: 0; }
+.infoBoxTitle { font-size: 10pt; font-weight: bold; color: #000; }
+.infoBoxBadProcStatus { color: #ff3300; }
+a.homepageURL:Hover { color: #ff3300; }
 
-.dataTitle { font-family: arial,serif;  text-align: center;  font-weight: bold;  font-size: 12pt; }
+.linkBox { border: 0; }
+table.linkBox { margin-top: 20px; }
+td.linkBox a { margin-left: 5px; padding-left: 10px; background: url(../../images/interface/menu_li1.gif) 0 0.35em no-repeat; }
+td.linkBox a:hover { background: url(../../images/interface/menu_li2.gif) 0 0.35em no-repeat; }
 
-.navBoxTitle { font-family: arial narrow,serif;  font-size: 10pt;  font-weight: bold; }
-.navBoxItem { font-family: arial,serif;  font-size: 8pt;  font-weight: bold;  color: red; }
-.navBoxDate { font-family: arial,serif;  font-size: 8pt;  font-weight: bold; }
-.navBoxFile { font-family: arial,serif;  font-size: 8pt;  font-weight: bold;  text-align: center; }
+.dataTitle { text-align: center; font-weight: bold; font-size: 10pt; }
 
-.optBox { font-family: arial narrow,serif;  font-size: 10pt;  font-weight: bold; }
-.optBoxItem { font-family: arial,serif;  font-size: 8pt;  font-weight: bold;  color: red; }
+.navBoxTitle { font-weight: bold; }
+.navBoxItem {  color: #707677; }
+.navBoxFile { font-weight: bold; text-align: center; color: #707677; }
 
-TABLE.notifications { font-family: arial,serif;  font-size: 10pt;  background-color: white;  padding: 5; }
-TH.notifications { font-family: arial,serif;  font-size: 10pt;  background-color: white;  text-align: left;  background-color: #999797;  color: #DCE5C1; }
-.notificationsOdd { font-family: arial,serif;  font-size: 8pt;  background-color: #DBDBDB; }
-.notificationsEven { font-family: arial,serif;  font-size: 8pt;  background-color: #C4C2C2; }
+table.notifications { background-color: #fff; padding: 5; }
+th.notifications { font-size: 10pt; background-color: #707677; color: #fff; }
+.notificationsOdd { background-color: #ededed; }
+.notificationsEven { background-color: #e9e9e9; }
 
-.notificationsOK { font-family: arial,serif;  font-size: 8pt;  background-color: #33FF00; }
-.notificationsUNKNOWN { font-family: arial,serif;  font-size: 8pt;  background-color: #FF9900; }
-.notificationsWARNING { font-family: arial,serif;  font-size: 8pt;  background-color: #FFFF00; }
-.notificationsCRITICAL { font-family: arial,serif;  font-size: 8pt;  background-color: #F83838; }
-.notificationsACKNOWLEDGEMENT { font-family: arial,serif;  font-size: 8pt;  background-color: #AAAAAA; }
-.notificationsCUSTOM { font-family: arial,serif;  font-size: 8pt;  background-color: #778899; }
+.notificationsOK { background-color: #00cc33; color: #fff; text-align: center; }
+.notificationsUNKNOWN { background-color: #bf44b2; color: #fff; text-align: center; }
+.notificationsWARNING { background-color: #ffa500; color: #fff; text-align: center; }
+.notificationsCRITICAL { background-color: #ff3300; color: #fff; text-align: center; }
+.notificationsACKNOWLEDGEMENT { background-color: #acacac; color: #fff; text-align: center; }
+.notificationsCUSTOM { background-color: #778899; color: #fff; text-align: center; }
 
-.notificationsHOSTUP { font-family: arial,serif;  font-size: 8pt;  background-color: #33FF00; }
-.notificationsHOSTDOWN { font-family: arial,serif;  font-size: 8pt;  background-color: #F83838; }
-.notificationsHOSTUNREACHABLE { font-family: arial,serif;  font-size: 8pt;  background-color: #F83838; }
-.notificationsHOSTACKNOWLEDGEMENT { font-family: arial,serif;  font-size: 8pt;  background-color: #AAAAAA; }
-.notificationsHOSTCUSTOM { font-family: arial,serif;  font-size: 8pt;  background-color: #778899; }
-
+.notificationsHOSTUP { background-color: #00cc33; color: #fff; text-align: center; }
+.notificationsHOSTDOWN { background-color: #ff3300; color: #fff; text-align: center; }
+.notificationsHOSTUNREACHABLE { background-color: #bf44b2; color: #fff; text-align: center; }
+.notificationsHOSTACKNOWLEDGEMENT { background-color: #acacac; color: #fff; text-align: center; }
+.notificationsHOSTCUSTOM { background-color: #778899; color: #fff; text-align: center; }

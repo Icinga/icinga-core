@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+	<title>Web Interface Monitoring</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Content-Language" content="fr" />
+	<meta name="robots" content="noindex, nofollow" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/interface/menu.css" media="screen, projection" />
+	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+	<script type="text/javascript" src="js/mootools.js"></script>
+	<script type="text/javascript" src="js/menu.js"></script>
+</head>
+<body>
+	<div id="menu">
+		<h2>General</h2>
+		<ul>
+			<li class="menuli_style1"><a href="main.html" target="main">Home</a></li>
+			<li class="menuli_style2"><a href="docs/index.html" target="main">Documentation</a></li>
+		</ul>
+		<h2>Monitoring</h2>
+		<ul>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/tac.cgi" target="main">Tactical Overview</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/status.cgi?hostgroup=all&style=hostdetail" target="main">Host Detail</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/status.cgi?host=all" target="main">Service Detail</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/status.cgi?hostgroup=all&style=overview" target="main">Hostgroup Overview</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/status.cgi?servicegroup=all&style=overview" target="main">Servicegroup Overview</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/statusmap.cgi?host=all" target="main">Status Map</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/statuswrl.cgi?host=all" target="main">3-D Status Map</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/status.cgi?host=all&servicestatustypes=28" target="main">Service Problems</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12" target="main">Host Problems</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/outages.cgi" target="main">Network Outages</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/extinfo.cgi?&type=3" target="main">Comments</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/extinfo.cgi?&type=6" target="main">Downtime</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/extinfo.cgi?&type=0" target="main">Process Info</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/extinfo.cgi?&type=4" target="main">Performance Info</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/extinfo.cgi?&type=7" target="main">Scheduling Queue</a></li>
+		</ul>
+		<h2>Reporting</h2>
+		<ul>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/trends.cgi" target="main">Trends</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/avail.cgi" target="main">Availability</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/histogram.cgi" target="main">Alert Histogram</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/history.cgi?host=all" target="main">Alert History</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/summary.cgi" target="main">Alert Summary</a></li>
+			<li class="menuli_style2"><a href="/icinga/cgi-bin/notifications.cgi?contact=all" target="main">Notifications</a></li>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/showlog.cgi" target="main">Event Log</a></li>
+		</ul>
+		<h2>Configuration</h2>
+		<ul>
+			<li class="menuli_style1"><a href="/icinga/cgi-bin/config.cgi" target="main">View Config</a></li>
+		</ul>
+	</div>
+</body>
+</html>
