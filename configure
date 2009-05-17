@@ -703,8 +703,6 @@ XPDC
 XPDH
 XDDC
 XDDH
-GLIB_INCLUDE
-GLIB_LIBS
 htmurl
 cgiurl
 BROKER_LDFLAGS
@@ -6965,22 +6963,6 @@ _ACEOF
 	fi
 fi
 
-GLIB_INCLUDE=`pkg-config --cflags glib-2.0`
-
-GLIB_LIBS=`pkg-config --libs glib-2.0`
-
-if test "x$GLIB_LIBS" != x; then
-	cat >>confdefs.h <<_ACEOF
-#define HAVE_GLIB 1
-_ACEOF
-
-	cat >>confdefs.h <<_ACEOF
-#define HAVE_GLIB_H 1
-_ACEOF
-
-fi
-
-
 
 # Check whether --with-cgiurl was given.
 if test "${with_cgiurl+set}" = set; then
@@ -8596,14 +8578,14 @@ XPDC!$XPDC$ac_delim
 XPDH!$XPDH$ac_delim
 XDDC!$XDDC$ac_delim
 XDDH!$XDDH$ac_delim
-GLIB_INCLUDE!$GLIB_INCLUDE$ac_delim
-GLIB_LIBS!$GLIB_LIBS$ac_delim
 htmurl!$htmurl$ac_delim
 cgiurl!$cgiurl$ac_delim
 BROKER_LDFLAGS!$BROKER_LDFLAGS$ac_delim
 BROKERLIBS!$BROKERLIBS$ac_delim
 MOD_CFLAGS!$MOD_CFLAGS$ac_delim
 MOD_LDFLAGS!$MOD_LDFLAGS$ac_delim
+BROKER_O!$BROKER_O$ac_delim
+BROKER_H!$BROKER_H$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -8645,8 +8627,6 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-BROKER_O!$BROKER_O$ac_delim
-BROKER_H!$BROKER_H$ac_delim
 DBLIBS!$DBLIBS$ac_delim
 icinga_name!$icinga_name$ac_delim
 icingastats_name!$icingastats_name$ac_delim
@@ -8668,7 +8648,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 21; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 19; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

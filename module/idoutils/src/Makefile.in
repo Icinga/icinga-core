@@ -21,7 +21,7 @@ INSTALL_OPTS=@INSTALL_OPTS@
 
 CC=@CC@
 
-CFLAGS=@CFLAGS@ @GLIB_INCLUDE@ @DEFS@ 
+CFLAGS=@CFLAGS@ @DEFS@ 
 
 # We don't like ANSI because ANSI doesn't like us! phhht!
 #CFLAGS=-g -Wall -ansi -pedantic -DHAVE_CONFIG_H
