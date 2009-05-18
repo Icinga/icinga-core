@@ -1,0 +1,47 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0/EN"
+               "http://www.docbook.org/xml/5.0CR5/dtd/docbook.dtd" [
+<!ENTITY quickstart SYSTEM "quickstart.xml">
+<!ENTITY quickstart-icinga SYSTEM "quickstart-icinga.xml">
+<!ENTITY quickstart-idoutils SYSTEM "quickstart-idoutils.xml">
+<!ENTITY startstop SYSTEM "startstop.xml">
+<!ENTITY verifyconfig SYSTEM "verifyconfig.xml">
+
+]>
+
+<book xmlns="http://docbook.org/ns/docbook">
+	<?dbhtml dir="../html/docs" ?>
+<!--
+	<chapter id="ch-about">
+		<title>About</title>
+		&about;
+	</chapter>
+
+	<chapter id="relnotes">
+		<title>Release Notes</title>
+		&whatsnew;
+	</chapter>
+
+-->
+	<chapter id="ch-getstarted">
+		<title>Getting Started</title>
+		<!-- &beginners; -->
+		&quickstart;
+		&quickstart-icinga;
+		&quickstart-idoutils;
+<!--
+		&quickstart-fedora;
+		&quickstart-opensuse;
+		&quickstart-ubuntu;
+-->
+	</chapter>
+
+	<chapter id="ch-running_icinga">
+		<title>Running Icinga</title>
+		&verifyconfig;
+		&startstop;
+	</chapter>
+
+</book>
+

@@ -1,0 +1,49 @@
+<section id="wb_verifyconfig">
+  <title>Verifying Your Configuration</title>
+  <para>
+    <citetitle>Verifying Your Configuration</citetitle>
+  </para>
+  <para>
+    Every time you modify your configuration files, you also
+    have to restart Icinga. It is important to run a sanity check on
+    your configuration files because in case of an error Icinga will
+    not start/be restarted.
+  </para>
+  <para>
+    In order to verify your configuration, run Icinga using the
+    <emphasis role="bold">-v</emphasis> command line option:
+  </para>
+  <programlisting>
+    /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+  </programlisting>
+  <para>
+    If you've forgotten to enter some critical data or
+    misconfigured things, Icinga will show a warning or error message
+    that should point you to the location of the problem.
+  </para>
+  <para>
+    Error messages generally print out the line in the configuration 
+    file that seems to be the source of the problem. 
+  </para>
+  <para>
+    On errors, Icinga will often exit the pre-flight check and 
+    return to the command prompt after printing only the first 
+    error that it has encountered. 
+  </para>
+  <para>
+    This is done because of one error does not cascade
+    into multiple errors as the remainder of the configuration data
+    is verified. 
+  </para>
+  <para>
+    If you get any error messages you'll need to go and
+    edit your configuration files to remedy the problem. Warning
+    messages can <emphasis>generally</emphasis> be safely ignored, 
+    since they are only recommendations and not requirements.
+  </para>
+  <para>
+    Once you've verified your configuration files and fixed
+    possible errors you can go ahead with 
+    <xref linkend="wb_startstop" />.
+  </para>
+</section>

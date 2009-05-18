@@ -1,0 +1,56 @@
+### 
+# To convert DocBook XML to chunked HTML:
+# xslproc STYLESHEET XMLFILE
+
+# Within the main xml file there is a definition for the target
+# directory. Here: ../en-en/
+
+xsltproc ./xsl/dbk-html-chunk.xsl icinga-main.xml
+
+########################################################
+#
+# NEW
+#
+# #####################################################
+
+1. Convert HTML to XHTML using tidy:
+   tidy -asxhtml -i configmain.html > ./configmain.xhtml
+
+2. Convert HTML to XML using xsltproc + stylesheet and make them tidy with tidy:
+   
+   xsltproc ./stylesheet.xslt configmain.xhtml | tidy -i -xml > configmain.xml
+
+
+##########################################
+# to work out..
+##########################################
+
+* You have to edit each resulting xml file to delete the first
+  xml line:
+     <?xml version='1.0'?>
+  before the "section" of the book begins
+
+* Also you have add the section id in every xml file like this:
+  File: quickstart.xml
+  Section: <section id="wb_quickstart">
+  Syntax:  <section id="wb_FILENAME">
+
+  This is needed for the internal links
+
+* Extern Links:
+  They have to be fixed with an additional whitespace character:
+  From: <ulink url="http://www.boutell.com/gd/">GD</ulink>development
+  To:   <ulink url="http://www.boutell.com/gd/">GD</ulink> development
+                                                          ^--- 
+
+
+
+##########################################
+# Nice VI Search and Replaces
+##########################################
+
+# Adds xreflabel to anchor
+#
+# :s/\(<anchor id="\)\(.*\)\(\"\ \/>\)/\1\2\"\ xreflabel=\"\2\3/
+#
+#

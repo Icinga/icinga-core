@@ -1,0 +1,51 @@
+<section id="wb_quickstart">
+  <title>Quickstart Installation Guides</title>
+  <para>
+    <citetitle>Introduction</citetitle>
+  </para>
+  <para>
+    These quickstart guides will provide you with simple
+    instruction on how to install Icinga from source and have it
+    monitoring your local machine inside of 20 minutes.
+  </para>
+  <para> 
+    Advanced installation options and configuration are discussed elsewhere.
+  </para>
+  <para>
+    Besides, a new quick install guide for using the IDOUtils of
+    Icinga is also available.
+  </para>
+  <para>
+    <citetitle>Guides</citetitle>
+  </para>
+  <para>
+    Quickstart installation guides are currently available for
+    Linux (most common Fedora, Ubuntu, openSUSE):
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        See: <xref linkend="wb_quickstart-icinga" />
+      </para>
+    </listitem>
+  </itemizedlist>
+  <itemizedlist>
+    <listitem>
+      <para>
+        See: <xref linkend="wb_quickstart-idoutils" />
+      </para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    If you are installing Icinga on an operating system or
+    Linux distribution that isn't listed above, read 
+    <xref linkend="wb_quickstart-icinga" /> for an overview of what
+    you'll need to do. 
+  </para>
+  <para>
+    Command names, paths, etc. vary widely across different 
+    Operating Systems/Distributions, so you'll likely need 
+    to tweak the installation docs a bit to work for your 
+    particular case.
+  </para>
+</section>
