@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>Starting and Stopping Icinga</title>
+
+<STYLE type="text/css">
+<!--
+        .Default { font-family: verdana,arial,serif; font-size: 8pt; }
+        .PageTitle { font-family: verdana,arial,serif; font-size: 16pt; font-weight: bold; }
+-->      
+</STYLE>
+</head>
+
+<body bgcolor="#FFFFFF" text="black" class="Default">
+<div align="center">
+<img src="images/logofullsize.png" border="0" alt="Icinga" title="Icinga">
+
+<h1 class="PageTitle">Starting and Stopping Icinga</h1>
+</div>
+
+<hr>
+<p>
+Up To: <a href="toc.html">Contents</a><br>
+<!--<img src="images/upto.gif" border="0" align="middle" alt="Up To" title="Up To">Up To: <a href="toc.html">Contents</a><br>
+<img src="images/seealso.gif" border="0" align="middle" alt="See Also" title="See Also"> See Also: <a href="verifyconfig.html">Verifying Your Configuration</a>-->
+</p>
+
+<p>
+There are different ways to start, stop, and restart Icinga. Depending on your installation, the most common example will be shown...<br>
+In case of using the init script make sure you have performed
+
+<pre>
+make install-init or make fullinstall
+</pre>
+</p>
+
+<br>
+Also, the installation path of Icinga may differ if you have chosen another --prefix during configure.
+
+<br>
+<p>
+Tip: Always make sure you <a href="verifyconfig.html">verify your configuration</a> before you (re)start Icinga.
+</p>
+
+<p>
+<strong><u>Starting Icinga</u></strong>
+</p>
+
+<ol>
+<li><b>Init Script:</b>  The easiest way to start Icinga is by using the init scrip:
+
+<pre>
+/etc/init.d/icinga start
+</pre>
+
+</li>
+<li><b>Manually:</b> You can start Icinga manually with the <b>-d</b> command line option:
+
+<pre>
+/usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg
+</pre>
+</li>
+</ol>
+
+
+<p>
+<strong><u>Restarting Icinga</u></strong>
+</p>
+
+<p>
+Restarting/reloading is nececessary if you modify your configuration files and want those changes to take effect.
+</p>
+
+<ol>
+<li><b>Init Script:</b>  The easiest way to reload/restart Icinga is by using the init script:
+<pre>
+/etc/init.d/icinga reload
+or
+/etc/init.d/icinga restart
+</pre>
+
+</li>
+
+<li><b>Manually:</b> You can restart Icinga by sending it a SIGHUP signal:
+
+<pre>
+kill -HUP &lt;icinga_pid&gt;
+</pre>
+
+</ol>
+
+<p>
+<strong><u>Stopping Icinga</u></strong>
+</p>
+
+<ol>
+<li><b>Init Script:</b>  The easiest way to stop Icinga is by using the init script:
+<pre>
+/etc/init.d/icinga stop
+</pre>
+
+</li>
+
+<li><b>Manually:</b> You can stop by sending it a SIGTERM signal:
+
+<pre>
+kill &lt;icinga_pid&gt;
+</pre>
+
+</li>
+
+</ol>
+
+<hr>
+</body>
+</html>
