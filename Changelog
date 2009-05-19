@@ -1,16 +1,22 @@
-#####################
-Icinga 0.7 Change Log
-#####################
+#######################
+Icinga 0.8.x Change Log
+#######################
 
-0.7 - 05/??/2009
+
+0.8 - 05/19/2009
 ----------------
 * Almost biggest deal to rename the components
-* including IDOUtils (former NDOUtils) into the core code, updating configure & make to get in
-touch with it
-* changed database handling in IDOUtils from native database support to libdbi
-(libdbi.sourceforge.net) as a abstraction layer, enable compile try with
-"configure --enable-idoutils"
-
+* including IDOUtils (former NDOUtils) into the core code,
+  updating configure & make to get in touch with it
+* changed database handling in IDOUtils from native
+  database support to libdbi (libdbi.sourceforge.net) as a
+  abstraction layer, enable compile try with
+  "configure --enable-idoutils"
+* Included a new stylesheet/icon theme based on Vautour Style
+  Vautour Style have been created by Yoann LAMY.
+  The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/).
+  The icons of Vautour Style use "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.
+  "Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).
 
 
 
