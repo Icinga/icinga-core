@@ -3,7 +3,6 @@
  * CGIUTILS.C - Common utilities for Icinga CGIs
  * 
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
  *
  * Last Modified: 05-05-2009
  *
@@ -1961,14 +1960,14 @@ void include_ssi_files(char *cgi_name, int type){
 		cgi_ssi_file[x]=tolower(cgi_ssi_file[x]);
 
 	if(type==SSI_HEADER){
-		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad.\nCopyright (c) 2009 Icinga Development Team (www.icinga.org) -->\n", PROGRAM_NAME, PROGRAM_NAME);
+		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad. -->\n", PROGRAM_NAME, PROGRAM_NAME);
 		include_ssi_file(common_ssi_file);
 		include_ssi_file(cgi_ssi_file);
 	        }
 	else{
 		include_ssi_file(cgi_ssi_file);
 		include_ssi_file(common_ssi_file);
-		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad.\nCopyright (c) 2009 Icinga Development Team (www.icinga.org) -->\n", PROGRAM_NAME, PROGRAM_NAME);
+		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad. -->\n", PROGRAM_NAME, PROGRAM_NAME);
 	        }
 
 	return;

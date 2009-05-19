@@ -3,7 +3,6 @@
  * HISTORY.C - Icinga History CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
  *
  * Last Modified: 05-05-2009
  *

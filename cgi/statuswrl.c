@@ -3,7 +3,6 @@
  * STATUSWRL.C - Icinga 3-D (VRML) Network Status View
  *
  * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009 Icinga Development Team (www.icinga.org)
  *
  * Last Modified:   05-05-2009
  *
