@@ -1623,7 +1623,7 @@ void draw_hosts(void){
 	                }
 
 		if(create_type==CREATE_IMAGE)
-			draw_text("Nagios Process",x1+(DEFAULT_NODE_WIDTH/2),y1+DEFAULT_NODE_HEIGHT,color_black);
+			draw_text("Icinga Process",x1+(DEFAULT_NODE_WIDTH/2),y1+DEFAULT_NODE_HEIGHT,color_black);
 	        }
 
 	/* calculate average services per host */
