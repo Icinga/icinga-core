@@ -9,7 +9,7 @@
   enhance the normal installation procedure and how to configure
   the IDOUtils to capture monitoring data into a database. This
   guide will show examples for Fedora and Ubuntu. Other
-  distributiosn may inherit from those.
+  distributions may inherit from those.
   <emphasis role="bold">If you are planning to use Icinga without
   IDOUtils please read 
   <xref linkend="wb_quickstart-icinga" />instead!</emphasis></para>
@@ -41,7 +41,7 @@
     <citetitle>Prerequisites</citetitle>
   </para>
   <para>During portions of the installation you'll need to have 
-  <emphasis role="bold">root</emphasis>access to your
+  <emphasis role="bold">root</emphasis> access to your
   machine.</para>
   <para>Make sure you've installed the following packages on your
   system before continuing. IDOUtils use the 
@@ -81,18 +81,26 @@
   <para>Become the root user.</para>
   <programlisting>su -l</programlisting>
   <para>Create a new 
-  <emphasis>icinga</emphasis>user account and give it a
+  <emphasis>icinga</emphasis> user account and give it a
   password.</para>
-  <programlisting>/usr/sbin/useradd -m icinga passwd icinga</programlisting>
+  <programlisting>
+    /usr/sbin/useradd -m icinga 
+    passwd icinga
+  </programlisting>
   <para>
     <citetitle>2) Download Icinga and the Plugins</citetitle>
   </para>
   <para>Change to your local source directory i.e. /usr/src</para>
   <programlisting>cd /usr/src</programlisting>
-  <para>Either fetch the actual icinga-core snapshot from Icinga
-  GIT</para>
-  <programlisting>git clone git://git.icinga.org/icinga-core.git</programlisting>
+  <para>
+    Either fetch the actual icinga-core snapshot from Icinga
+    GIT
+  </para>
+  <programlisting>
+    git clone git://git.icinga.org/icinga-core.git
+  </programlisting>
   <ulink url="http://www.icinga.org">Icinga Website</ulink> 
+  <para>Don't forget to download the </para>
   <ulink url="http://nagiosplugins.org/download">Nagios
   Plugins</ulink>
   <para>
@@ -101,23 +109,40 @@
   </para>
   <para>Extract the Icinga source code tarball (or change directory
   to the GIT snapshot)</para>
-  <programlisting>cd /usr/src/ tar xvzf icinga-0.8.tar.gz cd icinga</programlisting>
-  <para>Run the Icinga configure script and enable IDOUtils. You
-  will get help by using the --help flag:</para>
+  <programlisting>
+    cd /usr/src/ 
+    tar xvzf icinga-0.8.tar.gz 
+    cd icinga
+  </programlisting>
+  <para>
+    Run the Icinga configure script and enable IDOUtils. You
+    will get help by using the --help flag:
+  </para>
   <programlisting>./configure --enable-idoutils</programlisting>
-  <para>Compile the Icinga source code. There is also an extra
-  option for IDOUtils (
-  <emphasis>make idoutils</emphasis>) if you need to recompile only
-  this module. To see available options, only use "make".</para>
+  <para>
+    Compile the Icinga source code. There is also an extra
+    option for IDOUtils (<emphasis>make idoutils</emphasis>) 
+    if you need to recompile only this module. To see available 
+    options, only use "make".</para>
   <programlisting>make all</programlisting>
-  <para>Install binaries, init script, sample config files and set
-  permissions on the external command directory. Also install the
-  IDOUtils.</para>
-  <programlisting>make install make install-init make install-config make install-commandmode make install-idoutils
+  <para>
+    Install binaries, init script, sample config files and set
+    permissions on the external command directory. Also install the
+    IDOUtils.
+  </para>
+  <programlisting>
+    make install 
+    make install-init 
+    make install-config 
+    make install-commandmode 
+    make install-idoutils
+  </programlisting>
   or shorter 
-  make fullinstall</programlisting>
-  <para>Don't start Icinga yet - there's still more that needs to
-  be done...</para>
+  <programlisting>make fullinstall</programlisting>
+  <para>
+    Don't start Icinga yet - there's still more that needs to
+    be done...
+  </para>
   <para>
     <citetitle>4) Customize Configuration</citetitle>
   </para>
@@ -127,9 +152,9 @@
   <para>Edit the 
   <emphasis>
   /usr/local/icinga/etc/objects/contacts.cfg</emphasis>config file
-  with your favorite editor and change the email address associated
+  with your favourite editor and change the email address associated
   with the 
-  <emphasis>icingaadmin</emphasis>contact definition to the address
+  <emphasis>icingaadmin</emphasis> contact definition to the address
   you'd like to use for receiving alerts.</para>
   <programlisting>vi /usr/local/icinga/etc/objects/contacts.cfg</programlisting>
   <programlisting>cd /usr/local/icinga/etc/ cp idomod.cfg-sample idomod.cfg cp ido2db.cfg-sample ido2db.cfg</programlisting>
@@ -140,7 +165,11 @@
     <citetitle>5) Configure Database and IDOUtils</citetitle>
   </para>
   <ulink url="http://www.phpmyadmin.net">phpMyAdmin</ulink>
-  <programlisting>cd /usr/src/icinga/ cd /module/idoutils/db mysql -u root -p icinga &lt; mysql.sql</programlisting>
+  <programlisting>
+    cd /usr/src/icinga/ 
+    cd /module/idoutils/db 
+    mysql -u root -p icinga &lt; mysql.sql
+  </programlisting>
   <programlisting>vi /usr/local/icinga/etc/ido2db.cfg</programlisting>
   <para>
     <citetitle>6) Configure the Web Interface</citetitle>
@@ -149,7 +178,7 @@
   directory.</para>
   <programlisting>make install-webconf</programlisting>
   <para>Create a 
-  <emphasis>icingaadmin</emphasis>account for logging into the
+  <emphasis>icingaadmin</emphasis> account for logging into the
   Icinga web interface. If you want to change it later, use the
   same command. Remember the password you assign to this account -
   you'll need it later.</para>
@@ -168,7 +197,8 @@
   <programlisting>
     cd /usr/src 
     tar xvzf nagios-plugins-1.4.13.tar.gz 
-    cd nagios-plugins-1.4.13</programlisting>
+    cd nagios-plugins-1.4.13
+  </programlisting>
   <para>Compile and install the plugins by changing install
   directory to /usr/local/icinga</para>
   <programlisting>
@@ -183,9 +213,11 @@
     <emphasis role="bold">Start IDOUtils</emphasis>
   </emphasis>
   <para>IDOUtils must be started and running 
-  <citetitle>before</citetitle>Icinga is started.</para>
+  <citetitle>before</citetitle> Icinga is started.</para>
   <emphasis>Start IDO</emphasis>
-  <programlisting>/usr/local/icinga/bin/ido2db -c /usr/local/icinga/etc/ido2db.cfg</programlisting>
+  <programlisting>
+    /usr/local/icinga/bin/ido2db -c /usr/local/icinga/etc/ido2db.cfg
+  </programlisting>
   <emphasis>Stop IDO</emphasis>
   <programlisting>
     killall -9 ido2db 
@@ -195,7 +227,9 @@
     <emphasis role="bold">Start Icinga</emphasis>
   </emphasis>
   <para>Verify the sample Icinga configuration files.</para>
-  <programlisting>/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</programlisting>
+  <programlisting>
+    /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+  </programlisting>
   <para>If there are no errors, start Icinga.</para>
   <emphasis>Fedora, openSUSE</emphasis>
   <programlisting>service icinga start</programlisting>
@@ -223,10 +257,12 @@
   <para>
     <citetitle>8) Login to the Web Interface</citetitle>
   </para>
-  <para>You should now be able to access the Icinga web interface
-  at the URL below. You'll be prompted for the username (
-  <emphasis>icingaadmin</emphasis>) and password you specified
-  earlier.</para>
+  <para>
+    You should now be able to access the Icinga web interface
+    at the URL below. You'll be prompted for the username (
+    <emphasis>icingaadmin</emphasis> ) and password you specified
+    earlier.
+  </para>
   <programlisting>
     http://localhost/icinga/ 
     or 
@@ -242,7 +278,7 @@
   <para>Make sure your system's firewall rules are configured to
   allow access to the web server if you want to access the Icinga
   interface remotely.</para>
-  <programlisting>-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</programlisting>
+  <programlisting>iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</programlisting>
   <para>Setting up your mail transfer agent (MTA) like exim,
   sendmail or postfix to allow Icinga sending notification emails
   won't be explained here. Please refer to the 
@@ -253,7 +289,7 @@
   <para>
     <citetitle>10) You're Done</citetitle>
   </para>
-  <para>Congratulations! You sucessfully installed Icinga with
+  <para>Congratulations! You successfully installed Icinga with
   IDOUtils. Your journey into monitoring has just begun. You'll no
   doubt want to monitor more than just your local machine, so check
   out the 

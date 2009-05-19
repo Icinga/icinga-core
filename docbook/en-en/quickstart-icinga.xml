@@ -6,15 +6,16 @@
   <para>
     This guide is intended to provide you with simple
     instructions on how to install Icinga from source (code) and have
-    it monitoring your local machine inside of 20 minutes.
+    it monitoring your local machine within 20 minutes.
   </para>
   <para> 
     No advanced installation options are discussed here - just the
     basics that will work for 95% of users who want to get started.
   </para>
   <para>
-    This guide will give you examples for currently 3 different Linux
-    distrubitions: Fedora, Ubuntu and openSUSE. 
+    This guide will give you examples for currently three different Linux
+    distributions: Fedora, Ubuntu and openSUSE. Similar distributions may
+    work as well. That should include RedHat, CentOS, Debian and SLES.
   </para>
   <para>
     Other distributions may inherit from these examples.
@@ -22,7 +23,7 @@
   <para>
     <emphasis role="bold">If you are planning to use a database with
     IDOUtils please read 
-    <xref linkend="wb_quickstart-idoutils" />instead!</emphasis>
+    <xref linkend="wb_quickstart-idoutils" /> instead!</emphasis>
   </para>
   <para>
     <citetitle>What You'll End Up With</citetitle>
@@ -48,7 +49,7 @@
     <citetitle>Prerequisites</citetitle>
   </para>
   <para>During portions of the installation you'll need to have 
-  <emphasis role="bold">root</emphasis>access to your
+  <emphasis role="bold">root</emphasis> access to your
   machine.</para>
   <para>Make sure you've installed the following packages on your
   system before continuing.</para>
@@ -79,15 +80,20 @@
   <programlisting>apt-get install apache2 build-essential libgd2-xpm-dev</programlisting>
 
   <emphasis>OpenSUSE</emphasis>
+  <para>Please use yast to install the packages</para>
   <para>
     <citetitle>1) Create Account Information</citetitle>
   </para>
   <para>Become the root user.</para>
   <programlisting>su -l</programlisting>
-  <para>Create a new 
-  <emphasis>icinga</emphasis> user account and give it a
-  password:</para>
-  <programlisting>/usr/sbin/useradd -m icinga passwd icinga</programlisting>
+  <para>
+    Create a new <emphasis>icinga</emphasis> user account and give 
+    it a password:
+  </para>
+  <programlisting>
+    /usr/sbin/useradd -m icinga 
+    passwd icinga
+  </programlisting>
   <para>
     <citetitle>2) Download Icinga and the Plugins</citetitle>
   </para>
@@ -98,6 +104,7 @@
   </para>
   <programlisting>git clone git://git.icinga.org/icinga-core.git</programlisting>
   <ulink url="http://www.icinga.org">Icinga Website</ulink> 
+  <para>Don't forget to download the </para>
   <ulink url="http://nagiosplugins.org/download">Nagios Plugins</ulink>
   <para>
     <citetitle>3) Compile and Install Icinga</citetitle>
@@ -106,7 +113,10 @@
     Extract the Icinga source code tarball (or change directory
     to the GIT snapshot)
   </para>
-  <programlisting>cd /usr/src/ tar xvzf icinga-0.8.tar.gz cd icinga</programlisting>
+  <programlisting>
+    cd /usr/src/ 
+    tar xvzf icinga-0.8.tar.gz 
+    cd icinga</programlisting>
   <para>
     Run the Icinga configure script. You will get help by using
     the --help flag:
@@ -121,7 +131,12 @@
     Install binaries, init script, sample config files and set
     permissions on the external command directory.
   </para>
-  <programlisting>make install make install-init make install-config make install-commandmode </programlisting>
+  <programlisting>
+    make install 
+    make install-init 
+    make install-config 
+    make install-commandmode 
+  </programlisting>
   or shorter 
   <programlisting>make fullinstall</programlisting>
   <para>
@@ -138,7 +153,7 @@
   </para>
   <para>Edit the 
     <emphasis>/usr/local/icinga/etc/objects/contacts.cfg</emphasis> 
-    config file with your favorite editor and change the email 
+    config file with your favourite editor and change the email 
     address associated with the <emphasis>icingaadmin</emphasis> 
     contact definition to the address you'd like to use for 
     receiving alerts.
@@ -153,7 +168,7 @@
   </para>
   <programlisting>make install-webconf</programlisting>
   <para>
-    Create a <emphasis>icingaadmin</emphasis>account for logging into the
+    Create an <emphasis>icingaadmin</emphasis> account for logging into the
     Icinga web interface. If you want to change it later, use the
     same command. Remember the password you assign to this account -
     you'll need it later.
@@ -164,7 +179,7 @@
   </para>
   <emphasis>Fedora</emphasis>
   <programlisting>service httpd restart</programlisting>
-  <emphasis>Ubuntu</emphasis>
+  <emphasis>Ubuntu / OpenSuSE</emphasis>
   <programlisting>/etc/init.d/apache2 reload</programlisting>
   <para>
     <citetitle>6) Compile and Install the Nagios Plugins</citetitle>
@@ -179,7 +194,11 @@
     Compile and install the plugins by changing install
     directory to /usr/local/icinga
   </para>
-  <programlisting>./configure --prefix=/usr/local/icinga --with-icinga-user=icinga make make install</programlisting>
+  <programlisting>
+    ./configure --prefix=/usr/local/icinga --with-icinga-user=icinga 
+    make 
+    make install
+  </programlisting>
   <para>
     <citetitle>7) Start Icinga</citetitle>
   </para>
@@ -188,14 +207,17 @@
     automatically start when the system boots (make sure you have
     installed the init script before).
   </para>
-  <emphasis>Fedora, openSUSE</emphasis>
-  <programlisting>chkconfig --add icinga chkconfig icinga on</programlisting>
+  <emphasis>Fedora / OpenSUSE</emphasis>
+  <programlisting>
+    chkconfig --add icinga 
+    chkconfig icinga on
+  </programlisting>
   <emphasis>Ubuntu</emphasis>
   <programlisting>ln -s /etc/init.d/icinga /etc/rcS.d/S99icinga</programlisting>
   <para>Verify the sample Icinga configuration files.</para>
   <programlisting>/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</programlisting>
   <para>If there are no errors, start Icinga.</para>
-  <emphasis>Fedora, openSUSE</emphasis>
+  <emphasis>Fedora / OpenSUSE</emphasis>
   <programlisting>service icinga start</programlisting>
   <emphasis>Ubuntu</emphasis>
   <programlisting>/etc/init.d/icinga start</programlisting>
@@ -225,7 +247,7 @@
     allow access to the web server if you want to access the Icinga
     interface remotely.
   </para>
-  <programlisting>-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</programlisting>
+  <programlisting>iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</programlisting>
   <para>
     Setting up your mail transfer agent (MTA) like exim,
     sendmail or postfix to allow Icinga sending notification emails

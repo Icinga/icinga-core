@@ -31,9 +31,8 @@
     error that it has encountered. 
   </para>
   <para>
-    This is done because of one error does not cascade
-    into multiple errors as the remainder of the configuration data
-    is verified. 
+    This is done because one error might lead to consecutive 
+    errors as the remainder of the configuration data is verified. 
   </para>
   <para>
     If you get any error messages you'll need to go and

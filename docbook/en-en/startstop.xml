@@ -21,9 +21,9 @@
   <orderedlist>
     <listitem>
       <para>
-      <emphasis role="bold">Init Script:</emphasis> The easiest way
-      to start Icinga is by using the init scrip: 
-      <programlisting>/etc/init.d/icinga start</programlisting></para>
+        <emphasis role="bold">Init Script:</emphasis> The easiest way
+        to start Icinga is by using the init script: 
+        <programlisting>/etc/init.d/icinga start</programlisting></para>
     </listitem>
     <listitem>
       <para>
