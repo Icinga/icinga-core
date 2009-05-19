@@ -12,23 +12,23 @@
         <table border="0" width="100%" height="100%" id="top_searchbar">
 		<tr>
 			<td align="center" width="180">
-				<img src="/icinga/images/icinga-logo.png" alt"Icinga-Logo" \>
+				<img src="@htmurl@/images/icinga-logo.png" alt"Icinga-Logo" \>
 			</td>
 			<td align="center">
-				<form method="get" action="/icinga/cgi-bin/status.cgi" target="main">
+				<form method="get" action="@cgiurl@/status.cgi" target="main">
 					<b>Search Host:</b>
 					<input type='hidden' name='navbarsearch' value='1'>
 					<input type='text' name='host' size='15' class="NavBarSearchItem">
 				</form>
 			</td>
 			<td align="center">
-				<form method="get" action="/icinga/cgi-bin/status.cgi" target="main">
+				<form method="get" action="@cgiurl@/status.cgi" target="main">
 					<b>Search Hostgroup:</b>
 					<input type='text' name='hostgroup' size='15' class="NavBarSearchItem">
 				</form>
 			</td>
 			<td align="center">
-				<form method="get" action="/icinga/cgi-bin/status.cgi" target="main">
+				<form method="get" action="@cgiurl@/status.cgi" target="main">
 					<b>Search Servicegroup:</b>
 					<input type='text' name='servicegroup' size='15' class="NavBarSearchItem">
 				</form>

@@ -19,35 +19,35 @@
 		</ul>
 		<h2>Monitoring</h2>
 		<ul>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/tac.cgi" target="main">Tactical Overview</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/status.cgi?hostgroup=all&style=hostdetail" target="main">Host Detail</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/status.cgi?host=all" target="main">Service Detail</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/status.cgi?hostgroup=all&style=overview" target="main">Hostgroup Overview</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/status.cgi?servicegroup=all&style=overview" target="main">Servicegroup Overview</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/statusmap.cgi?host=all" target="main">Status Map</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/statuswrl.cgi?host=all" target="main">3-D Status Map</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/status.cgi?host=all&servicestatustypes=28" target="main">Service Problems</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12" target="main">Host Problems</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/outages.cgi" target="main">Network Outages</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/extinfo.cgi?&type=3" target="main">Comments</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/extinfo.cgi?&type=6" target="main">Downtime</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/extinfo.cgi?&type=0" target="main">Process Info</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/extinfo.cgi?&type=4" target="main">Performance Info</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/extinfo.cgi?&type=7" target="main">Scheduling Queue</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/tac.cgi" target="main">Tactical Overview</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail" target="main">Host Detail</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?host=all" target="main">Service Detail</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=overview" target="main">Hostgroup Overview</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=overview" target="main">Servicegroup Overview</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/statusmap.cgi?host=all" target="main">Status Map</a></li>
+			<!-- <li class="menuli_style1"><a href="@cgiurl@/statuswrl.cgi?host=all" target="main">3-D Status Map</a></li> -->
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?host=all&servicestatustypes=28" target="main">Service Problems</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12" target="main">Host Problems</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?&type=3" target="main">Comments</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/extinfo.cgi?&type=6" target="main">Downtime</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?&type=0" target="main">Process Info</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/extinfo.cgi?&type=4" target="main">Performance Info</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?&type=7" target="main">Scheduling Queue</a></li>
 		</ul>
 		<h2>Reporting</h2>
 		<ul>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/trends.cgi" target="main">Trends</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/avail.cgi" target="main">Availability</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/histogram.cgi" target="main">Alert Histogram</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/history.cgi?host=all" target="main">Alert History</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/summary.cgi" target="main">Alert Summary</a></li>
-			<li class="menuli_style2"><a href="/icinga/cgi-bin/notifications.cgi?contact=all" target="main">Notifications</a></li>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/showlog.cgi" target="main">Event Log</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/trends.cgi" target="main">Trends</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/avail.cgi" target="main">Availability</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/histogram.cgi" target="main">Alert Histogram</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/history.cgi?host=all" target="main">Alert History</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/summary.cgi" target="main">Alert Summary</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/notifications.cgi?contact=all" target="main">Notifications</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/showlog.cgi" target="main">Event Log</a></li>
 		</ul>
 		<h2>Configuration</h2>
 		<ul>
-			<li class="menuli_style1"><a href="/icinga/cgi-bin/config.cgi" target="main">View Config</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/config.cgi" target="main">View Config</a></li>
 		</ul>
 	</div>
 </body>

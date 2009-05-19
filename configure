@@ -6933,7 +6933,7 @@ echo "${ECHO_T}no" >&6; }
 		echo "      on your system, get over it and move on to other things.  The"
 		echo "      CGIs that use the GD libs are just a small part of the entire"
 		echo "      Nagios package.  Get everything else working first and then"
-		echo "      revisit the problem.  Make sure to check the nagios-users"
+		echo "      revisit the problem.  Make sure to check the icinga-users"
 		echo "      mailing list archives for possible solutions to GD library"
 		echo "      problems when you resume your troubleshooting."
 		echo ""
@@ -9100,9 +9100,9 @@ fi
 
 
 perl subst include/locations.h
-perl subst html/config.inc.php
 perl subst html/index.html
 perl subst html/menu.html
+perl subst html/top.html
 
 
 echo ""
