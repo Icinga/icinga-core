@@ -2,6 +2,7 @@
 
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0/EN"
                "http://www.docbook.org/xml/5.0CR5/dtd/docbook.dtd" [
+<!ENTITY whatsnew SYSTEM "whatsnew.xml">
 <!ENTITY quickstart SYSTEM "quickstart.xml">
 <!ENTITY quickstart-icinga SYSTEM "quickstart-icinga.xml">
 <!ENTITY quickstart-idoutils SYSTEM "quickstart-idoutils.xml">
@@ -17,13 +18,13 @@
 		<title>About</title>
 		&about;
 	</chapter>
+-->
 
 	<chapter id="relnotes">
 		<title>Release Notes</title>
 		&whatsnew;
 	</chapter>
 
--->
 	<chapter id="ch-getstarted">
 		<title>Getting Started</title>
 		<!-- &beginners; -->

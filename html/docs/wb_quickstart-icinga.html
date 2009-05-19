@@ -6,7 +6,7 @@
     <title>Icinga Quickstart</title>
     <meta name="generator" content="DocBook XSL Stylesheets V1.74.3" />
     <link rel="home" href="index.html" title="" />
-    <link rel="up" href="ch-getstarted.html" title="Chapter 1. Getting Started" />
+    <link rel="up" href="ch-getstarted.html" title="Chapter 2. Getting Started" />
     <link rel="prev" href="wb_quickstart.html" title="Quickstart Installation Guides" />
     <link rel="next" href="wb_quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart" />
   </head>
@@ -21,7 +21,7 @@
         </tr>
         <tr>
           <td width="20%" align="left"><a accesskey="p" href="wb_quickstart.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 1. Getting Started</th>
+          <th width="60%" align="center">Chapter 2. Getting Started</th>
           <td width="20%" align="right"> <a accesskey="n" href="wb_quickstart-idoutils.html">Next</a></td>
         </tr>
       </table>
@@ -194,6 +194,10 @@
     you'll need it later.
   </p>
   <pre class="programlisting">htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+  <p> 
+    If you want to change it later or want to add another user, use the following command:
+  </p>
+  <pre class="programlisting">htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
   <p>
     Reload/Restart Apache to make the new settings take effect.
   </p>

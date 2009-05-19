@@ -174,6 +174,10 @@
     you'll need it later.
   </para>
   <programlisting>htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</programlisting>
+  <para> 
+    If you want to change it later or want to add another user, use the following command:
+  </para>
+  <programlisting>htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</programlisting>
   <para>
     Reload/Restart Apache to make the new settings take effect.
   </para>
