@@ -295,7 +295,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(755,root,root)
 /etc/init.d/icinga
 %{_prefix}/sbin/icinga
-%{_prefix}/sbin/icingatats
+%{_prefix}/sbin/icingastats
 %if %{EMBPERL}
 %{_prefix}/sbin/p1.pl
 %endif
