@@ -94,6 +94,8 @@
     /usr/sbin/useradd -m icinga 
     passwd icinga
   </programlisting>
+  <para>On some distribution you'll need to add the group in a single step:</para>
+  <programlisting>/usr/sbin/groupadd icinga</programlisting>
   <para>
     <citetitle>2) Download Icinga and the Plugins</citetitle>
   </para>

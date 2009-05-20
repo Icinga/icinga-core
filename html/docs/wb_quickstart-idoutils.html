@@ -128,6 +128,8 @@ apt-get install apache2 build-essential libgd2-xpm-dev apt-get install mysql apt
     /usr/sbin/useradd -m icinga 
     passwd icinga
   </pre>
+  <p>On some distribution you'll need to add the group in a single step:</p>
+  <pre class="programlisting">/usr/sbin/groupadd icinga</pre>
   <p>
     <em class="citetitle">2) Download Icinga and the Plugins</em>
   </p>
@@ -208,10 +210,10 @@ apt-get install apache2 build-essential libgd2-xpm-dev apt-get install mysql apt
   <p>
     <em class="citetitle">5) Configure Database and IDOUtils</em>
   </p>
-  <a class="ulink" href="http://www.phpmyadmin.net" target="_top">phpMyAdmin</a>
+
   <pre class="programlisting">
     cd /usr/src/icinga/ 
-    cd /module/idoutils/db 
+    cd module/idoutils/db 
     mysql -u root -p icinga &lt; mysql.sql
   </pre>
   <pre class="programlisting">vi /usr/local/icinga/etc/ido2db.cfg</pre>

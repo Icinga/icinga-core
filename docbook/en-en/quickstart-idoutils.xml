@@ -110,6 +110,8 @@ apt-get install apache2 build-essential libgd2-xpm-dev apt-get install mysql apt
     /usr/sbin/useradd -m icinga 
     passwd icinga
   </programlisting>
+  <para>On some distribution you'll need to add the group in a single step:</para>
+  <programlisting>/usr/sbin/groupadd icinga</programlisting>
   <para>
     <citetitle>2) Download Icinga and the Plugins</citetitle>
   </para>
