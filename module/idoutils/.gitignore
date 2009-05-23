@@ -1,0 +1,7 @@
+db/upgradedb
+db/prepsql
+db/installdb
+idomod.cfg-sample
+config/icinga.cfg
+config/ido2db.cfg-sample
+
