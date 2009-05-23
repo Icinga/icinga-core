@@ -525,7 +525,7 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s "
-			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) "
+			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_date, realtime_data, inferred_data_extracted) "
 			"VALUES ('%lu', %s, %s, '0', '%lu', '%s', '0', '0')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
@@ -594,7 +594,9 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 	/* save entry to db */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s SET instance_id='%lu', event_type='%d', event_time=%s, event_time_usec='%lu', process_id='%lu', program_name='%s', program_version='%s', program_date='%s'",
+			"INSERT INTO %s "
+			"(instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) "
+			"VALUES ('%lu', '%d', %s, '%lu', '%lu', '%s', '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_PROCESSEVENTS],
 			idi->dbinfo.instance_id, type, ts[0], tstamp.tv_usec, process_id,
 			es[0], es[1], es[2]) == -1)
@@ -658,7 +660,9 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 
 #ifdef BAD_IDEA
 		/* record a fake log entry to indicate that Icinga is starting - this normally occurs during the module's "blackout period" */
-		if(asprintf(&buf,"INSERT INTO %s SET instance_id='%lu', logentry_time=%s, logentry_type='%lu', logentry_data='Icinga %s starting... (PID=%lu)'"
+		if(asprintf(&buf,"INSERT INTO %s "
+						"(instance_id, logentry_time, logentry_type, logentry_data) "
+						"VALUES ('%lu', %s, '%lu', 'Icinga %s starting... (PID=%lu)')"
 						,ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES]
 						,idi->dbinfo.instance_id
 						,ts[0]
@@ -840,7 +844,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		/* save entry to db */
 		if (asprintf(
 				&buf,
-				"INSERT INTO %s SET instance_id='%lu', event_type='%d', queued_time=%s, queued_time_usec='%lu', scheduled_time=%s, recurring_event='%d', object_id='%lu'",
+				"INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) "
+				"VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE],
 				idi->dbinfo.instance_id, event_type, ts[0], tstamp.tv_usec,
 				ts[1], recurring_event, object_id) == -1)
@@ -944,7 +949,7 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s "
-			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) "
+			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_date, realtime_data, inferred_data_extracted) "
 			"VALUES ('%lu', %s, %s, '%lu', '%lu', '%s', '1', '1')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
@@ -1985,7 +1990,9 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 	/* save entry to db */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s SET instance_id='%lu', event_time=%s, event_time_usec='%lu', event_type='%d', reason_type='%d', flapping_type='%d', object_id='%lu', percent_state_change='%lf', low_threshold='%lf', high_threshold='%lf', comment_time=%s, internal_comment_id='%lu'",
+			"INSERT INTO %s "
+			"(instance_id, event_time, event_time_usec, event_type, reason_type, flapping_type, object_id, percent_state_change, low_threshold, high_threshold, comment_time, internal_comment_id) "
+			"VALUES ('%lu', %s, '%lu', '%d', '%d', '%d', '%lu', '%lf', '%lf', '%lf', %s, '%lu')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_FLAPPINGHISTORY],
 			idi->dbinfo.instance_id, ts[0], tstamp.tv_usec, type, attr,
 			flapping_type, object_id, percent_state_change, low_threshold,
@@ -2749,7 +2756,9 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
 	/* save entry to db */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s SET instance_id='%lu', command_type='%d', entry_time=%s, command_name='%s', command_args='%s'",
+			"INSERT INTO %s "
+			"(instance_id, command_type, entry_time, command_name, command_args) "
+			"VALUES ('%lu', '%d', %s, '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],
 			idi->dbinfo.instance_id, command_type, ts, es[0], es[1]) == -1)
 		buf = NULL;
@@ -2965,7 +2974,9 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 	/* save entry to db */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s SET instance_id='%lu', state_time=%s, state_time_usec='%lu', object_id='%lu', state_change='%d', state='%d', state_type='%d', current_check_attempt='%d', max_check_attempts='%d', last_state='%d', last_hard_state='%d', output='%s', long_output='%s'",
+			"INSERT INTO %s "
+			"(instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, laste_state, last_hard_state, output, long_output) "
+			"('%lu', %s, '%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_STATEHISTORY],
 			idi->dbinfo.instance_id, ts[0], tstamp.tv_usec, object_id,
 			state_change_occurred, state, state_type, current_attempt,
