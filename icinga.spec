@@ -316,6 +316,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(755,%{nsusr},%{nsgrp})
 %dir /var/log/icinga
 %dir /var/log/icinga/archives
+%dir /var/log/icinga/spool
+%dir /var/log/icinga/spool/checkresults
+%dir /var/log/icinga/rw
 %defattr(2775,%{nsusr},%{nsgrp})
 %dir /var/spool/icinga
 %doc Changelog INSTALLING LICENSE README UPGRADING
