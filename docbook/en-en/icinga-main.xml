@@ -1,48 +1,52 @@
-<?xml version='1.0'?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book>
+<?dbhtml dir="../html/docs" ?>
+<bookinfo>
+    <title>Icinga Documentation</title>
 
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0/EN"
-               "http://www.docbook.org/xml/5.0CR5/dtd/docbook.dtd" [
-<!ENTITY whatsnew SYSTEM "whatsnew.xml">
-<!ENTITY quickstart SYSTEM "quickstart.xml">
-<!ENTITY quickstart-icinga SYSTEM "quickstart-icinga.xml">
-<!ENTITY quickstart-idoutils SYSTEM "quickstart-idoutils.xml">
-<!ENTITY startstop SYSTEM "startstop.xml">
-<!ENTITY verifyconfig SYSTEM "verifyconfig.xml">
+    <author>
+      <firstname>Icinga Development</firstname>
 
-]>
+      <surname>Team</surname>
 
-<book xmlns="http://docbook.org/ns/docbook">
-	<?dbhtml dir="../html/docs" ?>
-<!--
-	<chapter id="ch-about">
-		<title>About</title>
-		&about;
-	</chapter>
--->
+      <affiliation>
+        <orgname>Icinga</orgname>
+      </affiliation>
+    </author>
 
-	<chapter id="relnotes">
-		<title>Release Notes</title>
-		&whatsnew;
-	</chapter>
+    <pubdate>05-28-2009</pubdate>
 
-	<chapter id="ch-getstarted">
-		<title>Getting Started</title>
-		<!-- &beginners; -->
-		&quickstart;
-		&quickstart-icinga;
-		&quickstart-idoutils;
-<!--
-		&quickstart-fedora;
-		&quickstart-opensuse;
-		&quickstart-ubuntu;
--->
-	</chapter>
+    <copyright>
+      <year>2009</year>
+    </copyright>
+  </bookinfo>
 
-	<chapter id="ch-running_icinga">
-		<title>Running Icinga</title>
-		&verifyconfig;
-		&startstop;
-	</chapter>
+  <chapter id="ch_relnotes">
+    <title>Release Notes</title>
 
+    <xi:include href="whatsnew.xml" xpointer="element(/1)"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </chapter>
+
+  <chapter id="ch_gettingstarted">
+    <title>Getting Started</title>
+
+    <xi:include href="quickstart.xml" xpointer="element(/1)"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <xi:include href="quickstart-icinga.xml" xpointer="element(/1)"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <xi:include href="quickstart-idoutils.xml" xpointer="element(/1)"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </chapter>
+  <chapter id="ch-running_icinga">
+               <title>Running Icinga</title>
+    <xi:include href="verifyconfig.xml" xpointer="element(/1)"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="startstop.xml" xpointer="element(/1)"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </chapter>
 </book>
-
