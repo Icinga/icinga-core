@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<book>
-<?dbhtml dir="../html/docs" ?>
-<bookinfo>
-    <title>Icinga Documentation</title>
+<book version="5.0" xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:m="http://www.w3.org/1998/Math/MathML"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:db="http://docbook.org/ns/docbook">
+  <info>
+    <title></title>
 
     <author>
-      <firstname>Icinga Development</firstname>
-
-      <surname>Team</surname>
+      <personname><firstname>Icinga
+      Development</firstname><surname>Team</surname></personname>
 
       <affiliation>
         <orgname>Icinga</orgname>
@@ -17,36 +19,31 @@
     </author>
 
     <pubdate>05-28-2009</pubdate>
+  </info>
 
-    <copyright>
-      <year>2009</year>
-    </copyright>
-  </bookinfo>
+  <?dbhtml dir="../html/docs" ?>
 
-  <chapter id="ch_relnotes">
+  <chapter xml:id="ch_relnotes">
     <title>Release Notes</title>
 
-    <xi:include href="whatsnew.xml" xpointer="element(/1)"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="whatsnew.xml" xpointer="element(/1)" />
   </chapter>
 
-  <chapter id="ch_gettingstarted">
+  <chapter xml:id="ch_gettingstarted">
     <title>Getting Started</title>
 
-    <xi:include href="quickstart.xml" xpointer="element(/1)"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="quickstart.xml" xpointer="element(/1)" />
 
-    <xi:include href="quickstart-icinga.xml" xpointer="element(/1)"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="quickstart-icinga.xml" xpointer="element(/1)" />
 
-    <xi:include href="quickstart-idoutils.xml" xpointer="element(/1)"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="quickstart-idoutils.xml" xpointer="element(/1)" />
   </chapter>
-  <chapter id="ch-running_icinga">
-               <title>Running Icinga</title>
-    <xi:include href="verifyconfig.xml" xpointer="element(/1)"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-    <xi:include href="startstop.xml" xpointer="element(/1)"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+  <chapter xml:id="ch_running-icinga">
+    <title>Running Icinga</title>
+
+    <xi:include href="verifyconfig.xml" xpointer="element(/1)" />
+
+    <xi:include href="startstop.xml" xpointer="element(/1)" />
   </chapter>
 </book>

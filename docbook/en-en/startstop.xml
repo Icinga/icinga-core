@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<section id="wb_startstop">
+<section version="5.0" xml:id="wb_startstop"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
   <title>Starting and Stopping Icinga</title>
 
   <para>There are different ways to start, stop, and restart Icinga. Depending
   on your installation, the most common example will be shown... In case of
   using the init script make sure you have performed</para>
 
-  <programlisting>make install-init 
-or
-make fullinstall  </programlisting>
+  <programlisting>make install-init</programlisting>
+
+  <para>or</para>
+
+  <programlisting>make fullinstall</programlisting>
 
   <para>Tip: Always make sure you <xref linkend="wb_verifyconfig" /> before
   you (re)start Icinga.</para>
@@ -32,14 +39,14 @@ make fullinstall  </programlisting>
 
   <para><citetitle>Restarting Icinga</citetitle></para>
 
-  <para>Restarting/reloading is nececessary if you modify your configuration
-  files and want those changes to take effect.</para>
+  <para>Restarting/reloading is nececessary after you modified your
+  configuration files and want those changes to take effect.</para>
 
   <orderedlist>
     <listitem>
       <para><emphasis role="bold">Init Script:</emphasis> The easiest way to
-      reload/restart Icinga is by using the init script: <programlisting>/etc/init.d/icinga reload        </programlisting>
-      or <programlisting>/etc/init.d/icinga restart        </programlisting></para>
+      reload/restart Icinga is by using the init script: <programlisting>/etc/init.d/icinga reload</programlisting>
+      or <programlisting>/etc/init.d/icinga restart</programlisting></para>
     </listitem>
 
     <listitem>

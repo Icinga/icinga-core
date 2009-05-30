@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Verifying Your Configuration</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<link rel="home" href="index.html" title="Icinga Documentation">
-<link rel="up" href="ch-running_icinga.html" title="Chapter 3. Running Icinga">
-<link rel="prev" href="ch-running_icinga.html" title="Chapter 3. Running Icinga">
+<link rel="home" href="index.html" title="">
+<link rel="up" href="ch_running-icinga.html" title="Chapter 3. Running Icinga">
+<link rel="prev" href="ch_running-icinga.html" title="Chapter 3. Running Icinga">
 <link rel="next" href="wb_startstop.html" title="Starting and Stopping Icinga">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -15,7 +15,7 @@
 <tr><th colspan="3" align="center">Verifying Your Configuration</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch-running_icinga.html">Prev</a> </td>
+<a accesskey="p" href="ch_running-icinga.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 3. Running Icinga</th>
 <td width="20%" align="right"> <a accesskey="n" href="wb_startstop.html">Next</a>
 </td>
@@ -26,27 +26,38 @@
 <div class="section" title="Verifying Your Configuration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="wb_verifyconfig"></a>Verifying Your Configuration</h2></div></div></div>
-<p><em class="citetitle">Verifying Your Configuration</em></p>
-<p>Every time you modify your configuration files, you also have to
+  
+
+  <p>Every time you modify your configuration files, you also have to
   restart Icinga. It is important to run a sanity check on your configuration
   files because in case of an error Icinga will not start/be restarted.</p>
-<p>In order to verify your configuration, run Icinga using the <span class="bold"><strong>-v</strong></span> command line option:</p>
-<pre class="programlisting">/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
-<p>If you've forgotten to enter some critical data or misconfigured
+
+  <p>In order to verify your configuration, run Icinga using the <span class="bold"><strong>-v</strong></span> command line option:</p>
+
+  <pre class="programlisting">
+    /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+  </pre>
+
+  <p>If you've forgotten to enter some critical data or misconfigured
   things, Icinga will show a warning or error message that should point you to
   the location of the problem.</p>
-<p>Error messages generally print out the line in the configuration file
+
+  <p>Error messages generally print out the line in the configuration file
   that seems to be the source of the problem.</p>
-<p>On errors, Icinga will often exit the pre-flight check and return to
+
+  <p>On errors, Icinga will often exit the pre-flight check and return to
   the command prompt after printing only the first error that it has
   encountered.</p>
-<p>This is done because one error might lead to consecutive errors as the
+
+  <p>This is done because one error might lead to consecutive errors as the
   remainder of the configuration data is verified.</p>
-<p>If you get any error messages you'll need to go and edit your
+
+  <p>If you get any error messages you'll need to go and edit your
   configuration files to remedy the problem. Warning messages can
   <span class="emphasis"><em>generally</em></span> be safely ignored, since they are only
   recommendations and not requirements.</p>
-<p>Once you've verified your configuration files and fixed possible
+
+  <p>Once you've verified your configuration files and fixed possible
   errors you can go ahead with <a class="xref" href="wb_startstop.html" title="Starting and Stopping Icinga">the section called “Starting and Stopping Icinga”</a>.</p>
 </div>
 <div class="navfooter">
@@ -54,8 +65,8 @@
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch-running_icinga.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch-running_icinga.html">Up</a></td>
+<a accesskey="p" href="ch_running-icinga.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch_running-icinga.html">Up</a></td>
 <td width="40%" align="right"> <a accesskey="n" href="wb_startstop.html">Next</a>
 </td>
 </tr>

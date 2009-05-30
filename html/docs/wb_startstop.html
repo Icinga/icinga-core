@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Starting and Stopping Icinga</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<link rel="home" href="index.html" title="Icinga Documentation">
-<link rel="up" href="ch-running_icinga.html" title="Chapter 3. Running Icinga">
+<link rel="home" href="index.html" title="">
+<link rel="up" href="ch_running-icinga.html" title="Chapter 3. Running Icinga">
 <link rel="prev" href="wb_verifyconfig.html" title="Verifying Your Configuration">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,58 +24,71 @@
 <div class="section" title="Starting and Stopping Icinga">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="wb_startstop"></a>Starting and Stopping Icinga</h2></div></div></div>
-<p>There are different ways to start, stop, and restart Icinga. Depending
+  
+
+  <p>There are different ways to start, stop, and restart Icinga. Depending
   on your installation, the most common example will be shown... In case of
   using the init script make sure you have performed</p>
-<pre class="programlisting">make install-init 
-or
-make fullinstall  </pre>
-<p>Tip: Always make sure you <a class="xref" href="wb_verifyconfig.html" title="Verifying Your Configuration">the section called “Verifying Your Configuration”</a> before
+
+  <pre class="programlisting">make install-init</pre>
+
+  <p>or</p>
+
+  <pre class="programlisting">make fullinstall</pre>
+
+  <p>Tip: Always make sure you <a class="xref" href="wb_verifyconfig.html" title="Verifying Your Configuration">the section called “Verifying Your Configuration”</a> before
   you (re)start Icinga.</p>
-<p><em class="citetitle">Starting Icinga</em></p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
+
+  <p><em class="citetitle">Starting Icinga</em></p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
+      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
       start Icinga is by using the init script: </p>
 <pre class="programlisting">/etc/init.d/icinga start</pre>
-</li>
+    </li>
 <li class="listitem">
-<p><span class="bold"><strong>Manually:</strong></span> You can start Icinga
+      <p><span class="bold"><strong>Manually:</strong></span> You can start Icinga
       manually with the <span class="bold"><strong>-d</strong></span> command line
       option: </p>
 <pre class="programlisting">/usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
-</li>
+    </li>
 </ol></div>
-<p><em class="citetitle">Restarting Icinga</em></p>
-<p>Restarting/reloading is nececessary if you modify your configuration
-  files and want those changes to take effect.</p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
+
+  <p><em class="citetitle">Restarting Icinga</em></p>
+
+  <p>Restarting/reloading is nececessary after you modified your
+  configuration files and want those changes to take effect.</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
+      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
       reload/restart Icinga is by using the init script: </p>
-<pre class="programlisting">/etc/init.d/icinga reload        </pre>
+<pre class="programlisting">/etc/init.d/icinga reload</pre>
 <p>
       or </p>
-<pre class="programlisting">/etc/init.d/icinga restart        </pre>
-</li>
+<pre class="programlisting">/etc/init.d/icinga restart</pre>
+    </li>
 <li class="listitem">
-<p><span class="bold"><strong>Manually:</strong></span> You can restart Icinga
+      <p><span class="bold"><strong>Manually:</strong></span> You can restart Icinga
       by sending it a SIGHUP signal: </p>
 <pre class="programlisting">kill -HUP &lt;icinga_pid&gt;</pre>
-</li>
+    </li>
 </ol></div>
-<p><em class="citetitle">Stopping Icinga</em></p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
+
+  <p><em class="citetitle">Stopping Icinga</em></p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
+      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
       stop Icinga is by using the init script: </p>
 <pre class="programlisting">/etc/init.d/icinga stop</pre>
-</li>
+    </li>
 <li class="listitem">
-<p><span class="bold"><strong>Manually:</strong></span> You can stop by sending
+      <p><span class="bold"><strong>Manually:</strong></span> You can stop by sending
       it a SIGTERM signal: </p>
 <pre class="programlisting">kill &lt;icinga_pid&gt;</pre>
-</li>
+    </li>
 </ol></div>
 </div>
 <div class="navfooter">
@@ -84,7 +97,7 @@ make fullinstall  </pre>
 <tr>
 <td width="40%" align="left">
 <a accesskey="p" href="wb_verifyconfig.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch-running_icinga.html">Up</a></td>
+<td width="20%" align="center"><a accesskey="u" href="ch_running-icinga.html">Up</a></td>
 <td width="40%" align="right"> </td>
 </tr>
 <tr>

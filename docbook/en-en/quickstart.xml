@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-
-<section id="wb_quickstart">
+<section version="5.0" xml:id="wb_quickstart"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
   <title>Quickstart Installation Guides</title>
-  <para>
-    <citetitle>Introduction</citetitle>
-  </para>
-  <para>
-    These quickstart guides will provide you with simple
-    instruction on how to install Icinga from source and have it
-    monitoring your local machine within 20 minutes.
-  </para>
-  <para> 
-    Advanced installation options and configuration are discussed elsewhere.
-  </para>
-  <para>
-    Besides, a new quick install guide for using the IDOUtils of
-    Icinga is also available.
-  </para>
-  <para>
-    <citetitle>Guides</citetitle>
-  </para>
-  <para>
-    Quickstart installation guides are currently available for
-    Linux (most common Fedora, Ubuntu, openSUSE).
-    Because some distributions are similar you may succeed 
-    to use these intructions for RedHat, CentOS, Debian and SLES as well.
-  </para>
+
+  <para><citetitle>Introduction</citetitle></para>
+
+  <para>These quickstart guides will provide you with simple instruction on
+  how to install Icinga from source and have it monitoring your local machine
+  within 20 minutes.</para>
+
+  <para>Advanced installation options and configuration are discussed
+  elsewhere.</para>
+
+  <para>Besides, a new quick install guide for using the IDOUtils of Icinga is
+  also available.</para>
+
+  <para><citetitle>Guides</citetitle></para>
+
+  <para>Quickstart installation guides are currently available for Linux (most
+  common Fedora, Ubuntu, openSUSE). Because some distributions are similar you
+  may succeed to use these intructions for RedHat, CentOS, Debian and SLES as
+  well.</para>
+
   <itemizedlist>
     <listitem>
-      <para>
-        See: <xref linkend="wb_quickstart-icinga" />
-      </para>
+      <para>See: <xref linkend="wb_quickstart-icinga" /></para>
     </listitem>
   </itemizedlist>
+
   <itemizedlist>
     <listitem>
-      <para>
-        See: <xref linkend="wb_quickstart-idoutils" />
-      </para>
+      <para>See: <xref linkend="wb_quickstart-idoutils" /></para>
     </listitem>
   </itemizedlist>
-  <para>
-    If you are installing Icinga on an operating system or
-    Linux distribution that isn't listed above, read 
-    <xref linkend="wb_quickstart-icinga" /> for an overview of what
-    you'll need to do. 
-  </para>
-  <para>
-    Command names, paths, etc. vary widely across different 
-    Operating Systems/Distributions, so you'll likely need 
-    to tweak the installation docs a bit to work for your 
-    particular case.
-  </para>
+
+  <para>If you are installing Icinga on an operating system or Linux
+  distribution that isn't listed above, read <xref
+  linkend="wb_quickstart-icinga" /> for an overview of what you'll need to
+  do.</para>
+
+  <para>Command names, paths, etc. vary widely across different Operating
+  Systems/Distributions, so you'll likely need to tweak the installation docs
+  a bit to work for your particular case.</para>
 </section>

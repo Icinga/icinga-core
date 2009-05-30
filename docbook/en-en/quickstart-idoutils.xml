@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<section id="wb_quickstart-idoutils">
+<section version="5.0" xml:id="wb_quickstart-idoutils"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
   <title>Icinga with IDOUtils Quickstart</title>
 
   <para><citetitle>Introduction</citetitle></para>
@@ -55,11 +60,11 @@
   role="bold">root</emphasis> access to your machine.</para>
 
   <para>Make sure you've installed the following packages on your system
-  before continuing. IDOUtils use the <ulink
-  url="http://libdbi.sourceforge.net">libdbi</ulink> and the libdbi-drivers
-  for several databases. The development libraries are also required. The
-  following examples will show how to install the IDOUtils with the libdbi
-  using MySQL.</para>
+  before continuing. IDOUtils use the <link
+  xlink:href="http://libdbi.sourceforge.net">libdbi</link> and the
+  libdbi-drivers for several databases. The development libraries are also
+  required. The following examples will show how to install the IDOUtils with
+  the libdbi using MySQL.</para>
 
   <itemizedlist>
     <listitem>
@@ -75,8 +80,8 @@
     </listitem>
 
     <listitem>
-      <para><ulink url="http://www.boutell.com/gd/">GD</ulink> development
-      libraries</para>
+      <para><link xlink:href="http://www.boutell.com/gd/">GD</link>
+      development libraries</para>
     </listitem>
 
     <listitem>
@@ -87,17 +92,17 @@
   <para>You can install these packages by running the following commands (as
   root or sudo):</para>
 
-  <para><emphasis role="bold">Fedora</emphasis></para>
+  <para><emphasis>Fedora</emphasis></para>
 
   <programlisting>yum install httpd gcc glibc glibc-common gd gd-devel 
 yum install mysql</programlisting>
 
   <programlisting>yum install libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</programlisting>
 
-  <para><emphasis role="bold">Ubuntu</emphasis></para>
+  <para><emphasis>Ubuntu</emphasis></para>
 
-  <programlisting>apt-get install apache2 build-essential libgd2-xpm-dev 
-apt-get install mysql 
+  <programlisting>apt-get install apache2 build-essential libgd2-xpm-dev
+apt-get install mysql
 apt-get install libdbi0 libdbi0-dev libdbd-mysql  </programlisting>
 
   <para><citetitle>1) Create Account Information</citetitle></para>
@@ -109,7 +114,7 @@ apt-get install libdbi0 libdbi0-dev libdbd-mysql  </programlisting>
   <para>Create a new <emphasis>icinga</emphasis> user account and give it a
   password.</para>
 
-  <programlisting>/usr/sbin/useradd -m icinga 
+  <programlisting>/usr/sbin/useradd -m icinga
 passwd icinga  </programlisting>
 
   <para>On some distribution you'll need to add the group in a single
@@ -127,12 +132,12 @@ passwd icinga  </programlisting>
 
   <programlisting>git clone git://git.icinga.org/icinga-core.git  </programlisting>
 
-  <para><ulink url="http://www.icinga.org">Icinga Website</ulink></para>
+  <para><link xlink:href="http://www.icinga.org">Icinga Website</link></para>
 
   <para>Don't forget to download the</para>
 
-  <para><ulink url="http://nagiosplugins.org/download">Nagios
-  Plugins</ulink></para>
+  <para><link xlink:href="http://nagiosplugins.org/download">Nagios
+  Plugins</link></para>
 
   <para><citetitle>3) Compile and Install Icinga with
   IDOUtils</citetitle></para>
@@ -140,8 +145,8 @@ passwd icinga  </programlisting>
   <para>Extract the Icinga source code tarball (or change directory to the GIT
   snapshot)</para>
 
-  <programlisting>cd /usr/src/ 
-tar xvzf icinga-0.8.tar.gz 
+  <programlisting>cd /usr/src/
+tar xvzf icinga-0.8.tar.gz
 cd icinga  </programlisting>
 
   <para>Run the Icinga configure script and enable IDOUtils. You will get help
@@ -158,10 +163,10 @@ cd icinga  </programlisting>
   <para>Install binaries, init script, sample config files and set permissions
   on the external command directory. Also install the IDOUtils.</para>
 
-  <programlisting>make install 
-make install-init 
-make install-config 
-make install-commandmode 
+  <programlisting>make install
+make install-init
+make install-config
+make install-commandmode
 make install-idoutils  </programlisting>
 
   <para>or shorter</para>
@@ -185,21 +190,20 @@ make install-idoutils  </programlisting>
 
   <programlisting>vi /usr/local/icinga/etc/objects/contacts.cfg</programlisting>
 
-  <programlisting>cd /usr/local/icinga/etc/ 
-cp idomod.cfg-sample idomod.cfg 
+  <programlisting>cd /usr/local/icinga/etc/
+cp idomod.cfg-sample idomod.cfg
 cp ido2db.cfg-sample ido2db.cfg</programlisting>
 
-  <programlisting>vi /usr/local/icinga/etc/icinga.cfg 
-add line 
-broker_module=/usr/local/icinga/bin/idomod.o config_file=/usr/local/icinga/etc/idomod.cfg
-  </programlisting>
+  <programlisting>vi /usr/local/icinga/etc/icinga.cfg
+#add line
+broker_module=/usr/local/icinga/bin/idomod.o config_file=/usr/local/icinga/etc/idomod.cfg  </programlisting>
 
   <para><citetitle>5) Configure Database and IDOUtils</citetitle></para>
 
-  <para><ulink url="http://www.phpmyadmin.net">phpMyAdmin</ulink></para>
+  <!--  <link xlink:href="http://www.phpmyadmin.net">phpMyAdmin</link> -->
 
-  <programlisting>cd /usr/src/icinga/ 
-cd module/idoutils/db 
+  <programlisting>cd /usr/src/icinga/
+cd module/idoutils/db
 mysql -u root -p icinga &lt; mysql.sql  </programlisting>
 
   <programlisting>vi /usr/local/icinga/etc/ido2db.cfg</programlisting>
@@ -217,8 +221,8 @@ mysql -u root -p icinga &lt; mysql.sql  </programlisting>
 
   <programlisting>htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</programlisting>
 
-  <para>To change the password of an existing user or to add a new user, take
-  this command:</para>
+  <para>To change the password of an existing user <emphasis
+  role="bold">or</emphasis> to add a new user, take this command:</para>
 
   <programlisting>htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNMAE&gt;</programlisting>
 
@@ -237,20 +241,21 @@ mysql -u root -p icinga &lt; mysql.sql  </programlisting>
 
   <para>Extract the Nagios plugins source code tarball.</para>
 
-  <programlisting>cd /usr/src 
-tar xvzf nagios-plugins-1.4.13.tar.gz 
+  <programlisting>cd /usr/src
+tar xvzf nagios-plugins-1.4.13.tar.gz
 cd nagios-plugins-1.4.13  </programlisting>
 
   <para>Compile and install the plugins by changing install directory to
   /usr/local/icinga</para>
 
-  <programlisting>./configure --prefix=/usr/local/icinga --with-icinga-user=icinga 
+  <programlisting>./configure --prefix=/usr/local/icinga --with-icinga-user=icinga
 make 
-make install  </programlisting>
+make install</programlisting>
 
   <para><citetitle>8) Start IDOUtils and Icinga</citetitle></para>
 
-  <para><emphasis role="bold">Start IDOUtils</emphasis></para>
+  <para><emphasis> <emphasis role="bold">Start IDOUtils</emphasis>
+  </emphasis></para>
 
   <para>IDOUtils must be started and running <citetitle>before</citetitle>
   Icinga is started.</para>
@@ -261,22 +266,23 @@ make install  </programlisting>
 
   <para><emphasis>Stop IDO</emphasis></para>
 
-  <programlisting>killall -9 ido2db 
+  <programlisting>killall -9 ido2db
 rm -f /usr/local/icinga/var/ido.sock  </programlisting>
 
-  <para><emphasis role="bold">Start Icinga</emphasis></para>
+  <para><emphasis> <emphasis role="bold">Start Icinga</emphasis>
+  </emphasis></para>
 
   <para>Verify the sample Icinga configuration files.</para>
 
-  <programlisting>/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg </programlisting>
+  <programlisting>/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg  </programlisting>
 
   <para>If there are no errors, start Icinga.</para>
 
-  <para><emphasis role="bold">Fedora, openSUSE</emphasis></para>
+  <para><emphasis>Fedora, openSUSE</emphasis></para>
 
   <programlisting>service icinga start</programlisting>
 
-  <para><emphasis role="bold">Ubuntu</emphasis></para>
+  <para><emphasis>Ubuntu</emphasis></para>
 
   <programlisting>/etc/init.d/icinga start</programlisting>
 
@@ -284,9 +290,9 @@ rm -f /usr/local/icinga/var/ido.sock  </programlisting>
 
   <para>Check your database being filled</para>
 
-  <programlisting>mysql -u root -p use icinga; 
+  <programlisting>mysql -u &lt;your_idouser&gt; -p use icinga;
 SELECT count(servicecheck_id) as cnt FROM icinga_servicechecks;
-quit  </programlisting>
+quit</programlisting>
 
   <para><emphasis role="bold">Configure Icinga Startup</emphasis></para>
 
@@ -294,12 +300,12 @@ quit  </programlisting>
   start when the system boots (make sure you have installed the init script
   before).</para>
 
-  <para><emphasis role="bold">Fedora, openSUSE</emphasis></para>
+  <para><emphasis>Fedora, openSUSE</emphasis></para>
 
-  <programlisting>chkconfig --add icinga 
+  <programlisting>chkconfig --add icinga
 chkconfig icinga on</programlisting>
 
-  <para><emphasis role="bold">Ubuntu</emphasis></para>
+  <para><emphasis>Ubuntu</emphasis></para>
 
   <programlisting>ln -s /etc/init.d/icinga /etc/rcS.d/S99icinga</programlisting>
 
@@ -310,10 +316,11 @@ chkconfig icinga on</programlisting>
   <emphasis>icingaadmin</emphasis> ) and password you specified
   earlier.</para>
 
-  <programlisting>http://localhost/icinga/ 
-or 
-http://yourdomain.com/icinga/
-  </programlisting>
+  <programlisting>http://localhost/icinga/  </programlisting>
+
+  <para>or</para>
+
+  <programlisting>http://yourdomain.com/icinga/  </programlisting>
 
   <para>Click on the "Service Detail" navbar link to see details of what's
   being monitored on your local machine. It will take a few minutes for Icinga
@@ -329,8 +336,8 @@ http://yourdomain.com/icinga/
 
   <para>Setting up your mail transfer agent (MTA) like exim, sendmail or
   postfix to allow Icinga sending notification emails won't be explained here.
-  Please refer to the <ulink url="http://www.nagioswiki.org">Nagios
-  Wiki</ulink> for more ressources.</para>
+  Please refer to the <link xlink:href="http://www.nagioswiki.org">Nagios
+  Wiki</link> for more ressources.</para>
 
   <para>There are several tweaks for the IDOUtils (former NDOUtils of Nagios)
   available.</para>
@@ -339,7 +346,7 @@ http://yourdomain.com/icinga/
 
   <para>Congratulations! You successfully installed Icinga with IDOUtils. Your
   journey into monitoring has just begun. You'll no doubt want to monitor more
-  than just your local machine, so check out the <ulink
-  url="http://nagios.sourceforge.net/docs/3_0/toc.html"> official Nagios
-  Documentation</ulink> for more configurations...</para>
+  than just your local machine, so check out the <link
+  xlink:href="http://nagios.sourceforge.net/docs/3_0/toc.html"> official
+  Nagios Documentation</link> for more configurations...</para>
 </section>

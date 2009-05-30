@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<section id="wb_verifyconfig">
+<section version="5.0" xml:id="wb_verifyconfig"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
   <title>Verifying Your Configuration</title>
-
-  <para><citetitle>Verifying Your Configuration</citetitle></para>
 
   <para>Every time you modify your configuration files, you also have to
   restart Icinga. It is important to run a sanity check on your configuration
@@ -13,7 +16,9 @@
   <para>In order to verify your configuration, run Icinga using the <emphasis
   role="bold">-v</emphasis> command line option:</para>
 
-  <programlisting>/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</programlisting>
+  <programlisting>
+    /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+  </programlisting>
 
   <para>If you've forgotten to enter some critical data or misconfigured
   things, Icinga will show a warning or error message that should point you to

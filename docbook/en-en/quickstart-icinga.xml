@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<section id="wb_quickstart-icinga">
+<section version="5.0" xml:id="wb_quickstart-icinga"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:svg="http://www.w3.org/2000/svg"
+         xmlns:m="http://www.w3.org/1998/Math/MathML"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
   <title>Icinga Quickstart</title>
 
   <para><citetitle>Introduction</citetitle></para>
@@ -28,22 +33,22 @@
   <para>If you follow these instructions, here's what you'll end up
   with:</para>
 
-  <para><itemizedlist>
-      <listitem>
-        <para>Icinga and the plugins will be installed underneath
-        /usr/local/icinga</para>
-      </listitem>
+  <itemizedlist>
+    <listitem>
+      <para>Icinga and the plugins will be installed underneath
+      /usr/local/icinga</para>
+    </listitem>
 
-      <listitem>
-        <para>Icinga will be configured to monitor a few aspects of your local
-        system (CPU load, disk usage, etc.)</para>
-      </listitem>
+    <listitem>
+      <para>Icinga will be configured to monitor a few aspects of your local
+      system (CPU load, disk usage, etc.)</para>
+    </listitem>
 
-      <listitem>
-        <para>The Icinga web interface will be accessible at
-        http://localhost/icinga/ or http://yourdomain.com/icinga</para>
-      </listitem>
-    </itemizedlist></para>
+    <listitem>
+      <para>The Icinga web interface will be accessible at
+      http://localhost/icinga/ or http://yourdomain.com/icinga</para>
+    </listitem>
+  </itemizedlist>
 
   <para><citetitle>Prerequisites</citetitle></para>
 
@@ -67,7 +72,7 @@
     </listitem>
 
     <listitem>
-      <para><ulink url="http://www.boutell.com/gd/">GD</ulink> development
+      <para><link xlink:href="http://www.boutell.com/gd">GD</link> development
       libraries</para>
     </listitem>
   </itemizedlist>
@@ -75,15 +80,15 @@
   <para>You can install these packages by running the following commands (as
   root or sudo):</para>
 
-  <para><emphasis role="bold">Fedora</emphasis></para>
+  <para><emphasis>Fedora</emphasis></para>
 
   <programlisting>yum install httpd gcc glibc glibc-common gd gd-devel</programlisting>
 
-  <para><emphasis role="bold">Ubuntu</emphasis></para>
+  <para><emphasis>Ubuntu</emphasis></para>
 
   <programlisting>apt-get install apache2 build-essential libgd2-xpm-dev</programlisting>
 
-  <para><emphasis role="bold">OpenSUSE</emphasis></para>
+  <para><emphasis>OpenSUSE</emphasis></para>
 
   <para>Please use yast to install the packages</para>
 
@@ -97,7 +102,7 @@
   password:</para>
 
   <programlisting>/usr/sbin/useradd -m icinga 
-passwd icinga  </programlisting>
+passwd icinga </programlisting>
 
   <para>On some distribution you'll need to add the group in a single
   step:</para>
@@ -114,12 +119,12 @@ passwd icinga  </programlisting>
 
   <programlisting>git clone git://git.icinga.org/icinga-core.git</programlisting>
 
-  <para><ulink url="http://www.icinga.org">Icinga Website</ulink></para>
+  <para><link xlink:href="http://www.icinga.org">Icinga Website</link></para>
 
   <para>Don't forget to download the</para>
 
-  <para><ulink url="http://nagiosplugins.org/download">Nagios
-  Plugins</ulink></para>
+  <para><link xlink:href="http://nagiosplugins.org/download">Nagios
+  Plugins</link></para>
 
   <para><citetitle>3) Compile and Install Icinga</citetitle></para>
 
@@ -204,9 +209,9 @@ make install-commandmode  </programlisting>
 
   <para>Extract the Nagios plugins source code tarball.</para>
 
-  <programlisting>cd /usr/src 
+  <programlisting>cd /usr/src
 tar xvzf nagios-plugins-1.4.13.tar.gz
-cd nagios-plugins-1.4.13</programlisting>
+cd nagios-plugins-1.4.13  </programlisting>
 
   <para>Compile and install the plugins by changing install directory to
   /usr/local/icinga</para>
@@ -223,7 +228,7 @@ make install  </programlisting>
 
   <para><emphasis>Fedora / OpenSUSE</emphasis></para>
 
-  <programlisting>chkconfig --add icinga 
+  <programlisting>chkconfig --add icinga
 chkconfig icinga on  </programlisting>
 
   <para><emphasis>Ubuntu</emphasis></para>
@@ -272,8 +277,9 @@ chkconfig icinga on  </programlisting>
   postfix to allow Icinga sending notification emails won't be explained
   here.</para>
 
-  <para>Please refer to the <ulink url="http://www.nagioswiki.org">Nagios
-  Wiki</ulink> for more ressources.</para>
+  <para>Please refer to the <link
+  xlink:href="http://www.nagioswiki.org">Nagios Wiki</link> for more
+  ressources.</para>
 
   <para><citetitle>10) You're Done</citetitle></para>
 
@@ -281,6 +287,7 @@ chkconfig icinga on  </programlisting>
   monitoring has just begun.</para>
 
   <para>You'll no doubt want to monitor more than just your local machine, so
-  check out the <ulink url="http://nagios.sourceforge.net/docs/3_0/toc.html">
-  official Nagios Documentation </ulink> for more configurations...</para>
+  check out the <link
+  xlink:href="http://nagios.sourceforge.net/docs/3_0/toc.html"> official
+  Nagios Documentation </link> for more configurations...</para>
 </section>
