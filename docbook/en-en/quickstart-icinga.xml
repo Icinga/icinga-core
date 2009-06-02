@@ -216,7 +216,7 @@ cd nagios-plugins-1.4.13  </programlisting>
   <para>Compile and install the plugins by changing install directory to
   /usr/local/icinga</para>
 
-  <programlisting>./configure --prefix=/usr/local/icinga --with-icinga-user=icinga 
+  <programlisting>./configure --prefix=/usr/local/icinga --with-nagios-user=icinga 
 make 
 make install  </programlisting>
 
