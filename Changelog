@@ -2,6 +2,10 @@
 Icinga 0.8.x Change Log
 #######################
 
+0.8.1 - ??/??/2009
+------------------
+* Archived Logfiles renamed from Icinga-date-syntax.log => icinga-date-syntax.log (capital 'i')
+
 
 0.8 - 05/19/2009
 ----------------
