@@ -123,6 +123,15 @@ int main(int argc, char **argv){
 	/* make sure we support the db option chosen... */
 	if(ido2db_check_dbd_driver()==NDO_FALSE){
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
+		dbi_driver driver;
+		driver = NULL;
+		int numdrivers = dbi_initialize(NULL);
+		  fprintf(stderr, "%d drivers available: ", numdrivers);
+		  while ((driver = dbi_driver_list(driver)) != NULL) {
+		    fprintf(stderr, "%s ", dbi_driver_get_name(driver));
+		  }
+		  fprintf(stderr, "\n");
+
 		exit(1);
 		}
 
@@ -697,7 +706,7 @@ void ndo2db_parent_sighandler(int sig){
 
 	/* cleanup children that exit, so we don't have zombies */
 	if(sig==SIGCHLD){
-		waitpid(-1,NULL,WNOHANG);
+		while (waitpid(-1, NULL, WNOHANG) > 0);
 		return;
 	        }
 
