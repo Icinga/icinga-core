@@ -44,6 +44,7 @@ int ndo2db_use_inetd=NDO_FALSE;
 int ndo2db_show_version=NDO_FALSE;
 int ndo2db_show_license=NDO_FALSE;
 int ndo2db_show_help=NDO_FALSE;
+int ido2db_run_foreground=NDO_FALSE;
 
 ndo2db_dbconfig ndo2db_db_settings;
 time_t ndo2db_db_last_checkin_time=0L;
@@ -98,9 +99,10 @@ int main(int argc, char **argv){
 		printf("and processing.  Clients that are capable of sending data to the NDO2DB daemon\n");
 		printf("include the LOG2NDO utility and NDOMOD event broker module.\n");
 		printf("\n");
-		printf("Usage: %s -c <config_file> [-i]\n",argv[0]);
+		printf("Usage: %s -c <config_file> [-i] [-f]\n",argv[0]);
 		printf("\n");
 		printf("-i  = Run under INETD/XINETD.\n");
+		printf("-f  = Don't daemonize, run in foreground.\n");
 		printf("\n");
 		exit(1);
 	        }
@@ -188,6 +190,7 @@ int ndo2db_process_arguments(int argc, char **argv){
 	static struct option long_options[]={
 		{"configfile", required_argument, 0, 'c'},
 		{"inetd", no_argument, 0, 'i'},
+		{"foreground", no_argument, 0, 'f'},
 		{"help", no_argument, 0, 'h'},
 		{"license", no_argument, 0, 'l'},
 		{"version", no_argument, 0, 'V'},
@@ -201,7 +204,7 @@ int ndo2db_process_arguments(int argc, char **argv){
 		return NDO_OK;
 	        }
 
-	snprintf(optchars,sizeof(optchars),"c:ihlV");
+	snprintf(optchars,sizeof(optchars),"c:ifhlV");
 
 	while(1){
 #ifdef HAVE_GETOPT_H
@@ -230,6 +233,9 @@ int ndo2db_process_arguments(int argc, char **argv){
 			break;
 		case 'i':
 			ndo2db_use_inetd=NDO_TRUE;
+			break;
+		case 'f':
+			ido2db_run_foreground=NDO_TRUE;
 			break;
 		default:
 			return NDO_ERROR;
@@ -665,16 +671,14 @@ int ndo2db_daemonize(void){
 
         /* close existing stdin, stdout, stderr */
 	close(0);
-#ifndef DEBUG_NDO2DB
-	close(1);
-#endif
+	if(ido2db_run_foreground == NDO_FALSE)
+		close(1);
 	close(2);
 
 	/* re-open stdin, stdout, stderr with known values */
 	open("/dev/null",O_RDONLY);
-#ifndef DEBUG_NDO2DB
-	open("/dev/null",O_WRONLY);
-#endif
+	if(ido2db_run_foreground == NDO_FALSE)
+		open("/dev/null",O_WRONLY);
 	open("/dev/null",O_WRONLY);
 
 	return NDO_OK;
@@ -809,10 +813,10 @@ int ndo2db_wait_for_connections(void){
 
 
 	/* daemonize */
-#ifndef DEBUG_NDO2DB
-	if(ndo2db_daemonize()!=NDO_OK)
+	if(ido2db_run_foreground == NDO_FALSE) {
+		if(ndo2db_daemonize()!=NDO_OK)
 		return NDO_ERROR;
-#endif
+	}
 
 	/* accept connections... */
 	while(1){
@@ -823,25 +827,24 @@ int ndo2db_wait_for_connections(void){
 			return NDO_ERROR;
 		        }
 
-#ifndef DEBUG_NDO2DB
-		/* fork... */
-		new_pid=fork();
+		if(ido2db_run_foreground == NDO_FALSE) {
+			/* fork... */
+			new_pid=fork();
 
-		switch(new_pid){
-		case -1:
-			/* parent simply prints an error message and keeps on going... */
-			perror("Fork error");
-			close(new_sd);
-			break;
+			switch(new_pid){
+			case -1:
+				/* parent simply prints an error message and keeps on going... */
+				perror("Fork error");
+				close(new_sd);
+				break;
 
-		case 0:
-#endif
+			case 0:
+
 			/* child processes data... */
 			ndo2db_handle_client_connection(new_sd);
 
 			/* close socket when we're done */
 			close(new_sd);
-#ifndef DEBUG_NDO2DB
 			return NDO_OK;
 			break;
 
@@ -850,7 +853,14 @@ int ndo2db_wait_for_connections(void){
 			close(new_sd);
 			break;
 		        }
-#endif
+		}
+		else{
+			/* child processes data... */
+			ndo2db_handle_client_connection(new_sd);
+
+			/* close socket when we're done */
+			close(new_sd);
+		}
 
 #ifdef DEBUG_NDO2DB_EXIT_AFTER_CONNECTION
 		break;
