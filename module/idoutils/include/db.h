@@ -105,7 +105,7 @@ typedef struct ndo2db_dbconfig_struct{
 /**************** Object types *****************/
 
 #define NDO2DB_OBJECTTYPE_HOST                1
-#define NDO2DB_OBJECTTYPE_SERVICE             2 
+#define NDO2DB_OBJECTTYPE_SERVICE             2
 #define NDO2DB_OBJECTTYPE_HOSTGROUP           3
 #define NDO2DB_OBJECTTYPE_SERVICEGROUP        4
 #define NDO2DB_OBJECTTYPE_HOSTESCALATION      5
@@ -134,7 +134,7 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *,time_t);
 char *ndo2db_db_sql_to_timet(ndo2db_idi *,char *);
 int ndo2db_db_query(ndo2db_idi *,char *);
 int ndo2db_db_free_query(ndo2db_idi *);
-int ndo2db_handle_db_error(ndo2db_idi *,int);
+int ndo2db_handle_db_error(ndo2db_idi *);
 
 int ndo2db_db_clear_table(ndo2db_idi *,char *);
 int ndo2db_db_get_latest_data_time(ndo2db_idi *,char *,char *,unsigned long *);

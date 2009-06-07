@@ -285,6 +285,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name)
 			== -1)
 		buf = NULL;
+
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 			if (idi->dbinfo.dbi_result != NULL) {
 				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
@@ -293,6 +294,15 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 					have_instance = NDO_TRUE;
 				}
 			}
+	}
+	else {
+		/* cleanup the socket */
+		ndo2db_cleanup_socket();
+
+		/* free memory */
+		ndo2db_free_program_memory();
+
+		_exit(0);
 	}
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
@@ -479,6 +489,7 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
 int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	int result = NDO_OK;
 	int query_result = 0;
+	const char *error_msg;
 
 	if (idi == NULL || buf == NULL)
 		return NDO_ERROR;
@@ -496,14 +507,16 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_SQL, 0, "%s\n", buf);
 
-	if ((idi->dbinfo.dbi_result = dbi_conn_query(idi->dbinfo.dbi_conn, buf)) == NULL) {
-		syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
+	idi->dbinfo.dbi_result = dbi_conn_query(idi->dbinfo.dbi_conn, buf);
+
+	if (idi->dbinfo.dbi_result == NULL){
+		dbi_conn_error(idi->dbinfo.dbi_conn, &error_msg);
+
+		syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s' - '%s'\n", buf, error_msg);
+
+		ndo2db_handle_db_error(idi);
 		result = NDO_ERROR;
 	}
-
-	/* handle errors */
-	if (result == NDO_ERROR)
-		ndo2db_handle_db_error(idi, query_result);
 
 	return result;
 }
@@ -522,9 +535,8 @@ int ndo2db_db_free_query(ndo2db_idi *idi) {
 }
 
 /* handles SQL query errors */
-int ndo2db_handle_db_error(ndo2db_idi *idi, int query_result) {
+int ndo2db_handle_db_error(ndo2db_idi *idi) {
 	int result = 0;
-	const char *dbi_error_msg;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -532,10 +544,6 @@ int ndo2db_handle_db_error(ndo2db_idi *idi, int query_result) {
 	/* we're not currently connected... */
 	if (idi->dbinfo.connected == NDO_FALSE)
 		return NDO_OK;
-
-	dbi_conn_error(&idi->dbinfo.dbi_conn, &dbi_error_msg);
-
-	syslog(LOG_USER | LOG_INFO, dbi_error_msg);
 
 	ndo2db_db_disconnect(idi);
 
