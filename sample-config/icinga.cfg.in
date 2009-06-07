@@ -245,6 +245,9 @@ event_broker_options=-1
 #broker_module=/somewhere/module1.o
 #broker_module=/somewhere/module2.o arg1 arg2=3 debug=0
 
+# Uncomment this to enable idomod.o
+#broker_module=@bindir@/idomod.o config_file=@sysconfdir@/idomod.cfg
+
 
 
 # LOG ROTATION METHOD
