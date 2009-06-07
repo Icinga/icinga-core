@@ -358,7 +358,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 		ENTER;
 		SAVETMPS;
-		PUSHMARK(SP); 
+		PUSHMARK(SP);
 
 		XPUSHs(sv_2mortal(newSVpv(args[0],0)));
 		XPUSHs(sv_2mortal(newSVpv(args[1],0)));
@@ -397,7 +397,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 			LEAVE ;
 			}
 		}
-#endif 
+#endif
 
 	/* create a pipe */
 	pipe(fd);
@@ -426,8 +426,8 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 		/* close both ends of the pipe */
 		close(fd[0]);
 		close(fd[1]);
-		
-	        return STATE_UNKNOWN;  
+
+	        return STATE_UNKNOWN;
 	        }
 
 	/* execute the command in the child process */
@@ -484,7 +484,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 			PUTBACK;
 			FREETMPS;
-			LEAVE;                                    
+			LEAVE;
 
 			log_debug_info(DEBUGL_COMMANDS,0,"Embedded perl ran command %s with output %d, %s\n",fname,status,buffer);
 
@@ -499,13 +499,13 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 			_exit(status);
 		        }
-#endif  
+#endif
 		/******** END EMBEDDED PERL CODE EXECUTION ********/
 
 
 		/* run the command */
 		fp=(FILE *)popen(cmd,"r");
-		
+
 		/* report an error if we couldn't run the command */
 		if(fp==NULL){
 
@@ -525,7 +525,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 			/* close the command and get termination status */
 			status=pclose(fp);
-			
+
 			/* report an error if we couldn't close the command */
 			if(status==-1)
 				result=STATE_CRITICAL;
@@ -541,7 +541,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 		/* reset the alarm */
 		alarm(0);
-		
+
 		/* clear environment variables */
 		set_all_macro_environment_vars(FALSE);
 
@@ -557,7 +557,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 	/* parent waits for child to finish executing command */
 	else{
-		
+
 		/* close pipe for writing */
 		close(fd[1]);
 
@@ -711,7 +711,7 @@ int get_raw_command_line(command *cmd_ptr, char *cmd, char **full_command, int m
 			/* get the next argument */
 			/* can't use strtok(), as that's used in process_macros... */
 			for(arg_index++,y=0;y<sizeof(temp_arg)-1;arg_index++){
-				
+
 				/* backslashes escape */
 				if(cmd[arg_index]=='\\' && escaped==FALSE){
 					escaped=TRUE;
@@ -817,7 +817,7 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 	int year=0;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"check_time_against_period()\n");
-	
+
 	/* if no period was specified, assume the time is good */
 	if(tperiod==NULL)
 		return OK;
@@ -1071,7 +1071,7 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 
 /*#define TEST_TIMEPERIODS_B 1*/
 
-/* given a preferred time, get the next valid time within a time period */ 
+/* given a preferred time, get the next valid time within a time period */
 void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperiod){
 	time_t preferred_time=(time_t)0L;
 	timerange *temp_timerange;
@@ -1096,7 +1096,7 @@ void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperi
 	unsigned long advance_interval=0L;
 	int year=0; /* new */
 	int month=0; /* new */
-	
+
 	int pref_time_year=0;
 	int pref_time_mon=0;
 	int pref_time_mday=0;
@@ -1143,7 +1143,7 @@ void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperi
 	pref_time_mon=t->tm_mon;
 	pref_time_mday=t->tm_mday;
 	pref_time_wday=t->tm_wday;
-	
+
 	/* save current time values for later */
 	t=localtime((time_t *)&current_time);
 	current_time_year=t->tm_year;
@@ -1543,7 +1543,7 @@ time_t calculate_time_from_day_of_month(int year, int month, int monthday){
 		do{
 			/* back up a day */
 			day--;
-			
+
 			/* make the new time */
 			t.tm_mon=month;
 			t.tm_year=year;
@@ -1622,7 +1622,7 @@ time_t calculate_time_from_weekday_of_month(int year, int month, int weekday, in
 		do{
 			/* back up a week */
 			days-=7;
-			
+
 			/* make the new time */
 			t.tm_mon=month;
 			t.tm_year=year;
@@ -1670,7 +1670,7 @@ void get_datetime_string(time_t *raw_time, char *buffer, int buffer_length, int 
 
 	if(raw_time==NULL)
 		time(&t);
-	else 
+	else
 		t=*raw_time;
 
 	if(type==HTTP_DATE_TIME)
@@ -1924,7 +1924,7 @@ void service_check_sighandler(int sig){
 	/* try to kill the command that timed out by sending termination signal to our process group */
 	/* we also kill ourselves while doing this... */
 	kill((pid_t)0,SIGKILL);
-	
+
 	/* force the child process (service check) to exit... */
 	_exit(STATE_CRITICAL);
         }
@@ -1964,7 +1964,7 @@ void host_check_sighandler(int sig){
 	/* try to kill the command that timed out by sending termination signal to our process group */
 	/* we also kill ourselves while doing this... */
 	kill((pid_t)0,SIGKILL);
-	
+
 	/* force the child process (service check) to exit... */
 	_exit(STATE_CRITICAL);
         }
@@ -2130,7 +2130,7 @@ int drop_privileges(char *user, char *group){
 
 	/* set effective group ID */
 	if(group!=NULL){
-		
+
 		/* see if this is a group name */
 		if(strspn(group,"0123456789")<strlen(group)){
 			grp=(struct group *)getgrnam(group);
@@ -2157,7 +2157,7 @@ int drop_privileges(char *user, char *group){
 
 	/* set effective user ID */
 	if(user!=NULL){
-		
+
 		/* see if this is a user name */
 		if(strspn(user,"0123456789")<strlen(user)){
 			pw=(struct passwd *)getpwnam(user);
@@ -2170,7 +2170,7 @@ int drop_privileges(char *user, char *group){
 		/* else we were passed the UID */
 		else
 			uid=(uid_t)atoi(user);
-			
+
 #ifdef HAVE_INITGROUPS
 
 		if(uid!=geteuid()){
@@ -2551,7 +2551,7 @@ check_result *read_check_result(void){
 
 	first_cr=check_result_list;
 	check_result_list=check_result_list->next;
-	
+
 	return first_cr;
 	}
 
@@ -2651,7 +2651,7 @@ int free_check_result_list(void){
 
 /* frees memory associated with a host/service check result */
 int free_check_result(check_result *info){
-	
+
 	if(info==NULL)
 		return OK;
 
@@ -2734,7 +2734,7 @@ int parse_check_output(char *buf, char **short_output, char **long_output, char 
 			found_newline=FALSE;
 
 		if(found_newline==TRUE){
-	
+
 			current_line++;
 
 			/* handle this line of input */
@@ -2801,7 +2801,7 @@ int parse_check_output(char *buf, char **short_output, char **long_output, char 
 				my_free(tempbuf);
 				tempbuf=NULL;
 			        }
-		
+
 
 			/* shift data back to front of buffer and adjust counters */
 			memmove((void *)&buf[0],(void *)&buf[x+1],(size_t)((int)used_buf-x-1));
@@ -2913,7 +2913,7 @@ int open_command_file(void){
 
 		/* close the command file */
 		fclose(command_file_fp);
-	
+
 		/* delete the named pipe */
 		unlink(command_file);
 
@@ -2943,7 +2943,7 @@ int close_command_file(void){
 
 	/* close the command file */
 	fclose(command_file_fp);
-	
+
 	return OK;
         }
 
@@ -2985,7 +2985,7 @@ void strip(char *buffer){
 	if(x>0){
 		/* new length of the string after we stripped the end */
 		y=z+1;
-		
+
 		/* shift chars towards beginning of string to remove leading whitespace */
 		for(z=x;z<y;z++)
 			buffer[z-x]=buffer[z];
@@ -3020,7 +3020,7 @@ char *get_next_string_from_buf(char *buf, int *start_index, int bufsize){
 	sptr[x]='\x0';
 
 	*start_index+=x+1;
-	
+
 	return sptr;
 	}
 
@@ -3067,7 +3067,7 @@ int contains_illegal_object_chars(char *name){
 
 
 
-/* fix the problem with strtok() skipping empty options between tokens */	
+/* fix the problem with strtok() skipping empty options between tokens */
 char *my_strtok(char *buffer,char *tokens){
 	char *token_position=NULL;
 	char *sequence_head=NULL;
@@ -3081,12 +3081,12 @@ char *my_strtok(char *buffer,char *tokens){
 
 	if(my_strtok_buffer==NULL)
 		return NULL;
-	
+
 	sequence_head=my_strtok_buffer;
 
 	if(sequence_head[0]=='\x0')
 		return NULL;
-	
+
 	token_position=strchr(my_strtok_buffer,tokens[0]);
 
 	if(token_position==NULL){
@@ -3168,7 +3168,7 @@ int my_free(void **ptr){
 char *escape_newlines(char *rawbuf){
 	char *newbuf=NULL;
 	register int x,y;
-	
+
 	if(rawbuf==NULL)
 		return NULL;
 
@@ -3177,7 +3177,7 @@ char *escape_newlines(char *rawbuf){
 		return NULL;
 
 	for(x=0,y=0;rawbuf[x]!=(char)'\x0';x++){
-		
+
 		/* escape backslashes */
 		if(rawbuf[x]=='\\'){
 			newbuf[y++]='\\';
@@ -3339,7 +3339,7 @@ int my_fcopy(char *source, char *dest){
 
 		/* open source file for reading */
 		if((source_fd=open(source,O_RDONLY,0644))>0){
-			
+
 			/* copy file contents */
 			while((bytes_read=read(source_fd,buffer,sizeof(buffer)))>0)
 				write(dest_fd,buffer,bytes_read);
@@ -3441,7 +3441,7 @@ int mmap_fclose(mmapfile *temp_mmapfile){
 	/* free memory */
 	my_free(temp_mmapfile->path);
 	my_free(temp_mmapfile);
-	
+
 	return OK;
         }
 
@@ -3777,7 +3777,7 @@ int file_uses_embedded_perl(char *fname){
 					else
 						break;
 					}
-					
+
 				/* if the plugin didn't tell us whether or not to use embedded Perl, use implicit value */
 				if(found_epn_directive==FALSE)
 					use_epn=(use_embedded_perl_implicitly==TRUE)?TRUE:FALSE;
@@ -3908,7 +3908,7 @@ void * command_file_worker_thread(void *arg){
 
  		/* check for errors */
  		if(pollval==-1){
- 
+
  			switch(errno){
  			case EBADF:
  				write_to_log("command_file_worker_thread(): poll(): EBADF",logging_options,NULL);
@@ -3929,10 +3929,10 @@ void * command_file_worker_thread(void *arg){
  				write_to_log("command_file_worker_thread(): poll(): Unknown errno value.",logging_options,NULL);
  				break;
  			        }
- 
+
  			continue;
  		        }
- 
+
  		/* should we shutdown? */
  		pthread_testcancel();
 
@@ -3992,6 +3992,20 @@ void * command_file_worker_thread(void *arg){
 				pthread_testcancel();
 	                        }
 		        }
+		else {
+			/* HB 06-07-2009:
+			 * We should wait for the event queuing to catch up some commands
+			 * from the buffer if for this atomic run the buffer is filled completely or
+			 * is overrun
+			  */
+			/* wait a bit */
+			tv.tv_sec=0;
+			tv.tv_usec=250000;
+			select(0,NULL,NULL,NULL,&tv);
+
+			/* should we shutdown? */
+			pthread_testcancel();
+		}
 	        }
 
 	/* removes cleanup handler - this should never be reached */
@@ -4102,7 +4116,7 @@ int update_check_stats(int check_type, time_t check_time){
 	int new_current_bucket=0;
 	int this_bucket=0;
 	int x=0;
-	
+
 	if(check_type<0 || check_type>=MAX_CHECK_STATS_TYPES)
 		return ERROR;
 
@@ -4137,11 +4151,11 @@ int update_check_stats(int check_type, time_t check_time){
 		for(x=check_statistics[check_type].current_bucket;x<(CHECK_STATS_BUCKETS * 2);x++){
 
 			this_bucket=(x + CHECK_STATS_BUCKETS + 1) % CHECK_STATS_BUCKETS;
-			
+
 			if(this_bucket==new_current_bucket)
 				break;
-	
-#ifdef DEBUG_CHECK_STATS			
+
+#ifdef DEBUG_CHECK_STATS
 			printf("CLEARING BUCKET %d, (NEW=%d, OLD=%d)\n",this_bucket,new_current_bucket,check_statistics[check_type].current_bucket);
 #endif
 
@@ -4225,8 +4239,8 @@ int generate_check_stats(void){
 
 				if(this_bucket==new_current_bucket)
 					break;
-				
-#ifdef DEBUG_CHECK_STATS			
+
+#ifdef DEBUG_CHECK_STATS
 				printf("GEN CLEARING BUCKET %d, (NEW=%d, OLD=%d), CURRENT=%lu, LASTUPDATE=%lu\n",this_bucket,new_current_bucket,check_statistics[check_type].current_bucket,(unsigned long)current_time,(unsigned long)check_statistics[check_type].last_update);
 #endif
 
@@ -4262,7 +4276,7 @@ int generate_check_stats(void){
 
 		/* loop through each bucket */
 		for(x=0;x<CHECK_STATS_BUCKETS;x++){
-			
+
 			/* which buckets should we use for this/last bucket? */
 			this_bucket=(check_statistics[check_type].current_bucket + CHECK_STATS_BUCKETS - x) % CHECK_STATS_BUCKETS;
 			last_bucket=(this_bucket + CHECK_STATS_BUCKETS - 1) % CHECK_STATS_BUCKETS;
@@ -4293,7 +4307,7 @@ int generate_check_stats(void){
 			/* 1 minute stats */
 			if(x==0)
 				check_statistics[check_type].minute_stats[0]=bucket_value;
-		
+
 			/* 5 minute stats */
 			if(x<5)
 				check_statistics[check_type].minute_stats[1]+=bucket_value;
@@ -4376,7 +4390,7 @@ int check_for_nagios_updates(int force, int reschedule){
 		printf("UCIW: %d\n",UPDATE_CHECK_INTERVAL_WOBBLE);
 		printf("MULT: %f\n",(float)randnum/RAND_MAX);
 		*/
-		
+
 
 
 		/* we didn't do an update, so calculate next possible update time */
@@ -4393,7 +4407,7 @@ int check_for_nagios_updates(int force, int reschedule){
 				next_check=current_time+BASE_UPDATE_CHECK_INTERVAL;
 				next_check+=(unsigned long)( ((float)randnum/RAND_MAX) * UPDATE_CHECK_INTERVAL_WOBBLE);
 				}
-			
+
 			/* query resulted in an error - retry at a shorter interval */
 			else{
 				next_check=current_time+BASE_UPDATE_CHECK_RETRY_INTERVAL;
@@ -4470,7 +4484,7 @@ int query_update_api(void){
 	printf("%s",buf);
 	printf("\n");
 	*/
-	
+
 
 	result=my_tcp_connect(api_server,80,&sd,2);
 	/*printf("CONN RESULT: %d, SD: %d\n",result,sd);*/
@@ -4494,7 +4508,7 @@ int query_update_api(void){
 		printf("%s",recv_buf);
 		printf("\n");
 		*/
-		
+
 		/* close connection */
 		close(sd);
 
