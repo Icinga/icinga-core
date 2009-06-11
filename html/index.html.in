@@ -9,7 +9,7 @@
 </head>
 	<frameset frameborder="0" framespacing="0" rows="60,*">
 		<frame src="top.html" name="top" />
-		<frameset frameborder="0" framespacing="0" cols="180,*">
+		<frameset frameborder="0" framespacing="0" cols="210,*">
 			<frame src="menu.html" name="menu" target="main" />
 			<frameset frameborder="0" framespacing="0" rows="26,*">
 				<frame src="sidebar.html" name="navigation" />
