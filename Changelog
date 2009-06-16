@@ -2,14 +2,17 @@
 Icinga 0.8.x Change Log
 #######################
 
-0.8.1 - ??/??/2009
+0.8.2 - ??/??/2009
+
+0.8.1 - 06/17/2009
 ------------------
 * Archived Logfiles renamed from Icinga-date-syntax.log => icinga-date-syntax.log (capital 'i')
-* cherry picked latest Nagios Patches
+* cherry picked latest Nagios Patches (see Nagios Changelog below)
 * new ido2db command switch: '-f' don't daemonize the ido2db
 * ido2db will now prints out available database drivers
 * fix ido2db segfault when try to access non existing tables
 * DocBook v5 conversion
+* Fix menu frameset cols width
 
 0.8 - 05/19/2009
 ----------------
