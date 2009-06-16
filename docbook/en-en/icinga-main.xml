@@ -27,6 +27,8 @@
     <title>Release Notes</title>
 
     <xi:include href="whatsnew.xml" xpointer="element(/1)" />
+
+    <xi:include href="upgrade.xml" xpointer="element(/1)" />
   </chapter>
 
   <chapter xml:id="ch_gettingstarted">
