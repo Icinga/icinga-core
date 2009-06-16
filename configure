@@ -1763,9 +1763,9 @@ ac_config_headers="$ac_config_headers include/config.h include/snprintf.h includ
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="0.8"
+PKG_VERSION="0.8.1"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="05-20-2009"
+PKG_REL_DATE="06-17-2009"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -9403,4 +9403,6 @@ echo ""
 echo "Review the options above for accuracy.  If they look okay,"
 echo "type 'make all' to compile the main program and CGIs."
 echo ""
-
+echo ""
+echo "!!! Please take care about the upgrade documentation !!!"
+echo ""

@@ -3,11 +3,11 @@
  * ICINGASTATS.C - Displays Nagios Statistics
  *
  * Program: Icingastats (based on Nagiostats)
- * Version: 0.8
+ * Version: 0.8.1
  * License: GPL
  * Copyright (c) 2003-2008 Ethan Galstad (egalstad@nagios.org)
  *
- * Last Modified: 05-11-2009
+ * Last Modified:   06-17-2009
  *
  * License:
  *

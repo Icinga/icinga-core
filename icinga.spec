@@ -1,5 +1,5 @@
 %define name icinga
-%define version 0.8
+%define version 0.8.1
 %define release 1
 %define nsusr icinga
 %define nsgrp icinga
