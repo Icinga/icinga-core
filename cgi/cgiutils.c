@@ -789,7 +789,7 @@ char *unescape_newlines(char *rawbuf){
 				}
 
 			/* unescape backslashes and other stuff */
-			else{
+			if(rawbuf[x+1]!='\x0'){
 				rawbuf[y++]=rawbuf[x+1];
 				x++;
 				}
