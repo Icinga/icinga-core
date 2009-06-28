@@ -404,9 +404,14 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 	ts = ndo2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
-	if (asprintf(
-			&buf,
-			"UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET "
+		"disconnect_time=NOW(), "
+		"last_checkin_time=NOW(), "
+		"data_end_time=%s, "
+		"bytes_processed='%lu', "
+		"lines_processed='%lu', "
+		"entries_processed='%lu' "
+		"WHERE conninfo_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
