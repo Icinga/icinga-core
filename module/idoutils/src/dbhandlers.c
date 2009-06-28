@@ -146,22 +146,22 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 
 	if (name1 != NULL) {
 		es[0] = ndo2db_db_escape_string(idi, name1);
-		if (asprintf(&buf1, ", name1='%s'", es[0]) == -1)
+		if (asprintf(&buf1, ", '%s'", es[0]) == -1)
 			buf1 = NULL;
 	} else
 		es[0] = NULL;
 	if (name2 != NULL) {
 		es[1] = ndo2db_db_escape_string(idi, name2);
-		if (asprintf(&buf2, ", name2='%s'", es[1]) == -1)
+		if (asprintf(&buf2, "'%s'", es[1]) == -1)
 			buf2 = NULL;
 	} else
 		es[1] = NULL;
 
 	if (asprintf(&buf,
-			"INSERT INTO %s (instance_id, objecttype_id) VALUES ('%lu', '%d' %s %s)",
+			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES ('%lu', '%d' %s, %s)",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
-			idi->dbinfo.instance_id, object_type, (buf1 == NULL) ? "" : buf1,
-			(buf2 == NULL) ? "" : buf2) == -1)
+			idi->dbinfo.instance_id, object_type, (buf1 == NULL) ? "NULL" : buf1,
+			(buf2 == NULL) ? "NULL" : buf2) == -1)
 		buf = NULL;
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		*object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
@@ -523,7 +523,7 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s "
-			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_date, realtime_data, inferred_data_extracted) "
+			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) "
 			"VALUES ('%lu', %s, %s, '0', '%lu', '%s', '0', '0')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
@@ -946,7 +946,7 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s "
-			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_date, realtime_data, inferred_data_extracted) "
+			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) "
 			"VALUES ('%lu', %s, %s, '%lu', '%lu', '%s', '1', '1')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
