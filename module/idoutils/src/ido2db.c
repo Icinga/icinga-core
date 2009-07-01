@@ -52,6 +52,7 @@ time_t ndo2db_db_last_checkin_time=0L;
 char *ndo2db_debug_file=NULL;
 int ndo2db_debug_level=NDO2DB_DEBUGL_NONE;
 int ndo2db_debug_verbosity=NDO2DB_DEBUGV_BASIC;
+int stop_signal_detected=NDO_FALSE;
 FILE *ndo2db_debug_file_fp=NULL;
 unsigned long ndo2db_max_debug_file_size=0L;
 
@@ -708,11 +709,19 @@ int ndo2db_cleanup_socket(void){
 
 void ndo2db_parent_sighandler(int sig){
 
-	/* cleanup children that exit, so we don't have zombies */
-	if(sig==SIGCHLD){
-		while (waitpid(-1, NULL, WNOHANG) > 0);
+	switch (sig){
+	case SIGTERM:
+		/* forward signal to all members of this group of processes */
+		kill(0, sig);
+		break;
+	case SIGCHLD:
+		/* cleanup children that exit, so we don't have zombies */
+		while(waitpid(-1,NULL,WNOHANG)>0);
 		return;
-	        }
+
+	default:
+		printf("Caught the Signal '%d' but don't care about this.\n", sig);
+	}
 
 	/* cleanup the socket */
 	ndo2db_cleanup_socket();
