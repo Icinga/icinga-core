@@ -184,7 +184,7 @@ distclean: clean
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
 	rm -f sample-config/*.cfg  sample-config/*.conf sample-config/template-object/*.cfg
-	rm -f daemon-init pkginfo
+	rm -f daemon-init pkginfo rc.ido2db
 	rm -f Makefile subst
 	rm -f config.log config.status config.cache
 
@@ -297,6 +297,10 @@ install-init: install-daemoninit
 install-daemoninit:
 	$(INSTALL) -m 755 -d $(INIT_OPTS) $(DESTDIR)$(INIT_DIR)
 	$(INSTALL) -m 755 $(INIT_OPTS) daemon-init $(DESTDIR)$(INIT_DIR)/icinga
+
+	if [ x$(USE_IDOUTILS) = xyes ]; then \
+		$(INSTALL) -m 755 $(INIT_OPTS) rc.ido2db $(DESTDIR)$(INIT_DIR)/ido2db ;\
+	fi
 
 	@echo ""
 	@echo "*** Init script installed ***"

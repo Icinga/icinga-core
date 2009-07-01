@@ -1,0 +1,99 @@
+#!@SHELL@
+# Startup script for IDO2DB
+# Activate with: insserv /etc/init.d/ido2db
+# Use: /etc/init.d/ido2db stop | start
+# Contributed by Bruno Quintais
+### BEGIN INIT INFO
+# Provides: ido2db
+# Required-Start:
+# Required-Stop:
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Description: Automatic startup and shutdown of Icinga IDO2DB
+### END INIT INFO
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+BIN=@bindir@/@ido2db_name@
+CONF=@sysconfdir@/ido2db.cfg
+PID=@localstatedir@/ido2db.lock
+
+get_pid ()
+{
+	PID_NUMBER=`head -n 1 $PID`
+}
+
+case "$1" in
+	start)
+		if [ ! -f $PID ]
+		then
+			$BIN -c $CONF
+			if [ $? -eq 0 ]
+			then
+				echo "@ido2db_name@ started."
+				exit 0
+			else
+				echo "Could not start @ido2db_name@"
+				exit 1
+			fi
+		else
+			echo "PID File '$PID' exists. @ido2db_name@ already started"
+			exit 0
+		fi
+		;;
+	stop)
+		if [ -f $PID ]
+		then
+			get_pid
+			kill $PID_NUMBER
+			if [ $? -eq 0 ]
+			then
+				echo "@ido2db_name@ stopped."
+				exit 0
+			else
+				echo "Could not stop @ido2db_name@"
+				exit 1
+			fi
+		else
+			echo "@ido2db_name@ was not running."
+			exit 0
+		fi
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	reload)
+		if [ -f $PID ]
+		then
+			get_pid
+			kill -HUP $PID_NUMBER
+			if [ $? -eq 0 ]
+			then
+				echo "@ido2db_name@ reloaded"
+				exit 0
+			else
+				echo "Could not reload"
+				exit 1
+			fi
+		else
+			echo "@ido2db_name@ no running"
+			exit 1
+		fi
+		;;
+	status)
+		if [ -f $PID ]
+		then
+			echo "@ido2db_name@ running (PID=$PID_NUMBER)..."
+			exit 0
+		else
+			echo "@ido2db_name@ not running."
+			exit 1
+		fi
+		;;
+	*)
+		echo "Usage: @ido2db_name@ {start|stop|restart|reload|status}"
+		exit 1
+		;;
+esac
+

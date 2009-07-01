@@ -3,6 +3,8 @@ Icinga 0.8.x Change Log
 #######################
 
 0.8.2 - ??/??/2009
+* create a new basic ido2db init script
+* fix child signal handling in ido2db
 
 0.8.1 - 06/17/2009
 ------------------
