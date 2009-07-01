@@ -63,24 +63,6 @@ case "$1" in
 		$0 stop
 		$0 start
 		;;
-	reload)
-		if [ -f $PID ]
-		then
-			get_pid
-			kill -HUP $PID_NUMBER
-			if [ $? -eq 0 ]
-			then
-				echo "@ido2db_name@ reloaded"
-				exit 0
-			else
-				echo "Could not reload"
-				exit 1
-			fi
-		else
-			echo "@ido2db_name@ no running"
-			exit 1
-		fi
-		;;
 	status)
 		if [ -f $PID ]
 		then
@@ -92,7 +74,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: @ido2db_name@ {start|stop|restart|reload|status}"
+		echo "Usage: @ido2db_name@ {start|stop|restart|status}"
 		exit 1
 		;;
 esac
