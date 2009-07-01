@@ -556,9 +556,7 @@ int ndomod_goodbye_sink(void){
 
 /* used to rotate data sink file on a regular basis */
 int ndomod_rotate_sink_file(void *args){
-	char raw_command_line[MAX_COMMAND_BUFFER];
 	char *raw_command_line_3x=NULL;
-	char processed_command_line[MAX_COMMAND_BUFFER];
 	char *processed_command_line_3x=NULL;
 	int early_timeout=FALSE;
 	double exectime;
@@ -575,13 +573,13 @@ int ndomod_rotate_sink_file(void *args){
 
 	/* get the raw command line */
 	get_raw_command_line(find_command(ndomod_sink_rotation_command),ndomod_sink_rotation_command,&raw_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
-	strip(raw_command_line);
+	strip(raw_command_line_3x);
 
 	/* process any macros in the raw command line */
-	process_macros(raw_command_line,&processed_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
+	process_macros(raw_command_line_3x,&processed_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
 
 	/* run the command */
-	my_system(processed_command_line,ndomod_sink_rotation_timeout,&early_timeout,&exectime,NULL,0);
+	my_system(processed_command_line_3x,ndomod_sink_rotation_timeout,&early_timeout,&exectime,NULL,0);
 
 
 	/* allow data to be written to the sink */
