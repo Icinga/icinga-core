@@ -1090,7 +1090,7 @@ int ndomod_broker_data(int event_type, void *data){
 	host *temp_host=NULL;
 	service *temp_service=NULL;
 	contact *temp_contact=NULL;
-	char *es[8];
+	char *es[9];
 	int x=0;
 	scheduled_downtime *temp_downtime=NULL;
 	comment *temp_comment=NULL;
@@ -1454,9 +1454,10 @@ int ndomod_broker_data(int event_type, void *data){
 
 		es[0]=ndo_escape_buffer(cmddata->command_line);
 		es[1]=ndo_escape_buffer(cmddata->output);
+		es[2]=ndo_escape_buffer(cmddata->output);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%d\n%d=%.5lf\n%d=%d\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%d\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_SYSTEMCOMMANDDATA
 			 ,NDO_DATA_TYPE
 			 ,cmddata->type
@@ -1485,6 +1486,8 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,cmddata->return_code
 			 ,NDO_DATA_OUTPUT
 			 ,(es[1]==NULL)?"":es[1]
+			 ,NDO_DATA_LONGOUTPUT
+			 ,(es[2]==NULL)?"":es[2]
 			 ,NDO_API_ENDDATA
 			);
 
@@ -1503,9 +1506,11 @@ int ndomod_broker_data(int event_type, void *data){
 		es[3]=ndo_escape_buffer(ehanddata->command_args);
 		es[4]=ndo_escape_buffer(ehanddata->command_line);
 		es[5]=ndo_escape_buffer(ehanddata->output);
+		/* Preparing if eventhandler will have long_output in the future */
+		es[6]=ndo_escape_buffer(ehanddata->output);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%.5lf\n%d=%d\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_EVENTHANDLERDATA
 			 ,NDO_DATA_TYPE
 			 ,ehanddata->type
@@ -1546,6 +1551,8 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,ehanddata->return_code
 			 ,NDO_DATA_OUTPUT
 			 ,(es[5]==NULL)?"":es[5]
+			 ,NDO_DATA_LONGOUTPUT
+			 ,(es[6]==NULL)?"":es[6]
 			 ,NDO_API_ENDDATA
 			);
 
@@ -1561,11 +1568,13 @@ int ndomod_broker_data(int event_type, void *data){
 		es[0]=ndo_escape_buffer(notdata->host_name);
 		es[1]=ndo_escape_buffer(notdata->service_description);
 		es[2]=ndo_escape_buffer(notdata->output);
-		es[3]=ndo_escape_buffer(notdata->ack_author);
-		es[4]=ndo_escape_buffer(notdata->ack_data);
+		/* Preparing if notifications will have long_output in the future */
+		es[3]=ndo_escape_buffer(notdata->output);
+		es[4]=ndo_escape_buffer(notdata->ack_author);
+		es[5]=ndo_escape_buffer(notdata->ack_data);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d\n\n"
 			 ,NDO_API_NOTIFICATIONDATA
 			 ,NDO_DATA_TYPE
 			 ,notdata->type
@@ -1594,10 +1603,12 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,notdata->state
 			 ,NDO_DATA_OUTPUT
 			 ,(es[2]==NULL)?"":es[2]
-			 ,NDO_DATA_ACKAUTHOR
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[3]==NULL)?"":es[3]
-			 ,NDO_DATA_ACKDATA
+			 ,NDO_DATA_ACKAUTHOR
 			 ,(es[4]==NULL)?"":es[4]
+			 ,NDO_DATA_ACKDATA
+			 ,(es[5]==NULL)?"":es[5]
 			 ,NDO_DATA_ESCALATED
 			 ,notdata->escalated
 			 ,NDO_DATA_CONTACTSNOTIFIED
@@ -1620,10 +1631,11 @@ int ndomod_broker_data(int event_type, void *data){
 		es[3]=ndo_escape_buffer(scdata->command_args);
 		es[4]=ndo_escape_buffer(scdata->command_line);
 		es[5]=ndo_escape_buffer(scdata->output);
-		es[6]=ndo_escape_buffer(scdata->perf_data);
+		es[6]=ndo_escape_buffer(scdata->long_output);
+		es[7]=ndo_escape_buffer(scdata->perf_data);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_SERVICECHECKDATA
 			 ,NDO_DATA_TYPE
 			 ,scdata->type
@@ -1672,8 +1684,10 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,scdata->return_code
 			 ,NDO_DATA_OUTPUT
 			 ,(es[5]==NULL)?"":es[5]
-			 ,NDO_DATA_PERFDATA
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[6]==NULL)?"":es[6]
+			 ,NDO_DATA_PERFDATA
+			 ,(es[7]==NULL)?"":es[7]
 			 ,NDO_API_ENDDATA
 			);
 
@@ -1691,10 +1705,11 @@ int ndomod_broker_data(int event_type, void *data){
 		es[2]=ndo_escape_buffer(hcdata->command_args);
 		es[3]=ndo_escape_buffer(hcdata->command_line);
 		es[4]=ndo_escape_buffer(hcdata->output);
-		es[5]=ndo_escape_buffer(hcdata->perf_data);
+		es[5]=ndo_escape_buffer(hcdata->long_output);
+		es[6]=ndo_escape_buffer(hcdata->perf_data);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_HOSTCHECKDATA
 			 ,NDO_DATA_TYPE
 			 ,hcdata->type
@@ -1741,8 +1756,10 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,hcdata->return_code
 			 ,NDO_DATA_OUTPUT
 			 ,(es[4]==NULL)?"":es[4]
-			 ,NDO_DATA_PERFDATA
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[5]==NULL)?"":es[5]
+			 ,NDO_DATA_PERFDATA
+			 ,(es[6]==NULL)?"":es[6]
 			 ,NDO_API_ENDDATA
 			);
 
@@ -1983,15 +2000,16 @@ int ndomod_broker_data(int event_type, void *data){
 
 		es[0]=ndo_escape_buffer(temp_host->name);
 		es[1]=ndo_escape_buffer(temp_host->plugin_output);
-		es[2]=ndo_escape_buffer(temp_host->perf_data);
-		es[3]=ndo_escape_buffer(temp_host->event_handler);
-		es[4]=ndo_escape_buffer(temp_host->host_check_command);
-		es[5]=ndo_escape_buffer(temp_host->check_period);
+		es[2]=ndo_escape_buffer(temp_host->long_plugin_output);
+		es[3]=ndo_escape_buffer(temp_host->perf_data);
+		es[4]=ndo_escape_buffer(temp_host->event_handler);
+		es[5]=ndo_escape_buffer(temp_host->host_check_command);
+		es[6]=ndo_escape_buffer(temp_host->check_period);
 
 		retry_interval=temp_host->retry_interval;
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
 			 ,NDO_API_HOSTSTATUSDATA
 			 ,NDO_DATA_TYPE
 			 ,hsdata->type
@@ -2006,8 +2024,10 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,(es[0]==NULL)?"":es[0]
 			 ,NDO_DATA_OUTPUT
 			 ,(es[1]==NULL)?"":es[1]
-			 ,NDO_DATA_PERFDATA
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[2]==NULL)?"":es[2]
+			 ,NDO_DATA_PERFDATA
+			 ,(es[3]==NULL)?"":es[3]
 			 ,NDO_DATA_CURRENTSTATE
 			 ,temp_host->current_state
 			 ,NDO_DATA_HASBEENCHECKED
@@ -2080,15 +2100,15 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,NDO_DATA_MODIFIEDHOSTATTRIBUTES
 			 ,temp_host->modified_attributes
 			 ,NDO_DATA_EVENTHANDLER
-			 ,(es[3]==NULL)?"":es[3]
-			 ,NDO_DATA_CHECKCOMMAND
 			 ,(es[4]==NULL)?"":es[4]
+			 ,NDO_DATA_CHECKCOMMAND
+			 ,(es[5]==NULL)?"":es[5]
 			 ,NDO_DATA_NORMALCHECKINTERVAL
 			 ,(double)temp_host->check_interval
 			 ,NDO_DATA_RETRYCHECKINTERVAL
 			 ,(double)retry_interval
 			 ,NDO_DATA_HOSTCHECKPERIOD
-			 ,(es[5]==NULL)?"":es[5]
+			 ,(es[6]==NULL)?"":es[6]
 			);
 
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2139,13 +2159,14 @@ int ndomod_broker_data(int event_type, void *data){
 		es[0]=ndo_escape_buffer(temp_service->host_name);
 		es[1]=ndo_escape_buffer(temp_service->description);
 		es[2]=ndo_escape_buffer(temp_service->plugin_output);
-		es[3]=ndo_escape_buffer(temp_service->perf_data);
-		es[4]=ndo_escape_buffer(temp_service->event_handler);
-		es[5]=ndo_escape_buffer(temp_service->service_check_command);
-		es[6]=ndo_escape_buffer(temp_service->check_period);
+		es[3]=ndo_escape_buffer(temp_service->long_plugin_output);
+		es[4]=ndo_escape_buffer(temp_service->perf_data);
+		es[5]=ndo_escape_buffer(temp_service->event_handler);
+		es[6]=ndo_escape_buffer(temp_service->service_check_command);
+		es[7]=ndo_escape_buffer(temp_service->check_period);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
 			 ,NDO_API_SERVICESTATUSDATA
 			 ,NDO_DATA_TYPE
 			 ,ssdata->type
@@ -2162,8 +2183,10 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,(es[1]==NULL)?"":es[1]
 			 ,NDO_DATA_OUTPUT
 			 ,(es[2]==NULL)?"":es[2]
-			 ,NDO_DATA_PERFDATA
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[3]==NULL)?"":es[3]
+			 ,NDO_DATA_PERFDATA
+			 ,(es[4]==NULL)?"":es[4]
 			 ,NDO_DATA_CURRENTSTATE
 			 ,temp_service->current_state
 			 ,NDO_DATA_HASBEENCHECKED
@@ -2238,15 +2261,15 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,NDO_DATA_MODIFIEDSERVICEATTRIBUTES
 			 ,temp_service->modified_attributes
 			 ,NDO_DATA_EVENTHANDLER
-			 ,(es[4]==NULL)?"":es[4]
-			 ,NDO_DATA_CHECKCOMMAND
 			 ,(es[5]==NULL)?"":es[5]
+			 ,NDO_DATA_CHECKCOMMAND
+			 ,(es[6]==NULL)?"":es[6]
 			 ,NDO_DATA_NORMALCHECKINTERVAL
 			 ,(double)temp_service->check_interval
 			 ,NDO_DATA_RETRYCHECKINTERVAL
 			 ,(double)temp_service->retry_interval
 			 ,NDO_DATA_SERVICECHECKPERIOD
-			 ,(es[6]==NULL)?"":es[6]
+			 ,(es[7]==NULL)?"":es[7]
 			);
 
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -2651,12 +2674,14 @@ int ndomod_broker_data(int event_type, void *data){
 		es[0]=ndo_escape_buffer(cnotdata->host_name);
 		es[1]=ndo_escape_buffer(cnotdata->service_description);
 		es[2]=ndo_escape_buffer(cnotdata->output);
-		es[3]=ndo_escape_buffer(cnotdata->ack_author);
-		es[4]=ndo_escape_buffer(cnotdata->ack_data);
-		es[5]=ndo_escape_buffer(cnotdata->contact_name);
+		/* Preparing if contact notifications will have long_output in the future */
+		es[3]=ndo_escape_buffer(cnotdata->output);
+		es[4]=ndo_escape_buffer(cnotdata->ack_author);
+		es[5]=ndo_escape_buffer(cnotdata->ack_data);
+		es[6]=ndo_escape_buffer(cnotdata->contact_name);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_CONTACTNOTIFICATIONDATA
 			 ,NDO_DATA_TYPE
 			 ,cnotdata->type
@@ -2680,17 +2705,19 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,NDO_DATA_SERVICE
 			 ,(es[1]==NULL)?"":es[1]
 			 ,NDO_DATA_CONTACTNAME
-			 ,(es[5]==NULL)?"":es[5]
+			 ,(es[6]==NULL)?"":es[6]
 			 ,NDO_DATA_NOTIFICATIONREASON
 			 ,cnotdata->reason_type
 			 ,NDO_DATA_STATE
 			 ,cnotdata->state
 			 ,NDO_DATA_OUTPUT
 			 ,(es[2]==NULL)?"":es[2]
-			 ,NDO_DATA_ACKAUTHOR
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[3]==NULL)?"":es[3]
-			 ,NDO_DATA_ACKDATA
+			 ,NDO_DATA_ACKAUTHOR
 			 ,(es[4]==NULL)?"":es[4]
+			 ,NDO_DATA_ACKDATA
+			 ,(es[5]==NULL)?"":es[5]
 			 ,NDO_API_ENDDATA
 			);
 
@@ -2706,14 +2733,16 @@ int ndomod_broker_data(int event_type, void *data){
 		es[0]=ndo_escape_buffer(cnotmdata->host_name);
 		es[1]=ndo_escape_buffer(cnotmdata->service_description);
 		es[2]=ndo_escape_buffer(cnotmdata->output);
-		es[3]=ndo_escape_buffer(cnotmdata->ack_author);
-		es[4]=ndo_escape_buffer(cnotmdata->ack_data);
-		es[5]=ndo_escape_buffer(cnotmdata->contact_name);
-		es[6]=ndo_escape_buffer(cnotmdata->command_name);
-		es[7]=ndo_escape_buffer(cnotmdata->command_args);
+		/* Preparing if contact notifications method will have long_output in the future */
+		es[3]=ndo_escape_buffer(cnotmdata->output);
+		es[4]=ndo_escape_buffer(cnotmdata->ack_author);
+		es[5]=ndo_escape_buffer(cnotmdata->ack_data);
+		es[6]=ndo_escape_buffer(cnotmdata->contact_name);
+		es[7]=ndo_escape_buffer(cnotmdata->command_name);
+		es[8]=ndo_escape_buffer(cnotmdata->command_args);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_CONTACTNOTIFICATIONMETHODDATA
 			 ,NDO_DATA_TYPE
 			 ,cnotmdata->type
@@ -2737,21 +2766,23 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,NDO_DATA_SERVICE
 			 ,(es[1]==NULL)?"":es[1]
 			 ,NDO_DATA_CONTACTNAME
-			 ,(es[5]==NULL)?"":es[5]
-			 ,NDO_DATA_COMMANDNAME
 			 ,(es[6]==NULL)?"":es[6]
-			 ,NDO_DATA_COMMANDARGS
+			 ,NDO_DATA_COMMANDNAME
 			 ,(es[7]==NULL)?"":es[7]
+			 ,NDO_DATA_COMMANDARGS
+			 ,(es[8]==NULL)?"":es[8]
 			 ,NDO_DATA_NOTIFICATIONREASON
 			 ,cnotmdata->reason_type
 			 ,NDO_DATA_STATE
 			 ,cnotmdata->state
 			 ,NDO_DATA_OUTPUT
 			 ,(es[2]==NULL)?"":es[2]
-			 ,NDO_DATA_ACKAUTHOR
+			 ,NDO_DATA_LONGOUTPUT
 			 ,(es[3]==NULL)?"":es[3]
-			 ,NDO_DATA_ACKDATA
+			 ,NDO_DATA_ACKAUTHOR
 			 ,(es[4]==NULL)?"":es[4]
+			 ,NDO_DATA_ACKDATA
+			 ,(es[5]==NULL)?"":es[5]
 			 ,NDO_API_ENDDATA
 			);
 
@@ -2832,9 +2863,11 @@ int ndomod_broker_data(int event_type, void *data){
 		es[0]=ndo_escape_buffer(schangedata->host_name);
 		es[1]=ndo_escape_buffer(schangedata->service_description);
 		es[2]=ndo_escape_buffer(schangedata->output);
+		/* Preparing if servicecheck change data will have long_output in the future */
+		es[3]=ndo_escape_buffer(schangedata->output);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d\n\n"
+			 ,"\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
 			 ,NDO_API_STATECHANGEDATA
 			 ,NDO_DATA_TYPE
 			 ,schangedata->type
@@ -2867,6 +2900,8 @@ int ndomod_broker_data(int event_type, void *data){
 			 ,last_hard_state
 			 ,NDO_DATA_OUTPUT
 			 ,es[2]
+			 ,NDO_DATA_LONGOUTPUT
+			 ,es[3]
 			 ,NDO_API_ENDDATA
 			);
 

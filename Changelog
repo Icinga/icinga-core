@@ -8,7 +8,7 @@ Icinga 0.8.x Change Log
 * idoutils: fix escaping of customvars before insert
 * idoutils: fix in buggy rotate command execution
 * idoutils: fix fmt specifier in ndo2db_daemonize() error
-* 
+* idoutils: added long_output support to IDOUtils
 
 0.8.1 - 06/17/2009
 ------------------
