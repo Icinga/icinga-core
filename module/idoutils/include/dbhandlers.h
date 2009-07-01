@@ -69,5 +69,5 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *);
 int ndo2db_handle_timeperiodefinition(ndo2db_idi *);
 int ndo2db_handle_contactdefinition(ndo2db_idi *);
 int ndo2db_handle_contactgroupdefinition(ndo2db_idi *);
-
+int ndo2db_save_custom_variables(ndo2db_idi *,int, int, char *);
 #endif
