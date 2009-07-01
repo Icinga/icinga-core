@@ -70,7 +70,7 @@ all:
 		cd $(SRC_MODULE) && $(MAKE); \
 	fi
 	
-	if [ x$(USE_IDOUTILS) = xyes ]; then \
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
 		cd $(SRC_IDOUTILS) && $(MAKE); \
 	fi
 
@@ -286,11 +286,14 @@ install-webconf:
 	@echo ""
 
 install-idoutils:
-	cd $(SRC_IDOUTILS) && $(MAKE) $@
-
-	@echo ""
-	@echo "*** IDOUtils installed ***"
-	@echo ""
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
+		cd $(SRC_IDOUTILS) && $(MAKE) $@ ;\
+	fi
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
+		echo "" ;\
+		echo "*** IDOUtils installed ***" ;\
+		echo "" ;\
+	fi
 
 install-init: install-daemoninit
 
@@ -298,7 +301,7 @@ install-daemoninit:
 	$(INSTALL) -m 755 -d $(INIT_OPTS) $(DESTDIR)$(INIT_DIR)
 	$(INSTALL) -m 755 $(INIT_OPTS) daemon-init $(DESTDIR)$(INIT_DIR)/icinga
 
-	if [ x$(USE_IDOUTILS) = xyes ]; then \
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
 		$(INSTALL) -m 755 $(INIT_OPTS) rc.ido2db $(DESTDIR)$(INIT_DIR)/ido2db ;\
 	fi
 
@@ -316,7 +319,7 @@ install-commandmode:
 	@echo ""
 
 
-fullinstall: install install-init install-commandmode install-webconf
+fullinstall: install install-init install-commandmode install-webconf install-config install-idoutils
 
 # Uninstall is too destructive if base install directory is /usr, etc.
 #uninstall:
