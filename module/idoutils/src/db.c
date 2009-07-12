@@ -4,7 +4,7 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-11-2009
+ * Last Modified: 07-12-2009
  *
  **************************************************************/
 
@@ -488,7 +488,6 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
 /* executes a SQL statement */
 int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	int result = NDO_OK;
-	int query_result = 0;
 	const char *error_msg;
 
 	if (idi == NULL || buf == NULL)
@@ -536,7 +535,6 @@ int ndo2db_db_free_query(ndo2db_idi *idi) {
 
 /* handles SQL query errors */
 int ndo2db_handle_db_error(ndo2db_idi *idi) {
-	int result = 0;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -653,8 +651,6 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 }
 
 int ido2db_check_dbd_driver(void) {
-	int error = NDO_FALSE;
-	dbi_driver driver = NULL;
 
 	dbi_initialize(NULL);
 

@@ -4,7 +4,7 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-11-2009
+ * Last Modified: 07-12-2009
  *
  **************************************************************/
 
@@ -2149,11 +2149,6 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
-	char *ptr1 = NULL;
-	char *ptr2 = NULL;
-	char *ptr3 = NULL;
-	int has_been_modified = 0;
-	ndo2db_mbuf mbuf;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2317,11 +2312,6 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
-	char *ptr1 = NULL;
-	char *ptr2 = NULL;
-	char *ptr3 = NULL;
-	int has_been_modified = 0;
-	ndo2db_mbuf mbuf;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2456,18 +2446,12 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	unsigned long modified_service_attributes = 0L;
 	int host_notifications_enabled = 0;
 	int service_notifications_enabled = 0;
-	char *es[2];
 	char *ts[3];
 	char *buf = NULL;
 	char *buf1 = NULL;
 	unsigned long object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
-	char *ptr1 = NULL;
-	char *ptr2 = NULL;
-	char *ptr3 = NULL;
-	int has_been_modified = 0;
-	ndo2db_mbuf mbuf;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2481,35 +2465,20 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* covert vars */
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_LASTHOSTNOTIFICATION],
-			&last_host_notification);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_LASTSERVICENOTIFICATION],
-			&last_service_notification);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_MODIFIEDCONTACTATTRIBUTES],
-			&modified_attributes);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_MODIFIEDHOSTATTRIBUTES],
-			&modified_host_attributes);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_MODIFIEDSERVICEATTRIBUTES],
-			&modified_service_attributes);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONSENABLED],
-			&host_notifications_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONSENABLED],
-			&service_notifications_enabled);
+	result = ndo2db_convert_string_to_unsignedlong( idi->buffered_input[NDO_DATA_LASTHOSTNOTIFICATION], &last_host_notification);
+	result = ndo2db_convert_string_to_unsignedlong( idi->buffered_input[NDO_DATA_LASTSERVICENOTIFICATION], &last_service_notification);
+	result = ndo2db_convert_string_to_unsignedlong( idi->buffered_input[NDO_DATA_MODIFIEDCONTACTATTRIBUTES], &modified_attributes);
+	result = ndo2db_convert_string_to_unsignedlong( idi->buffered_input[NDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
+	result = ndo2db_convert_string_to_unsignedlong( idi->buffered_input[NDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
+	result = ndo2db_convert_string_to_int( idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONSENABLED], &host_notifications_enabled);
+	result = ndo2db_convert_string_to_int( idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONSENABLED], &service_notifications_enabled);
 
 	ts[0] = ndo2db_db_timet_to_sql(idi, tstamp.tv_sec);
 	ts[1] = ndo2db_db_timet_to_sql(idi, last_host_notification);
 	ts[2] = ndo2db_db_timet_to_sql(idi, last_service_notification);
 
 	/* get the object id */
-	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_CONTACT,
-			idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &object_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_CONTACT, idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &object_id);
 
 	/* generate query string */
 	if (asprintf(
@@ -3070,10 +3039,6 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	ndo2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
-	char *ptr1 = NULL;
-	char *ptr2 = NULL;
-	char *ptr3 = NULL;
-	int has_been_modified = 0;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3515,10 +3480,6 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	ndo2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
-	char *ptr1 = NULL;
-	char *ptr2 = NULL;
-	char *ptr3 = NULL;
-	int has_been_modified = 0;
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4518,10 +4479,6 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	int address_number = 0;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
-	char *ptr1 = NULL;
-	char *ptr2 = NULL;
-	char *ptr3 = NULL;
-	int has_been_modified = 0;
 
 	if (idi == NULL)
 		return NDO_ERROR;

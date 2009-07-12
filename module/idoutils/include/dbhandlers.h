@@ -2,7 +2,7 @@
  *
  * DBHANDLERS.H - NDO2DB DB Handler Include File
  * Copyright (c) 2005-2006 Ethan Galstad
- * Last Modified: 05-25-2006
+ * Last Modified: 07-12-2009
  *
  ************************************************************************/
 
@@ -72,4 +72,6 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *);
 int ndo2db_handle_contactdefinition(ndo2db_idi *);
 int ndo2db_handle_contactgroupdefinition(ndo2db_idi *);
 int ndo2db_save_custom_variables(ndo2db_idi *,int, int, char *);
+
+int ndo2db_log_debug_info(int , int , const char *, ...);
 #endif

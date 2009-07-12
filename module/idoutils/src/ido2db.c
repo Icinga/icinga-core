@@ -5,7 +5,7 @@
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 04-17-2009
+ * Last Modified: 07-12-2009
  *
  **************************************************************/
 
@@ -75,7 +75,6 @@ unsigned long mbuf_data_allocated=0L;
 
 
 int main(int argc, char **argv){
-	int db_supported=NDO_FALSE;
 	int result=NDO_OK;
 
 #ifdef DEBUG_MEMORY
