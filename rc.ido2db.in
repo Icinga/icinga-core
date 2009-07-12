@@ -1,81 +1,193 @@
-#!@SHELL@
-# Startup script for IDO2DB
-# Activate with: insserv /etc/init.d/ido2db
-# Use: /etc/init.d/ido2db stop | start
-# Contributed by Bruno Quintais
+#!/bin/sh
+# 
 ### BEGIN INIT INFO
-# Provides: ido2db
-# Required-Start:
-# Required-Stop:
-# Default-Start: 3 5
-# Default-Stop: 0 1 2 6
-# Description: Automatic startup and shutdown of Icinga IDO2DB
+# Provides:          ido2db
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Icinga IDO2DB Initscript
+# Description: 	     Icinga Data Out Daemon
 ### END INIT INFO
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-BIN=@bindir@/@ido2db_name@
-CONF=@sysconfdir@/ido2db.cfg
-PID=@localstatedir@/ido2db.lock
-
-get_pid ()
+# chkconfig: 345 99 01
+#
+# File : ido2db
+#
+# Author : Jorge Sanchez Aymar (jsanchez@lanchile.cl)
+# 
+# Changelog :
+#
+# 1999-07-09 Karl DeBisschop <kdebisschop@infoplease.com>
+#  - setup for autoconf
+#  - add reload function
+# 1999-08-06 Ethan Galstad <egalstad@nagios.org>
+#  - Added configuration info for use with RedHat's chkconfig tool
+#    per Fran Boon's suggestion
+# 1999-08-13 Jim Popovitch <jimpop@rocketship.com>
+#  - added variable for nagios/var directory
+#  - cd into nagios/var directory before creating tmp files on startup
+# 1999-08-16 Ethan Galstad <egalstad@nagios.org>
+#  - Added test for rc.d directory as suggested by Karl DeBisschop
+# 2000-07-23 Karl DeBisschop <kdebisschop@users.sourceforge.net>
+#  - Clean out redhat macros and other dependencies
+# 2003-01-11 Ethan Galstad <egalstad@nagios.org>
+#  - Updated su syntax (Gary Miller)
+# 2009-07-11 Hendrik Bäcker <andurin@process-zero.de>
+#  - Rewrite ido2db init script, inspired by Sascha Runschke
+#
+#
+  
+status_ido2db ()
 {
-	PID_NUMBER=`head -n 1 $PID`
+
+	pid_ido2db
+
+	if ps -p $Ido2dbPID > /dev/null 2>&1; then
+		return 0
+	else
+		if test -f $Ido2dbLockDir/$Ido2dbLockFile; then
+       			return 2
+		else
+			return 1
+		fi
+        fi
+
+        return 1
 }
 
+printstatus_ido2db()
+{
+	if status_ido2db $1 $2; then
+		echo "$servicename (pid $Ido2dbPID) is running..."
+	elif test $? == 2; then
+		echo "$servicename is not running but subsystem locked"
+	else
+		echo "$servicename is not running"
+	fi
+}
+
+
+killproc_ido2db ()
+{
+
+	kill $2 $Ido2dbPID
+
+}
+
+
+pid_ido2db ()
+{
+
+	if test ! -f $Ido2dbRunFile; then
+		return 1
+	fi
+
+	Ido2dbPID=`head -n 1 $Ido2dbRunFile`
+	return 0
+}
+
+
+# Source function library
+# Solaris doesn't have an rc.d directory, so do a test first
+if [ -f /etc/rc.d/init.d/functions ]; then
+	. /etc/rc.d/init.d/functions
+elif [ -f /etc/init.d/functions ]; then
+	. /etc/init.d/functions
+fi
+
+servicename=@ido2db_name@
+prefix=@prefix@
+exec_prefix=${prefix}
+Ido2dbBin=@bindir@/@ido2db_name@
+Ido2dbCfgFile=@sysconfdir@/ido2db.cfg
+Ido2dbVarDir=@localstatedir@
+Ido2dbRunFile=$Ido2dbVarDir/ido2db.lock
+Ido2dbLockDir=/var/lock/subsys
+Ido2dbLockFile=@ido2db_name@
+Ido2dbUser=@icinga_user@
+Ido2dbGroup=@icinga_grp@
+          
+
+# Check that ido2db exists.
+if [ ! -f $Ido2dbBin ]; then
+    echo "Executable file $Ido2dbBin not found.  Exiting."
+    exit 1
+fi
+
+# Check that ido2db.cfg exists.
+if [ ! -f $Ido2dbCfgFile ]; then
+    echo "Configuration file $Ido2dbCfgFile not found.  Exiting."
+    exit 1
+fi
+          
+# See how we were called.
 case "$1" in
+
 	start)
-		if [ ! -f $PID ]
-		then
-			$BIN -c $CONF
-			if [ $? -eq 0 ]
-			then
-				echo "@ido2db_name@ started."
-				exit 0
-			else
-				echo "Could not start @ido2db_name@"
-				exit 1
-			fi
-		else
-			echo "PID File '$PID' exists. @ido2db_name@ already started"
-			exit 0
+		status_ido2db
+		if [ $? -eq 0 ]; then
+			echo "$servicename already started..."
+			exit 1
 		fi
+		echo -n "Starting $servicename:"
+		touch $Ido2dbRunFile
+		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
+		$Ido2dbBin -c $Ido2dbCfgFile
+		if [ -d $Ido2dbLockDir ]; then touch $Ido2dbLockDir/$Ido2dbLockFile; fi
+		echo " done."
+		exit 0
 		;;
+
 	stop)
-		if [ -f $PID ]
-		then
-			get_pid
-			kill $PID_NUMBER
-			if [ $? -eq 0 ]
-			then
-				echo "@ido2db_name@ stopped."
-				exit 0
-			else
-				echo "Could not stop @ido2db_name@"
-				exit 1
-			fi
-		else
-			echo "@ido2db_name@ was not running."
-			exit 0
+		status_ido2db
+		if ! [ $? -eq 0 ]; then
+			echo "$servicename was not running... could not stop"
+			exit 1
 		fi
+		echo -n "Stopping $servicename: "
+
+		pid_ido2db
+		killproc_ido2db ido2db
+
+ 		# now we have to wait for ido2db to exit and remove its
+ 		# own Ido2dbRunFile, otherwise a following "start" could
+ 		# happen, and then the exiting ido2db will remove the
+ 		# new Ido2dbRunFile, allowing multiple ido2db daemons
+ 		# to (sooner or later) run - John Sellens
+		#echo -n 'Waiting for ido2db to exit .'
+ 		for i in 1 2 3 4 5 6 7 8 9 10 ; do
+ 		    if status_ido2db > /dev/null; then
+ 			echo -n '.'
+ 			sleep 1
+ 		    else
+ 			break
+ 		    fi
+ 		done
+ 		if status_ido2db > /dev/null; then
+ 		    echo ''
+ 		    echo 'Warning - $servicename did not exit in a timely manner'
+ 		else
+ 		    echo 'done.'
+ 		fi
+
+		rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
 		;;
+
+        status)
+		printstatus_ido2db
+                ;;
+
 	restart)
 		$0 stop
 		$0 start
 		;;
-	status)
-		if [ -f $PID ]
-		then
-			echo "@ido2db_name@ running (PID=$PID_NUMBER)..."
-			exit 0
-		else
-			echo "@ido2db_name@ not running."
-			exit 1
-		fi
-		;;
+
 	*)
-		echo "Usage: @ido2db_name@ {start|stop|restart|status}"
+		echo "Usage: $servicename {start|stop|restart|status}"
 		exit 1
 		;;
-esac
 
+esac
+  
+# End of this script
