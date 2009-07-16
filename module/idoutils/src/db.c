@@ -498,7 +498,20 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_timet_to_sql() start\n");
 
-	asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
+	switch (idi->dbinfo.server_type) {
+		case NDO2DB_DBSERVER_MYSQL:
+			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
+			break;
+		case NDO2DB_DBSERVER_PQSQL:
+			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
+			break;
+		case NDO2DB_DBSERVER_ORACLE:
+			/* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
+			asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t);
+			break;
+		default:
+			break;
+	} 
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_timet_to_sql() end\n");
 	return buf;
@@ -510,7 +523,19 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() start\n");
 
-	asprintf(&buf, "UNIX_TIMESTAMP(%s)", (field == NULL) ? "" : field);
+        switch (idi->dbinfo.server_type) { 
+                case NDO2DB_DBSERVER_MYSQL:
+                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
+			break;
+                case NDO2DB_DBSERVER_PQSQL:
+                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
+			break;
+                case NDO2DB_DBSERVER_ORACLE:
+                        asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
+			break;
+                default:
+                        break;
+        } 
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() start\n");
 
