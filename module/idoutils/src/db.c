@@ -309,7 +309,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
 	/* insert new instance if necessary */
 	if (have_instance == NDO_FALSE) {
-		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')",
+		if (asprintf(&buf, "INSERT INTO %s SET instance_name='%s'",
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES],
 				idi->instance_name) == -1)
 			buf = NULL;
@@ -325,22 +325,14 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	/* record initial connection information */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s "
-			"(instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) "
-			"VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+			"INSERT INTO %s SET instance_id='%lu', connect_time=NOW(), last_checkin_time=NOW(), bytes_processed='0', lines_processed='0', entries_processed='0', agent_name='%s', agent_version='%s', disposition='%s', connect_source='%s', connect_type='%s', data_start_time=%s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
 			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
-			idi->disposition, idi->connect_source, idi->connect_type) == -1)
+			idi->disposition, idi->connect_source, idi->connect_type, ts) == -1)
 		buf = NULL;
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
-		/* This might be 0 (zero) in some cases */
 		idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-
-		/* ToDo: 	Check if dbinfo.conninfo_id is zero and find another way to get the
-		 * 				last inserted ID
-		 */
 	}
-
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
 	free(ts);
@@ -394,14 +386,9 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 	ts = ndo2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
-	if (asprintf(&buf, "UPDATE %s SET "
-		"disconnect_time=NOW(), "
-		"last_checkin_time=NOW(), "
-		"data_end_time=%s, "
-		"bytes_processed='%lu', "
-		"lines_processed='%lu', "
-		"entries_processed='%lu' "
-		"WHERE conninfo_id='%lu'",
+	if (asprintf(
+			&buf,
+			"UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
@@ -484,20 +471,7 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 	char *buf = NULL;
 
-	switch (idi->dbinfo.server_type) {
-		case NDO2DB_DBSERVER_MYSQL:
-			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
-			break;
-		case NDO2DB_DBSERVER_PQSQL:
-			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
-			break;
-		case NDO2DB_DBSERVER_ORACLE:
-			/* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
-			asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t);
-			break;
-		default:
-			break;
-	} 
+	asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
 
 	return buf;
 }
@@ -506,19 +480,7 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
 	char *buf = NULL;
 
-        switch (idi->dbinfo.server_type) { 
-                case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
-			break;
-                case NDO2DB_DBSERVER_PQSQL:
-                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
-			break;
-                case NDO2DB_DBSERVER_ORACLE:
-                        asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
-			break;
-                default:
-                        break;
-        } 
+	asprintf(&buf, "UNIX_TIMESTAMP(%s)", (field == NULL) ? "" : field);
 
 	return buf;
 }
@@ -621,16 +583,14 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *idi, char *table_name, char *fiel
 
 	if (asprintf(
 			&buf,
-			"SELECT %s AS latest_time FROM %s WHERE instance_id='%lu' ORDER BY %s DESC LIMIT 1 OFFSET 0",
-			field_name, table_name, idi->dbinfo.instance_id, field_name) == -1)
+			"SELECT %s AS latest_time FROM %s WHERE instance_id='%lu' ORDER BY %s DESC LIMIT 0,1",
+			ts[0], table_name, idi->dbinfo.instance_id, field_name) == -1)
 		buf = NULL;
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
-			if (dbi_result_next_row(idi->dbinfo.dbi_result)){
-				// ndo2db_convert_string_to_unsignedlong(dbi_result_get_string_copy(idi->dbinfo.dbi_result, ts[0]), t);
-				*t = dbi_result_get_datetime(idi->dbinfo.dbi_result, "latest_time");
-			}
+			if (dbi_result_next_row(idi->dbinfo.dbi_result))
+				ndo2db_convert_string_to_unsignedlong(dbi_result_get_string_copy(idi->dbinfo.dbi_result, ts[0]), t);
 		}
 	}
 
