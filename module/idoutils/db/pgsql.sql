@@ -1,9 +1,11 @@
 /*
 # pgsql.sql
 #   - modfied mysql.sql to work with postgres 
+#   - INSERT_OR_UPDATE function
 #
 # mm/2009-05-13
-# 
+# mfriedrich/2009-07-18 
+#
 #-----------------------------------------------------
 # database installation instructions
 # 
@@ -18,11 +20,24 @@
 #
 #/etc/init.d/postgresql-8.3 reload
 #
-# psql -U icinga < pgsql.sql  
+# psql -U icingauser -d icinga < pgsql.sql  
 #
 #
 */
 
+/*
+CREATE OR REPLACE FUNCTION INSERT_OR_UPDATE(table_name_v varchar, cond_v varchar, insert_v varchar, update_v varchar) RETURNS void AS $$
+BEGIN
+	IF EXISTS( SELECT * FROM table_name_v
+		WHERE cond_v) THEN
+		UPDATE table_name_v SET update_v;
+	ELSE
+		INSERT INTO table_name_v insert_v;
+	END IF;
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
+*/
 
 
 --
