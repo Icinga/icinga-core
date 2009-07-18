@@ -503,7 +503,7 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
 			break;
 		case NDO2DB_DBSERVER_PGSQL:
-			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
+			asprintf(&buf, "(SELECT to_timestamp(%lu)::timestamp)", (unsigned long) t);
 			break;
 		case NDO2DB_DBSERVER_ORACLE:
 			/* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
@@ -528,7 +528,7 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
                         asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
 			break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
+                        asprintf(&buf,"(SELECT EXTRACT(EPOCH FROM TIMESTAMP '%s'))",(field==NULL)?"":field);
 			break;
                 case NDO2DB_DBSERVER_ORACLE:
                         asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
@@ -806,3 +806,56 @@ int ido2db_check_dbd_driver(void) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_dbd_driver() end\n");
 	return NDO_TRUE;
 }
+
+/****************************************************************************/
+/* DB SEPCIFIC FUNCTIONS                                                           */
+/****************************************************************************/
+
+/* returns rdbm specific insert or update query i
+   prepare insert, update and cond outside
+   build unique constraint for condition, unused in mysql, but needed for oracle/pgsql
+*/
+char *ido2db_insert_or_update(char *table_name, 
+				char *insert, 
+				char *update,
+				char *cond) {
+
+
+	char *query = NULL;
+
+	/* MySQL: INSERT INTO ... ON DUPLICATE KEY UPDATE ...*/
+	/* PostgreSQL: own pl function, if exists select ... where insert-values then update with update values else insert into insert-values */
+	/* Oracle MERGE INTO ... USING DUAL ON insert-condition WHEN MATCHED THEN UPDATE SET update-values WHEN NOT MATCHED INSERT insert-values */
+
+        switch (ndo2db_db_settings.server_type) {
+                case NDO2DB_DBSERVER_MYSQL:
+			asprintf(&query, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s", table_name, insert, update);
+                        break;
+                case NDO2DB_DBSERVER_PGSQL:
+			asprintf(&query, "IF EXISTS( SELECT * FROM %s WHERE %s) THEN UPDATE %s SET %s ELSE INSERT INTO %s %s END IF;", table_name, cond, table_name, update, table_name, insert);
+                        break;
+                case NDO2DB_DBSERVER_DB2:
+                        break;
+                case NDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case NDO2DB_DBSERVER_FREETDS:
+                        break;
+                case NDO2DB_DBSERVER_INGRES:
+                        break;
+                case NDO2DB_DBSERVER_MSQL:
+                        break;
+                case NDO2DB_DBSERVER_ORACLE:
+			asprintf(&query, "MERGE INTO %s USING DUAL ON (%s) WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s", table_name, cond, insert, update);
+                        break;
+                case NDO2DB_DBSERVER_SQLITE:
+                        break;
+                case NDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+
+	return query;
+
+}
+
