@@ -818,13 +818,13 @@ int ido2db_check_dbd_driver(void) {
    prepare insert, update and cond outside
    build unique constraint for condition, unused in mysql, but needed for oracle/pgsql
 */
-char *ido2db_insert_or_update(char *table_name, 
+int ido2db_insert_or_update(char **query,
+				char *table_name, 
 				char *insert, 
 				char *update,
 				char *cond) {
 
-
-	char *query = NULL;
+	int res = NDO_FALSE;
 
 	/* MySQL: INSERT INTO ... ON DUPLICATE KEY UPDATE ...*/
 	/* PostgreSQL: own pl function, if exists select ... where insert-values then update with update values else insert into insert-values */
@@ -832,12 +832,14 @@ char *ido2db_insert_or_update(char *table_name,
 
         switch (ndo2db_db_settings.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-			asprintf(&query, "INSERT INTO %s %s ON DUPLICATE KEY UPDATE %s", table_name, insert, update);
+			asprintf(query, "INSERT INTO %s %s ON DUPLICATE KEY UPDATE %s", table_name, insert, update);
+			res = NDO_TRUE;
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-			asprintf(&query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s ELSE INSERT INTO %s %s;", table_name, cond, table_name, update, table_name, insert);
-			asprintf(&query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s WHERE %s ELSE INSERT INTO %s %s END IF;", table_name, cond, table_name, update, cond, table_name, insert);
-			//asprintf(&query, "INSERT_OR_UPDATE('%s', '%s', '%s', '%s');", table_name, cond, table_name, update, table_name, insert);
+			asprintf(query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s ELSE INSERT INTO %s %s;", table_name, cond, table_name, update, table_name, insert);
+			asprintf(query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s WHERE %s ELSE INSERT INTO %s %s END IF;", table_name, cond, table_name, update, cond, table_name, insert);
+			//asprintf(query, "INSERT_OR_UPDATE('%s', '%s', '%s', '%s');", table_name, cond, table_name, update, table_name, insert);
+			res = NDO_TRUE;
                         break;
                 case NDO2DB_DBSERVER_DB2:
                         break;
@@ -850,7 +852,8 @@ char *ido2db_insert_or_update(char *table_name,
                 case NDO2DB_DBSERVER_MSQL:
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
-			asprintf(&query, "MERGE INTO %s USING DUAL ON (%s) WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s", table_name, cond, insert, update);
+			asprintf(query, "MERGE INTO %s USING DUAL ON (%s) WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s", table_name, cond, insert, update);
+			res = NDO_TRUE;
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
                         break;
@@ -860,7 +863,7 @@ char *ido2db_insert_or_update(char *table_name,
                         break;
         }
 
-	return query;
+	return res;
 
 }
 
