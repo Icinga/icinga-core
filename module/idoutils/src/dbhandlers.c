@@ -106,9 +106,9 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	free(buf1);
 	free(buf2);
 
-        for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
-                free(es[x]);
-	
+	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
+		free(es[x]);
+
 	if (found_object == NDO_FALSE)
 		result = NDO_ERROR;
 
@@ -565,6 +565,8 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_processdata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
@@ -690,6 +692,8 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_processdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -705,6 +709,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timedeventdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -892,6 +898,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
 		free(ts[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timedeventdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -906,6 +914,8 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 	char *buf = NULL;
 	int len = 0;
 	int x = 0;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -953,6 +963,8 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logdata() start\n");
+
 	return NDO_OK;
 }
 
@@ -971,6 +983,8 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_systemcommanddata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1018,6 +1032,7 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_systemcommanddata() end\n");
 
 	return NDO_OK;
 }
@@ -1042,6 +1057,8 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_eventhandlerdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1102,6 +1119,8 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_eventhandlerdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1122,6 +1141,8 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1183,6 +1204,8 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1197,6 +1220,8 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1249,6 +1274,8 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
 		free(ts[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1264,6 +1291,8 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationmethoddata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1316,6 +1345,8 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationmethoddata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1342,6 +1373,8 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 	char *buf1 = NULL;
 	int x = 0;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicecheckdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1441,6 +1474,8 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicecheckdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1468,6 +1503,8 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 	char *buf1 = NULL;
 	int x = 0;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostcheckdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1575,6 +1612,8 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostcheckdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1596,6 +1635,8 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commentdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1735,6 +1776,8 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commentdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1756,6 +1799,8 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_downtimedata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1935,6 +1980,8 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_downtimedata() end\n");
+
 	return NDO_OK;
 }
 
@@ -1952,6 +1999,8 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *ts[2];
 	char *buf = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_flappingdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -1997,6 +2046,8 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
 		free(ts[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_flappingdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -2027,6 +2078,8 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_programstatusdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2098,6 +2151,8 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_programstatusdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -2149,6 +2204,8 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hoststatusdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2260,6 +2317,8 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hoststatusdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -2312,6 +2371,8 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicestatusdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2433,6 +2494,8 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
 		free(ts[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicestatusdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -2452,6 +2515,8 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	unsigned long object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactstatusdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2509,45 +2574,59 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
 		free(ts[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactstatusdata() end\n");
+
 	return NDO_OK;
 }
 
 int ndo2db_handle_adaptiveprogramdata(ndo2db_idi *idi) {
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptiveprogramdata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
 	/* IGNORED */
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptiveprogramdata() end\n");
 
 	return NDO_OK;
 }
 
 int ndo2db_handle_adaptivehostdata(ndo2db_idi *idi) {
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptivehostdata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
 	/* IGNORED */
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptivehostdata() end\n");
 
 	return NDO_OK;
 }
 
 int ndo2db_handle_adaptiveservicedata(ndo2db_idi *idi) {
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptiveservicedata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
 	/* IGNORED */
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptiveservicedata() end\n");
 
 	return NDO_OK;
 }
 
 int ndo2db_handle_adaptivecontactdata(ndo2db_idi *idi) {
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptivecontactdata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
 	/* IGNORED */
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_adaptivecontactdata() end\n");
 
 	return NDO_OK;
 }
@@ -2562,6 +2641,8 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
 	unsigned long entry_time = 0L;
 	char *buf = NULL;
 	int result = NDO_OK;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_externalcommanddata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2604,25 +2685,35 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_externalcommanddata() end\n");
+
 	return NDO_OK;
 }
 
 int ndo2db_handle_aggregatedstatusdata(ndo2db_idi *idi) {
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_aggregatedstatusdata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
 	/* IGNORED */
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_aggregatedstatusdata() end\n");
 
 	return NDO_OK;
 }
 
 int ndo2db_handle_retentiondata(ndo2db_idi *idi) {
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_retentiondata() start\n");
+
 	if (idi == NULL)
 		return NDO_ERROR;
 
 	/* IGNORED */
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_retentiondata() end\n");
 
 	return NDO_OK;
 }
@@ -2642,6 +2733,8 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_acknowledgementdata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2704,6 +2797,8 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_acknowledgementdata() end\n");
+
 	return NDO_OK;
 }
 
@@ -2724,6 +2819,8 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 	char *ts[1];
 	char *es[2];
 	char *buf = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_statechangedata() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2781,6 +2878,8 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
                 free(ts[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_statechangedata() end\n");
+
 	return NDO_OK;
 }
 
@@ -2801,6 +2900,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 	char *varvalue = NULL;
 	ndo2db_mbuf mbuf;
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables() start\n");
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_SQL, 0, "HANDLE_CONFIGFILEVARS [1]\n");
 
 	if (idi == NULL)
@@ -2885,6 +2985,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 		free(es[2]);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables() end\n");
 	return NDO_OK;
 }
 
@@ -2907,6 +3008,8 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 	char *varname = NULL;
 	char *varvalue = NULL;
 	ndo2db_mbuf mbuf;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_runtimevariables() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -2952,6 +3055,8 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 		free(es[1]);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_runtimevariables() end\n");
+
 	return NDO_OK;
 }
 
@@ -2964,6 +3069,8 @@ int ndo2db_handle_configdumpstart(ndo2db_idi *idi) {
 	struct timeval tstamp;
 	int result = NDO_OK;
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configdumpstart() start\n");
+
 	/* convert timestamp, etc */
 	result = ndo2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 			&tstamp);
@@ -2975,6 +3082,8 @@ int ndo2db_handle_configdumpstart(ndo2db_idi *idi) {
 		idi->current_object_config_type = 1;
 	else
 		idi->current_object_config_type = 0;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configdumpstart() end\n");
 
 	return NDO_OK;
 }
@@ -3039,6 +3148,8 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	ndo2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3338,6 +3449,8 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -3353,6 +3466,8 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	ndo2db_mbuf mbuf;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3424,6 +3539,8 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 		free(buf1);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -3480,6 +3597,8 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	ndo2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3749,6 +3868,8 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -3766,6 +3887,8 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	ndo2db_mbuf mbuf;
 	char *hptr = NULL;
 	char *sptr = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3843,6 +3966,8 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 		free(buf1);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -3860,6 +3985,8 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdependencydefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3917,6 +4044,8 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 	free(buf);
 	free(buf1);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdependencydefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -3935,6 +4064,8 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedependencydefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -3995,6 +4126,8 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 	free(buf);
 	free(buf1);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedependencydefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -4016,6 +4149,8 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	ndo2db_mbuf mbuf;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4139,6 +4274,8 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		free(buf1);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -4161,6 +4298,8 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	ndo2db_mbuf mbuf;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicetescalationdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4287,6 +4426,8 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		free(buf1);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicetescalationdefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -4299,6 +4440,8 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commanddefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4342,6 +4485,8 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	for (x = 0; x < 1; x++)
 		free(es[x]);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commanddefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -4362,6 +4507,8 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	ndo2db_mbuf mbuf;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4444,6 +4591,8 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 		free(buf1);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -4479,6 +4628,8 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	int address_number = 0;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4711,6 +4862,8 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,contact_id,NULL);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition() end\n");
+
 	return NDO_OK;
 }
 
@@ -4725,6 +4878,8 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 	int result=NDO_OK;
 	int has_been_modified=0;
 	int x=0;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_save_custom_variables() start\n");
 
 	/* save custom variables to db */
 	mbuf=idi->mbuf[NDO2DB_MBUF_CUSTOMVARIABLE];
@@ -4787,6 +4942,8 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		free(buf1);
 	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_save_custom_variables() end\n");
+
 	return result;
 
 }
@@ -4803,6 +4960,8 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
 	ndo2db_mbuf mbuf;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -4875,6 +5034,8 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 		free(buf);
 		free(buf1);
 	}
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition() end\n");
 
 	return NDO_OK;
 }
