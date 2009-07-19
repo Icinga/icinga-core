@@ -710,6 +710,7 @@ void ndo2db_parent_sighandler(int sig){
 
 	switch (sig){
 	case SIGTERM:
+	case SIGINT:
 		/* forward signal to all members of this group of processes */
 		kill(0, sig);
 		break;
