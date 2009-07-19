@@ -26,7 +26,7 @@
 extern int errno;
 
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
-extern char *ido2db_insert_or_update(char *, char *, char * , char *);
+extern int ido2db_insert_or_update(char **, char *, char *, char * , char *);
 
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
@@ -804,7 +804,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			buf3=NULL;
 		
 		/* create query with table_name, insert, update, cond */
-		buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
+		ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
 		
 		free(buf1);
 		free(buf2);
@@ -861,7 +861,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
                         buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
                 free(buf1);
                 free(buf2);
                 free(buf3);
@@ -1132,7 +1132,7 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 		buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS], buf3, buf2, buf1);
 
 	free(buf1);
 	free(buf2);
@@ -1276,7 +1276,7 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 		   )==-1)
 		buf3=NULL;
 	/* create query with table_name, insert, update, cond */
-	buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], buf3, buf2, buf1);
+	ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], buf3, buf2, buf1);
 
 	free(buf1);
 	free(buf2);
@@ -1399,7 +1399,7 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                    )==-1)
                 buf3=NULL;
 	/* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -1508,7 +1508,7 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -1622,7 +1622,7 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -1818,7 +1818,7 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -2020,7 +2020,7 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -2169,16 +2169,8 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
                    )==-1)
                 buf3=NULL;
 
-		if(asprintf(&buf,"MERGE INTO %s USING DUAL ON (%s) WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s"
-		    ,ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]
-                    ,buf1
-                    ,buf2
-                    ,buf3
-                   )==-1)
-                buf=NULL;
-
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -2270,7 +2262,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	                buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], buf3, buf2, buf1);
 
 	        free(buf1);
 	        free(buf2);
@@ -2438,7 +2430,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	                buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], buf3, buf2, buf1);
 
 	        free(buf1);
 	        free(buf2);
@@ -2547,7 +2539,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
                 buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], buf3, buf2, buf1);
 
 	        free(buf1);
         	free(buf2);
@@ -2823,7 +2815,7 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -3100,7 +3092,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -3328,7 +3320,7 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -3457,7 +3449,7 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -3889,7 +3881,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 		buf2=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -3920,11 +3912,11 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 
 		if (asprintf(
 				&buf,
-				"instance_id='%lu', configfile_id='%lu', varname='%s', varvalue='%s'",
+				"(instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
 				idi->dbinfo.instance_id, configfile_id, es[1], es[2]) == -1)
 			buf = NULL;
 
-		if (asprintf(&buf1, "INSERT INTO %s SET %s",
+		if (asprintf(&buf1, "INSERT INTO %s %s",
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES], buf)
 				== -1)
 			buf1 = NULL;
@@ -4031,7 +4023,7 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_RUNTIMEVARIABLES], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_RUNTIMEVARIABLES], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -4402,7 +4394,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -4462,7 +4454,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTPARENTHOSTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTPARENTHOSTS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -4499,20 +4491,20 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 */
 
 		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "host_id=%lu AND contactgroup_object_id=%lu"
+		if(asprintf(&buf1, "host_id='%lu' AND contactgroup_object_id='%lu'"
 			    ,host_id
 			    ,member_id
 			   )==-1)
 			buf1=NULL;
 
 		/* Values to set when updating */
-		if(asprintf(&buf2, "instance_id=%lu"
+		if(asprintf(&buf2, "instance_id='%lu'"
 			    ,idi->dbinfo.instance_id
 			   )==-1)
 			buf2=NULL;
 
 		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, host_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+		if(asprintf(&buf3,"(instance_id, host_id, contactgroup_object_id) VALUES ('%d', '%lu', '%lu')"
 			    ,idi->dbinfo.instance_id
 			    ,host_id
 			    ,member_id
@@ -4520,7 +4512,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTGROUPS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTGROUPS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -4577,7 +4569,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -4671,7 +4663,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -4730,7 +4722,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPMEMBERS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPMEMBERS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -5043,7 +5035,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES], buf3, buf2, buf1);
 
 
         free(buf1);
@@ -5083,20 +5075,20 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 			buf1 = NULL;
 */
 		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "service_id=%lu AND contactgroup_object_id=%lu"
+		if(asprintf(&buf1, "service_id='%lu' AND contactgroup_object_id='%lu'"
 			    ,service_id
 			    ,member_id
 			   )==-1)
 			buf1=NULL;
 
 		/* Values to set when updating */
-		if(asprintf(&buf2, "instance_id=%lu"
+		if(asprintf(&buf2, "instance_id='%d'"
 			    ,idi->dbinfo.instance_id
 			   )==-1)
 			buf2=NULL;
 
 		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, service_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+		if(asprintf(&buf3,"(instance_id, service_id, contactgroup_object_id) VALUES ('%d', '%lu', '%lu')"
 			    ,idi->dbinfo.instance_id
 			    ,service_id
 			    ,member_id
@@ -5104,7 +5096,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTGROUPS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTGROUPS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -5161,7 +5153,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -5258,7 +5250,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -5321,7 +5313,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPMEMBERS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPMEMBERS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -5431,7 +5423,7 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTDEPENDENCIES], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTDEPENDENCIES], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -5553,7 +5545,7 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEDEPENDENCIES], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEDEPENDENCIES], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -5669,7 +5661,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -5709,20 +5701,20 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 */
 
 		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "hostescalation_id=%lu AND contactgroup_object_id=%lu"
+		if(asprintf(&buf1, "hostescalation_id='%lu' AND contactgroup_object_id='%lu'"
 			    ,escalation_id
 			    ,member_id
 			   )==-1)
 			buf1=NULL;
 
 		/* Values to set when updating */
-		if(asprintf(&buf2, "instance_id=%lu"
+		if(asprintf(&buf2, "instance_id='%d'"
 			    ,idi->dbinfo.instance_id
 			   )==-1)
 			buf2=NULL;
 
 		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, hostescalation_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+		if(asprintf(&buf3,"(instance_id, hostescalation_id, contactgroup_object_id) VALUES ('%d', '%lu', '%lu')"
 			    ,idi->dbinfo.instance_id
 			    ,escalation_id
 			    ,member_id
@@ -5734,7 +5726,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		free(buf3);
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS], buf3, buf2, buf1);
 
 		result = ndo2db_db_query(idi, buf);
 
@@ -5787,7 +5779,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -5913,7 +5905,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -5952,20 +5944,20 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 */
 
 		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "serviceescalation_id=%lu AND contactgroup_object_id=%lu"
+		if(asprintf(&buf1, "serviceescalation_id='%lu' AND contactgroup_object_id='%lu'"
 			    ,escalation_id
 			    ,member_id
 			   )==-1)
 			buf1=NULL;
 
 		/* Values to set when updating */
-		if(asprintf(&buf2, "instance_id=%lu"
+		if(asprintf(&buf2, "instance_id='%d'"
 			    ,idi->dbinfo.instance_id
 			   )==-1)
 			buf2=NULL;
 
 		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, serviceescalation_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+		if(asprintf(&buf3,"(instance_id, serviceescalation_id, contactgroup_object_id) VALUES ('%d', '%lu', '%lu')"
 			    ,idi->dbinfo.instance_id
 			    ,escalation_id
 			    ,member_id
@@ -5973,7 +5965,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -6008,7 +6000,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 			buf1 = NULL;
 */
 		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "instance_id=%lu AND serviceescalation_id=%lu AND contact_object_id=%lu"
+		if(asprintf(&buf1, "instance_id='%d' AND serviceescalation_id='%lu' AND contact_object_id='%lu'"
 			    ,idi->dbinfo.instance_id
 			    ,escalation_id
 			    ,member_id
@@ -6022,7 +6014,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
                         buf = NULL;
 
 		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, serviceescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+		if(asprintf(&buf3,"(instance_id, serviceescalation_id, contact_object_id) VALUES ('%d', '%lu', '%lu')"
 			    ,idi->dbinfo.instance_id
 			    ,escalation_id
 			    ,member_id
@@ -6030,7 +6022,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -6119,7 +6111,7 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMANDS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMANDS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -6219,7 +6211,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -6290,7 +6282,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODTIMERANGES], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODTIMERANGES], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -6472,7 +6464,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -6540,7 +6532,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 			buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTADDRESSES], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTADDRESSES], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -6613,7 +6605,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                         buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -6687,7 +6679,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                         buf3=NULL;
 
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS], buf3, buf2, buf1);
 
                 free(buf1);
                 free(buf2);
@@ -6839,7 +6831,7 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 
 */
                 /* create query with table_name, insert, update, cond */
-                buf = ido2db_insert_or_update(ndo2db_db_tablenames[table_idx], buf3, buf2, buf1);
+                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[table_idx], buf3, buf2, buf1);
 
 		free(buf1);
 		free(buf2);
@@ -6910,7 +6902,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 */
 
         /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND contactgroup_object_id=%lu"
+        if(asprintf(&buf1, "instance_id='%d' AND config_type='%lu' AND contactgroup_object_id='%lu'"
 		    ,idi->dbinfo.instance_id
 		    ,idi->current_object_config_type
 		    ,object_id
@@ -6924,7 +6916,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
                 buf2=NULL;
 
         /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, config_type, contactgroup_object_id, alias) VALUES (%lu, %d, %lu, '%s')"
+        if(asprintf(&buf3,"(instance_id, config_type, contactgroup_object_id, alias) VALUES ('%d', '%lu', '%lu', '%s')"
 		    ,idi->dbinfo.instance_id
 		    ,idi->current_object_config_type
 		    ,object_id
@@ -6933,7 +6925,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
                 buf3=NULL;
 
         /* create query with table_name, insert, update, cond */
-        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS], buf3, buf2, buf1);
+        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS], buf3, buf2, buf1);
 
         free(buf1);
         free(buf2);
@@ -6972,20 +6964,20 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 */
 
 		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "contactgroup_id=%lu AND contact_object_id=%lu"
+		if(asprintf(&buf1, "contactgroup_id='%lu' AND contact_object_id='%lu'"
 			    ,group_id
 			    ,member_id
 			   )==-1)
 			buf1=NULL;
 
 		/* Values to set when updating */
-		if(asprintf(&buf2, "instance_id=%lu"
+		if(asprintf(&buf2, "instance_id='%d'"
 			    ,idi->dbinfo.instance_id
 			   )==-1)
 			buf2=NULL;
 
 		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, contactgroup_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+		if(asprintf(&buf3,"(instance_id, contactgroup_id, contact_object_id) VALUES ('%d', '%lu', '%lu')"
 			    ,idi->dbinfo.instance_id
 			    ,group_id
 			    ,member_id
