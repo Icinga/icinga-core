@@ -514,6 +514,7 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 	} 
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_timet_to_sql() end\n");
+
 	return buf;
 }
 
@@ -536,6 +537,8 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
                 default:
                         break;
         } 
+	
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() start\n");
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() start\n");
 
