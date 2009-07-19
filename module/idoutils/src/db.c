@@ -832,7 +832,9 @@ char *ido2db_insert_or_update(char *table_name,
 			asprintf(&query, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s", table_name, insert, update);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-			asprintf(&query, "IF EXISTS( SELECT * FROM %s WHERE %s) THEN UPDATE %s SET %s ELSE INSERT INTO %s %s END IF;", table_name, cond, table_name, update, table_name, insert);
+			asprintf(&query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s ELSE INSERT INTO %s %s;", table_name, cond, table_name, update, table_name, insert);
+			asprintf(&query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s WHERE %s ELSE INSERT INTO %s %s END IF;", table_name, cond, table_name, update, cond, table_name, insert);
+			//asprintf(&query, "INSERT_OR_UPDATE('%s', '%s', '%s', '%s');", table_name, cond, table_name, update, table_name, insert);
                         break;
                 case NDO2DB_DBSERVER_DB2:
                         break;
