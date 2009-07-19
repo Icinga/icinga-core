@@ -832,7 +832,7 @@ char *ido2db_insert_or_update(char *table_name,
 
         switch (ndo2db_db_settings.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-			asprintf(&query, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s", table_name, insert, update);
+			asprintf(&query, "INSERT INTO %s %s ON DUPLICATE KEY UPDATE %s", table_name, insert, update);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
 			asprintf(&query, "IF EXISTS (SELECT * FROM %s WHERE %s) UPDATE %s SET %s ELSE INSERT INTO %s %s;", table_name, cond, table_name, update, table_name, insert);

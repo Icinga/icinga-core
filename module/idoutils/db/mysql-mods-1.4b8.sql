@@ -1,4 +1,3 @@
-; 05/03/08
 ALTER TABLE `icinga_hosts` ADD INDEX ( `host_object_id` );
 
 ALTER TABLE `icinga_hoststatus` ADD INDEX ( `instance_id` );
