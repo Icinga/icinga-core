@@ -52,7 +52,6 @@ time_t ndo2db_db_last_checkin_time=0L;
 char *ndo2db_debug_file=NULL;
 int ndo2db_debug_level=NDO2DB_DEBUGL_NONE;
 int ndo2db_debug_verbosity=NDO2DB_DEBUGV_BASIC;
-int stop_signal_detected=NDO_FALSE;
 FILE *ndo2db_debug_file_fp=NULL;
 unsigned long ndo2db_max_debug_file_size=0L;
 
