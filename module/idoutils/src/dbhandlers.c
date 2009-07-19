@@ -26,6 +26,7 @@
 extern int errno;
 
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
+extern char *ido2db_insert_or_update(char *, char *, char * , char *);
 
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
@@ -709,6 +710,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timedeventdata() start\n");
 
@@ -759,7 +762,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_TIMEDEVENT_ADD) {
 
 		/* save entry to db */
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%lu', event_type='%d', queued_time=%s, queued_time_usec='%lu', scheduled_time=%s, recurring_event='%d', object_id='%lu'",
 				idi->dbinfo.instance_id, event_type, ts[0], tstamp.tv_usec,
@@ -770,19 +773,54 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,event_type
+			    ,ts[1]
+			    ,object_id
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Values to set when updating */
+		if(asprintf(&buf2, "queued_time=%s, queued_time_usec=%lu, recurring_event=%d"
+                            ,ts[0]
+                            ,tstamp.tv_usec
+                            ,recurring_event
+                           )==-1)
+                        buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,event_type
+			    ,ts[0]
+			    ,tstamp.tv_usec
+			    ,ts[1]
+			    ,recurring_event
+			    ,object_id
+			   )==-1)
+			buf3=NULL;
+		
+		/* create query with table_name, insert, update, cond */
+		buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
+		
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save a record of timed events that get executed.... */
 	if (type == NEBTYPE_TIMEDEVENT_EXECUTE) {
 
 		/* save entry to db */
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%lu', event_type='%d', event_time=%s, event_time_usec='%lu', scheduled_time=%s, recurring_event='%d', object_id='%lu'",
 				idi->dbinfo.instance_id, event_type, ts[0], tstamp.tv_usec,
@@ -793,12 +831,45 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+                if(asprintf(&buf1, "instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu"
+                            ,idi->dbinfo.instance_id
+                            ,event_type
+                            ,ts[1]
+                            ,object_id
+                           )==-1)
+                        buf1=NULL;
+		/* Values to set when updating */
+                if(asprintf(&buf2, "event_time=%s, event_time_usec=%lu, recurring_event=%d"
+                            ,ts[0]
+                            ,tstamp.tv_usec
+                            ,recurring_event
+                           )==-1)
+                        buf2=NULL;
+		/* the data part of the INSERT statement */
+                if(asprintf(&buf3,"(instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)"
+                            ,idi->dbinfo.instance_id
+                            ,event_type
+                            ,ts[0]
+                            ,tstamp.tv_usec
+                            ,ts[1]
+                            ,recurring_event
+                            ,object_id
+                           )==-1)
+                        buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
+                free(buf1);
+                free(buf2);
+                free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save a record of timed events that get removed.... */
@@ -982,6 +1053,8 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	char *es[3];
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	int result = NDO_OK;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_systemcommanddata() start\n");
@@ -1008,7 +1081,7 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	ts[1] = ndo2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', command_line='%s', timeout='%d', early_timeout='%d', execution_time='%lf', return_code='%d', output='%s', long_output='%s'",
 			idi->dbinfo.instance_id, ts[0], start_time.tv_usec, ts[1],
@@ -1020,11 +1093,55 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
+	/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+	if(asprintf(&buf1, "instance_id=%lu AND start_time=%s AND start_time_usec=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+		   )==-1)
+		buf1=NULL;
 
-	result = ndo2db_db_query(idi, buf1);
+	/* Values to set when updating */
+	if(asprintf(&buf2, "end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s'"
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,es[0]
+		    ,timeout
+		    ,early_timeout
+		    ,execution_time
+		    ,return_code
+		    ,es[1]
+                   )==-1)
+                buf2=NULL;
+
+	/* the data part of the INSERT statement */
+	if(asprintf(&buf3,"(instance_id, start_time, start_time_usec, end_time, end_time_usec, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %s, %lu, %s, %lu, '%s', %d, %d, %lf, %d, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,es[0]
+		    ,timeout
+		    ,early_timeout
+		    ,execution_time
+		    ,return_code
+		    ,es[1]
+		   )==-1)
+		buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS], buf3, buf2, buf1);
+
+	free(buf1);
+	free(buf2);
+	free(buf3);
+
+
+	result = ndo2db_db_query(idi, buf);
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1056,6 +1173,8 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	unsigned long command_id = 0L;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	int result = NDO_OK;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_eventhandlerdata() start\n");
@@ -1095,7 +1214,7 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', eventhandler_type='%d', object_id='%lu', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', command_object_id='%lu', command_args='%s', command_line='%s', timeout='%d', early_timeout='%d', execution_time='%lf', return_code='%d', output='%s', long_output='%s'",
 			idi->dbinfo.instance_id, eventhandler_type, object_id, state,
@@ -1107,11 +1226,65 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], buf, buf) == -1)
 		buf1 = NULL;
+*/
+	/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+	if(asprintf(&buf1, "instance_id=%lu AND start_time=%s AND start_time_usec=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+		   )==-1)
+		buf1=NULL;
 
-	result = ndo2db_db_query(idi, buf1);
+	/* Values to set when updating */
+	if(asprintf(&buf2, "eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s'"
+		    ,eventhandler_type
+		    ,object_id
+		    ,state
+		    ,state_type
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,command_id
+		    ,es[0]
+		    ,es[1]
+		    ,timeout
+		    ,early_timeout
+		    ,execution_time
+		    ,return_code
+		    ,es[2]
+                   )==-1)
+                buf2=NULL;
+
+	/* the data part of the INSERT statement */
+	if(asprintf(&buf3,"(instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,eventhandler_type
+		    ,object_id
+		    ,state
+		    ,state_type
+		    ,ts[0]
+		    ,start_time.tv_usec
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,command_id
+		    ,es[0]
+		    ,es[1]
+		    ,timeout
+		    ,early_timeout
+		    ,execution_time
+		    ,return_code
+		    ,es[2]
+		   )==-1)
+		buf3=NULL;
+	/* create query with table_name, insert, update, cond */
+	buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], buf3, buf2, buf1);
+
+	free(buf1);
+	free(buf2);
+	free(buf3);
+
+	result = ndo2db_db_query(idi, buf);
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1141,6 +1314,8 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata() start\n");
 
@@ -1173,7 +1348,7 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', notification_type='%d', notification_reason='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', object_id='%lu', state='%d', output='%s', long_output='%s', escalated='%d', contacts_notified='%d'",
 			idi->dbinfo.instance_id, notification_type, notification_reason,
@@ -1184,9 +1359,54 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS], buf, buf) == -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', escalated=%d, contacts_notified=%d"
+		    ,notification_type
+		    ,notification_reason
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,state
+		    ,es[0]
+		    ,escalated
+		    ,contacts_notified
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, notification_type, notification_reason, start_time, start_time_usec, end_time, end_time_usec, object_id, state, output, escalated, contacts_notified) VALUES (%lu, %d, %d, %s, %lu, %s, %lu, %lu, %d, '%s', %d, %d)"
+		    ,idi->dbinfo.instance_id
+		    ,notification_type
+		    ,notification_reason
+		    ,ts[0]
+		    ,start_time.tv_usec
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,object_id
+		    ,state
+		    ,es[0]
+		    ,escalated
+		    ,contacts_notified
+                   )==-1)
+                buf3=NULL;
+	/* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
 
 	/* run the query */
-	result = ndo2db_db_query(idi, buf1);
+	result = ndo2db_db_query(idi, buf);
 
 	/* save the notification id for later use... */
 	if (type == NEBTYPE_NOTIFICATION_START)
@@ -1196,7 +1416,6 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1220,6 +1439,8 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata() start\n");
 
@@ -1245,7 +1466,7 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &contact_id);
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', notification_id='%lu', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', contact_object_id='%lu'",
 			idi->dbinfo.instance_id, idi->dbinfo.last_notification_id, ts[0],
@@ -1256,9 +1477,45 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,contact_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "notification_id=%lu, end_time=%s, end_time_usec=%lu"
+		    ,idi->dbinfo.last_notification_id
+		    ,ts[1]
+		    ,end_time.tv_usec
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, notification_id, start_time, start_time_usec, end_time, end_time_usec, contact_object_id) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu)"
+                    ,idi->dbinfo.instance_id
+                    ,idi->dbinfo.last_notification_id
+                    ,ts[0]
+                    ,start_time.tv_usec
+                    ,ts[1]
+                    ,end_time.tv_usec
+                    ,contact_id
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
 
 	/* run the query */
-	result = ndo2db_db_query(idi, buf1);
+	result = ndo2db_db_query(idi, buf);
 
 	/* save the contact notification id for later use... */
 	if (type == NEBTYPE_CONTACTNOTIFICATION_START)
@@ -1268,7 +1525,6 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1291,6 +1547,8 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationmethoddata() start\n");
 
@@ -1319,7 +1577,7 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', contactnotification_id='%lu', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', command_object_id='%lu', command_args='%s'",
 			idi->dbinfo.instance_id, idi->dbinfo.last_contact_notification_id,
@@ -1331,13 +1589,51 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
 			buf, buf) == -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND contactnotification_id=%lu AND start_time=%s AND start_time_usec=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->dbinfo.last_contact_notification_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s'"
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,command_id
+		    ,es[0]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,idi->dbinfo.last_contact_notification_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,command_id
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
 
 	/* run the query */
-	result = ndo2db_db_query(idi, buf1);
+	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1371,6 +1667,9 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 	unsigned long command_id = 0L;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2=NULL;
+	char *buf3=NULL;
+
 	int x = 0;
 	int result = NDO_OK;
 
@@ -1445,7 +1744,7 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 		command_id = 0L;
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf1,
 			"instance_id='%lu', service_object_id='%lu', check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
 			idi->dbinfo.instance_id, object_id, check_type,
@@ -1461,12 +1760,74 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS], buf1,
 			command_id, es[0], es[1], buf1) == -1)
 		buf = NULL;
+*/
+
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s"
+                        ,check_type
+                        ,current_check_attempt
+			,max_check_attempts
+			,state
+			,state_type
+			,ts[0]
+			,start_time.tv_usec
+			,ts[1]
+			,end_time.tv_usec
+			,timeout
+			,early_timeout
+			,execution_time
+			,latency
+			,return_code
+			,es[2]
+			,es[3]
+			,es[4]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, '%lu', %d, %d, %lf, %lf, %d, %s, %s, %s)"
+			,idi->dbinfo.instance_id
+			,object_id
+			,check_type
+			,current_check_attempt
+			,max_check_attempts
+			,state
+			,state_type
+			,ts[0]
+			,start_time.tv_usec
+			,ts[1]
+			,end_time.tv_usec
+			,timeout
+			,early_timeout
+			,execution_time
+			,latency
+			,return_code
+			,es[2]
+			,es[3]
+			,es[4]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
 
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1501,6 +1862,8 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 	unsigned long command_id = 0L;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	int x = 0;
 	int result = NDO_OK;
 
@@ -1583,7 +1946,7 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 		is_raw_check = 0;
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf1,
 			"instance_id='%lu', host_object_id='%lu', check_type='%d', is_raw_check='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
 			idi->dbinfo.instance_id, object_id, check_type, is_raw_check,
@@ -1599,12 +1962,74 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS], buf1, command_id,
 			es[0], es[1], buf1) == -1)
 		buf = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND host_object_id=%lu AND start_time=%s AND start_time_usec=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,ts[0]
+		    ,start_time.tv_usec
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "check_type=%d, is_raw_check=%d, current_check_attempt=%d, max_check_attempts=%d, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, timeout=%d, early_timeout=%d, execution_time=%lf, latency=%lf, return_code=%d, output='%s', perfdata='%s'"
+		    ,check_type
+		    ,is_raw_check
+		    ,current_check_attempt
+		    ,max_check_attempts
+		    ,state
+		    ,state_type
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,timeout
+		    ,early_timeout
+		    ,execution_time
+		    ,latency
+		    ,return_code
+		    ,es[2]
+		    ,es[3]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s')"
+		    ,command_id
+		    ,es[0]
+		    ,es[1]
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,check_type
+		    ,is_raw_check
+		    ,current_check_attempt
+		    ,max_check_attempts
+		    ,state
+		    ,state_type
+		    ,ts[0]
+		    ,start_time.tv_usec
+		    ,ts[1]
+		    ,end_time.tv_usec
+		    ,timeout
+		    ,early_timeout
+		    ,execution_time
+		    ,latency
+		    ,return_code
+		    ,es[2]
+		    ,es[3]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
 
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1635,6 +2060,8 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commentdata() start\n");
 
@@ -1686,7 +2113,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_COMMENT_ADD || type == NEBTYPE_COMMENT_LOAD) {
 
 		/* save entry to db */
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%lu', comment_type='%d', entry_type='%d', object_id='%lu', comment_time=%s, internal_comment_id='%lu', author_name='%s', comment_data='%s', is_persistent='%d', comment_source='%d', expires='%d', expiration_time=%s",
 				idi->dbinfo.instance_id, comment_type, entry_type, object_id,
@@ -1700,12 +2127,67 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY], buf,
 				ts[0], tstamp.tv_usec, buf) == -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,ts[1]
+			    ,internal_comment_id
+                   )==-1)
+                buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Values to set when updating */
+		if(asprintf(&buf2, "comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s"
+			    ,comment_type
+			    ,entry_type
+			    ,object_id
+			    ,es[0]
+			    ,es[1]
+			    ,is_persistent
+			    ,comment_source
+			    ,expires
+			    ,ts[2]
+                   )==-1)
+                buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)"
+			    ,ts[0]
+			    ,tstamp.tv_usec
+			    ,idi->dbinfo.instance_id
+			    ,comment_type
+			    ,entry_type
+			    ,object_id
+			    ,ts[1]
+			    ,internal_comment_id
+			    ,es[0]
+			    ,es[1]
+			    ,is_persistent
+			    ,comment_source
+			    ,expires
+			    ,ts[2]
+                   )==-1)
+                buf3=NULL;
+
+		if(asprintf(&buf,"MERGE INTO %s USING DUAL ON (%s) WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s"
+		    ,ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]
+                    ,buf1
+                    ,buf2
+                    ,buf3
+                   )==-1)
+                buf=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* UPDATE HISTORICAL COMMENTS */
@@ -1731,7 +2213,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-		if (asprintf(
+/*		if (asprintf(i
 				&buf,
 				"instance_id='%lu', comment_type='%d', entry_type='%d', object_id='%lu', comment_time=%s, internal_comment_id='%lu', author_name='%s', comment_data='%s', is_persistent='%d', comment_source='%d', expires='%d', expiration_time=%s",
 				idi->dbinfo.instance_id, comment_type, entry_type, object_id,
@@ -1745,12 +2227,60 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], buf, ts[0],
 				tstamp.tv_usec, buf) == -1)
 			buf1 = NULL;
+*/
+	        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        	if(asprintf(&buf1, "instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,ts[1]
+			    ,internal_comment_id
+	                   )==-1)
+                	buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+	        /* Values to set when updating */
+	        if(asprintf(&buf2, "comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s"
+			    ,comment_type
+			    ,entry_type
+			    ,object_id
+			    ,es[0]
+			    ,es[1]
+			    ,is_persistent
+			    ,comment_source
+			    ,expires
+			    ,ts[2]
+        	           )==-1)
+	                buf2=NULL;
+
+	        /* the data part of the INSERT statement */
+	        if(asprintf(&buf3,"(entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)"
+			    ,ts[0]
+			    ,tstamp.tv_usec
+			    ,idi->dbinfo.instance_id
+			    ,comment_type
+			    ,entry_type
+			    ,object_id
+			    ,ts[1]
+			    ,internal_comment_id
+			    ,es[0]
+			    ,es[1]
+			    ,is_persistent
+			    ,comment_source
+			    ,expires
+			    ,ts[2]
+	                   )==-1)
+	                buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], buf3, buf2, buf1);
+
+	        free(buf1);
+	        free(buf2);
+	        free(buf3);
+
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* REMOVE CURRENT COMMENTS */
@@ -1799,6 +2329,8 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_downtimedata() start\n");
 
@@ -1852,7 +2384,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_DOWNTIME_ADD || type == NEBTYPE_DOWNTIME_LOAD) {
 
 		/* save entry to db */
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%lu', downtime_type='%d', object_id='%lu', entry_time=%s, author_name='%s', comment_data='%s', internal_downtime_id='%lu', triggered_by_id='%lu', is_fixed='%d', duration='%lu', scheduled_start_time=%s, scheduled_end_time=%s",
 				idi->dbinfo.instance_id, downtime_type, object_id, ts[1],
@@ -1864,12 +2396,58 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,object_id
+			    ,ts[1]
+			    ,internal_downtime_id
+		           )==-1)
+		        buf1=NULL;
+
+	        /* Values to set when updating */
+	        if(asprintf(&buf2, "downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s"
+			    ,downtime_type
+			    ,es[0]
+			    ,es[1]
+			    ,triggered_by
+			    ,fixed
+			    ,duration
+			    ,ts[2]
+			    ,ts[3]
+	                   )==-1)
+	                buf2=NULL;
+
+	        /* the data part of the INSERT statement */
+	        if(asprintf(&buf3,"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)"
+			    ,idi->dbinfo.instance_id
+			    ,downtime_type
+			    ,object_id
+			    ,ts[1]
+			    ,es[0]
+			    ,es[1]
+			    ,internal_downtime_id
+			    ,triggered_by
+			    ,fixed
+			    ,duration
+			    ,ts[2]
+			    ,ts[3]
+	                   )==-1)
+	                buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], buf3, buf2, buf1);
+
+	        free(buf1);
+	        free(buf2);
+	        free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -1916,7 +2494,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%lu', downtime_type='%d', object_id='%lu', entry_time=%s, author_name='%s', comment_data='%s', internal_downtime_id='%lu', triggered_by_id='%lu', is_fixed='%d', duration='%lu', scheduled_start_time=%s, scheduled_end_time=%s",
 				idi->dbinfo.instance_id, downtime_type, object_id, ts[1],
@@ -1928,12 +2506,57 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], buf,
 				buf) == -1)
 			buf1 = NULL;
+*/
+        	/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+	        if(asprintf(&buf1, "instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,object_id
+			    ,ts[1]
+			    ,internal_downtime_id
+                   )==-1)
+                buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+	        /* Values to set when updating */
+	        if(asprintf(&buf2, "downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s"
+			    ,downtime_type
+			    ,es[0]
+			    ,es[1]
+			    ,triggered_by
+			    ,fixed
+			    ,duration
+			    ,ts[2]
+			    ,ts[3]
+                   )==-1)
+                buf2=NULL;
+
+	        /* the data part of the INSERT statement */
+        	if(asprintf(&buf3,"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)"
+			    ,idi->dbinfo.instance_id
+			    ,downtime_type
+			    ,object_id
+			    ,ts[1]
+			    ,es[0]
+			    ,es[1]
+			    ,internal_downtime_id
+			    ,triggered_by
+			    ,fixed
+			    ,duration
+			    ,ts[2]
+			    ,ts[3]
+                   )==-1)
+                buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], buf3, buf2, buf1);
+
+	        free(buf1);
+        	free(buf2);
+	        free(buf3);
+ 
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -2077,6 +2700,8 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	char *es[2];
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	int result = NDO_OK;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_programstatusdata() start\n");
@@ -2120,7 +2745,7 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	ts[3] = ndo2db_db_timet_to_sql(idi, last_log_rotation);
 
 	/* generate query string */
-	if (asprintf(
+/*	if (asprintf(
 			&buf1,
 			"instance_id='%lu', status_update_time=%s, program_start_time=%s, is_currently_running='1', process_id='%lu', daemon_mode='%d', last_command_check=%s, last_log_rotation=%s, notifications_enabled='%d', active_service_checks_enabled='%d', passive_service_checks_enabled='%d', active_host_checks_enabled='%d', passive_host_checks_enabled='%d', event_handlers_enabled='%d', flap_detection_enabled='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_hosts='%d', obsess_over_services='%d', modified_host_attributes='%lu', modified_service_attributes='%lu', global_host_event_handler='%s', global_service_event_handler='%s'",
 			idi->dbinfo.instance_id, ts[0], ts[1], process_id, daemon_mode,
@@ -2137,13 +2762,79 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], buf1, buf1)
 			== -1)
 		buf = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu"
+		    ,idi->dbinfo.instance_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "status_update_time=%s, program_start_time=%s, is_currently_running=1, process_id=%lu, daemon_mode=%d, last_command_check=%s, last_log_rotation=%s, notifications_enabled=%d, active_service_checks_enabled=%d, passive_service_checks_enabled=%d, active_host_checks_enabled=%d, passive_host_checks_enabled=%d, event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', global_service_event_handler='%s'"
+		    ,ts[0]
+		    ,ts[1]
+		    ,process_id
+		    ,daemon_mode
+		    ,ts[2]
+		    ,ts[3]
+		    ,notifications_enabled
+		    ,active_service_checks_enabled
+		    ,passive_service_checks_enabled
+		    ,active_host_checks_enabled
+		    ,passive_host_checks_enabled
+		    ,event_handlers_enabled
+		    ,flap_detection_enabled
+		    ,failure_prediction_enabled
+		    ,process_performance_data
+		    ,obsess_over_hosts
+		    ,obsess_over_services
+		    ,modified_host_attributes
+		    ,modified_service_attributes
+		    ,es[0]
+		    ,es[1]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, status_update_time, program_start_time, is_currently_running, process_id, daemon_mode, last_command_check, last_log_rotation, notifications_enabled, active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, failure_prediction_enabled, process_performance_data, obsess_over_hosts, obsess_over_services, modified_host_attributes, modified_service_attributes, global_host_event_handler, global_service_event_handler) VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, '%s', '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,ts[1]
+		    ,process_id
+		    ,daemon_mode
+		    ,ts[2]
+		    ,ts[3]
+		    ,notifications_enabled
+		    ,active_service_checks_enabled
+		    ,passive_service_checks_enabled
+		    ,active_host_checks_enabled
+		    ,passive_host_checks_enabled
+		    ,event_handlers_enabled
+		    ,flap_detection_enabled
+		    ,failure_prediction_enabled
+		    ,process_performance_data
+		    ,obsess_over_hosts
+		    ,obsess_over_services
+		    ,modified_host_attributes
+		    ,modified_service_attributes
+		    ,es[0]
+		    ,es[1]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
 
 	/* save entry to db */
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -2200,6 +2891,8 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	char *es[5];
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	unsigned long object_id = 0L;
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
@@ -2278,7 +2971,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[NDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
 
 	/* generate query string */
-	if (asprintf(
+/*	if (asprintf(
 			&buf1,
 			"instance_id='%lu', host_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
 			idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1], es[2],
@@ -2300,13 +2993,125 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	if (asprintf(&buf, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], buf1, buf1) == -1)
 		buf = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "host_object_id=%lu"
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "instance_id=%lu, status_update_time=%s, output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change=%lf, latency=%lf, execution_time=%lf, scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval=%lf, retry_check_interval=%lf, check_timeperiod_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,es[0]
+		    ,es[1]
+		    ,current_state
+		    ,has_been_checked
+		    ,should_be_scheduled
+		    ,current_check_attempt
+		    ,max_check_attempts
+		    ,ts[1]
+		    ,ts[2]
+		    ,check_type
+		    ,ts[3]
+		    ,ts[4]
+		    ,last_hard_state
+		    ,ts[5]
+		    ,ts[6]
+		    ,ts[7]
+		    ,state_type
+		    ,ts[8]
+		    ,ts[9]
+		    ,no_more_notifications
+		    ,notifications_enabled
+		    ,problem_has_been_acknowledged
+		    ,acknowledgement_type
+		    ,current_notification_number
+		    ,passive_checks_enabled
+		    ,active_checks_enabled
+		    ,event_handler_enabled
+		    ,flap_detection_enabled
+		    ,is_flapping
+		    ,percent_state_change
+		    ,latency
+		    ,execution_time
+		    ,scheduled_downtime_depth
+		    ,failure_prediction_enabled
+		    ,process_performance_data
+		    ,obsess_over_host
+		    ,modified_host_attributes
+		    ,es[2]
+		    ,es[3]
+		    ,normal_check_interval
+		    ,retry_check_interval
+		    ,check_timeperiod_object_id
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, host_object_id, status_update_time, output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,ts[0]
+		    ,es[0]
+		    ,es[1]
+		    ,current_state
+		    ,has_been_checked
+		    ,should_be_scheduled
+		    ,current_check_attempt
+		    ,max_check_attempts
+		    ,ts[1]
+		    ,ts[2]
+		    ,check_type
+		    ,ts[3]
+		    ,ts[4]
+		    ,last_hard_state
+		    ,ts[5]
+		    ,ts[6]
+		    ,ts[7]
+		    ,state_type
+		    ,ts[8]
+		    ,ts[9]
+		    ,no_more_notifications
+		    ,notifications_enabled
+		    ,problem_has_been_acknowledged
+		    ,acknowledgement_type
+		    ,current_notification_number
+		    ,passive_checks_enabled
+		    ,active_checks_enabled
+		    ,event_handler_enabled
+		    ,flap_detection_enabled
+		    ,is_flapping
+		    ,percent_state_change
+		    ,latency
+		    ,execution_time
+		    ,scheduled_downtime_depth
+		    ,failure_prediction_enabled
+		    ,process_performance_data
+		    ,obsess_over_host
+		    ,modified_host_attributes
+		    ,es[2]
+		    ,es[3]
+		    ,normal_check_interval
+		    ,retry_check_interval
+		    ,check_timeperiod_object_id
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
 
 	/* save entry to db */
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
@@ -2367,6 +3172,8 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 	char *es[5];
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	unsigned long object_id = 0L;
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
@@ -2452,7 +3259,7 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 			&check_timeperiod_object_id);
 
 	/* generate query string */
-	if (asprintf(
+/*	if (asprintf(
 			&buf1,
 			"instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
 			idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1],
@@ -2475,13 +3282,65 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], buf1, buf1)
 			== -1)
 		buf = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "service_object_id='%lu'"
+			    ,object_id
+		           )==-1)
+		        buf1=NULL;
+
+		/* Values to set when inserting */
+		if(asprintf(&buf3,"(instance_id, service_object_id, status_update_time, output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, %s, %s, %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, %s, %s, %lf, %lf, %lu)",
+                        idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1],
+                        current_state, has_been_checked, should_be_scheduled,
+                        current_check_attempt, max_check_attempts, ts[1], ts[2],
+                        check_type, ts[3], ts[4], last_hard_state, ts[5], ts[6], ts[7],
+                        ts[8], state_type, ts[9], ts[10], no_more_notifications,
+                        notifications_enabled, problem_has_been_acknowledged,
+                        acknowledgement_type, current_notification_number,
+                        passive_checks_enabled, active_checks_enabled,
+                        event_handler_enabled, flap_detection_enabled, is_flapping,
+                        percent_state_change, latency, execution_time,
+                        scheduled_downtime_depth, failure_prediction_enabled,
+                        process_performance_data, obsess_over_service,
+                        modified_service_attributes, es[2], es[3], normal_check_interval,
+                        retry_check_interval, check_timeperiod_object_id
+			)==-1)
+			buf2=NULL;
+
+		/* the data part of the UPDATE statement */
+		if(asprintf(&buf2,"instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
+                        idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1],
+                        current_state, has_been_checked, should_be_scheduled,
+                        current_check_attempt, max_check_attempts, ts[1], ts[2],
+                        check_type, ts[3], ts[4], last_hard_state, ts[5], ts[6], ts[7],
+                        ts[8], state_type, ts[9], ts[10], no_more_notifications,
+                        notifications_enabled, problem_has_been_acknowledged,
+                        acknowledgement_type, current_notification_number,
+                        passive_checks_enabled, active_checks_enabled,
+                        event_handler_enabled, flap_detection_enabled, is_flapping,
+                        percent_state_change, latency, execution_time,
+                        scheduled_downtime_depth, failure_prediction_enabled,
+                        process_performance_data, obsess_over_service,
+                        modified_service_attributes, es[2], es[3], normal_check_interval,
+                        retry_check_interval, check_timeperiod_object_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+
 
 	/* save entry to db */
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
@@ -2512,6 +3371,8 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	char *ts[3];
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	unsigned long object_id = 0L;
 	int x = 0;
 	int result = NDO_OK;
@@ -2546,7 +3407,7 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_CONTACT, idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &object_id);
 
 	/* generate query string */
-	if (asprintf(
+/*	if (asprintf(
 			&buf1,
 			"instance_id='%lu', contact_object_id='%lu', status_update_time=%s, host_notifications_enabled='%d', service_notifications_enabled='%d', last_host_notification=%s, last_service_notification=%s, modified_attributes='%lu', modified_host_attributes='%lu', modified_service_attributes='%lu'",
 			idi->dbinfo.instance_id, object_id, ts[0],
@@ -2559,13 +3420,54 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS], buf1, buf1)
 			== -1)
 		buf = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "contact_object_id=%lu"
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "instance_id=%lu, status_update_time=%s, host_notifications_enabled=%d, service_notifications_enabled=%d, last_host_notification=%s, last_service_notification=%s, modified_attributes=%lu, modified_host_attributes=%lu, modified_service_attributes=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,host_notifications_enabled
+		    ,service_notifications_enabled
+		    ,ts[1]
+		    ,ts[2]
+		    ,modified_attributes
+		    ,modified_host_attributes
+		    ,modified_service_attributes
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, contact_object_id, status_update_time, host_notifications_enabled, service_notifications_enabled, last_host_notification, last_service_notification, modified_attributes, modified_host_attributes, modified_service_attributes) VALUES (%lu, %lu, %s, %d, %d, %s, %s, %lu, %lu, %lu)"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,ts[0]
+		    ,host_notifications_enabled
+		    ,service_notifications_enabled
+		    ,ts[1]
+		    ,ts[2]
+		    ,modified_attributes
+		    ,modified_host_attributes
+		    ,modified_service_attributes
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
 
 	/* save entry to db */
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
@@ -2733,6 +3635,8 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_acknowledgementdata() start\n");
 
@@ -2772,7 +3676,7 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 				idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', entry_time=%s, entry_time_usec='%lu', acknowledgement_type='%d', object_id='%lu', state='%d', author_name='%s', comment_data='%s', is_sticky='%d', persistent_comment='%d', notify_contacts='%d'",
 			idi->dbinfo.instance_id, ts[0], tstamp.tv_usec,
@@ -2784,6 +3688,31 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_ACKNOWLEDGEMENTS], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
+	/* NOTE Primary Key and only unique key is auto_increment thus ON DUPLICATE KEY will not occur ever */
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf1,"(instance_id, entry_time, entry_time_usec, acknowledgement_type, object_id, state, author_name, comment_data, is_sticky, persistent_comment, notify_contacts) VALUES (%lu, %s, %lu, %d, %lu, %d, '%s', '%s', %d, %d, %d)"
+		    ,idi->dbinfo.instance_id
+		    ,ts[0]
+		    ,tstamp.tv_usec
+		    ,acknowledgement_type
+		    ,object_id
+		    ,state
+		    ,es[0]
+		    ,es[1]
+		    ,is_sticky
+		    ,persistent_comment
+		    ,notify_contacts
+                   )==-1)
+                buf1=NULL;
+
+        if(asprintf(&buf,"INSERT INTO %s %s"
+		    ,ndo2db_db_tablenames[NDO2DB_DBTABLE_ACKNOWLEDGEMENTS]
+                    ,buf1
+                   )==-1)
+                buf=NULL;
+        free(buf1);
 
 	result = ndo2db_db_query(idi, buf1);
 
@@ -2896,6 +3825,8 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	char *varname = NULL;
 	char *varvalue = NULL;
 	ndo2db_mbuf mbuf;
@@ -2924,7 +3855,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 			idi->buffered_input[NDO_DATA_CONFIGFILENAME]);
 
 	/* add config file to db */
-	if (asprintf(&buf,
+/*	if (asprintf(&buf,
 			"instance_id='%lu', configfile_type='%d', configfile_path='%s'",
 			idi->dbinfo.instance_id, configfile_type, es[0]) == -1)
 		buf = NULL;
@@ -2932,13 +3863,44 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES], buf, buf) == -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND configfile_type=%d AND configfile_path='%s'"
+		    ,idi->dbinfo.instance_id
+		    ,configfile_type
+		    ,es[0]
+                   )==-1)
+                buf1=NULL;
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, configfile_type, configfile_path) VALUES (%lu, %d, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,configfile_type
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+	/* custom update query */
+	if(asprintf(&buf2,"instance_id='%lu', configfile_type='%d', configfile_path='%s'"
+		    ,idi->dbinfo.instance_id
+		    ,configfile_type
+		    ,es[0]
+		   )==-1)
+		buf2=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		configfile_id  = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	free(es[0]);
 
@@ -2966,7 +3928,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES], buf)
 				== -1)
 			buf1 = NULL;
-#ifdef REMOVED_10182007
+/*#ifdef REMOVED_10182007
 		if(asprintf(&buf1,"INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s"
 						,ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES]
 						,buf
@@ -2974,7 +3936,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 				)==-1)
 		buf1=NULL;
 #endif
-
+*/
 		result = ndo2db_db_query(idi, buf1);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
@@ -3005,6 +3967,8 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	char *varname = NULL;
 	char *varvalue = NULL;
 	ndo2db_mbuf mbuf;
@@ -3035,7 +3999,7 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 
 		es[0] = ndo2db_db_escape_string(idi, varname);
 		es[1] = ndo2db_db_escape_string(idi, varvalue);
-
+/*
 		if (asprintf(&buf, "instance_id='%lu', varname='%s', varvalue='%s'",
 				idi->dbinfo.instance_id, es[0], es[1]) == -1)
 			buf = NULL;
@@ -3044,12 +4008,40 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_RUNTIMEVARIABLES], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND varname='%s'"
+			    ,idi->dbinfo.instance_id
+			    ,es[0]
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Values to set when updating */
+		if(asprintf(&buf2, "varvalue='%s'"
+			    ,es[1]
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, varname, varvalue) VALUES (%lu, '%s', '%s')"
+			    ,idi->dbinfo.instance_id
+			    ,es[0]
+			    ,es[1]
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_RUNTIMEVARIABLES], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 
 		free(es[0]);
 		free(es[1]);
@@ -3145,6 +4137,8 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
@@ -3163,109 +4157,46 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_HOSTCHECKINTERVAL], &check_interval);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_HOSTRETRYINTERVAL], &retry_interval);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTMAXCHECKATTEMPTS],
-			&max_check_attempts);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_FIRSTNOTIFICATIONDELAY],
-			&first_notification_delay);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONINTERVAL],
-			&notification_interval);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWN], &notify_on_down);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTUNREACHABLE],
-			&notify_on_unreachable);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTRECOVERY],
-			&notify_on_recovery);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTFLAPPING],
-			&notify_on_flapping);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWNTIME],
-			&notify_on_downtime);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKHOSTONUP], &stalk_on_up);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKHOSTONDOWN], &stalk_on_down);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKHOSTONUNREACHABLE],
-			&stalk_on_unreachable);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTFLAPDETECTIONENABLED],
-			&flap_detection_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONUP],
-			&flap_detection_on_up);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONDOWN],
-			&flap_detection_on_down);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONUNREACHABLE],
-			&flap_detection_on_unreachable);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_PROCESSHOSTPERFORMANCEDATA],
-			&process_performance_data);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTFRESHNESSCHECKSENABLED],
-			&freshness_checks_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTFRESHNESSTHRESHOLD],
-			&freshness_threshold);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_PASSIVEHOSTCHECKSENABLED],
-			&passive_checks_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTEVENTHANDLERENABLED],
-			&event_handler_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ACTIVEHOSTCHECKSENABLED],
-			&active_checks_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_RETAINHOSTSTATUSINFORMATION],
-			&retain_status_information);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_RETAINHOSTNONSTATUSINFORMATION],
-			&retain_nonstatus_information);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONSENABLED],
-			&notifications_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_OBSESSOVERHOST], &obsess_over_host);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTFAILUREPREDICTIONENABLED],
-			&failure_prediction_enabled);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_LOWHOSTFLAPTHRESHOLD],
-			&low_flap_threshold);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_HIGHHOSTFLAPTHRESHOLD],
-			&high_flap_threshold);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HAVE2DCOORDS], &have_2d_coords);
-	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_X2D],
-			&x_2d);
-	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_Y3D],
-			&y_2d);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HAVE3DCOORDS], &have_3d_coords);
-	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_X3D],
-			&x_3d);
-	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_Y3D],
-			&y_3d);
-	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_Z3D],
-			&z_3d);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_HOSTCHECKINTERVAL], &check_interval);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_HOSTRETRYINTERVAL], &retry_interval);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTMAXCHECKATTEMPTS], &max_check_attempts);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_FIRSTNOTIFICATIONDELAY], &first_notification_delay);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONINTERVAL], &notification_interval);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWN], &notify_on_down);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTUNREACHABLE], &notify_on_unreachable);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTRECOVERY],	&notify_on_recovery);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTFLAPPING],	&notify_on_flapping);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWNTIME],	&notify_on_downtime);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKHOSTONUP], &stalk_on_up);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKHOSTONDOWN], &stalk_on_down);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKHOSTONUNREACHABLE], &stalk_on_unreachable);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTFLAPDETECTIONENABLED], &flap_detection_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONUP], &flap_detection_on_up);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONDOWN], &flap_detection_on_down);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONUNREACHABLE], &flap_detection_on_unreachable);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_PROCESSHOSTPERFORMANCEDATA],	&process_performance_data);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTFRESHNESSCHECKSENABLED],	&freshness_checks_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTFRESHNESSTHRESHOLD], &freshness_threshold);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_PASSIVEHOSTCHECKSENABLED], &passive_checks_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTEVENTHANDLERENABLED], &event_handler_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ACTIVEHOSTCHECKSENABLED], &active_checks_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_RETAINHOSTSTATUSINFORMATION], &retain_status_information);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_RETAINHOSTNONSTATUSINFORMATION], &retain_nonstatus_information);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONSENABLED], &notifications_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_OBSESSOVERHOST], &obsess_over_host);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTFAILUREPREDICTIONENABLED], &failure_prediction_enabled);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_LOWHOSTFLAPTHRESHOLD], &low_flap_threshold);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_HIGHHOSTFLAPTHRESHOLD], &high_flap_threshold);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HAVE2DCOORDS], &have_2d_coords);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_X2D], &x_2d);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_Y3D], &y_2d);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HAVE3DCOORDS], &have_3d_coords);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_X3D], &x_3d);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_Y3D], &y_3d);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_Z3D], &z_3d);
 
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_HOSTADDRESS]);
-	es[1] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_HOSTFAILUREPREDICTIONOPTIONS]);
+	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_HOSTADDRESS]);
+	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_HOSTFAILUREPREDICTIONOPTIONS]);
 
 	/* get the check command */
 	cmdptr = strtok(idi->buffered_input[NDO_DATA_HOSTCHECKCOMMAND], "!");
@@ -3282,23 +4213,14 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	es[3] = ndo2db_db_escape_string(idi, argptr);
 
 	es[4] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_NOTES]);
-	es[5]
-			= ndo2db_db_escape_string(idi,
-					idi->buffered_input[NDO_DATA_NOTESURL]);
-	es[6] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_ACTIONURL]);
-	es[7] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_ICONIMAGE]);
-	es[8] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_ICONIMAGEALT]);
-	es[9] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_VRMLIMAGE]);
-	es[10] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_STATUSMAPIMAGE]);
-	es[11] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_DISPLAYNAME]);
-	es[12] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_HOSTALIAS]);
+	es[5] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_NOTESURL]);
+	es[6] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_ACTIONURL]);
+	es[7] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_ICONIMAGE]);
+	es[8] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_ICONIMAGEALT]);
+	es[9] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_VRMLIMAGE]);
+	es[10] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_STATUSMAPIMAGE]);
+	es[11] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_DISPLAYNAME]);
+	es[12] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_HOSTALIAS]);
 
 	/* get the object id */
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST,
@@ -3318,7 +4240,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 			&notification_timeperiod_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', host_object_id='%lu', alias='%s', display_name='%s', address='%s', check_command_object_id='%lu', check_command_args='%s', eventhandler_command_object_id='%lu', eventhandler_command_args='%s', check_timeperiod_object_id='%lu', notification_timeperiod_object_id='%lu', failure_prediction_options='%s', check_interval='%lf', retry_interval='%lf', max_check_attempts='%d', first_notification_delay='%lf', notification_interval='%lf', notify_on_down='%d', notify_on_unreachable='%d', notify_on_recovery='%d', notify_on_flapping='%d', notify_on_downtime='%d', stalk_on_up='%d', stalk_on_down='%d', stalk_on_unreachable='%d', flap_detection_enabled='%d', flap_detection_on_up='%d', flap_detection_on_down='%d', flap_detection_on_unreachable='%d', low_flap_threshold='%lf', high_flap_threshold='%lf', process_performance_data='%d', freshness_checks_enabled='%d', freshness_threshold='%d', passive_checks_enabled='%d', event_handler_enabled='%d', active_checks_enabled='%d', retain_status_information='%d', retain_nonstatus_information='%d', notifications_enabled='%d', obsess_over_host='%d', failure_prediction_enabled='%d', notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords='%d', x_2d='%d', y_2d='%d', have_3d_coords='%d', x_3d='%lf', y_3d='%lf', z_3d='%lf'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -3349,13 +4271,149 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS], buf, buf) == -1)
 		buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND host_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+			   )==-1)
+			buf1=NULL;
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+		/* Values to set when updating */
+		if(asprintf(&buf2, "alias='%s', display_name='%s', address='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notif_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf"
+		    ,(es[12]==NULL)?"":es[12]
+		    ,(es[11]==NULL)?"":es[11]
+		    ,(es[0]==NULL)?"":es[0]
+		    ,check_command_id
+		    ,(es[2]==NULL)?"":es[2]
+		    ,eventhandler_command_id
+		    ,(es[3]==NULL)?"":es[3]
+		    ,check_timeperiod_id
+		    ,notification_timeperiod_id
+		    ,(es[1]==NULL)?"":es[1]
+		    ,check_interval
+		    ,retry_interval
+		    ,max_check_attempts
+		    ,first_notification_delay
+		    ,notification_interval
+		    ,notify_on_down
+		    ,notify_on_unreachable
+		    ,notify_on_recovery
+		    ,notify_on_flapping
+		    ,notify_on_downtime
+		    ,stalk_on_up
+		    ,stalk_on_down
+		    ,stalk_on_unreachable
+		    ,flap_detection_enabled
+		    ,flap_detection_on_up
+		    ,flap_detection_on_down
+		    ,flap_detection_on_unreachable
+		    ,low_flap_threshold
+		    ,high_flap_threshold
+		    ,process_performance_data
+		    ,freshness_checks_enabled
+		    ,freshness_threshold
+		    ,passive_checks_enabled
+		    ,event_handler_enabled
+		    ,active_checks_enabled
+		    ,retain_status_information
+		    ,retain_nonstatus_information
+		    ,notifications_enabled
+		    ,obsess_over_host
+		    ,failure_prediction_enabled
+		    ,(es[4]==NULL)?"":es[4]
+		    ,(es[5]==NULL)?"":es[5]
+		    ,(es[6]==NULL)?"":es[6]
+		    ,(es[7]==NULL)?"":es[7]
+		    ,(es[8]==NULL)?"":es[8]
+		    ,(es[9]==NULL)?"":es[9]
+		    ,(es[10]==NULL)?"":es[10]
+		    ,have_2d_coords
+		    ,x_2d
+		    ,y_2d
+		    ,have_3d_coords
+		    ,x_3d
+		    ,y_3d
+		    ,z_3d
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notif_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf)"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,(es[12]==NULL)?"":es[12]
+		    ,(es[11]==NULL)?"":es[11]
+		    ,(es[0]==NULL)?"":es[0]
+		    ,check_command_id
+		    ,(es[2]==NULL)?"":es[2]
+		    ,eventhandler_command_id
+		    ,(es[3]==NULL)?"":es[3]
+		    ,check_timeperiod_id
+		    ,notification_timeperiod_id
+		    ,(es[1]==NULL)?"":es[1]
+		    ,check_interval
+		    ,retry_interval
+		    ,max_check_attempts
+		    ,first_notification_delay
+		    ,notification_interval
+		    ,notify_on_down
+		    ,notify_on_unreachable
+		    ,notify_on_recovery
+		    ,notify_on_flapping
+		    ,notify_on_downtime
+		    ,stalk_on_up
+		    ,stalk_on_down
+		    ,stalk_on_unreachable
+		    ,flap_detection_enabled
+		    ,flap_detection_on_up
+		    ,flap_detection_on_down
+		    ,flap_detection_on_unreachable
+		    ,low_flap_threshold
+		    ,high_flap_threshold
+		    ,process_performance_data
+		    ,freshness_checks_enabled
+		    ,freshness_threshold
+		    ,passive_checks_enabled
+		    ,event_handler_enabled
+		    ,active_checks_enabled
+		    ,retain_status_information
+		    ,retain_nonstatus_information
+		    ,notifications_enabled
+		    ,obsess_over_host
+		    ,failure_prediction_enabled
+		    ,(es[4]==NULL)?"":es[4]
+		    ,(es[5]==NULL)?"":es[5]
+		    ,(es[6]==NULL)?"":es[6]
+		    ,(es[7]==NULL)?"":es[7]
+		    ,(es[8]==NULL)?"":es[8]
+		    ,(es[9]==NULL)?"":es[9]
+		    ,(es[10]==NULL)?"":es[10]
+		    ,have_2d_coords
+		    ,x_2d
+		    ,y_2d
+		    ,have_3d_coords
+		    ,x_3d
+		    ,y_3d
+		    ,z_3d
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		host_id  = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	for (x = 0; x < 13; x++)
 		free(es[x]);
@@ -3371,7 +4429,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST,
 				mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(&buf,
+/*		if (asprintf(&buf,
 				"instance_id='%d', host_id='%lu', parent_host_object_id='%lu'",
 				idi->dbinfo.instance_id, host_id, member_id) == -1)
 			buf = NULL;
@@ -3380,12 +4438,40 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTPARENTHOSTS], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "host_id=%lu AND parent_host_object_id=%lu"
+			    ,host_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, host_id, parent_host_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,host_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTPARENTHOSTS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save contact groups to db */
@@ -3400,7 +4486,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 				NDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 				&member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', host_id='%lu', contactgroup_object_id='%lu'",
 				idi->dbinfo.instance_id, host_id, member_id) == -1)
@@ -3410,12 +4496,40 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTGROUPS], buf,
 				buf) == -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "host_id=%lu AND contactgroup_object_id=%lu"
+			    ,host_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, host_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,host_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTGROUPS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save contacts to db */
@@ -3429,7 +4543,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(&buf,
+/*		if (asprintf(&buf,
 				"instance_id='%d', host_id='%lu', contact_object_id='%lu'",
 				idi->dbinfo.instance_id, host_id, member_id) == -1)
 			buf = NULL;
@@ -3438,12 +4552,41 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND host_id=%lu AND contact_object_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,host_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* update statement*/
+                if (asprintf(&buf2,
+                                "instance_id='%d', host_id='%lu', contact_object_id='%lu'",
+                                idi->dbinfo.instance_id, host_id, member_id) == -1)
+                        buf2 = NULL;
+
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, host_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,host_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save custom variables to db */
@@ -3465,6 +4608,8 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition() start\n");
@@ -3491,7 +4636,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	ndo2db_set_object_as_active(idi, NDO2DB_OBJECTTYPE_HOSTGROUP, object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', hostgroup_object_id='%lu', alias='%s'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -3501,13 +4646,43 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS], buf, buf) == -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND hostgroup_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Values to set when updating */
+        if(asprintf(&buf2, "config_type=%d, alias='%s'"
+		    ,idi->current_object_config_type
+		    ,es[0]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, hostgroup_object_id, alias) VALUES (%lu, %d, %lu, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	free(es[0]);
 
@@ -3522,7 +4697,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST,
 				mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(&buf,
+/*		if (asprintf(&buf,
 				"instance_id='%d', hostgroup_id='%lu', host_object_id='%lu'",
 				idi->dbinfo.instance_id, group_id, member_id) == -1)
 			buf = NULL;
@@ -3531,12 +4706,40 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPMEMBERS], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "hostgroup_id=%lu AND host_object_id=%lu"
+			    ,group_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, hostgroup_id, host_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,group_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPMEMBERS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition() end\n");
@@ -3594,6 +4797,8 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
@@ -3612,111 +4817,42 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result
-			= ndo2db_convert_string_to_double(
-					idi->buffered_input[NDO_DATA_SERVICECHECKINTERVAL],
-					&check_interval);
-	result
-			= ndo2db_convert_string_to_double(
-					idi->buffered_input[NDO_DATA_SERVICERETRYINTERVAL],
-					&retry_interval);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_MAXSERVICECHECKATTEMPTS],
-			&max_check_attempts);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_FIRSTNOTIFICATIONDELAY],
-			&first_notification_delay);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONINTERVAL],
-			&notification_interval);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEWARNING],
-			&notify_on_warning);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEUNKNOWN],
-			&notify_on_unknown);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICECRITICAL],
-			&notify_on_critical);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICERECOVERY],
-			&notify_on_recovery);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEFLAPPING],
-			&notify_on_flapping);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEDOWNTIME],
-			&notify_on_downtime);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKSERVICEONOK], &stalk_on_ok);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKSERVICEONWARNING],
-			&stalk_on_warning);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKSERVICEONUNKNOWN],
-			&stalk_on_unknown);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STALKSERVICEONCRITICAL],
-			&stalk_on_critical);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICEISVOLATILE], &is_volatile);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICEFLAPDETECTIONENABLED],
-			&flap_detection_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONOK],
-			&flap_detection_on_ok);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONWARNING],
-			&flap_detection_on_warning);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONUNKNOWN],
-			&flap_detection_on_unknown);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FLAPDETECTIONONCRITICAL],
-			&flap_detection_on_critical);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_PROCESSSERVICEPERFORMANCEDATA],
-			&process_performance_data);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICEFRESHNESSCHECKSENABLED],
-			&freshness_checks_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICEFRESHNESSTHRESHOLD],
-			&freshness_threshold);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_PASSIVESERVICECHECKSENABLED],
-			&passive_checks_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICEEVENTHANDLERENABLED],
-			&event_handler_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ACTIVESERVICECHECKSENABLED],
-			&active_checks_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_RETAINSERVICESTATUSINFORMATION],
-			&retain_status_information);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_RETAINSERVICENONSTATUSINFORMATION],
-			&retain_nonstatus_information);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONSENABLED],
-			&notifications_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_OBSESSOVERSERVICE],
-			&obsess_over_service);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICEFAILUREPREDICTIONENABLED],
-			&failure_prediction_enabled);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_LOWSERVICEFLAPTHRESHOLD],
-			&low_flap_threshold);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_HIGHSERVICEFLAPTHRESHOLD],
-			&high_flap_threshold);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_SERVICECHECKINTERVAL], &check_interval);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_SERVICERETRYINTERVAL], &retry_interval);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_MAXSERVICECHECKATTEMPTS], &max_check_attempts);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_FIRSTNOTIFICATIONDELAY], &first_notification_delay);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONINTERVAL], &notification_interval);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEWARNING], &notify_on_warning);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEUNKNOWN], &notify_on_unknown);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICECRITICAL], &notify_on_critical);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICERECOVERY], &notify_on_recovery);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEFLAPPING], &notify_on_flapping);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEDOWNTIME], &notify_on_downtime);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKSERVICEONOK], &stalk_on_ok);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKSERVICEONWARNING], &stalk_on_warning);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKSERVICEONUNKNOWN], &stalk_on_unknown);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STALKSERVICEONCRITICAL], &stalk_on_critical);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICEISVOLATILE], &is_volatile);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICEFLAPDETECTIONENABLED], &flap_detection_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONOK], &flap_detection_on_ok);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONWARNING], &flap_detection_on_warning);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONUNKNOWN], &flap_detection_on_unknown);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FLAPDETECTIONONCRITICAL], &flap_detection_on_critical);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_PROCESSSERVICEPERFORMANCEDATA], &process_performance_data);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICEFRESHNESSCHECKSENABLED], &freshness_checks_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICEFRESHNESSTHRESHOLD], &freshness_threshold);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_PASSIVESERVICECHECKSENABLED], &passive_checks_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICEEVENTHANDLERENABLED], &event_handler_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ACTIVESERVICECHECKSENABLED], &active_checks_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_RETAINSERVICESTATUSINFORMATION], &retain_status_information);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_RETAINSERVICENONSTATUSINFORMATION], &retain_nonstatus_information);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONSENABLED], &notifications_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_OBSESSOVERSERVICE], &obsess_over_service);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICEFAILUREPREDICTIONENABLED], &failure_prediction_enabled);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_LOWSERVICEFLAPTHRESHOLD], &low_flap_threshold);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_HIGHSERVICEFLAPTHRESHOLD], &high_flap_threshold);
 
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_SERVICEFAILUREPREDICTIONOPTIONS]);
+	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_SERVICEFAILUREPREDICTIONOPTIONS]);
 
 	/* get the check command */
 	cmdptr = strtok(idi->buffered_input[NDO_DATA_SERVICECHECKCOMMAND], "!");
@@ -3728,22 +4864,14 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	/* get the event handler command */
 	cmdptr = strtok(idi->buffered_input[NDO_DATA_SERVICEEVENTHANDLER], "!");
 	argptr = strtok(NULL, "\x0");
-	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND,
-			cmdptr, NULL, &eventhandler_command_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &eventhandler_command_id);
 	es[2] = ndo2db_db_escape_string(idi, argptr);
-
 	es[3] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_NOTES]);
-	es[4]
-			= ndo2db_db_escape_string(idi,
-					idi->buffered_input[NDO_DATA_NOTESURL]);
-	es[5] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_ACTIONURL]);
-	es[6] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_ICONIMAGE]);
-	es[7] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_ICONIMAGEALT]);
-	es[8] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_DISPLAYNAME]);
+	es[4] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_NOTESURL]);
+	es[5] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_ACTIONURL]);
+	es[6] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_ICONIMAGE]);
+	es[7] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_ICONIMAGEALT]);
+	es[8] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_DISPLAYNAME]);
 
 	/* get the object ids */
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_SERVICE,
@@ -3766,7 +4894,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 			&notification_timeperiod_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', host_object_id='%lu', service_object_id='%lu', display_name='%s', check_command_object_id='%lu', check_command_args='%s', eventhandler_command_object_id='%lu', eventhandler_command_args='%s', check_timeperiod_object_id='%lu', notification_timeperiod_object_id='%lu', failure_prediction_options='%s', check_interval='%lf', retry_interval='%lf', max_check_attempts='%d', first_notification_delay='%lf', notification_interval='%lf', notify_on_warning='%d', notify_on_unknown='%d', notify_on_critical='%d', notify_on_recovery='%d', notify_on_flapping='%d', notify_on_downtime='%d', stalk_on_ok='%d', stalk_on_warning='%d', stalk_on_unknown='%d', stalk_on_critical='%d', is_volatile='%d', flap_detection_enabled='%d', flap_detection_on_ok='%d', flap_detection_on_warning='%d', flap_detection_on_unknown='%d', flap_detection_on_critical='%d', low_flap_threshold='%lf', high_flap_threshold='%lf', process_performance_data='%d', freshness_checks_enabled='%d', freshness_threshold='%d', passive_checks_enabled='%d', event_handler_enabled='%d', active_checks_enabled='%d', retain_status_information='%d', retain_nonstatus_information='%d', notifications_enabled='%d', obsess_over_service='%d', failure_prediction_enabled='%d', notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s'",
 			idi->dbinfo.instance_id, idi->current_object_config_type, host_id,
@@ -3796,13 +4924,137 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES], buf, buf) == -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND service_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Values to set when updating */
+        if(asprintf(&buf2, "host_object_id=%lu, display_name='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notif_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s'"
+		    ,host_id
+		    ,(es[8]==NULL)?"":es[8]
+		    ,check_command_id
+		    ,(es[1]==NULL)?"":es[1]
+		    ,eventhandler_command_id
+		    ,(es[2]==NULL)?"":es[2]
+		    ,check_timeperiod_id
+		    ,notification_timeperiod_id
+		    ,(es[0]==NULL)?"":es[0]
+		    ,check_interval
+		    ,retry_interval
+		    ,max_check_attempts
+		    ,first_notification_delay
+		    ,notification_interval
+		    ,notify_on_warning
+		    ,notify_on_unknown
+		    ,notify_on_critical
+		    ,notify_on_recovery
+		    ,notify_on_flapping
+		    ,notify_on_downtime
+		    ,stalk_on_ok
+		    ,stalk_on_warning
+		    ,stalk_on_unknown
+		    ,stalk_on_critical
+		    ,is_volatile
+		    ,flap_detection_enabled
+		    ,flap_detection_on_ok
+		    ,flap_detection_on_warning
+		    ,flap_detection_on_unknown
+		    ,flap_detection_on_critical
+		    ,low_flap_threshold
+		    ,high_flap_threshold
+		    ,process_performance_data
+		    ,freshness_checks_enabled
+		    ,freshness_threshold
+		    ,passive_checks_enabled
+		    ,event_handler_enabled
+		    ,active_checks_enabled
+		    ,retain_status_information
+		    ,retain_nonstatus_information
+		    ,notifications_enabled
+		    ,obsess_over_service
+		    ,failure_prediction_enabled
+		    ,(es[3]==NULL)?"":es[3]
+		    ,(es[4]==NULL)?"":es[4]
+		    ,(es[5]==NULL)?"":es[5]
+		    ,(es[6]==NULL)?"":es[6]
+		    ,(es[7]==NULL)?"":es[7]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notif_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,host_id
+		    ,object_id
+		    ,(es[8]==NULL)?"":es[8]
+		    ,check_command_id
+		    ,(es[1]==NULL)?"":es[1]
+		    ,eventhandler_command_id
+		    ,(es[2]==NULL)?"":es[2]
+		    ,check_timeperiod_id
+		    ,notification_timeperiod_id
+		    ,(es[0]==NULL)?"":es[0]
+		    ,check_interval
+		    ,retry_interval
+		    ,max_check_attempts
+		    ,first_notification_delay
+		    ,notification_interval
+		    ,notify_on_warning
+		    ,notify_on_unknown
+		    ,notify_on_critical
+		    ,notify_on_recovery
+		    ,notify_on_flapping
+		    ,notify_on_downtime
+		    ,stalk_on_ok
+		    ,stalk_on_warning
+		    ,stalk_on_unknown
+		    ,stalk_on_critical
+		    ,is_volatile
+		    ,flap_detection_enabled
+		    ,flap_detection_on_ok
+		    ,flap_detection_on_warning
+		    ,flap_detection_on_unknown
+		    ,flap_detection_on_critical
+		    ,low_flap_threshold
+		    ,high_flap_threshold
+		    ,process_performance_data
+		    ,freshness_checks_enabled
+		    ,freshness_threshold
+		    ,passive_checks_enabled
+		    ,event_handler_enabled
+		    ,active_checks_enabled
+		    ,retain_status_information
+		    ,retain_nonstatus_information
+		    ,notifications_enabled
+		    ,obsess_over_service
+		    ,failure_prediction_enabled
+		    ,(es[3]==NULL)?"":es[3]
+		    ,(es[4]==NULL)?"":es[4]
+		    ,(es[5]==NULL)?"":es[5]
+		    ,(es[6]==NULL)?"":es[6]
+		    ,(es[7]==NULL)?"":es[7]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES], buf3, buf2, buf1);
+
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		service_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	for (x = 0; x < 9; x++)
 		free(es[x]);
@@ -3819,7 +5071,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 				NDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 				&member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', service_id='%lu', contactgroup_object_id='%lu'",
 				idi->dbinfo.instance_id, service_id, member_id) == -1)
@@ -3829,12 +5081,39 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTGROUPS], buf,
 				buf) == -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "service_id=%lu AND contactgroup_object_id=%lu"
+			    ,service_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, service_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,service_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTGROUPS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
 
 		result = ndo2db_db_query(idi, buf1);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save contacts to db */
@@ -3848,7 +5127,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(&buf,
+/*		if (asprintf(&buf,
 				"instance_id='%d', service_id='%lu', contact_object_id='%lu'",
 				idi->dbinfo.instance_id, service_id, member_id) == -1)
 			buf = NULL;
@@ -3857,12 +5136,41 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND service_id=%lu AND contact_object_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,service_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* update statement */
+                if (asprintf(&buf2,
+                                "instance_id='%d', service_id='%lu', contact_object_id='%lu'",
+                                idi->dbinfo.instance_id, service_id, member_id) == -1)
+                        buf2 = NULL;
+
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, service_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,service_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save custom variables to db */
@@ -3884,6 +5192,8 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 	char *hptr = NULL;
 	char *sptr = NULL;
@@ -3913,7 +5223,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	ndo2db_set_object_as_active(idi, NDO2DB_OBJECTTYPE_SERVICEGROUP, object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', servicegroup_object_id='%lu', alias='%s'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -3923,13 +5233,42 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS], buf, buf) == -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND servicegroup_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Values to set when updating */
+        if(asprintf(&buf2, "alias='%s'"
+		    ,es[0]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, servicegroup_object_id, alias) VALUES (%lu, %d, %lu, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	free(es[0]);
 
@@ -3948,7 +5287,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_SERVICE, hptr, sptr, &member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', servicegroup_id='%lu', service_object_id='%lu'",
 				idi->dbinfo.instance_id, group_id, member_id) == -1)
@@ -3958,12 +5297,40 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPMEMBERS], buf,
 				buf) == -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "servicegroup_id=%lu AND service_object_id=%lu"
+			    ,group_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, servicegroup_id, service_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,group_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPMEMBERS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition() end\n");
@@ -3985,6 +5352,8 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdependencydefinition() start\n");
 
@@ -4000,31 +5369,19 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_DEPENDENCYTYPE], &dependency_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_INHERITSPARENT], &inherits_parent);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONUP], &fail_on_up);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONDOWN], &fail_on_down);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONUNREACHABLE],
-			&fail_on_unreachable);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_DEPENDENCYTYPE], &dependency_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_INHERITSPARENT], &inherits_parent);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONUP], &fail_on_up);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONDOWN], &fail_on_down);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONUNREACHABLE], &fail_on_unreachable);
 
 	/* get the object ids */
-	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST,
-			idi->buffered_input[NDO_DATA_HOSTNAME], NULL, &object_id);
-	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST,
-			idi->buffered_input[NDO_DATA_DEPENDENTHOSTNAME], NULL,
-			&dependent_object_id);
-	result = ndo2db_get_object_id_with_insert(idi,
-			NDO2DB_OBJECTTYPE_TIMEPERIOD,
-			idi->buffered_input[NDO_DATA_DEPENDENCYPERIOD], NULL,
-			&timeperiod_object_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOSTNAME], NULL, &object_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_DEPENDENTHOSTNAME], NULL, &dependent_object_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[NDO_DATA_DEPENDENCYPERIOD], NULL, &timeperiod_object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', host_object_id='%lu', dependent_host_object_id='%lu', dependency_type='%d', inherits_parent='%d', timeperiod_object_id='%lu', fail_on_up='%d', fail_on_down='%d', fail_on_unreachable='%d'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4037,12 +5394,53 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTDEPENDENCIES], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND host_object_id=%lu AND dependent_host_object_id=%lu AND dependency_type=%d AND inherits_parent=%d AND fail_on_up=%d AND fail_on_down=%d AND fail_on_unreachable=%d"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,dependent_object_id
+		    ,dependency_type
+		    ,inherits_parent
+		    ,fail_on_up
+		    ,fail_on_down
+		    ,fail_on_unreachable
+                   )==-1)
+                buf1=NULL;
 
-	result = ndo2db_db_query(idi, buf1);
+        /* Values to set when updating */
+        if(asprintf(&buf2, "timeperiod_object_id=%lu"
+		    ,timeperiod_object_id
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, host_object_id, dependent_host_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_up, fail_on_down, fail_on_unreachable) VALUES (%lu, %d, %lu, %lu, %d, %d, %lu, %d, %d, %d)"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,dependent_object_id
+		    ,dependency_type
+		    ,inherits_parent
+		    ,timeperiod_object_id
+		    ,fail_on_up
+		    ,fail_on_down
+		    ,fail_on_unreachable
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTDEPENDENCIES], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdependencydefinition() end\n");
 
@@ -4064,6 +5462,8 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedependencydefinition() start\n");
 
@@ -4079,18 +5479,12 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_DEPENDENCYTYPE], &dependency_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_INHERITSPARENT], &inherits_parent);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONOK], &fail_on_ok);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONWARNING], &fail_on_warning);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONUNKNOWN], &fail_on_unknown);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FAILONCRITICAL], &fail_on_critical);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_DEPENDENCYTYPE], &dependency_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_INHERITSPARENT], &inherits_parent);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONOK], &fail_on_ok);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONWARNING], &fail_on_warning);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONUNKNOWN], &fail_on_unknown);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FAILONCRITICAL], &fail_on_critical);
 
 	/* get the object ids */
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_SERVICE,
@@ -4106,7 +5500,7 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 			&timeperiod_object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', service_object_id='%lu', dependent_service_object_id='%lu', dependency_type='%d', inherits_parent='%d', timeperiod_object_id='%lu', fail_on_ok='%d', fail_on_warning='%d', fail_on_unknown='%d', fail_on_critical='%d'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4119,12 +5513,56 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEDEPENDENCIES], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
 
-	result = ndo2db_db_query(idi, buf1);
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND service_object_id=%lu AND dependent_service_object_id=%lu AND dependency_type=%d AND inherits_parent=%d AND fail_on_ok=%d AND fail_on_warning=%d AND fail_on_unknown=%d AND fail_on_critical=%d"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,dependent_object_id
+		    ,dependency_type
+		    ,inherits_parent
+		    ,fail_on_ok
+		    ,fail_on_warning
+		    ,fail_on_unknown
+		    ,fail_on_critical
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "timeperiod_object_id=%lu"
+		    ,timeperiod_object_id
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, service_object_id, dependent_service_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_ok, fail_on_warning, fail_on_unknown, fail_on_critical) VALUES (%lu, %d, %lu, %lu, %d, %d, %lu, %d, %d, %d, %d)"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,dependent_object_id
+		    ,dependency_type
+		    ,inherits_parent
+		    ,timeperiod_object_id
+		    ,fail_on_ok
+		    ,fail_on_warning
+		    ,fail_on_unknown
+		    ,fail_on_critical
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEDEPENDENCIES], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedependencydefinition() end\n");
 
@@ -4148,6 +5586,8 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition() start\n");
@@ -4164,35 +5604,21 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FIRSTNOTIFICATION],
-			&first_notification);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_LASTNOTIFICATION], &last_notification);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_NOTIFICATIONINTERVAL],
-			&notification_interval);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONRECOVERY],
-			&escalate_recovery);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONDOWN], &escalate_down);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONUNREACHABLE],
-			&escalate_unreachable);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FIRSTNOTIFICATION], &first_notification);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_LASTNOTIFICATION], &last_notification);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_NOTIFICATIONINTERVAL], &notification_interval);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONRECOVERY], &escalate_recovery);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONDOWN], &escalate_down);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONUNREACHABLE], &escalate_unreachable);
 
 	/* get the object id */
-	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST,
-			idi->buffered_input[NDO_DATA_HOSTNAME], NULL, &object_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOSTNAME], NULL, &object_id);
 
 	/* get the timeperiod id */
-	result = ndo2db_get_object_id_with_insert(idi,
-			NDO2DB_OBJECTTYPE_TIMEPERIOD,
-			idi->buffered_input[NDO_DATA_ESCALATIONPERIOD], NULL,
-			&timeperiod_id);
+	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[NDO_DATA_ESCALATIONPERIOD], NULL, &timeperiod_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', host_object_id='%lu', timeperiod_object_id='%lu', first_notification='%d', last_notification='%d', notification_interval='%lf', escalate_on_recovery='%d', escalate_on_down='%d', escalate_on_unreachable='%d'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4205,13 +5631,56 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d"
+	    ,idi->dbinfo.instance_id
+	    ,idi->current_object_config_type
+	    ,object_id
+	    ,timeperiod_id
+	    ,first_notification
+	    ,last_notification
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "notification_interval=%lf, escalate_on_recovery=%d, escalate_on_down=%d, escalate_on_unreachable=%d"
+	    ,notification_interval
+	    ,escalate_recovery
+	    ,escalate_down
+	    ,escalate_unreachable
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, host_object_id, timeperiod_object_id, first_notification, last_notification, notification_interval, escalate_on_recovery, escalate_on_down, escalate_on_unreachable) VALUES (%lu, %d, %lu, %lu, %d, %d, %lf, %d, %d, %d)"
+	    ,idi->dbinfo.instance_id
+	    ,idi->current_object_config_type
+	    ,object_id
+	    ,timeperiod_id
+	    ,first_notification
+	    ,last_notification
+	    ,notification_interval
+	    ,escalate_recovery
+	    ,escalate_down
+	    ,escalate_unreachable
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[NDO2DB_MBUF_CONTACTGROUP];
@@ -4225,7 +5694,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 				NDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 				&member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', hostescalation_id='%lu', contactgroup_object_id='%lu'",
 				idi->dbinfo.instance_id, escalation_id, member_id) == -1)
@@ -4237,12 +5706,40 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS],
 				buf, buf) == -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "hostescalation_id=%lu AND contactgroup_object_id=%lu"
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, hostescalation_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS], buf3, buf2, buf1);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save contacts to db */
@@ -4256,7 +5753,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', hostescalation_id='%lu', contact_object_id='%lu'",
 				idi->dbinfo.instance_id, escalation_id, member_id) == -1)
@@ -4266,12 +5763,40 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
 				buf, buf) == -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND hostescalation_id=%lu AND contact_object_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* update */
+                if (asprintf(&buf2,
+                                "instance_id='%d', hostescalation_id='%lu', contact_object_id='%lu'",
+                                idi->dbinfo.instance_id, escalation_id, member_id) == -1)
+                        buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, hostescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition() end\n");
@@ -4297,6 +5822,8 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicetescalationdefinition() start\n");
@@ -4313,24 +5840,13 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_FIRSTNOTIFICATION],
-			&first_notification);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_LASTNOTIFICATION], &last_notification);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_NOTIFICATIONINTERVAL],
-			&notification_interval);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONRECOVERY],
-			&escalate_recovery);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONWARNING], &escalate_warning);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONUNKNOWN], &escalate_unknown);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ESCALATEONCRITICAL],
-			&escalate_critical);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FIRSTNOTIFICATION], &first_notification);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_LASTNOTIFICATION], &last_notification);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_NOTIFICATIONINTERVAL], &notification_interval);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONRECOVERY], &escalate_recovery);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONWARNING], &escalate_warning);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONUNKNOWN], &escalate_unknown);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ESCALATEONCRITICAL], &escalate_critical);
 
 	/* get the object id */
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_SERVICE,
@@ -4344,7 +5860,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 			&timeperiod_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', service_object_id='%lu', timeperiod_object_id='%lu', first_notification='%d', last_notification='%d', notification_interval='%lf', escalate_on_recovery='%d', escalate_on_warning='%d', escalate_on_unknown='%d', escalate_on_critical='%d'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4357,13 +5873,57 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS], buf, buf)
 			== -1)
 		buf1 = NULL;
+*/
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND service_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,timeperiod_id
+		    ,first_notification
+		    ,last_notification
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "notification_interval=%lf, escalate_on_recovery=%d, escalate_on_warning=%d, escalate_on_unknown=%d, escalate_on_critical=%d"
+		    ,notification_interval
+		    ,escalate_recovery
+		    ,escalate_warning
+		    ,escalate_unknown
+		    ,escalate_critical
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, service_object_id, timeperiod_object_id, first_notification, last_notification, notification_interval, escalate_on_recovery, escalate_on_warning, escalate_on_unknown, escalate_on_critical) VALUES (%lu, %d, %lu, %lu, %d, %d, %lf, %d, %d, %d, %d)"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,timeperiod_id
+		    ,first_notification
+		    ,last_notification
+		    ,notification_interval
+		    ,escalate_recovery
+		    ,escalate_warning
+		    ,escalate_unknown
+		    ,escalate_critical
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[NDO2DB_MBUF_CONTACTGROUP];
@@ -4377,7 +5937,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 				NDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 				&member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', serviceescalation_id='%lu', contactgroup_object_id='%lu'",
 				idi->dbinfo.instance_id, escalation_id, member_id) == -1)
@@ -4389,12 +5949,40 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS],
 				buf, buf) == -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "serviceescalation_id=%lu AND contactgroup_object_id=%lu"
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, serviceescalation_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	/* save contacts to db */
@@ -4408,7 +5996,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', serviceescalation_id='%lu', contact_object_id='%lu'",
 				idi->dbinfo.instance_id, escalation_id, member_id) == -1)
@@ -4418,12 +6006,40 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
 				buf, buf) == -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "instance_id=%lu AND serviceescalation_id=%lu AND contact_object_id=%lu"
+			    ,idi->dbinfo.instance_id
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* update */
+                if (asprintf(&buf,
+                                "instance_id='%d', serviceescalation_id='%lu', contact_object_id='%lu'",
+                                idi->dbinfo.instance_id, escalation_id, member_id) == -1)
+                        buf = NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, serviceescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,escalation_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicetescalationdefinition() end\n");
@@ -4440,6 +6056,8 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commanddefinition() start\n");
 
@@ -4465,7 +6083,7 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	ndo2db_set_object_as_active(idi, NDO2DB_OBJECTTYPE_COMMAND, object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', object_id='%lu', config_type='%d', command_line='%s'",
 			idi->dbinfo.instance_id, object_id,
@@ -4475,12 +6093,42 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMANDS], buf, buf) == -1)
 		buf1 = NULL;
+*/
 
-	result = ndo2db_db_query(idi, buf1);
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND object_id=%lu AND config_type=%d"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,idi->current_object_config_type
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "command_line='%s'"
+		    ,es[0]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, object_id, config_type, command_line) VALUES (%lu, %lu, %d, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,object_id
+		    ,idi->current_object_config_type
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMANDS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	for (x = 0; x < 1; x++)
 		free(es[x]);
@@ -4506,6 +6154,8 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition() start\n");
@@ -4533,7 +6183,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	ndo2db_set_object_as_active(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', timeperiod_object_id='%lu', alias='%s'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4543,13 +6193,43 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS], buf, buf) == -1)
 		buf1 = NULL;
+*/
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND timeperiod_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "alias='%s'"
+		    ,es[0]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, timeperiod_object_id, alias) VALUES (%lu, %d, %lu, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	free(es[0]);
 
@@ -4572,7 +6252,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 		start_sec = strtoul(startptr, NULL, 0);
 		end_sec = strtoul(endptr, NULL, 0);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', timeperiod_id='%lu', day='%d', start_sec='%lu', end_sec='%lu'",
 				idi->dbinfo.instance_id, timeperiod_id, day, start_sec, end_sec)
@@ -4583,12 +6263,43 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODTIMERANGES], buf,
 				buf) == -1)
 			buf1 = NULL;
+*/
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "timeperiod_id=%lu AND day=%d AND start_sec=%lu AND end_sec=%lu"
+			    ,timeperiod_id
+			    ,day
+			    ,start_sec
+			    ,end_sec
+			   )==-1)
+			buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, timeperiod_id, day, start_sec, end_sec) VALUES (%lu, %lu, %d, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,timeperiod_id
+			    ,day
+			    ,start_sec
+			    ,end_sec
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODTIMERANGES], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition() end\n");
@@ -4622,6 +6333,8 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 	char *numptr = NULL;
 	char *addressptr = NULL;
@@ -4643,54 +6356,24 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONSENABLED],
-			&host_notifications_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONSENABLED],
-			&service_notifications_enabled);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_CANSUBMITCOMMANDS],
-			&can_submit_commands);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEWARNING],
-			&notify_service_warning);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEUNKNOWN],
-			&notify_service_unknown);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICECRITICAL],
-			&notify_service_critical);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICERECOVERY],
-			&notify_service_recovery);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEFLAPPING],
-			&notify_service_flapping);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYSERVICEDOWNTIME],
-			&notify_service_downtime);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWN], &notify_host_down);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTUNREACHABLE],
-			&notify_host_unreachable);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTRECOVERY],
-			&notify_host_recovery);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTFLAPPING],
-			&notify_host_flapping);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWNTIME],
-			&notify_host_downtime);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_HOSTNOTIFICATIONSENABLED], &host_notifications_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SERVICENOTIFICATIONSENABLED], &service_notifications_enabled);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_CANSUBMITCOMMANDS], &can_submit_commands);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEWARNING], &notify_service_warning);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEUNKNOWN], &notify_service_unknown);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICECRITICAL], &notify_service_critical);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICERECOVERY], &notify_service_recovery);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEFLAPPING], &notify_service_flapping);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYSERVICEDOWNTIME], &notify_service_downtime);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWN], &notify_host_down);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTUNREACHABLE], &notify_host_unreachable);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTRECOVERY], &notify_host_recovery);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTFLAPPING],	&notify_host_flapping);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_NOTIFYHOSTDOWNTIME], &notify_host_downtime);
 
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_CONTACTALIAS]);
-	es[1] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_EMAILADDRESS]);
-	es[2] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_PAGERADDRESS]);
+	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_CONTACTALIAS]);
+	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_EMAILADDRESS]);
+	es[2] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_PAGERADDRESS]);
 
 	/* get the object id */
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_CONTACT,
@@ -4710,7 +6393,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	ndo2db_set_object_as_active(idi, NDO2DB_OBJECTTYPE_CONTACT, contact_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', contact_object_id='%lu', alias='%s', email_address='%s', pager_address='%s', host_timeperiod_object_id='%lu', service_timeperiod_object_id='%lu', host_notifications_enabled='%d', service_notifications_enabled='%d', can_submit_commands='%d', notify_service_recovery='%d', notify_service_warning='%d', notify_service_unknown='%d', notify_service_critical='%d', notify_service_flapping='%d', notify_service_downtime='%d', notify_host_recovery='%d', notify_host_down='%d', notify_host_unreachable='%d', notify_host_flapping='%d', notify_host_downtime='%d'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4727,13 +6410,79 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS], buf, buf) == -1)
 		buf1 = NULL;
+*/
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND contact_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,contact_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "alias='%s', email_address='%s', pager_address='%s', host_timeperiod_object_id=%lu, service_timeperiod_object_id=%lu, host_notifications_enabled=%d, service_notifications_enabled=%d, can_submit_commands=%d, notify_service_recovery=%d, notify_service_warning=%d, notify_service_unknown=%d, notify_service_critical=%d, notify_service_flapping=%d, notify_service_downtime=%d, notify_host_recovery=%d, notify_host_down=%d, notify_host_unreachable=%d, notify_host_flapping=%d, notify_host_downtime=%d"
+		    ,es[0]
+		    ,es[1]
+		    ,es[2]
+		    ,host_timeperiod_id
+		    ,service_timeperiod_id
+		    ,host_notifications_enabled
+		    ,service_notifications_enabled
+		    ,can_submit_commands
+		    ,notify_service_recovery
+		    ,notify_service_warning
+		    ,notify_service_unknown
+		    ,notify_service_critical
+		    ,notify_service_flapping
+		    ,notify_service_downtime
+		    ,notify_host_recovery
+		    ,notify_host_down
+		    ,notify_host_unreachable
+		    ,notify_host_flapping
+		    ,notify_host_downtime
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, contact_object_id, alias, email_address, pager_address, host_timeperiod_object_id, service_timeperiod_object_id, host_notifications_enabled, service_notifications_enabled, can_submit_commands, notify_service_recovery, notify_service_warning, notify_service_unknown, notify_service_critical, notify_service_flapping, notify_service_downtime, notify_host_recovery, notify_host_down, notify_host_unreachable, notify_host_flapping, notify_host_downtime) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,contact_id
+		    ,es[0]
+		    ,es[1]
+		    ,es[2]
+		    ,host_timeperiod_id
+		    ,service_timeperiod_id
+		    ,host_notifications_enabled
+		    ,service_notifications_enabled
+		    ,can_submit_commands
+		    ,notify_service_recovery
+		    ,notify_service_warning
+		    ,notify_service_unknown
+		    ,notify_service_critical
+		    ,notify_service_flapping
+		    ,notify_service_downtime
+		    ,notify_host_recovery
+		    ,notify_host_down
+		    ,notify_host_unreachable
+		    ,notify_host_flapping
+		    ,notify_host_downtime
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		contact_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	for (x = 0; x < 3; x++)
 		free(es[x]);
@@ -4754,7 +6503,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		address_number = atoi(numptr);
 		es[0] = ndo2db_db_escape_string(idi, addressptr);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', contact_id='%lu', address_number='%d', address='%s'",
 				idi->dbinfo.instance_id, contact_id, address_number, es[0])
@@ -4765,12 +6514,42 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTADDRESSES], buf, buf)
 				== -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "contact_id=%lu AND address_number=%d"
+			    ,contact_id
+			    ,address_number
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu, address='%s'"
+			    ,idi->dbinfo.instance_id
+			    ,es[0]
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, contact_id, address_number, address) VALUES (%lu, %lu, %d, '%s')"
+			    ,idi->dbinfo.instance_id
+			    ,contact_id
+			    ,address_number
+			    ,es[0]
+			   )==-1)
+			buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTADDRESSES], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 
 		free(es[0]);
 	}
@@ -4794,7 +6573,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 
 		es[0] = ndo2db_db_escape_string(idi, argptr);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', contact_id='%lu', notification_type='%d', command_object_id='%lu', command_args='%s'",
 				idi->dbinfo.instance_id, contact_id, HOST_NOTIFICATION,
@@ -4807,12 +6586,43 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
 				buf, buf) == -1)
 			buf1 = NULL;
+*/
+                /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+                if(asprintf(&buf1, "instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu"
+                            ,idi->dbinfo.instance_id
+                            ,contact_id
+                            ,HOST_NOTIFICATION
+                            ,command_id
+                           )==-1)
+                        buf1=NULL;
 
-		result = ndo2db_db_query(idi, buf1);
+                /* Values to set when updating */
+                if(asprintf(&buf2, "command_args='%s'"
+				,(es[0] == NULL) ? "" : es[0]
+                           )==-1)
+                        buf2=NULL;
+
+                /* the data part of the INSERT statement */
+                if(asprintf(&buf3,"(instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (%d, %lu, %d, %lu, '%s')"
+                            ,idi->dbinfo.instance_id
+                            ,contact_id
+                            ,HOST_NOTIFICATION
+                            ,command_id
+                            ,(es[0] == NULL) ? "" : es[0]
+                           )==-1)
+                        buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 
 		free(es[0]);
 	}
@@ -4836,7 +6646,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 
 		es[0] = ndo2db_db_escape_string(idi, argptr);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', contact_id='%lu', notification_type='%d', command_object_id='%lu', command_args='%s'",
 				idi->dbinfo.instance_id, contact_id, SERVICE_NOTIFICATION,
@@ -4849,12 +6659,44 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
 				buf, buf) == -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+                /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+                if(asprintf(&buf1, "instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu"
+                            ,idi->dbinfo.instance_id
+                            ,contact_id
+                            ,SERVICE_NOTIFICATION
+                            ,command_id
+                           )==-1)
+                        buf1=NULL;
+
+                /* Values to set when updating */
+                if(asprintf(&buf2, "command_args='%s'"
+                                ,(es[0] == NULL) ? "" : es[0]
+                           )==-1)
+                        buf2=NULL;
+
+                /* the data part of the INSERT statement */
+                if(asprintf(&buf3,"(instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (%d, %lu, %d, %lu, '%s')"
+                            ,idi->dbinfo.instance_id
+                            ,contact_id
+                            ,SERVICE_NOTIFICATION
+                            ,command_id
+                            ,(es[0] == NULL) ? "" : es[0]
+                           )==-1)
+                        buf3=NULL;
+
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS], buf3, buf2, buf1);
+
+                free(buf1);
+                free(buf2);
+                free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 
 		free(es[0]);
 	}
@@ -4870,6 +6712,8 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *ts ){
 	char *buf=NULL;
 	char *buf1=NULL;
+	char *buf2=NULL;
+	char *buf3=NULL;
 	ndo2db_mbuf mbuf;
 	char *es[1];
 	char *ptr1=NULL;
@@ -4903,7 +6747,7 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		free(buf1);
 
 		if (table_idx==NDO2DB_DBTABLE_CUSTOMVARIABLES) {
-			if(asprintf(&buf,"instance_id='%d', object_id='%lu', config_type='%d', has_been_modified='%d', varname='%s', varvalue='%s'"
+/*			if(asprintf(&buf,"instance_id='%d', object_id='%lu', config_type='%d', has_been_modified='%d', varname='%s', varvalue='%s'"
 					,idi->dbinfo.instance_id
 					,o_id
 					,idi->current_object_config_type
@@ -4912,9 +6756,38 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 					,(es[1]==NULL)?"":es[1]
 				)==-1)
 				buf=NULL;
+
+*/
+			/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+			if(asprintf(&buf1, "object_id=%lu AND varname='%s'"
+			    ,o_id
+			    ,(es[0]==NULL)?"":es[0]
+			   )==-1)
+			buf1=NULL;
+
+			/* Values to set when updating */
+			if(asprintf(&buf2, "instance_id=%lu, config_type=%d, has_been_modified=%d, varvalue='%s'"
+			    ,idi->dbinfo.instance_id
+			    ,idi->current_object_config_type
+			    ,has_been_modified
+			    ,(es[1]==NULL)?"":es[1]
+			   )==-1)
+			buf2=NULL;
+
+			/* the data part of the INSERT statement */
+			if(asprintf(&buf3,"(instance_id, object_id, config_type, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %d, %d, '%s', '%s')"
+			    ,idi->dbinfo.instance_id
+			    ,o_id
+			    ,idi->current_object_config_type
+			    ,has_been_modified
+			    ,(es[0]==NULL)?"":es[0]
+			    ,(es[1]==NULL)?"":es[1]
+			   )==-1)
+			buf3=NULL;
+
 		}
 		if (table_idx==NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS) {
-			if(asprintf(&buf,"instance_id='%d', object_id='%lu',status_update_time=%s, has_been_modified='%d', varname='%s', varvalue='%s'"
+/*			if(asprintf(&buf,"instance_id='%d', object_id='%lu',status_update_time=%s, has_been_modified='%d', varname='%s', varvalue='%s'"
 					,idi->dbinfo.instance_id
 					,o_id
 					,(ts==NULL)?"NULL":ts
@@ -4923,23 +6796,59 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 					,(es[1]==NULL)?"":es[1]
 				)==-1)
 				buf=NULL;
+*/
+			/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+			if(asprintf(&buf1, "object_id=%lu AND varname='%s'"
+			    ,o_id
+			    ,(es[0]==NULL)?"":es[0]
+		           )==-1)
+		        buf1=NULL;
+
+			/* Values to set when updating */
+			if(asprintf(&buf2, "instance_id=%lu, status_update_time=%s, has_been_modified=%d, varvalue='%s'"
+			    ,idi->dbinfo.instance_id
+			    ,ts[0]
+			    ,has_been_modified
+			    ,(es[1]==NULL)?"":es[1]
+			   )==-1)
+			buf2=NULL;
+
+			/* the data part of the INSERT statement */
+			if(asprintf(&buf3,"(instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %s, %d, '%s', '%s')"
+			    ,idi->dbinfo.instance_id
+			    ,o_id
+			    ,ts[0]
+			    ,has_been_modified
+			    ,(es[0]==NULL)?"":es[0]
+			    ,(es[1]==NULL)?"":es[1]
+			   )==-1)
+			buf3=NULL;
+
+
 		}
 
 		free(es[0]);
 		free(es[1]);
 
-		if(asprintf(&buf1,"INSERT INtO %s SET %s ON DUPLICATE KEY UPDATE %s"
+/*		if(asprintf(&buf1,"INSERT INtO %s SET %s ON DUPLICATE KEY UPDATE %s"
 			    ,ndo2db_db_tablenames[table_idx]
 			    ,buf
 			    ,buf
 			   )==-1)
 			buf1=NULL;
 
-		result=ndo2db_db_query(idi,buf1);
+*/
+                /* create query with table_name, insert, update, cond */
+                buf = ido2db_insert_or_update(ndo2db_db_tablenames[table_idx], buf3, buf2, buf1);
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result=ndo2db_db_query(idi,buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_save_custom_variables() end\n");
@@ -4959,6 +6868,8 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
+	char *buf2 = NULL;
+	char *buf3 = NULL;
 	ndo2db_mbuf mbuf;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition() start\n");
@@ -4986,7 +6897,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	ndo2db_set_object_as_active(idi, NDO2DB_OBJECTTYPE_CONTACTGROUP, object_id);
 
 	/* add definition to db */
-	if (asprintf(
+/*	if (asprintf(
 			&buf,
 			"instance_id='%lu', config_type='%d', contactgroup_object_id='%lu', alias='%s'",
 			idi->dbinfo.instance_id, idi->current_object_config_type,
@@ -4996,13 +6907,44 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS], buf, buf) == -1)
 		buf1 = NULL;
+*/
 
-	if ((result = ndo2db_db_query(idi, buf1)) == NDO_OK)
+        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+        if(asprintf(&buf1, "instance_id=%lu AND config_type=%d AND contactgroup_object_id=%lu"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+                   )==-1)
+                buf1=NULL;
+
+        /* Values to set when updating */
+        if(asprintf(&buf2, "alias='%s'"
+		    ,es[0]
+                   )==-1)
+                buf2=NULL;
+
+        /* the data part of the INSERT statement */
+        if(asprintf(&buf3,"(instance_id, config_type, contactgroup_object_id, alias) VALUES (%lu, %d, %lu, '%s')"
+		    ,idi->dbinfo.instance_id
+		    ,idi->current_object_config_type
+		    ,object_id
+		    ,es[0]
+                   )==-1)
+                buf3=NULL;
+
+        /* create query with table_name, insert, update, cond */
+        buf = ido2db_insert_or_update(ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS], buf3, buf2, buf1);
+
+        free(buf1);
+        free(buf2);
+        free(buf3);
+
+
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
 		group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
-	free(buf1);
 
 	free(es[0]);
 
@@ -5017,7 +6959,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		if (asprintf(
+/*		if (asprintf(
 				&buf,
 				"instance_id='%d', contactgroup_id='%lu', contact_object_id='%lu'",
 				idi->dbinfo.instance_id, group_id, member_id) == -1)
@@ -5027,12 +6969,37 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPMEMBERS], buf,
 				buf) == -1)
 			buf1 = NULL;
+*/
 
-		result = ndo2db_db_query(idi, buf1);
+		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
+		if(asprintf(&buf1, "contactgroup_id=%lu AND contact_object_id=%lu"
+			    ,group_id
+			    ,member_id
+			   )==-1)
+			buf1=NULL;
+
+		/* Values to set when updating */
+		if(asprintf(&buf2, "instance_id=%lu"
+			    ,idi->dbinfo.instance_id
+			   )==-1)
+			buf2=NULL;
+
+		/* the data part of the INSERT statement */
+		if(asprintf(&buf3,"(instance_id, contactgroup_id, contact_object_id) VALUES (%lu, %lu, %lu)"
+			    ,idi->dbinfo.instance_id
+			    ,group_id
+			    ,member_id
+			   )==-1)
+			buf3=NULL;
+
+		free(buf1);
+		free(buf2);
+		free(buf3);
+
+		result = ndo2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-		free(buf1);
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition() end\n");

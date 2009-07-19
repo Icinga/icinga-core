@@ -142,5 +142,4 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *,char *,char *,unsigned long *);
 int ndo2db_db_perform_maintenance(ndo2db_idi *);
 int ndo2db_db_trim_data_table(ndo2db_idi *,char *,char *,unsigned long);
 
-
 #endif
