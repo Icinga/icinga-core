@@ -59,8 +59,8 @@ file2sock: file2sock.c $(COMMON_INC) $(COMMON_OBJS)
 log2ndo: log2ndo.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ log2ndo.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
-ido2db: ido2db.c $(NDO_INC) $(NDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o
-	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(MATHLIBS) $(OTHERLIBS)
+ido2db: ido2db.c $(NDO_INC) $(NDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o dbqueries.o
+	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o dbqueries.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(MATHLIBS) $(OTHERLIBS)
 
 idomod.o: idomod.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o idomod.o idomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -79,6 +79,9 @@ db.o: db.c $(SRC_INCLUDE)/db.h
 
 dbhandlers.o: dbhandlers.c $(SRC_INCLUDE)/dbhandlers.h
 	$(CC) $(CFLAGS) -c -o $@ dbhandlers.c
+
+dbqueries.o: dbqueries.c $(SRC_INCLUDE)/dbqueries.h
+	$(CC) $(CFLAGS) -c -o $@ dbqueries.c
 
 clean:
 	rm -f core file2sock log2ndo ido2db sockdebug *.o
