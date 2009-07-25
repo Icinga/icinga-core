@@ -17,6 +17,7 @@
 #include "../include/ido2db.h"
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
+#include "../include/dbqueries.h"
 
 /* Nagios header files */
 #include "../../../include/icinga.h"
@@ -761,59 +762,18 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	/* save a record of timed events that get added */
 	if (type == NEBTYPE_TIMEDEVENT_ADD) {
 
-		/* save entry to db */
-/*		if (asprintf(
-				&buf,
-				"instance_id='%lu', event_type='%d', queued_time=%s, queued_time_usec='%lu', scheduled_time=%s, recurring_event='%d', object_id='%lu'",
-				idi->dbinfo.instance_id, event_type, ts[0], tstamp.tv_usec,
-				ts[1], recurring_event, object_id) == -1)
-			buf = NULL;
+		void *data[7];
+		data[0] = (void *) &idi->dbinfo.instance_id; 
+		data[1] = (void *) &event_type;
+		data[2] = (void *) &ts[0];
+		data[3] = (void *) &tstamp.tv_usec;
+		data[4] = (void *) &ts[1];
+		data[5] = (void *) &recurring_event;
+		data[6] = (void *) &object_id;
 
-		if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf, buf)
-				== -1)
-			buf1 = NULL;
-*/
-		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu"
-			    ,idi->dbinfo.instance_id
-			    ,event_type
-			    ,ts[1]
-			    ,object_id
-			   )==-1)
-			buf1=NULL;
-
-		/* Values to set when updating */
-		if(asprintf(&buf2, "queued_time=%s, queued_time_usec=%lu, recurring_event=%d"
-                            ,ts[0]
-                            ,tstamp.tv_usec
-                            ,recurring_event
-                           )==-1)
-                        buf2=NULL;
-
-		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)"
-			    ,idi->dbinfo.instance_id
-			    ,event_type
-			    ,ts[0]
-			    ,tstamp.tv_usec
-			    ,ts[1]
-			    ,recurring_event
-			    ,object_id
-			   )==-1)
-			buf3=NULL;
-		
-		/* create query with table_name, insert, update, cond */
-		ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
-		
-		free(buf1);
-		free(buf2);
-		free(buf3);
-
-		result = ndo2db_db_query(idi, buf);
+		result = ido2db_query_insert_or_update_timedevent_add(idi, data);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
 	}
 
 	/* save a record of timed events that get executed.... */
