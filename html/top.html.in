@@ -1,38 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
         <title>Icinga</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <meta http-equiv="Content-Language" content="en" />
+        <meta http-equiv="Content-Language" content="fr" />
         <meta name="robots" content="noindex, nofollow" />
         <link rel="stylesheet" type="text/css" href="stylesheets/interface/common.css" media="screen, projection" />
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+        <script type="text/javascript" src="js/prototype.js"></script>
+        <script type="text/javascript" src="js/scriptaculous.js"></script>
 </head>
-<body id="top_hostsearch">
-        <table border="0" width="100%" height="100%" id="top_searchbar">
-		<tr>
-			<td align="center" width="180">
-				<img src="@htmurl@/images/icinga-logo.png" alt"Icinga-Logo" \>
-			</td>
-			<td align="center">
-				<form method="get" action="@cgiurl@/status.cgi" target="main">
-					<b>Search Host:</b>
-					<input type='hidden' name='navbarsearch' value='1'>
-					<input type='text' name='host' size='15' class="NavBarSearchItem">
-				</form>
-			</td>
-			<td align="center">
-				<form method="get" action="@cgiurl@/status.cgi" target="main">
-					<b>Search Hostgroup:</b>
-					<input type='text' name='hostgroup' size='15' class="NavBarSearchItem">
-				</form>
-			</td>
-			<td align="center">
-				<form method="get" action="@cgiurl@/status.cgi" target="main">
-					<b>Search Servicegroup:</b>
-					<input type='text' name='servicegroup' size='15' class="NavBarSearchItem">
-				</form>
-			</td>
-        </table>
+<body>
+	<div id="banner" align="center"><img src="./images/interface/Icinga_Header_Webinterface.jpg" alt="Icinga" /></div>
 </body>
 </html>

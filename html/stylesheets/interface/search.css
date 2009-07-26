@@ -1,0 +1,56 @@
+#searchTitle {
+	font-weight: bold;
+	font-size: 10pt;
+	background-color: #707677;
+	color: #fff;
+}
+
+div.autocomplete {
+	width: 350px;
+	background: #FFFFFF;
+	font-family: verdana,arial,serif; color: #000000;
+	font-size: 8pt;
+	text-align: left;
+}	
+
+div.autocomplete ul {
+	border: 1px solid #888;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style-type: none;
+	font-size: 8pt;
+}
+
+div.autocomplete ul li {
+	margin: 0;
+	padding: 3px;
+	font-size: 8pt;
+}
+
+div.autocomplete ul li.selected {
+	background-color: #e9e9e9;
+	color: #ef9f1b;
+}
+
+div.autocomplete ul strong.highlight {
+	color: #ef9f1b;
+	margin:0;
+	padding:0;
+}
+
+#listHOSTUP {
+	color: #00cc33;
+}
+
+#listHOSTDOWN {
+	color: #ff3300;
+}
+
+#listHOSTUNREACHABLE {
+	color: #bf44b2;
+}
+
+#searchSelected {
+	color: #000000;
+}

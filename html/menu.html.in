@@ -16,6 +16,7 @@
 		<ul>
 			<li class="menuli_style1"><a href="main.html" target="main">Home</a></li>
 			<li class="menuli_style2"><a href="docs/index.html" target="main">Documentation</a></li>
+			<li class="menuli_style2"><a href="search.html" target="main">Search</a></li>
 		</ul>
 		<h2>Monitoring</h2>
 		<ul>
