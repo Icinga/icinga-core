@@ -21,23 +21,24 @@ function secureVar($var) {
 // Array contains state codes for host state
 $hostStateCode = array ('0' => 'UP',
 						'1' => 'DOWN');
-	
-// Path to icinga api file
-$apiFile = 'icinga-api/IcingaApi.php';
+
+// Load required files
+require_once('icinga-api/IcingaApi.php');
+require_once('icinga-api/parser/Ido2dbParser.php');
+
+// Instance ido2db parser
+$ido2dbCfg = new Ido2dbParser();
 
 // Array contians connections data for the IDO
 $idoConfig = array (
-					'type'			=> 'mysql',
-					'host'			=> 'localhost',
-					'database'		=> '<DATABASENAME>',
-					'user'			=> '<USERNAME>',
-					'password'		=> '<PASSWORD>',
-					'persistent'		=> true,
-					'table_prefix'		=> 'icinga_',
-);
-
-// Load required files
-require_once($apiFile);
+					'type'			=> $ido2dbCfg->getConfigParameter('db_servertype'),
+					'host'			=> $ido2dbCfg->getConfigParameter('db_host'),
+					'database'		=> $ido2dbCfg->getConfigParameter('db_name'),
+					'user'			=> $ido2dbCfg->getConfigParameter('db_user'),
+					'password'		=> $ido2dbCfg->getConfigParameter('db_pass'),
+					'table_prefix'	=> $ido2dbCfg->getConfigParameter('db_prefix'),
+					'persistent'	=> true
+					);
 
 // Instance api object from class
 $api = IcingaApi::getConnection(IcingaApi::CONNECTION_IDO, $idoConfig);
