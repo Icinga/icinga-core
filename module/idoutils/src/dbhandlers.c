@@ -780,56 +780,18 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_TIMEDEVENT_EXECUTE) {
 
 		/* save entry to db */
-/*		if (asprintf(
-				&buf,
-				"instance_id='%lu', event_type='%d', event_time=%s, event_time_usec='%lu', scheduled_time=%s, recurring_event='%d', object_id='%lu'",
-				idi->dbinfo.instance_id, event_type, ts[0], tstamp.tv_usec,
-				ts[1], recurring_event, object_id) == -1)
-			buf = NULL;
+                void *data[7];
+                data[0] = (void *) &idi->dbinfo.instance_id;
+                data[1] = (void *) &event_type;
+                data[2] = (void *) &ts[0];
+                data[3] = (void *) &tstamp.tv_usec;
+                data[4] = (void *) &ts[1];
+                data[5] = (void *) &recurring_event;
+                data[6] = (void *) &object_id;
 
-		if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf, buf)
-				== -1)
-			buf1 = NULL;
-*/
-
-		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-                if(asprintf(&buf1, "instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu"
-                            ,idi->dbinfo.instance_id
-                            ,event_type
-                            ,ts[1]
-                            ,object_id
-                           )==-1)
-                        buf1=NULL;
-		/* Values to set when updating */
-                if(asprintf(&buf2, "event_time=%s, event_time_usec=%lu, recurring_event=%d"
-                            ,ts[0]
-                            ,tstamp.tv_usec
-                            ,recurring_event
-                           )==-1)
-                        buf2=NULL;
-		/* the data part of the INSERT statement */
-                if(asprintf(&buf3,"(instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)"
-                            ,idi->dbinfo.instance_id
-                            ,event_type
-                            ,ts[0]
-                            ,tstamp.tv_usec
-                            ,ts[1]
-                            ,recurring_event
-                            ,object_id
-                           )==-1)
-                        buf3=NULL;
-
-                /* create query with table_name, insert, update, cond */
-                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS], buf3, buf2, buf1);
-                free(buf1);
-                free(buf2);
-                free(buf3);
-
-		result = ndo2db_db_query(idi, buf);
+                result = ido2db_query_insert_or_update_timedevents_execute_add(idi, data);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
 	}
 
 	/* save a record of timed events that get removed.... */
@@ -1041,67 +1003,22 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	ts[1] = ndo2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf,
-			"instance_id='%lu', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', command_line='%s', timeout='%d', early_timeout='%d', execution_time='%lf', return_code='%d', output='%s', long_output='%s'",
-			idi->dbinfo.instance_id, ts[0], start_time.tv_usec, ts[1],
-			end_time.tv_usec, es[0], timeout, early_timeout, execution_time,
-			return_code, es[1], es[2]) == -1)
-		buf = NULL;
+        void *data[11];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &ts[0];
+        data[2] = (void *) &start_time.tv_usec;
+        data[3] = (void *) &ts[1];
+        data[4] = (void *) &end_time.tv_usec;
+        data[5] = (void *) &es[0];
+        data[6] = (void *) &timeout;
+        data[7] = (void *) &early_timeout;
+        data[8] = (void *) &execution_time;
+        data[9] = (void *) &return_code;
+        data[10] = (void *) &es[1];
+        data[11] = (void *) &es[2];
 
-	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS], buf, buf)
-			== -1)
-		buf1 = NULL;
-*/
-	/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-	if(asprintf(&buf1, "instance_id=%lu AND start_time=%s AND start_time_usec=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-		   )==-1)
-		buf1=NULL;
-
-	/* Values to set when updating */
-	if(asprintf(&buf2, "end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s'"
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,es[0]
-		    ,timeout
-		    ,early_timeout
-		    ,execution_time
-		    ,return_code
-		    ,es[1]
-                   )==-1)
-                buf2=NULL;
-
-	/* the data part of the INSERT statement */
-	if(asprintf(&buf3,"(instance_id, start_time, start_time_usec, end_time, end_time_usec, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %s, %lu, %s, %lu, '%s', %d, %d, %lf, %d, '%s')"
-		    ,idi->dbinfo.instance_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,es[0]
-		    ,timeout
-		    ,early_timeout
-		    ,execution_time
-		    ,return_code
-		    ,es[1]
-		   )==-1)
-		buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS], buf3, buf2, buf1);
-
-	free(buf1);
-	free(buf2);
-	free(buf3);
-
-
-	result = ndo2db_db_query(idi, buf);
+        result = ido2db_query_insert_or_update_systemcommanddata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1174,77 +1091,28 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf,
-			"instance_id='%lu', eventhandler_type='%d', object_id='%lu', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', command_object_id='%lu', command_args='%s', command_line='%s', timeout='%d', early_timeout='%d', execution_time='%lf', return_code='%d', output='%s', long_output='%s'",
-			idi->dbinfo.instance_id, eventhandler_type, object_id, state,
-			state_type, ts[0], start_time.tv_usec, ts[1], end_time.tv_usec,
-			command_id, es[0], es[1], timeout, early_timeout, execution_time,
-			return_code, es[2], es[3]) == -1)
-		buf = NULL;
+        void *data[18];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &eventhandler_type;
+        data[2] = (void *) &object_id;
+        data[3] = (void *) &state;
+        data[4] = (void *) &state_type;
+        data[5] = (void *) &ts[0];
+        data[6] = (void *) &start_time.tv_usec;
+        data[7] = (void *) &ts[1];
+        data[8] = (void *) &end_time.tv_usec;
+        data[9] = (void *) &command_id;
+        data[10] = (void *) &es[0];
+        data[11] = (void *) &es[1];
+        data[12] = (void *) &timeout;
+        data[13] = (void *) &early_timeout;
+        data[14] = (void *) &execution_time;
+        data[15] = (void *) &return_code;
+        data[16] = (void *) &es[2];
+        data[17] = (void *) &es[3];
 
-	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], buf, buf) == -1)
-		buf1 = NULL;
-*/
-	/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-	if(asprintf(&buf1, "instance_id=%lu AND start_time=%s AND start_time_usec=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-		   )==-1)
-		buf1=NULL;
-
-	/* Values to set when updating */
-	if(asprintf(&buf2, "eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s'"
-		    ,eventhandler_type
-		    ,object_id
-		    ,state
-		    ,state_type
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,command_id
-		    ,es[0]
-		    ,es[1]
-		    ,timeout
-		    ,early_timeout
-		    ,execution_time
-		    ,return_code
-		    ,es[2]
-                   )==-1)
-                buf2=NULL;
-
-	/* the data part of the INSERT statement */
-	if(asprintf(&buf3,"(instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s')"
-		    ,idi->dbinfo.instance_id
-		    ,eventhandler_type
-		    ,object_id
-		    ,state
-		    ,state_type
-		    ,ts[0]
-		    ,start_time.tv_usec
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,command_id
-		    ,es[0]
-		    ,es[1]
-		    ,timeout
-		    ,early_timeout
-		    ,execution_time
-		    ,return_code
-		    ,es[2]
-		   )==-1)
-		buf3=NULL;
-	/* create query with table_name, insert, update, cond */
-	ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], buf3, buf2, buf1);
-
-	free(buf1);
-	free(buf2);
-	free(buf3);
-
-	result = ndo2db_db_query(idi, buf);
+        result = ido2db_query_insert_or_update_eventhandlerdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1308,65 +1176,22 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf,
-			"instance_id='%lu', notification_type='%d', notification_reason='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', object_id='%lu', state='%d', output='%s', long_output='%s', escalated='%d', contacts_notified='%d'",
-			idi->dbinfo.instance_id, notification_type, notification_reason,
-			ts[0], start_time.tv_usec, ts[1], end_time.tv_usec, object_id,
-			state, es[0], es[1], escalated, contacts_notified) == -1)
-		buf = NULL;
+        void *data[13];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &notification_type;
+        data[2] = (void *) &notification_reason;
+        data[3] = (void *) &ts[0];
+        data[4] = (void *) &start_time.tv_sec;
+        data[5] = (void *) &ts[1];
+        data[6] = (void *) &end_time.tv_usec;
+        data[7] = (void *) &object_id;
+        data[8] = (void *) &state;
+        data[9] = (void *) &es[0];
+        data[10] = (void *) &es[1];
+        data[11] = (void *) &escalated;
+        data[12] = (void *) &contacts_notified;
 
-	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS], buf, buf) == -1)
-		buf1 = NULL;
-*/
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-		    ,object_id
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', escalated=%d, contacts_notified=%d"
-		    ,notification_type
-		    ,notification_reason
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,state
-		    ,es[0]
-		    ,escalated
-		    ,contacts_notified
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, notification_type, notification_reason, start_time, start_time_usec, end_time, end_time_usec, object_id, state, output, escalated, contacts_notified) VALUES (%lu, %d, %d, %s, %lu, %s, %lu, %lu, %d, '%s', %d, %d)"
-		    ,idi->dbinfo.instance_id
-		    ,notification_type
-		    ,notification_reason
-		    ,ts[0]
-		    ,start_time.tv_usec
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,object_id
-		    ,state
-		    ,es[0]
-		    ,escalated
-		    ,contacts_notified
-                   )==-1)
-                buf3=NULL;
-	/* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
-	/* run the query */
-	result = ndo2db_db_query(idi, buf);
+        result = ido2db_query_insert_or_update_notificationdata_add(idi, data);
 
 	/* save the notification id for later use... */
 	if (type == NEBTYPE_NOTIFICATION_START)
@@ -1375,7 +1200,6 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 		idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1426,56 +1250,16 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &contact_id);
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf,
-			"instance_id='%lu', notification_id='%lu', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', contact_object_id='%lu'",
-			idi->dbinfo.instance_id, idi->dbinfo.last_notification_id, ts[0],
-			start_time.tv_usec, ts[1], end_time.tv_usec, contact_id) == -1)
-		buf = NULL;
+        void *data[7];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &idi->dbinfo.last_notification_id;
+        data[2] = (void *) &ts[0];
+        data[3] = (void *) &start_time.tv_usec;
+        data[4] = (void *) &ts[1];
+        data[5] = (void *) &end_time.tv_usec;
+        data[6] = (void *) &contact_id;
 
-	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS], buf, buf)
-			== -1)
-		buf1 = NULL;
-*/
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,contact_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "notification_id=%lu, end_time=%s, end_time_usec=%lu"
-		    ,idi->dbinfo.last_notification_id
-		    ,ts[1]
-		    ,end_time.tv_usec
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, notification_id, start_time, start_time_usec, end_time, end_time_usec, contact_object_id) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu)"
-                    ,idi->dbinfo.instance_id
-                    ,idi->dbinfo.last_notification_id
-                    ,ts[0]
-                    ,start_time.tv_usec
-                    ,ts[1]
-                    ,end_time.tv_usec
-                    ,contact_id
-                   )==-1)
-                buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
-	/* run the query */
-	result = ndo2db_db_query(idi, buf);
+        result = ido2db_query_insert_or_update_contactnotificationdata_add(idi, data);
 
 	/* save the contact notification id for later use... */
 	if (type == NEBTYPE_CONTACTNOTIFICATION_START)
@@ -1484,7 +1268,6 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 		idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1537,63 +1320,17 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf,
-			"instance_id='%lu', contactnotification_id='%lu', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', command_object_id='%lu', command_args='%s'",
-			idi->dbinfo.instance_id, idi->dbinfo.last_contact_notification_id,
-			ts[0], start_time.tv_usec, ts[1], end_time.tv_usec, command_id,
-			es[0]) == -1)
-		buf = NULL;
+        void *data[7];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &idi->dbinfo.last_contact_notification_id;
+        data[2] = (void *) &ts[0];
+        data[3] = (void *) &start_time.tv_usec;
+        data[4] = (void *) &ts[1];
+        data[5] = (void *) &end_time.tv_usec;
+        data[6] = (void *) &command_id;
 
-	if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
-			buf, buf) == -1)
-		buf1 = NULL;
-*/
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu AND contactnotification_id=%lu AND start_time=%s AND start_time_usec=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,idi->dbinfo.last_contact_notification_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s'"
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,command_id
-		    ,es[0]
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu, '%s')"
-		    ,idi->dbinfo.instance_id
-		    ,idi->dbinfo.last_contact_notification_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,command_id
-		    ,es[0]
-                   )==-1)
-                buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
-
-	/* run the query */
-	result = ndo2db_db_query(idi, buf);
-
+        result = ido2db_query_insert_or_update_contactnotificationmethoddata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1652,33 +1389,18 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* covert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_CHECKTYPE], &check_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_CURRENTCHECKATTEMPT],
-			&current_check_attempt);
-	result
-			= ndo2db_convert_string_to_int(
-					idi->buffered_input[NDO_DATA_MAXCHECKATTEMPTS],
-					&max_check_attempts);
-	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STATE],
-			&state);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STATETYPE], &state_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_TIMEOUT], &timeout);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_EARLYTIMEOUT], &early_timeout);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_RETURNCODE], &return_code);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_LATENCY], &latency);
-	result = ndo2db_convert_string_to_timeval(
-			idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
-	result = ndo2db_convert_string_to_timeval(
-			idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_CHECKTYPE], &check_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STATE], &state);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STATETYPE], &state_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_TIMEOUT], &timeout);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_EARLYTIMEOUT], &early_timeout);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_RETURNCODE], &return_code);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_EXECUTIONTIME], &execution_time);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_LATENCY], &latency);
+	result = ndo2db_convert_string_to_timeval(idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
+	result = ndo2db_convert_string_to_timeval(idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMANDARGS]);
 	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMANDLINE]);
@@ -1704,90 +1426,29 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 		command_id = 0L;
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf1,
-			"instance_id='%lu', service_object_id='%lu', check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
-			idi->dbinfo.instance_id, object_id, check_type,
-			current_check_attempt, max_check_attempts, state, state_type,
-			ts[0], start_time.tv_usec, ts[1], end_time.tv_usec, timeout,
-			early_timeout, execution_time, latency, return_code, es[2], es[3], es[4])
-			== -1)
-		buf1 = NULL;
+        void *data[19];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &object_id;
+        data[2] = (void *) &check_type;
+        data[3] = (void *) &current_check_attempt;
+        data[4] = (void *) &max_check_attempts;
+        data[5] = (void *) &state;
+        data[6] = (void *) &state_type;
+        data[7] = (void *) &ts[0];
+        data[8] = (void *) &start_time.tv_usec;
+        data[9] = (void *) &ts[1];
+        data[10] = (void *) &end_time.tv_usec;
+        data[11] = (void *) &timeout;
+        data[12] = (void *) &early_timeout;
+        data[13] = (void *) &execution_time;
+        data[14] = (void *) &latency;
+        data[15] = (void *) &return_code;
+        data[16] = (void *) &es[2];
+        data[17] = (void *) &es[3];
+        data[18] = (void *) &es[4];
 
-	if (asprintf(
-			&buf,
-			"INSERT INTO %s SET %s, command_object_id='%lu', command_args='%s', command_line='%s' ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS], buf1,
-			command_id, es[0], es[1], buf1) == -1)
-		buf = NULL;
-*/
-
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,object_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'"
-                        ,check_type
-                        ,current_check_attempt
-			,max_check_attempts
-			,state
-			,state_type
-			,ts[0]
-			,start_time.tv_usec
-			,ts[1]
-			,end_time.tv_usec
-			,timeout
-			,early_timeout
-			,execution_time
-			,latency
-			,return_code
-			,es[2]
-			,es[3]
-			,es[4]
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%s', '%lu', '%s', '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')"
-			,idi->dbinfo.instance_id
-			,object_id
-			,check_type
-			,current_check_attempt
-			,max_check_attempts
-			,state
-			,state_type
-			,ts[0]
-			,start_time.tv_usec
-			,ts[1]
-			,end_time.tv_usec
-			,timeout
-			,early_timeout
-			,execution_time
-			,latency
-			,return_code
-			,es[2]
-			,es[3]
-			,es[4]
-                   )==-1)
-                buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
-	result = ndo2db_db_query(idi, buf);
-
+        result = ido2db_query_insert_or_update_servicecheckdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1848,33 +1509,18 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* covert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_CHECKTYPE], &check_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_CURRENTCHECKATTEMPT],
-			&current_check_attempt);
-	result
-			= ndo2db_convert_string_to_int(
-					idi->buffered_input[NDO_DATA_MAXCHECKATTEMPTS],
-					&max_check_attempts);
-	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STATE],
-			&state);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_STATETYPE], &state_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_TIMEOUT], &timeout);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_EARLYTIMEOUT], &early_timeout);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_RETURNCODE], &return_code);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ndo2db_convert_string_to_double(
-			idi->buffered_input[NDO_DATA_LATENCY], &latency);
-	result = ndo2db_convert_string_to_timeval(
-			idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
-	result = ndo2db_convert_string_to_timeval(
-			idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_CHECKTYPE], &check_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STATE], &state);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_STATETYPE], &state_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_TIMEOUT], &timeout);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_EARLYTIMEOUT], &early_timeout);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_RETURNCODE], &return_code);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_EXECUTIONTIME], &execution_time);
+	result = ndo2db_convert_string_to_double(idi->buffered_input[NDO_DATA_LATENCY], &latency);
+	result = ndo2db_convert_string_to_timeval(idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
+	result = ndo2db_convert_string_to_timeval(idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMANDARGS]);
 	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMANDLINE]);
@@ -1906,90 +1552,33 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 		is_raw_check = 0;
 
 	/* save entry to db */
-/*	if (asprintf(
-			&buf1,
-			"instance_id='%lu', host_object_id='%lu', check_type='%d', is_raw_check='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
-			idi->dbinfo.instance_id, object_id, check_type, is_raw_check,
-			current_check_attempt, max_check_attempts, state, state_type,
-			ts[0], start_time.tv_usec, ts[1], end_time.tv_usec, timeout,
-			early_timeout, execution_time, latency, return_code, es[2], es[3], es[4])
-			== -1)
-		buf1 = NULL;
+        void *data[23];
+        data[0] = (void *) &command_id;
+        data[1] = (void *) &es[0];
+        data[2] = (void *) &es[1];
+        data[3] = (void *) &idi->dbinfo.instance_id;
+        data[4] = (void *) &object_id;
+        data[5] = (void *) &check_type;
+        data[6] = (void *) &is_raw_check;
+        data[7] = (void *) &current_check_attempt;
+        data[8] = (void *) &max_check_attempts;
+        data[9] = (void *) &state;
+        data[10] = (void *) &state_type;
+        data[11] = (void *) &ts[0];
+        data[12] = (void *) &start_time.tv_usec;
+        data[13] = (void *) &ts[1];
+        data[14] = (void *) &end_time.tv_usec;
+        data[15] = (void *) &timeout;
+        data[16] = (void *) &early_timeout;
+        data[17] = (void *) &execution_time;
+        data[18] = (void *) &latency;
+        data[19] = (void *) &return_code;
+        data[20] = (void *) &es[2];
+        data[21] = (void *) &es[3];
+        data[22] = (void *) &es[3];
 
-	if (asprintf(
-			&buf,
-			"INSERT INTO %s SET %s, command_object_id='%lu', command_args='%s', command_line='%s' ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS], buf1, command_id,
-			es[0], es[1], buf1) == -1)
-		buf = NULL;
-*/
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu AND host_object_id=%lu AND start_time=%s AND start_time_usec=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,object_id
-		    ,ts[0]
-		    ,start_time.tv_usec
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "check_type=%d, is_raw_check=%d, current_check_attempt=%d, max_check_attempts=%d, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, timeout=%d, early_timeout=%d, execution_time=%lf, latency=%lf, return_code=%d, output='%s', perfdata='%s'"
-		    ,check_type
-		    ,is_raw_check
-		    ,current_check_attempt
-		    ,max_check_attempts
-		    ,state
-		    ,state_type
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,timeout
-		    ,early_timeout
-		    ,execution_time
-		    ,latency
-		    ,return_code
-		    ,es[2]
-		    ,es[3]
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s')"
-		    ,command_id
-		    ,es[0]
-		    ,es[1]
-		    ,idi->dbinfo.instance_id
-		    ,object_id
-		    ,check_type
-		    ,is_raw_check
-		    ,current_check_attempt
-		    ,max_check_attempts
-		    ,state
-		    ,state_type
-		    ,ts[0]
-		    ,start_time.tv_usec
-		    ,ts[1]
-		    ,end_time.tv_usec
-		    ,timeout
-		    ,early_timeout
-		    ,execution_time
-		    ,latency
-		    ,return_code
-		    ,es[2]
-		    ,es[3]
-                   )==-1)
-                buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
-	result = ndo2db_db_query(idi, buf);
-
+        result = ido2db_query_insert_or_update_hostcheckdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -2033,26 +1622,16 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			&tstamp);
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_COMMENTTYPE], &comment_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_ENTRYTYPE], &entry_type);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_PERSISTENT], &is_persistent);
-	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SOURCE],
-			&comment_source);
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_EXPIRES], &expires);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_COMMENTTYPE], &comment_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_ENTRYTYPE], &entry_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_PERSISTENT], &is_persistent);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_SOURCE], &comment_source);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_EXPIRES], &expires);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_COMMENTID], &internal_comment_id);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_ENTRYTIME], &comment_time);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_EXPIRATIONTIME], &expire_time);
 
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_COMMENTID], &internal_comment_id);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_ENTRYTIME], &comment_time);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_EXPIRATIONTIME], &expire_time);
-
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_AUTHORNAME]);
+	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_AUTHORNAME]);
 	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMENT]);
 
 	ts[0] = ndo2db_db_timet_to_sql(idi, tstamp.tv_sec);
@@ -2073,73 +1652,24 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_COMMENT_ADD || type == NEBTYPE_COMMENT_LOAD) {
 
 		/* save entry to db */
-/*		if (asprintf(
-				&buf,
-				"instance_id='%lu', comment_type='%d', entry_type='%d', object_id='%lu', comment_time=%s, internal_comment_id='%lu', author_name='%s', comment_data='%s', is_persistent='%d', comment_source='%d', expires='%d', expiration_time=%s",
-				idi->dbinfo.instance_id, comment_type, entry_type, object_id,
-				ts[1], internal_comment_id, es[0], es[1], is_persistent,
-				comment_source, expires, ts[2]) == -1)
-			buf = NULL;
+	        void *data[14];
+	        data[0] = (void *) &ts[0];
+	        data[1] = (void *) &tstamp.tv_usec;
+	        data[2] = (void *) &idi->dbinfo.instance_id;
+	        data[3] = (void *) &comment_type;
+	        data[4] = (void *) &entry_type;
+	        data[5] = (void *) &object_id;
+	        data[6] = (void *) &ts[1];
+	        data[7] = (void *) &internal_comment_id;
+	        data[8] = (void *) &es[0];
+	        data[9] = (void *) &es[1];
+	        data[10] = (void *) &is_persistent;
+	        data[11] = (void *) &comment_source;
+	        data[12] = (void *) &expires;
+	        data[13] = (void *) &ts[2];
 
-		if (asprintf(
-				&buf1,
-				"INSERT INTO %s SET %s, entry_time=%s, entry_time_usec='%lu' ON DUPLICATE KEY UPDATE %s",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY], buf,
-				ts[0], tstamp.tv_usec, buf) == -1)
-			buf1 = NULL;
-*/
-		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu"
-			    ,idi->dbinfo.instance_id
-			    ,ts[1]
-			    ,internal_comment_id
-                   )==-1)
-                buf1=NULL;
-
-		/* Values to set when updating */
-		if(asprintf(&buf2, "comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s"
-			    ,comment_type
-			    ,entry_type
-			    ,object_id
-			    ,es[0]
-			    ,es[1]
-			    ,is_persistent
-			    ,comment_source
-			    ,expires
-			    ,ts[2]
-                   )==-1)
-                buf2=NULL;
-
-		/* the data part of the INSERT statement */
-		if(asprintf(&buf3,"(entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)"
-			    ,ts[0]
-			    ,tstamp.tv_usec
-			    ,idi->dbinfo.instance_id
-			    ,comment_type
-			    ,entry_type
-			    ,object_id
-			    ,ts[1]
-			    ,internal_comment_id
-			    ,es[0]
-			    ,es[1]
-			    ,is_persistent
-			    ,comment_source
-			    ,expires
-			    ,ts[2]
-                   )==-1)
-                buf3=NULL;
-
-                /* create query with table_name, insert, update, cond */
-                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY], buf3, buf2, buf1);
-
-		free(buf1);
-		free(buf2);
-		free(buf3);
-
-		result = ndo2db_db_query(idi, buf);
-
+	        result = ido2db_query_insert_or_update_commentdata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY]);
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
 	}
 
 	/* UPDATE HISTORICAL COMMENTS */
@@ -2165,74 +1695,24 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-/*		if (asprintf(i
-				&buf,
-				"instance_id='%lu', comment_type='%d', entry_type='%d', object_id='%lu', comment_time=%s, internal_comment_id='%lu', author_name='%s', comment_data='%s', is_persistent='%d', comment_source='%d', expires='%d', expiration_time=%s",
-				idi->dbinfo.instance_id, comment_type, entry_type, object_id,
-				ts[1], internal_comment_id, es[0], es[1], is_persistent,
-				comment_source, expires, ts[2]) == -1)
-			buf = NULL;
+                void *data[14];
+                data[0] = (void *) &ts[0];
+                data[1] = (void *) &tstamp.tv_usec;
+                data[2] = (void *) &idi->dbinfo.instance_id;
+                data[3] = (void *) &comment_type;
+                data[4] = (void *) &entry_type;
+                data[5] = (void *) &object_id;
+                data[6] = (void *) &ts[1];
+                data[7] = (void *) &internal_comment_id;
+                data[8] = (void *) &es[0];
+                data[9] = (void *) &es[1];
+                data[10] = (void *) &is_persistent;
+                data[11] = (void *) &comment_source;
+                data[12] = (void *) &expires;
+                data[13] = (void *) &ts[2];
 
-		if (asprintf(
-				&buf1,
-				"INSERT INTO %s SET %s, entry_time=%s, entry_time_usec='%lu' ON DUPLICATE KEY UPDATE %s",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], buf, ts[0],
-				tstamp.tv_usec, buf) == -1)
-			buf1 = NULL;
-*/
-	        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        	if(asprintf(&buf1, "instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu"
-			    ,idi->dbinfo.instance_id
-			    ,ts[1]
-			    ,internal_comment_id
-	                   )==-1)
-                	buf1=NULL;
-
-	        /* Values to set when updating */
-	        if(asprintf(&buf2, "comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s"
-			    ,comment_type
-			    ,entry_type
-			    ,object_id
-			    ,es[0]
-			    ,es[1]
-			    ,is_persistent
-			    ,comment_source
-			    ,expires
-			    ,ts[2]
-        	           )==-1)
-	                buf2=NULL;
-
-	        /* the data part of the INSERT statement */
-	        if(asprintf(&buf3,"(entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)"
-			    ,ts[0]
-			    ,tstamp.tv_usec
-			    ,idi->dbinfo.instance_id
-			    ,comment_type
-			    ,entry_type
-			    ,object_id
-			    ,ts[1]
-			    ,internal_comment_id
-			    ,es[0]
-			    ,es[1]
-			    ,is_persistent
-			    ,comment_source
-			    ,expires
-			    ,ts[2]
-	                   )==-1)
-	                buf3=NULL;
-
-                /* create query with table_name, insert, update, cond */
-                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], buf3, buf2, buf1);
-
-	        free(buf1);
-	        free(buf2);
-	        free(buf3);
-
-
-		result = ndo2db_db_query(idi, buf);
-
+                result = ido2db_query_insert_or_update_commentdata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]);
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
 	}
 
 	/* REMOVE CURRENT COMMENTS */
@@ -2294,26 +1774,16 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 			&tstamp);
 
 	/* convert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_DOWNTIMETYPE], &downtime_type);
-	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FIXED],
-			&fixed);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_DOWNTIMETYPE], &downtime_type);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_FIXED], &fixed);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_DURATION], &duration);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_DOWNTIMEID], &internal_downtime_id);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_TRIGGEREDBY], &triggered_by);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_ENTRYTIME], &entry_time);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
 
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_DURATION], &duration);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_DOWNTIMEID], &internal_downtime_id);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_TRIGGEREDBY], &triggered_by);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_ENTRYTIME], &entry_time);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
-
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_AUTHORNAME]);
+	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_AUTHORNAME]);
 	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMENT]);
 
 	ts[0] = ndo2db_db_timet_to_sql(idi, tstamp.tv_sec);
@@ -2336,70 +1806,22 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_DOWNTIME_ADD || type == NEBTYPE_DOWNTIME_LOAD) {
 
 		/* save entry to db */
-/*		if (asprintf(
-				&buf,
-				"instance_id='%lu', downtime_type='%d', object_id='%lu', entry_time=%s, author_name='%s', comment_data='%s', internal_downtime_id='%lu', triggered_by_id='%lu', is_fixed='%d', duration='%lu', scheduled_start_time=%s, scheduled_end_time=%s",
-				idi->dbinfo.instance_id, downtime_type, object_id, ts[1],
-				es[0], es[1], internal_downtime_id, triggered_by, fixed,
-				duration, ts[2], ts[3]) == -1)
-			buf = NULL;
+	        void *data[12];
+	        data[0] = (void *) &idi->dbinfo.instance_id;
+	        data[1] = (void *) &downtime_type;
+	        data[2] = (void *) &object_id;
+	        data[3] = (void *) &ts[1];
+	        data[4] = (void *) &es[0];
+	        data[5] = (void *) &es[1];
+	        data[6] = (void *) &internal_downtime_id;
+	        data[7] = (void *) &triggered_by;
+	        data[8] = (void *) &fixed;
+	        data[9] = (void *) &duration;
+	        data[10] = (void *) &ts[2];
+	        data[11] = (void *) &ts[3];
 
-		if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], buf, buf)
-				== -1)
-			buf1 = NULL;
-*/
-
-		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu"
-			    ,idi->dbinfo.instance_id
-			    ,object_id
-			    ,ts[1]
-			    ,internal_downtime_id
-		           )==-1)
-		        buf1=NULL;
-
-	        /* Values to set when updating */
-	        if(asprintf(&buf2, "downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s"
-			    ,downtime_type
-			    ,es[0]
-			    ,es[1]
-			    ,triggered_by
-			    ,fixed
-			    ,duration
-			    ,ts[2]
-			    ,ts[3]
-	                   )==-1)
-	                buf2=NULL;
-
-	        /* the data part of the INSERT statement */
-	        if(asprintf(&buf3,"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)"
-			    ,idi->dbinfo.instance_id
-			    ,downtime_type
-			    ,object_id
-			    ,ts[1]
-			    ,es[0]
-			    ,es[1]
-			    ,internal_downtime_id
-			    ,triggered_by
-			    ,fixed
-			    ,duration
-			    ,ts[2]
-			    ,ts[3]
-	                   )==-1)
-	                buf3=NULL;
-
-                /* create query with table_name, insert, update, cond */
-                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], buf3, buf2, buf1);
-
-	        free(buf1);
-	        free(buf2);
-	        free(buf3);
-
-		result = ndo2db_db_query(idi, buf);
-
+	        result = ido2db_query_insert_or_update_downtimedata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]);
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -2446,69 +1868,22 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-/*		if (asprintf(
-				&buf,
-				"instance_id='%lu', downtime_type='%d', object_id='%lu', entry_time=%s, author_name='%s', comment_data='%s', internal_downtime_id='%lu', triggered_by_id='%lu', is_fixed='%d', duration='%lu', scheduled_start_time=%s, scheduled_end_time=%s",
-				idi->dbinfo.instance_id, downtime_type, object_id, ts[1],
-				es[0], es[1], internal_downtime_id, triggered_by, fixed,
-				duration, ts[2], ts[3]) == -1)
-			buf = NULL;
+                void *data[12];
+                data[0] = (void *) &idi->dbinfo.instance_id;
+                data[1] = (void *) &downtime_type;
+                data[2] = (void *) &object_id;
+                data[3] = (void *) &ts[1];
+                data[4] = (void *) &es[0];
+                data[5] = (void *) &es[1];
+                data[6] = (void *) &internal_downtime_id;
+                data[7] = (void *) &triggered_by;
+                data[8] = (void *) &fixed;
+                data[9] = (void *) &duration;
+                data[10] = (void *) &ts[2];
+                data[11] = (void *) &ts[3];
 
-		if (asprintf(&buf1, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], buf,
-				buf) == -1)
-			buf1 = NULL;
-*/
-        	/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-	        if(asprintf(&buf1, "instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu"
-			    ,idi->dbinfo.instance_id
-			    ,object_id
-			    ,ts[1]
-			    ,internal_downtime_id
-                   )==-1)
-                buf1=NULL;
-
-	        /* Values to set when updating */
-	        if(asprintf(&buf2, "downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s"
-			    ,downtime_type
-			    ,es[0]
-			    ,es[1]
-			    ,triggered_by
-			    ,fixed
-			    ,duration
-			    ,ts[2]
-			    ,ts[3]
-                   )==-1)
-                buf2=NULL;
-
-	        /* the data part of the INSERT statement */
-        	if(asprintf(&buf3,"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)"
-			    ,idi->dbinfo.instance_id
-			    ,downtime_type
-			    ,object_id
-			    ,ts[1]
-			    ,es[0]
-			    ,es[1]
-			    ,internal_downtime_id
-			    ,triggered_by
-			    ,fixed
-			    ,duration
-			    ,ts[2]
-			    ,ts[3]
-                   )==-1)
-                buf3=NULL;
-
-                /* create query with table_name, insert, update, cond */
-                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], buf3, buf2, buf1);
-
-	        free(buf1);
-        	free(buf2);
-	        free(buf3);
- 
-		result = ndo2db_db_query(idi, buf);
-
+                result = ido2db_query_insert_or_update_downtimedata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME]);
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -2696,97 +2071,33 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	ts[2] = ndo2db_db_timet_to_sql(idi, last_command_check);
 	ts[3] = ndo2db_db_timet_to_sql(idi, last_log_rotation);
 
-	/* generate query string */
-/*	if (asprintf(
-			&buf1,
-			"instance_id='%lu', status_update_time=%s, program_start_time=%s, is_currently_running='1', process_id='%lu', daemon_mode='%d', last_command_check=%s, last_log_rotation=%s, notifications_enabled='%d', active_service_checks_enabled='%d', passive_service_checks_enabled='%d', active_host_checks_enabled='%d', passive_host_checks_enabled='%d', event_handlers_enabled='%d', flap_detection_enabled='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_hosts='%d', obsess_over_services='%d', modified_host_attributes='%lu', modified_service_attributes='%lu', global_host_event_handler='%s', global_service_event_handler='%s'",
-			idi->dbinfo.instance_id, ts[0], ts[1], process_id, daemon_mode,
-			ts[2], ts[3], notifications_enabled, active_service_checks_enabled,
-			passive_service_checks_enabled, active_host_checks_enabled,
-			passive_host_checks_enabled, event_handlers_enabled,
-			flap_detection_enabled, failure_prediction_enabled,
-			process_performance_data, obsess_over_hosts, obsess_over_services,
-			modified_host_attributes, modified_service_attributes, es[0], es[1])
-			== -1)
-		buf1 = NULL;
-
-	if (asprintf(&buf, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], buf1, buf1)
-			== -1)
-		buf = NULL;
-*/
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "instance_id=%lu"
-		    ,idi->dbinfo.instance_id
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "status_update_time=%s, program_start_time=%s, is_currently_running=1, process_id=%lu, daemon_mode=%d, last_command_check=%s, last_log_rotation=%s, notifications_enabled=%d, active_service_checks_enabled=%d, passive_service_checks_enabled=%d, active_host_checks_enabled=%d, passive_host_checks_enabled=%d, event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', global_service_event_handler='%s'"
-		    ,ts[0]
-		    ,ts[1]
-		    ,process_id
-		    ,daemon_mode
-		    ,ts[2]
-		    ,ts[3]
-		    ,notifications_enabled
-		    ,active_service_checks_enabled
-		    ,passive_service_checks_enabled
-		    ,active_host_checks_enabled
-		    ,passive_host_checks_enabled
-		    ,event_handlers_enabled
-		    ,flap_detection_enabled
-		    ,failure_prediction_enabled
-		    ,process_performance_data
-		    ,obsess_over_hosts
-		    ,obsess_over_services
-		    ,modified_host_attributes
-		    ,modified_service_attributes
-		    ,es[0]
-		    ,es[1]
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, status_update_time, program_start_time, is_currently_running, process_id, daemon_mode, last_command_check, last_log_rotation, notifications_enabled, active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, failure_prediction_enabled, process_performance_data, obsess_over_hosts, obsess_over_services, modified_host_attributes, modified_service_attributes, global_host_event_handler, global_service_event_handler) VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, '%s', '%s')"
-		    ,idi->dbinfo.instance_id
-		    ,ts[0]
-		    ,ts[1]
-		    ,process_id
-		    ,daemon_mode
-		    ,ts[2]
-		    ,ts[3]
-		    ,notifications_enabled
-		    ,active_service_checks_enabled
-		    ,passive_service_checks_enabled
-		    ,active_host_checks_enabled
-		    ,passive_host_checks_enabled
-		    ,event_handlers_enabled
-		    ,flap_detection_enabled
-		    ,failure_prediction_enabled
-		    ,process_performance_data
-		    ,obsess_over_hosts
-		    ,obsess_over_services
-		    ,modified_host_attributes
-		    ,modified_service_attributes
-		    ,es[0]
-		    ,es[1]
-                   )==-1)
-                buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
+        void *data[22];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &ts[0];
+        data[2] = (void *) &ts[1];
+        data[3] = (void *) &process_id;
+        data[4] = (void *) &daemon_mode;
+        data[5] = (void *) &ts[2];
+        data[6] = (void *) &ts[3];
+        data[7] = (void *) &notifications_enabled;
+        data[8] = (void *) &active_service_checks_enabled;
+        data[9] = (void *) &passive_service_checks_enabled;
+        data[10] = (void *) &active_host_checks_enabled;
+        data[11] = (void *) &passive_host_checks_enabled;
+        data[12] = (void *) &event_handlers_enabled;
+        data[13] = (void *) &flap_detection_enabled;
+        data[14] = (void *) &failure_prediction_enabled;
+        data[15] = (void *) &process_performance_data;
+        data[16] = (void *) &obsess_over_hosts;
+        data[17] = (void *) &obsess_over_services;
+        data[18] = (void *) &modified_host_attributes;
+        data[19] = (void *) &modified_service_attributes;
+        data[20] = (void *) &es[0];
+        data[21] = (void *) &es[1];
 
 	/* save entry to db */
-	result = ndo2db_db_query(idi, buf);
-
+        result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -2922,148 +2233,57 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[NDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
 
-	/* generate query string */
-/*	if (asprintf(
-			&buf1,
-			"instance_id='%lu', host_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
-			idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1], es[2],
-			current_state, has_been_checked, should_be_scheduled,
-			current_check_attempt, max_check_attempts, ts[1], ts[2],
-			check_type, ts[3], ts[4], last_hard_state, ts[5], ts[6], ts[7],
-			state_type, ts[8], ts[9], no_more_notifications,
-			notifications_enabled, problem_has_been_acknowledged,
-			acknowledgement_type, current_notification_number,
-			passive_checks_enabled, active_checks_enabled,
-			event_handler_enabled, flap_detection_enabled, is_flapping,
-			percent_state_change, latency, execution_time,
-			scheduled_downtime_depth, failure_prediction_enabled,
-			process_performance_data, obsess_over_host,
-			modified_host_attributes, es[3], es[4], normal_check_interval,
-			retry_check_interval, check_timeperiod_object_id) == -1)
-		buf1 = NULL;
-
-	if (asprintf(&buf, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], buf1, buf1) == -1)
-		buf = NULL;
-*/
-        /* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-        if(asprintf(&buf1, "host_object_id=%lu"
-		    ,object_id
-                   )==-1)
-                buf1=NULL;
-
-        /* Values to set when updating */
-        if(asprintf(&buf2, "instance_id=%lu, status_update_time=%s, output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change=%lf, latency=%lf, execution_time=%lf, scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval=%lf, retry_check_interval=%lf, check_timeperiod_object_id=%lu"
-		    ,idi->dbinfo.instance_id
-		    ,ts[0]
-		    ,es[0]
-		    ,es[1]
-		    ,current_state
-		    ,has_been_checked
-		    ,should_be_scheduled
-		    ,current_check_attempt
-		    ,max_check_attempts
-		    ,ts[1]
-		    ,ts[2]
-		    ,check_type
-		    ,ts[3]
-		    ,ts[4]
-		    ,last_hard_state
-		    ,ts[5]
-		    ,ts[6]
-		    ,ts[7]
-		    ,state_type
-		    ,ts[8]
-		    ,ts[9]
-		    ,no_more_notifications
-		    ,notifications_enabled
-		    ,problem_has_been_acknowledged
-		    ,acknowledgement_type
-		    ,current_notification_number
-		    ,passive_checks_enabled
-		    ,active_checks_enabled
-		    ,event_handler_enabled
-		    ,flap_detection_enabled
-		    ,is_flapping
-		    ,percent_state_change
-		    ,latency
-		    ,execution_time
-		    ,scheduled_downtime_depth
-		    ,failure_prediction_enabled
-		    ,process_performance_data
-		    ,obsess_over_host
-		    ,modified_host_attributes
-		    ,es[2]
-		    ,es[3]
-		    ,normal_check_interval
-		    ,retry_check_interval
-		    ,check_timeperiod_object_id
-                   )==-1)
-                buf2=NULL;
-
-        /* the data part of the INSERT statement */
-        if(asprintf(&buf3,"(instance_id, host_object_id, status_update_time, output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)"
-		    ,idi->dbinfo.instance_id
-		    ,object_id
-		    ,ts[0]
-		    ,es[0]
-		    ,es[1]
-		    ,current_state
-		    ,has_been_checked
-		    ,should_be_scheduled
-		    ,current_check_attempt
-		    ,max_check_attempts
-		    ,ts[1]
-		    ,ts[2]
-		    ,check_type
-		    ,ts[3]
-		    ,ts[4]
-		    ,last_hard_state
-		    ,ts[5]
-		    ,ts[6]
-		    ,ts[7]
-		    ,state_type
-		    ,ts[8]
-		    ,ts[9]
-		    ,no_more_notifications
-		    ,notifications_enabled
-		    ,problem_has_been_acknowledged
-		    ,acknowledgement_type
-		    ,current_notification_number
-		    ,passive_checks_enabled
-		    ,active_checks_enabled
-		    ,event_handler_enabled
-		    ,flap_detection_enabled
-		    ,is_flapping
-		    ,percent_state_change
-		    ,latency
-		    ,execution_time
-		    ,scheduled_downtime_depth
-		    ,failure_prediction_enabled
-		    ,process_performance_data
-		    ,obsess_over_host
-		    ,modified_host_attributes
-		    ,es[2]
-		    ,es[3]
-		    ,normal_check_interval
-		    ,retry_check_interval
-		    ,check_timeperiod_object_id
-                   )==-1)
-                buf3=NULL;
-
-        /* create query with table_name, insert, update, cond */
-        ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], buf3, buf2, buf1);
-
-        free(buf1);
-        free(buf2);
-        free(buf3);
-
+        void *data[46];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &object_id;
+        data[2] = (void *) &ts[0];
+        data[3] = (void *) &es[0];
+        data[4] = (void *) &es[1];
+        data[5] = (void *) &es[2];
+        data[6] = (void *) &current_state;
+        data[7] = (void *) &has_been_checked;
+        data[8] = (void *) &should_be_scheduled;
+        data[9] = (void *) &current_check_attempt;
+        data[10] = (void *) &max_check_attempts;
+        data[11] = (void *) &ts[1];
+        data[12] = (void *) &ts[2];
+        data[13] = (void *) &check_type;
+        data[14] = (void *) &ts[3];
+        data[15] = (void *) &ts[4];
+        data[16] = (void *) &last_hard_state;
+        data[17] = (void *) &ts[5];
+        data[18] = (void *) &ts[6];
+        data[19] = (void *) &ts[7];
+        data[20] = (void *) &state_type;
+        data[21] = (void *) &ts[8];
+        data[22] = (void *) &ts[9];
+        data[23] = (void *) &no_more_notifications;
+        data[24] = (void *) &notifications_enabled;
+        data[25] = (void *) &problem_has_been_acknowledged;
+        data[26] = (void *) &acknowledgement_type;
+        data[27] = (void *) &current_notification_number;
+        data[28] = (void *) &passive_checks_enabled;
+        data[29] = (void *) &active_checks_enabled;
+        data[30] = (void *) &event_handler_enabled;
+        data[31] = (void *) &flap_detection_enabled;
+        data[32] = (void *) &is_flapping;
+        data[33] = (void *) &percent_state_change;
+        data[34] = (void *) &latency;
+        data[35] = (void *) &execution_time;
+        data[36] = (void *) &scheduled_downtime_depth;
+        data[37] = (void *) &failure_prediction_enabled;
+        data[38] = (void *) &process_performance_data;
+        data[39] = (void *) &obsess_over_host;
+        data[40] = (void *) &modified_host_attributes;
+        data[41] = (void *) &es[3];
+        data[42] = (void *) &es[4];
+        data[43] = (void *) &normal_check_interval;
+        data[44] = (void *) &retry_check_interval;
+        data[45] = (void *) &check_timeperiod_object_id;
 
 	/* save entry to db */
-	result = ndo2db_db_query(idi, buf);
-
+        result = ido2db_query_insert_or_update_hoststatusdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
