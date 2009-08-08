@@ -9299,6 +9299,7 @@ perl subst include/locations.h
 perl subst html/index.html
 perl subst html/menu.html
 perl subst html/top.html
+perl subst html/search.html
 
 
 echo ""

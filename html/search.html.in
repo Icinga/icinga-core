@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+        <title>Icinga</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <meta http-equiv="Content-Language" content="fr" />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="stylesheet" type="text/css" href="stylesheets/interface/search.css" media="screen, projection" />
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+        <script type="text/javascript" src="js/prototype.js"></script>
+        <script type="text/javascript" src="js/scriptaculous.js"></script>
+</head>
+<body>
+	<table border="0" width="100%">
+		<tr>
+			<td width="35%"></td>
+			<td align="center">
+				<div id="searchType">
+					<p id="searchTitle">Select search type:</p>
+					<form action="select.html">
+						<select name="searchType" size="1" onchange="Effect.toggle('searchType', 'appear'); Effect.toggle('type_'+this.form.searchType.options[this.form.searchType.selectedIndex].value, 'appear'); return false;">
+							<option selected>Select...</option>
+							<option value="host">Host</option>
+							<option value='hostgroup'>Hostgroup</option>
+							<option value='servicegroup'>Servicegroup</option>
+				    	</select>
+					</form>
+				</div>
+			</td>
+			<td width="35%"></td>
+		</tr>
+		<tr>
+			<td width="35%"></td>
+			<td align="center">
+				<div id="type_host" style="display:none;">
+					<p id="searchTitle">Search host</p>
+					<form method="get" action="@cgiurl@/status.cgi" target="main">
+						<input type='hidden' name='navbarsearch' value='1'>
+						<input type='text' class="searchInput" id="hostname" name='host' size='30' class="NavBarSearchItem">
+						<div id="AutocompleteChoicesHost" class="autocomplete"></div>
+						<script type="text/javascript">
+							new Ajax.Autocompleter("hostname", "AutocompleteChoicesHost", "getList.php?type=host", {minChars: 3});
+						</script>
+					</form>
+				</div>
+				<div id="type_hostgroup" style="display:none;">
+					<p id="searchTitle">Search hostgroup</p>
+					<form method="get" action="@cgiurl@/status.cgi" target="main">
+						<input type='hidden' name='style' value='detail'>
+						<input type='text' class="searchInput" id="hostgroup" name='hostgroup' size='30' class="NavBarSearchItem">
+						<div id="AutocompleteChoicesHostgroup" class="autocomplete"></div>
+						<script type="text/javascript">
+							new Ajax.Autocompleter("hostgroup", "AutocompleteChoicesHostgroup", "getList.php?type=hostgroup", {minChars: 3});
+						</script>
+					</form>
+				</div>
+				<div id="type_servicegroup" style="display:none;">
+					<p id="searchTitle">Search servicegroup</p>
+					<form method="get" action="@cgiurl@/status.cgi" target="main">
+						<input type='hidden' name='style' value='detail'>
+						<input type='text' class="searchInput" id="servicegroup" name='servicegroup' size='30' class="NavBarSearchItem">
+						<div id="AutocompleteChoicesServicegroup" class="autocomplete"></div>
+						<script type="text/javascript">
+							new Ajax.Autocompleter("servicegroup", "AutocompleteChoicesServicegroup", "getList.php?type=servicegroup", {minChars: 3});
+						</script>
+					</form>
+				</div>				
+			</td>
+			<td width="35%"></td>
+		</tr>
+	</table>
+</body>
+</html>
