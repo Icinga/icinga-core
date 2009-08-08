@@ -10,6 +10,7 @@ Icinga 0.8.x Change Log
 * idoutils: fix fmt specifier in ndo2db_daemonize() error
 * idoutils: added long_output support to IDOUtils
 * idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)
+* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)
 
 0.8.1 - 06/17/2009
 ------------------
