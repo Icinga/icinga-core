@@ -8,7 +8,7 @@
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  *
  * First Written:   01-28-1999 (start of development)
- * Last Modified:   06-17-2009
+ * Last Modified:   08-08-2009
  *
  * Description:
  *
@@ -514,7 +514,7 @@ int main(int argc, char **argv){
 			printf("\n***> One or more problems was encountered while processing the config files...\n");
 			printf("\n");
 			printf("     Check your configuration file(s) to ensure that they contain valid\n");
-			printf("     directives and data defintions.  If you are upgrading from a previous\n");
+			printf("     directives and data definitions.  If you are upgrading from a previous\n");
 			printf("     version of %s, you should be aware that some variables/definitions\n", PROGRAM_NAME);
 			printf("     may have been removed or modified in this version.  Make sure to read\n");
 			printf("     the HTML documentation regarding the config files, as well as the\n");
@@ -535,7 +535,7 @@ int main(int argc, char **argv){
 				printf("\n***> One or more problems was encountered while running the pre-flight check...\n");
 				printf("\n");
 				printf("     Check your configuration file(s) to ensure that they contain valid\n");
-				printf("     directives and data defintions.  If you are upgrading from a previous\n");
+				printf("     directives and data definitions.  If you are upgrading from a previous\n");
 				printf("     version of %s, you should be aware that some variables/definitions\n", PROGRAM_NAME);
 				printf("     may have been removed or modified in this version.  Make sure to read\n");
 				printf("     the HTML documentation regarding the config files, as well as the\n");
