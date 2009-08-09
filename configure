@@ -730,6 +730,7 @@ INSTALLPERLSTUFF
 USE_EVENTBROKER
 USE_IDOUTILS
 PERL
+USE_ICINGAAPI
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -742,7 +743,8 @@ LDFLAGS
 LIBS
 CPPFLAGS
 CPP'
-ac_subdirs_all='tap'
+ac_subdirs_all='tap
+module/icinga-api'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -7961,6 +7963,18 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
+
+if test -d "module/icinga-api"; then
+	echo "Configuring Icinga-API ..."
+	USE_ICINGAAPI="yes"
+
+	subdirs="$subdirs module/icinga-api"
+
+	echo "... done"
+else
+	echo "SHHHIIIIIITTTTTTTTTTTTTTTTTTTTTT"
+fi
+
 ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile"
 
 
@@ -8680,11 +8694,12 @@ INSTALLPERLSTUFF!$INSTALLPERLSTUFF$ac_delim
 USE_EVENTBROKER!$USE_EVENTBROKER$ac_delim
 USE_IDOUTILS!$USE_IDOUTILS$ac_delim
 PERL!$PERL$ac_delim
+USE_ICINGAAPI!$USE_ICINGAAPI$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 21; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 22; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

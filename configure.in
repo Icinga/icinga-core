@@ -801,6 +801,17 @@ AC_SUBST(USE_EVENTBROKER)
 AC_SUBST(USE_IDOUTILS)
 
 AC_PATH_PROG(PERL,perl)
+
+if test -d "module/icinga-api"; then
+	echo "Configuring Icinga-API ..."
+	USE_ICINGAAPI="yes"
+	AC_SUBST(USE_ICINGAAPI)
+	AC_CONFIG_SUBDIRS([module/icinga-api])
+	echo "... done"
+else
+	echo "SHHHIIIIIITTTTTTTTTTTTTTTTTTTTTT"
+fi
+
 AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile)
 
 

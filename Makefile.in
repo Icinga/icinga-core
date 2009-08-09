@@ -16,6 +16,7 @@ SRC_XDATA=@srcdir@/xdata
 SRC_CONTRIB=@srcdir@/contrib
 SRC_IDOUTILS=@srcdir@/module/idoutils
 SRC_TTAP=@srcdir@/t-tap
+SRC_ICINGAAPI=@srcdir@/module/icinga-api
 
 CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@
@@ -41,6 +42,7 @@ PERLDIR=@PERLDIR@
 
 USE_EVENTBROKER=@USE_EVENTBROKER@
 USE_IDOUTILS=@USE_IDOUTILS@
+USE_ICINGAAPI=@USE_ICINGAAPI@
 
 INSTALLPERLSTUFF=@INSTALLPERLSTUFF@
 
@@ -169,6 +171,10 @@ clean:
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
+	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
+		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
+	fi
+
 	rm -f *.cfg core
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
 
@@ -183,6 +189,10 @@ distclean: clean
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
+	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
+		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
+	fi
+
 	rm -f sample-config/*.cfg  sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db
 	rm -f Makefile subst
@@ -216,6 +226,11 @@ install:
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
+
+	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
+		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
+	fi
+
 	$(MAKE) install-basic
 
 install-unstripped:
