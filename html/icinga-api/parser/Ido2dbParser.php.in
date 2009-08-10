@@ -7,7 +7,7 @@
 class Ido2dbParser {
 
 	// Default path to ido2db.cfg
-	public $defaultPathToCfgFile = "/usr/local/icinga/etc/ido2db.cfg";
+	public $defaultPathToCfgFile = "@sysconfdir@/ido2db.cfg";
 	
 	// Temporary array for read in ido2db configuration file
 	public $arrTmpCfgFile = NULL;

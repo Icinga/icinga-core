@@ -29,7 +29,7 @@ clean:
 
 distclean: clean
 	rm -f Makefile
-	rm -f menu.html index.html top.html search.html
+	rm -f menu.html index.html top.html search.html icinga-api/parser/Ido2dbParser.php 
 
 devclean: distclean
 

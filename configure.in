@@ -823,6 +823,7 @@ perl subst html/index.html
 perl subst html/menu.html
 perl subst html/top.html
 perl subst html/search.html
+perl subst html/icinga-api/parser/Ido2dbParser.php
 
 
 echo ""
