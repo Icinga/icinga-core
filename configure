@@ -7964,7 +7964,7 @@ fi
 
 
 
-if test -d "module/icinga-api"; then
+if test -e "module/icinga-api/IcingaApi.php"; then
 	echo "Configuring Icinga-API ..."
 	USE_ICINGAAPI="yes"
 
@@ -7972,7 +7972,10 @@ if test -d "module/icinga-api"; then
 
 	echo "... done"
 else
-	echo "SHHHIIIIIITTTTTTTTTTTTTTTTTTTTTT"
+	USE_ICINGAAPI="no"
+	echo "You didn't checked out the git submodule for IcingaApi."
+	echo "I'll not be able to install it."
+	echo ""
 fi
 
 ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile"
