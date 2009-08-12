@@ -7,9 +7,12 @@
          xmlns:m="http://www.w3.org/1998/Math/MathML"
          xmlns:html="http://www.w3.org/1999/xhtml"
          xmlns:db="http://docbook.org/ns/docbook">
-  <title>What's New</title>
+  <title>What's New in 0.8.2</title>
 
-  <para>The past time was a coding time...</para>
+  <para>Sorry for bulking this out. We even are in the middle of so much work.</para>
+
+  <para>Documentation is a low priority topic for the moment. Please be patient and 
+  read the Changelog File for a rough overview.</para> 
 
   <para>This section will be filled with some more useful information
   soon.</para>
