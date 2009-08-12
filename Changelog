@@ -2,7 +2,9 @@
 Icinga 0.8.x Change Log
 #######################
 
-0.8.2 - ??/??/2009
+0.8.3 - ??/??/2009
+
+0.8.2 - 08/12/2009
 * create a new basic ido2db init script
 * idoutils: fix child signal handling in ido2db
 * idoutils: fix escaping of customvars before insert
@@ -11,6 +13,8 @@ Icinga 0.8.x Change Log
 * idoutils: added long_output support to IDOUtils
 * idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)
 * idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)
+* icinga-api added: The search function now uses the icinga-api submodule
+* various minor changes
 
 0.8.1 - 06/17/2009
 ------------------
