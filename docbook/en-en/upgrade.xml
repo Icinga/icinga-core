@@ -17,6 +17,21 @@
   sometime they are not preventable.</para>
 
   <section>
+    <title>Icinga 0.8.1 to 0.8.2</title>
+
+    <section>
+      <title>DB Scheme Update for long_output</title>
+
+        <para>IDOUtils now supports long_outputs. For this change
+	you have to update your database structure:</para>
+
+	<para><programlisting>cd /usr/local/src/icinga-0.8.2/
+cd module/idoutils/
+mysql -u &lt;your_mysql_admin_user&gt; -p &lt; db/mysql-upgrade-1.4b7.sql</programlisting></para>
+    </section>
+  </section>
+
+  <section>
     <title>Icinga 0.8.0 to 0.8.1</title>
 
     <section>
