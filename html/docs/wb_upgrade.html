@@ -5,7 +5,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <link rel="home" href="index.html" title="">
 <link rel="up" href="ch_relnotes.html" title="Chapter 1. Release Notes">
-<link rel="prev" href="wb_whatsnew.html" title="What's New">
+<link rel="prev" href="wb_whatsnew.html" title="What's New in 0.8.2">
 <link rel="next" href="ch_gettingstarted.html" title="Chapter 2. Getting Started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -35,14 +35,33 @@
   bugfixes might touch the userspace. This aren't very funny cases but
   sometime they are not preventable.</p>
 
+  <div class="section" title="Icinga 0.8.1 to 0.8.2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id353970"></a>Icinga 0.8.1 to 0.8.2</h3></div></div></div>
+    
+
+    <div class="section" title="DB Scheme Update for long_output">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id1212442"></a>DB Scheme Update for long_output</h4></div></div></div>
+      
+
+        <p>IDOUtils now supports long_outputs. For this change
+	you have to update your database structure:</p>
+
+	<pre class="programlisting">cd /usr/local/src/icinga-0.8.2/
+cd module/idoutils/
+mysql -u &lt;your_mysql_admin_user&gt; -p &lt; db/mysql-upgrade-1.4b7.sql</pre>
+    </div>
+  </div>
+
   <div class="section" title="Icinga 0.8.0 to 0.8.1">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3572648"></a>Icinga 0.8.0 to 0.8.1</h3></div></div></div>
+<a name="id1212611"></a>Icinga 0.8.0 to 0.8.1</h3></div></div></div>
     
 
     <div class="section" title="Archived Logfilename Fix">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id3572654"></a>Archived Logfilename Fix</h4></div></div></div>
+<a name="id1212616"></a>Archived Logfilename Fix</h4></div></div></div>
       
 
       <p>There was a small misspelling bug in Icinga 0.8.0 resulting in
@@ -62,7 +81,7 @@ done</pre>
 
   <div class="section" title="Normal upgrade path">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3572687"></a>Normal upgrade path</h3></div></div></div>
+<a name="id1212649"></a>Normal upgrade path</h3></div></div></div>
     
 
     <p>Regular updates should be possible by only re-install icinga like
@@ -84,7 +103,7 @@ done</pre>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">What's New </td>
+<td width="40%" align="left" valign="top">What's New in 0.8.2 </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
 <td width="40%" align="right" valign="top"> Chapter 2. Getting Started</td>
 </tr>
