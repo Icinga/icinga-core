@@ -307,6 +307,7 @@ install-webconf:
 
 install-idoutils:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
+		$(INSTALL) -m 755 $(INIT_OPTS) rc.ido2db $(DESTDIR)$(INIT_DIR)/ido2db ;\
 		cd $(SRC_IDOUTILS) && $(MAKE) $@ ;\
 	fi
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
