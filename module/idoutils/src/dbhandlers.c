@@ -2244,6 +2244,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[NDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
 
+	/* save entry to db */
         void *data[46];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &object_id;
@@ -2292,7 +2293,6 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
         data[44] = (void *) &retry_check_interval;
         data[45] = (void *) &check_timeperiod_object_id;
 
-	/* save entry to db */
         result = ido2db_query_insert_or_update_hoststatusdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
 

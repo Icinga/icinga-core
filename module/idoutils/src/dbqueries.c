@@ -30,6 +30,14 @@ extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
 /* OBJECT ROUTINES                                                          */
 /****************************************************************************/
 
+/*
+NOTE using libdbi:
+result is stored in idi->dbinfo.dbi_result
+which consists of the structure dbi_result_t defined in libdbi/include/dbi/dbi-dev.h
+for checking if UPDATE was successful try
+        unsigned long long numrows_matched; 
+        unsigned long long numrows_affected;
+*/
 
 /****************************************************************************/
 /* INSERT QUERIES                                                          */
@@ -93,9 +101,9 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 			);
 			/* send query to db */
 			result = ndo2db_db_query(idi, query1);		
-			
+		
 			/* check result if update was ok */
-			if(result == NDO_ERROR) {
+			if(idi->dbinfo.dbi_result.numrows_matched == 0) {
 				/* try insert instead */
 				asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', '%s', '%lu', '%s', '%d', '%lu')",
 					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
@@ -189,7 +197,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', '%s', '%lu', '%s', '%d', '%lu')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
@@ -304,7 +312,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, start_time, start_time_usec, end_time, end_time_usec, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %s, %lu, %s, %lu, '%s', %d, %d, %lf, %d, '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS],
@@ -442,7 +450,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS],
@@ -570,7 +578,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, notification_type, notification_reason, start_time, start_time_usec, end_time, end_time_usec, object_id, state, output, long_output, escalated, contacts_notified) VALUES (%lu, %d, %d, %s, %lu, %s, %lu, %lu, %d, '%s', '%s', %d, %d)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS],
@@ -675,7 +683,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, notification_id, start_time, start_time_usec, end_time, end_time_usec, contact_object_id) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
@@ -773,7 +781,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu, '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
@@ -913,7 +921,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%s', '%lu', '%s', '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
@@ -1066,7 +1074,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', i'%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS],
@@ -1199,7 +1207,7 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
                                         table_name,
@@ -1320,7 +1328,7 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)",
                                         table_name,
@@ -1472,7 +1480,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, status_update_time, program_start_time, is_currently_running, process_id, daemon_mode, last_command_check, last_log_rotation, notifications_enabled, active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, failure_prediction_enabled, process_performance_data, obsess_over_hosts, obsess_over_services, modified_host_attributes, modified_service_attributes, global_host_event_handler, global_service_event_handler) VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS],
@@ -1708,7 +1716,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                         result = ndo2db_db_query(idi, query1);
 
                         /* check result if update was ok */
-                        if(result == NDO_ERROR) {
+                        if(idi->dbinfo.dbi_result.numrows_matched == 0) {
                                 /* try insert instead */
                                 asprintf(&query2, "INSERT INTO %s (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS],
