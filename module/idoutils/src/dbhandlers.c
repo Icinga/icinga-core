@@ -2441,89 +2441,58 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_SERVICECHECKPERIOD], NULL,
 			&check_timeperiod_object_id);
 
-	/* generate query string */
-/*	if (asprintf(
-			&buf1,
-			"instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
-			idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1],
-			current_state, has_been_checked, should_be_scheduled,
-			current_check_attempt, max_check_attempts, ts[1], ts[2],
-			check_type, ts[3], ts[4], last_hard_state, ts[5], ts[6], ts[7],
-			ts[8], state_type, ts[9], ts[10], no_more_notifications,
-			notifications_enabled, problem_has_been_acknowledged,
-			acknowledgement_type, current_notification_number,
-			passive_checks_enabled, active_checks_enabled,
-			event_handler_enabled, flap_detection_enabled, is_flapping,
-			percent_state_change, latency, execution_time,
-			scheduled_downtime_depth, failure_prediction_enabled,
-			process_performance_data, obsess_over_service,
-			modified_service_attributes, es[2], es[3], normal_check_interval,
-			retry_check_interval, check_timeperiod_object_id) == -1)
-		buf1 = NULL;
-
-	if (asprintf(&buf, "INSERT INTO %s SET %s ON DUPLICATE KEY UPDATE %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], buf1, buf1)
-			== -1)
-		buf = NULL;
-*/
-		/* Unique constraint, upon match with these columns an UPDATE takes place, an INSERT otherwise */
-		if(asprintf(&buf1, "service_object_id='%lu'"
-			    ,object_id
-		           )==-1)
-		        buf1=NULL;
-
-		/* Values to set when inserting */
-		if(asprintf(&buf3,"(instance_id, service_object_id, status_update_time, output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
-                        idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1],
-                        current_state, has_been_checked, should_be_scheduled,
-                        current_check_attempt, max_check_attempts, ts[1], ts[2],
-                        check_type, ts[3], ts[4], last_hard_state, ts[5], ts[6], ts[7],
-                        ts[8], state_type, ts[9], ts[10], no_more_notifications,
-                        notifications_enabled, problem_has_been_acknowledged,
-                        acknowledgement_type, current_notification_number,
-                        passive_checks_enabled, active_checks_enabled,
-                        event_handler_enabled, flap_detection_enabled, is_flapping,
-                        percent_state_change, latency, execution_time,
-                        scheduled_downtime_depth, failure_prediction_enabled,
-                        process_performance_data, obsess_over_service,
-                        modified_service_attributes, es[2], es[3], normal_check_interval,
-                        retry_check_interval, check_timeperiod_object_id
-			)==-1)
-			buf2=NULL;
-
-		/* the data part of the UPDATE statement */
-		if(asprintf(&buf2,"instance_id='%lu', service_object_id='%lu', status_update_time='%s', output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check='%s', next_check='%s', check_type='%d', last_state_change='%s', last_hard_state_change='%s', last_hard_state='%d', last_time_ok='%s', last_time_warning='%s', last_time_unknown='%s', last_time_critical='%s', state_type='%d', last_notification='%s', next_notification='%s', no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
-                        idi->dbinfo.instance_id, object_id, ts[0], es[0], es[1],
-                        current_state, has_been_checked, should_be_scheduled,
-                        current_check_attempt, max_check_attempts, ts[1], ts[2],
-                        check_type, ts[3], ts[4], last_hard_state, ts[5], ts[6], ts[7],
-                        ts[8], state_type, ts[9], ts[10], no_more_notifications,
-                        notifications_enabled, problem_has_been_acknowledged,
-                        acknowledgement_type, current_notification_number,
-                        passive_checks_enabled, active_checks_enabled,
-                        event_handler_enabled, flap_detection_enabled, is_flapping,
-                        percent_state_change, latency, execution_time,
-                        scheduled_downtime_depth, failure_prediction_enabled,
-                        process_performance_data, obsess_over_service,
-                        modified_service_attributes, es[2], es[3], normal_check_interval,
-                        retry_check_interval, check_timeperiod_object_id
-			   )==-1)
-			buf3=NULL;
-
-                /* create query with table_name, insert, update, cond */
-                ido2db_insert_or_update(&buf, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], buf3, buf2, buf1);
-
-		free(buf1);
-		free(buf2);
-		free(buf3);
-
-
-
 	/* save entry to db */
-	result = ndo2db_db_query(idi, buf);
+        void *data[47];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &object_id;
+        data[2] = (void *) &ts[0];
+        data[3] = (void *) &es[0];
+        data[4] = (void *) &es[1];
+        data[5] = (void *) &es[2];
+        data[6] = (void *) &current_state;
+        data[7] = (void *) &has_been_checked;
+        data[8] = (void *) &should_be_scheduled;
+        data[9] = (void *) &current_check_attempt;
+        data[10] = (void *) &max_check_attempts;
+        data[11] = (void *) &ts[1];
+        data[12] = (void *) &ts[2];
+        data[13] = (void *) &check_type;
+        data[14] = (void *) &ts[3];
+        data[15] = (void *) &ts[4];
+        data[16] = (void *) &last_hard_state;
+        data[17] = (void *) &ts[5];
+        data[18] = (void *) &ts[6];
+        data[19] = (void *) &ts[7];
+        data[20] = (void *) &ts[8];
+        data[21] = (void *) &state_type;
+        data[22] = (void *) &ts[9];
+        data[23] = (void *) &ts[10];
+        data[24] = (void *) &no_more_notifications;
+        data[25] = (void *) &notifications_enabled;
+        data[26] = (void *) &problem_has_been_acknowledged;
+        data[27] = (void *) &acknowledgement_type;
+        data[28] = (void *) &current_notification_number;
+        data[29] = (void *) &passive_checks_enabled;
+        data[30] = (void *) &active_checks_enabled;
+        data[31] = (void *) &event_handler_enabled;
+        data[32] = (void *) &flap_detection_enabled;
+        data[33] = (void *) &is_flapping;
+        data[34] = (void *) &percent_state_change;
+        data[35] = (void *) &latency;
+        data[36] = (void *) &execution_time;
+        data[37] = (void *) &scheduled_downtime_depth;
+        data[38] = (void *) &failure_prediction_enabled;
+        data[39] = (void *) &process_performance_data;
+        data[40] = (void *) &obsess_over_service;
+        data[41] = (void *) &modified_service_attributes;
+        data[42] = (void *) &es[3];
+        data[43] = (void *) &es[4];
+        data[44] = (void *) &normal_check_interval;
+        data[45] = (void *) &retry_check_interval;
+        data[46] = (void *) &check_timeperiod_object_id;
 
+        result = ido2db_query_insert_or_update_servicestatusdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)

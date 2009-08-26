@@ -49,5 +49,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
 /* HOSTSTATUS */
 int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **data);
 
+/* SERVICESTATUS */
+int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **data);
 
 #endif

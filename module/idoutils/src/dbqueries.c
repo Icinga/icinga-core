@@ -390,7 +390,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
 
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s', '%s') ON DUPLICATE KEY UPDATE eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s', '%s') ON DUPLICATE KEY UPDATE eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -457,7 +457,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS],
 					*(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -1807,4 +1807,266 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
         return result;
 }
 
+/************************************/
+/* SERVICESTATUS                    */
+/************************************/
+
+int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **data) {
+        int result = NDO_OK;
+        const char *dbi_error;
+        char * query1;
+        char * query2;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() start\n");
+
+        if (idi == NULL)
+                return NDO_ERROR;
+
+        if (idi->dbinfo.connected == NDO_FALSE)
+                return NDO_ERROR;
+
+        switch (idi->dbinfo.server_type) {
+                case NDO2DB_DBSERVER_MYSQL:
+                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_i) VALUES ('%lu', '%lu', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu') ON DUPLICATE KEY UPDATE instance_id='%lu', service_object_id='%lu', status_update_time='%s', output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check='%s', next_check='%s', check_type='%d', last_state_change='%s', last_hard_state_change='%s', last_hard_state='%d', last_time_ok='%s', last_time_warning='%s', last_time_unknown='%s', last_time_critical='%s', state_type='%d', last_notification='%s', next_notification='%s', no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],
+                                        *(char **) data[2],
+                                        *(char **) data[3],
+                                        *(char **) data[4],
+                                        *(char **) data[5],
+                                        *(int *) data[6],
+                                        *(int *) data[7],
+                                        *(int *) data[8],
+                                        *(int *) data[9],
+                                        *(int *) data[10],
+                                        *(char **) data[11],
+                                        *(char **) data[12],
+                                        *(int *) data[13],
+                                        *(int *) data[14],
+                                        *(int *) data[15],
+                                        *(int *) data[16],
+                                        *(char **) data[17],
+                                        *(char **) data[18],
+                                        *(char **) data[19],
+                                        *(char **) data[20],
+                                        *(int *) data[21],
+                                        *(char **) data[22],
+                                        *(char **) data[23],
+                                        *(int *) data[24],
+                                        *(int *) data[25],
+                                        *(int *) data[26],
+                                        *(int *) data[27],
+                                        *(int *) data[28],
+                                        *(int *) data[29],
+                                        *(int *) data[30],
+                                        *(int *) data[31],
+                                        *(int *) data[32],
+                                        *(int *) data[33],
+                                        *(double *) data[34],
+                                        *(double *) data[35],
+                                        *(double *) data[36],
+                                        *(int *) data[37],
+                                        *(int *) data[38],
+                                        *(int *) data[39],
+                                        *(int *) data[40],
+                                        *(unsigned long *) data[41],
+                                        *(char **) data[42],
+                                        *(char **) data[43],
+                                        *(double *) data[44],
+                                        *(double *) data[45],
+                                        *(unsigned long *) data[46],     /* insert end */
+                                        *(unsigned long *) data[0],     /* update start */
+                                        *(unsigned long *) data[1],
+                                        *(char **) data[2],
+                                        *(char **) data[3],
+                                        *(char **) data[4],
+                                        *(char **) data[5],
+                                        *(int *) data[6],
+                                        *(int *) data[7],
+                                        *(int *) data[8],
+                                        *(int *) data[9],
+                                        *(int *) data[10],
+                                        *(char **) data[11],
+                                        *(char **) data[12],
+                                        *(int *) data[13],
+                                        *(int *) data[14],
+                                        *(int *) data[15],
+                                        *(int *) data[16],
+                                        *(char **) data[17],
+                                        *(char **) data[18],
+                                        *(char **) data[19],
+                                        *(char **) data[20],
+                                        *(int *) data[21],
+                                        *(char **) data[22],
+                                        *(char **) data[23],
+                                        *(int *) data[24],
+                                        *(int *) data[25],
+                                        *(int *) data[26],
+                                        *(int *) data[27],
+                                        *(int *) data[28],
+                                        *(int *) data[29],
+                                        *(int *) data[30],
+                                        *(int *) data[31],
+                                        *(int *) data[32],
+                                        *(int *) data[33],
+                                        *(double *) data[34],
+                                        *(double *) data[35],
+                                        *(double *) data[36],
+                                        *(int *) data[37],
+                                        *(int *) data[38],
+                                        *(int *) data[39],
+                                        *(int *) data[40],
+                                        *(unsigned long *) data[41],
+                                        *(char **) data[42],   
+                                        *(char **) data[43],
+                                        *(double *) data[44],
+                                        *(double *) data[45],
+                                        *(unsigned long *) data[46]     /* update end */                       
+			);
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        break;
+                case NDO2DB_DBSERVER_PGSQL:
+                        asprintf(&query1, "UPDATE %s instance_id='%lu', service_object_id='%lu', status_update_time='%s', output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check='%s', next_check='%s', check_type='%d', last_state_change='%s', last_hard_state_change='%s', last_hard_state='%d', last_time_ok='%s', last_time_warning='%s', last_time_unknown='%s', last_time_critical='%s', state_type='%d', last_notification='%s', next_notification='%s', no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE service_object_id='%lu'",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
+                                        *(unsigned long *) data[0],     /* update start */
+                                        *(unsigned long *) data[1],
+                                        *(char **) data[2],
+                                        *(char **) data[3],
+                                        *(char **) data[4],
+                                        *(char **) data[5],
+                                        *(int *) data[6],
+                                        *(int *) data[7],
+                                        *(int *) data[8],
+                                        *(int *) data[9],
+                                        *(int *) data[10],
+                                        *(char **) data[11],
+                                        *(char **) data[12],
+                                        *(int *) data[13],
+                                        *(int *) data[14],
+                                        *(int *) data[15],
+                                        *(int *) data[16],
+                                        *(char **) data[17],
+                                        *(char **) data[18],
+                                        *(char **) data[19],
+                                        *(char **) data[20],
+                                        *(int *) data[21],
+                                        *(char **) data[22],
+                                        *(char **) data[23],
+                                        *(int *) data[24],
+                                        *(int *) data[25],
+                                        *(int *) data[26],
+                                        *(int *) data[27],
+                                        *(int *) data[28],
+                                        *(int *) data[29],
+                                        *(int *) data[30],
+                                        *(int *) data[31],
+                                        *(int *) data[32],
+                                        *(int *) data[33],
+                                        *(double *) data[34],
+                                        *(double *) data[35],
+                                        *(double *) data[36],
+                                        *(int *) data[37],
+                                        *(int *) data[38],
+                                        *(int *) data[39],
+                                        *(int *) data[40],
+                                        *(unsigned long *) data[41],
+                                        *(char **) data[42],   
+                                        *(char **) data[43],
+                                        *(double *) data[44],
+                                        *(double *) data[45],
+                                        *(unsigned long *) data[46],     /* update end */
+                                        *(unsigned long *) data[1]     /* unique constraint start/end */
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+
+                        /* check result if update was ok */
+			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
+                                /* try insert instead */
+                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],
+                                        *(char **) data[2],
+                                        *(char **) data[3],
+                                        *(char **) data[4],
+                                        *(char **) data[5],
+                                        *(int *) data[6],
+                                        *(int *) data[7],
+                                        *(int *) data[8],
+                                        *(int *) data[9],
+                                        *(int *) data[10],
+                                        *(char **) data[11],
+                                        *(char **) data[12],
+                                        *(int *) data[13],
+                                        *(int *) data[14],
+                                        *(int *) data[15],
+                                        *(int *) data[16],
+                                        *(char **) data[17],
+                                        *(char **) data[18],
+                                        *(char **) data[19],
+                                        *(char **) data[20],
+                                        *(int *) data[21],
+                                        *(char **) data[22],
+                                        *(char **) data[23],
+                                        *(int *) data[24],
+                                        *(int *) data[25],
+                                        *(int *) data[26],
+                                        *(int *) data[27],
+                                        *(int *) data[28],
+                                        *(int *) data[29],
+                                        *(int *) data[30],
+                                        *(int *) data[31],
+                                        *(int *) data[32],
+                                        *(int *) data[33],
+                                        *(double *) data[34],
+                                        *(double *) data[35],
+                                        *(double *) data[36],
+                                        *(int *) data[37],
+                                        *(int *) data[38],
+                                        *(int *) data[39],
+                                        *(int *) data[40],
+                                        *(unsigned long *) data[41],
+                                        *(char **) data[42],   
+                                        *(char **) data[43],
+                                        *(double *) data[44],
+                                        *(double *) data[45],
+                                        *(unsigned long *) data[46]     /* insert end */
+                                );
+                                /* send query to db */
+                                result = ndo2db_db_query(idi, query2);
+                        }
+                        break;
+                case NDO2DB_DBSERVER_DB2:
+                        break;
+                case NDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case NDO2DB_DBSERVER_FREETDS:
+                        break;
+                case NDO2DB_DBSERVER_INGRES:
+                        break;
+                case NDO2DB_DBSERVER_MSQL:
+                        break;
+                case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+                        /* use prepared statements and ocilib */
+#endif
+                        break;
+                case NDO2DB_DBSERVER_SQLITE:
+                        break;
+                case NDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+
+        free(query1);
+        free(query2);
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() end\n");
+
+        return result;
+}
 
