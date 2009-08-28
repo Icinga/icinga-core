@@ -525,7 +525,7 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s "
-			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_date, realtime_data, inferred_data_extracted) "
+			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) "
 			"VALUES ('%lu', %s, %s, '0', '%lu', '%s', '0', '0')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
@@ -949,7 +949,7 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s "
-			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_date, realtime_data, inferred_data_extracted) "
+			"(instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) "
 			"VALUES ('%lu', %s, %s, '%lu', '%lu', '%s', '1', '1')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
