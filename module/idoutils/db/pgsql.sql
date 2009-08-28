@@ -25,6 +25,11 @@
 #
 */
 
+-- IF EXISTS DROP DATABASE icinga;
+-- CREATE DATABASE icinga WITH ENCODING 'LATIN1';
+-- SET SERVER_ENCODING TO 'LATIN1';
+-- SET CLIENT_ENCODING TO 'LATIN1';
+
 /*
 CREATE OR REPLACE FUNCTION INSERT_OR_UPDATE(table_name_v varchar, cond_v varchar, insert_v varchar, update_v varchar) RETURNS void AS $$
 BEGIN
@@ -38,6 +43,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 */
+
+--
+-- Functions
+--
+
+CREATE OR REPLACE FUNCTION from_unixtime(integer) RETURNS timestamp AS '
+	 SELECT to_timestamp($1)::timestamp AS result
+' LANGUAGE 'SQL';
+
+-- timestamp without time zone (i.e. 1973-11-29 21:33:09)
+CREATE OR REPLACE FUNCTION unix_timestamp(timestamp) RETURNS bigint AS '
+	SELECT EXTRACT(EPOCH FROM $1)::bigint AS result;
+' LANGUAGE 'SQL';
 
 
 --
@@ -78,8 +96,9 @@ CREATE TABLE  icinga_commands (
   config_type INTEGER NOT NULL default '0',
   object_id INTEGER NOT NULL default '0',
   command_line varchar(255) NOT NULL default '',
-  PRIMARY KEY  (command_id),
-  UNIQUE (instance_id,object_id,config_type)
+  PRIMARY KEY  (command_id)
+--  PRIMARY KEY  (command_id),
+--  UNIQUE (instance_id,object_id,config_type)
 ) ;
 
 -- --------------------------------------------------------
@@ -106,8 +125,9 @@ CREATE TABLE  icinga_commenthistory (
   expiration_time timestamp NOT NULL default '1970-01-01 00:00:00',
   deletion_time timestamp NOT NULL default '1970-01-01 00:00:00',
   deletion_time_usec INTEGER NOT NULL default '0',
-  PRIMARY KEY  (commenthistory_id),
-  UNIQUE (instance_id,comment_time,internal_comment_id)
+  PRIMARY KEY  (commenthistory_id)
+--  PRIMARY KEY  (commenthistory_id),
+--  UNIQUE (instance_id,comment_time,internal_comment_id)
 );
 
 -- --------------------------------------------------------
@@ -132,8 +152,9 @@ CREATE TABLE  icinga_comments (
   comment_source INTEGER NOT NULL default '0',
   expires INTEGER NOT NULL default '0',
   expiration_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  PRIMARY KEY  (comment_id),
-  UNIQUE (instance_id,comment_time,internal_comment_id)
+  PRIMARY KEY  (comment_id)
+--  PRIMARY KEY  (comment_id),
+--  UNIQUE (instance_id,comment_time,internal_comment_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -147,8 +168,9 @@ CREATE TABLE  icinga_configfiles (
   instance_id INTEGER NOT NULL default '0',
   configfile_type INTEGER NOT NULL default '0',
   configfile_path varchar(255) NOT NULL default '',
-  PRIMARY KEY  (configfile_id),
-  UNIQUE (instance_id,configfile_type,configfile_path)
+  PRIMARY KEY  (configfile_id)
+--  PRIMARY KEY  (configfile_id),
+--  UNIQUE (instance_id,configfile_type,configfile_path)
 );
 
 -- --------------------------------------------------------
@@ -203,8 +225,9 @@ CREATE TABLE  icinga_contactgroups (
   config_type INTEGER NOT NULL default '0',
   contactgroup_object_id INTEGER NOT NULL default '0',
   alias varchar(255) NOT NULL default '',
-  PRIMARY KEY  (contactgroup_id),
-  UNIQUE (instance_id,config_type,contactgroup_object_id)
+  PRIMARY KEY  (contactgroup_id)
+--  PRIMARY KEY  (contactgroup_id),
+--  UNIQUE (instance_id,config_type,contactgroup_object_id)
 );
 
 -- --------------------------------------------------------
@@ -218,8 +241,9 @@ CREATE TABLE  icinga_contactgroup_members (
   instance_id INTEGER NOT NULL default '0',
   contactgroup_id INTEGER NOT NULL default '0',
   contact_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (contactgroup_member_id),
-  UNIQUE (contactgroup_id,contact_object_id)
+  PRIMARY KEY  (contactgroup_member_id)
+--  PRIMARY KEY  (contactgroup_member_id),
+--  UNIQUE (contactgroup_id,contact_object_id)
 );
 
 -- --------------------------------------------------------
@@ -238,8 +262,9 @@ CREATE TABLE  icinga_contactnotificationmethods (
   end_time_usec INTEGER NOT NULL default '0',
   command_object_id INTEGER NOT NULL default '0',
   command_args varchar(255) NOT NULL default '',
-  PRIMARY KEY  (contactnotificationmethod_id),
-  UNIQUE (instance_id,contactnotification_id,start_time,start_time_usec)
+  PRIMARY KEY  (contactnotificationmethod_id)
+--  PRIMARY KEY  (contactnotificationmethod_id),
+--  UNIQUE (instance_id,contactnotification_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -257,8 +282,9 @@ CREATE TABLE  icinga_contactnotifications (
   start_time_usec INTEGER NOT NULL default '0',
   end_time timestamp NOT NULL default '1970-01-01 00:00:00',
   end_time_usec INTEGER NOT NULL default '0',
-  PRIMARY KEY  (contactnotification_id),
-  UNIQUE (instance_id,contact_object_id,start_time,start_time_usec)
+  PRIMARY KEY  (contactnotification_id)
+--  PRIMARY KEY  (contactnotification_id)
+--  UNIQUE (instance_id,contact_object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -291,8 +317,9 @@ CREATE TABLE  icinga_contacts (
   notify_host_unreachable INTEGER NOT NULL default '0',
   notify_host_flapping INTEGER NOT NULL default '0',
   notify_host_downtime INTEGER NOT NULL default '0',
-  PRIMARY KEY  (contact_id),
-  UNIQUE (instance_id,config_type,contact_object_id)
+  PRIMARY KEY  (contact_id)
+--  PRIMARY KEY  (contact_id),
+--  UNIQUE (instance_id,config_type,contact_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -313,8 +340,9 @@ CREATE TABLE  icinga_contactstatus (
   modified_attributes INTEGER NOT NULL default '0',
   modified_host_attributes INTEGER NOT NULL default '0',
   modified_service_attributes INTEGER NOT NULL default '0',
-  PRIMARY KEY  (contactstatus_id),
-  UNIQUE  (contact_object_id)
+  PRIMARY KEY  (contactstatus_id)
+--  PRIMARY KEY  (contactstatus_id),
+--  UNIQUE  (contact_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -329,8 +357,9 @@ CREATE TABLE  icinga_contact_addresses (
   contact_id INTEGER NOT NULL default '0',
   address_number INTEGER NOT NULL default '0',
   address varchar(255) NOT NULL default '',
-  PRIMARY KEY  (contact_address_id),
-  UNIQUE  (contact_id,address_number)
+  PRIMARY KEY  (contact_address_id)
+--  PRIMARY KEY  (contact_address_id),
+--  UNIQUE  (contact_id,address_number)
 ) ;
 
 -- --------------------------------------------------------
@@ -346,8 +375,9 @@ CREATE TABLE  icinga_contact_notificationcommands (
   notification_type INTEGER NOT NULL default '0',
   command_object_id INTEGER NOT NULL default '0',
   command_args varchar(255) NOT NULL default '',
-  PRIMARY KEY  (contact_notificationcommand_id),
-  UNIQUE  (contact_id,notification_type,command_object_id,command_args)
+  PRIMARY KEY  (contact_notificationcommand_id)
+--  PRIMARY KEY  (contact_notificationcommand_id),
+--  UNIQUE  (contact_id,notification_type,command_object_id,command_args)
 ) ;
 
 -- --------------------------------------------------------
@@ -364,9 +394,10 @@ CREATE TABLE  icinga_customvariables (
   has_been_modified INTEGER NOT NULL default '0',
   varname varchar(255) NOT NULL default '',
   varvalue varchar(255) NOT NULL default '',
-  PRIMARY KEY  (customvariable_id),
-  UNIQUE  (object_id,config_type,varname),
-  UNIQUE (varname)
+  PRIMARY KEY  (customvariable_id)
+--  PRIMARY KEY  (customvariable_id),
+--  UNIQUE  (object_id,config_type,varname),
+--  UNIQUE (varname)
 ) ;
 
 -- --------------------------------------------------------
@@ -383,9 +414,10 @@ CREATE TABLE  icinga_customvariablestatus (
   has_been_modified INTEGER NOT NULL default '0',
   varname varchar(255) NOT NULL default '',
   varvalue varchar(255) NOT NULL default '',
-  PRIMARY KEY  (customvariablestatus_id),
-  UNIQUE (object_id,varname),
-  UNIQUE (varname)
+  PRIMARY KEY  (customvariablestatus_id)
+--  PRIMARY KEY  (customvariablestatus_id),
+--  UNIQUE (object_id,varname),
+--  UNIQUE (varname)
 ) ;
 
 -- --------------------------------------------------------
@@ -425,8 +457,9 @@ CREATE TABLE  icinga_downtimehistory (
   actual_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
   actual_end_time_usec INTEGER NOT NULL default '0',
   was_cancelled INTEGER NOT NULL default '0',
-  PRIMARY KEY  (downtimehistory_id),
-  UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
+  PRIMARY KEY  (downtimehistory_id)
+--  PRIMARY KEY  (downtimehistory_id),
+--  UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -454,8 +487,10 @@ CREATE TABLE  icinga_eventhandlers (
   execution_time double precision NOT NULL default '0',
   return_code INTEGER NOT NULL default '0',
   output varchar(255) NOT NULL default '',
-  PRIMARY KEY  (eventhandler_id),
-  UNIQUE (instance_id,object_id,start_time,start_time_usec)
+  long_output varchar(8192) NOT NULL default '',
+  PRIMARY KEY  (eventhandler_id)
+--  PRIMARY KEY  (eventhandler_id),
+--  UNIQUE (instance_id,object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -526,9 +561,11 @@ CREATE TABLE  icinga_hostchecks (
   latency double precision NOT NULL default '0',
   return_code INTEGER NOT NULL default '0',
   output varchar(255) NOT NULL default '',
+  long_output varchar(8192) NOT NULL default '',
   perfdata varchar(255) NOT NULL default '',
-  PRIMARY KEY  (hostcheck_id),
-  UNIQUE (instance_id,host_object_id,start_time,start_time_usec)
+  PRIMARY KEY  (hostcheck_id)
+--  PRIMARY KEY  (hostcheck_id),
+--  UNIQUE (instance_id,host_object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -549,8 +586,9 @@ CREATE TABLE  icinga_hostdependencies (
   fail_on_up INTEGER NOT NULL default '0',
   fail_on_down INTEGER NOT NULL default '0',
   fail_on_unreachable INTEGER NOT NULL default '0',
-  PRIMARY KEY  (hostdependency_id),
-  UNIQUE (instance_id,config_type,host_object_id,dependent_host_object_id,dependency_type,inherits_parent,fail_on_up,fail_on_down,fail_on_unreachable)
+  PRIMARY KEY  (hostdependency_id)
+--  PRIMARY KEY  (hostdependency_id),
+--  UNIQUE (instance_id,config_type,host_object_id,dependent_host_object_id,dependency_type,inherits_parent,fail_on_up,fail_on_down,fail_on_unreachable)
 ) ;
 
 -- --------------------------------------------------------
@@ -571,8 +609,9 @@ CREATE TABLE  icinga_hostescalations (
   escalate_on_recovery INTEGER NOT NULL default '0',
   escalate_on_down INTEGER NOT NULL default '0',
   escalate_on_unreachable INTEGER NOT NULL default '0',
-  PRIMARY KEY  (hostescalation_id),
-  UNIQUE (instance_id,config_type,host_object_id,timeperiod_object_id,first_notification,last_notification)
+  PRIMARY KEY  (hostescalation_id)
+--  PRIMARY KEY  (hostescalation_id),
+--  UNIQUE (instance_id,config_type,host_object_id,timeperiod_object_id,first_notification,last_notification)
 ) ;
 
 -- --------------------------------------------------------
@@ -586,8 +625,9 @@ CREATE TABLE  icinga_hostescalation_contactgroups (
   instance_id INTEGER NOT NULL default '0',
   hostescalation_id INTEGER NOT NULL default '0',
   contactgroup_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (hostescalation_contactgroup_id),
-  UNIQUE (hostescalation_id,contactgroup_object_id)
+  PRIMARY KEY  (hostescalation_contactgroup_id)
+--  PRIMARY KEY  (hostescalation_contactgroup_id),
+--  UNIQUE (hostescalation_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -601,8 +641,9 @@ CREATE TABLE  icinga_hostescalation_contacts (
   instance_id INTEGER NOT NULL default '0',
   hostescalation_id INTEGER NOT NULL default '0',
   contact_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (hostescalation_contact_id),
-  UNIQUE (instance_id,hostescalation_id,contact_object_id)
+  PRIMARY KEY  (hostescalation_contact_id)
+--  PRIMARY KEY  (hostescalation_contact_id),
+--  UNIQUE (instance_id,hostescalation_id,contact_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -617,8 +658,9 @@ CREATE TABLE  icinga_hostgroups (
   config_type INTEGER NOT NULL default '0',
   hostgroup_object_id INTEGER NOT NULL default '0',
   alias varchar(255) NOT NULL default '',
-  PRIMARY KEY  (hostgroup_id),
-  UNIQUE (instance_id,hostgroup_object_id)
+  PRIMARY KEY  (hostgroup_id)
+--  PRIMARY KEY  (hostgroup_id),
+--  UNIQUE (instance_id,hostgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -632,8 +674,9 @@ CREATE TABLE  icinga_hostgroup_members (
   instance_id INTEGER NOT NULL default '0',
   hostgroup_id INTEGER NOT NULL default '0',
   host_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (hostgroup_member_id),
-  UNIQUE (hostgroup_id,host_object_id)
+  PRIMARY KEY  (hostgroup_member_id)
+--  PRIMARY KEY  (hostgroup_member_id),
+--  UNIQUE (hostgroup_id,host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -701,9 +744,10 @@ CREATE TABLE  icinga_hosts (
   x_3d double precision NOT NULL default '0',
   y_3d double precision NOT NULL default '0',
   z_3d double precision NOT NULL default '0',
-  PRIMARY KEY  (host_id),
-  UNIQUE (instance_id,config_type,host_object_id),
-  UNIQUE (host_object_id)
+  PRIMARY KEY  (host_id)
+--  PRIMARY KEY  (host_id),
+--  UNIQUE (instance_id,config_type,host_object_id),
+--  UNIQUE (host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -718,6 +762,7 @@ CREATE TABLE  icinga_hoststatus (
   host_object_id INTEGER NOT NULL default '0',
   status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
   output varchar(255) NOT NULL default '',
+  long_output varchar(8192) NOT NULL default '',
   perfdata varchar(255) NOT NULL default '',
   current_state INTEGER NOT NULL default '0',
   has_been_checked INTEGER NOT NULL default '0',
@@ -759,25 +804,26 @@ CREATE TABLE  icinga_hoststatus (
   normal_check_interval double precision NOT NULL default '0',
   retry_check_interval double precision NOT NULL default '0',
   check_timeperiod_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (hoststatus_id),
-  UNIQUE (host_object_id),
-  UNIQUE (instance_id),
-  UNIQUE (status_update_time),
-  UNIQUE (current_state),
-  UNIQUE (check_type),
-  UNIQUE (state_type),
-  UNIQUE (last_state_change),
-  UNIQUE (notifications_enabled),
-  UNIQUE (problem_has_been_acknowledged),
-  UNIQUE (active_checks_enabled),
-  UNIQUE (passive_checks_enabled),
-  UNIQUE (event_handler_enabled),
-  UNIQUE (flap_detection_enabled),
-  UNIQUE (is_flapping),
-  UNIQUE (percent_state_change),
-  UNIQUE (latency),
-  UNIQUE (execution_time),
-  UNIQUE (scheduled_downtime_depth)
+  PRIMARY KEY  (hoststatus_id)
+--  PRIMARY KEY  (hoststatus_id),
+--  UNIQUE (host_object_id),
+--  UNIQUE (instance_id),
+--  UNIQUE (status_update_time),
+--  UNIQUE (current_state),
+--  UNIQUE (check_type),
+--  UNIQUE (state_type),
+--  UNIQUE (last_state_change),
+--  UNIQUE (notifications_enabled),
+--  UNIQUE (problem_has_been_acknowledged),
+--  UNIQUE (active_checks_enabled),
+--  UNIQUE (passive_checks_enabled),
+--  UNIQUE (event_handler_enabled),
+--  UNIQUE (flap_detection_enabled),
+--  UNIQUE (is_flapping),
+--  UNIQUE (percent_state_change),
+--  UNIQUE (latency),
+--  UNIQUE (execution_time),
+--  UNIQUE (scheduled_downtime_depth)
 ) ;
 
 -- --------------------------------------------------------
@@ -791,8 +837,9 @@ CREATE TABLE  icinga_host_contactgroups (
   instance_id INTEGER NOT NULL default '0',
   host_id INTEGER NOT NULL default '0',
   contactgroup_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (host_contactgroup_id),
-  UNIQUE (host_id,contactgroup_object_id)
+  PRIMARY KEY  (host_contactgroup_id)
+--  PRIMARY KEY  (host_contactgroup_id),
+--  UNIQUE (host_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -806,8 +853,9 @@ CREATE TABLE  icinga_host_contacts (
   instance_id INTEGER NOT NULL default '0',
   host_id INTEGER NOT NULL default '0',
   contact_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (host_contact_id),
-  UNIQUE (instance_id,host_id,contact_object_id)
+  PRIMARY KEY  (host_contact_id)
+--  PRIMARY KEY  (host_contact_id),
+--  UNIQUE (instance_id,host_id,contact_object_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -821,8 +869,9 @@ CREATE TABLE  icinga_host_parenthosts (
   instance_id INTEGER NOT NULL default '0',
   host_id INTEGER NOT NULL default '0',
   parent_host_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (host_parenthost_id),
-  UNIQUE (host_id,parent_host_object_id)
+  PRIMARY KEY  (host_parenthost_id)
+--  PRIMARY KEY  (host_parenthost_id),
+--  UNIQUE (host_id,parent_host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -875,10 +924,12 @@ CREATE TABLE  icinga_notifications (
   end_time_usec INTEGER NOT NULL default '0',
   state INTEGER NOT NULL default '0',
   output varchar(255) NOT NULL default '',
+  long_output varchar(8192) NOT NULL default '',
   escalated INTEGER NOT NULL default '0',
   contacts_notified INTEGER NOT NULL default '0',
-  PRIMARY KEY  (notification_id),
-  UNIQUE (instance_id,object_id,start_time,start_time_usec)
+  PRIMARY KEY  (notification_id)
+--  PRIMARY KEY  (notification_id),
+--  UNIQUE (instance_id,object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -894,8 +945,9 @@ CREATE TABLE  icinga_objects (
   name1 varchar(128) NOT NULL default '',
   name2 varchar(128) default NULL,
   is_active INTEGER NOT NULL default '0',
-  PRIMARY KEY  (object_id),
-  UNIQUE (objecttype_id,name1,name2)
+  PRIMARY KEY  (object_id)
+--  PRIMARY KEY  (object_id),
+--  UNIQUE (objecttype_id,name1,name2)
 ) ;
 
 -- --------------------------------------------------------
@@ -949,8 +1001,9 @@ CREATE TABLE  icinga_programstatus (
   modified_service_attributes INTEGER NOT NULL default '0',
   global_host_event_handler varchar(255) NOT NULL default '',
   global_service_event_handler varchar(255) NOT NULL default '',
-  PRIMARY KEY  (programstatus_id),
-  UNIQUE (instance_id)
+  PRIMARY KEY  (programstatus_id)
+--  PRIMARY KEY  (programstatus_id),
+--  UNIQUE (instance_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -964,8 +1017,9 @@ CREATE TABLE  icinga_runtimevariables (
   instance_id INTEGER NOT NULL default '0',
   varname varchar(64) NOT NULL default '',
   varvalue varchar(255) NOT NULL default '',
-  PRIMARY KEY  (runtimevariable_id),
-  UNIQUE (instance_id,varname)
+  PRIMARY KEY  (runtimevariable_id)
+--  PRIMARY KEY  (runtimevariable_id),
+--  UNIQUE (instance_id,varname)
 ) ;
 
 -- --------------------------------------------------------
@@ -991,8 +1045,9 @@ CREATE TABLE  icinga_scheduleddowntime (
   was_started INTEGER NOT NULL default '0',
   actual_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
   actual_start_time_usec INTEGER NOT NULL default '0',
-  PRIMARY KEY  (scheduleddowntime_id),
-  UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
+  PRIMARY KEY  (scheduleddowntime_id)
+--  PRIMARY KEY  (scheduleddowntime_id),
+--  UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1023,11 +1078,13 @@ CREATE TABLE  icinga_servicechecks (
   latency double precision NOT NULL default '0',
   return_code INTEGER NOT NULL default '0',
   output varchar(255) NOT NULL default '',
+  long_output varchar(8192) NOT NULL default '',
   perfdata varchar(255) NOT NULL default '',
-  PRIMARY KEY  (servicecheck_id),
-  UNIQUE (instance_id),
-  UNIQUE (service_object_id),
-  UNIQUE (start_time)
+  PRIMARY KEY  (servicecheck_id)
+--  PRIMARY KEY  (servicecheck_id),
+--  UNIQUE (instance_id),
+--  UNIQUE (service_object_id),
+--  UNIQUE (start_time)
 ) ;
 
 -- --------------------------------------------------------
@@ -1049,8 +1106,9 @@ CREATE TABLE  icinga_servicedependencies (
   fail_on_warning INTEGER NOT NULL default '0',
   fail_on_unknown INTEGER NOT NULL default '0',
   fail_on_critical INTEGER NOT NULL default '0',
-  PRIMARY KEY  (servicedependency_id),
-  UNIQUE (instance_id,config_type,service_object_id,dependent_service_object_id,dependency_type,inherits_parent,fail_on_ok,fail_on_warning,fail_on_unknown,fail_on_critical)
+  PRIMARY KEY  (servicedependency_id)
+--  PRIMARY KEY  (servicedependency_id),
+--  UNIQUE (instance_id,config_type,service_object_id,dependent_service_object_id,dependency_type,inherits_parent,fail_on_ok,fail_on_warning,fail_on_unknown,fail_on_critical)
 ) ;
 
 -- --------------------------------------------------------
@@ -1072,8 +1130,9 @@ CREATE TABLE  icinga_serviceescalations (
   escalate_on_warning INTEGER NOT NULL default '0',
   escalate_on_unknown INTEGER NOT NULL default '0',
   escalate_on_critical INTEGER NOT NULL default '0',
-  PRIMARY KEY  (serviceescalation_id),
-  UNIQUE (instance_id,config_type,service_object_id,timeperiod_object_id,first_notification,last_notification)
+  PRIMARY KEY  (serviceescalation_id)
+--  PRIMARY KEY  (serviceescalation_id),
+--  UNIQUE (instance_id,config_type,service_object_id,timeperiod_object_id,first_notification,last_notification)
 ) ;
 
 -- --------------------------------------------------------
@@ -1087,8 +1146,9 @@ CREATE TABLE  icinga_serviceescalation_contactgroups (
   instance_id INTEGER NOT NULL default '0',
   serviceescalation_id INTEGER NOT NULL default '0',
   contactgroup_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (serviceescalation_contactgroup_id),
-  UNIQUE (serviceescalation_id,contactgroup_object_id)
+  PRIMARY KEY  (serviceescalation_contactgroup_id)
+--  PRIMARY KEY  (serviceescalation_contactgroup_id),
+--  UNIQUE (serviceescalation_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1102,8 +1162,9 @@ CREATE TABLE  icinga_serviceescalation_contacts (
   instance_id INTEGER NOT NULL default '0',
   serviceescalation_id INTEGER NOT NULL default '0',
   contact_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (serviceescalation_contact_id),
-  UNIQUE (instance_id,serviceescalation_id,contact_object_id)
+  PRIMARY KEY  (serviceescalation_contact_id)
+--  PRIMARY KEY  (serviceescalation_contact_id),
+--  UNIQUE (instance_id,serviceescalation_id,contact_object_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -1118,8 +1179,9 @@ CREATE TABLE  icinga_servicegroups (
   config_type INTEGER NOT NULL default '0',
   servicegroup_object_id INTEGER NOT NULL default '0',
   alias varchar(255) NOT NULL default '',
-  PRIMARY KEY  (servicegroup_id),
-  UNIQUE (instance_id,config_type,servicegroup_object_id)
+  PRIMARY KEY  (servicegroup_id)
+--  PRIMARY KEY  (servicegroup_id),
+--  UNIQUE (instance_id,config_type,servicegroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1133,8 +1195,9 @@ CREATE TABLE  icinga_servicegroup_members (
   instance_id INTEGER NOT NULL default '0',
   servicegroup_id INTEGER NOT NULL default '0',
   service_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (servicegroup_member_id),
-  UNIQUE (servicegroup_id,service_object_id)
+  PRIMARY KEY  (servicegroup_member_id)
+--  PRIMARY KEY  (servicegroup_member_id),
+--  UNIQUE (servicegroup_id,service_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1196,9 +1259,10 @@ CREATE TABLE  icinga_services (
   action_url varchar(255) NOT NULL default '',
   icon_image varchar(255) NOT NULL default '',
   icon_image_alt varchar(255) NOT NULL default '',
-  PRIMARY KEY  (service_id),
-  UNIQUE (instance_id,config_type,service_object_id),
-  UNIQUE (service_object_id)
+  PRIMARY KEY  (service_id)
+--  PRIMARY KEY  (service_id),
+--  UNIQUE (instance_id,config_type,service_object_id),
+--  UNIQUE (service_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1213,6 +1277,7 @@ CREATE TABLE  icinga_servicestatus (
   service_object_id INTEGER NOT NULL default '0',
   status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
   output varchar(255) NOT NULL default '',
+  long_output varchar(8192) NOT NULL default '',
   perfdata varchar(255) NOT NULL default '',
   current_state INTEGER NOT NULL default '0',
   has_been_checked INTEGER NOT NULL default '0',
@@ -1255,25 +1320,26 @@ CREATE TABLE  icinga_servicestatus (
   normal_check_interval double precision NOT NULL default '0',
   retry_check_interval double precision NOT NULL default '0',
   check_timeperiod_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (servicestatus_id),
-  UNIQUE (service_object_id),
-  UNIQUE (instance_id),
-  UNIQUE (status_update_time),
-  UNIQUE (current_state),
-  UNIQUE (check_type),
-  UNIQUE (state_type),
-  UNIQUE (last_state_change),
-  UNIQUE (notifications_enabled),
-  UNIQUE (problem_has_been_acknowledged),
-  UNIQUE (active_checks_enabled),
-  UNIQUE (passive_checks_enabled),
-  UNIQUE (event_handler_enabled),
-  UNIQUE (flap_detection_enabled),
-  UNIQUE (is_flapping),
-  UNIQUE (percent_state_change),
-  UNIQUE (latency),
-  UNIQUE (execution_time),
-  UNIQUE (scheduled_downtime_depth)
+  PRIMARY KEY  (servicestatus_id)
+--PRIMARY KEY  (servicestatus_id),
+--  UNIQUE (service_object_id),
+--  UNIQUE (instance_id),
+--  UNIQUE (status_update_time),
+--  UNIQUE (current_state),
+--  UNIQUE (check_type),
+--  UNIQUE (state_type),
+--  UNIQUE (last_state_change),
+--  UNIQUE (notifications_enabled),
+--  UNIQUE (problem_has_been_acknowledged),
+--  UNIQUE (active_checks_enabled),
+--  UNIQUE (passive_checks_enabled),
+--  UNIQUE (event_handler_enabled),
+--  UNIQUE (flap_detection_enabled),
+--  UNIQUE (is_flapping),
+--  UNIQUE (percent_state_change),
+--  UNIQUE (latency),
+--  UNIQUE (execution_time),
+--  UNIQUE (scheduled_downtime_depth)
 ) ;
 
 -- --------------------------------------------------------
@@ -1287,8 +1353,9 @@ CREATE TABLE  icinga_service_contactgroups (
   instance_id INTEGER NOT NULL default '0',
   service_id INTEGER NOT NULL default '0',
   contactgroup_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (service_contactgroup_id),
-  UNIQUE (service_id,contactgroup_object_id)
+  PRIMARY KEY  (service_contactgroup_id)
+--  PRIMARY KEY  (service_contactgroup_id),
+--  UNIQUE (service_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1302,8 +1369,9 @@ CREATE TABLE  icinga_service_contacts (
   instance_id INTEGER NOT NULL default '0',
   service_id INTEGER NOT NULL default '0',
   contact_object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (service_contact_id),
-  UNIQUE (instance_id,service_id,contact_object_id)
+  PRIMARY KEY  (service_contact_id)
+--  PRIMARY KEY  (service_contact_id),
+--  UNIQUE (instance_id,service_id,contact_object_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -1326,6 +1394,7 @@ CREATE TABLE  icinga_statehistory (
   last_state INTEGER NOT NULL default '-1',
   last_hard_state INTEGER NOT NULL default '-1',
   output varchar(255) NOT NULL default '',
+  long_output varchar(8192) NOT NULL default '',
   PRIMARY KEY  (statehistory_id)
 ) ;
 
@@ -1347,10 +1416,11 @@ CREATE TABLE  icinga_systemcommands (
   early_timeout INTEGER NOT NULL default '0',
   execution_time double precision NOT NULL default '0',
   return_code INTEGER NOT NULL default '0',
-  output varchar(255) NOT NULL default '',
-  PRIMARY KEY  (systemcommand_id),
-  UNIQUE (instance_id),
-  UNIQUE (start_time)
+  long_output varchar(8192) NOT NULL default '',
+  PRIMARY KEY  (systemcommand_id)
+--  PRIMARY KEY  (systemcommand_id),
+--  UNIQUE (instance_id),
+--  UNIQUE (start_time)
 ) ;
 
 -- --------------------------------------------------------
@@ -1368,11 +1438,12 @@ CREATE TABLE  icinga_timedeventqueue (
   scheduled_time timestamp NOT NULL default '1970-01-01 00:00:00',
   recurring_event INTEGER NOT NULL default '0',
   object_id INTEGER NOT NULL default '0',
-  PRIMARY KEY  (timedeventqueue_id),
-  UNIQUE (instance_id),
-  UNIQUE (event_type),
-  UNIQUE (scheduled_time),
-  UNIQUE (object_id)
+  PRIMARY KEY  (timedeventqueue_id)
+--  PRIMARY KEY  (timedeventqueue_id),
+--  UNIQUE (instance_id),
+--  UNIQUE (event_type),
+--  UNIQUE (scheduled_time),
+--  UNIQUE (object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1394,11 +1465,12 @@ CREATE TABLE  icinga_timedevents (
   object_id INTEGER NOT NULL default '0',
   deletion_time timestamp NOT NULL default '1970-01-01 00:00:00',
   deletion_time_usec INTEGER NOT NULL default '0',
-  PRIMARY KEY  (timedevent_id),
-  UNIQUE (instance_id),
-  UNIQUE (event_type),
-  UNIQUE (scheduled_time),
-  UNIQUE (object_id)
+  PRIMARY KEY  (timedevent_id)
+--  PRIMARY KEY  (timedevent_id),
+--  UNIQUE (instance_id),
+--  UNIQUE (event_type),
+--  UNIQUE (scheduled_time),
+--  UNIQUE (object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1413,8 +1485,9 @@ CREATE TABLE  icinga_timeperiods (
   config_type INTEGER NOT NULL default '0',
   timeperiod_object_id INTEGER NOT NULL default '0',
   alias varchar(255) NOT NULL default '',
-  PRIMARY KEY  (timeperiod_id),
-  UNIQUE (instance_id,config_type,timeperiod_object_id)
+  PRIMARY KEY  (timeperiod_id)
+--  PRIMARY KEY  (timeperiod_id),
+--  UNIQUE (instance_id,config_type,timeperiod_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1430,6 +1503,7 @@ CREATE TABLE  icinga_timeperiod_timeranges (
   day INTEGER NOT NULL default '0',
   start_sec INTEGER NOT NULL default '0',
   end_sec INTEGER NOT NULL default '0',
-  PRIMARY KEY  (timeperiod_timerange_id),
-  UNIQUE (timeperiod_id,day,start_sec,end_sec)
+  PRIMARY KEY  (timeperiod_timerange_id)
+--  PRIMARY KEY  (timeperiod_timerange_id),
+--  UNIQUE (timeperiod_id,day,start_sec,end_sec)
 ) ;

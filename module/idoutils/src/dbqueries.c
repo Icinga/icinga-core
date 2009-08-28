@@ -94,7 +94,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 			result = ndo2db_db_query(idi, query1);	
 	                break;
         	case NDO2DB_DBSERVER_PGSQL:
-			asprintf(&query1, "UPDATE %s queued_time=%s, queued_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
+			asprintf(&query1, "UPDATE %s SET queued_time=%s, queued_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
 					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(char **) data[2],		/* update start */
                                         *(int *) data[3],
@@ -110,7 +110,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 			/* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) { /* recast from void * */
 				/* try insert instead */
-				asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', '%s', '%lu', '%s', '%d', '%lu')",
+				asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
 					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -188,7 +188,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(char **) data[2],             /* update start */
                                         *(int *) data[3],
@@ -204,7 +204,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', '%s', '%lu', '%s', '%d', '%lu')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -298,7 +298,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                        asprintf(&query1, "UPDATE %s SET end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS],
                                         *(char **) data[3],             /* update start */
                                         *(unsigned long *) data[4],
@@ -430,7 +430,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                        asprintf(&query1, "UPDATE %s SET eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS],
                                         *(int *) data[1],               /* update start */
                                         *(unsigned long *) data[2],
@@ -563,7 +563,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', long_output='%s', escalated=%d, contacts_notified=%d  WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', long_output='%s', escalated=%d, contacts_notified=%d  WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS],
                                         *(int *) data[1],               /* update start */
                                         *(int *) data[2],
@@ -674,7 +674,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s notification_id=%lu, end_time=%s, end_time_usec=%lu WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                        asprintf(&query1, "UPDATE %s SET notification_id=%lu, end_time=%s, end_time_usec=%lu WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
                                         *(unsigned long *) data[1],     /* update start */
                                         *(char **) data[4],
@@ -771,7 +771,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s' WHERE instance_id=%lu AND contactnotification_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                        asprintf(&query1, "UPDATE %s SET end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s' WHERE instance_id=%lu AND contactnotification_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
                                         *(char **) data[4],             /* update start */
                                         *(unsigned long *) data[5],
@@ -898,7 +898,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHERE instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                        asprintf(&query1, "UPDATE %s SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHERE instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(int *) data[2],               /* update start */
                                         *(int *) data[3],
@@ -928,7 +928,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%s', '%lu', '%s', '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -1052,7 +1052,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s check_type='%d', is_raw_check='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHERE instance_id=%lu AND host_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                        asprintf(&query1, "UPDATE %s SET check_type='%d', is_raw_check='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHERE instance_id=%lu AND host_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS],
                                         *(int *) data[5],               /* update start */
                                         *(int *) data[6],
@@ -1081,7 +1081,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', i'%s', '%s')",
+                                asprintf(&query2, "INSERT INTO %s (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(char **) data[1],
@@ -1193,7 +1193,7 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
                                         table_name,
                                         *(int *) data[3],               /* update start */
                                         *(int *) data[4],
@@ -1287,7 +1287,7 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
 
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s) ON DUPLICATE KEY UPDATEdowntime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s ",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s) ON DUPLICATE KEY UPDATE downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s ",
                                         table_name,
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -1314,7 +1314,7 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
                                         table_name,
                                         *(int *) data[1],               /* update start */
                                         *(char **) data[4],
@@ -1456,7 +1456,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s status_update_time=%s, program_start_time=%s, is_currently_running=1, process_id=%lu, daemon_mode=%d, last_command_check=%s, last_log_rotation=%s, notifications_enabled=%d, active_service_checks_enabled=%d, passive_service_checks_enabled=%d, active_host_checks_enabled=%d, passive_host_checks_enabled=%d, event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', global_service_event_handler='%s' WHERE instance_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET status_update_time=%s, program_start_time=%s, is_currently_running=1, process_id=%lu, daemon_mode=%d, last_command_check=%s, last_log_rotation=%s, notifications_enabled=%d, active_service_checks_enabled=%d, passive_service_checks_enabled=%d, active_host_checks_enabled=%d, passive_host_checks_enabled=%d, event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', global_service_event_handler='%s' WHERE instance_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS],
                                         *(char **) data[1],             /* update start */
                                         *(char **) data[2],
@@ -1667,7 +1667,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s instance_id='%lu', host_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE host_object_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET instance_id='%lu', host_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE host_object_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS],
                                         *(unsigned long *) data[0],     /* update start */
                                         *(unsigned long *) data[1],
@@ -1928,7 +1928,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                         result = ndo2db_db_query(idi, query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s instance_id='%lu', service_object_id='%lu', status_update_time='%s', output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check='%s', next_check='%s', check_type='%d', last_state_change='%s', last_hard_state_change='%s', last_hard_state='%d', last_time_ok='%s', last_time_warning='%s', last_time_unknown='%s', last_time_critical='%s', state_type='%d', last_notification='%s', next_notification='%s', no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE service_object_id='%lu'",
+                        asprintf(&query1, "UPDATE %s SET instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE service_object_id='%lu'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
                                         *(unsigned long *) data[0],     /* update start */
                                         *(unsigned long *) data[1],
@@ -1985,7 +1985,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', %s, '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', %s, %s, '%d', %s, %s, '%d', %s, %s, %s, %s, '%d', %s, %s, '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
