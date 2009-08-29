@@ -26,8 +26,8 @@
 #include "../include/dbhandlers.h"
 
 #define NDO2DB_VERSION "1.4b8"
-#define NDO2DB_NAME "NDO2DB"
-#define NDO2DB_DATE "01-03-2009"
+#define NDO2DB_NAME "IDO2DB"
+#define NDO2DB_DATE "09-01-2009"
 
 
 extern int errno;

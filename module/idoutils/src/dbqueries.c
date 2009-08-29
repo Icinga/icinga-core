@@ -92,6 +92,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 			);
 			/* send query to db */
 			result = ndo2db_db_query(idi, query1);	
+			free(query1);
 	                break;
         	case NDO2DB_DBSERVER_PGSQL:
 			asprintf(&query1, "UPDATE %s SET queued_time=%s, queued_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
@@ -106,7 +107,8 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 			);
 			/* send query to db */
 			result = ndo2db_db_query(idi, query1);		
-		
+			free(query1);
+
 			/* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) { /* recast from void * */
 				/* try insert instead */
@@ -122,6 +124,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 				);
 				/* send query to db */
 				result = ndo2db_db_query(idi, query2);
+				free(query2);
 			}		
 	                break;
         	case NDO2DB_DBSERVER_DB2:
@@ -146,9 +149,6 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 	        default:
         	        break;
         }
-
-	free(query1);
-	free(query2);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add() end\n"); 
 
@@ -186,6 +186,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
@@ -200,6 +201,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -216,6 +218,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -240,9 +243,6 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_execute() end\n");
 
@@ -296,6 +296,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -315,6 +316,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -336,6 +338,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
 				);
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -360,9 +363,6 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() end\n");
 
@@ -428,6 +428,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
 			);
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -453,6 +454,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -480,6 +482,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -504,9 +507,6 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() end\n");
 
@@ -561,6 +561,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', long_output='%s', escalated=%d, contacts_notified=%d  WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
@@ -581,6 +582,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -603,6 +605,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -627,9 +630,6 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() end\n");
 
@@ -672,6 +672,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET notification_id=%lu, end_time=%s, end_time_usec=%lu WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -686,6 +687,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -702,6 +704,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -726,9 +729,6 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationdata_add() end\n");
 
@@ -769,6 +769,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s' WHERE instance_id=%lu AND contactnotification_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -784,6 +785,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -801,6 +803,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -825,9 +828,6 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationmethoddata_add() end\n");
 
@@ -855,7 +855,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
 
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%s', '%lu', '%s', '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -896,6 +896,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHERE instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -924,6 +925,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -952,6 +954,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -976,9 +979,6 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicecheckdata_add() end\n");
 
@@ -1050,6 +1050,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET check_type='%d', is_raw_check='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHERE instance_id=%lu AND host_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -1077,6 +1078,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -1109,6 +1111,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -1133,9 +1136,6 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostcheckdata_add() end\n");
 
@@ -1191,6 +1191,7 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
@@ -1210,6 +1211,7 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -1233,6 +1235,7 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -1257,9 +1260,6 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_add() end\n");
 
@@ -1312,6 +1312,7 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
@@ -1331,6 +1332,7 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -1352,6 +1354,7 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -1376,9 +1379,6 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_add() end\n");
 
@@ -1454,6 +1454,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET status_update_time=%s, program_start_time=%s, is_currently_running=1, process_id=%lu, daemon_mode=%d, last_command_check=%s, last_log_rotation=%s, notifications_enabled=%d, active_service_checks_enabled=%d, passive_service_checks_enabled=%d, active_host_checks_enabled=%d, passive_host_checks_enabled=%d, event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', global_service_event_handler='%s' WHERE instance_id=%lu",
@@ -1483,6 +1484,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -1514,6 +1516,7 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -1538,9 +1541,6 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_programstatusdata_add() end\n");
 
@@ -1665,6 +1665,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu', host_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE host_object_id=%lu",
@@ -1719,6 +1720,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
                         if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -1774,6 +1776,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -1798,9 +1801,6 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() end\n");
 
@@ -1827,7 +1827,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
 
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_i) VALUES ('%lu', '%lu', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu') ON DUPLICATE KEY UPDATE instance_id='%lu', service_object_id='%lu', status_update_time='%s', output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check='%s', next_check='%s', check_type='%d', last_state_change='%s', last_hard_state_change='%s', last_hard_state='%d', last_time_ok='%s', last_time_warning='%s', last_time_unknown='%s', last_time_critical='%s', state_type='%d', last_notification='%s', next_notification='%s', no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', %s, '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', %s, %s, '%d', %s, %s, '%d', %s, %s, %s, %s, '%d', %s, %s, '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu') ON DUPLICATE KEY UPDATE instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -1926,6 +1926,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
 			);
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHERE service_object_id='%lu'",
@@ -1981,6 +1982,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2037,6 +2039,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2061,9 +2064,6 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() end\n");
 
@@ -2115,6 +2115,7 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu, status_update_time=%s, host_notifications_enabled=%d, service_notifications_enabled=%d, last_host_notification=%s, last_service_notification=%s, modified_attributes=%lu, modified_host_attributes=%lu, modified_service_attributes=%lu WHERE contact_object_id=%lu",
@@ -2132,6 +2133,7 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2151,6 +2153,7 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2175,9 +2178,6 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactstatusdata_add() end\n");
 
@@ -2216,6 +2216,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu', configfile_type='%d', configfile_path='%s' WHERE instance_id=%lu AND configfile_type=%d AND configfile_path='%s'",
@@ -2229,6 +2230,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2241,6 +2243,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2265,9 +2268,6 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_configfilevariables_add() end\n");
 
@@ -2304,6 +2304,7 @@ int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET varvalue='%s' WHERE instance_id=%lu AND varname='%s'",
@@ -2314,6 +2315,7 @@ int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2326,6 +2328,7 @@ int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **d
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2350,9 +2353,6 @@ int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **d
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_runtimevariables_add() end\n");
 
@@ -2496,6 +2496,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET alias='%s', display_name='%s', address='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notif_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
@@ -2560,6 +2561,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2626,6 +2628,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2650,9 +2653,6 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_definition_add() end\n");
 
@@ -2685,6 +2685,7 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE host_id=%lu AND parent_host_object_id=%lu",
@@ -2695,6 +2696,7 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2707,6 +2709,7 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2731,9 +2734,6 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_parenthosts_add() end\n");
 
@@ -2766,6 +2766,7 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu' WHERE host_id='%lu' AND contactgroup_object_id='%lu'",
@@ -2776,6 +2777,7 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2788,6 +2790,7 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2812,9 +2815,6 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contactgroups_add() end\n");
 
@@ -2849,6 +2849,7 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%d', host_id='%lu', contact_object_id='%lu' WHERE instance_id=%lu AND host_id=%lu AND contact_object_id=%lu",
@@ -2862,6 +2863,7 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2874,6 +2876,7 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2898,9 +2901,6 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contacts_add() end\n");
 
@@ -2939,6 +2939,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET config_type=%d, alias='%s' WHERE instance_id=%lu AND hostgroup_object_id=%lu",
@@ -2950,6 +2951,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -2963,6 +2965,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -2987,9 +2990,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_definition_add() end\n");
 
@@ -3022,6 +3022,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE hostgroup_id=%lu AND host_object_id=%lu",
@@ -3032,6 +3033,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3044,6 +3046,7 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2d
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3068,9 +3071,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2d
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add() end\n");
 
@@ -3203,6 +3203,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET host_object_id=%lu, display_name='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notif_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s' WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
@@ -3261,6 +3262,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3321,6 +3323,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3345,9 +3348,6 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() end\n");
 
@@ -3380,6 +3380,7 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu' WHERE service_id='%lu' AND contactgroup_object_id='%lu'",
@@ -3390,6 +3391,7 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3402,6 +3404,7 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3426,9 +3429,6 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contactgroups_add() end\n");
 
@@ -3463,6 +3463,7 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu', service_id='%lu', contact_object_id='%lu' WHERE instance_id=%lu AND service_id=%lu AND contact_object_id=%lu",
@@ -3476,6 +3477,7 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3488,6 +3490,7 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3512,9 +3515,6 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contacts_add() end\n");
 
@@ -3552,6 +3552,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET alias='%s' WHERE instance_id=%lu AND config_type=%d AND servicegroup_object_id=%lu",
@@ -3563,6 +3564,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3576,6 +3578,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3600,9 +3603,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_definition_add() end\n");
 
@@ -3635,6 +3635,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE servicegroup_id=%lu AND service_object_id=%lu",
@@ -3645,6 +3646,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3658,6 +3660,7 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3682,9 +3685,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_members_add() end\n");
 
@@ -3728,6 +3728,7 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET timeperiod_object_id=%lu WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND dependent_host_object_id=%lu AND dependency_type=%d AND inherits_parent=%d AND fail_on_up=%d AND fail_on_down=%d AND fail_on_unreachable=%d",
@@ -3745,6 +3746,7 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3764,6 +3766,7 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3788,9 +3791,6 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdependencydefinition_definition_add() end\n");
 
@@ -3835,6 +3835,7 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET timeperiod_object_id=%lu WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu AND dependent_service_object_id=%lu AND dependency_type=%d AND inherits_parent=%d AND fail_on_ok=%d AND fail_on_warning=%d AND fail_on_unknown=%d AND fail_on_critical=%d",
@@ -3853,6 +3854,7 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3873,6 +3875,7 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -3897,9 +3900,6 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedependencydefinition_definition_add() end\n");
 
@@ -3945,6 +3945,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET notification_interval=%lf, escalate_on_recovery=%d, escalate_on_down=%d, escalate_on_unreachable=%d WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
@@ -3962,6 +3963,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -3981,6 +3983,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4005,9 +4008,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_definition_add() end\n");
 
@@ -4040,6 +4040,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ndo
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu' WHERE hostescalation_id='%lu' AND contactgroup_object_id='%lu'",
@@ -4062,6 +4063,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ndo
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4086,9 +4088,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ndo
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add() end\n");
 
@@ -4123,6 +4122,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%d', hostescalation_id='%lu', contact_object_id='%lu' WHERE instance_id=%lu AND hostescalation_id=%lu AND contact_object_id=%lu",
@@ -4136,6 +4136,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4148,6 +4149,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4172,9 +4174,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_contacts_add() end\n");
 
@@ -4223,6 +4222,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET notification_interval=%lf, escalate_on_recovery=%d, escalate_on_warning=%d, escalate_on_unknown=%d, escalate_on_critical=%d WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
@@ -4241,6 +4241,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4261,6 +4262,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4285,9 +4287,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_definition_add() end\n");
 
@@ -4320,6 +4319,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu' WHERE serviceescalation_id='%lu' AND contactgroup_object_id='%lu'",
@@ -4330,6 +4330,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4342,6 +4343,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4366,9 +4368,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add() end\n");
 
@@ -4403,6 +4402,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%d', serviceescalation_id='%lu', contact_object_id='%lu' WHERE instance_id='%d' AND serviceescalation_id='%lu' AND contact_object_id='%lu'",
@@ -4416,6 +4416,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4428,6 +4429,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4452,9 +4454,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add() end\n");
 
@@ -4492,6 +4491,7 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET command_line='%s' WHERE instance_id=%lu AND object_id=%lu AND config_type=%d",
@@ -4503,6 +4503,7 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4516,6 +4517,7 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4540,9 +4542,6 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commanddefinition_definition_add() end\n");
 
@@ -4580,6 +4579,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET alias='%s' WHERE instance_id=%lu AND config_type=%d AND timeperiod_object_id=%lu",
@@ -4591,6 +4591,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4604,6 +4605,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4628,9 +4630,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_definition_add() end\n");
 
@@ -4665,6 +4664,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE timeperiod_id=%lu AND day=%d AND start_sec=%lu AND end_sec=%lu",
@@ -4677,6 +4677,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4691,6 +4692,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4715,9 +4717,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_timeranges_add() end\n");
 
@@ -4791,6 +4790,7 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET alias='%s', email_address='%s', pager_address='%s', host_timeperiod_object_id=%lu, service_timeperiod_object_id=%lu, host_notifications_enabled=%d, service_notifications_enabled=%d, can_submit_commands=%d, notify_service_recovery=%d, notify_service_warning=%d, notify_service_unknown=%d, notify_service_critical=%d, notify_service_flapping=%d, notify_service_downtime=%d, notify_host_recovery=%d, notify_host_down=%d, notify_host_unreachable=%d, notify_host_flapping=%d, notify_host_downtime=%d WHERE instance_id=%lu AND config_type=%d AND contact_object_id=%lu",
@@ -4820,6 +4820,7 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4851,6 +4852,7 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4875,9 +4877,6 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_definition_add() end\n");
 
@@ -4912,6 +4911,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu, address='%s' WHERE contact_id=%lu AND address_number=%d",
@@ -4923,6 +4923,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -4936,6 +4937,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -4960,9 +4962,6 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_addresses_add() end\n");
 
@@ -4997,6 +4996,7 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET command_args='%s' WHERE instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu",
@@ -5009,6 +5009,7 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -5023,6 +5024,7 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -5047,9 +5049,6 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add() end\n");
 
@@ -5084,6 +5083,7 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET command_args='%s' WHERE instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu",
@@ -5096,6 +5096,7 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -5110,6 +5111,7 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -5134,9 +5136,6 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add() end\n");
 
@@ -5180,6 +5179,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu, config_type=%d, has_been_modified=%d, varvalue='%s' WHERE object_id=%lu AND varname='%s'",
@@ -5193,6 +5193,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -5208,6 +5209,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -5232,9 +5234,6 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariables_add() end\n");
 
@@ -5273,6 +5272,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id=%lu, status_update_time=%s, has_been_modified=%d, varvalue='%s' WHERE object_id=%lu AND varname='%s'",
@@ -5286,6 +5286,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -5301,6 +5302,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -5325,9 +5327,6 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add() end\n");
 
@@ -5365,6 +5364,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET alias='%s' WHERE instance_id='%lu' AND config_type='%lu' AND contactgroup_object_id='%lu'",
@@ -5376,6 +5376,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -5389,6 +5390,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -5413,9 +5415,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_definition_add() end\n");
 
@@ -5448,6 +5447,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET instance_id='%lu' WHERE contactgroup_id='%lu' AND contact_object_id='%lu'",
@@ -5458,6 +5458,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
+			free(query1);
 
                         /* check result if update was ok */
 			if(((dbi_result_t *)(idi->dbinfo.dbi_result))->numrows_matched == 0) {
@@ -5470,6 +5471,7 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
+				free(query2);
                         }
                         break;
                 case NDO2DB_DBSERVER_DB2:
@@ -5494,9 +5496,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
                 default:
                         break;
         }
-
-        free(query1);
-        free(query2);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add() end\n");
 
