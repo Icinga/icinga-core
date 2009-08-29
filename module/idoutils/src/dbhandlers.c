@@ -45,6 +45,8 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	char *buf2 = NULL;
 	char *es[2];
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() start\n");
+
 	/* make sure empty strings are set to null */
 	name1 = n1;
 	name2 = n2;
@@ -94,7 +96,8 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result))
-				*object_id = dbi_result_get_ulong(idi->dbinfo.dbi_result,	"object_id");
+				*object_id = dbi_result_get_ulong(idi->dbinfo.dbi_result, "object_id");
+				
 
 				dbi_result_free(idi->dbinfo.dbi_result);
 			idi->dbinfo.dbi_result = NULL;
@@ -114,6 +117,8 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	if (found_object == NDO_FALSE)
 		result = NDO_ERROR;
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() end\n");
+
 	return result;
 }
 
@@ -126,6 +131,8 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 	char *name1 = NULL;
 	char *name2 = NULL;
 	char *es[2];
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert() start\n");
 
 	/* make sure empty strings are set to null */
 	name1 = n1;
@@ -181,6 +188,8 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert() end\n");
+
 	return result;
 }
 
@@ -189,6 +198,8 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 	unsigned long object_id = 0L;
 	int objecttype_id = 0;
 	char *buf = NULL;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() start\n");
 
 	/* find all the object definitions we already have */
 	if (asprintf(
@@ -215,7 +226,9 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 		}
 	}
 	free(buf);
-
+        
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() end\n");
+	
 	return result;
 }
 
@@ -226,6 +239,8 @@ int ndo2db_get_cached_object_id(ndo2db_idi *idi, int object_type, char *name1,
 	int compare = 0;
 	ndo2db_dbobject *temp_object = NULL;
 	int y = 0;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_id() start\n");
 
 	hashslot = ndo2db_object_hashfunc(name1, name2, NDO2DB_OBJECT_HASHSLOTS);
 #ifdef NDO2DB_DEBUG_CACHING
@@ -262,6 +277,8 @@ int ndo2db_get_cached_object_id(ndo2db_idi *idi, int object_type, char *name1,
 	}
 #endif
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_id() end\n");
+
 	return result;
 }
 
@@ -276,6 +293,8 @@ int ndo2db_add_cached_object_id(ndo2db_idi *idi, int object_type, char *n1, char
 	int compare = 0;
 	char *name1 = NULL;
 	char *name2 = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_add_cached_object_id() start\n");
 
 	/* make sure empty strings are set to null */
 	name1 = n1;
@@ -338,11 +357,15 @@ int ndo2db_add_cached_object_id(ndo2db_idi *idi, int object_type, char *n1, char
 		idi->dbinfo.object_hashlist[hashslot] = new_object;
 	new_object->nexthash = temp_object;
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_add_cached_object_id() end\n");
+
 	return result;
 }
 
 int ndo2db_object_hashfunc(const char *name1, const char *name2, int hashslots) {
 	unsigned int i, result;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_object_hashfunc() start\n");
 
 	result = 0;
 	if (name1)
@@ -355,12 +378,16 @@ int ndo2db_object_hashfunc(const char *name1, const char *name2, int hashslots) 
 
 	result = result % hashslots;
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_object_hashfunc() end\n");
+
 	return result;
 }
 
 int ndo2db_compare_object_hashdata(const char *val1a, const char *val1b,
 		const char *val2a, const char *val2b) {
 	int result = 0;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_compare_object_hashdata() start\n");
 
 	/* check first name */
 	if (val1a == NULL && val2a == NULL)
@@ -384,6 +411,8 @@ int ndo2db_compare_object_hashdata(const char *val1a, const char *val1b,
 			return strcmp(val1b, val2b);
 	}
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_compare_object_hashdata() end\n");
+
 	return result;
 }
 
@@ -391,6 +420,8 @@ int ndo2db_free_cached_object_ids(ndo2db_idi *idi) {
 	int x = 0;
 	ndo2db_dbobject *temp_object = NULL;
 	ndo2db_dbobject *next_object = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_free_cached_object_ids() start\n");
 
 	if (idi == NULL)
 		return NDO_OK;
@@ -411,12 +442,16 @@ int ndo2db_free_cached_object_ids(ndo2db_idi *idi) {
 		idi->dbinfo.object_hashlist = NULL;
 	}
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_free_cached_object_ids() end\n");
+	
 	return NDO_OK;
 }
 
 int ndo2db_set_all_objects_as_inactive(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_all_objects_as_inactive() start\n");
 
 	/* mark all objects as being inactive */
 	if (asprintf(&buf, "UPDATE %s SET is_active='0' WHERE instance_id='%lu'",
@@ -429,6 +464,8 @@ int ndo2db_set_all_objects_as_inactive(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_all_objects_as_inactive() end\n");
+
 	return result;
 }
 
@@ -436,6 +473,8 @@ int ndo2db_set_object_as_active(ndo2db_idi *idi, int object_type,
 		unsigned long object_id) {
 	int result = NDO_OK;
 	char *buf = NULL;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_object_as_active() start\n");
 
 	/* mark the object as being active */
 	if (asprintf(
@@ -449,6 +488,8 @@ int ndo2db_set_object_as_active(ndo2db_idi *idi, int object_type,
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_object_as_active() end\n");
 
 	return result;
 }
@@ -468,6 +509,8 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	int duplicate_record = NDO_FALSE;
 	int len = 0;
 	int x = 0;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() start\n");
 
 	if (idi == NULL)
 		return NDO_ERROR;
@@ -549,6 +592,8 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
                 free(ts[x]);
 
 	/* TODO - further processing of log entry to expand archived data... */
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() end\n");
 
 	return result;
 }
