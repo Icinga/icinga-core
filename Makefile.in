@@ -116,10 +116,12 @@ all:
 	@echo "please make sure that you:"
 	@echo ""
 	@echo "     - Look at the sample config files"
-	@echo "     - Read the HTML documentation"
-	@echo "     - Read the FAQs online at http://www.icinga.org/faqs"
+	@echo "     - Read the HTML documentation in html/docs/"
 	@echo ""
-	@echo "before you post a question to one of the mailing lists."
+	@echo "before you post a question to one of the mailing lists at"
+	@echo "http://www.icinga.org/community/ or at Icinga Portal:"
+	@echo "http://www.icinga-portal.org"
+	@echo ""
 	@echo "Also make sure to include pertinent information that could"
 	@echo "help others help you.  This might include:"
 	@echo ""
@@ -130,7 +132,7 @@ all:
 	@echo ""
 	@echo "For more information on obtaining support for Icinga, visit:"
 	@echo ""
-	@echo "       http://www.icinga.org/support/"
+	@echo "       http://www.icinga.org/community/"
 	@echo ""
 	@echo "*************************************************************"
 	@echo ""
@@ -268,6 +270,9 @@ install-basic:
 	@echo "  make install-config"
 	@echo "     - This installs sample config files in $(DESTDIR)$(CFGDIR)"
 	@echo ""
+	@echo "  make install-webconf"
+	@echo "     - This installs the Apache config file for the web interface"
+	@echo ""
 
 
 install-config:
@@ -307,6 +312,11 @@ install-idoutils:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
 		echo "" ;\
 		echo "*** IDOUtils installed ***" ;\
+		echo "" ;\
+	else \
+		echo "" ;\
+		echo "Sorry, IDOUtils not enabled!" ;\
+		echo "Try again with ./configure --enable-idoutils" ;\
 		echo "" ;\
 	fi
 
