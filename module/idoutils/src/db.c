@@ -484,7 +484,7 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 					newbuf[y++] = '\\';
 				break;
 			case NDO2DB_DBSERVER_PGSQL:
-				if (buf[x] == '\'' || buf[x] == '\"' || buf[x] == '[' || 
+				if (buf[x] == '\'' || buf[x] == '[' || 
 					buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
 				//if (!(isspace(buf[x]) || isalnum(buf[x]) || (buf[x] == '_')))
 					newbuf[y++] = '\\';

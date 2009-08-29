@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `icinga_commands` (
   `instance_id` smallint(6) NOT NULL default '0',
   `config_type` smallint(6) NOT NULL default '0',
   `object_id` int(11) NOT NULL default '0',
-  `command_line` varchar(255) character set latin1 NOT NULL default '',
+  `command_line` varchar(1024) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`command_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`config_type`)
 ) ENGINE=MyISAM  COMMENT='Command definitions';

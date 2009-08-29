@@ -58,12 +58,14 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	/* null names mean no object id */
 	if (name1 == NULL && name2 == NULL) {
 		*object_id = 0L;
+	        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() return null names\n");
 		return NDO_OK;
 	}
 
 	/* see if the object already exists in cached lookup table */
 	if (ndo2db_get_cached_object_id(idi, object_type, name1, name2, &cached_object_id) == NDO_OK) {
 		*object_id = cached_object_id;
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id(%lu) return cached object\n", *object_id);
 		return NDO_OK;
 	}
 
@@ -117,7 +119,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	if (found_object == NDO_FALSE)
 		result = NDO_ERROR;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() end\n");
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id(%lu) end\n", *object_id);
 
 	return result;
 }
@@ -188,7 +190,7 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert() end\n");
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%lu) end\n", *object_id);
 
 	return result;
 }
@@ -227,7 +229,7 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 	}
 	free(buf);
         
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() end\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids(%lu) end\n", object_id);
 	
 	return result;
 }
@@ -277,7 +279,7 @@ int ndo2db_get_cached_object_id(ndo2db_idi *idi, int object_type, char *name1,
 	}
 #endif
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_id() end\n");
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_id(%lu) end\n", *object_id);
 
 	return result;
 }
