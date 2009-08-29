@@ -340,9 +340,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	/* record initial connection information */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s "
-			"(instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) "
-			"VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+			"INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
 			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
 			idi->disposition, idi->connect_source, idi->connect_type) == -1)
@@ -412,14 +410,7 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 	ts = ndo2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
-	if (asprintf(&buf, "UPDATE %s SET "
-		"disconnect_time=NOW(), "
-		"last_checkin_time=NOW(), "
-		"data_end_time=%s, "
-		"bytes_processed='%lu', "
-		"lines_processed='%lu', "
-		"entries_processed='%lu' "
-		"WHERE conninfo_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
@@ -470,7 +461,7 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	register int x, y, z;
 	char *newbuf = NULL;
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string(%s) start\n", buf);
 
 	if (idi == NULL || buf == NULL)
 		return NULL;
@@ -484,15 +475,42 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	/* escape characters */
 	for (x = 0, y = 0; x < z; x++) {
 
-		if (idi->dbinfo.server_type == NDO2DB_DBSERVER_MYSQL) {
-			if (buf[x] == '\'' || buf[x] == '\"' || buf[x] == '*' || buf[x]
-					== '\\' || buf[x] == '$' || buf[x] == '?' || buf[x] == '.'
-					|| buf[x] == '^' || buf[x] == '+' || buf[x] == '['
-					|| buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
-				newbuf[y++] = '\\';
-		} else if (idi->dbinfo.server_type == NDO2DB_DBSERVER_PGSQL) {
-			if (!(isspace(buf[x]) || isalnum(buf[x]) || (buf[x] == '_')))
-				newbuf[y++] = '\\';
+        	switch (idi->dbinfo.server_type) {
+	                case NDO2DB_DBSERVER_MYSQL:
+				if (buf[x] == '\'' || buf[x] == '\"' || buf[x] == '*' || buf[x]	== '\\' || 
+					buf[x] == '$' || buf[x] == '?' || buf[x] == '.'	|| 
+					buf[x] == '^' || buf[x] == '+' || buf[x] == '['	|| 
+					buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
+					newbuf[y++] = '\\';
+				break;
+			case NDO2DB_DBSERVER_PGSQL:
+				if (buf[x] == '\'' || buf[x] == '\"' || buf[x] == '[' || 
+					buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
+				//if (!(isspace(buf[x]) || isalnum(buf[x]) || (buf[x] == '_')))
+					newbuf[y++] = '\\';
+	                        break;
+        	        case NDO2DB_DBSERVER_DB2:
+	                        break;
+	                case NDO2DB_DBSERVER_FIREBIRD:
+	                        break;
+	                case NDO2DB_DBSERVER_FREETDS:
+	                        break;
+	                case NDO2DB_DBSERVER_INGRES:
+	                        break;
+	                case NDO2DB_DBSERVER_MSQL:
+	                        break;
+	                case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+				if(buf[x]=='\'' )
+					newbuf[y++]='\'';
+#endif
+        	                break;
+	                case NDO2DB_DBSERVER_SQLITE:
+	                        break;
+	                case NDO2DB_DBSERVER_SQLITE3:
+	                        break;
+	                default:
+	                        break;
 		}
 
 		newbuf[y++] = buf[x];
@@ -501,7 +519,7 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	/* terminate escape string */
 	newbuf[y] = '\0';
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string() end\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string(%s) end\n", newbuf);
 	return newbuf;
 }
 
@@ -516,16 +534,31 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
 			break;
 		case NDO2DB_DBSERVER_PGSQL:
-			//asprintf(&buf, "(SELECT to_timestamp(%lu)::timestamp)", (unsigned long) t);
 			/* from_unixtime is a PL/SQL function (defined in db/pgsql.sql) */
 			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
 			break;
-		case NDO2DB_DBSERVER_ORACLE:
-			/* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
-			asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t);
-			break;
-		default:
-			break;
+                case NDO2DB_DBSERVER_DB2:
+                        break;
+                case NDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case NDO2DB_DBSERVER_FREETDS:
+                        break;
+                case NDO2DB_DBSERVER_INGRES:
+                        break;
+                case NDO2DB_DBSERVER_MSQL:
+                        break;
+                case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+                        /* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
+                        asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t);
+#endif
+                        break;
+                case NDO2DB_DBSERVER_SQLITE:
+                        break;
+                case NDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
 	} 
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_timet_to_sql() end\n");
@@ -544,20 +577,33 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
                         asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
 			break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        //asprintf(&buf,"(SELECT EXTRACT(EPOCH FROM TIMESTAMP '%s'))",(field==NULL)?"":field);
                         /* unix_timestamp is a PL/SQL function (defined in db/pgsql.sql) */
                         asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
 			break;
+                case NDO2DB_DBSERVER_DB2:
+                        break;
+                case NDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case NDO2DB_DBSERVER_FREETDS:
+                        break;
+                case NDO2DB_DBSERVER_INGRES:
+                        break;
+                case NDO2DB_DBSERVER_MSQL:
+                        break;
                 case NDO2DB_DBSERVER_ORACLE:
-                        asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
-			break;
+#ifdef USE_ORACLE
+			asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
+#endif
+                        break;
+                case NDO2DB_DBSERVER_SQLITE:
+                        break;
+                case NDO2DB_DBSERVER_SQLITE3:
+                        break;
                 default:
                         break;
         } 
 	
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() start\n");
-
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_sql_to_timet() end\n");
 
 	return buf;
 }
