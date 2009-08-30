@@ -679,7 +679,7 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	int result = NDO_OK;
 	const char *error_msg;
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query(%s) start\n", buf);
 
 	if (idi == NULL || buf == NULL)
 		return NDO_ERROR;
@@ -708,7 +708,7 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 		result = NDO_ERROR;
 	}
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query() end\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query(%d) end\n", result);
 	return result;
 }
 
