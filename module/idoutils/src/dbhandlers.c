@@ -174,8 +174,45 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 			idi->dbinfo.instance_id, object_type, (buf1 == NULL) ? "NULL" : buf1,
 			(buf2 == NULL) ? "NULL" : buf2) == -1)
 		buf = NULL;
-	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK)
-		*object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                *object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%lu) object_id\n", *object_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_object_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1)
+                                        buf1 = NULL;
+
+                                *object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%s=%lu) object_id\n", buf1, *object_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+        }
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
@@ -1243,8 +1280,45 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 	/* save the notification id for later use... */
 	if (type == NEBTYPE_NOTIFICATION_START)
 		idi->dbinfo.last_notification_id = 0L;
-	if (result == NDO_OK && type == NEBTYPE_NOTIFICATION_START)
-		idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_notification_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS]) == -1)
+                                        buf1 = NULL;
+
+                                idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata(%s=%lu) last_notification_id\n", buf1, idi->dbinfo.last_notification_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+        }
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -1311,7 +1385,45 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 	/* save the contact notification id for later use... */
 	if (type == NEBTYPE_CONTACTNOTIFICATION_START)
 		idi->dbinfo.last_contact_notification_id = 0L;
-	if (result == NDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START)
+	if (result == NDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_contactnotification_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS]) == -1)
+                                        buf1 = NULL;
+
+                                idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata(%s=%lu) contactnotification_id\n", buf1, idi->dbinfo.last_contact_notification_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 		idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -2988,8 +3100,45 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 
         result = ido2db_query_insert_or_update_configfilevariables_add(idi, data);
 
-	if (result == NDO_OK)
-		configfile_id  = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                configfile_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables(%lu) configfilevariables_id\n", configfile_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_configfilevariable_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1)
+                                        buf1 = NULL;
+
+                                configfile_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables(%s=%lu) configfilevariables_id\n", buf1, configfile_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -3358,7 +3507,45 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_hostdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                host_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio(%lu) host_id\n", host_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_host_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS]) == -1)
+                                        buf1 = NULL;
+
+                                host_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio(%s=%lu) host_id\n", buf1, host_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 		host_id  = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -3487,8 +3674,45 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_hostgroupdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", group_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_hostgroup_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS]) == -1)
+                                        buf1 = NULL;
+
+                                group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition(%s=%lu) hostgroup_id\n", buf1, group_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -3731,8 +3955,46 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_servicedefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		service_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                service_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition(%lu) service_id\n", service_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_service_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES]) == -1)
+                                        buf1 = NULL;
+
+                                service_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition(%s=%lu) service_id\n", buf1, service_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -3841,8 +4103,45 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_servicegroupdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition(%lu) group_id\n", group_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_servicegroup_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS]) == -1)
+                                        buf1 = NULL;
+
+                                group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition(%s=%lu) group_id\n", buf1, group_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -4070,8 +4369,45 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_hostescalationdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition(%lu) escalation_id\n", escalation_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_hostescalation_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS]) == -1)
+                                        buf1 = NULL;
+
+                                escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition(%s=%lu) escalation_id\n", buf1, escalation_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -4190,8 +4526,45 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_serviceescalationdefinition(%lu) escalation_id\n", escalation_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_serviceescalation_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS]) == -1)
+                                        buf1 = NULL;
+
+                                escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_serviceescalationdefinition(%s=%lu) escalation_id\n", buf1, escalation_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -4350,8 +4723,45 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_timeperiodefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition(%lu) timeperiod_id\n", timeperiod_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_timeperiod_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS]) == -1)
+                                        buf1 = NULL;
+
+                                timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition(%s=%lu) timeperiod_id\n", buf1, timeperiod_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
@@ -4505,8 +4915,45 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_contactdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		contact_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                contact_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition(ndo2db_idi *idi)(%lu) contact_id\n", contact_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_contact_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS]) == -1)
+                                        buf1 = NULL;
+
+                                contact_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition(ndo2db_idi *idi)(%s=%lu) contact_id\n", buf1, contact_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
@@ -4763,8 +5210,45 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 
         result = ido2db_query_insert_or_update_contactgroupdefinition_definition_add(idi, data);
 
-	if (result == NDO_OK)
-		group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	if (result == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition(%lu) group_id\n", group_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_contactgroup_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS]) == -1)
+                                        buf1 = NULL;
+
+                                group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition(%s=%lu) group_id\n", buf1, group_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 

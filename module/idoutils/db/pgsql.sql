@@ -171,8 +171,9 @@ CREATE TABLE  icinga_configfilevariables (
   varname varchar(64) NOT NULL default '',
   varvalue varchar(255) NOT NULL default '',
 --  PRIMARY KEY  (configfilevariable_id)
-  PRIMARY KEY  (configfilevariable_id),
-  UNIQUE (instance_id,configfile_id,varname)
+  PRIMARY KEY  (configfilevariable_id)
+  --UNIQUE (instance_id,configfile_id) 
+  -- varname/varvalue are not unique!
 ) ;
 
 -- --------------------------------------------------------
@@ -1194,7 +1195,7 @@ CREATE TABLE  icinga_servicegroup_members (
   servicegroup_id INTEGER NOT NULL default '0',
   service_object_id INTEGER NOT NULL default '0',
 --  PRIMARY KEY  (servicegroup_member_id)
-  PRIMARY KEY  (servicegroup_member_id),
+  PRIMARY KEY  (servicegroup_member_ID),
   UNIQUE (servicegroup_id,service_object_id)
 ) ;
 
