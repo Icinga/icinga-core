@@ -1195,7 +1195,7 @@ CREATE TABLE  icinga_servicegroup_members (
   servicegroup_id INTEGER NOT NULL default '0',
   service_object_id INTEGER NOT NULL default '0',
 --  PRIMARY KEY  (servicegroup_member_id)
-  PRIMARY KEY  (servicegroup_member_ID),
+  PRIMARY KEY  (servicegroup_member_id),
   UNIQUE (servicegroup_id,service_object_id)
 ) ;
 

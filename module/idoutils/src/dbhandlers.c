@@ -130,6 +130,7 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 	char *buf = NULL;
 	char *buf1 = NULL;
 	char *buf2 = NULL;
+	char *tmp = NULL;
 	char *name1 = NULL;
 	char *name2 = NULL;
 	char *es[2];
@@ -184,12 +185,12 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
                                 break;
                         case NDO2DB_DBSERVER_PGSQL:
                                 /* depending on tableprefix/tablename a sequence will be used */
-                                if(asprintf(&buf1, "%s_object_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1)
-                                        buf1 = NULL;
+                                if(asprintf(&tmp, "%s_object_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1)
+                                        tmp = NULL;
 
-                                *object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%s=%lu) object_id\n", buf1, *object_id);
-                                free(buf1);
+                                *object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, tmp);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%s=%lu) object_id\n", tmp, *object_id);
+                                free(tmp);
                                 break;
                         case NDO2DB_DBSERVER_DB2:
                                 break;
@@ -4838,6 +4839,9 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	char *cmdptr = NULL;
 	char *argptr = NULL;
 
+	int tmp = HOST_NOTIFICATION;
+	int tmp = SERVICE_NOTIFICATION;
+
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition() start\n");
 
 	if (idi == NULL)
@@ -5013,10 +5017,10 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 
 		if(es[0] == NULL) {
 			es[0] = "";
+			continue;
 		}
 
 		/* save entry to db */
-		int tmp = HOST_NOTIFICATION;
 
 	        void *data[5];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
@@ -5055,7 +5059,6 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                 }
 
 		/* save entry to db */
-		int tmp = SERVICE_NOTIFICATION;
 
 	        void *data[5];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
