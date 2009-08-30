@@ -3547,13 +3547,17 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 	}
-		host_id  = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
-	for (x = 0; x < 13; x++)
+	for (x = 0; x < 13; x++) {
+		/* before we've prepared NULL values with "", but string literals cannot be free'd! */
+		if(es[x] == "") 
+			continue;
 		free(es[x]);
+	}
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio() free es\n");
 	/* save parent hosts to db */
 	mbuf = idi->mbuf[NDO2DB_MBUF_PARENTHOST];
 	for (x = 0; x < mbuf.used_lines; x++) {
@@ -3999,8 +4003,12 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
-	for (x = 0; x < 9; x++)
+	for (x = 0; x < 9; x++) {
+                /* before we've prepared NULL values with "", but string literals cannot be free'd! */
+                if(es[x] == "")
+                        continue;
 		free(es[x]);
+	}
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[NDO2DB_MBUF_CONTACTGROUP];
@@ -4839,8 +4847,8 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	char *cmdptr = NULL;
 	char *argptr = NULL;
 
-	int tmp = HOST_NOTIFICATION;
-	int tmp = SERVICE_NOTIFICATION;
+	int tmp1 = HOST_NOTIFICATION;
+	int tmp2 = SERVICE_NOTIFICATION;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition() start\n");
 
@@ -4848,8 +4856,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		return NDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ndo2db_convert_standard_data_elements(idi, &type, &flags, &attr,
-			&tstamp);
+	result = ndo2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
@@ -4960,7 +4967,6 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 	for (x = 0; x < 3; x++)
 		free(es[x]);
@@ -5005,34 +5011,32 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		argptr = strtok(NULL, "\x0");
 
 		if (numptr == NULL)
+		//if (cmdptr == NULL || argptr == NULL)
 			continue;
 
 		/* find the command */
-		result = ndo2db_get_object_id_with_insert(idi,
-				NDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
+		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
 		es[0] = ndo2db_db_escape_string(idi, argptr);
 
-		result = ndo2db_db_query(idi, buf);
-
 		if(es[0] == NULL) {
 			es[0] = "";
-			continue;
 		}
 
 		/* save entry to db */
-
 	        void *data[5];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
 	        data[1] = (void *) &contact_id;
-	        data[2] = (void *) &tmp;
+	        data[2] = (void *) &tmp1;
 	        data[3] = (void *) &command_id;
 	        data[4] = (void *) &es[0];
 
 	        result = ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add(idi, data);
 		dbi_result_free(idi->dbinfo.dbi_result);
-		
-		free(es[0]);
+	
+		if(es[0] != "") {
+			free(es[0]);
+		}
 	}
 
 	/* save service notification commands to db */
@@ -5046,11 +5050,11 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		argptr = strtok(NULL, "\x0");
 
 		if (numptr == NULL)
+		//if (cmdptr == NULL || argptr == NULL)
 			continue;
 
 		/* find the command */
-		result = ndo2db_get_object_id_with_insert(idi,
-				NDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
+		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
 		es[0] = ndo2db_db_escape_string(idi, argptr);
 
@@ -5063,14 +5067,16 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	        void *data[5];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
 	        data[1] = (void *) &contact_id;
-	        data[2] = (void *) &tmp;
+	        data[2] = (void *) &tmp2;
 	        data[3] = (void *) &command_id;
 	        data[4] = (void *) &es[0];
 
 	        result = ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add(idi, data);
 		dbi_result_free(idi->dbinfo.dbi_result);
 
-		free(es[0]);
+		if(es[0] != "") {
+			free(es[0]);
+		}
 	}
 
 	/* save custom variables to db */
