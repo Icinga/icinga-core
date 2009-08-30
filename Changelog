@@ -2,7 +2,18 @@
 Icinga 0.8.x Change Log
 #######################
 
-0.8.3 - ??/??/2009
+0.8.3 - 09/02/2009
+* idoutils: add PostgreSQL support
+* idoutils: add db/pgsql.sql, adapted table scheme for postgresql
+* idoutils: add time conversion functions for postgresql
+* idoutils: add try update, if affected rows=0, then insert queries for postgresql
+* idoutils: modify insert queries, normalized to sql-standard
+* idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms
+* idoutils: modify insert-or-update queries, build data array for functions
+* idoutils: fix string escaping for postgresql
+* idoutils: fix last insert id for postgresql - needs defined sequence id for table 
+* idoutils: modify command_line in commands table to varchar(1024)
+* idoutils: add more debug output
 
 0.8.2 - 08/12/2009
 * create a new basic ido2db init script
