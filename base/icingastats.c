@@ -285,7 +285,7 @@ int main(int argc, char **argv){
 
 	if(mrtg_mode==FALSE){
 		printf("\n%s Stats %s\n", PROGRAM_NAME, PROGRAM_VERSION);
-		printf("Copyright (c) 2003-2008 Ethan Galstad (www.nagios.org)\n");
+		printf("Copyright (c) 2003-2008 Ethan Galstad (www.icinga.org)\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
 	        }

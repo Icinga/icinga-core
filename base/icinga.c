@@ -388,7 +388,7 @@ int main(int argc, char **argv){
 		printf("Copyright (c) 1999-2009 Ethan Galstad\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
-		printf("Website: http://www.nagios.org\n");
+		printf("Website: http://www.icinga.org\n");
 	        }
 
 	/* just display the license */
