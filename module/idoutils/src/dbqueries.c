@@ -106,7 +106,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 					*(unsigned long *) data[6]	/* unique constraint end */
 			);
 
-	        	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%s) update\n", query1);
+	        	//ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%s) update\n", query1);
 
 			/* send query to db */
 			result = ndo2db_db_query(idi, query1);		
@@ -126,7 +126,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
                                         *(int *) data[5],
                                         *(unsigned long *) data[6]     /* insert end */
 				);
-		                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%s) insert\n", query2);
+		                //        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%s) insert\n", query2);
 				/* send query to db */
 				result = ndo2db_db_query(idi, query2);
 				free(query2);

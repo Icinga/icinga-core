@@ -284,6 +284,7 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 /* post-connect routines */
 int ndo2db_db_hello(ndo2db_idi *idi) {
 	char *buf = NULL;
+	char *buf1 = NULL;
 	char *ts = NULL;
 	int result = NDO_OK;
 	int have_instance = NDO_FALSE;
@@ -329,7 +330,41 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 				idi->instance_name) == -1)
 			buf = NULL;
 		if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
-			idi->dbinfo.instance_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	                switch (idi->dbinfo.server_type) {
+        	                case NDO2DB_DBSERVER_MYSQL:
+                	                /* mysql doesn't use sequences */
+	                                idi->dbinfo.instance_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+	                                break;
+	                        case NDO2DB_DBSERVER_PGSQL:
+	                                /* depending on tableprefix/tablename a sequence will be used */
+	                                if(asprintf(&buf1, "%s_instance_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES]) == -1)
+        	                                buf1 = NULL;
+	
+	                                idi->dbinfo.instance_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+        	                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%s=%lu) instance_id\n", buf1, idi->dbinfo.instance_id);
+	                                free(buf1);
+        	                        break;
+	                        case NDO2DB_DBSERVER_DB2:
+	                                break;
+	                        case NDO2DB_DBSERVER_FIREBIRD:
+	                                break;
+	                        case NDO2DB_DBSERVER_FREETDS:
+	                                break;
+	                        case NDO2DB_DBSERVER_INGRES:
+	                                break;
+	                        case NDO2DB_DBSERVER_MSQL:
+	                                break;
+	                        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+        	                        break;
+	                        case NDO2DB_DBSERVER_SQLITE:
+	                                break;
+	                        case NDO2DB_DBSERVER_SQLITE3:
+	                                break;
+        	                default:
+	                                break;
+        	        }
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
@@ -346,12 +381,43 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 			idi->disposition, idi->connect_source, idi->connect_type) == -1)
 		buf = NULL;
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
-		/* This might be 0 (zero) in some cases */
-		idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
 
-		/* ToDo: 	Check if dbinfo.conninfo_id is zero and find another way to get the
-		 * 				last inserted ID
-		 */
+	        switch (idi->dbinfo.server_type) {
+        	        case NDO2DB_DBSERVER_MYSQL:
+				/* mysql doesn't use sequences */
+				idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+				ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
+        	                break;
+	                case NDO2DB_DBSERVER_PGSQL:
+				/* depending on tableprefix/tablename a sequence will be used */
+				if(asprintf(&buf1, "%s_conninfo_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO]) == -1)
+					buf1 = NULL;
+
+				idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+				ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%s=%lu) conninfo_id\n", buf1, idi->dbinfo.conninfo_id);
+				free(buf1);
+                	        break;
+	                case NDO2DB_DBSERVER_DB2:
+        	                break;
+	                case NDO2DB_DBSERVER_FIREBIRD:
+        	                break;
+	                case NDO2DB_DBSERVER_FREETDS:
+        	                break;
+	                case NDO2DB_DBSERVER_INGRES:
+        	                break;
+	                case NDO2DB_DBSERVER_MSQL:
+        	                break;
+	                case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+#endif
+        	                break;
+	                case NDO2DB_DBSERVER_SQLITE:
+        	                break;
+	                case NDO2DB_DBSERVER_SQLITE3:
+        	                break;
+	                default:
+        	                break;
+        	}
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
