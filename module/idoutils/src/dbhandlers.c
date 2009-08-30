@@ -27,7 +27,6 @@
 extern int errno;
 
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
-extern int ido2db_insert_or_update(char **, char *, char *, char * , char *);
 
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
