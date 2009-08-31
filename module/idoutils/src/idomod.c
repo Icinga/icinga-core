@@ -6,7 +6,7 @@
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 05-11-2009
+ * Last Modified: 08-31-2009
  *
  *****************************************************************************/
 
@@ -36,8 +36,8 @@ NEB_API_VERSION(CURRENT_NEB_API_VERSION)
 
 
 #define NDOMOD_VERSION "1.4b8"
-#define NDOMOD_NAME "NDOMOD"
-#define NDOMOD_DATE "01-03-2009"
+#define NDOMOD_NAME "IDOMOD"
+#define NDOMOD_DATE "08-31-2009"
 
 
 void *ndomod_module_handle=NULL;
