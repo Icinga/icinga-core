@@ -4,7 +4,7 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 07-12-2009
+ * Last Modified: 08-31-2009
  *
  **************************************************************/
 
@@ -245,6 +245,7 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "password", ndo2db_db_settings.password);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "dbname", ndo2db_db_settings.dbname);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "encoding", "auto");
+
 	if (dbi_conn_connect(idi->dbinfo.dbi_conn) != 0) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
 		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to database: %s", dbi_error);
@@ -380,6 +381,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
 			idi->disposition, idi->connect_source, idi->connect_type) == -1)
 		buf = NULL;
+
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
 	        switch (idi->dbinfo.server_type) {
@@ -507,6 +509,7 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
 		buf = NULL;
+
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -552,7 +555,6 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 			case NDO2DB_DBSERVER_PGSQL:
 				if (buf[x] == '\'' || buf[x] == '[' || 
 					buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
-				//if (!(isspace(buf[x]) || isalnum(buf[x]) || (buf[x] == '_')))
 					newbuf[y++] = '\\';
 	                        break;
         	        case NDO2DB_DBSERVER_DB2:

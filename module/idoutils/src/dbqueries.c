@@ -3,11 +3,9 @@
  *
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 07-25-2009
+ * Last Modified: 08-31-2009
  *
  **************************************************************/
-
-
 
 /* include our project's header files */
 #include "../../../include/config.h"
@@ -24,9 +22,6 @@
 #include "../../../include/broker.h"
 #include "../../../include/comments.h"
 
-/* for result checking */
-//#include <dbi/dbi-dev.h>
-
 extern int errno;
 
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
@@ -34,15 +29,6 @@ extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
 /****************************************************************************/
-
-/*
-NOTE using libdbi:
-result is stored in idi->dbinfo.dbi_result
-which consists of the structure dbi_result_t * defined in libdbi/include/dbi/dbi-dev.h
-for checking if UPDATE was successful try
-        unsigned long long numrows_matched; 
-        unsigned long long numrows_affected;
-*/
 
 /****************************************************************************/
 /* INSERT QUERIES                                                          */
@@ -64,8 +50,8 @@ for checking if UPDATE was successful try
 int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-	char * query1;
-	char * query2;
+	char * query1 = NULL;
+	char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add() start\n");
 
@@ -106,15 +92,13 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 					*(unsigned long *) data[6]	/* unique constraint end */
 			);
 
-	        	//ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%s) update\n", query1);
-
 			/* send query to db */
 			result = ndo2db_db_query(idi, query1);		
 			free(query1);
 
 			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%lu) update rows matched\n", (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result)));
 			/* check result if update was ok */
-			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) { /* recast from void * */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) { 
 				/* try insert instead */
 				asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
 					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
@@ -126,7 +110,6 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
                                         *(int *) data[5],
                                         *(unsigned long *) data[6]     /* insert end */
 				);
-		                //        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%s) insert\n", query2);
 				/* send query to db */
 				result = ndo2db_db_query(idi, query2);
 				free(query2);
@@ -163,8 +146,8 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_execute() start\n");
 
@@ -262,8 +245,8 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
 int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() start\n");
 
@@ -382,8 +365,8 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
 int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() start\n");
 
@@ -526,8 +509,8 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
 int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() start\n");
 
@@ -649,8 +632,8 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
 int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationdata_add() start\n");
 
@@ -744,8 +727,8 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
 int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationmethoddata_add() start\n");
 
@@ -847,8 +830,8 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
 int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicecheckdata_add() start\n");
 
@@ -998,8 +981,8 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
 int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostcheckdata_add() start\n");
 
@@ -1155,8 +1138,8 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
 int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, char *table_name) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_add() start\n");
 
@@ -1279,8 +1262,8 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
 int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data, char *table_name) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_add() start\n");
 
@@ -1398,8 +1381,8 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
 int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_programstatusdata_add() start\n");
 
@@ -1560,8 +1543,8 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
 int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() start\n");
 
@@ -1819,8 +1802,8 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
 int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() start\n");
 
@@ -2083,8 +2066,8 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
 int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactstatusdata_add() start\n");
 
@@ -2197,8 +2180,8 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **
 int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_configfilevariables_add() start\n");
 
@@ -2289,8 +2272,8 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
 int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_runtimevariables_add() start\n");
 
@@ -2374,8 +2357,8 @@ int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **d
 int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_definition_add() start\n");
 
@@ -2670,8 +2653,8 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
 int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_parenthosts_add() start\n");
 
@@ -2751,8 +2734,8 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi
 int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contactgroups_add() start\n");
 
@@ -2832,8 +2815,8 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *i
 int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contacts_add() start\n");
 
@@ -2922,8 +2905,8 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
 int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_definition_add() start\n");
 
@@ -3007,8 +2990,8 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi 
 int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add() start\n");
 
@@ -3092,8 +3075,8 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2d
 int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() start\n");
 
@@ -3365,8 +3348,8 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
 int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contactgroups_add() start\n");
 
@@ -3446,8 +3429,8 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi
 int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contacts_add() start\n");
 
@@ -3536,8 +3519,8 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
 int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_definition_add() start\n");
 
@@ -3620,8 +3603,8 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_i
 int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_members_add() start\n");
 
@@ -3706,8 +3689,8 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi 
 int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdependencydefinition_definition_add() start\n");
 
@@ -3812,8 +3795,8 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db
 int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedependencydefinition_definition_add() start\n");
 
@@ -3921,8 +3904,8 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo
 int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_definition_add() start\n");
 
@@ -4025,8 +4008,8 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db
 int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add() start\n");
 
@@ -4105,8 +4088,8 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ndo
 int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_contacts_add() start\n");
 
@@ -4195,8 +4178,8 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
 int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_definition_add() start\n");
 
@@ -4304,8 +4287,8 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo
 int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add() start\n");
 
@@ -4385,8 +4368,8 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add() start\n");
 
@@ -4475,8 +4458,8 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
 int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commanddefinition_definition_add() start\n");
 
@@ -4563,8 +4546,8 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *i
 int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_definition_add() start\n");
 
@@ -4647,8 +4630,8 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi 
 int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_timeranges_add() start\n");
 
@@ -4738,8 +4721,8 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
 int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_definition_add() start\n");
 
@@ -4894,8 +4877,8 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *i
 int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_addresses_add() start\n");
 
@@ -4979,8 +4962,8 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
 int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add() start\n");
 
@@ -5066,8 +5049,8 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
 int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add() start\n");
 
@@ -5157,8 +5140,8 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariables_add() start\n");
 
@@ -5251,8 +5234,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2
 int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add() start\n");
 
@@ -5348,8 +5331,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_definition_add() start\n");
 
@@ -5432,8 +5415,8 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
 int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
-        char * query1;
-        char * query2;
+        char * query1 = NULL;
+        char * query2 = NULL;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add() start\n");
 
