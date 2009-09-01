@@ -65,9 +65,9 @@ perl -i -p -e "s/PKG_REL_DATE=.*\"/PKG_REL_DATE=\"$SHORTDATE\"/;" configure.in
 perl -i -p -e "s/%define version .*/%define version $newversion/;" icinga.spec
 
 # Update quickstart guides with new version number
-perl -i -p -e "s/nagios-$lastversion/nagios-$newversion/;" html/docs/quickstart-fedora.html
-perl -i -p -e "s/nagios-$lastversion/nagios-$newversion/;" html/docs/quickstart-opensuse.html
-perl -i -p -e "s/nagios-$lastversion/nagios-$newversion/;" html/docs/quickstart-ubuntu.html
+#perl -i -p -e "s/nagios-$lastversion/nagios-$newversion/;" html/docs/quickstart-fedora.html
+#perl -i -p -e "s/nagios-$lastversion/nagios-$newversion/;" html/docs/quickstart-opensuse.html
+#perl -i -p -e "s/nagios-$lastversion/nagios-$newversion/;" html/docs/quickstart-ubuntu.html
 
 # Update this file with version number and last date
 perl -i -p -e "s/^CURRENTVERSION=.*/CURRENTVERSION=$newversion/;" update-version
