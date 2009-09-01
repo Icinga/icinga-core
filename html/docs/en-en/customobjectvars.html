@@ -1,0 +1,185 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Custom Object Variables</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
+<link rel="prev" href="objectdefinitions.html" title="Object Definitions">
+<link rel="next" href="configcgi.html" title="CGI Configuration File Options">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Custom Object Variables</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="objectdefinitions.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
+<td width="20%" align="right"> <a accesskey="n" href="configcgi.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Custom Object Variables">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="customobjectvars"></a><a name="custom_object_vars"></a>Custom Object Variables</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Users often request that new variables be added to host, service, and contact definitions. These include variables for
+  SNMP community, MAC address, AIM username, Skype number, and street address. The list is endless. The problem that I see with
+  doing this is that it makes Icinga less generic and more infrastructure-specific. Icinga was intended to be
+  flexible, which meant things needed to be designed in a generic manner. Host definitions in Icinga, for example, have a
+  generic "address" variable that can contain anything from an IP address to human-readable driving directions - whatever is
+  appropriate for the user's setup.</p>
+
+  <p>Still, there needs to be a method for admins to store information about their infrastructure components in their
+  Icinga configuration without imposing a set of specific variables on others. Icinga attempts to solve this problem
+  by allowing users to define custom variables in their object definitions. Custom variables allow users to define additional
+  properties in their host, service, and contact definitions, and use their values in notifications, event handlers, and host and
+  service checks.</p>
+
+  <p><span class="bold"><strong>Custom Variable Basics</strong></span></p>
+
+  <p>There are a few important things that you should note about custom variables:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables</p>
+    </li>
+<li class="listitem">
+      <p>Custom variable names are case-insensitive</p>
+    </li>
+<li class="listitem">
+      <p>Custom variables are <a class="link" href="objectinheritance.html" title="Object Inheritance">inherited</a> from object templates like normal
+      variables</p>
+    </li>
+<li class="listitem">
+      <p>Scripts can reference custom variable values with <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros and environment
+      variables</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Examples</strong></span></p>
+
+  <p>Here's an example of how custom variables can be defined in different types of object definitions:</p>
+
+  <pre class="screen">
+define host{
+        host_name       linuxserver
+        _mac_address    00:06:5B:A6:AD:AA       ; &lt;-- Custom MAC_ADDRESS variable
+        _rack_number    R32                     ; &lt;-- Custom RACK_NUMBER variable
+        ...
+        }
+
+define service{
+        host_name       linuxserver
+        description     Memory Usage
+        _SNMP_community public                  ; &lt;-- Custom SNMP_COMMUNITY variable
+        _TechContact    Jane Doe                ; &lt;-- Custom TECHCONTACT variable
+        ....
+        }
+
+define contact{
+        contact_name    john
+        _AIM_username   john16                  ; &lt;-- Custom AIM_USERNAME variable
+        _YahooID        john32                  ; &lt;-- Custom YAHOOID variable
+        ...
+        }
+</pre>
+
+  <p><span class="bold"><strong>Custom Variables As Macros</strong></span></p>
+
+  <p>Custom variable values can be referenced in scripts and executables that Icinga runs for checks, notifications,
+  etc. by using <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> or environment variables.</p>
+
+  <p>In order to prevent name collision among custom variables from different object types, Icinga prepends "_HOST",
+  "_SERVICE", or "_CONTACT" to the beginning of custom host, service, or contact variables, respectively, in macro and environment
+  variable names. The table below shows the corresponding macro and environment variable names for the custom variables that were
+  defined in the example above.</p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Object Type</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Variable Name</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Macro Name</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Environment Variable</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>Host</p></td>
+<td><p>MAC_ADDRESS</p></td>
+<td><p>$_HOSTMAC_ADDRESS$</p></td>
+<td><p>NAGIOS__HOSTMAC_ADDRESS</p></td>
+</tr>
+<tr>
+<td><p>Host</p></td>
+<td><p>RACK_NUMBER</p></td>
+<td><p>$_HOSTRACK_NUMBER$</p></td>
+<td><p>NAGIOS__HOSTRACK_NUMBER</p></td>
+</tr>
+<tr>
+<td><p>Service</p></td>
+<td><p>SNMP_COMMUNITY</p></td>
+<td><p>$_SERVICESNMP_COMMUNITY$</p></td>
+<td><p>NAGIOS__SERVICESNMP_COMMUNITY</p></td>
+</tr>
+<tr>
+<td><p>Service</p></td>
+<td><p>TECHCONTACT</p></td>
+<td><p>$_SERVICETECHCONTACT$</p></td>
+<td><p>NAGIOS__SERVICETECHCONTACT</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p>AIM_USERNAME</p></td>
+<td><p>$_CONTACTAIM_USERNAME$</p></td>
+<td><p>NAGIOS__CONTACTAIM_USERNAME</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p>YAHOOID</p></td>
+<td><p>$_CONTACTYAHOOID$</p></td>
+<td><p>NAGIOS__CONTACTYAHOOID</p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Custom Variables And Inheritance</strong></span></p>
+
+  <p>Custom object variables are <a class="link" href="objectinheritance.html" title="Object Inheritance">inherited</a> just like standard host, service, or
+  contact variables.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="objectdefinitions.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="configcgi.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Object Definitions </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> CGI Configuration File Options</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

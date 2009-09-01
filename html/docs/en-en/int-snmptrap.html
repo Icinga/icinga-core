@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>SNMP Trap Integration</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch08.html" title="Chapter 8. Integration With Other Software">
+<link rel="prev" href="integration.html" title="Integration Overview">
+<link rel="next" href="int-tcpwrappers.html" title="TCP Wrapper Integration">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">SNMP Trap Integration</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="integration.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 8. Integration With Other Software</th>
+<td width="20%" align="right"> <a accesskey="n" href="int-tcpwrappers.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="SNMP Trap Integration">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="int-snmptrap"></a><a name="int_snmptrap"></a>SNMP Trap Integration</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Icinga is not designed to be a replacement for a full-blown SNMP management application like HP OpenView or <a class="link" href="http://www.opennms.org" target="_top">OpenNMS</a>. However, you can set things up so that SNMP traps received by a host on
+    your network can generate alerts in Icinga.</p>
+  </td></tr>
+</table></div>
+
+  <p>As if designed to make the Gods of Hypocrisy die of laughter, SNMP is anything but simple. Translating SNMP traps and
+  getting them into Icinga (as passive check results) can be a bit tedious. To make this task easier, we suggest you check
+  out Alex Burger's SNMP Trap Translator project located at <a class="link" href="http://www.snmptt.org" target="_top">http://www.snmptt.org</a>. When
+  combined with Net-SNMP, SNMPTT provides an enhanced trap handling system that can be integrated with Icinga.</p>
+
+  <p>Yep, that's all.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="integration.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="int-tcpwrappers.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Integration Overview </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> TCP Wrapper Integration</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Adaptive Monitoring</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch06.html" title="Chapter 6. Advanced Topics">
+<link rel="prev" href="embeddedperl.html" title="Using The Embedded Perl Interpreter">
+<link rel="next" href="dependencychecks.html" title="Predictive Dependency Checks">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Adaptive Monitoring</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="embeddedperl.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="dependencychecks.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Adaptive Monitoring">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="adaptive"></a><a name="adaptive_monitoring"></a>Adaptive Monitoring</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Icinga allows you to change certain commands and host and service check attributes during runtime. I'll refer to
+  this feature as "adaptive monitoring". Please note that the adaptive monitoring features found in Icinga will probably
+  not be of much use to 99% of users, but they do allow you to do some neat things.</p>
+
+  <p><span class="bold"><strong>What Can Be Changed?</strong></span></p>
+
+  <p>The following service check attributes can be changed during runtime:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Check command (and command arguments)</p>
+    </li>
+<li class="listitem">
+      <p>Check interval</p>
+    </li>
+<li class="listitem">
+      <p>Max check attempts</p>
+    </li>
+<li class="listitem">
+      <p>Check timeperiod</p>
+    </li>
+<li class="listitem">
+      <p>Event handler command (and command arguments)</p>
+    </li>
+</ul></div>
+
+  <p>The following host check attributes can be changed during runtime:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Check command (and command arguments)</p>
+    </li>
+<li class="listitem">
+      <p>Check interval</p>
+    </li>
+<li class="listitem">
+      <p>Max check attempts</p>
+    </li>
+<li class="listitem">
+      <p>Check timeperiod</p>
+    </li>
+<li class="listitem">
+      <p>Event handler command (and command arguments)</p>
+    </li>
+</ul></div>
+
+  <p>The following global attributes can be changed during runtime:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Global host event handler command (and command arguments)</p>
+    </li>
+<li class="listitem">
+      <p>Global service event handler command (and command arguments)</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>External Commands For Adaptive Monitoring</strong></span></p>
+
+  <p>In order to change global or host- or service-specific attributes during runtime, you must submit the appropriate <a class="link" href="extcommands.html" title="External Commands">external command</a> to Icinga via the <a class="link" href="configmain.html#configmain-command_file">external command
+  file</a>. The table below lists the different attributes that may be changed during runtime, along with the external command
+  to accomplish the job.</p>
+
+  <p>A full listing of external commands that can be used for adaptive monitoring (along with examples of how to use them) can
+  be found online at the following URL: <a class="link" href="http://www.nagios.org/developerinfo/externalcommands/" target="_top">http://www.nagios.org/developerinfo/externalcommands/</a></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>When changing check commands, check timeperiods, or event handler commands, it is important to note that the new
+        values for these options must have been defined before Icinga was started. Any request to change a command or
+        timeperiod to one which had not been defined when Icinga was started is ignored.</p>
+      </li>
+<li class="listitem">
+        <p>You can specify command arguments along with the actual command name - just separate individual arguments from the
+        command name (and from each other) using bang (!) characters. More information on how arguments in command definitions are
+        processed during runtime can be found in the documentation on <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a>.</p>
+      </li>
+</ul></div>
+  </td></tr>
+</table></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="embeddedperl.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="dependencychecks.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Using The Embedded Perl Interpreter </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Predictive Dependency Checks</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

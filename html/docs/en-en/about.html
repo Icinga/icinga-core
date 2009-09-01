@@ -1,0 +1,138 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>About Icinga</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch01.html" title="Chapter 1. About">
+<link rel="prev" href="ch01.html" title="Chapter 1. About">
+<link rel="next" href="whatsnew.html" title="What's new">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">About Icinga</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch01.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 1. About</th>
+<td width="20%" align="right"> <a accesskey="n" href="whatsnew.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="About Icinga">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="about"></a>About Icinga</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong><a name="whatsicinga"></a>What is Icinga?</strong></span></p>
+
+  <p>Icinga is a monitoring system checking hosts and services you specify and notifying you when things go wrong and
+  when they recover. It runs on multiple Linux distributions (including <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a>, and
+  <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>) as well as several Unix platforms (including <a class="link" href="http://www.sun.com/software/solaris/" target="_top">Solaris</a> and <a class="link" href="http://www.hp.com" target="_top">HP</a>). The systems to be monitored can be nearly anything connected to a
+  network.</p>
+
+  <p>Some of the many features of Icinga include:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Monitoring of network services (<code class="systemitem">SMTP</code>, <code class="systemitem">POP3</code>, <code class="systemitem">HTTP</code>, <code class="systemitem">NNTP</code>, <code class="systemitem">PING</code>,
+      etc.)</p>
+    </li>
+<li class="listitem">
+      <p>Monitoring of host resources (CPU load, disk usage, etc.)</p>
+    </li>
+<li class="listitem">
+      <p>Simple plugin design that allows users to easily develop their own service checks</p>
+    </li>
+<li class="listitem">
+      <p>Parallelized service checks</p>
+    </li>
+<li class="listitem">
+      <p>Ability to define network host hierarchy using "parent" hosts, allowing detection of and distinction between hosts
+      that are down and those that are unreachable</p>
+    </li>
+<li class="listitem">
+      <p>Contact notifications when service or host problems occur and get resolved (via email, pager, or user-defined
+      method)</p>
+    </li>
+<li class="listitem">
+      <p>Ability to define event handlers to be run during service or host events for proactive problem resolution</p>
+    </li>
+<li class="listitem">
+      <p>Automatic log file rotation</p>
+    </li>
+<li class="listitem">
+      <p>Support for implementing redundant monitoring hosts</p>
+    </li>
+<li class="listitem">
+      <p>Optional web interface for viewing current network status, notification and problem history, log file, etc.</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong><a name="system_requirements"></a>System requirements</strong></span></p>
+
+  <p>As mentioned above you'll need a machine running Linux or a Unix variant. If there is no precompiled version or if
+  you want to compile from source you need a C compiler like gcc. </p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Some compilers may not be suitable. That includes the C compiler on HP-UX which is used to compile a new
+      kernel.</p>
+    </td></tr>
+</table></div>
+<p>You may also want to have TCP/IP configured as most checks will require access via the network.</p>
+
+  <p>You are not required to use the web interface included with Icinga. However, if you do decide to use it, you will
+  need to have a web server (preferrably <a class="link" href="http://www.apache.org" target="_top">Apache</a>) installed.</p>
+
+  <p><span class="bold"><strong><a name="licensing"></a>Licensing</strong></span></p>
+
+  <p>Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
+  Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the
+  'LICENSE' file in the Icinga distribution or read the online version of the license for more details. Icinga is
+  provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR
+  PURPOSE.</p>
+
+  <p><span class="bold"><strong><a name="acknowledgements"></a>Acknowledgements</strong></span></p>
+
+  <p>Several people have contributed to Icinga by either reporting bugs, suggesting improvements, writing plugins, etc.
+  A list of some of the many contributors to the development of Icinga can be found at <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a>.</p>
+
+  <p><span class="bold"><strong><a name="downloading"></a>Downloading The Latest Version</strong></span></p>
+
+  <p>You can check for new versions of Icinga at <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a>.</p>
+
+  <p><span class="bold"><strong><a name="compatibility"></a>Compatibility</strong></span></p>
+
+  <p>Icinga is a fork of the well-known monitoring system <a class="link" href="http://www.nagios.org/" target="_top">Nagios</a>. Being 100% compatible with the internal structures of the latter
+  Icinga enables you to use all plugins and add-ons which were/are developed by several companies and the large
+  community.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch01.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch01.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="whatsnew.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 1. About </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> What's new</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

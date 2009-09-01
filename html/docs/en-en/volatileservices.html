@@ -1,0 +1,202 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Volatile Services</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch06.html" title="Chapter 6. Advanced Topics">
+<link rel="prev" href="eventhandlers.html" title="Event Handlers">
+<link rel="next" href="freshness.html" title="Service and Host Freshness Checks">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Volatile Services</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="eventhandlers.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="freshness.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Volatile Services">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="volatileservices"></a><a name="volatile_services"></a>Volatile Services</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Icinga has the ability to distinguish between "normal" services and "volatile" services. The
+  <span class="emphasis"><em>is_volatile</em></span> option in each service definition allows you to specify whether a specific service is volatile
+  or not. For most people, the majority of all monitored services will be non-volatile (i.e. "normal"). However, volatile services
+  can be very useful when used properly...</p>
+
+  <p><span class="bold"><strong>What Are They Useful For?</strong></span></p>
+
+  <p>Volatile services are useful for monitoring...</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Things that automatically reset themselves to an "OK" state each time they are checked</p>
+    </li>
+<li class="listitem">
+      <p>Events such as security alerts which require attention every time there is a problem (and not just the first
+      time)</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>What's So Special About Volatile Services?</strong></span></p>
+
+  <p>Volatile services differ from "normal" services in three important ways. <span class="emphasis"><em>Each time</em></span> they are checked
+  when they are in a <a class="link" href="statetypes.html" title="State Types">hard</a> non-OK state, and the check returns a non-OK state (i.e. no state
+  change has occurred)...</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>The non-OK service state is logged</p>
+    </li>
+<li class="listitem">
+      <p>Contacts are notified about the problem (if that's <a class="link" href="notifications.html" title="Notifications">what should be done</a>).</p>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Notification intervals are ignored for volatile services.</p>
+      </td></tr>
+</table></div>
+    </li>
+<li class="listitem">
+      <p>The <a class="link" href="eventhandlers.html" title="Event Handlers">event handler</a> for the service is run (if one has been defined)</p>
+    </li>
+</ul></div>
+
+  <p>These events normally only occur for services when they are in a non-OK state and a hard state change has just occurred.
+  In other words, they only happen the first time that a service goes into a non-OK state. If future checks of the service result
+  in the same non-OK state, no hard state change occurs and none of the events mentioned take place again.</p>
+
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>If you are only interested in logging, consider using <a class="link" href="stalking.html" title="State Stalking">stalking</a> options instead.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>The Power Of Two</strong></span></p>
+
+  <p>If you combine the features of volatile services and <a class="link" href="passivechecks.html" title="Passive Checks">passive service checks</a>, you can
+  do some very useful things. Examples of this include handling SNMP traps, security alerts, etc.</p>
+
+  <p>How about an example... Let's say you're running <a class="link" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a> to detect port scans on your machine and
+  automatically firewall potential intruders. If you want to let Icinga know about port scans, you could do the
+  following...</p>
+
+  <p><span class="bold"><strong>Icinga Configuration:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Create a service definition called <span class="emphasis"><em>Port Scans</em></span> and associate it with the host that PortSentry is
+      running on.</p>
+    </li>
+<li class="listitem">
+      <p>Set the <span class="emphasis"><em>max_check_attempts</em></span> directive in the service definition to 1. This will tell Icinga
+      to immediate force the service into a <a class="link" href="statetypes.html" title="State Types">hard state</a> when a non-OK state is reported.</p>
+    </li>
+<li class="listitem">
+      <p>Set the <span class="emphasis"><em>active_checks_enabled</em></span> directive in the service definition to 0. This prevents
+      Icinga from actively checking the service.</p>
+    </li>
+<li class="listitem">
+      <p>Set the <span class="emphasis"><em>passive_checks_enabled</em></span> directive in the service definition to 1. This enables passive
+      checks for the service.</p>
+    </li>
+<li class="listitem">
+      <p>Set this <span class="emphasis"><em>is_volatile</em></span> directive in the service definition to 1.</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>PortSentry Configuration:</strong></span></p>
+
+  <p>Edit your PortSentry configuration file (portsentry.conf) and define a command for the <span class="emphasis"><em>KILL_RUN_CMD</em></span>
+  directive as follows:</p>
+
+  <pre class="screen"> KILL_RUN_CMD="/usr/local/Icinga/libexec/eventhandlers/submit_check_result host_name 'Port Scans' 2 'Port scan from host $TARGET$ on port $PORT$.  Host has been firewalled.'"</pre>
+
+  <p>Make sure to replace <span class="emphasis"><em>host_name</em></span> with the short name of the host that the service is associated
+  with.</p>
+
+  <p><span class="bold"><strong>Port Scan Script:</strong></span></p>
+
+  <p>Create a shell script in the <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span> directory named
+  <span class="emphasis"><em>submit_check_result</em></span>. The contents of the shell script should be something similiar to the
+  following...</p>
+
+  <pre class="screen">#!/bin/sh
+
+# Write a command to the Icinga command file to cause
+# it to process a service check result
+ 
+echocmd="/bin/echo"
+ 
+CommandFile="/usr/local/icinga/var/rw/nagios.cmd"
+
+# get the current date/time in seconds since UNIX epoch
+datetime=`date +%s`
+ 
+# create the command line to add to the command file
+cmdline="[$datetime] PROCESS_SERVICE_CHECK_RESULT;$1;$2;$3;$4"
+ 
+# append the command to the end of the command file
+`$echocmd $cmdline &gt;&gt; $CommandFile`</pre>
+
+  <p>What will happen when PortSentry detects a port scan on the machine in the future?</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>PortSentry will firewall the host (this is a function of the PortSentry software)</p>
+    </li>
+<li class="listitem">
+      <p>PortSentry will execute the <span class="emphasis"><em>submit_check_result</em></span> shell script and send a passive check result to
+      Icinga</p>
+    </li>
+<li class="listitem">
+      <p>Icinga will read the external command file and see the passive service check submitted by PortSentry</p>
+    </li>
+<li class="listitem">
+      <p>Icinga will put the <span class="emphasis"><em>Port Scans</em></span> service in a hard CRITICAL state and send notifications to
+      contacts</p>
+    </li>
+</ul></div>
+
+  <p>Pretty neat, huh?</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="eventhandlers.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="freshness.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Event Handlers </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Service and Host Freshness Checks</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

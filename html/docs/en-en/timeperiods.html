@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Time Periods</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="statetypes.html" title="State Types">
+<link rel="next" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Time Periods</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="statetypes.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="networkreachability.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Time Periods">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="timeperiods"></a><a name="time_periods"></a>Time Periods</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p><span class="inlinemediaobject"><img src="../images/../images/objects-timeperiods.png"></span></p>
+
+  <p><a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Timeperiod</a> definitions allow you to control when various aspects of
+  the monitoring and alerting logic can operate. For instance, you can restrict:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>When regularly scheduled host and service checks can be performed</p>
+    </li>
+<li class="listitem">
+      <p>When notifications can be sent out</p>
+    </li>
+<li class="listitem">
+      <p>When notification escalations can be used</p>
+    </li>
+<li class="listitem">
+      <p>When dependencies are valid</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Precedence in Time Periods</strong></span></p>
+
+  <p>Timeperod <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">definitions</a> may contain multiple types of directives,
+  including weekdays, days of the month, and calendar dates. Different types of directives have different precendence levels and
+  may override other directives in your timeperiod definitions. The order of precedence for different types of directives (in
+  descending order) is as follows:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Calendar date (2008-01-01)</p>
+    </li>
+<li class="listitem">
+      <p>Specific month date (January 1st)</p>
+    </li>
+<li class="listitem">
+      <p>Generic month date (Day 15)</p>
+    </li>
+<li class="listitem">
+      <p>Offset weekday of specific month (2nd Tuesday in December)</p>
+    </li>
+<li class="listitem">
+      <p>Offset weekday (3rd Monday)</p>
+    </li>
+<li class="listitem">
+      <p>Normal weekday (Tuesday)</p>
+    </li>
+</ul></div>
+
+  <p>Examples of different timeperiod directives can be found <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">here</a>.</p>
+
+  <p><span class="bold"><strong>How Time Periods Work With Host and Service Checks</strong></span></p>
+
+  <p>Host and service definitions have an optional <span class="emphasis"><em>check_period</em></span> directive that allows you to specify a
+  timeperiod that should be used to restrict when regularly scheduled, active checks of the host or service can be made.</p>
+
+  <p>If you do not use the <span class="emphasis"><em>check_period</em></span> directive to specify a timeperiod, Icinga will be able to
+  schedule active checks of the host or service anytime it needs to. This is essentially a 24x7 monitoring scenario.</p>
+
+  <p>Specifying a timeperiod in the <span class="emphasis"><em>check_period</em></span> directive allows you to restrict the time that
+  Icinga perform regularly scheduled, active checks of the host or service. When Icinga attempts to reschedule a
+  host or service check, it will make sure that the next check falls within a valid time range within the defined timeperiod. If
+  it doesn't, Icinga will adjust the next check time to coincide with the next "valid" time in the specified timeperiod.
+  This means that the host or service may not get checked again for another hour, day, or week, etc.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>On-demand checks and passive checks are not restricted by the timeperiod you specify in the
+    <span class="emphasis"><em>check_period</em></span> directive. Only regularly scheduled active checks are restricted.</p>
+  </td></tr>
+</table></div>
+
+  <p>Unless you have a good reason not to do so, I would recommend that you monitor all your hosts and services using
+  timeperiods that cover a 24x7 time range. If you don't do this, you can run into some problems during "blackout" times (times
+  that are not valid in the timeperiod definition):</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>The status of the host or service will appear unchanged during the blackout time.</p>
+    </li>
+<li class="listitem">
+      <p>Contacts will mostly likely not get re-notified of problems with a host or service during blackout times.</p>
+    </li>
+<li class="listitem">
+      <p>If a host or service recovers during a blackout time, contacts will not be immediately notified of the
+      recovery.</p>
+    </li>
+</ol></div>
+
+  <p><span class="bold"><strong>How Time Periods Work With Contact Notifications</strong></span></p>
+
+  <p>By specifying a timeperiod in the <span class="emphasis"><em>notification_period</em></span> directive of a host or service definition, you
+  can control when Icinga is allowed to send notifications out regarding problems or recoveries for that host or service.
+  When a host notification is about to get sent out, Icinga will make sure that the current time is within a valid range in
+  the <span class="emphasis"><em>notification_period</em></span> timeperiod. If it is a valid time, then Icinga will attempt to notify each
+  contact of the problem or recovery.</p>
+
+  <p>You can also use timeperiods to control when notifications can be sent out to individual contacts. By using the
+  <span class="emphasis"><em>service_notification_period</em></span> and <span class="emphasis"><em>host_notification_period</em></span> directives in <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact definitions</a>, you're able to essentially define an "on call" period for each
+  contact. Contacts will only receive host and service notifications during the times you specify in the notification period
+  directives.</p>
+
+  <p>Examples of how to create timeperiod definitions for use for on-call rotations can be found <a class="link" href="oncallrotation.html" title="On-Call Rotations">here</a>.</p>
+
+  <p><span class="bold"><strong>How Time Periods Work With Notification Escalations</strong></span></p>
+
+  <p>Service and host <a class="link" href="escalations.html" title="Notification Escalations">notification escalations</a> have an optional
+  <span class="emphasis"><em>escalation_period</em></span> directive that allows you to specify a timeperiod when the escalation is valid and can be
+  used. If you do not use the <span class="emphasis"><em>escalation_period</em></span> directive in an escalation definition, the escalation is
+  considered valid at all times. If you specify a timeperiod in the <span class="emphasis"><em>escalation_period</em></span> directive,
+  Icinga will only use the escalation definition during times that are valid in the timeperiod definition.</p>
+
+  <p><span class="bold"><strong>How Time Periods Work With Dependencies</strong></span></p>
+
+  <p>Service and host <a class="link" href="dependencies.html" title="Host and Service Dependencies">dependencies</a> have an optional <span class="emphasis"><em>dependency_period</em></span>
+  directive that allows you to specify a timeperiod when the dependendies are valid and can be used. If you do not use the
+  <span class="emphasis"><em>dependency_period</em></span> directive in a dependency definition, the dependency can be used at any time. If you
+  specify a timeperiod in the <span class="emphasis"><em>dependency_period</em></span> directive, Icinga will only use the dependency
+  definition during times that are valid in the timeperiod definition.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="statetypes.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="networkreachability.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">State Types </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Determining Status and Reachability of Network Hosts</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

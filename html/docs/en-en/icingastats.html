@@ -1,0 +1,156 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Using The Icingastats Utility</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Security and Performance Tuning">
+<link rel="prev" href="largeinstalltweaks.html" title="Large Installation Tweaks">
+<link rel="next" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Using The Icingastats Utility</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="largeinstalltweaks.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="mrtggraphs.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Using The Icingastats Utility">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="icingastats"></a><a name="icinga_stats"></a>Using The Icingastats Utility</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>A utility called <span class="bold"><strong>icingastats</strong></span> is included in the Icinga distribution. It is
+  compiled and installed along with the main Icinga daemon. The icingastats utility allows you to obtain various
+  information about a running Icinga process that can be very helpful in <a class="link" href="tuning.html" title="Tuning Icinga For Maximum Performance">tuning performance</a>.
+  You can obtain information either in human-readable or MRTG-compatible format.</p>
+
+  <p><span class="bold"><strong>Usage Information</strong></span></p>
+
+  <p>You can run the <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>--help</strong></span> option to get
+  usage information.</p>
+
+  <p><span class="bold"><strong>Human-Readable Output</strong></span></p>
+
+  <p>To obtain human-readable information on the performance of a running Icinga process, run the
+  <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>-c</strong></span> command line argument to specify your
+  main configuration file location like such:</p>
+
+  <pre class="screen">[icinga@lanman ~]# /usr/local/icinga/bin/icingastats -c /usr/local/icinga/etc/icinga.cfg
+
+Icinga Stats 0.8.3
+Copyright (c) 2003-2008 Ethan Galstad (www.nagios.org)
+Last Modified: 05-20-2009
+License: GPL
+
+CURRENT STATUS DATA
+------------------------------------------------------
+Status File:                            /usr/local/icinga/var/status.dat
+Status File Age:                        0d 0h 0m 9s
+Status File Version:                    (null)
+
+Program Running Time:                   0d 5h 20m 39s
+Icinga PID:                             10119
+Used/High/Total Command Buffers:        0 / 0 / 64
+Used/High/Total Check Result Buffers:   0 / 7 / 512
+
+Total Services:                         95
+Services Checked:                       94
+Services Scheduled:                     91
+Services Actively Checked:              94
+Services Passively Checked:             1
+Total Service State Change:             0.000 / 78.950 / 1.026 %
+Active Service Latency:                 0.000 / 4.272 / 0.561 sec
+Active Service Execution Time:          0.000 / 60.007 / 2.066 sec
+Active Service State Change:            0.000 / 78.950 / 1.037 %
+Active Services Last 1/5/15/60 min:     4 / 68 / 91 / 91
+Passive Service State Change:           0.000 / 0.000 / 0.000 %
+Passive Services Last 1/5/15/60 min:    0 / 0 / 0 / 0
+Services Ok/Warn/Unk/Crit:              58 / 16 / 0 / 21
+Services Flapping:                      1
+Services In Downtime:                   0
+
+Total Hosts:                            24
+Hosts Checked:                          24
+Hosts Scheduled:                        24
+Hosts Actively Checked:                 24
+Host Passively Checked:                 0
+Total Host State Change:                0.000 / 9.210 / 0.384 %
+Active Host Latency:                    0.000 / 0.446 / 0.219 sec
+Active Host Execution Time:             1.019 / 10.034 / 2.764 sec
+Active Host State Change:               0.000 / 9.210 / 0.384 %
+Active Hosts Last 1/5/15/60 min:        5 / 22 / 24 / 24
+Passive Host State Change:              0.000 / 0.000 / 0.000 %
+Passive Hosts Last 1/5/15/60 min:       0 / 0 / 0 / 0
+Hosts Up/Down/Unreach:                  18 / 4 / 2
+Hosts Flapping:                         0
+Hosts In Downtime:                      0
+
+Active Host Checks Last 1/5/15 min:     9 / 52 / 164
+   Scheduled:                           4 / 23 / 75
+   On-demand:                           3 / 23 / 69
+   Cached:                              2 / 6 / 20
+Passive Host Checks Last 1/5/15 min:    0 / 0 / 0
+Active Service Checks Last 1/5/15 min:  9 / 80 / 244
+   Scheduled:                           9 / 80 / 244
+   On-demand:                           0 / 0 / 0
+   Cached:                              0 / 0 / 0
+Passive Service Checks Last 1/5/15 min: 0 / 0 / 0
+
+External Commands Last 1/5/15 min:      0 / 0 / 0
+
+[icinga@lanman ~]#</pre>
+
+  <p>As you can see, the utility displays a number of different metrics pertaining to the Icinga process. Metrics which
+  have multiple values are (unless otherwise specified) min, max and average values for that particular metric.</p>
+
+  <p><span class="bold"><strong>MRTG Integration</strong></span></p>
+
+  <p>You can use the <span class="emphasis"><em>icingastats</em></span> utility to display various Icinga metrics using MRTG (or other
+  compatible program). To do so, run the <span class="emphasis"><em>icingastats</em></span> utility using the <span class="bold"><strong>--mrtg</strong></span> and <span class="bold"><strong>--data</strong></span> arguments. The <span class="bold"><strong>--data</strong></span>
+  argument is used to specify what statistics should be graphed. Possible values for the <span class="bold"><strong>--data</strong></span>
+  argument can be found by running the <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>--help</strong></span>
+  option.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Information on using the <span class="emphasis"><em>icingastats</em></span> utility to generate MRTG graphs for Icinga performance
+    statistics can be found <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">here</a>.</p>
+  </td></tr>
+</table></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="largeinstalltweaks.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="mrtggraphs.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Large Installation Tweaks </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Graphing Performance Info With MRTG</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

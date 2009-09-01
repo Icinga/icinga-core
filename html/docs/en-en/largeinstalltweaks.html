@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Large Installation Tweaks</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Security and Performance Tuning">
+<link rel="prev" href="faststartup.html" title="Fast Startup Options">
+<link rel="next" href="icingastats.html" title="Using The Icingastats Utility">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Large Installation Tweaks</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="faststartup.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="icingastats.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Large Installation Tweaks">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="largeinstalltweaks"></a><a name="large_install_tweaks"></a>Large Installation Tweaks</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Users with large Icinga installations may benefit from the <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a> configuration option. Enabling this
+  option allows the Icinga daemon to take certain shortcuts which result in lower system load and better
+  performance.</p>
+
+  <p><span class="bold"><strong>Effects</strong></span></p>
+
+  <p>When you enable the <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a> option
+  in your main Icinga config file, several changes are made to the way the Icinga daemon operates:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p><span class="bold"><strong>No Summary Macros In Environment Variables</strong></span> - The <a class="link" href="macrolist.html#macrolist-summary_macros">summary macros</a> will not be available to you as environment variables. Calculating
+      the values of these macros can be quite time-intensive in large configurations, so they are not available as environment
+      variables when use this option. Summary macros will still be available as regular macros if you pass them to to your scripts
+      as arguments.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Different Memory Cleanup</strong></span> - Normally Icinga will free all allocated memory in
+      child processes before they exit. This is probably best practice, but is likely unnecessary in most installations, as most
+      OSes will take care of freeing allocated memory when processes exit. The OS tends to free allocated memory faster than can
+      be done within Icinga itself, so Icinga won't attempt to free memory in child processes if you enable this
+      option.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Checks fork() Less</strong></span> - Normally Icinga will fork() twice when it executes host
+      and service checks. This is done to (1) ensure a high level of resistance against plugins that go awry and segfault and (2)
+      make the OS deal with cleaning up the grandchild process once it exits. The extra fork() is not really necessary, so it is
+      skipped when you enable this option. As a result, Icinga will itself clean up child processes that exit (instead of
+      leaving that job to the OS). This feature should result in significant load savings on your Icinga
+      installation.</p>
+    </li>
+</ol></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="faststartup.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="icingastats.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Fast Startup Options </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Using The Icingastats Utility</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

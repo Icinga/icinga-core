@@ -1,0 +1,193 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Tuning Icinga For Maximum Performance</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Security and Performance Tuning">
+<link rel="prev" href="cgisecurity.html" title="Enhanced CGI Security and Authentication">
+<link rel="next" href="faststartup.html" title="Fast Startup Options">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Tuning Icinga For Maximum Performance</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="cgisecurity.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="faststartup.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Tuning Icinga For Maximum Performance">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="tuning"></a><a name="performance_tuning"></a>Tuning Icinga For Maximum Performance</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p><span class="inlinemediaobject"><img src="../images/../images/tuning.png"></span></p>
+
+  <p>So you've finally got Icinga up and running and you want to know how you can tweak it a bit. Tuning Icinga
+  to increase performance can be necessary when you start monitoring a large number (&gt; 1,000) of hosts and services. Here are a
+  few things to look at for optimizing Icinga...</p>
+
+  <p><span class="bold"><strong>Optimization Tips:</strong></span></p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p><span class="bold"><strong>Graph performance statistics with MRTG</strong></span> . In order to keep track of how well your
+      Icinga installation handles load over time and how your configuration changes affect it, you should be graphing
+      several important statistics with MRTG. This is really, really, really useful when it comes to tuning the performance of a
+      Icinga installation. Really. Information on how to do this can be found <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">here</a>.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Use large installation tweaks</strong></span> . Enabling the <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a> option may provide you with better
+      performance. Read more about what this option does <a class="link" href="largeinstalltweaks.html" title="Large Installation Tweaks">here</a>.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Disable environment macros</strong></span> . Macros are normally made available to check,
+      notification, event handler, etc. commands as environment variables. This can be a problem in a large Icinga
+      installation, as it consumes some additional memory and (more importantly) more CPU. If your scripts don't need to access
+      the macros as environment variables (e.g. you pass all necessary macros on the command line), you don't need this feature.
+      You can prevent macros from being made available as environment variables by using the <a class="link" href="configmain.html#configmain-enable_environment_macros">enable_environment_macros</a> option.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Check Result Reaper Frequency</strong></span> . The <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> variable determines how often
+      Icinga should check for host and service check results that need to be processed. The maximum amount of time it can
+      spend processing those results is determined by the max reaper time (see below). If your reaper frequency is too high (too
+      infrequent), you might see high latencies for host and service checks.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Max Reaper Time</strong></span> . The <a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a> variables determines the maximum
+      amount of time the Icinga daemon can spend processing the results of host and service checks before moving on to
+      other things - like executing new host and service checks. Too high of a value can result in large latencies for your host
+      and service checks. Too low of a value can have the same effect. If you're experiencing high latencies, adjust this variable
+      and see what effect it has. Again, you should be <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">graphing statistics</a> in order to make this
+      determination.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Adjust buffer slots</strong></span> . You may need to adjust the value of the <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external_command_buffer_slots</a> option. Graphing buffer slot
+      statistics with <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">MRTG</a> (see above) is critical in determining what values you should use for
+      this option.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Check service latencies to determine best value for maximum concurrent checks</strong></span> .
+      Icinga can restrict the number of maximum concurrently executing service checks to the value you specify with the
+      <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a> option. This is good because it gives you some
+      control over how much load Icinga will impose on your monitoring host, but it can also slow things down. If you are
+      seeing high latency values (&gt; 10 or 15 seconds) for the majority of your service checks (via the <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo CGI</a>), you are probably starving Icinga of the checks it needs. That's not
+      Icinga's fault - its yours. Under ideal conditions, all service checks would have a latency of 0, meaning they were
+      executed at the exact time that they were scheduled to be executed. However, it is normal for some checks to have small
+      latency values. We would recommend taking the minimum number of maximum concurrent checks reported when running Icinga
+      with the <span class="bold"><strong>-s</strong></span> command line argument and doubling it. Keep increasing it until the average
+      check latency for your services is fairly low. More information on service check scheduling can be found <a class="link" href="checkscheduling.html" title="Service and Host Check Scheduling">here</a>.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Use passive checks when possible</strong></span> . The overhead needed to process the results of
+      <a class="link" href="passivechecks.html" title="Passive Checks">passive service checks</a> is much lower than that of "normal" active checks, so make use
+      of that piece of info if you're monitoring a slew of services. It should be noted that passive service checks are only
+      really useful if you have some external application doing some type of monitoring or reporting, so if you're having
+      Icinga do all the work, this won't help things.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Avoid using interpreted plugins</strong></span> . One thing that will significantly reduce the load
+      on your monitoring host is the use of compiled (C/C++, etc.) plugins rather than interpreted script (Perl, etc) plugins.
+      While Perl scripts and such are easy to write and work well, the fact that they are compiled/interpreted at every execution
+      instance can significantly increase the load on your monitoring host if you have a lot of service checks. If you want to use
+      Perl plugins, consider compiling them into true executables using perlcc(1) (a utility which is part of the standard Perl
+      distribution) or compiling Icinga with an embedded Perl interpreter (see below).</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Use the embedded Perl interpreter</strong></span> . If you're using a lot of Perl scripts for service
+      checks, etc., you will probably find that compiling the <a class="link" href="embeddedperl.html" title="Using The Embedded Perl Interpreter">embedded Perl interpreter</a> into
+      the Icinga binary will speed things up.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Optimize host check commands</strong></span> . If you're checking host states using the check_ping
+      plugin you'll find that host checks will be performed much faster if you break up the checks. Instead of specifying a
+      <span class="emphasis"><em>max_attempts</em></span> value of 1 in the host definition and having the check_ping plugin send 10 ICMP packets to
+      the host, it would be much faster to set the <span class="emphasis"><em>max_attempts</em></span> value to 10 and only send out 1 ICMP packet
+      each time. This is due to the fact that Icinga can often determine the status of a host after executing the plugin
+      once, so you want to make the first check as fast as possible. This method does have its pitfalls in some situations (i.e.
+      hosts that are slow to respond may be assumed to be down), but you'll see faster host checks if you use it. Another option
+      would be to use a faster plugin (i.e. check_fping) as the <span class="emphasis"><em>host_check_command</em></span> instead of
+      check_ping.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Schedule regular host checks</strong></span> . Scheduling regular checks of hosts can actually help
+      performance in Icinga. This is due to the way the <a class="link" href="cachedchecks.html" title="Cached Checks">cached check logic</a> works (see
+      below). Prior to Icinga 3, regularly scheduled host checks used to result in a big performance hit. This is no longer
+      the case, as host checks are run in parallel - just like service checks. To schedule regular checks of a host, set the
+      <span class="emphasis"><em>check_interval</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> to
+      something greater than 0.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Enable cached host checks</strong></span> . Beginning in Icinga 3, on-demand host checks can
+      benefit from caching. On-demand host checks are performed whenever Icinga detects a service state change. These
+      on-demand checks are executed because Icinga wants to know if the host associated with the service changed state. By
+      enabling cached host checks, you can optimize performance. In some cases, Icinga may be able to used the old/cached
+      state of the host, rather than actually executing a host check command. This can speed things up and reduce load on
+      monitoring server. In order for cached checks to be effective, you need to schedule regular checks of your hosts (see
+      above). More information on cached checks can be found <a class="link" href="cachedchecks.html" title="Cached Checks">here</a>.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Don't use agressive host checking</strong></span> . Unless you're having problems with Icinga
+      recognizing host recoveries, We would recommend not enabling the <a class="link" href="configmain.html#configmain-use_agressive_host_checking">use_aggressive_host_checking</a> option. With this option turned off
+      host checks will execute much faster, resulting in speedier processing of service check results. However, host recoveries
+      can be missed under certain circumstances when this it turned off. For example, if a host recovers and all of the services
+      associated with that host stay in non-OK states (and don't "wobble" between different non-OK states), Icinga may miss
+      the fact that the host has recovered. A few people may need to enable this option, but the majority don't and we would
+      recommend not using it unless you find it necessary...</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>External command optimizations</strong></span> . If you're processing a lot of external commands
+      (i.e. passive checks in a <a class="link" href="distributed.html" title="Distributed Monitoring">distributed setup</a>, you'll probably want to set the <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> variable to <span class="bold"><strong>-1</strong></span>.
+      This will cause Icinga to check for external commands as often as possible. You should also consider increasing the
+      number of available <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a>. Buffers
+      slots are used to hold external commands that have been read from the <a class="link" href="configmain.html#configmain-command_file">external
+      command file</a> (by a separate thread) before they are processed by the Icinga daemon. If your Icinga
+      daemon is receiving a lot of passive checks or external commands, you could end up in a situation where the buffers are
+      always full. This results in child processes (external scripts, NSCA daemon, etc.) blocking when they attempt to write to
+      the external command file. We would highly recommend that you graph external command buffer slot usage using MRTG and the
+      nagiostats utility as described <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">here</a>, so you understand the typical external command
+      buffer usage of your Icinga installation.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Optimize hardware for maximum performance</strong></span> . NOTE: Hardware performance shouldn't be
+      an issue unless: 1) you're monitoring thousands of services, 2) you're doing a lot of post-processing of performance data,
+      etc. Your system configuration and your hardware setup are going to directly affect how your operating system performs, so
+      they'll affect how Icinga performs. The most common hardware optimization you can make is with your hard drives. CPU
+      and memory speed are obviously factors that affect performance, but disk access is going to be your biggest bottleneck.
+      Don't store plugins, the status log, etc on slow drives (i.e. old IDE drives or NFS mounts). If you've got them, use
+      UltraSCSI drives or fast IDE drives. An important note for IDE/Linux users is that many Linux installations do not attempt
+      to optimize disk access. If you don't change the disk access parameters (by using a utility like <span class="bold"><strong>hdparam</strong></span>), you'll loose out on a <span class="bold"><strong>lot</strong></span> of the speedy features of the
+      new IDE drives.</p>
+    </li>
+</ol></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="cgisecurity.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="faststartup.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Enhanced CGI Security and Authentication </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Fast Startup Options</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

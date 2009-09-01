@@ -1,0 +1,169 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Determining Status and Reachability of Network Hosts</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="timeperiods.html" title="Time Periods">
+<link rel="next" href="notifications.html" title="Notifications">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Determining Status and Reachability of Network Hosts</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="timeperiods.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="notifications.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Determining Status and Reachability of Network Hosts">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="networkreachability"></a><a name="network_reachability"></a>Determining Status and Reachability of Network Hosts</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>If you've ever work in tech support, you've undoubtably had users tell you "the Internet is down". As a techie, you're
+  pretty sure that no one pulled the power cord from the Internet. Something must be going wrong somewhere between the user's
+  chair and the Internet.</p>
+
+  <p>Assuming its a technical problem, you begin to search for the problem. Perhaps the user's computer is turned off, maybe
+  their network cable is unplugged, or perhaps your organization's core router just took a dive. Whatever the problem might be,
+  one thing is most certain - the Internet isn't down. It just happens to be unreachable for that user.</p>
+
+  <p>Icinga is able to determine whether the hosts you're monitoring are in a DOWN or UNREACHABLE state. These are very
+  different (although related) states and can help you quickly determine the root cause of network problems. Here's how the
+  reachability logic works to distinguish between these two states...</p>
+
+  <p><span class="bold"><strong>Example Network</strong></span></p>
+
+  <p>Take a look at the simple network diagram below. For this example, lets assume you're monitoring all the hosts (server,
+  routers, switches, etc) that are pictured. Icinga is installed and running on the <span class="emphasis"><em>Icinga</em></span>
+  host.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/../images/reachability1.png"></span></p>
+
+  <p><span class="bold"><strong>Defining Parent/Child Relationships</strong></span></p>
+
+  <p>In order for Icinga to be able to distinguish between DOWN and UNREACHABLE states for the hosts that are being
+  monitored, you'll need to tell Icinga how those hosts are connected to each other - from the standpoint of the
+  Icinga daemon. To do this, trace the path that a data packet would take from the Icinga daemon to each individual
+  host. Each switch, router, and server the packet encounters or passes through is considered a "hop" and will require that you
+  define a parent/child host relationship in Icinga. Here's what the host parent/child relationships look like from the
+  viewpoint of Icinga:</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/../images/reachability2.png"></span></p>
+
+  <p>Now that you know what the parent/child relationships look like for hosts that are being monitored, how do you configure
+  Icinga to reflect them? The <span class="emphasis"><em>parents</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host
+  definitions</a> allows you to do this. Here's what the (abbreviated) host definitions with parent/child relationships would
+  look like for this example:</p>
+
+  <pre class="screen"> define host{
+        host_name       Icinga   ; &lt;-- The local host has no parent - it is the topmost host
+        }
+
+ define host{
+        host_name       Switch1
+        parents         Icinga
+        }
+        
+ define host{
+        host_name       Web
+        parents         Switch1
+        }
+        
+ define host{
+        host_name       FTP
+        parents         Switch1
+        }
+        
+ define host{
+        host_name       Router1
+        parents         Switch1
+        }
+        
+ define host{
+        host_name       Switch2
+        parents         Router1
+        }
+        
+ define host{
+        host_name       Wkstn1
+        parents         Switch2
+        }
+        
+ define host{
+        host_name       HPLJ2605
+        parents         Switch2
+        }
+        
+ define host{
+        host_name       Router2
+        parents         Router1
+        }
+        
+ define host{
+        host_name       somewebsite.com
+        parents         Router2
+        }</pre>
+
+  <p><span class="bold"><strong>Reachability Logic in Action</strong></span></p>
+
+  <p>Now that you're configured Icinga with the proper parent/child relationships for your hosts, let's see what happen
+  when problems arise. Assume that two hosts - <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> - go offline...</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/../images/reachability3.png"></span></p>
+
+  <p>When hosts change state (i.e. from UP to DOWN), the host reachability logic in Icinga kicks in. The reachability
+  logic will initiate parallel checks of the parents and children of whatever hosts change state. This allows Icinga to
+  quickly determine the current status of your network infrastructure when changes occur.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/../images/reachability4.png"></span></p>
+
+  <p>In this example, Icinga will determine that <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> are both in
+  DOWN states because the "path" to those hosts is not being blocked.</p>
+
+  <p>Icinga will determine that all the hosts "beneath" <span class="emphasis"><em>Router1</em></span> are all in an UNREACHABLE state
+  because Icinga can't reach them. <span class="emphasis"><em>Router1</em></span> is DOWN and is blocking the path to those other hosts.
+  Those hosts might be running fine, or they might be offline - Icinga doesn't know because it can't reach them. Hence
+  Icinga considers them to be UNREACHABLE instead of DOWN.</p>
+
+  <p><span class="bold"><strong>UNREACHABLE States and Notifications</strong></span></p>
+
+  <p>By default, Icinga will notify contacts about both DOWN and UNREACHABLE host states. As an admin/tech, you might
+  not want to get notifications about hosts that are UNREACHABLE. You know your network structure, and if Icinga notifies
+  you that your router/firewall is down, you know that everything behind it is unreachable.</p>
+
+  <p>If you want to spare yourself from a flood of UNREACHABLE notifications during network outages, you can exclude the
+  unreachable (u) option from the <span class="emphasis"><em>notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> definitions and/or the <span class="emphasis"><em>host_notification_options</em></span> directive in
+  your <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> definitions.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="timeperiods.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="notifications.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Time Periods </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Notifications</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

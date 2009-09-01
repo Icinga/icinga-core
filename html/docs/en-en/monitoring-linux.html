@@ -1,0 +1,117 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Monitoring Linux/Unix Machines</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
+<link rel="prev" href="monitoring-windows.html" title="Monitoring Windows Machines">
+<link rel="next" href="monitoring-netware.html" title="Monitoring Netware Servers">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Monitoring Linux/Unix Machines</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="monitoring-windows.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 2. Getting Started</th>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-netware.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Monitoring Linux/Unix Machines">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring-linux"></a><a name="monitoring_linux"></a>Monitoring Linux/Unix Machines</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>This document describes how you can monitor "private" services and attributes of Linux/UNIX servers, such as:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>CPU load</p>
+    </li>
+<li class="listitem">
+      <p>Memory usage</p>
+    </li>
+<li class="listitem">
+      <p>Disk usage</p>
+    </li>
+<li class="listitem">
+      <p>Logged in users</p>
+    </li>
+<li class="listitem">
+      <p>Running processes</p>
+    </li>
+<li class="listitem">
+      <p>etc.</p>
+    </li>
+</ul></div>
+
+  <p>Publicly available services that are provided by Linux servers (HTTP, FTP, SSH, SMTP, etc.) can be monitored easily by
+  following the documentation on <a class="link" href="monitoring-publicservices.html" title="Monitoring Publicly Available Services">monitoring publicly available services</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart
+    guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
+    (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the
+    quickstart.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Overview</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This document has not been completed. We would recommend you read the documentation on the <a class="link" href="addons.html#addons-nrpe">NRPE addon</a> for instructions on how to monitor a remote Linux/Unix server.</p>
+  </td></tr>
+</table></div>
+
+  <p>There are several different ways to monitor attributes or remote Linux/Unix servers. One is by using shared SSH keys and
+  the <span class="emphasis"><em>check_by_ssh</em></span> plugin to execute plugins on remote servers. This method will not be covered here, but can
+  result in high load on your monitoring server if you are monitoring hundreds or thousands of services. The overhead of setting
+  up/destroying SSH connections is the cause of this.</p>
+
+  <div class="informalfigure">
+    <div class="mediaobject"><img src="../images/../images/nrpe.png"></div>
+  </div>
+
+  <p>Another common method of monitoring remote Linux/Unix hosts is to use the <a class="link" href="addons.html#addons-nrpe">NRPE addon</a>.
+  NRPE allows you to execute plugins on remote Linux/Unix hosts. This is useful if you need to monitor local resources/attributes
+  like disk usage, CPU load, memory usage, etc. on a remote host.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="monitoring-windows.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-netware.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Monitoring Windows Machines </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Monitoring Netware Servers</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
