@@ -19,6 +19,7 @@ Icinga 0.8.x Change Log
 * idoutils: fix last insert id for postgresql - needs defined sequence id for table 
 * idoutils: modify command_line in commands table to varchar(1024)
 * idoutils: add more debug output
+* idoutils: Support 8192 chars of perfdata
 
 0.8.2 - 08/12/2009
 * create a new basic ido2db init script
