@@ -853,7 +853,7 @@ perl subst sample-config/template-object/printer.cfg
 perl subst sample-config/template-object/switch.cfg
 
 echo ""
-echo "Creating sample config files in module/icoutils/config/ ..."
+echo "Creating sample config files in module/idoutils/config/ ..."
 
 perl subst module/idoutils/config/icinga.cfg
 perl subst module/idoutils/config/ido2db.cfg-sample
