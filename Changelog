@@ -4,6 +4,11 @@ Icinga 0.8.x Change Log
 
 0.8.3 - 09/02/2009
 * idoutils: add PostgreSQL support
+* new Icinga documentation in docbook and html format
+* fetch current Nagios patches
+* fix support links after make
+* idoutils: add note if install desired but not enabled
+* idoutils: fix installing of rc.ido2db in make install-idoutils
 * idoutils: add db/pgsql.sql, adapted table scheme for postgresql
 * idoutils: add time conversion functions for postgresql
 * idoutils: add try update, if affected rows=0, then insert queries for postgresql
