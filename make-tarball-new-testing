@@ -186,4 +186,9 @@ fi
 while read file; do
     mv "$file" "$OUT_FILE"
 done < $TMPFILE
-gzip $OUT_FILE
+
+gzip $OUT_FILE/icinga-core.tar
+mv $OUT_FILE/icinga-core.tar.gz ../
+
+echo "Please rename ../icinga-core.tar.gz to ../icinga-VERSIONSTRING.tar.gz and upload..."
+
