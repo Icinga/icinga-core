@@ -3,12 +3,12 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Program: Icinga (Nagios)
- * Version: 0.8.2
+ * Version: 0.8.3
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  *
  * First Written:   01-28-1999 (start of development)
- * Last Modified:   08-12-2009
+ * Last Modified:   09-02-2009
  *
  * Description:
  *
