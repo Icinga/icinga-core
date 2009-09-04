@@ -3527,7 +3527,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
-	for (x = 0; x < 13; x++) {
+	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++) {
 		/* before we've prepared NULL values with "", but string literals cannot be free'd! */
 		if(es[x] == "") 
 			continue;
@@ -3971,7 +3971,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
-	for (x = 0; x < 9; x++) {
+	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++) {
                 /* before we've prepared NULL values with "", but string literals cannot be free'd! */
                 if(es[x] == "")
                         continue;
@@ -4639,7 +4639,7 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
         result = ido2db_query_insert_or_update_commanddefinition_definition_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
 
-	for (x = 0; x < 1; x++)
+	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_commanddefinition() end\n");
@@ -4936,7 +4936,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
-	for (x = 0; x < 3; x++)
+	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
 
 	/* save addresses to db */
