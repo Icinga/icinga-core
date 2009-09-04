@@ -1317,34 +1317,48 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
---disable-statusmap=disables compilation of statusmap CGI
---disable-statuswrl=disables compilation of statuswrl (VRML) CGI
---enable-nanosleep enables use of nanosleep (instead sleep) in event timing
---enable-event-broker enables integration of event broker routines
---enable-idoutils enables database connectivity using idoutils
---enable-embedded-perl will enable embedded Perl interpreter
---enable-cygwin enables building under the CYGWIN environment
+  --disable-statusmap     disables compilation of statusmap CGI
+  --disable-statuswrl     disables compilation of statuswrl (VRML) CGI
+  --enable-nanosleep      enables use of nanosleep (instead sleep) in event
+                          timing
+  --enable-event-broker   enables integration of event broker routines
+  --enable-idoutils       enables database connectivity using idoutils
+  --enable-embedded-perl  will enable embedded Perl interpreter
+  --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         Enable built-in libtap for unit-testing (default:
                           no).
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
---with-icinga-user=<user> sets user name to run icinga
---with-icinga-group=<grp> sets group name to run icinga
---with-command-user=<user> sets user name for command access
---with-command-group=<grp> sets group name for command access
---with-mail=<path_to_mail> sets path to equivalent program to mail
---with-httpd-conf=<path_to_conf> sets path to Apache conf.d directory
---with-checkresult-dir=<path> sets path to check results spool directory
---with-temp-dir=<path> sets path to temp directory
---with-init-dir=<path> sets directory to place init script into
---with-lockfile=<path> sets path and file name for lock file
---with-gd-lib=DIR sets location of the gd library
---with-gd-inc=DIR sets location of the gd include files
---with-cgiurl=<local-url> sets URL for cgi programs (do not use a trailing slash)
---with-htmurl=<local-url> sets URL for public html
---with-perlcache turns on cacheing of internally compiled Perl scripts
+  --with-icinga-user=<user>
+                          sets user name to run icinga
+  --with-icinga-group=<grp>
+                          sets group name to run icinga
+  --with-command-user=<user>
+                          sets user name for command access
+  --with-command-group=<grp>
+                          sets group name for command access
+  --with-mail=<path_to_mail>
+                          sets path to equivalent program to mail
+  --with-httpd-conf=<path_to_conf>
+                          sets path to Apache conf.d directory
+  --with-checkresult-dir=<path>
+                          sets path to check results spool directory
+  --with-temp-dir=<path>  sets path to temp directory
+  --with-init-dir=<path>  sets directory to place init script into
+  --with-lockfile=<path>  sets path and file name for lock file
+  --with-gd-lib=DIR       sets location of the gd library
+  --with-gd-inc=DIR       sets location of the gd include files
+  --with-cgiurl=<local-url>
+                          sets URL for cgi programs (do not use a trailing
+                          slash)
+  --with-htmurl=<local-url>
+                          sets URL for public html
+  --with-dbi-lib=DIR      sets location of the dbi library
+  --with-dbi-inc=DIR      sets location of the dbi include files,
+  --with-perlcache        turns on cacheing of internally compiled Perl
+                          scripts
 
 Some influential environment variables:
   CC          C compiler command
@@ -7679,7 +7693,29 @@ if test x$USE_IDOUTILS = xyes; then
 echo "$as_me: error: --enable-idoutils needs also --enable-event-broker" >&2;}
    { (exit 1); exit 1; }; }
 	fi
-		{ echo "$as_me:$LINENO: checking for libdi" >&5
+
+
+# Check whether --with-dbi-lib was given.
+if test "${with_dbi_lib+set}" = set; then
+  withval=$with_dbi_lib;
+        	LDFLAGS="${LDFLAGS} -L${withval}"
+	        LD_RUN_PATH="${withval}${LD_RUN_PATH:+:}${LD_RUN_PATH}"
+
+fi
+
+
+# Check whether --with-dbi-inc was given.
+if test "${with_dbi_inc+set}" = set; then
+  withval=$with_dbi_inc;
+        	CFLAGS="${CFLAGS} -I${withval}"
+
+fi
+
+		cat >>confdefs.h <<\_ACEOF
+#define HAVE_DBI_DBI_H "1"
+_ACEOF
+
+	{ echo "$as_me:$LINENO: checking for libdi" >&5
 echo $ECHO_N "checking for libdi... $ECHO_C" >&6; }
 	{ echo "$as_me:$LINENO: checking for main in -ldbi" >&5
 echo $ECHO_N "checking for main in -ldbi... $ECHO_C" >&6; }
