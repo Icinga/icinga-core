@@ -3016,7 +3016,7 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 	/* save entry to db */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s (instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, laste_state, last_hard_state, output, long_output) VALUES ('%lu', %s, '%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s')",
+			"INSERT INTO %s (instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, last_state, last_hard_state, output, long_output) VALUES ('%lu', %s, '%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_STATEHISTORY],
 			idi->dbinfo.instance_id, ts[0], tstamp.tv_usec, object_id,
 			state_change_occurred, state, state_type, current_attempt,
