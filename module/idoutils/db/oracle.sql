@@ -1,3 +1,23 @@
+-- --------------------------------------------------------
+-- oracle.sql
+-- DB definition for Oracle
+--
+-- requirements: no table_prefix, primary key named "id"
+--	renamed columns, tablenames for idoutils
+--
+-- requires ocilib, oracle (instantclient) libs+sdk  to work
+-- specify oracle (instantclient) libs+sdk in configure
+-- ./configure \
+--	--with-oracle-headers-path=/opt/oracle/product/instantclient/instantclient_11_1/sdk/include \
+--	--with-oracle-lib-path=/opt/oracle/product/instantclient/instantclient_11_1/
+-- 
+-- initial version: 2008-02-20 David Schmidt
+-- current version: 2009-09-05 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+--
+-- -- --------------------------------------------------------
+
+
+
 -- set escape character
 SET ESCAPE \
 

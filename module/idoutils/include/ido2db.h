@@ -12,6 +12,10 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
+#ifdef USE_ORACLE
+#include "ocilib.h"
+#endif
+
 
 /*************** mbuf definitions *************/
 #define NDO2DB_MBUF_CONTACTGROUP                        0
@@ -54,17 +58,14 @@ typedef struct ndo2db_dbconninfo_struct{
 	int server_type;
 	int connected;
 	int error;
-// From Baecker
+	/* libdbi */
 	dbi_conn dbi_conn;
 	dbi_result dbi_result;
-#ifdef USE_MYSQL
-	MYSQL mysql_conn;
-	MYSQL_RES *mysql_result;
-	MYSQL_ROW mysql_row;
-#endif
-#ifdef USE_PGSQL
-	PGconn *pgsql_conn;
-	PGresult *pgsql_result;
+#ifdef USE_ORACLE
+	/* ocilib */
+	OCI_Connection* oci_connection;
+	OCI_Statement* oci_statement;
+	OCI_Resultset* oci_resultset;
 #endif
 	unsigned long instance_id;
 	unsigned long conninfo_id;
