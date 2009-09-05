@@ -93,7 +93,11 @@ char *ndo2db_db_rawtablenames[NDO2DB_MAX_DBTABLES]={
 	"host_contactgroups",
 	"service_contactgroups",
 	"hostescalation_contactgroups",
+#ifdef USE_ORACLE
+	"serviceescalationcontactgroups"
+#else
 	"serviceescalation_contactgroups"
+#endif
 	};
 
 char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
@@ -120,9 +124,39 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 
 	/* initialize table names */
 	for (x = 0; x < NDO2DB_MAX_DBTABLES; x++) {
-		if ((ndo2db_db_tablenames[x] = (char *) malloc(strlen(ndo2db_db_rawtablenames[x]) + ((ndo2db_db_settings.dbprefix==NULL) ? 0 : strlen(ndo2db_db_settings.dbprefix)) + 1))==NULL)
-			return NDO_ERROR;
-		sprintf(ndo2db_db_tablenames[x], "%s%s", (ndo2db_db_settings.dbprefix==NULL) ? "" : ndo2db_db_settings.dbprefix,ndo2db_db_rawtablenames[x]);
+
+	        switch (idi->dbinfo.server_type) {
+        		case NDO2DB_DBSERVER_MYSQL:
+		        case NDO2DB_DBSERVER_PGSQL:
+		        case NDO2DB_DBSERVER_DB2:
+		        case NDO2DB_DBSERVER_FIREBIRD:
+		        case NDO2DB_DBSERVER_FREETDS:
+		        case NDO2DB_DBSERVER_INGRES:
+		        case NDO2DB_DBSERVER_MSQL:
+		                if ((ndo2db_db_tablenames[x] = (char *) malloc(strlen(ndo2db_db_rawtablenames[x]) + ((ndo2db_db_settings.dbprefix==NULL) ? 0 : strlen(ndo2db_db_settings.dbprefix)) + 1))==NULL)
+                		        return NDO_ERROR;
+				
+				sprintf(ndo2db_db_tablenames[x], "%s%s", (ndo2db_db_settings.dbprefix==NULL) ? "" : ndo2db_db_settings.dbprefix,ndo2db_db_rawtablenames[x]);
+				break;
+		        case NDO2DB_DBSERVER_ORACLE:
+#ifdef USE_ORACLE
+				/* don't allow user to set table prefix for oracle */
+        		        if ((ndo2db_db_tablenames[x] = (char *) malloc(strlen(ndo2db_db_rawtablenames[x])))==NULL)
+                        		return NDO_ERROR;
+
+				sprintf(ndo2db_db_tablenames[x], "%s", ndo2db_db_rawtablenames[x]);
+#endif
+		                break;
+		        case NDO2DB_DBSERVER_SQLITE:
+		        case NDO2DB_DBSERVER_SQLITE3:
+		                if ((ndo2db_db_tablenames[x] = (char *) malloc(strlen(ndo2db_db_rawtablenames[x]) + ((ndo2db_db_settings.dbprefix==NULL) ? 0 : strlen(ndo2db_db_settings.dbprefix)) + 1))==NULL)
+                		        return NDO_ERROR;
+		                
+				sprintf(ndo2db_db_tablenames[x], "%s%s", (ndo2db_db_settings.dbprefix==NULL) ? "" : ndo2db_db_settings.dbprefix,ndo2db_db_rawtablenames[x]);
+				break;
+		        default:
+                		break;
+        	}
 	}
 
 	/* initialize other variables */
