@@ -1878,8 +1878,8 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                                         *(char **) data[11],
                                         *(char **) data[12],
                                         *(int *) data[13],
-                                        *(int *) data[14],
-                                        *(int *) data[15],
+                                        *(char **) data[14],
+                                        *(char **) data[15],
                                         *(int *) data[16],
                                         *(char **) data[17],
                                         *(char **) data[18],
@@ -1933,8 +1933,8 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                                         *(char **) data[11],
                                         *(char **) data[12],
                                         *(int *) data[13],
-                                        *(int *) data[14],
-                                        *(int *) data[15],
+                                        *(char **) data[14],
+                                        *(char **) data[15],
                                         *(int *) data[16],
                                         *(char **) data[17],
                                         *(char **) data[18],
@@ -1968,6 +1968,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                                         *(unsigned long *) data[46],     /* update end */
                                         *(unsigned long *) data[1]     /* unique constraint start/end */
                         );
+
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
 			free(query1);
@@ -1991,8 +1992,8 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                                         *(char **) data[11],
                                         *(char **) data[12],
                                         *(int *) data[13],
-                                        *(int *) data[14],
-                                        *(int *) data[15],
+                                        *(char **) data[14],
+                                        *(char **) data[15],
                                         *(int *) data[16],
                                         *(char **) data[17],
                                         *(char **) data[18],
