@@ -384,12 +384,10 @@ int main(int argc, char **argv){
 
 	if(daemon_mode==FALSE){
 		printf("\n%s %s\n", PROGRAM_NAME ,PROGRAM_VERSION);
-		printf("Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)");
 		printf("Copyright (c) 2009 Nagios Core Development Team and Community Contributors\n");
 		printf("Copyright (c) 1999-2009 Ethan Galstad\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
-		printf("Website: http://www.icinga.org\n");
 	        }
 
 	/* just display the license */

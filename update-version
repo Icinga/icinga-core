@@ -74,5 +74,6 @@ perl -i -p -e "s/^CURRENTVERSION=.*/CURRENTVERSION=$newversion/;" update-version
 perl -i -p -e "s/^LASTDATE=.*/LASTDATE=$SHORTDATE/;" update-version
 
 # Update version number and release date in IDOUtils
-#perl -i -p -e "s/NDOMOD_VERSION \".*\"/NDOMOD_VERSION \"$newversion\"/;" module/idoutils/src/idomod.c
-#perl -i -p -e "s/NDOMOD_DATE \".*\"/NDOMOD_DATE \"$SHORTDATE\"/;" module/idoutils/src/idomod.c
+perl -i -p -e "s/NDOMOD_VERSION \".*\"/NDOMOD_VERSION \"$newversion\"/;" module/idoutils/src/idomod.c
+perl -i -p -e "s/NDOMOD_DATE \".*\"/NDOMOD_DATE \"$SHORTDATE\"/;" module/idoutils/src/idomod.c
+perl -i -p -e "s/Last Modified: [0-9].*/Last Modified: $SHORTDATE/;" module/idoutils/src/idomod.c

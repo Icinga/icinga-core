@@ -58,6 +58,5 @@ ALTER TABLE `icinga_servicechecks` ADD INDEX ( `instance_id` );
 ALTER TABLE `icinga_servicechecks` ADD INDEX ( `service_object_id` );
 ALTER TABLE `icinga_servicechecks` ADD INDEX ( `start_time` );
 
-ALTER TABLE `icinga_configfilevariables` DROP INDEX `instance_id`;
 
 
