@@ -11,6 +11,14 @@
 #include "../include/common.h"
 #include "../include/io.h"
 
+#ifdef HAVE_SSL
+SSL_METHOD *meth;
+SSL_CTX *ctx;
+SSL *ssl;
+int use_ssl=NDO_TRUE;
+#else
+int use_ssl=NDO_FALSE;
+#endif
 
 
 
@@ -140,6 +148,7 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 	struct hostent *hp=NULL;
 	mode_t mode=S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
 	int newfd=0;
+	int rc=0;
 
 	/* use file */
 	if(type==NDO_SINK_FILE){
@@ -182,6 +191,23 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 		if(name==NULL)
 			return NDO_ERROR;
 		
+#ifdef HAVE_SSL
+		if(use_ssl==NDO_TRUE){
+			SSL_library_init();
+			SSLeay_add_ssl_algorithms();
+			meth=SSLv23_client_method();
+			SSL_load_error_strings();
+
+			if((ctx=SSL_CTX_new(meth))==NULL){
+					printf("CHECK_NRPE: Error - could not create SSL context.\n");
+					return NDO_ERROR;
+			}
+			/* ADDED 01/19/2004 */
+			/* use only TLSv1 protocol */
+			SSL_CTX_set_options(ctx,SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
+		}
+#endif
+
 		/* clear the address */
 		bzero((char *)&server_address_i,sizeof(server_address_i));
 
@@ -208,7 +234,25 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 			close(newfd);
 			return NDO_ERROR;
 		        }
-	        }
+
+#ifdef HAVE_SSL
+		if(use_ssl==NDO_TRUE){
+			if((ssl=SSL_new(ctx))!=NULL){
+				SSL_CTX_set_cipher_list(ctx,"ADH");
+				SSL_set_fd(ssl,newfd);
+				if((rc=SSL_connect(ssl))!=1){
+					printf("Error - Could not complete SSL handshake.\n");
+					SSL_CTX_free(ctx);
+					close(newfd);
+					return NDO_ERROR;
+				}
+			} else {
+				printf("CHECK_NRPE: Error - Could not create SSL connection structure.\n");
+				return NDO_ERROR;
+			}
+		}
+#endif
+		}
 
 	/* unknown sink type */
 	else
@@ -234,7 +278,12 @@ int ndo_sink_write(int fd, char *buf, int buflen){
 	while(tbytes<buflen){
 
 		/* try to write everything we have left */
-		result=write(fd,buf+tbytes,buflen-tbytes);
+#ifdef HAVE_SSL
+		if (use_ssl == NDO_TRUE)
+			result=SSL_write(ssl, buf+tbytes, buflen-tbytes);
+		else
+#endif
+			result=write(fd, buf+tbytes, buflen-tbytes);
 
 		/* some kind of error occurred */
 		if(result==-1){
