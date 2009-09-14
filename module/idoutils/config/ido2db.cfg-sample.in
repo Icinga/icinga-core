@@ -144,6 +144,16 @@ max_externalcommands_age=44640
 
 
 
+# ***EXPERIMENTAL*** DB TRIMMING INTERVAL
+# ido2db default db trimming interval is set to 60 SECONDS.
+# Some environments will require higher or lower values. This setting is
+# highly experimental!!!
+# Modify at your own risk to set the interval DB trimming interval
+# to an appropriate value. If left blank, it defaults to 60 seconds.
+trim_db_interval=60
+
+
+
 # DEBUG LEVEL
 # This option determines how much (if any) debugging information will
 # be written to the debug file.  OR values together to log multiple

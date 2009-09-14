@@ -303,6 +303,8 @@ int ndo2db_process_config_var(char *arg){
 	char *var=NULL;
 	char *val=NULL;
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() start\n");
+
 	/* split var/val */
 	var=strtok(arg,"=");
 	val=strtok(NULL,"\n");
@@ -388,8 +390,11 @@ int ndo2db_process_config_var(char *arg){
 	else if(!strcmp(var,"max_eventhandlers_age"))
 		ndo2db_db_settings.max_eventhandlers_age=strtoul(val,NULL,0)*60;
 	else if(!strcmp(var,"max_externalcommands_age"))
-		 ndo2db_db_settings.max_externalcommands_age=strtoul(val,NULL,0)*60;
+		ndo2db_db_settings.max_externalcommands_age=strtoul(val,NULL,0)*60;
 
+	else if(!strcmp(var,"trim_db_interval"))
+		ndo2db_db_settings.trim_db_interval=strtoul(val,NULL,0); 
+	
 	else if(!strcmp(var,"ndo2db_user"))
 		ndo2db_user=strdup(val);
 	else if(!strcmp(var,"ndo2db_group"))
@@ -405,6 +410,9 @@ int ndo2db_process_config_var(char *arg){
 		ndo2db_debug_verbosity=atoi(val);
 	else if(!strcmp(var,"max_debug_file_size"))
 		ndo2db_max_debug_file_size=strtoul(val,NULL,0);
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() trim_db_interval=%lu\n", ndo2db_db_settings.trim_db_interval);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() end\n");
 
 	return NDO_OK;
         }
@@ -428,6 +436,7 @@ int ndo2db_initialize_variables(void){
 	ndo2db_db_settings.max_hostchecks_age=0L;
 	ndo2db_db_settings.max_eventhandlers_age=0L;
 	ndo2db_db_settings.max_externalcommands_age=0L;
+	ndo2db_db_settings.trim_db_interval=(unsigned long)DEFAULT_TRIM_DB_INTERVAL; /* set the default if missing in ido2db.cfg */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_initialize_variables() end\n");
 	return NDO_OK;
@@ -867,12 +876,11 @@ int ndo2db_wait_for_connections(void){
 
 	/* accept connections... */
 	while(1){
-
 		if((new_sd=accept(ndo2db_sd,(ndo2db_socket_type==NDO_SINK_TCPSOCKET)?(struct sockaddr *)&client_address_i:(struct sockaddr *)&client_address_u,(socklen_t *)&client_address_length))<0){
-			perror("Accept error");
-			ndo2db_cleanup_socket();
+                        perror("Accept error");
+                        ndo2db_cleanup_socket();
 			return NDO_ERROR;
-		        }
+			}
 
 		if(ido2db_run_foreground == NDO_FALSE) {
 			/* fork... */
@@ -969,6 +977,7 @@ int ndo2db_handle_client_connection(int sd){
 					continue;
 				else {
 					error=NDO_TRUE;
+
 					break;
 				}
 		}

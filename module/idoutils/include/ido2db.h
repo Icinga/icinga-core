@@ -84,6 +84,7 @@ typedef struct ndo2db_dbconninfo_struct{
 	unsigned long max_hostchecks_age;
 	unsigned long max_eventhandlers_age;
 	unsigned long max_externalcommands_age;
+	unsigned long trim_db_interval;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
 	char *last_logentry_data;
@@ -226,8 +227,9 @@ typedef struct ndo2db_input_data_info_struct{
 #define NDO2DB_DEBUGV_MORE		       1
 #define NDO2DB_DEBUGV_MOST                     2
 
+/***************** default trim db interval ************/
 
-
+#define DEFAULT_TRIM_DB_INTERVAL 60
 
 /***************** functions *******************/
 
