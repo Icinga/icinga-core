@@ -8,9 +8,11 @@ Icinga 0.8.x Change Log
 * idoutils: fix typo laste_state (wrong column)
 * idoutils: fix buffer freeing with NAGIOS_SIZEOF_ARRAY
 * idoutils: delete old mysql files coming from ndoutils
-* idoutils: add new versionhandling, idomod now shows version of Icinga core
+* idoutils: add new versionhandling, idomod/ido2db now shows version of Icinga core
 * idoutils: rename existing mysql/pgsql files, added upgrade/fix files
 * idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing
+* idoutils: add experimental db trimming interval option in ido2db.cfg
+* core: fix wrong copyright url for Ethan
 
 0.8.3 - 09/02/2009
 * idoutils: add PostgreSQL support
