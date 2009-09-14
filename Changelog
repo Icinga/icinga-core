@@ -3,7 +3,6 @@ Icinga 0.8.x Change Log
 #######################
 
 0.8.4 - ??/??/2009
-* idoutils: add SSL Support
 * idoutils: fix failure_prediction_options in tables hosts, services for postgres
 * idoutils: add configure support for manual libdbi detection
 * idoutils: fix typo laste_state (wrong column)
@@ -12,7 +11,6 @@ Icinga 0.8.x Change Log
 * idoutils: add new versionhandling, idomod now shows version of Icinga core
 * idoutils: rename existing mysql/pgsql files, added upgrade/fix files
 * idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing
-
 
 0.8.3 - 09/02/2009
 * idoutils: add PostgreSQL support

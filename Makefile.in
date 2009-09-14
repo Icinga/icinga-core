@@ -196,9 +196,8 @@ distclean: clean
 		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
 	fi
 
-	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
+	rm -f sample-config/*.cfg  sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db
-	rm -f include/dh.h
 	rm -f Makefile subst
 	rm -f config.log config.status config.cache
 
