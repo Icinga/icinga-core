@@ -4,7 +4,7 @@
 <title>What's new</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
 <link rel="up" href="ch01.html" title="Chapter 1. About">
 <link rel="prev" href="about.html" title="About Icinga">
 <link rel="next" href="ch02.html" title="Chapter 2. Getting Started">
@@ -27,9 +27,63 @@
 <div class="section" title="What's new">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>What's new</h2></div></div></div>
-  
-
-  <p>This section will be filled with some more useful information soon. In the meantime please have a look at the file "Changelog".</p>
+<p>This section will be filled with some more detailed information soon. Just have look at the changelog:</p>
+<p><span class="bold"><strong>0.8.4 - 16/09/2009 </strong></span></p>
+<p>* idoutils: fix failure_prediction_options in tables hosts, services for postgres </p>
+<p>* idoutils: add configure support for manual libdbi detection </p>
+<p>* idoutils: fix typo laste_state (wrong column) </p>
+<p>* idoutils: fix buffer freeing with NAGIOS_SIZEOF_ARRAY </p>
+<p>* idoutils: delete old mysql files coming from ndoutils </p>
+<p>* idoutils: add new versionhandling, idomod/ido2db now shows version of Icinga core </p>
+<p>* idoutils: rename existing mysql/pgsql files, added upgrade/fix files </p>
+<p>* idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing </p>
+<p>* idoutils: add experimental db trimming interval option in ido2db.cfg </p>
+<p>* core: fix wrong copyright url for Ethan</p>
+<p></p>
+<p><span class="bold"><strong>0.8.3 - 09/02/2009 </strong></span></p>
+<p>* idoutils: add PostgreSQL support </p>
+<p>* new Icinga documentation in docbook and html format </p>
+<p>* fetch current Nagios patches </p>
+<p>* fix support links after make </p>
+<p>* idoutils: add note if install desired but not enabled </p>
+<p>* idoutils: fix installing of rc.ido2db in make install-idoutils </p>
+<p>* idoutils: add db/pgsql.sql, adapted table scheme for postgresql </p>
+<p>* idoutils: add time conversion functions for postgresql </p>
+<p>* idoutils: add try update, if affected rows=0, then insert queries for postgresql </p>
+<p>* idoutils: modify insert queries, normalized to sql-standard </p>
+<p>* idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms </p>
+<p>* idoutils: modify insert-or-update queries, build data array for functions </p>
+<p>* idoutils: fix string escaping for postgresql </p>
+<p>* idoutils: fix last insert id for postgresql - needs defined sequence id for table </p>
+<p>* idoutils: modify command_line in commands table to varchar(1024) </p>
+<p>* idoutils: add more debug output </p>
+<p>* idoutils: Support 8192 chars of perfdata</p>
+<p></p>
+<p><span class="bold"><strong>0.8.2 - 08/12/2009</strong></span> </p>
+<p>* create a new basic ido2db init script </p>
+<p>* idoutils: fix child signal handling in ido2db</p>
+<p>* idoutils: fix escaping of customvars before insert </p>
+<p>* idoutils: fix in buggy rotate command execution </p>
+<p>* idoutils: fix fmt specifier in ndo2db_daemonize() error </p>
+<p>* idoutils: added long_output support to IDOUtils </p>
+<p>* idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd) </p>
+<p>* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd) </p>
+<p>* icinga-api added: The search function now uses the icinga-api submodule * various minor changes </p>
+<p></p>
+<p><span class="bold"><strong>0.8.1 - 06/17/2009</strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* Archived Logfiles renamed from Icinga-date-syntax.log =&gt; icinga-date-syntax.log (capital 'i')</em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* cherry picked latest Nagios Patches (see Nagios Changelog below) </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* new ido2db command switch: '-f' don't daemonize the ido2db </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* ido2db will now prints out available database drivers </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* fix ido2db segfault when try to access non existing tables </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* DocBook v5 conversion </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* Fix menu frameset cols width</em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em></em></span></strong></span></p>
+<p><span class="bold"><strong><span class="bold"><strong> 0.8 - 05/19/2009</strong></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em> * Almost biggest deal to rename the components </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction layer, enable compile try with "configure --enable-idoutils" </em></span></strong></span></p>
+<p><span class="bold"><strong><span class="emphasis"><em>* Included a new stylesheet/icon theme based on Vautour Style Vautour Style have been created by Yoann LAMY. The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/). The icons of Vautour Style use "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James. "Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/). </em></span></strong></span></p>
 </div>
 <div class="navfooter">
 <hr>

@@ -4,7 +4,7 @@
 <title>Upgrading (to) Icinga</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.3 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">
 <link rel="next" href="monitoring-windows.html" title="Monitoring Windows Machines">
@@ -27,195 +27,84 @@
 <div class="section" title="Upgrading (to) Icinga">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading"></a><a name="upgrading_nagios"></a>Upgrading (to) Icinga</h2></div></div></div>
-  
-
-  <p><span class="bold"><strong>Contents</strong></span></p>
-
-  <p><a class="link" href="upgrading.html#upgrading-icinga">Upgrading from previous Icinga releases</a></p>
-
-  <p><a class="link" href="upgrading.html#upgrading-nagios3x">Upgrading from Nagios 3.x releases</a></p>
-
-  <p><a class="link" href="upgrading.html#upgrading-nagios2x">Upgrading from Nagios 2.x releases</a></p>
-
-  <p><a class="link" href="upgrading.html#upgrading-rpm">Upgrading from an RPM installation</a></p>
-
-  <p><span class="bold"><strong><a name="upgrading-icinga"></a> Upgrading from previous Icinga
-  releases</strong></span></p>
-
-  <p>During development there may be cases where the handling of bugfixes might touch the userspace. We try to avoid this as
-  far as possible but sometimes it is inevitable.</p>
-
-  <p><span class="bold"><strong>Icinga 0.8.0 to Icinga 0.8.1</strong></span></p>
-
-  <p>Archived Logfilename</p>
-
-  <p>There was a small misspelling bug in Icinga 0.8.0 resulting in archived logfile names beginning with a capital
-  <span class="bold"><strong>"I"</strong></span> like in <span class="bold"><strong>'Icinga-$date'</strong></span>". This was fixed in version
-  0.8.1.</p>
-
-  <p>If you experience this problem then please use the following script to fix the file names</p>
-
-  <pre class="programlisting"> cd /usr/local/icinga/var/archives
+<p><span class="bold"><strong>Contents</strong></span></p>
+<p><a class="link" href="upgrading.html#upgrading-icinga">Upgrading from previous Icinga releases</a></p>
+<p><a class="link" href="upgrading.html#upgrading-nagios3x">Upgrading from Nagios 3.x releases</a></p>
+<p><a class="link" href="upgrading.html#upgrading-nagios2x">Upgrading from Nagios 2.x releases</a></p>
+<p><a class="link" href="upgrading.html#upgrading-rpm">Upgrading from an RPM installation</a></p>
+<p><span class="bold"><strong><a name="upgrading-icinga"></a> Upgrading from previous Icinga releases</strong></span></p>
+<p>During development there may be cases where the handling of bugfixes might touch the userspace. We try to avoid this as far as possible but sometimes it is inevitable.</p>
+<p><span class="bold"><strong>Icinga 0.8.0 to Icinga 0.8.4</strong></span></p>
+<p>Archived Logfilename</p>
+<p>There was a small misspelling bug in Icinga 0.8.0 resulting in archived logfile names beginning with a capital <span class="bold"><strong>"I"</strong></span> like in <span class="bold"><strong>'Icinga-$date'</strong></span>". This was fixed in version 0.8.1. and newer.</p>
+<p>If you experience this problem then please use the following script to fix the file names</p>
+<pre class="programlisting"> cd /usr/local/icinga/var/archives
  for oldfilename in `find ./ -name "Icinga-*"`
  do
    newfilename=`echo $oldfilename | sed -e 's/Icinga/icinga/g'`
    mv $oldfilename $newfilename
  done</pre>
-
-  <p><span class="bold"><strong>Normal Icinga update path</strong></span></p>
-
-  <p>Regular updates of Icinga should be possible just by re-installing Icinga using </p>
+<p><span class="bold"><strong>Normal Icinga update path</strong></span></p>
+<p>Regular updates of Icinga should be possible just by re-installing Icinga using </p>
 <pre class="screen"> ./configure
  make all
  make install</pre>
-<p> Please keep in mind that you have to call ./configure using the same options as during the first
-  time.</p>
-
-  <p><span class="bold"><strong><a name="upgrading-nagios3x"></a> Upgrading From Nagios 3.x Releases</strong></span></p>
-
-  <p>We try to be compatible with the configuration files of the current Nagios 3.x versions so there should be very
-  little you have to do to "upgrade" from Nagios 3.x to Icinga 0.8.3. Assuming you've already installed
-  Nagios from source code as described in the Nagios quickstart guide, you can install Icinga quite
-  easily.</p>
-
-  <p>Make sure you have a good backup of your existing Nagios installation and configuration files. If anything goes
-  wrong or doesn't work, this will allow you to rollback to your old version.</p>
-
-  <p>Please install Icinga according to the <a class="link" href="quickstart" target="_top">quickstart guide</a>. Instead of using
-  "make install-config" copy your configuration files from <span class="emphasis"><em>&lt;Nagios-path&gt;/etc/</em></span> to
-  <span class="emphasis"><em>&lt;Icinga-path&gt;/etc/</em></span>. Before starting Icinga you have to alter some things:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p>The filename of the main config file has changed from <span class="emphasis"><em>nagios.cfg</em></span> to
-      <span class="emphasis"><em>icinga.cfg</em></span>. <code class="literal">mv nagios.cfg icinga.cfg</code> should be sufficient to change that</p>
-    </li>
-<li class="listitem">
-      <p>You have to edit the main config file (icinga.cfg) to change the directives named "nagios_user" and "nagios_group" to
-      "icinga_user" and "icinga_group" respectively. Depending on the paths you're using you may have to change them as
-      well.</p>
-    </li>
+<p> Please keep in mind that you have to call ./configure using the same options as during the first time.</p>
+<p><span class="bold"><strong><a name="upgrading-nagios3x"></a> Upgrading From Nagios 3.x Releases</strong></span></p>
+<p>We try to be compatible with the configuration files of the current Nagios 3.x versions so there should be very little you have to do to "upgrade" from Nagios 3.x to Icinga 0.8.4. Assuming you've already installed Nagios from source code as described in the Nagios quickstart guide, you can install Icinga quite easily.</p>
+<p>Make sure you have a good backup of your existing Nagios installation and configuration files. If anything goes wrong or doesn't work, this will allow you to rollback to your old version.</p>
+<p>Please install Icinga according to the <a class="link" href="quickstart" target="_top">quickstart guide</a>. Instead of using "make install-config" copy your configuration files from <span class="emphasis"><em>&lt;Nagios-path&gt;/etc/</em></span> to <span class="emphasis"><em>&lt;Icinga-path&gt;/etc/</em></span>. Before starting Icinga you have to alter some things:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>The filename of the main config file has changed from <span class="emphasis"><em>nagios.cfg</em></span> to <span class="emphasis"><em>icinga.cfg</em></span>. <code class="literal">mv nagios.cfg icinga.cfg</code> should be sufficient to change that</p></li>
+<li class="listitem"><p>You have to edit the main config file (icinga.cfg) to change the directives named "nagios_user" and "nagios_group" to "icinga_user" and "icinga_group" respectively. Depending on the paths you're using you may have to change them as well.</p></li>
 </ul></div>
-
-  <p>Verify your configuration files and restart Icinga.</p>
-
-  <pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+<p>Verify your configuration files and restart Icinga.</p>
+<pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
  /etc/init.d/icinga restart</pre>
-
-  <p>That's it - you're done!</p>
-
-  <p>Please keep in mind that</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p>the URL has changed to http://localhost/icinga/</p>
-    </li>
-<li class="listitem">
-      <p>the name of the admin user has changed to icingaadmin</p>
-    </li>
+<p>That's it - you're done!</p>
+<p>Please keep in mind that</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>the URL has changed to http://localhost/icinga/</p></li>
+<li class="listitem"><p>the name of the admin user has changed to icingaadmin</p></li>
 </ul></div>
-
-  <p><span class="bold"><strong><a name="upgrading-nagios2x"></a> Upgrading From Nagios 2.x Releases</strong></span></p>
-
-  <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 0.8.3. The upgrade is essentially
-  the same as what is described above for upgrading from Nagios 3.x releases. You will, however, have to change your
-  configuration files a bit so they work with Icinga 0.8.3:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p>The old <span class="emphasis"><em>service_reaper_frequency</em></span> variable in the main config file has been renamed to <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>.</p>
-    </li>
-<li class="listitem">
-      <p>The old <span class="emphasis"><em>$NOTIFICATIONNUMBER$</em></span> macro has been deprecated in favour of new <a class="link" href="macrolist.html#macrolist-hostnotificationnumber">$HOSTNOTIFICATIONNUMBER$</a> and <a class="link" href="macrolist.html#macrolist-servicenotificationnumber">$SERVICENOTIFICATIONNUMBER$</a> macros.</p>
-    </li>
-<li class="listitem">
-      <p>The old <span class="emphasis"><em>parallelize</em></span> directive in service definitions is now deprecated and no longer used, as all
-      service checks are run in parallel.</p>
-    </li>
-<li class="listitem">
-      <p>The old <span class="emphasis"><em>aggregate_status_updates</em></span> option has been removed. All status file updates are now
-      aggregated at a minimum interval of 1 second.</p>
-    </li>
-<li class="listitem">
-      <p>Extended host and extended service definitions have been deprecated. They are still read and processed by
-      Icinga, but it is recommended that you move the directives found in these definitions to your host and service
-      definitions, respectively.</p>
-    </li>
-<li class="listitem">
-      <p>The old <span class="emphasis"><em>downtime_file</em></span> file variable in the main config file is no longer supported, as scheduled
-      downtime entries are now saved in the <a class="link" href="configmain.html#configmain-state_retention_file">retention file</a>. To preserve
-      existing downtime entries, stop Nagios 2.x and append the contents of your old downtime file to the retention
-      file.</p>
-    </li>
-<li class="listitem">
-      <p>The old <span class="emphasis"><em>comment_file</em></span> file variable in the main config file is no longer supported, as comments
-      are now saved in the <a class="link" href="configmain.html#configmain-state_retention_file">retention file</a>. To preserve existing comments,
-      stop Nagios 2.x and append the contents of your old comment file to the retention file.</p>
-    </li>
+<p><span class="bold"><strong><a name="upgrading-nagios2x"></a> Upgrading From Nagios 2.x Releases</strong></span></p>
+<p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 0.8.4. The upgrade is essentially the same as what is described above for upgrading from Nagios 3.x releases. You will, however, have to change your configuration files a bit so they work with Icinga 0.8.4:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>The old <span class="emphasis"><em>service_reaper_frequency</em></span> variable in the main config file has been renamed to <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>.</p></li>
+<li class="listitem"><p>The old <span class="emphasis"><em>$NOTIFICATIONNUMBER$</em></span> macro has been deprecated in favour of new <a class="link" href="macrolist.html#macrolist-hostnotificationnumber">$HOSTNOTIFICATIONNUMBER$</a> and <a class="link" href="macrolist.html#macrolist-servicenotificationnumber">$SERVICENOTIFICATIONNUMBER$</a> macros.</p></li>
+<li class="listitem"><p>The old <span class="emphasis"><em>parallelize</em></span> directive in service definitions is now deprecated and no longer used, as all service checks are run in parallel.</p></li>
+<li class="listitem"><p>The old <span class="emphasis"><em>aggregate_status_updates</em></span> option has been removed. All status file updates are now aggregated at a minimum interval of 1 second.</p></li>
+<li class="listitem"><p>Extended host and extended service definitions have been deprecated. They are still read and processed by Icinga, but it is recommended that you move the directives found in these definitions to your host and service definitions, respectively.</p></li>
+<li class="listitem"><p>The old <span class="emphasis"><em>downtime_file</em></span> file variable in the main config file is no longer supported, as scheduled downtime entries are now saved in the <a class="link" href="configmain.html#configmain-state_retention_file">retention file</a>. To preserve existing downtime entries, stop Nagios 2.x and append the contents of your old downtime file to the retention file.</p></li>
+<li class="listitem"><p>The old <span class="emphasis"><em>comment_file</em></span> file variable in the main config file is no longer supported, as comments are now saved in the <a class="link" href="configmain.html#configmain-state_retention_file">retention file</a>. To preserve existing comments, stop Nagios 2.x and append the contents of your old comment file to the retention file.</p></li>
 </ul></div>
-
-  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's new">What's New</a>" section of the documentation. It describes all the
-  changes that were made to the Icinga code since the latest stable release of Nagios 3.0.6. Quite a bit has
-  changed, so make sure you read it over.</p>
-
-  <p><span class="bold"><strong><a name="upgrading-rpm"></a> Upgrading From an RPM Installation</strong></span></p>
-
-  <p>If you currently have an RPM- or Debian/Ubuntu APT package-based installation of Nagios and you would like to
-  transition to installing Icinga from the official source code distribution, here's the basic process you should
-  follow:</p>
-
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+<p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's new">What's New</a>" section of the documentation. It describes all the changes that were made to the Icinga code since the latest stable release of Nagios 3.0.6. Quite a bit has changed, so make sure you read it over.</p>
+<p><span class="bold"><strong><a name="upgrading-rpm"></a> Upgrading From an RPM Installation</strong></span></p>
+<p>If you currently have an RPM- or Debian/Ubuntu APT package-based installation of Nagios and you would like to transition to installing Icinga from the official source code distribution, here's the basic process you should follow:</p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Backup your existing Nagios installation</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<p>Backup your existing Nagios installation</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          <p>Configuration files</p>
-
-          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-                <p>Main config file (usually <span class="emphasis"><em>nagios.cfg</em></span>)</p>
-              </li>
-<li class="listitem">
-                <p>Resource config file (usually <span class="emphasis"><em>resource.cfg</em></span>)</p>
-              </li>
-<li class="listitem">
-                <p>CGI config file (usually <span class="emphasis"><em>cgi.cfg</em></span>)</p>
-              </li>
-<li class="listitem">
-                <p>All your object definition files</p>
-              </li>
+<p>Configuration files</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>Main config file (usually <span class="emphasis"><em>nagios.cfg</em></span>)</p></li>
+<li class="listitem"><p>Resource config file (usually <span class="emphasis"><em>resource.cfg</em></span>)</p></li>
+<li class="listitem"><p>CGI config file (usually <span class="emphasis"><em>cgi.cfg</em></span>)</p></li>
+<li class="listitem"><p>All your object definition files</p></li>
 </ul></div>
-        </li>
-<li class="listitem">
-          <p>Retention file (usually <span class="emphasis"><em>retention.dat</em></span>)</p>
-        </li>
-<li class="listitem">
-          <p>Current Nagios log file (usually <span class="emphasis"><em>nagios.log</em></span>)</p>
-        </li>
-<li class="listitem">
-          <p>Archived Nagios log files</p>
-        </li>
+</li>
+<li class="listitem"><p>Retention file (usually <span class="emphasis"><em>retention.dat</em></span>)</p></li>
+<li class="listitem"><p>Current Nagios log file (usually <span class="emphasis"><em>nagios.log</em></span>)</p></li>
+<li class="listitem"><p>Archived Nagios log files</p></li>
 </ul></div>
-    </li>
-<li class="listitem">
-      <p>Uninstall the original RPM or APT package</p>
-    </li>
-<li class="listitem">
-      <p>Install Icinga from source by following the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart guide</a></p>
-    </li>
-<li class="listitem">
-      <p>Restore your original Nagios configuration files, retention file, and log files</p>
-    </li>
-<li class="listitem">
-      <p><a class="link" href="verifyconfig.html" title="Verifying Your Configuration">Verify</a> your configuration and <a class="link" href="startstop.html" title="Starting and Stopping Icinga">start</a>
-      Icinga</p>
-    </li>
+</li>
+<li class="listitem"><p>Uninstall the original RPM or APT package</p></li>
+<li class="listitem"><p>Install Icinga from source by following the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart guide</a></p></li>
+<li class="listitem"><p>Restore your original Nagios configuration files, retention file, and log files</p></li>
+<li class="listitem"><p><a class="link" href="verifyconfig.html" title="Verifying Your Configuration">Verify</a> your configuration and <a class="link" href="startstop.html" title="Starting and Stopping Icinga">start</a> Icinga</p></li>
 </ol></div>
-
-  <p>Note that different RPMs or APT packages may install Icinga in different ways and in different locations. Make sure
-  you've backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back
-  if you encounter problems.</p>
+<p>Note that different RPMs or APT packages may install Icinga in different ways and in different locations. Make sure you've backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter problems.</p>
 </div>
 <div class="navfooter">
 <hr>
