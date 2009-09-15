@@ -2,7 +2,7 @@
 Icinga 0.8.x Change Log
 #######################
 
-0.8.4 - ??/??/2009
+0.8.4 - 09/15/2009
 * idoutils: fix failure_prediction_options in tables hosts, services for postgres
 * idoutils: add configure support for manual libdbi detection
 * idoutils: fix typo laste_state (wrong column)
@@ -13,6 +13,7 @@ Icinga 0.8.x Change Log
 * idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing
 * idoutils: add experimental db trimming interval option in ido2db.cfg
 * core: fix wrong copyright url for Ethan
+* docu: fix quickinstall guides
 
 0.8.3 - 09/02/2009
 * idoutils: add PostgreSQL support
