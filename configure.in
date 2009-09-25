@@ -679,15 +679,15 @@ if test x$USE_IDOUTILS = xyes; then
 
 	dnl Check for optional ocilib 
 	USE_OCILIB=no
-	AC_ARG_ENABLE(idoutils_oracle,AC_HELP_STRING([--use-oracle],[enables idoutils with ocilib and oracle]),USE_OCILIB=$enableval,USE_OCILIB=no)
+	AC_ARG_ENABLE(oracle,AC_HELP_STRING([--enable-oracle],[enables idoutils with ocilib and oracle]),USE_OCILIB=$enableval,USE_OCILIB=no)
 	if test x$USE_OCILIB = xyes; then
 
 		dnl FIXME - allow user to set specific dirs
 		OCILIB_INC="/usr/local/include"
 		OCILIB_LIB="/usr/local/lib"
 
-		CFLAGS="${CFLAGS} -I${OCILIB_INC} -DOCI_IMPORT_UNICODE -DOCI_CHARSET_UNICODE"
-		LDFLAGS="${LDFLAGS} -L${OCILIB_LIB}"
+		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_UNICODE -DOCI_CHARSET_UNICODE"
+		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
 
 		dnl check and include ocilib.h
 		#AC_CHECK_HEADER(ocilib.h, [], [], [${OCILIB_INC}])

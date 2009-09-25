@@ -1324,6 +1324,7 @@ Optional Features:
                           timing
   --enable-event-broker   enables integration of event broker routines
   --enable-idoutils       enables database connectivity using idoutils
+  --enable-oracle         enables idoutils with ocilib and oracle
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         Enable built-in libtap for unit-testing (default:
@@ -7787,8 +7788,105 @@ echo "$as_me: error: ERROR - We really need a libdbi to link against" >&2;}
 fi
 
 
+
+
+		USE_OCILIB=no
+	# Check whether --enable-oracle was given.
+if test "${enable_oracle+set}" = set; then
+  enableval=$enable_oracle; USE_OCILIB=$enableval
+else
+  USE_OCILIB=no
 fi
 
+	if test x$USE_OCILIB = xyes; then
+
+				OCILIB_INC="/usr/local/include"
+		OCILIB_LIB="/usr/local/lib"
+
+		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_UNICODE -DOCI_CHARSET_UNICODE"
+		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
+
+				#AC_CHECK_HEADER(ocilib.h, [], [], [${OCILIB_INC}])
+
+
+		cat >>confdefs.h <<\_ACEOF
+#define HAVE_OCILIB_H "1"
+_ACEOF
+
+                                { echo "$as_me:$LINENO: checking for ocilib" >&5
+echo $ECHO_N "checking for ocilib... $ECHO_C" >&6; }
+                { echo "$as_me:$LINENO: checking for main in -locilib" >&5
+echo $ECHO_N "checking for main in -locilib... $ECHO_C" >&6; }
+if test "${ac_cv_lib_ocilib_main+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-locilib  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext &&
+       $as_test_x conftest$ac_exeext; then
+  ac_cv_lib_ocilib_main=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_ocilib_main=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_ocilib_main" >&5
+echo "${ECHO_T}$ac_cv_lib_ocilib_main" >&6; }
+if test $ac_cv_lib_ocilib_main = yes; then
+  DBLIBS_OCI="${DBCFLAGS} -locilib"
+else
+  { { echo "$as_me:$LINENO: error: ERROR - We really need a ocilib to link against" >&5
+echo "$as_me: error: ERROR - We really need a ocilib to link against" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+		DBLIBS="${DBLIBS} ${DBLIBS_OCI}"
+
+
+				 cat >>confdefs.h <<_ACEOF
+#define USE_ORACLE 1
+_ACEOF
+
+	fi
+fi
 
 USEPERL=no;
 INSTALLPERLSTUFF=no;
