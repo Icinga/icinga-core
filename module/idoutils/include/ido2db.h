@@ -12,9 +12,9 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
-#ifdef USE_ORACLE
-#include "ocilib.h"
-#endif
+//#ifdef USE_ORACLE
+//#include "ocilib.h"
+//#endif
 
 
 /*************** mbuf definitions *************/
