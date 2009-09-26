@@ -410,6 +410,14 @@ int ndo2db_process_config_var(char *arg){
 		ndo2db_debug_verbosity=atoi(val);
 	else if(!strcmp(var,"max_debug_file_size"))
 		ndo2db_max_debug_file_size=strtoul(val,NULL,0);
+	else if(!strcmp(var,"use_ssl")){
+		if (strlen(val) == 1) {
+			if (isdigit((int)val[strlen(val)-1]) == NDO_TRUE)
+				use_ssl = atoi(val);
+			else
+				use_ssl = 0;
+		}
+	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() trim_db_interval=%lu\n", ndo2db_db_settings.trim_db_interval);
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() end\n");
@@ -968,7 +976,18 @@ int ndo2db_handle_client_connection(int sd){
 	/* read all data from client */
 	while(1){
 
+#ifdef HAVE_SSL
+		if(use_ssl==NDO_FALSE)
+			result=read(sd,buf,sizeof(buf)-1);
+		else{
+			result=SSL_read(ssl,buf,sizeof(buf)-1);
+			if(result==-1 && (SSL_get_error(ssl,result)==SSL_ERROR_WANT_READ)){
+				syslog(LOG_ERR,"SSL read error\n");
+			}
+		}
+#else
 		result=read(sd,buf,sizeof(buf)-1);
+#endif
 
 		/* bail out on hard errors */
 		if(result==-1) {
