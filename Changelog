@@ -2,6 +2,9 @@
 Icinga 0.8.x Change Log
 #######################
 
+0.?.? - ??/??/2009
+* idoutils: added ssl support
+
 0.8.4 - 09/15/2009
 * idoutils: fix failure_prediction_options in tables hosts, services for postgres
 * idoutils: add configure support for manual libdbi detection
