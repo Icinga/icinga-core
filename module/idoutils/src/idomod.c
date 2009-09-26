@@ -86,7 +86,7 @@ extern char *global_service_event_handler;
 
 extern int __nagios_object_structure_version;
 
-
+extern int use_ssl;
 
 #define DEBUG_NDO 1
 
@@ -763,6 +763,9 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			ndomod_sink_last_reconnect_warning=current_time;
 
 			asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost...");
+			ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
+			free(temp_buffer);
+			asprintf(&temp_buffer,"idomod: Please check remote ido2db log, database connection or SSL Parameters");
 			ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 			free(temp_buffer);
 			temp_buffer=NULL;

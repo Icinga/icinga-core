@@ -148,6 +148,7 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 	struct hostent *hp=NULL;
 	mode_t mode=S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
 	int newfd=0;
+	int rc=0;
 
 	/* use file */
 	if(type==NDO_SINK_FILE){
@@ -277,7 +278,12 @@ int ndo_sink_write(int fd, char *buf, int buflen){
 	while(tbytes<buflen){
 
 		/* try to write everything we have left */
-		result=write(fd,buf+tbytes,buflen-tbytes);
+#ifdef HAVE_SSL
+		if (use_ssl == NDO_TRUE)
+			result=SSL_write(ssl, buf+tbytes, buflen-tbytes);
+		else
+#endif
+			result=write(fd, buf+tbytes, buflen-tbytes);
 
 		/* some kind of error occurred */
 		if(result==-1){
