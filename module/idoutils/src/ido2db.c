@@ -1102,17 +1102,6 @@ int ndo2db_handle_client_connection(int sd){
 				syslog(LOG_ERR,"SSL read error\n");
 			}
 		}
-#endif
-
-#ifdef HAVE_SSL
-		if(use_ssl==NDO_FALSE)
-			result=read(sd,buf,sizeof(buf)-1);
-		else{
-			result=SSL_read(ssl,buf,sizeof(buf)-1);
-			if(result==-1 && (SSL_get_error(ssl,result)==SSL_ERROR_WANT_READ)){
-				syslog(LOG_ERR,"SSL read error\n");
-			}
-		}
 #else
 		result=read(sd,buf,sizeof(buf)-1);
 #endif
