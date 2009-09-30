@@ -191,6 +191,7 @@ int main(int argc, char **argv){
 	        }
 
 	/* make sure we support the db option chosen... */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if(ido2db_check_dbd_driver()==NDO_FALSE){
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
 		dbi_driver driver;
@@ -211,6 +212,13 @@ int main(int argc, char **argv){
 		exit(1);
 		}
 
+#else /* Oracle ocilib specific */
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
+	//FIXME
+
+#endif /* Oracle ocilib specific */
+	
 	/* initialize signal handling */
 	signal(SIGQUIT,ndo2db_parent_sighandler);
 	signal(SIGTERM,ndo2db_parent_sighandler);

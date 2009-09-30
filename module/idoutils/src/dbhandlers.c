@@ -88,6 +88,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 			buf2 = NULL;
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
 			"SELECT * FROM %s WHERE instance_id='%lu' AND objecttype_id='%d' AND %s AND %s",
@@ -107,6 +108,12 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
+
+#else /* Oracle ocilib specific */
+
+	//FIXME - get object_id
+
+#endif /* Oracle ocilib specific */
 
 	/* free memory */
 	free(buf1);
@@ -202,8 +209,13 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+				//FIXME
+
+#endif /* Oracle ocilib specific */
+
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -214,7 +226,16 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
                 }
         }
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	dbi_result_free(idi->dbinfo.dbi_result);
+
+#else /* Oracle ocilib specific */
+
+	//FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	/* cache object id for later lookups */
@@ -248,6 +269,8 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 			idi->dbinfo.instance_id) == -1)
 		buf = NULL;
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		while (idi->dbinfo.dbi_result) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
@@ -265,7 +288,11 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 		}
 	}
 	free(buf);
-        
+#else /* Oracle ocilib specific */
+
+	//FIXME
+
+#endif /* Oracle ocilib specific */
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids(%lu) end\n", object_id);
 	
 	return result;
@@ -500,7 +527,14 @@ int ndo2db_set_all_objects_as_inactive(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+	
+	//FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_all_objects_as_inactive() end\n");
@@ -525,7 +559,14 @@ int ndo2db_set_object_as_active(ndo2db_idi *idi, int object_type,
 
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_object_as_active() end\n");
@@ -584,6 +625,9 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[0], es[0]) == -1)
 		buf = NULL;
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 			if (idi->dbinfo.dbi_result != NULL) {
 				if (dbi_result_next_row(idi->dbinfo.dbi_result) != 0)
@@ -593,6 +637,12 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
+
+#else /* Oracle ocilib specific */
+
+	//FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/*if(duplicate_record==NDO_TRUE && idi->last_logentry_time!=etime){*/
 	/*if(duplicate_record==NDO_TRUE && strcmp((es[0]==NULL)?"":es[0],idi->dbinfo.last_logentry_data)){*/
@@ -613,7 +663,14 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	/* record timestamp of last log entry */
@@ -683,7 +740,14 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	/* MORE PROCESSING.... */
@@ -750,9 +814,15 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 				)==-1)
 		buf=NULL;
 		result=ndo2db_db_query(idi,buf);
-
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
-		free(buf);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
+	free(buf);
 #endif
 	}
 
@@ -767,8 +837,14 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 				idi->dbinfo.instance_id) == -1)
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
-
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -856,7 +932,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		data[6] = (void *) &object_id;
 
 		result = ido2db_query_insert_or_update_timedevent_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 	}
 
 	/* save a record of timed events that get executed.... */
@@ -873,7 +956,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
                 data[6] = (void *) &object_id;
 
                 result = ido2db_query_insert_or_update_timedevents_execute_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 	}
 
 	/* save a record of timed events that get removed.... */
@@ -890,7 +980,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -910,7 +1007,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -927,7 +1031,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -946,7 +1057,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 
 		/* if we are executing a low-priority event, remove older events from the queue, as we know they've already been executed */
@@ -963,7 +1081,14 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 				buf = NULL;
 			result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 			dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 			free(buf);
 		}
 
@@ -1029,7 +1154,15 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 			es[0]) == -1)
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	/* free memory */
@@ -1100,7 +1233,14 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
         data[11] = (void *) &es[2];
 
         result = ido2db_query_insert_or_update_systemcommanddata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1194,7 +1334,15 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
         data[17] = (void *) &es[3];
 
         result = ido2db_query_insert_or_update_eventhandlerdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1306,8 +1454,11 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+				//FIXME
+
+#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -1318,7 +1469,13 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                 }
         }
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1411,8 +1568,11 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+				//FIXME
+
+#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -1423,7 +1583,13 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1460,13 +1626,10 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 
 	/* convert vars */
 
-	result = ndo2db_convert_string_to_timeval(
-			idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
-	result = ndo2db_convert_string_to_timeval(
-			idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
+	result = ndo2db_convert_string_to_timeval(idi->buffered_input[NDO_DATA_STARTTIME], &start_time);
+	result = ndo2db_convert_string_to_timeval(idi->buffered_input[NDO_DATA_ENDTIME], &end_time);
 
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_COMMANDARGS]);
+	es[0] = ndo2db_db_escape_string(idi,idi->buffered_input[NDO_DATA_COMMANDARGS]);
 
 	ts[0] = ndo2db_db_timet_to_sql(idi, start_time.tv_sec);
 	ts[1] = ndo2db_db_timet_to_sql(idi, end_time.tv_sec);
@@ -1486,7 +1649,14 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
         data[6] = (void *) &command_id;
 
         result = ido2db_query_insert_or_update_contactnotificationmethoddata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1604,7 +1774,14 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
         data[18] = (void *) &es[4];
 
         result = ido2db_query_insert_or_update_servicecheckdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1734,7 +1911,14 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
         data[22] = (void *) &es[4];
 
         result = ido2db_query_insert_or_update_hostcheckdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -1774,8 +1958,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 		return NDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ndo2db_convert_standard_data_elements(idi, &type, &flags, &attr,
-			&tstamp);
+	result = ndo2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* convert vars */
 	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_COMMENTTYPE], &comment_type);
@@ -1825,7 +2008,15 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	        data[13] = (void *) &ts[2];
 
 	        result = ido2db_query_insert_or_update_commentdata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY]);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* UPDATE HISTORICAL COMMENTS */
@@ -1842,7 +2033,14 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -1868,7 +2066,15 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
                 data[13] = (void *) &ts[2];
 
                 result = ido2db_query_insert_or_update_commentdata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* REMOVE CURRENT COMMENTS */
@@ -1884,7 +2090,14 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -1977,7 +2190,15 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	        data[11] = (void *) &ts[3];
 
 	        result = ido2db_query_insert_or_update_downtimedata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -1994,7 +2215,14 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -2013,7 +2241,14 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -2039,7 +2274,15 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
                 data[11] = (void *) &ts[3];
 
                 result = ido2db_query_insert_or_update_downtimedata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME]);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -2057,7 +2300,14 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -2076,7 +2326,15 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
+
 		free(buf);
 	}
 
@@ -2145,7 +2403,14 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	/* free memory */
@@ -2253,7 +2518,14 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 
 	/* save entry to db */
         result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -2439,7 +2711,14 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
         data[45] = (void *) &check_timeperiod_object_id;
 
         result = ido2db_query_insert_or_update_hoststatusdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
@@ -2637,7 +2916,14 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
         data[46] = (void *) &check_timeperiod_object_id;
 
         result = ido2db_query_insert_or_update_servicestatusdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
@@ -2717,7 +3003,14 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
         data[9] = (void *) &modified_service_attributes;
 
         result = ido2db_query_insert_or_update_contactstatusdata_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* save custom variables to db */
 	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
@@ -2808,28 +3101,30 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
 		return NDO_OK;
 
 	/* covert vars */
-	result = ndo2db_convert_string_to_int(
-			idi->buffered_input[NDO_DATA_COMMANDTYPE], &command_type);
-	result = ndo2db_convert_string_to_unsignedlong(
-			idi->buffered_input[NDO_DATA_ENTRYTIME], &entry_time);
+	result = ndo2db_convert_string_to_int(idi->buffered_input[NDO_DATA_COMMANDTYPE], &command_type);
+	result = ndo2db_convert_string_to_unsignedlong(idi->buffered_input[NDO_DATA_ENTRYTIME], &entry_time);
 
-	es[0] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_COMMANDSTRING]);
-	es[1] = ndo2db_db_escape_string(idi,
-			idi->buffered_input[NDO_DATA_COMMANDARGS]);
+	es[0] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMANDSTRING]);
+	es[1] = ndo2db_db_escape_string(idi, idi->buffered_input[NDO_DATA_COMMANDARGS]);
 
 	ts = ndo2db_db_timet_to_sql(idi, entry_time);
 
 	/* save entry to db */
-	if (asprintf(
-			&buf,
+	if (asprintf(&buf,
 			"INSERT INTO %s (instance_id, command_type, entry_time, command_name, command_args) VALUES ('%lu', '%d', %s, '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],
 			idi->dbinfo.instance_id, command_type, ts, es[0], es[1]) == -1)
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	/* free memory */
@@ -2943,7 +3238,14 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf1);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 	free(buf1);
 
@@ -3025,7 +3327,14 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
         /* free memory */
@@ -3115,8 +3424,11 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+				//FIXME
+
+#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -3127,7 +3439,13 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	free(es[0]);
 
@@ -3145,8 +3463,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 		es[1] = ndo2db_db_escape_string(idi, varname);
 		es[2] = ndo2db_db_escape_string(idi, varvalue);
 
-		if (asprintf(
-				&buf,
+		if (asprintf(&buf,
 				"(instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
 				idi->dbinfo.instance_id, configfile_id, es[1], es[2]) == -1)
 			buf = NULL;
@@ -3157,7 +3474,13 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 			buf1 = NULL;
 		result = ndo2db_db_query(idi, buf1);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+		//FIXME
+
+#endif /* Oracle ocilib specific */
 		free(buf);
 		free(buf1);
 
@@ -3225,7 +3548,14 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 	        data[2] = (void *) &es[1];
 
 	        result = ido2db_query_insert_or_update_runtimevariables_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 		free(es[0]);
 		free(es[1]);
@@ -3513,8 +3843,11 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+				//FIXME
+
+#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -3525,7 +3858,13 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++) {
 		/* before we've prepared NULL values with "", but string literals cannot be free'd! */
@@ -3554,7 +3893,15 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 	        result = ido2db_query_insert_or_update_hostdefinition_parenthosts_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save contact groups to db */
@@ -3576,7 +3923,14 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                 data[2] = (void *) &member_id;
 
                 result = ido2db_query_insert_or_update_hostdefinition_contactgroups_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 	}
 
 	/* save contacts to db */
@@ -3598,7 +3952,15 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                 data[2] = (void *) &member_id;
 
 		result = ido2db_query_insert_or_update_hostdefinition_contacts_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save custom variables to db */
@@ -3693,7 +4055,13 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	free(es[0]);
 
@@ -3715,7 +4083,15 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 	        result = ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition() end\n");
@@ -3969,7 +4345,13 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++) {
                 /* before we've prepared NULL values with "", but string literals cannot be free'd! */
@@ -3997,7 +4379,15 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
                 data[2] = (void *) &member_id;
 
                 result = ido2db_query_insert_or_update_servicedefinition_contactgroups_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save contacts to db */
@@ -4019,7 +4409,15 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 		
 		result = ido2db_query_insert_or_update_servicedefinition_contacts_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save custom variables to db */
@@ -4120,7 +4518,13 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	free(es[0]);
 
@@ -4146,7 +4550,15 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 		result = ido2db_query_insert_or_update_servicegroupdefinition_members_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition() end\n");
@@ -4210,7 +4622,14 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
         data[9] = (void *) &fail_on_unreachable;
 
         result = ido2db_query_insert_or_update_hostdependencydefinition_definition_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdependencydefinition() end\n");
 
@@ -4276,7 +4695,14 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
         data[10] = (void *) &fail_on_critical;
 
         result = ido2db_query_insert_or_update_servicedependencydefinition_definition_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedependencydefinition() end\n");
 
@@ -4386,7 +4812,13 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[NDO2DB_MBUF_CONTACTGROUP];
@@ -4407,7 +4839,15 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 	        result = ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save contacts to db */
@@ -4429,7 +4869,15 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 	        result = ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition() end\n");
@@ -4543,7 +4991,13 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[NDO2DB_MBUF_CONTACTGROUP];
@@ -4564,7 +5018,15 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 		result = ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	/* save contacts to db */
@@ -4586,7 +5048,15 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 	        result = ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicetescalationdefinition() end\n");
@@ -4637,7 +5107,14 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
         data[3] = (void *) &es[0];
 
         result = ido2db_query_insert_or_update_commanddefinition_definition_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
@@ -4740,7 +5217,13 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	free(es[0]);
 
@@ -4772,7 +5255,15 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	        data[4] = (void *) &end_sec;
 
 	        result = ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition() end\n");
@@ -4934,7 +5425,13 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
@@ -4963,7 +5460,14 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	        data[3] = (void *) &es[0];
 
 	        result = ido2db_query_insert_or_update_contactdefinition_addresses_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 		free(es[0]);
 	}
@@ -5000,7 +5504,14 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	        data[4] = (void *) &es[0];
 
 	        result = ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 	
 		if(es[0] != "") {
 			free(es[0]);
@@ -5040,7 +5551,14 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	        data[4] = (void *) &es[0];
 
 	        result = ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 		if(es[0] != "") {
 			free(es[0]);
@@ -5111,7 +5629,14 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		        data[5] = (void *) &es[1];
 
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariables_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	                dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 		}
 		if (table_idx==NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS) {
@@ -5126,7 +5651,15 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		        data[5] = (void *) &es[1];
 
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(idi, data);
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 			dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		}
 
 		free(es[0]);
@@ -5227,7 +5760,13 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
                 }
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 
 	free(es[0]);
 
@@ -5249,7 +5788,15 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	        data[2] = (void *) &member_id;
 
 	        result = ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add(idi, data);		
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition() end\n");

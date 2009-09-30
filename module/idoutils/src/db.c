@@ -93,11 +93,11 @@ char *ndo2db_db_rawtablenames[NDO2DB_MAX_DBTABLES]={
 	"host_contactgroups",
 	"service_contactgroups",
 	"hostescalation_contactgroups",
-#ifdef USE_ORACLE
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 	"serviceescalationcontactgroups"
-#else
+#else /* everything else will be libdbi */
 	"serviceescalation_contactgroups"
-#endif
+#endif /* Oracle ocilib specific */
 	};
 
 char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
@@ -110,7 +110,10 @@ char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
 /* CONNECTION FUNCTIONS                                                     */
 /****************************************************************************/
 
-/* initialize database structures */
+
+/************************************/
+/* initialize database structures   */
+/************************************/
 int ndo2db_db_init(ndo2db_idi *idi) {
 	register int x;
 
@@ -139,13 +142,13 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 				sprintf(ndo2db_db_tablenames[x], "%s%s", (ndo2db_db_settings.dbprefix==NULL) ? "" : ndo2db_db_settings.dbprefix,ndo2db_db_rawtablenames[x]);
 				break;
 		        case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 				/* don't allow user to set table prefix for oracle */
         		        if ((ndo2db_db_tablenames[x] = (char *) malloc(strlen(ndo2db_db_rawtablenames[x])))==NULL)
                         		return NDO_ERROR;
 
 				sprintf(ndo2db_db_tablenames[x], "%s", ndo2db_db_rawtablenames[x]);
-#endif
+#endif /* Oracle ocilib specific */
 		                break;
 		        case NDO2DB_DBSERVER_SQLITE:
 		        case NDO2DB_DBSERVER_SQLITE3:
@@ -186,16 +189,24 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 	idi->dbinfo.object_hashlist = NULL;
 
 	/* initialize db structures, etc. */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	if (dbi_initialize(NULL) == -1) {
 		syslog(LOG_USER | LOG_INFO, "Error: dbi_initialize() failed\n");
 		return NDO_ERROR;
 	}
+#else /* Oracle ocilib specific */
 
+	//FIXME
+
+#endif /* Oracle ocilib specific */
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_init() end\n");
 	return NDO_OK;
 }
 
-/* clean up database structures */
+/************************************/
+/* clean up database structures     */
+/************************************/
 int ndo2db_db_deinit(ndo2db_idi *idi) {
 	register int x;
 
@@ -218,7 +229,9 @@ int ndo2db_db_deinit(ndo2db_idi *idi) {
 	return NDO_OK;
 }
 
-/* connects to the database server */
+/************************************/
+/* connects to the database server  */
+/************************************/
 int ndo2db_db_connect(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	const char *dbi_error;
@@ -255,7 +268,11 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_MSQL);
 		break;
 	case NDO2DB_DBSERVER_ORACLE:
-		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_ORACLE);
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+		//FIXME
+
+#endif /* Oracle ocilib specific */
 		break;
 	case NDO2DB_DBSERVER_SQLITE:
 		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_SQLITE);
@@ -267,6 +284,8 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		break;
 	}
 	/* Check if the dbi connection was created successful */
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (idi->dbinfo.dbi_conn == NULL) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
 		syslog(LOG_USER | LOG_INFO, "Error: Could  not dbi_conn_new(): %s", dbi_error);
@@ -291,12 +310,20 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		syslog(LOG_USER | LOG_INFO,
 				"Successfully connected to database");
 	}
+#else /* Oracle ocilib specific */
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_connect() end\n");
+	//FIXME
+
+#endif /* Oracle ocilib specific */
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_connect(%d) end\n", result);
 	return result;
 }
 
+
+/****************************************/
 /* disconnects from the database server */
+/****************************************/
 int ndo2db_db_disconnect(ndo2db_idi *idi) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_disconnect() start\n");
@@ -308,16 +335,24 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	if (idi->dbinfo.connected == NDO_FALSE)
 		return NDO_OK;
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_conn_close(idi->dbinfo.dbi_conn);
 	dbi_shutdown();
 
 	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from database");
+#else /* Oracle ocilib specific */
+
+	//FIXME
+
+#endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_disconnect() stop\n");
 	return NDO_OK;
 }
 
-/* post-connect routines */
+/************************************/
+/* post-connect routines            */
+/************************************/
 int ndo2db_db_hello(ndo2db_idi *idi) {
 	char *buf = NULL;
 	char *buf1 = NULL;
@@ -339,6 +374,8 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 		buf = NULL;
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 			if (idi->dbinfo.dbi_result != NULL) {
 				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
 					idi->dbinfo.instance_id = dbi_result_get_uint(
@@ -346,8 +383,14 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 					have_instance = NDO_TRUE;
 				}
 			}
+#else /* Oracle ocilib specific */
+
+			//FIXME
+
+#endif /* Oracle ocilib specific */
 	}
 	else {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() existing instance not found, cleaning up and exiting\n");
 		/* cleanup the socket */
 		ndo2db_cleanup_socket();
 
@@ -356,7 +399,15 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
 		_exit(0);
 	}
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+	//FIXME
+
+#endif /* Oracle ocilib specific */
+	
 	free(buf);
 
 	/* insert new instance if necessary */
@@ -391,8 +442,11 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                        case NDO2DB_DBSERVER_MSQL:
 	                                break;
 	                        case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+					//FIXME
+
+#endif /* Oracle ocilib specific */
         	                        break;
 	                        case NDO2DB_DBSERVER_SQLITE:
 	                                break;
@@ -402,7 +456,15 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                                break;
         	        }
 		}
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 		free(buf);
 	}
 
@@ -445,8 +507,11 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                case NDO2DB_DBSERVER_MSQL:
         	                break;
 	                case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+				//FIXME
+
+#endif /* Oracle ocilib specific */
         	                break;
 	                case NDO2DB_DBSERVER_SQLITE:
         	                break;
@@ -457,7 +522,14 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
         	}
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 	free(ts);
 
@@ -502,7 +574,9 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	return result;
 }
 
-/* pre-disconnect routines */
+/************************************/
+/* pre-disconnect routines          */
+/************************************/
 int ndo2db_db_goodbye(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
@@ -520,16 +594,24 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
+#else /* Oracle ocilib specific */
 
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
+	free(buf);
 	free(ts);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_goodbye() end\n");
 	return result;
 }
 
-/* checking routines */
+/************************************/
+/* checking routines                */
+/************************************/
 int ndo2db_db_checkin(ndo2db_idi *idi) {
 	int result = NDO_OK;
 	char *buf = NULL;
@@ -547,7 +629,13 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
 	free(buf);
 
 	time(&ndo2db_db_last_checkin_time);
@@ -560,7 +648,9 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 /* MISC FUNCTIONS                                                           */
 /****************************************************************************/
 
+/***************************************/
 /* escape a string for a SQL statement */
+/***************************************/
 char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	register int x, y, z;
 	char *newbuf = NULL;
@@ -603,10 +693,12 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	                case NDO2DB_DBSERVER_MSQL:
 	                        break;
 	                case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 				if(buf[x]=='\'' )
 					newbuf[y++]='\'';
-#endif
+#endif /* Oracle ocilib specific */
+
         	                break;
 	                case NDO2DB_DBSERVER_SQLITE:
 	                        break;
@@ -626,7 +718,9 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	return newbuf;
 }
 
+/*************************************************************/
 /* SQL query conversion of time_t format to date/time format */
+/*************************************************************/
 char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 	char *buf = NULL;
 
@@ -651,10 +745,12 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
                 case NDO2DB_DBSERVER_MSQL:
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
                         /* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
                         asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t);
-#endif
+#endif /* Oracle ocilib specific */
+
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
                         break;
@@ -669,7 +765,9 @@ char *ndo2db_db_timet_to_sql(ndo2db_idi *idi, time_t t) {
 	return buf;
 }
 
+/*************************************************************/
 /* SQL query conversion of date/time format to time_t format */
+/*************************************************************/
 char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
 	char *buf = NULL;
 
@@ -694,9 +792,11 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
                 case NDO2DB_DBSERVER_MSQL:
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 			asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
-#endif
+#endif/* Oracle ocilib specific */
+
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
                         break;
@@ -711,7 +811,9 @@ char *ndo2db_db_sql_to_timet(ndo2db_idi *idi, char *field) {
 	return buf;
 }
 
-/* executes a SQL statement */
+/************************************/
+/* executes a SQL statement         */
+/************************************/
 int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	int result = NDO_OK;
 	const char *error_msg;
@@ -720,6 +822,12 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 
 	if (idi == NULL || buf == NULL)
 		return NDO_ERROR;
+
+#ifdef USE_ORACLE
+	//FIXME - remove after debugging
+	return NDO_OK;
+
+#endif
 
 	/* if we're not connected, try and reconnect... */
 	if (idi->dbinfo.connected == NDO_FALSE) {
@@ -734,6 +842,7 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_SQL, 0, "%s\n", buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	idi->dbinfo.dbi_result = dbi_conn_query(idi->dbinfo.dbi_conn, buf);
 
 	if (idi->dbinfo.dbi_result == NULL){
@@ -744,12 +853,23 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 		ndo2db_handle_db_error(idi);
 		result = NDO_ERROR;
 	}
+#else /* Oracle ocilib specific */
+
+	//FIXME
+
+#endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query(%d) end\n", result);
 	return result;
 }
 
+//FIXME
+//define query-function for bind params
+
+
+/****************************************/
 /* frees memory associated with a query */
+/****************************************/
 int ndo2db_db_free_query(ndo2db_idi *idi) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_free_query() start\n");
@@ -765,7 +885,9 @@ int ndo2db_db_free_query(ndo2db_idi *idi) {
 	return NDO_OK;
 }
 
-/* handles SQL query errors */
+/************************************/
+/* handles SQL query errors         */
+/************************************/
 int ndo2db_handle_db_error(ndo2db_idi *idi) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_db_error() start\n");
@@ -785,7 +907,9 @@ int ndo2db_handle_db_error(ndo2db_idi *idi) {
 	return NDO_OK;
 }
 
+/**********************************************************/
 /* clears data from a given table (current instance only) */
+/**********************************************************/
 int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
 	char *buf = NULL;
 	int result = NDO_OK;
@@ -800,14 +924,23 @@ int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
 
 	result = ndo2db_db_query(idi, buf);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_clear_table() end\n");
 	return result;
 }
 
+/**************************************************/
 /* gets latest data time value from a given table */
+/**************************************************/
 int ndo2db_db_get_latest_data_time(ndo2db_idi *idi, char *table_name, char *field_name, unsigned long *t) {
 	char *buf = NULL;
 	char *ts[1];
@@ -821,9 +954,9 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *idi, char *table_name, char *fiel
 	*t = (time_t) 0L;
 	ts[0] = ndo2db_db_sql_to_timet(idi, field_name);
 
-	if (asprintf(
-			&buf,
-			"SELECT %s AS latest_time FROM %s WHERE instance_id='%lu' ORDER BY %s DESC LIMIT 1 OFFSET 0",
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+	if (asprintf(&buf,"SELECT %s AS latest_time FROM %s WHERE instance_id='%lu' ORDER BY %s DESC LIMIT 1 OFFSET 0",
 			field_name, table_name, idi->dbinfo.instance_id, field_name) == -1)
 		buf = NULL;
 
@@ -836,15 +969,39 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *idi, char *table_name, char *fiel
 		}
 	}
 
-	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        if( asprintf(&buf,"SELECT ( ( ( SELECT * FROM ( SELECT %s FROM %s WHERE instance_id='%lu' ORDER BY %s DESC) WHERE ROWNUM = 1 ) - to_date( '01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss' )) * 86400) AS latest_time FROM DUAL"
+                    ,(field_name==NULL)?"":field_name
+                    ,table_name
+                    ,idi->dbinfo.instance_id
+                    ,field_name
+                   )==-1)
+                buf=NULL;
+
+	//FIXME - result handling, see ndoutils oracle
+
+
+#endif /* Oracle ocilib specific */
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+        dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
-	free(ts[0]);
+        free(ts[0]);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_get_latest_data_time() end\n");
 	return result;
 }
 
+/*******************************************/
 /* trim/delete old data from a given table */
+/*******************************************/
 int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_name, unsigned long t) {
 	char *buf = NULL;
 	char *ts[1];
@@ -857,21 +1014,38 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
 
 	ts[0] = ndo2db_db_timet_to_sql(idi, (time_t) t);
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
 			table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
 		buf = NULL;
 
 	result = ndo2db_db_query(idi, buf);
 
-	dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+	//FIXME - use special plsql query with commits
+
+#endif /* Oracle ocilib specific */
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+        dbi_result_free(idi->dbinfo.dbi_result);
+#else /* Oracle ocilib specific */
+
+        //FIXME
+
+#endif /* Oracle ocilib specific */
+
 	free(buf);
-	free(ts[0]);
+        free(ts[0]);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() end\n");
 	return result;
 }
 
+/***********************************************/
 /* performs some periodic table maintenance... */
+/***********************************************/
 int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 	time_t current_time;
 
@@ -902,6 +1076,10 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() end\n");
 	return NDO_OK;
 }
+
+/************************************/
+/* check database driver (libdbi)   */
+/************************************/
 
 int ido2db_check_dbd_driver(void) {
 
@@ -953,10 +1131,16 @@ int ido2db_check_dbd_driver(void) {
 				}
 			break;
 		case NDO2DB_DBSERVER_ORACLE:
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 			if (dbi_driver_open(IDO2DB_DBI_DRIVER_ORACLE) == NULL){
 				dbi_shutdown();
 				return NDO_FALSE;
 				}
+#else /* Oracle ocilib specific */
+			/* unused */
+#endif /* Oracle ocilib specific */
+
 			break;
 		case NDO2DB_DBSERVER_SQLITE:
 			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE) == NULL){

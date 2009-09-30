@@ -349,5 +349,10 @@
 #include <dbi/dbi.h>
 #endif
 
+#undef USE_ORACLE
+#undef HAVE_ORACLE
+#ifdef USE_ORACLE
+#define HAVE_ORACLE 1
+#endif
 
 #endif

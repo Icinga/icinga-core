@@ -12,10 +12,17 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
-//#ifdef USE_ORACLE
-//#include "ocilib.h"
-//#endif
+#ifdef USE_ORACLE
 
+#ifdef HAVE_CONFIG_H
+#undef HAVE_CONFIG_H
+#include <ocilib.h>
+#define HAVE_CONFIG_H
+#else
+#include <ocilib.h>
+#endif
+
+#endif
 
 /*************** mbuf definitions *************/
 #define NDO2DB_MBUF_CONTACTGROUP                        0
