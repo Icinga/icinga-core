@@ -1,0 +1,187 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Performance-Daten</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch06.html" title="Kapitel 6. Fortgeschrittene Themen">
+<link rel="prev" href="stalking.html" title="Status Stalking">
+<link rel="next" href="downtime.html" title="Geplante Ausfallzeiten">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Performance-Daten</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="stalking.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 6. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="downtime.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Performance-Daten">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="perfdata"></a>Performance-Daten</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Icinga ist ausgelegt, dass <a class="link" href="plugins.html" title="Icinga Plugins">Plugins</a> neben den normalen Statusinformationen optional
+  auch Performance-Daten zurückliefern können, die Sie außerdem zur weiteren Verarbeitung an externe Applikationen übergeben
+  können. Eine Beschreibung der verschiedenen Typen von Performance-Daten wie auch Informationen dar�ber, wie diese Daten
+  verarbeitet werden, finden Sie im Folgenden...</p>
+
+  <p><span class="bold"><strong>Typen von Performance-Daten</strong></span></p>
+
+  <p>Es gibt zwei grundlegende Kategorien von Performance-Daten, die von Icinga erhalten werden können:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Prüf-Performance-Daten</p>
+    </li>
+<li class="listitem">
+      <p>Plugin-Performance-Daten</p>
+    </li>
+</ol></div>
+
+  <p>Prüf-Performance-Daten sind interne Daten, die sich auf die aktuelle Ausführung einer Host- oder Service-Prüfung beziehen.
+  Dies kann Dinge wie die Service-Prüfverzögerung enthalten (service check latency, d.h., wie viel Zeit von der geplanten
+  Ausführung bis zu eigentlichen Ausführung verging) oder die Anzahl der Sekunden, die die Ausführung einer Host- oder
+  Service-Prüfung dauerte. Dieser Typ von Performance-Daten ist für alle ausgeführten Prüfungen verfügbar. Die <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a>- und <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a>-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> können benutzt
+  werden, um die Anzahl der Sekunden zu ermitteln, die eine Host- oder Service-Prüfung dauerte und die <a class="link" href="macrolist.html#macrolist-hostlatency">$HOSTLATENCY$</a>- und <a class="link" href="macrolist.html#macrolist-servicelatency">$SERVICELATENCY$</a>-Makros können zur Ermittlung der "Verspätung" einer regulär geplanten
+  Host- oder Service-Prüfung genutzt werden.</p>
+
+  <p>Plugin-Performance-Daten sind externe Daten, die spezifisch für das Plugin sind, das die Host- oder Service-Prüfung
+  ausführt. Plugin-spezifische Daten können Dinge wie Prozentsatz des Paketverlustes, freie Plattenplatz, Prozessor-Load, Anzahl
+  der gegenwärtigen Benutzer usw. umfassen - generell jede Art von Metrik, die das Plugin misst, wenn es ausgeführt wird.
+  Plugin-spezifische Performance-Daten sind optional und werden ggf. nicht von allen Plugins unterstützt. Plugin-spezifische
+  Performance-Daten (falls verfügbar) werden durch die <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a>- und <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a>-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> bereit gestellt. Lesen Sie
+  weiter, um mehr Informationen darüber zu erhalten, wie Plugins Performance-Daten an Icinga zur Bereitstellung durch die
+  $HOSTPERFDATA$- und $SERVICEPERFDATA$-Makros zurückliefern können.</p>
+
+  <p><span class="bold"><strong>Plugin-Performance-Daten</strong></span></p>
+
+  <p>Als Minimum müssen Icinga-Plugins eine einzelne Zeile mit menschlich lesbarem Text zurückliefern, die den Status
+  eines Typs von Messdaten enthält. Zum Beispiel könnte das check_ping-Plugin eine Textzeile wie die folgende
+  zurückliefern:</p>
+
+  <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms</pre>
+
+  <p>Bei dieser einfachen Art von Ausgabe ist die gesamte Textzeile in den $HOSTOUTPUT$- oder $SERVICEOUTPUT$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> verfügbar (abhängig davon, ob dieses Plugin als Host- oder Service-Prüfung benutzt wurde).</p>
+
+  <p>Plugins können in ihrer Ausgabe optionale Performance-Daten zur�ckliefern, indem nach dem normalen, menschlich lesbaren
+  Text ein Pipe-Symbol (|) folgt und danach eine Zeichenkette, die ein oder mehrere Performance-Daten-Metriken enthält. Lassen Sie
+  uns das check_ping-Plugin als Beispiel nehmen und annehmen, dass es um die Ausgabe von Performance-Daten-Metriken für den
+  Prozentsatz von Paketverlusten (percent paket loss) und durchschnittlicher Umlaufzeit (average round trip time) erweitert wurde.
+  Die Beispielausgabe des Plugins könnte wie folgt aussehen:</p>
+
+  <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms | percent_packet_loss=0, rta=0.80</pre>
+
+  <p>wenn Icinga dieses Plugin-Ausgabeformat sieht, wird es die Ausgabe in zwei Teile aufteilen:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>alles vor dem Pipe-Symbol wird als "normale" Ausgabe des Plugins angesehen und im $HOSTOUTPUT$- oder
+      $SERVICEOUTPUT$-Makro gespeichert</p>
+    </li>
+<li class="listitem">
+      <p>alles nach dem Pipe-Symbol wird als Plugin-spezifische Ausgabe angesehen und in den $HOSTPERFDATA$- oder
+      $SERVICEPERFDATA$-Makros gespeichert.</p>
+    </li>
+</ol></div>
+
+  <p>Im obigen Beispiel würde das $HOSTOUTPUT$- oder das $SERVICEOUTPUT$-Makro "<span class="emphasis"><em>PING ok - Packet loss = 0%, RTA =
+  0.80 ms</em></span>" enthalten (ohne Anführungszeichen) und das $HOSTPERFDATA$- oder das $SERVICEPERFDATA$-Makro würde
+  "<span class="emphasis"><em>percent_packet_loss=0, rta=0.80</em></span>" enthalten (ohne Anführungszeichen).</p>
+
+  <p>Icinga kann mehrere Zeilen Performance-Daten (ebenso wie normale Textausgaben) von Plugins entgegennehmen, wie in
+  der <a class="link" href="pluginapi.html" title="Nagios Plugin API">plugin API documentation</a> beschrieben.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: der Icinga-Daemon verarbeitet Plugin-Performance-Daten nicht direkt, so dass es ihm
+  egal ist, wie die Performance-Daten aussehen. Es gibt daher eigentlich keine Beschränkungen des Formats oder des Inhalts der
+  Performance-Daten. Wenn Sie allerdings ein externes Addon benutzen, um die Performance-Daten zu verarbeiten (z.B. PNP oder
+  PerfParse), erwartet das Addon die Performance-Daten möglicher Weise in einem bestimmten Format. Prüfen Sie die Dokumentation
+  des Addon auf weitere Informationen.</p>
+
+  <p><span class="bold"><strong>Performance-Daten verarbeiten</strong></span></p>
+
+  <p>Wenn Sie die Performance-Daten, die von den Plugins und in Icinga verfügbar sind, müssen Sie folgendes tun:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>aktivieren Sie die <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a>-Option.</p>
+    </li>
+<li class="listitem">
+      <p>konfigurieren Sie Icinga so, dass Performance-Daten in Dateien geschrieben und/oder durch Befehle verarbeitet
+      wird.</p>
+    </li>
+</ol></div>
+
+  <p>Lesen Sie weiter, um Informationen darüber zu erhalten, wie Performance-Daten durch das Schreiben in Dateien oder die
+  Ausführung von Befehlen verarbeitet werden.</p>
+
+  <p><span class="bold"><strong>Performance-Daten verarbeiten durch Befehle</strong></span></p>
+
+  <p>Der flexibelste Weg, um Performance-Daten zu verarbeiten, besteht darin, Icinga Befehle ausführen zu lassen (die
+  Sie angeben), um die Daten zu verarbeiten oder sie umzulenken, damit sie später von externen Applikationen verarbeiten werden.
+  Die Befehle, die Icinga ausführt, um Host- und Service-Performance-Daten zu verarbeiten, werden durch die <a class="link" href="configmain.html#configmain-host_perfdata_command">host_perfdata_command</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_command">service_perfdata_command</a>-Optionen festgelegt.</p>
+
+  <p>Eine Beispiel-Befehlsdefinition, die Service-Prüf-Performance-Daten zur späteren Verarbeitung durch eine andere
+  Applikation in eine Textdatei umleitet, finden Sie nachfolgend:</p>
+
+  <pre class="screen"> # ACHTUNG: diese Definition funktioniert NICHT mit PNP!
+ define command{
+        command_name    store-service-perfdata
+        command_line    /bin/echo -e "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$" &gt;&gt; /usr/local/icinga/var/service-perfdata.dat
+        }</pre>
+
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Diese Methode, obwohl flexibel, erzeugt einen relativ hohen CPU-Overhead. Wenn Sie
+  Performance-Daten für viele Hosts und Services verarbeiten, dann ist es vielleicht besser, diese Daten in eine Datei zu
+  schreiben. Diese Methode wird im nächsten Abschnitt beschrieben.</p>
+
+  <p><span class="bold"><strong>Performance-Daten in Dateien schreiben</strong></span></p>
+
+  <p>Sie können Icinga mit Hilfe der <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a>-Optionen anweisen, die Host- und
+  Service-Performance-Daten direkt in Textdateien auszugeben. Das Format, in dem Host- und Service-Performance-Daten in diese
+  Dateien geschrieben wird, wird durch die <a class="link" href="configmain.html#configmain-host_perfdata_file_template">host_perfdata_file_template</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_template">service_perfdata_file_template</a>-Optionen festgelegt.</p>
+
+  <p>Eine Beispiel-Dateiformatvorlage für Performance-Daten könnte wie folgt aussehen:</p>
+
+  <pre class="screen"> # ACHTUNG: diese Definition funktioniert NICHT mit PNP!
+ service_perfdata_file_template=[SERVICEPERFDATA]\t$TIMET$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$
+</pre>
+
+  <p>Per Default werden die Textdateien im "append"-Modus ("anhängen") eröffnet. Wenn Sie den Modus auf "write" ("schreiben")
+  oder "non-blocking read/write" ("nicht-blockierendes Lesen/Schreiben", nützlich beim Schreiben in Pipes) ändern, können Sie die
+  <a class="link" href="configmain.html#configmain-host_perfdata_file_mode">host_perfdata_file_mode</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_mode">service_perfdata_file_mode</a>-Optionen nutzen.</p>
+
+  <p>Zusätzlich können Sie Icinga mit den <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_command">host_perfdata_file_processing_command</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_command">service_perfdata_file_processing_command</a>-Optionen anweisen,
+  periodisch Befehle auszuführen, um regelmäßig die Performance-Daten-Dateien zu verarbeiten (z.B., um sie zu rotieren). Das
+  Intervall, in dem diese Befehle ausgeführt werden, ist durch die <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_interval">host_perfdata_file_processing_interval</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_interval">service_perfdata_file_processing_interval</a>-Optionen
+  festgelegt.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="stalking.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="downtime.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Status Stalking </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Geplante Ausfallzeiten</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

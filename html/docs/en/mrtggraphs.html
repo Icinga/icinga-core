@@ -1,0 +1,324 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Graphing Performance Info With MRTG</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Security and Performance Tuning">
+<link rel="prev" href="icingastats.html" title="Using The Icingastats Utility">
+<link rel="next" href="ch08.html" title="Chapter 8. Integration With Other Software">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Graphing Performance Info With MRTG</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="icingastats.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch08.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Graphing Performance Info With MRTG">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="mrtggraphs"></a><a name="mrtg_graphs"></a>Graphing Performance Info With MRTG</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>The <a class="link" href="icingastats.html" title="Using The Icingastats Utility">icingastats</a> utility allows you to graph various Icinga performance
+  statistics over time using <a class="link" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>. This is important because it can help
+  you:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Ensure Icinga is operating efficiently</p>
+    </li>
+<li class="listitem">
+      <p>Locate problem areas in the monitoring process</p>
+    </li>
+<li class="listitem">
+      <p>Observe the performance impacts of changes in your Icinga configuration</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Sample MRTG Configuration</strong></span></p>
+
+  <p>Sample MRTG configuration file snippets for graphing various Icinga performance statistics can be found in the
+  <span class="emphasis"><em>mrtg.cfg</em></span> file located in the <span class="emphasis"><em>sample-config/</em></span> subdirectory of the Icinga
+  distribution. You can create graphs of other performance information if you'd like - the samples just provide you with a good
+  starting point.</p>
+
+  <p>Once you copy these sample entries into your MRTG config file (/etc/mrtg/mrtg.cfg) you should have some new graphs the
+  next time MRTG runs.</p>
+
+  <p><span class="bold"><strong>Example Graphs</strong></span></p>
+
+  <p>We'll describe what a few of the sample MRTG graphs mean and what they can be used for...</p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Active Host Checks</strong></span> - This graph shows how may
+          active host checks (regularly scheduled and on-demand) have occurred over time. Useful for understanding:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="hostchecks.html" title="Host Checks">Host checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">Predictive host dependency checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="cachedchecks.html" title="Cached Checks">Cached checks</a>
+                </p>
+              </li>
+</ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-activehostchecks.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Active Service Checks</strong></span> - This graph shows how
+          may active service checks (reguarly scheduled and on-demand) have occurred over time. Useful for understanding:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="servicechecks.html" title="Service Checks">Service checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">Predictive service dependency checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="cachedchecks.html" title="Cached Checks">Cached checks</a>
+                </p>
+              </li>
+</ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-activeservicechecks.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Cached Host and Service Checks</strong></span> - This graph
+          shows how may cached host and service checks have occurred over time. Useful for understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="cachedchecks.html" title="Cached Checks">Cached checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">Predictive host and service dependency checks</a>
+                </p>
+              </li>
+</ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-cachedchecks.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Passive Host and Service Checks</strong></span> - This graph
+          shows how may passive host and service checks have occurred over time. Useful for understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>
+                  <a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a>
+                </p>
+              </li></ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-passivechecks.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Hosts/Services Actively Checked</strong></span> - This graph
+          shows how many (of the total number of) hosts and services were <span class="emphasis"><em>last</em></span> checked actively over time.
+          Useful for understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>
+                  <a class="link" href="activechecks.html" title="Active Checks">Active checks</a>
+                </p>
+              </li></ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-activelychecked.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Hosts/Services Passively Checked</strong></span> - This graph
+          shows how many (of the total number of) hosts and services were <span class="emphasis"><em>last</em></span> checked passively over time.
+          Useful for understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>
+                  <a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a>
+                </p>
+              </li></ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-passivelychecked.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Average Service Check Latency and Execution
+          Time</strong></span> - This graph shows average service check latency and execution times over time. Useful for
+          understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="servicechecks.html" title="Service Checks">Service checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="tuning.html" title="Tuning Icinga For Maximum Performance">Performance tuning</a>
+                </p>
+              </li>
+</ul></div> <p>Consistently high latencies can be an indication that one of more of the following variables
+          need tweaking:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a>
+                </p>
+              </li>
+</ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-serviceperfstats.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Average Service State Change</strong></span> - This graph shows
+          the average percent state change (a measure of volatility) for services over time, broken down by services that were
+          last checked either actively or passively. Useful for understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>
+                  <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a>
+                </p>
+              </li></ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-servicestatechange.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Average Host Check Latency and Execution Time</strong></span> -
+          This graph shows average host check latency and execution times over time. Useful for understanding:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="hostchecks.html" title="Host Checks">Host checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="tuning.html" title="Tuning Icinga For Maximum Performance">Performance tuning</a>
+                </p>
+              </li>
+</ul></div> <p>Consistently high latencies can be an indication that one of more of the following variables
+          need tweaking:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a>
+                </p>
+              </li>
+</ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-hostperfstats.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>Average Host State Change</strong></span> - This graph shows
+          the average percent state change (a measure of volatility) for hosts over time, broken down by hosts that were last
+          checked either actively or passively. Useful for understanding:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                <p>
+                  <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a>
+                </p>
+              </li></ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-hoststatechange.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top">
+<p> <span class="bold"><strong>External Commands</strong></span> - This graph shows how may
+          external commands have been processed by the Icinga daemon over time. Unless you're processing a large number of
+          external commands (as in the case with distributed monitoring setups), this graph may appear mostly empty. Monitoring
+          external commands can be useful for understanding the impacts of:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>
+                  <a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="distributed.html" title="Distributed Monitoring">Distributed monitoring</a>
+                </p>
+              </li>
+<li class="listitem">
+                <p>
+                  <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">Redundant/failover monitoring</a>
+                </p>
+              </li>
+</ul></div>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-externalcommands.png"></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p> <span class="bold"><strong>External Command Buffers</strong></span> - This graph shows how
+          many external command buffer slots are in use over time. If the number of used buffers is near the number of available
+          buffers on a regular basis, it is likely you need to increase the available <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a>. Each buffer slot can hold one
+          external command. Buffers are used for temporarily holding external commands from the time they are read from the <a class="link" href="configmain.html#configmain-command_file">external command file</a> to the time they are processed by the Icinga
+          daemon.</p></td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/mrtg-commandbuffers.png"></span> </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="icingastats.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch08.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Using The Icingastats Utility </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 8. Integration With Other Software</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

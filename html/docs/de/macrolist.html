@@ -1,0 +1,2951 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Standard-Makros in Icinga</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
+<link rel="prev" href="macros.html" title="Makros verstehen und wie sie arbeiten">
+<link rel="next" href="hostchecks.html" title="Host-Prüfungen (Host checks)">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Standard-Makros in Icinga</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="macros.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
+<td width="20%" align="right"> <a accesskey="n" href="hostchecks.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Standard-Makros in Icinga">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="macrolist"></a>Standard-Makros in Icinga</h2></div></div></div>
+  
+
+  <p>In Icinga verfügbare Standard-Makros sind hier aufgelistet. On-Demand-Makros und Makros für Benutzervariablen sind
+  <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">hier</a> beschrieben.</p>
+
+  <p><span class="bold"><strong>Makro-Geltungsbereich</strong></span></p>
+
+  <p>Obwohl Makros in allen Befehlen benutzt werden können, die Sie definieren, sind sie ggf. nicht "gültig" innerhalb eines
+  bestimmten Befehlstyps. Zum Beispiel sind einige Makros vielleicht nur gültig bei Service-Benachrichtigungen, andere vielleicht
+  nur bei Host-Prüfungen. Es gibt zehn Arten von Befehlen, die Icinga erkennt und unterschiedlich behandelt. Dies
+  sind:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Service-Prüfungen</p>
+    </li>
+<li class="listitem">
+      <p>Service-Benachrichtigungen</p>
+    </li>
+<li class="listitem">
+      <p>Host-Prüfungen</p>
+    </li>
+<li class="listitem">
+      <p>Host-Benachrichtigungen</p>
+    </li>
+<li class="listitem">
+      <p>Service-<a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> und/oder ein globaler Service-Eventhandler</p>
+    </li>
+<li class="listitem">
+      <p>Host-<a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> und/oder ein globaler Host-Eventhandler</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a> Befehl</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-ochp_command">OCHP</a> Befehl</p>
+    </li>
+<li class="listitem">
+      <p>Service-<a class="link" href="perfdata.html" title="Performance-Daten">Performance-Daten</a> Befehle</p>
+    </li>
+<li class="listitem">
+      <p>Host-<a class="link" href="perfdata.html" title="Performance-Daten">Performance-Daten</a> Befehle</p>
+    </li>
+</ol></div>
+
+  <p>Die nachfolgenden Aufstellungen enthalten alle aktuell in Icinga verfügbaren Makros zusammen mit einer kurzen
+  Beschreibung und den Befehlstypen, in denen sie gelten. Wenn ein Makro in einem Befehl benutzt wird, in dem es nicht gültig ist,
+  wird es durch eine leere Zeichenkette ersetzt. Es ist zu beachten, dass Makros aus Großbuchstaben bestehen und in Dollarzeichen
+  ($) eingeschlossen werden.</p>
+
+  <p><span class="bold"><strong>Makroverfügbarkeits-Aufstellung</strong></span></p>
+
+  <p><span class="bold"><strong>Legende:</strong></span></p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Nein</p></td>
+<td><p>Das Makro ist nicht verfügbar</p></td>
+</tr>
+<tr>
+<td><p>Ja</p></td>
+<td><p>Das Makro ist verfügbar</p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service-Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service-Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host-Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host-Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service-Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host-Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service-Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host-Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Host-Makros: <a class="link" href="macrolist.html#macrolist-note3">
+          <sup>3</sup> </a> </p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostname">$HOSTNAME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostdisplayname">$HOSTDISPLAYNAME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostalias">$HOSTALIAS$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hoststate">$HOSTSTATE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hoststateid">$HOSTSTATEID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthoststate">$LASTHOSTSTATE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthoststateid">$LASTHOSTSTATEID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostattempt">$HOSTATTEMPT$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-maxhostattempts">$MAXHOSTATTEMPTS$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hosteventid">$HOSTEVENTID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthosteventid">$LASTHOSTEVENTID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostproblemid">$HOSTPROBLEMID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthostproblemid">$LASTHOSTPROBLEMID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostlatency">$HOSTLATENCY$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostduration">$HOSTDURATION$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostdurationsec">$HOSTDURATIONSEC$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostdowntime">$HOSTDOWNTIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostpercentchange">$HOSTPERCENTCHANGE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupname">$HOSTGROUPNAME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupnames">$HOSTGROUPNAMES$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthostcheck">$LASTHOSTCHECK$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthoststatechange">$LASTHOSTSTATECHANGE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthostup">$LASTHOSTUP$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthostdown">$LASTHOSTDOWN$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lasthostunreachable">$LASTHOSTUNREACHABLE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostoutput">$HOSTOUTPUT$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-longhostoutput">$LONGHOSTOUTPUT$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note1"> <sup>1</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostcheckcommand">$HOSTCHECKCOMMAND$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostackauthor">$HOSTACKAUTHOR$</a> <a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostackauthorname">$HOSTACKAUTHORNAME$</a> <a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostackauthoralias">$HOSTACKAUTHORALIAS$</a> <a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostackcomment">$HOSTACKCOMMENT$</a> <a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostactionurl">$HOSTACTIONURL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostnotesurl">$HOSTNOTESURL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostnotes">$HOSTNOTES$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostservices">$TOTALHOSTSERVICES$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostservicesok">$TOTALHOSTSERVICESOK$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostserviceswarning">$TOTALHOSTSERVICESWARNING$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostservicesunknown">$TOTALHOSTSERVICESUNKNOWN$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostservicescritical">$TOTALHOSTSERVICESCRITICAL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Hostgroup-Makros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupalias">$HOSTGROUPALIAS$</a> <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupmembers">$HOSTGROUPMEMBERS$</a> <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupnotes">$HOSTGROUPNOTES$</a> <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupnotesurl">$HOSTGROUPNOTESURL$</a> <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostgroupactionurl">$HOSTGROUPACTIONURL$</a> <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Service-Makros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicedesc">$SERVICEDESC$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicedisplayname">$SERVICEDISPLAYNAME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicestate">$SERVICESTATE$</a> </p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note2"> <sup>2</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicestateid">$SERVICESTATEID$</a> </p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note2"> <sup>2</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastservicestate">$LASTSERVICESTATE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastservicestateid">$LASTSERVICESTATEID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceattempt">$SERVICEATTEMPT$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-maxserviceattempts">$MAXSERVICEATTEMPTS$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceisvolatile">$SERVICEISVOLATILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceeventid">$SERVICEEVENTID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastserviceeventid">$LASTSERVICEEVENTID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceproblemid">$SERVICEPROBLEMID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastserviceproblemid">$LASTSERVICEPROBLEMID$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicelatency">$SERVICELATENCY$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a> </p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note2"> <sup>2</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceduration">$SERVICEDURATION$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicedurationsec">$SERVICEDURATIONSEC$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicedowntime">$SERVICEDOWNTIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicepercentchange">$SERVICEPERCENTCHANGE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupname">$SERVICEGROUPNAME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupnames">$SERVICEGROUPNAMES$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastservicecheck">$LASTSERVICECHECK$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastservicestatechange">$LASTSERVICESTATECHANGE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastserviceok">$LASTSERVICEOK$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastservicewarning">$LASTSERVICEWARNING$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastserviceunknown">$LASTSERVICEUNKNOWN$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-lastservicecritical">$LASTSERVICECRITICAL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a> </p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note2"> <sup>2</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-longserviceoutput">$LONGSERVICEOUTPUT$</a> </p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note2"> <sup>2</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> </p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note2"> <sup>2</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicecheckcommand">$SERVICECHECKCOMMAND$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceackauthor">$SERVICEACKAUTHOR$</a> <a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceackauthorname">$SERVICEACKAUTHORNAME$</a> <a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceackauthoralias">$SERVICEACKAUTHORALIAS$</a> <a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceackcomment">$SERVICEACKCOMMENT$</a> <a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceactionurl">$SERVICEACTIONURL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicenotesurl">$SERVICENOTESURL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicenotes">$SERVICENOTES$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Servicegroup-Makros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupalias">$SERVICEGROUPALIAS$</a> <a class="link" href="macrolist.html#macrolist-note6">
+          <sup>6</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupmembers">$SERVICEGROUPMEMBERS$</a> <a class="link" href="macrolist.html#macrolist-note6"> <sup>6</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupnotes">$SERVICEGROUPNOTES$</a> <a class="link" href="macrolist.html#macrolist-note6">
+          <sup>6</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupnotesurl">$SERVICEGROUPNOTESURL$</a> <a class="link" href="macrolist.html#macrolist-note6"> <sup>6</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicegroupactionurl">$SERVICEGROUPACTIONURL$</a> <a class="link" href="macrolist.html#macrolist-note6"> <sup>6</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Contact-Makros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactname">$CONTACTNAME$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactalias">$CONTACTALIAS$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactemail">$CONTACTEMAIL$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactpager">$CONTACTPAGER$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactaddress">$CONTACTADDRESSn$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Contactgroup-Makros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactgroupalias">$CONTACTGROUPALIAS$</a> <a class="link" href="macrolist.html#macrolist-note7">
+          <sup>7</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-contactgroupmembers">$CONTACTGROUPMEMBERS$</a> <a class="link" href="macrolist.html#macrolist-note7"> <sup>7</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p><a name="macrolist-summary_macros"></a>Auswertungsmakros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostsup">$TOTALHOSTSUP$</a> <a class="link" href="macrolist.html#macrolist-note10">
+          <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostsdown">$TOTALHOSTSDOWN$</a> <a class="link" href="macrolist.html#macrolist-note10">
+          <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostsunreachable">$TOTALHOSTSUNREACHABLE$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostsdownunhandled">$TOTALHOSTSDOWNUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostsunreachableunhandled">$TOTALHOSTSUNREACHABLEUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostproblems">$TOTALHOSTPROBLEMS$</a> <a class="link" href="macrolist.html#macrolist-note10">
+          <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalhostproblemsunhandled">$TOTALHOSTPROBLEMSUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalservicesok">$TOTALSERVICESOK$</a> <a class="link" href="macrolist.html#macrolist-note10">
+          <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalserviceswarning">$TOTALSERVICESWARNING$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalservicescritical">$TOTALSERVICESCRITICAL$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalservicesunknown">$TOTALSERVICESUNKNOWN$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalserviceswarningunhandled">$TOTALSERVICESWARNINGUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalservicescriticalunhandled">$TOTALSERVICESCRITICALUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalservicesunknownunhandled">$TOTALSERVICESUNKNOWNUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalserviceproblems">$TOTALSERVICEPROBLEMS$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-totalserviceproblemsunhandled">$TOTALSERVICEPROBLEMSUNHANDLED$</a> <a class="link" href="macrolist.html#macrolist-note10"> <sup>10</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note4"> <sup>4</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Benachrichtigungsmakros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationtype">$NOTIFICATIONTYPE$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationrecipients">$NOTIFICATIONRECIPIENTS$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationisescalated">$NOTIFICATIONISESCALATED$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationauthor">$NOTIFICATIONAUTHOR$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationauthorname">$NOTIFICATIONAUTHORNAME$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationauthoralias">$NOTIFICATIONAUTHORALIAS$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-notificationcomment">$NOTIFICATIONCOMMENT$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostnotificationnumber">$HOSTNOTIFICATIONNUMBER$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostnotificationid">$HOSTNOTIFICATIONID$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicenotificationnumber">$SERVICENOTIFICATIONNUMBER$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-servicenotificationid">$SERVICENOTIFICATIONID$</a> </p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Ja</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+<td><p>Nein</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Datums-/Zeitmakros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-longdatetime">$LONGDATETIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-shortdatetime">$SHORTDATETIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-date">$DATE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-time">$TIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-timet">$TIMET$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-isvalidtime">$ISVALIDTIME:$</a> <a class="link" href="macrolist.html#macrolist-note9">
+          <sup>9</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-nextvalidtime">$NEXTVALIDTIME:$</a> <a class="link" href="macrolist.html#macrolist-note9">
+          <sup>9</sup> </a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>Dateimakros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-mainconfigfile">$MAINCONFIGFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-statusdatafile">$STATUSDATAFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-commentdatafile">$COMMENTDATAFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja <a class="link" href="macrolist.html#macrolist-note5"> <sup>5</sup> </a> </p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-downtimedatafile">$DOWNTIMEDATAFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-retentiondatafile">$RETENTIONDATAFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-objectcachefile">$OBJECTCACHEFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-tempfile">$TEMPFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-temppath">$TEMPPATH$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-logfile">$LOGFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-resourcefile">$RESOURCEFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-commandfile">$COMMANDFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-hostperfdatafile">$HOSTPERFDATAFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-serviceperfdatafile">$SERVICEPERFDATAFILE$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"> </td></tr>
+<tr>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Prüfungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Benachrichtigungen</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Eventhandler und <a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Eventhandler und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a></strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service- Perf-Daten</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host- Perf-Daten</strong></span> </p></td>
+</tr>
+<tr><td colspan="9" align="left" valign="middle"><p>verschiedene Makros:</p></td></tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-processstarttime">$PROCESSSTARTTIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-eventstarttime">$EVENTSTARTTIME$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-adminemail">$ADMINEMAIL$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-adminpager">$ADMINPAGER$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+<tr>
+<td><p> <a class="link" href="macrolist.html#macrolist-user">$USERn$</a> </p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+<td><p>Ja</p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Makrobeschreibungen</strong></span></p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr><td colspan="2" align="left" valign="middle"><p>Host-Makros: <a class="link" href="macrolist.html#macrolist-note3">
+          <sup>3</sup> </a> </p></td></tr>
+<tr>
+<td><p><a name="macrolist-hostname"></a>$HOSTNAME$</p></td>
+<td><p>Kurzname für den Host (z.B. "biglinuxbox"). Dieser Wert wird aus der
+          <span class="emphasis"><em>host_name</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostdisplayname"></a>$HOSTDISPLAYNAME$</p></td>
+<td><p>Ein alternativer Anzeigename für den Host. Dieser Wert wird aus der
+          <span class="emphasis"><em>display_name</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostalias"></a>$HOSTALIAS$</p></td>
+<td><p>Langname/Beschreibung für den Host. Dieser Wert wird aus der <span class="emphasis"><em>alias</em></span>-Direktive in der
+          <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostaddress"></a>$HOSTADDRESS$</p></td>
+<td><p>Adresse des Hosts. Dieser Wert wird aus der <span class="emphasis"><em>address</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hoststate"></a>$HOSTSTATE$</p></td>
+<td><p>Eine Zeichenkette, die den aktuellen Status des Hosts angibt ("UP", "DOWN" oder
+          "UNREACHABLE").</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hoststateid"></a>$HOSTSTATEID$</p></td>
+<td><p>Eine Zahl, die dem aktuellen Status des Hosts entspricht: 0=UP, 1=DOWN, 2=UNREACHABLE.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthoststate"></a>$LASTHOSTSTATE$</p></td>
+<td><p>Eine Zeichenkette, die den letzten Status des Hosts angibt ("UP", "DOWN" oder
+          "UNREACHABLE").</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthoststateid"></a>$LASTHOSTSTATEID$</p></td>
+<td><p>Eine Zahl, die dem letzten Status des Hosts entspricht: 0=UP, 1=DOWN, 2=UNREACHABLE.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hoststatetype"></a>$HOSTSTATETYPE$</p></td>
+<td><p>Eine Zeichenkette, die den <a class="link" href="statetypes.html" title="Statustypen">Statustyp</a> der aktuellen Host-Prüfung angibt
+          ("HARD" oder "SOFT"). Ein Soft-Status tritt auf, wenn eine Host-Prüfung einen nicht-OK (nicht-UP) Status zurückliefert
+          und noch Wiederholungen anstehen. Ein Hard-Status liegt vor, wenn die Anzahl der Host-Prüfungs-Wiederholungen einen
+          maximal definierten Wert erreicht hat.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostattempt"></a>$HOSTATTEMPT$</p></td>
+<td><p>Die Anzahl der aktuellen Host-Prüfungs-Wiederholungen. Wenn dies beispielsweise das zweite Mal ist, dass
+          der Host erneut geprüft wird, dann steht hier die Zahl zwei. Die aktuelle Wiederholungsanzahl ist eigentlich nur dann
+          sinnvoll, wenn man Eventhandler für Soft-Zustände schreibt, die auf einer bestimmten Aktion für diese entsprechende Zahl
+          basieren.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-maxhostattempts"></a>$MAXHOSTATTEMPTS$</p></td>
+<td><p>Die max. Prüfversuche, wie sie für den aktuellen Host definiert sind. Nützlich, wenn man Host-Eventhandler
+          für "Soft"-Zustände schreibt, die eine bestimmte Aktion ausführen basierend auf der
+          Host-Wiederholungsanzahl.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hosteventid"></a>$HOSTEVENTID$</p></td>
+<td><p>Eine global eindeutige Zahl verbunden mit dem aktuellen Status des Hosts. Jedes Mal, wenn eine Host- (oder
+          Service-) Statusänderung eintritt, wird eine globale Ereignis-ID-Nummer um eins (1) erhöht. Falls bei einem Host keine
+          Statusänderung eintritt, wird dieses Makro auf Null (0) gesetzt.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthosteventid"></a>$LASTHOSTEVENTID$</p></td>
+<td><p>Die vorherige (global eindeutige) Ereigniszahl, die für den Host vergeben wurde.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostproblemid"></a>$HOSTPROBLEMID$</p></td>
+<td><p>Eine global eindeutige Zahl verbunden mit dem aktuellen Problemstatus des Hosts. Jedes Mal, wenn ein Host
+          (oder Service) von einem UP- oder OK-Status in einen Problemzustand wechselt, wird eine globale Problem-ID um eins (1)
+          erhöht. Dieses Makro wird ungleich Null sein, wenn der Host sich gerade in einem Zustand ungleich UP befindet.
+          Statuswechsel zwischen Zuständen ungleich UP (z.B. DOWN oder UNREACHABLE) erhöhen diese Problem-ID nicht. Wenn sich der
+          Host gerade in einem UP-Zustand befindet, wird dieses Makro auf Null (0) gesetzt. In Kombination mit Eventhandlern kann
+          dieses Makro benutzt werden, um automatisch ein Trouble-Ticket zu eröffnen, wenn Hosts das erste Mal einen
+          Problemzustand erreichen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthostproblemid"></a>$LASTHOSTPROBLEMID$</p></td>
+<td><p>Die vorherige (global eindeutige) Ereigniszahl, die für den Host vergeben wurde. In Kombination mit
+          Eventhandlern kann dieses Makro benutzt werden, um automatisch ein Trouble-Ticket zu schließen, wenn Hosts in einen
+          UP-Status zurückkehren.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostlatency"></a>$HOSTLATENCY$</p></td>
+<td><p>Eine (Fließkomma-) Zahl, die die Anzahl von Sekunden angibt, um die eine <span class="emphasis"><em>geplante</em></span>
+          Host-Prüfung nach der eigentlichen Planungszeit stattfand. Wenn beispielsweise eine Prüfung für 03:14:15 geplant war und
+          erst um 03:14:17 ausgeführt wurde, dann beträgt die Verzögerung 2.0 Sekunden. On-Demand-Host-Prüfungen haben eine
+          Verzögerung von null Sekunden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostexecutiontime"></a>$HOSTEXECUTIONTIME$</p></td>
+<td><p>Eine (Fließkomma-) Zahl, die die Dauer der Ausführung einer Host-Prüfung in Sekunden angibt.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostduration"></a>$HOSTDURATION$</p></td>
+<td><p>Eine Zeichenkette, die die Zeitdauer angibt, die sich der Host im aktuellen Status befindet. Das Format ist
+          "XXh YYm ZZs" und gibt die Stunden, Minuten und Sekunden an.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostdurationsec"></a>$HOSTDURATIONSEC$</p></td>
+<td><p>Eine Zahl, die die Zeitdauer in Sekunden angibt, die sich der Host im aktuellen Status
+          befindet.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostdowntime"></a>$HOSTDOWNTIME$</p></td>
+<td><p>Eine Zahl, die die aktuelle "Downtime-Tiefe" für den Host angibt. Wenn dieser Host sich gerade in einer
+          Phase einer <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplanten Downtime</a> befindet, ist dieser Wert größer als Null. Ist der Host
+          nicht gerade in einer Downtime-Phase, ist dieser Wert Null.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostpercentchange"></a>$HOSTPERCENTCHANGE$</p></td>
+<td><p>Eine (Fließkomma-) Zahl, die den prozentualen Statuswechsel angibt, dem der Host unterworfen war. Dieser
+          Wert wird vom <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">flap detection</a>-Algorithmus benutzt.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostgroupname"></a>$HOSTGROUPNAME$</p></td>
+<td><p>Der Kurzname der Hostgruppe, zu der dieser Host gehört. Dieser Wert wird aus der
+          <span class="emphasis"><em>hostgroup_name</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup-Definition</a> entnommen. Wenn der Host zu mehreren Hostgruppen
+          gehört, enthält dieses Makro nur einen der Namen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostgroupnames"></a>$HOSTGROUPNAMES$</p></td>
+<td><p>Eine Komma-separierte Liste der Kurznamen aller Hostgruppen, zu denen dieser Host gehört.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthostcheck"></a>$LASTHOSTCHECK$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt eine Prüfung des Hosts stattfand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthoststatechange"></a>$LASTHOSTSTATECHANGE$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt ein Statuswechsel des Hosts stattfand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthostup"></a>$LASTHOSTUP$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Host in einem UP-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthostdown"></a>$LASTHOSTDOWN$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Host in einem DOWN-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lasthostunreachable"></a>$LASTHOSTUNREACHABLE$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Host in einem UNREACHABLE-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostoutput"></a>$HOSTOUTPUT$</p></td>
+<td><p>Die erste Zeile von Textausgaben der letzten Host-Prüfung (z.B. "Ping OK")</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-longhostoutput"></a>$LONGHOSTOUTPUT$</p></td>
+<td><p>Die vollständige Textausgabe (außer der ersten Zeile) der letzten Host-Prüfung.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostperfdata"></a>$HOSTPERFDATA$</p></td>
+<td><p>Dieses Makro enthält jegliche <a class="link" href="perfdata.html" title="Performance-Daten">Performance-Daten</a>, die von der letzten
+          Host-Prüfung geliefert worden sein könnten.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostcheckcommand"></a>$HOSTCHECKCOMMAND$</p></td>
+<td><p>Dieses Makro enthält den Namen des Befehls (zusammen mit übergebenen Argumenten), der zur Host-Prüfung
+          benutzt wurde.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostackauthor"></a>$HOSTACKAUTHOR$<a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Namen des Benutzers enthält, der das Host-Problem bestätigt hat. Dieses Makro
+          ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$ auf "ACKNOWLEDGEMENT" gesetzt
+          ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostackauthorname"></a>$HOSTACKAUTHORNAME$<a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Kurznamen der Kontaktperson (falls zutreffend) enthält, die das Host-Problem
+          bestätigt hat. Dieses Makro ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$ auf
+          "ACKNOWLEDGEMENT" gesetzt ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostackauthoralias"></a>$HOSTACKAUTHORALIAS$<a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Alias der Kontaktperson (falls zutreffend) enthält, die das Host-Problem
+          bestätigt hat. Dieses Makro ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$ auf
+          "ACKNOWLEDGEMENT" gesetzt ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostackcomment"></a>$HOSTACKCOMMENT$<a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Bestätigungskommentar enthält, den der Benutzer eingegeben hat, der das
+          Host-Problem bestätigt hat. Dieses Makro ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$
+          auf "ACKNOWLEDGEMENT" gesetzt ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostactionurl"></a>$HOSTACTIONURL$</p></td>
+<td><p>Der Action-URL für den Host. Dieses Makro kann andere Makros enthalten (z.B. $HOSTNAME$), was nützlich sein
+          kann, wenn man den Hostnamen an eine Web-Seite übergeben will.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostnotesurl"></a>$HOSTNOTESURL$</p></td>
+<td><p>Der Anmerkungs-URL für den Host. Dieses Makro kann andere Makros enthalten (z.B. $HOSTNAME$), was nützlich
+          sein kann, wenn man den Hostnamen an eine Web-Seite übergeben will.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostnotes"></a>$HOSTNOTES$</p></td>
+<td><p>Anmerkungen für den Host. Dieses Makro kann andere Makros enthalten (z.B. $HOSTNAME$), was nützlich sein
+          kann, wenn man Hostspezifische Statusinformationen in der Beschreibung haben möchte.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostservices"></a>$TOTALHOSTSERVICES$</p></td>
+<td><p>Die Gesamtzahl von Services, die mit dem Host verbunden sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostservicesok"></a>$TOTALHOSTSERVICESOK$</p></td>
+<td><p>Die Gesamtzahl von Services im OK-Zustand, die mit dem Host verbunden sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostserviceswarning"></a>$TOTALHOSTSERVICESWARNING$</p></td>
+<td><p>Die Gesamtzahl von Services im WARNING-Zustand, die mit dem Host verbunden sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostservicesunknown"></a>$TOTALHOSTSERVICESUNKNOWN$</p></td>
+<td><p>Die Gesamtzahl von Services im UNKNOWN-Zustand, die mit dem Host verbunden sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostservicescritical"></a>$TOTALHOSTSERVICESCRITICAL$</p></td>
+<td><p>Die Gesamtzahl von Services im CRITICAL-Zustand, die mit dem Host verbunden sind.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Hostgroup-Makros: <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td></tr>
+<tr>
+<td><p><a name="macrolist-hostgroupalias"></a>$HOSTGROUPALIAS$<a class="link" href="macrolist.html#macrolist-note5"> <sup>5</sup> </a> </p></td>
+<td><p>Der Langname / Alias entweder des 1) Hostgruppennamens, der als On-Demand-Makro-Argument übergeben wurde
+          oder 2) der primären Hostgruppe, die mit dem aktuellen Host verbunden ist (falls sie nicht im Zusammenhang mit einem
+          On-Demand-Makro benutzt wurde). Dieser Wert wird aus der <span class="emphasis"><em>alias</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostgroupmembers"></a>$HOSTGROUPMEMBERS$<a class="link" href="macrolist.html#macrolist-note5"> <sup>5</sup> </a> </p></td>
+<td><p>Eine Komma-separierte Liste aller Hosts, die entweder 1) zu dem Hostgruppennamen gehören, der als
+          On-Demand-Makro-Argument übergeben wurde, oder 2) zu der primären Hostgruppe gehören, die mit dem aktuellen Host
+          verbunden ist (falls sie nicht im Zusammenhang mit einem On-Demand-Makro benutzt wurde).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostgroupnotes"></a>$HOSTGROUPNOTES$<a class="link" href="macrolist.html#macrolist-note5"> <sup>5</sup> </a> </p></td>
+<td><p>Die Anmerkungen, die verbunden sind mit entweder 1) dem Hostgroup-Namen, der als On-Demand-Makro-Argument
+          übergeben wurde oder 2) der primären Hostgruppe, die mit dem aktuellen Host verbunden ist (falls sie nicht im
+          Zusammenhang mit einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der <span class="emphasis"><em>notes</em></span>-Direktive in
+          der <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostgroupnotesurl"></a>$HOSTGROUPNOTESURL$<a class="link" href="macrolist.html#macrolist-note5"> <sup>5</sup> </a> </p></td>
+<td><p>Der Anmerkungs-URL, der verbunden ist mit entweder 1) dem Hostgroup-Namen, der als On-Demand-Makro-Argument
+          übergeben wurde oder 2) der primären Hostgruppe, die mit dem aktuellen Host verbunden ist (falls sie nicht im
+          Zusammenhang mit einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der <span class="emphasis"><em>notes_url</em></span>-Direktive
+          in der <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostgroupactionurl"></a>$HOSTGROUPACTIONURL$<a class="link" href="macrolist.html#macrolist-note5"> <sup>5</sup> </a> </p></td>
+<td><p>Der Action-URL, der verbunden ist mit entweder 1) dem Hostgroup-Namen, der als On-Demand-Makro-Argument
+          übergeben wurde oder 2) der primären Hostgruppe, die mit dem aktuellen Host verbunden ist (falls sie nicht im
+          Zusammenhang mit einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der
+          <span class="emphasis"><em>action_url</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Service-Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-servicedesc"></a>$SERVICEDESC$</p></td>
+<td><p>Der Langname/die Beschreibung des Service (z.B. "Main Website"). Dieser Wert wird aus der
+          <span class="emphasis"><em>description</em></span>-Direktive der <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicedisplayname"></a>$SERVICEDISPLAYNAME$</p></td>
+<td><p>Ein alternativer Anzeigename für den Service. Dieser Wert wird aus der
+          <span class="emphasis"><em>display_name</em></span>-Direktive der <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicestate"></a>$SERVICESTATE$</p></td>
+<td><p>Eine Zeichenkette, die den aktuellen Status des Service anzeigt ("OK", "WARNING", "UNKNOWN" oder
+          "CRITICAL").</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicestateid"></a>$SERVICESTATEID$</p></td>
+<td><p>Eine Zahl, die dem aktuellen Status des Service entspricht: 0=OK, 1=WARNING, 2=CRITICAL,
+          3=UNKNOWN.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastservicestate"></a>$LASTSERVICESTATE$</p></td>
+<td><p>Eine Zeichenkette, die den letzten Status des Service angibt ("OK", "WARNING", "UNKNOWN" oder
+          "CRITICAL").</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastservicestateid"></a>$LASTSERVICESTATEID$</p></td>
+<td><p>Eine Zahl, die dem letzten Status des Service entspricht: 0=OK, 1=WARNING, 2=CRITICAL,
+          3=UNKNOWN.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicestatetype"></a>$SERVICESTATETYPE$</p></td>
+<td><p>Eine Zeichenkette, die den <a class="link" href="statetypes.html" title="Statustypen">Statustyp</a> für die aktuelle Service-Prüfung
+          anzeigt ("HARD" oder "SOFT"). Ein Soft-Status tritt auf, wenn eine Service-Prüfung einen nicht-OK Status zurückliefert
+          und noch Wiederholungen anstehen. Ein Hard-Status liegt vor, wenn die Anzahl der Service-Prüfungswiederholungen einen
+          maximal definierten Wert erreicht hat.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceattempt"></a>$SERVICEATTEMPT$</p></td>
+<td><p>Die Anzahl der aktuellen Service-Prüfungswiederholungen. Wenn dies beispielsweise das zweite Mal ist, dass
+          der Service erneut geprüft wird, dann steht hier die Zahl zwei. Die aktuelle Wiederholungsanzahl ist eigentlich nur dann
+          sinnvoll, wenn man Eventhandler für Soft-Zustände schreibt, die auf einer bestimmten Aktion für diese entsprechende Zahl
+          basieren.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-maxserviceattempts"></a>$MAXSERVICEATTEMPTS$</p></td>
+<td><p>Die max. Prüfversuche, wie sie für den aktuellen Service definiert sind. Nützlich, wenn man
+          Service-Eventhandler für "Soft"-Zustände schreibt, die eine bestimmte Aktion ausführen basierend auf der
+          Service-Wiederholungsanzahl.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceisvolatile"></a>$SERVICEISVOLATILE$</p></td>
+<td><p>Zeigt an, ob der Service als sprunghaft ("volatile") markiert ist: 0 = not volatile, 1 =
+          volatile.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceeventid"></a>$SERVICEEVENTID$</p></td>
+<td><p>Eine global eindeutige Zahl verbunden mit dem aktuellen Status des Service. Jedes Mal, wenn eine Service-
+          (oder Host-) Statusänderung eintritt, wird eine globale Ereignis-ID-Nummer um eins (1) erhöht. Falls bei einem Service
+          keine Statusänderung eintritt, wird dieses Makro auf Null (0) gesetzt.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastserviceeventid"></a>$LASTSERVICEEVENTID$</p></td>
+<td><p>Die vorherige (global eindeutige) Ereigniszahl, die für den Service vergeben wurde.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceproblemid"></a>$SERVICEPROBLEMID$</p></td>
+<td><p>Eine global eindeutige Zahl verbunden mit dem aktuellen Problemstatus des Service. Jedes Mal, wenn ein
+          Service (oder Host) von einem UP- oder OK-Status in einen Problemzustand wechselt, wird eine globale Problem-ID um eins
+          (1) erhöht. Dieses Makro wird ungleich Null sein, wenn der Service sich gerade in einem Zustand ungleich OK befindet.
+          Statuswechsel zwischen Zuständen ungleich OK (z.B. DOWN oder UNREACHABLE) erhöhen diese Problem-ID nicht. Wenn sich der
+          Service gerade in einem OK-Zustand befindet, wird dieses Makro auf Null (0) gesetzt. In Kombination mit Eventhandlern
+          kann dieses Makro benutzt werden, um automatisch ein Trouble-Ticket zu eröffnen, wenn Services das erste Mal einen
+          Problemzustand erreichen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastserviceproblemid"></a>$LASTSERVICEPROBLEMID$</p></td>
+<td><p>Die vorherige (global eindeutige) Ereigniszahl, die für den Service vergeben wurde. In Kombination mit
+          Eventhandlern kann dieses Makro benutzt werden, um automatisch ein Trouble-Ticket zu schließen, wenn Services zu einem
+          Up-Status zurückkehren.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicelatency"></a>$SERVICELATENCY$</p></td>
+<td><p>Eine (Fließkomma-) Zahl, die die Anzahl von Sekunden angibt, um die eine <span class="emphasis"><em>geplante</em></span>
+          Service-Prüfung nach der eigentlichen Planungszeit stattfand. Wenn beispielsweise eine Prüfung für 03:14:15 geplant war
+          und erst um 03:14:17 ausgeführt wurde, dann beträgt die Verzögerung 2.0 Sekunden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceexecutiontime"></a>$SERVICEEXECUTIONTIME$</p></td>
+<td><p>Eine (Fließkomma-) Zahl, die die Dauer der Ausführung einer Service-Prüfung in Sekunden
+          angibt.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceduration"></a>$SERVICEDURATION$</p></td>
+<td><p>Eine Zeichenkette, die die Zeitdauer angibt, die sich der Service im aktuellen Status befindet. Das Format
+          ist "XXh YYm ZZs" und gibt die Stunden, Minuten und Sekunden an.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicedurationsec"></a>$SERVICEDURATIONSEC$</p></td>
+<td><p>Eine Zahl, die die Zeitdauer in Sekunden angibt, die sich der Service im aktuellen Status
+          befindet.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicedowntime"></a>$SERVICEDOWNTIME$</p></td>
+<td><p>Eine Zahl, die die aktuelle "Downtime-Tiefe" für den Service angibt. Wenn dieser Service sich gerade in
+          einer Phase einer <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplanten Downtime</a> befindet, ist dieser Wert größer als Null. Ist der
+          Service nicht gerade in einer Downtime-Phase, ist dieser Wert Null.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicepercentchange"></a>$SERVICEPERCENTCHANGE$</p></td>
+<td><p>Eine (Fließkomma-) Zahl, die den prozentualen Statuswechsel angibt, der der Service unterworfen war. Dieser
+          Wert wird vom <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">flap detection</a>-Algorithmus benutzt.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicegroupname"></a>$SERVICEGROUPNAME$</p></td>
+<td><p>Der Kurzname der Servicegruppe, zu der dieser Service gehört. Dieser Wert wird aus der
+          <span class="emphasis"><em>servicegroup_name</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">servicegroup-Definition</a> entnommen. Wenn der Service zu mehreren
+          Servicegruppen gehört, enthält dieses Makro nur einen der Namen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicegroupnames"></a>$SERVICEGROUPNAMES$</p></td>
+<td><p>Eine Komma-separierte Liste von Kurznamen aller Servicegruppen, zu denen dieser Service
+          gehört.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastservicecheck"></a>$LASTSERVICECHECK$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt eine Prüfung des Service stattfand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastservicestatechange"></a>$LASTSERVICESTATECHANGE$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt ein Statuswechsel des Service stattfand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastserviceok"></a>$LASTSERVICEOK$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Service in einem OK-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastservicewarning"></a>$LASTSERVICEWARNING$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Service in einem WARNING-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastserviceunknown"></a>$LASTSERVICEUNKNOWN$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Service in einem UNKNOWN-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-lastservicecritical"></a>$LASTSERVICECRITICAL$</p></td>
+<td><p>Dieses ist ein Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), der die Zeit angibt, zu der
+          zuletzt festgestellt wurde, dass sich der Service in einem CRITICAL-Zustand befand.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceoutput"></a>$SERVICEOUTPUT$</p></td>
+<td><p>Die erste Zeile von Textausgaben der letzten Service-Prüfung (z.B. "Ping OK")</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-longserviceoutput"></a>$LONGSERVICEOUTPUT$</p></td>
+<td><p>Die vollständige Textausgabe (außer der ersten Zeile) der letzten Service-Prüfung.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceperfdata"></a>$SERVICEPERFDATA$</p></td>
+<td><p>Dieses Makro enthält jegliche <a class="link" href="perfdata.html" title="Performance-Daten">Performance-Daten</a>, die von der letzten
+          Service-Prüfung geliefert worden sein könnten.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicecheckcommand"></a>$SERVICECHECKCOMMAND$</p></td>
+<td><p>Dieses Makro enthält den Namen des Befehls (zusammen mit übergebenen Argumenten), der zur Service-Prüfung
+          benutzt wurde.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceackauthor"></a>$SERVICEACKAUTHOR$<a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Namen des Benutzers enthält, der das Service-Problem bestätigt hat. Dieses Makro
+          ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$ auf "ACKNOWLEDGEMENT" gesetzt
+          ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceackauthorname"></a>$SERVICEACKAUTHORNAME$<a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Kurznamen der Kontaktperson (falls zutreffend) enthält, die das Service-Problem
+          bestätigt hat. Dieses Makro ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$ auf
+          "ACKNOWLEDGEMENT" gesetzt ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceackauthoralias"></a>$SERVICEACKAUTHORALIAS$<a class="link" href="macrolist.html#macrolist-note8">
+          <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Alias der Kontaktperson (falls zutreffend) enthält, die das Service-Problem
+          bestätigt hat. Dieses Makro ist nur gültig bei Benachrichtigungen, bei denen das Makro $NOTIFICATIONTYPE$ auf
+          "ACKNOWLEDGEMENT" gesetzt ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceackcomment"></a>$SERVICEACKCOMMENT$<a class="link" href="macrolist.html#macrolist-note8"> <sup>8</sup> </a> </p></td>
+<td><p>Eine Zeichenkette, die den Bestätigungskommentar enthält, den der Benutzer eingegeben hat, der das
+          Service-Problem bestätigt hat. Dieses Makro ist nur gültig bei Benachrichtigungen, bei denen das Makro
+          $NOTIFICATIONTYPE$ auf "ACKNOWLEDGEMENT" gesetzt ist.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceactionurl"></a>$SERVICEACTIONURL$</p></td>
+<td><p>Der Action-URL für den Service. Dieses Makro kann andere Makros enthalten (z.B. $HOSTNAME$ oder
+          $SERVICEDESC$), was nützlich sein kann, wenn man den Servicenamen an eine Web-Seite übergeben will.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicenotesurl"></a>$SERVICENOTESURL$</p></td>
+<td><p>Der Anmerkungs-URL für den Service. Dieses Makro kann andere Makros enthalten (z.B. $HOSTNAME$ oder
+          $SERVICEDESC$), was nützlich sein kann, wenn man den Servicenamen an eine Web-Seite übergeben will.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicenotes"></a>$SERVICENOTES$</p></td>
+<td><p>Anmerkungen für den Service. Dieses Makro kann andere Makros enthalten (z.B. $HOSTNAME$ oder
+          $SERVICEDESC$), was nützlich sein kann, wenn man Servicespezifische Statusinformationen in der Beschreibung haben
+          möchte.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Servicegroup-Makros: <a class="link" href="macrolist.html#macrolist-note6">
+          <sup>6</sup> </a> </p></td></tr>
+<tr>
+<td><p><a name="macrolist-servicegroupalias"></a>$SERVICEGROUPALIAS$<a class="link" href="macrolist.html#macrolist-note6"> <sup>6</sup> </a> </p></td>
+<td><p>Der Langname / Alias entweder des 1) Servicegroup-Namens, der als On-Demand-Makro-Argument übergeben wurde
+          oder 2) der primären Servicegruppe, die mit dem aktuellen Service verbunden ist (falls sie nicht im Zusammenhang mit
+          einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der <span class="emphasis"><em>alias</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">servicegroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicegroupmembers"></a>$SERVICEGROUPMEMBERS$<a class="link" href="macrolist.html#macrolist-note6">
+          <sup>6</sup> </a> </p></td>
+<td><p>Eine Komma-separierte Liste aller Services, die entweder 1) zu dem Servicegruppennamen gehören, der als
+          On-Demand-Makro-Argument übergeben wurde, oder 2) zu der primären Servicegruppe gehören, die mit dem aktuellen Service
+          verbunden ist (falls sie nicht im Zusammenhang mit einem On-Demand-Makro benutzt wurde).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicegroupnotes"></a>$SERVICEGROUPNOTES$<a class="link" href="macrolist.html#macrolist-note6"> <sup>6</sup> </a> </p></td>
+<td><p>Die Anmerkungen, die verbunden sind mit entweder 1) dem Servicegroup-Namen, der als
+          On-Demand-Makro-Argument übergeben wurde oder 2) der primären Servicegruppe, die mit dem aktuellen Host verbunden ist
+          (falls sie nicht im Zusammenhang mit einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der
+          <span class="emphasis"><em>notes</em></span>-Direktive in the <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">servicegroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicegroupnotesurl"></a>$SERVICEGROUPNOTESURL$<a class="link" href="macrolist.html#macrolist-note6">
+          <sup>6</sup> </a> </p></td>
+<td><p>Der Anmerkungs-URL, der verbunden sind mit entweder 1) dem Servicegroup-Namen, der als
+          On-Demand-Makro-Argument übergeben wurde oder 2) der primären Servicegruppe, die mit dem aktuellen Service verbunden ist
+          (falls sie nicht im Zusammenhang mit einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der
+          <span class="emphasis"><em>notes_url</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">servicegroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicegroupactionurl"></a>$SERVICEGROUPACTIONURL$<a class="link" href="macrolist.html#macrolist-note6">
+          <sup>6</sup> </a> </p></td>
+<td><p>Der Action-URL, der verbunden sind mit entweder 1) dem Servicegroup-Namen, der als On-Demand-Makro-Argument
+          übergeben wurde oder 2) der primären Servicegruppe, die mit dem aktuellen Service verbunden ist (falls sie nicht im
+          Zusammenhang mit einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der
+          <span class="emphasis"><em>action_url</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">servicegroup-Definition</a> genommen.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Contact-Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-contactname"></a>$CONTACTNAME$</p></td>
+<td><p>Kurzname für den Kontakt (z.B. "mmustermann"), der über ein Host- oder Service-Problem informiert wird.
+          Dieser Wert wird aus der <span class="emphasis"><em>contact_name</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactalias"></a>$CONTACTALIAS$</p></td>
+<td><p>Langname/Beschreibung für den Kontakt, der informiert wird. Dieser Wert wird aus der
+          <span class="emphasis"><em>alias</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactemail"></a>$CONTACTEMAIL$</p></td>
+<td><p>e-Mail-Adresse für den Kontakt, der informiert wird. Dieser Wert wird aus der
+          <span class="emphasis"><em>email</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactpager"></a>$CONTACTPAGER$</p></td>
+<td><p>Pager-Nummer/-Adresse für den Kontakt, der informiert wird. Dieser Wert wird aus der
+          <span class="emphasis"><em>pager</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact-Definition</a>
+          genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactaddress"></a>$CONTACTADDRESSn$</p></td>
+<td><p>Adresse für den Kontakt, der informiert wird. Jeder Kontakt kann sechs verschiedene Adressen haben
+          (zusätzlich zur e-Mail-Adresse und Pager-Nummer). Die Makros für diese Adressen sind $CONTACTADDRESS1$ -
+          $CONTACTADDRESS6$. Dieser Wert wird aus der <span class="emphasis"><em>addressx</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactgroupname"></a>$CONTACTGROUPNAME$</p></td>
+<td><p>Der Kurzname für die Kontaktgruppe, deren Mitglied der Kontakt ist. Dieser Wert wird aus der
+          <span class="emphasis"><em>contact_group</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contactgroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactgroupnames"></a>$CONTACTGROUPNAMES$</p></td>
+<td><p>Eine Komma-separierte Liste der Kurznamen aller Kontaktgruppen, deren Mitglied dieser Kontakt
+          ist.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Contactgroup-Makros: <a class="link" href="macrolist.html#macrolist-note5">
+          <sup>5</sup> </a> </p></td></tr>
+<tr>
+<td><p><a name="macrolist-contactgroupalias"></a>$CONTACTGROUPALIAS$<a class="link" href="macrolist.html#macrolist-note7"> <sup>7</sup> </a> </p></td>
+<td><p>Der Langname / Alias entweder des 1) Contactgroup-Namens, der als On-Demand-Makro-Argument übergeben wurde
+          oder 2) der primären Kontaktgruppe, die mit dem aktuellen Kontakt verbunden ist (falls sie nicht im Zusammenhang mit
+          einem On-Demand-Makro benutzt wurde). Dieser Wert wird aus der <span class="emphasis"><em>alias</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contactgroup-Definition</a> genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-contactgroupmembers"></a>$CONTACTGROUPMEMBERS$<a class="link" href="macrolist.html#macrolist-note7">
+          <sup>7</sup> </a> </p></td>
+<td><p>Eine Komma-separierte Liste aller Kontakte, die entweder 1) zu dem Kontaktgruppennamen gehören, der als
+          On-Demand-Makro-Argument übergeben wurde, oder 2) zu der primären Kontaktgruppe gehören, die mit dem aktuellen Kontakt
+          verbunden ist (falls sie nicht im Zusammenhang mit einem On-Demand-Makro benutzt wurde).</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Auswertungs-Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-totalhostsup"></a>$TOTALHOSTSUP$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem UP-Zustand befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostsdown"></a>$TOTALHOSTSDOWN$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem DOWN-Zustand befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostsunreachable"></a>$TOTALHOSTSUNREACHABLE$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem UNREACHABLE-Zustand
+          befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostsdownunhandled"></a>$TOTALHOSTSDOWNUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem DOWN-Status befinden und "unbehandelt"
+          sind. Unbehandelte Host-Probleme sind solche, die nicht bestätigt sind, sich nicht in einer geplanten Downtime befinden,
+          und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostsunreachableunhandled"></a>$TOTALHOSTSUNREACHABLEUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem UNREACHABLE-Status befinden und
+          "unbehandelt" sind. Unbehandelte Host-Probleme sind solche, die nicht bestätigt sind, sich nicht in einer geplanten
+          Downtime befinden, und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostproblems"></a>$TOTALHOSTPROBLEMS$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem DOWN- oder UNREACHABLE-Status
+          befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalhostproblemsunhandled"></a>$TOTALHOSTPROBLEMSUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Hosts an, die sich in einem DOWN- oder UNREACHABLE-Status befinden und
+          "unbehandelt" sind. Unbehandelte Host-Probleme sind solche, die nicht bestätigt sind, sich nicht in einer geplanten
+          Downtime befinden, und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalservicesok"></a>$TOTALSERVICESOK$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem OK-Status befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalserviceswarning"></a>$TOTALSERVICESWARNING$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem WARNING-Status befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalservicescritical"></a>$TOTALSERVICESCRITICAL$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem CRITICAL-Status
+          befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalservicesunknown"></a>$TOTALSERVICESUNKNOWN$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem UNKNOWN-Status befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalserviceswarningunhandled"></a>$TOTALSERVICESWARNINGUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem WARNING-Status befinden und
+          "unbehandelt" sind. Unbehandelte Service-Probleme sind solche, die nicht bestätigt sind, sich nicht in einer geplanten
+          Downtime befinden, und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalservicescriticalunhandled"></a>$TOTALSERVICESCRITICALUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem CRITICAL-Status befinden und
+          "unbehandelt" sind. Unbehandelte Service-Probleme sind solche, die nicht bestätigt sind, sich nicht in einer geplanten
+          Downtime befinden, und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalservicesunknownunhandled"></a>$TOTALSERVICESUNKNOWNUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem UNKNOWN-Status befinden und
+          "unbehandelt" sind. Unbehandelte Service-Probleme sind solche, die nicht bestätigt sind, sich nicht in einer geplanten
+          Downtime befinden, und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalserviceproblems"></a>$TOTALSERVICEPROBLEMS$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem WARNING-, CRITICAL- oder UNKNOWN-Status
+          befinden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-totalserviceproblemsunhandled"></a>$TOTALSERVICEPROBLEMSUNHANDLED$</p></td>
+<td><p>Dieses Makro gibt die Gesamtzahl der Services an, die sich in einem WARNING-, CRITICAL- oder UNKNOWN-Status
+          befinden und "unbehandelt" sind. Unbehandelte Service-Probleme sind solche, die nicht bestätigt sind, sich nicht in
+          einer geplanten Downtime befinden, und für die Prüfungen momentan aktiviert sind.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Benachrichtigungs-Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-notificationtype"></a>$NOTIFICATIONTYPE$</p></td>
+<td><p>Eine Zeichenkette, die den Typ der Benachrichtigung angibt, die versandt wird ("PROBLEM", "RECOVERY",
+          "ACKNOWLEDGEMENT", "FLAPPINGSTART", "FLAPPINGSTOP", "FLAPPINGDISABLED", "DOWNTIMESTART", "DOWNTIMEEND" oder
+          "DOWNTIMECANCELLED").</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-notificationrecipients"></a>$NOTIFICATIONRECIPIENTS$</p></td>
+<td><p>Eine Komma-separierte Liste der Kurznamen von allen Kontakten, die über den Host oder Service
+          benachrichtigt werden.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-notificationisescalated"></a>$NOTIFICATIONISESCALATED$</p></td>
+<td><p>Eine Ganzzahl, die angibt, ob diese Benachrichtigung an normale Kontakte für den Host oder Service versandt
+          wurde, oder ob sie eskaliert wurde. 0 = normale (nicht-eskalierte) Benachrichtigung, 1 = eskalierte
+          Benachrichtigung</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-notificationauthor"></a>$NOTIFICATIONAUTHOR$</p></td>
+<td><p>Eine Zeichenkette, die den Namen des Benutzers angibt, der die Benachrichtigung geschrieben hat. Falls das
+          $NOTIFICATIONTYPE$-Makro auf "DOWNTIMESTART" oder "DOWNTIMEEND" gesetzt ist, wird es der Name des Benutzers sein, der
+          die Downtime für den Host oder Service geplant hat. Falls das $NOTIFICATIONTYPE$-Makro auf "ACKNOWLEDGEMENT" gesetzt
+          ist, wird es der Name des Benutzers sein, der das Problem für den Host oder Service bestätigt hat. Falls das
+          $NOTIFICATIONTYPE$-Makro auf "CUSTOM" gesetzt ist, wird es der Name des Benutzers sein, der die benutzerdefinierte
+          Benachrichtigung für den Host oder Service ausgelöst hat.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-notificationauthorname"></a>$NOTIFICATIONAUTHORNAME$</p></td>
+<td><p>Eine Zeichenkette, die den Kurznamen des Kontakts (falls zutreffend) enthält, der im Makro
+          $NOTIFICATIONAUTHOR$ angegeben wurde.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-notificationauthoralias"></a>$NOTIFICATIONAUTHORALIAS$</p></td>
+<td><p>Eine Zeichenkette, die den Alias des Kontakts (falls zutreffend) enthält, der im Makro $NOTIFICATIONAUTHOR$
+          angegeben wurde.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-notificationcomment"></a>$NOTIFICATIONCOMMENT$</p></td>
+<td><p>Eine Zeichenkette, die den Kommentar des Benutzers angibt, der die Benachrichtigung geschrieben hat. Falls
+          das $NOTIFICATIONTYPE$-Makro auf "DOWNTIMESTART" oder "DOWNTIMEEND" gesetzt ist, wird es der Kommentar des Benutzers
+          sein, der die Downtime für den Host oder Service geplant hat. Falls das $NOTIFICATIONTYPE$-Makro auf "ACKNOWLEDGEMENT"
+          gesetzt ist, wird es der Kommentar des Benutzers sein, der das Problem für den Host oder Service bestätigt hat. Falls
+          das $NOTIFICATIONTYPE$-Makro auf "CUSTOM" gesetzt ist, wird es der Kommentar des Benutzers sein, der die
+          benutzerdefinierte Benachrichtigung für den Host oder Service ausgelöst hat.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostnotificationnumber"></a>$HOSTNOTIFICATIONNUMBER$</p></td>
+<td><p>Die aktuelle Benachrichtigungsnummer für den Host. Die Benachrichtigungsnummer wird jedes Mal um eins (1)
+          erhöht, wenn eine neue Benachrichtigung für den Host versandt wird (außer bei Bestätigungen). Die
+          Benachrichtigungsnummer wird auf Null (0) zurückgesetzt, wenn der Host wieder im UP-Zustand ist
+          (<span class="emphasis"><em>nachdem</em></span> die Benachrichtigung versandt wurde). Die Benachrichtungsnummer wird weder durch
+          Bestätigungen noch durch Benachrichtigungen über "Flap detection" oder geplante Downtimes erhöht.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostnotificationid"></a>$HOSTNOTIFICATIONID$</p></td>
+<td><p>Eine eindeutige Zahl, die eine Host-Benachrichtigung identifiziert. Benachrichtigungsnummern sind eindeutig
+          sowohl für Host- als auch Service-Benachrichtigungen, so dass Sie diese eindeutige Zahl als primären Schlüssel in einer
+          Benachrichtigungs-Datenbank benutzen können. Benachrichtigungsnummern sollten über den Restart des Icinga-
+          Prozesses hinweg eindeutig bleiben, solange Sie "state retention" aktiviert haben. Die Benachrichtigungsnummer wird für
+          jede neue Host-Benachrichtigung um eins (1) erhöht, unabhängig von der Anzahl der benachrichtigten
+          Kontakte.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicenotificationnumber"></a>$SERVICENOTIFICATIONNUMBER$</p></td>
+<td><p>Die aktuelle Benachrichtigungsnummer für den Service. Die Benachrichtigungsnummer wird jedes Mal um eins
+          (1) erhöht, wenn eine neue Benachrichtigung für den Service versandt wird (außer bei Bestätigungen). Die
+          Benachrichtigungsnummer wird auf Null (0) zurückgesetzt, wenn der Service wieder im OK-Zustand ist
+          (<span class="emphasis"><em>nachdem</em></span> die Benachrichtigung versandt wurde). Die Benachrichtungsnummer wird weder durch
+          Bestätigungen noch durch Benachrichtigungen über "Flap detection" oder geplante Downtimes erhöht.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-servicenotificationid"></a>$SERVICENOTIFICATIONID$</p></td>
+<td><p>Eine eindeutige Zahl, die eine Service-Benachrichtigung identifiziert. Benachrichtigungsnummern sind
+          eindeutig sowohl für Host- als auch Service-Benachrichtigungen, so dass Sie diese eindeutige Zahl als primären Schlüssel
+          in einer Benachrichtigungs-Datenbank benutzen können. Benachrichtigungsnummern sollten über den Restart des
+          Icinga- Prozesses hinweg eindeutig bleiben, solange Sie "state retention" aktiviert haben. Die
+          Benachrichtigungsnummer wird für jede neue Service-Benachrichtigung um eins (1) erhöht, unabhängig von der Anzahl der
+          benachrichtigten Kontakte.</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Datum-/Zeit-Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-longdatetime"></a>$LONGDATETIME$</p></td>
+<td><p>Aktueller Datum-/Zeitstempel (z.B. <span class="emphasis"><em>Fri Oct 13 00:30:28 CDT 2000</em></span>). Das Datum-Format ist
+          festgelegt durch die <a class="link" href="configmain.html#configmain-date_format">date_format</a>-Direktive.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-shortdatetime"></a>$SHORTDATETIME$</p></td>
+<td><p>Aktueller Datum-/Zeitstempel (z.B. <span class="emphasis"><em>10-13-2000 00:30:28</em></span>). Das Datum-Format ist
+          festgelegt durch die <a class="link" href="configmain.html#configmain-date_format">date_format</a>-Direktive.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-date"></a>$DATE$</p></td>
+<td><p>Aktueller Datumstempel (z.B. <span class="emphasis"><em>10-13-2000</em></span>). Das Datum-Format ist festgelegt durch die
+          <a class="link" href="configmain.html#configmain-date_format">date_format</a>-Direktive.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-time"></a>$TIME$</p></td>
+<td><p>Aktueller Zeitstempel (z.B. <span class="emphasis"><em>00:30:28</em></span>).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-timet"></a>$TIMET$</p></td>
+<td><p>Aktueller Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-isvalidtime"></a>$ISVALIDTIME:$<a class="link" href="macrolist.html#macrolist-note9"> <sup>9</sup> </a> </p></td>
+<td>
+<p> Dies ist ein spezielles On-Demand-Makro, das 1 oder 0 zurückliefert, abhängig davon, ob eine bestimmte
+          Zeit innerhalb einer angegebenen Zeitperiode gültig ist. Es gibt zwei Arten, dieses Makro zu benutzen:</p>
+          <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                <p><span class="bold"><strong>$ISVALIDTIME:24x7$</strong></span> wird auf "1" gesetzt, wenn die aktuelle Zeit innerhalb
+                der "24x7"-Zeitperiode gültig ist. Falls nicht, wird es auf "0" gesetzt.</p>
+              </li>
+<li class="listitem">
+                <p><span class="bold"><strong>$ISVALIDTIME:24x7:timestamp$</strong></span> wird auf "1" gesetzt, wenn die durch das
+                "timestamp"-Argument angegebene Zeit (die im time_t-Format sein muss) innerhalb der "24x7"-Zeitperiode gültig ist.
+                Falls nicht, wird es auf "0" gesetzt.</p>
+              </li>
+</ol></div>
+</td>
+</tr>
+<tr>
+<td><p><a name="macrolist-nextvalidtime"></a>$NEXTVALIDTIME:$<a class="link" href="macrolist.html#macrolist-note9"> <sup>9</sup> </a> </p></td>
+<td>
+<p> Dies ist ein spezielles On-Demand-Makro, das die nächste gültige Zeit (im time_t-Format) für eine angebene
+          Zeitperiode zurückliefert. Es gibt zwei Arten, dieses Makro zu benutzen:</p> <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                <p><span class="bold"><strong>$NEXTVALIDTIME:24x7$</strong></span> wird die nächste gültige Zeit zurückliefern - ab der
+                aktuellen Zeit - innerhalb der "24x7"-Zeitperiode.</p>
+              </li>
+<li class="listitem">
+                <p><span class="bold"><strong>$NEXTVALIDTIME:24x7:timestamp$</strong></span> wird die nächste gültige Zeit zurückliefern
+                - ab der durch das "timestamp"-Argument angegebenen Zeit (die im time_t-Format sein muss) - innerhalb der
+                "24x7"-Zeitperiode.</p>
+              </li>
+</ol></div> <p>Falls keine gültige Zeit innerhalb der angegebenen Zeitperiode gefunden werden kann, wird das
+          Makro auf "0" gesetzt.</p>
+</td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Datei-Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-mainconfigfile"></a>$MAINCONFIGFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> (main config
+          file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-statusdatafile"></a>$STATUSDATAFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-status_file">Statusdaten-Datei</a> (main config
+          file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-commentdatafile"></a>$COMMENTDATAFILE$</p></td>
+<td><p>Der Standort der Kommentardaten-Datei (comment data file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-downtimedatafile"></a>$DOWNTIMEDATAFILE$</p></td>
+<td><p>Der Standort der Ausfallzeitendaten-Datei (downtime data file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-retentiondatafile"></a>$RETENTIONDATAFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-state_retention_file">Aufbewahrungsdaten-Datei</a> (retention
+          data file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-objectcachefile"></a>$OBJECTCACHEFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-object_cache_file">Objektzwischenspeicherungs-Datei</a>
+          (object cache file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-tempfile"></a>$TEMPFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-temp_file">temporären Datei</a> (temp file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-temppath"></a>$TEMPPATH$</p></td>
+<td><p>Das durch die <a class="link" href="configmain.html#configmain-temp_path">temp path</a>-Variable festgelegte
+          Verzeichnis.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-logfile"></a>$LOGFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-log_file">Protokolldatei</a> (log file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-resourcefile"></a>$RESOURCEFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-resource_file">Ressource-Datei</a> (resource
+          file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-commandfile"></a>$COMMANDFILE$</p></td>
+<td><p>Der Standort der <a class="link" href="configmain.html#configmain-command_file">Befehlsdatei</a> (command file).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-hostperfdatafile"></a>$HOSTPERFDATAFILE$</p></td>
+<td><p>Der Standort der Host-Performancedaten-Datei (host performance data file; falls definiert).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-serviceperfdatafile"></a>$SERVICEPERFDATAFILE$</p></td>
+<td><p>Der Standort der Service-Performancedaten-Datei (service performance data file; falls
+          definiert).</p></td>
+</tr>
+<tr><td colspan="2" align="left" valign="middle"> </td></tr>
+<tr><td colspan="2" align="left" valign="middle"><p>Verschiedene Makros:</p></td></tr>
+<tr>
+<td><p><a name="macrolist-processstarttime"></a>$PROCESSSTARTTIME$</p></td>
+<td><p>Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), die angibt, wann der Icinga-Prozess
+          das letzte Mal neu/wieder gestartet wurde. Sie können die Laufzeit durch Subtraktion von $PROCESSSTARTTIME$ von <a class="link" href="macrolist.html#macrolist-timet">$TIMET$</a> ermitteln.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-eventstarttime"></a>$EVENTSTARTTIME$</p></td>
+<td><p>Zeitstempel im time_t-Format (Sekunden seit der UNIX-Epoche), die angibt, wann der Icinga-Prozess
+          begann, Ereignisse (Prüfungen, usw.) zu verarbeiten. Sie können die Zeit, die Icinga zum Start benötigte, durch
+          Subtraktion von $PROCESSSTARTTIME$ von $EVENTSTARTTIMET$ ermitteln.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-adminemail"></a>$ADMINEMAIL$</p></td>
+<td><p>Globale administrative e-Mail-Adresse. Dieser Wert wird aus der <a class="link" href="configmain.html#configmain-admin_email">admin_email</a>-Direktive genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-adminpager"></a>$ADMINPAGER$</p></td>
+<td><p>Globale administrative Pager-Nummer/-Adresse. Dieser Wert wird aus der <a class="link" href="configmain.html#configmain-admin_email">admin_pager</a>-Direktive genommen.</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-arg"></a>$ARGn$</p></td>
+<td><p>Das <span class="emphasis"><em>n</em></span>-te an den Befehl (Benachrichtigung, Eventhandler, Service-Prüfungen, usw.)
+          übergebene Argument. Icinga unterstützt bis zu 32 Argument-Makros ($ARG1$ bis $ARG32$).</p></td>
+</tr>
+<tr>
+<td><p><a name="macrolist-user"></a>$USERn$</p></td>
+<td><p>Das <span class="emphasis"><em>n</em></span>-te benutzerdefinierbare Makro. Benutzermakros können in ein oder mehreren <a class="link" href="configmain.html#configmain-resource_file">resource files</a> definiert werden. Icinga unterstützt bis zu 32
+          User-Makros ($USER1$ bis $USER32$).</p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Anmerkungen</strong></span></p>
+
+  <p><a name="macrolist-note1"></a><span class="bold"><strong><sup>1</sup></strong></span> Diese Makros sind nicht
+  gültig für den Host, dem sie zugeordnet sind, wenn der Host gerade geprüft wird (denn die Werte konnten noch nicht ermittelt
+  werden).</p>
+
+  <p><a name="macrolist-note2"></a><span class="bold"><strong><sup>2</sup></strong></span> Diese Makros sind nicht
+  gültig für den Service, dem sie zugeordnet sind, wenn der Service gerade geprüft wird (denn die Werte konnten noch nicht
+  ermittelt werden).</p>
+
+  <p><a name="macrolist-note3"></a><span class="bold"><strong><sup>3</sup></strong></span> Wenn Host-Makros in
+  Service-bezogenen Befehlen benutzt werden (z.B. Service-Benachrichtigungen, Eventhandler, usw.) verweisen sie auf den Host, dem
+  der Service zugeordnet ist.</p>
+
+  <p><a name="macrolist-note4"></a><span class="bold"><strong><sup>4</sup></strong></span> Wenn Host- und
+  Service-Auswertungsmakros in Benachrichtigungen benutzt werden, werden die Summen gefiltert, um so nur die Hosts und Services zu
+  berücksichtigen, für die die Kontaktperson berechtigt ist (z.B. Hosts und Services, für die sie Benachrichtigungen erhalten
+  soll).</p>
+
+  <p><a name="macrolist-note5"></a><span class="bold"><strong><sup>5</sup></strong></span> Diese Makros sind
+  normalerweise der ersten/primären Hostgruppe des aktuellen Hosts zugeordnet. Sie können deshalb in vielen Fällen als Host-Makros
+  angesehen werden. Allerdings sind diese Makros nicht als On-Demand-Makros verfügbar. Statt dessen können sie als
+  On-Demand-Hostgroup-Makros benutzt werden, wenn Sie den Namen einer Hostgruppe an das Makro übergeben. Beispielsweise würde
+  $HOSTGROUPMEMBERS:hg1$ eine komma-separierte Liste aller (Host)-Mitglieder der Hostgruppe <span class="emphasis"><em>hg1</em></span>
+  zurückliefern.</p>
+
+  <p><a name="macrolist-note6"></a><span class="bold"><strong><sup>6</sup></strong></span> Diese Makros sind
+  normalerweise der ersten/primären Servicegruppe des aktuellen Service zugeordnet. Sie können deshalb in vielen Fällen als
+  Service-Makros angesehen werden. Allerdings sind diese Makros nicht als On-Demand-Makros verfügbar. Statt dessen können sie als
+  On-Demand-Servicegroup-Makros benutzt werden, wenn Sie den Namen einer Servicegruppe an das Makro übergeben. Beispielsweise
+  würde $SERVICEGROUPMEMBERS:sg1$ eine komma-separierte Liste aller (Service)-Mitglieder der Servicegruppe
+  <span class="emphasis"><em>sg1</em></span> zurückliefern.</p>
+
+  <p><a name="macrolist-note7"></a><span class="bold"><strong><sup>7</sup></strong></span> Diese Makros sind
+  normalerweise der ersten/primären Kontaktgruppe des aktuellen Kontakts zugeordnet. Sie können deshalb in vielen Fällen als
+  Kontakt-Makros angesehen werden. Allerdings sind diese Makros nicht als On-Demand-Makros verfügbar. Statt dessen können sie als
+  On-Demand-Contaktgroup-Makros benutzt werden, wenn Sie den Namen einer Kontaktgruppe an das Makro übergeben. Beispielsweise
+  würde $CONTACTGROUPMEMBERS:cg1$ eine komma-separierte Liste aller (Kontakt)-Mitglieder der Kontaktgruppe
+  <span class="emphasis"><em>cg1</em></span> zurückliefern.</p>
+
+  <p><a name="macrolist-note8"></a><span class="bold"><strong><sup>8</sup></strong></span> Diese Bestätigungsmakros
+  sind veraltet. Nutzen Sie statt dessen die mehr generischen Makros $NOTIFICATIONAUTHOR$, $NOTIFICATIONAUTHORNAME$,
+  $NOTIFICATIONAUTHORALIAS$ oder $NOTIFICATIONAUTHORCOMMENT$</p>
+
+  <p><a name="macrolist-note9"></a><span class="bold"><strong><sup>9</sup></strong></span> Diese Makros sind nur als
+  On-Demand-Makros verfügbar - d.h. Sie müssen ein zusätzliches Argument übergeben, um sie zu nutzen. Diese Makros sind nicht als
+  Umgebungsvariablen verfügbar.</p>
+
+  <p><a name="macrolist-note10"></a><span class="bold"><strong><sup>10</sup></strong></span> Auswertungsmakros sind
+  nicht als Umgebungsvariablen verfügbar, wenn die Option <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a> aktiviert ist, weil sie ziemlich
+  CPU-intensiv zu berechnen sind.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="macros.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="hostchecks.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Makros verstehen und wie sie arbeiten </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Host-Prüfungen (Host checks)</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

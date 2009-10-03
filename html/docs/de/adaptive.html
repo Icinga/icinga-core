@@ -1,0 +1,131 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Adaptive Überwachung</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch06.html" title="Kapitel 6. Fortgeschrittene Themen">
+<link rel="prev" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">
+<link rel="next" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Adaptive Überwachung</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="embeddedperl.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 6. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="dependencychecks.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Adaptive Überwachung">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="adaptive"></a>Adaptive Überwachung</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Icinga erlaubt Ihnen, verschiedene Befehle und Host- und Service-Prüfattribute während der Laufzeit zu verändern.
+  Wir bezeichnen diese Möglichkeit als "adaptive Überwachung". Bitte beachten Sie, dass diese adaptiven Überwachungs-Features in
+  Icinga wahrscheinlich von 99% aller Benutzer nicht genutzt werden, aber sie erlauben Ihnen einige nette Dinge.</p>
+
+  <p><span class="bold"><strong>Was kann verändert werden?</strong></span></p>
+
+  <p>Die folgenden Service-Prüfattribute können während der Laufzeit verändert werden:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Prüfbefehl (und Befehlsparameter)</p>
+    </li>
+<li class="listitem">
+      <p>Prüfintervall</p>
+    </li>
+<li class="listitem">
+      <p>max. Prüfversuche</p>
+    </li>
+<li class="listitem">
+      <p>Prüfzeitfenster</p>
+    </li>
+<li class="listitem">
+      <p>Eventhandler-Befehl (und Befehlsparameter)</p>
+    </li>
+</ul></div>
+
+  <p>Die folgenden Host-Prüfattribute können während der Laufzeit verändert werden:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Prüfbefehl (und Befehlsparameter)</p>
+    </li>
+<li class="listitem">
+      <p>Prüfintervall</p>
+    </li>
+<li class="listitem">
+      <p>max. Prüfversuche</p>
+    </li>
+<li class="listitem">
+      <p>Prüfzeitfenster</p>
+    </li>
+<li class="listitem">
+      <p>Eventhandler-Befehl (und Befehlsparameter)</p>
+    </li>
+</ul></div>
+
+  <p>Die folgenden globalen Attribute können während der Laufzeit verändert werden:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Globaler Host-Eventhandler-Befehl (und Befehlsparameter)</p>
+    </li>
+<li class="listitem">
+      <p>Globaler Service-Eventhandler-Befehl (und Befehlsparameter)</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Externe Befehle für adaptive Überwachung</strong></span></p>
+
+  <p>Um globale oder Host- bzw. Service-spezifische Attribute während der Laufzeit zu ändern, müssen Sie über das <a class="link" href="configmain.html#configmain-command_file">external command file</a> den entsprechenden <a class="link" href="extcommands.html" title="Externe Befehle">externen
+  Befehl</a> an Icinga senden. Eine vollständige (englischsprachige) Liste von externen Befehlen, die zur adaptiven
+  Überwachung benutzt werden können (zusammen mit Beispielen, wie sie genutzt werden können), finden Sie online unter: <a class="link" href="http://www.nagios.org//developerinfo/externalcommands/" target="_top">http://www.nagios.org//developerinfo/externalcommands/</a>.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkungen:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Bei der Änderung von Prüfbefehlen, Prüfzeitfenstern oder Eventhandler-Befehlen ist es wichtig anzumerken, dass die
+      neuen Werte für diese Optionen vor dem Neustart von Icinga definiert werden müssen. Jede Anfrage, die einen Befehl
+      oder ein Zeitfenster auf einen Wert ändert, der beim Start nicht definiert war, wird ignoriert.</p>
+    </li>
+<li class="listitem">
+      <p>Sie können Befehlsparameter zusammen mit dem tatsächlichen Befehlsnamen angeben - trennen Sie einfach die einzelnen
+      Parameter vom Befehlsnamen (und voneinander) durch Ausrufezeichen (!). Mehr Informationen, wie Parameter in
+      Befehlsdefinitionen während der Laufzeit verarbeitet werden, finden Sie in der Dokumentation zu <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a>.</p>
+    </li>
+</ul></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="embeddedperl.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="dependencychecks.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Benutzen des Embedded Perl Interpreters </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Vorausschauende Abhängigkeitsprüfungen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

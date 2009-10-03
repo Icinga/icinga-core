@@ -1,0 +1,352 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Icinga Quickstart</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
+<link rel="prev" href="quickstart.html" title="Schnellstart-Installationsanleitungen">
+<link rel="next" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Icinga Quickstart</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="quickstart.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 2. Los geht's</th>
+<td width="20%" align="right"> <a accesskey="n" href="quickstart-idoutils.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Icinga Quickstart">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="quickstart-icinga"></a>Icinga Quickstart</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong><a name="introduction_icinga"></a>Einführung</strong></span></p>
+
+  <p>Diese Schnellstartanleitung ist dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von
+  20 Minuten aus dem Quellcode installieren und Ihren lokalen Rechner damit überwachen.</p>
+
+  <p>Hier werden keine fortgeschrittenen Installationsoptionen vorgestellt - lediglich die Grundlagen, die für 95% aller
+  Benutzer funktionieren, die anfangen wollen.</p>
+
+  <p>Diese Anleitung enthält momentan Anweisungen für drei verschiedene Linux-Distributionen: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> and
+  <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Ähnliche Distributionen werden wahrscheinlich auch
+  funktionieren, darunter <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>, <a class="link" href="http://www.debian.org/" target="_top">Debian</a> und
+  <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
+
+  <p><span class="bold"><strong>Wenn Sie planen, eine Datenbank zusammen mit IDOUtils zu nutzen, dann lesen Sie statt dessen
+  <a class="xref" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">„Icinga-Schnellstart mit IDOUtils“</a>!</strong></span></p>
+
+  <p><span class="bold"><strong>Was dabei herauskommt</strong></span></p>
+
+  <p>Wenn Sie diesen Anweisungen folgen, werden Sie am Ende folgendes haben:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Icinga und die Plugins werden unterhalb von /usr/local/icinga installiert sein</p>
+    </li>
+<li class="listitem">
+      <p>Icinga wird so konfiguriert sein, dass es einige Dinge auf Ihrem lokalen System überwacht (CPU-Auslastung,
+      Plattenbelegung, usw.)</p>
+    </li>
+<li class="listitem">
+      <p>Das Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/nagios/</code> oder
+      <code class="uri">http://yourdomain.com/icinga/</code></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+
+  <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer
+  Maschine.</p>
+
+  <p>Stellen Sie sicher, dass die folgenden Pakete installiert sind, bevor Sie fortfahren.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Apache</p>
+    </li>
+<li class="listitem">
+      <p>GCC-Compiler</p>
+    </li>
+<li class="listitem">
+      <p>C/C++ development libraries</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> -Development-Libraries</p>
+    </li>
+</ul></div>
+
+  <p>Sie können diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo):</p>
+
+  <p><span class="emphasis"><em>Fedora / RedHat / CentOS</em></span></p>
+
+  <pre class="programlisting"> # yum install httpd gcc glibc glibc-common gd gd-devel</pre>
+
+  <p><span class="emphasis"><em>Ubuntu</em></span></p>
+
+  <pre class="programlisting"> # apt-get install apache2 build-essential libgd2-xpm-dev</pre>
+
+  <p><span class="emphasis"><em>openSuSE</em></span></p>
+
+  <p>Bitte nutzen Sie yast für die Installation der Pakete</p>
+
+  <p><span class="bold"><strong>Benutzerinformationen erstellen</strong></span></p>
+
+  <p>Werden Sie zum root-Benutzer.</p>
+
+  <pre class="programlisting"> # su -l</pre>
+
+  <p>Erstellen Sie ein neues Benutzerkonto <span class="emphasis"><em>icinga</em></span> und vergeben Sie ein Passwort:</p>
+
+  <pre class="programlisting"> # /usr/sbin/useradd -m icinga 
+ # passwd icinga  </pre>
+
+  <p>Bei einigen Distributionen müssen Sie die Gruppe in einem gesonderten Schritt anlegen:</p>
+
+  <pre class="programlisting"> # /usr/sbin/groupadd icinga</pre>
+
+  <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
+
+  <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
+
+  <pre class="programlisting"> # cd /usr/src</pre>
+
+  <p>Holen Sie den aktuellen icinga-core Snapshot aus dem Icinga GIT </p>
+<pre class="programlisting"> # git clone git://git.icinga.org/icinga-core.git</pre>
+<p>
+  oder von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
+
+  <p>Vergessen Sie nicht die <a class="link" href="http://www.nagios.org/" target="_top">Nagios-Plugins</a>.</p>
+
+  <p><span class="bold"><strong>Icinga</strong></span> kompilieren und installieren</p>
+
+  <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
+
+  <pre class="programlisting"> # cd /usr/src/ 
+ # tar xvzf icinga-0.8.4.tar.gz 
+ # cd icinga-0.8.4</pre>
+
+  <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den
+  Optionen.</p>
+
+  <pre class="programlisting"> # ./configure</pre>
+
+  <p>Kompilieren Sie den Icinga-Source-Code. Um mögliche Optionen zu sehen, rufen Sie lediglich "make" auf.</p>
+
+  <pre class="programlisting"> # make all</pre>
+
+  <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das
+  External-Command-Verzeichnis. </p>
+<pre class="programlisting"> # make install 
+ # make install-init 
+ # make install-config 
+ # make install-commandmode </pre>
+<p> oder kürzer </p>
+<pre class="programlisting"> # make fullinstall</pre>
+
+  <p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
+
+  <p><span class="bold"><strong>Anpassen der Konfiguration</strong></span></p>
+
+  <p>Beispiel-Konfigurationsdateien werden durch </p>
+<pre class="programlisting"> # make install-config</pre>
+<p>in
+  /usr/local/icinga/etc/ installiert. Nun fehlt nur noch eine Änderung, bevor Sie fortfahren können...</p>
+
+  <p>Ändern Sie die <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span>-Konfigurationsdatei mit Ihrem bevorzugten
+  Editor und passen die e-Mail-Adresse in der <span class="emphasis"><em>icingaadmin</em></span>-Kontaktdefinition an, so dass sie die Adresse
+  enthält, die im Falle von Alarmen benachrichtigt werden soll.</p>
+
+  <pre class="programlisting"> # vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+
+  <p><span class="bold"><strong>Konfigurieren des Web-Interface</strong></span></p>
+
+  <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache conf.d-Verzeichnis.</p>
+
+  <pre class="programlisting"> # make install-webconf</pre>
+
+  <p>Legen Sie ein <span class="emphasis"><em>icinagaadmin</em></span>-Konto an, um sich am Web-Interface anmelden zu können. Merken Sie sich das
+  Passwort, das Sie diesem Konto geben - Sie brauchen es später.</p>
+
+  <pre class="programlisting"> # htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Abhängig von der Apache-Version müssen Sie ggf. <span class="emphasis"><em>htpasswd2 verwenden.</em></span></p>
+  </td></tr>
+</table></div>
+
+  <p>Wenn Sie das Passwort später ändern oder einen weiteren Benutzer hinzufügen möchten, verwenden Sie den folgenden
+  Befehl:</p>
+
+  <pre class="programlisting"> # htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+
+  <p>Starten Sie Apache neu, damit die Änderungen wirksam werden.</p>
+
+  <p><span class="emphasis"><em>Fedora/RedHat/CentOS</em></span></p>
+
+  <pre class="programlisting"> # service httpd restart</pre>
+
+  <p><span class="emphasis"><em>Ubuntu / openSuSE</em></span></p>
+
+  <pre class="programlisting"> # /etc/init.d/apache2 reload</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">hier</a> beschrieben, um sicherzustellen, dass Ihre Web-Authentifizierungsinformationen nicht
+  kompromittiert werden.</td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Kompilieren und installieren der Nagios-Plugins</strong></span></p>
+
+  <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
+
+  <pre class="programlisting"> # cd /usr/src
+ # tar xzf nagios-plugins-1.4.13.tar.gz
+ # cd nagios-plugins-1.4.13</pre>
+
+  <p>Kompilieren und installieren Sie die Plugins.</p>
+
+  <pre class="programlisting"> # ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga
+ # make
+ # make install</pre>
+
+  <p><span class="bold"><strong> Icinga starten</strong></span></p>
+
+  <p>Fügen Sie Icinga zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das
+  System hochfährt (stellen Sie sicher, dass Sie vorher das Init-Script installiert haben).</p>
+
+  <p><span class="emphasis"><em>Fedora / RedHat / CentOS / openSuSE</em></span></p>
+
+  <pre class="programlisting"> # chkconfig --add icinga 
+ # chkconfig icinga on </pre>
+
+  <p><span class="emphasis"><em>Ubuntu</em></span></p>
+
+  <pre class="programlisting"> # ln -s /etc/init.d/icinga /etc/rcS.d/S99icinga</pre>
+
+  <pre class="programlisting"> # chkconfig --add icinga
+ # chkconfig icinga on</pre>
+
+  <p>Überprüfen Sie die Icinga-Beispielkonfigurationsdateien.</p>
+
+  <pre class="programlisting"> # /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+
+  <p>Wenn keine Fehler auftreten, starten Sie Icinga.</p>
+
+  <pre class="screen"> # service icinga start</pre>
+
+  <p><span class="bold"><strong> 8) Anpassen der SELinux-Einstellungen</strong></span></p>
+
+  <p><span class="bold"><strong>Start Icinga</strong></span></p>
+
+  <p>Fügen Sie Icinga zur Liste der System-Services hinzu, damit es automatisch beim Start des Systems gestartet wird
+  (stellen Sie sicher, dass Sie das Init-Script vorher installiert haben).</p>
+
+  <p>Überprüfen Sie die Icinga-Beispielkonfigurationsdateien.</p>
+
+  <pre class="programlisting"> # /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+
+  <p>Wenn es dabei keine Fehler gibt, starten Sie Icinga.</p>
+
+  <p><span class="emphasis"><em>Fedora / openSuSE</em></span></p>
+
+  <pre class="programlisting"> # service icinga start</pre>
+
+  <p><span class="emphasis"><em>Ubuntu</em></span></p>
+
+  <pre class="programlisting"> # /etc/init.d/icinga start</pre>
+
+  <p>Fedora wird mit installiertem SELinux (Security Enhanced Linux) ausgeliefert und läuft im
+  "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die Icinga-CGIs
+  aufzurufen.</p>
+
+  <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
+
+  <pre class="screen"> # getenforce</pre>
+
+  <p>Setzen Sie SELinux in den "Permissive"-Modus.</p>
+
+  <pre class="screen"> # setenforce 0</pre>
+
+  <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und
+  das System neustarten.</p>
+
+  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl
+  benutzen, um die CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
+
+  <pre class="programlisting"> # chcon -R -t httpd_sys_content_t /usr/local/icinga/sbin/
+ # chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
+
+  <p>Besuchen Sie das IcingaCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
+  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
+
+  <p><span class="bold"><strong>Anmelden am Web-Interface</strong></span></p>
+
+  <p>Sie sollten nun auf das Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
+  (<span class="emphasis"><em>icingaadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
+
+  <pre class="programlisting"> http://localhost/icinga/</pre>
+
+  <p>oder</p>
+
+  <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
+
+  <p>Klicken Sie auf den "Service Detail"-Verweis in der Navigationsleiste, um Details darüber zu erhalten, was auf Ihrer
+  lokalen Maschine überwacht wird. Es wird ein paar Minuten dauern, bis Icinga alle mit Ihrer Maschine verbundenen Services
+  geprüft hat, weil die Prüfungen über eine gewisse Zeit verteilt werden.</p>
+
+  <p><span class="bold"><strong>Andere Anpassungen</strong></span></p>
+
+  <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das Web-Interface ermöglichen, wenn
+  Sie von anderen Rechnern darauf zugreifen wollen.</p>
+
+  <pre class="programlisting"> # iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
+
+  <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
+  e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw.
+  konfiguriert. Schauen Sie in Ihre Systemdokumentation, suchen Sie im Web oder gucken Sie im <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">IcingaCommunity.org-Wiki</a> nach genauen Anweisungen, wie Ihr System
+  konfiguriert werden muss, damit es e-Mail-Mitteilungen an externe Adressen versendet. Mehr Informationen zu Benachrichtigungen
+  finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
+
+  <p><span class="bold"><strong>Fertig</strong></span></p>
+
+  <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie
+  werden ohne Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen sollten...</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="quickstart.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="quickstart-idoutils.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Schnellstart-Installationsanleitungen </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Icinga-Schnellstart mit IDOUtils</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

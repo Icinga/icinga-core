@@ -1,0 +1,306 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Benachrichtigungen</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
+<link rel="prev" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">
+<link rel="next" href="cgis.html" title="Informationen über die CGIs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Benachrichtigungen</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="networkreachability.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgis.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Benachrichtigungen">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="notifications"></a>Benachrichtigungen</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right"></div>
+
+  <p>Es gab eine Menge Fragen, wie genau Benachrichtigungen arbeiten. Wir werden versuchen, genau zu erklären, wann und wie
+  Host- und Service-Benachrichtigungen versandt werden und ebenso, wer sie bekommt.</p>
+
+  <p>Benachrichtigungs-Eskalationen werden <a class="link" href="escalations.html" title="Benachrichtigungseskalationen">hier</a> beschrieben.</p>
+
+  <p><span class="bold"><strong>Wann erfolgen Benachrichtigungen?</strong></span></p>
+
+  <p>Die Entscheidung, Benachrichtigungen zu senden, wird in der Service- und Host-Prüflogik getroffen. Host- und
+  Service-Benachrichtigungen erfolgen in den folgenden Fällen...</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>wenn ein HARD-Statuswechsel erfolgt. Mehr Informationen über Statustypen und Hard-Statuswechsel finden Sie <a class="link" href="statetypes.html" title="Statustypen">hier</a>.</p>
+    </li>
+<li class="listitem">
+      <p>wenn ein Host oder Service in einem Hard nicht-OK-Zustand bleibt und die in der
+      &lt;<span class="emphasis"><em>notification_interval</em></span>&gt;-Option der Host- oder Service-Definition angegebene Zeit seit der letzten
+      versandten Benachrichtigung verstrichen ist (für den angegebenen Host oder Service).</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Wer wird benachrichtigt?</strong></span></p>
+
+  <p>Jede Host- und Service-Definition hat eine &lt;<span class="emphasis"><em>contact_groups</em></span>&gt;-Option, die angibt, welche
+  Kontaktgruppen Benachrichtigungen für bestimmte Hosts oder Services erhalten. Kontaktgruppen können ein oder mehrere einzelne
+  Kontakte enthalten.</p>
+
+  <p>Wenn Icinga eine Host- oder Service-Benachrichtigung versendet, wird es jeden Kontakt informieren, der Mitglied in
+  einer der Kontaktgruppen ist, die in der &lt;<span class="emphasis"><em>contactgroups</em></span>&gt;-Option der Service-Definition angegeben ist.
+  Icinga bemerkt, wenn ein Kontakt Mitglied von mehr als einer Kontaktgruppe ist und entfernt mehrfache
+  Kontaktbenachrichtigungen, bevor es irgendetwas tut.</p>
+
+  <p><span class="bold"><strong>Welche Filter müssen durchlaufen werden, damit Benachrichtigungen versandt werden?</strong></span></p>
+
+  <p>Nur weil Benachrichtigungen für einen Host- oder Service versandt werden müssen, bedeutet das nicht, dass irgendein
+  Kontakt informiert wird. Es gibt mehrere Filter, die potenzielle Benachrichtungen durchlaufen müssen, bevor sie als würdig genug
+  angesehen werden, um versandt zu werden. Lassen Sie uns einen genaueren Blick auf die Filter werfen, die zu durchlaufen
+  sind...</p>
+
+  <p><span class="bold"><strong>Programmweite Filter:</strong></span></p>
+
+  <p>Der erste Filter, den Benachrichtigungen durchlaufen müssen, ist ein Test, ob Benachrichtigungen auf einer programmweiten
+  Basis aktiviert sind. Dies wird ursprünglich durch die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Option in der Hauptkonfigurationsdatei festgelegt, kann
+  aber während der Laufzeit über das Web-Interface verändert werden. Falls Benachrichtigungen auf programmweiter Basis deaktiviert
+  sind, werden keine Benachrichtigungen für Hosts oder Services versandt - Punkt. Wenn sie auf programmweiter Basis aktiviert
+  sind, müssen weitere Tests durchlaufen werden...</p>
+
+  <p><span class="bold"><strong>Service- und Host-Filter:</strong></span></p>
+
+  <p>Der erste Filter für Host- oder Service-Benachrichtigungen ist eine Prüfung, ob sich der Host oder Service in einer <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplanten Ausfallzeit</a> (downtime) befindet. Falls es eine geplante Ausfallzeit ist, <span class="bold"><strong>wird niemand informiert</strong></span>. Wenn es keine Ausfallzeit ist, geht es weiter zum nächsten Filter. Als kleine
+  Randnotiz: Service-Benachrichtigungen werden unterdrückt, falls sich der mit ihnen verbundene Host in einer geplanten
+  Ausfallzeit befindet.</p>
+
+  <p>Der zweite Filter für Host- oder Service-Benachrichtigungenen ist eine Prüfung, ob der Host oder Service <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">flattert</a> (wenn Sie Flatter-Erkennung aktiviert haben). Falls der Service oder Host gerade flattert,
+  <span class="bold"><strong>wird niemand informiert</strong></span>. Andernfalls geht es weiter zum nächsten Filter.</p>
+
+  <p>Der dritte für Hosts oder Services zu durchlaufende Filter sind die Host- oder Service-spezifischen
+  Benachrichtigungsoptionen. Jede Service-Definition enthält Optionen, die festlegen, ob Benachrichtungen für Warnungen, kritische
+  Zustände oder Erholungen versandt werden oder nicht. Ähnlich ist es bei Hosts, wo festgelegt wird, ob Benachrichtigungen
+  versandt werden, wenn der Host down geht, unerreichbar wird oder sich wieder erholt. Falls die Host- oder
+  Service-Benachrichtigungen diese Optionen nicht passieren, <span class="bold"><strong>wird niemand informiert</strong></span>. Wenn sie
+  die Optionen durchlaufen, geht es zum nächsten Filter... Anmerkung: Benachrichtigungen über Host- oder Service-Erholungen werden
+  nur dann versandt, wenn auch eine Benachrichtigung über das ursprüngliche Problem versandt wurde. Es ist nicht sinnvoll, eine
+  Benachrichtigung über eine Erholung zu bekommen, wenn Sie nicht wussten, dass ein Problem existiert.</p>
+
+  <p>Der vierte Host- oder Service-Filter, der durchlaufen werden muss, ist der Zeitfenster-Test. Jede Host- und
+  Service-Definition hat eine &lt;<span class="emphasis"><em>notification_period</em></span>&gt;-Option, die angibt, welches Zeitfenster gültige
+  Benachrichtigungszeiten für den Host oder Service enthält. Wenn die Zeit der Benachrichtigung nicht in einen gültigen Bereich
+  des Zeitfensters fällt, <span class="bold"><strong>wird niemand informiert</strong></span>. Wenn sie in einen gültigen Bereich fällt, geht
+  es zum nächsten Filter... Anmerkung: falls der Zeitfenster-Filter nicht erfolgreich durchlaufen wird, plant Icinga die
+  nächste Benachrichtigung für den Host oder Service (falls er sich in einem nicht-OK-Status befindet) für die nächste verfügbare
+  gültige Zeit im Zeitfenster. Dies stellt sicher, dass der Kontakt so früh wie möglich über Probleme informiert wird, wenn die
+  nächste gültige Zeit erreicht wird.</p>
+
+  <p>Der letzte Satz von Host- oder Service-Filter ist abhängig von zwei Dingen: (1) zu einem Zeitpunkt in der Vergangenheit
+  wurde bereits eine Benachrichtigung über ein Problem mit dem Host oder Service versandt und (2) blieb der Host oder Service im
+  gleichen nicht-OK-Zustand, der zur Zeit der Benachrichtigung vorlag. Wenn diese beiden Kriterien zutreffen, wird Icinga
+  prüfen und sicherstellen, dass die seit der letzten Benachrichtigung vergangene Zeit den in der Option
+  &lt;<span class="emphasis"><em>notification_interval</em></span>&gt; angegebenen Wert in der Host- oder Service-Definition erreicht oder
+  übertrifft. Falls nicht genug Zeit seit der letzten Benachrichtigung vergangen ist, <span class="bold"><strong>wird niemand
+  benachrichtigt</strong></span>. Wenn entweder genug Zeit seit der letzten Benachrichtigung vergangen ist oder die beiden Kriterien
+  dieses Filters erfüllt wurden, wird die Benachrichtigung versandt. Ob sie tatsächlich an einzelne Kontakte versandt wird, hängt
+  von einem weiteren Satz von Filtern ab...</p>
+
+  <p><span class="bold"><strong>Kontakt-Filter:</strong></span></p>
+
+  <p>An diesem Punkt hat die Benachrichtigung die programmweiten und alle Host- und Service-Filter durchlaufen und
+  Icinga beginnt, <a class="link" href="objectdefinitions.html#objectdefinitions-contact">alle betroffenen Leute zu informieren</a>. Bedeutet dies,
+  dass jeder Kontakt die Benachrichtigung erhalten wird? Nein. Jeder Kontakt hat seinen eigenen Satz von Filtern, den die
+  Benachrichtigung passieren muss. Anmerkung: Kontaktfilter sind spezifisch für jeden Kontakt und beeinflussen nicht, ob andere
+  Kontakte Benachrichtigungen erhalten oder nicht.</p>
+
+  <p>Der erste zu passierende Filter für jeden Kontakt sind die Benachrichtigungsoptionen. Jede Kontaktdefinition enthält
+  Optionen, die festlegen, ob Service-Benachrichtigungen für Warning- und Critital-Zustände und Erholungen versandt werden können.
+  Jede Kontakt-Definition enthält auch Optionen, die festlegen, ob Host-Benachrichtigungen versandt werden, wenn der Host "down"
+  geht, unerreichbar wird oder sich erholt. Falls die Host- oder Service-Benachrichtigung diese Optionen nicht passieren kann,
+  <span class="bold"><strong>wird der Kontakt nicht informiert</strong></span>. Wenn es diese Optionen passiert, wird die Benachrichtigung
+  an den nächsten Filter weitergereicht... Anmerkung: Benachrichtigungen �ber die Erholung von Host oder Service werden nur dann
+  versandt, wenn eine Benachrichtigung für das ursprüngliche Problem versandt wurde. Es ist sinnlos, eine Benachrichtigung über
+  eine Erholung zu versenden, wenn Sie nicht wussten, dass ein Problem existiert...</p>
+
+  <p>Der letzte zu passierende Filter für jeden Kontakt ist der Zeitfenster-Test. Jede Kontaktdefinition hat eine
+  &lt;<span class="emphasis"><em>notification_period</em></span>&gt;-Option, die angibt, welches Zeitfenster gültige Benachrichtigungszeiten für den
+  Kontakt enthält. Wenn die Zeit, in der die Benachrichtigung erstellt wird, nicht in ein gültiges Zeitfenster fällt, <span class="bold"><strong>wird der Kontakt nicht informiert</strong></span>. Wenn sie in ein gültiges Zeitfenster fällt, wird der Kontakt
+  informiert!</p>
+
+  <p><span class="bold"><strong>Benachrichtigungs-Methoden</strong></span></p>
+
+  <p>Icinga kann Sie über Probleme und Erholungen auf vielfältige Weise informieren: Pager, Handy, e-Mail, SMS,
+  Audio-Hinweis usw. Wie Benachrichtigungen versandt werden, hängt von den <a class="link" href="objectdefinitions.html#objectdefinitions-command">Benachrichtigungs-Befehlen</a> ab, die in Ihren <a class="link" href="config.html" title="Konfigurationsüberblick">Objekt-Definitionsdateien</a> definiert werden.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Wenn Sie Icinga nach den <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Anleitungen</a>
+  installieren, sollte es zum Versand von e-Mail-Benachrichtigungen konfiguriert sein. Sie können die benutzten e-Mail-Befehle
+  ansehen, indem Sie den Inhalt der Datei <span class="emphasis"><em>/usr/local/icinga/etc/objects/commands.cfg</em></span> betrachten.</p>
+
+  <p>Spezielle Benachrichtigungs-Methoden (Paging usw.) sind nicht direkt in den Icinga-Code integriert, denn es ist
+  nicht sinnvoll. Der "Kern" von Icinga ist nicht als eierlegene Wollmilchsau gedacht. Wenn Service-Prüfungen im
+  Icinga-Kern enthalten wären, hätten Benutzer große Schwierigkeiten, neue Prüfmethoden hinzuzufügen, bestehende Prüfungen
+  zu modifizieren usw. Benachrichtigungen arbeiten in ähnlicher Weise. Es gibt tausend verschiedene Wege, Benachrichtigungen zu
+  versenden und es gibt bereits viele Pakete, die die schmutzige Arbeit tun, also warum das Rad neu erfinden und sich dann auf
+  einen Fahrrad-Reifen beschränken? Es ist viel einfacher, ein externes Gebilde (das kann ein einfaches Script sein oder ein
+  ausgewachsenes Message-System) die ganze Arbeit tun zu lassen. Einige Message-Pakete, die Benachrichtigungen für Pager und
+  Handys verarbeiten können, sind weiter unten aufgeführt.</p>
+
+  <p><span class="bold"><strong>Benachrichtigungstyp-Makro</strong></span></p>
+
+  <p>Wenn Sie Benachrichtigungs-Befehle erstellen, müssen Sie beachten, um welchen Typ von Benachrichtigung es sich handelt.
+  Das Makro <a class="link" href="macrolist.html#macrolist-notificationtype">$NOTIFICATIONTYPE$</a> enthält eine Zeichenkette, die genau das angibt.
+  Die nachfolgende Tabelle zeigt die möglichen Werte und deren entsprechende Beschreibungen:</p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Wert</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Beschreibung</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>PROBLEM</p></td>
+<td><p>Ein Host oder Service hat gerade einen Problemzustand erreicht (oder ist noch in einem). Wenn dies eine
+          Service-Benachrichtigung ist, bedeutet das, dass der Service in einem WARNING-, UNKNOWN- oder CRITICAL-Zustand ist. Wenn
+          dies eine Host-Benachrichtigung ist, bedeutet das, dass der Host in einem DOWN- oder UNREACHABLE-Zustand
+          ist.</p></td>
+</tr>
+<tr>
+<td><p>RECOVERY</p></td>
+<td><p>Ein Service oder Host hat sich erholt. Wenn dies eine Service-Benachrichtigung ist, bedeutet es, dass der
+          Service gerade wieder in einen OK-Zustand zurückgekehrt ist. Wenn dies eine Host-Benachrichtigung ist, bedeutet das,
+          dass der Host gerade wieder in einen UP-Zustand zurückgekehrt ist.</p></td>
+</tr>
+<tr>
+<td><p>ACKNOWLEDGEMENT</p></td>
+<td><p>Diese Benachrichtigung ist eine Bestätigung für ein Host- oder Service-Problem. Bestätigungen werden von
+          Kontakten für diesen Host oder Service über das Web-Interface ausgelöst.</p></td>
+</tr>
+<tr>
+<td><p>FLAPPINGSTART</p></td>
+<td><p>Der Host oder Service hat gerade angefangen zu <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">flattern</a>.</p></td>
+</tr>
+<tr>
+<td><p>FLAPPINGSTOP</p></td>
+<td><p>Der Host oder Service hat gerade aufgehört zu <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">flattern</a>.</p></td>
+</tr>
+<tr>
+<td><p>FLAPPINGDISABLED</p></td>
+<td><p>Der Host oder Service hat gerade aufgehört zu <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">flattern</a>, weil die
+          Flatter-Erkennung deaktiviert wurde.</p></td>
+</tr>
+<tr>
+<td><p>DOWNTIMESTART</p></td>
+<td><p>Der Host oder Service hat gerade ein <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Downtime</a> begonnen. Weitere
+          Benachrichtigungen werden unterdrückt.</p></td>
+</tr>
+<tr>
+<td><p>DOWNTIMESTOP</p></td>
+<td><p>Der Host oder Service hat gerade eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Downtime</a> beendet.
+          Benachrichtungen über Probleme werden wieder versandt.</p></td>
+</tr>
+<tr>
+<td><p>DOWNTIMECANCELLED</p></td>
+<td><p>Die Phase der <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplanten Downtime</a> für den Host oder Service wurde gerade
+          annulliert. Benachrichtungen über Probleme werden wieder versandt.</p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Hilfreiche Quellen</strong></span></p>
+
+  <p>Es gibt viele Wege, wie Sie Icinga konfigurieren können, damit Benachrichtigungen versandt werden. Sobald Sie dies
+  tun, müssen Sie notwendige Software installieren und Benachrichtigungs-Befehle konfigurieren, bevor Sie diese benutzen können.
+  Hier sind nur ein paar mögliche Benachrichtigungs-Methoden:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>e-Mail</p>
+    </li>
+<li class="listitem">
+      <p>Pager</p>
+    </li>
+<li class="listitem">
+      <p>Telefon (SMS)</p>
+    </li>
+<li class="listitem">
+      <p>WinPopup-Meldung</p>
+    </li>
+<li class="listitem">
+      <p>Yahoo-, ICQ- oder MSN-Sofortnachricht</p>
+    </li>
+<li class="listitem">
+      <p>Audio-Hinweise</p>
+    </li>
+<li class="listitem">
+      <p>etc...</p>
+    </li>
+</ul></div>
+
+  <p>Im Grunde genommen kann alles, was Sie von einer Kommandozeile aus tun können, so angepasst werden, dass Sie es in einem
+  Benachrichtigungs-Befehl nutzen können.</p>
+
+  <p>Wenn Sie nach einer Alternative suchen, um Meldungen per e-Mail an Ihren Pager oder Ihr Handy zu versenden, sollten Sie
+  diese Pakete ausprobieren. Sie können in Verbindung mit Icinga dazu benutzt werden, Benachrichtigungen über ein Modem zu
+  versenden, wenn ein Problem auftritt. Auf diese Weise müssen Sie sich nicht auf e-Mail verlassen, um Benachrichtigungen zu
+  versenden (bedenken Sie, dass e-Mail ggf. *nicht* funktioniert, wenn es ein Netzwerk-Problem gibt). Wir haben diese Pakete nicht
+  selbst ausprobiert, aber andere haben von erfolgreichem Einsatz berichtet...</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="http://www.gnokii.org/" target="_top">Gnokii</a> (SMS-Software, um Nokia-Telefone über das GSM-Netzwerk zu
+      erreichen)</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="http://www.qpage.org/" target="_top">QuickPage</a> (Alphanumerische Pager-Software)</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="http://www.sendpage.org/" target="_top">Sendpage</a> (Paging-Software)</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="http://www.smsclient.org/" target="_top">SMS Client</a> (Kommandozeilen-Utility, um Meldungen auf Pager und
+      Mobiltelefone zu senden)</p>
+    </li>
+</ul></div>
+
+  <p>Wenn Sie eine nicht-traditionelle Methode für Benachrichtigungen ausprobieren möchten, können Sie ggf. Audio-Hinweise
+  nutzen. Wenn Sie Audio-Hinweise auf dem Überwachungs-Rechner (mit synthetischer Stimme) abspielen möchten, probieren Sie <a class="link" href="http://www.cstr.ed.ac.uk/projects/festival/" target="_top">Festival</a>. Wenn Sie den Überwachungs-Rechner lieber in Ruhe
+  lassen und Audio-Hinweise auf einem anderen Rechner abspielen möchten, dann sehen Sie sich die Projekte <a class="link" href="http://radscan.com/nas.html" target="_top">Network Audio System (NAS)</a> und <a class="link" href="http://rplay.doit.org/" target="_top">rplay</a> an.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="networkreachability.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="cgis.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Informationen über die CGIs</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

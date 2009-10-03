@@ -1,0 +1,282 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Icinga aktualisieren</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
+<link rel="prev" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
+<link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Icinga aktualisieren</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="quickstart-idoutils.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 2. Los geht's</th>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Icinga aktualisieren">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="upgrading"></a>Icinga aktualisieren</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Inhalt</strong></span></p>
+
+  <p><a class="link" href="upgrading.html#upgrading-icinga">Aktualisierung von Icinga</a></p>
+
+  <p><a class="link" href="upgrading.html#upgrading-nagios3x">Upgrade von Nagios 3.x</a></p>
+
+  <p><a class="link" href="upgrading.html#upgrading-nagios2x">Upgrade von Nagios 2.x</a></p>
+
+  <p><a class="link" href="upgrading.html#upgrading-rpm">Aktualisierung einer RPM-Installation</a></p>
+
+  <p><a name="upgrading-icinga"></a> <span class="bold"><strong>Aktualisierung von Icinga</strong></span></p>
+
+  <p>Sobald neuere Alpha-, Beta- oder stabile Versionen von Icinga herauskommen, sollten Sie dringend über eine
+  Aktualisierung nachdenken. Neuere Ausgaben enthalten Behebungen kritischer Fehler, so dass es wichtig ist, aktuell zu sein. Wenn
+  Sie bereits Icinga wie in den <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitungen</a> beschrieben aus dem Quellcode
+  installiert haben, dann können Sie einfach neuere Versionen installieren. Sie müssen dazu noch nicht einmal root-Berechtigungen
+  haben, weil bereits alles passiert ist, was als root-Benutzer getan werden muss. Hier der Aktualisierungsprozess...</p>
+
+  <p>Stellen Sie sicher, dass Sie eine gute Datensicherung Ihrer bestehenden Icinga-Installation und der
+  Konfigurationsdateien haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre
+  alte Icinga-Version wiederherstellen.</p>
+
+  <p>Werden Sie der icinga-Benutzer. Debian/Ubuntu-Benutzer sollten <span class="emphasis"><em>sudo -s icinga</em></span>
+  benutzen.</p>
+
+  <pre class="screen"> su -l icinga</pre>
+
+  <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
+
+  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>0.8.4</em></span>.tar.gz</pre>
+
+  <p>Entpacken Sie das Quellcode-Archiv.</p>
+
+  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>0.8.4</em></span>.tar.gz
+ cd icinga-<span class="emphasis"><em>0.8.4</em></span> </pre>
+
+  <p>Starten Sie das Icinga-configure-Script mit den gleichen Optionen wie bei der letzten Installation, z.B. so:</p>
+
+  <pre class="screen"> ./configure --with-command-group=nagcmd</pre>
+
+  <p>Kompilieren Sie den Icinga-Quellcode.</p>
+
+  <pre class="screen"> make all</pre>
+
+  <p>Installieren Sie aktualisierte Programme, Dokumentation und Web-Interface. Ihre vorhandenen Konfigurationsdaten werden in
+  diesem Schritt nicht überschrieben.</p>
+
+  <pre class="screen"> make install</pre>
+
+  <p>Überprüfen Sie Ihre Konfigurationsdateien und starten Sie Icinga erneut.</p>
+
+  <pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+ /etc/init.d/icinga restart</pre>
+
+  <p>Das war's - Sie sind fertig!</p>
+
+  <p><a name="upgrading-nagios3x"></a> <span class="bold"><strong>Upgrade von Nagios 3.x</strong></span></p>
+
+  <p>Icinga ist aus Nagios 3.x hervorgegangen, so dass die Aktualisierung problemlos sein sollte.</p>
+
+  <p>Falls Sie einen Upgrade von Nagios-Version 3.0.x durchführen, dann fehlt Ihnen ggf. PHP.</p>
+
+  <p><span class="emphasis"><em>Debian / Ubuntu</em></span> </p>
+<pre class="screen"> apt-get install php5 libapache2-mod-php5</pre>
+
+  <p><span class="emphasis"><em>Fedora / RedHat</em></span></p>
+
+  <pre class="screen"> yum install php mod_php</pre>
+
+  <p><span class="emphasis"><em>openSuSE / SLES:</em></span> Nutzen Sie yast zur Installation der Pakete <span class="emphasis"><em>php5</em></span> und
+  <span class="emphasis"><em>apache2-mod_php5</em></span>.</p>
+
+  <p>Stellen Sie sicher, dass Sie eine gute Datensicherung Ihrer bestehenden Nagios-Installation und der
+  Konfigurationsdateien haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre
+  alte Nagios-Version wiederherstellen.</p>
+
+  <p>Werden Sie der nagios-Benutzer. Debian/Ubuntu-Benutzer sollten <span class="emphasis"><em>sudo -s nagios</em></span>
+  benutzen.</p>
+
+  <pre class="screen"> su -l nagios</pre>
+
+  <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
+
+  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>0.8.4</em></span>.tar.gz</pre>
+
+  <p>Entpacken Sie das Quellcode-Archiv.</p>
+
+  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>0.8.4</em></span>.tar.gz
+ cd icinga-<span class="emphasis"><em>0.8.4</em></span> </pre>
+
+  <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim ./configure von Nagios benutzt haben.
+  Den Aufruf finden Sie in der Datei config.log. Beispiel:</p>
+
+  <pre class="screen"> ./configure --with-command-group=nagcmd</pre>
+
+  <p>Kompilieren Sie den Icinga-Quellcode.</p>
+
+  <pre class="screen"> make all</pre>
+
+  <p>Installieren Sie aktualisierte Programme, Dokumentation, Web-Interface und das Init-Script. Ihre vorhandenen
+  Konfigurationsdaten werden in diesem Schritt nicht überschrieben.</p>
+
+  <pre class="screen"> make install
+ make install-init</pre>
+
+  <p>Kopieren Sie Ihre Konfigurationsdateien nach /usr/local/icinga/etc bzw. /usr/local/icinga/etc/object. Benennen Sie die
+  Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.conf</em></span> in <span class="emphasis"><em>icinga.conf</em></span> um und ändern Sie in
+  /usr/local/icinga/etc/icinga.cfg die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group".</p>
+
+  <p>Überprüfen Sie Ihre Konfigurationsdateien und starten Sie Icinga.</p>
+
+  <pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+ /etc/init.d/icinga start</pre>
+
+  <p>Das war's - Sie sind fertig!</p>
+
+  <p><a name="upgrading-nagios2x"></a> <span class="bold"><strong>Upgrade von Icinga 2.x</strong></span></p>
+
+  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 0.8.4 zu aktualisieren. Die
+  Aktualisierung ist im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre
+  Konfigurationsdateien ein wenig ändern, damit sie mit Icinga 0.8.4 funktionieren:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Die alte <span class="emphasis"><em>service_reaper_frequency</em></span>-Variable in der Hauptkonfigurationsdatei wurde umbenannt in
+      <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>.</p>
+    </li>
+<li class="listitem">
+      <p>Das alte <span class="emphasis"><em>$NOTIFICATIONNUMBER$</em></span>-Makro entfällt zugunsten der <a class="link" href="macrolist.html#macrolist-hostnotificationnumber">$HOSTNOTIFICATIONNUMBER$</a>- und <a class="link" href="macrolist.html#macrolist-servicenotificationnumber">$SERVICENOTIFICATIONNUMBER$</a>-Makros.</p>
+    </li>
+<li class="listitem">
+      <p>Die alte <span class="emphasis"><em>parallelize</em></span>-Direktive in Service-Definitionen ist veraltet und wird nicht länger
+      benutzt, weil alle Service-Prüfungen parallel ablaufen.</p>
+    </li>
+<li class="listitem">
+      <p>Die alte <span class="emphasis"><em>aggregate_status_updates</em></span>-Option wurde entfernt. Alle Statusdatei-Aktualisierungen werden
+      nun mit einem minimalen Intervall von einer Sekunde zusammengefasst.</p>
+    </li>
+<li class="listitem">
+      <p>Erweiterte Host- und erweiterte Service-Definitionen sind veraltet. Sie werden noch von Icinga gelesen und
+      verarbeitet, aber es wird empfohlen, dass Sie diese Direktiven in die entsprechenden Host- und Service-Definitionen
+      verschieben.</p>
+    </li>
+<li class="listitem">
+      <p>Die alte <span class="emphasis"><em>downtime_file</em></span>-Dateivariable in der Hauptkonfigurationsdatei wird nicht länger
+      unterstützt, weil Einträge von geplanten Ausfallzeiten (downtimes) nun in der <a class="link" href="configmain.html#configmain-state_retention_file">Aufbewahrungsdatei</a> (retention file) gespeichert werden. Um bestehende
+      Einträge zu erhalten, stoppen Sie Icinga 2.x und hängen Sie den Inhalt Ihrer alten Downtime-Datei an das "retention
+      file".</p>
+    </li>
+<li class="listitem">
+      <p>Die alte <span class="emphasis"><em>comment_file</em></span>-Dateivariable in der Hauptkonfigurationsdatei wird nicht länger
+      unterstützt, weil Kommentare nun in der <a class="link" href="configmain.html#configmain-state_retention_file">Aufbewahrungsdatei</a> (retention
+      file) gespeichert werden. Um bestehende Einträge zu erhalten, stoppen Sie Icinga 2.x und hängen Sie den Inhalt Ihrer
+      alten Kommentar-Datei an die "Aufbewahrungsdatei" (retention file).</p>
+    </li>
+<li class="listitem">
+      <p>Die Hauptkonfigurationsdatei heißt nun icinga.cfg. Innerhalb der Datei ist "nagios_user" gegen "icinga_user" und
+      nagios_group" gegen "icinga_group" auszutauschen.</p>
+    </li>
+</ul></div>
+
+  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="Was gibt es Neues">Was gibt's Neues</a>"-Abschnitt in der
+  Dokumentation lesen. Er beschreibt all die Änderungen am Icinga-Code.</p>
+
+  <p><a name="upgrading-rpm"></a> <span class="bold"><strong>Aktualisierung einer RPM-Installation</strong></span></p>
+
+  <p>Wenn Sie momentan eine RPM- oder Debian/Ubuntu-APT-paketbasierte Nagios-Installation haben und nun
+  den Übergang zu einer Installation aus dem offiziellen Quellcode machen wollen, dann sind hier die grundlegenden
+  Schritte:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Sichern Sie Ihre existierende Nagios-Installation</p>
+    </li>
+<li class="listitem">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <p>Konfigurationsdateien</p>
+          </li>
+<li class="listitem">
+            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                  <p>Hauptkonfigurationsdatei (normalerweise <span class="emphasis"><em>nagios.cfg</em></span>)</p>
+                </li>
+<li class="listitem">
+                  <p>Ressource-Konfigurationsdatei (normalerweise <span class="emphasis"><em>resource.cfg</em></span>)</p>
+                </li>
+<li class="listitem">
+                  <p>CGI-Konfigurationsdatei (normalerweise <span class="emphasis"><em>cgi.cfg</em></span>)</p>
+                </li>
+<li class="listitem">
+                  <p>all Ihre Objektdefinitionsdateien</p>
+                </li>
+</ul></div>
+          </li>
+<li class="listitem">
+            <p>Aufbewahrungsdatei (normalerweise <span class="emphasis"><em>retention.dat</em></span>)</p>
+          </li>
+<li class="listitem">
+            <p>die aktuelle Nagios-Protokolldatei (normalerweise <span class="emphasis"><em>nagios.log</em></span>)</p>
+          </li>
+<li class="listitem">
+            <p>archivierte Nagios-Protokolldateien</p>
+          </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p>Deinstallieren Sie die originalen RPM- oder APT-Pakete</p>
+    </li>
+<li class="listitem">
+      <p>Installieren Sie Icinga aus dem Quellcode, indem Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> folgen</p>
+    </li>
+<li class="listitem">
+      <p>Sichern Sie Ihre Original-Nagios-Konfigurationsdateien, Aufbewahrungs- und Protokolldateien wieder
+      zurück</p>
+    </li>
+<li class="listitem">
+      <p>Benennen Sie die Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.conf</em></span> in <span class="emphasis"><em>icinga.conf</em></span> um und
+      ändern Sie in /usr/local/icinga/etc/icinga.cfg die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in
+      "icinga_group".</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="verifyconfig.html" title="Überprüfen Ihrer Icinga-Konfiguration">Überprüfen</a> Sie Ihre Konfiguration und <a class="link" href="startstop.html" title="Icinga starten und stoppen">starten</a> Sie
+      Icinga</p>
+    </li>
+</ol></div>
+
+  <p>Beachten Sie, dass verschiedene RPM- oder APT-Pakete Nagios auf verschiedene Weisen oder an verschiedenen Orten
+  installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das
+  Original-RPM- oder APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="quickstart-idoutils.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Icinga-Schnellstart mit IDOUtils </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Windows-Maschinen überwachen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
