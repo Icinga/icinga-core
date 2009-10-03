@@ -24,7 +24,7 @@ $hostStateCode = array ('0' => 'UP',
 
 // Load required files
 require_once('icinga-api/IcingaApi.php');
-require_once('icinga-api/parser/Ido2dbParser.php');
+require_once('icinga-api/contrib/ido2dbparser/Ido2dbParser.php');
 
 // Instance ido2db parser
 $ido2dbCfg = new Ido2dbParser();
