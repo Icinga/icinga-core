@@ -121,6 +121,14 @@ fi
 case "$1" in
 
 	start)
+		# Check if icinga is already running
+	        $0 status > /dev/null
+                if [ $? -eq 0 ]; then
+                        pid_icinga
+                        echo "Icinga is already running. PID: $IcingaPID"
+                        exit 1
+                fi
+
 		echo -n "Starting icinga:"
 		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
 		if [ $? -eq 0 ]; then
