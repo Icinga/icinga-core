@@ -1731,7 +1731,7 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
         data[19] = (void *) &return_code;
         data[20] = (void *) &es[2];
         data[21] = (void *) &es[3];
-        data[22] = (void *) &es[3];
+        data[22] = (void *) &es[4];
 
         result = ido2db_query_insert_or_update_hostcheckdata_add(idi, data);
 	dbi_result_free(idi->dbinfo.dbi_result);
