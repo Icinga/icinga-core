@@ -846,7 +846,7 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 	/* get the current time */
 	time(&current_time);
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() trim_db_interval=%lu\n", idi->dbinfo.trim_db_interval);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() max_timedevents_age=%lu, max_systemcommands_age=%lu, max_servicechecks_age=%lu, max_hostchecks_age=%lu, max_eventhandlers_age=%lu, max_externalcommands_age=%lu, trim_db_interval=%lu\n", idi->dbinfo.max_timedevents_age, idi->dbinfo.max_systemcommands_age, idi->dbinfo.max_servicechecks_age, idi->dbinfo.max_hostchecks_age, idi->dbinfo.max_eventhandlers_age, idi->dbinfo.max_externalcommands_age, idi->dbinfo.trim_db_interval);
 
 	/* trim tables */
 	if (((unsigned long) current_time - idi->dbinfo.trim_db_interval) > (unsigned long) idi->dbinfo.last_table_trim_time) {
@@ -861,7 +861,7 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 		if (idi->dbinfo.max_eventhandlers_age > 0L)
 			ndo2db_db_trim_data_table(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], "start_time", (time_t) ((unsigned long) current_time - idi->dbinfo.max_eventhandlers_age));
 		if(idi->dbinfo.max_externalcommands_age>0L)
-			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],"entry_time",(time_t)((unsigned long)current_time-idi->dbinfo.max_externalcommands_age));
+			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],"entry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_externalcommands_age));
 		idi->dbinfo.last_table_trim_time = current_time;
 	}
 

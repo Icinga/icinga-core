@@ -411,7 +411,8 @@ int ndo2db_process_config_var(char *arg){
 	else if(!strcmp(var,"max_debug_file_size"))
 		ndo2db_max_debug_file_size=strtoul(val,NULL,0);
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() trim_db_interval=%lu\n", ndo2db_db_settings.trim_db_interval);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() config set: lock_file=%s, socket_type=%d, socket_name=%s, tcp_port=%d, db_servertype=%d, db_host=%s, db_port=%d, db_user=%s, db_pass=%s, db_name=%s, db_prefix=%s, max_timedevents_age=%lu, max_systemcommands_age=%lu, max_servicechecks_age=%lu, max_hostchecks_age=%lu, max_eventhandlers_age=%lu, max_externalcommands_age=%lu, trim_db_interval=%lu, ndo2db_user=%s, ndo2db_group=%s, debug_file=%s, debug_level=%d, debug_verbosity=%d, max_debug_file_size=%lu\n", lock_file, ndo2db_socket_type, ndo2db_socket_name, ndo2db_tcp_port, ndo2db_db_settings.server_type, ndo2db_db_settings.host, ndo2db_db_settings.port, ndo2db_db_settings.username, ndo2db_db_settings.password, ndo2db_db_settings.dbname, ndo2db_db_settings.dbprefix, ndo2db_db_settings.max_timedevents_age, ndo2db_db_settings.max_systemcommands_age, ndo2db_db_settings.max_servicechecks_age, ndo2db_db_settings.max_hostchecks_age, ndo2db_db_settings.max_eventhandlers_age, ndo2db_db_settings.max_externalcommands_age, ndo2db_db_settings.trim_db_interval, ndo2db_user, ndo2db_group, ndo2db_debug_level, ndo2db_debug_verbosity, ndo2db_max_debug_file_size);
+
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_process_config_var() end\n");
 
 	return NDO_OK;
