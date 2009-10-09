@@ -127,6 +127,15 @@ int main(int argc, char **argv){
 		exit(1);
 	        }
 
+        /* initialize variables */
+        ndo2db_initialize_variables();
+
+        /* process config file */
+        if(ndo2db_process_config_file(ndo2db_config_file)!=NDO_OK){
+		printf("Error processing config file '%s'.\n",ndo2db_config_file);
+		exit(1);
+        }
+
 #ifdef HAVE_SSL
 	        /* initialize SSL */
 	        if(use_ssl==NDO_TRUE){
@@ -174,15 +183,6 @@ int main(int argc, char **argv){
 	        	}
 	        /*Fin Hack SSL*/
 #endif
-
-	/* initialize variables */
-	ndo2db_initialize_variables();
-
-	/* process config file */
-	if(ndo2db_process_config_file(ndo2db_config_file)!=NDO_OK){
-		printf("Error processing config file '%s'.\n",ndo2db_config_file);
-		exit(1);
-	        }
 
 	/* make sure we're good to go */
 	if(ndo2db_check_init_reqs()!=NDO_OK){
@@ -472,8 +472,8 @@ int ndo2db_process_config_var(char *arg){
 		ndo2db_db_settings.max_externalcommands_age=strtoul(val,NULL,0)*60;
 
 	else if(!strcmp(var,"trim_db_interval"))
-		ndo2db_db_settings.trim_db_interval=strtoul(val,NULL,0); 
-	
+		ndo2db_db_settings.trim_db_interval=strtoul(val,NULL,0);
+
 	else if(!strcmp(var,"ndo2db_user"))
 		ndo2db_user=strdup(val);
 	else if(!strcmp(var,"ndo2db_group"))
@@ -491,7 +491,7 @@ int ndo2db_process_config_var(char *arg){
 		ndo2db_max_debug_file_size=strtoul(val,NULL,0);
 	else if(!strcmp(var,"use_ssl")){
 		if (strlen(val) == 1) {
-			if (isdigit((int)val[strlen(val)-1]) == NDO_TRUE)
+			if (isdigit((int)val[strlen(val)-1]) != NDO_FALSE)
 				use_ssl = atoi(val);
 			else
 				use_ssl = 0;
@@ -964,28 +964,32 @@ int ndo2db_wait_for_connections(void){
 
 	/* accept connections... */
 	while(1){
-		new_sd=accept(ndo2db_sd,(ndo2db_socket_type==NDO_SINK_TCPSOCKET)?(struct sockaddr *)&client_address_i:(struct sockaddr *)&client_address_u,(socklen_t *)&client_address_length);
 
-		/* ToDo:  Hendrik 08/12/2009
-		 * If both ends think differently about SSL encryption, data from a ndomod will
-		 * be lost forever (likewise on database errors/misconfiguration)
-		 * This seems a good place to output some information from which client
-		 * a possible misconfiguration comes from.
-		 * Logging the ip address together with the ndomod instance name might be
-		 * a great hint for further error hunting
-		 */
+		while(1){
 
-		if(new_sd>=0)
-			/* data available */
-			break;
-		if(errno == EINTR) {
-			/* continue */
+			new_sd=accept(ndo2db_sd,(ndo2db_socket_type==NDO_SINK_TCPSOCKET)?(struct sockaddr *)&client_address_i:(struct sockaddr *)&client_address_u,(socklen_t *)&client_address_length);
+
+			/* ToDo:  Hendrik 08/12/2009
+			 * If both ends think differently about SSL encryption, data from a ndomod will
+			 * be lost forever (likewise on database errors/misconfiguration)
+			 * This seems a good place to output some information from which client
+			 * a possible misconfiguration comes from.
+			 * Logging the ip address together with the ndomod instance name might be
+			 * a great hint for further error hunting
+			 */
+
+			if(new_sd>=0)
+				/* data available */
+				break;
+			if(errno == EINTR) {
+				/* continue */
 			}
-		else {
- 			perror("Accept error");
- 			ndo2db_cleanup_socket();
-			return NDO_ERROR;
+			else {
+				perror("Accept error");
+				ndo2db_cleanup_socket();
+				return NDO_ERROR;
 			}
+		}
 
 		if(ido2db_run_foreground == NDO_FALSE) {
 			/* fork... */
