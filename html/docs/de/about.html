@@ -1,0 +1,147 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Über Icinga</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch01.html" title="Kapitel 1. Über">
+<link rel="prev" href="ch01.html" title="Kapitel 1. Über">
+<link rel="next" href="whatsnew.html" title="Was gibt es Neues">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Über Icinga</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch01.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 1. Über</th>
+<td width="20%" align="right"> <a accesskey="n" href="whatsnew.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Über Icinga">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="about"></a>Über Icinga</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Was ist das?</strong></span></p>
+
+  <p>Icinga ist eine System- und Netzwerküberwachungsapplikation. Sie überwacht Hosts und Services, die Sie angeben, und
+  alarmiert Sie, wenn sich die Dinge verschlechtern und wenn sie wieder besser werden.</p>
+
+  <p>Icinga läuft unter <a class="link" href="" target="_top">Linux</a>, allerdings sollte es unter den meisten anderen
+  Unix-Derivaten ebenfalls funktionieren.</p>
+
+  <p>Einige der vielen Features von Icinga umfassen:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Überwachen von Netzwerkdiensten (<code class="systemitem">SMTP</code>, <code class="systemitem">POP3</code>, <code class="systemitem">HTTP</code>, <code class="systemitem">NNTP</code>, <code class="systemitem">PING</code>,
+      etc.)</p>
+    </li>
+<li class="listitem">
+      <p>Überwachen von Host-Ressourcen (Prozessorauslastung, Diskbelegung, usw.)</p>
+    </li>
+<li class="listitem">
+      <p>Einfaches Plugin-Design, das es Benutzern erlaubt, schnell eigene Service-Prüfungen zu entwickeln</p>
+    </li>
+<li class="listitem">
+      <p>Parallel laufende Service-Prüfungen</p>
+    </li>
+<li class="listitem">
+      <p>Die Möglichkeit, Netzwerk-Host-Hierarchien mit Hilfe von "Eltern"-Hosts zu definieren, um die Erkennung von Hosts zu
+      erlauben, die "down" sind und die Unterscheidung zwischen Hosts, die "down" bzw. unerreichbar sind</p>
+    </li>
+<li class="listitem">
+      <p>Benachrichtigung von Kontakten, wenn Service- oder Host-Probleme auftreten bzw. gelöst werden (über e-Mail, Pager oder
+      benutzerdefinierte Methoden)</p>
+    </li>
+<li class="listitem">
+      <p>Die Möglichkeit, Routinen zur Ereignisbehandlung (Eventhandler) zu definieren, die bei Host- oder Service-Ereignissen
+      ablaufen, um proaktive Problemlösungen zu erlauben</p>
+    </li>
+<li class="listitem">
+      <p>Automatische Rotation von Protokolldateien</p>
+    </li>
+<li class="listitem">
+      <p>Unterstützung, um redundante Überwachungs-Hosts zu implementieren</p>
+    </li>
+<li class="listitem">
+      <p>Optionales Web-Interface, um den aktuellen Netzwerkstatus, Benachrichtigungs- und Problemverläufe, Protokolldateien
+      usw. anzusehen</p>
+    </li>
+</ul></div>
+
+  <p><a name="requirements"></a> <span class="bold"><strong>Systemvoraussetzungen</strong></span></p>
+
+  <p><span class="emphasis"><em>Die einzige Voraussetzung für den Betrieb von Icinga ist eine Maschine, auf der Linux (oder eine
+  UNIX-Variante) läuft und ein C-Compiler.</em></span> Voraussichtlich werden Sie auch noch TCP/IP konfigurieren wollen, weil die
+  meisten Service-Prüfungen über das Netzwerk durchgeführt werden.</p>
+
+  <p>Sie <span class="emphasis"><em>müssen</em></span> nicht die CGIs benutzen, die in Icinga enthalten sind. Wenn Sie sich allerdings
+  entscheiden, sie zu benutzen, muss zusätzlich die folgende Software installiert sein...</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Ein Web-Server (vorzugsweise <a class="link" href="http://www.apache.org" target="_top">Apache</a>)</p>
+    </li>
+<li class="listitem">
+      <p>Thomas Boutells <a class="link" href="http://www.boutell.com/gd" target="_top">gd library</a> Version 1.6.3 oder höher (wird benötigt
+      von den <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- und <a class="link" href="cgis.html#cgis-trends_cgi">trends</a>-CGIs)</p>
+    </li>
+<li class="listitem">
+      <p>PHP</p>
+    </li>
+</ol></div>
+
+  <p><a name="licensing"></a> <span class="bold"><strong>Lizenzierung</strong></span></p>
+
+  <p>Icinga ist unter den Bedingungen der <a class="link" href="http://www.gnu.org/copyleft/gpl.html" target="_top">GNU General Public
+  License</a> Version 2 lizenziert, wie sie von der <a class="link" href="http://www.fsf.org/" target="_top">Free Software Foundation</a>
+  veröffentlicht wird. (A.d.Ü.: eine deutsche Übersetzung finden Sie <a class="link" href="http://www.gnu.de//documents/gpl-2.0.de.html" target="_top">hier</a>.) Die Lizenz gibt Ihnen das Recht, Icinga unter
+  bestimmten Bedingungen zu kopieren, zu verteilen und/oder zu modifizieren. Lesen Sie die 'LICENSE'-Datei in der
+  Icinga-Distribution oder lesen Sie die (englische) <a class="link" href="http://www.gnu.org/copyleft/gpl.html" target="_top">Online-Version
+  der Lizenz</a> für nähere Details.</p>
+
+  <p>Icinga wird geliefert WIE ES IST OHNE GARANTIE IRGENDEINER ART, EINSCHLIESSLICH DER GARANTIE FÜR DESIGN,
+  VERMARKTBARKEIT ODER DER TAUGLICHKEIT FÜR EINEN BESTIMMTEN ZWECK.</p>
+
+  <p><a name="acknowledgements"></a> <span class="bold"><strong>Danksagungen</strong></span></p>
+
+  <p>Verschiedene Leute haben zu Icinga beigetragen, z.B. durch Meldung von Fehlern, vorschlagen von Verbesserungen,
+  schreiben von Plugins usw.</p>
+
+  <p><a name="downloading"></a> <span class="bold"><strong>Beschaffen der neuesten Version</strong></span></p>
+
+  <p>Sie können auf <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a> nach neuen Versionen von Icinga
+  suchen.</p>
+
+  <p>Icinga und das Icinga-Logo sind Markenzeichen von icinga.org. Alle anderen Markenzeichen,
+  Dienstmarkenzeichen, registrierte Markenzeichen und registrierte Dienstmarkenzeichen können das Eigentum der jeweiligen Inhaber
+  sein.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch01.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch01.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="whatsnew.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Kapitel 1. Über </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Was gibt es Neues</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

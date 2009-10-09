@@ -1,0 +1,302 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Object Configuration Overview</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
+<link rel="prev" href="configmain.html" title="Main Configuration File Options">
+<link rel="next" href="objectdefinitions.html" title="Object Definitions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Object Configuration Overview</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="configmain.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
+<td width="20%" align="right"> <a accesskey="n" href="objectdefinitions.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Object Configuration Overview">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="configobject"></a><a name="config_object"></a>Object Configuration Overview</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>What Are Objects?</strong></span></p>
+
+  <p>Objects are all the elements that are involved in the monitoring and notification logic. Types of objects include:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Services</p>
+    </li>
+<li class="listitem">
+      <p>Service Groups</p>
+    </li>
+<li class="listitem">
+      <p>Hosts</p>
+    </li>
+<li class="listitem">
+      <p>Host Groups</p>
+    </li>
+<li class="listitem">
+      <p>Contacts</p>
+    </li>
+<li class="listitem">
+      <p>Contact Groups</p>
+    </li>
+<li class="listitem">
+      <p>Commands</p>
+    </li>
+<li class="listitem">
+      <p>Time Periods</p>
+    </li>
+<li class="listitem">
+      <p>Notification Escalations</p>
+    </li>
+<li class="listitem">
+      <p>Notification and Execution Dependencies</p>
+    </li>
+</ul></div>
+
+  <p>More information on what objects are and how they relate to each other can be found below.</p>
+
+  <p><span class="bold"><strong>Where Are Objects Defined?</strong></span></p>
+
+  <p>Objects can be defined in one or more configuration files and/or directories that you specify using the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> and/or <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directives in the main
+  configuration file.</p>
+
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>When you follow <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>, several sample object configuration
+    files are placed in <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>. You can use these sample files to see how object
+    inheritance works and learn how to define your own object definitions.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>How Are Objects Defined?</strong></span></p>
+
+  <p>Objects are defined in a flexible template format, which can make it much easier to manage your Icinga
+  configuration in the long term. Basic information on how to define objects in your configuration files can be found <a class="link" href="objectdefinitions.html" title="Object Definitions">here</a>.</p>
+
+  <p>Once you get familiar with the basics of how to define objects, you should read up on <a class="link" href="objectinheritance.html" title="Object Inheritance">object inheritance</a>, as it will make your configuration more robust for the future. Seasoned
+  users can exploit some advanced features of object definitions as described in the documentation on <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object tricks</a>.</p>
+
+  <p><a name="configobject.xml-objectoverview"></a></p>
+
+  <p><span class="bold"><strong>Objects Explained</strong></span></p>
+
+  <p>Some of the main object types are explained in greater detail below...</p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p> <a class="link" href="objectdefinitions.html#objectdefinitions-host">
+               
+
+              <span class="bold"><strong>Hosts</strong></span>
+
+               
+            </a> are one of the central objects in the monitoring logic. Important attributes of hosts are as follows:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>Hosts are usually physical devices on your network (servers, workstations, routers, switches, printers,
+                etc).</p>
+              </li>
+<li class="listitem">
+                <p>Hosts have an address of some kind (e.g. an IP or MAC address).</p>
+              </li>
+<li class="listitem">
+                <p>Hosts have one or more more services associated with them.</p>
+              </li>
+<li class="listitem">
+                <p>Hosts can have parent/child relationships with other hosts, often representing real-world network
+                connections, which is used in the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">network reachability</a> logic.</p>
+              </li>
+</ul></div> <p><a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">
+               
+
+              <span class="bold"><strong>Host Groups</strong></span>
+
+               
+            </a> are groups of one or more hosts. Host groups can make it easier to (1) view the status of related hosts in the
+          Icinga web interface and (2) simplify your configuration through the use of <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object
+          tricks</a>.</p>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
+</tr></tbody>
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p> <a class="link" href="objectdefinitions.html#objectdefinitions-service">
+               
+
+              <span class="bold"><strong>Services</strong></span>
+
+               
+            </a> are one of the central objects in the monitoring logic. Services are associated with hosts and can be:</p>
+          <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>Attributes of a host (CPU load, disk usage, uptime, etc.)</p>
+              </li>
+<li class="listitem">
+                <p>Services provided by the host (HTTP, POP3, FTP, SSH, etc.)</p>
+              </li>
+<li class="listitem">
+                <p>Other things associated with the host (DNS records, etc.)</p>
+              </li>
+</ul></div> <p><a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">
+               
+
+              <span class="bold"><strong>Service Groups</strong></span>
+
+               
+            </a> are groups of one or more services. Service groups can make it easier to (1) view the status of related
+          services in the Icinga web interface and (2) simplify your configuration through the use of <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object tricks</a>.</p>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
+</tr></tbody>
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p> <a class="link" href="objectdefinitions.html#objectdefinitions-contact">
+               
+
+              <span class="bold"><strong>Contacts</strong></span>
+
+               
+            </a> are people involved in the notification process:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>Contacts have one or more notification methods (cellphone, pager, email, instant messaging, etc.)</p>
+              </li>
+<li class="listitem">
+                <p>Contacts receive notifications for hosts and service they are responsible for</p>
+              </li>
+</ul></div> <p><a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">
+               
+
+              <span class="bold"><strong>Contact Groups</strong></span>
+
+               
+            </a> are groups of one or more contacts. Contact groups can make it easier to define all the people who get
+          notified when certain host or service problems occur.</p>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> </p></td>
+</tr></tbody>
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p> <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">
+               
+
+              <span class="bold"><strong>Timeperiods</strong></span>
+
+               
+            </a> are are used to control:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>When hosts and services can be monitored</p>
+              </li>
+<li class="listitem">
+                <p>When contacts can receive notifications</p>
+              </li>
+</ul></div> <p>Information on how timeperiods work can be found <a class="link" href="timeperiods.html" title="Time Periods">here</a>.</p>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span> </p></td>
+</tr></tbody>
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p> <a class="link" href="objectdefinitions.html#objectdefinitions-command">
+               
+
+              <span class="bold"><strong>Commands</strong></span>
+
+               
+            </a> are used to tell Icinga what programs, scripts, etc. it should execute to perform:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>Host and service checks</p>
+              </li>
+<li class="listitem">
+                <p>Notifications</p>
+              </li>
+<li class="listitem">
+                <p>Event handlers</p>
+              </li>
+<li class="listitem">
+                <p>and more...</p>
+              </li>
+</ul></div>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-commands.png"></span> </p></td>
+</tr></tbody>
+</table>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="configmain.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="objectdefinitions.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Main Configuration File Options </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Object Definitions</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Icinga Version 0.8.4 Dokumentation</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="next" href="ch01.html" title="Kapitel 1. Über">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Icinga Version 0.8.4 Dokumentation</th></tr>
+<tr>
+<td width="20%" align="left"> </td>
+<th width="60%" align="center"> </th>
+<td width="20%" align="right"> <a accesskey="n" href="ch01.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div lang="de" class="book" title="Icinga Version 0.8.4 Dokumentation">
+<div class="titlepage">
+<div>
+<div><h1 class="title">
+<a name="Icinga"></a><a name="Icinga.xml"></a>Icinga Version 0.8.4 Dokumentation</h1></div>
+<div><p class="copyright">Copyright © 2009 Icinga Development Team</p></div>
+<div><div class="legalnotice" title="Rechtlicher Hinweis">
+<a name="id3658297"></a>
+    <p>
+      Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the 'LICENSE' file in the Icinga distribution or read the online version of the license for more details.
+    </p>
+    <p>
+      Icinga is provided <span class="quote">„<span class="quote">AS IS</span>“</span> with <span class="quote">„<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>“</span>
+    </p>
+  </div></div>
+<div><div class="legalnotice" title="Rechtlicher Hinweis">
+<a name="id3658172"></a>
+    <p>
+      Nagios and the Nagios logo are registered trademarks of Ethan Galstad. All other trademarks, servicemarks, registered trademarks, and registered servicemarks mentioned herein may be the property of their respective owner(s). The information contained herein is provided <span class="quote">„<span class="quote">AS IS</span>“</span> with <span class="quote">„<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>“</span>
+    </p>
+  </div></div>
+<div><p class="pubdate">2009.09.27</p></div>
+<div><div class="revhistory"><table border="1" width="100%" summary="Revision history">
+<tr><th align="left" valign="top" colspan="2"><b>Versionsgeschichte</b></th></tr>
+    <tr>
+<td align="left">Version 0.1</td>
+<td align="left">2009-09-27</td>
+</tr>
+<tr><td align="left" colspan="2">First Release</td></tr>
+  </table></div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Inhaltsverzeichnis</b></p>
+<dl>
+<dt><span class="chapter"><a href="ch01.html">1. Über</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="about.html">Über Icinga</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html">Was gibt es Neues</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch02.html">2. Los geht's</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="beginners.html">Hinweise für Neulinge</a></span></dt>
+<dt><span class="section"><a href="quickstart.html">Schnellstart-Installationsanleitungen</a></span></dt>
+<dt><span class="section"><a href="quickstart-icinga.html">Icinga Quickstart</a></span></dt>
+<dt><span class="section"><a href="quickstart-idoutils.html">Icinga-Schnellstart mit IDOUtils</a></span></dt>
+<dt><span class="section"><a href="upgrading.html">Icinga aktualisieren</a></span></dt>
+<dt><span class="section"><a href="monitoring-windows.html">Windows-Maschinen überwachen</a></span></dt>
+<dt><span class="section"><a href="monitoring-linux.html">Linux/Unix-Rechner überwachen</a></span></dt>
+<dt><span class="section"><a href="monitoring-netware.html">Netware-Server überwachen</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html">Netzwerk-Drucker überwachen</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html">Router und Switches überwachen</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html">Öffentlich zugängliche Dienste überwachen</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch03.html">3. Icinga konfigurieren</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="config.html">Konfigurationsüberblick</a></span></dt>
+<dt><span class="section"><a href="configmain.html">Optionen der Hauptkonfigurationsdatei</a></span></dt>
+<dt><span class="section"><a href="configobject.html">Überblick Objektkonfiguration</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html">Objektdefinitionen</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html">Maßgeschneiderte Objektvariablen</a></span></dt>
+<dt><span class="section"><a href="configcgi.html">Optionen CGI-Konfigurationsdatei</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html">Authentifizierung und Autorisierung in den CGIs</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch04.html">4. Icinga starten/stoppen/prüfen</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="verifyconfig.html">Überprüfen Ihrer Icinga-Konfiguration</a></span></dt>
+<dt><span class="section"><a href="startstop.html">Icinga starten und stoppen</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch05.html">5. Die Grundlagen</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="plugins.html">Icinga Plugins</a></span></dt>
+<dt><span class="section"><a href="macros.html">Makros verstehen und wie sie arbeiten</a></span></dt>
+<dt><span class="section"><a href="macrolist.html">Standard-Makros in Icinga</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html">Host-Prüfungen (Host checks)</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html">Service-Prüfungen (Service Checks)</a></span></dt>
+<dt><span class="section"><a href="activechecks.html">Aktive Prüfungen (Active Checks)</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html">Passive Prüfungen (Passive Checks)</a></span></dt>
+<dt><span class="section"><a href="statetypes.html">Statustypen</a></span></dt>
+<dt><span class="section"><a href="timeperiods.html">Zeitfenster</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html">Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</a></span></dt>
+<dt><span class="section"><a href="notifications.html">Benachrichtigungen</a></span></dt>
+<dt><span class="section"><a href="cgis.html">Informationen über die CGIs</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch06.html">6. Fortgeschrittene Themen</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="extcommands.html">Externe Befehle</a></span></dt>
+<dt><span class="section"><a href="eventhandlers.html">Eventhandler</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html">sprunghafte Services</a></span></dt>
+<dt><span class="section"><a href="freshness.html">Service- und Host-Frische-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="distributed.html">Verteilte Überwachung</a></span></dt>
+<dt><span class="section"><a href="redundancy.html">Redundante und Failover-Netzwerk-Überwachung</a></span></dt>
+<dt><span class="section"><a href="flapping.html">Erkennung und Behandlung von Status-Flattern</a></span></dt>
+<dt><span class="section"><a href="escalations.html">Benachrichtigungseskalationen</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html">Bereitschafts-Rotation</a></span></dt>
+<dt><span class="section"><a href="clusters.html">Service- und Host-Gruppen überwachen</a></span></dt>
+<dt><span class="section"><a href="dependencies.html">Host- und Service-Abhängigkeiten</a></span></dt>
+<dt><span class="section"><a href="stalking.html">Status Stalking</a></span></dt>
+<dt><span class="section"><a href="perfdata.html">Performance-Daten</a></span></dt>
+<dt><span class="section"><a href="downtime.html">Geplante Ausfallzeiten</a></span></dt>
+<dt><span class="section"><a href="embeddedperl.html">Benutzen des Embedded Perl Interpreters</a></span></dt>
+<dt><span class="section"><a href="adaptive.html">Adaptive Überwachung</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html">Vorausschauende Abhängigkeitsprüfungen</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html">Zwischengespeicherte Prüfungen</a></span></dt>
+<dt><span class="section"><a href="passivestatetranslation.html">Passive Host-Zustandsübersetzung</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html">Service- und Host-Prüfungsplanung</a></span></dt>
+<dt><span class="section"><a href="cgiincludes.html">Angepasste CGI-Kopf- und Fußzeilen</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html">Objektvererbung</a></span></dt>
+<dt><span class="section"><a href="objecttricks.html">Zeitsparende Tricks für Objektdefinitionen</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch07.html">7. Sicherheit und Leistungsoptimierung</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="security.html">Sicherheitsüberlegungen</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html">Verbesserte CGI-Sicherheit und Authentifizierung</a></span></dt>
+<dt><span class="section"><a href="tuning.html">Icinga für maximale Leistung optimieren</a></span></dt>
+<dt><span class="section"><a href="faststartup.html">Schnellstart-Optionen</a></span></dt>
+<dt><span class="section"><a href="largeinstalltweaks.html">Large Installation Tweaks</a></span></dt>
+<dt><span class="section"><a href="icingastats.html">Nutzung des Icingastats-Utilitys</a></span></dt>
+<dt><span class="section"><a href="mrtggraphs.html">grafische Darstellung von Performance-Informationen mit MRTG</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch08.html">8. Integration mit anderer Software</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="integration.html">Integrationsüberblick</a></span></dt>
+<dt><span class="section"><a href="int-snmptrap.html">SNMP-Trap-Integration</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html">TCP-Wrapper-Integration</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch09.html">9. Icinga Addons</a></span></dt>
+<dd><dl><dt><span class="section"><a href="addons.html">Icinga Addons</a></span></dt></dl></dd>
+<dt><span class="chapter"><a href="ch10.html">10. Entwicklung</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="pluginapi.html">Nagios Plugin API</a></span></dt>
+<dt><span class="section"><a href="epnplugins.html">Entwickeln von Plugins für die Nutzung mit Embedded Perl</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left"> </td>
+<td width="20%" align="center"> </td>
+<td width="40%" align="right"> <a accesskey="n" href="ch01.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top"> </td>
+<td width="20%" align="center"> </td>
+<td width="40%" align="right" valign="top"> Kapitel 1. Über</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

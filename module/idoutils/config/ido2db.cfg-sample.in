@@ -1,7 +1,7 @@
 #####################################################################
 # IDO2DB DAEMON CONFIG FILE
 #
-# Last Modified: 05-09-2009
+# Last Modified: 10-08-2009
 #####################################################################
 
 
@@ -137,24 +137,52 @@ db_pass=idopassword
 # age (in MINUTES) that data should be allowd to remain in various tables
 # before it is deleted.  Using a value of zero (0) for any value means that
 # that particular table should NOT be automatically trimmed.
+#
+# Remember: There are no optimized settings, it depends on your rdbm install,
+# number/checkinterval of host/service-checks and your desired time of data savings - 
+# historical vs live-data. Please keep in mind that low delete intervals may interfere 
+# with insert/update data from Icinga.
+
+# ***DEFAULT***
+
+# Keep timed events for 1 hour
+max_timedevents_age=60
+
+# Keep system commands for 1 day
+max_systemcommands_age=1440
+
+# Keep service checks for 1 day
+max_servicechecks_age=1440
+
+# Keep host checks for 1 day
+max_hostchecks_age=1440
+
+# Keep event handlers for 1 week
+max_eventhandlers_age=10080
+
+# Keep external commands for 1 week
+max_externalcommands_age=10080
+
+
+# ***MORE HISTORICAL***
 
 # Keep timed events for 24 hours
-max_timedevents_age=1440
+# max_timedevents_age=1440
 
 # Keep system commands for 1 week
-max_systemcommands_age=10080
+# max_systemcommands_age=10080
 
 # Keep service checks for 1 week
-max_servicechecks_age=10080
+# max_servicechecks_age=10080
 
 # Keep host checks for 1 week
-max_hostchecks_age=10080
+# max_hostchecks_age=10080
 
 # Keep event handlers for 31 days
-max_eventhandlers_age=44640
+# max_eventhandlers_age=44640
 
 # Keep external commands for 31 days
-max_externalcommands_age=44640
+# max_externalcommands_age=44640
 
 
 

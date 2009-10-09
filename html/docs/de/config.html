@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Konfigurationsüberblick</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
+<link rel="prev" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
+<link rel="next" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Konfigurationsüberblick</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
+<td width="20%" align="right"> <a accesskey="n" href="configmain.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Konfigurationsüberblick">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="config"></a>Konfigurationsüberblick</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Es gibt verschiedene Konfigurationsdateien, die Sie erstellen oder editieren müssen, bevor Sie irgendetwas überwachen
+  können. Haben Sie Geduld! Icinga zu konfigurieren kann eine Weile dauern, besonders wenn Sie ein Neuling sind. Sobald Sie
+  herausgefunden haben, wie die Dinge funktionieren, werden Sie feststellen, dass es die Mühe wert ist. :-)</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Beispiel-Konfigurationsdateien werden im
+  <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis installiert, wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen.</p>
+
+  <div class="mediaobject" align="right"><img src="../images/configoverview.png" align="right"></div>
+
+  <p><span class="bold"><strong>Hauptkonfigurationsdatei</strong></span></p>
+
+  <p>Die Hauptkonfigurationsdatei enthält eine Reihe von Direktiven, die die Arbeitsweise des Icinga-Daemon
+  beeinflussen. Diese Konfigurationsdatei wird vom Icinga-Daemon und den CGIs gelesen. Hier werden Sie in Ihr
+  Konfigurationsabenteuer starten wollen.</p>
+
+  <p>Dokumentation zur Hauptkonfigurationsdatei finden Sie <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">hier</a>.</p>
+
+  <p><span class="bold"><strong>Ressource-Datei(en)</strong></span></p>
+
+  <p>Ressource-Dateien können zur Speicherung von benutzerdefinierten Makros genutzt werden. Der Hauptgrund für
+  Ressource-Dateien liegt darin, dass sie genutzt werden können, um sensible Informationen (wie z.B. Passworte) zu speichern, ohne
+  dass sie für CGIs zugänglich sind, weil diese Dateien nicht von den CGIs gelesen werden.</p>
+
+  <p>Sie können eine oder mehrere optionale Ressource-Dateien mit Hilfe der <a class="link" href="configmain.html#configmain-resource_file">resource_file</a>-Direktive in Ihrer Hauptkonfigurationsdatei angeben.</p>
+
+  <p><span class="bold"><strong>Objektdefinitionen-Dateien</strong></span></p>
+
+  <p>Objektdefinitionen-Dateien werden genutzt, um Hosts, Services, Hostgruppen, Kontakte, Kontaktgruppen, Befehle usw. zu
+  definieren. Hier definieren Sie, welche Dinge Sie überwachen wollen und wie Sie diese überwachen wollen.</p>
+
+  <p>Sie können eine oder mehrere Objektdefinitionen-Dateien mit Hilfe der <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>-
+  und/oder <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktiven in Ihrer Hauptkonfigurationsdatei angeben.</p>
+
+  <p>Eine Einführung zu Objektdefinitionen und wie sie in Beziehung zu einander stehen, finden Sie <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">hier</a>.</p>
+
+  <p><span class="bold"><strong>CGI-Konfigurationsdatei</strong></span></p>
+
+  <p>Die CGI-Konfigurationsdatei enthält eine Reihe von Direktiven, die die Arbeitsweise der <a class="link" href="cgis.html" title="Informationen über die CGIs">CGIs</a>
+  beeinflussen. Sie enthält auch einen Verweis auf die Hauptkonfigurationsdatei, so dass die CGIs wissen, wie Sie Icinga
+  konfiguriert haben und wo Ihre Objektdefinitionen gespeichert sind.</p>
+
+  <p>Dokumentation zur CGI-Konfigurationsdatei finden Sie <a class="link" href="configcgi.html" title="Optionen CGI-Konfigurationsdatei">hier</a>.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="configmain.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Kapitel 3. Icinga konfigurieren </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Optionen der Hauptkonfigurationsdatei</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

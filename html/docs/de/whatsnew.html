@@ -1,0 +1,111 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Was gibt es Neues</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="up" href="ch01.html" title="Kapitel 1. Über">
+<link rel="prev" href="about.html" title="Über Icinga">
+<link rel="next" href="ch02.html" title="Kapitel 2. Los geht's">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Was gibt es Neues</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="about.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 1. Über</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch02.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Was gibt es Neues">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="whatsnew"></a>Was gibt es Neues</h2></div></div></div>
+  
+
+<p></p>
+<p>Bald findest Du hier noch detailliertere Informationen, hier der Changelog:</p>
+<p><span class="bold"><strong>0.8.4 - 16/09/2009 </strong></span></p>
+<p>* idoutils: fix failure_prediction_options in tables hosts, services for postgres</p>
+<p>* idoutils: add configure support for manual libdbi detection</p>
+<p>* idoutils: fix typo laste_state (wrong column)</p>
+<p>* idoutils: fix buffer freeing with NAGIOS_SIZEOF_ARRAY</p>
+<p>* idoutils: delete old mysql files coming from ndoutils</p>
+<p>* idoutils: add new versionhandling, idomod/ido2db now shows version of Icinga core</p>
+<p>* idoutils: rename existing mysql/pgsql files, added upgrade/fix files</p>
+<p>* idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing</p>
+<p>* idoutils: add experimental db trimming interval option in ido2db.cfg</p>
+<p>* core: fix wrong copyright url for Ethan</p>
+<p></p>
+<p><span class="bold"><strong>0.8.3 - 09/02/2009 </strong></span></p>
+<p>* idoutils: add PostgreSQL support</p>
+<p>* new Icinga documentation in docbook and html format</p>
+<p>* fetch current Nagios patches</p>
+<p>* fix support links after make</p>
+<p>* idoutils: add note if install desired but not enabled</p>
+<p>* idoutils: fix installing of rc.ido2db in make install-idoutils</p>
+<p>* idoutils: add db/pgsql.sql, adapted table scheme for postgresql</p>
+<p>* idoutils: add time conversion functions for postgresql</p>
+<p>* idoutils: add try update, if affected rows=0, then insert queries for postgresql</p>
+<p>* idoutils: modify insert queries, normalized to sql-standard</p>
+<p>* idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms</p>
+<p>* idoutils: modify insert-or-update queries, build data array for functions</p>
+<p>* idoutils: fix string escaping for postgresql</p>
+<p>* idoutils: fix last insert id for postgresql - needs defined sequence id for table</p>
+<p>* idoutils: modify command_line in commands table to varchar(1024)</p>
+<p>* idoutils: add more debug output</p>
+<p>* idoutils: Support 8192 chars of perfdata</p>
+<p></p>
+<p><span class="bold"><strong>0.8.2 - 08/12/2009</strong></span></p>
+<p>* create a new basic ido2db init script</p>
+<p>* idoutils: fix child signal handling in ido2db</p>
+<p>* idoutils: fix escaping of customvars before insert</p>
+<p>* idoutils: fix in buggy rotate command execution</p>
+<p>* idoutils: fix fmt specifier in ndo2db_daemonize() error</p>
+<p>* idoutils: added long_output support to IDOUtils</p>
+<p>* idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)</p>
+<p>* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)</p>
+<p>* icinga-api added: The search function now uses the icinga-api submodule * various minor changes</p>
+<p></p>
+<p><span class="bold"><strong>0.8.1 - 06/17/2009</strong></span></p>
+<p>* Archived Logfiles renamed from Icinga-date-syntax.log =&gt; icinga-date-syntax.log (capital 'i') </p>
+<p>* cherry picked latest Nagios Patches (see Nagios Changelog below) </p>
+<p>* new ido2db command switch: '-f' don't daemonize the ido2db </p>
+<p>* ido2db will now prints out available database drivers </p>
+<p>* fix ido2db segfault when try to access non existing tables</p>
+<p>* DocBook v5 conversion </p>
+<p>* Fix menu frameset cols width </p>
+<p><span class="bold"><strong>0.8 - 05/19/2009</strong></span></p>
+<p>* Almost biggest deal to rename the components </p>
+<p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it </p>
+<p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction layer, enable compile try with "configure --enable-idoutils" </p>
+<p>* Included a new stylesheet/icon theme based on Vautour Style Vautour Style have been created by Yoann LAMY. </p>
+<p>The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/). The icons of Vautour Style use "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James. </p>
+<p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/). </p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="about.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch01.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch02.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Über Icinga </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Kapitel 2. Los geht's</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

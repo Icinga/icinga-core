@@ -1,0 +1,332 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Host and Service Dependencies</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="up" href="ch06.html" title="Chapter 6. Advanced Topics">
+<link rel="prev" href="clusters.html" title="Monitoring Service and Host Clusters">
+<link rel="next" href="stalking.html" title="State Stalking">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Host and Service Dependencies</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="clusters.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="stalking.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Host and Service Dependencies">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="dependencies"></a><a name="host_srv_dependencies"></a>Host and Service Dependencies</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Service and host dependencies are an advanced feature of Icinga that allow you to control the behavior of hosts and
+  services based on the status of one or more other hosts or services. We'll explain how dependencies work, along with the
+  differences between host and service dependencies.</p>
+
+  <p><span class="bold"><strong>Service Dependencies Overview</strong></span></p>
+
+  <p>There are a few things you should know about service dependencies:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>A service can be dependent on one or more other services</p>
+    </li>
+<li class="listitem">
+      <p>A service can be dependent on services which are not associated with the same host</p>
+    </li>
+<li class="listitem">
+      <p>Service dependencies are not inherited (unless specifically configured to)</p>
+    </li>
+<li class="listitem">
+      <p>Service dependencies can be used to cause service check execution and service notifications to be suppressed under
+      different circumstances (OK, WARNING, UNKNOWN, and/or CRITICAL states)</p>
+    </li>
+<li class="listitem">
+      <p>Service dependencies might only be valid during specific <a class="link" href="timeperiods.html" title="Time Periods">timeperiods</a></p>
+    </li>
+</ol></div>
+
+  <p><span class="bold"><strong>Defining Service Dependencies</strong></span></p>
+
+  <p>First, the basics. You create service dependencies by adding <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service
+  dependency definitions</a> in your <a class="link" href="configobject.html" title="Object Configuration Overview">object config file(s)</a>. In each definition you specify
+  the <span class="emphasis"><em>dependent</em></span> service, the service you are <span class="emphasis"><em>depending on</em></span>, and the criteria (if any)
+  that cause the execution and notification dependencies to fail (these are described later).</p>
+
+  <p>You can create several dependencies for a given service, but you must add a separate service dependency definition for
+  each dependency you create.</p>
+
+  <p><span class="bold"><strong>Example Service Dependencies</strong></span></p>
+
+  <p>The image below shows an example logical layout of service notification and execution dependencies. Different services are
+  dependent on other services for notifications and check execution.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/service-dependencies.png"></span></p>
+
+  <p>In this example, the dependency definitions for <span class="emphasis"><em>Service F</em></span> on <span class="emphasis"><em>Host C</em></span> would be
+  defined as follows:</p>
+
+  <pre class="screen"> define servicedependency{
+        host_name                       Host B
+        service_description             Service D
+        dependent_host_name             Host C
+        dependent_service_description   Service F
+        execution_failure_criteria      o
+        notification_failure_criteria   w,u
+        }
+
+ define servicedependency{
+        host_name                       Host B
+        service_description             Service E
+        dependent_host_name             Host C
+        dependent_service_description   Service F
+        execution_failure_criteria      n
+        notification_failure_criteria   w,u,c
+        }
+
+ define servicedependency{
+        host_name                       Host B
+        service_description             Service C
+        dependent_host_name             Host C
+        dependent_service_description   Service F
+        execution_failure_criteria      w
+        notification_failure_criteria   c
+        }</pre>
+
+  <p>The other dependency definitions shown in the image above would be defined as follows:</p>
+
+  <pre class="screen"> define servicedependency{
+        host_name                       Host A
+        service_description             Service A
+        dependent_host_name             Host B
+        dependent_service_description   Service D
+        execution_failure_criteria      u
+        notification_failure_criteria   n
+        }
+
+ define servicedependency{
+        host_name                       Host A
+        service_description             Service B
+        dependent_host_name             Host B
+        dependent_service_description   Service E
+        execution_failure_criteria      w,u
+        notification_failure_criteria   c
+        }
+
+ define servicedependency{
+        host_name                       Host B
+        service_description             Service C
+        dependent_host_name             Host B
+        dependent_service_description   Service E
+        execution_failure_criteria      n
+        notification_failure_criteria   w,u,c
+        }</pre>
+
+  <p><span class="bold"><strong>How Service Dependencies Are Tested</strong></span></p>
+
+  <p>Before Icinga executes a service check or sends notifications out for a service, it will check to see if the
+  service has any dependencies. If it doesn't have any dependencies, the check is executed or the notification is sent out as it
+  normally would be. If the service <span class="emphasis"><em>does</em></span> have one or more dependencies, Icinga will check each
+  dependency entry as follows:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Icinga gets the current status<sup> <a class="link" href="dependencies.html#dependencies.xml-hard_dependencies">*</a>
+      </sup> of the service that is being <span class="emphasis"><em>depended upon</em></span>.</p>
+    </li>
+<li class="listitem">
+      <p>Icinga compares the current status of the service that is being <span class="emphasis"><em>depended upon</em></span> against
+      either the execution or notification failure options in the dependency definition (whichever one is relevant at the
+      time).</p>
+    </li>
+<li class="listitem">
+      <p>If the current status of the service that is being <span class="emphasis"><em>depended upon</em></span> matches one of the failure
+      options, the dependency is said to have failed and Icinga will break out of the dependency check loop.</p>
+    </li>
+<li class="listitem">
+      <p>If the current state of the service that is being <span class="emphasis"><em>depended upon</em></span> does not match any of the failure
+      options for the dependency entry, the dependency is said to have passed and Icinga will go on and check the next
+      dependency entry.</p>
+    </li>
+</ol></div>
+
+  <p>This cycle continues until either all dependencies for the service have been checked or until one dependency check
+  fails.</p>
+
+  <p><a name="dependencies.xml-hard_dependencies"></a></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p><sup>*</sup>One important thing to note is that by default, Icinga will use the most current
+    <a class="link" href="statetypes.html" title="State Types">hard state</a> of the service(s) that is/are being depended upon when it does the dependeny
+    checks. If you want Icinga to use the most current state of the services (regardless of whether its a soft or hard
+    state), enable the <a class="link" href="configmain.html#configmain-soft_state_dependencies">soft_state_dependencies</a> option.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Execution Dependencies</strong></span></p>
+
+  <p>Execution dependencies are used to restrict when <a class="link" href="activechecks.html" title="Active Checks">active checks</a> of a service can be
+  performed. <a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a> are not restricted by execution dependencies.</p>
+
+  <p>If <span class="emphasis"><em>all</em></span> of the execution dependency tests for the service <span class="emphasis"><em>passed</em></span>, Icinga
+  will execute the check of the service as it normally would. If even just one of the execution dependencies for a service fails,
+  Icinga will temporarily prevent the execution of checks for that (dependent) service. At some point in the future the
+  execution dependency tests for the service may all pass. If this happens, Icinga will start checking the service again as
+  it normally would. More information on the check scheduling logic can be found <a class="link" href="checkscheduling.html" title="Service and Host Check Scheduling">here</a>.</p>
+
+  <p>In the example above, <span class="bold"><strong>Service E</strong></span> would have failed execution dependencies if <span class="bold"><strong>Service B</strong></span> is in a WARNING or UNKNOWN state. If this was the case, the service check would not be
+  performed and the check would be scheduled for (potential) execution at a later time.</p>
+
+  <p><span class="bold"><strong>Notification Dependencies</strong></span></p>
+
+  <p>If <span class="emphasis"><em>all</em></span> of the notification dependency tests for the service <span class="emphasis"><em>passed</em></span>,
+  Icinga will send notifications out for the service as it normally would. If even just one of the notification
+  dependencies for a service fails, Icinga will temporarily repress notifications for that (dependent) service. At some
+  point in the future the notification dependency tests for the service may all pass. If this happens, Icinga will start
+  sending out notifications again as it normally would for the service. More information on the notification logic can be found
+  <a class="link" href="notifications.html" title="Notifications">here</a>.</p>
+
+  <p>In the example above, <span class="bold"><strong>Service F</strong></span> would have failed notification dependencies if <span class="bold"><strong>Service C</strong></span> is in a CRITICAL state, <span class="emphasis"><em>and/or</em></span><span class="bold"><strong>Service D</strong></span>
+  is in a WARNING or UNKNOWN state, <span class="emphasis"><em>and/or</em></span> if <span class="bold"><strong>Service E</strong></span> is in a WARNING,
+  UNKNOWN, or CRITICAL state. If this were the case, notifications for the service would not be sent out.</p>
+
+  <p><span class="bold"><strong>Dependency Inheritance</strong></span></p>
+
+  <p>As mentioned before, service dependencies are <span class="emphasis"><em>not</em></span> inherited by default. In the example above you can
+  see that Service F is dependent on Service E. However, it does not automatically inherit Service E's dependencies on Service B
+  and Service C. In order to make Service F dependent on Service C we had to add another service dependency definition. There is
+  no dependency definition for Service B, so Service F is <span class="emphasis"><em>not</em></span> dependent on Service B.</p>
+
+  <p>If you <span class="emphasis"><em>do</em></span> wish to make service dependencies inheritable, you must use the
+  <span class="emphasis"><em>inherits_parent</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service
+  dependency</a> definition. When this directive is enabled, it indicates that the dependency inherits dependencies of the
+  service <span class="emphasis"><em>that is being depended upon</em></span> (also referred to as the master service). In other words, if the master
+  service is dependent upon other services and any one of those dependencies fail, this dependency will also fail.</p>
+
+  <p>In the example above, imagine that you want to add a new dependency for service F to make it dependent on service A. You
+  could create a new dependency definition that specified service F as the <span class="emphasis"><em>dependent</em></span> service and service A as
+  being the <span class="emphasis"><em>master</em></span> service (i.e. the service <span class="emphasis"><em>that is being dependend on</em></span>). You could
+  alternatively modify the dependency definition for services D and F to look like this:</p>
+
+  <pre class="screen"> define servicedependency{
+        host_name                       Host B
+        service_description             Service D
+        dependent_host_name             Host C
+        dependent_service_description   Service F
+        execution_failure_criteria      o
+        notification_failure_criteria   n
+        inherits_parent         1
+        }</pre>
+
+  <p>Since the <span class="emphasis"><em>inherits_parent</em></span> directive is enabled, the dependency between services A and D will be
+  tested when the dependency between services F and D are being tested.</p>
+
+  <p>Dependencies can have multiple levels of inheritence. If the dependency definition between A and D had its
+  <span class="emphasis"><em>inherits_parent</em></span> directive enable and service A was dependent on some other service (let's call it service
+  G), the service F would be dependent on services D, A, and G (each with potentially different criteria).</p>
+
+  <p><span class="bold"><strong>Host Dependencies</strong></span></p>
+
+  <p>As you'd probably expect, host dependencies work in a similiar fashion to service dependencies. The difference is that
+  they're for hosts, not services.</p>
+
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Do not confuse host dependencies with parent/child host relationships. You should be using parent/child host
+    relationships (defined with the <span class="emphasis"><em>parents</em></span> directive in <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a>
+    definitions) for most cases, rather than host dependencies. A description of how parent/child host relationships work can be
+    found in the documentation on <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">network reachability</a>.</p>
+  </td></tr>
+</table></div>
+
+  <p>Here are the basics about host dependencies:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>A host can be dependent on one or more other host</p>
+    </li>
+<li class="listitem">
+      <p>Host dependencies are not inherited (unless specifically configured to)</p>
+    </li>
+<li class="listitem">
+      <p>Host dependencies can be used to cause host check execution and host notifications to be suppressed under different
+      circumstances (UP, DOWN, and/or UNREACHABLE states)</p>
+    </li>
+<li class="listitem">
+      <p>Host dependencies might only be valid during specific <a class="link" href="timeperiods.html" title="Time Periods">timeperiods</a></p>
+    </li>
+</ol></div>
+
+  <p><span class="bold"><strong>Example Host Dependencies</strong></span></p>
+
+  <p>The image below shows an example of the logical layout of host notification dependencies. Different hosts are dependent on
+  other hosts for notifications.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/host-dependencies.png"></span></p>
+
+  <p>In the example above, the dependency definitions for <span class="emphasis"><em>Host C</em></span> would be defined as follows:</p>
+
+  <pre class="screen"> define hostdependency{
+        host_name                       Host A
+        dependent_host_name             Host C
+        notification_failure_criteria   d
+        }
+
+ define hostdependency{
+        host_name                       Host B
+        dependent_host_name             Host C
+        notification_failure_criteria   d,u
+        }</pre>
+
+  <p>As with service dependencies, host dependencies are not inherited. In the example image you can see that Host C does not
+  inherit the host dependencies of Host B. In order for Host C to be dependent on Host A, a new host dependency definition must be
+  defined.</p>
+
+  <p>Host notification dependencies work in a similiar manner to service notification dependencies. If <span class="emphasis"><em>all</em></span>
+  of the notification dependency tests for the host <span class="emphasis"><em>pass</em></span>, Icinga will send notifications out for the
+  host as it normally would. If even just one of the notification dependencies for a host fails, Icinga will temporarily
+  repress notifications for that (dependent) host. At some point in the future the notification dependency tests for the host may
+  all pass. If this happens, Icinga will start sending out notifications again as it normally would for the host. More
+  information on the notification logic can be found <a class="link" href="notifications.html" title="Notifications">here</a>.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="clusters.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="stalking.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Monitoring Service and Host Clusters </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> State Stalking</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

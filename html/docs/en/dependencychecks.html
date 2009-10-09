@@ -1,0 +1,117 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Predictive Dependency Checks</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="up" href="ch06.html" title="Chapter 6. Advanced Topics">
+<link rel="prev" href="adaptive.html" title="Adaptive Monitoring">
+<link rel="next" href="cachedchecks.html" title="Cached Checks">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Predictive Dependency Checks</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="adaptive.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="cachedchecks.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Predictive Dependency Checks">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="dependencychecks"></a><a name="dependency_checks"></a>Predictive Dependency Checks</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Host and service <a class="link" href="dependencies.html" title="Host and Service Dependencies">dependencies</a> can be defined to allow you greater control over when
+  checks are executed and when notifications are sent out. As dependencies are used to control basic aspects of the monitoring
+  process, it is crucial to ensure that status information used in the dependency logic is as up to date as possible.</p>
+
+  <p>Icinga allows you to enable predictive dependency checks for hosts and services to ensure that the dependency logic
+  will have the most up-to-date status information when it comes to making decisions about whether to send out notifications or
+  allow active checks of a host or service.</p>
+
+  <p><span class="bold"><strong>How Do Predictive Checks Work?</strong></span></p>
+
+  <p>The image below shows a basic diagram of hosts that are being monitored by Icinga, along with their parent/child
+  relationships and dependencies.</p>
+
+  <p>The <span class="emphasis"><em>Switch2</em></span> host in this example has just changed state from an UP state to a problem state.
+  Icinga needs to determine whether the host is DOWN or UNREACHABLE, so it will launch parallel checks of
+  <span class="emphasis"><em>Switch2</em></span>'s immediate parents (<span class="emphasis"><em>Firewall1</em></span>) and children (<span class="emphasis"><em>Comp1</em></span>,
+  <span class="emphasis"><em>Comp2</em></span>, and <span class="emphasis"><em>Switch3</em></span>). This is a normal function of the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
+
+  <p>You will also notice that <span class="emphasis"><em>Switch2</em></span> is depending on <span class="emphasis"><em>Monitor1</em></span> and
+  <span class="emphasis"><em>File1</em></span> for either notifications or check execution (which one is unimportant in this example). If predictive
+  host dependency checks are enabled, Icinga will launch parallel checks of <span class="emphasis"><em>Monitor1</em></span> and
+  <span class="emphasis"><em>File1</em></span> at the same time it launches checks of <span class="emphasis"><em>Switch2</em></span>'s immediate parents and children.
+  Icinga does this because it knows that it will have to test the dependency logic in the near future (e.g. for purposes of
+  notification) and it wants to make sure it has the most current status information for the hosts that take part in the
+  dependency.</p>
+
+  <p><span class="inlinemediaobject"><img src="../images/predictive-dependency-checks.png"></span></p>
+
+  <p>That's how predictive dependency checks work. Simple, eh?</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Predictive service dependency checks work in a similiar manner to what is described above. Except, of course, they deal
+    with services instead of hosts.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Enabling Predictive Checks</strong></span></p>
+
+  <p>Predictive dependency checks involve rather little overhead, so I would recommend that you enable them. In most cases, the
+  benefits of having accurate information for the dependency logic outweighs the extra overhead imposed by these checks.</p>
+
+  <p>Enabling predictive dependency checks is easy:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Predictive host dependency checks are controlled by the <a class="link" href="configmain.html#configmain-enable_predictive_host_dependency_checks">enable_predictive_host_dependency_checks</a> option.</p>
+    </li>
+<li class="listitem">
+      <p>Predictive service dependency checks are controlled by the <a class="link" href="configmain.html#configmain-enable_predictive_service_dependency_checks">enable_predictive_service_dependency_checks</a>
+      option.</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Cached Checks</strong></span></p>
+
+  <p>Predictive dependency checks are on-demand checks and are therefore subject to the rules of <a class="link" href="cachedchecks.html" title="Cached Checks">cached checks</a>. Cached checks can provide you with performance improvements by allowing
+  Icinga to forgo running an actual host or service check if it can use a relatively recent check result instead. More
+  information on cached checks can be found <a class="link" href="cachedchecks.html" title="Cached Checks">here</a>.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="adaptive.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="cachedchecks.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Adaptive Monitoring </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Cached Checks</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

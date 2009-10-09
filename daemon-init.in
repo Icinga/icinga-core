@@ -132,7 +132,6 @@ case "$1" in
 		echo -n "Starting icinga:"
 		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
 		if [ $? -eq 0 ]; then
-			su - $IcingaUser -c "touch $IcingaVarDir/icinga.log $IcingaRetentionFile"
 			rm -f $IcingaCommandFile
 			touch $IcingaRunFile
 			chown $IcingaUser:$IcingaGroup $IcingaRunFile
