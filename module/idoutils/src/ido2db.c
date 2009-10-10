@@ -650,33 +650,38 @@ int ndo2db_daemonize(void){
 	/* fork */
 	if((pid=fork())<0){
 		perror("Fork error");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() parent fork error\n");
 		ndo2db_cleanup_socket();
 		return NDO_ERROR;
 	        }
 
 	/* parent process goes away... */
 	else if((int)pid!=0){
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() parent process goes away\n");
 		ndo2db_free_program_memory();
 		exit(0);
 		}
 
 	/* child forks again... */
 	else{
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() child forks again\n");
 
 		if((pid=fork())<0){
 			perror("Fork error");
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() child fork error\n");
 			ndo2db_cleanup_socket();
 			return NDO_ERROR;
 	                }
 
 		/* first child process goes away.. */
 		else if((int)pid!=0){
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() first child process goes away\n");
 			ndo2db_free_program_memory();
 			exit(0);
 			}
 
 		/* grandchild continues... */
-
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() grandchild continues and  becomes session leader\n");
 		/* grandchild becomes session leader... */
 		setsid();
 	        }
@@ -706,7 +711,7 @@ int ndo2db_daemonize(void){
 		open("/dev/null",O_WRONLY);
 	open("/dev/null",O_WRONLY);
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_drop_privileges() end\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_daemonize() end\n");
 
 	return NDO_OK;
         }
