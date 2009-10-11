@@ -8091,7 +8091,7 @@ if test "${enable_ssl+set}" = set; then
 	fi
 
 else
-  check_for_ssl=yes
+  check_for_ssl=no
 fi
 
 
