@@ -294,6 +294,18 @@
 #include <linux/module.h>
 #endif
 
+#undef HAVE_SSL
+#ifdef HAVE_SSL
+#include <rsa.h>
+#include <crypto.h>
+#include <dh.h>
+#include <pem.h>
+#include <ssl.h>
+#include <err.h>
+#include <rand.h>
+#endif
+
+
 /* configure script should allow user to override ltdl choice, but this will do for now... */
 #undef USE_LTDL
 #undef HAVE_LTDL_H
