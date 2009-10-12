@@ -128,6 +128,13 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 	        case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
 			/* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
         	        break;
 	        case NDO2DB_DBSERVER_SQLITE:
@@ -222,6 +229,13 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -342,6 +356,13 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -486,6 +507,13 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ndo2db_idi *idi, void **d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -609,6 +637,13 @@ int ido2db_query_insert_or_update_notificationdata_add(ndo2db_idi *idi, void **d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -708,6 +743,13 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ndo2db_idi *idi, v
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -807,6 +849,13 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -958,6 +1007,13 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1115,6 +1171,13 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1239,6 +1302,13 @@ int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        table_name,
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1358,6 +1428,13 @@ int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data,
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        table_name,
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1520,6 +1597,13 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1780,6 +1864,13 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2044,6 +2135,13 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2158,6 +2256,13 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ndo2db_idi *idi, void **
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2250,6 +2355,13 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2335,6 +2447,13 @@ int ido2db_query_insert_or_update_runtimevariables_add(ndo2db_idi *idi, void **d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_RUNTIMEVARIABLES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2635,6 +2754,13 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2716,6 +2842,13 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ndo2db_idi *idi
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTPARENTHOSTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2797,6 +2930,13 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ndo2db_idi *i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2883,6 +3023,13 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2972,6 +3119,13 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ndo2db_idi 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3053,6 +3207,13 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ndo2d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPMEMBERS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3330,6 +3491,13 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3411,6 +3579,13 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ndo2db_idi
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3497,6 +3672,13 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3585,6 +3767,13 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ndo2db_i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3667,6 +3856,13 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ndo2db_idi 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPMEMBERS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3773,6 +3969,13 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ndo2db
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTDEPENDENCIES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3882,6 +4085,13 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ndo
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEDEPENDENCIES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -3990,6 +4200,13 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ndo2db
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4070,6 +4287,13 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ndo
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4156,6 +4380,13 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4269,6 +4500,13 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ndo
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4350,6 +4588,13 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4436,6 +4681,13 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4524,6 +4776,13 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ndo2db_idi *i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMANDS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4612,6 +4871,13 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ndo2db_idi 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4699,6 +4965,13 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4859,6 +5132,13 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -4944,6 +5224,13 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTADDRESSES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -5031,6 +5318,13 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -5118,6 +5412,13 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -5216,6 +5517,13 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CUSTOMVARIABLES],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -5309,6 +5617,13 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -5397,6 +5712,13 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -5478,6 +5800,13 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON () WHEN MATCHED THEN UPDATE SET  WHEN NOT MATCHED THEN INSERT",
+                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPMEMBERS],
+
+                        );
+                        /* send query to db */
+                        result = ndo2db_db_query(idi, query1);
+                        free(query1);
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
