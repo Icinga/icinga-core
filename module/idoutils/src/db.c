@@ -471,13 +471,21 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	ts = ndo2db_db_timet_to_sql(idi, idi->data_start_time);
 
 	/* record initial connection information */
-	if (asprintf(
-			&buf,
-			"INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+#ifndef USE_ORACLE /* everything else will be libdbi */
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
 			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
 			idi->disposition, idi->connect_source, idi->connect_type) == -1)
 		buf = NULL;
+
+#else /* Oracle ocilib specific */
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', SYSDATE, SYSDATE, '0', '0', '0', '%s', '%s', '%s', '%s', '%s', SYSDATE)",
+			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
+			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
+			idi->disposition, idi->connect_source, idi->connect_type) == -1)
+		buf = NULL;
+
+#endif /* Oracle ocilib specific */
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
@@ -587,11 +595,22 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 	ts = ndo2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf, "UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
 		buf = NULL;
+
+#else /* Oracle ocilib specific */
+	if (asprintf(&buf, "UPDATE %s SET disconnect_time=SYSDATE, last_checkin_time=SYSDATE, data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
+			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
+			idi->dbinfo.conninfo_id) == -1)
+		buf = NULL;        
+
+#endif /* Oracle ocilib specific */
+
 	result = ndo2db_db_query(idi, buf);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -619,13 +638,21 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_checkin() start\n");
 
 	/* record last connection information */
-	if (asprintf(
-			&buf,
-			"UPDATE %s SET last_checkin_time=NOW(), bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+#ifndef USE_ORACLE /* everything else will be libdbi */
+	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=NOW(), bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
 		buf = NULL;
+
+#else /* Oracle ocilib specific */
+	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=SYSDATE, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
+			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
+			idi->dbinfo.conninfo_id) == -1)
+		buf = NULL;
+
+#endif /* Oracle ocilib specific */
 
 	result = ndo2db_db_query(idi, buf);
 
