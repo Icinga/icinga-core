@@ -212,6 +212,11 @@ int main(int argc, char **argv){
 		exit(1);
 		}
 
+	/* 2009-10-16 Michael Friedrich: libdbi Oracle driver is not yet working, remains broken */
+	if(ndo2db_db_settings.server_type==NDO2DB_DBSERVER_ORACLE) {
+		printf("Support for libdbi Oracle driver is not yet working.\n");
+		exit(1);
+	}
 #else /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
@@ -844,10 +849,12 @@ void ndo2db_parent_sighandler(int sig){
 	case SIGTERM:
 	case SIGINT:
 		/* forward signal to all members of this group of processes */
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "forward signal to all members of this group of processes");
 		kill(0, sig);
 		break;
 	case SIGCHLD:
 		/* cleanup children that exit, so we don't have zombies */
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "cleanup children that exit, so we don't have zombies");
 		while(waitpid(-1,NULL,WNOHANG)>0);
 		return;
 
