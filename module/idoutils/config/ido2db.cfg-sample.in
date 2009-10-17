@@ -93,6 +93,7 @@ db_servertype=mysql
 
 # DATABASE HOST
 # This option specifies what host the DB server is running on.
+# Note: Oracle will ignore this setting
 
 db_host=localhost
 
@@ -111,6 +112,7 @@ db_port=3306
 
 # DATABASE NAME
 # This option specifies the name of the database that should be used.
+# Note: Oracle needs //DBSERVER/DBNAME
 
 db_name=icinga
 
