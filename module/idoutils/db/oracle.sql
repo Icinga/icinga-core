@@ -2,15 +2,19 @@
 -- oracle.sql
 -- DB definition for Oracle
 --
--- requirements: no table_prefix, primary key named "id"
---	renamed columns, tablenames for idoutils
---
 -- requires ocilib, oracle (instantclient) libs+sdk  to work
--- specify oracle (instantclient) libs+sdk in configure
+-- specify oracle (instantclient) libs+sdk in ocilib configure
 -- ./configure \
 --	--with-oracle-headers-path=/opt/oracle/product/instantclient/instantclient_11_1/sdk/include \
 --	--with-oracle-lib-path=/opt/oracle/product/instantclient/instantclient_11_1/
+--
+-- enable ocilib in Icinga with
+-- ./configure --enable-idoutils --enable--oracle
 -- 
+-- copy to $ORACLE_HOME 
+-- # sqlplus username/password
+-- SQL> @oracle.sql
+--
 -- initial version: 2008-02-20 David Schmidt
 -- current version: 2009-09-05 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 --
@@ -579,6 +583,7 @@ CREATE TABLE hostchecks (
   latency number default 0 NOT NULL,
   return_code number(6) default 0 NOT NULL,
   output varchar2(1024),
+  long_output clob,
   perfdata varchar2(1024),
   PRIMARY KEY  (id),
   CONSTRAINT hostchecks UNIQUE (instance_id,host_object_id,start_time,start_time_usec)
@@ -770,6 +775,7 @@ CREATE TABLE hoststatus (
   host_object_id number(11) default 0 NOT NULL,
   status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') NOT NULL,
   output varchar2(1024),
+  long_output clob,
   perfdata varchar2(1024),
   current_state number(6) default 0 NOT NULL,
   has_been_checked number(6) default 0 NOT NULL,
@@ -865,6 +871,7 @@ CREATE TABLE notifications (
   end_time_usec number(11) default 0 NOT NULL,
   state number(6) default 0 NOT NULL,
   output varchar2(1024),
+  long_output clob,
   escalated number(6) default 0 NOT NULL,
   contacts_notified number(6) default 0 NOT NULL,
   PRIMARY KEY  (id),
@@ -1043,6 +1050,7 @@ CREATE TABLE servicechecks (
   latency number default 0 NOT NULL,
   return_code number(6) default 0 NOT NULL,
   output varchar2(1024),
+  long_output clob,
   perfdata varchar2(1024),
   PRIMARY KEY  (id),
   CONSTRAINT servicechecks UNIQUE (instance_id,service_object_id,start_time,start_time_usec)
@@ -1230,6 +1238,7 @@ CREATE TABLE servicestatus (
   service_object_id number(11) default 0 NOT NULL,
   status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') NOT NULL,
   output varchar2(1024),
+  long_output clob,
   perfdata varchar2(1024),
   current_state number(6) default 0 NOT NULL,
   has_been_checked number(6) default 0 NOT NULL,
@@ -1296,6 +1305,7 @@ CREATE TABLE statehistory (
   last_state number(6) default -1 NOT NULL,
   last_hard_state number(6) default -1 NOT NULL,
   output varchar2(1024),
+  long_output clob,
   PRIMARY KEY  (id)
 );
 
@@ -1318,6 +1328,7 @@ CREATE TABLE systemcommands (
   execution_time number default 0 NOT NULL,
   return_code number(6) default 0 NOT NULL,
   output varchar2(1024),
+  long_output clob,
   PRIMARY KEY  (id),
   CONSTRAINT systemcommands UNIQUE (instance_id,start_time,start_time_usec)
 );

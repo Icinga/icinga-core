@@ -73,7 +73,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 					*(int *) data[5],
 					*(unsigned long *) data[6], 	/* insert end */
 					*(char **) data[2],		/* update start */
-					*(int *) data[3],
+					*(unsigned long *) data[3],
 					*(int *) data[5]		/* update end */
 			);
 			/* send query to db */
@@ -84,7 +84,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 			asprintf(&query1, "UPDATE %s SET queued_time=%s, queued_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
 					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(char **) data[2],		/* update start */
-                                        *(int *) data[3],
+                                        *(unsigned long *) data[3],
                                         *(int *) data[5],		/* update end */
 					*(unsigned long *) data[0],	/* unique constraint start */
 					*(int *) data[1],
@@ -135,7 +135,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 					*(char **) data[4],
 					*(unsigned long *) data[6],	/* unique constraint end */
                                         *(char **) data[2],		/* update start */
-                                        *(int *) data[3],
+                                        *(unsigned long *) data[3],
                                         *(int *) data[5],		/* update end */
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -189,7 +189,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                                         *(int *) data[5],
                                         *(unsigned long *) data[6],     /* insert end */
                                         *(char **) data[2],             /* update start */
-                                        *(int *) data[3],
+                                        *(unsigned long *) data[3],
                                         *(int *) data[5]                /* update end */
                         );
                         /* send query to db */
@@ -200,7 +200,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         asprintf(&query1, "UPDATE %s SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(char **) data[2],             /* update start */
-                                        *(int *) data[3],
+                                        *(unsigned *) data[3],
                                         *(int *) data[5],               /* update end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(int *) data[1],
@@ -249,7 +249,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                                         *(char **) data[4],
                                         *(unsigned long *) data[6],      /* unique constraint end */
                                         *(char **) data[2],             /* update start */
-                                        *(int *) data[3],
+                                        *(unsigned long *) data[3],
                                         *(int *) data[5],               /* update end */
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -1144,7 +1144,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu) WHEN MATCHED THEN UPDATE SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu) WHEN MATCHED THEN UPDATE SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(unsigned *) data[1],
@@ -1155,8 +1155,6 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                                         *(int *) data[4],
                                         *(int *) data[5],
                                         *(int *) data[6],
-                                        *(char **) data[7],
-                                        *(unsigned long *) data[8],
                                         *(char **) data[9],
                                         *(unsigned long *) data[10],
                                         *(int *) data[11],
@@ -2173,11 +2171,10 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (host_object_id=%lu) WHEN MATCHED THEN UPDATE SET instance_id='%lu', host_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (host_object_id=%lu) WHEN MATCHED THEN UPDATE SET instance_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS],
                                         *(unsigned long *) data[1],     /* unique constraint start/end */
                                         *(unsigned long *) data[0],     /* update start */
-                                        *(unsigned long *) data[1],
                                         *(char **) data[2],
                                         *(char **) data[3],
                                         *(char **) data[4],
@@ -2536,11 +2533,10 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (service_object_id='%lu') WHEN MATCHED THEN UPDATE SET instance_id='%lu', service_object_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', %s, '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', %s, %s, '%d', %s, %s, '%d', %s, %s, %s, %s, '%d', %s, %s, '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (service_object_id='%lu') WHEN MATCHED THEN UPDATE SET instance_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', %s, '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', %s, %s, '%d', %s, %s, '%d', %s, %s, %s, %s, '%d', %s, %s, '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
                                         *(unsigned long *) data[1],     /* unique constraint start/end */
                                         *(unsigned long *) data[0],     /* update start */
-                                        *(unsigned long *) data[1],
                                         *(char **) data[2],
                                         *(char **) data[3],
                                         *(char **) data[4],
@@ -2869,18 +2865,17 @@ int ido2db_query_insert_or_update_configfilevariables_add(ndo2db_idi *idi, void 
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND configfile_type=%d AND configfile_path='%s') WHEN MATCHED THEN UPDATE SET instance_id='%lu', configfile_type='%d', configfile_path='%s' WHEN NOT MATCHED THEN INSERT (instance_id, configfile_type, configfile_path) VALUES (%lu, %d, '%s')",
+
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu) WHEN MATCHED THEN UPDATE SET configfile_type='%d', configfile_path='%s' WHEN NOT MATCHED THEN INSERT (instance_id, configfile_type, configfile_path) VALUES (%lu, %d, '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(int *) data[1],
-                                        *(char **) data[2],             /* unique constraint end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(int *) data[1],
-                                        *(char **) data[2],              /* update end */
+                                        *(unsigned long *) data[0],     /* unique constraint start/end */
+                                        *(int *) data[1],		/* update start */
+                                        *(char **) data[2],             /* update end */
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
                                         *(char **) data[2]             /* insert end */
                         );
+
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
                         free(query1);
@@ -3281,7 +3276,7 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ndo2db_idi *idi,
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND config_type=%d AND host_object_id=%lu) WHEN MATCHED THEN UPDATE SET alias='%s', display_name='%s', address='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf WHEN NOT MATCHED THEN INSERT (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf)",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND config_type=%d AND host_object_id=%lu) WHEN MATCHED THEN UPDATE SET alias='%s', display_name='%s', address='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notif_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_down=%d, notify_on_unreachable=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_up=%d, stalk_on_down=%d, stalk_on_unreachable=%d, flap_detection_enabled=%d, flap_detection_on_up=%d, flap_detection_on_down=%d, flap_detection_on_unreachable=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_host=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s', vrml_image='%s', statusmap_image='%s', have_2d_coords=%d, x_2d=%d, y_2d=%d, have_3d_coords=%d, x_3d=%lf, y_3d=%lf, z_3d=%lf WHEN NOT MATCHED THEN INSERT (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notif_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS],
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(int *) data[1],
@@ -3673,13 +3668,10 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ndo2db_idi *idi, v
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND host_id=%lu AND contact_object_id=%lu) WHEN MATCHED THEN UPDATE SET instance_id='%d', host_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, host_id, contact_object_id) VALUES (%lu, %lu, %lu)",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu) WHEN MATCHED THEN UPDATE SET host_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, host_id, contact_object_id) VALUES (%lu, %lu, %lu)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned long *) data[1],
-                                        *(unsigned long *) data[2],      /* unique constraint end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(unsigned long *) data[1],
+                                        *(unsigned long *) data[0],     /* unique constraint start/end */
+                                        *(unsigned long *) data[1],	/* update start */
                                         *(unsigned long *) data[2],     /* update end */
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -4161,7 +4153,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ndo2db_idi *i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND config_type=%d AND service_object_id=%lu) WHEN MATCHED THEN UPDATE SET host_object_id=%lu, display_name='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notification_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s' WHEN NOT MATCHED THEN INSERT (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s')",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND config_type=%d AND service_object_id=%lu) WHEN MATCHED THEN UPDATE SET host_object_id=%lu, display_name='%s', check_command_object_id=%lu, check_command_args='%s', eventhandler_command_object_id=%lu, eventhandler_command_args='%s', check_timeperiod_object_id=%lu, notif_timeperiod_object_id=%lu, failure_prediction_options='%s', check_interval=%lf, retry_interval=%lf, max_check_attempts=%d, first_notification_delay=%lf, notification_interval=%lf, notify_on_warning=%d, notify_on_unknown=%d, notify_on_critical=%d, notify_on_recovery=%d, notify_on_flapping=%d, notify_on_downtime=%d, stalk_on_ok=%d, stalk_on_warning=%d, stalk_on_unknown=%d, stalk_on_critical=%d, is_volatile=%d, flap_detection_enabled=%d, flap_detection_on_ok=%d, flap_detection_on_warning=%d, flap_detection_on_unknown=%d, flap_detection_on_critical=%d, low_flap_threshold=%lf, high_flap_threshold=%lf, process_performance_data=%d, freshness_checks_enabled=%d, freshness_threshold=%d, passive_checks_enabled=%d, event_handler_enabled=%d, active_checks_enabled=%d, retain_status_information=%d, retain_nonstatus_information=%d, notifications_enabled=%d, obsess_over_service=%d, failure_prediction_enabled=%d, notes='%s', notes_url='%s', action_url='%s', icon_image='%s', icon_image_alt='%s' WHEN NOT MATCHED THEN INSERT (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notif_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES],
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(int *) data[1],
@@ -4448,13 +4440,10 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ndo2db_idi *idi
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND service_id=%lu AND contact_object_id=%lu) WHEN MATCHED THEN UPDATE SET instance_id='%lu', service_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, service_id, contact_object_id) VALUES (%lu, %lu, %lu)",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu) WHEN MATCHED THEN UPDATE SET service_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, service_id, contact_object_id) VALUES (%lu, %lu, %lu)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned long *) data[1],     
-                                        *(unsigned long *) data[2],     /* unique constraint end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[0],     /* unique constraint start/end */
+                                        *(unsigned long *) data[1],    /* update start */ 
                                         *(unsigned long *) data[2],     /* update end */
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],     
@@ -5240,13 +5229,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ndo2db_i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND hostescalation_id=%lu AND contact_object_id=%lu) WHEN MATCHED THEN UPDATE SET instance_id='%d', hostescalation_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, hostescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu) WHEN MATCHED THEN UPDATE SET hostescalation_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, hostescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned long *) data[1],     
-                                        *(unsigned long *) data[2],     /* unique constraint end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[0],     /* unique constraint start/end */
+                                        *(unsigned long *) data[1],    /* update start */ 
                                         *(unsigned long *) data[2],     /* update end */
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],     
@@ -5575,18 +5561,17 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ndo2d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id='%d' AND serviceescalation_id='%lu' AND contact_object_id='%lu') WHEN MATCHED THEN UPDATE SET instance_id='%d', serviceescalation_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, serviceescalation_id, contact_object_id) VALUES ('%lu', '%lu', '%lu')",
+                        
+			asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id='%d') WHEN MATCHED THEN UPDATE SET serviceescalation_id='%lu', contact_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, serviceescalation_id, contact_object_id) VALUES ('%lu', '%lu', '%lu')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned long *) data[1],     
-                                        *(unsigned long *) data[2],     /* unique constraint end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(unsigned long *) data[1],     
-                                        *(unsigned long *) data[2],     /* update start */
+                                        *(unsigned long *) data[0],     /* unique constraint start/end */
+                                        *(unsigned long *) data[1],	/* update start */
+                                        *(unsigned long *) data[2],     /* update end */
                                         *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[1],
                                         *(unsigned long *) data[2]     /* insert end */
                         );
+
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
                         free(query1);

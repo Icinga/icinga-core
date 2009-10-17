@@ -220,7 +220,10 @@ int main(int argc, char **argv){
 #else /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
-	//FIXME
+	if(OCI_GetOCIRuntimeVersion == OCI_UNKNOWN) {
+		printf("Unknown ocilib runtime version detected. Exiting...\n");
+		exit(1);
+	}
 
 #endif /* Oracle ocilib specific */
 	
@@ -849,12 +852,12 @@ void ndo2db_parent_sighandler(int sig){
 	case SIGTERM:
 	case SIGINT:
 		/* forward signal to all members of this group of processes */
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "forward signal to all members of this group of processes");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "forward signal to all members of this group of processes\n");
 		kill(0, sig);
 		break;
 	case SIGCHLD:
 		/* cleanup children that exit, so we don't have zombies */
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "cleanup children that exit, so we don't have zombies");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "cleanup children that exit, so we don't have zombies\n");
 		while(waitpid(-1,NULL,WNOHANG)>0);
 		return;
 

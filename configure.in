@@ -694,7 +694,7 @@ if test x$USE_IDOUTILS = xyes; then
 		dnl ido2db_runtime="$OCILIB_LIB"
 		dnl AC_SUBST(ido2db_runtime)
 
-		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_UNICODE"
+		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_ANSI"
 		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
 
 		dnl check and include ocilib.h

@@ -88,13 +88,10 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 			buf2 = NULL;
 	}
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
-	if (asprintf(
-			&buf,
-			"SELECT * FROM %s WHERE instance_id='%lu' AND objecttype_id='%d' AND %s AND %s",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
-			idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
+	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id='%lu' AND objecttype_id='%d' AND %s AND %s", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
 		buf = NULL;
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result))
@@ -107,15 +104,29 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 #else /* Oracle ocilib specific */
 
-	//FIXME - get object_id
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() query ok\n");
+
+                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() fetchnext ok\n");
+                        *object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+
+                } else {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() fetchnext not ok\n");
+                }
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id(object_id=%lu)\n", *object_id);
+        }
+
+	OCI_StatementFree(idi->dbinfo.oci_statement);
+	
 #endif /* Oracle ocilib specific */
 
 	/* free memory */
+	free(buf);
 	free(buf1);
 	free(buf2);
 
@@ -212,7 +223,8 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-				//FIXME
+                                *object_id = ido2db_ocilib_insert_id(idi);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%lu) object_id\n", *object_id);
 
 #endif /* Oracle ocilib specific */
 
@@ -232,7 +244,7 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -262,14 +274,9 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() start\n");
 
 	/* find all the object definitions we already have */
-	if (asprintf(
-			&buf,
-			"SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id='%lu'",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
-			idi->dbinfo.instance_id) == -1)
-		buf = NULL;
-
 #ifndef USE_ORACLE /* everything else will be libdbi */
+	if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id='%lu'", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
+		buf = NULL;
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		while (idi->dbinfo.dbi_result) {
@@ -287,12 +294,44 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 			idi->dbinfo.dbi_result = NULL;
 		}
 	}
-	free(buf);
+
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	char *tmp1 = NULL;
+	char *tmp2 = NULL;
+
+        if (asprintf(&buf, "SELECT id, objecttype_id, name1, name2 FROM %s WHERE instance_id='%lu'", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
+                buf = NULL;
+
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() query ok\n");
+
+                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() fetchnext ok\n");
+                        object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                        objecttype_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("objecttype_id"));
+
+			/* dirty little hack for mtext* <-> char* */
+		        asprintf(&tmp1, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name1")));
+		        asprintf(&tmp2, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2")));
+
+			ndo2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+
+                } else {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() fetchnext not ok\n");
+                }
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids(object_id=%lu, objecttype_id=%lu)\n", object_id, objecttype_id);
+        }
+
+	OCI_StatementFree(idi->dbinfo.oci_statement);
+
+	free(tmp1);
+	free(tmp2);
 
 #endif /* Oracle ocilib specific */
+
+	free(buf);
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids(%lu) end\n", object_id);
 	
 	return result;
@@ -531,7 +570,7 @@ int ndo2db_set_all_objects_as_inactive(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 	
-	//FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -550,6 +589,7 @@ int ndo2db_set_object_as_active(ndo2db_idi *idi, int object_type,
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_object_as_active() start\n");
 
 	/* mark the object as being active */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
 			"UPDATE %s SET is_active='1' WHERE instance_id='%lu' AND objecttype_id='%d' AND object_id='%lu'",
@@ -559,11 +599,19 @@ int ndo2db_set_object_as_active(ndo2db_idi *idi, int object_type,
 
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
 
-        //FIXME
+#else /* Oracle ocilib specific */
+        if (asprintf(   
+                        &buf,
+                        "UPDATE %s SET is_active='1' WHERE instance_id='%lu' AND objecttype_id='%d' AND id='%lu'",
+                        ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
+                        idi->dbinfo.instance_id, object_type, object_id) == -1)
+                buf = NULL;
+
+        result = ndo2db_db_query(idi, buf);
+
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -619,11 +667,7 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	type = 0;
 
 	/* make sure we aren't importing a duplicate log entry... */
-	if (asprintf(
-			&buf,
-			"SELECT * FROM %s WHERE instance_id='%lu' AND logentry_time=%s AND logentry_data='%s'",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],
-			idi->dbinfo.instance_id, ts[0], es[0]) == -1)
+	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id='%lu' AND logentry_time=%s AND logentry_data='%s'", ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES], idi->dbinfo.instance_id, ts[0], es[0]) == -1)
 		buf = NULL;
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -636,13 +680,27 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 		}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
-	free(buf);
 
 #else /* Oracle ocilib specific */
 
-	//FIXME
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() query ok\n");
+
+                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() fetchnext ok\n");
+			duplicate_record = NDO_TRUE;
+                } else {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() fetchnext not ok\n");
+                }
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry(duplicate_record=%lu)\n", duplicate_record);
+        }
+
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
+
+	free(buf);
 
 	/*if(duplicate_record==NDO_TRUE && idi->last_logentry_time!=etime){*/
 	/*if(duplicate_record==NDO_TRUE && strcmp((es[0]==NULL)?"":es[0],idi->dbinfo.last_logentry_data)){*/
@@ -667,7 +725,7 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -744,7 +802,7 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -818,7 +876,7 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -841,7 +899,7 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -937,7 +995,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	}
@@ -961,7 +1019,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	}
@@ -984,7 +1042,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1011,8 +1069,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
-
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 #endif /* Oracle ocilib specific */
 
 		free(buf);
@@ -1035,7 +1092,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1061,7 +1118,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1085,8 +1142,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
-
+			OCI_StatementFree(idi->dbinfo.oci_statement);
 #endif /* Oracle ocilib specific */
 
 			free(buf);
@@ -1159,7 +1215,7 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1238,7 +1294,7 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1339,7 +1395,7 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1456,7 +1512,8 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-				//FIXME
+                                idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
 
 #endif /* Oracle ocilib specific */
                                 break;
@@ -1473,7 +1530,7 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1570,7 +1627,8 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-				//FIXME
+                                idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
 
 #endif /* Oracle ocilib specific */
                                 break;
@@ -1587,7 +1645,7 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1654,7 +1712,7 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1779,7 +1837,7 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1916,7 +1974,7 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2013,7 +2071,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2037,7 +2095,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2071,7 +2129,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2094,7 +2152,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2195,7 +2253,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2219,7 +2277,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2245,7 +2303,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2279,7 +2337,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2304,7 +2362,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2330,7 +2388,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2407,7 +2465,7 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2523,7 +2581,7 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2716,7 +2774,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2921,7 +2979,7 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3008,7 +3066,7 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3121,7 +3179,7 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3242,7 +3300,7 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3331,7 +3389,7 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3426,7 +3484,8 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                         case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-				//FIXME
+                                configfile_id = ido2db_ocilib_insert_id(idi);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables(%lu) \n", configfile_id);
 
 #endif /* Oracle ocilib specific */
                                 break;
@@ -3443,7 +3502,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3478,7 +3537,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		//FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 		free(buf);
@@ -3553,7 +3612,7 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3845,7 +3904,8 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-				//FIXME
+                                host_id = ido2db_ocilib_insert_id(idi);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio(%lu) \n", host_id);
 
 #endif /* Oracle ocilib specific */
                                 break;
@@ -3862,7 +3922,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3898,7 +3958,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3928,7 +3988,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	}
@@ -3944,7 +4004,6 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		/* NOTE: UPDATE senseless upon unique constraint - FIXME */
                 /* save entry to db */
                 void *data[3];
                 data[0] = (void *) &idi->dbinfo.instance_id;
@@ -3957,7 +4016,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4059,7 +4118,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4088,7 +4147,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4349,7 +4408,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4384,7 +4443,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4401,7 +4460,6 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		/* NOTE: UPDATE senseless upon unique constraint - FIXME */
 		/* save entry to db */
 	        void *data[3];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
@@ -4414,7 +4472,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4522,7 +4580,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4555,7 +4613,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4627,7 +4685,7 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4700,7 +4758,7 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4816,7 +4874,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4844,7 +4902,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4861,7 +4919,6 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		/* NOTE: UPDATE senseless upon unique constraint - FIXME */
 		/* save entry tp db */
 	        void *data[3];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
@@ -4874,7 +4931,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4995,7 +5052,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5023,7 +5080,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5040,7 +5097,6 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi,
 				NDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		/* NOTE: UPDATE senseless upon unique constraint - FIXME */
 		/* save entry to db */
 	        void *data[3];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
@@ -5053,7 +5109,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5112,7 +5168,7 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5221,7 +5277,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5260,7 +5316,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5429,7 +5485,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5465,7 +5521,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5509,7 +5565,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	
@@ -5556,7 +5612,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5634,7 +5690,7 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 	                dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+			OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5656,7 +5712,7 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 			dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+			OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5764,7 +5820,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5793,7 +5849,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 

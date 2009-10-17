@@ -82,6 +82,10 @@ use_ssl=0
 #	oracle   = Oracle
 #	sqlite   = SQLite
 #	sqlite3  = SQLite3
+# Currently supported: 
+#	libdbi: mysql, pgsql
+#	ocilib: oracle
+
 
 db_servertype=mysql
 
@@ -99,6 +103,7 @@ db_host=localhost
 # Values:
 # 	3306 = Default MySQL port
 #	5432 = Default PostgreSQL port
+#       1521 = Default Oracle port
 
 db_port=3306
 
@@ -115,6 +120,7 @@ db_name=icinga
 # Determines the prefix (if any) that should be prepended to table names.
 # If you modify the table prefix, you'll need to modify the SQL script for
 # creating the database!
+# Note: Oracle will ignore this prefix since the tablename length will exceed 30 characters.
 
 db_prefix=icinga_
 

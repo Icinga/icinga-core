@@ -2,7 +2,31 @@
 Icinga 0.8.x Change Log
 #######################
 
-0.?.? - ??/??/2009
+1.0 RC - 28/10/2009
+* idoutils: add Oracle support with oclilib
+* idoutils: add configure --enable-oracle
+* idoutils: add oracle support to ido2db.cfg
+* idoutils: add ocilib runtime version check
+* idoutils: add ocilib linked at runtime (prevents setting of $ORACLE_HOME during configure)
+* idoutils: add ocilib hack to temp #undef CONFIG_H during compiling
+* idoutils: add #define USE_ORACLE set by --enable-oracle
+* idoutils: add #ifndef USE_ORACLE #else #endif to get code compatible with libdbi
+* idoutils: add ocilib connection, statement, resultset
+* idoutils: add ocilib execute statement, commit (no autocommit since we want to use the pros of oracle!)
+* idoutils: add ocilib insert id for sequence handling
+* idoutils: add ocilib free statement to match with sequences
+* idoutils: add oracle sysdate instead of NOW()
+* idoutils: add long_output to oracle.sql - introduce clob (Character Large Object)
+* idoutils: add even more debugoutput for oracle
+* idoutils: modify configure to use OCI_CHARSET_ANSI
+* idoutils: modify configure to set LD_LIBRARY_PATH for ido2db init script
+* idoutils: modify formatting to get more readable
+* idoutils: fix typecast bug - unsigned long is bigger then int
+* idoutils: fix oracle notif_timeperiod_object_id (30 chars max)
+* idoutils: fix oracle table serviceescalationcontactgroups (30 chars max)
+* idoutils: fix hoststatus/servicestatus/servicecheck unique constraint updating mismatch
+* idoutils: fix insert_or_update queries where update violates unique constraint
+* idoutils: remove and ignore oracle table_prefix (30 chars max)
 * idoutils: workaround to handle more than 4k Data which may exceed service outputs incl. long perf_data
 * core init: delete 'su' usage since all previously su touched files were created by the icinga user
 * idoutils: added ssl support

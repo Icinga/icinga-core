@@ -197,9 +197,16 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 	}
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	/* register error handler and init oci */
+	if(!OCI_Initialize(ido2db_ocilib_err_handler, NULL, OCI_ENV_DEFAULT)) {
+		syslog(LOG_USER | LOG_INFO, "Error:  OCI_Initialize() failed\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "OCI_Initialize() failed\n");
+		return NDO_ERROR;
+	} 
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "OCI_Initialize() ok\n");
 #endif /* Oracle ocilib specific */
+
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_init() end\n");
 	return NDO_OK;
 }
@@ -270,7 +277,7 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-		//FIXME
+		/* for ocilib there is no such statement next below */
 
 #endif /* Oracle ocilib specific */
 		break;
@@ -283,6 +290,7 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	default:
 		break;
 	}
+
 	/* Check if the dbi connection was created successful */
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -307,12 +315,27 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		idi->disconnect_client = NDO_TRUE;
 	} else {
 		idi->dbinfo.connected = NDO_TRUE;
-		syslog(LOG_USER | LOG_INFO,
-				"Successfully connected to database");
+		syslog(LOG_USER | LOG_INFO, "Successfully connected to database");
 	}
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	/* create db connection instantly */
+
+	idi->dbinfo.oci_connection = OCI_ConnectionCreate((mtext *)ndo2db_db_settings.dbname, (mtext *)ndo2db_db_settings.username, (mtext *)ndo2db_db_settings.password, OCI_SESSION_DEFAULT);
+	
+	if(idi->dbinfo.oci_connection == NULL) {
+		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to database: %s", OCI_ErrorGetString(OCI_GetLastError()));
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to database\n");
+                result = NDO_ERROR;
+                idi->disconnect_client = NDO_TRUE;
+        } else {
+                idi->dbinfo.connected = NDO_TRUE;
+                syslog(LOG_USER | LOG_INFO, "Successfully connected to database");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to database\n");
+        
+		/* create statement handler */
+		//idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
+	}
 
 #endif /* Oracle ocilib specific */
 
@@ -342,7 +365,9 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from database");
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	OCI_ConnectionFree(idi->dbinfo.oci_connection);
+	OCI_Cleanup();
+	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from oracle database");
 
 #endif /* Oracle ocilib specific */
 
@@ -367,6 +392,8 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	if (idi->instance_name == NULL)
 		idi->instance_name = strdup("default");
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	/* get existing instance */
 	if (asprintf(&buf, "SELECT instance_id FROM %s WHERE instance_name='%s'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name)
@@ -375,20 +402,40 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
-			if (idi->dbinfo.dbi_result != NULL) {
-				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-					idi->dbinfo.instance_id = dbi_result_get_uint(
-							idi->dbinfo.dbi_result, "instance_id");
-					have_instance = NDO_TRUE;
-				}
+		if (idi->dbinfo.dbi_result != NULL) {
+			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+				idi->dbinfo.instance_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "instance_id");
+				have_instance = NDO_TRUE;
 			}
+		}
+	}
 #else /* Oracle ocilib specific */
 
-			//FIXME
+        /* get existing instance */
+        if (asprintf(&buf, "SELECT id FROM %s WHERE instance_name='%s'", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
+                buf = NULL;
+
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query ok\n");
+			
+		if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() fetchnext ok\n");
+			idi->dbinfo.instance_id	= OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+
+			if(idi->dbinfo.instance_id == 0) {
+				have_instance = NDO_FALSE;
+			} else {
+				have_instance = NDO_TRUE;
+			}		
+		} else {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() fetchnext not ok\n");
+		}
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(instance_id=%lu)\n", idi->dbinfo.instance_id);
+        }
 
 #endif /* Oracle ocilib specific */
-	}
+	
 	else {
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() existing instance not found, cleaning up and exiting\n");
 		/* cleanup the socket */
@@ -404,7 +451,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	
@@ -412,9 +459,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
 	/* insert new instance if necessary */
 	if (have_instance == NDO_FALSE) {
-		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES],
-				idi->instance_name) == -1)
+		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
 			buf = NULL;
 		if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 	                switch (idi->dbinfo.server_type) {
@@ -444,7 +489,8 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                        case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-					//FIXME
+					idi->dbinfo.instance_id = ido2db_ocilib_insert_id(idi);
+					ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) instance_id\n", idi->dbinfo.instance_id);
 
 #endif /* Oracle ocilib specific */
         	                        break;
@@ -461,7 +507,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+		 OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -517,7 +563,8 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-				//FIXME
+                                idi->dbinfo.conninfo_id = ido2db_ocilib_insert_id(idi);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
 
 #endif /* Oracle ocilib specific */
         	                break;
@@ -534,7 +581,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -603,7 +650,7 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 		buf = NULL;
 
 #else /* Oracle ocilib specific */
-	if (asprintf(&buf, "UPDATE %s SET disconnect_time=SYSDATE, last_checkin_time=SYSDATE, data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET disconnect_time=SYSDATE, last_checkin_time=SYSDATE, data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
@@ -617,7 +664,7 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	 OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -646,7 +693,7 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 		buf = NULL;
 
 #else /* Oracle ocilib specific */
-	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=SYSDATE, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=SYSDATE, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
@@ -660,9 +707,10 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	 OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
+
 	free(buf);
 
 	time(&ndo2db_db_last_checkin_time);
@@ -845,16 +893,11 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	int result = NDO_OK;
 	const char *error_msg;
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query(%s) start\n", buf);
+	//ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query(%s) start\n", buf);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_query() start\n");
 
 	if (idi == NULL || buf == NULL)
 		return NDO_ERROR;
-
-#ifdef USE_ORACLE
-	//FIXME - remove after debugging
-	return NDO_OK;
-
-#endif
 
 	/* if we're not connected, try and reconnect... */
 	if (idi->dbinfo.connected == NDO_FALSE) {
@@ -882,7 +925,31 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	}
 #else /* Oracle ocilib specific */
 
-	//FIXME
+	int oci_res = 0;
+
+        /* create statement handler */
+        idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+	/* execute query in one go */
+	oci_res = OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT(buf));
+
+	/*  get result set */
+	idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
+
+	/* check for errors */
+	if(!oci_res) {
+		
+		syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: database query failed for: '%s'\n", buf);
+
+		ndo2db_handle_db_error(idi);
+		result = NDO_ERROR;
+
+	}
+
+	/* since we do not want to set auto commit to true, we do it manually */
+	OCI_Commit(idi->dbinfo.oci_connection);
+
 
 #endif /* Oracle ocilib specific */
 
@@ -955,7 +1022,7 @@ int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1006,8 +1073,17 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *idi, char *table_name, char *fiel
                    )==-1)
                 buf=NULL;
 
-	//FIXME - result handling, see ndoutils oracle
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_get_latest_data_time() query ok\n");
+                if (idi->dbinfo.oci_resultset != NULL) {
+                        /* check if next row */
+                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                                *t = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+				ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_get_latest_data_time(%lu)\n", *t);
+                        }
+                }
+        }
 
 #endif /* Oracle ocilib specific */
 
@@ -1015,7 +1091,7 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *idi, char *table_name, char *fiel
         dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1052,6 +1128,11 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
 #else /* Oracle ocilib specific */
 
 	//FIXME - use special plsql query with commits
+        if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
+                        table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
+                buf = NULL;
+
+        result = ndo2db_db_query(idi, buf);
 
 #endif /* Oracle ocilib specific */
 
@@ -1059,7 +1140,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
         dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-        //FIXME
+	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1191,3 +1272,54 @@ int ido2db_check_dbd_driver(void) {
 	return NDO_TRUE;
 }
 
+
+/************************************/
+/* error handler (ocilib)           */
+/************************************/
+
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+void ido2db_ocilib_err_handler(OCI_Error *err) {
+
+	if (OCI_ErrorGetType(err) == OCI_ERR_ORACLE) {
+		const mtext *sql = OCI_GetSql(OCI_ErrorGetStatement(err));
+
+		if (sql != NULL) {
+			syslog(LOG_USER | LOG_INFO, "ERROR: QUERY '%s'\n", sql);
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ERROR: QUERY '%s'\n", sql);
+		}
+	}
+
+	syslog(LOG_USER | LOG_INFO, "ERROR: MSG '%s'\n", OCI_ErrorGetString(err));
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ERROR: MSG '%s'\n", OCI_ErrorGetString(err));
+}
+
+/* use defined triggers/sequences to emulate last insert id in oracle */
+unsigned long ido2db_ocilib_insert_id(ndo2db_idi *idi) {
+
+	unsigned long insert_id = 0;
+
+        OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT("SELECT AUTOINCREMENT.CURRVAL FROM DUAL"));
+	OCI_Commit(idi->dbinfo.oci_connection);
+
+        /*  get result set */
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
+
+	if(idi->dbinfo.oci_resultset == NULL) {
+
+
+	} else {
+
+		/* check if next row */
+                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() nextrow ok\n");
+                        insert_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+                }
+	}
+
+
+	return insert_id;
+}
+
+#endif /* Oracle ocilib specific */

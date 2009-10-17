@@ -143,4 +143,9 @@ int ndo2db_db_get_latest_data_time(ndo2db_idi *,char *,char *,unsigned long *);
 int ndo2db_db_perform_maintenance(ndo2db_idi *);
 int ndo2db_db_trim_data_table(ndo2db_idi *,char *,char *,unsigned long);
 
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+void ido2db_ocilib_err_handler(OCI_Error *);
+unsigned long ido2db_ocilib_insert_id(ndo2db_idi *);
+#endif /* Oracle ocilib specific */
+
 #endif

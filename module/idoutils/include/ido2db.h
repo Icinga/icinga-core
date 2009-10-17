@@ -68,12 +68,12 @@ typedef struct ndo2db_dbconninfo_struct{
 	/* libdbi */
 	dbi_conn dbi_conn;
 	dbi_result dbi_result;
-#ifdef USE_ORACLE
-	/* ocilib */
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+	//FIXME build do not depend on libdbi
 	OCI_Connection* oci_connection;
 	OCI_Statement* oci_statement;
 	OCI_Resultset* oci_resultset;
-#endif
+#endif /* Oracle ocilib specific */
 	unsigned long instance_id;
 	unsigned long conninfo_id;
 	time_t latest_program_status_time;
