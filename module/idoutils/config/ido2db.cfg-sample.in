@@ -125,8 +125,8 @@ db_prefix=icinga_
 # The user needs at least SELECT, INSERT, UPDATE, and DELETE privileges on
 # the database.
 
-db_user=idouser
-db_pass=idopassword
+db_user=icinga
+db_pass=icinga
 
 
 
