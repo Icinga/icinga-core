@@ -1361,6 +1361,8 @@ Optional Packages:
                           sets URL for public html
   --with-dbi-lib=DIR      sets location of the dbi library
   --with-dbi-inc=DIR      sets location of the dbi include files,
+  --with-ocilib-lib=DIR   sets location of the ocilib library
+  --with-ocilib-inc=DIR   sets location of the ocilib include files,
   --with-perlcache        turns on cacheing of internally compiled Perl
                           scripts
   --with-ssl=DIR          sets location of the SSL installation
@@ -7806,6 +7808,22 @@ fi
 
 				OCILIB_INC="/usr/local/include"
 		OCILIB_LIB="/usr/local/lib"
+
+
+# Check whether --with-ocilib-lib was given.
+if test "${with_ocilib_lib+set}" = set; then
+  withval=$with_ocilib_lib;
+	                OCILIB_LIB="${withval}"
+
+fi
+
+
+# Check whether --with-ocilib-inc was given.
+if test "${with_ocilib_inc+set}" = set; then
+  withval=$with_ocilib_inc;
+	                OCILIB_INC="${withval}"
+
+fi
 
 
 		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_ANSI"

@@ -690,9 +690,13 @@ if test x$USE_IDOUTILS = xyes; then
 		OCILIB_INC="/usr/local/include"
 		OCILIB_LIB="/usr/local/lib"
 
-		dnl create ido2db_runtime for rc.ido2db.in
-		dnl ido2db_runtime="$OCILIB_LIB"
-		dnl AC_SUBST(ido2db_runtime)
+	        dnl Optional ocilib library and include paths
+	        AC_ARG_WITH(ocilib-lib,AC_HELP_STRING([--with-ocilib-lib=DIR],[sets location of the ocilib library]),[
+	                OCILIB_LIB="${withval}"
+	                ])
+	        AC_ARG_WITH(ocilib-inc,AC_HELP_STRING([--with-ocilib-inc=DIR],[sets location of the ocilib include files,]),[
+	                OCILIB_INC="${withval}"
+        	        ])
 
 		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_ANSI"
 		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
