@@ -4,7 +4,10 @@ Icinga 0.8.x Change Log
 
 1.0 RC - 28/10/2009
 * idoutils: add Oracle support with oclilib
+* idoutils: add ssl support
 * idoutils: add configure --enable-oracle
+* idoutils: add configure --enable-ssl
+* idoutils: add configure -with-ocilib-lib/inc for ocilib detection
 * idoutils: add oracle support to ido2db.cfg
 * idoutils: add ocilib runtime version check
 * idoutils: add ocilib linked at runtime (prevents setting of $ORACLE_HOME during configure)
@@ -29,7 +32,6 @@ Icinga 0.8.x Change Log
 * idoutils: remove and ignore oracle table_prefix (30 chars max)
 * idoutils: workaround to handle more than 4k Data which may exceed service outputs incl. long perf_data
 * core init: delete 'su' usage since all previously su touched files were created by the icinga user
-* idoutils: added ssl support
 * idoutils: fix unescape bug during tabstops
 
 0.8.4 - 09/15/2009
