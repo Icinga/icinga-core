@@ -324,17 +324,14 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	idi->dbinfo.oci_connection = OCI_ConnectionCreate((mtext *)ndo2db_db_settings.dbname, (mtext *)ndo2db_db_settings.username, (mtext *)ndo2db_db_settings.password, OCI_SESSION_DEFAULT);
 	
 	if(idi->dbinfo.oci_connection == NULL) {
-		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to database: %s", OCI_ErrorGetString(OCI_GetLastError()));
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to database\n");
+		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to oracle database: %s", OCI_ErrorGetString(OCI_GetLastError()));
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to oracle database\n");
                 result = NDO_ERROR;
                 idi->disconnect_client = NDO_TRUE;
         } else {
                 idi->dbinfo.connected = NDO_TRUE;
-                syslog(LOG_USER | LOG_INFO, "Successfully connected to database");
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to database\n");
-        
-		/* create statement handler */
-		//idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
+                syslog(LOG_USER | LOG_INFO, "Successfully connected to oracle database");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to oracle database\n");
 	}
 
 #endif /* Oracle ocilib specific */

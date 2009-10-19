@@ -222,6 +222,12 @@ int main(int argc, char **argv){
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
 	if(OCI_GetOCIRuntimeVersion == OCI_UNKNOWN) {
 		printf("Unknown ocilib runtime version detected. Exiting...\n");
+
+#ifdef HAVE_SSL 
+                if(use_ssl==NDO_TRUE)
+                        SSL_CTX_free(ctx);
+#endif
+
 		exit(1);
 	}
 
