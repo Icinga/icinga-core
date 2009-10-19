@@ -6660,10 +6660,10 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
 
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, config_type, contactgroup_object_id, alias) VALUES ('%lu', '%lu', '%lu', '%s') ON DUPLICATE KEY UPDATE alias='%s'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, config_type, contactgroup_object_id, alias) VALUES ('%lu', '%d', '%lu', '%s') ON DUPLICATE KEY UPDATE alias='%s'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS],
                                         *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],
+                                        *(int *) data[1],
                                         *(unsigned long *) data[2],
                                         *(char **) data[3],		/* insert end */
                                         *(char **) data[3]		/* update start/end */
@@ -6673,11 +6673,11 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
 			free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s SET alias='%s' WHERE instance_id='%lu' AND config_type='%lu' AND contactgroup_object_id='%lu'",
+                        asprintf(&query1, "UPDATE %s SET alias='%s' WHERE instance_id='%lu' AND config_type='%d' AND contactgroup_object_id='%lu'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS],
                                         *(char **) data[3],		/* update start/end */
                                         *(unsigned long *) data[0], 	/* unique constraint start */    
-                                        *(unsigned long *) data[1],
+                                        *(int *) data[1],
                                         *(unsigned long *) data[2]	/* unique constraint end */
                         );
                         /* send query to db */
@@ -6687,10 +6687,10 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                         /* check result if update was ok */
 			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, config_type, contactgroup_object_id, alias) VALUES ('%lu', '%lu', '%lu', '%s')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, config_type, contactgroup_object_id, alias) VALUES ('%lu', '%d', '%lu', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS],
                                         *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],
+                                        *(int *) data[1],
                                         *(unsigned long *) data[2],
                                         *(char **) data[3]		/* insert end */
                                 );
@@ -6712,14 +6712,14 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ndo2db_i
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id='%lu' AND config_type='%lu' AND contactgroup_object_id='%lu') WHEN MATCHED THEN UPDATE SET alias='%s' WHEN NOT MATCHED THEN INSERT (instance_id, config_type, contactgroup_object_id, alias) VALUES ('%lu', '%lu', '%lu', '%s')",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id='%lu' AND config_type='%d' AND contactgroup_object_id='%lu') WHEN MATCHED THEN UPDATE SET alias='%s' WHEN NOT MATCHED THEN INSERT (instance_id, config_type, contactgroup_object_id, alias) VALUES ('%lu', '%d', '%lu', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS],
                                         *(unsigned long *) data[0], 	/* unique constraint start */    
-                                        *(unsigned long *) data[1],
+                                        *(int *) data[1],
                                         *(unsigned long *) data[2],	/* unique constraint end */
                                         *(char **) data[3],		/* update start/end */
                                         *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],
+                                        *(int *) data[1],
                                         *(unsigned long *) data[2],
                                         *(char **) data[3]		/* insert end */
                         );

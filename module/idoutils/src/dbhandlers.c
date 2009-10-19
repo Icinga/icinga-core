@@ -3522,8 +3522,8 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 		es[1] = ndo2db_db_escape_string(idi, varname);
 		es[2] = ndo2db_db_escape_string(idi, varvalue);
 
-		if (asprintf(&buf,
-				"(instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
+#ifndef USE_ORACLE /* everything else will be libdbi */
+		if (asprintf(&buf,"(instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
 				idi->dbinfo.instance_id, configfile_id, es[1], es[2]) == -1)
 			buf = NULL;
 
@@ -3531,6 +3531,22 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES], buf)
 				== -1)
 			buf1 = NULL;
+
+#else /* Oracle ocilib specific */
+		if (asprintf(&buf1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND configfile_id=%lu AND varname='%s') WHEN MATCHED THEN UPDATE SET varvalue='%s' WHEN NOT MATCHED THEN INSERT (instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
+				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES],
+				idi->dbinfo.instance_id,	/* unique constraint start */
+				configfile_id,
+				es[1],				/* unique constraint end */
+				es[2],				/* update start/end */
+				idi->dbinfo.instance_id,	/* insert start */
+				configfile_id,
+				es[1],
+				es[2]				/* insert end */
+		) == -1) 
+			buf1 = NULL;				
+
+#endif /* Oracle ocilib specific */
 		result = ndo2db_db_query(idi, buf1);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -3612,7 +3628,7 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
