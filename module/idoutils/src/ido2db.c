@@ -136,6 +136,11 @@ int main(int argc, char **argv){
 		exit(1);
         }
 
+	if (ndo2db_socket_type==NDO_SINK_UNIXSOCKET && use_ssl == NDO_TRUE){
+		printf("SSL is not allowed on socket_type=unix\n");
+		exit(1);
+	}
+
 #ifdef HAVE_SSL
 	        /* initialize SSL */
 	        if(use_ssl==NDO_TRUE){

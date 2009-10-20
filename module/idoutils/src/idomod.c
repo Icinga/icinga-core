@@ -114,6 +114,11 @@ int nebmodule_init(int flags, char *args, void *handle){
 		return -1;
 		}
 
+	if(ndomod_sink_type==NDO_SINK_UNIXSOCKET && use_ssl == NDO_TRUE){
+		ndomod_write_to_logs("idomod: use_ssl=1 while using socket_type=unix is not allowed. Aborting...",NSLOG_INFO_MESSAGE);
+		return -1;
+		}
+
 	/* do some initialization stuff... */
 	if(ndomod_init()==NDO_ERROR){
 		ndomod_write_to_logs("idomod: An error occurred while attempting to initialize.",NSLOG_INFO_MESSAGE);
