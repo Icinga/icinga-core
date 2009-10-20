@@ -501,9 +501,9 @@ int ndo2db_process_config_var(char *arg){
 	else if(!strcmp(var,"trim_db_interval"))
 		ndo2db_db_settings.trim_db_interval=strtoul(val,NULL,0);
 
-	else if(!strcmp(var,"ndo2db_user"))
+	else if((!strcmp(var,"ido2db_user"))||(!strcmp(var,"ndo2db_user")))
 		ndo2db_user=strdup(val);
-	else if(!strcmp(var,"ndo2db_group"))
+	else if((!strcmp(var,"ido2db_group"))||(!strcmp(var,"ndo2db_group")))
 		ndo2db_group=strdup(val);
 
 	else if(!strcmp(var,"debug_file")){
