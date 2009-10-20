@@ -34,6 +34,7 @@ Icinga 0.8.x Change Log
 * core init: delete 'su' usage since all previously su touched files were created by the icinga user
 * idoutils: fix unescape bug during tabstops
 * idoutils: fix idomod/icinga segfault while try to use ssl on unix sockets
+* core configure: set INIT_OPTS depending on detected host OS (no more root:root on FreeBSD?)
 
 0.8.4 - 09/15/2009
 * idoutils: fix failure_prediction_options in tables hosts, services for postgres

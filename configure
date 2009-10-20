@@ -728,6 +728,7 @@ PERLDIR
 PERLXSI_O
 BASEEXTRALIBS
 INITDIR
+INIT_OPTS
 INSTALLPERLSTUFF
 USE_EVENTBROKER
 USE_IDOUTILS
@@ -7644,33 +7645,40 @@ echo $ECHO_N "checking for linker flags for loadable modules... $ECHO_C" >&6; }
 	case $host_os in
 		solaris2*|sysv4*)
 			MOD_LDFLAGS="-G"
+			INIT_OPTS="-o root -g root"
 		;;
 		aix4*|aix5*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
 			MOD_LDFLAGS="-G -bM:SRE -bnoentry -bexpall"
+			INIT_OPTS="-o root -g root"
 		;;
 		freebsd2*)
 			# Non-ELF GNU linker
 			MOD_LDFLAGS="-Bshareable"
+			INIT_OPTS="-o root -g wheel"
 		;;
 		darwin*)
 			# Mach-O linker, a shared lib and a loadable
 			# object file is not the same thing.
 			MOD_LDFLAGS="-bundle -flat_namespace -undefined suppress"
 			MOD_CFLAGS="$MOD_CFLAGS -fno-common"
+			INIT_OPTS="-o root -g root"
 		;;
 		linux* | k*bsd*-gnu*)
 			# assume GNU linker and ELF
 			MOD_LDFLAGS="-shared"
 			MOD_CFLAGS="-fPIC"
+			INIT_OPTS="-o root -g root"
 		;;
 		freebsd*)
 			MOD_LDFLAGS="-shared"
 			MOD_CFLAGS="-fPIC"
+			INIT_OPTS="-o root -g wheel"
 		;;
 		*)
 			# assume GNU linker and ELF
 			MOD_LDFLAGS="-shared"
+			INIT_OPTS="-o root -g root"
 		;;
 	esac
 	{ echo "$as_me:$LINENO: result: $MOD_LDFLAGS" >&5
@@ -8148,6 +8156,7 @@ if test "$enable_libtap" = "yes" ; then
 else
 	USE_LIBTAP=no
 fi
+
 
 
 
@@ -9090,6 +9099,7 @@ PERLDIR!$PERLDIR$ac_delim
 PERLXSI_O!$PERLXSI_O$ac_delim
 BASEEXTRALIBS!$BASEEXTRALIBS$ac_delim
 INITDIR!$INITDIR$ac_delim
+INIT_OPTS!$INIT_OPTS$ac_delim
 INSTALLPERLSTUFF!$INSTALLPERLSTUFF$ac_delim
 USE_EVENTBROKER!$USE_EVENTBROKER$ac_delim
 USE_IDOUTILS!$USE_IDOUTILS$ac_delim
@@ -9100,7 +9110,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 25; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 26; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

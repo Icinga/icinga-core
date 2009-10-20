@@ -607,33 +607,40 @@ if test x$USE_EVENTBROKER = xyes; then
 	case $host_os in
 		solaris2*|sysv4*)
 			MOD_LDFLAGS="-G"
+			INIT_OPTS="-o root -g root"
 		;;
 		aix4*|aix5*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
 			MOD_LDFLAGS="-G -bM:SRE -bnoentry -bexpall"
+			INIT_OPTS="-o root -g root"
 		;;
 		freebsd2*)
 			# Non-ELF GNU linker
 			MOD_LDFLAGS="-Bshareable"
+			INIT_OPTS="-o root -g wheel"
 		;;
 		darwin*)
 			# Mach-O linker, a shared lib and a loadable
 			# object file is not the same thing.
 			MOD_LDFLAGS="-bundle -flat_namespace -undefined suppress"
 			MOD_CFLAGS="$MOD_CFLAGS -fno-common"
+			INIT_OPTS="-o root -g root"
 		;;
 		linux* | k*bsd*-gnu*)
 			# assume GNU linker and ELF
 			MOD_LDFLAGS="-shared"
 			MOD_CFLAGS="-fPIC"
+			INIT_OPTS="-o root -g root"
 		;;
 		freebsd*)
 			MOD_LDFLAGS="-shared"
 			MOD_CFLAGS="-fPIC"
+			INIT_OPTS="-o root -g wheel"
 		;;
 		*)
 			# assume GNU linker and ELF
 			MOD_LDFLAGS="-shared"
+			INIT_OPTS="-o root -g root"
 		;;
 	esac
 	AC_MSG_RESULT([$MOD_LDFLAGS])
@@ -862,6 +869,7 @@ AC_SUBST(PERLDIR)
 AC_SUBST(PERLXSI_O)
 AC_SUBST(BASEEXTRALIBS)
 AC_SUBST(INITDIR)
+AC_SUBST(INIT_OPTS)
 AC_SUBST(INSTALLPERLSTUFF)
 AC_SUBST(USE_EVENTBROKER)
 AC_SUBST(USE_IDOUTILS)
