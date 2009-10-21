@@ -35,6 +35,7 @@ Icinga 0.8.x Change Log
 * idoutils: fix unescape bug during tabstops
 * idoutils: fix idomod/icinga segfault while try to use ssl on unix sockets
 * core configure: set INIT_OPTS depending on detected host OS (no more root:root on FreeBSD?)
+* core spec: added new spec file
 
 0.8.4 - 09/15/2009
 * idoutils: fix failure_prediction_options in tables hosts, services for postgres
