@@ -421,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `icinga_eventhandlers` (
   `execution_time` double NOT NULL default '0',
   `return_code` smallint(6) NOT NULL default '0',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`eventhandler_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`start_time`,`start_time_usec`)
 ) ENGINE=MyISAM COMMENT='Historical host and service event handlers';
@@ -494,8 +494,8 @@ CREATE TABLE IF NOT EXISTS `icinga_hostchecks` (
   `latency` double NOT NULL default '0',
   `return_code` smallint(6) NOT NULL default '0',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
-  `perfdata` varchar(8192) character set latin1 NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
+  `perfdata` TEXT character set latin1 NOT NULL default '',
   PRIMARY KEY  (`hostcheck_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`host_object_id`,`start_time`,`start_time_usec`)
 ) ENGINE=MyISAM  COMMENT='Historical host checks';
@@ -687,8 +687,8 @@ CREATE TABLE IF NOT EXISTS `icinga_hoststatus` (
   `host_object_id` int(11) NOT NULL default '0',
   `status_update_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
-  `perfdata` varchar(8192) character set latin1 NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
+  `perfdata` TEXT character set latin1 NOT NULL default '',
   `current_state` smallint(6) NOT NULL default '0',
   `has_been_checked` smallint(6) NOT NULL default '0',
   `should_be_scheduled` smallint(6) NOT NULL default '0',
@@ -845,7 +845,7 @@ CREATE TABLE IF NOT EXISTS `icinga_notifications` (
   `end_time_usec` int(11) NOT NULL default '0',
   `state` smallint(6) NOT NULL default '0',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
   `escalated` smallint(6) NOT NULL default '0',
   `contacts_notified` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`notification_id`),
@@ -994,8 +994,8 @@ CREATE TABLE IF NOT EXISTS `icinga_servicechecks` (
   `latency` double NOT NULL default '0',
   `return_code` smallint(6) NOT NULL default '0',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
-  `perfdata` varchar(8192) character set latin1 NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
+  `perfdata` TEXT character set latin1 NOT NULL default '',
   PRIMARY KEY  (`servicecheck_id`),
   KEY `instance_id` (`instance_id`),
   KEY `service_object_id` (`service_object_id`),
@@ -1185,8 +1185,8 @@ CREATE TABLE IF NOT EXISTS `icinga_servicestatus` (
   `service_object_id` int(11) NOT NULL default '0',
   `status_update_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
-  `perfdata` varchar(8192) character set latin1 NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
+  `perfdata` TEXT character set latin1 NOT NULL default '',
   `current_state` smallint(6) NOT NULL default '0',
   `has_been_checked` smallint(6) NOT NULL default '0',
   `should_be_scheduled` smallint(6) NOT NULL default '0',
@@ -1299,7 +1299,7 @@ CREATE TABLE IF NOT EXISTS `icinga_statehistory` (
   `last_state` smallint(6) NOT NULL default '-1',
   `last_hard_state` smallint(6) NOT NULL default '-1',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`statehistory_id`)
 ) ENGINE=MyISAM COMMENT='Historical host and service state changes';
 
@@ -1322,7 +1322,7 @@ CREATE TABLE IF NOT EXISTS `icinga_systemcommands` (
   `execution_time` double NOT NULL default '0',
   `return_code` smallint(6) NOT NULL default '0',
   `output` varchar(255) character set latin1 NOT NULL default '',
-  `long_output` varchar(8192) NOT NULL default '',
+  `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`systemcommand_id`),
   KEY `instance_id` (`instance_id`),
   KEY `start_time` (`start_time`)
