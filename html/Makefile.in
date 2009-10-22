@@ -78,7 +78,7 @@ install:
 	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
 	for file in images/*.jpg; \
 	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
-	for file in images/*.png; \
+	for file in images/*.gif; \
 	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
 	for file in images/*.ico; \
 	do $(INSTALL) -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(HTMLDIR)/images; done
