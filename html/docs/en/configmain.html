@@ -4,7 +4,7 @@
 <title>Main Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="config.html" title="Configuration Overview">
 <link rel="next" href="configobject.html" title="Object Configuration Overview">
@@ -3475,9 +3475,9 @@
 </table>
   </div>
 
-  <p>This value determines whether or not Icinga will "obsess" over host checks results and run the <a class="link" href="configmain.html#configmain-ochp_command">obsessive compulsive host processor command</a> you define. We know - funny name, but it was
-  all Ethan could think of. This option is useful for performing <a class="link" href="distributed.html" title="Distributed Monitoring">distributed monitoring</a>. If you're
-  not doing distributed monitoring, don't enable this option.</p>
+  <p>This value determines whether or not Icinga will "obsess" over host checks results and run the <a class="link" href="configmain.html#configmain-ochp_command">obsessive compulsive host processor command</a> you define. We know - funny name, but it
+  was all Ethan could think of. This option is useful for performing <a class="link" href="distributed.html" title="Distributed Monitoring">distributed monitoring</a>. If
+  you're not doing distributed monitoring, don't enable this option.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -4690,6 +4690,134 @@
   file grows larger than this size, it will be renamed with a .old extension. If a file already exists with a .old extension it
   will automatically be deleted. This helps ensure your disk space usage doesn't get out of control when debugging
   Icinga.</p>
+  <a class="indexterm" name="id3998756"></a>
+  <a class="indexterm" name="id3998762"></a>
+  <a class="indexterm" name="id3998772"></a>
+  <a class="indexterm" name="id3997751"></a>
+  <a class="indexterm" name="id3998788"></a>
+  <a class="indexterm" name="id3998797"></a>
+  <a class="indexterm" name="id3998806"></a>
+  <a class="indexterm" name="id3998815"></a>
+  <a class="indexterm" name="id3998825"></a>
+  <a class="indexterm" name="id3998835"></a>
+  <a class="indexterm" name="id3998845"></a>
+  <a class="indexterm" name="id3998855"></a>
+  <a class="indexterm" name="id3998865"></a>
+  <a class="indexterm" name="id3998874"></a>
+  <a class="indexterm" name="id3998885"></a>
+  <a class="indexterm" name="id3998896"></a>
+  <a class="indexterm" name="id3998907"></a>
+  <a class="indexterm" name="id3998916"></a>
+  <a class="indexterm" name="id3998927"></a>
+  <a class="indexterm" name="id3998938"></a>
+  <a class="indexterm" name="id3998950"></a>
+  <a class="indexterm" name="id3998960"></a>
+  <a class="indexterm" name="id3998969"></a>
+  <a class="indexterm" name="id3998980"></a>
+  <a class="indexterm" name="id3998970"></a>
+  <a class="indexterm" name="id3998999"></a>
+  <a class="indexterm" name="id3999010"></a>
+  <a class="indexterm" name="id3999020"></a>
+  <a class="indexterm" name="id3999011"></a>
+  <a class="indexterm" name="id3999031"></a>
+  <a class="indexterm" name="id3999041"></a>
+  <a class="indexterm" name="id3999042"></a>
+  <a class="indexterm" name="id3999052"></a>
+  <a class="indexterm" name="id3999073"></a>
+  <a class="indexterm" name="id3999083"></a>
+  <a class="indexterm" name="id3999095"></a>
+  <a class="indexterm" name="id3999096"></a>
+  <a class="indexterm" name="id3999107"></a>
+  <a class="indexterm" name="id3999141"></a>
+  <a class="indexterm" name="id3999146"></a>
+  <a class="indexterm" name="id3999161"></a>
+  <a class="indexterm" name="id3999150"></a>
+  <a class="indexterm" name="id3999181"></a>
+  <a class="indexterm" name="id3999171"></a>
+  <a class="indexterm" name="id3999191"></a>
+  <a class="indexterm" name="id3999202"></a>
+  <a class="indexterm" name="id3999203"></a>
+  <a class="indexterm" name="id3999232"></a>
+  <a class="indexterm" name="id3999243"></a>
+  <a class="indexterm" name="id3999233"></a>
+  <a class="indexterm" name="id3999265"></a>
+  <a class="indexterm" name="id3999275"></a>
+  <a class="indexterm" name="id3999266"></a>
+  <a class="indexterm" name="id3999276"></a>
+  <a class="indexterm" name="id3999287"></a>
+  <a class="indexterm" name="id3999297"></a>
+  <a class="indexterm" name="id3999317"></a>
+  <a class="indexterm" name="id3999337"></a>
+  <a class="indexterm" name="id3999348"></a>
+  <a class="indexterm" name="id3999339"></a>
+  <a class="indexterm" name="id3999359"></a>
+  <a class="indexterm" name="id3999349"></a>
+  <a class="indexterm" name="id3999389"></a>
+  <a class="indexterm" name="id3999401"></a>
+  <a class="indexterm" name="id3999410"></a>
+  <a class="indexterm" name="id3999411"></a>
+  <a class="indexterm" name="id3999434"></a>
+  <a class="indexterm" name="id3999444"></a>
+  <a class="indexterm" name="id3999456"></a>
+  <a class="indexterm" name="id3999445"></a>
+  <a class="indexterm" name="id3999465"></a>
+  <a class="indexterm" name="id3999476"></a>
+  <a class="indexterm" name="id3999487"></a>
+  <a class="indexterm" name="id3999488"></a>
+  <a class="indexterm" name="id3999498"></a>
+  <a class="indexterm" name="id3999509"></a>
+  <a class="indexterm" name="id3999539"></a>
+  <a class="indexterm" name="id3999530"></a>
+  <a class="indexterm" name="id3999541"></a>
+  <a class="indexterm" name="id3999551"></a>
+  <a class="indexterm" name="id3999562"></a>
+  <a class="indexterm" name="id3999592"></a>
+  <a class="indexterm" name="id3999572"></a>
+  <a class="indexterm" name="id3999603"></a>
+  <a class="indexterm" name="id3999612"></a>
+  <a class="indexterm" name="id3999614"></a>
+  <a class="indexterm" name="id3999643"></a>
+  <a class="indexterm" name="id3999644"></a>
+  <a class="indexterm" name="id3999654"></a>
+  <a class="indexterm" name="id3999655"></a>
+  <a class="indexterm" name="id3999685"></a>
+  <a class="indexterm" name="id3999676"></a>
+  <a class="indexterm" name="id3999696"></a>
+  <a class="indexterm" name="id3999705"></a>
+  <a class="indexterm" name="id3999707"></a>
+  <a class="indexterm" name="id3999738"></a>
+  <a class="indexterm" name="id3999727"></a>
+  <a class="indexterm" name="id3999748"></a>
+  <a class="indexterm" name="id3999739"></a>
+  <a class="indexterm" name="id3999769"></a>
+  <a class="indexterm" name="id3999779"></a>
+  <a class="indexterm" name="id3999781"></a>
+  <a class="indexterm" name="id3999812"></a>
+  <a class="indexterm" name="id3999814"></a>
+  <a class="indexterm" name="id3999824"></a>
+  <a class="indexterm" name="id3999825"></a>
+  <a class="indexterm" name="id3999836"></a>
+  <a class="indexterm" name="id3999846"></a>
+  <a class="indexterm" name="id3999857"></a>
+  <a class="indexterm" name="id3999868"></a>
+  <a class="indexterm" name="id3999878"></a>
+  <a class="indexterm" name="id3999888"></a>
+  <a class="indexterm" name="id3999908"></a>
+  <a class="indexterm" name="id3999919"></a>
+  <a class="indexterm" name="id3999931"></a>
+  <a class="indexterm" name="id3999951"></a>
+  <a class="indexterm" name="id3999962"></a>
+  <a class="indexterm" name="id3999972"></a>
+  <a class="indexterm" name="id3999983"></a>
+  <a class="indexterm" name="id3999994"></a>
+  <a class="indexterm" name="id4000004"></a>
+  <a class="indexterm" name="id4000014"></a>
+  <a class="indexterm" name="id4000024"></a>
+  <a class="indexterm" name="id4000036"></a>
+  <a class="indexterm" name="id4000045"></a>
+  <a class="indexterm" name="id4000056"></a>
+  <a class="indexterm" name="id4000065"></a>
+  <a class="indexterm" name="id4000075"></a>
 </div>
 <div class="navfooter">
 <hr>

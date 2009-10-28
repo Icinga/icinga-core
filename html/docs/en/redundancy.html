@@ -4,7 +4,7 @@
 <title>Redundant and Failover Network Monitoring</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. Advanced Topics">
 <link rel="prev" href="distributed.html" title="Distributed Monitoring">
 <link rel="next" href="flapping.html" title="Detection and Handling of State Flapping">
@@ -42,22 +42,22 @@
 </tr>
 <tr><td align="left" valign="top">
     <p><span class="color"></span> If you are just learning how to use Icinga, we would suggest
-    not trying to implement redundancy until you have becoming familiar with the <a class="link" href="redundancy.html#redundancy.xml-prerequisites">prerequisites</a> that have been laid out. Redundancy is a relatively complicated
+    not trying to implement redundancy until you have becoming familiar with the <a class="link" href="redundancy.html#redundancy-prerequisites">prerequisites</a> that have been laid out. Redundancy is a relatively complicated
     issue to understand, and even more difficult to implement properly.</p>
   </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
-  <p><a class="link" href="redundancy.html#redundancy.xml-prerequisites">Prerequisites</a></p>
+  <p><a class="link" href="redundancy.html#redundancy-prerequisites">Prerequisites</a></p>
 
-  <p><a class="link" href="redundancy.html#redundancy.xml-samples">Sample scripts</a></p>
+  <p><a class="link" href="redundancy.html#redundancy-samples">Sample scripts</a></p>
 
-  <p><a class="link" href="redundancy.html#redundancy.xml-scenario_1">Scenario 1 - Redundant monitoring</a></p>
+  <p><a class="link" href="redundancy.html#redundancy-scenario_1">Scenario 1 - Redundant monitoring</a></p>
 
-  <p><a class="link" href="redundancy.html#redundancy.xml-scenario_2">Scenario 2 - Failover monitoring</a></p>
+  <p><a class="link" href="redundancy.html#redundancy-scenario_2">Scenario 2 - Failover monitoring</a></p>
 
-  <p><a name="redundancy.xml-prerequisites"></a></p>
+  <p><a name="redundancy-prerequisites"></a></p>
 
   <div class="informaltable">
     <table border="0">
@@ -85,7 +85,7 @@
     </li>
 </ul></div>
 
-  <p><a name="redundancy.xml-samples"></a></p>
+  <p><a name="redundancy-samples"></a></p>
 
   <div class="informaltable">
     <table border="0">
@@ -97,7 +97,7 @@
   <p>All of the sample scripts that we use in this documentation can be found in the <span class="emphasis"><em>eventhandlers/</em></span>
   subdirectory of the Icinga distribution. You'll probably need to modify them to work on your system...</p>
 
-  <p><a name="redundancy.xml-scenario_1"></a></p>
+  <p><a name="redundancy-scenario_1"></a></p>
 
   <div class="informaltable">
     <table border="0">
@@ -364,7 +364,7 @@ exit 0</pre>
   minimized by increasing the frequency of service checks (on host E) of the Icinga process on host A. The rest is up to
   pure chance, but the total "blackout" time shouldn't be too bad.</p>
 
-  <p><a name="redundancy.xml-scenario_2"></a></p>
+  <p><a name="redundancy-scenario_2"></a></p>
 
   <div class="informaltable">
     <table border="0">
@@ -375,7 +375,7 @@ exit 0</pre>
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
-  <p>Failover monitoring is similiar to, but slightly different than redundant monitoring (as discussed above in <a class="link" href="redundancy.html#redundancy.xml-scenario_1">scenario 1</a>).</p>
+  <p>Failover monitoring is similiar to, but slightly different than redundant monitoring (as discussed above in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a>).</p>
 
   <p><span class="bold"><strong>Goals</strong></span></p>
 
@@ -383,7 +383,7 @@ exit 0</pre>
   Icinga process on the master host is running. If the process on the master host stops running (or if the host goes down),
   the Icinga process on the slave host starts monitoring everything.</p>
 
-  <p>While the method described in <a class="link" href="redundancy.html#redundancy.xml-scenario_1">scenario 1</a> will allow you to continue
+  <p>While the method described in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a> will allow you to continue
   receive notifications if the master monitoring hosts goes down, it does have some pitfalls. The biggest problem is that the
   slave host is monitoring the same hosts and servers as the master <span class="emphasis"><em>at the same time as the master</em></span>! This can
   cause problems with excessive traffic and load on the machines being monitored if you have a lot of services defined. Here's how
@@ -398,7 +398,7 @@ exit 0</pre>
 
   <p><span class="bold"><strong>Master Process Check</strong></span></p>
 
-  <p>Set up a cron job on the slave host that periodically (say every minute) runs a script that checks the staus of the
+  <p>Set up a cron job on the slave host that periodically (say every minute) runs a script that checks the status of the
   Icinga process on the master host (using the <span class="emphasis"><em>check_nrpe</em></span> plugin on the slave host and the <a class="link" href="addons.html#addons-nrpe">nrpe daemon</a> and <span class="emphasis"><em>check_nagios</em></span> plugin on the master host). The script should
   check the return code of the <span class="emphasis"><em>check_nrpe plugin</em></span> . If it returns a non-OK state, the script should send the
   appropriate commands to the <a class="link" href="configmain.html#configmain-command_file">external command file</a> to enable both notifications
@@ -408,7 +408,7 @@ exit 0</pre>
   <p>By doing this you end up with only one process monitoring hosts and services at a time, which is much more efficient that
   monitoring everything twice.</p>
 
-  <p>Also of note, you <span class="emphasis"><em>don't</em></span> need to define host and service handlers as mentioned in <a class="link" href="redundancy.html#redundancy.xml-scenario_1">scenario 1</a> because things are handled differently.</p>
+  <p>Also of note, you <span class="emphasis"><em>don't</em></span> need to define host and service handlers as mentioned in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a> because things are handled differently.</p>
 
   <p><span class="bold"><strong>Additional Issues</strong></span></p>
 
@@ -425,6 +425,9 @@ exit 0</pre>
   monitoring deals with service checks.</p>
 
   <p>That's pretty much it as far as setup goes.</p>
+  <a class="indexterm" name="id4052809"></a>
+  <a class="indexterm" name="id4052819"></a>
+  <a class="indexterm" name="id4052828"></a>
 </div>
 <div class="navfooter">
 <hr>

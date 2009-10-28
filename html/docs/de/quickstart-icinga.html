@@ -4,7 +4,7 @@
 <title>Icinga Quickstart</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.4 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart.html" title="Schnellstart-Installationsanleitungen">
 <link rel="next" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
@@ -85,15 +85,25 @@
     </li>
 </ul></div>
 
+  <p><span class="bold"><strong>Installation der Pakete</strong></span></p>
   <p>Sie können diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo):</p>
 
   <p><span class="emphasis"><em>Fedora / RedHat / CentOS</em></span></p>
 
-  <pre class="programlisting"> # yum install httpd gcc glibc glibc-common gd gd-devel</pre>
+  <pre class="programlisting"> # yum install httpd gcc glibc glibc-common gd gd-devel
+ # yum install libjpeg libjpeg-devel libpng libpng-devel</pre>
 
-  <p><span class="emphasis"><em>Ubuntu</em></span></p>
+  <p><span class="emphasis"><em>Debian / Ubuntu</em></span></p>
 
-  <pre class="programlisting"> # apt-get install apache2 build-essential libgd2-xpm-dev</pre>
+  <pre class="programlisting"> # apt-get install apache2 build-essential libgd2-xpm-dev
+ # apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev</pre>
+ <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Die Zahlen &lt;62/12&gt; können je nach Distribution abweichen</p></td></tr>
+</table></div>
 
   <p><span class="emphasis"><em>openSuSE</em></span></p>
 
@@ -107,7 +117,7 @@
 
   <p>Erstellen Sie ein neues Benutzerkonto <span class="emphasis"><em>icinga</em></span> und vergeben Sie ein Passwort:</p>
 
-  <pre class="programlisting"> # /usr/sbin/useradd -m icinga 
+  <pre class="programlisting"> # /usr/sbin/useradd -m icinga
  # passwd icinga  </pre>
 
   <p>Bei einigen Distributionen müssen Sie die Gruppe in einem gesonderten Schritt anlegen:</p>
@@ -131,9 +141,9 @@
 
   <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
-  <pre class="programlisting"> # cd /usr/src/ 
- # tar xvzf icinga-0.8.4.tar.gz 
- # cd icinga-0.8.4</pre>
+  <pre class="programlisting"> # cd /usr/src/
+ # tar xvzf icinga-1.0.tar.gz
+ # cd icinga-1.0</pre>
 
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den
   Optionen.</p>
@@ -200,7 +210,7 @@
 
   <pre class="programlisting"> # service httpd restart</pre>
 
-  <p><span class="emphasis"><em>Ubuntu / openSuSE</em></span></p>
+  <p><span class="emphasis"><em>Debian / Ubuntu / openSuSE</em></span></p>
 
   <pre class="programlisting"> # /etc/init.d/apache2 reload</pre>
 
@@ -209,8 +219,8 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top">Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">hier</a> beschrieben, um sicherzustellen, dass Ihre Web-Authentifizierungsinformationen nicht
-  kompromittiert werden.</td></tr>
+<tr><td align="left" valign="top"><p>Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">hier</a> beschrieben, um sicherzustellen, dass Ihre Web-Authentifizierungsinformationen nicht
+  kompromittiert werden.</p></td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Kompilieren und installieren der Nagios-Plugins</strong></span></p>
@@ -237,7 +247,7 @@
   <pre class="programlisting"> # chkconfig --add icinga 
  # chkconfig icinga on </pre>
 
-  <p><span class="emphasis"><em>Ubuntu</em></span></p>
+  <p><span class="emphasis"><em>Debian / Ubuntu</em></span></p>
 
   <pre class="programlisting"> # ln -s /etc/init.d/icinga /etc/rcS.d/S99icinga</pre>
 
@@ -269,7 +279,7 @@
 
   <pre class="programlisting"> # service icinga start</pre>
 
-  <p><span class="emphasis"><em>Ubuntu</em></span></p>
+  <p><span class="emphasis"><em>Debian / Ubuntu</em></span></p>
 
   <pre class="programlisting"> # /etc/init.d/icinga start</pre>
 
@@ -329,6 +339,8 @@
 
   <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie
   werden ohne Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen sollten...</p>
+  <a class="indexterm" name="id3625552"></a>
+  <a class="indexterm" name="id3625566"></a>
 </div>
 <div class="navfooter">
 <hr>

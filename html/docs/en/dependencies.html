@@ -4,7 +4,7 @@
 <title>Host and Service Dependencies</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. Advanced Topics">
 <link rel="prev" href="clusters.html" title="Monitoring Service and Host Clusters">
 <link rel="next" href="stalking.html" title="State Stalking">
@@ -143,7 +143,7 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Icinga gets the current status<sup> <a class="link" href="dependencies.html#dependencies.xml-hard_dependencies">*</a>
+      <p>Icinga gets the current status<sup> <a class="link" href="dependencies.html#dependencies-hard_dependencies">*</a>
       </sup> of the service that is being <span class="emphasis"><em>depended upon</em></span>.</p>
     </li>
 <li class="listitem">
@@ -165,7 +165,7 @@
   <p>This cycle continues until either all dependencies for the service have been checked or until one dependency check
   fails.</p>
 
-  <p><a name="dependencies.xml-hard_dependencies"></a></p>
+  <p><a name="dependencies-hard_dependencies"></a></p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -309,6 +309,8 @@
   repress notifications for that (dependent) host. At some point in the future the notification dependency tests for the host may
   all pass. If this happens, Icinga will start sending out notifications again as it normally would for the host. More
   information on the notification logic can be found <a class="link" href="notifications.html" title="Notifications">here</a>.</p>
+  <a class="indexterm" name="id4055762"></a>
+  <a class="indexterm" name="id4055777"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -4,7 +4,7 @@
 <title>Tuning Icinga For Maximum Performance</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Security and Performance Tuning">
 <link rel="prev" href="cgisecurity.html" title="Enhanced CGI Security and Authentication">
 <link rel="next" href="faststartup.html" title="Fast Startup Options">
@@ -84,9 +84,9 @@
       seeing high latency values (&gt; 10 or 15 seconds) for the majority of your service checks (via the <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo CGI</a>), you are probably starving Icinga of the checks it needs. That's not
       Icinga's fault - its yours. Under ideal conditions, all service checks would have a latency of 0, meaning they were
       executed at the exact time that they were scheduled to be executed. However, it is normal for some checks to have small
-      latency values. We would recommend taking the minimum number of maximum concurrent checks reported when running Icinga
-      with the <span class="bold"><strong>-s</strong></span> command line argument and doubling it. Keep increasing it until the average
-      check latency for your services is fairly low. More information on service check scheduling can be found <a class="link" href="checkscheduling.html" title="Service and Host Check Scheduling">here</a>.</p>
+      latency values. We would recommend taking the minimum number of maximum concurrent checks reported when running
+      Icinga with the <span class="bold"><strong>-s</strong></span> command line argument and doubling it. Keep increasing it until
+      the average check latency for your services is fairly low. More information on service check scheduling can be found <a class="link" href="checkscheduling.html" title="Service and Host Check Scheduling">here</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Use passive checks when possible</strong></span> . The overhead needed to process the results of
@@ -170,6 +170,7 @@
       new IDE drives.</p>
     </li>
 </ol></div>
+  <a class="indexterm" name="id4064772"></a>
 </div>
 <div class="navfooter">
 <hr>

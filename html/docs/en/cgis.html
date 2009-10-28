@@ -4,7 +4,7 @@
 <title>Information On The CGIs</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 0.8.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="notifications.html" title="Notifications">
 <link rel="next" href="ch06.html" title="Chapter 6. Advanced Topics">
@@ -27,26 +27,50 @@
 <div class="section" title="Information On The CGIs">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgis"></a><a name="information_on_cgis"></a>Information On The CGIs</h2></div></div></div>
-<p><span class="bold"><strong>Introduction</strong></span></p>
-<p>The various CGIs distributed with Icinga are described here, along with the authorization requirements for accessing and using each CGI. By default the CGIs require that you have authenticated to the web server and are authorized to view any information you are requesting. More information on configuring authorization can be found <a class="link" href="cgiauth" target="_top">here</a>.</p>
-<p><span class="bold"><strong>Index</strong></span></p>
-<p><a class="link" href="cgis.html#cgis-status_cgi">Status CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-statusmap_cgi">Status map CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-statuswml_cgi">WAP interface CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-tac_cgi">Tactical overview CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-outages_cgi">Network outages CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-config_cgi">Configuration CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-cmd_cgi">Command CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-extinfo_cgi">Extended information CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-showlog_cgi">Event log CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-history_cgi">Alert history CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-notifications_cgi">Notifications CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-trends_cgi">Trends CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-avail_cgi">Availability reporting CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-histogram_cgi">Alert histogram CGI</a></p>
-<p><a class="link" href="cgis.html#cgis-summary_cgi">Alert summary CGI</a></p>
-<p><a name="cgis-status_cgi"></a><span class="bold"><strong>Status CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>The various CGIs distributed with Icinga are described here, along with the authorization requirements for
+  accessing and using each CGI. By default the CGIs require that you have authenticated to the web server and are authorized to
+  view any information you are requesting. More information on configuring authorization can be found <a class="link" href="cgiauth" target="_top">here</a>.</p>
+
+  <p><span class="bold"><strong>Index</strong></span></p>
+
+  <p><a class="link" href="cgis.html#cgis-status_cgi">Status CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-statusmap_cgi">Status map CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-statuswml_cgi">WAP interface CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-tac_cgi">Tactical overview CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-outages_cgi">Network outages CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-config_cgi">Configuration CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-cmd_cgi">Command CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-extinfo_cgi">Extended information CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-showlog_cgi">Event log CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-history_cgi">Alert history CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-notifications_cgi">Notifications CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-trends_cgi">Trends CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-avail_cgi">Availability reporting CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-histogram_cgi">Alert histogram CGI</a></p>
+
+  <p><a class="link" href="cgis.html#cgis-summary_cgi">Alert summary CGI</a></p>
+
+  <p><a name="cgis-status_cgi"></a><span class="bold"><strong>Status CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -59,176 +83,344 @@
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-status-c.png"></span> </p></td>
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-status-d.png"></span> </p></td>
 </tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>status.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>status.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This is the most important CGI included with Icinga. It allows you to view the current status of all hosts and services that are being monitored. The status CGI can produce two main types of output - a status overview of all host groups (or a particular host group) and a detailed view of all services (or those associated with a particular host).</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view all hosts and services for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This is the most important CGI included with Icinga. It allows you to view the current status of all hosts and
+  services that are being monitored. The status CGI can produce two main types of output - a status overview of all host groups
+  (or a particular host group) and a detailed view of all services (or those associated with a particular host).</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view all hosts and services for which you are a
+      contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-statusmap_cgi"></a><span class="bold"><strong>Status Map CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-statusmap_cgi"></a><span class="bold"><strong>Status Map CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-statusmap.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statusmap.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>statusmap.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI creates a map of all hosts that you have defined on your network. The CGI uses Thomas Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create a PNG image of your network layout. The coordinates used when drawing each host (along with the optional pretty icons) are taken from <a class="link" href="objectdefinitions#host" target="_top">host</a> definitions. If you'd prefer to let the CGI automatically generate drawing coordinates for you, use the <a class="link" href="configcgi#default_statusmap_layout" target="_top">default_statusmap_layout</a> directive to specify a layout algorithm that should be used.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view all hosts.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI creates a map of all hosts that you have defined on your network. The CGI uses Thomas Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create a PNG image of your network
+  layout. The coordinates used when drawing each host (along with the optional pretty icons) are taken from <a class="link" href="objectdefinitions#host" target="_top">host</a> definitions. If you'd prefer to let the CGI automatically generate drawing
+  coordinates for you, use the <a class="link" href="configcgi#default_statusmap_layout" target="_top">default_statusmap_layout</a> directive to
+  specify a layout algorithm that should be used.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view all hosts.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view hosts for which you are a contact.</p>
+    </li>
 </ul></div>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Users who are not authorized to view specific hosts will see <span class="emphasis"><em>unknown</em></span> nodes in those positions. I realize that they really shouldn't see <span class="emphasis"><em>anything</em></span> there, but it doesn't make sense to even generate the map if you can't see all the host dependencies...</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Users who are not authorized to view specific hosts will see <span class="emphasis"><em>unknown</em></span> nodes in those positions. I
+    realize that they really shouldn't see <span class="emphasis"><em>anything</em></span> there, but it doesn't make sense to even generate the map
+    if you can't see all the host dependencies...</p>
+  </td></tr>
 </table></div>
-<p><a name="cgis-statuswml_cgi"></a><span class="bold"><strong>WAP Interface CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-statuswml_cgi"></a><span class="bold"><strong>WAP Interface CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-statuswml.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statuswml.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>statuswml.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI serves as a WAP interface to network status information. If you have a WAP-enabled device (i.e. an Internet-ready cellphone), you can view status information while you're on the go. Different status views include hostgroup summary, hostgroup overview, host detail, service detail, all problems, and unhandled problems. In addition to viewing status information, you can also disable notifications and checks and acknowledge problems from your cellphone. Pretty cool, huh?</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system information</em></span> </a> you can view Icinga process information.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view status data for all hosts <span class="bold"><strong>and</strong></span> services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view status data for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view status data for all hosts and services for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI serves as a WAP interface to network status information. If you have a WAP-enabled device (i.e. an Internet-ready
+  cellphone), you can view status information while you're on the go. Different status views include hostgroup summary, hostgroup
+  overview, host detail, service detail, all problems, and unhandled problems. In addition to viewing status information, you can
+  also disable notifications and checks and acknowledge problems from your cellphone. Pretty cool, huh?</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
+      information</em></span> </a> you can view Icinga process information.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view status data for all hosts <span class="bold"><strong>and</strong></span> services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view status data for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view status data for all hosts and services for which
+      you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-statuswrl_cgi"></a></p>
-<p><a name="cgis-tac_cgi"></a><span class="bold"><strong>Tactical Overview CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-statuswrl_cgi"></a></p>
+
+  <p><a name="cgis-tac_cgi"></a><span class="bold"><strong>Tactical Overview CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-tac.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>tac.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>tac.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI is designed to server as a "birds-eye view" of all network monitoring activity. It allows you to quickly see network outages, host status, and service status. It distinguishes between problems that have been "handled" in some way (i.e. been acknowledged, had notifications disabled, etc.) and those which have not been handled, and thus need attention. Very useful if you've got a lot of hosts/services you're monitoring and you need to keep a single screen up to alert you of problems.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view all hosts and services for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI is designed to server as a "birds-eye view" of all network monitoring activity. It allows you to quickly see
+  network outages, host status, and service status. It distinguishes between problems that have been "handled" in some way (i.e.
+  been acknowledged, had notifications disabled, etc.) and those which have not been handled, and thus need attention. Very useful
+  if you've got a lot of hosts/services you're monitoring and you need to keep a single screen up to alert you of problems.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view all hosts and services for which you are a
+      contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-outages_cgi"></a><span class="bold"><strong>Network Outages CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-outages_cgi"></a><span class="bold"><strong>Network Outages CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-outages.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>outages.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>outages.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI will produce a listing of "problem" hosts on your network that are causing network outages. This can be particularly useful if you have a large network and want to quickly identify the source of the problem. Hosts are sorted based on the severity of the outage they are causing.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view all hosts.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI will produce a listing of "problem" hosts on your network that are causing network outages. This can be
+  particularly useful if you have a large network and want to quickly identify the source of the problem. Hosts are sorted based
+  on the severity of the outage they are causing.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view all hosts.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view hosts for which you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-config_cgi"></a><span class="bold"><strong>Configuration CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-config_cgi"></a><span class="bold"><strong>Configuration CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-config.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>config.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>config.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI allows you to view objects (i.e. hosts, host groups, contacts, contact groups, time periods, services, etc.) that you have defined in your <a class="link" href="configobject" target="_top">object configuration file(s)</a>.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>You must be <a class="link" href="configcgi#authorized_for_configuration_information" target="_top"> <span class="emphasis"><em>authorized for configuration information</em></span> </a> in order to any kind of configuration information.</p></li></ul></div>
-<p><a name="cgis-cmd_cgi"></a><span class="bold"><strong>Command CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI allows you to view objects (i.e. hosts, host groups, contacts, contact groups, time periods, services, etc.) that
+  you have defined in your <a class="link" href="configobject" target="_top">object configuration file(s)</a>.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>You must be <a class="link" href="configcgi#authorized_for_configuration_information" target="_top"> <span class="emphasis"><em>authorized for
+      configuration information</em></span> </a> in order to any kind of configuration information.</p>
+    </li></ul></div>
+
+  <p><a name="cgis-cmd_cgi"></a><span class="bold"><strong>Command CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-cmd.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>cmd.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>cmd.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI allows you to send commands to the Icinga process. Although this CGI has several arguments, you would be better to leave them alone. Most will change between different revisions of Icinga. Use the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a> as a starting point for issuing commands.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>You must be <a class="link" href="configcgi#authorized_for_system_commands" target="_top"> <span class="emphasis"><em>authorized for system commands</em></span> </a> in order to issue commands that affect the Icinga process (restarts, shutdowns, mode changes, etc.).</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_host_commands" target="_top"> <span class="emphasis"><em>authorized for all host commands</em></span> </a> you can issue commands for all hosts <span class="bold"><strong>and</strong></span> services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_service_commands" target="_top"> <span class="emphasis"><em>authorized for all service commands</em></span> </a> you can issue commands for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can issue commands for all hosts and services for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI allows you to send commands to the Icinga process. Although this CGI has several arguments, you would be
+  better to leave them alone. Most will change between different revisions of Icinga. Use the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a> as a starting point for issuing commands.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>You must be <a class="link" href="configcgi#authorized_for_system_commands" target="_top"> <span class="emphasis"><em>authorized for system
+      commands</em></span> </a> in order to issue commands that affect the Icinga process (restarts, shutdowns, mode
+      changes, etc.).</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_host_commands" target="_top"> <span class="emphasis"><em>authorized for all host
+      commands</em></span> </a> you can issue commands for all hosts <span class="bold"><strong>and</strong></span> services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_service_commands" target="_top"> <span class="emphasis"><em>authorized for all service
+      commands</em></span> </a> you can issue commands for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can issue commands for all hosts and services for which
+      you are a contact.</p>
+    </li>
 </ul></div>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>If you have chosen not to <a class="link" href="configcgi#use_authentication" target="_top">use authentication</a> with the CGIs, this CGI will <span class="emphasis"><em>not</em></span> allow anyone to issue commands to Icinga. This is done for your own protection. We would suggest removing this CGI altogether if you decide not to use authentication with the CGIs.</p></li></ul></div></td></tr>
+<tr><td align="left" valign="top">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>If you have chosen not to <a class="link" href="configcgi#use_authentication" target="_top">use authentication</a> with the CGIs,
+        this CGI will <span class="emphasis"><em>not</em></span> allow anyone to issue commands to Icinga. This is done for your own
+        protection. We would suggest removing this CGI altogether if you decide not to use authentication with the CGIs.</p>
+      </li></ul></div>
+  </td></tr>
 </table></div>
-<p><a name="cgis-extinfo_cgi"></a><span class="bold"><strong>Extended Information CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-extinfo_cgi"></a><span class="bold"><strong>Extended Information CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -241,116 +433,236 @@
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-extinfo-c.png"></span> </p></td>
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-extinfo-d.png"></span> </p></td>
 </tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>extinfo.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>extinfo.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI allows you to view Icinga process information, host and service state statistics, host and service comments, and more. It also serves as a launching point for sending commands to Icinga via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Although this CGI has several arguments, you would be better to leave them alone - they are likely to change between different releases of Icinga. You can access this CGI by clicking on the 'Network Health' and 'Process Information' links on the side navigation bar, or by clicking on a host or service link in the output of the <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a>.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>You must be <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system information</em></span> </a> in order to view Icinga process information.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view extended information for all hosts <span class="bold"><strong>and</strong></span> services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view extended information for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view extended information for all hosts and services for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI allows you to view Icinga process information, host and service state statistics, host and service
+  comments, and more. It also serves as a launching point for sending commands to Icinga via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Although this CGI has several arguments, you would be better to leave them alone -
+  they are likely to change between different releases of Icinga. You can access this CGI by clicking on the 'Network
+  Health' and 'Process Information' links on the side navigation bar, or by clicking on a host or service link in the output of
+  the <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a>.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>You must be <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
+      information</em></span> </a> in order to view Icinga process information.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view extended information for all hosts <span class="bold"><strong>and</strong></span> services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view extended information for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view extended information for all hosts and services
+      for which you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-showlog_cgi"></a><span class="bold"><strong>Event Log CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-showlog_cgi"></a><span class="bold"><strong>Event Log CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-showlog.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>showlog.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>showlog.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI will display the <a class="link" href="configmain#log_file" target="_top">log file</a>. If you have <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> enabled, you can browse notifications present in archived log files by using the navigational links near the top of the page.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>You must be <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system information</em></span> </a> in order to view the log file.</p></li></ul></div>
-<p><a name="cgis-history_cgi"></a><span class="bold"><strong>Alert History CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI will display the <a class="link" href="configmain#log_file" target="_top">log file</a>. If you have <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> enabled, you can browse notifications present in archived log
+  files by using the navigational links near the top of the page.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>You must be <a class="link" href="configcgi#authorized_for_system_information" target="_top"> <span class="emphasis"><em>authorized for system
+      information</em></span> </a> in order to view the log file.</p>
+    </li></ul></div>
+
+  <p><a name="cgis-history_cgi"></a><span class="bold"><strong>Alert History CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-history.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>history.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>history.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI is used to display the history of problems with either a particular host or all hosts. The output is basically a subset of the information that is displayed by the <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a>. You have the ability to filter the output to display only the specific types of problems you wish to see (i.e. hard and/or soft alerts, various types of service and host alerts, all types of alerts, etc.). If you have <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> enabled, you can browse history information present in archived log files by using the navigational links near the top of the page.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view history information for all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view history information for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view history information for all services and hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI is used to display the history of problems with either a particular host or all hosts. The output is basically a
+  subset of the information that is displayed by the <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a>. You have the ability to
+  filter the output to display only the specific types of problems you wish to see (i.e. hard and/or soft alerts, various types of
+  service and host alerts, all types of alerts, etc.). If you have <a class="link" href="configmain#log_rotation_method" target="_top">log
+  rotation</a> enabled, you can browse history information present in archived log files by using the navigational links near
+  the top of the page.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view history information for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view history information for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view history information for all services and hosts
+      for which you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-notifications_cgi"></a><span class="bold"><strong>Notifications CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-notifications_cgi"></a><span class="bold"><strong>Notifications CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-notifications.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>notifications.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>notifications.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI is used to display host and service notifications that have been sent to various contacts. The output is basically a subset of the information that is displayed by the <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a>. You have the ability to filter the output to display only the specific types of notifications you wish to see (i.e. service notifications, host notifications, notifications sent to specific contacts, etc). If you have <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> enabled, you can browse notifications present in archived log files by using the navigational links near the top of the page.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view notifications for all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view notifications for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view notifications for all services and hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI is used to display host and service notifications that have been sent to various contacts. The output is
+  basically a subset of the information that is displayed by the <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a>. You have
+  the ability to filter the output to display only the specific types of notifications you wish to see (i.e. service
+  notifications, host notifications, notifications sent to specific contacts, etc). If you have <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> enabled, you can browse notifications present in archived log
+  files by using the navigational links near the top of the page.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view notifications for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view notifications for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view notifications for all services and hosts for
+      which you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-trends_cgi"></a><span class="bold"><strong>Trends CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-trends_cgi"></a><span class="bold"><strong>Trends CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-trends.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>trends.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>trends.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI is used to create a graph of host or service states over an arbitrary period of time. In order for this CGI to be of much use, you should enable <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> and keep archived logs in the path specified by the <a class="link" href="configmain#log_archive_path" target="_top">log_archive_path</a> directive. The CGI uses Thomas Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create the trends image.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view trends for all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view trends for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view trends for all services and hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI is used to create a graph of host or service states over an arbitrary period of time. In order for this CGI to be
+  of much use, you should enable <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> and keep archived logs in
+  the path specified by the <a class="link" href="configmain#log_archive_path" target="_top">log_archive_path</a> directive. The CGI uses Thomas
+  Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create the trends
+  image.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view trends for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view trends for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view trends for all services and hosts for which you
+      are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-avail_cgi"></a><span class="bold"><strong>Availability Reporting CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-avail_cgi"></a><span class="bold"><strong>Availability Reporting CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -359,71 +671,169 @@
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-avail-a.png"></span> </p></td>
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-avail-b.png"></span> </p></td>
 </tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>avail.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>avail.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI is used to report on the availability of hosts and services over a user-specified period of time. In order for this CGI to be of much use, you should enable <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> and keep archived logs in the path specified by the <a class="link" href="configmain#log_archive_path" target="_top">log_archive_path</a> directive.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view availability data for all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view availability data for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view availability data for all services and hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI is used to report on the availability of hosts and services over a user-specified period of time. In order for
+  this CGI to be of much use, you should enable <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> and keep
+  archived logs in the path specified by the <a class="link" href="configmain#log_archive_path" target="_top">log_archive_path</a>
+  directive.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view availability data for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view availability data for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view availability data for all services and hosts for
+      which you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-histogram_cgi"></a><span class="bold"><strong>Alert Histogram CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-histogram_cgi"></a><span class="bold"><strong>Alert Histogram CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-histogram.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>histogram.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>histogram.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI is used to report on the availability of hosts and services over a user-specified period of time. In order for this CGI to be of much use, you should enable <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> and keep archived logs in the path specified by the <a class="link" href="configmain#log_archive_path" target="_top">log_archive_path</a> directive. The CGI uses Thomas Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create the histogram image.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view histograms for all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view histograms for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view histograms for all services and hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI is used to report on the availability of hosts and services over a user-specified period of time. In order for
+  this CGI to be of much use, you should enable <a class="link" href="configmain#log_rotation_method" target="_top">log rotation</a> and keep
+  archived logs in the path specified by the <a class="link" href="configmain#log_archive_path" target="_top">log_archive_path</a> directive. The
+  CGI uses Thomas Boutell's <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a> library (version 1.6.3 or higher) to create
+  the histogram image.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view histograms for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view histograms for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view histograms for all services and hosts for which
+      you are a contact.</p>
+    </li>
 </ul></div>
-<p><a name="cgis-summary_cgi"></a><span class="bold"><strong>Alert Summary CGI</strong></span></p>
-<div class="informaltable"><table border="0">
+
+  <p><a name="cgis-summary_cgi"></a><span class="bold"><strong>Alert Summary CGI</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/cgi-summary.png"></span> </p></td></tr></tbody>
-</table></div>
-<div class="informaltable"><table border="0">
+</table>
+  </div>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>summary.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>summary.cgi</strong></span> </span>
+          </p></td>
 </tr></tbody>
-</table></div>
-<p><span class="bold"><strong>Description:</strong></span></p>
-<p>This CGI provides some generic reports about host and service alert data, including alert totals, top alert producers, etc.</p>
-<p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span> </a> you can view summary information for all hosts <span class="bold"><strong>and</strong></span> all services.</p></li>
-<li class="listitem"><p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span> </a> you can view summary information for all services.</p></li>
-<li class="listitem"><p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view summary information for all services and hosts for which you are a contact.</p></li>
+</table>
+  </div>
+
+  <p><span class="bold"><strong>Description:</strong></span></p>
+
+  <p>This CGI provides some generic reports about host and service alert data, including alert totals, top alert producers,
+  etc.</p>
+
+  <p><span class="bold"><strong>Authorization Requirements:</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_hosts" target="_top"> <span class="emphasis"><em>authorized for all hosts</em></span>
+      </a> you can view summary information for all hosts <span class="bold"><strong>and</strong></span> all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are <a class="link" href="configcgi#authorized_for_all_services" target="_top"> <span class="emphasis"><em>authorized for all services</em></span>
+      </a> you can view summary information for all services.</p>
+    </li>
+<li class="listitem">
+      <p>If you are an <span class="emphasis"><em>authenticated contact</em></span> you can view summary information for all services and hosts
+      for which you are a contact.</p>
+    </li>
 </ul></div>
+
+  <a class="indexterm" name="id4048805"></a>
+
+  <a class="indexterm" name="id4048818"></a>
+
+  <a class="indexterm" name="id4048832"></a>
+
+  <a class="indexterm" name="id4048846"></a>
+
+  <a class="indexterm" name="id4048860"></a>
+
+  <a class="indexterm" name="id4048874"></a>
+
+  <a class="indexterm" name="id4048888"></a>
+
+  <a class="indexterm" name="id4048902"></a>
+
+  <a class="indexterm" name="id4048915"></a>
+
+  <a class="indexterm" name="id4048928"></a>
+
+  <a class="indexterm" name="id4048943"></a>
+
+  <a class="indexterm" name="id4048956"></a>
+
+  <a class="indexterm" name="id4048970"></a>
+
+  <a class="indexterm" name="id4048983"></a>
+
+  <a class="indexterm" name="id4048997"></a>
 </div>
 <div class="navfooter">
 <hr>

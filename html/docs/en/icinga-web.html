@@ -1,0 +1,218 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Installation Icinga web frontend</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
+<link rel="up" href="ch10.html" title="Chapter 10. Development">
+<link rel="prev" href="epnplugins.html" title="Developing Plugins For Use With Embedded Perl">
+<link rel="next" href="ix01.html" title="Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Installation Icinga web frontend</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="epnplugins.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 10. Development</th>
+<td width="20%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Installation Icinga web frontend">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="icinga-web"></a>Installation Icinga web frontend</h2></div></div></div>
+  
+
+  <p>Since there is no installer available yet, it's not very easy to install the web frontend for the first time.</p>
+
+  <p>Here is an example config. If you don't want to use the provided values (directories, database, etc.) you have to modify
+  the code a little bit. Let's go:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Move git clone to /var/www/icinga-web (in this example). Please note that the path to the web directory depends on the
+      distribution you use:</p>
+
+      <pre class="programlisting"> # mv icinga-web /var/www</pre>
+    </li>
+<li class="listitem">
+      <p>Check out the Icinga API and move it to /var/www/lib/icinga-api: </p>
+<pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git/
+ # mv icinga-api /var/www/icinga-web/lib/</pre>
+    </li>
+<li class="listitem">
+      <p>Change owner of web directory to http user:</p>
+
+      <p><span class="emphasis"><em>Fedora / RedHat / CentOS</em></span></p>
+
+      <pre class="programlisting"> # chown -R apache:apache /var/www/icinga-web</pre>
+
+      <p><span class="emphasis"><em>Ubuntu / Debian / openSuSE</em></span></p>
+
+      <pre class="programlisting"> # chown -R www-data:www-data /var/www/icinga-web</pre>
+    </li>
+<li class="listitem">
+      <p>Create database and set grants: </p>
+<pre class="programlisting"> # mysql -u root -p
+ mysql&gt; CREATE DATABASE icinga_web;
+ mysql&gt; GRANT ALL ON 'icinga_web.*' TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web';
+ mysql&gt; FLUSH PRIVILEGES;
+ quit</pre>
+    </li>
+<li class="listitem">
+      <p>Import database from the following files: </p>
+<pre class="programlisting"> # mysql -u root -p icinga_web &lt; /var/www/icinga-web/etc/database/rescue_schema.sql
+ # mysql -u root -p icinga_web &lt; /var/www/icinga-web/etc/database/rescue_data.sql</pre>
+    </li>
+<li class="listitem">
+      <p>Edit /var/www/icinga-web/app/config/databases.xml and set database credentials (block should begin at line
+      7):</p>
+<pre class="programlisting">    &lt;database name="appkit_default" class="AgaviDoctrineDatabase"&gt;
+       &lt;ae:parameter name="dsn"&gt;mysql://icinga_web:icinga_web@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="username"&gt;icinga_web&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="password"&gt;icinga_web&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="manager_attributes"&gt;
+            
+          &lt;ae:parameter name="MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+       &lt;/ae:parameter&gt;
+       &lt;ae:parameter name="load_models"&gt;%de.icinga.appkit.doctrine_model_path%&lt;/ae:parameter&gt;
+    &lt;/database&gt;</pre>
+    </li>
+<li class="listitem">
+      <p>Edit /var/www/icinga-web/app/config/icinga.xml and set database credentials to give access to ido-db (block should
+      begin at line 163): </p>
+<pre class="programlisting"> &lt;parameter name="IcingaData"&gt;
+     &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
+     &lt;parameter name="api_file"&gt;%core.root_dir%/lib/icinga-api/IcingaApi.php&lt;/parameter&gt;
+     &lt;parameter name="api_type"&gt;IcingaApi::CONNECTION_IDO&lt;/parameter&gt;
+     &lt;parameter name="config_type"&gt;mysql&lt;/parameter&gt;
+     &lt;parameter name="config_host"&gt;127.0.0.1&lt;/parameter&gt;
+
+     &lt;parameter name="config_port"&gt;3306&lt;/parameter&gt;
+     &lt;parameter name="config_database"&gt;icinga&lt;/parameter&gt;
+
+     &lt;parameter name="config_user"&gt;icinga&lt;/parameter&gt;
+     &lt;parameter name="config_password"&gt;icinga&lt;/parameter&gt;
+           
+     &lt;parameter name="config_table_prefix"&gt;icinga_&lt;/parameter&gt;
+ &lt;/parameter&gt;</pre>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+          Please keep in mind that you have to install 
+
+          IDOUtils
+
+           before (according to the 
+
+          <a class="xref" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">“Icinga with IDOUtils Quickstart”</a>
+
+          )
+        </td></tr>
+</table></div>
+    </li>
+<li class="listitem">
+      <p>Set up a virtual host: </p>
+<pre class="programlisting"> &lt;VirtualHost *:80&gt;
+
+    ServerName icinga-web
+
+    DocumentRoot /var/www/icinga-web/pub/
+
+    DirectoryIndex index.php
+
+    &lt;Directory /var/www/icinga-web/pub/&gt;
+       Options -MultiViews -Indexes +FollowSymLinks
+       AllowOverride none
+       Order allow,deny
+       Allow from all
+
+       &lt;IfModule mod_rewrite.c&gt;
+          RewriteEngine On
+          RewriteBase /
+
+          # If the requested URL does not exist (it's likely an agavi route),
+          # pass it as path info to index.php, the Agavi dispatch script.
+          RewriteRule ^$ index.php?/ [QSA,L]
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule (.*) index.php?/$1 [QSA,L]
+       &lt;/IfModule&gt;
+
+    &lt;/Directory&gt;
+
+    # deny something!
+    &lt;Location /&gt;
+       Options -MultiViews -Indexes +FollowSymLinks
+       Order allow,deny
+       Allow from all
+    &lt;/Location&gt;
+
+    # JS frameworks
+    Alias /js/yui               /var/www/icinga-web/lib/yui
+    Alias /js/swfobject         /var/www/icinga-web/lib/swfobject
+    Alias /js/mootools          /var/www/icinga-web/lib/mootools
+    Alias /js/jquery            /var/www/icinga-web/lib/jquery
+    Alias /js/appkit            /var/www/icinga-web/lib/appkit/js
+    Alias /js/gc-prettify       /var/www/icinga-web/lib/gc-prettify
+    Alias /js/firebug           /var/www/icinga-web/lib/firebug
+    Alias /js/ext3              /var/www/icinga-web/lib/ext3
+
+    # Flash frameworks
+    Alias /flash/flexchart      /var/www/icinga-web/lib/flexchart
+
+    &lt;IfDefine APACHE2&gt;
+       AcceptPathInfo On
+    &lt;/IfDefine&gt;
+
+ &lt;/VirtualHost&gt;</pre>
+    </li>
+<li class="listitem">
+      <p>Clear cache </p>
+<pre class="programlisting"> # rm /var/www/icinga-web/app/cache/config/*.php</pre>
+    </li>
+<li class="listitem">
+      <p>Reload your web server config</p>
+
+      <p><span class="emphasis"><em>Fedora/RedHat/CentOS</em></span></p>
+
+      <pre class="programlisting"> # service httpd reload</pre>
+
+      <p><span class="emphasis"><em>Ubuntu / openSuSE</em></span></p>
+
+      <pre class="programlisting"> # /etc/init.d/apache2 reload</pre>
+    </li>
+</ol></div>
+
+  <p>That's it.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="epnplugins.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Developing Plugins For Use With Embedded Perl </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Index</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
