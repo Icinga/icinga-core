@@ -5,7 +5,7 @@
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 09-15-2009
+ * Last Modified: 
  *
  **************************************************************/
 
@@ -25,14 +25,14 @@
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
 
-#define NDO2DB_VERSION "0.8.4"
+#define NDO2DB_VERSION "1.0RC1"
 
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
 #endif
 
 #define NDO2DB_NAME "IDO2DB"
-#define NDO2DB_DATE "09-15-2009"
+#define NDO2DB_DATE "10-28-2009"
 
 #ifdef HAVE_SSL
 SSL_METHOD *meth;

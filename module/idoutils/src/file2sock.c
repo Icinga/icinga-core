@@ -13,9 +13,9 @@
 #include "../include/common.h"
 #include "../include/io.h"
 
-#define FILE2SOCK_VERSION "0.8.4"
+#define FILE2SOCK_VERSION "1.0RC1"
 #define FILE2SOCK_NAME "FILE2SOCK"
-#define FILE2SOCK_DATE "09-15-2009"
+#define FILE2SOCK_DATE "10-28-2009"
 
 
 int process_arguments(int,char **);
