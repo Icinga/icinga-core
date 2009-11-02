@@ -1880,7 +1880,7 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 		command_id = 0L;
 
 	/* save entry to db */
-        void *data[19];
+        void *data[22];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &object_id;
         data[2] = (void *) &check_type;
@@ -1900,6 +1900,9 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
         data[16] = (void *) &es[2];
         data[17] = (void *) &es[3];
         data[18] = (void *) &es[4];
+        data[19] = (void *) &command_id;
+        data[20] = (void *) &es[0];
+        data[21] = (void *) &es[1];
 
         result = ido2db_query_insert_or_update_servicecheckdata_add(idi, data);
 

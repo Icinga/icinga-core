@@ -1029,7 +1029,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
 
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s', %lu, '%s', '%s') ON DUPLICATE KEY UPDATE check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', start_time=%s, start_time_usec='%lu', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s'",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -1049,7 +1049,10 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                                         *(int *) data[15],
                                         *(char **) data[16],
                                         *(char **) data[17],
-                                        *(char **) data[18],     	/* insert end */
+                                        *(char **) data[18],     	
+                                        *(unsigned long *) data[19],     	
+                                        *(char **) data[20],     	
+                                        *(char **) data[21],     	/* insert end */
                                         *(int *) data[2],               /* update start */
                                         *(int *) data[3],
                                         *(int *) data[4],
@@ -1104,7 +1107,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         /* check result if update was ok */
                         if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s', %lu, '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -1124,7 +1127,10 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                                         *(int *) data[15],
                                         *(char **) data[16],
                                         *(char **) data[17],
-                                        *(char **) data[18]            /* insert end */
+                                        *(char **) data[18],     	
+                                        *(unsigned long *) data[19],     	
+                                        *(char **) data[20],     	
+                                        *(char **) data[21]     	/* insert end */
                                 );
                                 /* send query to db */
                                 result = ndo2db_db_query(idi, query2);
@@ -1144,7 +1150,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
                         /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu) WHEN MATCHED THEN UPDATE SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES ('%lu', '%lu', '%d', '%d', '%d', '%d', '%d', %s, '%lu', %s, '%lu', '%d', '%d', '%lf', '%lf', '%d', '%s', '%s', '%s')",
+                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu) WHEN MATCHED THEN UPDATE SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s', %lu, '%s', '%s')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(unsigned *) data[1],
@@ -1183,7 +1189,10 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                                         *(int *) data[15],
                                         *(char **) data[16],
                                         *(char **) data[17],
-                                        *(char **) data[18]            /* insert end */
+                                        *(char **) data[18],     	
+                                        *(unsigned long *) data[19],     	
+                                        *(char **) data[20],     	
+                                        *(char **) data[21]     	/* insert end */
                         );
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
