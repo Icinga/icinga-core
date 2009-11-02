@@ -22,6 +22,11 @@ extern int errno;
 
 extern int ndo2db_log_debug_info(int , int , const char *, ...);
 
+/* point to prepared statements after db initialize */
+#ifdef USE_ORACLE
+int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi);
+#endif
+
 extern ndo2db_dbconfig ndo2db_db_settings;
 extern time_t ndo2db_db_last_checkin_time;
 
@@ -205,6 +210,7 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 	} 
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "OCI_Initialize() ok\n");
+
 #endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_init() end\n");
@@ -334,6 +340,15 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to oracle database\n");
 	}
 
+        /* initialize prepared statements */
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() called\n");
+
+        if(ido2db_oci_prepared_statement_timedevents_queue(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() failed\n");
+                return NDO_ERROR;
+        }
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() call done\n");
+
 #endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_connect(%d) end\n", result);
@@ -362,6 +377,16 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from database");
 #else /* Oracle ocilib specific */
 
+	/* close prepared statements */
+	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents_queue);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostchecks);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hoststatus);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicechecks);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicestatus);
+
+
+	/* close db connection */
 	OCI_ConnectionFree(idi->dbinfo.oci_connection);
 	OCI_Cleanup();
 	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from oracle database");
@@ -1318,5 +1343,47 @@ unsigned long ido2db_ocilib_insert_id(ndo2db_idi *idi) {
 
 	return insert_id;
 }
+
+
+/****************************************************************************/
+/* PREPARED STATEMENTS                                                      */
+/****************************************************************************/
+
+int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X6) WHEN MATCHED THEN UPDATE SET queued_time=(SELECT unixts2date(:X3) FROM DUAL), queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
+                        buf = NULL;
+        }
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() query: %s\n", buf);
+
+        /* bind to timedevents_queue statement */
+	if(idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_timedevents_queue = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_timedevents_queue, 1);
+		
+	        if(!OCI_Prepare(idi->dbinfo.oci_statement_timedevents_queue, MT(buf))) {
+        	        free(buf);
+                	return NDO_ERROR;
+	        }
+	} else {
+		free(buf);
+		return NDO_ERROR;
+	}
+        free(buf);
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() end\n");
+
+        return NDO_OK;
+}
+
 
 #endif /* Oracle ocilib specific */

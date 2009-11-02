@@ -1050,7 +1050,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	/* save a record of timed events that get added */
 	if (type == NEBTYPE_TIMEDEVENT_ADD) {
 
-		void *data[7];
+		void *data[9];
 		data[0] = (void *) &idi->dbinfo.instance_id; 
 		data[1] = (void *) &event_type;
 		data[2] = (void *) &ts[0];
@@ -1058,6 +1058,10 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		data[4] = (void *) &ts[1];
 		data[5] = (void *) &recurring_event;
 		data[6] = (void *) &object_id;
+		/* add unixtime for bind params */
+		data[7] = (void *) &tstamp.tv_sec;
+		data[8] = (void *) &run_time;
+
 
 		result = ido2db_query_insert_or_update_timedevent_add(idi, data);
 
@@ -1065,7 +1069,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+		/* do not free if prepared statement */
+		//OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	}

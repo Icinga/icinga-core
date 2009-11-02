@@ -73,6 +73,13 @@ typedef struct ndo2db_dbconninfo_struct{
 	OCI_Connection* oci_connection;
 	OCI_Statement* oci_statement;
 	OCI_Resultset* oci_resultset;
+	/* for bind params keep prepared statements */
+	OCI_Statement* oci_statement_timedevents;
+	OCI_Statement* oci_statement_timedevents_queue;
+	OCI_Statement* oci_statement_hostchecks;
+	OCI_Statement* oci_statement_hoststatus;
+	OCI_Statement* oci_statement_servicechecks;
+	OCI_Statement* oci_statement_servicestatus;
 #endif /* Oracle ocilib specific */
 	unsigned long instance_id;
 	unsigned long conninfo_id;

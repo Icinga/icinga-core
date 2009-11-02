@@ -27,19 +27,46 @@ extern int errno;
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
 
 /****************************************************************************/
-/* OBJECT ROUTINES                                                          */
+/* PREPARED STATEMENTS                                                      */
+/****************************************************************************/
+#ifdef USE_ORACLE
+/*
+int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi) {
+
+	char *buf = NULL;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() start\n");
+
+	if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=:X5 AND object_id=:X6 WHEN MATCHED THEN UPDATE SET queued_time=:X3, queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (:X1, :X2, :X3, :X4, :X5, :X6, X6)", 
+		ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
+			buf = NULL;
+	}
+
+	if(!OCI_Prepare(idi->dbinfo.oci_statement_timedevents_queue, MT(buf))) {
+		free(buf);
+		return NDO_ERROR;
+	}
+
+	free(buf);
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() end\n");
+
+	return NDO_OK;
+}
+
+*/
+#endif
+
+/****************************************************************************/
+/* INSERT QUERIES                                                           */
 /****************************************************************************/
 
 /****************************************************************************/
-/* INSERT QUERIES                                                          */
+/* DELETE QUERIES                                                           */
 /****************************************************************************/
 
 /****************************************************************************/
-/* DELETE QUERIES                                                          */
-/****************************************************************************/
-
-/****************************************************************************/
-/* INSERT/UPDATE/MERGE QUERIES                                                          */
+/* INSERT/UPDATE/MERGE QUERIES                                              */
 /****************************************************************************/
 
 
@@ -52,6 +79,7 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
         const char *dbi_error;
 	char * query1 = NULL;
 	char * query2 = NULL;
+	unsigned long i = 666;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add() start\n");
 
@@ -127,27 +155,40 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
         	        break;
 	        case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-			/* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu) WHEN MATCHED THEN UPDATE SET queued_time=%s, queued_time_usec=%lu, recurring_event=%d WHEN NOT MATCHED THEN INSERT (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
-					*(unsigned long *) data[0],	/* unique constraint start */
-					*(int *) data[1],
-					*(char **) data[4],
-					*(unsigned long *) data[6],	/* unique constraint end */
-                                        *(char **) data[2],		/* update start */
-                                        *(unsigned long *) data[3],
-                                        *(int *) data[5],		/* update end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(int *) data[1],
-                                        *(char **) data[2],
-                                        *(unsigned long *) data[3],
-                                        *(char **) data[4],
-                                        *(int *) data[5],
-                                        *(unsigned long *) data[6]     /* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
+
+			/* bind params to prepared statement */
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X1"), (big_uint *) data[0])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X2"), (int *) data[1])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X3"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X4"), (big_uint *) data[3])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X5"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+				return NDO_ERROR;
+			}
+			if(!OCI_BindInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X6"), (int *) data[5])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_queue, MT(":X7"), (big_uint *) data[6])) {
+				return NDO_ERROR;
+			}
+
+			/* execute statement */
+			if(!OCI_Execute(idi->dbinfo.oci_statement_timedevents_queue)) {
+				ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add() execute error\n");
+				return NDO_ERROR;
+			}
+
+			/* commit statement */
+			OCI_Commit(idi->dbinfo.oci_connection);
+
+			/* do not free statement yet! */
 #endif
         	        break;
 	        case NDO2DB_DBSERVER_SQLITE:
