@@ -997,9 +997,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicechecks` (
   `long_output` TEXT NOT NULL default '',
   `perfdata` TEXT character set latin1 NOT NULL default '',
   PRIMARY KEY  (`servicecheck_id`),
-  KEY `instance_id` (`instance_id`),
-  KEY `service_object_id` (`service_object_id`),
-  KEY `start_time` (`start_time`)
+  UNIQUE KEY `instance_id` (`instance_id`,`service_object_id`,`start_time`,`start_time_usec`)
 ) ENGINE=MyISAM  COMMENT='Historical service checks';
 
 -- --------------------------------------------------------
