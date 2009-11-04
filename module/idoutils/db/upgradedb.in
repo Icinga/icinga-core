@@ -1,4 +1,4 @@
-#!@PERL@
+#!@ido2db_perl@
 #
 # SYNTAX:
 my $usage = "upgradedb -u user -p password -h hostname -d database";
@@ -53,7 +53,7 @@ if ($@) {
 
 # Get current database version
 my $version;
-my $="0.8.4";
+my $thisversion="1.0RC1";
 my $lastversion="1.0RC1";
 my $legacyversion="1.0RC1";
 

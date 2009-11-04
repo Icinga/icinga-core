@@ -77,7 +77,7 @@ perl -i -p -e "s/^LASTDATE=.*/LASTDATE=$SHORTDATE/;" update-version
 perl -i -p -e "s/NDOMOD_VERSION \".*\"/NDOMOD_VERSION \"$newversion\"/;" module/idoutils/src/idomod.c
 perl -i -p -e "s/NDOMOD_DATE \".*\"/NDOMOD_DATE \"$SHORTDATE\"/;" module/idoutils/src/idomod.c
 perl -i -p -e "s/Last Modified: [0-9].*/Last Modified: $SHORTDATE/;" module/idoutils/src/idomod.c
-perl -i -p -e "s/thisversion=\".*\"/\$thisversion=\"$newversion\"/;" module/idoutils/db/upgradedb.in
+perl -i -p -e "s/thisversion=\".*\"/\thisversion=\"$newversion\"/;" module/idoutils/db/upgradedb.in
 perl -i -p -e "s/lastversion=\".*\"/lastversion=\"$newversion\"/;" module/idoutils/db/upgradedb.in
 perl -i -p -e "s/legacyversion=\".*\"/legacyversion=\"$newversion\"/;" module/idoutils/db/upgradedb.in
 perl -i -p -e "s/thisversion=\".*\"/thisversion=\"$newversion\"/;" module/idoutils/db/installdb.in

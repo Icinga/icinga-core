@@ -1,4 +1,4 @@
-#!@PERL@
+#!@ido2db_perl@
 #
 # SYNTAX:
 my $usage = "installdb -u user -p password -h hostname -d database";

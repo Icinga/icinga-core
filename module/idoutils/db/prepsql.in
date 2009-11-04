@@ -2,5 +2,5 @@
 # Strip charset from db dump, so it defaults to user's 
 # Suggested by Ton Voon/Altinity
 
-@PERL@ -pi -e 's/DEFAULT CHARSET=ascii //' mysql.sql
-@PERL@ -pi -e 's/ DEFAULT CHARSET=ascii//' mysql.sql
+@ido2db_perl@ -pi -e 's/DEFAULT CHARSET=ascii //' mysql.sql
+@ido2db_perl@ -pi -e 's/ DEFAULT CHARSET=ascii//' mysql.sql
