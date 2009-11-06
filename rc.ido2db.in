@@ -71,7 +71,7 @@ printstatus_ido2db()
 killproc_ido2db ()
 {
 
-	kill $2 $Ido2dbPID
+	kill $2 $1
 
 }
 
@@ -80,12 +80,23 @@ pid_ido2db ()
 {
 
 	if test ! -f $Ido2dbRunFile; then
-		return 1
+		echo "PID file $Ido2dbRunFile not found"
+		exit 1
 	fi
 
 	Ido2dbPID=`head -n 1 $Ido2dbRunFile`
 	return 0
 }
+
+checkpid_ido2db() {
+        local i
+
+        for i in $* ; do
+                [ -d "/proc/$i" ] && return 0
+        done
+        return 1
+}
+
 
 
 # Source function library
@@ -128,9 +139,8 @@ fi
 case "$1" in
 
 	start)
-		status_ido2db
-		if [ $? -eq 0 ]; then
-			echo "$servicename already started..."
+		if [ -f $Ido2dbRunFile ]; then
+			echo "$servicename already started (found pidfile $Ido2dbRunFile)..."
 			exit 1
 		fi
 		echo -n "Starting $servicename:"
@@ -150,24 +160,25 @@ case "$1" in
 		fi
 		echo -n "Stopping $servicename: "
 
-		pid_ido2db
-		killproc_ido2db ido2db
+		# Set up $Ido2dbPID, exist if it does not work
+		pid_ido2db 
+		# Kill the process
+		killproc_ido2db $Ido2dbPID
 
  		# now we have to wait for ido2db to exit and remove its
  		# own Ido2dbRunFile, otherwise a following "start" could
  		# happen, and then the exiting ido2db will remove the
  		# new Ido2dbRunFile, allowing multiple ido2db daemons
  		# to (sooner or later) run - John Sellens
-		#echo -n 'Waiting for ido2db to exit .'
  		for i in 1 2 3 4 5 6 7 8 9 10 ; do
- 		    if status_ido2db > /dev/null; then
+ 		    if checkpid_ido2db $Ido2dbPID > /dev/null; then
  			echo -n '.'
  			sleep 1
  		    else
  			break
  		    fi
  		done
- 		if status_ido2db > /dev/null; then
+ 		if checkpid_ido2db $Ido2dbPID > /dev/null; then
  		    echo ''
  		    echo 'Warning - $servicename did not exit in a timely manner'
  		else
