@@ -265,6 +265,7 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	if (idi->dbinfo.connected == NDO_TRUE)
 		return NDO_OK;
 
+#ifndef USE_ORACLE /* Oracle ocilib specific */
 	switch (idi->dbinfo.server_type) {
 	case NDO2DB_DBSERVER_MYSQL:
 		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_MYSQL);
@@ -288,11 +289,6 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_MSQL);
 		break;
 	case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-		/* for ocilib there is no such statement next below */
-
-#endif /* Oracle ocilib specific */
 		break;
 	case NDO2DB_DBSERVER_SQLITE:
 		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_SQLITE);
@@ -303,6 +299,12 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	default:
 		break;
 	}
+#else /* Oracle ocilib specific */
+
+	/* for ocilib there is no such statement next below */
+
+#endif /* Oracle ocilib specific */
+
 
 	/* Check if the dbi connection was created successful */
 
@@ -554,6 +556,9 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
 			buf = NULL;
 		if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	                switch (idi->dbinfo.server_type) {
         	                case NDO2DB_DBSERVER_MYSQL:
                 	                /* mysql doesn't use sequences */
@@ -579,12 +584,6 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                        case NDO2DB_DBSERVER_MSQL:
 	                                break;
 	                        case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-					idi->dbinfo.instance_id = ido2db_ocilib_insert_id(idi);
-					ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) instance_id\n", idi->dbinfo.instance_id);
-
-#endif /* Oracle ocilib specific */
         	                        break;
 	                        case NDO2DB_DBSERVER_SQLITE:
 	                                break;
@@ -593,6 +592,13 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
         	                default:
 	                                break;
         	        }
+#else /* Oracle ocilib specific */
+
+			idi->dbinfo.instance_id = ido2db_ocilib_insert_id(idi);
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) instance_id\n", idi->dbinfo.instance_id);
+
+#endif /* Oracle ocilib specific */
+
 		}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -627,6 +633,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	        switch (idi->dbinfo.server_type) {
         	        case NDO2DB_DBSERVER_MYSQL:
 				/* mysql doesn't use sequences */
@@ -653,12 +660,6 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                case NDO2DB_DBSERVER_MSQL:
         	                break;
 	                case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-                                idi->dbinfo.conninfo_id = ido2db_ocilib_insert_id(idi);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
-
-#endif /* Oracle ocilib specific */
         	                break;
 	                case NDO2DB_DBSERVER_SQLITE:
         	                break;
@@ -667,6 +668,13 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                default:
         	                break;
         	}
+#else /* Oracle ocilib specific */
+
+		idi->dbinfo.conninfo_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
+
+#endif /* Oracle ocilib specific */
+
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -1035,12 +1043,10 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 
 		ndo2db_handle_db_error(idi);
 		result = NDO_ERROR;
-
 	}
 
 	/* since we do not want to set auto commit to true, we do it manually */
 	OCI_Commit(idi->dbinfo.oci_connection);
-
 
 #endif /* Oracle ocilib specific */
 
@@ -1273,10 +1279,11 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 /* check database driver (libdbi)   */
 /************************************/
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 int ido2db_check_dbd_driver(void) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_dbd_driver() start\n");
-
 	dbi_initialize(NULL);
 
 	switch (ndo2db_db_settings.server_type) {
@@ -1324,15 +1331,10 @@ int ido2db_check_dbd_driver(void) {
 			break;
 		case NDO2DB_DBSERVER_ORACLE:
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 			if (dbi_driver_open(IDO2DB_DBI_DRIVER_ORACLE) == NULL){
 				dbi_shutdown();
 				return NDO_FALSE;
 				}
-#else /* Oracle ocilib specific */
-			/* unused */
-#endif /* Oracle ocilib specific */
-
 			break;
 		case NDO2DB_DBSERVER_SQLITE:
 			if (dbi_driver_open(IDO2DB_DBI_DRIVER_SQLITE) == NULL){
@@ -1355,7 +1357,7 @@ int ido2db_check_dbd_driver(void) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_dbd_driver() end\n");
 	return NDO_TRUE;
 }
-
+#endif
 
 /************************************/
 /* error handler (ocilib)           */

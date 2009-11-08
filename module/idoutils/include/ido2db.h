@@ -65,11 +65,11 @@ typedef struct ndo2db_dbconninfo_struct{
 	int server_type;
 	int connected;
 	int error;
+#ifndef USE_ORACLE /* libdbi specific */
 	/* libdbi */
 	dbi_conn dbi_conn;
 	dbi_result dbi_result;
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-	//FIXME build do not depend on libdbi
+#else /* Oracle ocilib specific */
 	OCI_Connection* oci_connection;
 	OCI_Statement* oci_statement;
 	OCI_Resultset* oci_resultset;

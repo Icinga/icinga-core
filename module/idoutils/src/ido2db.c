@@ -68,7 +68,10 @@ FILE *ndo2db_debug_file_fp=NULL;
 unsigned long ndo2db_max_debug_file_size=0L;
 
 extern char *ndo2db_db_tablenames[NDO2DB_MAX_DBTABLES];
+
+#ifndef USE_ORACLE
 extern int ido2db_check_dbd_driver(void);
+#endif
 
 int ndo2db_open_debug_log(void);
 int ndo2db_close_debug_log(void);

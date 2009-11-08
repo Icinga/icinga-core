@@ -2,7 +2,7 @@
 Icinga 1.0.x Change Log
 #######################
 
-1.0 Stable - 28/10/2009
+1.0 Stable - 16/12/2009
 * idoutils: fix missing query arguments in servicecheck query
 * idoutils: fix duplicate rows in table servicechecks
 * idoutils: change default data_processing_options in idomod.cfg
@@ -29,6 +29,8 @@ Icinga 1.0.x Change Log
 	- SSL support
 	- better library: ocilib instead of own driver
 	- more prepared statements/bind param queries
+* split code into ocilib OR libdbi
+* --enable-oracle during configure decides which rdbm lib will be used
 
 1.0 RC - 28/10/2009
 * idoutils: add Oracle support with oclilib

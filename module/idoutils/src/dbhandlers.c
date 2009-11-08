@@ -264,6 +264,7 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 		buf = NULL;
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -290,14 +291,6 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-                                *object_id = ido2db_ocilib_insert_id(idi);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%lu) object_id\n", *object_id);
-
-#endif /* Oracle ocilib specific */
-
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -306,6 +299,11 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+
+                *object_id = ido2db_ocilib_insert_id(idi);
+                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%lu) object_id\n", *object_id);
+#endif /* Oracle ocilib specific */
         }
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -320,6 +318,7 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 
 	free(buf);
 
+	
 	/* cache object id for later lookups */
 	ndo2db_add_cached_object_id(idi, object_type, name1, name2, *object_id);
 
@@ -1561,6 +1560,7 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 		idi->dbinfo.last_notification_id = 0L;
 	if (result == NDO_OK && type == NEBTYPE_NOTIFICATION_START) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -1587,12 +1587,6 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-                                idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
-
-#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -1601,6 +1595,11 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+
+#else /* Oracle ocilib specific */
+                idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+#endif /* Oracle ocilib specific */
         }
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -1676,6 +1675,7 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 		idi->dbinfo.last_contact_notification_id = 0L;
 	if (result == NDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -1702,12 +1702,6 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-                                idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
-
-#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -1716,6 +1710,10 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -3571,6 +3569,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -3597,12 +3596,6 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-                                configfile_id = ido2db_ocilib_insert_id(idi);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables(%lu) \n", configfile_id);
-
-#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -3611,6 +3604,10 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                configfile_id = ido2db_ocilib_insert_id(idi);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables(%lu) \n", configfile_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -4007,6 +4004,7 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -4033,12 +4031,6 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-                                host_id = ido2db_ocilib_insert_id(idi);
-                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio(%lu) \n", host_id);
-
-#endif /* Oracle ocilib specific */
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -4047,6 +4039,10 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                host_id = ido2db_ocilib_insert_id(idi);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio(%lu) \n", host_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -4207,6 +4203,7 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -4233,8 +4230,6 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -4243,6 +4238,10 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+		group_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", group_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -4496,6 +4495,7 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -4522,8 +4522,6 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -4532,7 +4530,10 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
-
+#else /* Oracle ocilib specific */
+		service_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition(%lu) service_id\n", service_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -4669,6 +4670,7 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -4695,8 +4697,6 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -4705,6 +4705,10 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+		group_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition(%lu) group_id\n", group_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -4963,6 +4967,7 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -4989,8 +4994,6 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -4999,6 +5002,10 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                escalation_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition(%lu) escalation_id\n", escalation_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -5141,6 +5148,7 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -5167,8 +5175,6 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -5177,6 +5183,10 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                escalation_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_serviceescalationdefinition(%lu) escalation_id\n", escalation_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -5366,6 +5376,7 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -5392,8 +5403,6 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -5402,6 +5411,10 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                timeperiod_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition(%lu) timeperiod_id\n", timeperiod_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -5574,6 +5587,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -5600,8 +5614,6 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -5610,6 +5622,10 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                contact_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition(ndo2db_idi *idi)(%lu) contact_id\n", contact_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -5909,6 +5925,7 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 
 	if (result == NDO_OK) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -5935,8 +5952,6 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-#ifdef USE_ORACLE
-#endif
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
@@ -5945,6 +5960,10 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
                         default:
                                 break;
                 }
+#else /* Oracle ocilib specific */
+                group_id = ido2db_ocilib_insert_id(idi);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition(%lu) group_id\n", group_id);
+#endif /* Oracle ocilib specific */
 	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
