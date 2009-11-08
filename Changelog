@@ -2,6 +2,34 @@
 Icinga 1.0.x Change Log
 #######################
 
+1.0 Stable - 28/10/2009
+* idoutils: fix missing query arguments in servicecheck query
+* idoutils: fix duplicate rows in table servicechecks
+* idoutils: change default data_processing_options in idomod.cfg
+* fix thisversion and perl path generation in db install scripts
+
+* idoutils: Oracle improvents:
+* add prepared statements for most called queries
+	- hoststatus
+	- servicestatus
+	- hostchecks
+	- servicechecks
+	- timedevents*
+	- contact_notificationcommands
+	- programstatus
+* modify data[] to get unixtimestamps only
+* rewrite prepared statement queries to use SELECT unixts2date(unixtimestamp) FROM DUAL
+* allow rebinding of params in prepared statement for multi execution
+* prepared statement at db init
+* bind params the correct way
+* execute binded statement query instead of plain MERGE statement
+* code is now the same as NDOUtils Oracle, but with
+	- better code base (actual NDOUtils code)
+	- long_output
+	- SSL support
+	- better library: ocilib instead of own driver
+	- more prepared statements/bind param queries
+
 1.0 RC - 28/10/2009
 * idoutils: add Oracle support with oclilib
 * idoutils: add ssl support

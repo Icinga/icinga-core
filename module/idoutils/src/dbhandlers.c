@@ -1070,7 +1070,6 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 #else /* Oracle ocilib specific */
 
 		/* do not free if prepared statement */
-		//OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	}
@@ -1079,7 +1078,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_TIMEDEVENT_EXECUTE) {
 
 		/* save entry to db */
-                void *data[7];
+                void *data[9];
                 data[0] = (void *) &idi->dbinfo.instance_id;
                 data[1] = (void *) &event_type;
                 data[2] = (void *) &ts[0];
@@ -1087,6 +1086,9 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
                 data[4] = (void *) &ts[1];
                 data[5] = (void *) &recurring_event;
                 data[6] = (void *) &object_id;
+		/* add unixtime for bind params */
+		data[7] = (void *) &tstamp.tv_sec;
+		data[8] = (void *) &run_time;
 
                 result = ido2db_query_insert_or_update_timedevents_execute_add(idi, data);
 
@@ -1094,7 +1096,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+		/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 	}
@@ -1885,7 +1887,7 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
 		command_id = 0L;
 
 	/* save entry to db */
-        void *data[22];
+        void *data[24];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &object_id;
         data[2] = (void *) &check_type;
@@ -1908,14 +1910,17 @@ int ndo2db_handle_servicecheckdata(ndo2db_idi *idi) {
         data[19] = (void *) &command_id;
         data[20] = (void *) &es[0];
         data[21] = (void *) &es[1];
+        /* add unixtime for bind params */
+	data[22] = (void *) &start_time.tv_sec;
+        data[23] = (void *) &end_time.tv_sec;
 
-        result = ido2db_query_insert_or_update_servicecheckdata_add(idi, data);
+	result = ido2db_query_insert_or_update_servicecheckdata_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 
@@ -2021,7 +2026,7 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 		is_raw_check = 0;
 
 	/* save entry to db */
-        void *data[23];
+        void *data[25];
         data[0] = (void *) &command_id;
         data[1] = (void *) &es[0];
         data[2] = (void *) &es[1];
@@ -2045,6 +2050,9 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
         data[20] = (void *) &es[2];
         data[21] = (void *) &es[3];
         data[22] = (void *) &es[4];
+	/* add unixtime for bind params */
+        data[23] = (void *) &start_time.tv_sec;
+        data[24] = (void *) &end_time.tv_sec;
 
         result = ido2db_query_insert_or_update_hostcheckdata_add(idi, data);
 
@@ -2052,7 +2060,7 @@ int ndo2db_handle_hostcheckdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 
@@ -2628,7 +2636,7 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	ts[2] = ndo2db_db_timet_to_sql(idi, last_command_check);
 	ts[3] = ndo2db_db_timet_to_sql(idi, last_log_rotation);
 
-        void *data[22];
+        void *data[25];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &ts[0];
         data[2] = (void *) &ts[1];
@@ -2651,6 +2659,11 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
         data[19] = (void *) &modified_service_attributes;
         data[20] = (void *) &es[0];
         data[21] = (void *) &es[1];
+	/* add unixtime for bind params */
+        data[22] = (void *) &tstamp.tv_sec;
+        data[23] = (void *) &program_start_time;
+        data[24] = (void *) &last_command_check;
+        data[25] = (void *) &last_log_rotation;
 
 	/* save entry to db */
         result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);
@@ -2659,7 +2672,7 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 
@@ -2798,7 +2811,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[NDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
 
 	/* save entry to db */
-        void *data[46];
+        void *data[56];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &object_id;
         data[2] = (void *) &ts[0];
@@ -2845,6 +2858,18 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
         data[43] = (void *) &normal_check_interval;
         data[44] = (void *) &retry_check_interval;
         data[45] = (void *) &check_timeperiod_object_id;
+	/* add unixtime for bind params */
+        data[46] = (void *) &tstamp.tv_sec;
+        data[47] = (void *) &last_check;
+        data[48] = (void *) &next_check;
+        data[49] = (void *) &last_state_change;
+        data[50] = (void *) &last_hard_state_change;
+        data[51] = (void *) &last_time_up;
+        data[52] = (void *) &last_time_down;
+        data[53] = (void *) &last_time_unreachable;
+        data[54] = (void *) &last_notification;
+        data[55] = (void *) &next_notification;
+
 
         result = ido2db_query_insert_or_update_hoststatusdata_add(idi, data);
 
@@ -2852,7 +2877,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 
@@ -3002,7 +3027,7 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 			&check_timeperiod_object_id);
 
 	/* save entry to db */
-        void *data[47];
+        void *data[58];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &object_id;
         data[2] = (void *) &ts[0];
@@ -3050,6 +3075,18 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
         data[44] = (void *) &normal_check_interval;
         data[45] = (void *) &retry_check_interval;
         data[46] = (void *) &check_timeperiod_object_id;
+	/* add unixtime for bind params */
+        data[47] = (void *) &tstamp.tv_sec;
+        data[48] = (void *) &last_check;
+        data[49] = (void *) &next_check;
+        data[50] = (void *) &last_state_change;
+        data[51] = (void *) &last_hard_state_change;
+        data[52] = (void *) &last_time_ok;
+        data[53] = (void *) &last_time_warning;
+        data[54] = (void *) &last_time_unknown;
+        data[55] = (void *) &last_time_critical;
+        data[56] = (void *) &last_notification;
+        data[57] = (void *) &next_notification;
 
         result = ido2db_query_insert_or_update_servicestatusdata_add(idi, data);
 
@@ -3057,7 +3094,7 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 
@@ -5653,13 +5690,13 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	        data[3] = (void *) &command_id;
 	        data[4] = (void *) &es[0];
 
-	        result = ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add(idi, data);
+	        result = ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+		/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 	
@@ -5700,13 +5737,13 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	        data[3] = (void *) &command_id;
 	        data[4] = (void *) &es[0];
 
-	        result = ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add(idi, data);
+	        result = ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+		/* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
 

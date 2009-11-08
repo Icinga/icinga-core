@@ -69,6 +69,12 @@ int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi) {
 /* INSERT/UPDATE/MERGE QUERIES                                              */
 /****************************************************************************/
 
+/* 2009-11-08 Michael Friedrich: Note to myself:
+when binding char* and recasting from void* data, get the full string instead of ptr to string
+OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X21"), *(char **) data[20], 0)
+instead of
+OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X21"), (char **) data[20], 0)
+*/
 
 /************************************/
 /* TIMEDEVENTS                      */
@@ -282,6 +288,41 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
+                        /* bind params to prepared statement */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timedevents, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents, MT(":X3"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents, MT(":X5"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timedevents, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents, MT(":X7"), (big_uint *) data[6])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_timedevents)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_execute() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
+#ifdef UNUSED
                         /* use prepared statements and ocilib */
                         asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu) WHEN MATCHED THEN UPDATE SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHEN NOT MATCHED THEN INSERT (instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
@@ -303,6 +344,8 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         /* send query to db */
                         result = ndo2db_db_query(idi, query1);
                         free(query1);
+#endif 
+
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1190,54 +1233,84 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-                        /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND service_object_id=%lu AND start_time=%s AND start_time_usec=%lu) WHEN MATCHED THEN UPDATE SET check_type='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s', %lu, '%s', '%s')",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned *) data[1],
-                                        *(char **) data[7],
-                                        *(unsigned long *) data[8],      /* unique constraint end */
-                                        *(int *) data[2],               /* update start */
-                                        *(int *) data[3],
-                                        *(int *) data[4],
-                                        *(int *) data[5],
-                                        *(int *) data[6],
-                                        *(char **) data[9],
-                                        *(unsigned long *) data[10],
-                                        *(int *) data[11],
-                                        *(int *) data[12],
-                                        *(double *) data[13],
-                                        *(double *) data[14],
-                                        *(int *) data[15],
-                                        *(char **) data[16],
-                                        *(char **) data[17],
-                                        *(char **) data[18],            /* updapte end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],
-                                        *(int *) data[2],
-                                        *(int *) data[3],
-                                        *(int *) data[4],
-                                        *(int *) data[5],
-                                        *(int *) data[6],
-                                        *(char **) data[7],
-                                        *(unsigned long *) data[8],
-                                        *(char **) data[9],
-                                        *(unsigned long *) data[10],
-                                        *(int *) data[11],
-                                        *(int *) data[12],
-                                        *(double *) data[13],
-                                        *(double *) data[14],
-                                        *(int *) data[15],
-                                        *(char **) data[16],
-                                        *(char **) data[17],
-                                        *(char **) data[18],     	
-                                        *(unsigned long *) data[19],     	
-                                        *(char **) data[20],     	
-                                        *(char **) data[21]     	/* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
+			/* bind params to prepared statement */ 
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X3"), (int *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X4"), (int *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X7"), (int *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X8"), (big_uint *) data[22])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X9"), (big_uint *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X10"), (big_uint *) data[23])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X11"), (big_uint *) data[10])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X12"), (int *) data[11])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X13"), (int *) data[12])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicechecks, MT(":X14"), (double *) data[13])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicechecks, MT(":X15"), (double *) data[14])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X16"), (int *) data[15])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X17"), *(char **) data[16], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X18"), *(char **) data[17], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X19"), *(char **) data[18], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X20"), (big_uint *) data[19])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X21"), *(char **) data[20], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X22"), *(char **) data[21], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_servicechecks)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicechecks() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1263,6 +1336,7 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
         const char *dbi_error;
         char * query1 = NULL;
         char * query2 = NULL;
+	int i = 0;
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostcheckdata_add() start\n");
 
@@ -1394,56 +1468,87 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-                        /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND host_object_id=%lu AND start_time=%s AND start_time_usec=%lu) WHEN MATCHED THEN UPDATE SET check_type='%d', is_raw_check='%d', current_check_attempt='%d', max_check_attempts='%d', state='%d', state_type='%d', end_time=%s, end_time_usec='%lu', timeout='%d', early_timeout='%d', execution_time='%lf', latency='%lf', return_code='%d', output='%s', long_output='%s', perfdata='%s' WHEN NOT MATCHED THEN INSERT (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s')",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS],
-                                        *(unsigned long *) data[3],     /* unique constraint start */
-                                        *(unsigned long *) data[4],
-                                        *(char **) data[11],
-                                        *(unsigned long *) data[12],      /* unique constraint end */
-                                        *(int *) data[5],               /* update start */
-                                        *(int *) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(char **) data[13],
-                                        *(unsigned long *) data[14],
-                                        *(int *) data[15],
-                                        *(int *) data[16], 
-                                        *(double *) data[17],
-                                        *(double *) data[18],
-                                        *(int *) data[19],
-                                        *(char **) data[20],
-                                        *(char **) data[21],
-                                        *(char **) data[22],            /* update end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(char **) data[1],
-                                        *(char **) data[2],
-                                        *(unsigned long *) data[3],
-                                        *(unsigned long *) data[4],
-                                        *(int *) data[5],
-                                        *(int *) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(char **) data[11],
-                                        *(unsigned long *) data[12],
-                                        *(char **) data[13],
-                                        *(unsigned long *) data[14],
-                                        *(int *) data[15],
-                                        *(int *) data[16],
-                                        *(double *) data[17],
-                                        *(double *) data[18],
-                                        *(int *) data[19],
-                                        *(char **) data[20],
-                                        *(char **) data[21],
-                                        *(char **) data[22]            /* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
+                        /* bind params to prepared statement */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X2"), *(char **) data[1], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X7"), (int *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X8"), (int *) data[7])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X9"), (int *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X10"), (int *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X11"), (int *) data[10])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X12"), (big_uint *) data[23])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X13"), (big_uint *) data[12])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X14"), (big_uint *) data[24])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X15"), (big_uint *) data[14])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X16"), (int *) data[15])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X17"), (int *) data[16])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hostchecks, MT(":X18"), (double *) data[17])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hostchecks, MT(":X19"), (double *) data[18])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X20"), (int *) data[19])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X21"), *(char **) data[20], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X22"), *(char **) data[21], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X23"), *(char **) data[22], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_hostchecks)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostchecks() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -1910,57 +2015,84 @@ int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-                        /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu) WHEN MATCHED THEN UPDATE SET status_update_time=%s, program_start_time=%s, is_currently_running=1, process_id=%lu, daemon_mode=%d, last_command_check=%s, last_log_rotation=%s, notifications_enabled=%d, active_service_checks_enabled=%d, passive_service_checks_enabled=%d, active_host_checks_enabled=%d, passive_host_checks_enabled=%d, event_handlers_enabled=%d, flap_detection_enabled=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_hosts=%d, obsess_over_services=%d, modified_host_attributes=%lu, modified_service_attributes=%lu, global_host_event_handler='%s', global_service_event_handler='%s' WHEN NOT MATCHED THEN INSERT (instance_id, status_update_time, program_start_time, is_currently_running, process_id, daemon_mode, last_command_check, last_log_rotation, notifications_enabled, active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, failure_prediction_enabled, process_performance_data, obsess_over_hosts, obsess_over_services, modified_host_attributes, modified_service_attributes, global_host_event_handler, global_service_event_handler) VALUES (%lu, %s, %s, '1', %lu, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lu, %lu, '%s', '%s')",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS],
-                                        *(unsigned long *) data[0],      /* unique constraint start/end */
-                                        *(char **) data[1],             /* update start */
-                                        *(char **) data[2],
-                                        *(unsigned long *) data[3],
-                                        *(int *) data[4],
-                                        *(char **) data[5],
-                                        *(char **) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(int *) data[11],
-                                        *(int *) data[12],
-                                        *(int *) data[13],
-                                        *(int *) data[14],
-                                        *(int *) data[15],
-                                        *(int *) data[16],
-                                        *(int *) data[17],
-                                        *(unsigned long *) data[18],
-                                        *(unsigned long *) data[19],
-                                        *(char **) data[20],
-                                        *(char **) data[21],            /* update end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(char **) data[1],
-                                        *(char **) data[2],
-                                        *(unsigned long *) data[3],
-                                        *(int *) data[4],
-                                        *(char **) data[5],
-                                        *(char **) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(int *) data[11],
-                                        *(int *) data[12],
-                                        *(int *) data[13],
-                                        *(int *) data[14],
-                                        *(int *) data[15],
-                                        *(int *) data[16],
-                                        *(int *) data[17],
-                                        *(unsigned long *) data[18],
-                                        *(unsigned long *) data[19],
-                                        *(char **) data[20],
-                                        *(char **) data[21]             /* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
+			/* bind params to prepared statement */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X2"), (big_uint *) data[22])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X3"), (big_uint *) data[23])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X6"), (big_uint *) data[24])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X7"), (big_uint *) data[25])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X8"), (int *) data[7])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X9"), (int *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X10"), (int *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X11"), (int *) data[10])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X12"), (int *) data[11])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X13"), (int *) data[12])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X14"), (int *) data[13])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X15"), (int *) data[14])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X16"), (int *) data[15])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X17"), (int *) data[16])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_programstatus, MT(":X18"), (int *) data[17])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X19"), (big_uint *) data[18])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X20"), (big_uint *) data[19])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_programstatus, MT(":X21"), *(char **) data[20], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_programstatus, MT(":X22"), *(char **) data[21], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_programstatus)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_programstatus() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2220,105 +2352,156 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ndo2db_idi *idi, void **dat
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-                        /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (host_object_id=%lu) WHEN MATCHED THEN UPDATE SET instance_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_host='%d', modified_host_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS],
-                                        *(unsigned long *) data[1],     /* unique constraint start/end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(char **) data[2],
-                                        *(char **) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5],
-                                        *(int *) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(char **) data[11],
-                                        *(char **) data[12],
-                                        *(int *) data[13],
-                                        *(char **) data[14],
-                                        *(char **) data[15],
-                                        *(int *) data[16],
-                                        *(char **) data[17],
-                                        *(char **) data[18],
-                                        *(char **) data[19],
-                                        *(int *) data[20],
-                                        *(char **) data[21],
-                                        *(char **) data[22],
-                                        *(int *) data[23],
-                                        *(int *) data[24],
-                                        *(int *) data[25],
-                                        *(int *) data[26],
-                                        *(int *) data[27],
-                                        *(int *) data[28],
-                                        *(int *) data[29],
-                                        *(int *) data[30],
-                                        *(int *) data[31],
-                                        *(int *) data[32],
-                                        *(double *) data[33],
-                                        *(double *) data[34],
-                                        *(double *) data[35],
-                                        *(int *) data[36],
-                                        *(int *) data[37],
-                                        *(int *) data[38],
-                                        *(int *) data[39],
-                                        *(unsigned long *) data[40],
-                                        *(char **) data[41],
-                                        *(char **) data[42],
-                                        *(double *) data[43],
-                                        *(double *) data[44],
-                                        *(unsigned long *) data[45],     /* update end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],
-                                        *(char **) data[2],
-                                        *(char **) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5],
-                                        *(int *) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(char **) data[11],
-                                        *(char **) data[12],
-                                        *(int *) data[13],
-                                        *(char **) data[14],
-                                        *(char **) data[15],
-                                        *(int *) data[16],
-                                        *(char **) data[17],
-                                        *(char **) data[18],
-                                        *(char **) data[19],
-                                        *(int *) data[20],
-                                        *(char **) data[21],
-                                        *(char **) data[22],
-                                        *(int *) data[23],
-                                        *(int *) data[24],
-                                        *(int *) data[25],
-                                        *(int *) data[26],
-                                        *(int *) data[27],
-                                        *(int *) data[28],
-                                        *(int *) data[29],
-                                        *(int *) data[30],
-                                        *(int *) data[31],
-                                        *(int *) data[32],
-                                        *(double *) data[33],
-                                        *(double *) data[34],
-                                        *(double *) data[35],
-                                        *(int *) data[36],
-                                        *(int *) data[37],
-                                        *(int *) data[38],
-                                        *(int *) data[39],
-                                        *(unsigned long *) data[40],
-                                        *(char **) data[41],
-                                        *(char **) data[42],
-                                        *(double *) data[43],
-                                        *(double *) data[44],
-                                        *(unsigned long *) data[45]     /* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
+			/* bind params to prepared statement */ 
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X3"), (big_uint *) data[46])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X4"), *(char **) data[3], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X5"), *(char **) data[4], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X7"), (int *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X8"), (int *) data[7])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X9"), (int *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X10"), (int *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X11"), (int *) data[10])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X12"), (big_uint *) data[47])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X13"), (big_uint *) data[48])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X14"), (int *) data[13])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X15"), (big_uint *) data[49])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X16"), (big_uint *) data[50])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X17"), (int *) data[16])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X18"), (big_uint *) data[51])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X19"), (big_uint *) data[52])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X20"), (big_uint *) data[53])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X21"), (int *) data[20])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X22"), (big_uint *) data[54])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X23"), (big_uint *) data[55])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X24"), (int *) data[23])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X25"), (int *) data[24])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X26"), (int *) data[25])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X27"), (int *) data[26])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X28"), (int *) data[27])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X29"), (int *) data[28])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X30"), (int *) data[29])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X31"), (int *) data[30])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X32"), (int *) data[31])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X33"), (int *) data[32])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X34"), (double *) data[33])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X35"), (double *) data[34])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X36"), (double *) data[35])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X37"), (int *) data[36])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X38"), (int *) data[37])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X39"), (int *) data[38])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X40"), (int *) data[39])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X41"), (big_uint *) data[40])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X42"), *(char **) data[41], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X43"), *(char **) data[42], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X44"), (double *) data[43])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X45"), (double *) data[44])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X46"), (big_uint *) data[45])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_hoststatus)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatus() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -2582,107 +2765,159 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ndo2db_idi *idi, void **
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-                        /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (service_object_id='%lu') WHEN MATCHED THEN UPDATE SET instance_id='%lu', status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state='%d', has_been_checked='%d', should_be_scheduled='%d', current_check_attempt='%d', max_check_attempts='%d', last_check=%s, next_check=%s, check_type='%d', last_state_change=%s, last_hard_state_change=%s, last_hard_state='%d', last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type='%d', last_notification=%s, next_notification=%s, no_more_notifications='%d', notifications_enabled='%d', problem_has_been_acknowledged='%d', acknowledgement_type='%d', current_notification_number='%d', passive_checks_enabled='%d', active_checks_enabled='%d', event_handler_enabled='%d', flap_detection_enabled='%d', is_flapping='%d', percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth='%d', failure_prediction_enabled='%d', process_performance_data='%d', obsess_over_service='%d', modified_service_attributes='%lu', event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id='%lu' WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES ('%lu', '%lu', %s, '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', %s, %s, '%d', %s, %s, '%d', %s, %s, %s, %s, '%d', %s, %s, '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%lf', '%lf', '%lf', '%d', '%d', '%d', '%d', '%lu', '%s', '%s', '%lf', '%lf', '%lu')",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS],
-                                        *(unsigned long *) data[1],     /* unique constraint start/end */
-                                        *(unsigned long *) data[0],     /* update start */
-                                        *(char **) data[2],
-                                        *(char **) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5],
-                                        *(int *) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(char **) data[11],
-                                        *(char **) data[12],
-                                        *(int *) data[13],
-                                        *(char **) data[14],
-                                        *(char **) data[15],
-                                        *(int *) data[16],
-                                        *(char **) data[17],
-                                        *(char **) data[18],
-                                        *(char **) data[19],
-                                        *(char **) data[20],
-                                        *(int *) data[21],
-                                        *(char **) data[22],
-                                        *(char **) data[23],
-                                        *(int *) data[24],
-                                        *(int *) data[25],
-                                        *(int *) data[26],
-                                        *(int *) data[27],
-                                        *(int *) data[28],
-                                        *(int *) data[29],
-                                        *(int *) data[30],
-                                        *(int *) data[31],
-                                        *(int *) data[32],
-                                        *(int *) data[33],
-                                        *(double *) data[34],
-                                        *(double *) data[35],
-                                        *(double *) data[36],
-                                        *(int *) data[37],
-                                        *(int *) data[38],
-                                        *(int *) data[39],
-                                        *(int *) data[40],
-                                        *(unsigned long *) data[41],
-                                        *(char **) data[42],   
-                                        *(char **) data[43],
-                                        *(double *) data[44],
-                                        *(double *) data[45],
-                                        *(unsigned long *) data[46],     /* update end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],
-                                        *(char **) data[2],
-                                        *(char **) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5],
-                                        *(int *) data[6],
-                                        *(int *) data[7],
-                                        *(int *) data[8],
-                                        *(int *) data[9],
-                                        *(int *) data[10],
-                                        *(char **) data[11],
-                                        *(char **) data[12],
-                                        *(int *) data[13],
-                                        *(char **) data[14],
-                                        *(char **) data[15],
-                                        *(int *) data[16],
-                                        *(char **) data[17],
-                                        *(char **) data[18],
-                                        *(char **) data[19],
-                                        *(char **) data[20],
-                                        *(int *) data[21],
-                                        *(char **) data[22],
-                                        *(char **) data[23],
-                                        *(int *) data[24],
-                                        *(int *) data[25],
-                                        *(int *) data[26],
-                                        *(int *) data[27],
-                                        *(int *) data[28],
-                                        *(int *) data[29],
-                                        *(int *) data[30],
-                                        *(int *) data[31],
-                                        *(int *) data[32],
-                                        *(int *) data[33],
-                                        *(double *) data[34],
-                                        *(double *) data[35],
-                                        *(double *) data[36],
-                                        *(int *) data[37],
-                                        *(int *) data[38],
-                                        *(int *) data[39],
-                                        *(int *) data[40],
-                                        *(unsigned long *) data[41],
-                                        *(char **) data[42],   
-                                        *(char **) data[43],
-                                        *(double *) data[44],
-                                        *(double *) data[45],
-                                        *(unsigned long *) data[46]     /* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
+			/* bind params to prepared statement */ 
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X3"), (big_uint *) data[47])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X4"), *(char **) data[3], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X5"), *(char **) data[4], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X7"), (int *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X8"), (int *) data[7])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X9"), (int *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X10"), (int *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X11"), (int *) data[10])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X12"), (big_uint *) data[48])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X13"), (big_uint *) data[49])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X14"), (int *) data[13])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X15"), (big_uint *) data[50])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X16"), (big_uint *) data[51])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X17"), (int *) data[16])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X18"), (big_uint *) data[52])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X19"), (big_uint *) data[53])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X20"), (big_uint *) data[54])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X21"), (big_uint *) data[55])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X22"), (int *) data[21])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X23"), (big_uint *) data[56])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X24"), (big_uint *) data[57])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X25"), (int *) data[24])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X26"), (int *) data[25])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X27"), (int *) data[26])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X28"), (int *) data[27])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X29"), (int *) data[28])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X30"), (int *) data[29])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X31"), (int *) data[30])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X32"), (int *) data[31])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X33"), (int *) data[32])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X34"), (int *) data[33])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X35"), (double *) data[34])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X36"), (double *) data[35])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X37"), (double *) data[36])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X38"), (int *) data[37])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X39"), (int *) data[38])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X40"), (int *) data[39])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X41"), (int *) data[40])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X42"), (big_uint *) data[41])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X43"), *(char **) data[42], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X44"), *(char **) data[43], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X45"), (double *) data[44])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X46"), (double *) data[45])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X47"), (big_uint *) data[46])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_servicestatus)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatus() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 #endif
                         break;
                 case NDO2DB_DBSERVER_SQLITE:
@@ -6257,13 +6492,13 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *id
 }
 
 
-int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add(ndo2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
         char * query1 = NULL;
         char * query2 = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add() start\n");
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_notificationcommands_add() start\n");
 
         if (idi == NULL)
                 return NDO_ERROR;
@@ -6327,25 +6562,35 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                         break;
                 case NDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE
-                        /* use prepared statements and ocilib */
-                        asprintf(&query1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu) WHEN MATCHED THEN UPDATE SET command_args='%s' WHEN NOT MATCHED THEN INSERT (instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (%lu, %lu, %d, %lu, '%s')",
-                                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
-                                        *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned long *) data[1],
-                                        *(int *) data[2],
-                                        *(unsigned long *) data[3],	/* unique constraint end */
-                                        *(char **) data[4],		/* update start/end */
-                                        *(unsigned long *) data[0],     /* insert start */
-                                        *(unsigned long *) data[1],     
-                                        *(int *) data[2],
-                                        *(unsigned long *) data[3],
-                                        *(char **) data[4]              /* insert end */
-                        );
-                        /* send query to db */
-                        result = ndo2db_db_query(idi, query1);
-                        free(query1);
-#endif
-                        break;
+                        /* bind params to prepared statement */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X3"), (int *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X5"), *(char **) data[4], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_contact_notificationcommands)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_notificationcommands_add() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif                       
+			break;
                 case NDO2DB_DBSERVER_SQLITE:
                         break;
                 case NDO2DB_DBSERVER_SQLITE3:
@@ -6354,7 +6599,7 @@ int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add
                         break;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add() end\n");
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinitionnotificationcommands_add() end\n");
 
         return result;
 }

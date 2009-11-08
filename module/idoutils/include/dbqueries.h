@@ -106,8 +106,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ndo2db_idi 
 /* CONTACTDEFINITION */
 int ido2db_query_insert_or_update_contactdefinition_definition_add(ndo2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_contactdefinition_addresses_add(ndo2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_contactdefinition_hostnotificationcommands_add(ndo2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add(ndo2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ndo2db_idi *idi, void **data);
 
 /* CUSTOMVARIABLES */
 int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ndo2db_idi *idi, void **data);
