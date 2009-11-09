@@ -5709,7 +5709,8 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
 	 test -z "$ac_c_werror_flag" ||
 	 test ! -s conftest.err
        } && test -s conftest.$ac_objext; then
-  cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define SOCKET_SIZE_TYPE size_t
 _ACEOF
  { echo "$as_me:$LINENO: result: size_t" >&5
@@ -5718,7 +5719,8 @@ else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define SOCKET_SIZE_TYPE int
 _ACEOF
  { echo "$as_me:$LINENO: result: int" >&5
@@ -6262,17 +6264,21 @@ fi
 
 
 
+
 cat >>confdefs.h <<_ACEOF
 #define DEFAULT_ICINGA_USER "$icinga_user"
 _ACEOF
+
 
 cat >>confdefs.h <<_ACEOF
 #define DEFAULT_NAGIOS_USER "$icinga_user"
 _ACEOF
 
+
 cat >>confdefs.h <<_ACEOF
 #define DEFAULT_ICINGA_GROUP "$icinga_grp"
 _ACEOF
+
 
 cat >>confdefs.h <<_ACEOF
 #define DEFAULT_NAGIOS_GROUP "$icinga_grp"
@@ -6458,8 +6464,9 @@ XDDCOMMENT=
 USE_MYSQL=no
 USE_PGSQL=no
 
+
 cat >>confdefs.h <<_ACEOF
-#define USE_XSDDEFAULT 1
+#define USE_XSDDEFAULT
 _ACEOF
 
 XSDC="xsddefault.c"
@@ -6470,8 +6477,9 @@ echo "We'll use default routines (in xdata/xsddefault.*) for status data I/O..."
 
 
 
+
 cat >>confdefs.h <<_ACEOF
-#define USE_XCDDEFAULT 1
+#define USE_XCDDEFAULT
 _ACEOF
 
 XCDC="xcddefault.c"
@@ -6482,8 +6490,9 @@ echo "We'll use default routines (in xdata/xcddefault.*) for comment data I/O...
 
 
 
+
 cat >>confdefs.h <<_ACEOF
-#define USE_XRDDEFAULT 1
+#define USE_XRDDEFAULT
 _ACEOF
 
 XRDC="xrddefault.c"
@@ -6494,8 +6503,9 @@ echo "We'll use default routines (in xdata/xrddefault.*) for retention data I/O.
 
 
 
+
 cat >>confdefs.h <<_ACEOF
-#define USE_XODTEMPLATE 1
+#define USE_XODTEMPLATE
 _ACEOF
 
 XODC="xodtemplate.c"
@@ -6507,8 +6517,9 @@ echo "We'll use template-based routines (in xdata/xodtemplate.*) for object data
 
 
 
+
 cat >>confdefs.h <<_ACEOF
-#define USE_XPDDEFAULT 1
+#define USE_XPDDEFAULT
 _ACEOF
 
 XPDC="xpddefault.c"
@@ -6519,8 +6530,9 @@ echo "We'll use default routines (in xdata/xpddefault.*) for performance data I/
 
 
 
+
 cat >>confdefs.h <<_ACEOF
-#define USE_XDDDEFAULT 1
+#define USE_XDDDEFAULT
 _ACEOF
 
 XDDC="xdddefault.c"
@@ -6568,8 +6580,9 @@ fi
 
 
 if test x$TRYSTATUSWRL = xyep; then
-	cat >>confdefs.h <<_ACEOF
-#define USE_STATUSWRL 1
+
+cat >>confdefs.h <<_ACEOF
+#define USE_STATUSWRL
 _ACEOF
 
 	CGIEXTRAS="$CGIEXTRAS statuswrl.cgi"
@@ -6974,8 +6987,9 @@ echo "${ECHO_T}no" >&6; }
 		else
 		echo "GD library was found!"
 		if test x$TRYSTATUSMAP = xyep; then
-			cat >>confdefs.h <<_ACEOF
-#define USE_STATUSMAP 1
+
+cat >>confdefs.h <<_ACEOF
+#define USE_STATUSMAP
 _ACEOF
 
 			CGIEXTRAS="$CGIEXTRAS statusmap.cgi"
@@ -7050,14 +7064,16 @@ fi
 
 		fi
 
-				cat >>confdefs.h <<_ACEOF
-#define USE_TRENDS 1
+
+cat >>confdefs.h <<_ACEOF
+#define USE_TRENDS
 _ACEOF
 
 		CGIEXTRAS="$CGIEXTRAS trends.cgi"
 
-				cat >>confdefs.h <<_ACEOF
-#define USE_HISTOGRAM 1
+
+cat >>confdefs.h <<_ACEOF
+#define USE_HISTOGRAM
 _ACEOF
 
 	        CGIEXTRAS="$CGIEXTRAS histogram.cgi"
@@ -7092,8 +7108,9 @@ else
 fi
 
 if test x$USE_NANOSLEEP = xyes; then
-	cat >>confdefs.h <<_ACEOF
-#define USE_NANOSLEEP 1
+
+cat >>confdefs.h <<_ACEOF
+#define USE_NANOSLEEP
 _ACEOF
 
 fi
@@ -7302,8 +7319,9 @@ fi
 echo "${ECHO_T}$ac_cv_lib_ltdl_lt_dlinit" >&6; }
 if test $ac_cv_lib_ltdl_lt_dlinit = yes; then
 
-			cat >>confdefs.h <<\_ACEOF
-#define HAVE_LTDL_H 1
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_LTDL_H
 _ACEOF
 
 			some_dl_found="yes"
@@ -7506,8 +7524,9 @@ fi
 echo "${ECHO_T}$ac_cv_lib_dl_dlopen" >&6; }
 if test $ac_cv_lib_dl_dlopen = yes; then
 
-			cat >>confdefs.h <<\_ACEOF
-#define HAVE_DLFCN_H 1
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_DLFCN_H
 _ACEOF
 
 			some_dl_found="yes"
@@ -7687,8 +7706,9 @@ echo "${ECHO_T}$MOD_LDFLAGS" >&6; }
 
 
 
-	cat >>confdefs.h <<_ACEOF
-#define USE_EVENT_BROKER 1
+
+cat >>confdefs.h <<_ACEOF
+#define USE_EVENT_BROKER
 _ACEOF
 
 	BROKER_O="broker.o nebmods.o"
@@ -8135,7 +8155,8 @@ if test "${with_perlcache+set}" = set; then
 
 else
 
-	cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define DO_CLEAN "1"
 _ACEOF
 
@@ -8146,8 +8167,9 @@ fi
 
 if test x$USEPERL = xyes; then
 
-	cat >>confdefs.h <<_ACEOF
-#define EMBEDDEDPERL 1
+
+cat >>confdefs.h <<_ACEOF
+#define EMBEDDEDPERL
 _ACEOF
 
 	PERLLIBS="`perl -MExtUtils::Embed -e ldopts`"
@@ -8163,14 +8185,16 @@ _ACEOF
 	echo "Embedded Perl interpreter will be compiled in..."
 
 		if test x$PERLCACHE = xyes; then
-		cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define DO_CLEAN "0"
 _ACEOF
 
 		PERLCACHE=yes;
 		echo "Internally compiled Perl scripts will be cached..."
 	else
-		cat >>confdefs.h <<\_ACEOF
+
+cat >>confdefs.h <<\_ACEOF
 #define DO_CLEAN "1"
 _ACEOF
 
@@ -8181,8 +8205,9 @@ fi
 if test x$USEPERL = xyes; then
 	if (perl -e 'use Config;exit -1 unless ($Config{'usethreads'});'); then
 		echo "Using threaded perl"
-		cat >>confdefs.h <<_ACEOF
-#define THREADEDPERL 1
+
+cat >>confdefs.h <<_ACEOF
+#define THREADEDPERL
 _ACEOF
 
 	fi
@@ -8253,6 +8278,7 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
+
 cat >>confdefs.h <<_ACEOF
 #define TRACEROUTE_COMMAND "$PATH_TO_TRACEROUTE"
 _ACEOF
@@ -8313,8 +8339,9 @@ else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	cat >>confdefs.h <<\_ACEOF
-#define NEED_VA_LIST 1
+
+cat >>confdefs.h <<\_ACEOF
+#define NEED_VA_LIST
 _ACEOF
  { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
