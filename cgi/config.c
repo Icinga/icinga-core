@@ -1717,7 +1717,7 @@ void display_servicedependencies(void){
 	printf("<TH CLASS='data'>Host</TH>");
 	printf("<TH CLASS='data'>Service</TH>");
 	printf("<TH CLASS='data'>Dependency Type</TH>");
-	printf("<TH CLASS='data'>Dependency Perod</TH>");
+	printf("<TH CLASS='data'>Dependency Period</TH>");
 	printf("<TH CLASS='data'>Dependency Failure Options</TH>");
 	printf("</TR>\n");
 
