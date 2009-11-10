@@ -2634,7 +2634,7 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 	ts[2] = ndo2db_db_timet_to_sql(idi, last_command_check);
 	ts[3] = ndo2db_db_timet_to_sql(idi, last_log_rotation);
 
-        void *data[25];
+        void *data[26];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &ts[0];
         data[2] = (void *) &ts[1];
@@ -2665,6 +2665,11 @@ int ndo2db_handle_programstatusdata(ndo2db_idi *idi) {
 
 	/* save entry to db */
         result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);
+
+	if(result == NDO_ERROR) {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_programstatusdata() error\n");
+		return result;
+	}
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
