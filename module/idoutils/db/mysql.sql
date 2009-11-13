@@ -1322,9 +1322,7 @@ CREATE TABLE IF NOT EXISTS `icinga_systemcommands` (
   `output` varchar(255) character set latin1 NOT NULL default '',
   `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`systemcommand_id`),
-  UNIQUE KEY `instance_id` (`instance_id`,`start_time`,`start_time_usec`),
-  KEY `instance_id` (`instance_id`),
-  KEY `start_time` (`start_time`)
+  UNIQUE KEY `instance_id` (`instance_id`,`start_time`,`start_time_usec`)
 ) ENGINE=MyISAM  COMMENT='Historical system commands that are executed';
 
 -- --------------------------------------------------------
@@ -1343,11 +1341,7 @@ CREATE TABLE IF NOT EXISTS `icinga_timedeventqueue` (
   `recurring_event` smallint(6) NOT NULL default '0',
   `object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`timedeventqueue_id`),
-  UNIQUE KEY `instance_id` (`instance_id`,`event_type`,`scheduled_time`,`object_id`),
-  KEY `instance_id` (`instance_id`),
-  KEY `event_type` (`event_type`),
-  KEY `scheduled_time` (`scheduled_time`),
-  KEY `object_id` (`object_id`)
+  UNIQUE KEY `instance_id` (`instance_id`,`event_type`,`scheduled_time`,`object_id`)
 ) ENGINE=MyISAM  COMMENT='Current Icinga event queue';
 
 -- --------------------------------------------------------
@@ -1370,11 +1364,7 @@ CREATE TABLE IF NOT EXISTS `icinga_timedevents` (
   `deletion_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `deletion_time_usec` int(11) NOT NULL default '0',
   PRIMARY KEY  (`timedevent_id`),
-  UNIQUE KEY `instance_id` (`instance_id`,`event_type`,`scheduled_time`,`object_id`),
-  KEY `instance_id` (`instance_id`),
-  KEY `event_type` (`event_type`),
-  KEY `scheduled_time` (`scheduled_time`),
-  KEY `object_id` (`object_id`)
+  UNIQUE KEY `instance_id` (`instance_id`,`event_type`,`scheduled_time`,`object_id`)
 ) ENGINE=MyISAM  COMMENT='Historical events from the Icinga event queue';
 
 -- --------------------------------------------------------
