@@ -1780,7 +1780,7 @@ service *add_service(char *host_name, char *description, char *display_name, cha
 	/* check values */
 	if(max_attempts<=0 || check_interval<0 || retry_interval<=0 || notification_interval<0){
 #ifdef NSCORE
-		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid max_attempts, check_interval, retry_interval, or notification_interval value for service '%s' on host '%s'\n",description,host_name);
+		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid max_check_attempts, check_interval, retry_interval, or notification_interval value for service '%s' on host '%s'\n",description,host_name);
 #endif
 		return NULL;
 	        }
