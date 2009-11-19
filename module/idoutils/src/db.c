@@ -531,7 +531,7 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 	
 	else {
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() existing instance not found, cleaning up and exiting\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 		/* cleanup the socket */
 		ndo2db_cleanup_socket();
 
