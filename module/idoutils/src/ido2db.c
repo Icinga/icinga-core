@@ -5,7 +5,7 @@
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 12-16-2009
+ * Last Modified:
  *
  **************************************************************/
 
@@ -75,6 +75,9 @@ extern int ido2db_check_dbd_driver(void);
 
 int ndo2db_open_debug_log(void);
 int ndo2db_close_debug_log(void);
+
+void *ido2db_thread_cleanup(void *);
+static void *exit_handler_mem(void *);
 
 /*#define DEBUG_NDO2DB 1*/                         /* don't daemonize */
 /*#define DEBUG_NDO2DB_EXIT_AFTER_CONNECTION 1*/    /* exit after first client disconnects */
@@ -231,7 +234,7 @@ int main(int argc, char **argv){
 	if(OCI_GetOCIRuntimeVersion == OCI_UNKNOWN) {
 		printf("Unknown ocilib runtime version detected. Exiting...\n");
 
-#ifdef HAVE_SSL 
+#ifdef HAVE_SSL
                 if(use_ssl==NDO_TRUE)
                         SSL_CTX_free(ctx);
 #endif
@@ -240,7 +243,7 @@ int main(int argc, char **argv){
 	}
 
 #endif /* Oracle ocilib specific */
-	
+
 	/* initialize signal handling */
 	signal(SIGQUIT,ndo2db_parent_sighandler);
 	signal(SIGTERM,ndo2db_parent_sighandler);
@@ -1040,19 +1043,18 @@ int ndo2db_wait_for_connections(void){
 				break;
 
 			case 0:
+				/* child processes data... */
+				ndo2db_handle_client_connection(new_sd);
 
-			/* child processes data... */
-			ndo2db_handle_client_connection(new_sd);
+				/* close socket when we're done */
+				close(new_sd);
+				return NDO_OK;
+				break;
 
-			/* close socket when we're done */
-			close(new_sd);
-			return NDO_OK;
-			break;
-
-		default:
-			/* parent keeps on going... */
-			close(new_sd);
-			break;
+			default:
+				/* parent keeps on going... */
+				close(new_sd);
+				break;
 		        }
 		}
 		else{
@@ -1332,6 +1334,9 @@ int ndo2db_handle_client_input(ndo2db_idi *idi, char *buf){
 	int data_type=NDO_DATA_NONE;
 	int input_type=NDO2DB_INPUT_DATA_NONE;
 
+	int pthread_ret = 0;
+	pthread_t th[1];
+
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_client_input() start\n");
 
 #ifdef DEBUG_NDO2DB2
@@ -1386,6 +1391,13 @@ int ndo2db_handle_client_input(ndo2db_idi *idi, char *buf){
 
 			/* save connection info to DB */
 			ndo2db_db_hello(idi);
+
+			/* create cleanup thread */
+			if ((pthread_ret = pthread_create(&th[0], NULL, ido2db_thread_cleanup, idi)) != 0) {
+				syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
+				exit(EXIT_FAILURE);
+			}
+
 		        }
 
 		else if(!strcmp(var,NDO_API_PROTOCOL))
@@ -2416,3 +2428,54 @@ int ndo2db_log_debug_info(int level, int verbosity, const char *fmt, ...){
 	return NDO_OK;
 	}
 
+/********************************************************************
+ *
+ * housekeeping - this is the function for the db trimming thread
+ *
+ ********************************************************************/
+
+void * ido2db_thread_cleanup(void *data) {
+
+	/* This is creepy annoying
+	 * Just want to copy this idi to a variable of my own
+	 * To use it for a second database connection in this "per client thread"
+	 */
+	ndo2db_idi *temp_idi = (ndo2db_idi*) data;
+	ndo2db_idi idi =  *temp_idi;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
+
+	pthread_cleanup_push((void *) &exit_handler_mem, NULL);
+
+	/* Fake that this idi is not connected to enforce a new connections */
+	// idi->dbinfo->connected = NDO_FALSE;
+
+	/* Connect this thread to a new connection */
+	//ndo2db_db_connect(idi);
+
+	while(1) {
+		sleep(1);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() working...\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has instance name '%s'...\n", idi->instance_name);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has db last logentry data  '%s'...\n", idi->dbinfo.last_logentry_data);
+		sleep(10);
+	}
+
+	pthread_cleanup_pop(1);
+
+	pthread_exit((void *) pthread_self());
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
+
+}
+
+/* ******************************************************************
+ *                                                                  *
+ * processfile - this is the function for each thread               *
+ *                                                                  *
+ * ******************************************************************/
+
+static void *exit_handler_mem(void * arg) {
+
+	return 0;
+
+}
