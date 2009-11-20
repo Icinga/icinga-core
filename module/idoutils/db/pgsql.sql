@@ -8,34 +8,6 @@
 # current version: 2009-08-31 Michael Friedrich <michael.friedrich@univie.ac.at>
 #
 #--------------------------------------------------------------------------------
-# database installation instructions
-# 
-# create db and user:
-#
-# # su - postgres
-# $ psql 
-# 
-# postgres=# CREATE USER icingauser;
-# postgres=# ALTER USER icingauser WITH PASSWORD 'icingauser';
-# postgres=# CREATE DATABASE icinga;
-#
-# vi /etc/postgresql/8.x/main/pg_hba.conf 
-# local   icinga      icingauser                        trust
-#
-# # /etc/init.d/postgresql-8.3 reload
-#
-# import db schema
-#
-# psql -U icingauser -d icinga < /path/to/icinga-src/module/idoutils/db/pgsql.sql  
-#
-#
-# Edit ido2db.cfg to the following:
-#
-# dbtype=pgsql
-# dbport=5432
-# dbuser=icingauser
-# dbpass=icingauser
-#
 #
 */
 
