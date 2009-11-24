@@ -1177,8 +1177,6 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
                 /* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
-		
-		free(buf);
 	}
 
 	/* REMOVE QUEUED TIMED EVENTS */
