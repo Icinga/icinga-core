@@ -269,8 +269,10 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		return NDO_ERROR;
 
 	/* we're already connected... */
-	if (idi->dbinfo.connected == NDO_TRUE)
+	if (idi->dbinfo.connected == NDO_TRUE){
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "\tndo2db_db_connect(): already connected. Dropping out.\n");
 		return NDO_OK;
+	}
 
 #ifndef USE_ORACLE /* Oracle ocilib specific */
 	switch (idi->dbinfo.server_type) {

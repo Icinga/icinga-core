@@ -2093,7 +2093,7 @@ int ndo2db_end_input_data(ndo2db_idi *idi){
 	idi->entries_processed++;
 
 	/* perform periodic maintenance... */
-	ndo2db_db_perform_maintenance(idi);
+	//ndo2db_db_perform_maintenance(idi);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_end_input_data() end\n");
 	return result;
@@ -2436,35 +2436,51 @@ int ndo2db_log_debug_info(int level, int verbosity, const char *fmt, ...){
 
 void * ido2db_thread_cleanup(void *data) {
 
-	/* This is creepy annoying
-	 * Just want to copy this idi to a variable of my own
-	 * To use it for a second database connection in this "per client thread"
-	 */
-	ndo2db_idi *temp_idi = (ndo2db_idi*) data;
-	ndo2db_idi idi =  *temp_idi;
+	ndo2db_idi *idi = (ndo2db_idi*) data;
+	ndo2db_idi thread_idi;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread idi\n");
+	/* initialize input data information */
+	ndo2db_idi_init(&thread_idi);
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread db connection\n");
+	/* initialize database connection */
+	ndo2db_db_init(&thread_idi);
+	ndo2db_db_connect(&thread_idi);
+
+	/* copy needed idi information */
+	thread_idi.instance_name = idi->instance_name;
+	thread_idi.agent_name = "idomod house keeper";
+
+	/* save connection info to DB */
+	ndo2db_db_hello(&thread_idi);
 
 	pthread_cleanup_push((void *) &exit_handler_mem, NULL);
 
-	/* Fake that this idi is not connected to enforce a new connections */
-	// idi->dbinfo->connected = NDO_FALSE;
-
-	/* Connect this thread to a new connection */
-	//ndo2db_db_connect(idi);
-
 	while(1) {
-		sleep(1);
+		if(idi->disconnect_client==NDO_TRUE){
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup(): origin idi said we should disconnect the client\n");
+			break;
+		}
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() working...\n");
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has instance name '%s'...\n", idi->instance_name);
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has db last logentry data  '%s'...\n", idi->dbinfo.last_logentry_data);
-		sleep(10);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has instance name '%s'...\n", thread_idi.instance_name);
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() calling ndo2db_db_perform_maintenance...\n");
+		ndo2db_db_perform_maintenance(&thread_idi);
+		sleep(idi->dbinfo.trim_db_interval);
 	}
 
+	/* gracefully back out of current operation... */
+	ndo2db_db_goodbye(&thread_idi);
+
+	/* ToDo
+	 * Actual this thread never exits after a idomod connection ends up
+	 */
 	pthread_cleanup_pop(1);
 
 	pthread_exit((void *) pthread_self());
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() end\n");
 
 }
 
