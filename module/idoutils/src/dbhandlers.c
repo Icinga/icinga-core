@@ -1154,24 +1154,30 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	/* ADD QUEUED TIMED EVENTS */
 	if (type == NEBTYPE_TIMEDEVENT_ADD && tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
-		/* save entry to db */
-		if (asprintf(
-				&buf,
-				"INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE],
-				idi->dbinfo.instance_id, event_type, ts[0], tstamp.tv_usec,
-				ts[1], recurring_event, object_id) == -1)
-			buf = NULL;
-		result = ndo2db_db_query(idi, buf);
+		/* save entry to db by update or insert */
+                void *data[9];
+                data[0] = (void *) &idi->dbinfo.instance_id;
+                data[1] = (void *) &event_type;
+                data[2] = (void *) &ts[0];
+                data[3] = (void *) &tstamp.tv_usec;
+                data[4] = (void *) &ts[1];
+                data[5] = (void *) &recurring_event;
+                data[6] = (void *) &object_id;
+                /* add unixtime for bind params */
+                data[7] = (void *) &tstamp.tv_sec;
+                data[8] = (void *) &run_time; 
+
+
+                result = ido2db_query_insert_or_update_timedeventqueue_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
+                dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+                /* do not free if prepared statement */
 
 #endif /* Oracle ocilib specific */
-
+		
 		free(buf);
 	}
 

@@ -25,6 +25,7 @@ extern int ndo2db_log_debug_info(int , int , const char *, ...);
 /* point to prepared statements after db initialize */
 #ifdef USE_ORACLE
 int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_timedeventqueue(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_timedevents(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_hoststatus(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_hostchecks(ndo2db_idi *idi);
@@ -209,6 +210,12 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 	}
 #else /* Oracle ocilib specific */
 
+        /* check if config matches */
+        if(idi->dbinfo.server_type != NDO2DB_DBSERVER_ORACLE) {
+                syslog(LOG_USER | LOG_INFO, "Error: ido2db.cfg not correctly configured. Please recheck for Oracle!\n");
+                return NDO_ERROR;
+        }
+
 	/* register error handler and init oci */
 	if(!OCI_Initialize(ido2db_ocilib_err_handler, NULL, OCI_ENV_CONTEXT)) {
 		syslog(LOG_USER | LOG_INFO, "Error:  OCI_Initialize() failed\n");
@@ -334,8 +341,13 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	}
 #else /* Oracle ocilib specific */
 
-	/* create db connection instantly */
+        /* check if config matches */
+        if(idi->dbinfo.server_type != NDO2DB_DBSERVER_ORACLE) {
+                syslog(LOG_USER | LOG_INFO, "Error: ido2db.cfg not correctly configured. Please recheck for Oracle!\n");
+                return NDO_ERROR;
+        }
 
+	/* create db connection instantly */
 	idi->dbinfo.oci_connection = OCI_ConnectionCreate((mtext *)ndo2db_db_settings.dbname, (mtext *)ndo2db_db_settings.username, (mtext *)ndo2db_db_settings.password, OCI_SESSION_DEFAULT);
 	
 	if(idi->dbinfo.oci_connection == NULL) {
@@ -367,6 +379,14 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
                 return NDO_ERROR;
         }
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() call done\n");
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() called\n");
+
+        if(ido2db_oci_prepared_statement_timedeventqueue(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() failed\n");
+                return NDO_ERROR;
+        }
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() call done\n");
 
 	/* hoststatus/check */
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() called\n");
@@ -451,6 +471,7 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	/* close prepared statements */
 	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents);
 	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents_queue);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timedeventqueue);
 	OCI_StatementFree(idi->dbinfo.oci_statement_hostchecks);
 	OCI_StatementFree(idi->dbinfo.oci_statement_hoststatus);
 	OCI_StatementFree(idi->dbinfo.oci_statement_servicechecks);
@@ -1448,6 +1469,41 @@ int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi) {
         free(buf);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_timedeventqueue(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET queued_time=(SELECT unixts2date(:X3) FROM DUAL), queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
+                        buf = NULL;
+        }
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_timedeventqueue = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timedeventqueue, 1);
+                
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timedeventqueue, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() end\n");
 
         return NDO_OK;
 }

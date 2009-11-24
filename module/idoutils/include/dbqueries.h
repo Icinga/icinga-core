@@ -17,6 +17,7 @@
 /* TIMEDEVENTS */
 int ido2db_query_insert_or_update_timedevents_add(ndo2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_timedeventqueue_add(ndo2db_idi *idi, void **data);
 
 /* SYSTEMCOMMANDS */
 int ido2db_query_insert_or_update_systemcommanddata_add(ndo2db_idi *idi, void **data);

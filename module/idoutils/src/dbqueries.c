@@ -179,6 +179,136 @@ int ido2db_query_insert_or_update_timedevent_add(ndo2db_idi *idi, void **data) {
 	return result;
 }
 
+int ido2db_query_insert_or_update_timedeventqueue_add(ndo2db_idi *idi, void **data) {
+        int result = NDO_OK;
+        const char *dbi_error;
+	char * query1 = NULL;
+	char * query2 = NULL;
+	unsigned long i = 666;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add() start\n");
+
+        if (idi == NULL)
+                return NDO_ERROR;
+
+        if (idi->dbinfo.connected == NDO_FALSE)
+                return NDO_ERROR;
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+	        case NDO2DB_DBSERVER_MYSQL:
+			asprintf(&query1, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu) ON DUPLICATE KEY UPDATE queued_time=%s, queued_time_usec=%lu, recurring_event=%d", 
+					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE],
+					*(unsigned long *) data[0], 	/* insert start */
+					*(int *) data[1],
+					*(char **) data[2],
+					*(unsigned long *) data[3],
+					*(char **) data[4],
+					*(int *) data[5],
+					*(unsigned long *) data[6], 	/* insert end */
+					*(char **) data[2],		/* update start */
+					*(unsigned long *) data[3],
+					*(int *) data[5]		/* update end */
+			);
+			/* send query to db */
+			result = ndo2db_db_query(idi, query1);	
+			free(query1);
+	                break;
+        	case NDO2DB_DBSERVER_PGSQL:
+			asprintf(&query1, "UPDATE %s SET queued_time=%s, queued_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
+					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE],
+                                        *(char **) data[2],		/* update start */
+                                        *(unsigned long *) data[3],
+                                        *(int *) data[5],		/* update end */
+					*(unsigned long *) data[0],	/* unique constraint start */
+					*(int *) data[1],
+					*(char **) data[4],
+					*(unsigned long *) data[6]	/* unique constraint end */
+			);
+
+			/* send query to db */
+			result = ndo2db_db_query(idi, query1);		
+			free(query1);
+
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add(%lu) update rows matched\n", (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result)));
+			/* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) { 
+				/* try insert instead */
+				asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES ('%lu', '%d', %s, '%lu', %s, '%d', '%lu')",
+					ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(int *) data[1],
+                                        *(char **) data[2],
+                                        *(unsigned long *) data[3],
+                                        *(char **) data[4],
+                                        *(int *) data[5],
+                                        *(unsigned long *) data[6]     /* insert end */
+				);
+				/* send query to db */
+				result = ndo2db_db_query(idi, query2);
+				free(query2);
+			}		
+	                break;
+        	case NDO2DB_DBSERVER_DB2:
+	                break;
+        	case NDO2DB_DBSERVER_FIREBIRD:
+                	break;
+	        case NDO2DB_DBSERVER_FREETDS:
+	                break;
+	        case NDO2DB_DBSERVER_INGRES:
+        	        break;
+	        case NDO2DB_DBSERVER_MSQL:
+        	        break;
+	        case NDO2DB_DBSERVER_ORACLE:
+                        break;
+                case NDO2DB_DBSERVER_SQLITE:
+                        break;
+                case NDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#else /* Oracle ocilib specific */
+
+			/* bind params to prepared statement */
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X1"), (big_uint *) data[0])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X2"), (int *) data[1])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X3"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X4"), (big_uint *) data[3])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X5"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+				return NDO_ERROR;
+			}
+			if(!OCI_BindInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X6"), (int *) data[5])) {
+				return NDO_ERROR;
+			}
+			if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue, MT(":X7"), (big_uint *) data[6])) {
+				return NDO_ERROR;
+			}
+
+			/* execute statement */
+			if(!OCI_Execute(idi->dbinfo.oci_statement_timedeventqueue)) {
+				ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add() execute error\n");
+				return NDO_ERROR;
+			}
+
+			/* commit statement */
+			OCI_Commit(idi->dbinfo.oci_connection);
+
+			/* do not free statement yet! */
+#endif
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add() end\n"); 
+
+	return result;
+}
+
 int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void **data) {
         int result = NDO_OK;
         const char *dbi_error;
