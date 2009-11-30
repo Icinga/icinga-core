@@ -19,8 +19,11 @@ function secureVar($var) {
 }	
 
 // Array contains state codes for host state
-$hostStateCode = array ('0' => 'UP',
-						'1' => 'DOWN');
+$hostStateCode = array (
+	'0' => 'UP',
+	'1' => 'DOWN',
+	'2' => 'UNREACHABLE'
+);
 
 // Load required files
 require_once('icinga-api/IcingaApi.php');
@@ -57,7 +60,7 @@ if ($secureType == "host") {
 
 	echo '<ul>';
 		foreach($apiRes as $apiHandle){
-			echo '<li><b>'.$apiHandle->host_name.'</b><span class="informal" id="listHOST'.$hostStateCode[$apiHandle->host_current_state].'"> ('.$hostStateCode[$apiHandle->host_current_state].')</span></li>';
+			echo '<li><b>'.$apiHandle->HOST_NAME.'</b><span class="informal" id="listHOST'.$hostStateCode[$apiHandle->HOST_CURRENT_STATE].'"> ('.$hostStateCode[$apiHandle->HOST_CURRENT_STATE].')</span></li>';
 		}
 	echo '</ul>';
 // Seach hostgroup
@@ -71,7 +74,7 @@ if ($secureType == "host") {
 
 	echo '<ul>';
 		foreach($apiRes as $apiHandle){
-			echo '<li><span class="informal" id="searchSelected"><b>'.$apiHandle->hostgroup_alias.'</b> (</span>'.$apiHandle->hostgroup_name.'<span class="informal" id="searchSelected">)</span></li>';
+			echo '<li><span class="informal" id="searchSelected"><b>'.$apiHandle->HOSTGROUP_ALIAS.'</b> (</span>'.$apiHandle->HOSTGROUP_NAME.'<span class="informal" id="searchSelected">)</span></li>';
 		}
 	echo '</ul>';
 // Seach servicegroup
@@ -85,7 +88,7 @@ if ($secureType == "host") {
 
 	echo '<ul>';
 		foreach($apiRes as $apiHandle){
-			echo '<li><span class="informal" id="searchSelected"><b>'.$apiHandle->servicegroup_alias.'</b> (</span>'.$apiHandle->servicegroup_name.'<span class="informal" id="searchSelected">)</span></li>';
+			echo '<li><span class="informal" id="searchSelected"><b>'.$apiHandle->SERVICEGROUP_ALIAS.'</b> (</span>'.$apiHandle->SERVICEGROUP_NAME.'<span class="informal" id="searchSelected">)</span></li>';
 		}
 	echo '</ul>';
 } else {
