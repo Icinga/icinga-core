@@ -8,6 +8,7 @@ Icinga 1.0.x Change Log
 * idoutils: change default data_processing_options in idomod.cfg
 * fix thisversion and perl path generation in db install scripts
 * idoutils: fix duplicate rows in table systemcommands, timedevents, timedeventqueue (missing unique keys)
+* idoutils: add upgrade path/sql queries for unique key failure
 
 * idoutils: Oracle improvents:
 * add prepared statements for most called queries
