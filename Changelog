@@ -3,12 +3,22 @@ Icinga 1.0.x Change Log
 #######################
 
 1.0 Stable - 16/12/2009
-* idoutils: fix missing query arguments in servicecheck query
-* idoutils: fix duplicate rows in table servicechecks
+* core: create webserver conf.d dir if not existing
+* core: output the correct config parameter name on error message
+* core: run dos2unix on spec file
+* core: check /proc/$pid instead of lock file while waiting for shutdown
+* core: fix cgi/config.c typo
+* core: fix typo in cgi/cmd.c
+* core: applied nagios patches after 3.2.0
+
 * idoutils: change default data_processing_options in idomod.cfg
-* fix thisversion and perl path generation in db install scripts
+* idoutils: fix missing query arguments in servicecheck query
+* idoutils: fix thisversion and perl path generation in db install scripts
+* idoutils: change db README to docs.icinga.org
+* idoutils: fix wrong debug output in db_hello()
+* idoutils: fix duplicate rows in table servicecheck
 * idoutils: fix duplicate rows in table systemcommands, timedevents, timedeventqueue (missing unique keys)
-* idoutils: add upgrade path/sql queries for unique key failure
+* idoutils: add upgrade path/sql queries for unique key failure - check the docs for upgrading information
 
 * idoutils: Oracle improvents:
 * add prepared statements for most called queries
@@ -33,6 +43,7 @@ Icinga 1.0.x Change Log
 	- more prepared statements/bind param queries
 * split code into ocilib OR libdbi
 * --enable-oracle during configure decides which rdbm lib will be used
+
 
 1.0 RC - 28/10/2009
 * idoutils: add Oracle support with oclilib
@@ -73,6 +84,7 @@ Icinga 1.0.x Change Log
 * idoutils: change ido2db.cfg: ndo2db_[user|group] to ido2db_[user|group]
 * core web: fix missing gif icon copy
 
+
 0.8.4 - 09/15/2009
 * idoutils: fix failure_prediction_options in tables hosts, services for postgres
 * idoutils: add configure support for manual libdbi detection
@@ -85,6 +97,7 @@ Icinga 1.0.x Change Log
 * idoutils: add experimental db trimming interval option in ido2db.cfg
 * core: fix wrong copyright url for Ethan
 * docu: fix quickinstall guides
+
 
 0.8.3 - 09/02/2009
 * idoutils: add PostgreSQL support
@@ -105,6 +118,7 @@ Icinga 1.0.x Change Log
 * idoutils: add more debug output
 * idoutils: Support 8192 chars of perfdata
 
+
 0.8.2 - 08/12/2009
 * create a new basic ido2db init script
 * idoutils: fix child signal handling in ido2db
@@ -117,6 +131,7 @@ Icinga 1.0.x Change Log
 * icinga-api added: The search function now uses the icinga-api submodule
 * various minor changes
 
+
 0.8.1 - 06/17/2009
 ------------------
 * Archived Logfiles renamed from Icinga-date-syntax.log => icinga-date-syntax.log (capital 'i')
@@ -126,6 +141,7 @@ Icinga 1.0.x Change Log
 * fix ido2db segfault when try to access non existing tables
 * DocBook v5 conversion
 * Fix menu frameset cols width
+
 
 0.8 - 05/19/2009
 ----------------
@@ -149,12 +165,12 @@ Nagios 3.x Change Log
 #####################
 
 
-3.2.0 - 08/??/2009
-=======
 3.2.1 ????
 -----------------
 ENHANCEMENTS
 * Link to allow scheduling downtime for all services on a host (Hendrik Baecker)
+* Test for rw/nagios.cmd (Hendrik Baecker)
+
 
 FIXES
 * Fix for incorrect scheduling when time has gone back an hour (partial fix for 24x7)
@@ -162,6 +178,10 @@ FIXES
 * Fix for compile on Solaris
 * Fix for logging test, which was not timezone aware (bug #0000077 - Allan Clark)
 * Trivial cleanups for autoconf (Allan Clark)
+* Fix case consistency in CGI output
+* Set to search external libs, rather than include all the time (Allan Clark)
+* Fixed test compile on linux servers
+* Fixed incorrect return code in test failures
 
 WARNINGS
 
