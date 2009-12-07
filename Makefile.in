@@ -305,7 +305,7 @@ install-config:
 	@echo ""
 
 install-webconf:
-	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf
+	$(INSTALL) -D -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf
 
 	@echo ""
 	@echo "*** Icinga/Apache conf file installed ***"
