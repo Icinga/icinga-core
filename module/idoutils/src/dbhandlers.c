@@ -1354,7 +1354,7 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	ts[1] = ndo2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* save entry to db */
-        void *data[11];
+        void *data[12];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &ts[0];
         data[2] = (void *) &start_time.tv_usec;
