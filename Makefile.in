@@ -59,7 +59,7 @@ none:
 		@echo "Please supply a command line argument (i.e. 'make all').  Other targets are:"
 		@echo "   icinga cgis contrib modules idoutils"
 		@echo "   clean"
-		@echo "   install install-base install-cgis install-html install-config install-init install-commandmode install-idoutils fullinstall"
+		@echo "   install install-base install-cgis install-html install-config install-init install-commandmode install-idoutils install-webconf fullinstall"
 #		@echo "   uninstall"
 
 # FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
