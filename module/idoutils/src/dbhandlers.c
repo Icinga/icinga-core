@@ -5828,6 +5828,10 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		if(es[1] == NULL) {
 			es[1] = "";
 		}
+		if(ts == NULL) {
+			ts = "NULL";
+		}
+
 
 		if (table_idx==NDO2DB_DBTABLE_CUSTOMVARIABLES) {
 
@@ -5857,7 +5861,7 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		        void *data[6];
 		        data[0] = (void *) &idi->dbinfo.instance_id;
 		        data[1] = (void *) &o_id;
-		        data[2] = (void *) &ts[0];
+		        data[2] = (void *) &ts;
 		        data[3] = (void *) &has_been_modified;
 		        data[4] = (void *) &es[0];
 		        data[5] = (void *) &es[1];

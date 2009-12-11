@@ -16,6 +16,7 @@ Icinga 1.0.x Change Log
 * idoutils: fix thisversion and perl path generation in db install scripts
 * idoutils: change db README to docs.icinga.org
 * idoutils: fix wrong debug output in db_hello()
+* idoutils: fix save custom variables segfault caused by wrong char*
 * idoutils: fix duplicate rows in table servicecheck
 * idoutils: fix duplicate rows in table systemcommands, timedevents, timedeventqueue (missing unique keys)
 * idoutils: add upgrade path/sql queries for unique key failure - check the docs for upgrading information
