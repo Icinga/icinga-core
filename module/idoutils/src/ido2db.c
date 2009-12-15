@@ -5,7 +5,7 @@
  * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 
+ * Last Modified: 12-16-2009
  *
  **************************************************************/
 
@@ -32,7 +32,7 @@
 #endif
 
 #define NDO2DB_NAME "IDO2DB"
-#define NDO2DB_DATE "12-15-2009"
+#define NDO2DB_DATE "12-16-2009"
 
 #ifdef HAVE_SSL
 SSL_METHOD *meth;

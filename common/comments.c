@@ -3,7 +3,7 @@
  * COMMENTS.C - Comment functions for Nagios
  *
  * Copyright (c) 1999-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-19-2007
+ * Last Modified: 12-16-2009
  *
  * License:
  *

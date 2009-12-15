@@ -53,7 +53,7 @@ if ($@) {
 
 # Get current database version
 my $version;
-my $	hisversion="1.0";
+my $thisversion="1.0";
 my $lastversion="1.0";
 my $legacyversion="1.0";
 

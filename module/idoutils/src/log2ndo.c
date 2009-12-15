@@ -14,7 +14,7 @@
 
 #define LOG2NDO_VERSION "1.0"
 #define LOG2NDO_NAME "LOG2NDO"
-#define LOG2NDO_DATE "12-15-2009"
+#define LOG2NDO_DATE "12-16-2009"
 
 
 
