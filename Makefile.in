@@ -58,8 +58,8 @@ CP=@CP@
 none:
 		@echo "Please supply a command line argument (i.e. 'make all').  Other targets are:"
 		@echo "   icinga cgis contrib modules idoutils"
-		@echo "   clean"
-		@echo "   install install-base install-cgis install-html install-config install-init install-commandmode install-idoutils install-webconf fullinstall"
+		@echo "   clean distclean"
+		@echo "   install install-base install-cgis install-html install-config install-init install-commandmode install-idoutils install-api install-webconf fullinstall"
 #		@echo "   uninstall"
 
 # FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
@@ -85,7 +85,7 @@ all:
 	@echo "without any arguments for a list of all possible options):"
 	@echo ""
 	@echo "  make install"
-	@echo "     - This installs the main program, CGIs, and HTML files"
+	@echo "     - This installs the main program, CGIs, API, and HTML files"
 	@echo ""
 	@echo "  make install-init"
 	@echo "     - This installs the init script in $(DESTDIR)$(INIT_DIR)"
@@ -97,6 +97,9 @@ all:
 	@echo "  make install-idoutils"
 	@echo "     - This installs the database addon IDOUtils into the"
 	@echo "       destination directory"
+	@echo ""
+	@echo "  make install-api"
+	@echo "     - This installs the Icinga API in $(DESTDIR)$(HTMLDIR)"
 	@echo ""
 	@echo "  make install-config"
 	@echo "     - This installs *SAMPLE* config files in $(DESTDIR)$(CFGDIR)"
@@ -235,10 +238,7 @@ install:
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
 
-	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
-		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
-	fi
-
+	$(MAKE) install-api
 	$(MAKE) install-basic
 
 install-unstripped:
@@ -326,6 +326,11 @@ install-idoutils:
 		echo "Try again with ./configure --enable-idoutils" ;\
 		echo "" ;\
 	fi
+
+install-api:
+	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
+                cd $(SRC_ICINGAAPI) && $(MAKE) install; \
+        fi
 
 install-init: install-daemoninit
 
