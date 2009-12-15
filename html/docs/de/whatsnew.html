@@ -4,7 +4,7 @@
 <title>Was gibt es Neues</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Dokumentation">
 <link rel="up" href="ch01.html" title="Kapitel 1. Über">
 <link rel="prev" href="about.html" title="Über Icinga">
 <link rel="next" href="ch02.html" title="Kapitel 2. Los geht's">
@@ -24,221 +24,182 @@
 </table>
 <hr>
 </div>
+<div class="section" title="Was gibt es Neues">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>Was gibt es Neues</h2></div></div></div>
-  
-  <p>* IDOUtils mit Oracle- Unterstützung </p>
-  <p>* IDOUtils mit PostgreSQL- Unterstützung</p>
-
-  <p>* neue Dokumentation in Docbook v5</p>
-
-  <p>* neue Icinga- Api, die Suchfunktion im Webinterface benutzt nun das Icinga-api Submodule</p>
-
-  <p>* neues Design des Webinterfaces in Vautour Style by Yoann LAMY</p>
-
-  <p>* libdbi-Treiber Integration für die IDOUtils, Integration der IDOUtils in den Icinga- Core, einbinden über ./configure
-  --enable-idoutils</p>
-
-  <p>* ssl-Encryption für die IDOUtils, einzubinden über ./configure --enable-ssl</p>
-
-  <p> </p>
-
-  <p>Bald gibt es hier noch detailliertere Informationen, vorerst der Changelog:</p>
-
-  <p><span class="bold"><strong>1.0 - 28.10.2009 </strong></span></p>
-
-  <p>* idoutils: add Oracle support with oclilib</p>
-
-  <p>* idoutils: add ssl support</p>
-
-  <p>* idoutils: add configure --enable-oracle</p>
-
-  <p>* idoutils: add configure --enable-ssl</p>
-
-  <p>* idoutils: add configure -with-ocilib-lib/inc for ocilib detection</p>
-
-  <p>* idoutils: add oracle support to ido2db.cfg</p>
-
-  <p>* idoutils: add ocilib runtime version check</p>
-
-  <p>* idoutils: add ocilib linked at runtime (prevents setting of $ORACLE_HOME during configure)</p>
-
-  <p>* idoutils: add ocilib hack to temp #undef CONFIG_H during compiling</p>
-
-  <p>* idoutils: add #define USE_ORACLE set by --enable-oracle</p>
-
-  <p>* idoutils: add #ifndef USE_ORACLE #else #endif to get code compatible with libdbi</p>
-
-  <p>* idoutils: add ocilib connection, statement, resultset</p>
-   
-  <p>* idoutils: add ocilib execute statement, commit (no autocommit since we want to use the pros of oracle!)</p>
-
-  <p>* idoutils: add ocilib insert id for sequence handling</p>
-
-  <p>* idoutils: add ocilib free statement to match with sequences</p>
-
-  <p>* idoutils: add oracle sysdate instead of NOW()</p>
-
-  <p>* idoutils: add long_output to oracle.sql - introduce clob (Character Large Object)</p>
-
-  <p>* idoutils: add even more debugoutput for oracle</p>
-
-  <p>* idoutils: modify configure to use OCI_CHARSET_ANSI</p>
-
-  <p>* idoutils: modify configure to set LD_LIBRARY_PATH for ido2db init script</p>
-
-  <p>* idoutils: modify formatting to get more readable</p>
-
-  <p>* idoutils: fix typecast bug - unsigned long is bigger then int</p>
-
-  <p>* idoutils: fix oracle notif_timeperiod_object_id (30 chars max)</p>
-
-  <p>* idoutils: fix oracle table serviceescalationcontactgroups (30 chars max)</p>
-
-  <p>* idoutils: fix hoststatus/servicestatus/servicecheck unique constraint updating mismatch</p>
-
-  <p>* idoutils: fix insert_or_update queries where update violates unique constraint</p>
-
-  <p>* idoutils: remove and ignore oracle table_prefix (30 chars max)</p>
-
-  <p>* idoutils: workaround to handle more than 4k Data which may exceed service outputs incl. long perf_data</p>
-
-  <p>* core init: delete 'su' usage since all previously su touched files were created by the icinga user</p>
-
-  <p>* idoutils: fix unescape bug during tabstops</p>
-
-  <p>* idoutils: fix idomod/icinga segfault while try to use ssl on unix sockets</p>
-
-   <p>* idoutils: set long_output/perfdata to TEXT in MySQL</p>
-
-  <p>* core configure: set INIT_OPTS depending on detected host OS (no more root:root on FreeBSD?)</p>
-
-  <p>* core spec: added new spec file</p>
-
-  <p>* idoutils: fix case insensitive comparison in MySQL using BINARY</p>
-
-   <p>* idoutils: change ido2db.cfg: ndo2db_[user|group] to ido2db_[user|group]</p>
-
-   <p>* core web: fix missing gif icon copy</p>
-
-  <p><span class="bold"><strong>0.8.4 - 16/09/2009 </strong></span></p>
-
-  <p>* idoutils: fix failure_prediction_options in tables hosts, services for postgres</p>
-
-  <p>* idoutils: add configure support for manual libdbi detection</p>
-
-  <p>* idoutils: fix typo laste_state (wrong column)</p>
-
-  <p>* idoutils: fix buffer freeing with NAGIOS_SIZEOF_ARRAY</p>
-
-  <p>* idoutils: delete old mysql files coming from ndoutils</p>
-
-  <p>* idoutils: add new versionhandling, idomod/ido2db now shows version of Icinga core</p>
-
-  <p>* idoutils: rename existing mysql/pgsql files, added upgrade/fix files</p>
-
-  <p>* idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing</p>
-
-  <p>* idoutils: add experimental db trimming interval option in ido2db.cfg</p>
-
-  <p>* core: fix wrong copyright url for Ethan</p>
-
-  <p> </p>
-
-  <p><span class="bold"><strong>0.8.3 - 09/02/2009 </strong></span></p>
-
-  <p>* idoutils: add PostgreSQL support</p>
-
-  <p>* new Icinga documentation in docbook and html format</p>
-
-  <p>* fetch current Nagios patches</p>
-
-  <p>* fix support links after make</p>
-
-  <p>* idoutils: add note if install desired but not enabled</p>
-
-  <p>* idoutils: fix installing of rc.ido2db in make install-idoutils</p>
-
-  <p>* idoutils: add db/pgsql.sql, adapted table scheme for postgresql</p>
-
-  <p>* idoutils: add time conversion functions for postgresql</p>
-
-  <p>* idoutils: add try update, if affected rows=0, then insert queries for postgresql</p>
-
-  <p>* idoutils: modify insert queries, normalized to sql-standard</p>
-
-  <p>* idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms</p>
-
-  <p>* idoutils: modify insert-or-update queries, build data array for functions</p>
-
-  <p>* idoutils: fix string escaping for postgresql</p>
-
-  <p>* idoutils: fix last insert id for postgresql - needs defined sequence id for table</p>
-
-  <p>* idoutils: modify command_line in commands table to varchar(1024)</p>
-
-  <p>* idoutils: add more debug output</p>
-
-  <p>* idoutils: Support 8192 chars of perfdata</p>
-
-  <p> </p>
-
-  <p><span class="bold"><strong>0.8.2 - 08/12/2009</strong></span></p>
-
-  <p>* create a new basic ido2db init script</p>
-
-  <p>* idoutils: fix child signal handling in ido2db</p>
-
-  <p>* idoutils: fix escaping of customvars before insert</p>
-
-  <p>* idoutils: fix in buggy rotate command execution</p>
-
-  <p>* idoutils: fix fmt specifier in ndo2db_daemonize() error</p>
-
-  <p>* idoutils: added long_output support to IDOUtils</p>
-
-  <p>* idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)</p>
-
-  <p>* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)</p>
-
-  <p>* icinga-api added: The search function now uses the icinga-api submodule * various minor changes</p>
-
-  <p> </p>
-
-  <p><span class="bold"><strong>0.8.1 - 06/17/2009</strong></span></p>
-
-  <p>* Archived Logfiles renamed from Icinga-date-syntax.log =&gt; icinga-date-syntax.log (capital 'i')</p>
-
-  <p>* cherry picked latest Nagios Patches (see Nagios Changelog below)</p>
-
-  <p>* new ido2db command switch: '-f' don't daemonize the ido2db</p>
-
-  <p>* ido2db will now prints out available database drivers</p>
-
-  <p>* fix ido2db segfault when try to access non existing tables</p>
-
-  <p>* DocBook v5 conversion</p>
-
-  <p>* Fix menu frameset cols width</p>
-
-  <p><span class="bold"><strong>0.8 - 05/19/2009</strong></span></p>
-
-  <p>* Almost biggest deal to rename the components</p>
-
-  <p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it</p>
-
-  <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction
-  layer, enable compile try with "configure --enable-idoutils"</p>
-
-  <p>* Included a new stylesheet/icon theme based on Vautour Style Vautour Style have been created by Yoann LAMY.</p>
-
-  <p>The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/). The icons of Vautour Style use
-  "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.</p>
-
-  <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License
-  (http://creativecommons.org/licenses/by/2.5/).</p>
-
-  <a class="indexterm" name="id3624530"></a>
+<p></p>
+<p>Bald gibt es hier noch detailliertere Informationen, vorerst der Changelog:</p>
+<p><span class="bold"><strong>Icinga-Web:</strong></span></p>
+<p><span class="bold"><strong>0.9.1-alpha -16/12/2009</strong></span></p>
+<p>* Updated install-fromscratch.txt: apache settings ...
+</p>
+<p>* Removed the yui top menu and implemented top nav with ExtJ
+</p>
+<p>* Removed yui
+</p>
+<p>
+* Removed unused libraries (gc-prettify, jquery, firebug-lite) </p>
+<p>* Cherrypicked hendricks makefile changes
+</p>
+<p>* Changed installer toolkit to make basic installs
+</p>
+<p>* Installer fixes: paths and permissions </p>
+<p>* Added explicit bin owner for webfiles 
+</p>
+<p>
+* Added rabbit dropping script to clear temp and bak files</p>
+<p>* Added deflate to htaccess </p>
+<p>* Fixed guest users for the menuextender (adding items before admin submenu) </p>
+<p>* Commands should work (Templates, Ajax proc, command factory, auth, ...) </p>
+<p>* Changing API result keys to uppercase </p>
+<p>* Opera array type fixes (notification baloon) 
+</p>
+<p>* Added AC macro to detect the web user </p>
+<p>* Global xml replacements within the templates (view proc)
+</p>
+<p>* Updating ExtJS to 3.0.3
+</p>
+<p>* Removed php notice warnings (isset, undef vars)</p>
+<p>* Fixed make error (#206) </p>
+<p><span class="bold"><strong>0.9.0-alpha -28/10/2009</strong></span></p>
+<p>* This is the initial release, prototyping, testing, think about features
+</p>
+<p></p>
+<p><span class="bold"><strong>Icinga-Core:</strong></span></p>
+<p><span class="bold"><strong>1.0 Stable - 16/12/2009 </strong></span></p>
+<p>* core: create webserver conf.d dir if not existing</p>
+<p>* core: output the correct config parameter name on error message</p>
+<p>* core: run dos2unix on spec file * core: check /proc/$pid instead of lock file while waiting for shutdown</p>
+<p>* core: fix cgi/config.c typo * core: fix typo in cgi/cmd.c</p>
+<p>* core: applied nagios patches after 3.2.0</p>
+<p>* idoutils: change default data_processing_options in idomod.cfg</p>
+<p>* idoutils: fix missing query arguments in servicecheck query</p>
+<p>* idoutils: fix thisversion and perl path generation in db install scripts</p>
+<p>* idoutils: change db README to docs.icinga.org</p>
+<p>* idoutils: fix wrong debug output in db_hello()</p>
+<p>* idoutils: fix save custom variables segfault caused by wrong char*</p>
+<p>* idoutils: fix duplicate rows in table servicecheck</p>
+<p>* idoutils: fix duplicate rows in table systemcommands, timedevents, timedeventqueue (missing unique keys)</p>
+<p>* idoutils: add upgrade path/sql queries for unique key failure - check the docs for upgrading information</p>
+<p>* idoutils: Oracle improvents:</p>
+<p>* add prepared statements for most called queries - hoststatus</p>
+<p>- servicestatus</p>
+<p>- hostchecks</p>
+<p>- servicechecks</p>
+<p>- timedevents</p>
+<p>- contact_notificationcommands</p>
+<p>- programstatus</p>
+<p>* modify data[] to get unixtimestamps only</p>
+<p>* rewrite prepared statement queries to use SELECT unixts2date(unixtimestamp) FROM DUAL</p>
+<p>* allow rebinding of params in prepared statement for multi execution</p>
+<p>* prepared statement at db init</p>
+<p>* bind params the correct way</p>
+<p>* execute binded statement query instead of plain MERGE statement</p>
+<p>* code is now the same as NDOUtils Oracle, but with</p>
+<p>- better code base (actual NDOUtils code)</p>
+<p>- long_output</p>
+<p>- SSL support</p>
+<p>- better library: ocilib instead of own driver</p>
+<p>- more prepared statements/bind param queries</p>
+<p>* split code into ocilib OR libdbi</p>
+<p>* --enable-oracle during configure decides which rdbm lib will be used</p>
+<p></p>
+<p><span class="bold"><strong>1.0 RC - 28.10.2009 </strong></span></p>
+<p>* idoutils: add Oracle support with oclilib</p>
+<p>* idoutils: add ssl support</p>
+<p>* idoutils: add configure --enable-oracle</p>
+<p>* idoutils: add configure --enable-ssl</p>
+<p>* idoutils: add configure -with-ocilib-lib/inc for ocilib detection</p>
+<p>* idoutils: add oracle support to ido2db.cfg</p>
+<p>* idoutils: add ocilib runtime version check</p>
+<p>* idoutils: add ocilib linked at runtime (prevents setting of $ORACLE_HOME during configure)</p>
+<p>* idoutils: add ocilib hack to temp #undef CONFIG_H during compiling</p>
+<p>* idoutils: add #define USE_ORACLE set by --enable-oracle</p>
+<p>* idoutils: add #ifndef USE_ORACLE #else #endif to get code compatible with libdbi</p>
+<p>* idoutils: add ocilib connection, statement, resultset</p>
+<p>* idoutils: add ocilib execute statement, commit (no autocommit since we want to use the pros of oracle!)</p>
+<p>* idoutils: add ocilib insert id for sequence handling</p>
+<p>* idoutils: add ocilib free statement to match with sequences</p>
+<p>* idoutils: add oracle sysdate instead of NOW()</p>
+<p>* idoutils: add long_output to oracle.sql - introduce clob (Character Large Object)</p>
+<p>* idoutils: add even more debugoutput for oracle</p>
+<p>* idoutils: modify configure to use OCI_CHARSET_ANSI</p>
+<p>* idoutils: modify configure to set LD_LIBRARY_PATH for ido2db init script</p>
+<p>* idoutils: modify formatting to get more readable</p>
+<p>* idoutils: fix typecast bug - unsigned long is bigger then int</p>
+<p>* idoutils: fix oracle notif_timeperiod_object_id (30 chars max)</p>
+<p>* idoutils: fix oracle table serviceescalationcontactgroups (30 chars max)</p>
+<p>* idoutils: fix hoststatus/servicestatus/servicecheck unique constraint updating mismatch</p>
+<p>* idoutils: fix insert_or_update queries where update violates unique constraint</p>
+<p>* idoutils: remove and ignore oracle table_prefix (30 chars max)</p>
+<p>* idoutils: workaround to handle more than 4k Data which may exceed service outputs incl. long perf_data</p>
+<p>* core init: delete 'su' usage since all previously su touched files were created by the icinga user</p>
+<p>* idoutils: fix unescape bug during tabstops</p>
+<p>* idoutils: fix idomod/icinga segfault while try to use ssl on unix sockets</p>
+<p>* idoutils: set long_output/perfdata to TEXT in MySQL</p>
+<p>* core configure: set INIT_OPTS depending on detected host OS (no more root:root on FreeBSD?)</p>
+<p>* core spec: added new spec file</p>
+<p>* idoutils: fix case insensitive comparison in MySQL using BINARY</p>
+<p>* idoutils: change ido2db.cfg: ndo2db_[user|group] to ido2db_[user|group]</p>
+<p>* core web: fix missing gif icon copy</p>
+<p><span class="bold"><strong>0.8.4 - 16/09/2009 </strong></span></p>
+<p>* idoutils: fix failure_prediction_options in tables hosts, services for postgres</p>
+<p>* idoutils: add configure support for manual libdbi detection</p>
+<p>* idoutils: fix typo laste_state (wrong column)</p>
+<p>* idoutils: fix buffer freeing with NAGIOS_SIZEOF_ARRAY</p>
+<p>* idoutils: delete old mysql files coming from ndoutils</p>
+<p>* idoutils: add new versionhandling, idomod/ido2db now shows version of Icinga core</p>
+<p>* idoutils: rename existing mysql/pgsql files, added upgrade/fix files</p>
+<p>* idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing</p>
+<p>* idoutils: add experimental db trimming interval option in ido2db.cfg</p>
+<p>* core: fix wrong copyright url for Ethan</p>
+<p></p>
+<p><span class="bold"><strong>0.8.3 - 09/02/2009 </strong></span></p>
+<p>* idoutils: add PostgreSQL support</p>
+<p>* new Icinga documentation in docbook and html format</p>
+<p>* fetch current Nagios patches</p>
+<p>* fix support links after make</p>
+<p>* idoutils: add note if install desired but not enabled</p>
+<p>* idoutils: fix installing of rc.ido2db in make install-idoutils</p>
+<p>* idoutils: add db/pgsql.sql, adapted table scheme for postgresql</p>
+<p>* idoutils: add time conversion functions for postgresql</p>
+<p>* idoutils: add try update, if affected rows=0, then insert queries for postgresql</p>
+<p>* idoutils: modify insert queries, normalized to sql-standard</p>
+<p>* idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms</p>
+<p>* idoutils: modify insert-or-update queries, build data array for functions</p>
+<p>* idoutils: fix string escaping for postgresql</p>
+<p>* idoutils: fix last insert id for postgresql - needs defined sequence id for table</p>
+<p>* idoutils: modify command_line in commands table to varchar(1024)</p>
+<p>* idoutils: add more debug output</p>
+<p>* idoutils: Support 8192 chars of perfdata</p>
+<p></p>
+<p><span class="bold"><strong>0.8.2 - 08/12/2009</strong></span></p>
+<p>* create a new basic ido2db init script</p>
+<p>* idoutils: fix child signal handling in ido2db</p>
+<p>* idoutils: fix escaping of customvars before insert</p>
+<p>* idoutils: fix in buggy rotate command execution</p>
+<p>* idoutils: fix fmt specifier in ndo2db_daemonize() error</p>
+<p>* idoutils: added long_output support to IDOUtils</p>
+<p>* idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)</p>
+<p>* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)</p>
+<p>* icinga-api added: The search function now uses the icinga-api submodule * various minor changes</p>
+<p></p>
+<p><span class="bold"><strong>0.8.1 - 06/17/2009</strong></span></p>
+<p>* Archived Logfiles renamed from Icinga-date-syntax.log =&gt; icinga-date-syntax.log (capital 'i')</p>
+<p>* cherry picked latest Nagios Patches (see Nagios Changelog below)</p>
+<p>* new ido2db command switch: '-f' don't daemonize the ido2db</p>
+<p>* ido2db will now prints out available database drivers</p>
+<p>* fix ido2db segfault when try to access non existing tables</p>
+<p>* DocBook v5 conversion</p>
+<p>* Fix menu frameset cols width</p>
+<p><span class="bold"><strong>0.8 - 05/19/2009</strong></span></p>
+<p>* Almost biggest deal to rename the components</p>
+<p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it</p>
+<p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction layer, enable compile try with "configure --enable-idoutils"</p>
+<p>* Included a new stylesheet/icon theme based on Vautour Style Vautour Style have been created by Yoann LAMY.</p>
+<p>The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/). The icons of Vautour Style use "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.</p>
+<p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
+<a class="indexterm" name="id4449958"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -4,10 +4,10 @@
 <title>Icinga aktualisieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
-<link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
+<link rel="next" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -18,12 +18,13 @@
 <td width="20%" align="left">
 <a accesskey="p" href="quickstart-idoutils.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="upgrading_idoutils.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
+<div class="section" title="Icinga aktualisieren">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading"></a>Icinga aktualisieren</h2></div></div></div>
   
@@ -57,12 +58,12 @@
 
   <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0</em></span>.tar.gz</pre>
+  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0 Stable</em></span>.tar.gz</pre>
 
   <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>1.0</em></span>.tar.gz
- cd icinga-<span class="emphasis"><em>1.0</em></span> </pre>
+  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>1.0 Stable</em></span>.tar.gz
+ cd icinga-<span class="emphasis"><em>1.0 Stable</em></span> </pre>
 
   <p>Starten Sie das Icinga-configure-Script mit den gleichen Optionen wie bei der letzten Installation, z.B. so:</p>
 
@@ -111,12 +112,12 @@
 
   <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0</em></span>.tar.gz</pre>
+  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0 Stable</em></span>.tar.gz</pre>
 
   <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>1.0</em></span>.tar.gz
- cd icinga-<span class="emphasis"><em>1.0</em></span> </pre>
+  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>1.0 Stable</em></span>.tar.gz
+ cd icinga-<span class="emphasis"><em>1.0 Stable</em></span> </pre>
 
   <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim ./configure von Nagios benutzt haben.
   Den Aufruf finden Sie in der Datei config.log. Beispiel:</p>
@@ -146,9 +147,9 @@
 
   <p><a name="upgrading-nagios2x"></a> <span class="bold"><strong>Upgrade von Icinga 2.x</strong></span></p>
 
-  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.0 zu aktualisieren. Die
+  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.0 Stable zu aktualisieren. Die
   Aktualisierung ist im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre
-  Konfigurationsdateien ein wenig ändern, damit sie mit Icinga 1.0 funktionieren:</p>
+  Konfigurationsdateien ein wenig ändern, damit sie mit Icinga 1.0 Stable funktionieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -258,13 +259,13 @@
   <p>Beachten Sie, dass verschiedene RPM- oder APT-Pakete Nagios auf verschiedene Weisen oder an verschiedenen Orten
   installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das
   Original-RPM- oder APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
-  <a class="indexterm" name="id3627582"></a>
+  <a class="indexterm" name="id4452497"></a>
 
-  <a class="indexterm" name="id3627591"></a>
+  <a class="indexterm" name="id4452525"></a>
 
-  <a class="indexterm" name="id3627605"></a>
+  <a class="indexterm" name="id4452538"></a>
 
-  <a class="indexterm" name="id3627620"></a>
+  <a class="indexterm" name="id4452553"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -273,13 +274,13 @@
 <td width="40%" align="left">
 <a accesskey="p" href="quickstart-idoutils.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="upgrading_idoutils.html">Weiter</a>
 </td>
 </tr>
 <tr>
 <td width="40%" align="left" valign="top">Icinga-Schnellstart mit IDOUtils </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Windows-Maschinen überwachen</td>
+<td width="40%" align="right" valign="top"> IDOUtils-Datenbank aktualisieren</td>
 </tr>
 </table>
 </div>

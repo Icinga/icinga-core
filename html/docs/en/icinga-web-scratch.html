@@ -1,0 +1,231 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Installation Icinga web frontend from scratch</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
+<link rel="up" href="ch10.html" title="Chapter 10. Development">
+<link rel="prev" href="epnplugins.html" title="Developing Plugins For Use With Embedded Perl">
+<link rel="next" href="ix01.html" title="Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Installation Icinga web frontend from scratch</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="epnplugins.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 10. Development</th>
+<td width="20%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Installation Icinga web frontend from scratch">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="icinga-web-scratch"></a>Installation Icinga web frontend from scratch</h2></div></div></div>
+<p><span class="emphasis"><em>Install icinga-web standalone from scratch</em></span></p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<p><span class="bold"><strong>Prerequisites</strong></span></p>
+<p>Based on the fact that you have a running mysql and php (with PEAR and CLI) environment and Icinga and IDOUtils are running as well you can continue with the second step. ianOtherwise:</p>
+<p><span class="emphasis"><em>Ubuntu / Debian</em></span></p>
+<pre class="programlisting"> # apt-get install php5-cli php-pear php5-xmlrpc php5-xsl</pre>
+<p><span class="emphasis"><em>Fedora / RHEL / CentOS</em></span></p>
+<pre class="programlisting"> # yum install php-cli php-pear php-xmlrpc php-xsl</pre>
+<p><span class="emphasis"><em>OpenSuSE</em></span></p>
+<p><span class="emphasis"><em>Please use yast to install the packages "php5-pear", "php5-xmlrpc" und "php5-xsl". The CLI is contained in the php5 package</em></span></p>
+<p><span class="emphasis"><em> </em></span></p>
+<p>Take your clone from the icinga-web.git to get a fresh branch</p>
+<pre class="programlisting"> # git clone git://git.icinga.org/icinga-web.git</pre>
+</li>
+<li class="listitem">
+<p><span class="bold"><strong>The installation</strong></span></p>
+<pre class="programlisting"> # tar xzvf icinga-web-(version).tar.gz
+ # cd icinga-web</pre>
+<p>Recently work has been started on setting up an installer for the new Icinga-web UI, use:</p>
+<pre class="programlisting"> # ./configure --help</pre>
+<p>to see all configure options.</p>
+<p>Default the Icinga Webinterface will be installed to /usr/local/icinga-web by:</p>
+<pre class="programlisting"> # ./configure
+ # make install</pre>
+</li>
+<li class="listitem">
+<p><span class="bold"><strong>PHP dependencies</strong></span></p>
+<p>Test the php dependencies with:</p>
+<pre class="programlisting"> # make testdeps</pre>
+<p>All required tests should pass successfully. Maybe you have to alter the php.ini for the framework.</p>
+<p>In case of the gpc_magic_quote setting, you have to disable both entries (apache and cli php.ini).</p>
+<pre class="programlisting"> # vi /etc/php5/apache/php.ini
+   magic_quotes_gpc = off
+
+ # vi /etc/php5/cli/php.ini
+   magic_quotes_gpc = off</pre>
+</li>
+<li class="listitem">
+<p><span class="bold"><strong>Database installation</strong></span></p>
+<p><span class="bold"><strong>Manual creation</strong></span></p>
+<p>Create a database and a user you like. The user must have default data privileges like SELECT, UPDATE, INSERT, DELETE. Import the schemes etc/database/deploy/init.sql and etc/database/deploy/db-deploy.sql to your database. Thats all.</p>
+<p><span class="bold"><strong>Auto creation</strong></span></p>
+<p>Create a database user with scheme and data privileges (CREATE, DROP, ALTER, INDEX). Go to the etc dir and copy the build.properties to a safe place (e.g. /tmp). Alter the database settings within the properties file. You can also set you database root user to create your scheme. Call the phing deploy task:</p>
+<pre class="programlisting"># /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/etc/build.properties db-initialize</pre>
+<p>You have to manually create a database user to access your database. Add the default data privileges that icinga-web can work with the newly created database.</p>
+</li>
+<li class="listitem">
+<p><span class="bold"><strong>Icinga-web settings</strong></span></p>
+<p>Alter the config files: Edit /usr/local/icinga-web/app/config/databases.xml and set database credentials (block should begin at line 7, in this Example: DB-User: icinga_user, PW: password):</p>
+<pre class="programlisting">    &lt;database name="appkit_default" class="AgaviDoctrineDatabase"&gt;
+       &lt;ae:parameter name="dsn"&gt;mysql://icinga_user:password@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="username"&gt;icinga_user&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="password"&gt;password&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="manager_attributes"&gt;
+            
+          &lt;ae:parameter name="MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+       &lt;/ae:parameter&gt;
+       &lt;ae:parameter name="load_models"&gt;%de.icinga.appkit.doctrine_model_path%&lt;/ae:parameter&gt;
+    &lt;/database&gt;</pre>
+<p>Change the credentials for your database connection</p>
+<p>Edit /usr/local/icinga-web/app/config/icinga.xml and set database credentials to give access to ido-db (block should begin at line 163):</p>
+<pre class="programlisting"> &lt;parameter name="IcingaData"&gt;
+     &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
+     &lt;parameter name="api_file"&gt;%core.root_dir%/lib/icinga-api/IcingaApi.php&lt;/parameter&gt;
+     &lt;parameter name="api_type"&gt;IcingaApi::CONNECTION_IDO&lt;/parameter&gt;
+     &lt;parameter name="config_type"&gt;mysql&lt;/parameter&gt;
+     &lt;parameter name="config_host"&gt;127.0.0.1&lt;/parameter&gt;
+
+     &lt;parameter name="config_port"&gt;3306&lt;/parameter&gt;
+     &lt;parameter name="config_database"&gt;icinga&lt;/parameter&gt;
+
+     &lt;parameter name="config_user"&gt;your-ido-user&lt;/parameter&gt;
+     &lt;parameter name="config_password"&gt;your-ido-pw&lt;/parameter&gt;
+
+     &lt;parameter name="config_table_prefix"&gt;icinga_&lt;/parameter&gt;
+ &lt;/parameter&gt;</pre>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"> Please keep in mind that you have to install IDOUtils before (according to the <a class="xref" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">“Icinga with IDOUtils Quickstart”</a> ) </td></tr>
+</table></div>
+<p>Go to the appkit.factories section and change the path and the credentials for the icinga-api.</p>
+<pre class="programlisting">
+ &lt;!-- icinga-api data interface --&gt;
+                &lt;parameter name="IcingaData"&gt;
+                        &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
+                        &lt;parameter name="file"&gt;%core.module_dir%/Web/lib/icinga/factory/IcingaData.class.php &lt;/parameter&gt;
+
+                         &lt;parameter name="requiredClasses"&gt;
+                                &lt;!-- NONE --&gt;
+                         &lt;/parameter&gt;
+
+                         &lt;parameter name="api_file"&gt;%core.root_dir%/icinga-api/IcingaApi.php/&lt;parameter&gt;
+                         &lt;parameter name="api_type"&gt;IcingaApi::CONNECTION_IDO&lt;/parameter&gt;
+
+                         &lt;parameter name="config_type"&gt;mysql&lt;/parameter&gt;
+                         &lt;parameter name="config_host"&gt;127.0.0.1&lt;/parameter&gt;
+
+
+                         &lt;parameter name="config_port"&gt;3306&lt;/parameter&gt;
+                         &lt;parameter name="config_database"&gt;icinga&lt;/parameter&gt;
+
+                         &lt;parameter name="config_user"&gt;your-ido-user&lt;/parameter&gt;
+                         &lt;parameter name="config_password"&gt;your-ido-pw&lt;/parameter&gt;
+
+                         &lt;parameter name="config_table_prefix"&gt;icinga_&lt;/parameter&gt;
+                &lt;/parameter&gt;</pre>
+</li>
+<li class="listitem">
+<p><span class="bold"><strong>Apache settings</strong></span></p>
+<p>This should be prepared:</p>
+<p>* mod_rewrite enabled, maybe you have to create a link:</p>
+<pre class="programlisting"> # ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enable/rewrite.load</pre>
+<p>Using OpenSuSE you have to edit the file "/etc/sysconfig/apache2". The module "rewrite" has to be appended to the line "APACHE_MODULES=...".</p>
+<p>* Any htaccess enabled alias settings</p>
+<p>Edit your .htaccess in /usr/local/icinga-web/pub :</p>
+<p>At line 14, change the RewriteBase direction to suite your needs:</p>
+<pre class="programlisting"> DirectoryIndex index.php
+
+Options -MultiViews -Indexes +FollowSymLinks
+Order allow,deny
+Allow from all
+
+&lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine On
+
+    # This depends on your path
+    # on independent hosts the base is '/'
+    RewriteBase /icinga-web/
+
+        # If the requested URL does not exist (it's likely an agavi route),
+        # pass it as path info to index.php, the Agavi dispatch script.
+        RewriteRule ^$ index.php?/ [QSA,L]
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule (.*) index.php?/$1 [QSA,L]
+&lt;/IfModule&gt;
+
+&lt;IfModule mod_deflate.c&gt;
+        SetOutputFilter DEFLATE
+
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+        BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+        Header append Vary User-Agent env=!dont-vary
+&lt;/IfModule&gt;
+
+&lt;IfDefine APACHE2&gt;
+        AcceptPathInf  On
+&lt;/IfDefine&gt;
+
+#&lt;IfModule mod_auth_basic.c&gt;
+#       AuthType Basic
+#       AuthName "My http basic auth realm"
+#       AuthUserFile /path/to/my/htusers
+#       require valid-user
+#&lt;/IfModule&gt;</pre>
+<p>Go to the webservers configuration directory and create a new alias (maybe in /etc/apache2/conf.d/icinga.conf) :</p>
+<pre class="programlisting"># vi /etc/apache2/conf.d/icinga.conf
+  Alias /icinga-web /usr/local/icinga-web/pub
+  &lt;directory /usr/local/icinga-web/pub&gt;
+        AllowOverride All
+  &lt;/directory&gt;</pre>
+<p>Clear cache:</p>
+<pre class="programlisting"># rm /usr/local/icinga-web/app/cache/config/*.php</pre>
+<p>Restart your Webserver:</p>
+<pre class="programlisting"># service apache2 restart</pre>
+</li>
+<li class="listitem">
+<p><span class="bold"><strong>Try</strong></span></p>
+<p><span class="bold"><strong>Please ensure mysql, apache, idoutils and icinga are running!</strong></span></p>
+<p>Go to the webpath and try if the webinterface starts without exceptions (database connections web and api). You can login with user 'root' and password 'password'</p>
+</li>
+</ol></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="epnplugins.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Developing Plugins For Use With Embedded Perl </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Index</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

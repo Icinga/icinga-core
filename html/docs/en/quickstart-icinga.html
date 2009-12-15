@@ -4,7 +4,7 @@
 <title>Icinga Quickstart</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart.html" title="Quickstart Installation Guides">
 <link rel="next" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">
@@ -24,6 +24,7 @@
 </table>
 <hr>
 </div>
+<div class="section" title="Icinga Quickstart">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="quickstart-icinga"></a>Icinga Quickstart</h2></div></div></div>
   
@@ -142,8 +143,8 @@
   <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
   <pre class="programlisting"> # cd /usr/src/ 
- # tar xvzf icinga-1.0.tar.gz 
- # cd icinga-1.0</pre>
+ # tar xvzf icinga-1.0 Stable.tar.gz 
+ # cd icinga-1.0 Stable</pre>
 
   <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
 
@@ -216,8 +217,8 @@
   <p>Extract the Nagios plugins source code tarball.</p>
 
   <pre class="programlisting"> # cd /usr/src 
- # tar xvzf nagios-plugins-1.4.13.tar.gz
- # cd nagios-plugins-1.4.13 </pre>
+ # tar xvzf nagios-plugins-1.4.14.tar.gz
+ # cd nagios-plugins-1.4.14 </pre>
 
   <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
 
@@ -237,7 +238,7 @@
 
   <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
-  <pre class="programlisting"> # ln -s /etc/init.d/icinga /etc/rcS.d/S99icinga</pre>
+  <pre class="programlisting"> # update-rc.d icinga defaults</pre>
 
   <p>Verify the sample Icinga configuration files.</p>
 
@@ -285,7 +286,7 @@
 
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id3976477"></a>
+  <a class="indexterm" name="id2908556"></a>
 </div>
 <div class="navfooter">
 <hr>

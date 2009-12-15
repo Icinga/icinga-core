@@ -1,0 +1,195 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>IDOUtils-Datenbank aktualisieren</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Dokumentation">
+<link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
+<link rel="prev" href="upgrading.html" title="Icinga aktualisieren">
+<link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">IDOUtils-Datenbank aktualisieren</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="upgrading.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 2. Los geht's</th>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="IDOUtils-Datenbank aktualisieren">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="upgrading_idoutils"></a><a name="upgrading_idoutils2"></a>IDOUtils-Datenbank aktualisieren</h2></div></div></div>
+  
+
+  <p>Es mag einen Bug im Datenbankschema geben, der behoben wurde. Wenn Sie eine ältere IDOUtils-Version aktualisieren,
+  dann müssen Sie außerdem diese Anpassungen manuell ausführen. Wenn Sie rpm/deb-Pakete, lesen Sie bitte die Hinweise und/oder
+  fragen Sie den Maintainer, ob er diese Anpassungen in der Installationsroutine hinzugefügt hat.</p>
+
+  <p>Die Update-Dateien finden Sie zusammen mit den Datenbank-Installationsdateien in</p>
+
+  <code class="code">/path/to/icinga-src/module/idoutils/db/</code>
+
+  <p>Die Syntax ist wie folgt</p>
+
+  <code class="code">&lt;rdbm&gt;-upgrade-&lt;version&gt;.sql</code>
+
+  <p>wobei &lt;rdbm&gt; mysql, pgsql oder oracle sein kann und &lt;version&gt; zeigt auf die Version, auf die Sie aktualisieren
+  wollen.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Wenn Sie eine ältere Version aktualisieren wollen und zwischen dieser und der aktuellen noch andere Versionen liegen,
+    dann sollten Sie beachten, dass Sie auch die dazwischen liegenden Updates inkrementell installieren müssen!</p>
+  </td></tr>
+</table></div>
+
+  <p>Z.B. haben Sie 1.0RC1 installiert und möchten auf 1.0.1 aktualisieren - Sie müssen dann zuerst auf 1.0 Stable updaten und
+  dann die Aktualierung auf 1.0.1 durchführen.</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Sichern Sie Ihre aktuelle Datenbank vor der Aktualisierung!</p>
+    </li>
+<li class="listitem">
+      <p>Prüfen Sie die laufende IDOUtils-Version und die Zielversion. Prüfen Sie, ob zwischen diesen beiden Versionen
+      noch andere Versionen liegen und aktualisieren Sie ggf. schrittweise.</p>
+    </li>
+<li class="listitem">
+      <p>Führen Sie die Aktualisierung(en) mit einem Benutzer durch, der über die notwendigen Berechtigungen verfügt. Sie
+      können das upgradedb-Script verwenden, aber das wird nicht empfehlen (betrifft nur MySQL).</p>
+    </li>
+</ol></div>
+
+  <span class="bold"><strong>MySQL</strong></span>
+
+  <pre class="programlisting"> $ mysql -u root -p &lt;dbname&gt; &lt; /path/to/icinga-src/module/idoutils/db/mysql-upgrade-&lt;version&gt;.sql</pre>
+
+  <span class="bold"><strong>Postgresql</strong></span>
+
+  <pre class="programlisting"> # su - postgres
+ $ psql -U icinga -d icinga &lt; /path/to/icinga-src/module/idoutils/db/pgsql-upgrade-&lt;version&gt;.sql</pre>
+
+  <span class="bold"><strong>Oracle</strong></span>
+
+  <pre class="programlisting"> # su - oracle
+ $ sqlplus dbuser/dbpass
+ SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
+
+  <a name="upgrading_idoutils_1.0"></a>
+
+  <span class="bold"><strong>Aktualisieren der IDOUtils auf 1.0</strong></span>
+
+  <p>Es gab einen Unique-Key-Fehler durch den Fork, der bei einigen Tabellen zu doppelten und nutzlosen Zeilen führt. Dies
+  betrifft die folgenden Tabellen:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>timedevents, timedeventqueue</p>
+    </li>
+<li class="listitem">
+      <p>servicechecks</p>
+    </li>
+<li class="listitem">
+      <p>systemcommands</p>
+    </li>
+</ul></div>
+
+  <p>Wenn Sie sich z.B. Definition der Tabelle servicechecks ansehen:</p>
+
+  <pre class="programlisting"> mysql&gt; show create table icinga_servicechecks;</pre>
+
+  <p>sollten Sie etwa folgendes sehen</p>
+
+  <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
+ KEY `instance_id` (`instance_id`),
+ KEY `service_object_id` (`service_object_id`),
+ KEY `start_time` (`start_time`)</pre>
+
+  <p>Um die o.g. Definition zu etwas wie diesem</p>
+
+  <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
+ UNIQUE KEY `instance_id` (`instance_id`,`service_object_id`,`start_time`,`start_time_usec`)</pre>
+
+  <p>zu ändern, befolgen Sie bitte den folgenden Ablauf!</p>
+
+  <p>
+    <span class="bold"><strong>Wenn Sie von IDOUtils 1.0RC aktualisieren, dann benutzen Sie bitte
+    module/idoutils/db/mysql-upgrade-1.0.sql - wenn Sie von einer älteren Version aktualisieren, dann führen Sie vorher die
+    notwendigen Schritte durch, um auf 1.0RC zu aktualisieren!</strong></span>
+  </p>
+
+  <p>Bitte sichern Sie Ihre Datenbank und stoppen Sie ido2db vor der Ausführung des Patches!</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <code class="code">/etc/init.d/ido2db stop</code>
+    </li>
+<li class="listitem">
+      <code class="code">mysql -u root -p icinga &lt; /path/to/icinga-src/module/idoutils/db/mysql-upgrade-1.0.sql</code>
+    </li>
+</ol></div>
+
+  <p>Der Patch erledigt das Folgende mit Hilfe von MySQL-Befehlen:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>hinzufügen einer temporären Spalte 'active', um die aktualisierte Zeile zu kennzeichnen</p>
+    </li>
+<li class="listitem">
+      <p>ermitteln der benötigten Informationen zweier doppelter Zeilen basierend auf dem unique contraint, aktualisieren der
+      zweiten Zeile und markieren durch first=inactive, second=active</p>
+    </li>
+<li class="listitem">
+      <p>löschen aller als 'inactive' gekennzeichneten Zeilen</p>
+    </li>
+<li class="listitem">
+      <p>entfernen der fehlerhaften Key-Definitionen</p>
+    </li>
+<li class="listitem">
+      <p>hinzüfen des Unique Key</p>
+    </li>
+<li class="listitem">
+      <p>entfernen der temporären Spalte 'active'</p>
+    </li>
+</ul></div>
+
+  <p>Diese Prozedur wird für jede Tabelle durchgeführt, so dass es eine Weile dauern kann, abhängig von Ihren Tabellengrößen
+  und/oder DB-Spezifikationen.</p>
+
+  <p>Falls Sie vorher etwas an den Keys verändert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in
+  IDOUtils 1.0RC benutzen, andernfalls wird das Script fehlschlagen.</p>
+
+  <a class="indexterm" name="id4452850"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="upgrading.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Icinga aktualisieren </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Windows-Maschinen überwachen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
