@@ -25,14 +25,14 @@
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
 
-#define NDO2DB_VERSION "1.0RC1"
+#define NDO2DB_VERSION "1.0"
 
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
 #endif
 
 #define NDO2DB_NAME "IDO2DB"
-#define NDO2DB_DATE "10-28-2009"
+#define NDO2DB_DATE "12-15-2009"
 
 #ifdef HAVE_SSL
 SSL_METHOD *meth;

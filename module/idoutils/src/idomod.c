@@ -35,9 +35,9 @@
 NEB_API_VERSION(CURRENT_NEB_API_VERSION)
 
 
-#define NDOMOD_VERSION "1.0RC1"
+#define NDOMOD_VERSION "1.0"
 #define NDOMOD_NAME "IDOMOD"
-#define NDOMOD_DATE "10-28-2009"
+#define NDOMOD_DATE "12-15-2009"
 
 
 void *ndomod_module_handle=NULL;
