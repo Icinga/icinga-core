@@ -3,7 +3,7 @@
  * FLAPPING.C - State flap detection and handling routines for Nagios
  *
  * Copyright (c) 2001-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 05-15-2009
+ * Last Modified: 12-15-2009
  *
  * License:
  *
@@ -346,7 +346,7 @@ void set_service_flap(service *svc, double percent_change, double high_threshold
 
 	/* add a non-persistent comment to the service */
 	asprintf(&temp_buffer,"Notifications for this service are being suppressed because it was detected as having been flapping between different states (%2.1f%% change >= %2.1f%% threshold).  When the service state stabilizes and the flapping stops, notifications will be re-enabled.",percent_change,high_threshold);
-	add_new_service_comment(FLAPPING_COMMENT,svc->host_name,svc->description,time(NULL),"(Nagios Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(svc->flapping_comment_id));
+	add_new_service_comment(FLAPPING_COMMENT,svc->host_name,svc->description,time(NULL),"(Icinga Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(svc->flapping_comment_id));
 	my_free(temp_buffer);
 
 	/* set the flapping indicator */
@@ -427,7 +427,7 @@ void set_host_flap(host *hst, double percent_change, double high_threshold, doub
 
 	/* add a non-persistent comment to the host */
 	asprintf(&temp_buffer,"Notifications for this host are being suppressed because it was detected as having been flapping between different states (%2.1f%% change > %2.1f%% threshold).  When the host state stabilizes and the flapping stops, notifications will be re-enabled.",percent_change,high_threshold);
-	add_new_host_comment(FLAPPING_COMMENT,hst->name,time(NULL),"(Nagios Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(hst->flapping_comment_id));
+	add_new_host_comment(FLAPPING_COMMENT,hst->name,time(NULL),"(Icinga Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(hst->flapping_comment_id));
 	my_free(temp_buffer);
 
 	/* set the flapping indicator */

@@ -3,7 +3,7 @@
  * DOWNTIME.C - Scheduled downtime functions for Nagios
  *
  * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 02-17-2008
+ * Last Modified: 15-12-2009
  *
  * License:
  *
@@ -294,9 +294,9 @@ int register_downtime(int type, unsigned long downtime_id){
 
 	/* add a non-persistent comment to the host or service regarding the scheduled outage */
 	if(temp_downtime->type==SERVICE_DOWNTIME)
-		add_new_comment(SERVICE_COMMENT,DOWNTIME_COMMENT,svc->host_name,svc->description,time(NULL),"(Nagios Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(temp_downtime->comment_id));
+		add_new_comment(SERVICE_COMMENT,DOWNTIME_COMMENT,svc->host_name,svc->description,time(NULL),"(Icinga Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(temp_downtime->comment_id));
 	else
-		add_new_comment(HOST_COMMENT,DOWNTIME_COMMENT,hst->name,NULL,time(NULL),"(Nagios Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(temp_downtime->comment_id));
+		add_new_comment(HOST_COMMENT,DOWNTIME_COMMENT,hst->name,NULL,time(NULL),"(Icinga Process)",temp_buffer,0,COMMENTSOURCE_INTERNAL,FALSE,(time_t)0,&(temp_downtime->comment_id));
 
 
 	/*** SCHEDULE DOWNTIME - FLEXIBLE (NON-FIXED) DOWNTIME IS HANDLED AT A LATER POINT ***/
