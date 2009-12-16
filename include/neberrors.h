@@ -50,7 +50,7 @@
 #define NEBERROR_CALLBACKNOTFOUND   203     /* the callback could not be found */
 #define NEBERROR_NOMODULEHANDLE     204     /* no module handle specified */
 #define NEBERROR_BADMODULEHANDLE    205     /* bad module handle */
-#define NEBERROR_CALLBACKOVERRIDE   206     /* module wants to override default Nagios handling of event */
+#define NEBERROR_CALLBACKOVERRIDE   206     /* module wants to override default Icinga handling of event */
 #define NEBERROR_CALLBACKCANCEL     207     /* module wants to cancel callbacks to other modules */
 
 

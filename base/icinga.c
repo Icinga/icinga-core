@@ -16,7 +16,7 @@
  * that you specify.  It has the ability to notify contacts via email, pager,
  * or other user-defined methods when a service or host goes down and
  * recovers.  Service and host monitoring is done through the use of external
- * plugins which can be developed independently of Nagios.
+ * plugins which can be developed independently of Icinga.
  *
  * License:
  *
@@ -736,7 +736,7 @@ int main(int argc, char **argv){
 
 			/* initialize embedded Perl interpreter */
 			/* NOTE 02/15/08 embedded Perl must be initialized if compiled in, regardless of whether or not its enabled in the config file */
-			/* It compiled it, but not initialized, Nagios will segfault in readdir() calls, as libperl takes this function over */
+			/* It compiled it, but not initialized, Icinga will segfault in readdir() calls, as libperl takes this function over */
 			if(embedded_perl_initialized==FALSE){
 /*				if(enable_embedded_perl==TRUE){*/
 #ifdef EMBEDDEDPERL

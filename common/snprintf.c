@@ -104,7 +104,7 @@
  **************************************************************/
 
 #ifndef NO_CONFIG_H
-/* 02/28/2006 EG changed path to config.h to match Nagios distro */
+/* 02/28/2006 EG changed path to config.h to match Icinga distro */
 #include "../include/config.h"
 #else
 #define NULL 0

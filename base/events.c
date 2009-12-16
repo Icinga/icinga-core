@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * EVENTS.C - Timed event functions for Nagios
+ * EVENTS.C - Timed event functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 06-16-2009
@@ -394,7 +394,7 @@ void init_timing_loop(void){
 		/* skip most services that shouldn't be scheduled */
 		if(temp_service->should_be_scheduled==FALSE){
 
-			/* passive checks are an exception if a forced check was scheduled before Nagios was restarted */
+			/* passive checks are an exception if a forced check was scheduled before Icinga was restarted */
 			if(!(temp_service->checks_enabled==FALSE && temp_service->next_check!=(time_t)0L && (temp_service->check_options & CHECK_OPTION_FORCE_EXECUTION)))
 				continue;
 			}
@@ -526,7 +526,7 @@ void init_timing_loop(void){
 		/* skip most hosts that shouldn't be scheduled */
 		if(temp_host->should_be_scheduled==FALSE){
 
-			/* passive checks are an exception if a forced check was scheduled before Nagios was restarted */
+			/* passive checks are an exception if a forced check was scheduled before Icinga was restarted */
 			if(!(temp_host->checks_enabled==FALSE && temp_host->next_check!=(time_t)0L && (temp_host->check_options & CHECK_OPTION_FORCE_EXECUTION)))
 				continue;
 			}
@@ -1196,7 +1196,7 @@ int event_execution_loop(void){
 #endif
 		        }
 
-		/* update status information occassionally - NagVis watches the NDOUtils DB to see if Nagios is alive */
+		/* update status information occassionally - NagVis watches the NDOUtils DB to see if Icinga is alive */
 		if((unsigned long)(current_time-last_status_update)>5){
 			last_status_update=current_time;
 			update_program_status(FALSE);
@@ -1390,7 +1390,7 @@ int handle_timed_event(timed_event *event){
 
 		log_debug_info(DEBUGL_EVENTS,0,"** Check For Program Update\n");
 
-		/* check for new versions of Nagios */
+		/* check for new versions of Icinga */
 		check_for_nagios_updates(FALSE,TRUE);
 		break;
 

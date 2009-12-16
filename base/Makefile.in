@@ -174,7 +174,7 @@ xretention-base.o: $(SRC_XDATA)/$(XRDC) $(SRC_XDATA)/$(XRDH)
 
 
 
-########## NAGIOS ##########
+########## Icinga ##########
 
 icinga: icinga.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/icinga.h $(SRC_INCLUDE)/locations.h
 	$(CC) $(CFLAGS) -o $@ icinga.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)

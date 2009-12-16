@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * STATUSMAP.C - Nagios Network Status Map CGI
+ * STATUSMAP.C - Icinga Network Status Map CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 05-19-2008
@@ -214,8 +214,8 @@ int bottom_margin=0;
 int draw_child_links=FALSE;
 int draw_parent_links=FALSE;
 
-int draw_nagios_icon=FALSE;    /* should we drawn the Nagios process icon? */
-int nagios_icon_x=0;           /* coords of Nagios icon */
+int draw_nagios_icon=FALSE;    /* should we drawn the Icinga process icon? */
+int nagios_icon_x=0;           /* coords of Icinga icon */
 int nagios_icon_y=0;
 
 extern hoststatus *hoststatus_list;
@@ -918,7 +918,7 @@ void calculate_host_coords(void){
 		/* calculate center x coord */
 		center_x=(((DEFAULT_NODE_WIDTH*max_layer_width)+(DEFAULT_NODE_HSPACING*(max_layer_width-1)))/2)+offset_x;
 
-		/* coords for Nagios icon if necessary */
+		/* coords for Icinga icon if necessary */
 		if(this_host==NULL || this_host->parent_hosts==NULL){
 			nagios_icon_x=center_x;
 			nagios_icon_y=offset_y;
@@ -1002,7 +1002,7 @@ void calculate_host_coords(void){
 		/* calculate center x coord */
 		center_x=(((DEFAULT_NODE_WIDTH*max_layer_width)+(DEFAULT_NODE_HSPACING*(max_layer_width-1)))/2)+offset_x;
 
-		/* coords for Nagios icon if necessary */
+		/* coords for Icinga icon if necessary */
 		if(this_host==NULL || this_host->parent_hosts==NULL){
 			nagios_icon_x=center_x;
 			nagios_icon_y=offset_y;
@@ -1101,7 +1101,7 @@ void calculate_host_coords(void){
 		/* calculate center x coord */
 		center_x=(((DEFAULT_NODE_WIDTH*max_drawing_width)+(DEFAULT_NODE_HSPACING*(max_drawing_width-1)))/2)+offset_x;
 
-		/* coords for Nagios icon if necessary */
+		/* coords for Icinga icon if necessary */
 		if(this_host==NULL || this_host->parent_hosts==NULL){
 			nagios_icon_x=center_x;
 			nagios_icon_y=offset_y;
@@ -1462,7 +1462,7 @@ void draw_host_links(void){
 		if(is_authorized_for_host(this_host,&current_authdata)==FALSE)
 			continue;
 
-		/* this is a "root" host, so draw link to Nagios process icon if using auto-layout mode */
+		/* this is a "root" host, so draw link to Icinga process icon if using auto-layout mode */
 		if(this_host->parent_hosts==NULL && layout_method!=LAYOUT_USER_SUPPLIED && draw_nagios_icon==TRUE){
 
 			x=this_host->x_2d+(DEFAULT_NODE_WIDTH/2)-canvas_x;
@@ -1596,7 +1596,7 @@ void draw_hosts(void){
 		return;
 	        }
 
-	/* draw Nagios process icon if using auto-layout mode */
+	/* draw Icinga process icon if using auto-layout mode */
 	if(layout_method!=LAYOUT_USER_SUPPLIED && draw_nagios_icon==TRUE){
 
 		/* get coords of bounding box */

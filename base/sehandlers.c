@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * SEHANDLERS.C - Service and host event and state handlers for Nagios
+ * SEHANDLERS.C - Service and host event and state handlers for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Last Modified:   01-02-2009

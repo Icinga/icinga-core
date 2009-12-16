@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * BROKER.C - Event broker routines for Nagios
+ * BROKER.C - Event broker routines for Icinga
  *
  * Copyright (c) 2002-2006 Ethan Galstad (egalstad@nagios.org)
  * Last Modified:   10-18-2007

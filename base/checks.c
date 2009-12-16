@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * CHECKS.C - Service and host check functions for Nagios
+ * CHECKS.C - Service and host check functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 06-23-2009
@@ -507,7 +507,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		fprintf(check_result_info.output_file_fp,"file_time=%lu\n",(unsigned long)check_result_info.start_time.tv_sec);
 		fprintf(check_result_info.output_file_fp,"\n");
 
-		fprintf(check_result_info.output_file_fp,"### Nagios Service Check Result ###\n");
+		fprintf(check_result_info.output_file_fp,"### Icinga Service Check Result ###\n");
 		fprintf(check_result_info.output_file_fp,"# Time: %s",ctime(&check_result_info.start_time.tv_sec));
 		fprintf(check_result_info.output_file_fp,"host_name=%s\n",check_result_info.host_name);
 		fprintf(check_result_info.output_file_fp,"service_description=%s\n",check_result_info.service_description);
@@ -955,7 +955,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		temp_service->is_executing=FALSE;
 
 	/* DISCARD INVALID FRESHNESS CHECK RESULTS */
-	/* If a services goes stale, Nagios will initiate a forced check in order to freshen it.  There is a race condition whereby a passive check
+	/* If a services goes stale, Icinga will initiate a forced check in order to freshen it.  There is a race condition whereby a passive check
 	   could arrive between the 1) initiation of the forced check and 2) the time when the forced check result is processed here.  This would 
 	   make the service fresh again, so we do a quick check to make sure the service is still stale before we accept the check result. */
 	if((queued_check_result->check_options & CHECK_OPTION_FRESHNESS_CHECK) && is_service_result_fresh(temp_service,current_time,FALSE)==TRUE){
@@ -2051,7 +2051,7 @@ int is_service_result_fresh(service *temp_service, time_t current_time, int log_
 	/* CHANGED 02/25/06 SG - passive checks also become stale, so remove dependence on active check logic */
 	if(temp_service->has_been_checked==FALSE)
 		expiration_time=(time_t)(event_start+freshness_threshold);
-	/* CHANGED 06/19/07 EG - Per Ton's suggestion (and user requests), only use program start time over last check if no specific threshold has been set by user.  Otheriwse use it.  Problems can occur if Nagios is restarted more frequently that freshness threshold intervals (services never go stale). */
+	/* CHANGED 06/19/07 EG - Per Ton's suggestion (and user requests), only use program start time over last check if no specific threshold has been set by user.  Otheriwse use it.  Problems can occur if Icinga is restarted more frequently that freshness threshold intervals (services never go stale). */
 	/* CHANGED 10/07/07 EG - Only match next condition for services that have active checks enabled... */
 	/* CHANGED 10/07/07 EG - Added max_service_check_spread to expiration time as suggested by Altinity */
 	else if(temp_service->checks_enabled==TRUE && event_start>temp_service->last_check && temp_service->freshness_threshold==0)
@@ -2440,7 +2440,7 @@ int is_host_result_fresh(host *temp_host, time_t current_time, int log_this){
 	/* CHANGED 11/10/05 EG - program start is only used in expiration time calculation if > last check AND active checks are enabled, so active checks can become stale immediately upon program startup */
 	if(temp_host->has_been_checked==FALSE)
 		expiration_time=(time_t)(event_start+freshness_threshold);
-	/* CHANGED 06/19/07 EG - Per Ton's suggestion (and user requests), only use program start time over last check if no specific threshold has been set by user.  Otheriwse use it.  Problems can occur if Nagios is restarted more frequently that freshness threshold intervals (hosts never go stale). */
+	/* CHANGED 06/19/07 EG - Per Ton's suggestion (and user requests), only use program start time over last check if no specific threshold has been set by user.  Otheriwse use it.  Problems can occur if Icinga is restarted more frequently that freshness threshold intervals (hosts never go stale). */
 	/* CHANGED 10/07/07 EG - Added max_host_check_spread to expiration time as suggested by Altinity */
 	else if(temp_host->checks_enabled==TRUE && event_start>temp_host->last_check && temp_host->freshness_threshold==0)
 		expiration_time=(time_t)(event_start+freshness_threshold+(max_host_check_spread*interval_length));
@@ -2472,7 +2472,7 @@ int is_host_result_fresh(host *temp_host, time_t current_time, int log_this){
 
 
 /******************************************************************/
-/************* NAGIOS 3.X ROUTE/HOST CHECK FUNCTIONS **************/
+/************* Icinga 3.X ROUTE/HOST CHECK FUNCTIONS **************/
 /******************************************************************/
 
 
@@ -3000,7 +3000,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		fprintf(check_result_info.output_file_fp,"file_time=%lu\n",(unsigned long)check_result_info.start_time.tv_sec);
 		fprintf(check_result_info.output_file_fp,"\n");
 
-		fprintf(check_result_info.output_file_fp,"### Nagios Host Check Result ###\n");
+		fprintf(check_result_info.output_file_fp,"### Icinga Host Check Result ###\n");
 		fprintf(check_result_info.output_file_fp,"# Time: %s",ctime(&check_result_info.start_time.tv_sec));
 		fprintf(check_result_info.output_file_fp,"host_name=%s\n",check_result_info.host_name);
 		fprintf(check_result_info.output_file_fp,"check_type=%d\n",check_result_info.check_type);
@@ -3249,7 +3249,7 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 		temp_host->is_being_freshened=FALSE;
 
 	/* DISCARD INVALID FRESHNESS CHECK RESULTS */
-	/* If a host goes stale, Nagios will initiate a forced check in order to freshen it.  There is a race condition whereby a passive check
+	/* If a host goes stale, Icinga will initiate a forced check in order to freshen it.  There is a race condition whereby a passive check
 	   could arrive between the 1) initiation of the forced check and 2) the time when the forced check result is processed here.  This would 
 	   make the host fresh again, so we do a quick check to make sure the host is still stale before we accept the check result. */
 	if((queued_check_result->check_options & CHECK_OPTION_FRESHNESS_CHECK) && is_host_result_fresh(temp_host,current_time,FALSE)==TRUE){
@@ -3596,7 +3596,7 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 				next_check=(unsigned long)(current_time+(hst->check_interval*interval_length));
 
 				/* we need to run SYNCHRONOUS checks of all parent hosts to accurately determine the state of this host */
-				/* this is extremely inefficient (reminiscent of Nagios 2.x logic), but there's no other good way around it */
+				/* this is extremely inefficient (reminiscent of Icinga 2.x logic), but there's no other good way around it */
 				/* check all parent hosts to see if we're DOWN or UNREACHABLE */
 				/* only do this for ACTIVE checks, as PASSIVE checks contain a pre-determined state */
 				if(hst->check_type==HOST_CHECK_ACTIVE){

@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * CONFIG.C - Configuration input and verification routines for Nagios
+ * CONFIG.C - Configuration input and verification routines for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 12-14-2008
@@ -1095,7 +1095,7 @@ int read_main_config_file(char *main_config_file){
 
 		else if(!strcmp(variable,"aggregate_status_updates")){
 
-			/* DEPRECATED - ALL UPDATED ARE AGGREGATED AS OF NAGIOS 3.X */
+			/* DEPRECATED - ALL UPDATED ARE AGGREGATED AS OF Icinga 3.X */
 			/*aggregate_status_updates=(atoi(value)>0)?TRUE:FALSE;*/
 
 			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: aggregate_status_updates directive ignored.  All status file updates are now aggregated.");

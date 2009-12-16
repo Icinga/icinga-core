@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * Nagios Common Header File
+ * Icinga Common Header File
  * Written By: Ethan Galstad (egalstad@nagios.org)
  * Modified By: Icinga Development Team (http://www.icinga.org)
  *
@@ -310,13 +310,13 @@
 
 /************************ SERVICE CHECK TYPES ****************************/
 
-#define SERVICE_CHECK_ACTIVE		0	/* Nagios performed the service check */
+#define SERVICE_CHECK_ACTIVE		0	/* Icinga performed the service check */
 #define SERVICE_CHECK_PASSIVE		1	/* the service check result was submitted by an external source */
 
 
 /************************** HOST CHECK TYPES *****************************/
 
-#define HOST_CHECK_ACTIVE		0	/* Nagios performed the host check */
+#define HOST_CHECK_ACTIVE		0	/* Icinga performed the host check */
 #define HOST_CHECK_PASSIVE		1	/* the host check result was submitted by an external source */
 
 
@@ -472,7 +472,7 @@
 
 /************************** MISC DEFINITIONS ****************************/
 
-#define MAX_FILENAME_LENGTH			256	/* max length of path/filename that Nagios will process */
+#define MAX_FILENAME_LENGTH			256	/* max length of path/filename that Icinga will process */
 #define MAX_INPUT_BUFFER			1024	/* size in bytes of max. input buffer (for reading files, misc stuff) */
 #define MAX_COMMAND_BUFFER                      8192    /* max length of raw or processed command line */
 #define MAX_EXTERNAL_COMMAND_LENGTH             8192    /* max length of an external command */

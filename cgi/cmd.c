@@ -1853,7 +1853,7 @@ void commit_command_data(int cmd){
 		        }
 	        }
 
-	/* if Nagios isn't checking external commands, don't do anything... */
+	/* if Icinga isn't checking external commands, don't do anything... */
 	else if(check_external_commands==FALSE){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: %s is not checking external commands!</p>\n", PROGRAM_NAME);
@@ -1943,7 +1943,7 @@ int commit_command(int cmd){
 
 	/*
 	 * these are supposed to be implanted inside the
-	 * completed commands shipped off to nagios and
+	 * completed commands shipped off to Icinga and
 	 * must therefore never contain ';'
 	 */
 	if (host_name && strchr(host_name, ';'))
@@ -2534,12 +2534,12 @@ void show_command_help(cmd){
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for a particular host and all of his services.  During the specified downtime, Nagios will not send notifications out about the host.\n");
+		printf("This command is used to schedule downtime for a particular host and all of his services.  During the specified downtime, Icinga will not send notifications out about the host.\n");
 		printf("Normally, a host in downtime will not send alerts about any services in a failed state. This option will explicitly set downtime for all services for this host.\n");
-		printf("When the scheduled downtime expires, Nagios will send out notifications for this host as it normally would.  Scheduled downtimes are preserved\n");
+		printf("When the scheduled downtime expires, Icinga will send out notifications for this host as it normally would.  Scheduled downtimes are preserved\n");
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
 		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Nagios will treat this as \"flexible\" downtime.  Flexible downtime starts when the host goes down or becomes unreachable (sometime between the\n");
+		printf("option, Icinga will treat this as \"flexible\" downtime.  Flexible downtime starts when the host goes down or becomes unreachable (sometime between the\n");
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
 		break;
 

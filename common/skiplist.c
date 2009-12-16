@@ -1,6 +1,6 @@
 /************************************************************************
  *
- * SKIPLIST.C - Skiplist functions for use in Nagios event/object lists
+ * SKIPLIST.C - Skiplist functions for use in Icinga event/object lists
  *
  * Copyright (c) 2008 Ethan Galstad
  * Last Modified: 02-28-2008
@@ -10,12 +10,12 @@
  * These function implement a slightly modified skiplist from that
  * described by William Pugh (ftp://ftp.cs.umd.edu/pub/skipLists/skiplists.pdf).
  * The structures and function were modified to allow the list to act
- * like a priority queue for the Nagios event list/queue(s).  Multiple nodes with
+ * like a priority queue for the Icinga event list/queue(s).  Multiple nodes with
  * the same key value are allowed on the list to accomodate multiple events
  * occurring at the same (second) point in time.  Implemented peek() and pop()
  * functions to allow for quick event queue processing, and a method to delete
  * a specific list item, based on its pointer, rather than its data value.  Again,
- * this is useful for the Nagios event queue.
+ * this is useful for the Icinga event queue.
  *
  * License:
  *

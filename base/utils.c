@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * UTILS.C - Miscellaneous utility functions for Nagios
+ * UTILS.C - Miscellaneous utility functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 06-16-2009
@@ -374,7 +374,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 		if( SvTRUE(ERRSV) ){
 			/*
-			 * XXXX need pipe open to send the compilation failure message back to Nagios ?
+			 * XXXX need pipe open to send the compilation failure message back to Icinga ?
 			 */
 			(void) POPs ;
 
@@ -3769,7 +3769,7 @@ int file_uses_embedded_perl(char *fname){
 
 					if(fgets(linen,80,fp)){
 
-						/* line contains Nagios directives */
+						/* line contains Icinga directives */
 						if(strstr(linen,"# nagios:")){
 
 							ptr=strtok(linen,":");
@@ -4360,7 +4360,7 @@ int generate_check_stats(void){
 /************************ UPDATE FUNCTIONS ************************/
 /******************************************************************/
 
-/* check for new releases of Nagios */
+/* check for new releases of Icinga */
 int check_for_nagios_updates(int force, int reschedule){
 	time_t current_time;
 	int result=OK;
@@ -4474,7 +4474,7 @@ int query_update_api(void){
 	int update_check_succeeded=FALSE;
 
 	/* report a new install, upgrade, or rollback */
-	/* Nagios monitors the world and we monitor Nagios taking over the world. :-) */
+	/* Icinga monitors the world and we monitor Icinga taking over the world. :-) */
 	if(last_update_check==(time_t)0L)
 		report_install=TRUE;
 	if(last_program_version==NULL || strcmp(PROGRAM_VERSION,last_program_version))
@@ -4492,7 +4492,7 @@ int query_update_api(void){
 
 	/* generate the HTTP request */
 	asprintf(&buf,"POST %s HTTP/1.0\r\n",api_path);
-	asprintf(&buf,"%sUser-Agent: Nagios/%s\r\n",buf,PROGRAM_VERSION);
+	asprintf(&buf,"%sUser-Agent: Icinga/%s\r\n",buf,PROGRAM_VERSION);
 	asprintf(&buf,"%sConnection: close\r\n",buf);
 	asprintf(&buf,"%sHost: %s\r\n",buf,api_server);
 	asprintf(&buf,"%sContent-Type: application/x-www-form-urlencoded\r\n",buf);
@@ -4591,14 +4591,14 @@ int query_update_api(void){
 /************************* MISC FUNCTIONS *************************/
 /******************************************************************/
 
-/* returns Nagios version */
+/* returns Icinga version */
 char *get_program_version(void){
 
 	return (char *)PROGRAM_VERSION;
         }
 
 
-/* returns Nagios modification date */
+/* returns Icinga modification date */
 char *get_program_modification_date(void){
 
 	return (char *)PROGRAM_MODIFICATION_DATE;
@@ -4698,7 +4698,7 @@ void free_memory(void){
 	my_free(illegal_object_chars);
 	my_free(illegal_output_chars);
 
-	/* free nagios user and group */
+	/* free Icinga user and group */
 	my_free(nagios_user);
 	my_free(nagios_group);
 

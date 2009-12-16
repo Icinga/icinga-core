@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * ICINGASTATS.C - Displays Nagios Statistics
+ * ICINGASTATS.C - Displays Icinga Statistics
  *
  * Program: Icingastats (based on Nagiostats)
  * Version: 1.0
@@ -875,7 +875,7 @@ int read_config_file(void){
 	if(fp==NULL)
 		return ERROR;
 
-	/* read all lines from the main nagios config file */
+	/* read all lines from the main Icinga config file */
 	while(fgets(temp_buffer,sizeof(temp_buffer)-1,fp)){
 
 		strip(temp_buffer);

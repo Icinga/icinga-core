@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * PERFDATA.C - Performance data routines for Nagios
+ * PERFDATA.C - Performance data routines for Icinga
  *
  * Copyright (c) 2000-2004 Ethan Galstad (egalstad@nagios.org)
  * Last Modified:   11-29-2004

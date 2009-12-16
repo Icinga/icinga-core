@@ -186,12 +186,12 @@ int neb_load_module(nebmodule *mod){
 
 	/********** 
 	   Using dlopen() is great, but a real danger as-is.  The problem with loaded modules is that if you overwrite the original file (e.g. using 'mv'),
-	   you do not alter the inode of the original file.  Since the original file/module is memory-mapped in some fashion, Nagios will segfault the next
+	   you do not alter the inode of the original file.  Since the original file/module is memory-mapped in some fashion, Icinga will segfault the next
 	   time an event broker call is directed to one of the module's callback functions.  This is extremely problematic when it comes to upgrading NEB
-	   modules while Nagios is running.  A workaround is to (1) 'mv' the original/loaded module file to another name (on the same filesystem)
+	   modules while Icinga is running.  A workaround is to (1) 'mv' the original/loaded module file to another name (on the same filesystem)
 	   and (2) copy the new module file to the location of the original one (using the original filename).  In this scenario, dlopen() will keep referencing
 	   the original file/inode for callbacks.  This is not an ideal solution.   A better one is to delete the module file once it is loaded by dlopen().
-	   This prevents other processed from unintentially overwriting the original file, which would cause Nagios to crash.  However, if we delete the file
+	   This prevents other processed from unintentially overwriting the original file, which would cause Icinga to crash.  However, if we delete the file
 	   before anyone else can muck with it, things should be good.  'lsof' shows that a deleted file is still referenced by the kernel and callback
 	   functions continue to work once the module has been loaded.  Long story, but this took quite a while to figure out, as there isn't much 
 	   of anything I could find on the subject other than some sketchy info on similar problems on HP-UX.  Hopefully this will save future coders some time.
@@ -237,7 +237,7 @@ int neb_load_module(nebmodule *mod){
 	mod->is_currently_loaded=TRUE;
 
 	/* delete the temp copy of the module we just created and loaded */
-	/* this will prevent other processes from overwriting the file (using the same inode), which would cause Nagios to crash */
+	/* this will prevent other processes from overwriting the file (using the same inode), which would cause Icinga to crash */
 	/* the kernel will keep the deleted file in memory until we unload it */
 	/* NOTE: This *should* be portable to most Unices, but I've only tested it on Linux */
 	if(unlink(output_file)==-1){
@@ -584,11 +584,11 @@ int neb_make_callbacks(int callback_type, void *data){
 		total_callbacks++;
 		log_debug_info(DEBUGL_EVENTBROKER,2,"Callback #%d (type %d) return code = %d\n",total_callbacks,callback_type,cbresult);
 
-		/* module wants to cancel callbacks to other modules (and potentially cancel the default Nagios handling of an event) */
+		/* module wants to cancel callbacks to other modules (and potentially cancel the default Icinga handling of an event) */
 		if(cbresult==NEBERROR_CALLBACKCANCEL)
 			break;
 
-		/* module wants to override default Nagios handling of an event */
+		/* module wants to override default Icinga handling of an event */
 		/* not sure if we should bail out here just because one module wants to override things - what about other modules? EG 12/11/2006 */
 		else if(cbresult==NEBERROR_CALLBACKOVERRIDE)
 			break;

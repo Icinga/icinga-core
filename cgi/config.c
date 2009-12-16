@@ -1,6 +1,6 @@
 /***********************************************************************
  *
- * CONFIG.C - Nagios Configuration CGI (View Only)
+ * CONFIG.C - Icinga Configuration CGI (View Only)
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 05-15-2009

@@ -84,7 +84,7 @@ function get_update_information(){
 	// DETERMINE UPDATE INFO FROM RETENTION FILE
 	////////////////////////////////////////////
 	
-	// Nagios might be shutdown (ie, no status file), so try and read data from the retention file
+	// Icinga might be shutdown (ie, no status file), so try and read data from the retention file
 
 	// read retentiion file (just first few lines)
 	$rfc=read_retention_file($rf,50);

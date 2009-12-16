@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * NETUTILS.C - Network connection  utility functions for Nagios
+ * NETUTILS.C - Network connection  utility functions for Icinga
  *
  * Copyright (c) 1999,2008 Ethan Galstad (egalstad@nagios.org)
  * Portions Copyright (c) 1999-2008 Nagios Plugin development team

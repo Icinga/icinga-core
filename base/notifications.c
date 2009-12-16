@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * NOTIFICATIONS.C - Service and host notification functions for Nagios
+ * NOTIFICATIONS.C - Service and host notification functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 10-15-2008
@@ -153,7 +153,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 		if(not_data)
 			macro_x[MACRO_NOTIFICATIONCOMMENT]=(char *)strdup(not_data);
 
-		/* NOTE: these macros are deprecated and will likely disappear in Nagios 4.x */
+		/* NOTE: these macros are deprecated and will likely disappear in Icinga 4.x */
 		/* if this is an acknowledgement, get author and comment macros */
 		if(type==NOTIFICATION_ACKNOWLEDGEMENT){
 
@@ -1045,7 +1045,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 		if(not_data)
 			macro_x[MACRO_NOTIFICATIONCOMMENT]=(char *)strdup(not_data);
 
-		/* NOTE: these macros are deprecated and will likely disappear in Nagios 4.x */
+		/* NOTE: these macros are deprecated and will likely disappear in Icinga 4.x */
 		/* if this is an acknowledgement, get author and comment macros */
 		if(type==NOTIFICATION_ACKNOWLEDGEMENT){
 

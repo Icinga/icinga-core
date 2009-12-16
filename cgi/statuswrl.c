@@ -368,7 +368,7 @@ void display_world(void){
 	/* coordinates were specified... */
 	else{
 
-		/* draw Nagios icon */
+		/* draw Icinga icon */
 		if(layout_method!=LAYOUT_USER_SUPPLIED)
 			draw_process_icon();
 
@@ -566,7 +566,7 @@ void calculate_host_coords(void){
 		/* calculate center x coord */
 		center_x=(((DEFAULT_NODE_WIDTH*max_layer_width)+(DEFAULT_NODE_HSPACING*(max_layer_width-1)))/2)+offset_x;
 
-		/* coords for Nagios icon if necessary */
+		/* coords for Icinga icon if necessary */
 		if(this_host==NULL || this_host->parent_hosts==NULL){
 			nagios_icon_x=center_x;
 			nagios_icon_y=offset_y;
@@ -655,7 +655,7 @@ void calculate_host_coords(void){
 		/* calculate center x coord */
 		center_x=(((DEFAULT_NODE_WIDTH*max_drawing_width)+(DEFAULT_NODE_HSPACING*(max_drawing_width-1)))/2)+offset_x;
 
-		/* coords for Nagios icon if necessary */
+		/* coords for Icinga icon if necessary */
 		if(this_host==NULL || this_host->parent_hosts==NULL){
 			nagios_icon_x=center_x;
 			nagios_icon_y=offset_y;
