@@ -31,7 +31,7 @@
 <p>Bald gibt es hier noch detailliertere Informationen, vorerst der Changelog:</p>
 <p><span class="bold"><strong>Icinga-Web:</strong></span></p>
 <p><span class="bold"><strong>0.9.1-alpha -16/12/2009</strong></span></p>
-<p>* Updated install-fromscratch.txt: apache settings ...
+<p>* Updated install-fromscratch.txt: Apache settings ...
 </p>
 <p>* Removed the yui top menu and implemented top nav with ExtJ
 </p>
@@ -39,7 +39,7 @@
 </p>
 <p>
 * Removed unused libraries (gc-prettify, jquery, firebug-lite) </p>
-<p>* Cherrypicked hendricks makefile changes
+<p>* Cherry-picked Hendriks makefile changes
 </p>
 <p>* Changed installer toolkit to make basic installs
 </p>
@@ -69,8 +69,10 @@
 <p><span class="bold"><strong>1.0 Stable - 16/12/2009 </strong></span></p>
 <p>* core: create webserver conf.d dir if not existing</p>
 <p>* core: output the correct config parameter name on error message</p>
-<p>* core: run dos2unix on spec file * core: check /proc/$pid instead of lock file while waiting for shutdown</p>
-<p>* core: fix cgi/config.c typo * core: fix typo in cgi/cmd.c</p>
+<p>* core: run dos2unix on spec file</p>
+<p>* core: check /proc/$pid instead of lock file while waiting for shutdown</p>
+<p>* core: fix cgi/config.c typo</p>
+<p>* core: fix typo in cgi/cmd.c</p>
 <p>* core: applied nagios patches after 3.2.0</p>
 <p>* idoutils: change default data_processing_options in idomod.cfg</p>
 <p>* idoutils: fix missing query arguments in servicecheck query</p>
@@ -81,14 +83,15 @@
 <p>* idoutils: fix duplicate rows in table servicecheck</p>
 <p>* idoutils: fix duplicate rows in table systemcommands, timedevents, timedeventqueue (missing unique keys)</p>
 <p>* idoutils: add upgrade path/sql queries for unique key failure - check the docs for upgrading information</p>
-<p>* idoutils: Oracle improvents:</p>
-<p>* add prepared statements for most called queries - hoststatus</p>
-<p>- servicestatus</p>
-<p>- hostchecks</p>
-<p>- servicechecks</p>
-<p>- timedevents</p>
-<p>- contact_notificationcommands</p>
-<p>- programstatus</p>
+<p>* idoutils: Oracle improvements:</p>
+<p>* add prepared statements for most called queries</p>
+<p>  - hoststatus</p>
+<p>  - servicestatus</p>
+<p>  - hostchecks</p>
+<p>  - servicechecks</p>
+<p>  - timedevents</p>
+<p>  - contact_notificationcommands</p>
+<p>  - programstatus</p>
 <p>* modify data[] to get unixtimestamps only</p>
 <p>* rewrite prepared statement queries to use SELECT unixts2date(unixtimestamp) FROM DUAL</p>
 <p>* allow rebinding of params in prepared statement for multi execution</p>
@@ -96,11 +99,11 @@
 <p>* bind params the correct way</p>
 <p>* execute binded statement query instead of plain MERGE statement</p>
 <p>* code is now the same as NDOUtils Oracle, but with</p>
-<p>- better code base (actual NDOUtils code)</p>
-<p>- long_output</p>
-<p>- SSL support</p>
-<p>- better library: ocilib instead of own driver</p>
-<p>- more prepared statements/bind param queries</p>
+<p>  - better code base (actual NDOUtils code)</p>
+<p>  - long_output</p>
+<p>  - SSL support</p>
+<p>  - better library: ocilib instead of own driver</p>
+<p>  - more prepared statements/bind param queries</p>
 <p>* split code into ocilib OR libdbi</p>
 <p>* --enable-oracle during configure decides which rdbm lib will be used</p>
 <p></p>
@@ -110,32 +113,32 @@
 <p>* idoutils: add configure --enable-oracle</p>
 <p>* idoutils: add configure --enable-ssl</p>
 <p>* idoutils: add configure -with-ocilib-lib/inc for ocilib detection</p>
-<p>* idoutils: add oracle support to ido2db.cfg</p>
+<p>* idoutils: add Oracle support to ido2db.cfg</p>
 <p>* idoutils: add ocilib runtime version check</p>
 <p>* idoutils: add ocilib linked at runtime (prevents setting of $ORACLE_HOME during configure)</p>
 <p>* idoutils: add ocilib hack to temp #undef CONFIG_H during compiling</p>
 <p>* idoutils: add #define USE_ORACLE set by --enable-oracle</p>
 <p>* idoutils: add #ifndef USE_ORACLE #else #endif to get code compatible with libdbi</p>
 <p>* idoutils: add ocilib connection, statement, resultset</p>
-<p>* idoutils: add ocilib execute statement, commit (no autocommit since we want to use the pros of oracle!)</p>
+<p>* idoutils: add ocilib execute statement, commit (no autocommit since we want to use the pros of Oracle!)</p>
 <p>* idoutils: add ocilib insert id for sequence handling</p>
 <p>* idoutils: add ocilib free statement to match with sequences</p>
-<p>* idoutils: add oracle sysdate instead of NOW()</p>
+<p>* idoutils: add Oracle sysdate instead of NOW()</p>
 <p>* idoutils: add long_output to oracle.sql - introduce clob (Character Large Object)</p>
-<p>* idoutils: add even more debugoutput for oracle</p>
+<p>* idoutils: add even more debugoutput for Oracle</p>
 <p>* idoutils: modify configure to use OCI_CHARSET_ANSI</p>
 <p>* idoutils: modify configure to set LD_LIBRARY_PATH for ido2db init script</p>
 <p>* idoutils: modify formatting to get more readable</p>
 <p>* idoutils: fix typecast bug - unsigned long is bigger then int</p>
-<p>* idoutils: fix oracle notif_timeperiod_object_id (30 chars max)</p>
-<p>* idoutils: fix oracle table serviceescalationcontactgroups (30 chars max)</p>
+<p>* idoutils: fix Oracle notif_timeperiod_object_id (30 chars max)</p>
+<p>* idoutils: fix Oracle table serviceescalationcontactgroups (30 chars max)</p>
 <p>* idoutils: fix hoststatus/servicestatus/servicecheck unique constraint updating mismatch</p>
 <p>* idoutils: fix insert_or_update queries where update violates unique constraint</p>
-<p>* idoutils: remove and ignore oracle table_prefix (30 chars max)</p>
-<p>* idoutils: workaround to handle more than 4k Data which may exceed service outputs incl. long perf_data</p>
+<p>* idoutils: remove and ignore Oracle table_prefix (30 chars max)</p>
+<p>* idoutils: workaround to handle more than 4k data which may exceed service outputs incl. long perf_data</p>
 <p>* core init: delete 'su' usage since all previously su touched files were created by the icinga user</p>
 <p>* idoutils: fix unescape bug during tabstops</p>
-<p>* idoutils: fix idomod/icinga segfault while try to use ssl on unix sockets</p>
+<p>* idoutils: fix idomod/icinga segfault while trying to use ssl on unix sockets</p>
 <p>* idoutils: set long_output/perfdata to TEXT in MySQL</p>
 <p>* core configure: set INIT_OPTS depending on detected host OS (no more root:root on FreeBSD?)</p>
 <p>* core spec: added new spec file</p>
@@ -182,7 +185,8 @@
 <p>* idoutils: added long_output support to IDOUtils</p>
 <p>* idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)</p>
 <p>* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)</p>
-<p>* icinga-api added: The search function now uses the icinga-api submodule * various minor changes</p>
+<p>* icinga-api added: The search function now uses the icinga-api submodule</p>
+<p>* various minor changes</p>
 <p></p>
 <p><span class="bold"><strong>0.8.1 - 06/17/2009</strong></span></p>
 <p>* Archived Logfiles renamed from Icinga-date-syntax.log =&gt; icinga-date-syntax.log (capital 'i')</p>
@@ -196,10 +200,10 @@
 <p>* Almost biggest deal to rename the components</p>
 <p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it</p>
 <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction layer, enable compile try with "configure --enable-idoutils"</p>
-<p>* Included a new stylesheet/icon theme based on Vautour Style Vautour Style have been created by Yoann LAMY.</p>
+<p>* Included a new stylesheet/icon theme based on Vautour Style. Vautour Style have been created by Yoann LAMY.</p>
 <p>The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/). The icons of Vautour Style use "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.</p>
 <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
-<a class="indexterm" name="id2545507"></a>
+<a class="indexterm" name="id2651450"></a>
 </div>
 <div class="navfooter">
 <hr>
