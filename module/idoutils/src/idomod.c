@@ -24,7 +24,7 @@
 #include "../../../include/nebcallbacks.h"
 #include "../../../include/broker.h"
 
-/* include other Nagios header files for access to functions, data structs, etc. */
+/* include other Icinga header files for access to functions, data structs, etc. */
 #include "../../../include/common.h"
 #include "../../../include/icinga.h"
 #include "../../../include/downtime.h"
@@ -65,7 +65,7 @@ ndomod_sink_buffer sinkbuf;
 
 extern int errno;
 
-/**** NAGIOS VARIABLES ****/
+/**** Icinga VARIABLES ****/
 extern command *command_list;
 extern timeperiod *timeperiod_list;
 extern contact *contact_list;
@@ -99,12 +99,12 @@ int nebmodule_init(int flags, char *args, void *handle){
 	/* save our handle */
 	ndomod_module_handle=handle;
 
-	/* log module info to the Nagios log file */
+	/* log module info to the Icinga log file */
 	snprintf(temp_buffer, sizeof(temp_buffer)-1, "idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009 Icinga Development Team (http://www.icinga.org))", NDOMOD_NAME, NDOMOD_VERSION, NDOMOD_DATE);
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 
-	/* check Nagios object structure version */
+	/* check Icinga object structure version */
 	if(ndomod_check_nagios_object_version()==NDO_ERROR)
 		return -1;
 
@@ -136,7 +136,7 @@ int nebmodule_deinit(int flags, int reason){
 	/* do some shutdown stuff... */
 	ndomod_deinit();
 
-	/* log a message to the Nagios log file */
+	/* log a message to the Icinga log file */
 	snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Shutdown complete.\n");
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
         ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
@@ -150,7 +150,7 @@ int nebmodule_deinit(int flags, int reason){
 /* INIT/DEINIT FUNCTIONS                                                    */
 /****************************************************************************/
 
-/* checks to make sure Nagios object version matches what we know about */
+/* checks to make sure Icinga object version matches what we know about */
 int ndomod_check_nagios_object_version(void){
 	char temp_buffer[NDOMOD_MAX_BUFLEN];
 
@@ -199,7 +199,7 @@ int ndomod_init(void){
 		/* make sure we have a rotation command defined... */
 		if(ndomod_sink_rotation_command==NULL){
 
-			/* log an error message to the Nagios log file */
+			/* log an error message to the Icinga log file */
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Warning - No file rotation command defined.\n");
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
@@ -439,7 +439,7 @@ int ndomod_process_config_var(char *arg){
 /* UTILITY FUNCTIONS                                                        */
 /****************************************************************************/
 
-/* writes a string to Nagios logs */
+/* writes a string to Icinga logs */
 int ndomod_write_to_logs(char *buf, int flags){
 
 	if(buf==NULL)
@@ -3600,7 +3600,7 @@ int ndomod_write_object_config(int config_type){
 			es[0]=NULL;
 		        }
 
-		/* dump individual contacts (not supported in Nagios 2.x) */
+		/* dump individual contacts */
 		for(temp_contactsmember=temp_host->contacts;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
 
 			es[0]=ndo_escape_buffer(temp_contactsmember->contact_name);
@@ -3867,7 +3867,7 @@ int ndomod_write_object_config(int config_type){
 			es[0]=NULL;
 		        }
 
-		/* dump individual contacts (not supported in Nagios 2.x) */
+		/* dump individual contacts  */
 		for(temp_contactsmember=temp_service->contacts;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
 
 			es[0]=ndo_escape_buffer(temp_contactsmember->contact_name);
@@ -4136,7 +4136,7 @@ int ndomod_write_object_config(int config_type){
 			es[0]=NULL;
 		        }
 
-		/* dump individual contacts (not supported in Nagios 2.x) */
+		/* dump individual contacts */
 		for(temp_contactsmember=temp_serviceescalation->contacts;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
 
 			es[0]=ndo_escape_buffer(temp_contactsmember->contact_name);

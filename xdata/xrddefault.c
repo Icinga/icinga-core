@@ -1,8 +1,8 @@
 /*****************************************************************************
  *
- * XRDDEFAULT.C - Default external state retention routines for Nagios
+ * XRDDEFAULT.C - Default external state retention routines for Icinga
  *
- * Copyright (c) 2009 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009 Icinga Core Development Team and Community Contributors
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 07-31-2009
  *
@@ -970,7 +970,7 @@ int xrddefault_read_state_information(void){
 				else
 					add_service_downtime(host_name,service_description,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,downtime_id);
 
-				/* must register the downtime with Nagios so it can schedule it, add comments, etc. */
+				/* must register the downtime with Icinga so it can schedule it, add comments, etc. */
 				register_downtime((data_type==XRDDEFAULT_HOSTDOWNTIME_DATA)?HOST_DOWNTIME:SERVICE_DOWNTIME,downtime_id);
 
 				/* free temp memory */

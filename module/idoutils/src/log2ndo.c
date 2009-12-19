@@ -53,13 +53,13 @@ int main(int argc, char **argv){
 		printf("Last Mofieid: %s\n",LOG2NDO_DATE);
 		printf("License: GPL v2\n");
 		printf("\n");
-		printf("Sends the contents of an archived Nagios or NetSaint log file to STDOUT,\n");
+		printf("Sends the contents of an archived Icinga log file to STDOUT,\n");
 		printf("a TCP socket, or a Unix domain socket in a format that is understood by the\n");
 		printf("NDO2DB daemon.\n");
 		printf("\n");
 		printf("Usage: %s -s <source> -d <dest> -i <instance> [-t <type>] [-p <port>]\n",argv[0]);
 		printf("\n");
-		printf("<source>   = Name of the Nagios/NetSaint log file to read from.\n");
+		printf("<source>   = Name of the Icinga log file to read from.\n");
 		printf("<dest>     = If destination is a TCP socket, the address/hostname to connect to.\n");
 		printf("             If destination is a Unix domain socket, the path to the socket.\n");
 		printf("             If destination is STDOUT (for redirection, etc), a single dash (-).\n");

@@ -9,7 +9,7 @@
  * Description:
  *
  * This is an example of a very basic module.  It does nothing useful other
- * than logging some messages to the main Nagios log file when it is initialized
+ * than logging some messages to the main Icinga log file when it is initialized
  * (loaded), when it is closed (unloaded), and when aggregated status updates
  * occur.  I would not call that too useful, but hopefully it will serve as a
  * very basic example of how to write a NEB module...
@@ -30,7 +30,7 @@
 #include "../include/nebstructs.h"
 #include "../include/broker.h"
 
-/* include some Nagios stuff as well */
+/* include some Icinga stuff as well */
 #include "../include/config.h"
 #include "../include/common.h"
 #include "../include/icinga.h"
@@ -54,18 +54,18 @@ int nebmodule_init(int flags, char *args, nebmodule *handle){
 	/* save our handle */
 	helloworld_module_handle=handle;
 
-	/* set some info - this is completely optional, as Nagios doesn't do anything with this data */
+	/* set some info - this is completely optional, as Icinga doesn't do anything with this data */
 	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_TITLE,"helloworld");
 	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_AUTHOR,"Ethan Galstad");
 	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_TITLE,"Copyright (c) 2003-2007 Ethan Galstad");
 	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_VERSION,"noversion");
 	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_LICENSE,"GPL v2");
-	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_DESC,"A simple example to get you started with Nagios Event Broker (NEB) modules.");
+	neb_set_module_info(helloworld_module_handle,NEBMODULE_MODINFO_DESC,"A simple example to get you started with Icinga Event Broker modules.");
 
-	/* log module info to the Nagios log file */
+	/* log module info to the Icinga log file */
 	write_to_all_logs("helloworld: Copyright (c) 2003-2007 Ethan Galstad (egalstad@nagios.org)",NSLOG_INFO_MESSAGE);
 	
-	/* log a message to the Nagios log file */
+	/* log a message to the Icinga log file */
 	snprintf(temp_buffer,sizeof(temp_buffer)-1,"helloworld: Hello world!\n");
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	write_to_all_logs(temp_buffer,NSLOG_INFO_MESSAGE);
@@ -89,7 +89,7 @@ int nebmodule_deinit(int flags, int reason){
 	/* deregister for all events we previously registered for... */
 	neb_deregister_callback(NEBCALLBACK_AGGREGATED_STATUS_DATA,helloworld_handle_data);
 
-	/* log a message to the Nagios log file */
+	/* log a message to the Icinga log file */
 	snprintf(temp_buffer,sizeof(temp_buffer)-1,"helloworld: Goodbye world!\n");
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	write_to_all_logs(temp_buffer,NSLOG_INFO_MESSAGE);
@@ -102,7 +102,7 @@ int nebmodule_deinit(int flags, int reason){
 void helloworld_reminder_message(char *message){
 	char temp_buffer[1024];
 	
-	/* log a message to the Nagios log file */
+	/* log a message to the Icinga log file */
 	snprintf(temp_buffer,sizeof(temp_buffer)-1,"helloworld: I'm still here! %s",message);
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	write_to_all_logs(temp_buffer,NSLOG_INFO_MESSAGE);
@@ -111,7 +111,7 @@ void helloworld_reminder_message(char *message){
         }
 
 
-/* handle data from Nagios daemon */
+/* handle data from Icinga daemon */
 int helloworld_handle_data(int event_type, void *data){
 	nebstruct_aggregated_status_data *agsdata=NULL;
 	char temp_buffer[1024];
@@ -124,7 +124,7 @@ int helloworld_handle_data(int event_type, void *data){
 		/* an aggregated status data dump just started or ended... */
 		if((agsdata=(nebstruct_aggregated_status_data *)data)){
 
-			/* log a message to the Nagios log file */
+			/* log a message to the Icinga log file */
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"helloworld: An aggregated status update just %s.",(agsdata->type==NEBTYPE_AGGREGATEDSTATUS_STARTDUMP)?"started":"finished");
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			write_to_all_logs(temp_buffer,NSLOG_INFO_MESSAGE);

@@ -1,6 +1,6 @@
 /******************************************************
  *
- * GETCGI.H -  Nagios CGI Input Routine Include File
+ * GETCGI.H -  Icinga CGI Input Routine Include File
  *
  * Last Modified: 11-25-2005
  *

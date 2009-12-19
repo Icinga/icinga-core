@@ -1,6 +1,6 @@
  package Embed::Persistent;
 
-# p1.pl for Nagios
+# p1.pl for Icinga
 
 use strict ;
 
@@ -16,7 +16,7 @@ use constant	DEBUG_LEVEL		=> 0 ;
 # use constant	DEBUG_LEVEL		=> LEAVE_MSG | CACHE_DUMP ;
 # use constant	DEBUG_LEVEL		=> LEAVE_MSG | CACHE_DUMP | PLUGIN_DUMP ;
 
-use constant	DEBUG_LOG_PATH		=> '/usr/local/nagios/var/' ;
+use constant	DEBUG_LOG_PATH		=> '/usr/local/icgina/var/' ;
 # use constant	DEBUG_LOG_PATH		=> './' ;
 use constant	LEAVE_MSG_STREAM	=> DEBUG_LOG_PATH . 'epn_leave-msgs.log' ;
 use constant	CACHE_DUMP_STREAM	=> DEBUG_LOG_PATH . 'epn_cache-dump.log' ;
@@ -90,7 +90,7 @@ sub READLINE {
 	my $self = shift;
 
 # CHANGED 12/26/07 EG Following two statements didn't allow for multi-line output or output > 256 chars
-								# Omit all lines after the first, per the nagios plugin guidelines
+								# Omit all lines after the first, per the icgina plugin guidelines
 #        $$self = (split /\n/, $$self)[0];
 								# Perl code other than plugins may print nothing; in this case return "(No output!)\n".
 #	return $$self ? substr($$self, 0, 256) : "(No output!)\n" ;
@@ -314,9 +314,9 @@ sub run_package {
 
 =head1 NAME
 
-p1.pl - Perl program to provide Perl code persistence for the Nagios project (http://www.Nagios.Org).
+p1.pl - Perl program to provide Perl code persistence for the Icinga project (http://www.Icinga.Org).
 
-This program provides an API for calling Nagios Perl plugins from Nagios when it is built with embedded Perl support. The
+This program provides an API for calling Icinga Perl plugins from Icinga when it is built with embedded Perl support. The
 intent is to tradeoff memory usage (see BUGS) against repeated context switches to recompile Perl plugins.
 
 =head1 SYNOPSIS
@@ -387,23 +387,23 @@ If you want to enable logging
 
 Set the values of (the 'use constant' statements) the log path, B<DEBUG_LOG_PATH>, and set the B<DEBUG_LEVEL> constant to
 one or more of the log options (B<LEAVE_MSG> and friends ) or'ed together.
-The default is to log nothing and to use S<<path_to_Nagios>/var/epn_stderr.log> as the log path.
+The default is to log nothing and to use S<<path_to_Icinga>/var/epn_stderr.log> as the log path.
 
 =head1 DESCRIPTION
 
-Nagios is a program to monitor service availability by scheduling 'plugins' - discrete programs
+Icinga is a program to monitor service availability by scheduling 'plugins' - discrete programs
 that check a service (by for example simulating a users interaction with a web server using WWW::Mechanize)  and output a line of
-text (the summary of the service state) for those responsible for the service, and exit with a coded value to relay the same information to Nagios.
+text (the summary of the service state) for those responsible for the service, and exit with a coded value to relay the same information to Icinga.
 
-Each plugin is run in a new child process forked by Nagios.
+Each plugin is run in a new child process forked by Icinga.
 
-Plugins, like CGIs, can be coded in Perl. The persistence framework embeds a Perl interpreter in Nagios to
+Plugins, like CGIs, can be coded in Perl. The persistence framework embeds a Perl interpreter in Icinga to
 
 =over 4
 
 =item * reduce the time taken for the Perl compile and execute cycle.
 
-=item * eliminate the need for Nagios to fork a process (with popen) to run the Perl code.
+=item * eliminate the need for Icinga to fork a process (with popen) to run the Perl code.
 
 =item * eliminate reloading of frequently used modules.
 
@@ -411,8 +411,8 @@ Plugins, like CGIs, can be coded in Perl. The persistence framework embeds a Per
 
 and all the good things mentioned in the B<perlembed> man page under 'Maintaining a persistent interpreter'.
 
-Plugin run-time and syntax errors, are returned to Nagios as the 'plugin output'. These messages
-appear in the Nagios log like S<**ePN 'check_test' Global symbol "$status" requires explicit package name at (eval 54) line 15.>
+Plugin run-time and syntax errors, are returned to Icinga as the 'plugin output'. These messages
+appear in the Icinga log like S<**ePN 'check_test' Global symbol "$status" requires explicit package name at (eval 54) line 15.>
 
 Extra logging is given by setting DEBUG_LEVEL to include
 
@@ -425,49 +425,49 @@ B<2> logs messages describing the success or otherwise of the plugin compilation
 
 An example of such messages are
 
- Fri Apr 22 11:54:21 2005 eval_file: successfully compiled "/usr/local/nagios/libexec/check_bass ".
- Fri Apr 22 11:54:21 2005 run_package: "/usr/local/nagios/libexec/check_bass " returning ("0", "BASS Transaction completed Ok.
+ Fri Apr 22 11:54:21 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_bass ".
+ Fri Apr 22 11:54:21 2005 run_package: "/usr/local/icgina/libexec/check_bass " returning ("0", "BASS Transaction completed Ok.
  ").
- Fri Apr 22 11:55:02 2005 eval_file: successfully compiled "/usr/local/nagios/libexec/check_ad -D production.prod -S".
- Fri Apr 22 11:55:02 2005 run_package: "/usr/local/nagios/libexec/check_ad -D foo.dom -S" returning ("0", "Ok. Expected 2 domain controllers [foo1 foo2] for "foo.dom.prod" domain from "1.1.2.3" DNS, found 8 [foo1 foo2 ..]
+ Fri Apr 22 11:55:02 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_ad -D production.prod -S".
+ Fri Apr 22 11:55:02 2005 run_package: "/usr/local/icgina/libexec/check_ad -D foo.dom -S" returning ("0", "Ok. Expected 2 domain controllers [foo1 foo2] for "foo.dom.prod" domain from "1.1.2.3" DNS, found 8 [foo1 foo2 ..]
  ").
- Fri Apr 22 11:55:19 2005 eval_file: successfully compiled "/usr/local/nagios/libexec/check_ldap adonis".
- Fri Apr 22 11:55:19 2005 run_package: "/usr/local/nagios/libexec/check_ldap adonis" returning ("0", "Ok. Schema query response DN: dc=ipaustralia,dc=gov,dc=au aci: (target="ldap:///dc=ipaustralia,dc=gov,dc=au")(targetattr!="userPassword")(targetfi
+ Fri Apr 22 11:55:19 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_ldap adonis".
+ Fri Apr 22 11:55:19 2005 run_package: "/usr/local/icgina/libexec/check_ldap adonis" returning ("0", "Ok. Schema query response DN: dc=ipaustralia,dc=gov,dc=au aci: (target="ldap:///dc=ipaustralia,dc=gov,dc=au")(targetattr!="userPassword")(targetfi
  ").
- Fri Apr 22 11:55:29 2005 eval_file: successfully compiled "/usr/local/nagios/libexec/check_scheduler -H aphrodite -p 7003".
- Fri Apr 22 11:55:30 2005 eval_file: successfully compiled "/usr/local/nagios/libexec/check_pams -H aphrodite -p 7003 -R".
- Fri Apr 22 11:55:29 2005 run_package: "/usr/local/nagios/libexec/check_scheduler -H aphrodite -p 7003" returning ("0", "Ok. COMSQ last ran 31 seconds ago. System: 0.02s Number of jobs waiting 0 "Detail" system sch_V2_6 14/01/2005 12:22:53 aimali Jobs: COMSQ/PollerManager Fri Apr 22 11:55:00, adhoc pause Fri Apr 22 09:00:00, PAMS/SchedExamDocCheck Thu Apr 21 23:00:00, CFX Cl"
+ Fri Apr 22 11:55:29 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_scheduler -H aphrodite -p 7003".
+ Fri Apr 22 11:55:30 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_pams -H aphrodite -p 7003 -R".
+ Fri Apr 22 11:55:29 2005 run_package: "/usr/local/icgina/libexec/check_scheduler -H aphrodite -p 7003" returning ("0", "Ok. COMSQ last ran 31 seconds ago. System: 0.02s Number of jobs waiting 0 "Detail" system sch_V2_6 14/01/2005 12:22:53 aimali Jobs: COMSQ/PollerManager Fri Apr 22 11:55:00, adhoc pause Fri Apr 22 09:00:00, PAMS/SchedExamDocCheck Thu Apr 21 23:00:00, CFX Cl"
  ).
- Fri Apr 22 11:55:30 2005 run_package: "/usr/local/nagios/libexec/check_pams -H aphrodite -p 7003 -R" returning ("0", "OK PAMS Worst: Test Time 2.61 Failure Ratio 0 [0:5] Statii: BASE OK Oracle (direct) OK COMS Processor OK CCS Name Search (direct) OK Correspondence Manager OK PAMS Tier OK CASEWORK OK Objective (direct) OK Customer Manager OK 
+ Fri Apr 22 11:55:30 2005 run_package: "/usr/local/icgina/libexec/check_pams -H aphrodite -p 7003 -R" returning ("0", "OK PAMS Worst: Test Time 2.61 Failure Ratio 0 [0:5] Statii: BASE OK Oracle (direct) OK COMS Processor OK CCS Name Search (direct) OK Correspondence Manager OK PAMS Tier OK CASEWORK OK Objective (direct) OK Customer Manager OK 
  ").
- Fri Apr 22 11:55:45 2005 eval_file: successfully compiled "/usr/local/nagios/libexec/check_coms ".
- Fri Apr 22 11:55:45 2005 run_package: "/usr/local/nagios/libexec/check_coms " returning ("0", "COMS Ok. 11 successes 20 minutes ago. 55 minute deltas: (0 0 0 11 0 1 3 4 0 6) or <a href='http://tsitc/cgi-bin/coms_graph_deltas?INT=-2h'>graph</a>
+ Fri Apr 22 11:55:45 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_coms ".
+ Fri Apr 22 11:55:45 2005 run_package: "/usr/local/icgina/libexec/check_coms " returning ("0", "COMS Ok. 11 successes 20 minutes ago. 55 minute deltas: (0 0 0 11 0 1 3 4 0 6) or <a href='http://tsitc/cgi-bin/coms_graph_deltas?INT=-2h'>graph</a>
  )
 
   .. after all the plugins are compiled, the 'successfully compiled mesages' are replaced by  'skipping compilation'
 
- Fri Apr 22 12:05:10 2005 eval_file: /usr/local/nagios/libexec/check_adds already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:11 2005 eval_file: /usr/local/nagios/libexec/check_aub already successfully compiled and file has not changed; skipping compilation
+ Fri Apr 22 12:05:10 2005 eval_file: /usr/local/icgina/libexec/check_adds already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:11 2005 eval_file: /usr/local/icgina/libexec/check_aub already successfully compiled and file has not changed; skipping compilation
  .
- Fri Apr 22 12:05:10 2005 run_package: "/usr/local/nagios/libexec/check_adds " returning ("0", "ADDS Transaction completed Ok.
+ Fri Apr 22 12:05:10 2005 run_package: "/usr/local/icgina/libexec/check_adds " returning ("0", "ADDS Transaction completed Ok.
  ").
- Fri Apr 22 12:05:13 2005 eval_file: /usr/local/nagios/libexec/check_eForm already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:13 2005 run_package: "/usr/local/nagios/libexec/check_eForm " returning ("0", "eForm Transaction completed Ok.
+ Fri Apr 22 12:05:13 2005 eval_file: /usr/local/icgina/libexec/check_eForm already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:13 2005 run_package: "/usr/local/icgina/libexec/check_eForm " returning ("0", "eForm Transaction completed Ok.
  ").
- Fri Apr 22 12:05:15 2005 eval_file: /usr/local/nagios/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:15 2005 run_package: "/usr/local/nagios/libexec/check_cfx_log -H faxgw1" returning ("0", "Ok. Last write of "//faxgw1/Faxloader$/cfxFaxLoaderClient.log"  0.0 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:19:42 2003 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005".
+ Fri Apr 22 12:05:15 2005 eval_file: /usr/local/icgina/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:15 2005 run_package: "/usr/local/icgina/libexec/check_cfx_log -H faxgw1" returning ("0", "Ok. Last write of "//faxgw1/Faxloader$/cfxFaxLoaderClient.log"  0.0 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:19:42 2003 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005".
  ").
- Fri Apr 22 12:05:16 2005 eval_file: /usr/local/nagios/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:16 2005 run_package: "/usr/local/nagios/libexec/check_cfx_log -H faxgw2" returning ("0", "Ok. Last write of "//faxgw2/Faxloader$/cfxFaxLoaderClient.log"  0.3 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:27:24 2003 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005".
+ Fri Apr 22 12:05:16 2005 eval_file: /usr/local/icgina/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:16 2005 run_package: "/usr/local/icgina/libexec/check_cfx_log -H faxgw2" returning ("0", "Ok. Last write of "//faxgw2/Faxloader$/cfxFaxLoaderClient.log"  0.3 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:27:24 2003 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005".
  ").
- Fri Apr 22 12:05:17 2005 eval_file: /usr/local/nagios/libexec/check_apps_asearch already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:18 2005 eval_file: /usr/local/nagios/libexec/check_aurioness already successfully compiled and file has not changed; skipping compi lation.
- Fri Apr 22 12:05:11 2005 run_package: "/usr/local/nagios/libexec/check_aub " returning ("0", "AU-B Transaction completed Ok.
+ Fri Apr 22 12:05:17 2005 eval_file: /usr/local/icgina/libexec/check_apps_asearch already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:18 2005 eval_file: /usr/local/icgina/libexec/check_aurioness already successfully compiled and file has not changed; skipping compi lation.
+ Fri Apr 22 12:05:11 2005 run_package: "/usr/local/icgina/libexec/check_aub " returning ("0", "AU-B Transaction completed Ok.
  ").
 
 If you are lucky enough to have plugins with errors in them,
 
- Fri Apr 22 12:16:01 2005 run_package: "//usr/local/nagios/libexec/eventhandlers/restart_coldfusion OK SOFT" returning ("3", "**ePN "//usr/local/nagios/libexec/eventhandlers/restart_coldfusion": "Can't use string ("") as a subroutine ref while "strict refs" in use at /usr/local/nagios/bin/p1.pl line 291, <DATA> line 218".
+ Fri Apr 22 12:16:01 2005 run_package: "//usr/local/icgina/libexec/eventhandlers/restart_coldfusion OK SOFT" returning ("3", "**ePN "//usr/local/icgina/libexec/eventhandlers/restart_coldfusion": "Can't use string ("") as a subroutine ref while "strict refs" in use at /usr/local/icgina/bin/p1.pl line 291, <DATA> line 218".
 
 
 B<PLUGIN_DUMP>
@@ -475,7 +475,7 @@ B<PLUGIN_DUMP>
 B<1> opens an extra output stream in the path given by the value of DEBUG_LOG_PATH.
 
 B<2> logs a listing of the text of any B<faulty> plugin - as transformed by the persistence framework. Note that plugins that compile
-are B<never> dumped. This option is only useful for investigating WTF a plugin that runs from the CLI does not run under Nagios with embedded Perl.
+are B<never> dumped. This option is only useful for investigating WTF a plugin that runs from the CLI does not run under Icinga with embedded Perl.
 
  Sat Apr 23 19:25:32 2005 eval_file: transformed plugin "check_dummy_plugin" to ==>
          1  package Embed::check_5fdummy_5fplugin;
@@ -522,7 +522,7 @@ arguments (if non null), the last compilation error,  and a code ref to the Perl
 
  Sat Apr 23 19:24:59 2005 eval_file: after 5 compilations %Cache =>
  %Cache = (
-           '/usr/local/nagios/libexec/check_adds' => [
+           '/usr/local/icgina/libexec/check_adds' => [
                                                        '100.230810185185',
                                                        undef,
                                                        '',
@@ -540,7 +540,7 @@ arguments (if non null), the last compilation error,  and a code ref to the Perl
                                '',
                                sub { "DUMMY" }
                              ],
-          '/usr/local/nagios/libexec/check_pams' => [
+          '/usr/local/icgina/libexec/check_pams' => [
                                                        '1.90859953703704',
                                                        {
                                                          '-R -I -H asterix -p 7003' => [
@@ -578,8 +578,8 @@ Unless otherwise stated, all subroutines take two (4) arguments :-
 
 =item 2 DO_CLEAN - boolean: set if plugin is not to be cached. Defaults to 0.
 
-Setting this flag means that the plugin is compiled each time it is executed. Nagios B<never> sets this flag when the 
-Nagios is compiled with the configure setting --with-perlcache.
+Setting this flag means that the plugin is compiled each time it is executed. Icinga B<never> sets this flag when the 
+Icinga is compiled with the configure setting --with-perlcache.
 
 =item 3 (SV *) code ref to the Perl subroutine corresponding to the plugin
 
@@ -621,7 +621,7 @@ Otherwise, the plugin is compiled into a subroutine in a new package by
 =item 3 overriding CORE::GLOBAL::exit from within package main (C<sub CORE::GLOBAL::exit { die "ExitTrap: \$_[0] (yada)"; }>)
 
 This allows the plugin to both call exit without taking down the persistence framework, and to return the exit code to the
-Nagios.
+Icinga.
 
 =item 4 prepending the plugin text with code to let the plugin function as a subroutine.
 
@@ -660,14 +660,14 @@ This framework ties STDOUT to a scalar that stores the result of PRINT or PRINTF
 =item * Running Perl programs in child processes
 
 This is the largest single difference between this framework and the example program persistent.pl. The example uses one
-subroutine (eval_file()) to compile and run the program. This is unsuitable for a process like Nagios that
+subroutine (eval_file()) to compile and run the program. This is unsuitable for a process like Icinga that
 fork a new process to run a plugin. (It is unsuitable because were the child process 
 to call eval_file() and then the update its copy of %Cache, other child processes would not get the updated %Cache,
 and would therefore recompile the plugin).
 
 Instead, eval_file() is split into two: eval_file() and run_package().
 
-Eval_file is called by the Nagios parent process to compile the plugin 
+Eval_file is called by the Icinga parent process to compile the plugin 
 and update %Cache. Child processes forked in base/checks.c have the same copy of %Cache and call run_plugin() to check the
 last compilation error (from %Cache) and run the plugin if the plugin was error free.
 
@@ -696,33 +696,33 @@ Probably the best way of doing so is by periodically scheduling
 
 =over 4
 
-=item 1 A check of the memory used by the Nagios process  (by running for example the standard Nagios plugin check_procs)
+=item 1 A check of the memory used by the Icinga process  (by running for example the standard Icinga plugin check_procs)
 
-=item 2 Restarting Nagios with the (supplied with Nagios) startup script (restart command).
+=item 2 Restarting Icinga with the (supplied with Icinga) startup script (restart command).
 
 
 =back
 
-If you do periodically restart Nagios, make sure that 
+If you do periodically restart Icinga, make sure that 
 
 =over 4
 
 =item 1 plugins all set the PATH environment variable if they need other system binaries (otherwise, if the
 init script is excec'd by cron, the PATH will be reset and the plugins will fail - but only when reatsrted by cron).
 
-=item 2 that the group owning the Nagios command pipe is the same as the Nagios group (otherwise, the restarted
-Nagios will not be able to read from the command pipe).
+=item 2 that the group owning the Icinga command pipe is the same as the Icinga group (otherwise, the restarted
+Icinga will not be able to read from the command pipe).
 
 =back
 
-Nagios installations using the persistence framework B<must> monitor the memory use of the Nagios process and stop/start it when
+Icinga installations using the persistence framework B<must> monitor the memory use of the Icinga process and stop/start it when
 the usage is exorbidant (eg, for a site with 400 services on 200 hosts and custom Perl plugins used for about 10% of the
-service checks, the Nagios process uses ~80 MB after 20-30 days runningi with Perl 5.005 [Memory usage is
+service checks, the Icinga process uses ~80 MB after 20-30 days runningi with Perl 5.005 [Memory usage is
 B<much> greater with recent Perls]. It is usually stopped and started at this point).
 
-Note that a HUP signal is B<not> sufficient to deallocate the Perl memory; the Nagios process must be stopped and started. In fact, since HUP
-causes Nagios to re-run the Perl interpreter initialisation code, memory use increases significantly. B<Don't use HUP>; use the 'restart' argument
-of the Nagios supplied startup script.
+Note that a HUP signal is B<not> sufficient to deallocate the Perl memory; the Icinga process must be stopped and started. In fact, since HUP
+causes Icinga to re-run the Perl interpreter initialisation code, memory use increases significantly. B<Don't use HUP>; use the 'restart' argument
+of the Icinga supplied startup script.
 
 There are all sorts of suprising gotchas about the debug logging including
 
@@ -739,8 +739,8 @@ no dump of the cache.
 
 =item * Debug level set at compile time
 
-Nagios must be restarted to change the debug level (use the examples if you have a troublesome plugin;l you may need a debug copy 
-of Nagios)
+Icinga must be restarted to change the debug level (use the examples if you have a troublesome plugin;l you may need a debug copy 
+of Icinga)
 
 =item * Not all Cached fields visible
 
@@ -755,7 +755,7 @@ Always compile one more plugin to ensure that all the fields in the cache are se
 
 =item * perlembed (section on maintaining a persistent interpreter)
 
-=item * examples in the examples/ directory including both C and Perl drivers that run Nagios plugins using p1.pl.
+=item * examples in the examples/ directory including both C and Perl drivers that run Icinga plugins using p1.pl.
 
 =back
 

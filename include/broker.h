@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * BROKER.H - Event broker includes for Nagios
+ * BROKER.H - Event broker includes for Icgina
  *
  * Copyright (c) 2002-2006 Ethan Galstad (egalstad@nagios.org)
  * Last Modified:   12-12-2006
@@ -157,7 +157,7 @@
 /****** EVENT FLAGS ************************/
 
 #define NEBFLAG_NONE                          0
-#define NEBFLAG_PROCESS_INITIATED             1         /* event was initiated by Nagios process */
+#define NEBFLAG_PROCESS_INITIATED             1         /* event was initiated by Icgina process */
 #define NEBFLAG_USER_INITIATED                2         /* event was initiated by a user request */
 #define NEBFLAG_MODULE_INITIATED              3         /* event was initiated by an event broker module */
 
