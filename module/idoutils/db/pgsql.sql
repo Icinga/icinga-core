@@ -1305,6 +1305,7 @@ CREATE TABLE  icinga_systemcommands (
   early_timeout INTEGER NOT NULL default '0',
   execution_time double precision NOT NULL default '0',
   return_code INTEGER NOT NULL default '0',
+  output varchar(255) NOT NULL default '',
   long_output varchar(8192) NOT NULL default '',
   PRIMARY KEY  (systemcommand_id),
   UNIQUE (instance_id,start_time,start_time_usec)

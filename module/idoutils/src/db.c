@@ -865,44 +865,8 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 	/* escape characters */
 	for (x = 0, y = 0; x < z; x++) {
 
-        	switch (idi->dbinfo.server_type) {
-	                case NDO2DB_DBSERVER_MYSQL:
-				if (buf[x] == '\'' || buf[x] == '\"' || buf[x] == '*' || buf[x]	== '\\' || 
-					buf[x] == '$' || buf[x] == '?' || buf[x] == '.'	|| 
-					buf[x] == '^' || buf[x] == '+' || buf[x] == '['	|| 
-					buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
-					newbuf[y++] = '\\';
-				break;
-			case NDO2DB_DBSERVER_PGSQL:
-				if (buf[x] == '\'' || buf[x] == '[' || 
-					buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
-					newbuf[y++] = '\\';
-	                        break;
-        	        case NDO2DB_DBSERVER_DB2:
-	                        break;
-	                case NDO2DB_DBSERVER_FIREBIRD:
-	                        break;
-	                case NDO2DB_DBSERVER_FREETDS:
-	                        break;
-	                case NDO2DB_DBSERVER_INGRES:
-	                        break;
-	                case NDO2DB_DBSERVER_MSQL:
-	                        break;
-	                case NDO2DB_DBSERVER_ORACLE:
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-				if(buf[x]=='\'' )
-					newbuf[y++]='\'';
-#endif /* Oracle ocilib specific */
-
-        	                break;
-	                case NDO2DB_DBSERVER_SQLITE:
-	                        break;
-	                case NDO2DB_DBSERVER_SQLITE3:
-	                        break;
-	                default:
-	                        break;
-		}
+                if(buf[x]=='\'' )
+	                newbuf[y++]='\'';
 
 		newbuf[y++] = buf[x];
 	}
@@ -1033,6 +997,8 @@ int ndo2db_db_query(ndo2db_idi *idi, char *buf) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_SQL, 0, "%s\n", buf);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
+
+	/* send query */
 	idi->dbinfo.dbi_result = dbi_conn_query(idi->dbinfo.dbi_conn, buf);
 
 	if (idi->dbinfo.dbi_result == NULL){
