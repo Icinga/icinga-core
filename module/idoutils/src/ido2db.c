@@ -2,10 +2,10 @@
  * NDO2DB.C - NDO To Database Daemon
  *
  * Copyright (c) 2005-2008 Ethan Galstad
- * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified:
+ * Last Modified: 01-05-2010
  *
  **************************************************************/
 
@@ -1208,6 +1208,10 @@ int ndo2db_handle_client_connection(int sd){
 #ifdef DEBUG_NDO2DB2
 	printf("BYTES: %lu, LINES: %lu\n",idi.bytes_processed,idi.lines_processed);
 #endif
+
+	/* Kill all sub threads */
+	/* Experimental and may be dangerous... */
+	/* pthread_exit(NULL); */
 
 	/* free memory allocated to dynamic buffer */
 	ndo_dbuf_free(&dbuf);
