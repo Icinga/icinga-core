@@ -125,6 +125,12 @@
 
   <pre class="programlisting"> # /usr/sbin/groupadd icinga</pre>
 
+  <p>For sending commands from the webinterface to Icinga, you'll need to create a new group icinga-cmd. Add the webuser and the Icingauser to this group: </p>
+
+    <pre class="programlisting"> # /usr/sbin/groupadd icinga-cmd
+ # /usr/sbin/usermod -a -G icinga-cmd icinga
+ # /usr/sbin/usermod -a -G icinga-cmd www-data (or www, wwwrun)</pre>
+
   <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
 
   <p>Change to your local source directory i.e. /usr/src</p>
@@ -148,7 +154,7 @@
 
   <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
 
-  <pre class="programlisting"> # ./configure</pre>
+  <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd</pre>
 
   <p>Compile the Icinga source code. To see available options, only use "make".</p>
 
@@ -286,7 +292,7 @@
 
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id4219553"></a>
+  <a class="indexterm" name="id3826496"></a>
 </div>
 <div class="navfooter">
 <hr>

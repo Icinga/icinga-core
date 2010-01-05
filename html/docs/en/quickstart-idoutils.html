@@ -27,230 +27,233 @@
 <div class="section" title="Icinga with IDOUtils Quickstart">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="quickstart-idoutils"></a>Icinga with IDOUtils Quickstart</h2></div></div></div>
-  
+    
 
-  <p><span class="bold"><strong><a name="introduction_idoutils"></a>Introduction</strong></span></p>
+    <p><span class="bold"><strong><a name="introduction_idoutils"></a>Introduction</strong></span></p>
 
-  <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have
-  it monitoring your local machine within 30 minutes.</p>
+    <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it monitoring
+    your local machine within 30 minutes.</p>
 
-  <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get
-  started.</p>
+    <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get started.</p>
 
-  <p>This guide will give you examples for currently three different Linux distributions: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> and
-  <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Similar distributions may work as well. That should include
-  <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>,
-  <a class="link" href="http://www.debian.org/" target="_top">Debian</a> and <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
+    <p>This guide will give you examples for currently three different Linux distributions: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> and <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Similar distributions may work as well. That should include <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>, <a class="link" href="http://www.debian.org/" target="_top">Debian</a> and <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
 
-  <p>Other distributions may inherit from these examples.</p>
+    <p>Other distributions may inherit from these examples.</p>
 
-  <p><span class="bold"><strong>If you are planning to use Icinga without IDOUtils please read <a class="xref" href="quickstart-icinga.html" title="Icinga Quickstart">“Icinga Quickstart”</a> instead!</strong></span></p>
+    <p><span class="bold"><strong>If you are planning to use Icinga without IDOUtils please read <a class="xref" href="quickstart-icinga.html" title="Icinga Quickstart">“Icinga Quickstart”</a>
+    instead!</strong></span></p>
 
-  <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
+    <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
 
-  <p>If you follow these instructions, here's what you'll end up with:</p>
+    <p>If you follow these instructions, here's what you'll end up with:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Icinga and the plugins will be installed underneath /usr/local/icinga</p>
-    </li>
+            <p>Icinga and the plugins will be installed underneath /usr/local/icinga</p>
+        </li>
 <li class="listitem">
-      <p>Icinga will be configured to monitor a few aspects of your local system (CPU load, disk usage, etc.)</p>
-    </li>
+            <p>Icinga will be configured to monitor a few aspects of your local system (CPU load, disk usage, etc.)</p>
+        </li>
 <li class="listitem">
-      <p>The Icinga web interface will be accessible at http://localhost/icinga/ or http://yourdomain.com/icinga</p>
-    </li>
+            <p>The Icinga web interface will be accessible at http://localhost/icinga/ or http://yourdomain.com/icinga</p>
+        </li>
 <li class="listitem">
-      <p>A database which is filled by Icinga using IDOUtils</p>
-    </li>
+            <p>A database which is filled by Icinga using IDOUtils</p>
+        </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+    <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
-  <p>During portions of the installation you'll need to have <span class="bold"><strong>root</strong></span> access to your
-  machine.</p>
+    <p>During portions of the installation you'll need to have <span class="bold"><strong>root</strong></span> access to your machine.</p>
 
-  <p>Make sure you've installed the following packages on your system before continuing. IDOUtils use the <a class="link" href="http://libdbi.sourceforge.net" target="_top">libdbi</a> and the libdbi-drivers for several databases. The development libraries
-  are also required. The following examples will show how to install the IDOUtils with the libdbi using MySQL or
-  PostgreSQL.</p>
+    <p>Make sure you've installed the following packages on your system before continuing. IDOUtils use the <a class="link" href="http://libdbi.sourceforge.net" target="_top">libdbi</a> and the libdbi-drivers for several databases. The development libraries are also
+    required. The following examples will show how to install the IDOUtils with the libdbi using MySQL or PostgreSQL.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Apache</p>
-    </li>
+            <p>Apache</p>
+        </li>
 <li class="listitem">
-      <p>GCC compiler</p>
-    </li>
+            <p>GCC compiler</p>
+        </li>
 <li class="listitem">
-      <p>C/C++ development libraries</p>
-    </li>
+            <p>C/C++ development libraries</p>
+        </li>
 <li class="listitem">
-      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
-    </li>
+            <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
+        </li>
 <li class="listitem">
-      <p>libdbi/libdbi-drivers, database like MySQL or PostgreSQL</p>
-    </li>
+            <p>libdbi/libdbi-drivers, database like MySQL or PostgreSQL</p>
+        </li>
 </ul></div>
 
-  <p><span class="bold"><strong>New features for the IDOUtils:</strong></span></p>
+    <p><span class="bold"><strong>New features for the IDOUtils:</strong></span></p>
 
-  <p><span class="bold"><strong>SSL- encryption between idomod and ido2db</strong></span></p>
+    <p><span class="bold"><strong>SSL- encryption between idomod and ido2db</strong></span></p>
 
-  <p>If you want to use SSL-Encryption you'll need openssl and openssl-devel/libssl-dev (Ubuntu) to be installed !</p>
+    <p>If you want to use SSL-Encryption you'll need openssl and openssl-devel/libssl-dev (Ubuntu) to be installed !</p>
 
-  <p><span class="bold"><strong>Oracle Database Support</strong></span></p>
+    <p><span class="bold"><strong>Oracle Database Support</strong></span></p>
 
-  <p>If you want Oracle as RDBM you'll need to install ocilib instead to libdbi. Get it from http://orclib.sourceforge.net/ and point configure
-  to your Oracle libraries and header files e.g. from the Oracle instant client:</p>
+    <p>If you want Oracle as RDBM you'll need to install ocilib instead to libdbi. Get it from http://orclib.sourceforge.net/ and point configure to your Oracle
+    libraries and header files e.g. from the Oracle instant client:</p>
 
-  <pre class="programlisting"> # ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include --with-oracle-lib-path=/path/to/instantclient/
+    <pre class="programlisting"> # ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include --with-oracle-lib-path=/path/to/instantclient/
  # make
  # make install</pre>
 
-  <p><span class="bold"><strong>Install packages</strong></span></p>
+    <p><span class="bold"><strong>Install packages</strong></span></p>
 
-  <p>You can install your packages by running the following commands (as root or sudo):</p>
+    <p>You can install your packages by running the following commands (as root or sudo):</p>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
+    <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
 
-  <pre class="programlisting"> # yum install httpd gcc glibc glibc-common gd gd-devel
+    <pre class="programlisting"> # yum install httpd gcc glibc glibc-common gd gd-devel
  # yum install libjpeg libjpeg-devel libpng libpng-devel</pre>
 
-  <p><span class="bold"><strong>MySQL:</strong></span></p>
+    <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-  <pre class="programlisting"> # yum install mysql mysql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
+    <pre class="programlisting"> # yum install mysql mysql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
 
-  <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+    <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-  <pre class="programlisting"> # yum install postgresql postgresql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-pgsql</pre>
+    <pre class="programlisting"> # yum install postgresql postgresql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-pgsql</pre>
 
-  <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
+    <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
 
-  <pre class="programlisting"> # apt-get install apache2 build-essential libgd2-xpm-dev
+    <pre class="programlisting"> # apt-get install apache2 build-essential libgd2-xpm-dev
  # apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
-  </td></tr>
+        <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
+    </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>MySQL:</strong></span></p>
+    <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-  <pre class="programlisting"> # apt-get install mysql-server mysql-client libdbi0 libdbi0-dev libdbd-mysql</pre>
+    <pre class="programlisting"> # apt-get install mysql-server mysql-client libdbi0 libdbi0-dev libdbd-mysql</pre>
 
-  <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+    <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-  <pre class="programlisting"> # apt-get install postgresql libdbi0 libdbi0-dev libdbd-pgsql</pre>
+    <pre class="programlisting"> # apt-get install postgresql libdbi0 libdbi0-dev libdbd-pgsql</pre>
 
-  <p><span class="bold"><strong>openSuSE:</strong></span></p>
+    <p><span class="bold"><strong>openSuSE:</strong></span></p>
 
-  <p>Use yast to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" or "postgresql", "postgresql-devel", "postgresql-server".</p>
-  <p>It is most likely that there aren't any libdbi packages so you have to download and compile the sources. Replace
-  &lt;rdbm&gt; with your desired RDBM like mysql or pgsql. Remember that the Oracle driver is not yet working and read the
-  appropriate section with ocilib instead of libdbi.</p>
+    <p>Use yast to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" or "postgresql",
+    "postgresql-devel", "postgresql-server".</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <p>It is most likely that there aren't any libdbi packages so you have to download and compile the sources. Replace &lt;rdbm&gt; with your
+    desired RDBM like mysql or pgsql. Remember that the Oracle driver is not yet working and read the appropriate section with ocilib instead of
+    libdbi.</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Download and extract the tar.gz files</p>
+            <p>Download and extract the tar.gz files</p>
 
-      <p><a class="link" href="http://libdbi.sourceforge.net/download.html" target="_top">http://libdbi.sourceforge.net/download.html</a></p>
+            <p><a class="link" href="http://libdbi.sourceforge.net/download.html" target="_top">http://libdbi.sourceforge.net/download.html</a></p>
 
-      <p><a class="link" href="http://libdbi-drivers.sourceforge.net/download.html" target="_top">http://libdbi-drivers.sourceforge.net/download.html</a></p>
+            <p><a class="link" href="http://libdbi-drivers.sourceforge.net/download.html" target="_top">http://libdbi-drivers.sourceforge.net/download.html</a></p>
 
-      <pre class="programlisting"> # tar xvzf libdbi-0.8.3.tar.gz
+            <pre class="programlisting"> # tar xvzf libdbi-0.8.3.tar.gz
  # tar xvzf libdbi-drivers-0.8.3-1.tar.gz</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p>Install libdbi. Maybe you have to specify additional options with configure (set --prefix=/usr ... )</p>
+            <p>Install libdbi. Maybe you have to specify additional options with configure (set --prefix=/usr ... )</p>
 
-      <pre class="programlisting"> # cd libdbi
+            <pre class="programlisting"> # cd libdbi
  # ./configure --disable-docs
  # make
  # make install</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p>Install libdbi-drivers</p>
+            <p>Install libdbi-drivers</p>
 
-      <pre class="programlisting"> # cd libdbi-drivers
+            <pre class="programlisting"> # cd libdbi-drivers
  # ./configure --with-&lt;rdbm&gt; --disable-docs
  # make
  # make install</pre>
-    </li>
+        </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Create Account Information</strong></span></p>
+    <p><span class="bold"><strong>Create Account Information</strong></span></p>
 
-  <p>Become the root user.</p>
+    <p>Become the root user.</p>
 
-  <pre class="programlisting"> # su -l</pre>
+    <pre class="programlisting"> # su -l</pre>
 
-  <p>Create a new <span class="emphasis"><em>Icinga</em></span> user account and give it a password.</p>
+    <p>Create a new <span class="emphasis"><em>Icinga</em></span> user account and give it a password.</p>
 
-  <pre class="programlisting"> # /usr/sbin/useradd -m icinga 
+    <pre class="programlisting"> # /usr/sbin/useradd -m icinga 
  # passwd icinga </pre>
 
-  <p>On some distributions you'll need to add the group in a single step:</p>
+    <p>On some distributions you'll need to add the group in a single step:</p>
 
-  <pre class="programlisting"> # /usr/sbin/groupadd icinga</pre>
+    <pre class="programlisting"> # /usr/sbin/groupadd icinga</pre>
 
-  <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
+    <p>For sending commands from the webinterface to Icinga, you'll need to create a new group icinga-cmd. Add the webuser and the
+    Icingauser to this group:</p>
 
-  <p>Change to your local source directory i.e. /usr/src</p>
+    <pre class="programlisting"> # /usr/sbin/groupadd icinga-cmd
+ # /usr/sbin/usermod -a -G icinga-cmd icinga
+ # /usr/sbin/usermod -a -G icinga-cmd www-data (or www, wwwrun)</pre>
 
-  <pre class="programlisting"> # cd /usr/src</pre>
+    <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
 
-  <p>Either fetch the actual icinga-core snapshot from Icinga GIT </p>
+    <p>Change to your local source directory i.e. /usr/src</p>
+
+    <pre class="programlisting"> # cd /usr/src</pre>
+
+    <p>Either fetch the actual icinga-core snapshot from Icinga GIT </p>
 <pre class="programlisting"> # git clone git://git.icinga.org/icinga-core.git  </pre>
 <p>
-  or from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> . Don't forget to download the <a class="link" href="http://www.nagios.org/" target="_top">Nagios Plugins</a></p>
+    or from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> . Don't forget to download the <a class="link" href="http://www.nagios.org/" target="_top">Nagios Plugins</a></p>
 
-  <p><span class="bold"><strong>Compile and Install Icinga with IDOUtils</strong></span></p>
+    <p><span class="bold"><strong>Compile and Install Icinga with IDOUtils</strong></span></p>
 
-  <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
+    <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
-  <pre class="programlisting"> # cd /usr/src/ 
+    <pre class="programlisting"> # cd /usr/src/ 
  # tar xvzf icinga-1.0 Stable.tar.gz 
  # cd icinga-1.0 Stable</pre>
 
-  <p>Run the Icinga configure script and enable IDOUtils. You will get help by using the --help flag:</p>
+    <p>Run the Icinga configure script and enable IDOUtils. You will get help by using the --help flag:</p>
 
-  <pre class="programlisting"> # ./configure --enable-idoutils</pre>
+    <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils </pre>
 
-  <p><span class="bold"><strong>With SSL-encryption:</strong></span></p>
+    <p><span class="bold"><strong>With SSL-encryption:</strong></span></p>
 
-  <pre class="programlisting"> # ./configure --enable-idoutils --enable-ssl</pre>
+    <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
 
-  <p><span class="bold"><strong>With Oracle database support:</strong></span></p>
+    <p><span class="bold"><strong>With Oracle database support:</strong></span></p>
 
-  <pre class="programlisting"> # ./configure --enable-idoutils --enable-oracle</pre>
-<p> If you didn't install ocilib to the
-  default path (/usr/local) you can point configure to the lib/inc directories:</p>
+    <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle </pre>
+<p> If you didn't install
+    ocilib to the default path (/usr/local) you can point configure to the lib/inc directories:</p>
 
-  <pre class="programlisting"> # ./configure --enable-idoutils --enable-oracle --with-ocilib-lib=/path/to/ocilib/lib --with-ocilib-inc=/path/to/ocilib/include</pre>
+    <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle --with-ocilib-lib=/path/to/ocilib/lib --with-ocilib-inc=/path/to/ocilib/include</pre>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>If you want to change RDBM from Oracle to others, you need to recompile and reinstall IDOUtils!</p>
-    </td></tr>
+            <p>If you want to change RDBM from Oracle to others, you need to recompile and reinstall IDOUtils!</p>
+        </td></tr>
 </table></div>
 <pre class="programlisting"> # make distclean
  # ./configure --enable-idoutils</pre>
-<p> Compile the Icinga source code. There is also an extra option for
-  IDOUtils (<span class="emphasis"><em>make idoutils</em></span>) if you need to recompile only this module. To see available options, only
-  use "make".</p>
+<p> Compile the Icinga source code. There is also an extra option for IDOUtils
+    (<span class="emphasis"><em>make idoutils</em></span>) if you need to recompile only this module. To see available options, only use "make".</p>
 
-  <pre class="programlisting"> # make all</pre>
+    <pre class="programlisting"> # make all</pre>
 
-  <p>Install binaries, init script, sample config files and set permissions on the external command directory. Also install the
-  IDOUtils. </p>
+    <p>Install binaries, init script, sample config files and set permissions on the external command directory. Also install the IDOUtils.
+    </p>
 <pre class="programlisting"> # make install 
  # make install-init 
  # make install-config 
@@ -259,52 +262,53 @@
 <p> or shorter </p>
 <pre class="programlisting"> # make fullinstall</pre>
 
-  <p>Don't start Icinga yet - there's still more that needs to be done...</p>
+    <p>Don't start Icinga yet - there's still more that needs to be done...</p>
 
-  <p><span class="bold"><strong>Customize Configuration</strong></span></p>
+    <p><span class="bold"><strong>Customize Configuration</strong></span></p>
 
-  <p>Sample configuration files have been installed by using make install-config into /usr/local/icinga/etc/. You'll need to
-  make just one change before you proceed...</p>
+    <p>Sample configuration files have been installed by using make install-config into /usr/local/icinga/etc/. You'll need to make just one change
+    before you proceed...</p>
 
-  <p>Edit the <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span> config file with your favourite editor and change
-  the email address associated with the <span class="emphasis"><em>icingaadmin</em></span> contact definition to the address you'd like to use for
-  receiving alerts.</p>
+    <p>Edit the <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span> config file with your favourite editor and change the email address
+    associated with the <span class="emphasis"><em>icingaadmin</em></span> contact definition to the address you'd like to use for receiving alerts.</p>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+    <pre class="programlisting"> # vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
 
-  <pre class="programlisting"> # cd /usr/local/icinga/etc/
- # cp idomod.cfg-sample idomod.cfg
- # cp ido2db.cfg-sample ido2db.cfg</pre>
+    <pre class="programlisting"> # cd /usr/local/icinga/etc/
+ # mv idomod.cfg-sample idomod.cfg
+ # mv ido2db.cfg-sample ido2db.cfg</pre>
 
-  <p>If you want to enable SSL-encryption and you configured the IDOUtils with ./configure --enable-ssl, you have to
-  change idomod.cfg and ido2db.cfg: </p>
-<pre class="programlisting"> # use_ssl=1
- # socket_type=tcp </pre>
+    <p>If you want to enable SSL-encryption and you configured the IDOUtils with ./configure --enable-ssl, you have to change idomod.cfg and
+    ido2db.cfg: </p>
+<pre class="programlisting"> use_ssl=1
+ socket_type=tcp </pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If SSL is enabled in ido2db but not in the different idomod clients - data from those instances will be lost - that's
-    guaranteed! SSL configuration has to be the same on all nodes!!!</p>
-  </td></tr>
+        <p>If SSL is enabled in ido2db but not in the different idomod clients - data from those instances will be lost - that's guaranteed! SSL
+        configuration has to be the same on all nodes!!!</p>
+    </td></tr>
 </table></div>
 
-  <p><span class="emphasis"><em>Enable the idomod event broker module:</em></span></p>
+    <p><span class="emphasis"><em>Enable the idomod event broker module:</em></span></p>
 
-  <p>Search for broker_module and uncomment the example or edit it matching your filenames in:</p>
+    <p>Search for broker_module and uncomment the example or edit it matching your filenames in:</p>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/icinga.cfg</pre>
+    <pre class="programlisting"> # vi /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <p><span class="bold"><strong>Creation of database and IDOUtils</strong></span></p>
+    <pre class="programlisting"> broker_module=/usr/local/icinga/bin/idomod.o config_file=/usr/local/icinga/etc/idomod.cfg</pre>
 
-  <p><span class="bold"><strong>MySQL:</strong></span></p>
+    <p><span class="bold"><strong>Creation of database and IDOUtils</strong></span></p>
 
-  <p>Create Database, User, Grants:</p>
+    <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-  <pre class="programlisting"> # mysql -u root -p
+    <p>Create Database, User, Grants:</p>
+
+    <pre class="programlisting"> # mysql -u root -p
 
  mysql&gt; CREATE DATABASE icinga;
  GRANT USAGE ON *.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
@@ -312,43 +316,43 @@
  FLUSH PRIVILEGES ;
  quit</pre>
 
-  <p>Import database scheme for MySQL:</p>
+    <p>Import database scheme for MySQL:</p>
 
-  <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db 
+    <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db 
  # mysql -u root -p icinga &lt; mysql.sql</pre>
 
-  <p>Edit the DB config file to customize IDOUtils</p>
+    <p>Edit the DB config file to customize IDOUtils</p>
 
-  
+    
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/ido2db.cfg
+    <pre class="programlisting"> # vi /usr/local/icinga/etc/ido2db.cfg
 
  db_servertype=mysql
  db_port=3306
  db_user=icinga
  db_pass=icinga</pre>
 
-  <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+    <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-  <p>Create database and User:</p>
+    <p>Create database and User:</p>
 
-  <pre class="programlisting"> # su - postgres
+    <pre class="programlisting"> # su - postgres
  $psql
  postgres=# CREATE USER icinga;
  postgres=# ALTER USER icinga WITH PASSWORD 'icinga';
  postgres=# CREATE DATABASE icinga; </pre>
 
-  <p><span class="bold"><strong>Debian:</strong></span></p>
+    <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> # vi /etc/postgresql/8.x/main/pg_hba.conf</pre>
+    <pre class="programlisting"> # vi /etc/postgresql/8.x/main/pg_hba.conf</pre>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
+    <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
 
-  <pre class="programlisting"> # vi /var/lib/pgsql/data/pg_hba.conf</pre>
+    <pre class="programlisting"> # vi /var/lib/pgsql/data/pg_hba.conf</pre>
 
-  <p>Edit the config e.g. like this (local user must be trusted)</p>
+    <p>Edit the config e.g. like this (local user must be trusted)</p>
 
-  <pre class="programlisting"> # database administrative login by UNIX sockets
+    <pre class="programlisting"> # database administrative login by UNIX sockets
  local    all        postgres                  ident
  # TYPE   DATABASE   USER       CIDR-ADDRESS   METHOD 
  #icinga
@@ -360,167 +364,175 @@
  # IPV6 local connections
  local    all        all        ::1/128        trust</pre>
 
-  <p>Reload and configure database scheme.</p>
+    <p>Reload and configure database scheme.</p>
 
-  <pre class="programlisting"> # /etc/init.d/postgresql-8.x reload</pre>
+    <pre class="programlisting"> # /etc/init.d/postgresql-8.x reload</pre>
 
-  <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db
+    <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db
  # psql -U icinga -d icinga &lt; pgsql.sql</pre>
 
-  <p>Edit the DB config file to customize IDOUtils</p>
+    <p>Edit the DB config file to customize IDOUtils</p>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/ido2db.cfg
+    <pre class="programlisting"> # vi /usr/local/icinga/etc/ido2db.cfg
  db_servertype=pgsql
  db_port=5432
  db_user=icinga
  db_pass=icinga</pre>
 
-  <p><span class="bold"><strong>Oracle:</strong></span></p>
+    <p><span class="bold"><strong>Oracle:</strong></span></p>
 
-  <p>Create a database schema and username/password (refer to the Oracle documentation at http://www.oracle.com or consult your DBA).
-  Import the database scheme with sqlplus (or your preferred method). Copy module/idoutils/db/oracle.sql to $ORACLE_HOME</p>
+    <p>Create a database schema and username/password (refer to the Oracle documentation at http://www.oracle.com or consult your DBA). Import the database
+    scheme with sqlplus (or your preferred method). Copy module/idoutils/db/oracle.sql to $ORACLE_HOME</p>
 
-  <pre class="programlisting"> # su - oracle
+    <pre class="programlisting"> # su - oracle
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle.sql</pre>
 
-  <p>Edit the DB config file to customize IDOUtils. Remember that Oracle ignores the db host, instead point db_name to
-  //DBSERVER/DBNAME</p>
+    <p>Edit the DB config file to customize IDOUtils. Remember that Oracle ignores the db host, instead point db_name to //DBSERVER/DBNAME</p>
 
-  <pre class="programlisting"># vi /usr/local/icinga/etc/ido2db.cfg
+    <pre class="programlisting"># vi /usr/local/icinga/etc/ido2db.cfg
   db_servertype=oracle
   db_port=1521
   db_user=icinga
   db_pass=icinga</pre>
 
-  <p><span class="bold"><strong>Configure the Web Interface</strong></span></p>
+    <p><span class="bold"><strong>Configure the Web Interface</strong></span></p>
 
-  <p>Install the Icinga web config file in the Apache conf.d directory.</p>
+    <p>Install the Icinga web config file in the Apache conf.d directory.</p>
 
-  <pre class="programlisting"> # make install-webconf</pre>
+    <pre class="programlisting"> # make install-webconf</pre>
 
-  <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga web interface. Remember the password
-  you assign to this account - you'll need it later.</p>
+    <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga web interface. Remember the password you assign to
+    this account - you'll need it later.</p>
 
-  <pre class="programlisting"> # htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+    <pre class="programlisting"> # htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
 
-  <p>To change the password of an existing user or to add a new user, take this command:</p>
+    <p>To change the password of an existing user or to add a new user, take this command:</p>
 
-  <pre class="programlisting"> # htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+    <pre class="programlisting"> # htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Depending on your distribution/Apache-version you may have to use <span class="emphasis"><em>htpasswd2</em></span> instead.</p>
-  </td></tr>
+        <p>Depending on your distribution/Apache-version you may have to use <span class="emphasis"><em>htpasswd2</em></span> instead.</p>
+    </td></tr>
 </table></div>
 
-  <p>Reload/Restart Apache to make the new settings take effect.</p>
+    <p>Reload/Restart Apache to make the new settings take effect.</p>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
+    <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
 
-  <pre class="programlisting"> # service httpd restart</pre>
+    <pre class="programlisting"> # service httpd restart</pre>
 
-  <p><span class="bold"><strong>Ubuntu/openSuSE:</strong></span></p>
- <pre class="programlisting"> # service apache2 restart</pre>
- <p><span class="bold"><strong>Debian:</strong></span></p>
+    <p><span class="bold"><strong>Ubuntu/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> # /etc/init.d/apache2 reload</pre>
+    <pre class="programlisting"> # service apache2 restart</pre>
 
-  <p><span class="bold"><strong>Compile and Install the Nagios Plugins</strong></span></p>
+    <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <p>Extract the Nagios plugins source code tarball.</p>
+    <pre class="programlisting"> # /etc/init.d/apache2 reload</pre>
 
-  <pre class="programlisting"> # cd /usr/src 
+    <p><span class="bold"><strong>Compile and Install the Nagios Plugins</strong></span></p>
+
+    <p>Extract the Nagios plugins source code tarball.</p>
+
+    <pre class="programlisting"> # cd /usr/src 
  # tar xvzf nagios-plugins-1.4.14.tar.gz 
  # cd nagios-plugins-1.4.14  </pre>
 
-  <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
+    <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
 
-  <pre class="programlisting"> # ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga 
+    <pre class="programlisting"> # ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga 
  # make 
  # make install </pre>
 
-  <p><span class="bold"><strong>Start IDOUtils and Icinga</strong></span></p>
+    <p><span class="bold"><strong>Start IDOUtils and Icinga</strong></span></p>
 
-  <p><span class="emphasis"><em><span class="bold"><strong>Start IDOUtils</strong></span></em></span></p>
+    <p><span class="emphasis"><em><span class="bold"><strong>Start IDOUtils</strong></span></em></span></p>
 
-  <p>IDOUtils must be started and running <span class="emphasis"><em>before</em></span> Icinga is started.</p>
+    <p>IDOUtils must be started and running <span class="emphasis"><em>before</em></span> Icinga is started.</p>
 
-  <p><span class="emphasis"><em>Start IDOUtils:</em></span></p>
- <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
- <pre class="programlisting"> # service ido2db start</pre>
- <p><span class="bold"><strong>Debian:</strong></span></p>
-  <pre class="programlisting"> # /etc/init.d/ido2db start</pre>
+    <p><span class="emphasis"><em>Start IDOUtils:</em></span></p>
 
-  <p><span class="emphasis"><em>Stop IDOUtils:</em></span></p>
-<p><span class="bold"><strong> Fedora/RHEL/CentOSUbuntu/openSuSE:</strong></span></p>
- <pre class="programlisting"> # service ido2db stop</pre>
- <p><span class="bold"><strong>Debian:</strong></span></p>
+    <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> # /etc/init.d/ido2db stop</pre>
+    <pre class="programlisting"> # service ido2db start</pre>
 
-  <p>Verify the sample Icinga configuration files.</p>
+    <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> #/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg </pre>
+    <pre class="programlisting"> # /etc/init.d/ido2db start</pre>
 
-  <p>If there are no errors, start Icinga.</p>
+    <p><span class="emphasis"><em>Stop IDOUtils:</em></span></p>
 
-  <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
+    <p><span class="bold"><strong> Fedora/RHEL/CentOSUbuntu/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> service icinga start</pre>
+    <pre class="programlisting"> # service ido2db stop</pre>
 
-  <p><span class="bold"><strong>Debian:</strong></span></p>
+    <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> # /etc/init.d/icinga start</pre>
+    <pre class="programlisting"> # /etc/init.d/ido2db stop</pre>
 
-  <p><span class="bold"><strong>Configure Icinga Startup</strong></span></p>
+    <p>Verify the sample Icinga configuration files.</p>
 
-  <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have
-  installed the init script before).</p>
+    <pre class="programlisting"> #/usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg </pre>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS/openSuSE:</strong></span></p>
+    <p>If there are no errors, start Icinga.</p>
 
-  <pre class="programlisting"> # chkconfig --add icinga chkconfig icinga on</pre>
+    <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
 
-  <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
+    <pre class="programlisting"> service icinga start</pre>
 
-  <pre class="programlisting"> # update-rc.d icinga defaults</pre>
+    <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <p><span class="bold"><strong>Login to the Web Interface</strong></span></p>
+    <pre class="programlisting"> # /etc/init.d/icinga start</pre>
 
-  <p>You should now be able to access the Icinga web interface at the URL below. You'll be prompted for the username (
-  <span class="emphasis"><em>icingaadmin</em></span> ) and password you specified earlier. </p>
+    <p><span class="bold"><strong>Configure Icinga Startup</strong></span></p>
+
+    <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have installed the
+    init script before).</p>
+
+    <p><span class="bold"><strong>Fedora/RHEL/CentOS/openSuSE:</strong></span></p>
+
+    <pre class="programlisting"> # chkconfig --add icinga chkconfig icinga on</pre>
+
+    <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
+
+    <pre class="programlisting"> # update-rc.d icinga defaults</pre>
+
+    <p><span class="bold"><strong>Login to the Web Interface</strong></span></p>
+
+    <p>You should now be able to access the Icinga web interface at the URL below. You'll be prompted for the username (
+    <span class="emphasis"><em>icingaadmin</em></span> ) and password you specified earlier. </p>
 <pre class="programlisting"> http://localhost/icinga/</pre>
-<p>
-  or </p>
+<p> or
+    </p>
 <pre class="programlisting"> http://yourdomain.com/icinga/ </pre>
 
-  <p>Click on the "Service Detail" navbar link to see details of what's being monitored on your local machine. It will take a
-  few minutes for Icinga to check all the services associated with your machine.</p>
+    <p>Click on the "Service Detail" navbar link to see details of what's being monitored on your local machine. It will take a few minutes for
+    Icinga to check all the services associated with your machine.</p>
 
-  <p><span class="bold"><strong>Other Modifications</strong></span></p>
+    <p><span class="bold"><strong>Other Modifications</strong></span></p>
 
-  <p>Make sure your system's firewall rules are configured to allow access to the web server if you want to access the
-  Icinga interface remotely.</p>
+    <p>Make sure your system's firewall rules are configured to allow access to the web server if you want to access the Icinga interface
+    remotely.</p>
 
-  <pre class="programlisting"> # iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
+    <pre class="programlisting"> # iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
 
-  <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification
-  emails won't be explained here. Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios Wiki</a> for
-  more resources.</p>
+    <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't be
+    explained here. Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios Wiki</a> for more resources.</p>
 
-  <p>There are several tweaks for the IDOUtils (former NDOUtils of Nagios) available.</p>
+    <p>There are several tweaks for the IDOUtils (former NDOUtils of Nagios) available.</p>
 
-  <p><span class="bold"><strong>You're Done</strong></span></p>
+    <p><span class="bold"><strong>You're Done</strong></span></p>
 
-  <p>Congratulations! You successfully installed Icinga with IDOUtils. Your journey into monitoring has just
-  begun. You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a> about "Monitoring ..."</p>
+    <p>Congratulations! You successfully installed Icinga with IDOUtils. Your journey into monitoring has just begun. You'll no doubt
+    want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a> about "Monitoring
+    ..."</p>
 
-  <a class="indexterm" name="id4220703"></a>
+    <a class="indexterm" name="id3827790"></a>
 </div>
 <div class="navfooter">
 <hr>

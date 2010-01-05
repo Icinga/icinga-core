@@ -27,55 +27,92 @@
 <div class="section" title="Installation des neuen Icinga Webinterface">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-web-scratch"></a>Installation des neuen Icinga Webinterface</h2></div></div></div>
-<div class="orderedlist"><ol class="orderedlist" type="1">
+    
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<p><span class="bold"><strong>Voraussetzungen</strong></span></p>
-<p>Die Pakete mysql und php5 sind installiert (mit PEAR und CLI), Icinga läuft, die IDOUtils ebenfalls, dann ab zu 2., ansonsten bitte:</p>
-<p><span class="emphasis"><em>Ubuntu / Debian</em></span></p>
-<pre class="programlisting"> # apt-get install php5-cli php-pear php5-xmlrpc php5-xsl</pre>
-<p><span class="emphasis"><em>Fedora / RHEL / CentOS</em></span></p>
-<pre class="programlisting"> # yum install php-cli php-pear php-xmlrpc php-xsl</pre>
-<p><span class="emphasis"><em>OpenSuSE</em></span></p>
-<p>Benutzer Sie yast, um die Pakete "php5-pear", "php5-xmlrpc" und "php5-xsl" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
-<p></p>
-<p>Clonen Sie von icinga-web.git, um mit der aktuellsten Version zu arbeiten:</p>
-<pre class="programlisting"> # git clone git://git.icinga.org/icinga-web.git</pre>
-</li>
+            <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+
+            <p>Die Pakete mysql und php5 sind installiert (mit PEAR und CLI), Icinga läuft, die IDOUtils ebenfalls, dann ab zu 2., ansonsten
+            bitte:</p>
+
+            <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
+
+            <pre class="programlisting"> # apt-get install php5-cli php-pear php5-xmlrpc php5-xsl</pre>
+
+            <p><span class="emphasis"><em>Fedora / RHEL / CentOS</em></span></p>
+
+            <pre class="programlisting"> # yum install php-cli php-pear php-xmlrpc php-xsl</pre>
+
+            <p><span class="bold"><strong>OpenSuSE</strong></span></p>
+
+            <p>Benutzer Sie yast, um die Pakete "php5-pear", "php5-xmlrpc" und "php5-xsl" zu installieren. Die CLI ist im php5-Paket
+            enthalten.</p>
+
+            <p></p>
+
+            <p>Clonen Sie von icinga-web.git, um mit der aktuellsten Version zu arbeiten:</p>
+
+            <pre class="programlisting"> # git clone git://git.icinga.org/icinga-web.git</pre>
+        </li>
 <li class="listitem">
-<p><span class="bold"><strong>Die Installation</strong></span></p>
-<pre class="programlisting"> # tar xzvf icinga-web-(version).tar.gz
+            <p><span class="bold"><strong>Die Installation</strong></span></p>
+
+            <pre class="programlisting"> # tar xzvf icinga-web-(version).tar.gz
  # cd icinga-web</pre>
-<p>Nun können Sie schon den Installer bemühen, mit:</p>
-<pre class="programlisting"> # ./configure --help</pre>
-<p>sehen Sie alle Konfigurationsmöglichkeiten.</p>
-<p>Ohne weitere Optionen wird das Icinga Webinterface unter /usr/local/icinga-web installiert:</p>
-<pre class="programlisting"> # ./configure
+
+            <p>Nun können Sie schon den Installer bemühen, mit:</p>
+
+            <pre class="programlisting"> # ./configure --help</pre>
+
+            <p>sehen Sie alle Konfigurationsmöglichkeiten.</p>
+
+            <p>Ohne weitere Optionen wird das Icinga Webinterface unter /usr/local/icinga-web installiert:</p>
+
+            <pre class="programlisting"> # ./configure
  # make install</pre>
-</li>
+        </li>
 <li class="listitem">
-<p><span class="bold"><strong>PHP- Abhängigkeiten</strong></span></p>
-<p>Bitte prüfen Sie die PHP-Abhängigkeiten mit :</p>
-<pre class="programlisting"> # make testdeps</pre>
-<p>Alle "require"-Test sollten erfolgreich sein. Eventuell müssen Sie die php.ini anpassen:</p>
-<p>Die "magic_quote_gpc" in der Apache- und der CLI-php.ini auf "Off" setzen!</p>
-<pre class="programlisting"> # vi /etc/php5/apache/php.ini
+            <p><span class="bold"><strong>PHP- Abhängigkeiten</strong></span></p>
+
+            <p>Bitte prüfen Sie die PHP-Abhängigkeiten mit :</p>
+
+            <pre class="programlisting"> # make testdeps</pre>
+
+            <p>Alle "require"-Test sollten erfolgreich sein. Eventuell müssen Sie die php.ini anpassen:</p>
+
+            <p>Die "magic_quote_gpc" in der Apache- und der CLI-php.ini auf "Off" setzen!</p>
+
+            <pre class="programlisting"> # vi /etc/php5/apache/php.ini
    magic_quotes_gpc = off
 
  # vi /etc/php5/cli/php.ini
    magic_quotes_gpc = off</pre>
-</li>
+        </li>
 <li class="listitem">
-<p><span class="bold"><strong>Datenbank-Installation</strong></span></p>
-<p><span class="bold"><strong>Manuelles Anlegen der Datenbank:</strong></span></p>
-<p>Legen Sie eine Datenbank und einen Benutzer Ihrer Wahl an. Der Benutzer benötigt folgende Berechtigungen auf die Datenbank: SELECT, UPDATE, INSERT, DELETE. Importieren SIe die Schema etc/database/deploy/init.sql und etc/database/deploy/db-deploy.sql in die Datenbank. Das war es auch schon.</p>
-<p><span class="bold"><strong>Automatische Installation:</strong></span></p>
-<p>Angelegt wird eine Datenbank und ein User mit den entsprechenden Privilegien (CREATE, DROP, ALTER, INDEX). Gehen Sie nach etc und kopieren Sie die build.properties an einen sicheren Ort (z.B. nach /tmp). Ändern Sie die Datenbank-Einstellungen innerhalb der Properties-Datei. Sie können auch den Root-Benutzer der Datenbank verwenden, um das Schema anzulegen. Rufen Sie phing auf mit:</p>
-<pre class="programlisting"># /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/etc/build.properties db-initialize</pre>
-<p>Jetzt müssen Sie noch einen DB-User anlegen (mit den Rechten SELECT, UPDATE, INSERT, DELETE).</p>
-</li>
+            <p><span class="bold"><strong>Datenbank-Installation</strong></span></p>
+
+            <p><span class="bold"><strong>Manuelles Anlegen der Datenbank:</strong></span></p>
+
+            <p>Legen Sie eine Datenbank und einen Benutzer Ihrer Wahl an. Der Benutzer benötigt folgende Berechtigungen auf die Datenbank: SELECT,
+            UPDATE, INSERT, DELETE. Importieren SIe die Schema etc/database/deploy/init.sql und etc/database/deploy/db-deploy.sql in die Datenbank.
+            Das war es auch schon.</p>
+
+            <p><span class="bold"><strong>Automatische Installation:</strong></span></p>
+
+            <p>Angelegt wird eine Datenbank und ein User mit den entsprechenden Privilegien (CREATE, DROP, ALTER, INDEX). Gehen Sie nach etc und
+            kopieren Sie die build.properties an einen sicheren Ort (z.B. nach /tmp). Ändern Sie die Datenbank-Einstellungen innerhalb der
+            Properties-Datei. Sie können auch den Root-Benutzer der Datenbank verwenden, um das Schema anzulegen. Rufen Sie phing auf mit:</p>
+
+            <pre class="programlisting"># /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/build.properties db-initialize</pre>
+
+            <p>Jetzt müssen Sie noch einen DB-User anlegen (mit den Rechten SELECT, UPDATE, INSERT, DELETE).</p>
+        </li>
 <li class="listitem">
-<p><span class="bold"><strong>Icinga-Web Konfiguration</strong></span></p>
-<p>Anpassen der Konfiguration: Editieren /usr/local/icinga-web/app/config/databases.xml und ändern Sie die Datenbank-Einstellungen (ab Zeile 7, im Beispiel DB-User: icinga_user, PW: password):</p>
+            <p><span class="bold"><strong>Icinga-Web Konfiguration</strong></span></p>
+
+            <p>Anpassen der Konfiguration: Editieren /var/www/icinga-web/app/config/databases.xml und ändern Sie die Datenbank-Einstellungen (ab
+            Zeile 7, im Beispiel DB-User: icinga_user, PW: password):</p>
 <pre class="programlisting">    &lt;database name="appkit_default" class="AgaviDoctrineDatabase"&gt;
        &lt;ae:parameter name="dsn"&gt;mysql://icinga_user:password@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
        &lt;ae:parameter name="username"&gt;icinga_user&lt;/ae:parameter&gt;
@@ -86,10 +123,13 @@
           &lt;ae:parameter name="MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
        &lt;/ae:parameter&gt;
        &lt;ae:parameter name="load_models"&gt;%de.icinga.appkit.doctrine_model_path%&lt;/ae:parameter&gt;
-    &lt;/database&gt;</pre>
-<p>Ändern Sie die Werte für Ihre Datenbank-Verbindung.</p>
-<p>Editieren Sie /usr/local/icinga-web/app/config/icinga.xml und setzen Sie die Werte für die IDOUtils (ab Zeile 163):</p>
-<pre class="programlisting"> &lt;parameter name="IcingaData"&gt;
+   &lt;/database&gt;</pre>
+
+            <p>Ändern Sie die Werte für Ihre Datenbank-Verbindung.</p>
+
+            <p>Editieren Sie /var/www/icinga-web/app/config/icinga.xml und setzen Sie die Werte für die IDOUtils (ab Zeile 163):</p>
+
+            <pre class="programlisting"> &lt;parameter name="IcingaData"&gt;
      &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
      &lt;parameter name="api_file"&gt;%core.root_dir%/share/icinga-api/IcingaApi.php&lt;/parameter&gt;
      &lt;parameter name="api_type"&gt;IcingaApi::CONNECTION_IDO&lt;/parameter&gt;
@@ -101,15 +141,28 @@
      &lt;parameter name="config_password"&gt;your-ido-pw&lt;/parameter&gt;
      &lt;parameter name="config_table_prefix"&gt;icinga_&lt;/parameter&gt;
  &lt;/parameter&gt;</pre>
-<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+            <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"> Denken Sie daran, vorher die IDOUtils installiert zu haben (wie hier beschrieben: <a class="xref" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">„Icinga-Schnellstart mit IDOUtils“</a> ) </td></tr>
+<tr><td align="left" valign="top">
+                 Denken Sie daran, vorher die 
+
+                IDOUtils
+
+                 installiert zu haben (wie hier beschrieben: 
+
+                <a class="xref" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">„Icinga-Schnellstart mit IDOUtils“</a>
+
+                 ) 
+            </td></tr>
 </table></div>
-<p>Gehen Sie zum appkit.factories - Bereich und ändern Sie den Pfad und die Konfiguration für die icinga-api.</p>
-<pre class="programlisting">
+
+            <p>Gehen Sie zum appkit.factories - Bereich und ändern Sie den Pfad und die Konfiguration für die icinga-api.</p>
+
+            <pre class="programlisting">
  &lt;!-- icinga-api data interface --&gt;
                 &lt;parameter name="IcingaData"&gt;
                         &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
@@ -134,14 +187,20 @@
 
                          &lt;parameter name="config_table_prefix"&gt;icinga_&lt;/parameter&gt;
                 &lt;/parameter&gt;</pre>
-</li>
+        </li>
 <li class="listitem">
-<p><span class="bold"><strong>Apache-Konfiguration</strong></span></p>
-<p>Voraussetzungen:</p>
-<p>* mod_rewrite, vielleicht müssen Sie einen Verweis erstellen:</p>
-<pre class="programlisting"> # ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enable/rewrite.load</pre>
-<p>Bei OpenSuSE gibt es in der Datei /etc/sysconfig/apache2 die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden muss.</p>
-<p>Editieren Sie die .htaccess unter /usr/local/icinga-web/pub und ändern Sie die RewriteBase (ab Zeile 14) : </p>
+            <p><span class="bold"><strong>Apache-Konfiguration</strong></span></p>
+
+            <p>Voraussetzungen:</p>
+
+            <p>* mod_rewrite, vielleicht müssen Sie einen Verweis erstellen:</p>
+
+            <pre class="programlisting"> # ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
+
+            <p>Bei OpenSuSE gibt es in der Datei /etc/sysconfig/apache2 die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden
+            muss.</p>
+
+            <p>Editieren Sie die .htaccess unter /usr/local/icinga-web/pub und ändern Sie die RewriteBase (ab Zeile 14) : </p>
 <pre class="programlisting"> DirectoryIndex index.php
 
 Options -MultiViews -Indexes +FollowSymLinks
@@ -185,27 +244,40 @@ Allow from all
 #       AuthUserFile /path/to/my/htusers
 #       require valid-user
 #&lt;/IfModule&gt;</pre>
-<p>Bitte erstellen Sie noch einen neuen Alias im Konfigurationsverzeichnis des Webservers (hier in der icinga.conf):</p>
-<pre class="programlisting"> # vi /etc/apache2/conf.d/icinga.conf
+
+            <p>Bitte erstellen Sie noch einen neuen Alias im Konfigurationsverzeichnis des Webservers (hier in der icinga.conf):</p>
+
+            <pre class="programlisting"> # vi /etc/apache2/conf.d/icinga.conf
    Alias /icinga-web /usr/local/icinga-web/pub
   &lt;directory /usr/local/icinga-web/pub&gt;
         AllowOverride All
   &lt;/directory&gt;</pre>
-<p>Leeren Sie den Cache:</p>
-<pre class="programlisting"> # rm /usr/local/icinga-web/app/cache/config/*.php</pre>
-<p>und starten Sie den Webserver neu:</p>
-<pre class="programlisting"> # service apache2 restart</pre>
-<p>bzw.</p>
-<pre class="programlisting"> # /etc/init.d/apache2 restart</pre>
-</li>
+
+            <p>Leeren Sie den Cache:</p>
+
+            <pre class="programlisting"> # rm /usr/local/icinga-web/app/cache/config/*.php</pre>
+
+            <p>und starten Sie den Webserver neu:</p>
+
+            <pre class="programlisting"> # service apache2 restart</pre>
+
+            <p>bzw.</p>
+
+            <pre class="programlisting"> # /etc/init.d/apache2 restart</pre>
+        </li>
 <li class="listitem">
-<p><span class="bold"><strong>Testen </strong></span></p>
-<p><span class="bold"><strong>Bitte achten Sie darauf, dass MySQL, Apache, IDOUtils und Icinga gestartet sind!</strong></span></p>
-<p>Öffnen Sie im Webbrowser: http://localhost/icinga-web und loggen Sie sich mit dem User 'root' und dem Passwort 'password' ein. Viel Spaß beim Entdecken....wir freuen uns auf Ihr Feedback.</p>
-</li>
+            <p><span class="bold"><strong>Testen </strong></span></p>
+
+            <p><span class="bold"><strong>Bitte achten Sie darauf, dass MySQL, Apache, IDOUtils und Icinga gestartet sind!</strong></span></p>
+
+            <p>Öffnen Sie im Webbrowser: http://localhost/icinga-web und loggen Sie sich mit dem User 'root' und dem Passwort 'password' ein. Viel
+            Spaß beim Entdecken....wir freuen uns auf Ihr Feedback.</p>
+        </li>
 </ol></div>
-<a class="indexterm" name="id2738088"></a>
-<a class="indexterm" name="id2738102"></a>
+
+    <a class="indexterm" name="id3872881"></a>
+
+    <a class="indexterm" name="id3872889"></a>
 </div>
 <div class="navfooter">
 <hr>
