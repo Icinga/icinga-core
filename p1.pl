@@ -90,7 +90,7 @@ sub READLINE {
 	my $self = shift;
 
 # CHANGED 12/26/07 EG Following two statements didn't allow for multi-line output or output > 256 chars
-								# Omit all lines after the first, per the icgina plugin guidelines
+								# Omit all lines after the first, per the icinga plugin guidelines
 #        $$self = (split /\n/, $$self)[0];
 								# Perl code other than plugins may print nothing; in this case return "(No output!)\n".
 #	return $$self ? substr($$self, 0, 256) : "(No output!)\n" ;
@@ -425,49 +425,49 @@ B<2> logs messages describing the success or otherwise of the plugin compilation
 
 An example of such messages are
 
- Fri Apr 22 11:54:21 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_bass ".
- Fri Apr 22 11:54:21 2005 run_package: "/usr/local/icgina/libexec/check_bass " returning ("0", "BASS Transaction completed Ok.
+ Fri Apr 22 11:54:21 2005 eval_file: successfully compiled "/usr/local/icinga/libexec/check_bass ".
+ Fri Apr 22 11:54:21 2005 run_package: "/usr/local/icinga/libexec/check_bass " returning ("0", "BASS Transaction completed Ok.
  ").
- Fri Apr 22 11:55:02 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_ad -D production.prod -S".
- Fri Apr 22 11:55:02 2005 run_package: "/usr/local/icgina/libexec/check_ad -D foo.dom -S" returning ("0", "Ok. Expected 2 domain controllers [foo1 foo2] for "foo.dom.prod" domain from "1.1.2.3" DNS, found 8 [foo1 foo2 ..]
+ Fri Apr 22 11:55:02 2005 eval_file: successfully compiled "/usr/local/icinga/libexec/check_ad -D production.prod -S".
+ Fri Apr 22 11:55:02 2005 run_package: "/usr/local/icinga/libexec/check_ad -D foo.dom -S" returning ("0", "Ok. Expected 2 domain controllers [foo1 foo2] for "foo.dom.prod" domain from "1.1.2.3" DNS, found 8 [foo1 foo2 ..]
  ").
- Fri Apr 22 11:55:19 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_ldap adonis".
- Fri Apr 22 11:55:19 2005 run_package: "/usr/local/icgina/libexec/check_ldap adonis" returning ("0", "Ok. Schema query response DN: dc=ipaustralia,dc=gov,dc=au aci: (target="ldap:///dc=ipaustralia,dc=gov,dc=au")(targetattr!="userPassword")(targetfi
+ Fri Apr 22 11:55:19 2005 eval_file: successfully compiled "/usr/local/icinga/libexec/check_ldap adonis".
+ Fri Apr 22 11:55:19 2005 run_package: "/usr/local/icinga/libexec/check_ldap adonis" returning ("0", "Ok. Schema query response DN: dc=ipaustralia,dc=gov,dc=au aci: (target="ldap:///dc=ipaustralia,dc=gov,dc=au")(targetattr!="userPassword")(targetfi
  ").
- Fri Apr 22 11:55:29 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_scheduler -H aphrodite -p 7003".
- Fri Apr 22 11:55:30 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_pams -H aphrodite -p 7003 -R".
- Fri Apr 22 11:55:29 2005 run_package: "/usr/local/icgina/libexec/check_scheduler -H aphrodite -p 7003" returning ("0", "Ok. COMSQ last ran 31 seconds ago. System: 0.02s Number of jobs waiting 0 "Detail" system sch_V2_6 14/01/2005 12:22:53 aimali Jobs: COMSQ/PollerManager Fri Apr 22 11:55:00, adhoc pause Fri Apr 22 09:00:00, PAMS/SchedExamDocCheck Thu Apr 21 23:00:00, CFX Cl"
+ Fri Apr 22 11:55:29 2005 eval_file: successfully compiled "/usr/local/icinga/libexec/check_scheduler -H aphrodite -p 7003".
+ Fri Apr 22 11:55:30 2005 eval_file: successfully compiled "/usr/local/icinga/libexec/check_pams -H aphrodite -p 7003 -R".
+ Fri Apr 22 11:55:29 2005 run_package: "/usr/local/icinga/libexec/check_scheduler -H aphrodite -p 7003" returning ("0", "Ok. COMSQ last ran 31 seconds ago. System: 0.02s Number of jobs waiting 0 "Detail" system sch_V2_6 14/01/2005 12:22:53 aimali Jobs: COMSQ/PollerManager Fri Apr 22 11:55:00, adhoc pause Fri Apr 22 09:00:00, PAMS/SchedExamDocCheck Thu Apr 21 23:00:00, CFX Cl"
  ).
- Fri Apr 22 11:55:30 2005 run_package: "/usr/local/icgina/libexec/check_pams -H aphrodite -p 7003 -R" returning ("0", "OK PAMS Worst: Test Time 2.61 Failure Ratio 0 [0:5] Statii: BASE OK Oracle (direct) OK COMS Processor OK CCS Name Search (direct) OK Correspondence Manager OK PAMS Tier OK CASEWORK OK Objective (direct) OK Customer Manager OK 
+ Fri Apr 22 11:55:30 2005 run_package: "/usr/local/icinga/libexec/check_pams -H aphrodite -p 7003 -R" returning ("0", "OK PAMS Worst: Test Time 2.61 Failure Ratio 0 [0:5] Statii: BASE OK Oracle (direct) OK COMS Processor OK CCS Name Search (direct) OK Correspondence Manager OK PAMS Tier OK CASEWORK OK Objective (direct) OK Customer Manager OK
  ").
- Fri Apr 22 11:55:45 2005 eval_file: successfully compiled "/usr/local/icgina/libexec/check_coms ".
- Fri Apr 22 11:55:45 2005 run_package: "/usr/local/icgina/libexec/check_coms " returning ("0", "COMS Ok. 11 successes 20 minutes ago. 55 minute deltas: (0 0 0 11 0 1 3 4 0 6) or <a href='http://tsitc/cgi-bin/coms_graph_deltas?INT=-2h'>graph</a>
+ Fri Apr 22 11:55:45 2005 eval_file: successfully compiled "/usr/local/icinga/libexec/check_coms ".
+ Fri Apr 22 11:55:45 2005 run_package: "/usr/local/icinga/libexec/check_coms " returning ("0", "COMS Ok. 11 successes 20 minutes ago. 55 minute deltas: (0 0 0 11 0 1 3 4 0 6) or <a href='http://tsitc/cgi-bin/coms_graph_deltas?INT=-2h'>graph</a>
  )
 
   .. after all the plugins are compiled, the 'successfully compiled mesages' are replaced by  'skipping compilation'
 
- Fri Apr 22 12:05:10 2005 eval_file: /usr/local/icgina/libexec/check_adds already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:11 2005 eval_file: /usr/local/icgina/libexec/check_aub already successfully compiled and file has not changed; skipping compilation
+ Fri Apr 22 12:05:10 2005 eval_file: /usr/local/icinga/libexec/check_adds already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:11 2005 eval_file: /usr/local/icinga/libexec/check_aub already successfully compiled and file has not changed; skipping compilation
  .
- Fri Apr 22 12:05:10 2005 run_package: "/usr/local/icgina/libexec/check_adds " returning ("0", "ADDS Transaction completed Ok.
+ Fri Apr 22 12:05:10 2005 run_package: "/usr/local/icinga/libexec/check_adds " returning ("0", "ADDS Transaction completed Ok.
  ").
- Fri Apr 22 12:05:13 2005 eval_file: /usr/local/icgina/libexec/check_eForm already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:13 2005 run_package: "/usr/local/icgina/libexec/check_eForm " returning ("0", "eForm Transaction completed Ok.
+ Fri Apr 22 12:05:13 2005 eval_file: /usr/local/icinga/libexec/check_eForm already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:13 2005 run_package: "/usr/local/icinga/libexec/check_eForm " returning ("0", "eForm Transaction completed Ok.
  ").
- Fri Apr 22 12:05:15 2005 eval_file: /usr/local/icgina/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:15 2005 run_package: "/usr/local/icgina/libexec/check_cfx_log -H faxgw1" returning ("0", "Ok. Last write of "//faxgw1/Faxloader$/cfxFaxLoaderClient.log"  0.0 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:19:42 2003 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005".
+ Fri Apr 22 12:05:15 2005 eval_file: /usr/local/icinga/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:15 2005 run_package: "/usr/local/icinga/libexec/check_cfx_log -H faxgw1" returning ("0", "Ok. Last write of "//faxgw1/Faxloader$/cfxFaxLoaderClient.log"  0.0 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:19:42 2003 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005 Fri Apr 22 12:05:13 2005".
  ").
- Fri Apr 22 12:05:16 2005 eval_file: /usr/local/icgina/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:16 2005 run_package: "/usr/local/icgina/libexec/check_cfx_log -H faxgw2" returning ("0", "Ok. Last write of "//faxgw2/Faxloader$/cfxFaxLoaderClient.log"  0.3 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:27:24 2003 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005".
+ Fri Apr 22 12:05:16 2005 eval_file: /usr/local/icinga/libexec/check_cfx_log already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:16 2005 run_package: "/usr/local/icinga/libexec/check_cfx_log -H faxgw2" returning ("0", "Ok. Last write of "//faxgw2/Faxloader$/cfxFaxLoaderClient.log"  0.3 minutes ago. File info (create, access, modify, write times): "Wed Mar 26 17:27:24 2003 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005 Fri Apr 22 12:04:55 2005".
  ").
- Fri Apr 22 12:05:17 2005 eval_file: /usr/local/icgina/libexec/check_apps_asearch already successfully compiled and file has not changed; skipping compilation.
- Fri Apr 22 12:05:18 2005 eval_file: /usr/local/icgina/libexec/check_aurioness already successfully compiled and file has not changed; skipping compi lation.
- Fri Apr 22 12:05:11 2005 run_package: "/usr/local/icgina/libexec/check_aub " returning ("0", "AU-B Transaction completed Ok.
+ Fri Apr 22 12:05:17 2005 eval_file: /usr/local/icinga/libexec/check_apps_asearch already successfully compiled and file has not changed; skipping compilation.
+ Fri Apr 22 12:05:18 2005 eval_file: /usr/local/icinga/libexec/check_aurioness already successfully compiled and file has not changed; skipping compi lation.
+ Fri Apr 22 12:05:11 2005 run_package: "/usr/local/icinga/libexec/check_aub " returning ("0", "AU-B Transaction completed Ok.
  ").
 
 If you are lucky enough to have plugins with errors in them,
 
- Fri Apr 22 12:16:01 2005 run_package: "//usr/local/icgina/libexec/eventhandlers/restart_coldfusion OK SOFT" returning ("3", "**ePN "//usr/local/icgina/libexec/eventhandlers/restart_coldfusion": "Can't use string ("") as a subroutine ref while "strict refs" in use at /usr/local/icgina/bin/p1.pl line 291, <DATA> line 218".
+ Fri Apr 22 12:16:01 2005 run_package: "//usr/local/icinga/libexec/eventhandlers/restart_coldfusion OK SOFT" returning ("3", "**ePN "//usr/local/icinga/libexec/eventhandlers/restart_coldfusion": "Can't use string ("") as a subroutine ref while "strict refs" in use at /usr/local/icinga/bin/p1.pl line 291, <DATA> line 218".
 
 
 B<PLUGIN_DUMP>
@@ -522,7 +522,7 @@ arguments (if non null), the last compilation error,  and a code ref to the Perl
 
  Sat Apr 23 19:24:59 2005 eval_file: after 5 compilations %Cache =>
  %Cache = (
-           '/usr/local/icgina/libexec/check_adds' => [
+           '/usr/local/icinga/libexec/check_adds' => [
                                                        '100.230810185185',
                                                        undef,
                                                        '',
@@ -540,7 +540,7 @@ arguments (if non null), the last compilation error,  and a code ref to the Perl
                                '',
                                sub { "DUMMY" }
                              ],
-          '/usr/local/icgina/libexec/check_pams' => [
+          '/usr/local/icinga/libexec/check_pams' => [
                                                        '1.90859953703704',
                                                        {
                                                          '-R -I -H asterix -p 7003' => [
