@@ -275,8 +275,8 @@ int ndo2db_free_connection_memory(ndo2db_idi *);
 int ndo2db_wait_for_connections(void);
 int ndo2db_handle_client_connection(int);
 int ndo2db_idi_init(ndo2db_idi *);
-int ndo2db_check_for_client_input(ndo2db_idi *,ndo_dbuf *);
-int ndo2db_handle_client_input(ndo2db_idi *,char *);
+int ndo2db_check_for_client_input(ndo2db_idi *,ndo_dbuf *, pthread_t *);
+int ndo2db_handle_client_input(ndo2db_idi *,char *, pthread_t *);
 
 int ndo2db_start_input_data(ndo2db_idi *);
 int ndo2db_end_input_data(ndo2db_idi *);
@@ -290,5 +290,8 @@ int ndo2db_convert_string_to_double(char *,double *);
 int ndo2db_convert_string_to_long(char *,long *);
 int ndo2db_convert_string_to_unsignedlong(char *,unsigned long *);
 int ndo2db_convert_string_to_timeval(char *,struct timeval *);
+
+void *ido2db_thread_cleanup(void *);
+static void *ido2db_thread_cleanup_exit_handler(void *);
 
 #endif

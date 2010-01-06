@@ -76,9 +76,6 @@ extern int ido2db_check_dbd_driver(void);
 int ndo2db_open_debug_log(void);
 int ndo2db_close_debug_log(void);
 
-void *ido2db_thread_cleanup(void *);
-static void *exit_handler_mem(void *);
-
 /*#define DEBUG_NDO2DB 1*/                         /* don't daemonize */
 /*#define DEBUG_NDO2DB_EXIT_AFTER_CONNECTION 1*/    /* exit after first client disconnects */
 /*#define DEBUG_NDO2DB2 1 */
@@ -1087,6 +1084,9 @@ int ndo2db_handle_client_connection(int sd){
 	int result=0;
 	int error=NDO_FALSE;
 
+	int pthread_ret=0;
+	pthread_t thread_pool[1];
+// HENDRIK1
 #ifdef HAVE_SSL
 	SSL *ssl=NULL;
 #endif
@@ -1106,6 +1106,12 @@ int ndo2db_handle_client_connection(int sd){
 	signal(SIGINT,ndo2db_child_sighandler);
 	signal(SIGSEGV,ndo2db_child_sighandler);
 	signal(SIGFPE,ndo2db_child_sighandler);
+
+	/* create cleanup thread */
+	if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, &idi)) != 0) {
+		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
+		exit(EXIT_FAILURE);
+	}
 
 	/* initialize input data information */
 	ndo2db_idi_init(&idi);
@@ -1193,7 +1199,7 @@ int ndo2db_handle_client_connection(int sd){
 		ndo_dbuf_strcat(&dbuf,buf);
 
 		/* check for completed lines of input */
-		ndo2db_check_for_client_input(&idi,&dbuf);
+		ndo2db_check_for_client_input(&idi,&dbuf, thread_pool);
 
 		/* should we disconnect the client? */
 		if(idi.disconnect_client==NDO_TRUE){
@@ -1211,7 +1217,12 @@ int ndo2db_handle_client_connection(int sd){
 
 	/* Kill all sub threads */
 	/* Experimental and may be dangerous... */
-	/* pthread_exit(NULL); */
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_client_connection() idi.disconnect_client is '%d'\n", idi.disconnect_client);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_client_connection() Cancel cleanup thread to terminate\n");
+	// pthread_join(thread_pool[0], NULL);
+	pthread_kill(thread_pool[0], SIGINT);
+	pthread_cancel(thread_pool[0]);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_client_connection() cleanup thread terminated\n");
 
 	/* free memory allocated to dynamic buffer */
 	ndo_dbuf_free(&dbuf);
@@ -1278,7 +1289,7 @@ int ndo2db_idi_init(ndo2db_idi *idi){
 
 
 /* checks for single lines of input from a client connection */
-int ndo2db_check_for_client_input(ndo2db_idi *idi,ndo_dbuf *dbuf){
+int ndo2db_check_for_client_input(ndo2db_idi *idi,ndo_dbuf *dbuf, pthread_t *thread_pool){
 	char *buf=NULL;
 	register int x;
 
@@ -1307,7 +1318,7 @@ int ndo2db_check_for_client_input(ndo2db_idi *idi,ndo_dbuf *dbuf){
 			/* handle this line of input */
 			dbuf->buf[x]='\x0';
 			if((buf=strdup(dbuf->buf))){
-				ndo2db_handle_client_input(idi,buf);
+				ndo2db_handle_client_input(idi,buf, thread_pool);
 				free(buf);
 				buf=NULL;
 				idi->lines_processed++;
@@ -1331,7 +1342,7 @@ int ndo2db_check_for_client_input(ndo2db_idi *idi,ndo_dbuf *dbuf){
 
 
 /* handles a single line of input from a client connection */
-int ndo2db_handle_client_input(ndo2db_idi *idi, char *buf){
+int ndo2db_handle_client_input(ndo2db_idi *idi, char *buf, pthread_t *thread_pool){
 	char *var=NULL;
 	char *val=NULL;
 	unsigned long data_type_long=0L;
@@ -1339,7 +1350,7 @@ int ndo2db_handle_client_input(ndo2db_idi *idi, char *buf){
 	int input_type=NDO2DB_INPUT_DATA_NONE;
 
 	int pthread_ret = 0;
-	pthread_t th[1];
+	// pthread_t th[1];
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_client_input() start\n");
 
@@ -1397,11 +1408,11 @@ int ndo2db_handle_client_input(ndo2db_idi *idi, char *buf){
 			ndo2db_db_hello(idi);
 
 			/* create cleanup thread */
-			if ((pthread_ret = pthread_create(&th[0], NULL, ido2db_thread_cleanup, idi)) != 0) {
+/*			if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, idi)) != 0) {
 				syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 				exit(EXIT_FAILURE);
 			}
-
+*/
 		        }
 
 		else if(!strcmp(var,NDO_API_PROTOCOL))
@@ -2443,6 +2454,12 @@ void * ido2db_thread_cleanup(void *data) {
 	ndo2db_idi *idi = (ndo2db_idi*) data;
 	ndo2db_idi thread_idi;
 
+	int old_thread_state;
+
+	struct timespec delay;
+	delay.tv_sec = 0;
+	delay.tv_nsec = 500;
+
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread idi\n");
@@ -2454,48 +2471,69 @@ void * ido2db_thread_cleanup(void *data) {
 	ndo2db_db_init(&thread_idi);
 	ndo2db_db_connect(&thread_idi);
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push()\n");
+	pthread_cleanup_push((void *) &ido2db_thread_cleanup_exit_handler, NULL);
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push() end \n");
+
+	while(idi->instance_name==NULL) {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() nanosleeping cause missing instance_name...\n");
+		nanosleep(&delay, NULL);
+	}
+
 	/* copy needed idi information */
 	thread_idi.instance_name = idi->instance_name;
-	thread_idi.agent_name = "idomod house keeper";
+	thread_idi.agent_name = "IDOMOD Trimming Thread";
+	thread_idi.agent_version = idi->agent_version;
+	thread_idi.disposition = idi->disposition;
+	thread_idi.connect_source = idi->connect_source;
+	thread_idi.connect_type = idi->connect_type;
 
 	/* save connection info to DB */
 	ndo2db_db_hello(&thread_idi);
 
-	pthread_cleanup_push((void *) &exit_handler_mem, NULL);
-
-	while(1) {
+	while(1){
 		if(idi->disconnect_client==NDO_TRUE){
 			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup(): origin idi said we should disconnect the client\n");
 			break;
 		}
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() working...\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() idi is: '%d'\n", idi->disconnect_client);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has instance name '%s'...\n", thread_idi.instance_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() calling ndo2db_db_perform_maintenance...\n");
+
+		/* Set this thread temporary to CANCEL_DISABLE to prevent interuption */
+		if(pthread_setcancelstate( PTHREAD_CANCEL_DISABLE, &old_thread_state) != 0) {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 1, "ido2db_thread_cleanup() Problem during pthread_setcancelstate() LOCK Cancel\n");
+		}
+
+		/* Perfom DB Maintenance */
 		ndo2db_db_perform_maintenance(&thread_idi);
-		sleep(idi->dbinfo.trim_db_interval);
+
+		/* Reset this thread cancelstate */
+		if(pthread_setcancelstate( old_thread_state, NULL) != 0) {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 1, "ido2db_thread_cleanup() Problem during pthread_setcancelstate() UNLOCK Cancel\n");
+		}
+		sleep(idi->dbinfo.trim_db_interval+1);
 	}
 
 	/* gracefully back out of current operation... */
 	ndo2db_db_goodbye(&thread_idi);
 
-	/* ToDo
-	 * Actual this thread never exits after a idomod connection ends up
-	 */
 	pthread_cleanup_pop(1);
 
-	pthread_exit((void *) pthread_self());
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() end\n");
+	pthread_exit((void *) pthread_self());
 
 }
 
 /* ******************************************************************
- *                                                                  *
- * processfile - this is the function for each thread               *
- *                                                                  *
+ *
+ * exit_handler_mem is called as thread canceling
+ *
  * ******************************************************************/
 
-static void *exit_handler_mem(void * arg) {
-
+static void *ido2db_thread_cleanup_exit_handler(void * arg) {
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() cleanup_exit_handler...\n");
 	return 0;
 
 }
