@@ -1,7 +1,7 @@
 #####################################################################
 # IDOMOD CONFIG FILE
 #
-# Last Modified: 05-09-2009
+# Last Modified: 01-08-2010
 #####################################################################
 
 
@@ -52,7 +52,7 @@ tcp_port=5668
 
 # ENCRYPTION
 # This option determines if the module will use SSL to encrypt the 
-# network traffic between module and ndo2db daemon.
+# network traffic between module and ido2db daemon.
 # Both sides have to enable this feature which depends on SSL Libraries
 # like openssl or kerberos 
 # This option is only valid if the output type
@@ -82,7 +82,7 @@ output_buffer_items=5000
 # Icinga (re)starts, the IDO NEB module will read the contents of this
 # file and send it to the IDO2DB daemon for processing.
 
-buffer_file=@localstatedir@/ndomod.tmp
+buffer_file=@localstatedir@/idomod.tmp
 
 
 
@@ -141,7 +141,7 @@ reconnect_warning_interval=15
 # This option determines what data the IDO NEB module will process. 
 # Do not mess with this option unless you know what you're doing!!!!
 #
-# Read the source code (module/idoutils/include/ndomod.h) and look for 
+# Read the source code (module/idoutils/include/idomod.h) and look for 
 # "NDOMOD_PROCESS_" to determine what values to use here.  
 # Values from source code should be OR'ed to get the value to use here.  
 # A value of -1 will cause all data to be processed. 
@@ -202,4 +202,45 @@ data_processing_options=67108861
 #         3 = Dump both original and retained configuration
 
 config_output_options=2
+
+
+
+# DEBUG LEVEL
+# This option determines how much (if any) debugging information will
+# be written to the debug file.  OR values together to log multiple
+# types of information.
+# Values: -1 = Everything
+#          0 = Nothing
+#          1 = Process info
+#          2 = SQL queries
+
+debug_level=0
+
+
+
+# DEBUG VERBOSITY
+# This option determines how verbose the debug log out will be.
+# Values: 0 = Brief output
+#         1 = More detailed
+#         2 = Very detailed
+
+debug_verbosity=1
+
+
+
+# DEBUG FILE
+# This option determines where the daemon should write debugging information.
+
+debug_file=@localstatedir@/idomod.debug
+
+
+
+# MAX DEBUG FILE SIZE
+# This option determines the maximum size (in bytes) of the debug file.  If
+# the file grows larger than this size, it will be renamed with a .old
+# extension.  If a file already exists with a .old extension it will
+# automatically be deleted.  This helps ensure your disk space usage doesn't
+# get out of control when debugging.
+
+max_debug_file_size=1000000
 

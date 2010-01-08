@@ -7,7 +7,7 @@
 
 
 # LOCK FILE
-# This is the lockfile that NDO2DB will use to store its PID number
+# This is the lockfile that IDO2DB will use to store its PID number
 # in when it is running in daemon mode.
 
 lock_file=@localstatedir@/ido2db.lock
@@ -55,8 +55,8 @@ tcp_port=5668
 
 
 # ENCRYPTION
-# This option determines if the ndo2db daemon will accept SSL to encrypt the 
-# network traffic between module and ndo2db daemon.
+# This option determines if the ido2db daemon will accept SSL to encrypt the 
+# network traffic between module and ido2db daemon.
 # Both sides have to enable this feature which depends on SSL Libraries
 # like openssl or kerberos 
 # This option is only valid if the output type

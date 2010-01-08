@@ -1,17 +1,24 @@
 /************************************************************************
  *
- * NDOMOD.H - NDO NEB Module Include File
+ * IDOMOD.H - IDO NEB Module Include File
  * Copyright (c) 2005-2006 Ethan Galstad
- * Last Modified: 05-25-2006
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 01-08-2010
  *
  ************************************************************************/
 
-#ifndef _NDBXT_NDOMOD_H
-#define _NDBXT_NDOMOD_H
+#ifndef _NDBXT_IDOMOD_H
+#define _NDBXT_IDOMOD_H
 
+/************** misc definitions *************/
 
 /* this is needed for access to daemon's internal data */
 #define NSCORE 1
+
+#define NDOMOD_MAX_BUFLEN   16384
+
+/************** structures *******************/
 
 typedef struct ndomod_sink_buffer_struct{
 	char **buffer;
@@ -24,8 +31,7 @@ typedef struct ndomod_sink_buffer_struct{
         }ndomod_sink_buffer;
 
 
-#define NDOMOD_MAX_BUFLEN   16384
-
+/************* types of process data ***********/
 
 #define NDOMOD_PROCESS_PROCESS_DATA                   1
 #define NDOMOD_PROCESS_TIMED_EVENT_DATA               2
@@ -57,11 +63,27 @@ typedef struct ndomod_sink_buffer_struct{
 #define NDOMOD_PROCESS_EVERYTHING                     67108863
 
 
+/************* types of config dump ************/
+
 #define NDOMOD_CONFIG_DUMP_NONE                       0
 #define NDOMOD_CONFIG_DUMP_ORIGINAL                   1
 #define NDOMOD_CONFIG_DUMP_RETAINED                   2
 #define NDOMOD_CONFIG_DUMP_ALL                        3
 
+
+/************* debugging levels ****************/
+
+#define IDOMOD_DEBUGL_ALL                      -1
+#define IDOMOD_DEBUGL_NONE                     0
+#define IDOMOD_DEBUGL_PROCESSINFO              1
+#define IDOMOD_DEBUGL_SQL                      2
+
+#define IDOMOD_DEBUGV_BASIC                    0
+#define IDOMOD_DEBUGV_MORE                     1
+#define IDOMOD_DEBUGV_MOST                     2
+
+
+/************* functions ***********************/
 
 int nebmodule_init(int,char *,void *);
 int nebmodule_deinit(int,int);
@@ -110,5 +132,7 @@ int ndomod_write_resource_config_files(void);
 int ndomod_write_resource_config_file(char *);
 
 int ndomod_write_runtime_variables(void);
+
+int idomod_log_debug_info(int , int , const char *, ...);
 
 #endif

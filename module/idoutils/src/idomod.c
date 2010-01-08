@@ -16,7 +16,7 @@
 #include "../include/io.h"
 #include "../include/utils.h"
 #include "../include/protoapi.h"
-#include "../include/ndomod.h"
+#include "../include/idomod.h"
 
 /* include (minimum required) event broker header files */
 #include "../../../include/nebstructs.h"
@@ -62,6 +62,15 @@ unsigned long ndomod_process_options=NDOMOD_PROCESS_EVERYTHING;
 int ndomod_config_output_options=NDOMOD_CONFIG_DUMP_ALL;
 unsigned long ndomod_sink_buffer_slots=5000;
 ndomod_sink_buffer sinkbuf;
+
+char *idomod_debug_file=NULL;
+int idomod_debug_level=IDOMOD_DEBUGL_NONE;
+int idomod_debug_verbosity=IDOMOD_DEBUGV_BASIC;
+FILE *idomod_debug_file_fp=NULL;
+unsigned long idomod_max_debug_file_size=0L;
+
+int idomod_open_debug_log(void);
+int idomod_close_debug_log(void);
 
 extern int errno;
 
@@ -172,6 +181,11 @@ int ndomod_init(void){
 	char temp_buffer[NDOMOD_MAX_BUFLEN];
 	time_t current_time;
 
+        /* open debug log */
+        idomod_open_debug_log();
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_init() start\n");
+
 	/* initialize some vars (needed for restarts of daemon - why, if the module gets reloaded ???) */
 	ndomod_sink_is_open=NDO_FALSE;
 	ndomod_sink_previously_open=NDO_FALSE;
@@ -212,12 +226,16 @@ int ndomod_init(void){
 		}
 	}
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_init() end\n");
+
 	return NDO_OK;
         }
 
 
 /* performs some shutdown stuff */
 int ndomod_deinit(void){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_deinit() start\n");
 
 	/* deregister callbacks */
 	ndomod_deregister_callbacks();
@@ -231,6 +249,11 @@ int ndomod_deinit(void){
 	/* close data sink */
 	ndomod_goodbye_sink();
 	ndomod_close_sink();
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_deinit() end\n");
+
+        /* close debug log */
+        idomod_close_debug_log();
 
 	return NDO_OK;
         }
@@ -418,6 +441,17 @@ int ndomod_process_config_var(char *arg){
 	else if(!strcmp(var,"buffer_file"))
 		ndomod_buffer_file=strdup(val);
 
+        else if(!strcmp(var,"debug_file")){
+                if((idomod_debug_file=strdup(val))==NULL)
+                        return NDO_ERROR;
+                }
+        else if(!strcmp(var,"debug_level"))
+                idomod_debug_level=atoi(val);
+        else if(!strcmp(var,"debug_verbosity"))
+                idomod_debug_verbosity=atoi(val);
+        else if(!strcmp(var,"max_debug_file_size"))
+                idomod_max_debug_file_size=strtoul(val,NULL,0);
+
 	else if(!strcmp(var,"use_ssl")){
 		if (strlen(val) == 1) {
 			if (isdigit((int)val[strlen(val)-1]) != NDO_FALSE)
@@ -458,6 +492,8 @@ int ndomod_write_to_logs(char *buf, int flags){
 int ndomod_open_sink(void){
 	int flags=0;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_open_sink() start\n");
+
 	/* sink is already open... */
 	if(ndomod_sink_is_open==NDO_TRUE)
 		return ndomod_sink_fd;
@@ -474,12 +510,16 @@ int ndomod_open_sink(void){
 	/* mark the sink as having once been open */
 	ndomod_sink_previously_open=NDO_TRUE;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_open_sink() end\n");
+
 	return NDO_OK;
         }
 
 
 /* (re)open data sink */
 int ndomod_close_sink(void){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_close_sink() start\n");
 
 	/* sink is already closed... */
 	if(ndomod_sink_is_open==NDO_FALSE)
@@ -494,6 +534,8 @@ int ndomod_close_sink(void){
 	/* mark the sink as being closed */
 	ndomod_sink_is_open=NDO_FALSE;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_close_sink() end\n");
+
 	return NDO_OK;
         }
 
@@ -503,6 +545,8 @@ int ndomod_hello_sink(int reconnect, int problem_disconnect){
 	char temp_buffer[NDOMOD_MAX_BUFLEN];
 	char *connection_type=NULL;
 	char *connect_type=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_hello_sink() start\n");
 
 	/* get the connection type string */
 	if(ndomod_sink_type==NDO_SINK_FD || ndomod_sink_type==NDO_SINK_FILE)
@@ -544,6 +588,8 @@ int ndomod_hello_sink(int reconnect, int problem_disconnect){
 
 	ndomod_write_to_sink(temp_buffer,NDO_FALSE,NDO_FALSE);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_hello_sink() end\n");
+
 	return NDO_OK;
         }
 
@@ -551,6 +597,8 @@ int ndomod_hello_sink(int reconnect, int problem_disconnect){
 /* say goodbye */
 int ndomod_goodbye_sink(void){
 	char temp_buffer[NDOMOD_MAX_BUFLEN];
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_goodbye_sink() start\n");
 
 	snprintf(temp_buffer,sizeof(temp_buffer)-1
 		 ,"\n%d\n%s: %lu\n%s\n\n"
@@ -564,6 +612,8 @@ int ndomod_goodbye_sink(void){
 
 	ndomod_write_to_sink(temp_buffer,NDO_FALSE,NDO_TRUE);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_goodbye_sink() end\n");
+
 	return NDO_OK;
         }
 
@@ -574,6 +624,8 @@ int ndomod_rotate_sink_file(void *args){
 	char *processed_command_line_3x=NULL;
 	int early_timeout=FALSE;
 	double exectime;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_rotate_sink_file() start\n");
 
 	/* close sink */
 	ndomod_goodbye_sink();
@@ -603,6 +655,8 @@ int ndomod_rotate_sink_file(void *args){
 	ndomod_open_sink();
 	ndomod_hello_sink(TRUE,FALSE);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_rotate_sink_file() end\n");
+
 	return NDO_OK;
         }
 
@@ -617,10 +671,14 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 	int reconnect=NDO_FALSE;
 	unsigned long items_to_flush=0L;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_to_sink() start\n");
+
 	/* we have nothing to write... */
 	if(buf==NULL)
 		return NDO_OK;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_to_sink(%s)\n", buf);
+	
 	/* we shouldn't be messing with things... */
 	if(ndomod_allow_sink_activity==NDO_FALSE)
 		return NDO_ERROR;
@@ -784,6 +842,8 @@ int ndomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 		return NDO_ERROR;
 	        }
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_to_sink() end\n");
+
 	return NDO_OK;
         }
 
@@ -794,6 +854,8 @@ int ndomod_save_unprocessed_data(char *f){
 	FILE *fp=NULL;
 	char *buf=NULL;
 	char *ebuf=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_save_unprocessed_data() start\n");
 
 	/* no file */
 	if(f==NULL)
@@ -825,6 +887,8 @@ int ndomod_save_unprocessed_data(char *f){
 
 	fclose(fp);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_save_unprocessed_data() end\n");
+
 	return NDO_OK;
 	}
 
@@ -835,6 +899,8 @@ int ndomod_load_unprocessed_data(char *f){
 	ndo_mmapfile *thefile=NULL;
 	char *ebuf=NULL;
 	char *buf=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_load_unprocessed_data() start\n");
 
 	/* open the file */
 	if((thefile=ndo_mmap_fopen(f))==NULL)
@@ -859,6 +925,8 @@ int ndomod_load_unprocessed_data(char *f){
 	/* remove the file so we don't process it again in the future */
 	unlink(f);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_load_unprocessed_data() end\n");
+
 	return NDO_OK;
 	}
 
@@ -867,6 +935,8 @@ int ndomod_load_unprocessed_data(char *f){
 /* initializes sink buffer */
 int ndomod_sink_buffer_init(ndomod_sink_buffer *sbuf,unsigned long maxitems){
 	unsigned long x;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_init() start\n");
 
 	if(sbuf==NULL || maxitems<=0)
 		return NDO_ERROR;
@@ -884,6 +954,8 @@ int ndomod_sink_buffer_init(ndomod_sink_buffer *sbuf,unsigned long maxitems){
 	sbuf->maxitems=maxitems;
 	sbuf->overflow=0L;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_init() end\n");
+
 	return NDO_OK;
         }
 
@@ -891,6 +963,8 @@ int ndomod_sink_buffer_init(ndomod_sink_buffer *sbuf,unsigned long maxitems){
 /* deinitializes sink buffer */
 int ndomod_sink_buffer_deinit(ndomod_sink_buffer *sbuf){
 	unsigned long x;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_deinit() start\n");
 
 	if(sbuf==NULL)
 		return NDO_ERROR;
@@ -902,12 +976,16 @@ int ndomod_sink_buffer_deinit(ndomod_sink_buffer *sbuf){
 	free(sbuf->buffer);
 	sbuf->buffer=NULL;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_deinit() end\n");
+
 	return NDO_OK;
         }
 
 
 /* buffers output */
 int ndomod_sink_buffer_push(ndomod_sink_buffer *sbuf,char *buf){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_push() start\n");
 
 	if(sbuf==NULL || buf==NULL)
 		return NDO_ERROR;
@@ -923,6 +1001,8 @@ int ndomod_sink_buffer_push(ndomod_sink_buffer *sbuf,char *buf){
 	sbuf->head=(sbuf->head+1)%sbuf->maxitems;
 	sbuf->items++;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_push() end\n");
+
 	return NDO_OK;
         }
 
@@ -930,6 +1010,8 @@ int ndomod_sink_buffer_push(ndomod_sink_buffer *sbuf,char *buf){
 /* gets and removes next item from buffer */
 char *ndomod_sink_buffer_pop(ndomod_sink_buffer *sbuf){
 	char *buf=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_pop() start\n");
 
 	if(sbuf==NULL)
 		return NULL;
@@ -946,6 +1028,8 @@ char *ndomod_sink_buffer_pop(ndomod_sink_buffer *sbuf){
 	sbuf->tail=(sbuf->tail+1)%sbuf->maxitems;
 	sbuf->items--;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_pop() end\n");
+
 	return buf;
         }
 
@@ -953,6 +1037,8 @@ char *ndomod_sink_buffer_pop(ndomod_sink_buffer *sbuf){
 /* gets next items from buffer */
 char *ndomod_sink_buffer_peek(ndomod_sink_buffer *sbuf){
 	char *buf=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_peek() start\n");
 
 	if(sbuf==NULL)
 		return NULL;
@@ -962,12 +1048,16 @@ char *ndomod_sink_buffer_peek(ndomod_sink_buffer *sbuf){
 
 	buf=sbuf->buffer[sbuf->tail];
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_peek() end\n");
+
 	return buf;
         }
 
 
 /* returns number of items buffered */
 int ndomod_sink_buffer_items(ndomod_sink_buffer *sbuf){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_items()\n");
 
 	if(sbuf==NULL)
 		return 0;
@@ -976,8 +1066,11 @@ int ndomod_sink_buffer_items(ndomod_sink_buffer *sbuf){
         }
 
 
+
 /* gets number of items lost due to buffer overflow */
 unsigned long ndomod_sink_buffer_get_overflow(ndomod_sink_buffer *sbuf){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_get_overflow()\n");
 
 	if(sbuf==NULL)
 		return 0;
@@ -988,6 +1081,8 @@ unsigned long ndomod_sink_buffer_get_overflow(ndomod_sink_buffer *sbuf){
 
 /* sets number of items lost due to buffer overflow */
 int ndomod_sink_buffer_set_overflow(ndomod_sink_buffer *sbuf, unsigned long num){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_sink_buffer_set_overflow()\n");
 
 	if(sbuf==NULL)
 		return 0;
@@ -1007,6 +1102,8 @@ int ndomod_sink_buffer_set_overflow(ndomod_sink_buffer *sbuf, unsigned long num)
 int ndomod_register_callbacks(void){
 	int priority=0;
 	int result=NDO_OK;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_register_callbacks() start\n");
 
 	if(result==NDO_OK)
 		result=neb_register_callback(NEBCALLBACK_PROCESS_DATA,ndomod_module_handle,priority,ndomod_broker_data);
@@ -1061,12 +1158,16 @@ int ndomod_register_callbacks(void){
 	if(result==NDO_OK)
 		result=neb_register_callback(NEBCALLBACK_ADAPTIVE_CONTACT_DATA,ndomod_module_handle,priority,ndomod_broker_data);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_register_callbacks() end\n");
+
 	return result;
         }
 
 
 /* deregisters callbacks */
 int ndomod_deregister_callbacks(void){
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_deregister_callbacks() start\n");
 
 	neb_deregister_callback(NEBCALLBACK_PROCESS_DATA,ndomod_broker_data);
 	neb_deregister_callback(NEBCALLBACK_TIMED_EVENT_DATA,ndomod_broker_data);
@@ -1094,6 +1195,8 @@ int ndomod_deregister_callbacks(void){
 	neb_deregister_callback(NEBCALLBACK_STATE_CHANGE_DATA,ndomod_broker_data);
 	neb_deregister_callback(NEBCALLBACK_CONTACT_STATUS_DATA,ndomod_broker_data);
 	neb_deregister_callback(NEBCALLBACK_ADAPTIVE_CONTACT_DATA,ndomod_broker_data);
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_deregister_callbacks() end\n");
 
 	return NDO_OK;
         }
@@ -1143,6 +1246,8 @@ int ndomod_broker_data(int event_type, void *data){
 	int last_hard_state=-1;
 
 	customvariablesmember *temp_customvar=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_broker_data() start\n");
 
 	if(data==NULL)
 		return 0;
@@ -2983,6 +3088,8 @@ int ndomod_broker_data(int event_type, void *data){
 		break;
 	        }
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_broker_data() end\n");
+
 	return 0;
         }
 
@@ -2997,6 +3104,8 @@ int ndomod_write_config(int config_type){
 	char temp_buffer[NDOMOD_MAX_BUFLEN];
 	struct timeval now;
 	int result;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_config() start\n");
 
 	if(!(ndomod_config_output_options & config_type))
 		return NDO_OK;
@@ -3033,6 +3142,8 @@ int ndomod_write_config(int config_type){
 		);
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	ndomod_write_to_sink(temp_buffer,NDO_TRUE,NDO_TRUE);
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_config() end\n");
 
 	return result;
         }
@@ -3088,6 +3199,7 @@ int ndomod_write_object_config(int config_type){
 	contactsmember *temp_contactsmember=NULL;
 	servicesmember *temp_servicesmember=NULL;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_object_config() start\n");
 
 	if(!(ndomod_process_options & NDOMOD_PROCESS_OBJECT_CONFIG_DATA))
 		return NDO_OK;
@@ -4286,6 +4398,8 @@ int ndomod_write_object_config(int config_type){
 		es[x]=NULL;
 	        }
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_object_config() end\n");
+
 	return NDO_OK;
         }
 
@@ -4295,11 +4409,15 @@ int ndomod_write_object_config(int config_type){
 int ndomod_write_config_files(void){
 	int result=NDO_OK;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_config_files() start\n");
+
 	if((result=ndomod_write_main_config_file())==NDO_ERROR)
 		return NDO_ERROR;
 
 	if((result=ndomod_write_resource_config_files())==NDO_ERROR)
 		return NDO_ERROR;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_config_files() end\n");
 
 	return result;
         }
@@ -4314,6 +4432,8 @@ int ndomod_write_main_config_file(void){
 	FILE *fp;
 	char *var=NULL;
 	char *val=NULL;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_main_config_file() start\n");
 
 	/* get current time */
 	gettimeofday(&now,NULL);
@@ -4372,6 +4492,8 @@ int ndomod_write_main_config_file(void){
 	free(temp_buffer);
 	temp_buffer=NULL;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_main_config_file() end\n");
+
 	return NDO_OK;
         }
 
@@ -4380,9 +4502,13 @@ int ndomod_write_main_config_file(void){
 /* dumps all resource config files to sink */
 int ndomod_write_resource_config_files(void){
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_resource_config_files() start\n");
+
 	/* TODO */
 	/* loop through main config file to find all resource config files, and then process them */
 	/* this should probably NOT be done, as the resource file is supposed to remain private... */
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_resource_config_files() end\n");
 
 	return NDO_OK;
         }
@@ -4392,9 +4518,13 @@ int ndomod_write_resource_config_files(void){
 /* dumps a single resource config file to sink */
 int ndomod_write_resource_config_file(char *filename){
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_resource_config_file() start\n");
+
 	/* TODO */
 	/* loop through main config file to find all resource config files, and then process them */
 	/* this should probably NOT be done, as the resource file is supposed to remain private... */
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_resource_config_file() end\n");
 
 	return NDO_OK;
         }
@@ -4405,6 +4535,8 @@ int ndomod_write_resource_config_file(char *filename){
 int ndomod_write_runtime_variables(void){
 	char *temp_buffer=NULL;
 	struct timeval now;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_runtime_variables() start\n");
 
 	/* get current time */
 	gettimeofday(&now,NULL);
@@ -4498,8 +4630,97 @@ int ndomod_write_runtime_variables(void){
 	free(temp_buffer);
 	temp_buffer=NULL;
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "ndomod_write_runtime_variables() end\n");
+
 	return NDO_OK;
         }
 
 
+/****************************************************************************/
+/* LOGGING ROUTINES                                                         */
+/****************************************************************************/
+
+/* opens the debug log for writing */
+int idomod_open_debug_log(void){
+
+        /* don't do anything if we're not debugging */
+        if(idomod_debug_level==IDOMOD_DEBUGL_NONE)
+                return NDO_OK;
+
+        if((idomod_debug_file_fp=fopen(idomod_debug_file,"a+"))==NULL) {
+                syslog(LOG_ERR, "Warning: Could not open debug file '%s' - '%s'", idomod_debug_file, strerror(errno));
+                return NDO_ERROR;
+        }
+
+        idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_open_debug_log()\n");
+
+        return NDO_OK;
+}
+
+
+/* closes the debug log */
+int idomod_close_debug_log(void){
+
+        if(idomod_debug_file_fp!=NULL)
+                fclose(idomod_debug_file_fp);
+
+        idomod_debug_file_fp=NULL;
+
+        return NDO_OK;
+}
+
+
+/* write to the debug log */
+int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...){
+        va_list ap;
+        char *temp_path=NULL;
+        struct timeval current_time;
+
+        if(!(idomod_debug_level==IDOMOD_DEBUGL_ALL || (level & idomod_debug_level)))
+                return NDO_OK;
+
+        if(verbosity>idomod_debug_verbosity)
+                return NDO_OK;
+
+        if(idomod_debug_file_fp==NULL)
+                return NDO_ERROR;
+
+        /* write the timestamp */
+        gettimeofday(&current_time,NULL);
+        fprintf(idomod_debug_file_fp,"[%lu.%06lu] [%03d.%d] [pid=%lu] ",current_time.tv_sec,current_time.tv_usec,level,verbosity,(unsigned long)getpid());
+
+        /* write the data */
+        va_start(ap,fmt);
+        vfprintf(idomod_debug_file_fp,fmt,ap);
+        va_end(ap);
+
+        /* flush, so we don't have problems tailing or when fork()ing */
+        fflush(idomod_debug_file_fp);
+
+        /* if file has grown beyond max, rotate it */
+        if((unsigned long)ftell(idomod_debug_file_fp)>idomod_max_debug_file_size && idomod_max_debug_file_size>0L){
+
+                /* close the file */
+                idomod_close_debug_log();
+
+                /* rotate the log file */
+                asprintf(&temp_path,"%s.old",idomod_debug_file);
+                if(temp_path){
+
+                        /* unlink the old debug file */
+                        unlink(temp_path);
+
+                        /* rotate the debug file */
+                        my_rename(idomod_debug_file,temp_path);
+
+                        /* free memory */
+                        my_free(temp_path);
+                        }
+
+                /* open a new file */
+                idomod_open_debug_log();
+	}
+
+        return NDO_OK;
+}
 

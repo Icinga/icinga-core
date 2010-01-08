@@ -2,12 +2,14 @@
  *
  * IDO2DB.H - IDO2DB Include File
  * Copyright (c) 2005-2007 Ethan Galstad
- * Last Modified: 05-14-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 01-08-2010
  *
  ************************************************************************/
 
-#ifndef _NDO2DB_NDO2DB_H
-#define _NDO2DB_NDO2DB_H
+#ifndef _IDO2DB_NDO2DB_H
+#define _IDO2DB_NDO2DB_H
 
 #include "../../../include/config.h"
 #include "utils.h"
@@ -228,13 +230,13 @@ typedef struct ndo2db_input_data_info_struct{
 #define NDO2DB_INPUT_DATA_SERVICEEXTINFODEFINITION      74
 
 
-/************* types of config data *************/
+/************* types of config data ************/
 #define NDO2DB_CONFIGTYPE_ORIGINAL                      0
 #define NDO2DB_CONFIGTYPE_RETAINED                      1
 
 
 
-/***************** debugging levels *******************/
+/************* debugging levels ****************/
 
 #define NDO2DB_DEBUGL_ALL                      -1
 #define NDO2DB_DEBUGL_NONE                     0
@@ -245,7 +247,7 @@ typedef struct ndo2db_input_data_info_struct{
 #define NDO2DB_DEBUGV_MORE		       1
 #define NDO2DB_DEBUGV_MOST                     2
 
-/***************** default trim db interval ************/
+/************* default trim db interval ********/
 
 #define DEFAULT_TRIM_DB_INTERVAL 60
 
