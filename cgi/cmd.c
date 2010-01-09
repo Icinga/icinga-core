@@ -701,7 +701,7 @@ void request_command_data(int cmd){
 		
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
-		printf("%s the %s process",(cmd==CMD_SHUTDOWN_PROCESS)?"shutdown":"restart"), PROGRAM_NAME;
+		printf("%s the %s process",(cmd==CMD_SHUTDOWN_PROCESS)?"shutdown":"restart", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
