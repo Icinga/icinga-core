@@ -22,7 +22,7 @@
 #include "downtime.h"
 #include "comments.h"
 #include "statusdata.h"
-#include "nagios.h"
+#include "icinga.h"
 #include "broker.h"
 #include "sretention.h"
 #include "tap.h"
