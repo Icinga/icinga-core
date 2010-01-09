@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * test_nagios_config.c - Test configuration loading
+ * test_icinga_config.c - Test configuration loading
  *
  * Program: Nagios Core Testing
  * License: GPL
@@ -12,7 +12,7 @@
  *
  * Description:
  *
- * Tests Nagios configuration loading
+ * Tests Icinga configuration loading
  *
  * License:
  *
@@ -38,7 +38,7 @@
 #include "../include/downtime.h"
 #include "../include/statusdata.h"
 #include "../include/macros.h"
-#include "../include/nagios.h"
+#include "../include/icinga.h"
 #include "../include/sretention.h"
 #include "../include/perfdata.h"
 #include "../include/broker.h"

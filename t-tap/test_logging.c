@@ -18,11 +18,11 @@
 
 #define NSCORE 1
 #include "config.h"
-#include "nagios.h"
+#include "icinga.h"
 #include "objects.h"
 #include "tap.h"
 
-char *log_file="var/nagios.log";
+char *log_file="var/icinga.log";
 char *temp_file="";
 char *log_archive_path="var";
 char *macro_x[1];
@@ -83,7 +83,7 @@ main (int argc, char **argv)
 	rotation_time = (time_t)1242949698;
 	t=localtime(&rotation_time);
 
-	asprintf(&log_filename_localtime,"var/nagios-%02d-%02d-%d-%02d.log", t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
+	asprintf(&log_filename_localtime,"var/icinga-%02d-%02d-%d-%02d.log", t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
 
 	log_rotation_method=5;
 	ok(rotate_log_file(rotation_time) == ERROR, "Got error for a bad log_rotation_method");
@@ -93,24 +93,24 @@ main (int argc, char **argv)
 	ok(rotate_log_file(rotation_time) == ERROR, "Got an error with rename");
 	ok( strcmp(saved_dest, log_filename_localtime)==0, "Got an hourly rotation" );
 
-	log_file="var/nagios.log";
+	log_file="var/icinga.log";
 	log_rotation_method=LOG_ROTATION_HOURLY;
-	ok(system("cp var/nagios.log.dummy var/nagios.log")==0, "Copied in dummy nagios.log for archiving");
+	ok(system("cp var/icinga.log.dummy var/icinga.log")==0, "Copied in dummy icinga.log for archiving");
 	ok(rotate_log_file(rotation_time) == OK, "Log rotation should work happily");
 
-	ok( system("diff var/nagios.log var/nagios.log.expected > /dev/null")==0, "Got correct contents of nagios.log");
+	ok( system("diff var/icinga.log var/icinga.log.expected > /dev/null")==0, "Got correct contents of icinga.log");
 
-	asprintf(&temp_command, "diff var/nagios.log.dummy %s", log_filename_localtime);
-	ok( system(temp_command)==0, "nagios log archived correctly" );
+	asprintf(&temp_command, "diff var/icinga.log.dummy %s", log_filename_localtime);
+	ok( system(temp_command)==0, "icinga log archived correctly" );
 
 	unlink(log_filename_localtime);
-	ok( system("chmod 777 var/nagios.log")==0, "Changed mode of nagios.log" );
-	ok( stat("var/nagios.log", &stat_info) == 0, "Got stat info for log file" );
+	ok( system("chmod 777 var/icinga.log")==0, "Changed mode of icinga.log" );
+	ok( stat("var/icinga.log", &stat_info) == 0, "Got stat info for log file" );
 	ok( rotate_log_file(rotation_time) == OK, "Log rotate to check if mode is retained" );
 	ok( stat(log_filename_localtime, &stat_new) == 0, "Got new stat info for archived log file" );
 	ok( stat_info.st_mode == stat_new.st_mode, "Mode for archived file same as original log file" );
 
-	ok( stat("var/nagios.log", &stat_new) == 0, "Got new stat info for new log file" );
+	ok( stat("var/icinga.log", &stat_new) == 0, "Got new stat info for new log file" );
 	ok( stat_info.st_mode == stat_new.st_mode, "Mode for new log file kept same as original log file" );
 
 	return exit_status ();

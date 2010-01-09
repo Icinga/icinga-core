@@ -489,14 +489,14 @@ int read_main_config_file(char *main_config_file){
 			ochp_command=(char *)strdup(value);
 		        }
 
-		else if(!strcmp(variable,"icinga_user")){
+		else if(!strcmp(variable, "icinga_user") || !strcmp(variable, "nagios_user")){
 			my_free(nagios_user);
-			nagios_user=(char *)strdup(value);
+			nagios_user = (char *)strdup(value);
 		        }
 
-		else if(!strcmp(variable,"icinga_group")){
+		else if(!strcmp(variable, "icinga_group") || !strcmp(variable, "nagios_group")){
 			my_free(nagios_group);
-			nagios_group=(char *)strdup(value);
+			nagios_group = (char *)strdup(value);
 		        }
 
 		else if(!strcmp(variable,"admin_email")){

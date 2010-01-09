@@ -33,7 +33,7 @@ $mech->cgi_application("$cgi_dir/history.cgi");
 
 $mech->get_ok("http://localhost/");
 
-$mech->title_is("Nagios History");
+$mech->title_is("Icinga History");
 
 html_ok( $lint, $mech->content, "HTML correct" );
 

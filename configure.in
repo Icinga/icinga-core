@@ -1030,7 +1030,7 @@ else
 fi
 
 
-AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile module/idoutils/db/installdb module/idoutils/db/upgradedb module/idoutils/db/prepsql)
+AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/installdb module/idoutils/db/upgradedb module/idoutils/db/prepsql)
 
 
 perl subst include/locations.h
