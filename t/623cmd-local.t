@@ -60,7 +60,7 @@ unlike( $output, "/Sorry, but no information is available for this command./", "
 # Tests against command type '5'
 $cmd_typ=5;
 $output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
-like( $output, "/You are requesting to enable actice checks of a particular service/", "$local_cgi with cmd_typ=$cmd_typ shows enable active service checks form" );
+like( $output, "/You are requesting to enable active checks of a particular service/", "$local_cgi with cmd_typ=$cmd_typ shows enable active service checks form" );
 like( $output, "/<td CLASS='optBoxRequiredItem'>Host Name:</td>/", "$local_cgi with cmd_typ=$cmd_typ requires Host Name in form" );
 like( $output, "/<td CLASS='optBoxRequiredItem'>Service:</td>/", "$local_cgi with cmd_typ=$cmd_typ requires Service in form" );
 unlike( $output, "/Sorry, but no information is available for this command./", "$local_cgi with cmd_typ=$cmd_typ has a command description" );
@@ -68,7 +68,7 @@ unlike( $output, "/Sorry, but no information is available for this command./", "
 # Tests against command type '6'
 $cmd_typ=6;
 $output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
-like( $output, "/You are requesting to disable actice checks of a particular service/", "$local_cgi with cmd_typ=$cmd_typ shows disable active service checks form" );
+like( $output, "/You are requesting to disable active checks of a particular service/", "$local_cgi with cmd_typ=$cmd_typ shows disable active service checks form" );
 like( $output, "/<td CLASS='optBoxRequiredItem'>Host Name:</td>/", "$local_cgi with cmd_typ=$cmd_typ requires Host Name in form" );
 like( $output, "/<td CLASS='optBoxRequiredItem'>Service:</td>/", "$local_cgi with cmd_typ=$cmd_typ requires Service in form" );
 unlike( $output, "/Sorry, but no information is available for this command./", "$local_cgi with cmd_typ=$cmd_typ has a command description" );
