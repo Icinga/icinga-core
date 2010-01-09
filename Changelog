@@ -2,6 +2,9 @@
 Icinga 1.0.x Change Log
 #######################
 
+1.x - xx/xx/2010
+* core: fix segfault in cmd.cgi
+
 1.0 Stable - 16/12/2009
 * core: create webserver conf.d dir if not existing
 * core: output the correct config parameter name on error message
