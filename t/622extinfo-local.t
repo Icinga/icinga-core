@@ -14,7 +14,7 @@ my $cgi_dir = "$topdir/cgi";
 my $extinfo_cgi = "$cgi_dir/extinfo.cgi";
 
 my $output;
-my $remote_user = "REMOTE_USER=nagiosadmin";
+my $remote_user = "REMOTE_USER=icingaadmin";
 
 plan tests => 2;
 

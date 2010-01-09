@@ -43,7 +43,7 @@ while($iteration <= $iterations_max) {
 	# As the test status.dat generator is in a random order, the output will also be in the same
 	# random order
 	# Check that the comments ids are sorted
-	#$output = `NAGIOS_CGI_CONFIG=etc/cgi-with-generated-status.cfg REQUEST_METHOD=GET REMOTE_USER=nagiosadmin QUERY_STRING="type=2&host=host1&service=Dummy+service" $extinfo_cgi`;
+	#$output = `NAGIOS_CGI_CONFIG=etc/cgi-with-generated-status.cfg REQUEST_METHOD=GET REMOTE_USER=icingaadmin QUERY_STRING="type=2&host=host1&service=Dummy+service" $extinfo_cgi`;
 	#check_decrementing_comment_ids();
 
 	$iteration++;

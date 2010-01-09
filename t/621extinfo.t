@@ -28,7 +28,7 @@ my $cgi_dir = "$topdir/cgi";
 
 my $mech = Test::WWW::Mechanize::CGI->new;
 
-$mech->env( REMOTE_USER => "nagiosadmin" );
+$mech->env( REMOTE_USER => "icingaadmin" );
 $mech->env( NAGIOS_CGI_CONFIG => "etc/cgi.cfg" );
 $mech->cgi_application("$cgi_dir/extinfo.cgi");
 
