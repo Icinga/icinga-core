@@ -16,7 +16,7 @@ my $local_cgi = "$cgi_dir/cmd.cgi";
 my $output;
 
 my $cmd_typ = '';
-my $remote_user = 'REMOTE_USER=nagiosadmin';
+my $remote_user = 'REMOTE_USER=icingaadmin';
 
 plan tests => 110;
 
@@ -119,13 +119,13 @@ unlike( $output, "/Sorry, but no information is available for this command./", "
 # Tests against command type '13'
 $cmd_typ=13;
 $output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
-like( $output, "/You are requesting to restart the Nagios process/", "$local_cgi with cmd_typ=$cmd_typ shows request to restart nagios" );
+like( $output, "/You are requesting to restart the Icinga process/", "$local_cgi with cmd_typ=$cmd_typ shows request to restart icinga" );
 unlike( $output, "/Sorry, but no information is available for this command./", "$local_cgi with cmd_typ=$cmd_typ has a command description" );
 
 # Tests against command type '14'
 $cmd_typ=14;
 $output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
-like( $output, "/You are requesting to shutdown the Nagios process/", "$local_cgi with cmd_typ=$cmd_typ shows request to shutdown nagios" );
+like( $output, "/You are requesting to shutdown the Icinga process/", "$local_cgi with cmd_typ=$cmd_typ shows request to shutdown icinga" );
 unlike( $output, "/Sorry, but no information is available for this command./", "$local_cgi with cmd_typ=$cmd_typ has a command description" );
 
 # Tests against command type '15'
