@@ -563,6 +563,11 @@ int read_all_status_data(char *config_file,int options){
 	if(service_status_has_been_read==TRUE && (options & READ_SERVICE_STATUS))
 		options-=READ_SERVICE_STATUS;
 
+        /* return error if daemon is not running */
+        if(check_daemon_running()==ERROR) {
+                return ERROR;
+        }
+
 	/* bail out if we've already read what we need */
 	if(options<=0)
 		return OK;
@@ -2270,4 +2275,102 @@ void strip_splunk_query_terms(char *buffer){
 	return;
 	}
 
+
+/**********************************************************
+*************** CHECK CORE FUNCTIONS **********************
+**********************************************************/
+
+/* code partly taken from contrib/daemonchk.c */
+
+/* checks if core daemon is running for showing live data or an error */
+int check_daemon_running(void) {
+
+#define CHARLEN 256
+
+	char *lock_file=NULL;
+	char *proc_file=NULL;
+	char *input = NULL;
+	char *val = NULL;
+	char *daemon_name = NULL;
+	struct stat statbuf;
+	int pid, testpid, found;
+	char input_buffer[CHARLEN];
+	mmapfile *fk;
+	FILE *fp;
+
+	/* find lock file. get pid if it exists */
+	if(asprintf(&lock_file,"%s",DEFAULT_LOCK_FILE)==-1) {
+                return ERROR;
+        }
+
+	if((fk=mmap_fopen(lock_file))==NULL) {
+
+		/* no lock file found try program name instead */
+                asprintf(&daemon_name,"%s",PROGRAM_NAME_LC);
+
+                if(asprintf(&proc_file,"/bin/ps -o pid -C %s",daemon_name)==-1) {
+                        free(proc_file);
+                        return ERROR;
+                }
+
+                if((fp=popen(proc_file, "r"))==NULL) {
+                        free(proc_file);
+                        return ERROR;
+                }
+
+                fgets(input_buffer,CHARLEN-1,fp);
+                fgets(input_buffer,CHARLEN-1,fp);
+
+                /* check if entry found */
+                if (sscanf(input_buffer,"%d",&testpid)!=1) {
+                        free(proc_file);
+                        return ERROR;
+                } else {
+			/* daemon is running */
+			free(proc_file);
+			return OK;
+		}
+	}
+        
+	if((input=mmap_fgets(fk))==NULL) {
+		mmap_fclose(fk);
+		free(lock_file);
+		return ERROR;
+	}
+
+	strip(input);
+        val=strtok(input,"\n");
+	pid=atoi(val);
+
+        free(input);
+        mmap_fclose(fk);
+	free(lock_file);
+
+	/* find pid in running processes to check if core died without removing lock file */
+	free(proc_file);
+	if(asprintf(&proc_file,"/bin/ps -o pid -p %d",pid)==-1) {
+		free(lock_file);
+		return ERROR;
+	}
+
+        if((fp=popen(proc_file, "r"))==NULL) {
+		free(proc_file);
+                return ERROR;
+        }
+
+	fgets(input_buffer,CHARLEN-1,fp);
+	fgets(input_buffer,CHARLEN-1,fp);
+
+	/* check if correct pid found */
+	if (sscanf(input_buffer,"%d",&testpid)==1) {
+		if (testpid!=pid) {
+	                free(proc_file);
+			return ERROR;
+		}
+	} 
+
+	free(proc_file);	
+
+	return OK;
+}
 
