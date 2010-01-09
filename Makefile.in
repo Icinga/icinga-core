@@ -16,6 +16,7 @@ SRC_XDATA=@srcdir@/xdata
 SRC_CONTRIB=@srcdir@/contrib
 SRC_IDOUTILS=@srcdir@/module/idoutils
 SRC_TTAP=@srcdir@/t-tap
+SRC_TAP=@srcdir@/tap
 SRC_ICINGAAPI=@srcdir@/module/icinga-api
 
 CC=@CC@
@@ -177,6 +178,9 @@ clean:
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
+	@if [ x$(USE_LIBTAP) = xyes ]; then \
+		cd $(SRC_TAP) && $(MAKE) $@; \
+	fi
 	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
 		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
 	fi
@@ -195,6 +199,9 @@ distclean: clean
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
+	@if [ x$(USE_LIBTAP) = xyes ]; then \
+		cd $(SRC_TAP) && $(MAKE) $@; \
+	fi
 	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
 		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
 	fi
