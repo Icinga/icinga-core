@@ -561,7 +561,7 @@ int neb_deregister_callback(int callback_type, int (*callback_func)(int,void *))
 
 /* make callbacks to modules */
 int neb_make_callbacks(int callback_type, void *data){
-	nebcallback *temp_callback=NULL;
+	nebcallback *temp_callback=NULL, *next_callback=NULL;
 	int (*callbackfunc)(int,void *);
 	register int cbresult=0;
 	int total_callbacks=0;
@@ -577,7 +577,10 @@ int neb_make_callbacks(int callback_type, void *data){
 	log_debug_info(DEBUGL_EVENTBROKER,1,"Making callbacks (type %d)...\n",callback_type);
 
 	/* make the callbacks... */
-	for(temp_callback=neb_callback_list[callback_type];temp_callback!=NULL;temp_callback=temp_callback->next){
+	for(temp_callback=neb_callback_list[callback_type];temp_callback!=NULL;temp_callback=next_callback){
+		/* Save temp_callback->next because if the callback function de-registers itself temp_callback's */
+		/* pointer isn't guaranteed to be usable anymore (neb_deregister_callback will free() it) */
+		next_callback=temp_callback->next;
 		callbackfunc=temp_callback->callback_func;
 		cbresult=callbackfunc(callback_type,data);
 
