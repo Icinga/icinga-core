@@ -6,6 +6,7 @@ Icinga 1.0.x Change Log
 * core: fix segfault in cmd.cgi
 * core: fix event broker callback function self de-registering for callbacks (Sean Millichamp)
 * core: added missing sound.js provided by scriptaculous
+* core: fix idomod doesn't de-initialize after config error
 
 1.0 Stable - 16/12/2009
 * core: create webserver conf.d dir if not existing

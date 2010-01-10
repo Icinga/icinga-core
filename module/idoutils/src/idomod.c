@@ -3,10 +3,10 @@
  * IDOMOD.C - Icinga Data Output Event Broker Module
  *
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 12-16-2009 
+ * Last Modified: 01-10-2010
  *
  *****************************************************************************/
 
@@ -375,6 +375,8 @@ int ndomod_process_config_var(char *arg){
 	char *var=NULL;
 	char *val=NULL;
 
+	char temp_buffer[NDOMOD_MAX_BUFLEN];
+
 	/* split var/val */
 	var=strtok(arg,"=");
 	val=strtok(NULL,"\n");
@@ -390,7 +392,7 @@ int ndomod_process_config_var(char *arg){
 	/* process the variable... */
 
 	if(!strcmp(var,"config_file"))
-		ndomod_process_config_file(val);
+		return ndomod_process_config_file(val);
 
 	else if(!strcmp(var,"instance_name"))
 		ndomod_instance_name=strdup(val);
@@ -461,8 +463,14 @@ int ndomod_process_config_var(char *arg){
 			}
 	}
 
-	else
+	else {
+		/* log an error message to the Icinga log file */
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: ERROR - Unknown config file variable '%s'.\n", var);
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
+
 		return NDO_ERROR;
+	}
 
 	return NDO_OK;
         }
