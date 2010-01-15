@@ -52,11 +52,11 @@
 <li class="listitem">
       <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to start Icinga is by using the init script:
       </p>
-<pre class="programlisting"> /etc/init.d/icinga start</pre>
+<pre class="programlisting"># /etc/init.d/icinga start</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Manually:</strong></span> You can start Icinga manually with the <span class="bold"><strong>-d</strong></span> command line option: </p>
-<pre class="programlisting"> /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
+<pre class="programlisting"># /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Debugging Mode:</strong></span> In the very rare case that Icinga ends silently without any
@@ -76,7 +76,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to reload/restart Icinga is by using the init
       script: </p>
-<pre class="programlisting"> /etc/init.d/icinga reload</pre>
+<pre class="programlisting"># /etc/init.d/icinga reload</pre>
 <p> or </p>
 <pre class="programlisting"> /etc/init.d/icinga restart</pre>
 <p>
@@ -92,7 +92,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>Manually:</strong></span> You can restart Icinga by sending it a SIGHUP signal:
       </p>
-<pre class="programlisting"> kill -HUP &lt;icinga_pid&gt;</pre>
+<pre class="programlisting"># kill -HUP &lt;icinga_pid&gt;</pre>
     </li>
 </ol></div>
 
@@ -102,7 +102,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to stop Icinga is by using the init script:
       </p>
-<pre class="programlisting"> /etc/init.d/icinga stop</pre>
+<pre class="programlisting"># /etc/init.d/icinga stop</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Web-Interface:</strong></span> You can stop Icinga using the Web-Interface Click on the
@@ -112,10 +112,10 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Manually:</strong></span> You can stop by sending it a SIGTERM signal: </p>
-<pre class="programlisting"> kill &lt;icinga_pid&gt;</pre>
+<pre class="programlisting"># kill &lt;icinga_pid&gt;</pre>
     </li>
 </ol></div>
-  <a class="indexterm" name="id3871681"></a>
+  <a class="indexterm" name="id5232417"></a>
 </div>
 <div class="navfooter">
 <hr>

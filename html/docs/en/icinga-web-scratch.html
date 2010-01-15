@@ -60,7 +60,7 @@
 <li class="listitem">
             <p><span class="bold"><strong>The installation</strong></span></p>
 
-            <pre class="programlisting"> # tar xzvf icinga-web-(version).tar.gz
+            <pre class="programlisting"> # tar xzvf icinga-web-0.9.1-alpha.tar.gz
  # cd icinga-web</pre>
 
             <p>Recently work has been started on setting up an installer for the new Icinga-web UI, use:</p>
@@ -96,16 +96,17 @@
 
             <p><span class="bold"><strong>Manual creation</strong></span></p>
 
-            <p>Create a database and a user you like. The user must have default data privileges like SELECT, UPDATE, INSERT, DELETE. Import the
-            schemes etc/database/deploy/init.sql and etc/database/deploy/db-deploy.sql to your database. Thats all.</p>
+            <p>Create a database and a user you like. The user needs at least the following privileges: SELECT, UPDATE, INSERT, DELETE, CREATE, DROP,
+            ALTER, INDEX. Import the schemes etc/database/deploy/init.sql and etc/database/deploy/db-deploy.sql to your database. Thats all.</p>
 
             <p><span class="bold"><strong>Auto creation</strong></span></p>
 
             <p>Create a database user with scheme and data privileges (CREATE, DROP, ALTER, INDEX). Go to the etc dir and copy the build.properties
             to a safe place (e.g. /tmp). Alter the database settings within the properties file. You can also set you database root user to create
-            your scheme. Call the phing deploy task:</p>
+            your scheme. Go to /usr/local/icinga-web/etc and call the phing deploy task:</p>
 
-            <pre class="programlisting"># /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/etc/build.properties db-initialize</pre>
+            <pre class="programlisting"># cd /usr/local/icinga-web/etc
+	# /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/etc/build.properties db-initialize</pre>
 
             <p>You have to manually create a database user to access your database. Add the default data privileges that icinga-web can work with
             the newly created database.</p>
@@ -285,9 +286,9 @@ Allow from all
         </li>
 </ol></div>
 
-    <a class="indexterm" name="id3920810"></a>
+    <a class="indexterm" name="id5277702"></a>
 
-    <a class="indexterm" name="id3920819"></a>
+    <a class="indexterm" name="id5278085"></a>
 </div>
 <div class="navfooter">
 <hr>

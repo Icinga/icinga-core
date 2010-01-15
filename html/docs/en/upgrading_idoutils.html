@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Upgrading IDOUtils database</title>
+<title>Upgrading IDOUtils Database</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Upgrading IDOUtils database</th></tr>
+<tr><th colspan="3" align="center">Upgrading IDOUtils Database</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="upgrading.html">Prev</a> </td>
@@ -24,9 +24,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Upgrading IDOUtils database">
+<div class="section" title="Upgrading IDOUtils Database">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="upgrading_idoutils"></a><a name="upgrading_idoutils2"></a>Upgrading IDOUtils database</h2></div></div></div>
+<a name="upgrading_idoutils"></a><a name="upgrading_idoutils2"></a>Upgrading IDOUtils Database</h2></div></div></div>
   
 
   <p>There may be a bug within the database scheme which has been fixed. If you are upgrading from an older IDOUtils
@@ -131,14 +131,8 @@
 
   <p>Please backup your database and stop ido2db before applying this patch!</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-      <code class="code">/etc/init.d/ido2db stop</code>
-    </li>
-<li class="listitem">
-      <code class="code">mysql -u root -p icinga &lt; /path/to/icinga-src/module/idoutils/db/mysql-upgrade-1.0.sql</code>
-    </li>
-</ol></div>
+  <pre class="programlisting"># /etc/init.d/ido2db stop
+   # mysql -u root -p icinga &lt; /path/to/icinga-src/module/idoutils/db/mysql-upgrade-1.0.sql</pre>
 
   <p>The patch will do the following through MySQL statements:</p>
 
@@ -170,7 +164,7 @@
   <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC
   otherwise the script will fail.</p>
 
-  <a class="indexterm" name="id3828722"></a>
+  <a class="indexterm" name="id5191579"></a>
 </div>
 <div class="navfooter">
 <hr>

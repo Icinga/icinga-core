@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">
-<link rel="next" href="upgrading_idoutils.html" title="Upgrading IDOUtils database">
+<link rel="next" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -40,7 +40,7 @@
   <p><a class="link" href="upgrading.html#upgrading-rpm">Upgrading from an RPM installation</a></p>
 
   <p><span class="bold"><strong><a name="upgrading-icinga"></a> Upgrading from previous Icinga
-  releases</strong></span></p>
+  Releases</strong></span></p>
 
   <p>During development there may be cases where the handling of bugfixes might touch the userspace. We try to avoid this as
   far as possible but sometimes it is inevitable.</p>
@@ -55,23 +55,24 @@
 
   <p>If you experience this problem then please use the following script to fix the file names</p>
 
-  <pre class="programlisting"> cd /usr/local/icinga/var/archives
+  <pre class="programlisting"># cd /usr/local/icinga/var/archives
+
  for oldfilename in `find ./ -name "Icinga-*"`
  do
    newfilename=`echo $oldfilename | sed -e 's/Icinga/icinga/g'`
    mv $oldfilename $newfilename
  done</pre>
 
-  <p><span class="bold"><strong>Normal Icinga update path</strong></span></p>
+  <p><span class="bold"><strong>Normal Icinga update Path</strong></span></p>
 
   <p>Regular updates of Icinga should be possible just by re-installing Icinga using </p>
-<pre class="screen"> ./configure
- make all
- make install</pre>
+<pre class="screen"># ./configure
+# make all
+# make install</pre>
 <p> Please keep in mind that you have to call ./configure using the same options as during the first
   time.</p>
 
-  <p><span class="bold"><strong><a name="upgrading-nagios3x"></a> Upgrading From Nagios 3.x Releases</strong></span></p>
+  <p><span class="bold"><strong><a name="upgrading-nagios3x"></a> Upgrading from Nagios 3.x Releases</strong></span></p>
 
   <p>We try to be compatible with the configuration files of the current Nagios 3.x versions so there should be very
   little you have to do to "upgrade" from Nagios 3.x to Icinga 1.0 Stable. Assuming you've already installed
@@ -99,8 +100,8 @@
 
   <p>Verify your configuration files and restart Icinga.</p>
 
-  <pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
- /etc/init.d/icinga restart</pre>
+  <pre class="screen"># /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+ # /etc/init.d/icinga restart</pre>
 
   <p>That's it - you're done!</p>
 
@@ -115,7 +116,7 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong><a name="upgrading-nagios2x"></a> Upgrading From Nagios 2.x Releases</strong></span></p>
+  <p><span class="bold"><strong><a name="upgrading-nagios2x"></a> Upgrading from Nagios 2.x Releases</strong></span></p>
 
   <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 1.0 Stable. The upgrade is essentially
   the same as what is described above for upgrading from Nagios 3.x releases. You will, however, have to change your
@@ -154,7 +155,7 @@
     </li>
 </ul></div>
 
-  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's new">What's New</a>" section of the documentation. It describes all the
+  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's New in Icinga Core 1.0 Stable and Icinga Web 0.9.1-alpha">What's New</a>" section of the documentation. It describes all the
   changes that were made to the Icinga code since the latest stable release of Nagios 3.0.6. Quite a bit has
   changed, so make sure you read it over.</p>
 
@@ -217,13 +218,13 @@
   you've backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back
   if you encounter problems.</p>
 
-  <a class="indexterm" name="id3828362"></a>
+  <a class="indexterm" name="id5191244"></a>
 
-  <a class="indexterm" name="id3828372"></a>
+  <a class="indexterm" name="id5191272"></a>
 
-  <a class="indexterm" name="id3828386"></a>
+  <a class="indexterm" name="id5191287"></a>
 
-  <a class="indexterm" name="id3828399"></a>
+  <a class="indexterm" name="id5191298"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -238,7 +239,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Icinga with IDOUtils Quickstart </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Upgrading IDOUtils database</td>
+<td width="40%" align="right" valign="top"> Upgrading IDOUtils Database</td>
 </tr>
 </table>
 </div>

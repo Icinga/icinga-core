@@ -58,7 +58,7 @@
 <li class="listitem">
             <p><span class="bold"><strong>Die Installation</strong></span></p>
 
-            <pre class="programlisting"> # tar xzvf icinga-web-(version).tar.gz
+            <pre class="programlisting"> # tar xzvf icinga-web-0.9.1-alpha.tar.gz
  # cd icinga-web</pre>
 
             <p>Nun können Sie schon den Installer bemühen, mit:</p>
@@ -94,24 +94,25 @@
 
             <p><span class="bold"><strong>Manuelles Anlegen der Datenbank:</strong></span></p>
 
-            <p>Legen Sie eine Datenbank und einen Benutzer Ihrer Wahl an. Der Benutzer benötigt folgende Berechtigungen auf die Datenbank: SELECT,
-            UPDATE, INSERT, DELETE. Importieren SIe die Schema etc/database/deploy/init.sql und etc/database/deploy/db-deploy.sql in die Datenbank.
+            <p>Legen Sie eine Datenbank und einen Benutzer Ihrer Wahl an. Der Benutzer benötigt mindestens folgende Berechtigungen auf die Datenbank: SELECT,
+            UPDATE, INSERT, DELETE, CREATE, DROP, ALTER, INDEX. Importieren SIe die Schema etc/database/deploy/init.sql und etc/database/deploy/db-deploy.sql in die Datenbank.
             Das war es auch schon.</p>
 
             <p><span class="bold"><strong>Automatische Installation:</strong></span></p>
 
             <p>Angelegt wird eine Datenbank und ein User mit den entsprechenden Privilegien (CREATE, DROP, ALTER, INDEX). Gehen Sie nach etc und
             kopieren Sie die build.properties an einen sicheren Ort (z.B. nach /tmp). Ändern Sie die Datenbank-Einstellungen innerhalb der
-            Properties-Datei. Sie können auch den Root-Benutzer der Datenbank verwenden, um das Schema anzulegen. Rufen Sie phing auf mit:</p>
+            Properties-Datei. Sie können auch den Root-Benutzer der Datenbank verwenden, um das Schema anzulegen. Wechseln Sie in das etc-Verzeichnis vin icinga-web und rufen Sie phing auf mit:</p>
 
-            <pre class="programlisting"># /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/build.properties db-initialize</pre>
+            <pre class="programlisting"># cd /usr/local/icinga-web/etc
+	# /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/etc/build.properties db-initialize</pre>
 
             <p>Jetzt müssen Sie noch einen DB-User anlegen (mit den Rechten SELECT, UPDATE, INSERT, DELETE).</p>
         </li>
 <li class="listitem">
             <p><span class="bold"><strong>Icinga-Web Konfiguration</strong></span></p>
 
-            <p>Anpassen der Konfiguration: Editieren /var/www/icinga-web/app/config/databases.xml und ändern Sie die Datenbank-Einstellungen (ab
+            <p>Anpassen der Konfiguration: Editieren /usr/local/icinga-web/app/config/databases.xml und ändern Sie die Datenbank-Einstellungen (ab
             Zeile 7, im Beispiel DB-User: icinga_user, PW: password):</p>
 <pre class="programlisting">    &lt;database name="appkit_default" class="AgaviDoctrineDatabase"&gt;
        &lt;ae:parameter name="dsn"&gt;mysql://icinga_user:password@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
@@ -127,7 +128,7 @@
 
             <p>Ändern Sie die Werte für Ihre Datenbank-Verbindung.</p>
 
-            <p>Editieren Sie /var/www/icinga-web/app/config/icinga.xml und setzen Sie die Werte für die IDOUtils (ab Zeile 163):</p>
+            <p>Editieren Sie /usr/local/icinga-web/app/config/icinga.xml und setzen Sie die Werte für die IDOUtils (ab Zeile 163):</p>
 
             <pre class="programlisting"> &lt;parameter name="IcingaData"&gt;
      &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
@@ -275,9 +276,9 @@ Allow from all
         </li>
 </ol></div>
 
-    <a class="indexterm" name="id3872881"></a>
+    <a class="indexterm" name="id2670224"></a>
 
-    <a class="indexterm" name="id3872889"></a>
+    <a class="indexterm" name="id2670598"></a>
 </div>
 <div class="navfooter">
 <hr>
