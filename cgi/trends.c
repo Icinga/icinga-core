@@ -148,6 +148,7 @@ int use_map=TRUE;
 int small_image=FALSE;
 int embedded=FALSE;
 int display_header=TRUE;
+int daemon_check=TRUE;
 
 int assume_initial_states=TRUE;
 int assume_state_retention=TRUE;
@@ -335,7 +336,7 @@ int main(int argc, char **argv){
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
-	if(result==ERROR){
+	if(result==ERROR && daemon_check==TRUE){
 		if(mode==CREATE_HTML){
 			document_header(FALSE);
 			status_data_error();
@@ -1639,6 +1640,10 @@ int process_cgivars(void){
 		/* we found the small image option */
 		else if(!strcmp(variables[x],"smallimage"))
 			small_image=TRUE;
+
+		/* we found the nodaemoncheck option */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
 
 	        }
 

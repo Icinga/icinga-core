@@ -94,6 +94,7 @@ char *ping_address="";
 char *traceroute_address="";
 
 int show_all_hostgroups=TRUE;
+int daemon_check=TRUE;
 
 
 authdata current_authdata;
@@ -144,7 +145,7 @@ int main(void){
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
-	if(result==ERROR){
+	if(result==ERROR && daemon_check==TRUE){
 		printf("<P>Error: Could not read host and service status information!</P>\n");
 		document_footer();
 		free_memory();
@@ -336,7 +337,11 @@ int process_cgivars(void){
 			strip_html_brackets(traceroute_address);
 		        }
 
-	        }
+		/* we found the nodaemoncheck option */
+                else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
+
+		}
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);

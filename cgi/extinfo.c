@@ -127,6 +127,7 @@ int sort_option=SORT_NEXTCHECKTIME;
 
 int embedded=FALSE;
 int display_header=TRUE;
+int daemon_check=TRUE;
 
 
 
@@ -177,7 +178,7 @@ int main(void){
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
-	if(result==ERROR){
+	if(result==ERROR && daemon_check==TRUE){
 		document_header(FALSE);
 		status_data_error();
 		document_footer();
@@ -765,7 +766,13 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the nodaemoncheck option */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
+
 	        }
+
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);

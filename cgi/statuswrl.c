@@ -130,6 +130,7 @@ int layout_method=LAYOUT_USER_SUPPLIED;
 
 int coordinates_were_specified=FALSE;   /* were drawing coordinates specified with extended host info entries? */
 
+int daemon_check=TRUE;
 
 
 
@@ -167,7 +168,7 @@ int main(int argc, char **argv){
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
-	if(result==ERROR){
+	if(result==ERROR && daemon_check==TRUE){
 		free_memory();
 		return ERROR;
                 }
@@ -295,6 +296,10 @@ int process_cgivars(void){
 			custom_viewpoint_z=strtod(variables[x],NULL);
 			custom_viewpoint=TRUE;
 		        }
+
+		/* we found the nodaemoncheck option */
+                else if(!strcmp(variables[x],"nodaemoncheck"))
+                        daemon_check=FALSE;
 
 	        }
 

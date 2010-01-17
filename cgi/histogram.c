@@ -204,6 +204,7 @@ int graph_statetypes=GRAPH_HARD_STATETYPES;
 
 int embedded=FALSE;
 int display_header=TRUE;
+int daemon_check=TRUE;
 
 char *host_name="";
 char *svc_description="";
@@ -293,7 +294,7 @@ int main(int argc, char **argv){
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
-	if(result==ERROR){
+	if(result==ERROR && daemon_check==TRUE){
 		if(mode==CREATE_HTML){
 			document_header(FALSE);
 			status_data_error();
@@ -1394,6 +1395,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+                /* we found the nodaemoncheck option */
+                else if(!strcmp(variables[x],"nodaemoncheck"))
+                        daemon_check=FALSE;
 
 		/* we found the input option */
 		else if(!strcmp(variables[x],"input")){
