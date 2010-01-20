@@ -30,6 +30,7 @@ my $mech = Test::WWW::Mechanize::CGI->new;
 
 $mech->env( REMOTE_USER => "icingaadmin" );
 $mech->env( NAGIOS_CGI_CONFIG => "etc/cgi.cfg" );
+$mech->env( QUERY_STRING => "nodaemoncheck" );
 $mech->cgi_application("$cgi_dir/extinfo.cgi");
 
 $mech->get_ok("http://localhost/");
