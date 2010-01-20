@@ -99,7 +99,7 @@ clean:
 
 distclean: clean
 	rm -f perlxsi.c
-	rm -f t-tap/var/icinga-05-22-2009-01.log t-tap/var/icinga.log
+	rm -f var/icinga-05-22-2009-01.log var/icinga.log smallconfig/objects.cache
 	rm -f Makefile
 
 devclean: distclean
