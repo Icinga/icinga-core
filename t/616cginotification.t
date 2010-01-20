@@ -17,7 +17,7 @@ my $output;
 
 plan tests => 5;
 
-$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET $notifications_cgi`;
+$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING='nodaemoncheck'  $notifications_cgi`;
 like( $output, "/<input type='hidden' name='host' value='all'>/", "Host value set to all if nothing set" );
 
 $output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING='nodaemoncheck&host=all' $notifications_cgi`;
