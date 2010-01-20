@@ -275,7 +275,7 @@ int main(void){
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("Tactical Status Overview",TRUE,&current_authdata);
+		display_info_table("Tactical Status Overview",TRUE,&current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
@@ -951,7 +951,7 @@ void display_tac_overview(void){
 	/* left column */
 	printf("<td align=left valign=top width=50%%>\n");
 
-	display_info_table("Tactical Monitoring Overview",TRUE,&current_authdata);
+	display_info_table("Tactical Monitoring Overview",TRUE,&current_authdata, daemon_check);
 
 	printf("</td>\n");
 

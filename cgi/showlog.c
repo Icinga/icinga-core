@@ -59,7 +59,7 @@ int embedded=FALSE;
 int display_header=TRUE;
 int display_frills=TRUE;
 int display_timebreaks=TRUE;
-
+int daemon_check=TRUE;
 
 int main(void){
 	int result=OK;
@@ -116,7 +116,7 @@ int main(void){
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table((log_rotation_method==LOG_ROTATION_NONE || log_archive==0)?"Current Event Log":"Archived Event Log",FALSE,&current_authdata);
+		display_info_table((log_rotation_method==LOG_ROTATION_NONE || log_archive==0)?"Current Event Log":"Archived Event Log",FALSE,&current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
@@ -278,6 +278,10 @@ int process_cgivars(void){
 		/* we found the notimebreaks option */
 		else if(!strcmp(variables[x],"notimebreaks"))
 			display_timebreaks=FALSE;
+
+		/* we found the nodaemoncheck option */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
 
 		/* we received an invalid argument */
 		else

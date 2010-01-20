@@ -83,6 +83,7 @@ int display_timebreaks=TRUE;
 int display_system_messages=TRUE;
 int display_flapping_alerts=TRUE;
 int display_downtime_alerts=TRUE;
+int daemon_check=TRUE;
 
 
 int main(void){
@@ -147,7 +148,7 @@ int main(void){
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Host Alert History");
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,FALSE,&current_authdata);
+		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
@@ -455,6 +456,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the nodaemoncheck option */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
 
 		/* we found the nofrills option */
 		else if(!strcmp(variables[x],"nofrills"))

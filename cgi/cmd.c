@@ -100,6 +100,7 @@ int command_mode=CMDMODE_REQUEST;
 int content_type=HTML_CONTENT;
 
 int display_header=TRUE;
+int daemon_check=TRUE;
 
 authdata current_authdata;
 
@@ -184,7 +185,7 @@ int main(void){
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("External Command Interface",FALSE,&current_authdata);
+		display_info_table("External Command Interface",FALSE,&current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* center column of the first row */
@@ -639,6 +640,10 @@ int process_cgivars(void){
 		/* we found the broadcast notification option */
 		else if(!strcmp(variables[x],"broadcast_notification"))
 			broadcast_notification=NOTIFICATION_OPTION_BROADCAST;
+
+		/* we got the persistence option for a comment */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check = FALSE;
 
                 }
 

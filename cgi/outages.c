@@ -161,7 +161,7 @@ int main(void){
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("Network Outages",TRUE,&current_authdata);
+		display_info_table("Network Outages",TRUE,&current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top row */

@@ -196,6 +196,7 @@ int total_items=0;
 
 int embedded=FALSE;
 int display_header=TRUE;
+int daemon_check= TRUE;
 
 int output_format=HTML_OUTPUT;
 int display_type=REPORT_RECENT_ALERTS;
@@ -284,7 +285,7 @@ int main(int argc, char **argv){
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"Alert Summary Report");
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,FALSE,&current_authdata);
+		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		printf("</td>\n");
 
@@ -841,6 +842,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the nodaemoncheck option */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
 
 		/* we found time argument */
 		else if(!strcmp(variables[x],"smon")){

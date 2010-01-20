@@ -313,7 +313,7 @@ int main(void){
 		printf("<td align=left valign=top width=33%%>\n");
 
 		/* info table */
-		display_info_table("Current Network Status",TRUE,&current_authdata);
+		display_info_table("Current Network Status",TRUE,&current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");

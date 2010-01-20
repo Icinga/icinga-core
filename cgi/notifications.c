@@ -74,6 +74,7 @@ int use_lifo=TRUE;
 
 int embedded=FALSE;
 int display_header=TRUE;
+int daemon_check=TRUE;
 
 
 int main(void){
@@ -144,7 +145,7 @@ int main(void){
 		        }
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Contact Notifications");
-		display_info_table(temp_buffer,FALSE,&current_authdata);
+		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		if(query_type==FIND_HOST || query_type==FIND_SERVICE){
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
@@ -445,10 +446,14 @@ int process_cgivars(void){
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
 			embedded=TRUE;
-	
+
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the nodaemoncheck option */
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
                 }
 
 	/* 

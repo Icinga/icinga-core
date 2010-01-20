@@ -93,7 +93,7 @@ authdata current_authdata;
 int display_type=DISPLAY_NONE;
 
 int embedded=FALSE;
-
+int daemon_check=TRUE;
 
 int main(void){
 	int result=OK;
@@ -145,7 +145,7 @@ int main(void){
 
 	/* left column of the first row */
 	printf("<td align=left valign=top width=50%%>\n");
-	display_info_table("Configuration",FALSE,&current_authdata);
+	display_info_table("Configuration",FALSE,&current_authdata, daemon_check);
 	printf("</td>\n");
 
 	/* right hand column of top row */
@@ -386,6 +386,10 @@ int process_cgivars(void){
 			/* we found the embed option */
 			else if(!strcmp(variables[x],"embedded"))
 				embedded=TRUE;
+
+			/* we found the nodaemoncheck option */
+			else if(!strcmp(variables[x],"nodaemoncheck"))
+				daemon_check=FALSE;
 		        }
 
 		/* we received an invalid argument */

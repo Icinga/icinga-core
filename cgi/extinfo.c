@@ -223,7 +223,7 @@ int main(void){
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Icinga Process Information");
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,TRUE,&current_authdata);
+		display_info_table(temp_buffer,TRUE,&current_authdata, daemon_check);
 
 		/* find the host */
 		if(display_type==DISPLAY_HOST_INFO || display_type==DISPLAY_SERVICE_INFO){

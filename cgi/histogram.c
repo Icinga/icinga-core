@@ -336,7 +336,7 @@ int main(int argc, char **argv){
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Host and Service Alert Histogram");
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,FALSE,&current_authdata);
+		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		if(display_type!=DISPLAY_NO_HISTOGRAM && input_type==GET_INPUT_NONE){
 

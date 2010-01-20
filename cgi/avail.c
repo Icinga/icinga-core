@@ -404,7 +404,7 @@ int main(int argc, char **argv){
 			break;
 		        }
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,FALSE,&current_authdata);
+		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		if(((display_type==DISPLAY_HOST_AVAIL && show_all_hosts==FALSE) || (display_type==DISPLAY_SERVICE_AVAIL && show_all_services==FALSE)) && get_date_parts==FALSE){
 
