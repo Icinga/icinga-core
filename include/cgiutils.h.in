@@ -495,7 +495,7 @@ int determine_archive_to_use_from_time(time_t);
 void print_extra_hostgroup_url(char *,char *);
 void print_extra_servicegroup_url(char *,char *);
 
-void display_info_table(char *,int,authdata *);
+void display_info_table(char *,int,authdata *, int);
 void display_nav_table(char *,int);
 
 void display_splunk_host_url(host *);
