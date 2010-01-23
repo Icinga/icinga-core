@@ -1168,7 +1168,7 @@ void display_services(void){
 	printf("<TH CLASS='data'>Description</TH>\n");
 	printf("<TH CLASS='data'>Max. Check Attempts</TH>\n");
 	printf("<TH CLASS='data'>Normal Check Interval</TH>\n");
-	printf("<TH CLASS='data'>Retry Check Interal</TH>\n");
+	printf("<TH CLASS='data'>Retry Check Interval</TH>\n");
 	printf("<TH CLASS='data'>Check Command</TH>\n");
 	printf("<TH CLASS='data'>Check Period</TH>\n");
 	printf("<TH CLASS='data'>Parallelize</TH>\n");
