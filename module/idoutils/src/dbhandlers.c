@@ -3414,9 +3414,10 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
                     ,buf1
                    )==-1)
                 buf=NULL;
-        free(buf1);
 
-	result = ndo2db_db_query(idi, buf1);
+	free(buf1);
+
+	result = ndo2db_db_query(idi, buf);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -3427,7 +3428,6 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 	free(buf);
-	free(buf1);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
