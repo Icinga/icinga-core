@@ -1776,7 +1776,7 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-        void *data[7];
+        void *data[8];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &idi->dbinfo.last_contact_notification_id;
         data[2] = (void *) &ts[0];
@@ -1784,6 +1784,7 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
         data[4] = (void *) &ts[1];
         data[5] = (void *) &end_time.tv_usec;
         data[6] = (void *) &command_id;
+        data[7] = (void *) &es[0];
 
         result = ido2db_query_insert_or_update_contactnotificationmethoddata_add(idi, data);
 
