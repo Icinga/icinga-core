@@ -1033,37 +1033,37 @@ fi
 AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/installdb module/idoutils/db/upgradedb module/idoutils/db/prepsql)
 
 
-perl subst include/locations.h
-perl subst html/index.html
-perl subst html/menu.html
-perl subst html/top.html
-perl subst html/search.html
+perl subst $srcdir/include/locations.h
+perl subst $srcdir/html/index.html
+perl subst $srcdir/html/menu.html
+perl subst $srcdir/html/top.html
+perl subst $srcdir/html/search.html
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."
 
-perl subst sample-config/icinga.cfg
-perl subst sample-config/cgi.cfg
-perl subst sample-config/resource.cfg
-perl subst sample-config/httpd.conf
-perl subst sample-config/mrtg.cfg
+perl subst $srcdir/sample-config/icinga.cfg
+perl subst $srcdir/sample-config/cgi.cfg
+perl subst $srcdir/sample-config/resource.cfg
+perl subst $srcdir/sample-config/httpd.conf
+perl subst $srcdir/sample-config/mrtg.cfg
 
-perl subst sample-config/template-object/templates.cfg
-perl subst sample-config/template-object/commands.cfg
-perl subst sample-config/template-object/timeperiods.cfg
-perl subst sample-config/template-object/contacts.cfg
+perl subst $srcdir/sample-config/template-object/templates.cfg
+perl subst $srcdir/sample-config/template-object/commands.cfg
+perl subst $srcdir/sample-config/template-object/timeperiods.cfg
+perl subst $srcdir/sample-config/template-object/contacts.cfg
 
-perl subst sample-config/template-object/localhost.cfg
-perl subst sample-config/template-object/windows.cfg
-perl subst sample-config/template-object/printer.cfg
-perl subst sample-config/template-object/switch.cfg
+perl subst $srcdir/sample-config/template-object/localhost.cfg
+perl subst $srcdir/sample-config/template-object/windows.cfg
+perl subst $srcdir/sample-config/template-object/printer.cfg
+perl subst $srcdir/sample-config/template-object/switch.cfg
 
 echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
-perl subst module/idoutils/config/icinga.cfg
-perl subst module/idoutils/config/ido2db.cfg-sample
-perl subst module/idoutils/config/idomod.cfg-sample
+perl subst $srcdir/module/idoutils/config/icinga.cfg
+perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
+perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
 
 dnl Create IDOUtils Perl Scripts for DB Handling
 dnl perl subst module/idoutils/db/installdb
