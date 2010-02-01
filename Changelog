@@ -268,7 +268,7 @@ FIXES
 * Added test for testing status.cgi with a large number of comments and downtime
 * Updated tests to check that comment ids are sorted
 * Fixed deferred sorting of comments and downtimes. Added tests to prove sorting
-
+* Fix for template configurations which use negated wildcards (Tim Wilde)
 
 WARNINGS
 
