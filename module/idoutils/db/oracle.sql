@@ -16,7 +16,7 @@
 -- SQL> @oracle.sql
 --
 -- initial version: 2008-02-20 David Schmidt
--- current version: 2009-09-05 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- current version: 2010-02-03 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 --
 -- -- --------------------------------------------------------
 
@@ -50,6 +50,21 @@ EXCEPTION
                 RAISE;
 END;
 /
+
+-- 
+-- Cleaning procedures (requires Oracle 11)
+-- this is only for testing purposes and not yet used in the src code 
+-- CREATE OR REPLACE PROCEDURE clean_table_by_instance
+--	( p_table_name IN varchar2, p_id IN number )
+--	IS
+--	v_cur integer;
+-- BEGIN
+--	v_cur := dbms_sql.open_cursor;
+--	dbms_sql.parse(v_cur, 'delete from '||p_table_name||' WHERE instance_id='||p_id, dbms_sql.native);
+--	dbms_output.put_line(dbms_sql.execute(v_cur));
+--	dbms_sql.close_cursor(v_cur);
+--END; 
+--/
 
 
 -- 
@@ -460,7 +475,7 @@ CREATE TABLE eventhandlers (
   end_time_usec number(11) default 0 NOT NULL,
   command_object_id number(11) default 0 NOT NULL,
   command_args varchar2(255),
-  command_line varchar2(255),
+  command_line varchar2(1024),
   timeout number(6) default 0 NOT NULL,
   early_timeout number(6) default 0 NOT NULL,
   execution_time number default 0 NOT NULL,
@@ -576,7 +591,7 @@ CREATE TABLE hostchecks (
   end_time_usec number(11) default 0 NOT NULL,
   command_object_id number(11) default 0 NOT NULL,
   command_args varchar2(255),
-  command_line varchar2(255),
+  command_line varchar2(1024),
   timeout number(6) default 0 NOT NULL,
   early_timeout number(6) default 0 NOT NULL,
   execution_time number default 0 NOT NULL,
@@ -1043,7 +1058,7 @@ CREATE TABLE servicechecks (
   end_time_usec number(11) default 0 NOT NULL,
   command_object_id number(11) default 0 NOT NULL,
   command_args varchar2(255),
-  command_line varchar2(255),
+  command_line varchar2(1024),
   timeout number(6) default 0 NOT NULL,
   early_timeout number(6) default 0 NOT NULL,
   execution_time number default 0 NOT NULL,
@@ -1322,7 +1337,7 @@ CREATE TABLE systemcommands (
   start_time_usec number(11) default 0 NOT NULL,
   end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') NOT NULL,
   end_time_usec number(11) default 0 NOT NULL,
-  command_line varchar2(255),
+  command_line varchar2(1024),
   timeout number(6) default 0 NOT NULL,
   early_timeout number(6) default 0 NOT NULL,
   execution_time number default 0 NOT NULL,
@@ -1406,6 +1421,86 @@ CREATE TABLE timeperiods (
   PRIMARY KEY  (id),
   CONSTRAINT timeperiods UNIQUE (instance_id,config_type,timeperiod_object_id)
 );
+
+
+
+--
+-- index
+--
+
+-- for periodic delete - db.c 
+-- instance_id and
+-- TIMEDEVENTS => scheduled_time
+-- SYSTEMCOMMANDS, SERVICECHECKS, HOSTCHECKS, EVENTHANDLERS  => start_time
+-- EXTERNALCOMMANDS => entry_time
+
+-- instance_id
+CREATE INDEX instance_id_idx on timedevents(instance_id);
+CREATE INDEX instance_id_idx on systemcommands(instance_id);
+CREATE INDEX instance_id_idx on servicechecks(instance_id);
+CREATE INDEX instance_id_idx on hostchecks(instance_id);
+CREATE INDEX instance_id_idx on eventhandlers(instance_id);
+CREATE INDEX instance_id_idx on externalcommands(instance_id);
+
+-- time
+CREATE INDEX time_id_idx on timedevents(scheduled_time);
+CREATE INDEX time_id_idx on systemcommands(start_time);
+CREATE INDEX time_id_idx on servicechecks(start_time);
+CREATE INDEX time_id_idx on hostchecks(start_time);
+CREATE INDEX time_id_idx on eventhandlers(start_time);
+CREATE INDEX time_id_idx on externalcommands(entry_time);
+
+-- for starting cleanup - dbhandler.c
+-- instance_id only
+
+-- realtime data
+CREATE INDEX instance_id_idx on programstatus(instance_id);
+CREATE INDEX instance_id_idx on hoststatus(instance_id);
+CREATE INDEX instance_id_idx on servicestatus(instance_id);
+CREATE INDEX instance_id_idx on contactstatus(instance_id);
+CREATE INDEX instance_id_idx on timedeventqueue(instance_id);
+CREATE INDEX instance_id_idx on comments(instance_id);
+CREATE INDEX instance_id_idx on scheduleddowntime(instance_id);
+CREATE INDEX instance_id_idx on runtimevariables(instance_id);
+CREATE INDEX instance_id_idx on customvariablestatus(instance_id);
+
+-- config data
+CREATE INDEX instance_id_idx on configfiles(instance_id);
+CREATE INDEX instance_id_idx on configfilevariables(instance_id);
+CREATE INDEX instance_id_idx on customvariables(instance_id);
+CREATE INDEX instance_id_idx on commands(instance_id);
+CREATE INDEX instance_id_idx on timeperiods(instance_id);
+CREATE INDEX instance_id_idx on timeperiod_timeranges(instance_id);
+CREATE INDEX instance_id_idx on contactgroups(instance_id);
+CREATE INDEX instance_id_idx on contactgroup_members(instance_id);
+CREATE INDEX instance_id_idx on hostgroups(instance_id);
+CREATE INDEX instance_id_idx on hostgroup_members(instance_id);
+CREATE INDEX instance_id_idx on servicegroups(instance_id);
+CREATE INDEX instance_id_idx on servicegroup_members(instance_id);
+CREATE INDEX instance_id_idx on hostescalations(instance_id);
+CREATE INDEX instance_id_idx on hostescalation_contacts(instance_id);
+CREATE INDEX instance_id_idx on serviceescalations(instance_id);
+CREATE INDEX instance_id_idx on serviceescalation_contacts(instance_id);
+CREATE INDEX instance_id_idx on hostdependencies(instance_id);
+CREATE INDEX instance_id_idx on contacts(instance_id);
+CREATE INDEX instance_id_idx on contact_addresses(instance_id);
+CREATE INDEX instance_id_idx on contact_notificationcommands(instance_id);
+CREATE INDEX instance_id_idx on hosts(instance_id);
+CREATE INDEX instance_id_idx on host_parenthosts(instance_id);
+CREATE INDEX instance_id_idx on host_contacts(instance_id);
+CREATE INDEX instance_id_idx on services(instance_id);
+CREATE INDEX instance_id_idx on service_contacts(instance_id);
+CREATE INDEX instance_id_idx on service_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on host_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on hostescalation_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on serviceescalationcontactgroups(instance_id);
+
+
+--
+-- triggers/sequences
+--
+
+
 
 CREATE SEQUENCE autoincrement
    start with 1

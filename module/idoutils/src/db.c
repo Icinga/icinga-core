@@ -1087,21 +1087,56 @@ int ndo2db_handle_db_error(ndo2db_idi *idi) {
 int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
 	char *buf = NULL;
 	int result = NDO_OK;
+	int oci_res = 0;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_clear_table() start\n");
 
 	if (idi == NULL || table_name == NULL)
 		return NDO_ERROR;
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
 		buf = NULL;
 
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
+	/* using a specialized deleting, we just execute the procedure but do not commit */
+        //if (asprintf(&buf, "begin clean_table_by_instance('%s', %lu); end;", table_name, idi->dbinfo.instance_id) == -1)
+	//	buf = NULL;
+
+        //result = ndo2db_db_query(idi, buf);
+
+        /* create statement handler */
+        //idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+        /* execute query in one go */
+        //oci_res = OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT(buf));
+
+        /*  get result set */
+        //idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
+
+        /* check for errors */
+        //if(!oci_res) {
+
+        //        syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
+        //        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: database query failed for: '%s'\n", buf);
+
+        //        ndo2db_handle_db_error(idi);
+        //        result = NDO_ERROR;
+        //}
+
+        if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
+                buf = NULL;
+
+        result = ndo2db_db_query(idi, buf);
+	
+	/* commit statement */
+	//OCI_Commit(idi->dbinfo.oci_connection);
+
+	/* don't free statement yet */
 	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */

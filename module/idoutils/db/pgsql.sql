@@ -5,7 +5,7 @@
 #	  as sql function
 #
 # initial version: 2009-05-13 Markus Manzke
-# current version: 2009-08-31 Michael Friedrich <michael.friedrich@univie.ac.at>
+# current version: 2010-02-03 Michael Friedrich <michael.friedrich@univie.ac.at>
 #
 #--------------------------------------------------------------------------------
 #
@@ -436,7 +436,7 @@ CREATE TABLE  icinga_eventhandlers (
   end_time_usec INTEGER NOT NULL default '0',
   command_object_id INTEGER NOT NULL default '0',
   command_args varchar(255) NOT NULL default '',
-  command_line varchar(255) NOT NULL default '',
+  command_line varchar(1024) NOT NULL default '',
   timeout INTEGER NOT NULL default '0',
   early_timeout INTEGER NOT NULL default '0',
   execution_time double precision NOT NULL default '0',
@@ -508,7 +508,7 @@ CREATE TABLE  icinga_hostchecks (
   end_time_usec INTEGER NOT NULL default '0',
   command_object_id INTEGER NOT NULL default '0',
   command_args varchar(255) NOT NULL default '',
-  command_line varchar(255) NOT NULL default '',
+  command_line varchar(1024) NOT NULL default '',
   timeout INTEGER NOT NULL default '0',
   early_timeout INTEGER NOT NULL default '0',
   execution_time double precision NOT NULL default '0',
@@ -991,7 +991,7 @@ CREATE TABLE  icinga_servicechecks (
   end_time_usec INTEGER NOT NULL default '0',
   command_object_id INTEGER NOT NULL default '0',
   command_args varchar(255) NOT NULL default '',
-  command_line varchar(255) NOT NULL default '',
+  command_line varchar(1024) NOT NULL default '',
   timeout INTEGER NOT NULL default '0',
   early_timeout INTEGER NOT NULL default '0',
   execution_time double precision NOT NULL default '0',
@@ -1300,7 +1300,7 @@ CREATE TABLE  icinga_systemcommands (
   start_time_usec INTEGER NOT NULL default '0',
   end_time timestamp NOT NULL default '1970-01-01 00:00:00',
   end_time_usec INTEGER NOT NULL default '0',
-  command_line varchar(255) NOT NULL default '',
+  command_line varchar(1024) NOT NULL default '',
   timeout INTEGER NOT NULL default '0',
   early_timeout INTEGER NOT NULL default '0',
   execution_time double precision NOT NULL default '0',
@@ -1386,5 +1386,74 @@ CREATE TABLE  icinga_timeperiod_timeranges (
 ) ;
 
 
+-- -----------------------------------------
+-- add index
+-- -----------------------------------------
 
+-- for periodic delete 
+-- instance_id and
+-- TIMEDEVENTS => scheduled_time
+-- SYSTEMCOMMANDS, SERVICECHECKS, HOSTCHECKS, EVENTHANDLERS  => start_time
+-- EXTERNALCOMMANDS => entry_time
+
+-- instance_id
+CREATE INDEX instance_id_idx on icinga_timedevents(instance_id);
+CREATE INDEX instance_id_idx on icinga_systemcommands(instance_id);
+CREATE INDEX instance_id_idx on icinga_servicechecks(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostchecks(instance_id);
+CREATE INDEX instance_id_idx on icinga_eventhandlers(instance_id);
+CREATE INDEX instance_id_idx on icinga_externalcommands(instance_id);
+
+-- time
+CREATE INDEX time_id_idx on icinga_timedevents(scheduled_time);
+CREATE INDEX time_id_idx on icinga_systemcommands(start_time);
+CREATE INDEX time_id_idx on icinga_servicechecks(start_time);
+CREATE INDEX time_id_idx on icinga_hostchecks(start_time);
+CREATE INDEX time_id_idx on icinga_eventhandlers(start_time);
+CREATE INDEX time_id_idx on icinga_externalcommands(entry_time);
+
+-- for starting cleanup - referenced in dbhandler.c:882
+-- instance_id only
+
+-- realtime data
+CREATE INDEX instance_id_idx on icinga_programstatus(instance_id);
+CREATE INDEX instance_id_idx on icinga_hoststatus(instance_id);
+CREATE INDEX instance_id_idx on icinga_servicestatus(instance_id);
+CREATE INDEX instance_id_idx on icinga_contactstatus(instance_id);
+CREATE INDEX instance_id_idx on icinga_timedeventqueue(instance_id);
+CREATE INDEX instance_id_idx on icinga_comments(instance_id);
+CREATE INDEX instance_id_idx on icinga_scheduleddowntime(instance_id);
+CREATE INDEX instance_id_idx on icinga_runtimevariables(instance_id);
+CREATE INDEX instance_id_idx on icinga_customvariablestatus(instance_id);
+
+-- config data
+CREATE INDEX instance_id_idx on icinga_configfiles(instance_id);
+CREATE INDEX instance_id_idx on icinga_configfilevariables(instance_id);
+CREATE INDEX instance_id_idx on icinga_customvariables(instance_id);
+CREATE INDEX instance_id_idx on icinga_commands(instance_id);
+CREATE INDEX instance_id_idx on icinga_timeperiods(instance_id);
+CREATE INDEX instance_id_idx on icinga_timeperiod_timeranges(instance_id);
+CREATE INDEX instance_id_idx on icinga_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on icinga_contactgroup_members(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostgroups(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostgroup_members(instance_id);
+CREATE INDEX instance_id_idx on icinga_servicegroups(instance_id);
+CREATE INDEX instance_id_idx on icinga_servicegroup_members(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostescalations(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostescalation_contacts(instance_id);
+CREATE INDEX instance_id_idx on icinga_serviceescalations(instance_id);
+CREATE INDEX instance_id_idx on icinga_serviceescalation_contacts(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostdependencies(instance_id);
+CREATE INDEX instance_id_idx on icinga_contacts(instance_id);
+CREATE INDEX instance_id_idx on icinga_contact_addresses(instance_id);
+CREATE INDEX instance_id_idx on icinga_contact_notificationcommands(instance_id);
+CREATE INDEX instance_id_idx on icinga_hosts(instance_id);
+CREATE INDEX instance_id_idx on icinga_host_parenthosts(instance_id);
+CREATE INDEX instance_id_idx on icinga_host_contacts(instance_id);
+CREATE INDEX instance_id_idx on icinga_services(instance_id);
+CREATE INDEX instance_id_idx on icinga_service_contacts(instance_id);
+CREATE INDEX instance_id_idx on icinga_service_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on icinga_host_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on icinga_hostescalation_contactgroups(instance_id);
+CREATE INDEX instance_id_idx on icinga_serviceescalation_contactgroups(instance_id);
 
