@@ -76,6 +76,7 @@ typedef struct ndo2db_dbconninfo_struct{
 	OCI_Statement* oci_statement;
 	OCI_Resultset* oci_resultset;
 	/* for bind params keep prepared statements */
+	OCI_Statement* oci_statement_startup_clean;
 	OCI_Statement* oci_statement_timedevents;
 	OCI_Statement* oci_statement_timedevents_queue;
 	OCI_Statement* oci_statement_timedeventqueue;

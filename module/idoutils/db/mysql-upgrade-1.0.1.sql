@@ -1,32 +1,21 @@
--- -----------------------------------------
--- pgsql-upgrade-1.0.1.sql
--- upgrade path for Icinga IDOUtils 1.0.1
---
--- fixes output missing in table systemcommands
--- fixes command_line size
--- adds index for deleting
--- -----------------------------------------
--- Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
---
--- Initial Revision: 2009-12-30 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- --------------------------------------------------------
+-- mysql-upgrade-1.0.1.sql
+-- DB definition for Postgres
 -- 
--- Please check http://docs.icinga.org for upgrading information!
--- -----------------------------------------
+-- 
+-- sets index on several tables for improved delete
+--
+-- -- --------------------------------------------------------
 
--- -----------------------------------------
--- systemcommands upgrade path
--- -----------------------------------------
 
-ALTER TABLE icinga_systemcommands ADD output VARCHAR(255) NOT NULL default '';
 
--- -----------------------------------------
--- modify command_line
--- -----------------------------------------
+-- modify command_line size to varchar(1024) instead of varchar(255)
 
-ALTER TABLE icinga_hostchecks ALTER COLUMN command_line TYPE varchar(1024);
-ALTER TABLE icinga_servicechecks ALTER COLUMN command_line TYPE varchar(1024);
-ALTER TABLE icinga_systemcommands ALTER COLUMN command_line TYPE varchar(1024);
-ALTER TABLE icinga_eventhandlers ALTER COLUMN command_line TYPE varchar(1024);
+ALTER TABLE `icinga_hostchecks` MODIFY COLUMN `command_line` varchar(1024) NOT NULL;
+ALTER TABLE `icinga_servicechecks` MODIFY COLUMN `command_line` varchar(1024) NOT NULL;
+ALTER TABLE `icinga_systemcommands` MODIFY COLUMN `command_line` varchar(1024) NOT NULL;
+ALTER TABLE `icinga_eventhandlers` MODIFY COLUMN `command_line` varchar(1024) NOT NULL;
+
 
 -- -----------------------------------------
 -- add index
@@ -98,6 +87,4 @@ CREATE INDEX instance_id_idx on icinga_service_contactgroups(instance_id);
 CREATE INDEX instance_id_idx on icinga_host_contactgroups(instance_id);
 CREATE INDEX instance_id_idx on icinga_hostescalation_contactgroups(instance_id);
 CREATE INDEX instance_id_idx on icinga_serviceescalation_contactgroups(instance_id);
-
-
 
