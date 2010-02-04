@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- mysql-upgrade-1.0.1.sql
--- DB definition for Postgres
+-- DB definition for MySQL
 -- 
--- 
+-- modify command_line to carchar(1024)
 -- sets index on several tables for improved delete
 --
 -- -- --------------------------------------------------------

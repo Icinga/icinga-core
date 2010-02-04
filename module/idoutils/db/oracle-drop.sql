@@ -56,6 +56,7 @@ DROP TABLE host_contactgroups;
 DROP TABLE service_contactgroups;
 DROP TABLE hostescalation_contactgroups;
 DROP TABLE serviceescalationcontactgroups;
+DROP TABLE dbversion;
 
 DROP SEQUENCE autoincrement;
 
