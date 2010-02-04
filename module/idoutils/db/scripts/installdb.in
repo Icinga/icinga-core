@@ -51,7 +51,7 @@ my $thisversion="1.0";
 eval { $dbh->do("SELECT * FROM icinga_dbversion LIMIT 1") };
 if ($@) {
 
-	my $file="mysql.sql";
+	my $file="../mysql/mysql.sql";
 	if (-e $file){
 	    print "** Creating tables for version $thisversion",$/;
 	    print "     Using $file for installation...",$/;

@@ -1,6 +1,6 @@
-db/upgradedb
-db/prepsql
-db/installdb
+db/scripts/upgradedb
+db/scripts/prepsql
+db/scripts/installdb
 idomod.cfg-sample
 config/icinga.cfg
 config/ido2db.cfg-sample
