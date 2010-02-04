@@ -36,7 +36,7 @@ distclean: clean
 	rm -f config.log config.status config.cache $(SRC_INCLUDE)/config.h
 	rm -f Makefile
 	rm -f init-script.suse subst
-	rm -f db/prepsql db/installdb db/upgradedb
+	rm -f db/scripts/prepsql db/scripts/installdb db/scripts/upgradedb
 	rm -f config/ido2db.cfg-sample config/idomod.cfg-sample config/icinga.cfg
 
 devclean: distclean

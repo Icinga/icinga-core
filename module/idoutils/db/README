@@ -1,1 +1,36 @@
-Please refer to http://docs.icinga.org or /path/to/icinga-src/docs/ and read carefully.
+Here you can find the following:
+
+mysql/
+	- mysql.sql for installing IDOUtils MySQL
+	- mysql-upgrade-$version.sql for upgrading IDOUtils MySQL
+	  Please read the docs for upgrading information!
+
+
+pgsql/
+	- pqsql.sql for installing IDOUtils Postgresql
+	- pgsql-upgrade-$version.sql for upgrading IDOUtils Postgresql
+	  Please read the docs for upgrading information!
+
+
+oracle/
+	- oracle.sql for installing IDOUtils Oracle
+	- oracle-drop.sql for dropping all tables
+	- oracle-upgrade-$version.sql for upgrading IDOUtils Oracle
+	  Please read the docs for upgrading information!
+
+
+scripts/
+	- Install and Upgrade Scripts for IDOUtils MySQL
+
+queries/
+	- Example queries for selecting data
+
+========================================================================
+
+Please refer to 
+
+http://docs.icinga.org 
+or 
+/path/to/icinga-src/docs/ 
+
+and read carefully!

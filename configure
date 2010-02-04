@@ -8650,7 +8650,7 @@ else
 fi
 
 
-ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/installdb module/idoutils/db/upgradedb module/idoutils/db/prepsql"
+ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql"
 
 
 
@@ -9152,9 +9152,9 @@ do
     "module/idoutils/src/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/src/Makefile" ;;
     "t-tap/Makefile") CONFIG_FILES="$CONFIG_FILES t-tap/Makefile" ;;
     "t/Makefile") CONFIG_FILES="$CONFIG_FILES t/Makefile" ;;
-    "module/idoutils/db/installdb") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/installdb" ;;
-    "module/idoutils/db/upgradedb") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/upgradedb" ;;
-    "module/idoutils/db/prepsql") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/prepsql" ;;
+    "module/idoutils/db/scripts/installdb") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/scripts/installdb" ;;
+    "module/idoutils/db/scripts/upgradedb") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/scripts/upgradedb" ;;
+    "module/idoutils/db/scripts/prepsql") CONFIG_FILES="$CONFIG_FILES module/idoutils/db/scripts/prepsql" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -9994,37 +9994,37 @@ fi
 
 
 
-perl subst include/locations.h
-perl subst html/index.html
-perl subst html/menu.html
-perl subst html/top.html
-perl subst html/search.html
+perl subst $srcdir/include/locations.h
+perl subst $srcdir/html/index.html
+perl subst $srcdir/html/menu.html
+perl subst $srcdir/html/top.html
+perl subst $srcdir/html/search.html
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."
 
-perl subst sample-config/icinga.cfg
-perl subst sample-config/cgi.cfg
-perl subst sample-config/resource.cfg
-perl subst sample-config/httpd.conf
-perl subst sample-config/mrtg.cfg
+perl subst $srcdir/sample-config/icinga.cfg
+perl subst $srcdir/sample-config/cgi.cfg
+perl subst $srcdir/sample-config/resource.cfg
+perl subst $srcdir/sample-config/httpd.conf
+perl subst $srcdir/sample-config/mrtg.cfg
 
-perl subst sample-config/template-object/templates.cfg
-perl subst sample-config/template-object/commands.cfg
-perl subst sample-config/template-object/timeperiods.cfg
-perl subst sample-config/template-object/contacts.cfg
+perl subst $srcdir/sample-config/template-object/templates.cfg
+perl subst $srcdir/sample-config/template-object/commands.cfg
+perl subst $srcdir/sample-config/template-object/timeperiods.cfg
+perl subst $srcdir/sample-config/template-object/contacts.cfg
 
-perl subst sample-config/template-object/localhost.cfg
-perl subst sample-config/template-object/windows.cfg
-perl subst sample-config/template-object/printer.cfg
-perl subst sample-config/template-object/switch.cfg
+perl subst $srcdir/sample-config/template-object/localhost.cfg
+perl subst $srcdir/sample-config/template-object/windows.cfg
+perl subst $srcdir/sample-config/template-object/printer.cfg
+perl subst $srcdir/sample-config/template-object/switch.cfg
 
 echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
-perl subst module/idoutils/config/icinga.cfg
-perl subst module/idoutils/config/ido2db.cfg-sample
-perl subst module/idoutils/config/idomod.cfg-sample
+perl subst $srcdir/module/idoutils/config/icinga.cfg
+perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
+perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
 
 
 
