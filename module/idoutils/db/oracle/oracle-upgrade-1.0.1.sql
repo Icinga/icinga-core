@@ -191,7 +191,8 @@ CREATE INDEX objects_inst_id_idx ON objects(instance_id);
 
 -- logentries
 -- CREATE INDEX loge_instance_id_idx on logentries(instance_id);
--- CREATE INDEX loge_time_idx on logentries(logentry_time);
+-- #236
+CREATE INDEX loge_time_idx on logentries(logentry_time);
 -- CREATE INDEX loge_data_idx on logentries(logentry_data);
 
 -- commenthistory
