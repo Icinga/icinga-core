@@ -366,81 +366,54 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
         /* initialize prepared statements */
 
 	/* timed events */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() called\n");
-
         if(ido2db_oci_prepared_statement_timedevents_queue(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() called\n");
 
         if(ido2db_oci_prepared_statement_timedevents(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() called\n");
 
         if(ido2db_oci_prepared_statement_timedeventqueue(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() call done\n");
 
 	/* hoststatus/check */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() called\n");
-
         if(ido2db_oci_prepared_statement_hoststatus(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() called\n");
 
         if(ido2db_oci_prepared_statement_hostchecks(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() call done\n");
 
 	/* servicestatus/check */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() called\n");
-
         if(ido2db_oci_prepared_statement_servicestatus(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() called\n");
 
         if(ido2db_oci_prepared_statement_servicechecks(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() call done\n");
 
 	/* contactnotifications */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() called\n");
-
         if(ido2db_oci_prepared_statement_contact_notificationcommands(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() call done\n");
 
         /* programstatus */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() called\n");
-
         if(ido2db_oci_prepared_statement_programstatus(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() call done\n");
 
 #endif /* Oracle ocilib specific */
 
@@ -576,11 +549,10 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
 	/* insert new instance if necessary */
 	if (have_instance == NDO_FALSE) {
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
 			buf = NULL;
 		if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
 
 	                switch (idi->dbinfo.server_type) {
         	                case NDO2DB_DBSERVER_MYSQL:
@@ -615,18 +587,41 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
         	                default:
 	                                break;
         	        }
+		}
+		dbi_result_free(idi->dbinfo.dbi_result);
+
 #else /* Oracle ocilib specific */
+                if (asprintf(&buf, "INSERT INTO %s (id, instance_name) VALUES (seq_instances.nextval, '%s') RETURNING id INTO :id", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
+                        buf = NULL;
+
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%s)\n", buf);
+		
+		idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		OCI_Prepare(idi->dbinfo.oci_statement, MT(buf));
+		OCI_RegisterInt(idi->dbinfo.oci_statement, ":id");
+
+		result = OCI_Execute(idi->dbinfo.oci_statement);
+
+		idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
+
+		if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+			idi->dbinfo.instance_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) instance_id\n", idi->dbinfo.instance_id);
+		} else {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() instance_id could not be fetched\n");
+		}
+
+		OCI_Commit(idi->dbinfo.oci_connection);
+/*
+                if (asprintf(&buf, "INSERT INTO %s (id, instance_name) VALUES (seq_instances.nextval, '%s') RETURNING id INTO :id", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
+	                        buf = NULL;
+                if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
 			idi->dbinfo.instance_id = ido2db_ocilib_insert_id(idi);
 			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) instance_id\n", idi->dbinfo.instance_id);
 
-#endif /* Oracle ocilib specific */
-
-		}
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
+		}*/
 
 		 OCI_StatementFree(idi->dbinfo.oci_statement);
 

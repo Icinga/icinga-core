@@ -1607,6 +1607,297 @@ CREATE INDEX objects_inst_id_idx ON objects(instance_id);
 -- triggers/sequences
 -- -----------------------------------------
 
+CREATE SEQUENCE seq_acknowledgements
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_commands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_commenthistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_comments
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_configfiles
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_configfilevariables
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_conninfo
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contact_addresses
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contact_notifcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactgroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactnotifmethods
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactnotifications
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactstatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_customvariables
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_customvariablestatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_downtimehistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_eventhandlers
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_externalcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_flappinghistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_host_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_host_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_host_parenthosts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostchecks
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostdependencies
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostesc_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostesc_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostescalations
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostgroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hosts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hoststatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_instances
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_logentries
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_notifications
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_objects
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_processevents
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_programstatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_runtimevariables
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_scheduleddowntime
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_service_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_service_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicechecks
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicedependencies
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_serviceesccontactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_serviceesc_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_serviceescalations
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicegroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicegroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_services
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicestatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_statehistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_systemcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timedeventqueue
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timedevents
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timep_timer
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timeperiods
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+
 
 
 CREATE SEQUENCE autoincrement
