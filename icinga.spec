@@ -97,7 +97,7 @@ PHP api for %{name}
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
     --with-init-dir="%{_initrddir}" \
-    --with-lockfile="%{_localstatedir}/run/icinga.pid" \
+    --with-lockfile="%{_localstatedir}/icinga/icinga.pid" \
     --with-mail="/bin/mail" \
     --with-icinga-user="icinga" \
     --with-icinga-group="icinga" \
