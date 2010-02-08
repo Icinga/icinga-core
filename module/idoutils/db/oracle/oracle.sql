@@ -15,8 +15,11 @@
 -- # sqlplus username/password
 -- SQL> @oracle.sql
 --
+-- Note: set open_cursors to an appropriate value, not the default 50
+-- http://www.orafaq.com/node/758
+--
 -- initial version: 2008-02-20 David Schmidt
--- current version: 2010-02-04 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- current version: 2010-02-08 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 --
 -- -- --------------------------------------------------------
 

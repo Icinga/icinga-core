@@ -2153,6 +2153,10 @@ unsigned long ido2db_ocilib_insert_id(ndo2db_idi *idi, char *seq_name) {
 	                        insert_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
 	                }
 		}
+
+		/* free statement */
+		OCI_StatementFree(idi->dbinfo.oci_statement);
+
 	} else {
 		insert_id = -1;
 	}
