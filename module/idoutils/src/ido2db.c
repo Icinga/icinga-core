@@ -1108,10 +1108,13 @@ int ndo2db_handle_client_connection(int sd){
 	signal(SIGFPE,ndo2db_child_sighandler);
 
 	/* create cleanup thread */
+
+	//FIXME - for debugging, thread disabled
+	/*
 	if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, &idi)) != 0) {
 		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 		exit(EXIT_FAILURE);
-	}
+	}*/
 
 	/* initialize input data information */
 	ndo2db_idi_init(&idi);

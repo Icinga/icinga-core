@@ -23,6 +23,38 @@
 --
 -- -- --------------------------------------------------------
 
+CREATE OR REPLACE PROCEDURE clean_table_by_instance
+     (p_table_name IN varchar2, p_id IN number )
+     IS
+        v_stmt_str varchar2(200);
+BEGIN
+        v_stmt_str := 'DELETE FROM '
+        || p_table_name
+        || ' WHERE instance_id='
+        || p_id;
+        EXECUTE IMMEDIATE v_stmt_str;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE clean_table_by_instance_time
+     (p_table_name IN varchar2, p_id IN number, p_field_name IN varchar2, p_time IN number)
+     IS
+        v_stmt_str varchar2(200);
+BEGIN
+        v_stmt_str := 'DELETE FROM '
+        || p_table_name
+        || ' WHERE instance_id='
+        || p_id
+        || ' AND '
+        || p_field_name
+        || '<(SELECT unixts2date('
+        || p_time
+        || ') FROM DUAL)';
+        EXECUTE IMMEDIATE v_stmt_str;
+END;
+/
+
+
 --
 -- command_line
 --
@@ -213,6 +245,80 @@ CREATE INDEX objects_inst_id_idx ON objects(instance_id);
 -- CREATE INDEX sched_d_t_entry_time_idx on scheduleddowntime(entry_time);
 -- CREATE INDEX sched_d_t_start_time_idx on scheduleddowntime(scheduled_start_time);
 -- CREATE INDEX sched_d_t_end_time_idx on scheduleddowntime(scheduled_end_time);
+
+
+-- -----------------------------------------
+-- upgrade path for using sequences 
+-- problem: the sequences start by 1
+-- but within the table relations there 
+-- are other ids used
+-- so get the highest id from each table
+-- and set to sequence start
+-- -----------------------------------------
+
+-- -----------------------------------------
+-- drop triggers first
+-- -----------------------------------------
+
+DROP TRIGGER acknowledgements;
+DROP TRIGGER commands;
+DROP TRIGGER commenthistory;
+DROP TRIGGER comments;
+DROP TRIGGER configfiles;
+DROP TRIGGER configfilevariables;
+DROP TRIGGER conninfo;
+DROP TRIGGER contact_addresses;
+DROP TRIGGER contact_notificationcommands;
+DROP TRIGGER contactgroup_members;
+DROP TRIGGER contactgroups;
+DROP TRIGGER contactnotificationmethods;
+DROP TRIGGER contactnotifications;
+DROP TRIGGER contacts;
+DROP TRIGGER contactstatus;
+DROP TRIGGER customvariables;
+DROP TRIGGER customvariablestatus;
+DROP TRIGGER downtimehistory;
+DROP TRIGGER eventhandlers;
+DROP TRIGGER externalcommands;
+DROP TRIGGER flappinghistory;
+DROP TRIGGER host_contactgroups;
+DROP TRIGGER host_contacts;
+DROP TRIGGER host_parenthosts;
+DROP TRIGGER hostchecks;
+DROP TRIGGER hostdependencies;
+DROP TRIGGER hostescalation_contactgroups;
+DROP TRIGGER hostescalation_contacts;
+DROP TRIGGER hostescalations;
+DROP TRIGGER hostgroup_members;
+DROP TRIGGER hostgroups;
+DROP TRIGGER hosts;
+DROP TRIGGER hoststatus;
+DROP TRIGGER instances;
+DROP TRIGGER logentries;
+DROP TRIGGER notifications;
+DROP TRIGGER objects;
+DROP TRIGGER processevents;
+DROP TRIGGER programstatus;
+DROP TRIGGER runtimevariables;
+DROP TRIGGER scheduleddowntime;
+DROP TRIGGER service_contactgroups;
+DROP TRIGGER service_contacts;
+DROP TRIGGER servicechecks;
+DROP TRIGGER servicedependencies;
+DROP TRIGGER serviceescalationcontactgroups;
+DROP TRIGGER serviceescalation_contacts;
+DROP TRIGGER serviceescalations;
+DROP TRIGGER servicegroup_members;
+DROP TRIGGER servicegroups;
+DROP TRIGGER services;
+DROP TRIGGER servicestatus;
+DROP TRIGGER statehistory;
+DROP TRIGGER systemcommands;
+DROP TRIGGER timedeventqueue;
+DROP TRIGGER timedevents;
+DROP TRIGGER timeperiod_timeranges;
+DROP TRIGGER timeperiods;
+/
 
 
 -- -----------------------------------------
@@ -509,6 +615,5 @@ CREATE SEQUENCE seq_timeperiods
    increment by 1
    nomaxvalue;
 
--- -----------------------------------------
--- remove triggers/sequences
--- -----------------------------------------
+
+

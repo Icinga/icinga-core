@@ -39,10 +39,12 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
 int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data);
 
 /* COMMENTS */
-int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, char *table_name);
+int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_commentdata_history_add(ndo2db_idi *idi, void **data);
 
 /* DOWNTIME */
-int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data, char *table_name);
+int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ndo2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ndo2db_idi *idi, void **data);
 
 /* PROGRAMSTATUS */
 int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **data);

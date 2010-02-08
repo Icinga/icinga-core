@@ -2,9 +2,9 @@
  * DBHANDLERS.C - Data handler routines for IDO2DB daemon
  *
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 08-31-2009
+ * Last Modified: 02-07-2010
  *
  **************************************************************/
 
@@ -67,6 +67,10 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id(%lu) return cached object\n", *object_id);
 		return NDO_OK;
 	}
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+	/* normal parts for !oracle */
 
 	if (name1 == NULL) {
 		es[0] = NULL;
@@ -142,11 +146,11 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
 
-#ifdef USE_ORACLE /* Oracle ocilib specific */
+//#ifdef USE_ORACLE /* Oracle ocilib specific */
 				/* Oracle does case sensitive compare  */
-		                if (asprintf(&buf2, "name2='%s'", es[1]) == -1)
-		                        buf2 = NULL;
-#endif /* Oracle ocilib specific */
+//		                if (asprintf(&buf2, "name2='%s'", es[1]) == -1)
+//		                        buf2 = NULL;
+//#endif /* Oracle ocilib specific */
 
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
@@ -161,7 +165,6 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id='%lu' AND objecttype_id='%d' AND %s AND %s", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
 		buf = NULL;
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result))
@@ -175,34 +178,188 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 
+        free(buf);
+	free(buf1);
+	free(buf2);
+
 #else /* Oracle ocilib specific */
 
-        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+	/* above code for other rdbms is real bullshit and not even modular for prepared statements ... */
+	/* ......... db.c ......... */
+	/* ok we have prepared 4 queries - now for the fun part */
 
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() query ok\n");
+	if(name1 != NULL && name2 != NULL) {
 
-                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() fetchnext ok\n");
-                        *object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+			es[0] = ndo2db_db_escape_string(idi, name1);
+			es[1] = ndo2db_db_escape_string(idi, name2);
 
-                } else {
-                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id() fetchnext not ok\n");
-                }
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id(object_id=%lu)\n", *object_id);
-        }
+		        void *data[4];
+		        data[0] = (void *) &idi->dbinfo.instance_id;
+		        data[1] = (void *) &object_type;
+		        data[2] = (void *) &es[0];
+		        data[3] = (void *) &es[1];
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X4"), *(char **) data[3], 0)) {
+                                return NDO_ERROR;
+                        }
+
+		        /* execute statement */
+		        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2)) {
+		                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2() execute error\n");
+		                return NDO_ERROR;
+		        }
+
+			OCI_Commit(idi->dbinfo.oci_connection);
+
+		        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_name2);
+
+		        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+		                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%lu) insert_id\n", *object_id);
+		        } else {
+		                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2() insert_id could not be fetched\n");
+		        }
+
+		        /* do not free statement yet! */
+
+	} 
+	else if(name1 == NULL && name2 != NULL) {
+
+                        es[0] = NULL;
+                        es[1] = ndo2db_db_escape_string(idi, name2);
+
+		        void *data[3];
+		        data[0] = (void *) &idi->dbinfo.instance_id;
+		        data[1] = (void *) &object_type;
+		        data[2] = (void *) &es[1];
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_null_name2)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_null_name2);
+
+                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(%lu) insert_id\n", *object_id);
+                        } else {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2() insert_id could not be fetched\n");
+                        }
+
+
+                        /* do not free statement yet! */
+
+	} 
+	else if(name1 !=NULL && name2 == NULL) {
+
+                        es[0] = ndo2db_db_escape_string(idi, name1);
+                        es[1] = NULL;
+
+		        void *data[3];
+		        data[0] = (void *) &idi->dbinfo.instance_id;
+		        data[1] = (void *) &object_type;
+		        data[2] = (void *) &es[0];
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2_null)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null() execute error\n");
+                                return NDO_ERROR;
+                        }
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_name2_null);
+
+                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%lu) insert_id\n", *object_id);
+                        } else {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null() insert_id could not be fetched\n");
+                        }
+
+
+                        /* do not free statement yet! */
+
+	}
+	else if(name1 == NULL && name2 == NULL) {
+
+                        es[0] = NULL;
+                        es[1] = NULL;
+
+		        void *data[2];
+		        data[0] = (void *) &idi->dbinfo.instance_id;
+		        data[1] = (void *) &object_type;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        OCI_Commit(idi->dbinfo.oci_connection);
+                        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null);
+
+                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(%lu) insert_id\n", *object_id);
+                        } else {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null() insert_id could not be fetched\n");
+                        }
+
+
+                        /* do not free statement yet! */
+	} 
+
+
 	
 #endif /* Oracle ocilib specific */
 
 	/* free memory */
-	free(buf);
-	free(buf1);
-	free(buf2);
-
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_() before free\n");
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
 
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_() free of es\n");
 	if (found_object == NDO_FALSE)
 		result = NDO_ERROR;
 
@@ -245,26 +402,22 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 
 	if (name1 != NULL) {
 		es[0] = ndo2db_db_escape_string(idi, name1);
-		if (asprintf(&buf1, ", '%s'", es[0]) == -1)
-			buf1 = NULL;
 	} else
-		es[0] = NULL;
+		asprintf(&es[0],"NULL");
 	if (name2 != NULL) {
 		es[1] = ndo2db_db_escape_string(idi, name2);
-		if (asprintf(&buf2, "'%s'", es[1]) == -1)
-			buf2 = NULL;
 	} else
-		es[1] = NULL;
+		asprintf(&es[1], "NULL");
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf,
-			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES ('%lu', '%d' %s, %s)",
+			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, %s, %s)",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
-			idi->dbinfo.instance_id, object_type, (buf1 == NULL) ? "NULL" : buf1,
-			(buf2 == NULL) ? "NULL" : buf2) == -1)
+			idi->dbinfo.instance_id, object_type, es[0],
+			es[1]) == -1)
 		buf = NULL;
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
                 switch (idi->dbinfo.server_type) {
                         case NDO2DB_DBSERVER_MYSQL:
                                 /* mysql doesn't use sequences */
@@ -299,25 +452,52 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
                         default:
                                 break;
                 }
-#else /* Oracle ocilib specific */
-
-                *object_id = ido2db_ocilib_insert_id(idi);
-                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id_with_insert(%lu) object_id\n", *object_id);
-#endif /* Oracle ocilib specific */
         }
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-
 	dbi_result_free(idi->dbinfo.dbi_result);
 
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	void *data[4];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &object_type; 
+	data[2] = (void *) &es[0];
+	data[3] = (void *) &es[1];
+
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, MT(":X1"), (big_uint *) data[0])) {
+	        return NDO_ERROR;
+        }
+        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_insert, MT(":X2"), (int *) data[1])) {
+        	return NDO_ERROR;
+        }
+        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X3"), *(char **) data[2], 0)) {
+        	return NDO_ERROR;
+        }
+        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X4"), *(char **) data[3], 0)) {
+	        return NDO_ERROR;
+        }
+
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_insert)) {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert() execute error\n");
+                return NDO_ERROR;
+        }
+
+        OCI_Commit(idi->dbinfo.oci_connection);
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_insert);
+
+        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                *object_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db(%lu) insert_id\n", *object_id);
+        } else {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db() isert_id could not be fetched\n");
+        }
+
+
+	/* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
 	free(buf);
-
 	
 	/* cache object id for later lookups */
 	ndo2db_add_cached_object_id(idi, object_type, name1, name2, *object_id);
@@ -364,43 +544,52 @@ int ndo2db_get_cached_object_ids(ndo2db_idi *idi) {
 		}
 	}
 
+	free(buf);
 #else /* Oracle ocilib specific */
 
 	char *tmp1 = NULL;
 	char *tmp2 = NULL;
 
-        if (asprintf(&buf, "SELECT id, objecttype_id, name1, name2 FROM %s WHERE instance_id='%lu'", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
-                buf = NULL;
+	void *data[1];
+	data[0] = (void *) & idi->dbinfo.instance_id;
 
-        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_cached, MT(":X1"), (big_uint *) data[0])) {
+	        return NDO_ERROR;
+        }
 
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() query ok\n");
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_cached)) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_cached() execute error\n");
+                return NDO_ERROR;
+        }
 
-                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+        OCI_Commit(idi->dbinfo.oci_connection);
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_cached);
+
+        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+
                         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() fetchnext ok\n");
                         object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
                         objecttype_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("objecttype_id"));
 
-			/* dirty little hack for mtext* <-> char* */
-		        asprintf(&tmp1, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name1")));
-		        asprintf(&tmp2, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2")));
+                        /* dirty little hack for mtext* <-> char* */
+                        asprintf(&tmp1, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name1")));
+                        asprintf(&tmp2, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2")));
 
-			ndo2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+                        ndo2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
 
-                } else {
-                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() fetchnext not ok\n");
-                }
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids(object_id=%lu, objecttype_id=%lu)\n", object_id, objecttype_id);
+        } else {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids() fetchnext ok\n\n");
         }
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+
+        /* do not free statement yet! */
 
 	free(tmp1);
 	free(tmp2);
 
 #endif /* Oracle ocilib specific */
 
-	free(buf);
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_cached_object_ids(%lu) end\n", object_id);
 	
 	return result;
@@ -628,6 +817,7 @@ int ndo2db_set_all_objects_as_inactive(ndo2db_idi *idi) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_all_objects_as_inactive() start\n");
 
 	/* mark all objects as being inactive */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf, "UPDATE %s SET is_active='0' WHERE instance_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
 			idi->dbinfo.instance_id) == -1)
@@ -635,15 +825,35 @@ int ndo2db_set_all_objects_as_inactive(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	free(buf);
+
 #else /* Oracle ocilib specific */
-	
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+
+	unsigned long is_active = 0;
+	void *data[2];
+	data[0] = (void *) &is_active;
+	data[1] = (void *) &idi->dbinfo.instance_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_update_inactive, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_update_inactive, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_update_inactive)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_update_inactive() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
-
-	free(buf);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_all_objects_as_inactive() end\n");
 
@@ -669,22 +879,42 @@ int ndo2db_set_object_as_active(ndo2db_idi *idi, int object_type,
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	free(buf);
 
 #else /* Oracle ocilib specific */
-        if (asprintf(   
-                        &buf,
-                        "UPDATE %s SET is_active='1' WHERE instance_id='%lu' AND objecttype_id='%d' AND id='%lu'",
-                        ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
-                        idi->dbinfo.instance_id, object_type, object_id) == -1)
-                buf = NULL;
 
-        result = ndo2db_db_query(idi, buf);
+	unsigned long is_active = 1;
+        void *data[4];
+        data[0] = (void *) &is_active;
+        data[1] = (void *) &idi->dbinfo.instance_id;
+        data[2] = (void *) &object_type;
+        data[3] = (void *) &object_id;
+	
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X3"), (int *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_update_active)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_update_active() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
-
-	free(buf);
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_set_object_as_active() end\n");
 
@@ -736,10 +966,10 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	type = 0;
 
 	/* make sure we aren't importing a duplicate log entry... */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id='%lu' AND logentry_time=%s AND logentry_data='%s'", ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES], idi->dbinfo.instance_id, ts[0], es[0]) == -1)
 		buf = NULL;
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 			if (idi->dbinfo.dbi_result != NULL) {
@@ -749,37 +979,58 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 		}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	free(buf);
 
 #else /* Oracle ocilib specific */
 
-        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+	void * data[8];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &etime;
+	data[2] = (void *) &es[0];
 
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() query ok\n");
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_select, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_select, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_select, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
 
-                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() fetchnext ok\n");
-			duplicate_record = NDO_TRUE;
-                } else {
-                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() fetchnext not ok\n");
-                }
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry(duplicate_record=%lu)\n", duplicate_record);
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_logentries_select)) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_() execute error\n");
+                return NDO_ERROR;
         }
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+        OCI_Commit(idi->dbinfo.oci_connection);
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_logentries_select);
+
+        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() fetchnext ok\n");
+                        duplicate_record = NDO_TRUE;
+        } else {
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() fetchnext not ok\n");
+	}
+
+
+        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
-	free(buf);
 
 	/*if(duplicate_record==NDO_TRUE && idi->last_logentry_time!=etime){*/
 	/*if(duplicate_record==NDO_TRUE && strcmp((es[0]==NULL)?"":es[0],idi->dbinfo.last_logentry_data)){*/
 	if (duplicate_record == NDO_TRUE) {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logentry() ignoring duplicate log record\n");
 #ifdef NDO2DB_DEBUG
 		printf("IGNORING DUPLICATE LOG RECORD!\n");
 #endif
 		return NDO_OK;
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	/* save entry to db */
 	if (asprintf(
 			&buf,
@@ -790,11 +1041,61 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	/* set only values needed */
+	int n_zero = 0;
+	if(es[0] == NULL)
+		es[0] = "";
+
+	//void *data[8];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &etime;
+	data[2] = (void *) &etime;
+	data[3] = (void *) &n_zero;
+	data[4] = (void *) &type;
+	data[5] = (void *) &es[0];
+	data[6] = (void *) &n_zero;
+	data[7] = (void *) &n_zero;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X2"), *(char **) data[1], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X7"), (big_uint *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X8"), (big_uint *) data[7])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_logentries_insert)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_logentries_insert() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
@@ -809,8 +1110,10 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	idi->dbinfo.last_logentry_data = strdup((es[0] == NULL) ? "" : es[0]);
 
 	/* free memory */
-        for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
+        for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++) {
+		if(es[x]=="") continue;
                 free(es[x]);
+	}
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
                 free(ts[x]);
 
@@ -858,6 +1161,7 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_PROGRAMDATE]);
 
 	/* save entry to db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) VALUES ('%lu', '%d', %s, '%lu', '%lu', '%s', '%s', '%s')",
@@ -867,11 +1171,54 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	void *data[8];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &type;
+	data[2] = (void *) &tstamp.tv_sec;
+	data[3] = (void *) &tstamp.tv_usec;
+	data[4] = (void *) &process_id;
+	data[5] = (void *) &es[0];
+	data[6] = (void *) &es[1];
+	data[7] = (void *) &es[2];
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_process_events, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_process_events, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_process_events, MT(":X3"), (big_uint *) data[2])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_process_events, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_process_events, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_process_events, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_process_events, MT(":X7"), *(char **) data[6], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_process_events, MT(":X8"), *(char **) data[7], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_process_events)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_process_events() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
@@ -930,6 +1277,7 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 		ndo2db_set_all_objects_as_inactive(idi);
 
 #ifdef BAD_IDEA
+		//FIXME - rewrite to bindparams for oracle, but this is never used, isn't it?
 		/* record a fake log entry to indicate that Icinga is starting - this normally occurs during the module's "blackout period" */
 		if(asprintf(&buf,"INSERT INTO %s (instance_id, logentry_time, logentry_type, logentry_data) VALUES ('%lu', %s, '%lu', 'Icinga %s starting... (PID=%lu)')"
 						,ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES]
@@ -957,6 +1305,7 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 	if ((type == NEBTYPE_PROCESS_SHUTDOWN || type == NEBTYPE_PROCESS_RESTART)
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		if (asprintf(
 				&buf,
 				"UPDATE %s SET program_end_time=%s, is_currently_running='0' WHERE instance_id='%lu'",
@@ -964,15 +1313,41 @@ int ndo2db_handle_processdata(ndo2db_idi *idi) {
 				idi->dbinfo.instance_id) == -1)
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	unsigned long is_currently_running = 0;
+        void *data[3];
+        data[0] = (void *) &tstamp.tv_sec;
+        data[1] = (void *) &is_currently_running;
+        data[2] = (void *) &idi->dbinfo.instance_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus_update, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus_update, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus_update, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_programstatus_update)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_programstatus_update() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* free memory */
@@ -1104,6 +1479,7 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_TIMEDEVENT_REMOVE) {
 
 		/* save entry to db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		if (asprintf(
 				&buf,
 				"UPDATE %s SET deletion_time=%s, deletion_time_usec='%lu' WHERE instance_id='%lu' AND event_type='%d' AND scheduled_time=%s AND recurring_event='%d' AND object_id='%lu'",
@@ -1114,15 +1490,56 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+        void *data[7];
+        data[0] = (void *) &tstamp.tv_sec;
+        data[1] = (void *) &tstamp.tv_usec;
+        data[2] = (void *) &idi->dbinfo.instance_id;
+        data[3] = (void *) &event_type;
+        data[4] = (void *) &run_time;
+        data[5] = (void *) &recurring_event;
+        data[6] = (void *) &object_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X4"), (int *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X5"), (big_uint *) data[4])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedevents_update, MT(":X7"), (big_uint *) data[6])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_timedevents_update)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_timedevents_update() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* CURRENT TIMED EVENTS */
@@ -1133,6 +1550,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 		idi->dbinfo.clean_event_queue = NDO_FALSE;
 
 		/* clear old entries from db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 		if (asprintf(
 				&buf,
 				"DELETE FROM %s WHERE instance_id='%lu' AND scheduled_time<=%s",
@@ -1141,14 +1560,35 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+                void *data[2];
+                data[0] = (void *) &idi->dbinfo.instance_id;
+                data[1] = (void *) &tstamp.tv_sec;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_timedeventqueue_delete)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_timedeventqueue_delete() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
+
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* ADD QUEUED TIMED EVENTS */
@@ -1185,6 +1625,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			>= idi->dbinfo.latest_realtime_data_time) {
 
 		/* clear entry from db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 		if (asprintf(
 				&buf,
 				"DELETE FROM %s WHERE instance_id='%lu' AND event_type='%d' AND scheduled_time=%s AND recurring_event='%d' AND object_id='%lu'",
@@ -1194,15 +1636,47 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+        void *data[5];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &event_type;
+        data[2] = (void *) &run_time;
+        data[3] = (void *) &recurring_event;
+        data[4] = (void *) &object_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(":X3"), (big_uint *) data[2])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(":X4"), (int *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_timedeventqueue_delete_more)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_timedeventqueue_delete_more() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 
 #endif /* Oracle ocilib specific */
-
-		free(buf);
 
 		/* if we are executing a low-priority event, remove older events from the queue, as we know they've already been executed */
 		/* THIS IS A HACK!  It shouldn't be necessary, but for some reason it is...  Otherwise not all events are removed from the queue. :-( */
@@ -1210,6 +1684,8 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 				== EVENT_SERVICE_CHECK || event_type == EVENT_HOST_CHECK)) {
 
 			/* clear entries from db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 			if (asprintf(
 					&buf,
 					"DELETE FROM %s WHERE instance_id='%lu' AND scheduled_time<%s",
@@ -1218,14 +1694,34 @@ int ndo2db_handle_timedeventdata(ndo2db_idi *idi) {
 				buf = NULL;
 			result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 			dbi_result_free(idi->dbinfo.dbi_result);
+			free(buf);
 #else /* Oracle ocilib specific */
 
-			OCI_StatementFree(idi->dbinfo.oci_statement);
+                void *data[2];
+                data[0] = (void *) &idi->dbinfo.instance_id;
+                data[1] = (void *) &run_time;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timedeventqueue_delete, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_timedeventqueue_delete)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_timedeventqueue_delete() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 #endif /* Oracle ocilib specific */
 
-			free(buf);
 		}
 
 	}
@@ -1281,6 +1777,7 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 			break;
 	}
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	/* save entry to db */
 	if (asprintf(
 			&buf,
@@ -1290,14 +1787,62 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
 			es[0]) == -1)
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	unsigned long n_one = 1;
 
+        void *data[8];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &etime;
+        data[2] = (void *) &tstamp.tv_sec;
+        data[3] = (void *) &tstamp.tv_usec;
+        data[4] = (void *) &letype;
+        data[5] = (void *) &es[0];
+        data[6] = (void *) &n_one;
+        data[7] = (void *) &n_one;
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logdata() data array\n");
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X3"), (big_uint *) data[2])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR; 
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X7"), (big_uint *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X8"), (big_uint *) data[7])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_logentries_insert)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_logentries_insert() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 #endif /* Oracle ocilib specific */
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logdata() query ok\n");
 
 	free(buf);
 
@@ -1307,7 +1852,7 @@ int ndo2db_handle_logdata(ndo2db_idi *idi) {
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logdata() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_logdata() end\n");
 
 	return NDO_OK;
 }
@@ -1354,7 +1899,7 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	ts[1] = ndo2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* save entry to db */
-        void *data[12];
+        void *data[14];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &ts[0];
         data[2] = (void *) &start_time.tv_usec;
@@ -1367,6 +1912,9 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
         data[9] = (void *) &return_code;
         data[10] = (void *) &es[1];
         data[11] = (void *) &es[2];
+	/* bind params */
+	data[12] = (void *) &start_time.tv_sec;
+	data[13] = (void *) &end_time.tv_sec;
 
         result = ido2db_query_insert_or_update_systemcommanddata_add(idi, data);
 
@@ -1374,7 +1922,6 @@ int ndo2db_handle_systemcommanddata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1449,7 +1996,7 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-        void *data[18];
+        void *data[20];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &eventhandler_type;
         data[2] = (void *) &object_id;
@@ -1468,6 +2015,9 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
         data[15] = (void *) &return_code;
         data[16] = (void *) &es[2];
         data[17] = (void *) &es[3];
+	/* bind params */
+        data[18] = (void *) &start_time.tv_sec;
+        data[19] = (void *) &end_time.tv_sec;
 
         result = ido2db_query_insert_or_update_eventhandlerdata_add(idi, data);
 
@@ -1475,7 +2025,6 @@ int ndo2db_handle_eventhandlerdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1542,7 +2091,7 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 		result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_HOST, idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
-        void *data[13];
+        void *data[15];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &notification_type;
         data[2] = (void *) &notification_reason;
@@ -1556,6 +2105,9 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
         data[10] = (void *) &es[1];
         data[11] = (void *) &escalated;
         data[12] = (void *) &contacts_notified;
+	/* bind params */
+	data[13] = (void *) &start_time.tv_sec;
+	data[14] = (void *) &end_time.tv_sec;
 
         result = ido2db_query_insert_or_update_notificationdata_add(idi, data);
 
@@ -1601,8 +2153,12 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
                 }
 
 #else /* Oracle ocilib specific */
-                idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi);
+		char *seq_name = NULL;
+		asprintf(&seq_name, "seq_notifications");
+                idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi, seq_name);
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
         }
 
@@ -1610,7 +2166,6 @@ int ndo2db_handle_notificationdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1663,7 +2218,7 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &contact_id);
 
 	/* save entry to db */
-        void *data[7];
+        void *data[9];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &idi->dbinfo.last_notification_id;
         data[2] = (void *) &ts[0];
@@ -1671,6 +2226,9 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
         data[4] = (void *) &ts[1];
         data[5] = (void *) &end_time.tv_usec;
         data[6] = (void *) &contact_id;
+	/* bind params */
+	data[7] = (void *) &start_time.tv_sec;
+	data[8] = (void *) &end_time.tv_sec;
 
         result = ido2db_query_insert_or_update_contactnotificationdata_add(idi, data);
 
@@ -1715,8 +2273,12 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_contactnotifications");
+                idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi, seq_name);
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
+		free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -1724,7 +2286,6 @@ int ndo2db_handle_contactnotificationdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -1776,7 +2337,7 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 			idi->buffered_input[NDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
-        void *data[8];
+        void *data[10];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &idi->dbinfo.last_contact_notification_id;
         data[2] = (void *) &ts[0];
@@ -1785,6 +2346,9 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
         data[5] = (void *) &end_time.tv_usec;
         data[6] = (void *) &command_id;
         data[7] = (void *) &es[0];
+	/* bind params */
+	data[8] = (void *) &start_time.tv_sec;
+	data[9] = (void *) &end_time.tv_sec;
 
         result = ido2db_query_insert_or_update_contactnotificationmethoddata_add(idi, data);
 
@@ -1792,7 +2356,6 @@ int ndo2db_handle_contactnotificationmethoddata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2138,7 +2701,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_COMMENT_ADD || type == NEBTYPE_COMMENT_LOAD) {
 
 		/* save entry to db */
-	        void *data[14];
+	        void *data[17];
 	        data[0] = (void *) &ts[0];
 	        data[1] = (void *) &tstamp.tv_usec;
 	        data[2] = (void *) &idi->dbinfo.instance_id;
@@ -2153,14 +2716,17 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	        data[11] = (void *) &comment_source;
 	        data[12] = (void *) &expires;
 	        data[13] = (void *) &ts[2];
+                /* bind params */
+                data[14] = &tstamp.tv_sec;
+                data[15] = &comment_time;
+                data[16] = &expire_time;
 
-	        result = ido2db_query_insert_or_update_commentdata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY]);
+	        result = ido2db_query_insert_or_update_commentdata_history_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2171,6 +2737,8 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_COMMENT_DELETE) {
 
 		/* update db entry */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 		if (asprintf(
 				&buf,
 				"UPDATE %s SET deletion_time=%s, deletion_time_usec='%lu' WHERE instance_id='%lu' AND comment_time=%s AND internal_comment_id='%lu'",
@@ -2180,15 +2748,47 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+        void *data[5];
+        data[0] = (void *) &tstamp.tv_sec;
+        data[1] = (void *) &tstamp.tv_usec;
+        data[2] = (void *) &idi->dbinfo.instance_id;
+        data[3] = (void *) &comment_time;
+        data[4] = (void *) &internal_comment_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comment_history_update, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comment_history_update, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comment_history_update, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comment_history_update, MT(":X4"), (big_uint *) data[3])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comment_history_update, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_comment_history_update)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_comment_history_update() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* ADD CURRENT COMMENTS */
@@ -2196,7 +2796,7 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-                void *data[14];
+                void *data[17];
                 data[0] = (void *) &ts[0];
                 data[1] = (void *) &tstamp.tv_usec;
                 data[2] = (void *) &idi->dbinfo.instance_id;
@@ -2211,14 +2811,17 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
                 data[11] = (void *) &comment_source;
                 data[12] = (void *) &expires;
                 data[13] = (void *) &ts[2];
+		/* bind params */
+		data[14] = &tstamp.tv_sec;
+		data[15] = &comment_time;
+		data[16] = &expire_time;
 
-                result = ido2db_query_insert_or_update_commentdata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]);
+                result = ido2db_query_insert_or_update_commentdata_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2229,6 +2832,8 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			>= idi->dbinfo.latest_realtime_data_time) {
 
 		/* clear entry from db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 		if (asprintf(
 				&buf,
 				"DELETE FROM %s WHERE instance_id='%lu' AND comment_time=%s AND internal_comment_id='%lu'",
@@ -2237,15 +2842,39 @@ int ndo2db_handle_commentdata(ndo2db_idi *idi) {
 			buf = NULL;
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+        void *data[3];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &comment_time;
+        data[2] = (void *) &internal_comment_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comments_delete, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comments_delete, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_comments_delete, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_comments_delete)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_comments_delete() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* free memory */
@@ -2322,7 +2951,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_DOWNTIME_ADD || type == NEBTYPE_DOWNTIME_LOAD) {
 
 		/* save entry to db */
-	        void *data[12];
+	        void *data[15];
 	        data[0] = (void *) &idi->dbinfo.instance_id;
 	        data[1] = (void *) &downtime_type;
 	        data[2] = (void *) &object_id;
@@ -2335,14 +2964,17 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	        data[9] = (void *) &duration;
 	        data[10] = (void *) &ts[2];
 	        data[11] = (void *) &ts[3];
+		/* bind params */
+		data[12] = (void *) &entry_time;
+		data[13] = (void *) &start_time;
+		data[14] = (void *) &end_time;
 
-	        result = ido2db_query_insert_or_update_downtimedata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]);
+	        result = ido2db_query_insert_or_update_downtimedata_downtime_history_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2352,8 +2984,9 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 	if (type == NEBTYPE_DOWNTIME_START) {
 
 		/* save entry to db */
-		if (asprintf(
-				&buf,
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+		if (asprintf(&buf,
 				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec='%lu', was_started='%d' WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY], ts[0],
 				tstamp.tv_usec, 1, idi->dbinfo.instance_id, downtime_type,
@@ -2362,21 +2995,72 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+	unsigned long was_started = 1;
+        void *data[9];
+        data[0] = (void *) &tstamp.tv_sec;
+        data[1] = (void *) &tstamp.tv_usec;
+        data[2] = (void *) &was_started;
+        data[3] = (void *) &idi->dbinfo.instance_id;
+        data[4] = (void *) &downtime_type;
+        data[5] = (void *) &object_id;
+        data[6] = (void *) &entry_time;
+        data[7] = (void *) &start_time;
+        data[8] = (void *) &end_time;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X3"), (int *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X6"), (big_uint *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X7"), (big_uint *) data[6])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X8"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X9"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_downtimehistory_update_start)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_downtimehistory_update_start() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* save a record of scheduled downtime that ends */
 	if (type == NEBTYPE_DOWNTIME_STOP) {
 
 		/* save entry to db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
 		if (asprintf(
 				&buf,
 				"UPDATE %s SET actual_end_time=%s, actual_end_time_usec='%lu', was_cancelled='%d' WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
@@ -2388,15 +3072,70 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+	int was_cancelled;
+
+	if(attr == NEBATTR_DOWNTIME_STOP_CANCELLED) {
+		was_cancelled = 1;
+	} else {
+		was_cancelled = 0;
+	}
+		
+        void *data[9];
+        data[0] = (void *) &tstamp.tv_sec;
+        data[1] = (void *) &tstamp.tv_usec;
+        data[2] = (void *) &was_cancelled;
+        data[3] = (void *) &idi->dbinfo.instance_id;
+        data[4] = (void *) &downtime_type;
+        data[5] = (void *) &object_id;
+        data[6] = (void *) &entry_time;
+        data[7] = (void *) &start_time;
+        data[8] = (void *) &end_time;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X3"), (int *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X6"), (big_uint *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X7"), (big_uint *) data[6])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X8"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(":X9"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_downtimehistory_update_stop)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_downtimehistory_update_stop() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* CURRENT DOWNTIME */
@@ -2406,7 +3145,7 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-                void *data[12];
+                void *data[15];
                 data[0] = (void *) &idi->dbinfo.instance_id;
                 data[1] = (void *) &downtime_type;
                 data[2] = (void *) &object_id;
@@ -2419,14 +3158,17 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
                 data[9] = (void *) &duration;
                 data[10] = (void *) &ts[2];
                 data[11] = (void *) &ts[3];
+                /* bind params */
+                data[12] = (void *) &entry_time;
+                data[13] = (void *) &start_time;
+                data[14] = (void *) &end_time;
 
-                result = ido2db_query_insert_or_update_downtimedata_add(idi, data, ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME]);
+                result = ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -2437,8 +3179,9 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 			>= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-		if (asprintf(
-				&buf,
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+		if (asprintf(&buf,
 				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec='%lu', was_started='%d' WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME], ts[0],
 				tstamp.tv_usec, 1, idi->dbinfo.instance_id, downtime_type,
@@ -2447,15 +3190,66 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+        unsigned long was_started = 1;
+        void *data[9];
+        data[0] = (void *) &tstamp.tv_sec;
+        data[1] = (void *) &tstamp.tv_usec;
+        data[2] = (void *) &was_started;
+        data[3] = (void *) &idi->dbinfo.instance_id;
+        data[4] = (void *) &downtime_type;
+        data[5] = (void *) &object_id;
+        data[6] = (void *) &entry_time;
+        data[7] = (void *) &start_time;
+        data[8] = (void *) &end_time;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X3"), (int *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X6"), (big_uint *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X7"), (big_uint *) data[6])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X8"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X9"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_downtimehistory_update_start)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_downtimehistory_update_start() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
+
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
 
 	/* remove completed or deleted downtime */
@@ -2463,8 +3257,9 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 		/* save entry to db */
-		if (asprintf(
-				&buf,
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+		if (asprintf(&buf,
 				"DELETE FROM %s WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME],
 				idi->dbinfo.instance_id, downtime_type, object_id, ts[1],
@@ -2473,16 +3268,52 @@ int ndo2db_handle_downtimedata(ndo2db_idi *idi) {
 
 		result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+        void *data[6];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &downtime_type;
+        data[2] = (void *) &object_id;
+        data[3] = (void *) &entry_time;
+        data[4] = (void *) &start_time;
+        data[5] = (void *) &end_time;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtime_delete, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtime_delete, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtime_delete, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtime_delete, MT(":X4"), (big_uint *) data[3])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtime_delete, MT(":X5"), (big_uint *) data[4])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtime_delete, MT(":X6"), (big_uint *) data[5])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_downtime_delete)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_downtime_delete() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
 
 #endif /* Oracle ocilib specific */
 
 
-		free(buf);
 	}
 
 	/* free memory */
@@ -2540,6 +3371,7 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 				idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s (instance_id, event_time, event_time_usec, event_type, reason_type, flapping_type, object_id, percent_state_change, low_threshold, high_threshold, comment_time, internal_comment_id) VALUES ('%lu', %s, '%lu', '%d', '%d', '%d', '%lu', '%lf', '%lf', '%lf', %s, '%lu')",
@@ -2550,11 +3382,72 @@ int ndo2db_handle_flappingdata(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	void *data[12];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &tstamp.tv_sec;
+	data[2] = (void *) &tstamp.tv_usec;
+	data[3] = (void *) &type;
+	data[4] = (void *) &attr;
+	data[5] = (void *) &flapping_type;
+	data[6] = (void *) &object_id;
+	data[7] = (void *) &percent_state_change;
+	data[8] = (void *) &low_threshold;
+	data[9] = (void *) &high_threshold;
+	data[10] = (void *) &comment_time;
+	data[11] = (void *) &internal_comment_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X4"), (int *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X7"), (big_uint *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_flappinghistory, MT(":X8"), (double *) data[7])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_flappinghistory, MT(":X9"), (double *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindDouble(idi->dbinfo.oci_statement_flappinghistory, MT(":X10"), (double *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X11"), (big_uint *) data[10])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_flappinghistory, MT(":X12"), (big_uint *) data[11])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_flappinghistory)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_flappinghistory() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
+
 
 #endif /* Oracle ocilib specific */
 
@@ -2890,7 +3783,7 @@ int ndo2db_handle_hoststatusdata(ndo2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 	/* save custom variables to db */
-	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
+	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0], tstamp.tv_sec);
 
         /* free memory */
         for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -3111,7 +4004,7 @@ int ndo2db_handle_servicestatusdata(ndo2db_idi *idi) {
 		free(es[x]);
 
 	/* save custom variables to db */
-	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
+	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0], tstamp.tv_sec);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -3171,7 +4064,7 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	result = ndo2db_get_object_id_with_insert(idi, NDO2DB_OBJECTTYPE_CONTACT, idi->buffered_input[NDO_DATA_CONTACTNAME], NULL, &object_id);
 
 	/* save entry to db */
-        void *data[10];
+        void *data[13];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &object_id;
         data[2] = (void *) &ts[0];
@@ -3182,6 +4075,10 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
         data[7] = (void *) &modified_attributes;
         data[8] = (void *) &modified_host_attributes;
         data[9] = (void *) &modified_service_attributes;
+	/* bind params */
+	data [10] = (void *) &tstamp.tv_sec;
+	data [11] = (void *) &last_host_notification;
+	data [12] = (void *) &last_service_notification;
 
         result = ido2db_query_insert_or_update_contactstatusdata_add(idi, data);
 
@@ -3189,12 +4086,11 @@ int ndo2db_handle_contactstatusdata(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
 	/* save custom variables to db */
-	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0]);
+	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS,object_id,ts[0], tstamp.tv_sec);
 
 	/* free memory */
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(ts); x++)
@@ -3291,6 +4187,7 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
 	ts = ndo2db_db_timet_to_sql(idi, entry_time);
 
 	/* save entry to db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf,
 			"INSERT INTO %s (instance_id, command_type, entry_time, command_name, command_args) VALUES ('%lu', '%d', %s, '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],
@@ -3298,11 +4195,42 @@ int ndo2db_handle_externalcommanddata(ndo2db_idi *idi) {
 		buf = NULL;
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	void *data[5];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &command_type;
+	data[2] = (void *) &entry_time;
+	data[3] = (void *) &es[0];
+	data[4] = (void *) &es[1];
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_external_commands, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_external_commands, MT(":X2"), (int *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_external_commands, MT(":X3"), (big_uint *) data[2])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_external_commands, MT(":X4"), *(char **) data[3], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_external_commands, MT(":X5"), *(char **) data[4], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_external_commands)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_external_commands() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
@@ -3394,6 +4322,7 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 	/* save entry to db */
 	/* NOTE Primary Key and only unique key is auto_increment thus ON DUPLICATE KEY will not occur ever */
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
         /* the data part of the INSERT statement */
         if(asprintf(&buf1,"(instance_id, entry_time, entry_time_usec, acknowledgement_type, object_id, state, author_name, comment_data, is_sticky, persistent_comment, notify_contacts) VALUES (%lu, %s, %lu, %d, %lu, %d, '%s', '%s', %d, %d, %d)"
 		    ,idi->dbinfo.instance_id
@@ -3420,11 +4349,66 @@ int ndo2db_handle_acknowledgementdata(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	void *data[11];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &tstamp.tv_sec;
+	data[2] = (void *) &tstamp.tv_usec;
+	data[3] = (void *) &acknowledgement_type;
+	data[4] = (void *) &object_id;
+	data[5] = (void *) &state;
+	data[6] = (void *) &es[0];
+	data[7] = (void *) &es[1];
+	data[8] = (void *) &is_sticky;
+	data[9] = (void *) &persistent_comment;
+	data[10] = (void *) &notify_contacts;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X4"), (int *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_acknowledgements, MT(":X7"), *(char **) data[6], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_acknowledgements, MT(":X8"), *(char **) data[7], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X9"), (int *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X10"), (int *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X11"), (int *) data[10])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_acknowledgements)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_acknowledgements() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
@@ -3497,6 +4481,7 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 				idi->buffered_input[NDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
 			"INSERT INTO %s (instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, last_state, last_hard_state, output, long_output) VALUES ('%lu', %s, '%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s')",
@@ -3508,11 +4493,74 @@ int ndo2db_handle_statechangedata(ndo2db_idi *idi) {
 
 	result = ndo2db_db_query(idi, buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+	void *data[13];
+	data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &tstamp.tv_sec;
+	data[2] = (void *) &tstamp.tv_usec;
+	data[3] = (void *) &object_id;
+	data[4] = (void *) &state_change_occurred;
+	data[5] = (void *) &state;
+	data[6] = (void *) &state_type;
+	data[7] = (void *) &current_attempt;
+	data[8] = (void *) &max_attempts;
+	data[9] = (void *) &last_state;
+	data[10] = (void *) &last_hard_state;
+	data[11] = (void *) &es[0];
+	data[12] = (void *) &es[1];
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_statehistory, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_statehistory, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_statehistory, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_statehistory, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X5"), (int *) data[4])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X6"), (int *) data[5])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X7"), (int *) data[6])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X8"), (int *) data[7])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X9"), (int *) data[8])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X10"), (int *) data[9])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X11"), (int *) data[10])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_statehistory, MT(":X12"), *(char **) data[11], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_statehistory, MT(":X13"), *(char **) data[12], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_statehistory)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_statehistory() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
@@ -3588,7 +4636,7 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                                 break;
                         case NDO2DB_DBSERVER_PGSQL:
                                 /* depending on tableprefix/tablename a sequence will be used */
-                                if(asprintf(&buf1, "%s_configfilevariable_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1)
+                                if(asprintf(&buf1, "%s_configfile_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES]) == -1)
                                         buf1 = NULL;
 
                                 configfile_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
@@ -3615,8 +4663,12 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                configfile_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_configfiles");
+                configfile_id = ido2db_ocilib_insert_id(idi, seq_name);
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_configfilevariables(%lu) \n", configfile_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -3624,7 +4676,6 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -3654,28 +4705,38 @@ int ndo2db_handle_configfilevariables(ndo2db_idi *idi, int configfile_type) {
 				== -1)
 			buf1 = NULL;
 
-#else /* Oracle ocilib specific */
-		if (asprintf(&buf1, "MERGE INTO %s USING DUAL ON (instance_id=%lu AND configfile_id=%lu AND varname='%s') WHEN MATCHED THEN UPDATE SET varvalue='%s' WHEN NOT MATCHED THEN INSERT (instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
-				ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES],
-				idi->dbinfo.instance_id,	/* unique constraint start */
-				configfile_id,
-				es[1],				/* unique constraint end */
-				es[2],				/* update start/end */
-				idi->dbinfo.instance_id,	/* insert start */
-				configfile_id,
-				es[1],
-				es[2]				/* insert end */
-		) == -1) 
-			buf1 = NULL;				
+                result = ndo2db_db_query(idi, buf1);
+                dbi_result_free(idi->dbinfo.dbi_result);
 
-#endif /* Oracle ocilib specific */
-		result = ndo2db_db_query(idi, buf1);
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
+		void *data[4];
+		data[0] = (void *) &idi->dbinfo.instance_id;
+		data[1] = (void *) &configfile_id;
+		data[2] = (void *) &es[1];
+		data[3] = (void *) &es[2];
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X4"), *(char **) data[3], 0)) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_configfilevariables_insert)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_configfilevariables_insert() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
 
 #endif /* Oracle ocilib specific */
 		free(buf);
@@ -3750,7 +4811,6 @@ int ndo2db_handle_runtimevariables(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4050,8 +5110,12 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                host_id = ido2db_ocilib_insert_id(idi);
-                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinitio(%lu) \n", host_id);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_hosts");
+                host_id = ido2db_ocilib_insert_id(idi, seq_name);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinition(%lu) \n", host_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -4059,7 +5123,6 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4095,7 +5158,6 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4125,7 +5187,6 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 	}
@@ -4153,14 +5214,13 @@ int ndo2db_handle_hostdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
 	}
 
 	/* save custom variables to db */
-	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL);
+	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL, -1);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostdefinition() end\n");
 
@@ -4249,8 +5309,12 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-		group_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_hostgroups");
+		group_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", group_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -4258,7 +5322,6 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4287,7 +5350,6 @@ int ndo2db_handle_hostgroupdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4541,8 +5603,12 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-		service_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_services");
+		service_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition(%lu) service_id\n", service_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -4550,7 +5616,6 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4585,7 +5650,6 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4614,14 +5678,13 @@ int ndo2db_handle_servicedefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
 	}
 
 	/* save custom variables to db */
-	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL);
+	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL, -1);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicedefinition() end\n");
 
@@ -4716,8 +5779,12 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-		group_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_servicegroups");
+		group_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_servicegroupdefinition(%lu) group_id\n", group_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -4725,7 +5792,6 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4758,7 +5824,6 @@ int ndo2db_handle_servicegroupdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4830,7 +5895,6 @@ int ndo2db_handle_hostdependencydefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -4903,7 +5967,6 @@ int ndo2db_handle_servicedependencydefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5013,8 +6076,12 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                escalation_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_hostescalations");
+                escalation_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_hostescalationdefinition(%lu) escalation_id\n", escalation_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -5022,7 +6089,6 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5050,7 +6116,6 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5079,7 +6144,6 @@ int ndo2db_handle_hostescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5194,8 +6258,12 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                escalation_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_serviceescalations");
+                escalation_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_serviceescalationdefinition(%lu) escalation_id\n", escalation_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -5203,7 +6271,6 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5231,7 +6298,6 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5260,7 +6326,6 @@ int ndo2db_handle_serviceescalationdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5319,7 +6384,6 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5422,8 +6486,11 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                timeperiod_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_timeperiods");
+                timeperiod_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_timeperiodefinition(%lu) timeperiod_id\n", timeperiod_id);
+                free(seq_name);
 #endif /* Oracle ocilib specific */
 	}
 
@@ -5431,7 +6498,6 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5470,7 +6536,6 @@ int ndo2db_handle_timeperiodefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5633,8 +6698,11 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                contact_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_contacts");
+                contact_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition(ndo2db_idi *idi)(%lu) contact_id\n", contact_id);
+                free(seq_name);
 #endif /* Oracle ocilib specific */
 	}
 
@@ -5642,7 +6710,6 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5678,7 +6745,6 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5779,14 +6845,14 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	}
 
 	/* save custom variables to db */
-	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,contact_id,NULL);
+	result=ndo2db_save_custom_variables(idi,NDO2DB_DBTABLE_CUSTOMVARIABLES,contact_id,NULL, -1);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactdefinition() end\n");
 
 	return NDO_OK;
 }
 
-int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *ts ){
+int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *ts, unsigned long tstamp){
 	char *buf=NULL;
 	char *buf1=NULL;
 	char *buf2=NULL;
@@ -5824,15 +6890,14 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		free(buf1);
 
 		if(es[0] == NULL) {
-			es[0] = "";
+			asprintf(&es[0], "");
 		}
 		if(es[1] == NULL) {
-			es[1] = "";
+			asprintf(&es[1], "");
 		}
 		if(ts == NULL) {
-			ts = "NULL";
+			asprintf(&ts, "NULL");
 		}
-
 
 		if (table_idx==NDO2DB_DBTABLE_CUSTOMVARIABLES) {
 
@@ -5844,14 +6909,13 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		        data[3] = (void *) &has_been_modified;
 		        data[4] = (void *) &es[0];
 		        data[5] = (void *) &es[1];
-
+			
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariables_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	                dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-			OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5859,13 +6923,15 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		if (table_idx==NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS) {
 
 			/* save entry to db */
-		        void *data[6];
+		        void *data[7];
 		        data[0] = (void *) &idi->dbinfo.instance_id;
 		        data[1] = (void *) &o_id;
 		        data[2] = (void *) &ts;
 		        data[3] = (void *) &has_been_modified;
 		        data[4] = (void *) &es[0];
 		        data[5] = (void *) &es[1];
+			/* wtf is ts doing here? */
+			data[6] = (void *) &tstamp;
 
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(idi, data);
 
@@ -5873,7 +6939,6 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 			dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-			OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -5975,8 +7040,12 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
                                 break;
                 }
 #else /* Oracle ocilib specific */
-                group_id = ido2db_ocilib_insert_id(idi);
+                char *seq_name = NULL;
+                asprintf(&seq_name, "seq_contactgroups");
+                group_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_handle_contactgroupdefinition(%lu) group_id\n", group_id);
+                free(seq_name);
+
 #endif /* Oracle ocilib specific */
 	}
 
@@ -5984,7 +7053,6 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
@@ -6013,7 +7081,6 @@ int ndo2db_handle_contactgroupdefinition(ndo2db_idi *idi) {
 		dbi_result_free(idi->dbinfo.dbi_result);
 #else /* Oracle ocilib specific */
 
-		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 

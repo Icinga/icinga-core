@@ -145,7 +145,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *,char *,char *,unsigned long);
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 void ido2db_ocilib_err_handler(OCI_Error *);
-unsigned long ido2db_ocilib_insert_id(ndo2db_idi *);
+unsigned long ido2db_ocilib_insert_id(ndo2db_idi *, char *seq_name);
 #endif /* Oracle ocilib specific */
 
 #endif
