@@ -411,7 +411,7 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf,
-			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, %s, %s)",
+			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, '%s', '%s')",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
 			idi->dbinfo.instance_id, object_type, es[0],
 			es[1]) == -1)
@@ -6852,7 +6852,7 @@ int ndo2db_handle_contactdefinition(ndo2db_idi *idi) {
 	return NDO_OK;
 }
 
-int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *ts, unsigned long tstamp){
+int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, unsigned long o_id, char *ts, unsigned long tstamp){
 	char *buf=NULL;
 	char *buf1=NULL;
 	char *buf2=NULL;
@@ -6909,7 +6909,8 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 		        data[3] = (void *) &has_been_modified;
 		        data[4] = (void *) &es[0];
 		        data[5] = (void *) &es[1];
-			
+
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_save_custom_variables() instance_id=%lu, object_id=%lu, config_type=%d, modified=%d, varname=%s, varvalue=%s\n", idi->dbinfo.instance_id, o_id, idi->current_object_config_type, has_been_modified, es[0], es[1]);	
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariables_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -6933,6 +6934,7 @@ int ndo2db_save_custom_variables(ndo2db_idi *idi,int table_idx, int o_id, char *
 			/* wtf is ts doing here? */
 			data[6] = (void *) &tstamp;
 
+                        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_save_custom_variablestatus() instance_id=%lu, object_id=%lu, ts=%s, modified=%d, varname=%s, varvalue=%s\n", idi->dbinfo.instance_id, o_id, ts, has_been_modified, es[0], es[1]);
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(idi, data);
 
 #ifndef USE_ORACLE /* everything else will be libdbi */

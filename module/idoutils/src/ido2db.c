@@ -111,7 +111,7 @@ int main(int argc, char **argv){
 		printf("\n");
 		printf("%s %s\n",NDO2DB_NAME,NDO2DB_VERSION);
 		printf("Copyright(c) 2005-2008 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Copyright(c) 2009 Icinga Development Team (http://www.icinga.org)\n");
+		printf("Copyright(c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Last Modified: %s\n",NDO2DB_DATE);
 		printf("License: GPL v2\n");
 #ifdef HAVE_SSL
@@ -119,8 +119,8 @@ int main(int argc, char **argv){
 #endif
 		printf("\n");
 		printf("Stores Icinga event and configuration data to a database for later retrieval\n");
-		printf("and processing.  Clients that are capable of sending data to the NDO2DB daemon\n");
-		printf("include the LOG2NDO utility and NDOMOD event broker module.\n");
+		printf("and processing.  Clients that are capable of sending data to the IDO2DB daemon\n");
+		printf("include the LOG2NDO utility and IDOMOD event broker module.\n");
 		printf("\n");
 		printf("Usage: %s -c <config_file> [-i] [-f]\n",argv[0]);
 		printf("\n");
@@ -442,27 +442,37 @@ int ndo2db_process_config_var(char *arg){
 		ndo2db_tcp_port=atoi(val);
 	        }
 	else if(!strcmp(var,"db_servertype")){
-		if(!strcmp(val,"mysql"))
+		if(!strcmp(val,"mysql")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_MYSQL;
-		else if(!strcmp(val,"pgsql"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"pgsql")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_PGSQL;
-		else if(!strcmp(val,"db2"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"db2")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_DB2;
-		else if(!strcmp(val,"firebird"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"firebird")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_FIREBIRD;
-		else if(!strcmp(val,"freetds"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"freetds")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_FREETDS;
-		else if(!strcmp(val,"ingres"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"ingres")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_INGRES;
-		else if(!strcmp(val,"msql"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"msql")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_MSQL;
-		else if(!strcmp(val,"oracle"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"oracle")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_ORACLE;
-		else if(!strcmp(val,"sqlite"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"sqlite")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_SQLITE;
-		else if(!strcmp(val,"sqlite3"))
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else if(!strcmp(val,"sqlite3")) {
 			ndo2db_db_settings.server_type=NDO2DB_DBSERVER_SQLITE3;
-		else
+			ndo2db_db_settings.dbserver=strdup(val);
+		} else
 			return NDO_ERROR;
 	        }
 	else if(!strcmp(var,"db_host")){

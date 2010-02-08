@@ -415,12 +415,12 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 
 	if (dbi_conn_connect(idi->dbinfo.dbi_conn) != 0) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
-		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to database: %s", dbi_error);
+		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to %s database: %s", ndo2db_db_settings.dbserver, dbi_error);
 		result = NDO_ERROR;
 		idi->disconnect_client = NDO_TRUE;
 	} else {
 		idi->dbinfo.connected = NDO_TRUE;
-		syslog(LOG_USER | LOG_INFO, "Successfully connected to database");
+		syslog(LOG_USER | LOG_INFO, "Successfully connected to %s database", ndo2db_db_settings.dbserver);
 	}
 #else /* Oracle ocilib specific */
 
@@ -435,13 +435,13 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	
 	if(idi->dbinfo.oci_connection == NULL) {
 		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to oracle database: %s", OCI_ErrorGetString(OCI_GetLastError()));
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to oracle database\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to %s database\n", ndo2db_db_settings.dbserver);
                 result = NDO_ERROR;
                 idi->disconnect_client = NDO_TRUE;
         } else {
                 idi->dbinfo.connected = NDO_TRUE;
                 syslog(LOG_USER | LOG_INFO, "Successfully connected to oracle database");
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to oracle database\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to %s database\n", ndo2db_db_settings.dbserver);
 	}
 
         /* initialize prepared statements */
@@ -4943,7 +4943,7 @@ int ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus(ndo
  
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (object_id=:X2 AND varname=:X5) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), has_been_modified=:X4, varvalue=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (seq_customvariablestatus.nextval, :X1, :X2, :X3, :X4, :X5, :X6)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (object_id=:X2 AND varname=:X5) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), has_been_modified=:X4, varvalue=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (seq_customvariablestatus.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS]) == -1) {
                         buf = NULL;
         }

@@ -20,6 +20,7 @@ typedef struct ndo2db_dbconfig_struct{
 	char *password;
 	char *dbname;
 	char *dbprefix;
+	char *dbserver;
 	unsigned long max_timedevents_age;
 	unsigned long max_systemcommands_age;
 	unsigned long max_servicechecks_age;

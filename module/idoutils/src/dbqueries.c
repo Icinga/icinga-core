@@ -1906,9 +1906,7 @@ int ido2db_query_insert_or_update_commentdata_history_add(ndo2db_idi *idi, void 
 #ifndef USE_ORACLE /* everything else will be libdbi */
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id,
- author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s) ON DUPLICATE KE
-Y UPDATE comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s",
+                        asprintf(&query1, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s) ON DUPLICATE KEY UPDATE comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY],
                                         *(char **) data[0],             /* insert start */
                                         *(unsigned long *) data[1],
@@ -1939,8 +1937,7 @@ Y UPDATE comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', commen
                         free(query1);
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_sourc
-e=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY],
                                         *(int *) data[3],               /* update start */
                                         *(int *) data[4],
@@ -1962,8 +1959,7 @@ e=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s A
                         /* check result if update was ok */
                         if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_com
-ment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
+                                asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY],
                                         *(char **) data[0],             /* insert start */
                                         *(unsigned long *) data[1],
@@ -2248,9 +2244,7 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ndo2db_idi *
 #ifndef USE_ORACLE /* everything else will be libdbi */
         switch (idi->dbinfo.server_type) {
                 case NDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_
-id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s) ON DUPLICATE KEY UPDATE downtime_type=%d,
- author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s ",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s) ON DUPLICATE KEY UPDATE downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s ",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
@@ -2278,8 +2272,7 @@ id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %
                         free(query1);   
                         break;
                 case NDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s SET downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_st
-art_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY],
                                         *(int *) data[1],               /* update start */
                                         *(char **) data[4],
@@ -2302,8 +2295,7 @@ art_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND e
                         /* check result if update was ok */
                         if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, trigg
-ered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s)",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(int *) data[1],
