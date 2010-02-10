@@ -1119,12 +1119,11 @@ int ndo2db_handle_client_connection(int sd){
 
 	/* create cleanup thread */
 
-	//FIXME - for debugging, thread disabled
-	/*
+	
 	if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, &idi)) != 0) {
 		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 		exit(EXIT_FAILURE);
-	}*/
+	}
 
 	/* initialize input data information */
 	ndo2db_idi_init(&idi);
@@ -2482,6 +2481,8 @@ void * ido2db_thread_cleanup(void *data) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread db connection\n");
 	/* initialize database connection */
 	ndo2db_db_init(&thread_idi);
+	
+	//ido2db_thread_db_connect(&thread_idi);
 	ndo2db_db_connect(&thread_idi);
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push()\n");
@@ -2501,8 +2502,13 @@ void * ido2db_thread_cleanup(void *data) {
 	thread_idi.connect_source = idi->connect_source;
 	thread_idi.connect_type = idi->connect_type;
 
+
+	delay.tv_sec = 5;
 	/* save connection info to DB */
-	ndo2db_db_hello(&thread_idi);
+	while(ido2db_thread_db_hello(&thread_idi) == NDO_ERROR) {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() no instance found, sleeping...\n");
+		nanosleep(&delay, NULL);
+	}
 
 	while(1){
 		if(idi->disconnect_client==NDO_TRUE){
@@ -2531,6 +2537,8 @@ void * ido2db_thread_cleanup(void *data) {
 
 	/* gracefully back out of current operation... */
 	ndo2db_db_goodbye(&thread_idi);
+
+	//ido2db_thread_db_disconnect(&thread_idi);
 
 	pthread_cleanup_pop(1);
 

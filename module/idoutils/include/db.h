@@ -129,6 +129,7 @@ int ndo2db_db_connect(ndo2db_idi *);
 int ndo2db_db_disconnect(ndo2db_idi *);
 
 int ndo2db_db_hello(ndo2db_idi *);
+int ido2db_thread_db_hello(ndo2db_idi *);
 int ndo2db_db_goodbye(ndo2db_idi *);
 int ndo2db_db_checkin(ndo2db_idi *);
 
