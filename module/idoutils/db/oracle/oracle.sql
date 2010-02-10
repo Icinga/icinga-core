@@ -2,7 +2,7 @@
 -- oracle.sql
 -- DB definition for Oracle
 --
--- requires ocilib, oracle (instantclient) libs+sdk  to work
+-- requires ocilib, oracle (instantclient) libs+sdk to work
 -- specify oracle (instantclient) libs+sdk in ocilib configure
 -- ./configure \
 --	--with-oracle-headers-path=/opt/oracle/product/instantclient/instantclient_11_1/sdk/include \
@@ -15,20 +15,28 @@
 -- # sqlplus username/password
 -- SQL> @oracle.sql
 --
--- Note: set open_cursors to an appropriate value, not the default 50
--- http://www.orafaq.com/node/758
+-- Hints: 
+-- * set open_cursors to an appropriate value, not the default 50
+--   http://www.orafaq.com/node/758
+-- * if you are going into performance issues, consider setting commit_write to nowait
+--
+-- Example:
+-- open_cursors=1000
+-- commit_write='batch,nowait'
+--
 --
 -- initial version: 2008-02-20 David Schmidt
--- current version: 2010-02-08 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- current version: 2010-02-10 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 --
 -- -- --------------------------------------------------------
 
 -- set escape character
 SET ESCAPE \
 
---
--- Helper Function to convert from unix timestamp to Oracle Date
---
+-- --------------------------------------------------------
+-- unix timestamp 2 oradate function
+-- --------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION unixts2date( n_seconds   IN    PLS_INTEGER)
         RETURN    DATE
 IS
@@ -52,23 +60,11 @@ EXCEPTION
 END;
 /
 
+-- --------------------------------------------------------
+-- cleaning procedures
+-- --------------------------------------------------------
 
-
--- 
--- Cleaning procedures (requires Oracle 11)
--- this is only for testing purposes and not yet used in the src code 
--- CREATE OR REPLACE PROCEDURE clean_table_by_instance
---	( p_table_name IN varchar2, p_id IN number )
---	IS
---	v_cur integer;
--- BEGIN
---	v_cur := dbms_sql.open_cursor;
---	dbms_sql.parse(v_cur, 'delete from '||p_table_name||' WHERE instance_id='||p_id, dbms_sql.native);
---	dbms_output.put_line(dbms_sql.execute(v_cur));
---	dbms_sql.close_cursor(v_cur);
---END; 
---/
-
+-- will be called during startup maintenance
 CREATE OR REPLACE PROCEDURE clean_table_by_instance
      (p_table_name IN varchar2, p_id IN number )
      IS
@@ -82,6 +78,8 @@ BEGIN
 END;
 /
 
+
+-- will be called during periodic maintenance
 CREATE OR REPLACE PROCEDURE clean_table_by_instance_time
      (p_table_name IN varchar2, p_id IN number, p_field_name IN varchar2, p_time IN number)
      IS
@@ -102,11 +100,10 @@ END;
 
 
 
--- 
--- Database: icinga
--- 
-
 -- --------------------------------------------------------
+-- database table creation: icinga
+-- --------------------------------------------------------
+
 
 -- 
 -- Table structure for table acknowledgements

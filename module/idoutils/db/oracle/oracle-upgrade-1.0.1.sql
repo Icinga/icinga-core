@@ -19,15 +19,30 @@
 -- # sqlplus username/password
 -- SQL> @oracle-upgrade-1.0.1.sql
 --
--- current version: 2010-02-05 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- Hints: 
+-- * set open_cursors to an appropriate value, not the default 50
+--   http://www.orafaq.com/node/758
+-- * if you are going into performance issues, consider setting commit_write to nowait
 --
--- -- --------------------------------------------------------
+-- Example:
+-- open_cursors=1000
+-- commit_write='batch,nowait'
+--
+--
+-- current version: 2010-02-10 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+--
+-- --------------------------------------------------------
 
+-- --------------------------------------------------------
+-- new cleaning procedures
+-- --------------------------------------------------------
+
+-- will be called during startup maintenance
 CREATE OR REPLACE PROCEDURE clean_table_by_instance
      (p_table_name IN varchar2, p_id IN number )
-     IS
+     IS 
         v_stmt_str varchar2(200);
-BEGIN
+BEGIN   
         v_stmt_str := 'DELETE FROM '
         || p_table_name
         || ' WHERE instance_id='
@@ -36,6 +51,8 @@ BEGIN
 END;
 /
 
+
+-- will be called during periodic maintenance
 CREATE OR REPLACE PROCEDURE clean_table_by_instance_time
      (p_table_name IN varchar2, p_id IN number, p_field_name IN varchar2, p_time IN number)
      IS
@@ -55,9 +72,9 @@ END;
 /
 
 
---
--- command_line
---
+-- --------------------------------------------------------
+-- command_line upgrades
+-- --------------------------------------------------------
 
 ALTER TABLE hostchecks MODIFY command_line varchar2(1024);
 ALTER TABLE servicechecks MODIFY command_line varchar2(1024);
@@ -65,9 +82,9 @@ ALTER TABLE systemcommands MODIFY command_line varchar2(1024);
 ALTER TABLE eventhandlers MODIFY command_line varchar2(1024);
 
 
--- -----------------------------------------
+-- --------------------------------------------------------
 -- add index (delete)
--- -----------------------------------------
+-- --------------------------------------------------------
 
 -- for periodic delete 
 -- instance_id and
@@ -94,7 +111,7 @@ CREATE INDEX eventhandlers_time_id_idx on eventhandlers(start_time);
 CREATE INDEX externalcommands_time_id_idx on externalcommands(entry_time);
 
 
--- for starting cleanup - referenced in dbhandler.c:882
+-- for starting cleanup
 -- instance_id only
 
 -- realtime data
@@ -140,9 +157,9 @@ CREATE INDEX hostesc_cgroups_i_id_idx on hostescalation_contactgroups(instance_i
 CREATE INDEX serviceesc_cgroups_i_id_idx on serviceescalationcontactgroups(instance_id);
 
 
--- -----------------------------------------
+-- --------------------------------------------------------
 -- more index stuff (WHERE clauses)
--- -----------------------------------------
+-- --------------------------------------------------------
 
 -- hosts
 CREATE INDEX hosts_host_object_id_idx on hosts(host_object_id);
@@ -247,18 +264,37 @@ CREATE INDEX objects_inst_id_idx ON objects(instance_id);
 -- CREATE INDEX sched_d_t_end_time_idx on scheduleddowntime(scheduled_end_time);
 
 
--- -----------------------------------------
+-- --------------------------------------------------------
 -- upgrade path for using sequences 
--- problem: the sequences start by 1
--- but within the table relations there 
--- are other ids used
--- so get the highest id from each table
--- and set to sequence start
--- -----------------------------------------
+-- problem: the sequences start by 1 but within the table 
+-- relations there are other ids used so get the highest id 
+-- from each table and set to sequence start. 
+-- e.g.
+-- select (max(id)+1) as max_id from table;
+-- alter sequence seq_table start with max_id; 
+-- --------------------------------------------------------
 
--- -----------------------------------------
--- drop triggers first
--- -----------------------------------------
+-- NOTE: this procedure is provided without any warranty. Use at your own risk!!!
+-- call it like this after creatin sequences and having imported your data:
+--  update_sequence(table_with_new_data_name, sequence_to_update);
+-- for all existing tables 
+-- hint: user must have the right to 'ALTER ANY SEQUENCE'
+
+-- PROCEDURE update_sequence
+--         (p_table_name IN varchar2, p_seq_name in varchar2)
+-- AUTHID CURRENT_USER AS
+--         v_sql_text varchar2(255);
+--         v_seq_text varchar2(512);
+-- BEGIN
+-- EXECUTE IMMEDIATE 'SELECT to_char(MAX(id)+1) FROM '||p_table_name INTO v_sql_text;
+-- v_seq_text := 'ALTER SEQUENCE '||p_seq_name||' start with '|| v_sql_text;
+-- EXECUTE IMMEDIATE v_seq_text;
+-- END;
+
+
+-- --------------------------------------------------------
+-- drop removed triggers/sequence first
+-- --------------------------------------------------------
 
 DROP TRIGGER acknowledgements;
 DROP TRIGGER commands;
@@ -318,12 +354,15 @@ DROP TRIGGER timedeventqueue;
 DROP TRIGGER timedevents;
 DROP TRIGGER timeperiod_timeranges;
 DROP TRIGGER timeperiods;
+
+-- autoincrement sequence not used anymore
+DROP SEQUENCE autoincrement;
 /
 
 
--- -----------------------------------------
+-- --------------------------------------------------------
 -- add sequences
--- -----------------------------------------
+-- --------------------------------------------------------
 
 CREATE SEQUENCE seq_acknowledgements
    start with 1

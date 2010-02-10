@@ -2,9 +2,10 @@
  *
  * DBQUERIES.H - IDO2DB DB QUERY Handler Include File
  *
- * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 07-25-2009
+ * Last Modified: 02-10-2010
+ * 
  ************************************************************************/
 
 #ifndef _IDO2DB_DBQUERIES_H

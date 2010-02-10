@@ -1,8 +1,10 @@
 /************************************************************************
  *
- * DBHANDLERS.H - NDO2DB DB Handler Include File
+ * DBHANDLERS.H - IDO2DB DB Handler Include File
  * Copyright (c) 2005-2006 Ethan Galstad
- * Last Modified: 07-12-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * 
+ * Last Modified: 02-10-2010
  *
  ************************************************************************/
 

@@ -4,7 +4,7 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 02-07-2010
+ * Last Modified: 02-10-2010
  *
  **************************************************************/
 
@@ -35,7 +35,6 @@ int ido2db_oci_prepared_statement_servicestatus(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_servicechecks(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_contact_notificationcommands(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_programstatus(ndo2db_idi *idi);
-/* added 2010-02-07 */
 int ido2db_oci_prepared_statement_systemcommanddata(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_eventhandlerdata(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_notificationdata(ndo2db_idi *idi);
@@ -2048,43 +2047,18 @@ int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
 
 #else /* Oracle ocilib specific */
 
-	/* using a specialized deleting, we just execute the procedure but do not commit */
-        //if (asprintf(&buf, "begin clean_table_by_instance('%s', %lu); end;", table_name, idi->dbinfo.instance_id) == -1)
-	//	buf = NULL;
-
-        //result = ndo2db_db_query(idi, buf);
-
-        /* create statement handler */
-        //idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-        /* execute query in one go */
-        //oci_res = OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT(buf));
-
-        /*  get result set */
-        //idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
-
-        /* check for errors */
-        //if(!oci_res) {
-
-        //        syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
-        //        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: database query failed for: '%s'\n", buf);
-
-        //        ndo2db_handle_db_error(idi);
-        //        result = NDO_ERROR;
-        //}
-
+/*
         if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
                 buf = NULL;
 
         result = ndo2db_db_query(idi, buf);
 	
-	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
 
 	OCI_StatementFree(idi->dbinfo.oci_statement);
-
+*/
 	/* procedure approach */
-/*        void *data[2];
+        void *data[2];
         data[0] = (void *) &table_name;
         data[1] = (void *) &idi->dbinfo.instance_id;	
 
@@ -2101,7 +2075,6 @@ int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
                         }
 
                         OCI_Commit(idi->dbinfo.oci_connection);
-*/
 
 #endif /* Oracle ocilib specific */
 
@@ -2205,7 +2178,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
         dbi_result_free(idi->dbinfo.dbi_result);
 
 #else /* Oracle ocilib specific */
-/*
+
         void *data[4];
         data[0] = (void *) &table_name;
         data[1] = (void *) &idi->dbinfo.instance_id;
@@ -2231,7 +2204,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
                         }
 
                         OCI_Commit(idi->dbinfo.oci_connection);
-*/
+/*
 
         if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
                         table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
@@ -2240,13 +2213,13 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
         result = ndo2db_db_query(idi, buf);
 
 	OCI_StatementFree(idi->dbinfo.oci_statement);
-
+*/
 #endif /* Oracle ocilib specific */
 
 	free(buf);
         free(ts[0]);
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() end\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table(%s => %s: %lu) end\n", table_name, field_name, t);
 	return result;
 }
 
@@ -5466,7 +5439,7 @@ int ido2db_oci_prepared_statement_instances_delete(ndo2db_idi *idi) {
 
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf, "begin clean_table_by_instance(:X1, :X2) end;") == -1) {
+        if(asprintf(&buf, "BEGIN clean_table_by_instance(:X1, :X2); END;") == -1) {
                         buf = NULL;
         }
 
@@ -5500,7 +5473,7 @@ int ido2db_oci_prepared_statement_instances_delete_time(ndo2db_idi *idi) {
  
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf, "begin clean_table_by_instance_time(:X1, :X2, :X3, :X4) end;") == -1) {
+        if(asprintf(&buf, "BEGIN clean_table_by_instance_time(:X1, :X2, :X3, :X4); END;") == -1) {
                         buf = NULL;
         }
  

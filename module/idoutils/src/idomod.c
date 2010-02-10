@@ -6,7 +6,7 @@
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * First Written: 05-19-2005
- * Last Modified: 01-10-2010
+ * Last Modified: 02-10-2010
  *
  *****************************************************************************/
 
@@ -109,7 +109,7 @@ int nebmodule_init(int flags, char *args, void *handle){
 	ndomod_module_handle=handle;
 
 	/* log module info to the Icinga log file */
-	snprintf(temp_buffer, sizeof(temp_buffer)-1, "idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009 Icinga Development Team (http://www.icinga.org))", NDOMOD_NAME, NDOMOD_VERSION, NDOMOD_DATE);
+	snprintf(temp_buffer, sizeof(temp_buffer)-1, "idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org))", NDOMOD_NAME, NDOMOD_VERSION, NDOMOD_DATE);
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	ndomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 
