@@ -2,11 +2,86 @@
 Icinga 1.0.x Change Log
 #######################
 
-1.x - xx/xx/2010
+1.0.1 - 03/03/2010
+
+ENHANCEMENTS
+* core: updated docs
+* core: fix config parsing for icinga_user and icinga_group
+* core: fix status.dat ok, no daemon running, show error instead of old data
+* core: permanently remove sleep on run_event == FALSE in main loop (Max Schubert)
+
+* idoutils: add ido2db threaded housekeeper
+	- periodic cleanup will now be performed in own thread
+	- startup blocking behavior removed
+	- housekeeper will wait for idomod instance, idle wait using und db_hello
+	- creates own db connection and does its job
+
+* idoutils: add indexes for delete/select statements
+	- delete/select will perform faster
+	- getting cached objects with select runs faster
+	- getting logentries within icinga-web is faster
+
+* idoutils: reorganize db setup files for MySQL/Postgresql/Oracle
+	- module/idoutils/db/<rdbms>/ holds needed files
+	- module/idoutils/scripts/ with installdb/upgradedb for MySQL
+	- updated Makefile, README
+
+* idoutils: complete oracle rewrite to improve performance
+	- query rewrite
+		- 1x SELECT latest data time as is (called only at startup)
+		- dynamic binded procedure for DELETE on table by instance_id called at startup
+		  for cleaning config/status
+		- dynamic binded procedure for DELETE on tably by instance_id, field<time called
+		  during periodic cleanup in threaded housekeeper 
+		- all other queries are prepared with their own statement handler
+			 4x DELETE
+			 52x MERGE
+			 9x INSERT
+			 9x UPDATE
+			 5x SELECT
+	- rewritten getting cached object_id using select
+	- all queries use binded unixtimestamp instead of prepared query string
+	- removed autoincrement sequence and insert triggers to update primary key
+	- added sequence for each table
+	- INSERT INTO ... (id, ...) VALUES (seq_name.nextval, ...) will do the trick
+	- added RETURNING id INTO :id for INSERT statements to save one round trip
+	- MERGE does not support returning INTO, added SELECT seq_name.currval query instead
+	  for fetching last inserted id
+	- add explizit upgrade information and provided procedure to alter sequence start
+	  when importing data (check oracle-upgrade-1.0.1.sql for more info)
+
+* idoutils: add upgrade path for mysql/pgsql/oracle for 1.0.1
+* idoutils: add initial debug output for idomod (to be set in idomod.cfg)
+* idoutils: add database name in connection msg to syslog
+
+FIXES
+
 * core: fix segfault in cmd.cgi
 * core: fix event broker callback function self de-registering for callbacks (Sean Millichamp)
-* core: added missing sound.js provided by scriptaculous
+* core: add missing sound.js provided by scriptaculous
+* core: string replaces for icinga
+* core: typo fix in mrtg.cfg (Dennis van Zuijlekom) 
+* core: add init info as required by LSB
+* core: fix perl tests
+* core: fix missing clean & distclean against tap/ directory
+* core: fix several libtap c TAP tests and cleanups
+* core: refactor perl test to use icingaadmin
+* core: add cgi argument 'nodaemoncheck' and tests
+* core: add config.cgi test
+* core: add subtests to extinfo tests
+* core: add tests against histogram.cgi
+* core: add $srcdir to paths
 * core: fix idomod doesn't de-initialize after config error
+
+* idoutils: modify string escaping for mysql and pgsql
+* idoutils: fix pgsql table systemcommands (missing column 'output')
+* idoutils: fix arraysize of es in save_custom_variables
+* idoutils: rename ndomod.h to idomod.h
+* idoutils: fix several naming issues
+* idoutils: fix acknowledgments query, wrong buffer freed/set as query to db (Bruce Pennypacker)
+* idoutils: fix contactnotification data array, command args were not provided (Bruce Pennypacker)
+* idoutils: fix custom_variables object_id type int => unsigned long
+
 
 1.0 Stable - 16/12/2009
 * core: create webserver conf.d dir if not existing
@@ -189,6 +264,11 @@ FIXES
 * Set to search external libs, rather than include all the time (Allan Clark)
 * Fixed test compile on linux servers
 * Fixed incorrect return code in test failures
+* Create Makefile in t/
+* Added test for testing status.cgi with a large number of comments and downtime
+* Updated tests to check that comment ids are sorted
+* Fixed deferred sorting of comments and downtimes. Added tests to prove sorting
+
 
 WARNINGS
 
