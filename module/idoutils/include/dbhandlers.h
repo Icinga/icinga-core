@@ -1,8 +1,10 @@
 /************************************************************************
  *
- * DBHANDLERS.H - NDO2DB DB Handler Include File
+ * DBHANDLERS.H - IDO2DB DB Handler Include File
  * Copyright (c) 2005-2006 Ethan Galstad
- * Last Modified: 07-12-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * 
+ * Last Modified: 02-10-2010
  *
  ************************************************************************/
 
@@ -71,7 +73,7 @@ int ndo2db_handle_commanddefinition(ndo2db_idi *);
 int ndo2db_handle_timeperiodefinition(ndo2db_idi *);
 int ndo2db_handle_contactdefinition(ndo2db_idi *);
 int ndo2db_handle_contactgroupdefinition(ndo2db_idi *);
-int ndo2db_save_custom_variables(ndo2db_idi *,int, int, char *);
+int ndo2db_save_custom_variables(ndo2db_idi *,int, unsigned long, char *, unsigned long);
 
 int ndo2db_log_debug_info(int , int , const char *, ...);
 #endif

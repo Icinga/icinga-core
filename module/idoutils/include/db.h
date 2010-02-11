@@ -1,8 +1,10 @@
 /************************************************************************
  *
- * DB.H - NDO Database Include File
+ * DB.H - IDO Database Include File
  * Copyright (c) 2005-2006 Ethan Galstad
- * Last Modified: 05-14-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 02-10-2010
  *
  ************************************************************************/
 
@@ -20,6 +22,7 @@ typedef struct ndo2db_dbconfig_struct{
 	char *password;
 	char *dbname;
 	char *dbprefix;
+	char *dbserver;
 	unsigned long max_timedevents_age;
 	unsigned long max_systemcommands_age;
 	unsigned long max_servicechecks_age;
@@ -128,6 +131,7 @@ int ndo2db_db_connect(ndo2db_idi *);
 int ndo2db_db_disconnect(ndo2db_idi *);
 
 int ndo2db_db_hello(ndo2db_idi *);
+int ido2db_thread_db_hello(ndo2db_idi *);
 int ndo2db_db_goodbye(ndo2db_idi *);
 int ndo2db_db_checkin(ndo2db_idi *);
 
@@ -145,7 +149,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *,char *,char *,unsigned long);
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 void ido2db_ocilib_err_handler(OCI_Error *);
-unsigned long ido2db_ocilib_insert_id(ndo2db_idi *);
+unsigned long ido2db_ocilib_insert_id(ndo2db_idi *, char *seq_name);
 #endif /* Oracle ocilib specific */
 
 #endif

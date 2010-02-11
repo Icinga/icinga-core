@@ -2,9 +2,10 @@
  *
  * DBQUERIES.H - IDO2DB DB QUERY Handler Include File
  *
- * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 07-25-2009
+ * Last Modified: 02-10-2010
+ * 
  ************************************************************************/
 
 #ifndef _IDO2DB_DBQUERIES_H
@@ -39,10 +40,12 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
 int ido2db_query_insert_or_update_hostcheckdata_add(ndo2db_idi *idi, void **data);
 
 /* COMMENTS */
-int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data, char *table_name);
+int ido2db_query_insert_or_update_commentdata_add(ndo2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_commentdata_history_add(ndo2db_idi *idi, void **data);
 
 /* DOWNTIME */
-int ido2db_query_insert_or_update_downtimedata_add(ndo2db_idi *idi, void **data, char *table_name);
+int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ndo2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ndo2db_idi *idi, void **data);
 
 /* PROGRAMSTATUS */
 int ido2db_query_insert_or_update_programstatusdata_add(ndo2db_idi *idi, void **data);

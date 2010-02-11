@@ -19,13 +19,62 @@
 -- # sqlplus username/password
 -- SQL> @oracle-upgrade-1.0.1.sql
 --
--- current version: 2010-02-03 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- Hints: 
+-- * set open_cursors to an appropriate value, not the default 50
+--   http://www.orafaq.com/node/758
+-- * if you are going into performance issues, consider setting commit_write to nowait
 --
--- -- --------------------------------------------------------
+-- Example:
+-- open_cursors=1000
+-- commit_write='batch,nowait'
+--
+--
+-- current version: 2010-02-10 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+--
+-- --------------------------------------------------------
 
---
--- command_line
---
+-- --------------------------------------------------------
+-- new cleaning procedures
+-- --------------------------------------------------------
+
+-- will be called during startup maintenance
+CREATE OR REPLACE PROCEDURE clean_table_by_instance
+     (p_table_name IN varchar2, p_id IN number )
+     IS 
+        v_stmt_str varchar2(200);
+BEGIN   
+        v_stmt_str := 'DELETE FROM '
+        || p_table_name
+        || ' WHERE instance_id='
+        || p_id;
+        EXECUTE IMMEDIATE v_stmt_str;
+END;
+/
+
+
+-- will be called during periodic maintenance
+CREATE OR REPLACE PROCEDURE clean_table_by_instance_time
+     (p_table_name IN varchar2, p_id IN number, p_field_name IN varchar2, p_time IN number)
+     IS
+        v_stmt_str varchar2(200);
+BEGIN
+        v_stmt_str := 'DELETE FROM '
+        || p_table_name
+        || ' WHERE instance_id='
+        || p_id
+        || ' AND '
+        || p_field_name
+        || '<(SELECT unixts2date('
+        || p_time
+        || ') FROM DUAL)';
+        EXECUTE IMMEDIATE v_stmt_str;
+END;
+/
+
+
+-- --------------------------------------------------------
+-- command_line upgrades
+-- --------------------------------------------------------
 
 ALTER TABLE hostchecks MODIFY command_line varchar2(1024);
 ALTER TABLE servicechecks MODIFY command_line varchar2(1024);
@@ -33,9 +82,9 @@ ALTER TABLE systemcommands MODIFY command_line varchar2(1024);
 ALTER TABLE eventhandlers MODIFY command_line varchar2(1024);
 
 
--- -----------------------------------------
+-- --------------------------------------------------------
 -- add index (delete)
--- -----------------------------------------
+-- --------------------------------------------------------
 
 -- for periodic delete 
 -- instance_id and
@@ -62,7 +111,7 @@ CREATE INDEX eventhandlers_time_id_idx on eventhandlers(start_time);
 CREATE INDEX externalcommands_time_id_idx on externalcommands(entry_time);
 
 
--- for starting cleanup - referenced in dbhandler.c:882
+-- for starting cleanup
 -- instance_id only
 
 -- realtime data
@@ -108,9 +157,9 @@ CREATE INDEX hostesc_cgroups_i_id_idx on hostescalation_contactgroups(instance_i
 CREATE INDEX serviceesc_cgroups_i_id_idx on serviceescalationcontactgroups(instance_id);
 
 
--- -----------------------------------------
+-- --------------------------------------------------------
 -- more index stuff (WHERE clauses)
--- -----------------------------------------
+-- --------------------------------------------------------
 
 -- hosts
 CREATE INDEX hosts_host_object_id_idx on hosts(host_object_id);
@@ -216,8 +265,395 @@ CREATE INDEX loge_time_idx on logentries(logentry_time);
 -- CREATE INDEX sched_d_t_end_time_idx on scheduleddowntime(scheduled_end_time);
 
 
--- -----------------------------------------
--- triggers/sequences
--- -----------------------------------------
+-- --------------------------------------------------------
+-- upgrade path for using sequences 
+-- problem: the sequences start by 1 but within the table 
+-- relations there are other ids used so get the highest id 
+-- from each table and set to sequence start. 
+-- e.g.
+-- select (max(id)+1) as max_id from table;
+-- alter sequence seq_table start with max_id; 
+-- --------------------------------------------------------
+
+-- NOTE: this procedure is provided without any warranty. Use at your own risk!!!
+-- call it like this after creatin sequences and having imported your data:
+--  update_sequence(table_with_new_data_name, sequence_to_update);
+-- for all existing tables 
+-- hint: user must have the right to 'ALTER ANY SEQUENCE'
+
+-- PROCEDURE update_sequence
+--         (p_table_name IN varchar2, p_seq_name in varchar2)
+-- AUTHID CURRENT_USER AS
+--         v_sql_text varchar2(255);
+--         v_seq_text varchar2(512);
+-- BEGIN
+-- EXECUTE IMMEDIATE 'SELECT to_char(MAX(id)+1) FROM '||p_table_name INTO v_sql_text;
+-- v_seq_text := 'ALTER SEQUENCE '||p_seq_name||' start with '|| v_sql_text;
+-- EXECUTE IMMEDIATE v_seq_text;
+-- END;
+
+
+-- --------------------------------------------------------
+-- drop removed triggers/sequence first
+-- --------------------------------------------------------
+
+DROP TRIGGER acknowledgements;
+DROP TRIGGER commands;
+DROP TRIGGER commenthistory;
+DROP TRIGGER comments;
+DROP TRIGGER configfiles;
+DROP TRIGGER configfilevariables;
+DROP TRIGGER conninfo;
+DROP TRIGGER contact_addresses;
+DROP TRIGGER contact_notificationcommands;
+DROP TRIGGER contactgroup_members;
+DROP TRIGGER contactgroups;
+DROP TRIGGER contactnotificationmethods;
+DROP TRIGGER contactnotifications;
+DROP TRIGGER contacts;
+DROP TRIGGER contactstatus;
+DROP TRIGGER customvariables;
+DROP TRIGGER customvariablestatus;
+DROP TRIGGER downtimehistory;
+DROP TRIGGER eventhandlers;
+DROP TRIGGER externalcommands;
+DROP TRIGGER flappinghistory;
+DROP TRIGGER host_contactgroups;
+DROP TRIGGER host_contacts;
+DROP TRIGGER host_parenthosts;
+DROP TRIGGER hostchecks;
+DROP TRIGGER hostdependencies;
+DROP TRIGGER hostescalation_contactgroups;
+DROP TRIGGER hostescalation_contacts;
+DROP TRIGGER hostescalations;
+DROP TRIGGER hostgroup_members;
+DROP TRIGGER hostgroups;
+DROP TRIGGER hosts;
+DROP TRIGGER hoststatus;
+DROP TRIGGER instances;
+DROP TRIGGER logentries;
+DROP TRIGGER notifications;
+DROP TRIGGER objects;
+DROP TRIGGER processevents;
+DROP TRIGGER programstatus;
+DROP TRIGGER runtimevariables;
+DROP TRIGGER scheduleddowntime;
+DROP TRIGGER service_contactgroups;
+DROP TRIGGER service_contacts;
+DROP TRIGGER servicechecks;
+DROP TRIGGER servicedependencies;
+DROP TRIGGER serviceescalationcontactgroups;
+DROP TRIGGER serviceescalation_contacts;
+DROP TRIGGER serviceescalations;
+DROP TRIGGER servicegroup_members;
+DROP TRIGGER servicegroups;
+DROP TRIGGER services;
+DROP TRIGGER servicestatus;
+DROP TRIGGER statehistory;
+DROP TRIGGER systemcommands;
+DROP TRIGGER timedeventqueue;
+DROP TRIGGER timedevents;
+DROP TRIGGER timeperiod_timeranges;
+DROP TRIGGER timeperiods;
+
+-- autoincrement sequence not used anymore
+DROP SEQUENCE autoincrement;
+/
+
+
+-- --------------------------------------------------------
+-- add sequences
+-- --------------------------------------------------------
+
+CREATE SEQUENCE seq_acknowledgements
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_commands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_commenthistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_comments
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_configfiles
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_configfilevariables
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_conninfo
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contact_addresses
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contact_notifcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactgroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactnotifmethods
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactnotifications
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_contactstatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_customvariables
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_customvariablestatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_downtimehistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_eventhandlers
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_externalcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_flappinghistory
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_host_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_host_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_host_parenthosts
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostchecks
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_hostdependencies
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hostesc_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hostesc_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hostescalations
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hostgroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hostgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hosts
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_hoststatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_instances
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_logentries
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_notifications
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_objects
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_processevents
+   start with 1
+   increment by 1
+   nomaxvalue;
+   
+CREATE SEQUENCE seq_programstatus
+   start with 1
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_runtimevariables
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_scheduleddowntime
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_service_contactgroups
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_service_contacts
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicechecks
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicedependencies
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_serviceesccontactgroups
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_serviceesc_contacts
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_serviceescalations
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicegroup_members
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicegroups
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_services
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_servicestatus
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_statehistory
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_systemcommands
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timedeventqueue
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timedevents
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timep_timer
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
+CREATE SEQUENCE seq_timeperiods
+   start with 1 
+   increment by 1
+   nomaxvalue;
+
 
 

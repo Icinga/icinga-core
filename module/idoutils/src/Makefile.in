@@ -39,6 +39,7 @@ SOCKETLIBS=@SOCKETLIBS@
 DBLIBS=@DBLIBS@
 MATHLIBS=-lm
 OTHERLIBS=@OTHERLIBS@
+THREADLIBS=@THREADLIBS@
 
 COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h
 COMMON_SRC=io.c utils.c
@@ -60,7 +61,7 @@ log2ndo: log2ndo.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ log2ndo.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
 ido2db: ido2db.c $(NDO_INC) $(NDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o dbqueries.o
-	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o dbqueries.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(MATHLIBS) $(OTHERLIBS)
+	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o dbqueries.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(THREADLIBS) $(MATHLIBS) $(OTHERLIBS)
 
 idomod.o: idomod.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o idomod.o idomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
