@@ -2472,6 +2472,10 @@ void * ido2db_thread_cleanup(void *data) {
 	delay.tv_sec = 0;
 	delay.tv_nsec = 500;
 
+	/* it might happen that db connection comes to fast after main thread so sleep a while */
+	delay.tv_sec = 5;
+	nanosleep(&delay, NULL);
+
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread idi\n");
@@ -2488,6 +2492,9 @@ void * ido2db_thread_cleanup(void *data) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push()\n");
 	pthread_cleanup_push((void *) &ido2db_thread_cleanup_exit_handler, NULL);
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push() end \n");
+
+        delay.tv_sec = 0;
+        delay.tv_nsec = 500;
 
 	while(idi->instance_name==NULL) {
 		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() nanosleeping cause missing instance_name...\n");
