@@ -1730,6 +1730,7 @@ int pre_flight_object_check(int *w, int *e){
 	hostescalation *temp_he=NULL;
 	servicedependency *temp_sd=NULL;
 	hostdependency *temp_hd=NULL;
+	escalation_condition *temp_escalation_condition=NULL;
 	char *buf=NULL;
 	char *temp_command_name="";
 	int found=FALSE;
@@ -2386,6 +2387,27 @@ int pre_flight_object_check(int *w, int *e){
 			/* save the contact group pointer for later */
 			temp_contactgroupsmember->group_ptr=temp_contactgroup;
 			}
+
+               /* check escalation conditions */
+               for(temp_escalation_condition=temp_se->condition;temp_escalation_condition!=NULL;temp_escalation_condition=temp_escalation_condition->next){
+                       
+                       /* find the host */
+                       temp_host=find_host(temp_escalation_condition->host_name);
+                       if(temp_host==NULL){
+                               logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Host '%s' specified in service escalation condition is not defined anywhere!",temp_escalation_condition->host_name);
+                               errors++;
+                       }
+                       
+                       else if(temp_escalation_condition->service_description!=NULL){
+                               /* find the service */
+                               temp_service=find_service(temp_escalation_condition->host_name,temp_escalation_condition->service_description);
+                               if(temp_service==NULL){
+                                       logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!",temp_escalation_condition->service_description,temp_escalation_condition->host_name);
+                                       errors++;
+                                       }
+                               }
+                       }
+
 	        }
 
 	if(verify_config==TRUE)
@@ -2503,6 +2525,26 @@ int pre_flight_object_check(int *w, int *e){
 			temp_contactgroupsmember->group_ptr=temp_contactgroup;
 			}
 	        }
+               
+               /* check escalation conditions */
+               for(temp_escalation_condition=temp_he->condition;temp_escalation_condition!=NULL;temp_escalation_condition=temp_escalation_condition->next){
+                       
+                       /* find the host */
+                       temp_host=find_host(temp_escalation_condition->host_name);
+                       if(temp_host==NULL){
+                               logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Host '%s' specified in service escalation condition is not defined anywhere!",temp_escalation_condition->host_name);
+                               errors++;
+                       }
+                       
+                       else if(temp_escalation_condition->service_description!=NULL){
+                               /* find the service */
+                               temp_service=find_service(temp_escalation_condition->host_name,temp_escalation_condition->service_description);
+                               if(temp_service==NULL){
+                                       logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!",temp_escalation_condition->service_description,temp_escalation_condition->host_name);
+                                       errors++;
+                                       }
+                               }
+                       }
 
 	if(verify_config==TRUE)
 		printf("\tChecked %d host escalations.\n",total_objects);

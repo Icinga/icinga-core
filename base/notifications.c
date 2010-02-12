@@ -832,9 +832,87 @@ int is_valid_escalation_for_service_notification(service *svc, serviceescalation
 	else if(svc->current_state==STATE_CRITICAL && se->escalate_on_critical==FALSE)
 		return FALSE;
 
+       /* skip this escalation if the conditions don't match */
+       else if(check_escalation_condition(se->condition)==FALSE)
+               return FALSE; 
+
 	return TRUE;
         }
 
+/* internal help function checks if all conditions in an escalation condition list match the status of hosts/services */
+int check_escalation_condition(escalation_condition *cond){
+        int resultAll = TRUE;
+        int connector = EC_CONNECTOR_NO;
+        escalation_condition *cnd = cond; // first condition in list
+       
+        log_debug_info(DEBUGL_FUNCTIONS,0,"check_escalation_condition()");
+       
+        while(cnd!=NULL) {
+                int result = TRUE;
+               
+                /* service condition */
+                if(cnd->service_description!=NULL && strcmp(cnd->service_description,"")
+                                        && cnd->host_name!=NULL && strcmp(cnd->host_name,"")) {
+                       
+                        /* try to find the service */
+                        service *svc = find_service(cnd->host_name, cnd->service_description);                  
+                        if (svc == NULL) {
+                                result = FALSE;
+                        }
+                        else {
+                                if(svc->current_state==STATE_OK && cnd->escalate_on_ok==FALSE)
+                                        result = FALSE;
+                                else if(svc->current_state==STATE_WARNING && cnd->escalate_on_warning==FALSE)
+                                        result = FALSE;
+                                else if(svc->current_state==STATE_UNKNOWN && cnd->escalate_on_unknown==FALSE)
+                                        result = FALSE;
+                                else if(svc->current_state==STATE_CRITICAL && cnd->escalate_on_critical==FALSE)
+                                        result = FALSE;
+                        }
+                        log_debug_info(DEBUGL_NOTIFICATIONS,1,"Check service escalation condition %s.%s = %d.\n", svc->host_name, svc->description, result);
+                }
+               
+                /* host condition */
+                else if(cnd->host_name!=NULL && strcmp(cnd->host_name,"")) {
+                       
+                        /* try to find the host */
+                        host *hst = find_host(cnd->host_name);                  
+                        if (hst==NULL) {
+                                result = FALSE;
+                        }
+                        else {
+                                if(hst->current_state==HOST_UP && cnd->escalate_on_ok==FALSE)
+                                        result = FALSE;
+                                else if(hst->current_state==HOST_DOWN && cnd->escalate_on_down==FALSE)
+                                        result = FALSE;
+                                else if(hst->current_state==HOST_UNREACHABLE && cnd->escalate_on_unreachable==FALSE)
+                                        result = FALSE;
+                        }
+                        log_debug_info(DEBUGL_NOTIFICATIONS,1,"Check host escalation condition %s = %d.\n", hst->name, result);
+                }
+               
+                /* connect the result with the result of previous conditions */
+                switch(connector) {
+                        case EC_CONNECTOR_NO:
+                                // goes here when looking at the first condition!
+                                resultAll = result;
+                                break;
+                        case EC_CONNECTOR_AND: 
+                                resultAll = resultAll && result;
+                                break;
+                        case EC_CONNECTOR_OR:
+                                resultAll = resultAll || result;
+                                break;
+                        default:
+                                // this should not happen
+                                return FALSE;
+                                break;
+                }
+                connector = cnd->connector;
+                cnd = cnd->next;
+        }
+        return resultAll;
+}
 
 /* checks to see whether a service notification should be escalation */
 int should_service_notification_be_escalated(service *svc){
@@ -1689,6 +1767,10 @@ int is_valid_escalation_for_host_notification(host *hst, hostescalation *he, int
 	else if(hst->current_state==HOST_UNREACHABLE && he->escalate_on_unreachable==FALSE)
 		return FALSE;
 
+        /* skip this escalation if the conditions don't match */
+        else if(check_escalation_condition(he->condition)==FALSE)
+                return FALSE;
+   
 	return TRUE;
         }
 

@@ -500,6 +500,38 @@ typedef struct xodtemplate_servicegroup_struct{
 	struct xodtemplate_servicegroup_struct *next;
         }xodtemplate_servicegroup;
 
+ /* ESCALATION CONDITION STRUCTURE 
+  * Vitali Voroth, 09.10.2009
+  * A condition is written this way:
+  * escalation_condition        host linux01 = c
+  * More than one condition are connected via & OR | :
+  * escalation_condition        host linux01 = c | service linux01.SSH = c,w
+  * where & is an AND connection and | is and OR connection.
+ */
+ typedef struct xodtemplate_escalation_condition_struct{
+        char      *host_name;
+        char      *service_description;
+        /*
+        int       have_host_name;
+        int       have_service_description;
+        */
+        /* Connects this and the next condition either with an AND or with an OR.
+         * (constants defined in objects.h)
+         *      0: EC_CONNECTOR_NO
+         *  1: EC_CONNECTOR_AND
+         *  2: EC_CONNECTOR_OR
+        */
+        int       connector;
+        
+        int       escalate_on_down;
+        int       escalate_on_unreachable;
+        int       escalate_on_warning;
+        int       escalate_on_unknown;
+        int       escalate_on_critical;
+        int       escalate_on_ok;
+        
+        struct xodtemplate_escalation_condition_struct *next;
+        }xodtemplate_escalation_condition;
 
 /* SERVICEDEPENDENCY TEMPLATE STRUCTURE */
 typedef struct xodtemplate_servicedependency_struct{
@@ -545,6 +577,7 @@ typedef struct xodtemplate_servicedependency_struct{
 
 	int        has_been_resolved;
 	int        register_object;
+
 	struct xodtemplate_servicedependency_struct *next;
         }xodtemplate_servicedependency;
 
@@ -586,6 +619,8 @@ typedef struct xodtemplate_serviceescalation_struct{
 
 	int       has_been_resolved;
 	int       register_object;
+
+        xodtemplate_escalation_condition *condition;
 	struct xodtemplate_serviceescalation_struct *next;
         }xodtemplate_serviceescalation;
 
@@ -660,6 +695,8 @@ typedef struct xodtemplate_hostescalation_struct{
 
 	int       has_been_resolved;
 	int       register_object;
+
+        xodtemplate_escalation_condition *condition;
 	struct xodtemplate_hostescalation_struct *next;
         }xodtemplate_hostescalation;
 

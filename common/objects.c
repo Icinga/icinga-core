@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * OBJECTS.C - Object addition and search functions for Nagios
+ * OBJECTS.C - Object addition and search functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Last Modified: 11-30-2008
@@ -2565,7 +2565,100 @@ hostescalation *add_hostescalation(char *host_name,int first_notification,int la
 	return new_hostescalation;
 	}
 
+/* add a condition to a (host or service) escalation in memory */
+escalation_condition *add_host_service_escalation_condition(hostescalation *my_hostescalation, serviceescalation *my_serviceescalation, escalation_condition *last_condition, char *host_name, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok){
+        escalation_condition *new_escalation_condition=NULL;
+        int result=OK;
+          
+        /* make sure we have the data we need */
+        if(host_name==NULL || !strcmp(host_name,"")){
+ #ifdef NSCORE
+                logit(NSLOG_CONFIG_ERROR,TRUE,"Error: escalation condition: host name is NULL\n");
+ #endif
+                return NULL;
+        }
+       
+#ifdef TEST
+        printf("NEW ESCALATION CONDITION: host = %s; service = %s; connector = %d/\n",host_name,service_description,connector);
+ #endif 
+       
+        /* remove whitespaces */
+        strip(host_name);
+        strip(service_description);
+       
+        /* allocate memory for a new escalation_condition entry */
+        if((new_escalation_condition=malloc(sizeof(escalation_condition)))==NULL)
+                return NULL;
+       
+        /* initialize vars */
+        new_escalation_condition->host_name=NULL;
+        new_escalation_condition->service_description=NULL;
+        new_escalation_condition->next=NULL;
+        new_escalation_condition->escalate_on_warning=FALSE;
+        new_escalation_condition->escalate_on_unknown=FALSE;
+        new_escalation_condition->escalate_on_critical=FALSE;
+        new_escalation_condition->escalate_on_ok=FALSE;
+        new_escalation_condition->escalate_on_down=FALSE;
+        new_escalation_condition->escalate_on_unreachable=FALSE;
+        
+        /* service condition */
+        if(service_description!=NULL && strcmp(service_description,"")
+                                && host_name!=NULL && strcmp(host_name,"")) {
+                if((new_escalation_condition->host_name=(char *)strdup(host_name))==NULL)
+                        result=ERROR;
+                if((new_escalation_condition->service_description=(char *)strdup(service_description))==NULL)
+                        result=ERROR;
+                        
+                new_escalation_condition->escalate_on_warning=(escalate_on_warning>0)?TRUE:FALSE;
+                new_escalation_condition->escalate_on_unknown=(escalate_on_unknown>0)?TRUE:FALSE;
+                new_escalation_condition->escalate_on_critical=(escalate_on_critical>0)?TRUE:FALSE;
+                new_escalation_condition->escalate_on_ok=(escalate_on_ok>0)?TRUE:FALSE;
+        }
+        
+        /* host condition */
+        else if(host_name!=NULL && strcmp(host_name,"")) {
+                if((new_escalation_condition->host_name=(char *)strdup(host_name))==NULL)
+                        result=ERROR;
+                       
+                new_escalation_condition->escalate_on_down=(escalate_on_down>0)?TRUE:FALSE;
+                new_escalation_condition->escalate_on_unreachable=(escalate_on_unreachable>0)?TRUE:FALSE;
+                new_escalation_condition->escalate_on_ok=(escalate_on_ok>0)?TRUE:FALSE;
+        }
+       
+        /* connector to next condition */
+        new_escalation_condition->connector=(connector>=0 && connector<=2)?connector : EC_CONNECTOR_NO;
+       
+        /* handle errors */
+        if(result==ERROR){
+                my_free(new_escalation_condition->host_name);
+                my_free(new_escalation_condition->service_description);
+                my_free(new_escalation_condition);
+                return NULL;
+                }
+        
+        /* if head of escalation condition is NULL set it to new condition */
+        if(my_serviceescalation!=NULL && my_serviceescalation->condition==NULL){
+                my_serviceescalation->condition=new_escalation_condition;
+        }
+        else if(my_hostescalation!=NULL && my_hostescalation->condition==NULL){
+                my_hostescalation->condition=new_escalation_condition;
+        }
+        /* else add new condition to the tail of condition list */
+        else {
+                last_condition->next=new_escalation_condition;
+        }
+        return new_escalation_condition;
+}
 
+/* add a condition to a host escalation in memory */
+escalation_condition *add_hostescalation_condition(hostescalation *my_hostescalation, escalation_condition *last_condition, char *host_name, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok){
+        return add_host_service_escalation_condition(my_hostescalation, NULL, last_condition, host_name, service_description, connector, escalate_on_down, escalate_on_unreachable, escalate_on_warning, escalate_on_unknown, escalate_on_critical, escalate_on_ok);
+}
+
+/* add a condition to a service escalation in memory */
+escalation_condition *add_serviceescalation_condition(serviceescalation *my_serviceescalation, escalation_condition *last_condition, char *host_name, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok){
+        return add_host_service_escalation_condition(NULL, my_serviceescalation, last_condition, host_name, service_description, connector, escalate_on_down, escalate_on_unreachable, escalate_on_warning, escalate_on_unknown, escalate_on_critical, escalate_on_ok);
+}
 
 /* adds a contact group to a host escalation */
 contactgroupsmember *add_contactgroup_to_hostescalation(hostescalation *he,char *group_name){
@@ -3611,6 +3704,8 @@ int free_object_data(void){
 	hostdependency *next_hostdependency=NULL;
 	hostescalation *this_hostescalation=NULL;
 	hostescalation *next_hostescalation=NULL;
+        escalation_condition *this_escalation_condition=NULL;
+        escalation_condition *next_escalation_condition=NULL;
 	register int x=0;
 	register int i=0;
 
@@ -3988,6 +4083,16 @@ int free_object_data(void){
 			this_contactsmember=next_contactsmember;
 			}
 
+                /* free memory for escalation_conditions */
+                this_escalation_condition=this_serviceescalation->condition;
+                while(this_escalation_condition!=NULL){
+                        next_escalation_condition=this_escalation_condition->next;
+                        my_free(this_escalation_condition->host_name);
+                        my_free(this_escalation_condition->service_description);
+                        my_free(this_escalation_condition);
+                        this_escalation_condition=next_escalation_condition;
+                        }
+
 		next_serviceescalation=this_serviceescalation->next;
 		my_free(this_serviceescalation->host_name);
 		my_free(this_serviceescalation->description);
@@ -4053,6 +4158,16 @@ int free_object_data(void){
 			my_free(this_contactsmember);
 			this_contactsmember=next_contactsmember;
 			}
+
+                /* free memory for escalation_conditions */
+                this_escalation_condition=this_hostescalation->condition;
+                while(this_escalation_condition!=NULL){
+                        next_escalation_condition=this_escalation_condition->next;
+                        my_free(this_escalation_condition->host_name);
+                        my_free(this_escalation_condition->service_description);
+                        my_free(this_escalation_condition);
+                        this_escalation_condition=next_escalation_condition;
+                        }
 
 		next_hostescalation=this_hostescalation->next;
 		my_free(this_hostescalation->host_name);

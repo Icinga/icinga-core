@@ -10,6 +10,29 @@ ENHANCEMENTS
 * core: fix status.dat ok, no daemon running, show error instead of old data
 * core: permanently remove sleep on run_event == FALSE in main loop (Max Schubert)
 
+* core: add service_check_timeout_state	configuration variable
+	This setting determines the state Icinga will report when a
+	service check times out - it does not respond within
+	service_check_timeout seconds.  
+	c - Critical (default)
+	u - Unknown
+	w - Warning
+	o - OK
+
+* core: add escalation_condition definition (Vitali Voroth DECOIT GmbH)
+	The escalation_condition option is completely optional and can be
+	defined for host escalations as well as for service escalations.
+	escalation_condition <condition> ( [ & / | ] <condition> )*
+	where <condition> is either host hostname = [u,d,o] or
+	service hostname.service_description] = [w,u,c,o].
+	The escalation_condition accepts a list of one or more conditions 
+	separated by & (logical AND) or | (logical OR).
+	w = WARNING
+	u = UNKNOWN
+	c = CRITICAL
+	o = OK for services or UP for hosts
+	d = DOWN for hosts
+
 * idoutils: add ido2db threaded housekeeper
 	- periodic cleanup will now be performed in own thread
 	- startup blocking behavior removed

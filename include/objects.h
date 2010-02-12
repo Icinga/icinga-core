@@ -66,6 +66,10 @@
 #define HOSTESCALATION_SKIPLIST                10
 #define SERVICEESCALATION_SKIPLIST             11
 
+/******** escalation condition connectors ******/
+#define EC_CONNECTOR_NO                   0
+#define EC_CONNECTOR_OR                   1
+#define EC_CONNECTOR_AND                  2
 
 /****************** DATA STRUCTURES *******************/
 
@@ -519,6 +523,34 @@ struct service_struct{
 	struct service_struct *nexthash;
 	};
 
+/* ESCALATION CONDITION STRUCTURE 
+ * Vitali Voroth, 25.10.2009
+ * A condition is written this way:
+ * escalation_condition        host linux01 = c
+ * More than one condition are connected via & OR | :
+ * escalation_condition        host linux01 = c | service linux01.SSH = c,w
+ * where & is an AND connection and | is and OR connection.
+*/
+typedef struct escalation_condition_struct{
+        char      *host_name;
+        char      *service_description;
+       
+        /* Connects this and the next condition either with an AND or with an OR.
+         *      0: EC_CONNECTOR_NO
+         *  1: EC_CONNECTOR_AND
+         *  2: EC_CONNECTOR_OR
+        */
+        int       connector;
+       
+        int       escalate_on_down;
+        int       escalate_on_unreachable;
+        int       escalate_on_warning;
+        int       escalate_on_unknown;
+        int       escalate_on_critical;
+        int       escalate_on_ok;
+        
+        struct escalation_condition_struct *next;
+        }escalation_condition;
 
 /* SERVICE ESCALATION structure */
 typedef struct serviceescalation_struct{
@@ -532,6 +564,7 @@ typedef struct serviceescalation_struct{
 	int     escalate_on_warning;
 	int     escalate_on_unknown;
 	int     escalate_on_critical;
+        escalation_condition *condition;
 	contactgroupsmember *contact_groups;
 	contactsmember *contacts;
 #ifdef NSCORE
@@ -580,6 +613,7 @@ typedef struct hostescalation_struct{
 	int     escalate_on_recovery;
 	int     escalate_on_down;
 	int     escalate_on_unreachable;
+        escalation_condition *condition;
 	contactgroupsmember *contact_groups;
 	contactsmember *contacts;
 #ifdef NSCORE
@@ -676,6 +710,8 @@ customvariablesmember *add_custom_variable_to_object(customvariablesmember **,ch
 
 servicesmember *add_service_link_to_host(host *,service *);
 
+escalation_condition *add_serviceescalation_condition(serviceescalation *, escalation_condition *, char *, char *, int, int, int, int, int, int, int); /* add a condition to a service escalation in memory */
+escalation_condition *add_hostescalation_condition(hostescalation *, escalation_condition *, char *, char *, int, int, int, int, int, int, int); /* add a condition to a host escalation in memory */
 
 /*** Object Skiplist Functions ****/
 int init_object_skiplists(void);
