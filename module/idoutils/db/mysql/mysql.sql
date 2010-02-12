@@ -736,7 +736,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hoststatus` (
   `retry_check_interval` double NOT NULL default '0',
   `check_timeperiod_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`hoststatus_id`),
-  UNIQUE KEY `object_id` (`host_object_id`),
+  UNIQUE KEY `object_id` (`host_object_id`)
 ) ENGINE=MyISAM  COMMENT='Current host status information';
 
 -- --------------------------------------------------------
@@ -1216,7 +1216,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicestatus` (
   `retry_check_interval` double NOT NULL default '0',
   `check_timeperiod_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`servicestatus_id`),
-  UNIQUE KEY `object_id` (`service_object_id`),
+  UNIQUE KEY `object_id` (`service_object_id`)
 ) ENGINE=MyISAM  COMMENT='Current service status information';
 
 -- --------------------------------------------------------
