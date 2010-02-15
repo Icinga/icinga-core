@@ -1001,17 +1001,16 @@ check_for_orphaned_hosts=1
 
 # SERVICE CHECK TIMEOUT STATE
 # This setting determines the state Icinga will report when a
-# service check times out - it does not respond within
-# service_check_timeout seconds.  This can be useful if a
-# machine is running at too high a load and you do not want
-# to consider a failed service check to be critical (the default).
+# service check times out meaning it does not respond within
+# service_check_timeout seconds.  The default is set to Unknown
+# and not Critical.
 # Valid settings are:
-# c - Critical (default)
-# u - Unknown
+# c - Critical
+# u - Unknown (default)
 # w - Warning
 # o - OK
 
-service_check_timeout_state=c
+service_check_timeout_state=u
 
 
 
