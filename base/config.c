@@ -2524,7 +2524,6 @@ int pre_flight_object_check(int *w, int *e){
 			/* save the contact group pointer for later */
 			temp_contactgroupsmember->group_ptr=temp_contactgroup;
 			}
-	        }
                
                /* check escalation conditions */
                for(temp_escalation_condition=temp_he->condition;temp_escalation_condition!=NULL;temp_escalation_condition=temp_escalation_condition->next){
@@ -2545,6 +2544,8 @@ int pre_flight_object_check(int *w, int *e){
                                        }
                                }
                        }
+
+		}
 
 	if(verify_config==TRUE)
 		printf("\tChecked %d host escalations.\n",total_objects);
