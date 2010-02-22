@@ -77,6 +77,8 @@ ENHANCEMENTS
 * idoutils: add initial debug output for idomod (to be set in idomod.cfg)
 * idoutils: add database name in connection msg to syslog
 * idoutils: change mysql db engine to innodb (no table locking, better transcations)
+* idoutils: add --with-oracle-lib=/path/to/instantclient for runtime export of 
+	LD_LIBRARY_PATH if instantclient not installed to path
 
 FIXES
 

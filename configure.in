@@ -693,6 +693,18 @@ if test x$USE_IDOUTILS = xyes; then
 	                OCILIB_INC="${withval}"
         	        ])
 
+		ORACLE_LIB=""
+                AC_ARG_WITH(oracle-lib,AC_HELP_STRING([--with-oracle-lib=DIR],[sets location of the oracle library]),[
+                        ORACLE_LIB="${withval}"
+                        ])
+
+		if test "$ORACLE_LIB" = ""; then
+			IDO2DB_RUNTIME="$OCILIB_LIB"
+		else
+			IDO2DB_RUNTIME="$OCILIB_LIB:$ORACLE_LIB"
+		fi
+
+
 		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_ANSI"
 		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
 
@@ -808,7 +820,7 @@ AC_SUBST(icingastats_name)
 AC_SUBST(ido2db_name)
 
 dnl create ido2db_runtime for rc.ido2db.in
-ido2db_runtime="$OCILIB_LIB"
+ido2db_runtime="$IDO2DB_RUNTIME"
 AC_SUBST(ido2db_runtime)
 
 dnl Should predictive failure routines be compiled in?
