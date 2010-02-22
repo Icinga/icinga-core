@@ -76,6 +76,7 @@ ENHANCEMENTS
 * idoutils: add upgrade path for mysql/pgsql/oracle for 1.0.1
 * idoutils: add initial debug output for idomod (to be set in idomod.cfg)
 * idoutils: add database name in connection msg to syslog
+* idoutils: change mysql db engine to innodb (no table locking, better transcations)
 
 FIXES
 
@@ -95,6 +96,7 @@ FIXES
 * core: add tests against histogram.cgi
 * core: add $srcdir to paths
 * core: fix idomod doesn't de-initialize after config error
+* core: fix make fullinstall/idoutils without enabled idoutils during configure
 
 * idoutils: modify string escaping for mysql and pgsql
 * idoutils: fix pgsql table systemcommands (missing column 'output')
