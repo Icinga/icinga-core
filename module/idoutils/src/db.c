@@ -275,6 +275,8 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 	idi->dbinfo.max_hostchecks_age = ndo2db_db_settings.max_hostchecks_age;
 	idi->dbinfo.max_eventhandlers_age = ndo2db_db_settings.max_eventhandlers_age;
 	idi->dbinfo.max_externalcommands_age=ndo2db_db_settings.max_externalcommands_age;
+	idi->dbinfo.max_logentries_age=ndo2db_db_settings.max_logentries_age;
+	idi->dbinfo.max_acknowledgements_age=ndo2db_db_settings.max_acknowledgements_age;
 	idi->dbinfo.trim_db_interval=ndo2db_db_settings.trim_db_interval;
 	idi->dbinfo.last_table_trim_time = (time_t) 0L;
 	idi->dbinfo.last_logentry_time = (time_t) 0L;
@@ -2161,7 +2163,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
 	char *ts[1];
 	int result = NDO_OK;
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() start, time=%lu\n", t);
 
 	if (idi == NULL || table_name == NULL || field_name == NULL)
 		return NDO_ERROR;
@@ -2231,6 +2233,8 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() start\n");
 
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() max_logentries_age=%lu, max_ack_age=%lu\n", idi->dbinfo.max_logentries_age, idi->dbinfo.max_logentries_age);
+
 	/* get the current time */
 	time(&current_time);
 
@@ -2248,6 +2252,10 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 			ndo2db_db_trim_data_table(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], "start_time", (time_t) ((unsigned long) current_time - idi->dbinfo.max_eventhandlers_age));
 		if(idi->dbinfo.max_externalcommands_age>0L)
 			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],"entry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_externalcommands_age));
+		if(idi->dbinfo.max_logentries_age>0L)
+			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],"logentry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_logentries_age));
+		if(idi->dbinfo.max_acknowledgements_age>0L)
+			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_ACKNOWLEDGEMENTS],"entry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_acknowledgements_age));
 		idi->dbinfo.last_table_trim_time = current_time;
 	}
 

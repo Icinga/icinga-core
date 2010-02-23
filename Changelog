@@ -79,6 +79,7 @@ ENHANCEMENTS
 * idoutils: change mysql db engine to innodb (no table locking, better transcations)
 * idoutils: add --with-oracle-lib=/path/to/instantclient for runtime export of 
 	LD_LIBRARY_PATH if instantclient not installed to path
+* idoutils: add max_logentries_age and max_acknowledgements_age to ido2db (check ido2db.cfg)
 
 FIXES
 
