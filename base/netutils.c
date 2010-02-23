@@ -47,6 +47,8 @@ int my_tcp_connect(char *host_name, int port, int *sd, int timeout){
 
 	asprintf(&port_str,"%d",port);
 	result=getaddrinfo(host_name,port_str,&hints,&res);
+	my_free(port_str);
+	
 	if(result!=0){
 		/*printf("GETADDRINFO: %s (%s) = %s\n",host_name,port_str,gai_strerror(result));*/
 		return ERROR;

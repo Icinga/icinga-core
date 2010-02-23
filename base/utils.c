@@ -4483,19 +4483,14 @@ int query_update_api(void){
 		}
 
 	/* generate the query */
-	asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1");
-	if(bare_update_check==FALSE)
-		asprintf(&api_query,"%s&version=%s%s",api_query,PROGRAM_VERSION,(api_query_opts==NULL)?"":api_query_opts);
+	if(bare_update_check==FALSE) {
+		asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1&version=%s%s",PROGRAM_VERSION,(api_query_opts==NULL)?"":api_query_opts);
+	} else {
+		asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1");
+	}
 
 	/* generate the HTTP request */
-	asprintf(&buf,"POST %s HTTP/1.0\r\n",api_path);
-	asprintf(&buf,"%sUser-Agent: Icinga/%s\r\n",buf,PROGRAM_VERSION);
-	asprintf(&buf,"%sConnection: close\r\n",buf);
-	asprintf(&buf,"%sHost: %s\r\n",buf,api_server);
-	asprintf(&buf,"%sContent-Type: application/x-www-form-urlencoded\r\n",buf);
-	asprintf(&buf,"%sContent-Length: %d\r\n",buf,strlen(api_query));
-	asprintf(&buf,"%s\r\n",buf);
-	asprintf(&buf,"%s%s\r\n",buf,api_query);
+	asprintf(&buf,"POST %s HTTP/1.0\r\nUser-Agent: Nagios/%s\r\nConnection: close\r\nHost: %s\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",api_path, PROGRAM_VERSION, api_server, strlen(api_query), api_query);
 
 	/*
 	printf("SENDING...\n");
