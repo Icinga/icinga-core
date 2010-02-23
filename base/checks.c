@@ -1775,10 +1775,6 @@ void schedule_service_check(service *svc, time_t check_time, int options){
 		log_debug_info(DEBUGL_CHECKS,2,"Keeping original service check event (ignoring the new one).\n");
 		}
 
-
-	/* update the status log */
-	update_service_status(svc,FALSE);
-
 	return;
         }
 

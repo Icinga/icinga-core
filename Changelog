@@ -99,6 +99,7 @@ FIXES
 * core: add $srcdir to paths
 * core: fix idomod doesn't de-initialize after config error
 * core: fix make fullinstall/idoutils without enabled idoutils during configure
+* core: fix sending two identical service_status events to neb module
 
 * idoutils: modify string escaping for mysql and pgsql
 * idoutils: fix pgsql table systemcommands (missing column 'output')
