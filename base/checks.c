@@ -2237,9 +2237,6 @@ void schedule_host_check(host *hst, time_t check_time, int options){
 		log_debug_info(DEBUGL_CHECKS,2,"Keeping original host check event (ignoring the new one).\n");
 		}
 
-	/* update the status log */
-	update_host_status(hst,FALSE);
-
 	return;
         }
 
