@@ -3109,7 +3109,7 @@ int ido2db_oci_prepared_statement_external_commands(ndo2db_idi *idi) {
 
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, command_type, entry_time, command_name, command_args) VALUES (seq_external_commands.nextval, :X1, :X2. (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5)", 
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, command_type, entry_time, command_name, command_args) VALUES (seq_externalcommands.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5)", 
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS]) == -1) {
                         buf = NULL;
         }
@@ -3790,7 +3790,7 @@ int ido2db_oci_prepared_statement_contactnotificationmethoddata(ndo2db_idi *idi)
 
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationmethoddata() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contactnotification_id=:X2 AND start_time=(SELECT unixts2date(:X3) FROM DUAL) AND start_time_usec=:X4) WHEN MATCHED THEN UPDATE SET end_time=(SELECT unixts2date(:X5) FROM DUAL), end_time_usec=:X6, command_object_id=:X7, command_args=:X8 WHEN NOT MATCHED THEN INSERT (id, instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (seq_contact_notifcommands.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7, :X8)", 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contactnotification_id=:X2 AND start_time=(SELECT unixts2date(:X3) FROM DUAL) AND start_time_usec=:X4) WHEN MATCHED THEN UPDATE SET end_time=(SELECT unixts2date(:X5) FROM DUAL), end_time_usec=:X6, command_object_id=:X7, command_args=:X8 WHEN NOT MATCHED THEN INSERT (id, instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (seq_contactnotifmethods.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7, :X8)", 
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS]) == -1) {
                         buf = NULL;
         }
@@ -3832,7 +3832,7 @@ int ido2db_oci_prepared_statement_commentdata(ndo2db_idi *idi) {
 
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X3 AND comment_time=(SELECT unixts2date(:X7) FROM DUAL) AND internal_comment_id=:X8) WHEN MATCHED THEN UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, author_name=:X9, comment_data=:X10, is_persistent=:X11, comment_source=:X12, expires=:X13, expiration_time=(SELECT unixts2date(:X14) FROM DUAL) WHEN NOT MATCHED THEN INSERT (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (seq_comments.nextval, (SELECT unixts2date(:X1) FROM DUAL), :X2, :X3, :X4, :X5, :X6, (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, (SELECT unixts2date(:X14) FROM DUAL))", 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X3 AND comment_time=(SELECT unixts2date(:X7) FROM DUAL) AND internal_comment_id=:X8) WHEN MATCHED THEN UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, author_name=:X9, comment_data=:X10, is_persistent=:X11, comment_source=:X12, expires=:X13, expiration_time=(SELECT unixts2date(:X14) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (seq_comments.nextval, (SELECT unixts2date(:X1) FROM DUAL), :X2, :X3, :X4, :X5, :X6, (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, (SELECT unixts2date(:X14) FROM DUAL))", 
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]) == -1) {
                         buf = NULL;
         }
@@ -3866,7 +3866,7 @@ int ido2db_oci_prepared_statement_commentdata_history(ndo2db_idi *idi) {
 
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata_history() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X3 AND comment_time=(SELECT unixts2date(:X7) FROM DUAL) AND internal_comment_id=:X8) WHEN MATCHED THEN UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, author_name=:X9, comment_data=:X10, is_persistent=:X11, comment_source=:X12, expires=:X13, expiration_time=(SELECT unixts2date(:X14) FROM DUAL) WHEN NOT MATCHED THEN INSERT (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (seq_comments.nextval, (SELECT unixts2date(:X1) FROM DUAL), :X2, :X3, :X4, :X5, :X6, (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, (SELECT unixts2date(:X14) FROM DUAL))",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X3 AND comment_time=(SELECT unixts2date(:X7) FROM DUAL) AND internal_comment_id=:X8) WHEN MATCHED THEN UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, author_name=:X9, comment_data=:X10, is_persistent=:X11, comment_source=:X12, expires=:X13, expiration_time=(SELECT unixts2date(:X14) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (seq_commenthistory.nextval, (SELECT unixts2date(:X1) FROM DUAL), :X2, :X3, :X4, :X5, :X6, (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, (SELECT unixts2date(:X14) FROM DUAL))",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY]) == -1) {
                         buf = NULL;
         }
@@ -3975,7 +3975,7 @@ int ido2db_oci_prepared_statement_downtimedata_downtime_history(ndo2db_idi *idi)
  
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_downtime_history() start\n");
  
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND object_id=:X3 AND entry_time=(SELECT unixts2date(:X4) FROM DUAL) AND internal_downtime_id=:X7) WHEN MATCHED THEN UPDATE SET downtime_type=:X2, author_name=:X5, comment_data=:X6, triggered_by_id=:X8, is_fixed=:X9, duration=:X10, scheduled_start_time=(SELECT unixts2date(:X11) FROM DUAL), scheduled_end_time=(SELECT unixts2date(:X12) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (seq_scheduleddowntime.nextval, :X1, :X2, :X3, (SELECT unixts2date(:X4) FROM DUAL), :X5, :X6, :X7, :X8, :X9, :X10, (SELECT unixts2date(:X11) FROM DUAL), (SELECT unixts2date(:X12) FROM DUAL))",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND object_id=:X3 AND entry_time=(SELECT unixts2date(:X4) FROM DUAL) AND internal_downtime_id=:X7) WHEN MATCHED THEN UPDATE SET downtime_type=:X2, author_name=:X5, comment_data=:X6, triggered_by_id=:X8, is_fixed=:X9, duration=:X10, scheduled_start_time=(SELECT unixts2date(:X11) FROM DUAL), scheduled_end_time=(SELECT unixts2date(:X12) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (seq_downtimehistory.nextval, :X1, :X2, :X3, (SELECT unixts2date(:X4) FROM DUAL), :X5, :X6, :X7, :X8, :X9, :X10, (SELECT unixts2date(:X11) FROM DUAL), (SELECT unixts2date(:X12) FROM DUAL))",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
                         buf = NULL;
         }
