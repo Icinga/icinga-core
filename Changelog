@@ -102,6 +102,7 @@ FIXES
 * core: fix make fullinstall/idoutils without enabled idoutils during configure
 * core: fix sending two identical service_status events to neb module
 * core: fix segmentation fault crash when a non-existant host or service is passed to the command pipe 
+* core: add check for NULL for event_list_high
 
 * idoutils: modify string escaping for mysql and pgsql
 * idoutils: fix pgsql table systemcommands (missing column 'output')
