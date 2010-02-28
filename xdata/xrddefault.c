@@ -395,6 +395,8 @@ int xrddefault_save_state_information(void){
 		fprintf(fp,"notified_on_unreachable=%d\n",temp_host->notified_on_unreachable);
 		fprintf(fp,"last_notification=%lu\n",temp_host->last_host_notification);
 		fprintf(fp,"current_notification_number=%d\n",temp_host->current_notification_number);
+		fprintf(fp,"current_down_notification_number=%d\n",temp_host->current_down_notification_number);
+		fprintf(fp,"current_unreachable_notification_number=%d\n",temp_host->current_unreachable_notification_number);
 		fprintf(fp,"current_notification_id=%lu\n",temp_host->current_notification_id);
 		fprintf(fp,"notifications_enabled=%d\n",temp_host->notifications_enabled);
 		fprintf(fp,"problem_has_been_acknowledged=%d\n",temp_host->problem_has_been_acknowledged);
@@ -467,6 +469,9 @@ int xrddefault_save_state_information(void){
 		fprintf(fp,"notified_on_warning=%d\n",temp_service->notified_on_warning);
 		fprintf(fp,"notified_on_critical=%d\n",temp_service->notified_on_critical);
 		fprintf(fp,"current_notification_number=%d\n",temp_service->current_notification_number);
+		fprintf(fp,"current_warning_notification_number=%d\n",temp_service->current_warning_notification_number);
+		fprintf(fp,"current_critical_notification_number=%d\n",temp_service->current_critical_notification_number);
+		fprintf(fp,"current_unknown_notification_number=%d\n",temp_service->current_unknown_notification_number);
 		fprintf(fp,"current_notification_id=%lu\n",temp_service->current_notification_id);
 		fprintf(fp,"last_notification=%lu\n",temp_service->last_notification);
 		fprintf(fp,"notifications_enabled=%d\n",temp_service->notifications_enabled);
@@ -1242,6 +1247,10 @@ int xrddefault_read_state_information(void){
 							temp_host->last_host_notification=strtoul(val,NULL,10);
 						else if(!strcmp(var,"current_notification_number"))
 							temp_host->current_notification_number=atoi(val);
+						else if(!strcmp(var,"current_down_notification_number"))
+							temp_host->current_down_notification_number=atoi(val);
+						else if(!strcmp(var,"current_unreachable_notification_number"))
+							temp_host->current_unreachable_notification_number=atoi(val);
 						else if(!strcmp(var,"current_notification_id"))
 							temp_host->current_notification_id=strtoul(val,NULL,10);
 						else if(!strcmp(var,"is_flapping"))
@@ -1515,6 +1524,12 @@ int xrddefault_read_state_information(void){
 							temp_service->notified_on_critical=(atoi(val)>0)?TRUE:FALSE;
 						else if(!strcmp(var,"current_notification_number"))
 							temp_service->current_notification_number=atoi(val);
+						else if(!strcmp(var,"current_warning_notification_number"))
+							temp_service->current_warning_notification_number=atoi(val);
+						else if(!strcmp(var,"current_critical_notification_number"))
+							temp_service->current_critical_notification_number=atoi(val);
+						else if(!strcmp(var,"current_unknown_notification_number"))
+							temp_service->current_unknown_notification_number=atoi(val);
 						else if(!strcmp(var,"current_notification_id"))
 							temp_service->current_notification_id=strtoul(val,NULL,10);
 						else if(!strcmp(var,"last_notification"))
