@@ -236,7 +236,7 @@ fi
 
 
 %changelog
-* Wed Mar 03 2019 Christoph Maser <cmr@financial.com> - 1.0.1-1
+* Wed Mar 03 2010 Christoph Maser <cmr@financial.com> - 1.0.1-1
 - Update to 1.0.1-1
 
 * Tue Dec 15 2009 Christoph Maser <cmr@financial.com> - 1.0-1
