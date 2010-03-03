@@ -17,7 +17,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.0
+Version: 1.0.1
 Release: 1%{?dist}
 License: GPL
 Group: Applications/System
@@ -236,6 +236,9 @@ fi
 
 
 %changelog
+* Wed Mar 03 2019 Christoph Maser <cmr@financial.com> - 1.0.1-1
+- Update to 1.0.1-1
+
 * Tue Dec 15 2009 Christoph Maser <cmr@financial.com> - 1.0-1
 - Update to 1.0-1
 
