@@ -185,7 +185,7 @@ CREATE INDEX hoststatus_sch_downt_d_idx on hoststatus(scheduled_downtime_depth);
 -- services
 CREATE INDEX services_host_object_id_idx on services(host_object_id);
 
---servicestatus
+-- servicestatus
 CREATE INDEX srvcstatus_stat_upd_time_idx on servicestatus(status_update_time);
 CREATE INDEX srvcstatus_current_state_idx on servicestatus(current_state);
 CREATE INDEX srvcstatus_check_type_idx on servicestatus(check_type);
@@ -211,7 +211,7 @@ CREATE INDEX timed_e_q_rec_ev_id_idx on timedeventqueue(recurring_event);
 
 -- timedevents
 CREATE INDEX timed_e_event_type_idx on timedevents(event_type);
---CREATE INDEX timed_e_sched_time_idx on timedevents(scheduled_time); -- already set for delete
+-- CREATE INDEX timed_e_sched_time_idx on timedevents(scheduled_time); -- already set for delete
 CREATE INDEX timed_e_object_id_idx on timedevents(object_id);
 CREATE INDEX timed_e_rec_ev_idx on timedevents(recurring_event);
 

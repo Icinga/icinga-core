@@ -1,17 +1,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Icinga Version 1.0 Stable Documentation</title>
+<title>Icinga Version 1.0.1 Documentation</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
 <link rel="next" href="ch01.html" title="Chapter 1. About">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Version 1.0 Stable Documentation</th></tr>
+<tr><th colspan="3" align="center">Icinga Version 1.0.1 Documentation</th></tr>
 <tr>
 <td width="20%" align="left"> </td>
 <th width="60%" align="center"> </th>
@@ -21,14 +21,14 @@
 </table>
 <hr>
 </div>
-<div lang="en" class="book" title="Icinga Version 1.0 Stable Documentation">
+<div lang="en" class="book" title="Icinga Version 1.0.1 Documentation">
 <div class="titlepage">
 <div>
 <div><h1 class="title">
-<a name="Icinga"></a>Icinga Version 1.0 Stable Documentation</h1></div>
-<div><p class="copyright">Copyright © 2009 Icinga Development Team</p></div>
+<a name="Icinga"></a>Icinga Version 1.0.1 Documentation</h1></div>
+<div><p class="copyright">Copyright © 2009-2010 Icinga Development Team</p></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="id5188125"></a>
+<a name="id4698617"></a>
     <p>
       Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the 'LICENSE' file in the Icinga distribution or read the online version of the license for more details.
     </p>
@@ -37,12 +37,12 @@
     </p>
   </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="id5188151"></a>
+<a name="id4698527"></a>
     <p>
       Nagios and the Nagios logo are registered trademarks of Ethan Galstad. All other trademarks, servicemarks, registered trademarks, and registered servicemarks mentioned herein may be the property of their respective owner(s). The information contained herein is provided <span class="quote">“<span class="quote">AS IS</span>”</span> with <span class="quote">“<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>”</span>
     </p>
   </div></div>
-<div><p class="pubdate">2009.12.16</p></div>
+<div><p class="pubdate">2010.03.03</p></div>
 <div><div class="revhistory"><table border="1" width="100%" summary="Revision history">
 <tr><th align="left" valign="top" colspan="2"><b>Revision History</b></th></tr>
     <tr>
@@ -50,6 +50,21 @@
 <td align="left">2009-08-12</td>
 </tr>
 <tr><td align="left" colspan="2">First Release</td></tr>
+<tr>
+<td align="left">Revision 1.0 RC1</td>
+<td align="left">2009-10-28</td>
+</tr>
+<tr><td align="left" colspan="2">1.0 RC1 Icinga Documentation</td></tr>
+<tr>
+<td align="left">Revision 1.0 Stable</td>
+<td align="left">2009-12-16</td>
+</tr>
+<tr><td align="left" colspan="2">1.0 Stable Icinga Documentation</td></tr>
+<tr>
+<td align="left">Revision 1.0.1</td>
+<td align="left">2010-03-03</td>
+</tr>
+<tr><td align="left" colspan="2">1.0.1 Icinga Documentation</td></tr>
   </table></div></div>
 </div>
 <hr>
@@ -60,7 +75,11 @@
 <dt><span class="chapter"><a href="ch01.html">1. About</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="about.html">About Icinga</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html">What's New in Icinga Core 1.0 Stable and Icinga Web 0.9.1-alpha</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html">What's New in Icinga Core 1.0.1 and Icinga Web 0.9.1-beta</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="whatsnew.html#changelog-core">Changelog of the Icinga Core</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#changelog-web">Changelog of the Icinga Web</a></span></dt>
+</dl></dd>
 </dl></dd>
 <dt><span class="chapter"><a href="ch02.html">2. Getting Started</a></span></dt>
 <dd><dl>
@@ -85,12 +104,14 @@
 <dt><span class="section"><a href="objectdefinitions.html">Object Definitions</a></span></dt>
 <dt><span class="section"><a href="customobjectvars.html">Custom Object Variables</a></span></dt>
 <dt><span class="section"><a href="configcgi.html">CGI Configuration File Options</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html">Authentication And Authorization In The CGIs</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html">Authentication And
+  Authorization In The CGIs</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ch04.html">4. Running Icinga</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="verifyconfig.html">Verifying Your Configuration</a></span></dt>
-<dt><span class="section"><a href="startstop.html">Starting and Stopping Icinga</a></span></dt>
+<dt><span class="section"><a href="startstop.html">Starting and Stopping
+  Icinga</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ch05.html">5. The Basics</a></span></dt>
 <dd><dl>
@@ -117,26 +138,30 @@
 <dt><span class="section"><a href="redundancy.html">Redundant and Failover Network Monitoring</a></span></dt>
 <dt><span class="section"><a href="flapping.html">Detection and Handling of State Flapping</a></span></dt>
 <dt><span class="section"><a href="escalations.html">Notification Escalations</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html">Escalation Condition</a></span></dt>
 <dt><span class="section"><a href="oncallrotation.html">On-Call Rotations</a></span></dt>
 <dt><span class="section"><a href="clusters.html">Monitoring Service and Host Clusters</a></span></dt>
 <dt><span class="section"><a href="dependencies.html">Host and Service Dependencies</a></span></dt>
 <dt><span class="section"><a href="stalking.html">State Stalking</a></span></dt>
 <dt><span class="section"><a href="perfdata.html">Performance Data</a></span></dt>
 <dt><span class="section"><a href="downtime.html">Scheduled Downtime</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html">Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section"><a href="embeddedperl.html">Using The Embedded Perl
+  Interpreter</a></span></dt>
 <dt><span class="section"><a href="adaptive.html">Adaptive Monitoring</a></span></dt>
 <dt><span class="section"><a href="dependencychecks.html">Predictive Dependency Checks</a></span></dt>
 <dt><span class="section"><a href="cachedchecks.html">Cached Checks</a></span></dt>
 <dt><span class="section"><a href="passivestatetranslation.html">Passive Host State Translation</a></span></dt>
 <dt><span class="section"><a href="checkscheduling.html">Service and Host Check Scheduling</a></span></dt>
-<dt><span class="section"><a href="cgiincludes.html">Custom CGI Headers and Footers</a></span></dt>
+<dt><span class="section"><a href="cgiincludes.html">Custom CGI Headers and
+  Footers</a></span></dt>
 <dt><span class="section"><a href="objectinheritance.html">Object Inheritance</a></span></dt>
 <dt><span class="section"><a href="objecttricks.html">Time-Saving Tricks For Object Definitions</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ch07.html">7. Security and Performance Tuning</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="security.html">Security Considerations</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html">Enhanced CGI Security and Authentication</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html">Enhanced CGI Security and
+  Authentication</a></span></dt>
 <dt><span class="section"><a href="tuning.html">Tuning Icinga For Maximum Performance</a></span></dt>
 <dt><span class="section"><a href="faststartup.html">Fast Startup Options</a></span></dt>
 <dt><span class="section"><a href="largeinstalltweaks.html">Large Installation Tweaks</a></span></dt>
@@ -201,6 +226,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <title>CGI Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="customobjectvars.html" title="Custom Object Variables">
 <link rel="next" href="cgiauth.html" title="Authentication And Authorization In The CGIs">
@@ -31,14 +31,17 @@
 
   <p><span class="bold"><strong>Notes</strong></span></p>
 
-  <p>When creating and/or editing configuration files, keep the following in mind:</p>
+  <p>When creating and/or editing configuration files, keep the following
+  in mind:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Lines that start with a '#' character are taken to be comments and are not processed</p>
+      <p>Lines that start with a '#' character are taken to be comments and
+      are not processed</p>
     </li>
 <li class="listitem">
-      <p>Variables names must begin at the start of the line - no white space is allowed before the name</p>
+      <p>Variables names must begin at the start of the line - no white
+      space is allowed before the name</p>
     </li>
 <li class="listitem">
       <p>Variable names are case-sensitive</p>
@@ -53,87 +56,112 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>A sample CGI configuration file (<span class="emphasis"><em>/usr/local/icinga/etc/icinga.cfg</em></span>) is installed for you when you follow the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <p>A sample CGI configuration file
+    (<span class="emphasis"><em>/usr/local/icinga/etc/icinga.cfg</em></span>) is installed for you when you
+    follow the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation
+    guide</a>.</p>
   </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Config File Location</strong></span></p>
 
-  <p>By default, Icinga expects the CGI configuration file to be named <span class="bold"><strong>cgi.cfg</strong></span> and
-  located in the config file directory along with the <a class="link" href="configmain.html" title="Main Configuration File Options">main config file</a>. If you need to change
-  the name of the file or its location, you can configure Apache to pass an environment variable named NAGIOS_CGI_CONFIG (which
-  points to the correct location) to the CGIs. See the Apache documentation for information on how to do this.</p>
+  <p>By default, Icinga expects the CGI configuration file to be
+  named <span class="bold"><strong>cgi.cfg</strong></span> and located in the config
+  file directory along with the <a class="link" href="configmain.html" title="Main Configuration File Options">main config
+  file</a>. If you need to change the name of the file or its location, you
+  can configure Apache to pass an environment variable named NAGIOS_CGI_CONFIG
+  (which points to the correct location) to the CGIs. See the Apache
+  documentation for information on how to do this.</p>
 
   <p><span class="bold"><strong>Configuration File Variables</strong></span></p>
 
-  <p>Below you will find descriptions of each main Icinga configuration file option...</p>
+  <p>Below you will find descriptions of each main Icinga
+  configuration file option...</p>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-main_cfg_file">Main configuration file location</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-main_cfg_file">Main configuration file
+      location</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-physical_html_path">Physical HTML path</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-physical_html_path">Physical HTML
+      path</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-url_html_path">URL HTML path</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-url_html_path">URL HTML
+      path</a></p>
     </li>
 </ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-use_authentication">Authentication usage</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-use_authentication">Authentication
+      usage</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-default_user_name">Default user name</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-default_user_name">Default user
+      name</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_system_information">System/process information access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_system_information">System/process
+      information access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">System/process command access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">System/process
+      command access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_configuration_information">Configuration information access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_configuration_information">Configuration
+      information access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">Global host information access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">Global host
+      information access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">Global host command access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">Global
+      host command access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_services">Global service information access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_services">Global
+      service information access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">Global service command access</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">Global service
+      command access</a></p>
     </li>
 </ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-lock_author_names">Lock author names</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-lock_author_names">Lock author
+      names</a></p>
     </li></ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-statusmap_background_image">Statusmap CGI background image</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-statusmap_background_image">Statusmap CGI
+      background image</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-default_statusmap_layout">Default statusmap layout method</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-default_statusmap_layout">Default
+      statusmap layout method</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-statuswrl_include">Statuswrl CGI include world</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-statuswrl_include">Statuswrl CGI include
+      world</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-default_statuswrl_layout">Default statuswrl layout method</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-default_statuswrl_layout">Default
+      statuswrl layout method</a></p>
     </li>
 </ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-refresh_rate">CGI refresh rate</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-refresh_rate">CGI refresh
+      rate</a></p>
     </li>
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-audio_alerts">Audio alerts</a></p>
@@ -145,28 +173,33 @@
     </li></ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-escape_html_tags">Escape HTML tags option</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-escape_html_tags">Escape HTML tags
+      option</a></p>
     </li></ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-notes_url_target">Notes URL target</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-notes_url_target">Notes URL
+      target</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-action_url_target">Action URL target</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-action_url_target">Action URL
+      target</a></p>
     </li>
 </ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-enable_splunk_integration">Splunk integration option</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-enable_splunk_integration">Splunk
+      integration option</a></p>
     </li>
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-splunk_url">Splunk URL</a></p>
     </li>
 </ul></div>
 
-  <p><a name="configcgi-main_cfg_file"></a> <span class="bold"><strong>Main Configuration File Location</strong></span></p>
+  <p><a name="configcgi-main_cfg_file"></a> <span class="bold"><strong>Main
+  Configuration File Location</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -177,19 +210,22 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>main_config_file=&lt;file_name&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>main_config_file=&lt;file_name&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This specifies the location of your <a class="link" href="configmain.html" title="Main Configuration File Options">main configuration file</a>. The CGIs need to know where
-  to find this file in order to get information about configuration information, current host and service status, etc.</p>
+  <p>This specifies the location of your <a class="link" href="configmain.html" title="Main Configuration File Options">main
+  configuration file</a>. The CGIs need to know where to find this file in
+  order to get information about configuration information, current host and
+  service status, etc.</p>
 
   <p><a name="configcgi-physical_html_path"></a> <span class="bold"><strong>Physical HTML Path</strong></span></p>
 
@@ -202,21 +238,26 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>physical_html_path=&lt;path&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>physical_html_path=&lt;path&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is the <span class="emphasis"><em>physical</em></span> path where the HTML files for Icinga are kept on your workstation or
-  server. Icinga assumes that the documentation and images files (used by the CGIs) are stored in subdirectories called
-  <span class="emphasis"><em>docs/</em></span> and <span class="emphasis"><em>images/</em></span>, respectively.</p>
+  <p>This is the <span class="emphasis"><em>physical</em></span> path where the HTML files
+  for Icinga are kept on your workstation or server. Icinga
+  assumes that the documentation and images files (used by the CGIs) are
+  stored in subdirectories called <span class="emphasis"><em>docs/</em></span> and
+  <span class="emphasis"><em>images/</em></span>, respectively.</p>
 
-  <p><a name="configcgi-url_html_path"></a> <span class="bold"><strong>URL HTML Path</strong></span></p>
+  <p><a name="configcgi-url_html_path"></a> <span class="bold"><strong>URL
+  HTML Path</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -238,8 +279,11 @@
 </table>
   </div>
 
-  <p>If, when accessing Icinga via a web browser, you point to an URL like <span class="bold"><strong>http://www.myhost.com/icinga</strong></span>, this value should be <span class="emphasis"><em>/icinga</em></span>. Basically, its the path
-  portion of the URL that is used to access the Icinga HTML pages.</p>
+  <p>If, when accessing Icinga via a web browser, you point to an
+  URL like <span class="bold"><strong>http://www.myhost.com/icinga</strong></span>, this
+  value should be <span class="emphasis"><em>/icinga</em></span>. Basically, its the path
+  portion of the URL that is used to access the Icinga HTML
+  pages.</p>
 
   <p><a name="configcgi-use_authentication"></a> <span class="bold"><strong>Authentication Usage</strong></span></p>
 
@@ -252,7 +296,8 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>use_authentication=&lt;0/1&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>use_authentication=&lt;0/1&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
@@ -263,19 +308,23 @@
 </table>
   </div>
 
-  <p>This option controls whether or not the CGIs will use the authentication and authorization functionality when determining
-  what information and commands users have access to. We would strongly suggest that you use the authentication functionality for
-  the CGIs. If you decide not to use authentication, make sure to remove the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> to
-  prevent unauthorized users from issuing commands to Icinga. The CGI will not issue commands to Icinga if
-  authentication is disabled, but we would suggest removing it altogether just to be on the safe side. More information on how to
-  setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This option controls whether or not the CGIs will use the
+  authentication and authorization functionality when determining what
+  information and commands users have access to. We would strongly suggest
+  that you use the authentication functionality for the CGIs. If you decide
+  not to use authentication, make sure to remove the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> to prevent unauthorized users from
+  issuing commands to Icinga. The CGI will not issue commands to
+  Icinga if authentication is disabled, but we would suggest removing
+  it altogether just to be on the safe side. More information on how to setup
+  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>0 = Don't use authentication functionality</p>
     </li>
 <li class="listitem">
-      <p>1 = Use authentication and authorization functionality (default)</p>
+      <p>1 = Use authentication and authorization functionality
+      (default)</p>
     </li>
 </ul></div>
 
@@ -290,28 +339,34 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_user_name=&lt;username&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>default_user_name=&lt;username&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>default_user_name=guest</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>default_user_name=guest</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>Setting this variable will define a default username that can access the CGIs. This allows people within a secure domain
-  (i.e., behind a firewall) to access the CGIs without necessarily having to authenticate to the web server. You may want to use
-  this to avoid having to use basic authentication if you are not using a secure server, as basic authentication transmits
-  passwords in clear text over the Internet.</p>
+  <p>Setting this variable will define a default username that can access
+  the CGIs. This allows people within a secure domain (i.e., behind a
+  firewall) to access the CGIs without necessarily having to authenticate to
+  the web server. You may want to use this to avoid having to use basic
+  authentication if you are not using a secure server, as basic authentication
+  transmits passwords in clear text over the Internet.</p>
 
-  <p><span class="bold"><strong>Important:</strong></span> Do <span class="emphasis"><em>not</em></span> define a default username unless you are running a
-  secure web server and are sure that everyone who has access to the CGIs has been authenticated in some manner! If you define
-  this variable, anyone who has not authenticated to the web server will inherit all rights you assign to this user!</p>
+  <p><span class="bold"><strong>Important:</strong></span> Do
+  <span class="emphasis"><em>not</em></span> define a default username unless you are running a
+  secure web server and are sure that everyone who has access to the CGIs has
+  been authenticated in some manner! If you define this variable, anyone who
+  has not authenticated to the web server will inherit all rights you assign
+  to this user!</p>
 
-  <p><a name="configcgi-authorized_for_system_information"></a> <span class="bold"><strong>System/Process Information
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_system_information"></a>
+  <span class="bold"><strong>System/Process Information Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -327,20 +382,22 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_system_information=nagiosadmin,theboss</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view system/process
-  information in the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>. Users in this list are
-  <span class="emphasis"><em>not</em></span> automatically authorized to issue system/process commands. If you want users to be able to issue
-  system/process commands as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a> variable. More information on how to
-  setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can view system/process information in the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>. Users in this
+  list are <span class="emphasis"><em>not</em></span> automatically authorized to issue
+  system/process commands. If you want users to be able to issue
+  system/process commands as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a>
+  variable. More information on how to setup authentication and configure
+  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
-  <p><a name="configcgi-authorized_for_system_commands"></a> <span class="bold"><strong>System/Process Command
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_system_commands"></a> <span class="bold"><strong>System/Process Command Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -356,20 +413,23 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_system_commands=nagiosadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue system/process commands
-  via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically
-  authorized to view system/process information. If you want users to be able to view system/process information as well, you must
-  add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a> variable.
-  More information on how to setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can issue system/process commands via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are
+  <span class="emphasis"><em>not</em></span> automatically authorized to view system/process
+  information. If you want users to be able to view system/process information
+  as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a>
+  variable. More information on how to setup authentication and configure
+  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
-  <p><a name="configcgi-authorized_for_configuration_information"></a> <span class="bold"><strong>Configuration Information
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_configuration_information"></a>
+  <span class="bold"><strong>Configuration Information Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -385,19 +445,20 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_configuration_information=nagiosadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view configuration information
-  in the <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a>. Users in this list can view information on all configured
-  hosts, host groups, services, contacts, contact groups, time periods, and commands. More information on how to setup
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can view configuration information in the <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a>. Users in this list can
+  view information on all configured hosts, host groups, services, contacts,
+  contact groups, time periods, and commands. More information on how to setup
   authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
-  <p><a name="configcgi-authorized_for_all_hosts"></a> <span class="bold"><strong>Global Host Information
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_hosts"></a> <span class="bold"><strong>Global Host Information Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -413,20 +474,25 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_hosts=nagiosadmin,theboss</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view status and configuration
-  information for all hosts. Users in this list are also automatically authorized to view information for all services. Users in
-  this list are <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all hosts or services. If you want users
-  able to issue commands for all hosts and services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a> variable. More information on how
-  to setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can view status and configuration information for all
+  hosts. Users in this list are also automatically authorized to view
+  information for all services. Users in this list are
+  <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all
+  hosts or services. If you want users able to issue commands for all hosts
+  and services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a>
+  variable. More information on how to setup authentication and configure
+  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
-  <p><a name="configcgi-authorized_for_all_host_commands"></a> <span class="bold"><strong>Global Host Command
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_host_commands"></a>
+  <span class="bold"><strong>Global Host Command Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -442,21 +508,24 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_host_commands=nagiosadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue commands for all hosts
-  via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are also automatically authorized to issue commands
-  for all services. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view status or configuration
-  information for all hosts or services. If you want users able to view status and configuration information for all hosts and
-  services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a>
-  variable. More information on how to setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can issue commands for all hosts via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are also
+  automatically authorized to issue commands for all services. Users in this
+  list are <span class="emphasis"><em>not</em></span> automatically authorized to view status or
+  configuration information for all hosts or services. If you want users able
+  to view status and configuration information for all hosts and services as
+  well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a>
+  variable. More information on how to setup authentication and configure
+  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
-  <p><a name="configcgi-authorized_for_all_services"></a> <span class="bold"><strong>Global Service Information
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_services"></a> <span class="bold"><strong>Global Service Information Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -472,20 +541,25 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_services=nagiosadmin,theboss</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view status and configuration
-  information for all services. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view information for
-  all hosts. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all services. If you
-  want users able to issue commands for all services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a> variable. More information on
-  how to setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can view status and configuration information for all
+  services. Users in this list are <span class="emphasis"><em>not</em></span> automatically
+  authorized to view information for all hosts. Users in this list are
+  <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all
+  services. If you want users able to issue commands for all services as well,
+  you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a>
+  variable. More information on how to setup authentication and configure
+  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
-  <p><a name="configcgi-authorized_for_all_service_commands"></a> <span class="bold"><strong>Global Service Command
-  Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_service_commands"></a>
+  <span class="bold"><strong>Global Service Command Access</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -501,18 +575,22 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_service_commands=nagiosadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue commands for all
-  services via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically
-  authorized to issue commands for all hosts. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view
-  status or configuration information for all hosts. If you want users able to view status and configuration information for all
-  services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
-  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated
+  users</em></span> who can issue commands for all services via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are
+  <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all
+  hosts. Users in this list are <span class="emphasis"><em>not</em></span> automatically
+  authorized to view status or configuration information for all hosts. If you
+  want users able to view status and configuration information for all
+  services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>
+  variable. More information on how to setup authentication and configure
+  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
   <p><a name="configcgi-lock_author_names"></a> <span class="bold"><strong>Lock Author Names</strong></span></p>
 
@@ -536,21 +614,22 @@
 </table>
   </div>
 
-  <p>This option allows you to restrict users from changing the author name when submitting comments, acknowledgements, and
-  scheduled downtime from the web interface. If this option is enabled, users will be unable to change the author name associated
-  with the command request.</p>
+  <p>This option allows you to restrict users from changing the author name
+  when submitting comments, acknowledgements, and scheduled downtime from the
+  web interface. If this option is enabled, users will be unable to change the
+  author name associated with the command request.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>0 = Allow users to change author names when submitting commands</p>
+      <p>0 = Allow users to change author names when submitting
+      commands</p>
     </li>
 <li class="listitem">
       <p>1 = Prevent users from changing author names (default)</p>
     </li>
 </ul></div>
 
-  <p><a name="configcgi-statusmap_background_image"></a> <span class="bold"><strong>Statusmap CGI Background
-  Image</strong></span></p>
+  <p><a name="configcgi-statusmap_background_image"></a> <span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -561,20 +640,26 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>statusmap_background_image=&lt;image_file&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>statusmap_background_image=&lt;image_file&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option allows you to specify an image to be used as a background in the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap
-  CGI</a> if you use the user-supplied coordinates layout method. The background image is not be available in any other layout
-  methods. It is assumed that the image resides in the HTML images path (i.e. /usr/local/icinga/share/images). This path is
-  automatically determined by appending "/images" to the path specified by the <a class="link" href="configcgi.html#configcgi-physical_html_path">physical_html_path</a> directive.</p>
+  <p>This option allows you to specify an image to be used as a background
+  in the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap CGI</a> if you use
+  the user-supplied coordinates layout method. The background image is not be
+  available in any other layout methods. It is assumed that the image resides
+  in the HTML images path (i.e. /usr/local/icinga/share/images). This path is
+  automatically determined by appending "/images" to the path specified by the
+  <a class="link" href="configcgi.html#configcgi-physical_html_path">physical_html_path</a>
+  directive.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -582,13 +667,13 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>The image file can be in GIF, JPEG, PNG, or GD2 format. However, GD2 format (preferably in uncompressed format) is
-    recommended, as it will reduce the CPU load when the CGI generates the map image.</p>
+    <p>The image file can be in GIF, JPEG, PNG, or GD2 format. However, GD2
+    format (preferably in uncompressed format) is recommended, as it will
+    reduce the CPU load when the CGI generates the map image.</p>
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-default_statusmap_layout"></a> <span class="bold"><strong>Default Statusmap Layout
-  Method</strong></span></p>
+  <p><a name="configcgi-default_statusmap_layout"></a> <span class="bold"><strong>Default Statusmap Layout Method</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -599,19 +684,21 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_statusmap_layout=&lt;layout_number&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>default_statusmap_layout=&lt;layout_number&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>default_statusmap_layout=4</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>default_statusmap_layout=4</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option allows you to specify the default layout method used by the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap
-  CGI</a>. Valid options are:</p>
+  <p>This option allows you to specify the default layout method used by
+  the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap CGI</a>. Valid options
+  are:</p>
 
   <div class="informaltable">
     <table border="1">
@@ -621,8 +708,10 @@
 </colgroup>
 <tbody>
 <tr>
-<td><p> <span class="bold"><strong>&lt;layout_number&gt; Value</strong></span> </p></td>
-<td><p> <span class="bold"><strong>Layout Method</strong></span> </p></td>
+<td><p> <span class="bold"><strong>&lt;layout_number&gt;
+          Value</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Layout Method</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td><p>0</p></td>
@@ -667,19 +756,22 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>statuswrl_include=&lt;vrml_file&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>statuswrl_include=&lt;vrml_file&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statuswrl_include=myworld.wrl</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>statuswrl_include=myworld.wrl</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option allows you to include your own objects in the generated VRML world. It is assumed that the file resides in the
-  path specified by the <a class="link" href="configcgi.html#configcgi-physical_html_path">physical_html_path</a> directive.</p>
+  <p>This option allows you to include your own objects in the generated
+  VRML world. It is assumed that the file resides in the path specified by the
+  <a class="link" href="configcgi.html#configcgi-physical_html_path">physical_html_path</a>
+  directive.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -687,12 +779,12 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>This file must be a fully qualified VRML world (i.e. you can view it by itself in a VRML browser).</p>
+    <p>This file must be a fully qualified VRML world (i.e. you can view it
+    by itself in a VRML browser).</p>
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-default_statuswrl_layout"></a> <span class="bold"><strong>Default Statuswrl Layout
-  Method</strong></span></p>
+  <p><a name="configcgi-default_statuswrl_layout"></a> <span class="bold"><strong>Default Statuswrl Layout Method</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -703,19 +795,21 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_statuswrl_layout=&lt;layout_number&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>default_statuswrl_layout=&lt;layout_number&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>default_statuswrl_layout=4</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>default_statuswrl_layout=4</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option allows you to specify the default layout method used by the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl
-  CGI</a>. Valid options are:</p>
+  <p>This option allows you to specify the default layout method used by
+  the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl CGI</a>. Valid options
+  are:</p>
 
   <div class="informaltable">
     <table border="1">
@@ -725,8 +819,10 @@
 </colgroup>
 <tbody>
 <tr>
-<td><p> <span class="bold"><strong>&lt;layout_number&gt; Value</strong></span> </p></td>
-<td><p> <span class="bold"><strong>Layout Method</strong></span> </p></td>
+<td><p> <span class="bold"><strong>&lt;layout_number&gt;
+          Value</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Layout Method</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td><p>0</p></td>
@@ -748,7 +844,8 @@
 </table>
   </div>
 
-  <p><a name="configcgi-refresh_rate"></a> <span class="bold"><strong>CGI Refresh Rate</strong></span></p>
+  <p><a name="configcgi-refresh_rate"></a> <span class="bold"><strong>CGI
+  Refresh Rate</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -759,20 +856,22 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>refresh_rate=&lt;rate_in_seconds&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>refresh_rate=&lt;rate_in_seconds&gt;</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>refresh_rate=90</strong></span> </span>
-          </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>refresh_rate=90</strong></span> </span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option allows you to specify the number of seconds between page refreshes for the <a class="link" href="cgis.html#cgis-status_cgi">status</a>, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>, and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs.</p>
+  <p>This option allows you to specify the number of seconds between page
+  refreshes for the <a class="link" href="cgis.html#cgis-status_cgi">status</a>, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>, and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs.</p>
 
-  <p><a name="configcgi-audio_alerts"></a> <span class="bold"><strong>Audio Alerts</strong></span></p>
+  <p><a name="configcgi-audio_alerts"></a> <span class="bold"><strong>Audio
+  Alerts</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -887,13 +986,16 @@
 </table>
   </div>
 
-  <p>These options allow you to specify an audio file that should be played in your browser if there are problems when you are
-  viewing the <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a>. If there are problems, the audio file for the most critical type
-  of problem will be played. The most critical type of problem is on or more unreachable hosts, while the least critical is one or
-  more services in an unknown state (see the order in the example above). Audio files are assumed to be in the <span class="bold"><strong>media/</strong></span> subdirectory in your HTML directory (i.e.
+  <p>These options allow you to specify an audio file that should be played
+  in your browser if there are problems when you are viewing the <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a>. If there are problems, the
+  audio file for the most critical type of problem will be played. The most
+  critical type of problem is on or more unreachable hosts, while the least
+  critical is one or more services in an unknown state (see the order in the
+  example above). Audio files are assumed to be in the <span class="bold"><strong>media/</strong></span> subdirectory in your HTML directory (i.e.
   <span class="emphasis"><em>/usr/local/icinga/share/media</em></span>).</p>
 
-  <p><a name="configcgi-ping_syntax"></a> <span class="bold"><strong>Ping Syntax</strong></span></p>
+  <p><a name="configcgi-ping_syntax"></a> <span class="bold"><strong>Ping
+  Syntax</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -915,8 +1017,11 @@
 </table>
   </div>
 
-  <p>This option determines what syntax should be used when attempting to ping a host from the WAP interface (using the <a class="link" href="cgis.html#cgis-statuswml_cgi">statuswml CGI</a>. You must include the full path to the ping binary, along with all required
-  options. The $HOSTADDRESS$ macro is substituted with the address of the host before the command is executed.</p>
+  <p>This option determines what syntax should be used when attempting to
+  ping a host from the WAP interface (using the <a class="link" href="cgis.html#cgis-statuswml_cgi">statuswml CGI</a>. You must include the full
+  path to the ping binary, along with all required options. The $HOSTADDRESS$
+  macro is substituted with the address of the host before the command is
+  executed.</p>
 
   <p><a name="configcgi-escape_html_tags"></a> <span class="bold"><strong>Escape HTML Tags Option</strong></span></p>
 
@@ -940,8 +1045,9 @@
 </table>
   </div>
 
-  <p>This option determines whether or not HTML tags in host and service (plugin) output is escaped in the CGIs. If you enable
-  this option, your plugin output will not be able to contain clickable hyperlinks.</p>
+  <p>This option determines whether or not HTML tags in host and service
+  (plugin) output is escaped in the CGIs. If you enable this option, your
+  plugin output will not be able to contain clickable hyperlinks.</p>
 
   <p><a name="configcgi-notes_url_target"></a> <span class="bold"><strong>Notes URL Target</strong></span></p>
 
@@ -958,16 +1064,17 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>notes_url_target=_blank</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>notes_url_target=_blank</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option determines the name of the frame target that notes URLs should be displayed in. Valid options include
-  <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span>, or any other
-  valid target name.</p>
+  <p>This option determines the name of the frame target that notes URLs
+  should be displayed in. Valid options include <span class="emphasis"><em>_blank</em></span>,
+  <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>,
+  <span class="emphasis"><em>_parent</em></span>, or any other valid target name.</p>
 
   <p><a name="configcgi-action_url_target"></a> <span class="bold"><strong>Action URL Target</strong></span></p>
 
@@ -984,16 +1091,17 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>action_url_target=_blank</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>action_url_target=_blank</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option determines the name of the frame target that action URLs should be displayed in. Valid options include
-  <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span>, or any other
-  valid target name.</p>
+  <p>This option determines the name of the frame target that action URLs
+  should be displayed in. Valid options include <span class="emphasis"><em>_blank</em></span>,
+  <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>,
+  <span class="emphasis"><em>_parent</em></span>, or any other valid target name.</p>
 
   <p><a name="configcgi-enable_splunk_integration"></a> <span class="bold"><strong>Splunk Integration Option</strong></span></p>
 
@@ -1006,22 +1114,26 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>enable_splunk_integration=[0/1]</strong></span> </p></td>
+<td><p> <span class="bold"><strong>enable_splunk_integration=[0/1]</strong></span>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>enable_splunk_integration=1</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>enable_splunk_integration=1</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option determines whether integration functionality with Splunk is enabled in the web interface. If enabled, you'll
-  be presented with "Splunk It" links in various places in the CGIs (log file, alert history, host/service detail, etc). Useful if
-  you're trying to research why a particular problem occurred. For more information on Splunk, visit <a class="link" href="http://www.splunk.com/" target="_top">http://www.splunk.com/</a>.</p>
+  <p>This option determines whether integration functionality with Splunk
+  is enabled in the web interface. If enabled, you'll be presented with
+  "Splunk It" links in various places in the CGIs (log file, alert history,
+  host/service detail, etc). Useful if you're trying to research why a
+  particular problem occurred. For more information on Splunk, visit <a class="link" href="http://www.splunk.com/" target="_top">http://www.splunk.com/</a>.</p>
 
-  <p><a name="configcgi-splunk_url"></a> <span class="bold"><strong>Splunk URL</strong></span></p>
+  <p><a name="configcgi-splunk_url"></a> <span class="bold"><strong>Splunk
+  URL</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -1036,39 +1148,64 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option is used to define the base URL to your Splunk interface. This URL is used by the CGIs when creating links if
-  the <a class="link" href="configcgi.html#configcgi-enable_splunk_integration">enable_splunk_integration</a> option is enabled.</p>
-  <a class="indexterm" name="id5230848"></a>
-  <a class="indexterm" name="id5230882"></a>
-  <a class="indexterm" name="id5230888"></a>
-  <a class="indexterm" name="id5230897"></a>
-  <a class="indexterm" name="id5230908"></a>
-  <a class="indexterm" name="id5230915"></a>
-  <a class="indexterm" name="id5230926"></a>
-  <a class="indexterm" name="id5230936"></a>
-  <a class="indexterm" name="id5230946"></a>
-  <a class="indexterm" name="id5230955"></a>
-  <a class="indexterm" name="id5230965"></a>
-  <a class="indexterm" name="id5230975"></a>
-  <a class="indexterm" name="id5230947"></a>
-  <a class="indexterm" name="id5230994"></a>
-  <a class="indexterm" name="id5231001"></a>
-  <a class="indexterm" name="id5231012"></a>
-  <a class="indexterm" name="id5231022"></a>
-  <a class="indexterm" name="id5231013"></a>
-  <a class="indexterm" name="id5231041"></a>
-  <a class="indexterm" name="id5231031"></a>
-  <a class="indexterm" name="id5231059"></a>
-  <a class="indexterm" name="id5231068"></a>
-  <a class="indexterm" name="id5231079"></a>
-  <a class="indexterm" name="id5231090"></a>
+  <p>This option is used to define the base URL to your Splunk interface.
+  This URL is used by the CGIs when creating links if the <a class="link" href="configcgi.html#configcgi-enable_splunk_integration">enable_splunk_integration</a>
+  option is enabled.</p>
+
+  <a class="indexterm" name="id4743218"></a>
+
+  <a class="indexterm" name="id4743228"></a>
+
+  <a class="indexterm" name="id4743241"></a>
+
+  <a class="indexterm" name="id4743253"></a>
+
+  <a class="indexterm" name="id4743265"></a>
+
+  <a class="indexterm" name="id4743277"></a>
+
+  <a class="indexterm" name="id4743290"></a>
+
+  <a class="indexterm" name="id4743304"></a>
+
+  <a class="indexterm" name="id4743318"></a>
+
+  <a class="indexterm" name="id4743332"></a>
+
+  <a class="indexterm" name="id4743345"></a>
+
+  <a class="indexterm" name="id4743359"></a>
+
+  <a class="indexterm" name="id4743373"></a>
+
+  <a class="indexterm" name="id4743386"></a>
+
+  <a class="indexterm" name="id4743400"></a>
+
+  <a class="indexterm" name="id4743414"></a>
+
+  <a class="indexterm" name="id4743428"></a>
+
+  <a class="indexterm" name="id4743441"></a>
+
+  <a class="indexterm" name="id4743456"></a>
+
+  <a class="indexterm" name="id4743442"></a>
+
+  <a class="indexterm" name="id4743485"></a>
+
+  <a class="indexterm" name="id4743470"></a>
+
+  <a class="indexterm" name="id4743512"></a>
+
+  <a class="indexterm" name="id4743525"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -1083,10 +1220,11 @@
 <tr>
 <td width="40%" align="left" valign="top">Custom Object Variables </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Authentication And Authorization In The CGIs</td>
+<td width="40%" align="right" valign="top"> Authentication And
+  Authorization In The CGIs</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -211,7 +211,7 @@ CREATE INDEX timed_e_q_rec_ev_id_idx on icinga_timedeventqueue(recurring_event);
 
 -- timedevents
 CREATE INDEX timed_e_event_type_idx on icinga_timedevents(event_type);
---CREATE INDEX timed_e_sched_time_idx on icinga_timedevents(scheduled_time); --already set for delete
+-- CREATE INDEX timed_e_sched_time_idx on icinga_timedevents(scheduled_time); --already set for delete
 CREATE INDEX timed_e_object_id_idx on icinga_timedevents(object_id);
 CREATE INDEX timed_e_rec_ev_idx on icinga_timedevents(recurring_event);
 

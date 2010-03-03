@@ -4,7 +4,7 @@
 <title>Icinga Quickstart</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart.html" title="Schnellstart-Installationsanleitungen">
 <link rel="next" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
@@ -130,26 +130,33 @@
  # /usr/sbin/usermod -a -G icinga-cmd icinga
  # /usr/sbin/usermod -a -G icinga-cmd www-data (oder www, wwwrun je nach Distribution)</pre>
 
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">Bei einigen usermod-Versionen (z.B. bei OpenSuSE 11 bzw. SLES 11) fehlt die Option -a. In diesen Fällen kann sie entfallen.</td></tr>
+</table></div>
     <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
 
     <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
 
     <pre class="programlisting"> # cd /usr/src</pre>
 
-    <p>Holen Sie den aktuellen icinga-core Snapshot aus dem Icinga GIT </p>
+    <p>Holen Sie den aktuellen icinga-core-Snapshot aus dem Icinga GIT </p>
 <pre class="programlisting"> # git clone git://git.icinga.org/icinga-core.git</pre>
 <p>
     oder von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
 
-    <p>Vergessen Sie nicht die <a class="link" href="http://www.nagios.org/" target="_top">Nagios-Plugins</a>.</p>
+    <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios-Plugins</a>.</p>
 
     <p><span class="bold"><strong>Icinga</strong></span> kompilieren und installieren</p>
 
     <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
     <pre class="programlisting"> # cd /usr/src/
- # tar xvzf icinga-1.0 Stable.tar.gz
- # cd icinga-1.0 Stable</pre>
+ # tar xvzf icinga-1.0.1.tar.gz
+ # cd icinga-1.0.1</pre>
 
     <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
@@ -341,9 +348,9 @@
     <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie werden ohne Zweifel
     mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen sollten...</p>
 
-    <a class="indexterm" name="id2584433"></a>
+    <a class="indexterm" name="id3015191"></a>
 
-    <a class="indexterm" name="id2584431"></a>
+    <a class="indexterm" name="id3015190"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -362,6 +369,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
