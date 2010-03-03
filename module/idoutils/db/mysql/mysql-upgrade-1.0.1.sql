@@ -185,7 +185,7 @@ CREATE INDEX hoststatus_sch_downt_d_idx on icinga_hoststatus(scheduled_downtime_
 -- services
 CREATE INDEX services_host_object_id_idx on icinga_services(host_object_id);
 
---servicestatus
+-- servicestatus
 CREATE INDEX srvcstatus_stat_upd_time_idx on icinga_servicestatus(status_update_time);
 CREATE INDEX srvcstatus_current_state_idx on icinga_servicestatus(current_state);
 CREATE INDEX srvcstatus_check_type_idx on icinga_servicestatus(check_type);
