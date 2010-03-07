@@ -16,3 +16,4 @@ Debug
 .project
 .settings
 tags
+*.dSYM
