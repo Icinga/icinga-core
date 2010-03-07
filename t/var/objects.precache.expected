@@ -114,7 +114,7 @@ define host {
 	alias	host2 test
 	address	192.168.2.2
 	check_period	none
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	notification_period	none
 	initial_state	o
 	check_interval	5.000000
@@ -214,7 +214,7 @@ define service {
 	service_description	Uses important check command
 	check_period	none
 	check_command	set_to_stale
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	notification_period	none
 	initial_state	o
 	check_interval	15.000000
@@ -251,7 +251,7 @@ define serviceescalation {
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	}
 
 define serviceescalation {
@@ -262,6 +262,6 @@ define serviceescalation {
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	}
 
