@@ -2,6 +2,25 @@
 Icinga 1.0.x Change Log
 #######################
 
+1.0.x - ??/??/2010
+
+ENHANCEMENTS
+* core: add state-based escalation ranges (Mark Guis)
+	The directives first_notification and last_notification apply to the
+	total count of notifications on a particular service or host.  It is
+	sometimes desirable to escalate after the Nth critical notification,
+	rather than after a total number of N notifications have been sent.
+	Service Escalation:
+		first/last_warning_notification
+		first/last_critical_notification
+		first/last_unknown_notification
+	Host Escalation:
+		first/last_down_notification
+		first/last_unreachable_notification
+
+FIXES
+
+
 1.0.1 - 03/03/2010
 
 ENHANCEMENTS
@@ -32,19 +51,6 @@ ENHANCEMENTS
 	c = CRITICAL
 	o = OK for services or UP for hosts
 	d = DOWN for hosts
-
-* core: add state-based escalation ranges (Mark Guis)
-	The directives first_notification and last_notification apply to the 
-	total count of notifications on a particular service or host.  It is 
-	sometimes desirable to escalate after the Nth critical notification, 
-	rather than after a total number of N notifications have been sent. 
-	Service Escalation:	
-		first/last_warning_notification
-		first/last_critical_notification
-		first/last_unknown_notification
-	Host Escalation:
-		first/last_down_notification
-		first/last_unreachable_notification
 
 * idoutils: add ido2db threaded housekeeper
 	- periodic cleanup will now be performed in own thread
