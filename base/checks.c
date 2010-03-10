@@ -1292,9 +1292,6 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		temp_service->last_notification=(time_t)0;
 		temp_service->next_notification=(time_t)0;
 		temp_service->current_notification_number=0;
-		temp_service->current_warning_notification_number=0;
-		temp_service->current_critical_notification_number=0;
-		temp_service->current_unknown_notification_number=0;
 		temp_service->problem_has_been_acknowledged=FALSE;
 		temp_service->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
 		temp_service->notified_on_unknown=FALSE;

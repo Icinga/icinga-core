@@ -83,8 +83,6 @@ typedef struct hoststatus_struct{
 	int     problem_has_been_acknowledged;
 	int     acknowledgement_type;
 	int     current_notification_number;
-	int     current_down_notification_number;
-	int     current_unreachable_notification_number;
 	int     accept_passive_host_checks;
 	int     event_handler_enabled;
 	int     checks_enabled;
@@ -135,9 +133,6 @@ typedef struct servicestatus_struct{
 	int     problem_has_been_acknowledged;
 	int     acknowledgement_type;
 	int     current_notification_number;
-	int     current_warning_notification_number;
-	int     current_critical_notification_number;
-	int     current_unknown_notification_number;
 	int     accept_passive_service_checks;
 	int     event_handler_enabled;
 	int     flap_detection_enabled;
