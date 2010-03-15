@@ -1,8 +1,6 @@
 ###########################################################################
 #
-# RESOURCE.CFG - Sample Resource File for Icinga @VERSION@
-#
-# Last Modified: 05-01-2009
+# RESOURCE.CFG - Sample Resource File for Icinga
 #
 # You can define $USERx$ macros in this file, which can in turn be used
 # in command definitions in your host config file(s).  $USERx$ macros are

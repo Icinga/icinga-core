@@ -1,5 +1,5 @@
 ###################################################################
-# MRTG Graphs: Icinga @VERSION@ Statistics
+# MRTG Graphs: Icinga Statistics
 #
 # You can add the following entries to your MRTG config file to
 # begin graphing several Icinga statistics which can be useful for

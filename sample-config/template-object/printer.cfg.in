@@ -1,8 +1,6 @@
 ###############################################################################
 # PRINTER.CFG - SAMPLE CONFIG FILE FOR MONITORING A NETWORK PRINTER
 #
-# Last Modified: 05-01-2009
-#
 # NOTES: This config file assumes that you are using the sample configuration
 #	 files that get installed with the Icinga quickstart guide.
 #

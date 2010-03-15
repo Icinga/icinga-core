@@ -1,12 +1,10 @@
 ##############################################################################
 #
-# ICINGA.CFG - Sample Main Config File for Icinga @VERSION@
+# ICINGA.CFG - Sample Main Config File for Icinga
 #
 # Read the documentation for more information on this configuration
 # file.  I've provided some comments here, but things may not be so
 # clear without further explanation.
-#
-# Last Modified: 12-14-2008
 #
 ##############################################################################
 

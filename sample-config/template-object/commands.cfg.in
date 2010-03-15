@@ -1,7 +1,5 @@
 ###############################################################################
-# COMMANDS.CFG - SAMPLE COMMAND DEFINITIONS FOR ICINGA @VERSION@
-#
-# Last Modified: 05-31-2007
+# COMMANDS.CFG - SAMPLE COMMAND DEFINITIONS FOR ICINGA
 #
 # NOTES: This config file provides you with some example command definitions
 #        that you can reference in host, service, and contact definitions.
