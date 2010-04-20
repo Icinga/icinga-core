@@ -162,16 +162,18 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                 }
 	}
 
-	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id='%lu' AND objecttype_id='%d' AND %s AND %s", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
+	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id=%lu AND objecttype_id=%d AND %s AND %s", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
 		buf = NULL;
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
-			if (dbi_result_next_row(idi->dbinfo.dbi_result))
+			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
 				*object_id = dbi_result_get_ulong(idi->dbinfo.dbi_result, "object_id");
-				
+			} else {
+				result = NDO_ERROR;
+			}	
 
-				dbi_result_free(idi->dbinfo.dbi_result);
+			dbi_result_free(idi->dbinfo.dbi_result);
 			idi->dbinfo.dbi_result = NULL;
 		}
 	}
@@ -355,13 +357,11 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 #endif /* Oracle ocilib specific */
 
 	/* free memory */
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_() before free\n");
+	//ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_() before free\n");
 	for (x = 0; x < NAGIOS_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_() free of es\n");
-	if (found_object == NDO_FALSE)
-		result = NDO_ERROR;
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_() free of es\n");
 
         ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_get_object_id(%lu) end\n", *object_id);
 

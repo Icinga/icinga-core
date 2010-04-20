@@ -11,6 +11,7 @@ FIXES
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
+* idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
 
 1.0.1 - 03/03/2010
 
