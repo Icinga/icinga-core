@@ -230,6 +230,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 		                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%lu) insert_id\n", *object_id);
 		        } else {
 		                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2() insert_id could not be fetched\n");
+				result = NDO_ERROR;
 		        }
 
 		        /* do not free statement yet! */
@@ -270,6 +271,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(%lu) insert_id\n", *object_id);
                         } else {
                                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2() insert_id could not be fetched\n");
+				result = NDO_ERROR;
                         }
 
 
@@ -310,6 +312,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%lu) insert_id\n", *object_id);
                         } else {
                                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null() insert_id could not be fetched\n");
+				result = NDO_ERROR;
                         }
 
 
@@ -346,6 +349,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(%lu) insert_id\n", *object_id);
                         } else {
                                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null() insert_id could not be fetched\n");
+				result = NDO_ERROR;
                         }
 
 
