@@ -5,6 +5,7 @@ Icinga 1.0.x Change Log
 1.0.2 - 30/06/2010
 
 ENHANCEMENTS
+* idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 * idoutils: change select * into select [*_]id if unused results
 

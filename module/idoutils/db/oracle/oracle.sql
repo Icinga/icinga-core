@@ -1,6 +1,8 @@
 -- --------------------------------------------------------
 -- oracle.sql
 -- DB definition for Oracle
+-- 
+-- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
 --
 -- requires ocilib, oracle (instantclient) libs+sdk to work
 -- specify oracle (instantclient) libs+sdk in ocilib configure

@@ -79,16 +79,6 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	} else {
 		es[0] = ndo2db_db_escape_string(idi, name1);
                 switch (idi->dbinfo.server_type) {
-                        case NDO2DB_DBSERVER_MYSQL:
-                                /* mysql does case INsensitive compare, use BINARY */
-                                if (asprintf(&buf1, "BINARY name1='%s'", es[0]) == -1)
-                                        buf1 = NULL;
-                                break;
-                        case NDO2DB_DBSERVER_PGSQL:
-                                /* Postgres does case sensitive compare  */
-                                if (asprintf(&buf1, "name1='%s'", es[0]) == -1)
-                                        buf1 = NULL;
-                                break;
                         case NDO2DB_DBSERVER_DB2:
                                 break;
                         case NDO2DB_DBSERVER_FIREBIRD:
@@ -100,19 +90,17 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-                                /* Oracle does case sensitive compare  */
-                                if (asprintf(&buf1, "name1='%s'", es[0]) == -1)
-                                        buf1 = NULL;
-#endif /* Oracle ocilib specific */
-
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
                         case NDO2DB_DBSERVER_SQLITE3:
                                 break;
                         default:
+				/* William Preston: mysql does case sensitive compare
+				 * IF the collation is changed to latin1_general_cs */
+                                /* Postgres does case sensitive compare  */
+                                if (asprintf(&buf1, "name1='%s'", es[0]) == -1)
+                                        buf1 = NULL;
                                 break;
                 }
 	}
@@ -124,16 +112,6 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
 	} else {
 		es[1] = ndo2db_db_escape_string(idi, name2);
                 switch (idi->dbinfo.server_type) {
-                        case NDO2DB_DBSERVER_MYSQL:
-                                /* mysql does case INsensitive compare, use BINARY */
-		                if (asprintf(&buf2, "BINARY name2='%s'", es[1]) == -1)
-                			buf2 = NULL;
-                                break;
-                        case NDO2DB_DBSERVER_PGSQL:
-                                /* Postgres does case sensitive compare  */
-                                if (asprintf(&buf2, "name2='%s'", es[1]) == -1)
-                                        buf2 = NULL;
-                                break;
                         case NDO2DB_DBSERVER_DB2:
                                 break;
                         case NDO2DB_DBSERVER_FIREBIRD:
@@ -145,19 +123,17 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                         case NDO2DB_DBSERVER_MSQL:
                                 break;
                         case NDO2DB_DBSERVER_ORACLE:
-
-//#ifdef USE_ORACLE /* Oracle ocilib specific */
-				/* Oracle does case sensitive compare  */
-//		                if (asprintf(&buf2, "name2='%s'", es[1]) == -1)
-//		                        buf2 = NULL;
-//#endif /* Oracle ocilib specific */
-
                                 break;
                         case NDO2DB_DBSERVER_SQLITE:
                                 break;
                         case NDO2DB_DBSERVER_SQLITE3:
                                 break;
                         default:
+				/* William Preston: mysql does case sensitive compare
+				 * IF the collation is changed to latin1_general_cs */
+                                /* Postgres does case sensitive compare  */
+                                if (asprintf(&buf2, "name2='%s'", es[1]) == -1)
+                                        buf2 = NULL;
                                 break;
                 }
 	}

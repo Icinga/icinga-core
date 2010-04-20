@@ -2,6 +2,8 @@
 -- mysql.sql
 -- DB definition for MySQL
 -- 
+-- 
+-- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
 --
 -- -- --------------------------------------------------------
 
@@ -623,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hosts` (
   `config_type` smallint(6) NOT NULL default '0',
   `host_object_id` int(11) NOT NULL default '0',
   `alias` varchar(64) character set latin1 NOT NULL default '',
-  `display_name` varchar(64) character set latin1 NOT NULL default '',
+  `display_name` varchar(64) character set latin1 collate latin1_general_cs NOT NULL default '',
   `address` varchar(128) character set latin1 NOT NULL default '',
   `check_command_object_id` int(11) NOT NULL default '0',
   `check_command_args` varchar(255) character set latin1 NOT NULL default '',
@@ -851,8 +853,8 @@ CREATE TABLE IF NOT EXISTS `icinga_objects` (
   `object_id` int(11) NOT NULL auto_increment,
   `instance_id` smallint(6) NOT NULL default '0',
   `objecttype_id` smallint(6) NOT NULL default '0',
-  `name1` varchar(128) character set latin1 NOT NULL default '',
-  `name2` varchar(128) character set latin1 default NULL,
+  `name1` varchar(128) character set latin1 collate latin1_general_cs NOT NULL default '',
+  `name2` varchar(128) character set latin1 collate latin1_general_cs default NULL,
   `is_active` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`object_id`),
   KEY `objecttype_id` (`objecttype_id`,`name1`,`name2`)
@@ -1108,7 +1110,7 @@ CREATE TABLE IF NOT EXISTS `icinga_services` (
   `config_type` smallint(6) NOT NULL default '0',
   `host_object_id` int(11) NOT NULL default '0',
   `service_object_id` int(11) NOT NULL default '0',
-  `display_name` varchar(64) character set latin1 NOT NULL default '',
+  `display_name` varchar(64) character set latin1 collate latin1_general_cs NOT NULL default '',
   `check_command_object_id` int(11) NOT NULL default '0',
   `check_command_args` varchar(255) character set latin1 NOT NULL default '',
   `eventhandler_command_object_id` int(11) NOT NULL default '0',
