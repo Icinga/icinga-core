@@ -956,7 +956,7 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	dbi_conn_close(idi->dbinfo.dbi_conn);
 	dbi_shutdown();
 
-	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from database");
+	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from %s database", ndo2db_db_settings.dbserver);
 #else /* Oracle ocilib specific */
 
 	/* close prepared statements */
@@ -1089,6 +1089,11 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 		}
 	}
         else {
+		/* there was an error with the initial db handshake, bail out */
+		/* could be missing database, missing db schema */
+		syslog(LOG_USER | LOG_INFO, "Error: Initial %s database query failed! Please check %s database configuration and schema!", ndo2db_db_settings.dbserver, ndo2db_db_settings.dbserver);
+		syslog(LOG_USER | LOG_INFO, "Exiting ...");
+
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
                 /* cleanup the socket */
                 ndo2db_cleanup_socket();
@@ -1114,6 +1119,11 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 
         /* execute statement */
         if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
+		/* there was an error with the initial db handshake, bail out */
+		/* could be missing database, missing db schema */
+		syslog(LOG_USER | LOG_INFO, "Error: Initial oracle database query failed! Please check oracle database configuration and schema!");
+		syslog(LOG_USER | LOG_INFO, "Exiting ...");
+
 	        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
 		/* cleanup the socket */
