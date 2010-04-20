@@ -2,9 +2,11 @@
 Icinga 1.0.x Change Log
 #######################
 
-1.0.x ??/??/2010
+1.0.2 - 30/06/2010
 
 ENHANCEMENTS
+* idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
+
 
 FIXES
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)

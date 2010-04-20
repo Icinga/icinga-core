@@ -246,7 +246,8 @@ typedef struct ndo2db_input_data_info_struct{
 
 /*************** misc definitions **************/
 #define NDO2DB_INPUT_BUFFER                             1024
-#define NDO2DB_OBJECT_HASHSLOTS                         1024
+/* #define NDO2DB_OBJECT_HASHSLOTS                         1024 */
+#define NDO2DB_OBJECT_HASHSLOTS                         50240	/* Altinity patch: Spread the list of linked lists thinner */
 
 
 /*********** types of input sections ***********/
