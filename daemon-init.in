@@ -33,6 +33,8 @@
 #  - Clean out redhat macros and other dependencies
 # 2003-01-11 Ethan Galstad <egalstad@nagios.org>
 #  - Updated su syntax (Gary Miller)
+# 2010-04-20 Michael Friedrich <michael.friedrich@univie.ac.at>
+#  - Added show-errors, improved configuration checks (Wolfgang Nieder)
 #
 # Description: Starts and stops the Icinga monitor
 #              used to provide network services status.
@@ -90,6 +92,24 @@ pid_icinga ()
 }
 
 
+chk_config ()
+{
+	echo "Running configuration check..."
+	$IcingaBin -v $IcingaCfgFile > $IcingaChkFile 2>&1
+	if test $? -ne 0; then
+		if test -z "$1"; then
+			cat $IcingaChkFile
+			echo "Result saved to $IcingaChkFile"
+		else
+			echo $1
+		fi
+		exit 1
+	fi
+	rm -f $IcingaChkFile
+	echo "OK"
+	#exit 0
+}
+
 # Source function library
 # Solaris doesn't have an rc.d directory, so do a test first
 if [ -f /etc/rc.d/init.d/functions ]; then
@@ -112,6 +132,7 @@ IcingaLockFile=icinga
 IcingaCGIDir=@sbindir@
 IcingaUser=@icinga_user@
 IcingaGroup=@icinga_grp@
+IcingaChkFile=@localstatedir@/icinga.chk
           
 
 # Check that icinga exists.
@@ -138,20 +159,15 @@ case "$1" in
                         exit 1
                 fi
 
-		echo -n "Starting icinga:"
-		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
-		if [ $? -eq 0 ]; then
-			rm -f $IcingaCommandFile
-			touch $IcingaRunFile
-			chown $IcingaUser:$IcingaGroup $IcingaRunFile
-			$IcingaBin -d $IcingaCfgFile
-			if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
-			echo " done."
-			exit 0
-		else
-			echo "CONFIG ERROR!  Start aborted.  Check your Icinga configuration."
-			exit 1
-		fi
+		echo -n "Starting icinga: "
+		chk_config "CONFIG ERROR!  Start aborted. See $IcingaChkFile for details."
+		rm -f $IcingaCommandFile
+		touch $IcingaRunFile
+		chown $IcingaUser:$IcingaGroup $IcingaRunFile
+		$IcingaBin -d $IcingaCfgFile
+		if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
+		echo "Starting icinga done."
+		exit 0
 		;;
 
 	stop)
@@ -176,12 +192,12 @@ case "$1" in
  		done
  		if status_icinga > /dev/null; then
  		    echo ''
- 		    echo 'Warning - icinga did not exit in a timely manner'
+ 		    echo 'Warning - icinga did not exit in a timely manner. Please try again.'
  		else
- 		    echo 'done.'
+ 		    echo 'Stopping icinga done.'
+                    rm -f $IcingaStatusFile $IcingaRunFile $IcingaLockDir/$IcingaLockFile $IcingaCommandFile
  		fi
 
-		rm -f $IcingaStatusFile $IcingaRunFile $IcingaLockDir/$IcingaLockFile $IcingaCommandFile
 		;;
 
 	status)
@@ -190,55 +206,38 @@ case "$1" in
 		;;
 
 	checkconfig)
-		printf "Running configuration check..."
-		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
-		if [ $? -eq 0 ]; then
-			echo " OK."
-		else
-			echo " CONFIG ERROR!  Check your Icinga configuration."
-			exit 1
-		fi
+		chk_config " CONFIG ERROR!  See $IcingaChkFile for details."
+		;;
+
+	show-errors)
+		chk_config
 		;;
 
 	restart)
-		printf "Running configuration check..."
-		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
-		if [ $? -eq 0 ]; then
-			echo "done."
-			$0 stop
-			$0 start
-		else
-			echo " CONFIG ERROR!  Restart aborted.  Check your Icinga configuration."
-			exit 1
-		fi
+		#chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
+		$0 stop
+		$0 start
 		;;
 
 	reload|force-reload)
-		printf "Running configuration check..."
-		$IcingaBin -v $IcingaCfgFile > /dev/null 2>&1;
-		if [ $? -eq 0 ]; then
-			echo "done."
-			if test ! -f $IcingaRunFile; then
-				$0 start
-			else
-				pid_icinga
-				if status_icinga > /dev/null; then
-					printf "Reloading icinga configuration..."
-					killproc_icinga icinga -HUP
-					echo "done"
-				else
-					$0 stop
-					$0 start
-				fi
-			fi
+		chk_config " CONFIG ERROR!  Reload aborted.  See $IcingaChkFile for details."
+		if test ! -f $IcingaRunFile; then
+			$0 start
 		else
-			echo " CONFIG ERROR!  Reload aborted.  Check your Icinga configuration."
-			exit 1
+			pid_icinga
+			if status_icinga > /dev/null; then
+				printf "Reloading icinga configuration..."
+				killproc_icinga icinga -HUP
+				echo "done"
+			else
+				$0 stop
+				$0 start
+			fi
 		fi
 		;;
 
 	*)
-		echo "Usage: icinga {start|stop|restart|reload|force-reload|status|checkconfig}"
+		echo "Usage: icinga {start|stop|restart|reload|force-reload|status|checkconfig|show-errors}"
 		exit 1
 		;;
 

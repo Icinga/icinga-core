@@ -5,6 +5,8 @@ Icinga 1.0.x Change Log
 1.0.2 - 30/06/2010
 
 ENHANCEMENTS
+* core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
+
 * idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 * idoutils: change select * into select [*_]id if unused results
@@ -17,6 +19,7 @@ FIXES
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
+
 
 1.0.1 - 03/03/2010
 
