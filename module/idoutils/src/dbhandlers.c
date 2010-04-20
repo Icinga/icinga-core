@@ -401,17 +401,28 @@ int ndo2db_get_object_id_with_insert(ndo2db_idi *idi, int object_type, char *n1,
 		return NDO_OK;
 
 	if (name1 != NULL) {
-		es[0] = ndo2db_db_escape_string(idi, name1);
+		tmp = ndo2db_db_escape_string(idi, name1);
+		asprintf(&es[0], "'%s'", tmp);
+		if (tmp) {
+			free(tmp);
+			tmp = NULL;
+		}
 	} else
 		asprintf(&es[0],"NULL");
+
 	if (name2 != NULL) {
-		es[1] = ndo2db_db_escape_string(idi, name2);
+		tmp = ndo2db_db_escape_string(idi, name2);
+		asprintf(&es[1], "'%s'", tmp);
+		if (tmp) {
+			free(tmp);
+			tmp = NULL;
+		}
 	} else
 		asprintf(&es[1], "NULL");
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf,
-			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, '%s', '%s')",
+			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, %s, %s)",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS],
 			idi->dbinfo.instance_id, object_type, es[0],
 			es[1]) == -1)

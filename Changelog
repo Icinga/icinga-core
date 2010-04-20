@@ -7,9 +7,10 @@ Icinga 1.0.x Change Log
 ENHANCEMENTS
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 
-
 FIXES
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)
+
+* idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 
 1.0.1 - 03/03/2010
 
