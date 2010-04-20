@@ -6,6 +6,7 @@ Icinga 1.0.x Change Log
 
 ENHANCEMENTS
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
+* idoutils: change select * into select [*_]id if unused results
 
 FIXES
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)

@@ -162,7 +162,7 @@ int ndo2db_get_object_id(ndo2db_idi *idi, int object_type, char *n1, char *n2, u
                 }
 	}
 
-	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id=%lu AND objecttype_id=%d AND %s AND %s", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
+	if (asprintf(&buf, "SELECT object_id FROM %s WHERE instance_id=%lu AND objecttype_id=%d AND %s AND %s", ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, object_type, buf1, buf2) == -1)
 		buf = NULL;
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
@@ -983,7 +983,7 @@ int ndo2db_handle_logentry(ndo2db_idi *idi) {
 	/* make sure we aren't importing a duplicate log entry... */
 #ifndef USE_ORACLE /* everything else will be libdbi */
 
-	if (asprintf(&buf, "SELECT * FROM %s WHERE instance_id='%lu' AND logentry_time=%s AND logentry_data='%s'", ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES], idi->dbinfo.instance_id, ts[0], es[0]) == -1)
+	if (asprintf(&buf, "SELECT logentry_id FROM %s WHERE instance_id='%lu' AND logentry_time=%s AND logentry_data='%s'", ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES], idi->dbinfo.instance_id, ts[0], es[0]) == -1)
 		buf = NULL;
 
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {

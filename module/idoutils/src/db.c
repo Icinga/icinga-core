@@ -2994,7 +2994,7 @@ int ido2db_oci_prepared_statement_logentries_select(ndo2db_idi *idi) {
 
         //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf, "SELECT * FROM %s WHERE instance_id=:X1 AND logentry_time=(SELECT unixts2date(:X2) FROM DUAL) AND logentry_data=:X3", 
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND logentry_time=(SELECT unixts2date(:X2) FROM DUAL) AND logentry_data=:X3", 
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES]) == -1) {
                         buf = NULL;
         }
