@@ -12,6 +12,7 @@ ENHANCEMENTS
 
 FIXES
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)
+* core: Fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
