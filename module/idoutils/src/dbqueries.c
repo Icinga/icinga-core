@@ -341,7 +341,7 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ndo2db_idi *idi, void 
                         asprintf(&query1, "UPDATE %s SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
                                         ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS],
                                         *(char **) data[2],             /* update start */
-                                        *(unsigned *) data[3],
+                                        *(unsigned long *) data[3],
                                         *(int *) data[5],               /* update end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(int *) data[1],
@@ -1329,7 +1329,7 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ndo2db_idi *idi, void **d
                                         *(char **) data[17],
                                         *(char **) data[18],            /* updapte end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
-                                        *(unsigned *) data[1],
+                                        *(unsigned long *) data[1],
                                         *(char **) data[7],
                                         *(unsigned long *) data[8]      /* unique constraint end */
                         );
