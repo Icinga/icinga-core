@@ -1813,11 +1813,57 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 
 	z = strlen(buf);
 
+	/* escape characters */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+	/* allocate space for the new string */
+
+        if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
+                return NULL;
+
+        for (x = 0, y = 0; x < z; x++) {
+
+                if(idi->dbinfo.server_type==NDO2DB_DBSERVER_MYSQL){
+
+                         if(buf[x]=='\'' || buf[x]=='\"' || buf[x]=='*' || buf[x]=='\\' || buf[x]=='$' || buf[x]=='?' || buf[x]=='.' || buf[x]=='^' || buf[x]=='+' || buf[x]=='[' || buf[x]==']' || buf[x]=='(' || buf[x]==')')
+                                newbuf[y++]='\\';
+                }
+                else if(idi->dbinfo.server_type==NDO2DB_DBSERVER_PGSQL){
+
+			if (buf[x] == '\'' || buf[x] == '[' || buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
+				newbuf[y++] = '\\';
+
+                	/* should be fixed with binding values */
+			/* if(buf[x]=='\'' )
+                               newbuf[y++]='\''; */
+		}
+		else {
+
+                       if(buf[x]=='\'' )
+                               newbuf[y++]='\'';
+
+		}
+
+                newbuf[y++] = buf[x];
+        }
+
+        /* terminate escape string */
+        newbuf[y] = '\0';
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string(%s) end\n", newbuf);
+        return newbuf;
+
+        //size_t res = dbi_conn_quote_string(idi->dbinfo.dbi_conn, &buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string(%s) end\n", buf);
+        //return buf;
+
+#else /* Oracle ocilib specific */
+
 	/* allocate space for the new string */
 	if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
 		return NULL;
 
-	/* escape characters */
+
 	for (x = 0, y = 0; x < z; x++) {
 
                 if(buf[x]=='\'' )
@@ -1825,6 +1871,7 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 
 		newbuf[y++] = buf[x];
 	}
+#endif /* Oracle ocilib specific */
 
 	/* terminate escape string */
 	newbuf[y] = '\0';
