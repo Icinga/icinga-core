@@ -2291,9 +2291,7 @@ int check_daemon_running(void) {
 	char *proc_file=NULL;
 	char *input = NULL;
 	char *val = NULL;
-	char *daemon_name = NULL;
-	struct stat statbuf;
-	int pid, testpid, found;
+	int pid, testpid;
 	char input_buffer[CHARLEN];
 	mmapfile *fk;
 	FILE *fp;
@@ -2306,9 +2304,7 @@ int check_daemon_running(void) {
 	if((fk=mmap_fopen(lock_file))==NULL) {
 
 		/* no lock file found try program name instead */
-                asprintf(&daemon_name,"%s",PROGRAM_NAME_LC);
-
-                if(asprintf(&proc_file,"/bin/ps -o pid -C %s",daemon_name)==-1) {
+                if(asprintf(&proc_file,"/bin/ps -o pid -C %s",PROGRAM_NAME_LC)==-1) {
                         free(proc_file);
                         return ERROR;
                 }
@@ -2321,13 +2317,14 @@ int check_daemon_running(void) {
                 fgets(input_buffer,CHARLEN-1,fp);
                 fgets(input_buffer,CHARLEN-1,fp);
 
+		pclose(fp);
+		free(proc_file);
+
                 /* check if entry found */
                 if (sscanf(input_buffer,"%d",&testpid)!=1) {
-                        free(proc_file);
                         return ERROR;
                 } else {
 			/* daemon is running */
-			free(proc_file);
 			return OK;
 		}
 	}
