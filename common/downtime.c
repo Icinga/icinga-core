@@ -1045,6 +1045,38 @@ scheduled_downtime *find_service_downtime(unsigned long downtime_id){
         }
 
 
+/* finds a specific downtime entry by similar content (in a distributed environment, downtime_ids are not synchronised) */
+scheduled_downtime *find_downtime_by_similar_content(int type, char *host_name, char *service_description, char *author, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long duration){
+	scheduled_downtime *temp_downtime=NULL;
+
+	if(service_description==NULL) {
+		if(type==ANY_DOWNTIME)
+			type=HOST_DOWNTIME;
+
+		/* Must specify a service_description if you are searching services - obviously! */
+		if(type==SERVICE_DOWNTIME)
+			return NULL;
+		}
+
+	for(temp_downtime=scheduled_downtime_list;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
+		
+		if(type!=ANY_DOWNTIME && temp_downtime->type!=type)
+			continue;
+
+		if(temp_downtime->start_time==start_time 
+			&& temp_downtime->end_time==end_time 
+			&& temp_downtime->fixed==fixed
+			&& temp_downtime->duration==duration
+			&& strcmp(temp_downtime->host_name,host_name)==0 
+			&& (service_description==NULL || (temp_downtime->type == SERVICE_DOWNTIME && strcmp(temp_downtime->service_description,service_description)==0)) 
+			&& strcmp(temp_downtime->author,author)==0 
+			&& strcmp(temp_downtime->comment,comment_data)==0)
+			return temp_downtime;
+			}
+
+	return NULL;
+	}
+
 
 /******************************************************************/
 /********************* CLEANUP FUNCTIONS **************************/

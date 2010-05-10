@@ -46,6 +46,7 @@
 
 #define HOST_COMMENT			1
 #define SERVICE_COMMENT			2
+#define ANY_COMMENT             	3
 
 
 /****************************** ENTRY TYPES ********************************/
@@ -105,6 +106,7 @@ int check_for_expired_comment(unsigned long);                       /* expires a
 comment *find_comment(unsigned long,int);                             /* finds a specific comment */
 comment *find_service_comment(unsigned long);                         /* finds a specific service comment */
 comment *find_host_comment(unsigned long);                            /* finds a specific host comment */
+comment *find_comment_by_similar_content(int,char *,char *,char *,char *); /* finds a comment based on content - used for distributed nagios instances */
 
 comment *get_first_comment_by_host(char *);
 comment *get_next_comment_by_host(char *,comment *);

@@ -98,6 +98,7 @@ extern unsigned long  retained_process_service_attribute_mask;
 
 
 char *xrddefault_retention_file=NULL;
+char *xrddefault_sync_retention_file=NULL;
 char *xrddefault_temp_file=NULL;
 
 
@@ -117,6 +118,7 @@ int xrddefault_grab_config_info(char *main_config_file){
 
 		log_debug_info(DEBUGL_RETENTIONDATA,2,"Error: Cannot open main configuration file '%s' for reading!\n",main_config_file);
 
+		my_free(xrddefault_sync_retention_file);
 		my_free(xrddefault_retention_file);
 		my_free(xrddefault_temp_file);
 
@@ -194,6 +196,9 @@ int xrddefault_grab_config_directives(char *input){
 	if(!strcmp(varname,"xrddefault_retention_file") || !strcmp(varname,"state_retention_file"))
 		xrddefault_retention_file=(char *)strdup(varvalue);
 
+        else if(!strcmp(varname,"sync_retention_file"))
+                xrddefault_sync_retention_file=(char *)strdup(varvalue);
+
 	/* temp file definition */
 	else if(!strcmp(varname,"temp_file"))
 		xrddefault_temp_file=(char *)strdup(varvalue);
@@ -230,6 +235,7 @@ int xrddefault_initialize_retention_data(char *config_file){
 int xrddefault_cleanup_retention_data(char *config_file){
 
 	/* free memory */
+	my_free(xrddefault_sync_retention_file);
 	my_free(xrddefault_retention_file);
 	my_free(xrddefault_temp_file);
 
@@ -606,6 +612,17 @@ int xrddefault_save_state_information(void){
 /******************************************************************/
 
 int xrddefault_read_state_information(void){
+	return xrddefault_read_retention_file_information(xrddefault_retention_file,TRUE);
+}
+
+int xrddefault_sync_state_information(void){
+	int result=OK;
+	if(xrddefault_sync_retention_file!=NULL)
+		result=xrddefault_read_retention_file_information(xrddefault_sync_retention_file,FALSE);
+	return result;
+}
+
+int xrddefault_read_retention_file_information(char *retention_file, int overwrite_data){
 	char *input=NULL;
 	char *inputbuf=NULL;
 	char *temp_ptr=NULL;
@@ -658,12 +675,14 @@ int xrddefault_read_state_information(void){
 	struct timeval tv[2];
 	double runtime[2];
 	int found_directive=FALSE;
-
+        int retain_flag=TRUE;
+        time_t last_check=0L;
+	int add_object;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"xrddefault_read_state_information() start\n");
 
 	/* make sure we have what we need */
-	if(xrddefault_retention_file==NULL){
+	if(retention_file==NULL){
 
 #ifdef NSCORE
 		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: We don't have a filename for retention data!\n");
@@ -676,7 +695,7 @@ int xrddefault_read_state_information(void){
 		gettimeofday(&tv[0],NULL);
 
 	/* open the retention file for reading */
-	if((thefile=mmap_fopen(xrddefault_retention_file))==NULL)
+	if((thefile=mmap_fopen(retention_file))==NULL)
 		return ERROR;
 
 	/* what attributes should be masked out? */
@@ -749,7 +768,7 @@ int xrddefault_read_state_information(void){
 
 			case XRDDEFAULT_HOSTSTATUS_DATA:
 
-				if(temp_host!=NULL){
+				if(temp_host!=NULL && retain_flag){
 
 					/* adjust modified attributes if necessary */
 					if(temp_host->retain_nonstatus_information==FALSE)
@@ -808,6 +827,7 @@ int xrddefault_read_state_information(void){
 				/* reset vars */
 				was_flapping=FALSE;
 				allow_flapstart_notification=TRUE;
+				retain_flag=TRUE;
 
 				my_free(host_name);
 				host_name=NULL;
@@ -816,7 +836,7 @@ int xrddefault_read_state_information(void){
 
 			case XRDDEFAULT_SERVICESTATUS_DATA:
 
-				if(temp_service!=NULL){
+				if(temp_service!=NULL && retain_flag){
 
 					/* adjust modified attributes if necessary */
 					if(temp_service->retain_nonstatus_information==FALSE)
@@ -879,6 +899,7 @@ int xrddefault_read_state_information(void){
 				/* reset vars */
 				was_flapping=FALSE;
 				allow_flapstart_notification=TRUE;
+				retain_flag=TRUE;
 
 				my_free(host_name);
 				my_free(service_description);
@@ -915,34 +936,59 @@ int xrddefault_read_state_information(void){
 			case XRDDEFAULT_HOSTCOMMENT_DATA:
 			case XRDDEFAULT_SERVICECOMMENT_DATA:
 
-				/* add the comment */
-				add_comment((data_type==XRDDEFAULT_HOSTCOMMENT_DATA)?HOST_COMMENT:SERVICE_COMMENT,entry_type,host_name,service_description,entry_time,author,comment_data,comment_id,persistent,expires,expire_time,source);
+				add_object=TRUE;
 
-				/* delete the comment if necessary */
-				/* it seems a bit backwards to add and then immediately delete the comment, but its necessary to track comment deletions in the event broker */
-				remove_comment=FALSE;
-				/* host no longer exists */
-				if((temp_host=find_host(host_name))==NULL)
-					remove_comment=TRUE;
-				/* service no longer exists */
-				else if(data_type==XRDDEFAULT_SERVICECOMMENT_DATA && (temp_service=find_service(host_name,service_description))==NULL)
-					remove_comment=TRUE;
-				/* acknowledgement comments get deleted if they're not persistent and the original problem is no longer acknowledged */
-				else if(entry_type==ACKNOWLEDGEMENT_COMMENT){
-					ack=FALSE;
-					if(data_type==XRDDEFAULT_HOSTCOMMENT_DATA)
-						ack=temp_host->problem_has_been_acknowledged;
-					else
-						ack=temp_service->problem_has_been_acknowledged;
-					if(ack==FALSE && persistent==FALSE)
-						remove_comment=TRUE;
+				if(overwrite_data==FALSE) {
+
+					/* search for comment. If exists, then drop. If doesn't exist, then flow through but need to get a comment_id */
+					if(find_comment_by_similar_content((data_type==XRDDEFAULT_HOSTCOMMENT_DATA)?HOST_COMMENT:SERVICE_COMMENT,host_name,(data_type==XRDDEFAULT_HOSTCOMMENT_DATA?NULL:service_description),author,comment_data)!=NULL) {
+						add_object=FALSE;
+					} else {
+						/* Get next available comment_id */
+						while(find_comment(next_comment_id,ANY_COMMENT)!=NULL)
+							next_comment_id++;
+						comment_id=next_comment_id;
 					}
-				/* non-persistent comments don't last past restarts UNLESS they're acks (see above) */
-				else if(persistent==FALSE)
-					remove_comment=TRUE;
-				
-				if(remove_comment==TRUE)
-					delete_comment((data_type==XRDDEFAULT_HOSTCOMMENT_DATA)?HOST_COMMENT:SERVICE_COMMENT,comment_id);
+				}
+
+				if(add_object==TRUE) {
+					/* add the comment */
+					add_comment((data_type==XRDDEFAULT_HOSTCOMMENT_DATA)?HOST_COMMENT:SERVICE_COMMENT,entry_type,host_name,service_description,entry_time,author,comment_data,comment_id,persistent,expires,expire_time,source);
+
+					/* delete the comment if necessary */
+					/* it seems a bit backwards to add and then immediately delete the comment, but its necessary to track comment deletions in the event broker */
+					remove_comment=FALSE;
+					/* host no longer exists */
+					if((temp_host=find_host(host_name))==NULL) {
+						remove_comment=TRUE;
+					/* service no longer exists */
+					} else if(data_type==XRDDEFAULT_SERVICECOMMENT_DATA && (temp_service=find_service(host_name,service_description))==NULL) {
+						remove_comment=TRUE;
+					/* acknowledgement comments get deleted if they're not persistent and the original problem is no longer acknowledged */
+					} else if(entry_type==ACKNOWLEDGEMENT_COMMENT){
+						ack=FALSE;
+						if(data_type==XRDDEFAULT_HOSTCOMMENT_DATA) {
+							ack=temp_host->problem_has_been_acknowledged;
+						} else {
+							ack=temp_service->problem_has_been_acknowledged;
+						}
+						if(ack==FALSE && persistent==FALSE)
+							remove_comment=TRUE;
+					}
+
+					/* non-persistent comments don't last past restarts UNLESS they're acks (see above) */
+					else if(persistent==FALSE) {
+						remove_comment=TRUE;
+                    			}
+
+					if(remove_comment==TRUE)
+						delete_comment((data_type==XRDDEFAULT_HOSTCOMMENT_DATA)?HOST_COMMENT:SERVICE_COMMENT,comment_id);
+
+					/* Reset any temporary pointers */
+					temp_host=NULL;
+					temp_service=NULL;
+				}
+
 
 				/* free temp memory */
 				my_free(host_name);
@@ -964,14 +1010,34 @@ int xrddefault_read_state_information(void){
 			case XRDDEFAULT_HOSTDOWNTIME_DATA:
 			case XRDDEFAULT_SERVICEDOWNTIME_DATA:
 
-				/* add the downtime */
-				if(data_type==XRDDEFAULT_HOSTDOWNTIME_DATA)
-					add_host_downtime(host_name,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,downtime_id);
-				else
-					add_service_downtime(host_name,service_description,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,downtime_id);
+				add_object=TRUE;
 
-				/* must register the downtime with Icinga so it can schedule it, add comments, etc. */
-				register_downtime((data_type==XRDDEFAULT_HOSTDOWNTIME_DATA)?HOST_DOWNTIME:SERVICE_DOWNTIME,downtime_id);
+				if(overwrite_data==FALSE) {
+
+					/* search for downtime. If exists, then drop. If doesn't exist, then flow through but need to get a downtime id */
+					if(find_downtime_by_similar_content(ANY_DOWNTIME,host_name,(data_type==XRDDEFAULT_HOSTDOWNTIME_DATA?NULL:service_description),author,comment_data,start_time,end_time,fixed,duration)!=NULL) {
+						add_object=FALSE;
+					} else {
+						/* Get next available downtime id */
+						while(find_downtime(ANY_DOWNTIME,next_downtime_id)!=NULL)
+							next_downtime_id++;
+						
+						downtime_id=next_downtime_id;
+					}
+				}
+
+				if (add_object==TRUE) {
+
+					/* add the downtime */
+					if(data_type==XRDDEFAULT_HOSTDOWNTIME_DATA) {
+						add_host_downtime(host_name,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,downtime_id);
+					} else {
+						add_service_downtime(host_name,service_description,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,downtime_id);
+					}
+
+					/* must register the downtime with Icinga so it can schedule it, add comments, etc. */
+					register_downtime((data_type==XRDDEFAULT_HOSTDOWNTIME_DATA)?HOST_DOWNTIME:SERVICE_DOWNTIME,downtime_id);
+				}
 
 				/* free temp memory */
 				my_free(host_name);
@@ -1175,7 +1241,7 @@ int xrddefault_read_state_information(void){
 						/* break out */
 						break;
 						}
-					if(temp_host->retain_status_information==TRUE){
+					if(retain_flag && temp_host->retain_status_information==TRUE){
 						if(!strcmp(var,"has_been_checked"))
 							temp_host->has_been_checked=(atoi(val)>0)?TRUE:FALSE;
 						else if(!strcmp(var,"check_execution_time"))
@@ -1202,8 +1268,13 @@ int xrddefault_read_state_information(void){
 							my_free(temp_host->perf_data);
 							temp_host->perf_data=(char *)strdup(val);
 					                }
-						else if(!strcmp(var,"last_check"))
-							temp_host->last_check=strtoul(val,NULL,10);
+                                                else if(!strcmp(var,"last_check")) {
+                                                        last_check=strtoul(val,NULL,10);
+                                                        if (overwrite_data==FALSE && last_check<temp_host->last_check)
+                                                                retain_flag=FALSE;
+                                                        else
+                                                                temp_host->last_check=last_check;
+                                                        }
 						else if(!strcmp(var,"next_check")){
 							if(use_retained_scheduling_info==TRUE && scheduling_info_is_ok==TRUE)
 								temp_host->next_check=strtoul(val,NULL,10);
@@ -1263,7 +1334,7 @@ int xrddefault_read_state_information(void){
 						else
 							found_directive=FALSE;
 					        }
-					if(temp_host->retain_nonstatus_information==TRUE){
+					if(retain_flag && temp_host->retain_nonstatus_information==TRUE){
 						/* null-op speeds up logic */
 						if(found_directive==TRUE);
 
@@ -1446,7 +1517,7 @@ int xrddefault_read_state_information(void){
 						/* mask out attributes we don't want to retain */
 						temp_service->modified_attributes&=~service_attribute_mask;
 						}
-					if(temp_service->retain_status_information==TRUE){
+					if(retain_flag && temp_service->retain_status_information==TRUE){
 						if(!strcmp(var,"has_been_checked"))
 							temp_service->has_been_checked=(atoi(val)>0)?TRUE:FALSE;
 						else if(!strcmp(var,"check_execution_time"))
@@ -1497,8 +1568,14 @@ int xrddefault_read_state_information(void){
 							my_free(temp_service->perf_data);
 							temp_service->perf_data=(char *)strdup(val);
 					                }
-						else if(!strcmp(var,"last_check"))
-							temp_service->last_check=strtoul(val,NULL,10);
+                                                else if(!strcmp(var,"last_check")){
+                                                        last_check=strtoul(val,NULL,10);
+                                                        if (overwrite_data==FALSE && last_check<temp_service->last_check)
+                                                                retain_flag=FALSE;
+                                                        else
+                                                                temp_service->last_check=last_check;
+                                                        }
+
 						else if(!strcmp(var,"next_check")){
 							if(use_retained_scheduling_info==TRUE && scheduling_info_is_ok==TRUE)
 								temp_service->next_check=strtoul(val,NULL,10);
@@ -1538,7 +1615,7 @@ int xrddefault_read_state_information(void){
 						else
 							found_directive=FALSE;
 					        }
-					if(temp_service->retain_nonstatus_information==TRUE){
+					if(retain_flag && temp_service->retain_nonstatus_information==TRUE){
 						/* null-op speeds up logic */
 						if(found_directive==TRUE);
 
@@ -1861,6 +1938,10 @@ int xrddefault_read_state_information(void){
 	my_free(inputbuf);
 	mmap_fclose(thefile);
 
+	/* If this is a sync file, remove the file */
+	if(overwrite_data==FALSE)
+		unlink(retention_file);
+
 	if(test_scheduling==TRUE)
 		gettimeofday(&tv[1],NULL);
 
@@ -1876,6 +1957,8 @@ int xrddefault_read_state_information(void){
 		printf("TOTAL:                %.6lf sec\n",runtime[1]);
 		printf("\n\n");
 		}
+
+	log_debug_info(DEBUGL_FUNCTIONS,0,"xrddefault_read_state_information() end\n");
 
 	return OK;
         }

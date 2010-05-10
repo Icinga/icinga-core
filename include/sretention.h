@@ -30,6 +30,7 @@ int initialize_retention_data(char *);
 int cleanup_retention_data(char *);
 int save_state_information(int);                 /* saves all host and state information */
 int read_initial_state_information(void);        /* reads in initial host and state information */
+int sync_state_information(void);                /* syncs hosts and state information from sync file */
 
 #ifdef __cplusplus
   }

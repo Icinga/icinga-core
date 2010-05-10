@@ -1347,6 +1347,8 @@ int read_main_config_file(char *main_config_file){
 			continue;
 		else if(strstr(input,"state_retention_file=")==input)
 			continue;
+                else if(strstr(input,"sync_retention_file=")==input)
+                        continue;
 		else if(strstr(input,"object_cache_file=")==input)
 			continue;
 		else if(strstr(input,"precached_object_file=")==input)

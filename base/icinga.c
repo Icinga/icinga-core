@@ -804,6 +804,7 @@ int main(int argc, char **argv){
 			/* read initial service and host state information  */
 			initialize_retention_data(config_file);
 			read_initial_state_information();
+			sync_state_information();
 
 			/* initialize comment data */
 			initialize_comment_data(config_file);

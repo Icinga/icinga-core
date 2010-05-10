@@ -706,14 +706,29 @@ comment *find_comment(unsigned long comment_id, int comment_type){
 	comment *temp_comment=NULL;
 
 	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=temp_comment->next){
-		if(temp_comment->comment_id==comment_id && temp_comment->comment_type==comment_type)
-			return temp_comment;
+		if(comment_type!=ANY_COMMENT && temp_comment->comment_type!=comment_type)
+			continue;
+			if(temp_comment->comment_id==comment_id)
+				return temp_comment;
 	        }
 
 	return NULL;
         }
 
-
+/* find a comment by comment_type, host_name, service_desc (NULL if hostcomment), entry_time, author, comment_data */
+comment *find_comment_by_similar_content(int comment_type, char *hostname, char *service_description, char *author, char *comment_data){
+	comment *temp_comment=NULL;
+ 
+	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=temp_comment->next){
+		if(temp_comment->comment_type==comment_type 
+			&& strcmp(temp_comment->host_name,hostname)==0 
+			&& (service_description==NULL || strcmp(temp_comment->service_description,service_description)==0) 
+			&& strcmp(temp_comment->author,author)==0 
+			&& strcmp(temp_comment->comment_data,comment_data)==0)
+			return temp_comment;
+			}
+	return NULL;
+	}
 
 
 

@@ -141,5 +141,22 @@ int read_initial_state_information(void){
 	return OK;
         }
 
+/* syncs host and state information from sync file */
+/* Should this go within read_state_information()? */
+int sync_state_information(void){
+        int result=OK;
+ 
+        if(retain_state_information==FALSE)
+                return OK;
+ 
+        /********* IMPLEMENTATION-SPECIFIC INPUT FUNCTION ********/
+#ifdef USE_XRDDEFAULT
+        result=xrddefault_sync_state_information();
+#endif
+ 
+        if(result==ERROR)
+                return ERROR;
 
+        return OK;
+        }
 

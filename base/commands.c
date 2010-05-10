@@ -271,6 +271,8 @@ int process_external_command1(char *cmd){
 		command_type=CMD_SAVE_STATE_INFORMATION;
 	else if(!strcmp(command_id,"READ_STATE_INFORMATION"))
 		command_type=CMD_READ_STATE_INFORMATION;
+        else if(!strcmp(command_id,"SYNC_STATE_INFORMATION"))
+                command_type=CMD_SYNC_STATE_INFORMATION;
 
 	else if(!strcmp(command_id,"ENABLE_EVENT_HANDLERS"))
 		command_type=CMD_ENABLE_EVENT_HANDLERS;
@@ -780,6 +782,10 @@ int process_external_command2(int cmd, time_t entry_time, char *args){
 
 	case CMD_READ_STATE_INFORMATION:
 		read_initial_state_information();
+		break;
+
+	case CMD_SYNC_STATE_INFORMATION:
+		sync_state_information();
 		break;
 
 	case CMD_ENABLE_NOTIFICATIONS:

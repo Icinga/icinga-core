@@ -6,6 +6,7 @@ Icinga 1.0.x Change Log
 
 ENHANCEMENTS
 * core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
+* core: add in sync retention facility (Ton Voon, Opsera Ltd)
 
 * idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
