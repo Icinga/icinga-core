@@ -20,6 +20,7 @@ FIXES
 * core: minor cleanups to icingastats.c (Eric Sesterhenn)
 * core: minor cleanups to cgiutils.c (Eric Sestersenn)
 * core: remove dead code (Andreas Ericsson)
+* core: introduce common/shared.c and include/shared.h (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
