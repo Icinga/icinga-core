@@ -1199,6 +1199,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                         break;
         }
 #else /* Oracle ocilib specific */
+
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_contactnotificationmethoddata() %lu, %lu, %lu, %lu, %lu, %lu, %lu, %s \n", *(unsigned long *) data[0], *(unsigned long *) data[1], *(unsigned long *) data[8], *(unsigned long *) data[3], *(unsigned long *) data[9], *(unsigned long *) data[5], *(unsigned long *) data[6], *(char **) data[7]);
+
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X1"), (big_uint *) data[0])) {
                                 return NDO_ERROR;
                         }
@@ -1220,9 +1223,11 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ndo2db_idi *
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X7"), (big_uint *) data[6])) {
                                 return NDO_ERROR;
                         }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
-                                return NDO_ERROR;
-                        }
+                        if(*(char **) data[7] != NULL) {
+				if(!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
+        	                        return NDO_ERROR;
+	                        }
+			}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_contactnotificationmethoddata)) {

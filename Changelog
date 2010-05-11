@@ -52,6 +52,7 @@ FIXES
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
 * idoutils: fix postgres wrong type in service_object_id
 * idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though
+* idoutils: fix for oracle when binding a NULL value on contactnotificationmethods
 
 
 1.0.1 - 03/03/2010
