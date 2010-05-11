@@ -723,12 +723,6 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 		if(input[0]=='\t')
 			input++;
 
-#ifdef REMOVED_022008
-		/* skip blank lines and comments */
-		if(input[0]=='#' || input[0]=='\n' || input[0]=='\x0')
-			continue;
-#endif
-
 		strip(input);
 
 		if(!strcmp(input,"service {"))
@@ -1065,12 +1059,6 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 
 		else if(data_type!=XRDDEFAULT_NO_DATA){
 
-#ifdef REMOVED_022008
-			var=strtok(input,"=");
-			val=strtok(NULL,"\n");
-			if(val==NULL)
-				continue;
-#endif
 			/* slightly faster than strtok () */
 			var=input;
 			if((val=strchr(input,'='))==NULL)

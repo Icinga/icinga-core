@@ -19,6 +19,7 @@ FIXES
 * core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)
 * core: minor cleanups to icingastats.c (Eric Sesterhenn)
 * core: minor cleanups to cgiutils.c (Eric Sestersenn)
+* core: remove dead code (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)

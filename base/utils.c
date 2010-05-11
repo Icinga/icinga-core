@@ -3054,20 +3054,6 @@ int contains_illegal_object_chars(char *name){
 
 		ch=(int)name[x];
 
-		/* illegal ASCII characters */
-		/* REMOVED 09/26/07 to allow for multi-byte asian characters */
-		/*
-		if(ch<32 || ch==127)
-			return TRUE;
-		*/
-
-		/* REMOVED 3/11/05 to allow for non-english spellings, etc. */
-		/* illegal extended ASCII characters */
-		/*
-		if(ch>=166)
-			return TRUE;
-		*/
-
 		/* illegal user-specified characters */
 		if(illegal_object_chars!=NULL)
 			for(y=0;illegal_object_chars[y];y++)
@@ -3157,24 +3143,6 @@ char *my_strsep (char **stringp, const char *delim){
 
 	return begin;
 	}
-
-
-#ifdef REMOVED_10182007
-/* my wrapper for free() */
-int my_free(void **ptr){
-
-	if(ptr==NULL)
-		return ERROR;
-
-	/* I hate calling free() and then resetting the pointer to NULL, so lets do it together */
-	if(*ptr){
-		free(*ptr);
-		*ptr=NULL;
-	        }
-
-	return OK;
-        }
-#endif
 
 
 /* escapes newlines in a string */
