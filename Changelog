@@ -31,6 +31,8 @@ FIXES
 * core: cgi/cmd.c: Squelch warning about empty gnu_printf format string  (Andreas Ericsson)
 * core: more linker tricks and less #ifdef's - log_debug_info() stubbed (Andreas Ericsson)
 * core: common/objects.c: Use calloc() instead of malloc() + manual NULL'ing (Andreas Ericsson)
+* core: macros: Protect against typos in macro names (Andreas Ericsson)
+* core: macros: Add NOTIFICATIONISESCALATED to the list of macro names (Marc Powell)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
