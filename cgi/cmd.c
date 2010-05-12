@@ -1918,11 +1918,13 @@ static int cmd_submitf(int id, const char *fmt, ...){
 	if (len < 0)
 		return ERROR;
 
-	va_start(ap, fmt);
-	len2 = vsnprintf(&cmd[len], sizeof(cmd) - len - 1, fmt, ap);
-	va_end(ap);
-	if (len2 < 0)
-		return ERROR;
+	if(fmt) {
+		va_start(ap, fmt);
+		len2 = vsnprintf(&cmd[len], sizeof(cmd) - len - 1, fmt, ap);
+		va_end(ap);
+		if (len2 < 0)
+			return ERROR;
+	}
 
 	return write_command_to_file(cmd);
 	}
@@ -1985,7 +1987,7 @@ int commit_command(int cmd){
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		result = cmd_submitf(cmd,"");
+		result = cmd_submitf(cmd,NULL);
 		break;
 
 		/** simple host commands **/
