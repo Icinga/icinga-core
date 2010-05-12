@@ -1636,7 +1636,7 @@ service *add_service(char *host_name, char *description, char *display_name, cha
 	new_service->notify_on_recovery=(notify_recovery>0)?TRUE:FALSE;
 	new_service->notify_on_flapping=(notify_flapping>0)?TRUE:FALSE;
 	new_service->notify_on_downtime=(notify_downtime>0)?TRUE:FALSE;
-	new_service->is_volatile=(is_volatile>0)?TRUE:FALSE;
+	new_service->is_volatile=(is_volatile>0)?((is_volatile==2)?VOLATILE_WITH_RENOTIFICATION_INTERVAL:TRUE):FALSE;
 	new_service->flap_detection_enabled=(flap_detection_enabled>0)?TRUE:FALSE;
 	new_service->low_flap_threshold=low_flap_threshold;
 	new_service->high_flap_threshold=high_flap_threshold;

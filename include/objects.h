@@ -66,6 +66,12 @@
 #define HOSTESCALATION_SKIPLIST                10
 #define SERVICEESCALATION_SKIPLIST             11
 
+/****************** DEFINITIONS *******************/
+/*#define VOLATILE_FALSE 0 - uses FALSE*/
+/*#define VOLATILE_TRUE  1 - uses TRUE */
+#define VOLATILE_WITH_RENOTIFICATION_INTERVAL 2
+
+
 /******** escalation condition connectors ******/
 #define EC_CONNECTOR_NO                   0
 #define EC_CONNECTOR_OR                   1

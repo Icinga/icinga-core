@@ -1246,7 +1246,7 @@ void display_services(void){
 
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->parallelize==TRUE)?"Yes":"No");
 
-		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->is_volatile==TRUE)?"Yes":"No");
+		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->is_volatile==FALSE)?"Yes":"No");
 
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->obsess_over_service==TRUE)?"Yes":"No");
 

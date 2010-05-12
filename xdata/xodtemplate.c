@@ -3893,7 +3893,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			temp_service->have_parallelize_check=TRUE;
 		        }
 		else if(!strcmp(variable,"is_volatile")){
-			temp_service->is_volatile=(atoi(value)>0)?TRUE:FALSE;
+			temp_service->is_volatile=(atoi(value)>0)?((atoi(value)==2)?VOLATILE_WITH_RENOTIFICATION_INTERVAL:TRUE):FALSE;
 			temp_service->have_is_volatile=TRUE;
 		        }
 		else if(!strcmp(variable,"obsess_over_service")){

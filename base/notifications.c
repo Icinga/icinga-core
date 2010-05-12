@@ -513,10 +513,12 @@ int check_service_notification_viability(service *svc, int type, int options){
 	        }
 	
 	/* don't notify if we haven't waited long enough since the last time (and the service is not marked as being volatile) */
-	if((current_time < svc->next_notification) && svc->is_volatile==FALSE){
-		log_debug_info(DEBUGL_NOTIFICATIONS,1,"We haven't waited long enough to re-notify contacts about this service.\n");
-		log_debug_info(DEBUGL_NOTIFICATIONS,1,"Next valid notification time: %s",ctime(&svc->next_notification));
-		return ERROR;
+	if((current_time < svc->next_notification)){
+		if (svc->is_volatile==FALSE || svc->is_volatile==VOLATILE_WITH_RENOTIFICATION_INTERVAL) {
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"We haven't waited long enough to re-notify contacts about this service.\n");
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"Next valid notification time: %s",ctime(&svc->next_notification));
+			return ERROR;
+			}
 	        }
 
 	/* if this service is currently in a scheduled downtime period, don't send the notification */
