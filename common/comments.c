@@ -198,10 +198,15 @@ int delete_comment(int type, unsigned long comment_id){
 		last_hash=NULL;
 		for(this_hash=comment_hashlist[hashslot];this_hash;this_hash=this_hash->nexthash){
 			if(this_hash==this_comment){
-				if(last_hash)
+				if(last_hash){
 					last_hash->nexthash=this_hash->nexthash;
-				else
-					comment_hashlist[hashslot]=NULL;
+				} else {
+					if (this_hash->nexthash){
+						comment_hashlist[hashslot]=this_hash->nexthash;
+					} else {
+						comment_hashlist[hashslot]=NULL;
+					}
+				}
 				break;
 			        }
 			last_hash=this_hash;
