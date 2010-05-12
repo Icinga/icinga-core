@@ -44,6 +44,7 @@ FIXES
 * core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
 * core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)
 * core: enable compiler flag -Wall by default (base/cgi/common/idoutils)
+* core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
