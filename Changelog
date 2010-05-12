@@ -23,6 +23,7 @@ FIXES
 * core: introduce common/shared.c and include/shared.h (Andreas Ericsson)
 * core: move cgiutils.h compile time option macros to config.h (Andreas Ericsson)
 * core: icinga.c: remove conditional main() configuration (Andreas Ericsson)
+* core: icinga.c: replace asprintf() + write_to_logs_and_console() with logit() (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
