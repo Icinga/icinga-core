@@ -23,22 +23,13 @@
 #ifndef _CGIUTILS_H
 #define _CGIUTILS_H
 
+#include "config.h"
 #include "objects.h"
 #include "cgiauth.h"
 
 #ifdef __cplusplus
 extern "C" { 
 #endif
-
-/* should we compile and use the statusmap CGI? */
-#undef USE_STATUSMAP
-/* should we compile and use the statuswrl CGI? */
-#undef USE_STATUSWRL
-/* should we compile and use the trends CGI? */
-#undef USE_TRENDS
-/* should we compile and use the histogram CGI? */
-#undef USE_HISTOGRAM
-
 
 /**************************** CGI REFRESH RATE ******************************/
 
