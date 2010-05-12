@@ -244,8 +244,11 @@ int neb_load_module(nebmodule *mod){
 		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Could not delete temporary file '%s' used for module '%s'.  The module will be unloaded: %s\n",output_file,mod->filename,strerror(errno));
 		neb_unload_module(mod,NEBMODULE_FORCE_UNLOAD,NEBMODULE_ERROR_API_VERSION);
 
+		my_free(output_file);
 		return ERROR;
 		}
+
+	my_free(output_file);
 
 	/* find module API version */
 #ifdef USE_LTDL

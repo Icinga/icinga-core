@@ -195,7 +195,8 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 				*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(temp_buffer)+3);
 				strcat(*output_buffer,"$");
 				strcat(*output_buffer,temp_buffer);
-				strcat(*output_buffer,"$");
+				if (buf_ptr!=NULL)
+					strcat(*output_buffer,"$");
 				}
 
 			/* insert macro */

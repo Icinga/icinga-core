@@ -4,7 +4,7 @@
 <title>Icinga with IDOUtils Quickstart</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart-icinga.html" title="Icinga Quickstart">
 <link rel="next" href="upgrading.html" title="Upgrading (to) Icinga">
@@ -95,7 +95,15 @@
 
     <p><span class="bold"><strong>Oracle Database Support</strong></span></p>
 
-    <p>If you want Oracle as RDBM you'll need to install ocilib instead to libdbi. Get it from http://orclib.sourceforge.net/ and point configure to your Oracle
+    <p>If you want Oracle as RDBM you'll need to install ocilib instead to libdbi. </p>
+<div class="itemizedlist">
+<p>If you install from package, make sure the libraries are within PATH. Otherwise you need to set the Oracle libs during Icinga IDOUtils install using e.g. --with-oracle-lib=/path/to/instantclient</p>
+<ul class="itemizedlist" type="disc">
+<li class="listitem">Oracle libraries and SDK (e.g. Instant Client)</li>
+<li class="listitem">ocilib instead to libdbi</li>
+</ul>
+</div>
+<p>Get it from http://orclib.sourceforge.net/ and point configure to your Oracle
     libraries and header files e.g. from the Oracle instant client:</p>
 
     <pre class="programlisting"> # ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include --with-oracle-lib-path=/path/to/instantclient/
@@ -201,6 +209,13 @@
     <pre class="programlisting"> # /usr/sbin/groupadd icinga-cmd
  # /usr/sbin/usermod -a -G icinga-cmd icinga
  # /usr/sbin/usermod -a -G icinga-cmd www-data (or www, wwwrun)</pre>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">Some usermod-versions (e.g in OpenSuSE 11 and SLES 11, resp.) are lacking the option -a. In this case please omit the option -a.</td></tr>
+</table></div>
 
     <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
 
@@ -211,15 +226,15 @@
     <p>Either fetch the actual icinga-core snapshot from Icinga GIT </p>
 <pre class="programlisting"> # git clone git://git.icinga.org/icinga-core.git  </pre>
 <p>
-    or from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> . Don't forget to download the <a class="link" href="http://www.nagios.org/" target="_top">Nagios Plugins</a></p>
+    or from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> . Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a></p>
 
     <p><span class="bold"><strong>Compile and Install Icinga with IDOUtils</strong></span></p>
 
     <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
     <pre class="programlisting"> # cd /usr/src/ 
- # tar xvzf icinga-1.0 Stable.tar.gz 
- # cd icinga-1.0 Stable</pre>
+ # tar xvzf icinga-1.0.1.tar.gz 
+ # cd icinga-1.0.1</pre>
 
     <p>Run the Icinga configure script and enable IDOUtils. You will get help by using the --help flag:</p>
 
@@ -230,11 +245,10 @@
     <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
 
     <p><span class="bold"><strong>With Oracle Database Support:</strong></span></p>
-
     <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle </pre>
-<p> If you didn't install
-    ocilib to the default path (/usr/local) you can point configure to the lib/inc directories:</p>
-
+<p> If you didn't install Oracle libraries to PATH, you can point configure there:</p>
+<pre class="programlisting"># ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle --with-oracle-lib=/path/to/instantclient</pre>
+<p>If you didn't install ocilib to the default path (/usr/local) you can point configure to the lib/inc directories:</p>
     <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle --with-ocilib-lib=/path/to/ocilib/lib --with-ocilib-inc=/path/to/ocilib/include</pre>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -318,7 +332,7 @@
 
     <p>Import database scheme for MySQL:</p>
 
-    <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db 
+    <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db/mysql
  # mysql -u root -p icinga &lt; mysql.sql</pre>
 
     <p>Edit the DB config file to customize IDOUtils</p>
@@ -368,7 +382,7 @@
 
     <pre class="programlisting"> # /etc/init.d/postgresql-8.x reload</pre>
 
-    <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db
+    <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db/pgsql
  # psql -U icinga -d icinga &lt; pgsql.sql</pre>
 
     <p>Edit the DB config file to customize IDOUtils</p>
@@ -382,7 +396,7 @@
     <p><span class="bold"><strong>Oracle:</strong></span></p>
 
     <p>Create a database schema and username/password (refer to the Oracle documentation at http://www.oracle.com or consult your DBA). Import the database
-    scheme with sqlplus (or your preferred method). Copy module/idoutils/db/oracle.sql to $ORACLE_HOME</p>
+    scheme with sqlplus (or your preferred method). Copy module/idoutils/db/oracle/oracle.sql to $ORACLE_HOME</p>
 
     <pre class="programlisting"> # su - oracle
  $ sqlplus dbuser/dbpass
@@ -532,7 +546,7 @@
     want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a> about "Monitoring
     ..."</p>
 
-    <a class="indexterm" name="id5190737"></a>
+    <a class="indexterm" name="id4702812"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -551,6 +565,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

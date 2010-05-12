@@ -1357,6 +1357,7 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		new_serviceescalation->have_escalation_options=FALSE;
 		new_serviceescalation->has_been_resolved=FALSE;
 		new_serviceescalation->register_object=TRUE;
+                new_serviceescalation->condition=NULL;
 
 		new_serviceescalation->_config_file=config_file;
 		new_serviceescalation->_start_line=start_line;
@@ -1861,6 +1862,7 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		new_hostescalation->have_escalation_options=FALSE;
 		new_hostescalation->has_been_resolved=FALSE;
 		new_hostescalation->register_object=TRUE;
+                new_hostescalation->condition=NULL;
 
 		new_hostescalation->_config_file=config_file;
 		new_hostescalation->_start_line=start_line;
@@ -3028,6 +3030,20 @@ int xodtemplate_add_object_property(char *input, int options){
 			        }
 			temp_serviceescalation->have_escalation_options=TRUE;
 		        }
+                else if(!strcmp(variable,"escalation_condition")){
+                        /* create new escalation_condition (head of the condition list) */
+                        xodtemplate_escalation_condition *temp_condition=(xodtemplate_escalation_condition *)malloc(sizeof(xodtemplate_escalation_condition));
+                        if (xodtemplate_create_escalation_condition(value, temp_condition)==OK) {
+                                temp_serviceescalation->condition=temp_condition;
+                        }
+                        else {
+                                        my_free(temp_condition);
+#ifdef NSCORE
+                                        logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not create escalation condition for serviceescalation .\n");
+#endif
+                                        return ERROR;
+                        }       
+                }
 		else if(!strcmp(variable,"register"))
 			temp_serviceescalation->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
@@ -4473,6 +4489,19 @@ int xodtemplate_add_object_property(char *input, int options){
 			        }
 			temp_hostescalation->have_escalation_options=TRUE;
 		        }
+                else if(!strcmp(variable,"escalation_condition")){
+                        xodtemplate_escalation_condition *temp_condition=(xodtemplate_escalation_condition *)malloc(sizeof(xodtemplate_escalation_condition));
+                        if (xodtemplate_create_escalation_condition(value, temp_condition)==OK) {
+                                temp_hostescalation->condition=temp_condition;
+                        }
+                        else {
+                                my_free(temp_condition);
+#ifdef NSCORE
+                                logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not create escalation condition for hostescalation .\n");
+#endif
+                                return ERROR;
+                        }
+                }
 		else if(!strcmp(variable,"register"))
 			temp_hostescalation->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
@@ -6364,6 +6393,9 @@ int xodtemplate_duplicate_service(xodtemplate_service *temp_service, char *host_
 /* duplicates a host escalation definition (with a new host name) */
 int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostescalation, char *host_name){
 	xodtemplate_hostescalation *new_hostescalation=NULL;
+        xodtemplate_escalation_condition *temp_escalationcondition=NULL;
+        xodtemplate_escalation_condition *new_escalationcondition=NULL;
+        xodtemplate_escalation_condition *new_escalationcondition_tail=NULL;
 	int error=FALSE;
 
 
@@ -6430,6 +6462,55 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
 	new_hostescalation->escalate_on_recovery=temp_hostescalation->escalate_on_recovery;
 	new_hostescalation->have_escalation_options=temp_hostescalation->have_escalation_options;
 
+        
+        /* duplicate escalation conditions */
+        new_hostescalation->condition=NULL;
+        for(temp_escalationcondition=temp_hostescalation->condition;temp_escalationcondition!=NULL;temp_escalationcondition=temp_escalationcondition->next){
+                /* skip escalation conditions without enough data */
+                if(temp_escalationcondition->host_name==NULL)
+                        continue;
+                
+                /* allocate memory for a new escalation condition */
+                new_escalationcondition=(xodtemplate_escalation_condition *)malloc(sizeof(xodtemplate_escalation_condition));
+                if(new_escalationcondition==NULL)
+                        return ERROR;
+                
+                /* string defaults */
+                new_escalationcondition->host_name=NULL;
+                new_escalationcondition->service_description=NULL;
+                
+                /* allocate memory for and copy string members of serviceescalation definition */
+                if(temp_escalationcondition->host_name!=NULL && (new_escalationcondition->host_name=(char *)strdup(temp_escalationcondition->host_name))==NULL)
+                        error=TRUE;
+                if(temp_escalationcondition->service_description!=NULL && (new_escalationcondition->service_description=(char *)strdup(temp_escalationcondition->service_description))==NULL)
+                        error=TRUE;
+                
+                if(error==TRUE){
+                        my_free(new_escalationcondition->host_name);
+                        my_free(new_escalationcondition->service_description);
+                        my_free(new_escalationcondition);
+                        return ERROR;
+                }
+                
+                /* duplicate non-string members */
+                new_escalationcondition->escalate_on_critical=temp_escalationcondition->escalate_on_critical;
+                new_escalationcondition->escalate_on_down=temp_escalationcondition->escalate_on_down;
+                new_escalationcondition->escalate_on_ok=temp_escalationcondition->escalate_on_ok;
+                new_escalationcondition->escalate_on_unknown=temp_escalationcondition->escalate_on_unknown;
+                new_escalationcondition->escalate_on_unreachable=temp_escalationcondition->escalate_on_unreachable;
+                new_escalationcondition->escalate_on_warning=temp_escalationcondition->escalate_on_warning;
+                
+                /* first escalation condition is head of the condition list */
+                if(new_hostescalation->condition==NULL){
+                        new_hostescalation->condition=new_escalationcondition;
+                }
+                /* add new escalation condition to tail of list */
+                else {
+                        new_escalationcondition_tail->next=new_escalationcondition;
+                }
+                new_escalationcondition_tail=new_escalationcondition;           
+        }
+
 	/* add new hostescalation to head of list in memory */
 	new_hostescalation->next=xodtemplate_hostescalation_list;
 	xodtemplate_hostescalation_list=new_hostescalation;
@@ -6442,6 +6523,9 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
 /* duplicates a service escalation definition (with a new host name and/or service description) */
 int xodtemplate_duplicate_serviceescalation(xodtemplate_serviceescalation *temp_serviceescalation, char *host_name, char *svc_description){
 	xodtemplate_serviceescalation *new_serviceescalation=NULL;
+        xodtemplate_escalation_condition *temp_escalationcondition=NULL;
+        xodtemplate_escalation_condition *new_escalationcondition=NULL;
+        xodtemplate_escalation_condition *new_escalationcondition_tail=NULL;
 	int error=FALSE;
 
 	/* allocate memory for a new service escalation definition */
@@ -6514,6 +6598,56 @@ int xodtemplate_duplicate_serviceescalation(xodtemplate_serviceescalation *temp_
 	new_serviceescalation->escalate_on_critical=temp_serviceescalation->escalate_on_critical;
 	new_serviceescalation->escalate_on_recovery=temp_serviceescalation->escalate_on_recovery;
 	new_serviceescalation->have_escalation_options=temp_serviceescalation->have_escalation_options;
+
+        /* duplicate escalation conditions */
+        new_serviceescalation->condition=NULL;
+        for(temp_escalationcondition=temp_serviceescalation->condition;temp_escalationcondition!=NULL;temp_escalationcondition=temp_escalationcondition->next){
+ 
+                /* skip escalation conditions without enough data */
+                if(temp_escalationcondition->host_name==NULL)
+                        continue;
+ 
+                /* allocate memory for a new escalation condition */
+                new_escalationcondition=(xodtemplate_escalation_condition *)malloc(sizeof(xodtemplate_escalation_condition));
+                if(new_escalationcondition==NULL)
+                        return ERROR;
+ 
+                /* string defaults */
+                new_escalationcondition->host_name=NULL;
+                new_escalationcondition->service_description=NULL;
+ 
+                /* allocate memory for and copy string members of serviceescalation definition */
+                if(temp_escalationcondition->host_name!=NULL && (new_escalationcondition->host_name=(char *)strdup(temp_escalationcondition->host_name))==NULL)
+                        error=TRUE;
+                if(temp_escalationcondition->service_description!=NULL && (new_escalationcondition->service_description=(char *)strdup(temp_escalationcondition->service_description))==NULL)
+                        error=TRUE;
+ 
+                if(error==TRUE){
+                        my_free(new_escalationcondition->host_name);
+                        my_free(new_escalationcondition->service_description);
+                        my_free(new_escalationcondition);
+                        return ERROR;
+                }
+                
+                /* duplicate non-string members */
+                new_escalationcondition->escalate_on_critical=temp_escalationcondition->escalate_on_critical;
+                new_escalationcondition->escalate_on_down=temp_escalationcondition->escalate_on_down;
+                new_escalationcondition->escalate_on_ok=temp_escalationcondition->escalate_on_ok;
+                new_escalationcondition->escalate_on_unknown=temp_escalationcondition->escalate_on_unknown;
+                new_escalationcondition->escalate_on_unreachable=temp_escalationcondition->escalate_on_unreachable;
+                new_escalationcondition->escalate_on_warning=temp_escalationcondition->escalate_on_warning;
+                
+                /* first escalation condition is head of the condition list */
+                if(new_serviceescalation->condition==NULL){
+                        new_serviceescalation->condition=new_escalationcondition;
+                }
+                /* add new escalation condition to tail of list */
+                else {
+                        new_escalationcondition_tail->next=new_escalationcondition;
+                }
+                new_escalationcondition_tail=new_escalationcondition;
+        }
+
 	
 	/* add new serviceescalation to head of list in memory */
 	new_serviceescalation->next=xodtemplate_serviceescalation_list;
@@ -8684,7 +8818,7 @@ int xodtemplate_recombobulate_contactgroups(void){
 
 		/* preprocess the contactgroup list, to change "grp1,grp2,grp3,!grp2" into "grp1,grp3" */
 		if((contactgroup_names=xodtemplate_process_contactgroup_names(temp_contact->contact_groups,temp_contact->_config_file,temp_contact->_start_line))==NULL)
-			continue;
+			return ERROR;
 
 		/* process the list of contactgroups */
 		for(temp_ptr=strtok(contactgroup_names,",");temp_ptr;temp_ptr=strtok(NULL,",")){
@@ -10373,7 +10507,35 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
 				}
 			}
 		}
-
+ 
+        /* add conditions */
+        new_serviceescalation->condition=NULL;
+        if(this_serviceescalation->condition!=NULL){
+                escalation_condition *last_condition=NULL;
+                xodtemplate_escalation_condition *temp_condition=this_serviceescalation->condition;
+                while(temp_condition!=NULL){
+                                last_condition=add_serviceescalation_condition(new_serviceescalation, last_condition, 
+                                        temp_condition->host_name,
+                                        temp_condition->service_description,
+                                        temp_condition->connector,
+                                        temp_condition->escalate_on_down,
+                                        temp_condition->escalate_on_unreachable,
+                                        temp_condition->escalate_on_warning,
+                                        temp_condition->escalate_on_unknown,
+                                        temp_condition->escalate_on_critical,
+                                        temp_condition->escalate_on_ok);
+                                       
+                        temp_condition=temp_condition->next;
+                       
+                        if(last_condition==NULL){
+#ifdef NSCORE
+                                logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add condition to service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_serviceescalation->_config_file),this_serviceescalation->_start_line);
+#endif
+                                return ERROR;
+                        }
+                }
+        }
+   
 	return OK;
         }
 
@@ -10715,6 +10877,34 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
 				}
 			}
 	        }
+ 
+        /* add conditions */
+        new_hostescalation->condition=NULL;
+        if(this_hostescalation->condition!=NULL){
+                escalation_condition *last_condition=NULL;
+                xodtemplate_escalation_condition *temp_condition=this_hostescalation->condition;
+                while(temp_condition!=NULL){
+                                last_condition=add_hostescalation_condition(new_hostescalation, last_condition, 
+                                        temp_condition->host_name,
+                                        temp_condition->service_description,
+                                        temp_condition->connector,
+                                        temp_condition->escalate_on_down,
+                                        temp_condition->escalate_on_unreachable,
+                                        temp_condition->escalate_on_warning,
+                                        temp_condition->escalate_on_unknown,
+                                        temp_condition->escalate_on_critical,
+                                        temp_condition->escalate_on_ok);
+                       
+                        temp_condition=temp_condition->next;
+                       
+                        if(last_condition==NULL){
+#ifdef NSCORE
+                                logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add condition to host escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostescalation->_config_file),this_hostescalation->_start_line);
+#endif
+                                return ERROR;
+                        }
+                }
+        }                       
 
 	return OK;
         }
@@ -12941,6 +13131,8 @@ int xodtemplate_free_memory(void){
 	xodtemplate_serviceextinfo *next_serviceextinfo=NULL;
 	xodtemplate_customvariablesmember *this_customvariablesmember=NULL;
 	xodtemplate_customvariablesmember *next_customvariablesmember=NULL;
+        xodtemplate_escalation_condition *this_escalation_condition=NULL;
+        xodtemplate_escalation_condition *next_escalation_condition=NULL;
 	register int x=0;
 
 
@@ -13048,6 +13240,12 @@ int xodtemplate_free_memory(void){
 	/* free memory allocated to serviceescalation list */
 	for(this_serviceescalation=xodtemplate_serviceescalation_list;this_serviceescalation!=NULL;this_serviceescalation=next_serviceescalation){
 		next_serviceescalation=this_serviceescalation->next;
+                for(this_escalation_condition=this_serviceescalation->condition;this_escalation_condition!=NULL;this_escalation_condition=next_escalation_condition){
+                        next_escalation_condition=this_escalation_condition->next;
+                        my_free(this_escalation_condition->host_name);
+                        my_free(this_escalation_condition->service_description);
+                        my_free(this_escalation_condition);
+                }
 		my_free(this_serviceescalation->template);
 		my_free(this_serviceescalation->name);
 		my_free(this_serviceescalation->servicegroup_name);
@@ -13189,6 +13387,12 @@ int xodtemplate_free_memory(void){
 	/* free memory allocated to hostescalation list */
 	for(this_hostescalation=xodtemplate_hostescalation_list;this_hostescalation!=NULL;this_hostescalation=next_hostescalation){
 		next_hostescalation=this_hostescalation->next;
+                for(this_escalation_condition=this_hostescalation->condition;this_escalation_condition!=NULL;this_escalation_condition=next_escalation_condition){
+                        next_escalation_condition=this_escalation_condition->next;
+                        my_free(this_escalation_condition->host_name);
+                        my_free(this_escalation_condition->service_description);
+                        my_free(this_escalation_condition);
+                }
 		my_free(this_hostescalation->template);
 		my_free(this_hostescalation->name);
 		my_free(this_hostescalation->hostgroup_name);
@@ -13524,6 +13728,7 @@ int xodtemplate_expand_contactgroups(xodtemplate_memberlist **list, xodtemplate_
 		if(found_match==FALSE){
 #ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any contactgroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
+			return ERROR;
 #endif
 			break;
 	                }
@@ -14378,7 +14583,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 		        }
 
 		/* we didn't find a match */
-		if(found_match==FALSE){
+		if(found_match==FALSE && reject_item==FALSE){
 #ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find a service matching host name '%s' and description '%s' (config file '%s', starting on line %d)\n",host_name,temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
 #endif
@@ -14390,7 +14595,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 		regfree(&preg2);
 	my_free(service_names);
 
-	if(found_match==FALSE)
+	if(found_match==FALSE && reject_item==FALSE)
 		return ERROR;
 
 	return OK;
@@ -14617,6 +14822,7 @@ int xodtemplate_get_hostgroup_names(xodtemplate_memberlist **list, xodtemplate_m
 		if(found_match==FALSE){
 #ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any hostgroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
+			return ERROR;
 #endif
 			break;
 	                }
@@ -15172,4 +15378,106 @@ int xodtemplate_clean_additive_strings(void){
 
 #endif
 
+int xodtemplate_create_escalation_condition(char *value, xodtemplate_escalation_condition *condition_head) {
+        int result = OK;
+        int count = 0;
+        char *temp_ptr;
+        xodtemplate_escalation_condition *condition_last=NULL;
+        
+        /* for each condition split first token : host / service */
+        for(temp_ptr=strtok(value," ");temp_ptr;temp_ptr=strtok(NULL," ")){
+                xodtemplate_escalation_condition *new_condition=NULL;
+                if (count==0) {
+                        /* first condition will be the head of the condition list */
+                        new_condition=condition_head;
+                        count++;
+                } else {
+                        /* further conditions will be appended to the tail, create new condition struct */
+                        new_condition=(xodtemplate_escalation_condition *)malloc(sizeof(xodtemplate_escalation_condition));
+                }
+               
+                /* set default values */
+                new_condition->host_name=NULL;
+                new_condition->service_description=NULL;
+               
+               
+                new_condition->connector=EC_CONNECTOR_NO;
+                new_condition->escalate_on_down=FALSE;
+                new_condition->escalate_on_unreachable=FALSE;
+                new_condition->escalate_on_warning=FALSE;
+                new_condition->escalate_on_unknown=FALSE;
+                new_condition->escalate_on_critical=FALSE;
+                new_condition->escalate_on_ok=FALSE;
+               
+                new_condition->next=NULL;
+               
+                /* if it is a host condition */
+                if(!strcmp(temp_ptr,"host")) {
+                        /* split and save host_name */
+                        if ((temp_ptr=strtok(NULL,"="))==NULL
+                                || (new_condition->host_name=(char *)strdup(temp_ptr))==NULL) {
+                                        result = ERROR;
+                        }
+                }
+               
+                /* if it is a service condition */
+                else if(!strcmp(temp_ptr,"service")) {
+                        /* split and save host_name*/
+                        if ((temp_ptr=strtok(NULL,"."))==NULL
+                               || (new_condition->host_name=(char *)strdup(temp_ptr))==NULL) {
+                                        result=ERROR;
+                        }
+                        /* split and save service_description */
+                        if ((temp_ptr=strtok(NULL,"="))==NULL
+                                || (new_condition->service_description=(char *)strdup(temp_ptr))==NULL) {
+                                        result=ERROR;
+                        }
+                }
+                       
+                /* here should be options separated by comma [d,u,w,c,o] */
+                for(temp_ptr=strtok(NULL,", ");temp_ptr;temp_ptr=strtok(NULL,", ")){
+                        if(!strcmp(temp_ptr,"d"))
+                                new_condition->escalate_on_down=TRUE;
+                        else if(!strcmp(temp_ptr,"w"))
+                                new_condition->escalate_on_warning=TRUE;
+                        else if(!strcmp(temp_ptr,"c"))
+                                new_condition->escalate_on_critical=TRUE;
+                        else if(!strcmp(temp_ptr,"o"))
+                                new_condition->escalate_on_ok=TRUE;
+                        else if(!strcmp(temp_ptr,"u")) {
+                                new_condition->escalate_on_unreachable=TRUE;
+                                new_condition->escalate_on_unknown=TRUE;
+                        }
+                        else if(!strcmp(temp_ptr,"|")) {
+                                new_condition->connector= EC_CONNECTOR_OR;
+                                break; 
+                        }
+                        else if(!strcmp(temp_ptr,"&")) {
+                                new_condition->connector= EC_CONNECTOR_AND;
+                                break;
+                        }
+                        else {  // no other chars alowed, something is wrong
+#ifdef NSCORE
+                                logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add escalation condition ( only d,w,c,o,u,&,| are alowed after = ).\n");
+#endif                         
+                                result=ERROR;
+                                break;
+                        }
+                }
+               
+                /* handle errors */
+                if(result==ERROR){
+                        my_free(new_condition->host_name);
+                        my_free(new_condition->service_description);
+                        my_free(new_condition);
+                        return result;
+                }
+               
+                /* add new condition to the tail of the condition list */
+                if (condition_last!=NULL)
+                        condition_last->next=new_condition;
+                condition_last=new_condition;
+        }
+        return result;
+}
 

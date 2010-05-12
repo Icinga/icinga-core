@@ -4,7 +4,7 @@
 <title>Object Definitions</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0 Stable Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="configobject.html" title="Object Configuration Overview">
 <link rel="next" href="customobjectvars.html" title="Custom Object Variables">
@@ -2476,6 +2476,11 @@
 <td><p>[w,u,c,r]</p></td>
 </tr>
 <tr>
+<td><p></p></td>
+<td><p>escalation_condition</p></td>
+<td><p>&lt;condition&gt; ( [ &amp; / | ] &lt;condition&gt; )*</p></td>
+</tr>
+<tr>
 <td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
@@ -2578,6 +2583,10 @@
           <span class="bold"><strong>w</strong></span> = escalate on a WARNING state, <span class="bold"><strong>u</strong></span> = escalate on an
           UNKNOWN state, and <span class="bold"><strong>c</strong></span> = escalate on a CRITICAL state. Example: If you specify <span class="bold"><strong>w</strong></span> in this field, the escalation will only be used if the service is in a WARNING
           state.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
+<td><p>This directive is completely optional (and only available starting with Icinga 1.0.1). Details can be found <a class="link" href="escalation_condition.html" title="Escalation Condition">here</a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3304,36 +3313,36 @@
 </tbody>
 </table>
   </div>
-  <a class="indexterm" name="id5226423"></a>
-  <a class="indexterm" name="id5226430"></a>
-  <a class="indexterm" name="id5226440"></a>
-  <a class="indexterm" name="id5226445"></a>
-  <a class="indexterm" name="id5226453"></a>
-  <a class="indexterm" name="id5226458"></a>
-  <a class="indexterm" name="id5226467"></a>
-  <a class="indexterm" name="id5226472"></a>
-  <a class="indexterm" name="id5226480"></a>
-  <a class="indexterm" name="id5226485"></a>
-  <a class="indexterm" name="id5226494"></a>
-  <a class="indexterm" name="id5226499"></a>
-  <a class="indexterm" name="id5226507"></a>
-  <a class="indexterm" name="id5226513"></a>
-  <a class="indexterm" name="id5226521"></a>
-  <a class="indexterm" name="id5226526"></a>
-  <a class="indexterm" name="id5226535"></a>
-  <a class="indexterm" name="id5226541"></a>
-  <a class="indexterm" name="id5226551"></a>
-  <a class="indexterm" name="id5226542"></a>
-  <a class="indexterm" name="id5226570"></a>
-  <a class="indexterm" name="id5226578"></a>
-  <a class="indexterm" name="id5226588"></a>
-  <a class="indexterm" name="id5226598"></a>
-  <a class="indexterm" name="id5226590"></a>
-  <a class="indexterm" name="id5226600"></a>
-  <a class="indexterm" name="id5226627"></a>
-  <a class="indexterm" name="id5226628"></a>
-  <a class="indexterm" name="id5226618"></a>
-  <a class="indexterm" name="id5226657"></a>
+  <a class="indexterm" name="id4738754"></a>
+  <a class="indexterm" name="id4738769"></a>
+  <a class="indexterm" name="id4738776"></a>
+  <a class="indexterm" name="id4738784"></a>
+  <a class="indexterm" name="id4738725"></a>
+  <a class="indexterm" name="id4738797"></a>
+  <a class="indexterm" name="id4738802"></a>
+  <a class="indexterm" name="id4738811"></a>
+  <a class="indexterm" name="id4738821"></a>
+  <a class="indexterm" name="id4738825"></a>
+  <a class="indexterm" name="id4738835"></a>
+  <a class="indexterm" name="id4738838"></a>
+  <a class="indexterm" name="id4738846"></a>
+  <a class="indexterm" name="id4738851"></a>
+  <a class="indexterm" name="id4738861"></a>
+  <a class="indexterm" name="id4738866"></a>
+  <a class="indexterm" name="id4738876"></a>
+  <a class="indexterm" name="id4738867"></a>
+  <a class="indexterm" name="id4738891"></a>
+  <a class="indexterm" name="id4738899"></a>
+  <a class="indexterm" name="id4738900"></a>
+  <a class="indexterm" name="id4738919"></a>
+  <a class="indexterm" name="id4738910"></a>
+  <a class="indexterm" name="id4738939"></a>
+  <a class="indexterm" name="id4738930"></a>
+  <a class="indexterm" name="id4738959"></a>
+  <a class="indexterm" name="id4738967"></a>
+  <a class="indexterm" name="id4738920"></a>
+  <a class="indexterm" name="id4738986"></a>
+  <a class="indexterm" name="id4738997"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -3352,6 +3361,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

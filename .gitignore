@@ -8,6 +8,7 @@ autom4te.cache
 config.log
 config.status
 daemon-init
+daemon-init-redhat
 rc.ido2db
 /Makefile
 Debug
@@ -15,3 +16,4 @@ Debug
 .project
 .settings
 tags
+*.dSYM

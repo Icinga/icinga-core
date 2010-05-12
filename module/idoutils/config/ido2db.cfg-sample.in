@@ -171,6 +171,12 @@ max_eventhandlers_age=10080
 # Keep external commands for 1 week
 max_externalcommands_age=10080
 
+# Keep logentries for 31 days
+# max_logentries_age=44640
+
+# Keep acknowledgements for 31 days
+# max_acknowledgements_age=44640
+
 
 # ***MORE HISTORICAL***
 

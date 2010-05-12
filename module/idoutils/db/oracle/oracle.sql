@@ -1,8 +1,10 @@
 -- --------------------------------------------------------
 -- oracle.sql
 -- DB definition for Oracle
+-- 
+-- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
 --
--- requires ocilib, oracle (instantclient) libs+sdk  to work
+-- requires ocilib, oracle (instantclient) libs+sdk to work
 -- specify oracle (instantclient) libs+sdk in ocilib configure
 -- ./configure \
 --	--with-oracle-headers-path=/opt/oracle/product/instantclient/instantclient_11_1/sdk/include \
@@ -15,17 +17,28 @@
 -- # sqlplus username/password
 -- SQL> @oracle.sql
 --
+-- Hints: 
+-- * set open_cursors to an appropriate value, not the default 50
+--   http://www.orafaq.com/node/758
+-- * if you are going into performance issues, consider setting commit_write to nowait
+--
+-- Example:
+-- open_cursors=1000
+-- commit_write='batch,nowait'
+--
+--
 -- initial version: 2008-02-20 David Schmidt
--- current version: 2010-02-04 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- current version: 2010-02-10 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 --
 -- -- --------------------------------------------------------
 
 -- set escape character
 SET ESCAPE \
 
---
--- Helper Function to convert from unix timestamp to Oracle Date
---
+-- --------------------------------------------------------
+-- unix timestamp 2 oradate function
+-- --------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION unixts2date( n_seconds   IN    PLS_INTEGER)
         RETURN    DATE
 IS
@@ -49,27 +62,50 @@ EXCEPTION
 END;
 /
 
--- 
--- Cleaning procedures (requires Oracle 11)
--- this is only for testing purposes and not yet used in the src code 
--- CREATE OR REPLACE PROCEDURE clean_table_by_instance
---	( p_table_name IN varchar2, p_id IN number )
---	IS
---	v_cur integer;
--- BEGIN
---	v_cur := dbms_sql.open_cursor;
---	dbms_sql.parse(v_cur, 'delete from '||p_table_name||' WHERE instance_id='||p_id, dbms_sql.native);
---	dbms_output.put_line(dbms_sql.execute(v_cur));
---	dbms_sql.close_cursor(v_cur);
---END; 
---/
+-- --------------------------------------------------------
+-- cleaning procedures
+-- --------------------------------------------------------
+
+-- will be called during startup maintenance
+CREATE OR REPLACE PROCEDURE clean_table_by_instance
+     (p_table_name IN varchar2, p_id IN number )
+     IS
+     	v_stmt_str varchar2(200);
+BEGIN
+	v_stmt_str := 'DELETE FROM '
+	|| p_table_name
+	|| ' WHERE instance_id=' 
+	|| p_id;
+	EXECUTE IMMEDIATE v_stmt_str;
+END;
+/
 
 
--- 
--- Database: icinga
--- 
+-- will be called during periodic maintenance
+CREATE OR REPLACE PROCEDURE clean_table_by_instance_time
+     (p_table_name IN varchar2, p_id IN number, p_field_name IN varchar2, p_time IN number)
+     IS
+        v_stmt_str varchar2(200);
+BEGIN
+        v_stmt_str := 'DELETE FROM '
+        || p_table_name
+        || ' WHERE instance_id='
+        || p_id
+	|| ' AND '
+	|| p_field_name
+	|| '<(SELECT unixts2date('
+	|| p_time
+	|| ') FROM DUAL)';
+        EXECUTE IMMEDIATE v_stmt_str;
+END;
+/
+
+
 
 -- --------------------------------------------------------
+-- database table creation: icinga
+-- --------------------------------------------------------
+
 
 -- 
 -- Table structure for table acknowledgements
@@ -1608,481 +1644,294 @@ CREATE INDEX loge_time_idx on logentries(logentry_time);
 -- triggers/sequences
 -- -----------------------------------------
 
-
-
-CREATE SEQUENCE autoincrement
+CREATE SEQUENCE seq_acknowledgements
    start with 1
    increment by 1
    nomaxvalue;
 
-CREATE TRIGGER acknowledgements
-   before insert on acknowledgements
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_commands
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER commands
-   before insert on commands
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_commenthistory
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER commenthistory
-   before insert on commenthistory
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_comments
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER comments
-   before insert on comments
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_configfiles
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER configfiles
-   before insert on configfiles
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_configfilevariables
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER configfilevariables
-   before insert on configfilevariables
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_conninfo
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER conninfo
-   before insert on conninfo
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contact_addresses
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contact_addresses
-   before insert on contact_addresses
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contact_notifcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contact_notificationcommands
-   before insert on contact_notificationcommands
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contactgroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contactgroup_members
-   before insert on contactgroup_members
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contactgroups
-   before insert on contactgroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contactnotifmethods
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contactnotificationmethods
-   before insert on contactnotificationmethods
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contactnotifications
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contactnotifications
-   before insert on contactnotifications
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contacts
-   before insert on contacts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_contactstatus
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER contactstatus
-   before insert on contactstatus
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_customvariables
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER customvariables
-   before insert on customvariables
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_customvariablestatus
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER customvariablestatus
-   before insert on customvariablestatus
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_downtimehistory
+   start with 1
+   increment by 1
+   nomaxvalue;
 
---CREATE TRIGGER dbversion
---   before insert on dbversion
---   for each row
---   begin
---   select autoincrement.nextval into :new.id from dual;
---   end;
---/
+CREATE SEQUENCE seq_eventhandlers
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER downtimehistory
-   before insert on downtimehistory
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_externalcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER eventhandlers
-   before insert on eventhandlers
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_flappinghistory
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER externalcommands
-   before insert on externalcommands
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_host_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER flappinghistory
-   before insert on flappinghistory
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_host_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER host_contactgroups
-   before insert on host_contactgroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_host_parenthosts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER host_contacts
-   before insert on host_contacts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostchecks
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER host_parenthosts
-   before insert on host_parenthosts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostdependencies
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostchecks
-   before insert on hostchecks
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostesc_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostdependencies
-   before insert on hostdependencies
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostesc_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostescalation_contactgroups
-   before insert on hostescalation_contactgroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostescalations
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostescalation_contacts
-   before insert on hostescalation_contacts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostgroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostescalations
-   before insert on hostescalations
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hostgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostgroup_members
-   before insert on hostgroup_members
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hosts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hostgroups
-   before insert on hostgroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_hoststatus
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hosts
-   before insert on hosts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_instances
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER hoststatus
-   before insert on hoststatus
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_logentries
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER instances
-   before insert on instances
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_notifications
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER logentries
-   before insert on logentries
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_objects
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER notifications
-   before insert on notifications
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_processevents
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER objects
-   before insert on objects
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_programstatus
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER processevents
-   before insert on processevents
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_runtimevariables
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER programstatus
-   before insert on programstatus
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_scheduleddowntime
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER runtimevariables
-   before insert on runtimevariables
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_service_contactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER scheduleddowntime
-   before insert on scheduleddowntime
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_service_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER service_contactgroups
-   before insert on service_contactgroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_servicechecks
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER service_contacts
-   before insert on service_contacts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_servicedependencies
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER servicechecks
-   before insert on servicechecks
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_serviceesccontactgroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER servicedependencies
-   before insert on servicedependencies
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_serviceesc_contacts
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER serviceescalationcontactgroups
-   before insert on serviceescalationcontactgroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_serviceescalations
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER serviceescalation_contacts
-   before insert on serviceescalation_contacts
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_servicegroup_members
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER serviceescalations
-   before insert on serviceescalations
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_servicegroups
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER servicegroup_members
-   before insert on servicegroup_members
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_services
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER servicegroups
-   before insert on servicegroups
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_servicestatus
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER services
-   before insert on services
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_statehistory
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER servicestatus
-   before insert on servicestatus
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_systemcommands
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER statehistory
-   before insert on statehistory
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_timedeventqueue
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER systemcommands
-   before insert on systemcommands
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_timedevents
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER timedeventqueue
-   before insert on timedeventqueue
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_timep_timer
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER timedevents
-   before insert on timedevents
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
+CREATE SEQUENCE seq_timeperiods
+   start with 1
+   increment by 1
+   nomaxvalue;
 
-CREATE TRIGGER timeperiod_timeranges
-   before insert on timeperiod_timeranges
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/
 
-CREATE TRIGGER timeperiods
-   before insert on timeperiods
-   for each row
-   begin
-   select autoincrement.nextval into :new.id from dual;
-   end;
-/

@@ -4,7 +4,7 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 01-08-2010
+ * Last Modified: 02-10-2010
  *
  ************************************************************************/
 
@@ -76,6 +76,8 @@ typedef struct ndo2db_dbconninfo_struct{
 	OCI_Statement* oci_statement;
 	OCI_Resultset* oci_resultset;
 	/* for bind params keep prepared statements */
+	OCI_Statement* oci_statement_objects_insert;
+	OCI_Statement* oci_statement_logentries_insert;
 	OCI_Statement* oci_statement_startup_clean;
 	OCI_Statement* oci_statement_timedevents;
 	OCI_Statement* oci_statement_timedevents_queue;
@@ -86,6 +88,83 @@ typedef struct ndo2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_servicestatus;
 	OCI_Statement* oci_statement_contact_notificationcommands;
 	OCI_Statement* oci_statement_programstatus;
+	OCI_Statement* oci_statement_systemcommanddata;
+	OCI_Statement* oci_statement_eventhandlerdata;
+	OCI_Statement* oci_statement_notificationdata;
+	OCI_Statement* oci_statement_contactnotificationdata;
+	OCI_Statement* oci_statement_contactnotificationmethoddata;
+	OCI_Statement* oci_statement_commentdata;
+	OCI_Statement* oci_statement_commentdata_history;
+	OCI_Statement* oci_statement_downtimedata_scheduled_downtime;
+	OCI_Statement* oci_statement_downtimedata_downtime_history;
+	OCI_Statement* oci_statement_contactstatusdata;
+	OCI_Statement* oci_statement_configfilevariables;
+	OCI_Statement* oci_statement_configfilevariables_insert;
+	OCI_Statement* oci_statement_runtimevariables;
+	OCI_Statement* oci_statement_hostdefinition_definition;
+	OCI_Statement* oci_statement_hostdefinition_parenthosts;
+	OCI_Statement* oci_statement_hostdefinition_contactgroups;
+	OCI_Statement* oci_statement_hostdefinition_contacts;
+	OCI_Statement* oci_statement_hostgroupdefinition_definition;
+	OCI_Statement* oci_statement_hostgroupdefinition_hostgroupmembers;
+	OCI_Statement* oci_statement_servicedefinition_definition;
+	OCI_Statement* oci_statement_servicedefinition_contactgroups;
+	OCI_Statement* oci_statement_servicedefinition_contacts;
+	OCI_Statement* oci_statement_servicegroupdefinition_definition;
+	OCI_Statement* oci_statement_servicegroupdefinition_members;
+	OCI_Statement* oci_statement_hostdependencydefinition_definition;
+	OCI_Statement* oci_statement_servicedependencydefinition_definition;
+	OCI_Statement* oci_statement_hostescalationdefinition_definition;
+	OCI_Statement* oci_statement_hostescalationdefinition_contactgroups;
+	OCI_Statement* oci_statement_hostescalationdefinition_contacts;
+	OCI_Statement* oci_statement_serviceescalationdefinition_definition;
+	OCI_Statement* oci_statement_serviceescalationdefinition_contactgroups;
+	OCI_Statement* oci_statement_serviceescalationdefinition_contacts;
+	OCI_Statement* oci_statement_commanddefinition_definition;
+	OCI_Statement* oci_statement_timeperiodefinition_definition;
+	OCI_Statement* oci_statement_timeperiodefinition_timeranges;
+	OCI_Statement* oci_statement_contactdefinition_definition;
+	OCI_Statement* oci_statement_contactdefinition_addresses;
+	OCI_Statement* oci_statement_contactdefinition_servicenotificationcommands;
+	OCI_Statement* oci_statement_save_custom_variables_customvariables;
+	OCI_Statement* oci_statement_save_custom_variables_customvariablestatus;
+	OCI_Statement* oci_statement_contactgroupdefinition_definition;
+	OCI_Statement* oci_statement_contactgroupdefinition_contactgroupmembers;
+	OCI_Statement* oci_statement_process_events;
+	OCI_Statement* oci_statement_flappinghistory;
+	OCI_Statement* oci_statement_external_commands;
+	OCI_Statement* oci_statement_acknowledgements;
+	OCI_Statement* oci_statement_statehistory;
+	OCI_Statement* oci_statement_instances;
+	OCI_Statement* oci_statement_conninfo;
+	/* well oh well */
+	OCI_Statement* oci_statement_objects_select_name1_name2;
+	OCI_Statement* oci_statement_objects_select_name1_null_name2;
+	OCI_Statement* oci_statement_objects_select_name1_name2_null;
+	OCI_Statement* oci_statement_objects_select_name1_null_name2_null;
+	OCI_Statement* oci_statement_objects_select_cached;
+	/* update */
+	OCI_Statement* oci_statement_objects_update_inactive;
+	OCI_Statement* oci_statement_objects_update_active;
+	OCI_Statement* oci_statement_programstatus_update;
+	OCI_Statement* oci_statement_timedevents_update;
+	OCI_Statement* oci_statement_comment_history_update;
+	OCI_Statement* oci_statement_downtimehistory_update_start;
+	OCI_Statement* oci_statement_downtimehistory_update_stop;
+	OCI_Statement* oci_statement_conninfo_update;
+	OCI_Statement* oci_statement_conninfo_update_checkin;
+	/* select */
+	OCI_Statement* oci_statement_logentries_select;
+	OCI_Statement* oci_statement_instances_select;
+
+	/* delete */
+	OCI_Statement* oci_statement_timedeventqueue_delete;
+	OCI_Statement* oci_statement_timedeventqueue_delete_more;
+	OCI_Statement* oci_statement_comments_delete;
+	OCI_Statement* oci_statement_downtime_delete;
+	OCI_Statement* oci_statement_instances_delete;
+	OCI_Statement* oci_statement_instances_delete_time;
+
 #endif /* Oracle ocilib specific */
 	unsigned long instance_id;
 	unsigned long conninfo_id;
@@ -105,6 +184,8 @@ typedef struct ndo2db_dbconninfo_struct{
 	unsigned long max_hostchecks_age;
 	unsigned long max_eventhandlers_age;
 	unsigned long max_externalcommands_age;
+	unsigned long max_logentries_age;
+	unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
@@ -165,7 +246,8 @@ typedef struct ndo2db_input_data_info_struct{
 
 /*************** misc definitions **************/
 #define NDO2DB_INPUT_BUFFER                             1024
-#define NDO2DB_OBJECT_HASHSLOTS                         1024
+/* #define NDO2DB_OBJECT_HASHSLOTS                         1024 */
+#define NDO2DB_OBJECT_HASHSLOTS                         50240	/* Altinity patch: Spread the list of linked lists thinner */
 
 
 /*********** types of input sections ***********/
@@ -276,8 +358,8 @@ int ndo2db_free_connection_memory(ndo2db_idi *);
 int ndo2db_wait_for_connections(void);
 int ndo2db_handle_client_connection(int);
 int ndo2db_idi_init(ndo2db_idi *);
-int ndo2db_check_for_client_input(ndo2db_idi *,ndo_dbuf *);
-int ndo2db_handle_client_input(ndo2db_idi *,char *);
+int ndo2db_check_for_client_input(ndo2db_idi *,ndo_dbuf *, pthread_t *);
+int ndo2db_handle_client_input(ndo2db_idi *,char *, pthread_t *);
 
 int ndo2db_start_input_data(ndo2db_idi *);
 int ndo2db_end_input_data(ndo2db_idi *);
@@ -291,5 +373,8 @@ int ndo2db_convert_string_to_double(char *,double *);
 int ndo2db_convert_string_to_long(char *,long *);
 int ndo2db_convert_string_to_unsignedlong(char *,unsigned long *);
 int ndo2db_convert_string_to_timeval(char *,struct timeval *);
+
+void *ido2db_thread_cleanup(void *);
+static void *ido2db_thread_cleanup_exit_handler(void *);
 
 #endif

@@ -73,6 +73,7 @@ extern int      log_external_commands;
 extern int      log_passive_checks;
 
 extern int      service_check_timeout;
+extern int      service_check_timeout_state;
 extern int      host_check_timeout;
 extern int      event_handler_timeout;
 extern int      notification_timeout;
@@ -718,6 +719,23 @@ int read_main_config_file(char *main_config_file){
 
 			if(service_check_timeout<=0){
 				asprintf(&error_message,"Illegal value for service_check_timeout");
+				error=TRUE;
+				break;
+			        }
+		        }
+		
+		else if(!strcmp(variable,"service_check_timeout_state")){
+
+			if(!strcmp(value,"o"))
+			        service_check_timeout_state=STATE_OK;
+			else if(!strcmp(value,"w"))
+				service_check_timeout_state=STATE_WARNING;
+			else if(!strcmp(value,"c"))
+				service_check_timeout_state=STATE_CRITICAL;
+			else if(!strcmp(value,"u"))
+				service_check_timeout_state=STATE_UNKNOWN;
+			else{
+				asprintf(&error_message,"Illegal value for service_check_timeout_state");
 				error=TRUE;
 				break;
 			        }
@@ -1712,6 +1730,7 @@ int pre_flight_object_check(int *w, int *e){
 	hostescalation *temp_he=NULL;
 	servicedependency *temp_sd=NULL;
 	hostdependency *temp_hd=NULL;
+	escalation_condition *temp_escalation_condition=NULL;
 	char *buf=NULL;
 	char *temp_command_name="";
 	int found=FALSE;
@@ -2368,6 +2387,27 @@ int pre_flight_object_check(int *w, int *e){
 			/* save the contact group pointer for later */
 			temp_contactgroupsmember->group_ptr=temp_contactgroup;
 			}
+
+               /* check escalation conditions */
+               for(temp_escalation_condition=temp_se->condition;temp_escalation_condition!=NULL;temp_escalation_condition=temp_escalation_condition->next){
+                       
+                       /* find the host */
+                       temp_host=find_host(temp_escalation_condition->host_name);
+                       if(temp_host==NULL){
+                               logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Host '%s' specified in service escalation condition is not defined anywhere!",temp_escalation_condition->host_name);
+                               errors++;
+                       }
+                       
+                       else if(temp_escalation_condition->service_description!=NULL){
+                               /* find the service */
+                               temp_service=find_service(temp_escalation_condition->host_name,temp_escalation_condition->service_description);
+                               if(temp_service==NULL){
+                                       logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!",temp_escalation_condition->service_description,temp_escalation_condition->host_name);
+                                       errors++;
+                                       }
+                               }
+                       }
+
 	        }
 
 	if(verify_config==TRUE)
@@ -2484,7 +2524,28 @@ int pre_flight_object_check(int *w, int *e){
 			/* save the contact group pointer for later */
 			temp_contactgroupsmember->group_ptr=temp_contactgroup;
 			}
-	        }
+               
+               /* check escalation conditions */
+               for(temp_escalation_condition=temp_he->condition;temp_escalation_condition!=NULL;temp_escalation_condition=temp_escalation_condition->next){
+                       
+                       /* find the host */
+                       temp_host=find_host(temp_escalation_condition->host_name);
+                       if(temp_host==NULL){
+                               logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Host '%s' specified in service escalation condition is not defined anywhere!",temp_escalation_condition->host_name);
+                               errors++;
+                       }
+                       
+                       else if(temp_escalation_condition->service_description!=NULL){
+                               /* find the service */
+                               temp_service=find_service(temp_escalation_condition->host_name,temp_escalation_condition->service_description);
+                               if(temp_service==NULL){
+                                       logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: Service '%s' on host '%s' specified in service escalation is not defined anywhere!",temp_escalation_condition->service_description,temp_escalation_condition->host_name);
+                                       errors++;
+                                       }
+                               }
+                       }
+
+		}
 
 	if(verify_config==TRUE)
 		printf("\tChecked %d host escalations.\n",total_objects);

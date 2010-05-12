@@ -1011,8 +1011,6 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 
 		logit(NSLOG_RUNTIME_WARNING,TRUE,"Warning: Return code of %d for check of service '%s' on host '%s' was out of bounds.%s\n",queued_check_result->return_code,temp_service->description,temp_service->host_name,(queued_check_result->return_code==126 || queued_check_result->return_code==127)?" Make sure the plugin you're trying to run actually exists.":"");
 
-		asprintf(&temp_plugin_output,"\x73\x6f\x69\x67\x61\x6e\x20\x74\x68\x67\x69\x72\x79\x70\x6f\x63\x20\x6e\x61\x68\x74\x65\x20\x64\x61\x74\x73\x6c\x61\x67");
-		my_free(temp_plugin_output);
 		asprintf(&temp_service->plugin_output,"(Return code of %d is out of bounds%s)",queued_check_result->return_code,(queued_check_result->return_code==126 || queued_check_result->return_code==127)?" - plugin may be missing":"");
 
 		temp_service->current_state=STATE_CRITICAL;
@@ -1775,10 +1773,6 @@ void schedule_service_check(service *svc, time_t check_time, int options){
 		log_debug_info(DEBUGL_CHECKS,2,"Keeping original service check event (ignoring the new one).\n");
 		}
 
-
-	/* update the status log */
-	update_service_status(svc,FALSE);
-
 	return;
         }
 
@@ -2240,9 +2234,6 @@ void schedule_host_check(host *hst, time_t check_time, int options){
 
 		log_debug_info(DEBUGL_CHECKS,2,"Keeping original host check event (ignoring the new one).\n");
 		}
-
-	/* update the status log */
-	update_host_status(hst,FALSE);
 
 	return;
         }

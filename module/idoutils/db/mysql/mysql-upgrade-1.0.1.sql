@@ -2,11 +2,75 @@
 -- mysql-upgrade-1.0.1.sql
 -- DB definition for MySQL
 -- 
--- modify command_line to carchar(1024)
+-- alter db engine to innoDB
+-- modify command_line to varchar(1024)
 -- sets index on several tables for improved delete
 --
 -- -- --------------------------------------------------------
 
+-- -----------------------------------------
+-- change db engine to innoDB
+-- -----------------------------------------
+
+ALTER TABLE `icinga_acknowledgements` ENGINE = InnoDB;
+ALTER TABLE `icinga_commands` ENGINE = InnoDB;
+ALTER TABLE `icinga_commenthistory` ENGINE = InnoDB;
+ALTER TABLE `icinga_comments` ENGINE = InnoDB;
+ALTER TABLE `icinga_configfiles` ENGINE = InnoDB;
+ALTER TABLE `icinga_configfilevariables` ENGINE = InnoDB;
+ALTER TABLE `icinga_conninfo` ENGINE = InnoDB;
+ALTER TABLE `icinga_contactgroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_contactgroup_members` ENGINE = InnoDB;
+ALTER TABLE `icinga_contactnotificationmethods` ENGINE = InnoDB;
+ALTER TABLE `icinga_contactnotifications` ENGINE = InnoDB;
+ALTER TABLE `icinga_contacts` ENGINE = InnoDB;
+ALTER TABLE `icinga_contactstatus` ENGINE = InnoDB;
+ALTER TABLE `icinga_contact_addresses` ENGINE = InnoDB;
+ALTER TABLE `icinga_contact_notificationcommands` ENGINE = InnoDB;
+ALTER TABLE `icinga_customvariables` ENGINE = InnoDB;
+ALTER TABLE `icinga_customvariablestatus` ENGINE = InnoDB;
+ALTER TABLE `icinga_dbversion` ENGINE = InnoDB;
+ALTER TABLE `icinga_downtimehistory` ENGINE = InnoDB;
+ALTER TABLE `icinga_eventhandlers` ENGINE = InnoDB;
+ALTER TABLE `icinga_externalcommands` ENGINE = InnoDB;
+ALTER TABLE `icinga_flappinghistory` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostchecks` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostdependencies` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostescalations` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostescalation_contactgroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostescalation_contacts` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostgroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_hostgroup_members` ENGINE = InnoDB;
+ALTER TABLE `icinga_hosts` ENGINE = InnoDB;
+ALTER TABLE `icinga_hoststatus` ENGINE = InnoDB;
+ALTER TABLE `icinga_host_contactgroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_host_contacts` ENGINE = InnoDB;
+ALTER TABLE `icinga_host_parenthosts` ENGINE = InnoDB;
+ALTER TABLE `icinga_instances` ENGINE = InnoDB;
+ALTER TABLE `icinga_logentries` ENGINE = InnoDB;
+ALTER TABLE `icinga_notifications` ENGINE = InnoDB;
+ALTER TABLE `icinga_objects` ENGINE = InnoDB;
+ALTER TABLE `icinga_processevents` ENGINE = InnoDB;
+ALTER TABLE `icinga_programstatus` ENGINE = InnoDB;
+ALTER TABLE `icinga_runtimevariables` ENGINE = InnoDB;
+ALTER TABLE `icinga_scheduleddowntime` ENGINE = InnoDB;
+ALTER TABLE `icinga_servicechecks` ENGINE = InnoDB;
+ALTER TABLE `icinga_servicedependencies` ENGINE = InnoDB;
+ALTER TABLE `icinga_serviceescalations` ENGINE = InnoDB;
+ALTER TABLE `icinga_serviceescalation_contactgroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_serviceescalation_contacts` ENGINE = InnoDB;
+ALTER TABLE `icinga_servicegroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_servicegroup_members` ENGINE = InnoDB;
+ALTER TABLE `icinga_services` ENGINE = InnoDB;
+ALTER TABLE `icinga_servicestatus` ENGINE = InnoDB;
+ALTER TABLE `icinga_service_contactgroups` ENGINE = InnoDB;
+ALTER TABLE `icinga_service_contacts` ENGINE = InnoDB;
+ALTER TABLE `icinga_statehistory` ENGINE = InnoDB;
+ALTER TABLE `icinga_systemcommands` ENGINE = InnoDB;
+ALTER TABLE `icinga_timedeventqueue` ENGINE = InnoDB;
+ALTER TABLE `icinga_timedevents` ENGINE = InnoDB;
+ALTER TABLE `icinga_timeperiods` ENGINE = InnoDB;
+ALTER TABLE `icinga_timeperiod_timeranges` ENGINE = InnoDB;
 
 -- -----------------------------------------
 -- modify command_line size to varchar(1024)
@@ -121,7 +185,7 @@ CREATE INDEX hoststatus_sch_downt_d_idx on icinga_hoststatus(scheduled_downtime_
 -- services
 CREATE INDEX services_host_object_id_idx on icinga_services(host_object_id);
 
---servicestatus
+-- servicestatus
 CREATE INDEX srvcstatus_stat_upd_time_idx on icinga_servicestatus(status_update_time);
 CREATE INDEX srvcstatus_current_state_idx on icinga_servicestatus(current_state);
 CREATE INDEX srvcstatus_check_type_idx on icinga_servicestatus(check_type);
@@ -147,7 +211,7 @@ CREATE INDEX timed_e_q_rec_ev_id_idx on icinga_timedeventqueue(recurring_event);
 
 -- timedevents
 CREATE INDEX timed_e_event_type_idx on icinga_timedevents(event_type);
---CREATE INDEX timed_e_sched_time_idx on icinga_timedevents(scheduled_time); --already set for delete
+-- CREATE INDEX timed_e_sched_time_idx on icinga_timedevents(scheduled_time); --already set for delete
 CREATE INDEX timed_e_object_id_idx on icinga_timedevents(object_id);
 CREATE INDEX timed_e_rec_ev_idx on icinga_timedevents(recurring_event);
 

@@ -1,15 +1,13 @@
-/*
-# pgsql.sql
-#   	- modfied mysql.sql to work with postgres 
-#	- added from_unixtime and unix_timestamp 
-#	  as sql function
-#
-# initial version: 2009-05-13 Markus Manzke
-# current version: 2010-02-03 Michael Friedrich <michael.friedrich@univie.ac.at>
-#
-#--------------------------------------------------------------------------------
-#
-*/
+-- --------------------------------------------------------
+-- pgsql.sql
+-- DB definition for Postgresql
+-- 
+-- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+--
+-- initial version: 2009-05-13 Markus Manzke
+-- current version: 2010-02-03 Michael Friedrich <michael.friedrich@univie.ac.at>
+--
+-- --------------------------------------------------------
 
 --
 -- Functions

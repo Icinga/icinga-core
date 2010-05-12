@@ -156,7 +156,14 @@ cgis:
 	cd $(SRC_CGI) && $(MAKE)
 
 idoutils:
-	cd $(SRC_IDOUTILS) && $(MAKE)
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
+		cd $(SRC_IDOUTILS) && $(MAKE); \
+        else \
+                echo "" ;\
+                echo "Sorry, IDOUtils not enabled!" ;\
+                echo "Try again with ./configure --enable-idoutils" ;\
+                echo "" ;\
+        fi
 
 html:
 	cd $(SRC_HTM) && $(MAKE)
@@ -364,7 +371,12 @@ install-commandmode:
 	@echo ""
 
 
-fullinstall: install install-init install-commandmode install-webconf install-config install-idoutils
+fullinstall:
+	@if [ x$(USE_IDOUTILS) = xyes ]; then \
+		${MAKE} install install-init install-commandmode install-webconf install-config install-idoutils ;\
+        else \
+		${MAKE} install install-init install-commandmode install-webconf install-config ;\
+        fi
 
 # Uninstall is too destructive if base install directory is /usr, etc.
 #uninstall:

@@ -996,7 +996,10 @@ int event_execution_loop(void){
 			/* remove the first event from the timing loop */
 			temp_event=event_list_high;
 			event_list_high=event_list_high->next;
-			event_list_high->prev=NULL;
+			
+			/* we may have just removed the only item from the list */
+			if (event_list_high!=NULL)
+				event_list_high->prev=NULL;
 
 			/* handle the event */
 			handle_timed_event(temp_event);

@@ -2,11 +2,141 @@
 Icinga 1.0.x Change Log
 #######################
 
-1.x - xx/xx/2010
+1.0.2 - 30/06/2010
+
+ENHANCEMENTS
+* core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
+
+* idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
+* idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
+* idoutils: change select * into select [*_]id if unused results
+* idoutils: add syslog output, if ido2db is unable to do initial db query
+
+FIXES
+* core: fix spurious dollar signs added to command_lines (Alexander Wirt)
+* core: fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)
+* core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)
+* core: minor cleanups to icingastats.c (Eric Sesterhenn)
+* core: minor cleanups to cgiutils.c (Eric Sestersenn)
+
+* idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
+* idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
+* idoutils: fix postgres wrong type in service_object_id
+* idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though
+* idoutils: fix for oracle when binding a NULL value on contactnotificationmethods
+
+
+1.0.1 - 03/03/2010
+
+ENHANCEMENTS
+* core: updated docs
+* core: fix config parsing for icinga_user and icinga_group
+* core: fix status.dat ok, no daemon running, show error instead of old data
+* core: permanently remove sleep on run_event == FALSE in main loop (Max Schubert)
+
+* core: add service_check_timeout_state	configuration variable
+	This setting determines the state Icinga will report when a
+	service check times out - it does not respond within
+	service_check_timeout seconds.  
+	c - Critical (default)
+	u - Unknown
+	w - Warning
+	o - OK
+
+* core: add escalation_condition definition (Vitali Voroth DECOIT GmbH)
+	The escalation_condition option is completely optional and can be
+	defined for host escalations as well as for service escalations.
+	escalation_condition <condition> ( [ & / | ] <condition> )*
+	where <condition> is either host hostname = [u,d,o] or
+	service hostname.service_description] = [w,u,c,o].
+	The escalation_condition accepts a list of one or more conditions 
+	separated by & (logical AND) or | (logical OR).
+	w = WARNING
+	u = UNKNOWN
+	c = CRITICAL
+	o = OK for services or UP for hosts
+	d = DOWN for hosts
+
+* idoutils: add ido2db threaded housekeeper
+	- periodic cleanup will now be performed in own thread
+	- startup blocking behavior removed
+	- housekeeper will wait for idomod instance, idle wait using und db_hello
+	- creates own db connection and does its job
+
+* idoutils: add indexes for delete/select statements
+	- delete/select will perform faster
+	- getting cached objects with select runs faster
+	- getting logentries within icinga-web is faster
+
+* idoutils: reorganize db setup files for MySQL/Postgresql/Oracle
+	- module/idoutils/db/<rdbms>/ holds needed files
+	- module/idoutils/scripts/ with installdb/upgradedb for MySQL
+	- updated Makefile, README
+
+* idoutils: complete oracle rewrite to improve performance
+	- query rewrite
+		- 1x SELECT latest data time as is (called only at startup)
+		- dynamic binded procedure for DELETE on table by instance_id called at startup
+		  for cleaning config/status
+		- dynamic binded procedure for DELETE on tably by instance_id, field<time called
+		  during periodic cleanup in threaded housekeeper 
+		- all other queries are prepared with their own statement handler
+			 4x DELETE
+			 52x MERGE
+			 9x INSERT
+			 9x UPDATE
+			 5x SELECT
+	- rewritten getting cached object_id using select
+	- all queries use binded unixtimestamp instead of prepared query string
+	- removed autoincrement sequence and insert triggers to update primary key
+	- added sequence for each table
+	- INSERT INTO ... (id, ...) VALUES (seq_name.nextval, ...) will do the trick
+	- added RETURNING id INTO :id for INSERT statements to save one round trip
+	- MERGE does not support returning INTO, added SELECT seq_name.currval query instead
+	  for fetching last inserted id
+	- add explizit upgrade information and provided procedure to alter sequence start
+	  when importing data (check oracle-upgrade-1.0.1.sql for more info)
+
+* idoutils: add upgrade path for mysql/pgsql/oracle for 1.0.1
+* idoutils: add initial debug output for idomod (to be set in idomod.cfg)
+* idoutils: add database name in connection msg to syslog
+* idoutils: change mysql db engine to innodb (no table locking, better transcations)
+* idoutils: add --with-oracle-lib=/path/to/instantclient for runtime export of 
+	LD_LIBRARY_PATH if instantclient not installed to path
+* idoutils: add max_logentries_age and max_acknowledgements_age to ido2db (check ido2db.cfg)
+
+FIXES
+
 * core: fix segfault in cmd.cgi
 * core: fix event broker callback function self de-registering for callbacks (Sean Millichamp)
-* core: added missing sound.js provided by scriptaculous
+* core: add missing sound.js provided by scriptaculous
+* core: string replaces for icinga
+* core: typo fix in mrtg.cfg (Dennis van Zuijlekom) 
+* core: add init info as required by LSB
+* core: fix perl tests
+* core: fix missing clean & distclean against tap/ directory
+* core: fix several libtap c TAP tests and cleanups
+* core: refactor perl test to use icingaadmin
+* core: add cgi argument 'nodaemoncheck' and tests
+* core: add config.cgi test
+* core: add subtests to extinfo tests
+* core: add tests against histogram.cgi
+* core: add $srcdir to paths
 * core: fix idomod doesn't de-initialize after config error
+* core: fix make fullinstall/idoutils without enabled idoutils during configure
+* core: fix sending two identical service_status events to neb module
+* core: fix segmentation fault crash when a non-existant host or service is passed to the command pipe 
+* core: add check for NULL for event_list_high
+
+* idoutils: modify string escaping for mysql and pgsql
+* idoutils: fix pgsql table systemcommands (missing column 'output')
+* idoutils: fix arraysize of es in save_custom_variables
+* idoutils: rename ndomod.h to idomod.h
+* idoutils: fix several naming issues
+* idoutils: fix acknowledgments query, wrong buffer freed/set as query to db (Bruce Pennypacker)
+* idoutils: fix contactnotification data array, command args were not provided (Bruce Pennypacker)
+* idoutils: fix custom_variables object_id type int => unsigned long
+
 
 1.0 Stable - 16/12/2009
 * core: create webserver conf.d dir if not existing
@@ -189,6 +319,11 @@ FIXES
 * Set to search external libs, rather than include all the time (Allan Clark)
 * Fixed test compile on linux servers
 * Fixed incorrect return code in test failures
+* Create Makefile in t/
+* Added test for testing status.cgi with a large number of comments and downtime
+* Updated tests to check that comment ids are sorted
+* Fixed deferred sorting of comments and downtimes. Added tests to prove sorting
+* Fix for template configurations which use negated wildcards (Tim Wilde)
 
 WARNINGS
 

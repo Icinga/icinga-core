@@ -115,6 +115,7 @@ extern unsigned long      logging_options;
 extern unsigned long      syslog_options;
 
 extern int      service_check_timeout;
+extern int      service_check_timeout_state;
 extern int      host_check_timeout;
 extern int      event_handler_timeout;
 extern int      notification_timeout;
@@ -851,9 +852,6 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 	t->tm_sec=0;
 	t->tm_min=0;
 	t->tm_hour=0;
-        /* Removed for the moment. This fixes a bug where the timeperiod is incorrectly calculated */
-	/* See t-tap/test_timeperiods for a test failure */
-	/* t->tm_isdst=-1; */
 	midnight=(unsigned long)mktime(t);
 
 	/**** check exceptions first ****/
@@ -1079,14 +1077,13 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 
 /*#define TEST_TIMEPERIODS_B 1*/
 
-/* given a preferred time, get the next valid time within a time period */
-void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperiod){
+/* Separate this out from public get_next_valid_time for testing, so we can mock current_time */
+void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_time, timeperiod *tperiod){
 	time_t preferred_time=(time_t)0L;
 	timerange *temp_timerange;
 	daterange *temp_daterange;
 	unsigned long midnight=0L;
 	struct tm *t;
-	time_t current_time=(time_t)0L;
 	time_t day_start=(time_t)0L;
 	time_t day_range_start=(time_t)0L;
 	time_t day_range_end=(time_t)0L;
@@ -1114,11 +1111,7 @@ void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperi
 	int current_time_mday=0;
 	int current_time_wday=0;
 
-
-	log_debug_info(DEBUGL_FUNCTIONS,0,"get_next_valid_time()\n");
-
-	/* get time right now, preferred time must be now or in the future */
-	time(&current_time);
+	/* preferred time must be now or in the future */
 	preferred_time=(pref_time<current_time)?current_time:pref_time;
 
 	/* if no timeperiod, go with preferred time */
@@ -1143,7 +1136,6 @@ void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperi
 	t->tm_sec=0;
 	t->tm_min=0;
 	t->tm_hour=0;
-        t->tm_isdst=-1;
 	midnight=(unsigned long)mktime(t);
 
 	/* save pref time values for later */
@@ -1490,6 +1482,19 @@ void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperi
 
 	return;
         }
+
+
+/* given a preferred time, get the next valid time within a time period */ 
+void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperiod){
+        time_t current_time=(time_t)0L;
+ 
+        log_debug_info(DEBUGL_FUNCTIONS,0,"get_next_valid_time()\n");
+ 
+        /* get time right now, preferred time must be now or in the future */
+        time(&current_time);
+ 
+        _get_next_valid_time(pref_time, current_time, valid_time, tperiod);
+}
 
 
 
@@ -1906,11 +1911,7 @@ void service_check_sighandler(int sig){
 	/* get the current time */
 	gettimeofday(&end_time,NULL);
 
-#ifdef SERVICE_CHECK_TIMEOUTS_RETURN_UNKNOWN
-	check_result_info.return_code=STATE_UNKNOWN;
-#else
-	check_result_info.return_code=STATE_CRITICAL;
-#endif
+	check_result_info.return_code=service_check_timeout_state;
 	check_result_info.finish_time=end_time;
 	check_result_info.early_timeout=TRUE;
 
@@ -4486,19 +4487,14 @@ int query_update_api(void){
 		}
 
 	/* generate the query */
-	asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1");
-	if(bare_update_check==FALSE)
-		asprintf(&api_query,"%s&version=%s%s",api_query,PROGRAM_VERSION,(api_query_opts==NULL)?"":api_query_opts);
+	if(bare_update_check==FALSE) {
+		asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1&version=%s%s",PROGRAM_VERSION,(api_query_opts==NULL)?"":api_query_opts);
+	} else {
+		asprintf(&api_query,"v=1&product=icinga&tinycheck=1&stableonly=1");
+	}
 
 	/* generate the HTTP request */
-	asprintf(&buf,"POST %s HTTP/1.0\r\n",api_path);
-	asprintf(&buf,"%sUser-Agent: Icinga/%s\r\n",buf,PROGRAM_VERSION);
-	asprintf(&buf,"%sConnection: close\r\n",buf);
-	asprintf(&buf,"%sHost: %s\r\n",buf,api_server);
-	asprintf(&buf,"%sContent-Type: application/x-www-form-urlencoded\r\n",buf);
-	asprintf(&buf,"%sContent-Length: %d\r\n",buf,strlen(api_query));
-	asprintf(&buf,"%s\r\n",buf);
-	asprintf(&buf,"%s%s\r\n",buf,api_query);
+	asprintf(&buf,"POST %s HTTP/1.0\r\nUser-Agent: Nagios/%s\r\nConnection: close\r\nHost: %s\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",api_path, PROGRAM_VERSION, api_server, strlen(api_query), api_query);
 
 	/*
 	printf("SENDING...\n");

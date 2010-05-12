@@ -1363,6 +1363,7 @@ Optional Packages:
                           sets URL for public html
   --with-ocilib-lib=DIR   sets location of the ocilib library
   --with-ocilib-inc=DIR   sets location of the ocilib include files,
+  --with-oracle-lib=DIR   sets location of the oracle library
   --with-dbi-lib=DIR      sets location of the libdbi library
   --with-dbi-inc=DIR      sets location of the libdbi include files,
   --with-perlcache        turns on cacheing of internally compiled Perl
@@ -1793,9 +1794,9 @@ ac_config_headers="$ac_config_headers include/config.h include/snprintf.h includ
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.0"
+PKG_VERSION="1.0.1"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="12-16-2009"
+PKG_REL_DATE="03-03-2010"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -7812,6 +7813,23 @@ if test "${with_ocilib_inc+set}" = set; then
 fi
 
 
+		ORACLE_LIB=""
+
+# Check whether --with-oracle-lib was given.
+if test "${with_oracle_lib+set}" = set; then
+  withval=$with_oracle_lib;
+                        ORACLE_LIB="${withval}"
+
+fi
+
+
+		if test "$ORACLE_LIB" = ""; then
+			IDO2DB_RUNTIME="$OCILIB_LIB"
+		else
+			IDO2DB_RUNTIME="$OCILIB_LIB:$ORACLE_LIB"
+		fi
+
+
 		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_ANSI"
 		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
 
@@ -8280,7 +8298,7 @@ fi
 
 
 
-ido2db_runtime="$OCILIB_LIB"
+ido2db_runtime="$IDO2DB_RUNTIME"
 
 
 
@@ -8650,7 +8668,7 @@ else
 fi
 
 
-ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql"
+ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql"
 
 
 
@@ -9148,6 +9166,7 @@ do
     "module/idoutils/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/Makefile" ;;
     "xdata/Makefile") CONFIG_FILES="$CONFIG_FILES xdata/Makefile" ;;
     "daemon-init") CONFIG_FILES="$CONFIG_FILES daemon-init" ;;
+    "daemon-init-redhat") CONFIG_FILES="$CONFIG_FILES daemon-init-redhat" ;;
     "rc.ido2db") CONFIG_FILES="$CONFIG_FILES rc.ido2db" ;;
     "module/idoutils/src/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/src/Makefile" ;;
     "t-tap/Makefile") CONFIG_FILES="$CONFIG_FILES t-tap/Makefile" ;;

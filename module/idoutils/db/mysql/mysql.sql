@@ -2,6 +2,8 @@
 -- mysql.sql
 -- DB definition for MySQL
 -- 
+-- 
+-- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
 --
 -- -- --------------------------------------------------------
 
@@ -37,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `icinga_acknowledgements` (
   `persistent_comment` smallint(6) NOT NULL default '0',
   `notify_contacts` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`acknowledgement_id`)
-) ENGINE=MyISAM COMMENT='Current and historical host and service acknowledgements';
+) ENGINE=InnoDB COMMENT='Current and historical host and service acknowledgements';
 
 -- --------------------------------------------------------
 
@@ -53,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `icinga_commands` (
   `command_line` varchar(1024) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`command_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`config_type`)
-) ENGINE=MyISAM  COMMENT='Command definitions';
+) ENGINE=InnoDB  COMMENT='Command definitions';
 
 -- --------------------------------------------------------
 
@@ -81,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `icinga_commenthistory` (
   `deletion_time_usec` int(11) NOT NULL default '0',
   PRIMARY KEY  (`commenthistory_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`comment_time`,`internal_comment_id`)
-) ENGINE=MyISAM  COMMENT='Historical host and service comments';
+) ENGINE=InnoDB  COMMENT='Historical host and service comments';
 
 -- --------------------------------------------------------
 
@@ -107,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `icinga_comments` (
   `expiration_time` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`comment_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`comment_time`,`internal_comment_id`)
-) ENGINE=MyISAM ;
+) ENGINE=InnoDB  COMMENT='Usercomments on Icinga objects';
 
 -- --------------------------------------------------------
 
@@ -122,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `icinga_configfiles` (
   `configfile_path` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`configfile_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`configfile_type`,`configfile_path`)
-) ENGINE=MyISAM  COMMENT='Configuration files';
+) ENGINE=InnoDB  COMMENT='Configuration files';
 
 -- --------------------------------------------------------
 
@@ -137,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `icinga_configfilevariables` (
   `varname` varchar(64) character set latin1 NOT NULL default '',
   `varvalue` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`configfilevariable_id`)
-) ENGINE=MyISAM  COMMENT='Configuration file variables';
+) ENGINE=InnoDB  COMMENT='Configuration file variables';
 
 -- --------------------------------------------------------
 
@@ -162,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `icinga_conninfo` (
   `lines_processed` int(11) NOT NULL default '0',
   `entries_processed` int(11) NOT NULL default '0',
   PRIMARY KEY  (`conninfo_id`)
-) ENGINE=MyISAM  COMMENT='NDO2DB daemon connection information';
+) ENGINE=InnoDB  COMMENT='IDO2DB daemon connection information';
 
 -- --------------------------------------------------------
 
@@ -178,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contactgroups` (
   `alias` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`contactgroup_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`contactgroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Contactgroup definitions';
+) ENGINE=InnoDB  COMMENT='Contactgroup definitions';
 
 -- --------------------------------------------------------
 
@@ -193,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contactgroup_members` (
   `contact_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`contactgroup_member_id`),
   UNIQUE KEY `instance_id` (`contactgroup_id`,`contact_object_id`)
-) ENGINE=MyISAM  COMMENT='Contactgroup members';
+) ENGINE=InnoDB  COMMENT='Contactgroup members';
 
 -- --------------------------------------------------------
 
@@ -213,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contactnotificationmethods` (
   `command_args` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`contactnotificationmethod_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`contactnotification_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM  COMMENT='Historical record of contact notification methods';
+) ENGINE=InnoDB  COMMENT='Historical record of contact notification methods';
 
 -- --------------------------------------------------------
 
@@ -232,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contactnotifications` (
   `end_time_usec` int(11) NOT NULL default '0',
   PRIMARY KEY  (`contactnotification_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`contact_object_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM  COMMENT='Historical record of contact notifications';
+) ENGINE=InnoDB  COMMENT='Historical record of contact notifications';
 
 -- --------------------------------------------------------
 
@@ -266,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contacts` (
   `notify_host_downtime` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`contact_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`contact_object_id`)
-) ENGINE=MyISAM  COMMENT='Contact definitions';
+) ENGINE=InnoDB  COMMENT='Contact definitions';
 
 -- --------------------------------------------------------
 
@@ -288,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contactstatus` (
   `modified_service_attributes` int(11) NOT NULL default '0',
   PRIMARY KEY  (`contactstatus_id`),
   UNIQUE KEY `contact_object_id` (`contact_object_id`)
-) ENGINE=MyISAM  COMMENT='Contact status';
+) ENGINE=InnoDB  COMMENT='Contact status';
 
 -- --------------------------------------------------------
 
@@ -304,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contact_addresses` (
   `address` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`contact_address_id`),
   UNIQUE KEY `contact_id` (`contact_id`,`address_number`)
-) ENGINE=MyISAM COMMENT='Contact addresses';
+) ENGINE=InnoDB COMMENT='Contact addresses';
 
 -- --------------------------------------------------------
 
@@ -321,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `icinga_contact_notificationcommands` (
   `command_args` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`contact_notificationcommand_id`),
   UNIQUE KEY `contact_id` (`contact_id`,`notification_type`,`command_object_id`,`command_args`)
-) ENGINE=MyISAM  COMMENT='Contact host and service notification commands';
+) ENGINE=InnoDB  COMMENT='Contact host and service notification commands';
 
 -- --------------------------------------------------------
 
@@ -340,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `icinga_customvariables` (
   PRIMARY KEY  (`customvariable_id`),
   UNIQUE KEY `object_id_2` (`object_id`,`config_type`,`varname`),
   KEY `varname` (`varname`)
-) ENGINE=MyISAM COMMENT='Custom variables';
+) ENGINE=InnoDB COMMENT='Custom variables';
 
 -- --------------------------------------------------------
 
@@ -359,7 +361,7 @@ CREATE TABLE IF NOT EXISTS `icinga_customvariablestatus` (
   PRIMARY KEY  (`customvariablestatus_id`),
   UNIQUE KEY `object_id_2` (`object_id`,`varname`),
   KEY `varname` (`varname`)
-) ENGINE=MyISAM COMMENT='Custom variable status information';
+) ENGINE=InnoDB COMMENT='Custom variable status information';
 
 -- --------------------------------------------------------
 
@@ -370,7 +372,7 @@ CREATE TABLE IF NOT EXISTS `icinga_customvariablestatus` (
 CREATE TABLE IF NOT EXISTS `icinga_dbversion` (
   `name` varchar(10) character set latin1 NOT NULL default '',
   `version` varchar(10) character set latin1 NOT NULL default ''
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -400,7 +402,7 @@ CREATE TABLE IF NOT EXISTS `icinga_downtimehistory` (
   `was_cancelled` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`downtimehistory_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`entry_time`,`internal_downtime_id`)
-) ENGINE=MyISAM  COMMENT='Historical scheduled host and service downtime';
+) ENGINE=InnoDB  COMMENT='Historical scheduled host and service downtime';
 
 -- --------------------------------------------------------
 
@@ -430,7 +432,7 @@ CREATE TABLE IF NOT EXISTS `icinga_eventhandlers` (
   `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`eventhandler_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM COMMENT='Historical host and service event handlers';
+) ENGINE=InnoDB COMMENT='Historical host and service event handlers';
 
 -- --------------------------------------------------------
 
@@ -446,7 +448,7 @@ CREATE TABLE IF NOT EXISTS `icinga_externalcommands` (
   `command_name` varchar(128) character set latin1 NOT NULL default '',
   `command_args` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`externalcommand_id`)
-) ENGINE=MyISAM  COMMENT='Historical record of processed external commands';
+) ENGINE=InnoDB  COMMENT='Historical record of processed external commands';
 
 -- --------------------------------------------------------
 
@@ -469,7 +471,7 @@ CREATE TABLE IF NOT EXISTS `icinga_flappinghistory` (
   `comment_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `internal_comment_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`flappinghistory_id`)
-) ENGINE=MyISAM  COMMENT='Current and historical record of host and service flapping';
+) ENGINE=InnoDB  COMMENT='Current and historical record of host and service flapping';
 
 -- --------------------------------------------------------
 
@@ -504,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostchecks` (
   `perfdata` TEXT character set latin1 NOT NULL default '',
   PRIMARY KEY  (`hostcheck_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`host_object_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM  COMMENT='Historical host checks';
+) ENGINE=InnoDB  COMMENT='Historical host checks';
 
 -- --------------------------------------------------------
 
@@ -526,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostdependencies` (
   `fail_on_unreachable` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`hostdependency_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`host_object_id`,`dependent_host_object_id`,`dependency_type`,`inherits_parent`,`fail_on_up`,`fail_on_down`,`fail_on_unreachable`)
-) ENGINE=MyISAM COMMENT='Host dependency definitions';
+) ENGINE=InnoDB COMMENT='Host dependency definitions';
 
 -- --------------------------------------------------------
 
@@ -548,7 +550,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostescalations` (
   `escalate_on_unreachable` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`hostescalation_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`host_object_id`,`timeperiod_object_id`,`first_notification`,`last_notification`)
-) ENGINE=MyISAM  COMMENT='Host escalation definitions';
+) ENGINE=InnoDB  COMMENT='Host escalation definitions';
 
 -- --------------------------------------------------------
 
@@ -563,7 +565,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostescalation_contactgroups` (
   `contactgroup_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`hostescalation_contactgroup_id`),
   UNIQUE KEY `instance_id` (`hostescalation_id`,`contactgroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Host escalation contact groups';
+) ENGINE=InnoDB  COMMENT='Host escalation contact groups';
 
 -- --------------------------------------------------------
 
@@ -578,7 +580,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostescalation_contacts` (
   `contact_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`hostescalation_contact_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`hostescalation_id`,`contact_object_id`)
-) ENGINE=MyISAM ;
+) ENGINE=InnoDB  COMMENT='Host escalation contacts';
 
 -- --------------------------------------------------------
 
@@ -594,7 +596,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostgroups` (
   `alias` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`hostgroup_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`hostgroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Hostgroup definitions';
+) ENGINE=InnoDB  COMMENT='Hostgroup definitions';
 
 -- --------------------------------------------------------
 
@@ -609,7 +611,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostgroup_members` (
   `host_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`hostgroup_member_id`),
   UNIQUE KEY `instance_id` (`hostgroup_id`,`host_object_id`)
-) ENGINE=MyISAM  COMMENT='Hostgroup members';
+) ENGINE=InnoDB  COMMENT='Hostgroup members';
 
 -- --------------------------------------------------------
 
@@ -623,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hosts` (
   `config_type` smallint(6) NOT NULL default '0',
   `host_object_id` int(11) NOT NULL default '0',
   `alias` varchar(64) character set latin1 NOT NULL default '',
-  `display_name` varchar(64) character set latin1 NOT NULL default '',
+  `display_name` varchar(64) character set latin1 collate latin1_general_cs NOT NULL default '',
   `address` varchar(128) character set latin1 NOT NULL default '',
   `check_command_object_id` int(11) NOT NULL default '0',
   `check_command_args` varchar(255) character set latin1 NOT NULL default '',
@@ -679,7 +681,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hosts` (
   PRIMARY KEY  (`host_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`host_object_id`),
   KEY `host_object_id` (`host_object_id`)
-) ENGINE=MyISAM  COMMENT='Host definitions';
+) ENGINE=InnoDB  COMMENT='Host definitions';
 
 -- --------------------------------------------------------
 
@@ -737,7 +739,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hoststatus` (
   `check_timeperiod_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`hoststatus_id`),
   UNIQUE KEY `object_id` (`host_object_id`)
-) ENGINE=MyISAM  COMMENT='Current host status information';
+) ENGINE=InnoDB  COMMENT='Current host status information';
 
 -- --------------------------------------------------------
 
@@ -752,7 +754,7 @@ CREATE TABLE IF NOT EXISTS `icinga_host_contactgroups` (
   `contactgroup_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`host_contactgroup_id`),
   UNIQUE KEY `instance_id` (`host_id`,`contactgroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Host contact groups';
+) ENGINE=InnoDB  COMMENT='Host contact groups';
 
 -- --------------------------------------------------------
 
@@ -767,7 +769,7 @@ CREATE TABLE IF NOT EXISTS `icinga_host_contacts` (
   `contact_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`host_contact_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`host_id`,`contact_object_id`)
-) ENGINE=MyISAM ;
+) ENGINE=InnoDB  COMMENT='Host contacts';
 
 -- --------------------------------------------------------
 
@@ -782,7 +784,7 @@ CREATE TABLE IF NOT EXISTS `icinga_host_parenthosts` (
   `parent_host_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`host_parenthost_id`),
   UNIQUE KEY `instance_id` (`host_id`,`parent_host_object_id`)
-) ENGINE=MyISAM  COMMENT='Parent hosts';
+) ENGINE=InnoDB  COMMENT='Parent hosts';
 
 -- --------------------------------------------------------
 
@@ -795,7 +797,7 @@ CREATE TABLE IF NOT EXISTS `icinga_instances` (
   `instance_name` varchar(64) character set latin1 NOT NULL default '',
   `instance_description` varchar(128) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`instance_id`)
-) ENGINE=MyISAM  COMMENT='Location names of various Icinga installations';
+) ENGINE=InnoDB  COMMENT='Location names of various Icinga installations';
 
 -- --------------------------------------------------------
 
@@ -814,7 +816,7 @@ CREATE TABLE IF NOT EXISTS `icinga_logentries` (
   `realtime_data` smallint(6) NOT NULL default '0',
   `inferred_data_extracted` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`logentry_id`)
-) ENGINE=MyISAM COMMENT='Historical record of log entries';
+) ENGINE=InnoDB COMMENT='Historical record of log entries';
 
 -- --------------------------------------------------------
 
@@ -839,7 +841,7 @@ CREATE TABLE IF NOT EXISTS `icinga_notifications` (
   `contacts_notified` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`notification_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM  COMMENT='Historical record of host and service notifications';
+) ENGINE=InnoDB  COMMENT='Historical record of host and service notifications';
 
 -- --------------------------------------------------------
 
@@ -851,12 +853,12 @@ CREATE TABLE IF NOT EXISTS `icinga_objects` (
   `object_id` int(11) NOT NULL auto_increment,
   `instance_id` smallint(6) NOT NULL default '0',
   `objecttype_id` smallint(6) NOT NULL default '0',
-  `name1` varchar(128) character set latin1 NOT NULL default '',
-  `name2` varchar(128) character set latin1 default NULL,
+  `name1` varchar(128) character set latin1 collate latin1_general_cs NOT NULL default '',
+  `name2` varchar(128) character set latin1 collate latin1_general_cs default NULL,
   `is_active` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`object_id`),
   KEY `objecttype_id` (`objecttype_id`,`name1`,`name2`)
-) ENGINE=MyISAM  COMMENT='Current and historical objects of all kinds';
+) ENGINE=InnoDB  COMMENT='Current and historical objects of all kinds';
 
 -- --------------------------------------------------------
 
@@ -875,7 +877,7 @@ CREATE TABLE IF NOT EXISTS `icinga_processevents` (
   `program_version` varchar(20) character set latin1 NOT NULL default '',
   `program_date` varchar(10) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`processevent_id`)
-) ENGINE=MyISAM  COMMENT='Historical Icinga process events';
+) ENGINE=InnoDB  COMMENT='Historical Icinga process events';
 
 -- --------------------------------------------------------
 
@@ -911,7 +913,7 @@ CREATE TABLE IF NOT EXISTS `icinga_programstatus` (
   `global_service_event_handler` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`programstatus_id`),
   UNIQUE KEY `instance_id` (`instance_id`)
-) ENGINE=MyISAM  COMMENT='Current program status information';
+) ENGINE=InnoDB  COMMENT='Current program status information';
 
 -- --------------------------------------------------------
 
@@ -926,7 +928,7 @@ CREATE TABLE IF NOT EXISTS `icinga_runtimevariables` (
   `varvalue` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`runtimevariable_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`varname`)
-) ENGINE=MyISAM  COMMENT='Runtime variables from the Icinga daemon';
+) ENGINE=InnoDB  COMMENT='Runtime variables from the Icinga daemon';
 
 -- --------------------------------------------------------
 
@@ -953,7 +955,7 @@ CREATE TABLE IF NOT EXISTS `icinga_scheduleddowntime` (
   `actual_start_time_usec` int(11) NOT NULL default '0',
   PRIMARY KEY  (`scheduleddowntime_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`object_id`,`entry_time`,`internal_downtime_id`)
-) ENGINE=MyISAM COMMENT='Current scheduled host and service downtime';
+) ENGINE=InnoDB COMMENT='Current scheduled host and service downtime';
 
 -- --------------------------------------------------------
 
@@ -987,7 +989,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicechecks` (
   `perfdata` TEXT character set latin1 NOT NULL default '',
   PRIMARY KEY  (`servicecheck_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`service_object_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM  COMMENT='Historical service checks';
+) ENGINE=InnoDB  COMMENT='Historical service checks';
 
 -- --------------------------------------------------------
 
@@ -1010,7 +1012,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicedependencies` (
   `fail_on_critical` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`servicedependency_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`service_object_id`,`dependent_service_object_id`,`dependency_type`,`inherits_parent`,`fail_on_ok`,`fail_on_warning`,`fail_on_unknown`,`fail_on_critical`)
-) ENGINE=MyISAM COMMENT='Service dependency definitions';
+) ENGINE=InnoDB COMMENT='Service dependency definitions';
 
 -- --------------------------------------------------------
 
@@ -1033,7 +1035,7 @@ CREATE TABLE IF NOT EXISTS `icinga_serviceescalations` (
   `escalate_on_critical` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`serviceescalation_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`service_object_id`,`timeperiod_object_id`,`first_notification`,`last_notification`)
-) ENGINE=MyISAM  COMMENT='Service escalation definitions';
+) ENGINE=InnoDB  COMMENT='Service escalation definitions';
 
 -- --------------------------------------------------------
 
@@ -1048,7 +1050,7 @@ CREATE TABLE IF NOT EXISTS `icinga_serviceescalation_contactgroups` (
   `contactgroup_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`serviceescalation_contactgroup_id`),
   UNIQUE KEY `instance_id` (`serviceescalation_id`,`contactgroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Service escalation contact groups';
+) ENGINE=InnoDB  COMMENT='Service escalation contact groups';
 
 -- --------------------------------------------------------
 
@@ -1063,7 +1065,7 @@ CREATE TABLE IF NOT EXISTS `icinga_serviceescalation_contacts` (
   `contact_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`serviceescalation_contact_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`serviceescalation_id`,`contact_object_id`)
-) ENGINE=MyISAM ;
+) ENGINE=InnoDB  COMMENT='Service escalation contacts';
 
 -- --------------------------------------------------------
 
@@ -1079,7 +1081,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicegroups` (
   `alias` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`servicegroup_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`servicegroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Servicegroup definitions';
+) ENGINE=InnoDB  COMMENT='Servicegroup definitions';
 
 -- --------------------------------------------------------
 
@@ -1094,7 +1096,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicegroup_members` (
   `service_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`servicegroup_member_id`),
   UNIQUE KEY `instance_id` (`servicegroup_id`,`service_object_id`)
-) ENGINE=MyISAM  COMMENT='Servicegroup members';
+) ENGINE=InnoDB  COMMENT='Servicegroup members';
 
 -- --------------------------------------------------------
 
@@ -1108,7 +1110,7 @@ CREATE TABLE IF NOT EXISTS `icinga_services` (
   `config_type` smallint(6) NOT NULL default '0',
   `host_object_id` int(11) NOT NULL default '0',
   `service_object_id` int(11) NOT NULL default '0',
-  `display_name` varchar(64) character set latin1 NOT NULL default '',
+  `display_name` varchar(64) character set latin1 collate latin1_general_cs NOT NULL default '',
   `check_command_object_id` int(11) NOT NULL default '0',
   `check_command_args` varchar(255) character set latin1 NOT NULL default '',
   `eventhandler_command_object_id` int(11) NOT NULL default '0',
@@ -1158,7 +1160,7 @@ CREATE TABLE IF NOT EXISTS `icinga_services` (
   PRIMARY KEY  (`service_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`service_object_id`),
   KEY `service_object_id` (`service_object_id`)
-) ENGINE=MyISAM  COMMENT='Service definitions';
+) ENGINE=InnoDB  COMMENT='Service definitions';
 
 -- --------------------------------------------------------
 
@@ -1217,7 +1219,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicestatus` (
   `check_timeperiod_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`servicestatus_id`),
   UNIQUE KEY `object_id` (`service_object_id`)
-) ENGINE=MyISAM  COMMENT='Current service status information';
+) ENGINE=InnoDB  COMMENT='Current service status information';
 
 -- --------------------------------------------------------
 
@@ -1232,7 +1234,7 @@ CREATE TABLE IF NOT EXISTS `icinga_service_contactgroups` (
   `contactgroup_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`service_contactgroup_id`),
   UNIQUE KEY `instance_id` (`service_id`,`contactgroup_object_id`)
-) ENGINE=MyISAM  COMMENT='Service contact groups';
+) ENGINE=InnoDB  COMMENT='Service contact groups';
 
 -- --------------------------------------------------------
 
@@ -1247,7 +1249,7 @@ CREATE TABLE IF NOT EXISTS `icinga_service_contacts` (
   `contact_object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`service_contact_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`service_id`,`contact_object_id`)
-) ENGINE=MyISAM ;
+) ENGINE=InnoDB  COMMENT='Service contacts';
 
 -- --------------------------------------------------------
 
@@ -1271,7 +1273,7 @@ CREATE TABLE IF NOT EXISTS `icinga_statehistory` (
   `output` varchar(255) character set latin1 NOT NULL default '',
   `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`statehistory_id`)
-) ENGINE=MyISAM COMMENT='Historical host and service state changes';
+) ENGINE=InnoDB COMMENT='Historical host and service state changes';
 
 -- --------------------------------------------------------
 
@@ -1295,7 +1297,7 @@ CREATE TABLE IF NOT EXISTS `icinga_systemcommands` (
   `long_output` TEXT NOT NULL default '',
   PRIMARY KEY  (`systemcommand_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`start_time`,`start_time_usec`)
-) ENGINE=MyISAM  COMMENT='Historical system commands that are executed';
+) ENGINE=InnoDB  COMMENT='Historical system commands that are executed';
 
 -- --------------------------------------------------------
 
@@ -1314,7 +1316,7 @@ CREATE TABLE IF NOT EXISTS `icinga_timedeventqueue` (
   `object_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`timedeventqueue_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`event_type`,`scheduled_time`,`object_id`)
-) ENGINE=MyISAM  COMMENT='Current Icinga event queue';
+) ENGINE=InnoDB  COMMENT='Current Icinga event queue';
 
 -- --------------------------------------------------------
 
@@ -1337,7 +1339,7 @@ CREATE TABLE IF NOT EXISTS `icinga_timedevents` (
   `deletion_time_usec` int(11) NOT NULL default '0',
   PRIMARY KEY  (`timedevent_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`event_type`,`scheduled_time`,`object_id`)
-) ENGINE=MyISAM  COMMENT='Historical events from the Icinga event queue';
+) ENGINE=InnoDB  COMMENT='Historical events from the Icinga event queue';
 
 -- --------------------------------------------------------
 
@@ -1353,7 +1355,7 @@ CREATE TABLE IF NOT EXISTS `icinga_timeperiods` (
   `alias` varchar(255) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`timeperiod_id`),
   UNIQUE KEY `instance_id` (`instance_id`,`config_type`,`timeperiod_object_id`)
-) ENGINE=MyISAM  COMMENT='Timeperiod definitions';
+) ENGINE=InnoDB  COMMENT='Timeperiod definitions';
 
 -- --------------------------------------------------------
 
@@ -1370,7 +1372,7 @@ CREATE TABLE IF NOT EXISTS `icinga_timeperiod_timeranges` (
   `end_sec` int(11) NOT NULL default '0',
   PRIMARY KEY  (`timeperiod_timerange_id`),
   UNIQUE KEY `instance_id` (`timeperiod_id`,`day`,`start_sec`,`end_sec`)
-) ENGINE=MyISAM  COMMENT='Timeperiod definitions';
+) ENGINE=InnoDB  COMMENT='Timeperiod definitions';
 
 
 -- -----------------------------------------

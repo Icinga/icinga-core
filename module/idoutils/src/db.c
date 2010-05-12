@@ -1,10 +1,10 @@
 /***************************************************************
- * DB.C - Datatabase routines for NDO2DB daemon
+ * DB.C - Datatabase routines for IDO2DB daemon
  *
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 11-05-2009
+ * Last Modified: 02-10-2010
  *
  **************************************************************/
 
@@ -24,6 +24,8 @@ extern int ndo2db_log_debug_info(int , int , const char *, ...);
 
 /* point to prepared statements after db initialize */
 #ifdef USE_ORACLE
+int ido2db_oci_prepared_statement_objects_insert(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_logentries_insert(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_timedeventqueue(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_timedevents(ndo2db_idi *idi);
@@ -33,6 +35,84 @@ int ido2db_oci_prepared_statement_servicestatus(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_servicechecks(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_contact_notificationcommands(ndo2db_idi *idi);
 int ido2db_oci_prepared_statement_programstatus(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_systemcommanddata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_eventhandlerdata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_notificationdata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactnotificationdata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactnotificationmethoddata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_commentdata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_commentdata_history(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_downtimedata_downtime_history(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactstatusdata(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_configfilevariables(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_runtimevariables(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdefinition_contacts(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostgroupdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_servicedefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_servicedefinition_contacts(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_servicegroupdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_servicegroupdefinition_members(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdependencydefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_servicedependencydefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostescalationdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostescalationdefinition_contactgroups(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_hostescalationdefinition_contacts(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_serviceescalationdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_serviceescalationdefinition_contactgroups(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_serviceescalationdefinition_contacts(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_timeperiodefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactdefinition_addresses(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactdefinition_servicenotificationcommands(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_save_custom_variables_customvariables(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactgroupdefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_commanddefinition_definition(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_process_events(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_configfilevariables_insert(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_flappinghistory(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_external_commands(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_acknowledgements(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_statehistory(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_instances(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_conninfo(ndo2db_idi *idi);
+/* this is screwed but should work ... */
+int ido2db_oci_prepared_statement_objects_select_name1_name2(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_objects_select_name1_null_name2(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_objects_select_name1_name2_null(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_objects_select_name1_null_name2_null(ndo2db_idi *idi);
+/* select stuff */
+int ido2db_oci_prepared_statement_objects_select_cached(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_logentries_select(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_instances_select(ndo2db_idi *idi);
+
+/* update stuff */
+int ido2db_oci_prepared_statement_objects_update_inactive(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_objects_update_active(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_programstatus_update(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_timedevents_update(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_comment_history_update(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_downtimehistory_update_start(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_downtimehistory_update_stop(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_conninfo_update(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_conninfo_update_checkin(ndo2db_idi *idi);
+
+/* delete stuff */
+int ido2db_oci_prepared_statement_timedeventqueue_delete(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_timedeventqueue_delete_more(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_comments_delete(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_downtime_delete(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_instances_delete(ndo2db_idi *idi);
+int ido2db_oci_prepared_statement_instances_delete_time(ndo2db_idi *idi);
+
 #endif
 
 extern ndo2db_dbconfig ndo2db_db_settings;
@@ -195,6 +275,8 @@ int ndo2db_db_init(ndo2db_idi *idi) {
 	idi->dbinfo.max_hostchecks_age = ndo2db_db_settings.max_hostchecks_age;
 	idi->dbinfo.max_eventhandlers_age = ndo2db_db_settings.max_eventhandlers_age;
 	idi->dbinfo.max_externalcommands_age=ndo2db_db_settings.max_externalcommands_age;
+	idi->dbinfo.max_logentries_age=ndo2db_db_settings.max_logentries_age;
+	idi->dbinfo.max_acknowledgements_age=ndo2db_db_settings.max_acknowledgements_age;
 	idi->dbinfo.trim_db_interval=ndo2db_db_settings.trim_db_interval;
 	idi->dbinfo.last_table_trim_time = (time_t) 0L;
 	idi->dbinfo.last_logentry_time = (time_t) 0L;
@@ -269,8 +351,10 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 		return NDO_ERROR;
 
 	/* we're already connected... */
-	if (idi->dbinfo.connected == NDO_TRUE)
+	if (idi->dbinfo.connected == NDO_TRUE){
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "\tndo2db_db_connect(): already connected. Dropping out.\n");
 		return NDO_OK;
+	}
 
 #ifndef USE_ORACLE /* Oracle ocilib specific */
 	switch (idi->dbinfo.server_type) {
@@ -332,12 +416,12 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 
 	if (dbi_conn_connect(idi->dbinfo.dbi_conn) != 0) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
-		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to database: %s", dbi_error);
+		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to %s database: %s", ndo2db_db_settings.dbserver, dbi_error);
 		result = NDO_ERROR;
 		idi->disconnect_client = NDO_TRUE;
 	} else {
 		idi->dbinfo.connected = NDO_TRUE;
-		syslog(LOG_USER | LOG_INFO, "Successfully connected to database");
+		syslog(LOG_USER | LOG_INFO, "Successfully connected to %s database", ndo2db_db_settings.dbserver);
 	}
 #else /* Oracle ocilib specific */
 
@@ -352,100 +436,507 @@ int ndo2db_db_connect(ndo2db_idi *idi) {
 	
 	if(idi->dbinfo.oci_connection == NULL) {
 		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to oracle database: %s", OCI_ErrorGetString(OCI_GetLastError()));
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to oracle database\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to %s database\n", ndo2db_db_settings.dbserver);
                 result = NDO_ERROR;
                 idi->disconnect_client = NDO_TRUE;
         } else {
                 idi->dbinfo.connected = NDO_TRUE;
                 syslog(LOG_USER | LOG_INFO, "Successfully connected to oracle database");
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to oracle database\n");
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to %s database\n", ndo2db_db_settings.dbserver);
 	}
 
         /* initialize prepared statements */
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_connet() prepare statements start\n");
+
+	/* object inserts */
+        if(ido2db_oci_prepared_statement_objects_insert(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* logentries */
+        if(ido2db_oci_prepared_statement_logentries_insert(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_insert() failed\n");
+                return NDO_ERROR;
+        }
 
 	/* timed events */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() called\n");
-
         if(ido2db_oci_prepared_statement_timedevents_queue(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() called\n");
 
         if(ido2db_oci_prepared_statement_timedevents(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() called\n");
 
         if(ido2db_oci_prepared_statement_timedeventqueue(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() call done\n");
 
 	/* hoststatus/check */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() called\n");
-
         if(ido2db_oci_prepared_statement_hoststatus(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() called\n");
 
         if(ido2db_oci_prepared_statement_hostchecks(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() call done\n");
 
 	/* servicestatus/check */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() called\n");
-
         if(ido2db_oci_prepared_statement_servicestatus(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() call done\n");
-
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() called\n");
 
         if(ido2db_oci_prepared_statement_servicechecks(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() call done\n");
 
 	/* contactnotifications */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() called\n");
-
         if(ido2db_oci_prepared_statement_contact_notificationcommands(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() call done\n");
 
         /* programstatus */
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() called\n");
-
         if(ido2db_oci_prepared_statement_programstatus(idi) == NDO_ERROR) {
                 ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() failed\n");
                 return NDO_ERROR;
         }
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() call done\n");
+
+        /* systemcommand */
+        if(ido2db_oci_prepared_statement_systemcommanddata(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_systemcommanddata() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* commanddefinition_definition */
+        if(ido2db_oci_prepared_statement_commanddefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commanddefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* eventhandler */
+        if(ido2db_oci_prepared_statement_eventhandlerdata(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_eventhandlerdata() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* notificationdata */
+        if(ido2db_oci_prepared_statement_notificationdata(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_notificationdata() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactnotificationdata */
+        if(ido2db_oci_prepared_statement_contactnotificationdata(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationdata() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* commentdata */
+        if(ido2db_oci_prepared_statement_commentdata(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* commentdata history */
+        if(ido2db_oci_prepared_statement_commentdata_history(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata_history() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* downtimedata scheduled_downtime */
+        if(ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_scheduled_downtime() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* downtimedata downtime_history */
+        if(ido2db_oci_prepared_statement_downtimedata_downtime_history(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_downtime_history() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactstatusdata */
+        if(ido2db_oci_prepared_statement_contactstatusdata(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactstatusdata() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* configfilevariables */
+        if(ido2db_oci_prepared_statement_configfilevariables(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configfilevariables() failed\n");
+                return NDO_ERROR;
+        }
+
+        if(ido2db_oci_prepared_statement_configfilevariables_insert(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configfilevariables_insert() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* runtimevariables */
+        if(ido2db_oci_prepared_statement_runtimevariables(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_runtimevariables() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostdefinition_definition */
+        if(ido2db_oci_prepared_statement_hostdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostdefinition_parenthosts */
+        if(ido2db_oci_prepared_statement_hostdefinition_parenthosts(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_parenthosts() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostdefinition_contactgroups */
+        if(ido2db_oci_prepared_statement_hostdefinition_contactgroups(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_contactgroups() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostdefinition_contacts */
+        if(ido2db_oci_prepared_statement_hostdefinition_contacts(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_contacts() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostgroupdefinition_definition */
+        if(ido2db_oci_prepared_statement_hostgroupdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostgroupdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostgroupdefinition_hostgroupmembers */
+        if(ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* servicedefinition_definition */
+        if(ido2db_oci_prepared_statement_servicedefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicedefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* servicedefinition_contactgroups */
+        if(ido2db_oci_prepared_statement_servicedefinition_contactgroups(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicedefinition_contactgroups() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* servicedefinition_contacts */
+        if(ido2db_oci_prepared_statement_servicedefinition_contacts(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicedefinition_contacts() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* servicegroupdefinition_definition */
+        if(ido2db_oci_prepared_statement_servicegroupdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicegroupdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* servicegroupdefinition_members */
+        if(ido2db_oci_prepared_statement_servicegroupdefinition_members(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicegroupdefinition_members() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostdependencydefinition_definition */
+        if(ido2db_oci_prepared_statement_hostdependencydefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdependencydefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* servicedependencydefinition_definition */
+        if(ido2db_oci_prepared_statement_servicedependencydefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicedependencydefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostescalationdefinition_definition */
+        if(ido2db_oci_prepared_statement_hostescalationdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostescalationdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostescalationdefinition_contactgroups */
+        if(ido2db_oci_prepared_statement_hostescalationdefinition_contactgroups(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostescalationdefinition_contactgroups() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* hostescalationdefinition_contacts */
+        if(ido2db_oci_prepared_statement_hostescalationdefinition_contacts(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostescalationdefinition_contacts() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* serviceescalationdefinition_definition */
+        if(ido2db_oci_prepared_statement_serviceescalationdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_serviceescalationdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* serviceescalationdefinition_contactgroups */
+        if(ido2db_oci_prepared_statement_serviceescalationdefinition_contactgroups(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_serviceescalationdefinition_contactgroups() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* serviceescalationdefinition_contacts */
+        if(ido2db_oci_prepared_statement_serviceescalationdefinition_contacts(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_serviceescalationdefinition_contacts() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* timeperiodefinition_definition */
+        if(ido2db_oci_prepared_statement_timeperiodefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timeperiodefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* timeperiodefinition_timeranges */
+        if(ido2db_oci_prepared_statement_timeperiodefinition_timeranges(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timeperiodefinition_timeranges() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactdefinition_definition */
+        if(ido2db_oci_prepared_statement_contactdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactdefinition_addresses */
+        if(ido2db_oci_prepared_statement_contactdefinition_addresses(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactdefinition_addresses() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactdefinition_servicenotificationcommands */
+        if(ido2db_oci_prepared_statement_contactdefinition_servicenotificationcommands(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactdefinition_servicenotificationcommands() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* save_custom_variables_customvariables */
+        if(ido2db_oci_prepared_statement_save_custom_variables_customvariables(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_save_custom_variables_customvariables() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* save_custom_variables_customvariablestatus */
+        if(ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactgroupdefinition_definition */
+        if(ido2db_oci_prepared_statement_contactgroupdefinition_definition(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactgroupdefinition_definition() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* contactgroupdefinition_contactgroupmembers */
+        if(ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* process_events */
+        if(ido2db_oci_prepared_statement_process_events(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_process_events() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* flapping history */
+        if(ido2db_oci_prepared_statement_flappinghistory(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_flappinghistory() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* external commands */
+        if(ido2db_oci_prepared_statement_external_commands(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_external_commands() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* acknowledgements */
+        if(ido2db_oci_prepared_statement_acknowledgements(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_acknowledgements() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* statehistory */
+        if(ido2db_oci_prepared_statement_statehistory(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_statehistory() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* instances */
+        if(ido2db_oci_prepared_statement_instances(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_instances() failed\n");
+                return NDO_ERROR;
+        }
+
+        /*  conninfo */
+        if(ido2db_oci_prepared_statement_conninfo(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_connfino() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* objects select  I: name1, name2 II: name1 IS NULL, name2 III: name1, name2 IS NULL IV: name1 IS NULL, name2 IS NULL */
+        if(ido2db_oci_prepared_statement_objects_select_name1_name2(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /*  */
+        if(ido2db_oci_prepared_statement_objects_select_name1_null_name2(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /*  */
+        if(ido2db_oci_prepared_statement_objects_select_name1_name2_null(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /*  */
+        if(ido2db_oci_prepared_statement_objects_select_name1_null_name2_null(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* objects select cached */  
+        if(ido2db_oci_prepared_statement_objects_select_cached(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* objects update inactive */
+        if(ido2db_oci_prepared_statement_objects_update_inactive(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_update_inactive() failed\n");
+                return NDO_ERROR;
+        }
+
+        /*  objects update active */
+        if(ido2db_oci_prepared_statement_objects_update_active(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_update_active() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* logentries select  */
+        if(ido2db_oci_prepared_statement_logentries_select(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_select() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* programstatus update */
+        if(ido2db_oci_prepared_statement_programstatus_update(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus_update() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* timedevents update */
+        if(ido2db_oci_prepared_statement_timedevents_update(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_update() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* timdeventqueue delete */
+        if(ido2db_oci_prepared_statement_timedeventqueue_delete(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* timdeventqueue delete more*/
+        if(ido2db_oci_prepared_statement_timedeventqueue_delete_more(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+      	} 
+
+        /* comment history update  */
+        if(ido2db_oci_prepared_statement_comment_history_update(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* comments delete */
+        if(ido2db_oci_prepared_statement_comments_delete(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* downtimehistory_update start */
+        if(ido2db_oci_prepared_statement_downtimehistory_update_start(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* downtimehistory_update stop */
+        if(ido2db_oci_prepared_statement_downtimehistory_update_stop(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* downtime delete */
+        if(ido2db_oci_prepared_statement_downtime_delete(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* instances select */
+        if(ido2db_oci_prepared_statement_instances_select(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* conninfo update */
+        if(ido2db_oci_prepared_statement_conninfo_update(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* conninfo update */
+        if(ido2db_oci_prepared_statement_conninfo_update_checkin(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* instances delete */
+        if(ido2db_oci_prepared_statement_instances_delete(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_instances_delete() failed\n");
+                return NDO_ERROR;
+        }
+
+        /* instances delete time */
+        if(ido2db_oci_prepared_statement_instances_delete_time(idi) == NDO_ERROR) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_instances_delete_time() failed\n");
+                return NDO_ERROR;
+        }
+
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_connet() prepare statements end\n");
 
 #endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_connect(%d) end\n", result);
 	return result;
 }
-
 
 /****************************************/
 /* disconnects from the database server */
@@ -465,7 +956,7 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	dbi_conn_close(idi->dbinfo.dbi_conn);
 	dbi_shutdown();
 
-	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from database");
+	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from %s database", ndo2db_db_settings.dbserver);
 #else /* Oracle ocilib specific */
 
 	/* close prepared statements */
@@ -477,6 +968,78 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	OCI_StatementFree(idi->dbinfo.oci_statement_servicechecks);
 	OCI_StatementFree(idi->dbinfo.oci_statement_servicestatus);
 	OCI_StatementFree(idi->dbinfo.oci_statement_contact_notificationcommands);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_insert);
+	OCI_StatementFree(idi->dbinfo.oci_statement_logentries_insert);
+	OCI_StatementFree(idi->dbinfo.oci_statement_programstatus);
+	OCI_StatementFree(idi->dbinfo.oci_statement_systemcommanddata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_eventhandlerdata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_notificationdata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactnotificationdata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactnotificationmethoddata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_commentdata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_commentdata_history);
+	OCI_StatementFree(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime);
+	OCI_StatementFree(idi->dbinfo.oci_statement_downtimedata_downtime_history);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactstatusdata);
+	OCI_StatementFree(idi->dbinfo.oci_statement_configfilevariables);
+	OCI_StatementFree(idi->dbinfo.oci_statement_configfilevariables_insert);
+	OCI_StatementFree(idi->dbinfo.oci_statement_runtimevariables);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_parenthosts);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_contactgroups);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_contacts);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostgroupdefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicedefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicedefinition_contactgroups);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicedefinition_contacts);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicegroupdefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicegroupdefinition_members);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostdependencydefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_servicedependencydefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_hostescalationdefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_serviceescalationdefinition_contactgroups);
+	OCI_StatementFree(idi->dbinfo.oci_statement_serviceescalationdefinition_contacts);
+	OCI_StatementFree(idi->dbinfo.oci_statement_commanddefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timeperiodefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timeperiodefinition_timeranges);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactdefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactdefinition_addresses);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands);
+	OCI_StatementFree(idi->dbinfo.oci_statement_save_custom_variables_customvariables);
+	OCI_StatementFree(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactgroupdefinition_definition);
+	OCI_StatementFree(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers);
+	OCI_StatementFree(idi->dbinfo.oci_statement_process_events);
+	OCI_StatementFree(idi->dbinfo.oci_statement_flappinghistory);
+	OCI_StatementFree(idi->dbinfo.oci_statement_external_commands);
+	OCI_StatementFree(idi->dbinfo.oci_statement_acknowledgements);
+	OCI_StatementFree(idi->dbinfo.oci_statement_statehistory);
+	OCI_StatementFree(idi->dbinfo.oci_statement_instances);
+	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_name2);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_null_name2);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_name2_null);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_cached);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_update_inactive);
+	OCI_StatementFree(idi->dbinfo.oci_statement_objects_update_active);
+	OCI_StatementFree(idi->dbinfo.oci_statement_logentries_select);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents_update);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timedeventqueue_delete);
+	OCI_StatementFree(idi->dbinfo.oci_statement_timedeventqueue_delete_more);
+	OCI_StatementFree(idi->dbinfo.oci_statement_comment_history_update);
+	OCI_StatementFree(idi->dbinfo.oci_statement_comments_delete);
+	OCI_StatementFree(idi->dbinfo.oci_statement_downtimehistory_update_start);
+	OCI_StatementFree(idi->dbinfo.oci_statement_downtimehistory_update_stop);
+	OCI_StatementFree(idi->dbinfo.oci_statement_downtime_delete);
+	OCI_StatementFree(idi->dbinfo.oci_statement_instances_select);
+	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo_update);
+	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo_update_checkin);
+	
+	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete);
+	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete_time);
+
 	syslog(LOG_USER | LOG_INFO, "Successfully freed prepared statements");
 
 	/* close db connection */
@@ -489,6 +1052,7 @@ int ndo2db_db_disconnect(ndo2db_idi *idi) {
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_disconnect() stop\n");
 	return NDO_OK;
 }
+
 
 /************************************/
 /* post-connect routines            */
@@ -524,61 +1088,86 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 			}
 		}
 	}
+        else {
+		/* there was an error with the initial db handshake, bail out */
+		/* could be missing database, missing db schema */
+		syslog(LOG_USER | LOG_INFO, "Error: Initial %s database query failed! Please check %s database configuration and schema!", ndo2db_db_settings.dbserver, ndo2db_db_settings.dbserver);
+		syslog(LOG_USER | LOG_INFO, "Exiting ...");
+
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+                /* cleanup the socket */
+                ndo2db_cleanup_socket();
+
+                /* free memory */
+                ndo2db_free_program_memory();
+
+                _exit(0);
+        }
+
+	dbi_result_free(idi->dbinfo.dbi_result);
+	free(buf);
+
 #else /* Oracle ocilib specific */
 
         /* get existing instance */
-        if (asprintf(&buf, "SELECT id FROM %s WHERE instance_name='%s'", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
-                buf = NULL;
+        void *data[9];
+        data[0] = (void *) &idi->instance_name;
 
-        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
-
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query ok\n");
-			
-		if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() fetchnext ok\n");
-			idi->dbinfo.instance_id	= OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
-
-			if(idi->dbinfo.instance_id == 0) {
-				have_instance = NDO_FALSE;
-			} else {
-				have_instance = NDO_TRUE;
-			}		
-		} else {
-			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() fetchnext not ok\n");
-		}
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(instance_id=%lu)\n", idi->dbinfo.instance_id);
+        if(!OCI_BindString(idi->dbinfo.oci_statement_instances_select, MT(":X1"), *(char **) data[0], 0)) {
+	        return NDO_ERROR;
         }
 
-#endif /* Oracle ocilib specific */
-	
-	else {
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
+		/* there was an error with the initial db handshake, bail out */
+		/* could be missing database, missing db schema */
+		syslog(LOG_USER | LOG_INFO, "Error: Initial oracle database query failed! Please check oracle database configuration and schema!");
+		syslog(LOG_USER | LOG_INFO, "Exiting ...");
+
+	        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+
 		/* cleanup the socket */
 		ndo2db_cleanup_socket();
-
+		
 		/* free memory */
 		ndo2db_free_program_memory();
 
 		_exit(0);
 	}
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
+        /* commit statement */
+        OCI_Commit(idi->dbinfo.oci_connection);
 
-	OCI_StatementFree(idi->dbinfo.oci_statement);
+        /* do not free statement yet! */
+
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_instances_select);
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() query ok\n");
+			
+	if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() fetchnext ok\n");
+		idi->dbinfo.instance_id	= OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+
+		if(idi->dbinfo.instance_id == 0) {
+			have_instance = NDO_FALSE;
+		} else {
+			have_instance = NDO_TRUE;
+		}		
+	} else {
+		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() fetchnext not ok\n");
+	}
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(instance_id=%lu)\n", idi->dbinfo.instance_id);
+
 
 #endif /* Oracle ocilib specific */
 	
-	free(buf);
 
 	/* insert new instance if necessary */
 	if (have_instance == NDO_FALSE) {
+#ifndef USE_ORACLE /* everything else will be libdbi */
 		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')", ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
 			buf = NULL;
 		if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
 
 	                switch (idi->dbinfo.server_type) {
         	                case NDO2DB_DBSERVER_MYSQL:
@@ -613,48 +1202,58 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
         	                default:
 	                                break;
         	        }
+		}
+		dbi_result_free(idi->dbinfo.dbi_result);
+		
+		free(buf);
+
 #else /* Oracle ocilib specific */
 
-			idi->dbinfo.instance_id = ido2db_ocilib_insert_id(idi);
+	        void *data[1];
+	        data[0] = (void *) &idi->instance_name;
+
+                if(!OCI_BindString(idi->dbinfo.oci_statement_instances, MT(":X1"), *(char **) data[0], 0)) {
+                        return NDO_ERROR;
+                }
+
+	        /* execute statement */
+	        if(!OCI_Execute(idi->dbinfo.oci_statement_instances)) {
+	                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_instances() execute error\n");
+	                return NDO_ERROR;
+	        }
+
+		OCI_Commit(idi->dbinfo.oci_connection);
+
+		idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_instances);
+
+		if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+			idi->dbinfo.instance_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
 			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) instance_id\n", idi->dbinfo.instance_id);
-
-#endif /* Oracle ocilib specific */
-
+		} else {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() instance_id could not be fetched\n");
 		}
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
+		OCI_Commit(idi->dbinfo.oci_connection);
 
-		 OCI_StatementFree(idi->dbinfo.oci_statement);
+	        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
-		free(buf);
 	}
-
-	ts = ndo2db_db_timet_to_sql(idi, idi->data_start_time);
 
 	/* record initial connection information */
 #ifndef USE_ORACLE /* everything else will be libdbi */
+
+	ts = ndo2db_db_timet_to_sql(idi, idi->data_start_time);
+
 	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
 			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
 			idi->disposition, idi->connect_source, idi->connect_type) == -1)
 		buf = NULL;
 
-#else /* Oracle ocilib specific */
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', SYSDATE, SYSDATE, '0', '0', '0', '%s', '%s', '%s', '%s', '%s', SYSDATE)",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
-			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
-			idi->disposition, idi->connect_source, idi->connect_type) == -1)
-		buf = NULL;
-
-#endif /* Oracle ocilib specific */
-
 	if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	        switch (idi->dbinfo.server_type) {
         	        case NDO2DB_DBSERVER_MYSQL:
 				/* mysql doesn't use sequences */
@@ -689,26 +1288,76 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 	                default:
         	                break;
         	}
-#else /* Oracle ocilib specific */
-
-		idi->dbinfo.conninfo_id = ido2db_ocilib_insert_id(idi);
-		ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
-
-#endif /* Oracle ocilib specific */
-
+		dbi_result_free(idi->dbinfo.dbi_result);
 	}
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
-
-	OCI_StatementFree(idi->dbinfo.oci_statement);
-
-#endif /* Oracle ocilib specific */
 
 	free(buf);
 	free(ts);
+#else /* Oracle ocilib specific */
 
+	unsigned long n_zero = 0;
+
+        //void *data[9];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &n_zero;
+        data[2] = (void *) &n_zero;
+        data[3] = (void *) &n_zero;
+        data[4] = (void *) &idi->agent_name;
+        data[5] = (void *) &idi->agent_version;
+        data[6] = (void *) &idi->disposition;
+        data[7] = (void *) &idi->connect_source;
+        data[8] = (void *) &idi->connect_type;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X5"), *(char **) data[4], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X7"), *(char **) data[6], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X8"), *(char **) data[7], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X9"), *(char **) data[8], 0)) {
+                                return NDO_ERROR;
+                        }
+
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_conninfo)) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_conninfo() execute error\n");
+                return NDO_ERROR;
+        }
+	OCI_Commit(idi->dbinfo.oci_connection);
+
+	idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_conninfo);
+
+	if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+        	idi->dbinfo.conninfo_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
+	} else {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() conninfo_id could not be fetched\n");
+        }
+
+        /* do not free statement yet! */
+
+#endif /* Oracle ocilib specific */
+
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() get cached object ids\n");
 	/* get cached object ids... */
 	ndo2db_get_cached_object_ids(idi);
 
@@ -751,6 +1400,270 @@ int ndo2db_db_hello(ndo2db_idi *idi) {
 }
 
 /************************************/
+/* threading post-connect routines  */
+/************************************/
+int ido2db_thread_db_hello(ndo2db_idi *idi) {
+        char *buf = NULL;
+        char *buf1 = NULL;
+        char *ts = NULL;
+        int result = NDO_OK;
+        int have_instance = NDO_FALSE;
+        time_t current_time;
+
+	void *data[9];
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() start\n");
+
+        /* make sure we have an instance name */
+        if (idi->instance_name == NULL)
+                idi->instance_name = strdup("default");
+
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+        /* get existing instance */
+        if (asprintf(&buf, "SELECT instance_id FROM %s WHERE instance_name='%s'",
+                        ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES], idi->instance_name)
+                        == -1)
+                buf = NULL;
+
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+                if (idi->dbinfo.dbi_result != NULL) {
+                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                idi->dbinfo.instance_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "instance_id");
+                                have_instance = NDO_TRUE;
+                        }
+                }
+        }
+        else {  
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+                /* cleanup the socket */
+                ndo2db_cleanup_socket();
+
+                /* free memory */
+                ndo2db_free_program_memory();
+
+                _exit(0);
+        }
+
+        dbi_result_free(idi->dbinfo.dbi_result);
+        free(buf);
+
+#else /* Oracle ocilib specific */
+
+        /* get existing instance */
+        //void *data[9];
+        data[0] = (void *) &idi->instance_name;
+
+        if(!OCI_BindString(idi->dbinfo.oci_statement_instances_select, MT(":X1"), *(char **) data[0], 0)) {
+                return NDO_ERROR;
+        }
+
+        /* execute statement */ 
+        if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+
+                /* cleanup the socket */
+                ndo2db_cleanup_socket();
+
+                /* free memory */
+                ndo2db_free_program_memory();
+
+                _exit(0);
+        }
+
+        /* commit statement */
+        OCI_Commit(idi->dbinfo.oci_connection);
+
+        /* do not free statement yet! */
+
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_instances_select);
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query ok\n");
+
+        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() fetchnext ok\n");
+                idi->dbinfo.instance_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+
+                if(idi->dbinfo.instance_id == 0) {
+                        have_instance = NDO_FALSE;
+                } else {
+                        have_instance = NDO_TRUE;
+                }
+        } else {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() fetchnext not ok\n");
+        }
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(instance_id=%lu)\n", idi->dbinfo.instance_id);
+
+
+#endif /* Oracle ocilib specific */
+
+	
+	/* check if instance found */
+	if(have_instance == NDO_FALSE) {
+		return NDO_ERROR;
+	}
+
+        /* record initial connection information */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+
+        ts = ndo2db_db_timet_to_sql(idi, idi->data_start_time);
+
+        if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+                        ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
+                        idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
+                        idi->disposition, idi->connect_source, idi->connect_type) == -1)
+                buf = NULL;
+
+        if ((result = ndo2db_db_query(idi, buf)) == NDO_OK) {
+
+                switch (idi->dbinfo.server_type) {
+                        case NDO2DB_DBSERVER_MYSQL:
+                                /* mysql doesn't use sequences */
+                                idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
+                                break;
+                        case NDO2DB_DBSERVER_PGSQL:
+                                /* depending on tableprefix/tablename a sequence will be used */
+                                if(asprintf(&buf1, "%s_conninfo_id_seq", ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO]) == -1)
+                                        buf1 = NULL;
+
+                                idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(%s=%lu) conninfo_id\n", buf1, idi->dbinfo.conninfo_id);
+                                free(buf1);
+                                break;
+                        case NDO2DB_DBSERVER_DB2:
+                                break;
+                        case NDO2DB_DBSERVER_FIREBIRD:
+                                break;
+                        case NDO2DB_DBSERVER_FREETDS:
+                                break;
+                        case NDO2DB_DBSERVER_INGRES:
+                                break;
+                        case NDO2DB_DBSERVER_MSQL:
+                                break;
+                        case NDO2DB_DBSERVER_ORACLE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE:
+                                break;
+                        case NDO2DB_DBSERVER_SQLITE3:
+                                break;
+                        default:
+                                break;
+                }
+                dbi_result_free(idi->dbinfo.dbi_result);
+        }
+
+        free(buf);
+        free(ts);
+#else /* Oracle ocilib specific */
+
+        unsigned long n_zero = 0;
+
+        //void *data[9];
+        data[0] = (void *) &idi->dbinfo.instance_id;
+        data[1] = (void *) &n_zero;
+        data[2] = (void *) &n_zero;
+        data[3] = (void *) &n_zero;
+        data[4] = (void *) &idi->agent_name;
+        data[5] = (void *) &idi->agent_version;
+        data[6] = (void *) &idi->disposition;
+        data[7] = (void *) &idi->connect_source;
+        data[8] = (void *) &idi->connect_type;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X5"), *(char **) data[4], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X6"), *(char **) data[5], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X7"), *(char **) data[6], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X8"), *(char **) data[7], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X9"), *(char **) data[8], 0)) {
+                                return NDO_ERROR;
+                        }
+
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_conninfo)) {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_conninfo() execute error\n");
+                return NDO_ERROR;
+        }
+        OCI_Commit(idi->dbinfo.oci_connection);
+
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_conninfo);
+
+        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                idi->dbinfo.conninfo_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(%lu) conninfo_id\n", idi->dbinfo.conninfo_id);
+        } else {
+                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() conninfo_id could not be fetched\n");
+        }
+
+        /* do not free statement yet! */
+
+#endif /* Oracle ocilib specific */
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() get cached object ids\n");
+        /* get cached object ids... */
+        ndo2db_get_cached_object_ids(idi);
+
+        /* get latest times from various tables... */
+        ndo2db_db_get_latest_data_time(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_program_status_time);
+        ndo2db_db_get_latest_data_time(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_host_status_time);
+        ndo2db_db_get_latest_data_time(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_service_status_time);
+        ndo2db_db_get_latest_data_time(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_contact_status_time);
+        ndo2db_db_get_latest_data_time(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE], "queued_time", (unsigned long *) &idi->dbinfo.latest_queued_event_time);
+        ndo2db_db_get_latest_data_time(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS], "entry_time", (unsigned long *) &idi->dbinfo.latest_comment_time);
+
+        /* calculate time of latest realtime data */
+        idi->dbinfo.latest_realtime_data_time = (time_t) 0L;
+        if (idi->dbinfo.latest_program_status_time > idi->dbinfo.latest_realtime_data_time)
+                idi->dbinfo.latest_realtime_data_time = idi->dbinfo.latest_program_status_time;
+        if (idi->dbinfo.latest_host_status_time > idi->dbinfo.latest_realtime_data_time)
+                idi->dbinfo.latest_realtime_data_time = idi->dbinfo.latest_host_status_time;
+        if (idi->dbinfo.latest_service_status_time > idi->dbinfo.latest_realtime_data_time)
+                idi->dbinfo.latest_realtime_data_time = idi->dbinfo.latest_service_status_time;
+        if (idi->dbinfo.latest_contact_status_time > idi->dbinfo.latest_realtime_data_time)
+                idi->dbinfo.latest_realtime_data_time = idi->dbinfo.latest_contact_status_time;
+        if (idi->dbinfo.latest_queued_event_time > idi->dbinfo.latest_realtime_data_time)
+                idi->dbinfo.latest_realtime_data_time = idi->dbinfo.latest_queued_event_time;
+
+        /* get current time */
+        /* make sure latest time stamp isn't in the future - this will cause problems if a backwards system time change occurs */
+        time(&current_time);
+        if (idi->dbinfo.latest_realtime_data_time > current_time)
+                idi->dbinfo.latest_realtime_data_time = current_time;
+
+        /* set flags to clean event queue, etc. */
+        idi->dbinfo.clean_event_queue = NDO_TRUE;
+
+        /* set misc data */
+        idi->dbinfo.last_notification_id = 0L;
+        idi->dbinfo.last_contact_notification_id = 0L;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() end\n");
+        return result;
+}
+
+
+
+
+/************************************/
 /* pre-disconnect routines          */
 /************************************/
 int ndo2db_db_goodbye(ndo2db_idi *idi) {
@@ -760,37 +1673,60 @@ int ndo2db_db_goodbye(ndo2db_idi *idi) {
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_goodbye() start\n");
 
+#ifndef USE_ORACLE /* everything else will be libdbi */
 	ts = ndo2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
-#ifndef USE_ORACLE /* everything else will be libdbi */
 	if (asprintf(&buf, "UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
 			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
 		buf = NULL;
 
-#else /* Oracle ocilib specific */
-	if (asprintf(&buf, "UPDATE %s SET disconnect_time=SYSDATE, last_checkin_time=SYSDATE, data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE id='%lu'",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO], ts,
-			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
-			idi->dbinfo.conninfo_id) == -1)
-		buf = NULL;        
+        result = ndo2db_db_query(idi, buf);
 
-#endif /* Oracle ocilib specific */
-
-	result = ndo2db_db_query(idi, buf);
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
-
-	 OCI_StatementFree(idi->dbinfo.oci_statement);
-
-#endif /* Oracle ocilib specific */
+        dbi_result_free(idi->dbinfo.dbi_result);
 
 	free(buf);
 	free(ts);
+
+#else /* Oracle ocilib specific */
+
+        void *data[5];
+        data[0] = (void *) &idi->data_end_time;
+        data[1] = (void *) &idi->bytes_processed;
+        data[2] = (void *) &idi->lines_processed;
+        data[3] = (void *) &idi->entries_processed;
+        data[4] = (void *) &idi->dbinfo.conninfo_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update, MT(":X5"), (big_uint *) data[4])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_conninfo_update)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_conninfo_update() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+
+#endif /* Oracle ocilib specific */
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_goodbye() end\n");
 	return result;
@@ -813,26 +1749,45 @@ int ndo2db_db_checkin(ndo2db_idi *idi) {
 			idi->dbinfo.conninfo_id) == -1)
 		buf = NULL;
 
+        result = ndo2db_db_query(idi, buf);
+
+        dbi_result_free(idi->dbinfo.dbi_result);
+        free(buf);
+
 #else /* Oracle ocilib specific */
-	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=SYSDATE, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE id='%lu'",
-			ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO],
-			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
-			idi->dbinfo.conninfo_id) == -1)
-		buf = NULL;
+
+        void *data[4];
+        data[0] = (void *) &idi->bytes_processed;
+        data[1] = (void *) &idi->lines_processed;
+        data[2] = (void *) &idi->entries_processed;
+        data[3] = (void *) &idi->dbinfo.conninfo_id;
+
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update_checkin, MT(":X1"), (big_uint *) data[0])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update_checkin, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update_checkin, MT(":X3"), (big_uint *) data[2])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo_update_checkin, MT(":X4"), (big_uint *) data[3])) {
+                                return NDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_conninfo_update_checkin)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_conninfo_update_checkin() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
-	result = ndo2db_db_query(idi, buf);
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
-
-	 OCI_StatementFree(idi->dbinfo.oci_statement);
-
-#endif /* Oracle ocilib specific */
-
-	free(buf);
 
 	time(&ndo2db_db_last_checkin_time);
 
@@ -858,11 +1813,57 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 
 	z = strlen(buf);
 
+	/* escape characters */
+#ifndef USE_ORACLE /* everything else will be libdbi */
+	/* allocate space for the new string */
+
+        if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
+                return NULL;
+
+        for (x = 0, y = 0; x < z; x++) {
+
+                if(idi->dbinfo.server_type==NDO2DB_DBSERVER_MYSQL){
+
+                         if(buf[x]=='\'' || buf[x]=='\"' || buf[x]=='*' || buf[x]=='\\' || buf[x]=='$' || buf[x]=='?' || buf[x]=='.' || buf[x]=='^' || buf[x]=='+' || buf[x]=='[' || buf[x]==']' || buf[x]=='(' || buf[x]==')')
+                                newbuf[y++]='\\';
+                }
+                else if(idi->dbinfo.server_type==NDO2DB_DBSERVER_PGSQL){
+
+			if (buf[x] == '\'' || buf[x] == '[' || buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
+				newbuf[y++] = '\\';
+
+                	/* should be fixed with binding values */
+			/* if(buf[x]=='\'' )
+                               newbuf[y++]='\''; */
+		}
+		else {
+
+                       if(buf[x]=='\'' )
+                               newbuf[y++]='\'';
+
+		}
+
+                newbuf[y++] = buf[x];
+        }
+
+        /* terminate escape string */
+        newbuf[y] = '\0';
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string(%s) end\n", newbuf);
+        return newbuf;
+
+        //size_t res = dbi_conn_quote_string(idi->dbinfo.dbi_conn, &buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_escape_string(%s) end\n", buf);
+        //return buf;
+
+#else /* Oracle ocilib specific */
+
 	/* allocate space for the new string */
 	if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
 		return NULL;
 
-	/* escape characters */
+
 	for (x = 0, y = 0; x < z; x++) {
 
                 if(buf[x]=='\'' )
@@ -870,6 +1871,7 @@ char *ndo2db_db_escape_string(ndo2db_idi *idi, char *buf) {
 
 		newbuf[y++] = buf[x];
 	}
+#endif /* Oracle ocilib specific */
 
 	/* terminate escape string */
 	newbuf[y] = '\0';
@@ -1101,43 +2103,37 @@ int ndo2db_db_clear_table(ndo2db_idi *idi, char *table_name) {
 	result = ndo2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+
 #else /* Oracle ocilib specific */
 
-	/* using a specialized deleting, we just execute the procedure but do not commit */
-        //if (asprintf(&buf, "begin clean_table_by_instance('%s', %lu); end;", table_name, idi->dbinfo.instance_id) == -1)
-	//	buf = NULL;
-
-        //result = ndo2db_db_query(idi, buf);
-
-        /* create statement handler */
-        //idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-        /* execute query in one go */
-        //oci_res = OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT(buf));
-
-        /*  get result set */
-        //idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
-
-        /* check for errors */
-        //if(!oci_res) {
-
-        //        syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
-        //        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "Error: database query failed for: '%s'\n", buf);
-
-        //        ndo2db_handle_db_error(idi);
-        //        result = NDO_ERROR;
-        //}
-
+/*
         if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
                 buf = NULL;
 
         result = ndo2db_db_query(idi, buf);
 	
-	/* commit statement */
-	//OCI_Commit(idi->dbinfo.oci_connection);
+	OCI_Commit(idi->dbinfo.oci_connection);
 
-	/* don't free statement yet */
 	OCI_StatementFree(idi->dbinfo.oci_statement);
+*/
+	/* procedure approach */
+        void *data[2];
+        data[0] = (void *) &table_name;
+        data[1] = (void *) &idi->dbinfo.instance_id;	
+
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_instances_delete, MT(":X1"), *(char **) data[0], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_instances_delete, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_instances_delete)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_instances_delete() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        OCI_Commit(idi->dbinfo.oci_connection);
 
 #endif /* Oracle ocilib specific */
 
@@ -1224,7 +2220,7 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
 	char *ts[1];
 	int result = NDO_OK;
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() start\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() start, time=%lu\n", t);
 
 	if (idi == NULL || table_name == NULL || field_name == NULL)
 		return NDO_ERROR;
@@ -1238,30 +2234,51 @@ int ndo2db_db_trim_data_table(ndo2db_idi *idi, char *table_name, char *field_nam
 		buf = NULL;
 
 	result = ndo2db_db_query(idi, buf);
+        dbi_result_free(idi->dbinfo.dbi_result);
 
 #else /* Oracle ocilib specific */
 
-	//FIXME - use special plsql query with commits
+        void *data[4];
+        data[0] = (void *) &table_name;
+        data[1] = (void *) &idi->dbinfo.instance_id;
+        data[2] = (void *) &field_name;
+        data[3] = (void *) &t;
+
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_instances_delete_time, MT(":X1"), *(char **) data[0], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_instances_delete_time, MT(":X2"), (big_uint *) data[1])) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_instances_delete_time, MT(":X3"), *(char **) data[2], 0)) {
+                                return NDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_instances_delete_time, MT(":X4"), (big_uint *) data[3])) { // unixtimestamp instead of time2sql 
+                                return NDO_ERROR;
+                        }
+
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_instances_delete_time)) {
+                                ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_instances_delete_time() execute error\n");
+                                return NDO_ERROR;
+                        }
+
+                        OCI_Commit(idi->dbinfo.oci_connection);
+/*
+
         if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
                         table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
                 buf = NULL;
 
         result = ndo2db_db_query(idi, buf);
 
-#endif /* Oracle ocilib specific */
-
-#ifndef USE_ORACLE /* everything else will be libdbi */
-        dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
-
 	OCI_StatementFree(idi->dbinfo.oci_statement);
-
+*/
 #endif /* Oracle ocilib specific */
 
 	free(buf);
         free(ts[0]);
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table() end\n");
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_trim_data_table(%s => %s: %lu) end\n", table_name, field_name, t);
 	return result;
 }
 
@@ -1272,6 +2289,8 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 	time_t current_time;
 
 	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() start\n");
+
+	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_perform_maintenance() max_logentries_age=%lu, max_ack_age=%lu\n", idi->dbinfo.max_logentries_age, idi->dbinfo.max_logentries_age);
 
 	/* get the current time */
 	time(&current_time);
@@ -1290,6 +2309,10 @@ int ndo2db_db_perform_maintenance(ndo2db_idi *idi) {
 			ndo2db_db_trim_data_table(idi, ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS], "start_time", (time_t) ((unsigned long) current_time - idi->dbinfo.max_eventhandlers_age));
 		if(idi->dbinfo.max_externalcommands_age>0L)
 			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS],"entry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_externalcommands_age));
+		if(idi->dbinfo.max_logentries_age>0L)
+			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES],"logentry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_logentries_age));
+		if(idi->dbinfo.max_acknowledgements_age>0L)
+			ndo2db_db_trim_data_table(idi,ndo2db_db_tablenames[NDO2DB_DBTABLE_ACKNOWLEDGEMENTS],"entry_time",(time_t)((unsigned long)current_time - idi->dbinfo.max_acknowledgements_age));
 		idi->dbinfo.last_table_trim_time = current_time;
 	}
 
@@ -1404,28 +2427,45 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 }
 
 /* use defined triggers/sequences to emulate last insert id in oracle */
-unsigned long ido2db_ocilib_insert_id(ndo2db_idi *idi) {
+unsigned long ido2db_ocilib_insert_id(ndo2db_idi *idi, char *seq_name) {
 
 	unsigned long insert_id = 0;
+	char *buf = NULL;
 
-        OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT("SELECT AUTOINCREMENT.CURRVAL FROM DUAL"));
-	OCI_Commit(idi->dbinfo.oci_connection);
+	//ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id(%s) seq_name\n", seq_name);
+	if(asprintf(&buf, "SELECT %s.CURRVAL FROM DUAL", seq_name) == -1)
+		buf = NULL;
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id(%s) buf\n", buf);
 
-        /*  get result set */
-        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
+	if(idi->dbinfo.oci_connection) {
 
-	if(idi->dbinfo.oci_resultset == NULL) {
+		idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
 
+	        OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT(buf));
+		OCI_Commit(idi->dbinfo.oci_connection);
+
+	        /*  get result set */
+	        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
+
+		if(idi->dbinfo.oci_resultset == NULL) {
+			ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id() nextrow not ok\n");
+		} else {
+
+			/* check if next row */
+	                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+	                	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id() nextrow ok\n");
+	                        insert_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+	                }
+		}
+
+		/* free statement */
+		OCI_StatementFree(idi->dbinfo.oci_statement);
 
 	} else {
-
-		/* check if next row */
-                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ndo2db_db_hello() nextrow ok\n");
-                        insert_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
-                }
+		insert_id = -1;
 	}
 
+	free(buf);
 
 	return insert_id;
 }
@@ -1435,6 +2475,816 @@ unsigned long ido2db_ocilib_insert_id(ndo2db_idi *idi) {
 /* PREPARED STATEMENTS                                                      */
 /****************************************************************************/
 
+
+/************************************/
+/* SEQUENCE                         */
+/************************************/
+
+/*
+int ido2db_oci_prepared_statement_sequence_select(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "SELECT :X1.CURRVAL FROM DUAL") == -1) {
+                        buf = NULL;
+        }
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_sequence_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_sequence_select, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_sequence_select, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+*/
+
+/************************************/
+/* INSTANCES                        */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_instances(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_name) VALUES (seq_instances.nextval, :X1) RETURNING id INTO :id", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_instances = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_instances, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_instances, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+		OCI_RegisterInt(idi->dbinfo.oci_statement_instances, ":id");
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_instances_select(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_name=:X1", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_INSTANCES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_instances_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_instances_select, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_instances_select, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* CONNINFO                         */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_conninfo(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES (seq_conninfo.nextval, :X1, SYSDATE, SYSDATE, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, SYSDATE) RETURNING id INTO :id", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_conninfo = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_conninfo, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_conninfo, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+		OCI_RegisterInt(idi->dbinfo.oci_statement_conninfo, ":id");
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_conninfo_update(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_conninfo_update() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET disconnect_time=SYSDATE, last_checkin_time=SYSDATE, data_end_time=(SELECT unixts2date(:X1) FROM DUAL), bytes_processed=:X2, lines_processed=:X3, entries_processed=:X4 WHERE id=:X5", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_conninfo_update() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_conninfo_update = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_conninfo_update, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_conninfo_update, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_conninfo_update_checkin(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET last_checkin_time=SYSDATE, bytes_processed=:X1, lines_processed=:X2, entries_processed=:X3 WHERE id=:X4", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONNINFO]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_conninfo_update_checkin = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_conninfo_update_checkin, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_conninfo_update_checkin, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* OBJECTS INSERT                   */
+/************************************/
+
+int ido2db_oci_prepared_statement_objects_insert(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, objecttype_id, name1, name2) VALUES (seq_objects.nextval, :X1, :X2, :X3, :X4) RETURNING id INTO :id", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_objects_insert = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_insert, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_insert, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+		OCI_RegisterInt(idi->dbinfo.oci_statement_objects_insert, ":id");
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* OBJECTS SELECT                   */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_objects_select_cached(ndo2db_idi *idi) {
+
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "SELECT id, objecttype_id, name1, name2 FROM %s WHERE instance_id=:X1", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_objects_select_cached = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_cached, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_cached, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_objects_select_name1_name2(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1=:X3 AND name2=:X4", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_objects_select_name1_name2 = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_name2, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_objects_select_name1_null_name2(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1 IS NULL AND name2=:X3",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_objects_select_name1_null_name2 = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_null_name2, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_objects_select_name1_name2_null(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1=:X3 AND name2 IS NULL",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_objects_select_name1_name2_null = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_name2_null, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_objects_select_name1_null_name2_null(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1 IS NULL AND name2 IS NULL",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_objects_select_name1_null_name2_null = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+/************************************/
+/* OBJECTS UPDATE                   */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_objects_update_inactive(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET is_active=:X1 WHERE instance_id=:X2", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_objects_update_inactive = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_update_inactive, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_update_inactive, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_objects_update_active(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "UPDATE %s SET is_active=:X1 WHERE instance_id=:X2 AND objecttype_id=:X3 AND id=:X4",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_OBJECTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_objects_update_active = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_update_active, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_update_active, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* LOGENTRIES                       */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_logentries_insert(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_insert() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (seq_logentries.nextval, :X1, (SELECT unixts2date(:X2) FROM DUAL), (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6, :X7, :X8)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_insert() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_logentries_insert = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_logentries_insert, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_logentries_insert, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_insert() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_logentries_select(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND logentry_time=(SELECT unixts2date(:X2) FROM DUAL) AND logentry_data=:X3", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_LOGENTRIES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_logentries_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_logentries_select, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_logentries_select, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+
+/************************************/
+/* PROCESSEVENTS                    */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_process_events(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) VALUES (seq_processevents.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6, :X7, :X8)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_PROCESSEVENTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_process_events = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_process_events, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_process_events, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* FLAPPINGHISTORY                  */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_flappinghistory(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, event_time, event_time_usec, event_type, reason_type, flapping_type, object_id, percent_state_change, low_threshold, high_threshold, comment_time, internal_comment_id) VALUES (seq_flappinghistory.nextval, :X1, (SELECT unixts2date(:X2) FROM DUAL), :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, (SELECT unixts2date(:X11) FROM DUAL), :X12)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_FLAPPINGHISTORY]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_flappinghistory = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_flappinghistory, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_flappinghistory, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+/************************************/
+/* EXTERNALCOMMANDS                 */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_external_commands(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, command_type, entry_time, command_name, command_args) VALUES (seq_externalcommands.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_EXTERNALCOMMANDS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_external_commands = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_external_commands, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_external_commands, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+/************************************/
+/* ACKNOWLEDGMENTS                  */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_acknowledgements(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, entry_time, entry_time_usec, acknowledgement_type, object_id, state, author_name, comment_data, is_sticky, persistent_comment, notify_contacts) VALUES (seq_acknowledgements.nextval, :X1, (SELECT unixts2date(:X2) FROM DUAL), :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_ACKNOWLEDGEMENTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_acknowledgements = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_acknowledgements, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_acknowledgements, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+/************************************/
+/* STATEHISTORY                     */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_statehistory(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, last_state, last_hard_state, output, long_output) VALUES (seq_statehistory.nextval, :X1, (SELECT unixts2date(:X2) FROM DUAL), :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, :X12, :X13)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_STATEHISTORY]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_statehistory = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_statehistory, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_statehistory, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+
 /************************************/
 /* TIMED EVENTS                     */
 /************************************/
@@ -1443,14 +3293,14 @@ int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET queued_time=(SELECT unixts2date(:X3) FROM DUAL), queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET queued_time=(SELECT unixts2date(:X3) FROM DUAL), queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (seq_timedevents.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
                         buf = NULL;
         }
 
-	ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() query: %s\n", buf);
+	//ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() query: %s\n", buf);
 
 	if(idi->dbinfo.oci_connection) {
 
@@ -1469,7 +3319,7 @@ int ido2db_oci_prepared_statement_timedevents_queue(ndo2db_idi *idi) {
 	}
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents_queue() end\n");
 
         return NDO_OK;
 }
@@ -1478,14 +3328,14 @@ int ido2db_oci_prepared_statement_timedeventqueue(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET queued_time=(SELECT unixts2date(:X3) FROM DUAL), queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET queued_time=(SELECT unixts2date(:X3) FROM DUAL), queued_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (seq_timedeventqueue.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1504,7 +3354,7 @@ int ido2db_oci_prepared_statement_timedeventqueue(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedeventqueue() end\n");
 
         return NDO_OK;
 }
@@ -1513,14 +3363,14 @@ int ido2db_oci_prepared_statement_timedevents(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET event_time=(SELECT unixts2date(:X3) FROM DUAL), event_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND object_id=:X7) WHEN MATCHED THEN UPDATE SET event_time=(SELECT unixts2date(:X3) FROM DUAL), event_time_usec=:X4, recurring_event=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES (seq_timedevents.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1539,10 +3389,46 @@ int ido2db_oci_prepared_statement_timedevents(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timedevents() end\n");
 
         return NDO_OK;
 }
+
+int ido2db_oci_prepared_statement_timedevents_update(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET deletion_time=(SELECT unixts2date(:X1) FROM DUAL), deletion_time_usec=:X2 WHERE instance_id=:X3 AND event_type=:X4 AND scheduled_time=(SELECT unixts2date(:X5) FROM DUAL) AND recurring_event=:X6 AND object_id=:X7", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_timedevents_update = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timedevents_update, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timedevents_update, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
 
 /************************************/
 /* HOSTSTATUS/CHECK                 */
@@ -1552,14 +3438,14 @@ int ido2db_oci_prepared_statement_hoststatus(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (host_object_id=:X2) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), output=:X4, long_output=:X5, perfdata=:X6, current_state=:X7, has_been_checked=:X8, should_be_scheduled=:X9, current_check_attempt=:X10, max_check_attempts=:X11, last_check=(SELECT unixts2date(:X12) FROM DUAL), next_check=(SELECT unixts2date(:X13) FROM DUAL), check_type=:X14, last_state_change=(SELECT unixts2date(:X15) FROM DUAL), last_hard_state_change=(SELECT unixts2date(:X16) FROM DUAL), last_hard_state=:X17, last_time_up=(SELECT unixts2date(:X18) FROM DUAL), last_time_down=(SELECT unixts2date(:X19) FROM DUAL), last_time_unreachable=(SELECT unixts2date(:X20) FROM DUAL), state_type=:X21, last_notification=(SELECT unixts2date(:X22) FROM DUAL), next_notification=(SELECT unixts2date(:X23) FROM DUAL), no_more_notifications=:X24, notifications_enabled=:X25, problem_has_been_acknowledged=:X26, acknowledgement_type=:X27, current_notification_number=:X28, passive_checks_enabled=:X29, active_checks_enabled=:X30, event_handler_enabled=:X31, flap_detection_enabled=:X32, is_flapping=:X33, percent_state_change=:X34, latency=:X35, execution_time=:X36, scheduled_downtime_depth=:X37, failure_prediction_enabled=:X38, process_performance_data=:X39, obsess_over_host=:X40, modified_host_attributes=:X41, event_handler=:X42, check_command=:X43, normal_check_interval=:X44, retry_check_interval=:X45, check_timeperiod_object_id=:X46 WHEN NOT MATCHED THEN INSERT (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), (SELECT unixts2date(:X13) FROM DUAL), :X14, (SELECT unixts2date(:X15) FROM DUAL), (SELECT unixts2date(:X16) FROM DUAL), :X17, (SELECT unixts2date(:X18) FROM DUAL), (SELECT unixts2date(:X19) FROM DUAL), (SELECT unixts2date(:X20) FROM DUAL), :X21, (SELECT unixts2date(:X22) FROM DUAL), (SELECT unixts2date(:X23) FROM DUAL), :X24, :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (host_object_id=:X2) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), output=:X4, long_output=:X5, perfdata=:X6, current_state=:X7, has_been_checked=:X8, should_be_scheduled=:X9, current_check_attempt=:X10, max_check_attempts=:X11, last_check=(SELECT unixts2date(:X12) FROM DUAL), next_check=(SELECT unixts2date(:X13) FROM DUAL), check_type=:X14, last_state_change=(SELECT unixts2date(:X15) FROM DUAL), last_hard_state_change=(SELECT unixts2date(:X16) FROM DUAL), last_hard_state=:X17, last_time_up=(SELECT unixts2date(:X18) FROM DUAL), last_time_down=(SELECT unixts2date(:X19) FROM DUAL), last_time_unreachable=(SELECT unixts2date(:X20) FROM DUAL), state_type=:X21, last_notification=(SELECT unixts2date(:X22) FROM DUAL), next_notification=(SELECT unixts2date(:X23) FROM DUAL), no_more_notifications=:X24, notifications_enabled=:X25, problem_has_been_acknowledged=:X26, acknowledgement_type=:X27, current_notification_number=:X28, passive_checks_enabled=:X29, active_checks_enabled=:X30, event_handler_enabled=:X31, flap_detection_enabled=:X32, is_flapping=:X33, percent_state_change=:X34, latency=:X35, execution_time=:X36, scheduled_downtime_depth=:X37, failure_prediction_enabled=:X38, process_performance_data=:X39, obsess_over_host=:X40, modified_host_attributes=:X41, event_handler=:X42, check_command=:X43, normal_check_interval=:X44, retry_check_interval=:X45, check_timeperiod_object_id=:X46 WHEN NOT MATCHED THEN INSERT (id, instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (seq_hoststatus.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), (SELECT unixts2date(:X13) FROM DUAL), :X14, (SELECT unixts2date(:X15) FROM DUAL), (SELECT unixts2date(:X16) FROM DUAL), :X17, (SELECT unixts2date(:X18) FROM DUAL), (SELECT unixts2date(:X19) FROM DUAL), (SELECT unixts2date(:X20) FROM DUAL), :X21, (SELECT unixts2date(:X22) FROM DUAL), (SELECT unixts2date(:X23) FROM DUAL), :X24, :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTSTATUS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1578,7 +3464,7 @@ int ido2db_oci_prepared_statement_hoststatus(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hoststatus() end\n");
 
         return NDO_OK;
 }
@@ -1588,14 +3474,14 @@ int ido2db_oci_prepared_statement_hostchecks(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X4 AND host_object_id=:X5 AND start_time=(SELECT unixts2date(:X12) FROM DUAL) AND start_time_usec=:X13) WHEN MATCHED THEN UPDATE SET check_type=:X6, is_raw_check=:X7, current_check_attempt=:X8, max_check_attempts=:X9, state=:X10, state_type=:X11, end_time=(SELECT unixts2date(:X14) FROM DUAL), end_time_usec=:X15, timeout=:X16, early_timeout=:X17, execution_time=:X18, latency=:X19, return_code=:X20, output=:X21, long_output=:X22, perfdata=:X23 WHEN NOT MATCHED THEN INSERT (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (:X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), :X13, (SELECT unixts2date(:X14) FROM DUAL), :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X4 AND host_object_id=:X5 AND start_time=(SELECT unixts2date(:X12) FROM DUAL) AND start_time_usec=:X13) WHEN MATCHED THEN UPDATE SET check_type=:X6, is_raw_check=:X7, current_check_attempt=:X8, max_check_attempts=:X9, state=:X10, state_type=:X11, end_time=(SELECT unixts2date(:X14) FROM DUAL), end_time_usec=:X15, timeout=:X16, early_timeout=:X17, execution_time=:X18, latency=:X19, return_code=:X20, output=:X21, long_output=:X22, perfdata=:X23 WHEN NOT MATCHED THEN INSERT (id, command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (seq_hostchecks.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), :X13, (SELECT unixts2date(:X14) FROM DUAL), :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCHECKS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1614,7 +3500,7 @@ int ido2db_oci_prepared_statement_hostchecks(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() end\n");
 
         return NDO_OK;
 }
@@ -1627,14 +3513,14 @@ int ido2db_oci_prepared_statement_servicestatus(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (service_object_id=:X2) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), output=:X4, long_output=:X5, perfdata=:X6, current_state=:X7, has_been_checked=:X8, should_be_scheduled=:X9, current_check_attempt=:X10, max_check_attempts=:X11, last_check=(SELECT unixts2date(:X12) FROM DUAL), next_check=(SELECT unixts2date(:X13) FROM DUAL), check_type=:X14, last_state_change=(SELECT unixts2date(:X15) FROM DUAL), last_hard_state_change=(SELECT unixts2date(:X16) FROM DUAL), last_hard_state=:X17, last_time_ok=(SELECT unixts2date(:X18) FROM DUAL), last_time_warning=(SELECT unixts2date(:X19) FROM DUAL), last_time_unknown=(SELECT unixts2date(:X20) FROM DUAL), last_time_critical=(SELECT unixts2date(:X21) FROM DUAL), state_type=:X22, last_notification=(SELECT unixts2date(:X23) FROM DUAL), next_notification=(SELECT unixts2date(:X24) FROM DUAL), no_more_notifications=:X25, notifications_enabled=:X26, problem_has_been_acknowledged=:X27, acknowledgement_type=:X28, current_notification_number=:X29, passive_checks_enabled=:X30, active_checks_enabled=:X31, event_handler_enabled=:X32, flap_detection_enabled=:X33, is_flapping=:X34, percent_state_change=:X35, latency=:X36, execution_time=:X37, scheduled_downtime_depth=:X38, failure_prediction_enabled=:X39, process_performance_data=:X40, obsess_over_service=:X41, modified_service_attributes=:X42, event_handler=:X43, check_command=:X44, normal_check_interval=:X45, retry_check_interval=:X46, check_timeperiod_object_id=:X47 WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (:X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), (SELECT unixts2date(:X13) FROM DUAL), :X14, (SELECT unixts2date(:X15) FROM DUAL), (SELECT unixts2date(:X16) FROM DUAL), :X17, (SELECT unixts2date(:X18) FROM DUAL), (SELECT unixts2date(:X19) FROM DUAL), (SELECT unixts2date(:X20) FROM DUAL), (SELECT unixts2date(:X21) FROM DUAL), :X22, (SELECT unixts2date(:X23) FROM DUAL), (SELECT unixts2date(:X24) FROM DUAL), :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46, :X47)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (service_object_id=:X2) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), output=:X4, long_output=:X5, perfdata=:X6, current_state=:X7, has_been_checked=:X8, should_be_scheduled=:X9, current_check_attempt=:X10, max_check_attempts=:X11, last_check=(SELECT unixts2date(:X12) FROM DUAL), next_check=(SELECT unixts2date(:X13) FROM DUAL), check_type=:X14, last_state_change=(SELECT unixts2date(:X15) FROM DUAL), last_hard_state_change=(SELECT unixts2date(:X16) FROM DUAL), last_hard_state=:X17, last_time_ok=(SELECT unixts2date(:X18) FROM DUAL), last_time_warning=(SELECT unixts2date(:X19) FROM DUAL), last_time_unknown=(SELECT unixts2date(:X20) FROM DUAL), last_time_critical=(SELECT unixts2date(:X21) FROM DUAL), state_type=:X22, last_notification=(SELECT unixts2date(:X23) FROM DUAL), next_notification=(SELECT unixts2date(:X24) FROM DUAL), no_more_notifications=:X25, notifications_enabled=:X26, problem_has_been_acknowledged=:X27, acknowledgement_type=:X28, current_notification_number=:X29, passive_checks_enabled=:X30, active_checks_enabled=:X31, event_handler_enabled=:X32, flap_detection_enabled=:X33, is_flapping=:X34, percent_state_change=:X35, latency=:X36, execution_time=:X37, scheduled_downtime_depth=:X38, failure_prediction_enabled=:X39, process_performance_data=:X40, obsess_over_service=:X41, modified_service_attributes=:X42, event_handler=:X43, check_command=:X44, normal_check_interval=:X45, retry_check_interval=:X46, check_timeperiod_object_id=:X47 WHEN NOT MATCHED THEN INSERT (id, instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (seq_servicestatus.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), (SELECT unixts2date(:X13) FROM DUAL), :X14, (SELECT unixts2date(:X15) FROM DUAL), (SELECT unixts2date(:X16) FROM DUAL), :X17, (SELECT unixts2date(:X18) FROM DUAL), (SELECT unixts2date(:X19) FROM DUAL), (SELECT unixts2date(:X20) FROM DUAL), (SELECT unixts2date(:X21) FROM DUAL), :X22, (SELECT unixts2date(:X23) FROM DUAL), (SELECT unixts2date(:X24) FROM DUAL), :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46, :X47)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICESTATUS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1653,7 +3539,7 @@ int ido2db_oci_prepared_statement_servicestatus(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicestatus() end\n");
 
         return NDO_OK;
 }
@@ -1663,14 +3549,14 @@ int ido2db_oci_prepared_statement_servicechecks(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND service_object_id=:X2 AND start_time=(SELECT unixts2date(:X8) FROM DUAL) AND start_time_usec=:X9) WHEN MATCHED THEN UPDATE SET check_type=:X3, current_check_attempt=:X4, max_check_attempts=:X5, state=:X6, state_type=:X7, end_time=(SELECT unixts2date(:X10) FROM DUAL), end_time_usec=:X11, timeout=:X12, early_timeout=:X13, execution_time=:X14, latency=:X15, return_code=:X16, output=:X17, long_output=:X18, perfdata=:X19 WHEN NOT MATCHED THEN INSERT (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (:X1, :X2, :X3, :X4, :X5, :X6, :X7, (SELECT unixts2date(:X8) FROM DUAL), :X9, (SELECT unixts2date(:X10) FROM DUAL), :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND service_object_id=:X2 AND start_time=(SELECT unixts2date(:X8) FROM DUAL) AND start_time_usec=:X9) WHEN MATCHED THEN UPDATE SET check_type=:X3, current_check_attempt=:X4, max_check_attempts=:X5, state=:X6, state_type=:X7, end_time=(SELECT unixts2date(:X10) FROM DUAL), end_time_usec=:X11, timeout=:X12, early_timeout=:X13, execution_time=:X14, latency=:X15, return_code=:X16, output=:X17, long_output=:X18, perfdata=:X19 WHEN NOT MATCHED THEN INSERT (id, instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (seq_servicechecks.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, (SELECT unixts2date(:X8) FROM DUAL), :X9, (SELECT unixts2date(:X10) FROM DUAL), :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECHECKS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1689,7 +3575,7 @@ int ido2db_oci_prepared_statement_servicechecks(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() end\n");
 
         return NDO_OK;
 }
@@ -1702,14 +3588,14 @@ int ido2db_oci_prepared_statement_contact_notificationcommands(ndo2db_idi *idi) 
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contact_id=:X2 AND notification_type=:X3 AND command_object_id=:X4) WHEN MATCHED THEN UPDATE SET command_args=:X5 WHEN NOT MATCHED THEN INSERT (instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (:X1, :X2, :X3, :X4, :X5)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contact_id=:X2 AND notification_type=:X3 AND command_object_id=:X4) WHEN MATCHED THEN UPDATE SET command_args=:X5 WHEN NOT MATCHED THEN INSERT (id, instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (seq_contact_notifcommands.nextval, :X1, :X2, :X3, :X4, :X5)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1728,7 +3614,7 @@ int ido2db_oci_prepared_statement_contact_notificationcommands(ndo2db_idi *idi) 
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contact_notificationcommands() end\n");
 
         return NDO_OK;
 }
@@ -1741,14 +3627,14 @@ int ido2db_oci_prepared_statement_programstatus(ndo2db_idi *idi) {
 
         char *buf = NULL;
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() start\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET status_update_time=(SELECT unixts2date(:X2) FROM DUAL), program_start_time=(SELECT unixts2date(:X3) FROM DUAL), is_currently_running=1, process_id=:X4, daemon_mode=:X5, last_command_check=(SELECT unixts2date(:X6) FROM DUAL), last_log_rotation=(SELECT unixts2date(:X7) FROM DUAL), notifications_enabled=:X8, active_service_checks_enabled=:X9, passive_service_checks_enabled=:X10, active_host_checks_enabled=:X11, passive_host_checks_enabled=:X12, event_handlers_enabled=:X13, flap_detection_enabled=:X14, failure_prediction_enabled=:X15, process_performance_data=:X16, obsess_over_hosts=:X17, obsess_over_services=:X18, modified_host_attributes=:X19, modified_service_attributes=:X20, global_host_event_handler=:X21, global_service_event_handler=:X22 WHEN NOT MATCHED THEN INSERT (instance_id, status_update_time, program_start_time, is_currently_running, process_id, daemon_mode, last_command_check, last_log_rotation, notifications_enabled, active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, failure_prediction_enabled, process_performance_data, obsess_over_hosts, obsess_over_services, modified_host_attributes, modified_service_attributes, global_host_event_handler, global_service_event_handler) VALUES (:X1, (SELECT unixts2date(:X2) FROM DUAL), (SELECT unixts2date(:X3) FROM DUAL), '1', :X4, :X5, (SELECT unixts2date(:X6) FROM DUAL), (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET status_update_time=(SELECT unixts2date(:X2) FROM DUAL), program_start_time=(SELECT unixts2date(:X3) FROM DUAL), is_currently_running=1, process_id=:X4, daemon_mode=:X5, last_command_check=(SELECT unixts2date(:X6) FROM DUAL), last_log_rotation=(SELECT unixts2date(:X7) FROM DUAL), notifications_enabled=:X8, active_service_checks_enabled=:X9, passive_service_checks_enabled=:X10, active_host_checks_enabled=:X11, passive_host_checks_enabled=:X12, event_handlers_enabled=:X13, flap_detection_enabled=:X14, failure_prediction_enabled=:X15, process_performance_data=:X16, obsess_over_hosts=:X17, obsess_over_services=:X18, modified_host_attributes=:X19, modified_service_attributes=:X20, global_host_event_handler=:X21, global_service_event_handler=:X22 WHEN NOT MATCHED THEN INSERT (id, instance_id, status_update_time, program_start_time, is_currently_running, process_id, daemon_mode, last_command_check, last_log_rotation, notifications_enabled, active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, passive_host_checks_enabled, event_handlers_enabled, flap_detection_enabled, failure_prediction_enabled, process_performance_data, obsess_over_hosts, obsess_over_services, modified_host_attributes, modified_service_attributes, global_host_event_handler, global_service_event_handler) VALUES (seq_programstatus.nextval, :X1, (SELECT unixts2date(:X2) FROM DUAL), (SELECT unixts2date(:X3) FROM DUAL), '1', :X4, :X5, (SELECT unixts2date(:X6) FROM DUAL), (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
                 ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
                         buf = NULL;
         }
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() query: %s\n", buf);
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -1767,10 +3653,1917 @@ int ido2db_oci_prepared_statement_programstatus(ndo2db_idi *idi) {
         }
         free(buf);
 
-        ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() end\n");
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_programstatus() end\n");
 
         return NDO_OK;
 }
 
+int ido2db_oci_prepared_statement_programstatus_update(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET program_end_time=(SELECT unixts2date(:X1) FROM DUAL), is_currently_running=:X2 WHERE instance_id=:X3", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_programstatus_update = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_programstatus_update, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_programstatus_update, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* SYSTEMCOMMANDS                   */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_systemcommanddata(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_systemcommanddata() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND start_time=(SELECT unixts2date(:X2) FROM DUAL) AND start_time_usec=:X3) WHEN MATCHED THEN UPDATE SET end_time=(SELECT unixts2date(:X4) FROM DUAL), end_time_usec=:X5, command_line=:X6, timeout=:X7, early_timeout=:X8, execution_time=:X9, return_code=:X10, output=:X11, long_output=:X12 WHEN NOT MATCHED THEN INSERT (id, instance_id, start_time, start_time_usec, end_time, end_time_usec, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (seq_systemcommands.nextval, :X1, (SELECT unixts2date(:X2) FROM DUAL), :X3, (SELECT unixts2date(:X4) FROM DUAL), :X5, :X6, :X7, :X8, :X9, :X10, :X11, :X12)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SYSTEMCOMMANDS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_systemcommanddata() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_systemcommanddata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_systemcommanddata, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_systemcommanddata, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_systemcommanddata() end\n");
+
+        return NDO_OK;
+}
+
+/************************************/
+/* EVENTHANLDERS                    */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_eventhandlerdata(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_eventhandlerdata() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND start_time=(SELECT unixts2date(:X6) FROM DUAL) AND start_time_usec=:X7) WHEN MATCHED THEN UPDATE SET eventhandler_type=:X2, object_id=:X3, state=:X4, state_type=:X5, end_time=:X8, end_time_usec=:X9, command_object_id=:X10, command_args=:X11, command_line=:X12, timeout=:X13, early_timeout=:X14, execution_time=:X15, return_code=:X16, output=:X17, long_output=:X18 WHEN NOT MATCHED THEN INSERT (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (seq_eventhandlers.nextval, :X1, :X2, :X3, :X4, :X5, (SELECT unixts2date(:X6) FROM DUAL), :X7, (SELECT unixts2date(:X8) FROM DUAL), :X9, :X10, :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_EVENTHANDLERS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_eventhandlerdata() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_eventhandlerdata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_eventhandlerdata, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_eventhandlerdata, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_eventhandlerdata() end\n");
+
+        return NDO_OK;
+}
+
+
+
+/************************************/
+/* NOTIFICATIONS                    */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_notificationdata(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_notificationdata() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND start_time=(SELECT unixts2date(:X4) FROM DUAL) AND start_time_usec=:X5 AND object_id=:X8) WHEN MATCHED THEN UPDATE SET notification_type=:X2, notification_reason=:X3, end_time=(SELECT unixts2date(:X6) FROM DUAL), end_time_usec=:X7, state=:X9, output=:X10, long_output=:X11, escalated=:X12, contacts_notified=:X13 WHEN NOT MATCHED THEN INSERT (id, instance_id, notification_type, notification_reason, start_time, start_time_usec, end_time, end_time_usec, object_id, state, output, long_output, escalated, contacts_notified) VALUES (seq_notifications.nextval, :X1, :X2, :X3, (SELECT unixts2date(:X4) FROM DUAL), :X5, (SELECT unixts2date(:X6) FROM DUAL), :X7, :X8, :X9, :X10, :X11, :X12, :X13)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_NOTIFICATIONS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_notificationdata() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_notificationdata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_notificationdata, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_notificationdata, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_notificationdata() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_contactnotificationdata(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationdata() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contact_object_id=:X7 AND start_time=(SELECT unixts2date(:X3) FROM DUAL) AND start_time_usec=:X4) WHEN MATCHED THEN UPDATE SET notification_id=:X2, end_time=(SELECT unixts2date(:X5) FROM DUAL), end_time_usec=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, notification_id, start_time, start_time_usec, end_time, end_time_usec, contact_object_id) VALUES (seq_contactnotifications.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationdata() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_contactnotificationdata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactnotificationdata, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactnotificationdata, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationdata() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_contactnotificationmethoddata(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationmethoddata() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contactnotification_id=:X2 AND start_time=(SELECT unixts2date(:X3) FROM DUAL) AND start_time_usec=:X4) WHEN MATCHED THEN UPDATE SET end_time=(SELECT unixts2date(:X5) FROM DUAL), end_time_usec=:X6, command_object_id=:X7, command_args=:X8 WHEN NOT MATCHED THEN INSERT (id, instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (seq_contactnotifmethods.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, (SELECT unixts2date(:X5) FROM DUAL), :X6, :X7, :X8)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationmethoddata() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_contactnotificationmethoddata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactnotificationmethoddata, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationmethoddata() end\n");
+
+        return NDO_OK;
+}
+
+
+
+
+/************************************/
+/* COMMENTS                         */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_commentdata(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X3 AND comment_time=(SELECT unixts2date(:X7) FROM DUAL) AND internal_comment_id=:X8) WHEN MATCHED THEN UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, author_name=:X9, comment_data=:X10, is_persistent=:X11, comment_source=:X12, expires=:X13, expiration_time=(SELECT unixts2date(:X14) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (seq_comments.nextval, (SELECT unixts2date(:X1) FROM DUAL), :X2, :X3, :X4, :X5, :X6, (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, (SELECT unixts2date(:X14) FROM DUAL))", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_commentdata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_commentdata, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_commentdata, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_commentdata_history(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata_history() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X3 AND comment_time=(SELECT unixts2date(:X7) FROM DUAL) AND internal_comment_id=:X8) WHEN MATCHED THEN UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, author_name=:X9, comment_data=:X10, is_persistent=:X11, comment_source=:X12, expires=:X13, expiration_time=(SELECT unixts2date(:X14) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (seq_commenthistory.nextval, (SELECT unixts2date(:X1) FROM DUAL), :X2, :X3, :X4, :X5, :X6, (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10, :X11, :X12, :X13, (SELECT unixts2date(:X14) FROM DUAL))",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata_history() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_commentdata_history = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_commentdata_history, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_commentdata_history, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commentdata_history() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_comment_history_update(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET deletion_time=(SELECT unixts2date(:X1) FROM DUAL), deletion_time_usec=:X2 WHERE instance_id=:X3 AND comment_time=(SELECT unixts2date(:X4) FROM DUAL) AND internal_comment_id=:X5", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTHISTORY]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_comment_history_update = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_comment_history_update, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_comment_history_update, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+/************************************/
+/* DOWNTIME                         */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_scheduled_downtime() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND object_id=:X3 AND entry_time=(SELECT unixts2date(:X4) FROM DUAL) AND internal_downtime_id=:X7) WHEN MATCHED THEN UPDATE SET downtime_type=:X2, author_name=:X5, comment_data=:X6, triggered_by_id=:X8, is_fixed=:X9, duration=:X10, scheduled_start_time=(SELECT unixts2date(:X11) FROM DUAL), scheduled_end_time=(SELECT unixts2date(:X12) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (seq_scheduleddowntime.nextval, :X1, :X2, :X3, (SELECT unixts2date(:X4) FROM DUAL), :X5, :X6, :X7, :X8, :X9, :X10, (SELECT unixts2date(:X11) FROM DUAL), (SELECT unixts2date(:X12) FROM DUAL))", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_scheduled_downtime() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_downtimedata_scheduled_downtime = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_scheduled_downtime() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_downtimedata_downtime_history(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_downtime_history() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND object_id=:X3 AND entry_time=(SELECT unixts2date(:X4) FROM DUAL) AND internal_downtime_id=:X7) WHEN MATCHED THEN UPDATE SET downtime_type=:X2, author_name=:X5, comment_data=:X6, triggered_by_id=:X8, is_fixed=:X9, duration=:X10, scheduled_start_time=(SELECT unixts2date(:X11) FROM DUAL), scheduled_end_time=(SELECT unixts2date(:X12) FROM DUAL) WHEN NOT MATCHED THEN INSERT (id, instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (seq_downtimehistory.nextval, :X1, :X2, :X3, (SELECT unixts2date(:X4) FROM DUAL), :X5, :X6, :X7, :X8, :X9, :X10, (SELECT unixts2date(:X11) FROM DUAL), (SELECT unixts2date(:X12) FROM DUAL))",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtime_history() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_downtimedata_downtime_history = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_downtimedata_downtime_history, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_downtimedata_downtime_history() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_downtimehistory_update_start(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET actual_start_time=(SELECT unixts2date(:X1) FROM DUAL), actual_start_time_usec=:X2, was_started=:X3 WHERE instance_id=:X4 AND downtime_type=:X5 AND object_id=:X6 AND entry_time=(SELECT unixts2date(:X7) FROM DUAL) AND scheduled_start_time=(SELECT unixts2date(:X8) FROM DUAL) AND scheduled_end_time=(SELECT unixts2date(:X9) FROM DUAL)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_downtimehistory_update_start = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_downtimehistory_update_start, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_downtimehistory_update_stop(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET actual_end_time=(SELECT unixts2date(:X1) FROM DUAL), actual_end_time_usec=:X2, was_cancelled=:X3 WHERE instance_id=:X4 AND downtime_type=:X5 AND object_id=:X6 AND entry_time=(SELECT unixts2date(:X7) FROM DUAL) AND scheduled_start_time=(SELECT unixts2date(:X8) FROM DUAL) AND scheduled_end_time=(SELECT unixts2date(:X9) FROM DUAL)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_downtimehistory_update_stop = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_downtimehistory_update_stop, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_downtimehistory_update_stop, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+/************************************/
+/* CONTACTSTATUS                    */
+/************************************/
+ 
+
+int ido2db_oci_prepared_statement_contactstatusdata(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (contact_object_id=:X2) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), host_notifications_enabled=:X4, service_notifications_enabled=:X5, last_host_notification=(SELECT unixts2date(:X6) FROM DUAL), last_service_notification=(SELECT unixts2date(:X7) FROM DUAL), modified_attributes=:X8, modified_host_attributes=:X9, modified_service_attributes=:X10 WHEN NOT MATCHED THEN INSERT (id, instance_id, contact_object_id, status_update_time, host_notifications_enabled, service_notifications_enabled, last_host_notification, last_service_notification, modified_attributes, modified_host_attributes, modified_service_attributes) VALUES (seq_contactstatus.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, (SELECT unixts2date(:X6) FROM DUAL), (SELECT unixts2date(:X7) FROM DUAL), :X8, :X9, :X10)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTSTATUS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactstatusdata() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_contactstatusdata = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactstatusdata, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactstatusdata, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+
+/************************************/
+/* VARIABLES                        */
+/************************************/
+ 
+
+int ido2db_oci_prepared_statement_configfilevariables(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET configfile_type=:X2, configfile_path=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, configfile_type, configfile_path) VALUES (seq_configfiles.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILES]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_configfilevariables = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_configfilevariables, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_configfilevariables, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_configfilevariables_insert(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND configfile_id=:X2 AND varname=:X3) WHEN MATCHED THEN UPDATE SET varvalue=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, configfile_id, varname, varvalue) VALUES (seq_configfilevariables.nextval, :X1, :X2, :X3, :X4)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_configfilevariables_insert = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_configfilevariables_insert, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_configfilevariables_insert, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+
+int ido2db_oci_prepared_statement_runtimevariables(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND varname=:X2) WHEN MATCHED THEN UPDATE SET varvalue=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, varname, varvalue) VALUES (seq_runtimevariables.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_RUNTIMEVARIABLES]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_runtimevariables = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_runtimevariables, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_runtimevariables, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* HOSTDEFINITION                   */
+/************************************/
+ 
+
+int ido2db_oci_prepared_statement_hostdefinition_definition(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND host_object_id=:X3) WHEN MATCHED THEN UPDATE SET alias=:X4, display_name=:X5, address=:X6, check_command_object_id=:X7, check_command_args=:X8, eventhandler_command_object_id=:X9, eventhandler_command_args=:X10, check_timeperiod_object_id=:X11, notif_timeperiod_object_id=:X12, failure_prediction_options=:X13, check_interval=:X14, retry_interval=:X15, max_check_attempts=:X16, first_notification_delay=:X17, notification_interval=:X18, notify_on_down=:X19, notify_on_unreachable=:X20, notify_on_recovery=:X21, notify_on_flapping=:X22, notify_on_downtime=:X23, stalk_on_up=:X24, stalk_on_down=:X25, stalk_on_unreachable=:X26, flap_detection_enabled=:X27, flap_detection_on_up=:X28, flap_detection_on_down=:X29, flap_detection_on_unreachable=:X30, low_flap_threshold=:X31, high_flap_threshold=:X32, process_performance_data=:X33, freshness_checks_enabled=:X34, freshness_threshold=:X35, passive_checks_enabled=:X36, event_handler_enabled=:X37, active_checks_enabled=:X38, retain_status_information=:X39, retain_nonstatus_information=:X40, notifications_enabled=:X41, obsess_over_host=:X42, failure_prediction_enabled=:X43, notes=:X44, notes_url=:X45, action_url=:X46, icon_image=:X47, icon_image_alt=:X48, vrml_image=:X49, statusmap_image=:X50, have_2d_coords=:X51, x_2d=:X52, y_2d=:X53, have_3d_coords=:X54, x_3d=:X55, y_3d=:X56, z_3d=:X57 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notif_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d) VALUES (seq_hosts.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23, :X24, :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46, :X47, :X48, :X49, :X50, :X51, :X52, :X53, :X54, :X55, :X56, :X57)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdefinition_definition, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdefinition_definition, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (host_id=:X2 AND parent_host_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, host_id, parent_host_object_id) VALUES (seq_host_parenthosts.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTPARENTHOSTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdefinition_parenthosts = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdefinition_parenthosts, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }   
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (host_id=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, host_id, contactgroup_object_id) VALUES (seq_host_contactgroups.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdefinition_contactgroups = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdefinition_contactgroups, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }   
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostdefinition_contacts(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET host_id=:X2, contact_object_id=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, host_id, contact_object_id) VALUES (seq_host_contacts.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTCONTACTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdefinition_contacts = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdefinition_contacts, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }   
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* HOSTGROUPDEFINITION              */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_hostgroupdefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:x1 AND hostgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET config_type=:X2, alias=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, hostgroup_object_id, alias) VALUES (seq_hostgroups.nextval, :X1, :X2, :X3, :X4)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_hostgroupdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostgroupdefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostgroupdefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (hostgroup_id=:X2 AND host_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, hostgroup_id, host_object_id) VALUES (seq_hostgroup_members.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTGROUPMEMBERS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* SERVICEDEFINITION                */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_servicedefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND service_object_id=:X4) WHEN MATCHED THEN UPDATE SET host_object_id=:X3, display_name=:X5, check_command_object_id=:X6, check_command_args=:X7, eventhandler_command_object_id=:X8, eventhandler_command_args=:X9, check_timeperiod_object_id=:X10, notif_timeperiod_object_id=:X11, failure_prediction_options=:X12, check_interval=:X13, retry_interval=:X14, max_check_attempts=:X15, first_notification_delay=:X16, notification_interval=:X17, notify_on_warning=:X18, notify_on_unknown=:X19, notify_on_critical=:X20, notify_on_recovery=:X21, notify_on_flapping=:X22, notify_on_downtime=:X23, stalk_on_ok=:X24, stalk_on_warning=:X25, stalk_on_unknown=:X26, stalk_on_critical=:X27, is_volatile=:X28, flap_detection_enabled=:X29, flap_detection_on_ok=:X30, flap_detection_on_warning=:X31, flap_detection_on_unknown=:X32, flap_detection_on_critical=:X33, low_flap_threshold=:X34, high_flap_threshold=:X35, process_performance_data=:X36, freshness_checks_enabled=:X37, freshness_threshold=:X38, passive_checks_enabled=:X39, event_handler_enabled=:X40, active_checks_enabled=:X41, retain_status_information=:X42, retain_nonstatus_information=:X43, notifications_enabled=:X44, obsess_over_service=:X45, failure_prediction_enabled=:X46, notes=:X47, notes_url=:X48, action_url=:X49, icon_image=:X50, icon_image_alt=:X51 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notif_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (seq_services.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23, :X24, :X25, :X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, :X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, :X43, :X44, :X45, :X46, :X47, :X48, :X49, :X50, :X51)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_servicedefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicedefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicedefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (service_id=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, service_id, contactgroup_object_id) VALUES (seq_service_contactgroups.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_servicedefinition_contactgroups = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicedefinition_contactgroups, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_servicedefinition_contacts(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET service_id=:X2, contact_object_id=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, service_id, contact_object_id) VALUES (seq_service_contacts.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICECONTACTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_servicedefinition_contacts = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicedefinition_contacts, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* SERVICEGROUPDEFINITION           */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_servicegroupdefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND servicegroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET alias=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, servicegroup_object_id, alias) VALUES (seq_servicegroups.nextval, :X1, :X2, :X3, :X4)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_servicegroupdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicegroupdefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicegroupdefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_servicegroupdefinition_members(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (servicegroup_id=:X2 AND service_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, servicegroup_id, service_object_id) VALUES (seq_servicegroup_members.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEGROUPMEMBERS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_servicegroupdefinition_members = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicegroupdefinition_members, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+
+/************************************/
+/* DEPENDENCYDEFINITION             */
+/************************************/
+ 
+
+int ido2db_oci_prepared_statement_hostdependencydefinition_definition(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND host_object_id=:X3 AND dependent_host_object_id=:X4 AND dependency_type=:X5 AND inherits_parent=:X6 AND fail_on_up=:X8 AND fail_on_down=:X9 AND fail_on_unreachable=:X10) WHEN MATCHED THEN UPDATE SET timeperiod_object_id=:X7 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, host_object_id, dependent_host_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_up, fail_on_down, fail_on_unreachable) VALUES (seq_hostdependencies.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTDEPENDENCIES]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdependencydefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdependencydefinition_definition, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdependencydefinition_definition, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_servicedependencydefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (nstance_id=:X1 AND config_type=:X2 AND service_object_id=:X3 AND dependent_service_object_id=:X4 AND dependency_type=:X5 AND inherits_parent=:X6 AND fail_on_ok=:X8 AND fail_on_warning=:X9 AND fail_on_unknown=:X10 AND fail_on_critical=:X11) WHEN MATCHED THEN UPDATE SET timeperiod_object_id=:X7 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, service_object_id, dependent_service_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_ok, fail_on_warning, fail_on_unknown, fail_on_critical) VALUES (seq_servicedependencies.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEDEPENDENCIES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_servicedependencydefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicedependencydefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicedependencydefinition_definition, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* HOSTESCALATIONDEFINITION         */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_hostescalationdefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND host_object_id=:X3 AND timeperiod_object_id=:X4 AND first_notification=:X5 AND last_notification=:X6) WHEN MATCHED THEN UPDATE SET notification_interval=:X7, escalate_on_recovery=:X8, escalate_on_down=:X9, escalate_on_unreachable=:X10 WHEN NOT MATCHED THEN INSERT (instance_id, config_type, host_object_id, timeperiod_object_id, first_notification, last_notification, notification_interval, escalate_on_recovery, escalate_on_down, escalate_on_unreachable) VALUES (seq_hostescalations.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_hostescalationdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostescalationdefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostescalationdefinition_definition, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostescalationdefinition_contactgroups(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (hostescalation_id=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, hostescalation_id, contactgroup_object_id) VALUES (seq_hostesc_contactgroups.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_hostescalationdefinition_contactgroups = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostescalationdefinition_contactgroups, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostescalationdefinition_contactgroups, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostescalationdefinition_contacts(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET hostescalation_id=:X2, contact_object_id=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, hostescalation_id, contact_object_id) VALUES (seq_hostesc_contacts.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_hostescalationdefinition_contacts = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostescalationdefinition_contacts, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostescalationdefinition_contacts, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf); 
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* SERVICEESCALATIONDEFINITION      */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_serviceescalationdefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND service_object_id=:X3 AND timeperiod_object_id=:X4 AND first_notification=:X5 AND last_notification=:X6) WHEN MATCHED THEN UPDATE SET notification_interval=:X7, escalate_on_recovery=:X8, escalate_on_warning=:X9, escalate_on_unknown=:X10, escalate_on_critical=:X11 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, service_object_id, timeperiod_object_id, first_notification, last_notification, notification_interval, escalate_on_recovery, escalate_on_warning, escalate_on_unknown, escalate_on_critical) VALUES (seq_serviceescalations.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_serviceescalationdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_serviceescalationdefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_serviceescalationdefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_serviceescalationdefinition_contactgroups(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (serviceescalation_id=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, serviceescalation_id, contactgroup_object_id) VALUES (seq_serviceesccontactgroups.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_serviceescalationdefinition_contactgroups = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_serviceescalationdefinition_contactgroups, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_serviceescalationdefinition_contactgroups, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_serviceescalationdefinition_contacts(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1) WHEN MATCHED THEN UPDATE SET serviceescalation_id=:X2, contact_object_id=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, serviceescalation_id, contact_object_id) VALUES (seq_serviceesc_contacts.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_serviceescalationdefinition_contacts = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_serviceescalationdefinition_contacts, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_serviceescalationdefinition_contacts, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* COMMANDDEFINITION                */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_commanddefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commanddefinition_definition() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND object_id=:X2 AND config_type=:X3) WHEN MATCHED THEN UPDATE SET command_line=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, object_id, config_type, command_line) VALUES (seq_commands.nextval, :X1, :X2, :X3, :X4)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMANDS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_commanddefinition_definition() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_commanddefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_commanddefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_commanddefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_(nddefinition_definition) end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* TIMEPERIODEFINTION               */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_timeperiodefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND timeperiod_object_id=:X3) WHEN MATCHED THEN UPDATE SET alias=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, timeperiod_object_id, alias) VALUES (seq_timeperiods.nextval, :X1, :X2, :X3, :X4)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_timeperiodefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timeperiodefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timeperiodefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (timeperiod_id=:X2 AND day=:X3 AND start_sec=:X4 AND end_sec=:X5) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, timeperiod_id, day, start_sec, end_sec) VALUES (seq_timep_timer.nextval, :X1, :X2, :X3, :X4, :X5)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEPERIODTIMERANGES]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_timeperiodefinition_timeranges = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* CONTACTDEFINTION                 */
+/************************************/
+ 
+
+int ido2db_oci_prepared_statement_contactdefinition_definition(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND contact_object_id=:X3) WHEN MATCHED THEN UPDATE SET alias=:X4, email_address=:X5, pager_address=:X6, host_timeperiod_object_id=:X7, service_timeperiod_object_id=:X8, host_notifications_enabled=:X9, service_notifications_enabled=:X10, can_submit_commands=:X11, notify_service_recovery=:X12, notify_service_warning=:X13, notify_service_unknown=:X14, notify_service_critical=:X15, notify_service_flapping=:X16, notify_service_downtime=:X17, notify_host_recovery=:X18, notify_host_down=:X19, notify_host_unreachable=:X20, notify_host_flapping=:X21, notify_host_downtime=:X22 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, contact_object_id, alias, email_address, pager_address, host_timeperiod_object_id, service_timeperiod_object_id, host_notifications_enabled, service_notifications_enabled, can_submit_commands, notify_service_recovery, notify_service_warning, notify_service_unknown, notify_service_critical, notify_service_flapping, notify_service_downtime, notify_host_recovery, notify_host_down, notify_host_unreachable, notify_host_flapping, notify_host_downtime) VALUES (seq_contacts.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_contactdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactdefinition_definition, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactdefinition_definition, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_contactdefinition_addresses(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (contact_id=:X1 AND address_number=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X2, address=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, contact_id, address_number, address) VALUES (seq_contact_addresses.nextval, :X1, :X2, :X3, :X4)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTADDRESSES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_contactdefinition_addresses = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactdefinition_addresses, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactdefinition_addresses, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_contactdefinition_servicenotificationcommands(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND contact_id=:X2 AND notification_type=:X3 AND command_object_id=:X4) WHEN MATCHED THEN UPDATE SET command_args=:X5 WHEN NOT MATCHED THEN INSERT (id, instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (seq_contact_notifcommands.nextval, :X1, :X2, :X3, :X4, :X5)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+/************************************/
+/* CUSTOMVARIABLES                  */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_save_custom_variables_customvariables(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (object_id=:X2 AND varname=:X5) WHEN MATCHED THEN UPDATE SET instance_id=:X1, config_type=:X3, has_been_modified=:X4, varvalue=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, object_id, config_type, has_been_modified, varname, varvalue) VALUES (seq_customvariables.nextval, :X1, :X2, :X3, :X4, :X5, :X6)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CUSTOMVARIABLES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_save_custom_variables_customvariables = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_save_custom_variables_customvariables, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (object_id=:X2 AND varname=:X5) WHEN MATCHED THEN UPDATE SET instance_id=:X1, status_update_time=(SELECT unixts2date(:X3) FROM DUAL), has_been_modified=:X4, varvalue=:X6 WHEN NOT MATCHED THEN INSERT (id, instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (seq_customvariablestatus.nextval, :X1, :X2, (SELECT unixts2date(:X3) FROM DUAL), :X4, :X5, :X6)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* CONTACTGROUPDEFINITION           */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_contactgroupdefinition_definition(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET alias=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, contactgroup_object_id, alias) VALUES (seq_contactgroups.nextval, :X1, :X2, :X3, :X4)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_contactgroupdefinition_definition = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactgroupdefinition_definition, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactgroupdefinition_definition, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (contactgroup_id=:X2 AND contact_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, contactgroup_id, contact_object_id) VALUES (seq_contactgroup_members.nextval, :X1, :X2, :X3)",
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_CONTACTGROUPMEMBERS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
+
+
+/************************************/
+/* DELETE                           */
+/************************************/
+
+
+int ido2db_oci_prepared_statement_timedeventqueue_delete(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "DELETE FROM %s WHERE instance_id=:X1 AND scheduled_time<=(SELECT unixts2date(:X2) FROM DUAL)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_timedeventqueue_delete = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timedeventqueue_delete, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timedeventqueue_delete, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_timedeventqueue_delete_more(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "DELETE FROM %s WHERE instance_id=:X1 AND event_type=:X2 AND scheduled_time=(SELECT unixts2date(:X3) FROM DUAL) AND recurring_event=:X4 AND object_id=:X5", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_timedeventqueue_delete_more = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timedeventqueue_delete_more, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timedeventqueue_delete_more, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_comments_delete(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "DELETE FROM %s WHERE instance_id=:X1 AND comment_time=(SELECT unixts2date(:X2) FROM DUAL) AND internal_comment_id=:X3", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_COMMENTS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_comments_delete = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_comments_delete, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_comments_delete, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_downtime_delete(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "DELETE FROM %s WHERE instance_id=:X1 AND downtime_type=:X2 AND object_id=:X3 AND entry_time=(SELECT unixts2date(:X4) FROM DUAL) AND scheduled_start_time=(SELECT unixts2date(:X5) FROM DUAL) AND scheduled_end_time=(SELECT unixts2date(:X6) FROM DUAL)", 
+                ndo2db_db_tablenames[NDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_downtime_delete = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_downtime_delete, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_downtime_delete, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_instances_delete(ndo2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "BEGIN clean_table_by_instance(:X1, :X2); END;") == -1) {
+                        buf = NULL;
+        }
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_instances_delete = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_instances_delete, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_instances_delete, MT(buf))) {
+                        free(buf); 
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return NDO_OK;
+}
+
+int ido2db_oci_prepared_statement_instances_delete_time(ndo2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "BEGIN clean_table_by_instance_time(:X1, :X2, :X3, :X4); END;") == -1) {
+                        buf = NULL;
+        }
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_instances_delete_time = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_instances_delete_time, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_instances_delete_time, MT(buf))) {
+                        free(buf);
+                        return NDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return NDO_ERROR;
+        }
+        free(buf);
+ 
+        //ndo2db_log_debug_info(NDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return NDO_OK;
+}
 
 #endif /* Oracle ocilib specific */

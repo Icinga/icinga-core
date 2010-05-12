@@ -3,7 +3,7 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Program: Icinga (Nagios)
- * Version: 1.0
+ * Version: 1.0.1
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  *
@@ -99,6 +99,7 @@ unsigned long   logging_options=0;
 unsigned long   syslog_options=0;
 
 int             service_check_timeout=DEFAULT_SERVICE_CHECK_TIMEOUT;
+int             service_check_timeout_state=STATE_CRITICAL;
 int             host_check_timeout=DEFAULT_HOST_CHECK_TIMEOUT;
 int             event_handler_timeout=DEFAULT_EVENT_HANDLER_TIMEOUT;
 int             notification_timeout=DEFAULT_NOTIFICATION_TIMEOUT;
