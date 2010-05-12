@@ -37,6 +37,7 @@ FIXES
 * core: comments: Remove one comment at a time from hashlist (Hiren Patel)
 * core: fix checking of the open(2) system call (David Glick)
 * core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)
+* core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
