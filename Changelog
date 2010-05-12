@@ -29,6 +29,7 @@ FIXES
 * core: Janitor patch: Remove unused variables (Andreas Ericsson)
 * core: base/utils.c: typo-fix s/escape_newlines==/escape_newlines_please==/ (Andreas Ericsson)
 * core: cgi/cmd.c: Squelch warning about empty gnu_printf format string  (Andreas Ericsson)
+* core: more linker tricks and less #ifdef's - log_debug_info() stubbed (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
