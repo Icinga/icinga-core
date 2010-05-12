@@ -34,6 +34,7 @@ FIXES
 * core: macros: Protect against typos in macro names (Andreas Ericsson)
 * core: macros: Add NOTIFICATIONISESCALATED to the list of macro names (Marc Powell)
 * core: comments: Remove one comment at a time from hashlist (Hiren Patel)
+* core: fix checking of the open(2) system call (David Glick)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
