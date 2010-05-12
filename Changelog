@@ -46,6 +46,7 @@ FIXES
 * core: enable compiler flag -Wall by default (base/cgi/common/idoutils)
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
 * core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
+* core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
