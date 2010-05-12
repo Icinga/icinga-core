@@ -2715,7 +2715,7 @@ int parse_check_output(char *buf, char **short_output, char **long_output, char 
 	/* save long output */
 	if(long_output && (db1.buf && strcmp(db1.buf,""))){
 
-		if(escape_newlines==FALSE)
+		if(escape_newlines_please==FALSE)
 			*long_output=(char *)strdup(db1.buf);
 
 		else{
