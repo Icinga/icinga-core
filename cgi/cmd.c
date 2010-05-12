@@ -1931,7 +1931,6 @@ static int cmd_submitf(int id, const char *fmt, ...){
 
 /* commits a command for processing */
 int commit_command(int cmd){
-	char command_buffer[MAX_INPUT_BUFFER];
 	time_t current_time;
 	time_t scheduled_time;
 	time_t notification_time;

@@ -2254,7 +2254,6 @@ int process_check_result_queue(char *dirname){
 /* reads check result(s) from a file */
 int process_check_result_file(char *fname){
 	mmapfile *thefile=NULL;
-	char *temp_buffer=NULL;
 	char *input=NULL;
 	char *var=NULL;
 	char *val=NULL;
@@ -2960,11 +2959,7 @@ int compare_strings(char *val1a, char *val2a){
 
 /* renames a file - works across filesystems (Mike Wiacek) */
 int my_rename(char *source, char *dest){
-	char buffer[MAX_INPUT_BUFFER]={0};
 	int rename_result=0;
-	int source_fd=-1;
-	int dest_fd=-1;
-	int bytes_read=0;
 
 
 	/* make sure we have something */
