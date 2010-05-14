@@ -9,6 +9,8 @@ ENHANCEMENTS
 * core: add in sync retention facility (Ton Voon, Opsera Ltd)
 * core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
 
+* cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
+
 * idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 * idoutils: change select * into select [*_]id if unused results
