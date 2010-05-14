@@ -799,7 +799,7 @@ void request_command_data(int cmd){
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-		printf("schedule downtime for all services for a particular host");
+		printf("schedule downtime for all services for a particular host and the host itsself");
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:

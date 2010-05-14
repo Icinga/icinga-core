@@ -2514,6 +2514,10 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args){
 				continue;
 			schedule_downtime(SERVICE_DOWNTIME,host_name,temp_service->description,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,&downtime_id);
 	                }
+		
+		/* schedule downtime for the host itsself too */
+		schedule_downtime(HOST_DOWNTIME,host_name,NULL,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,&downtime_id);
+
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
