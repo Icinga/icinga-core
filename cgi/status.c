@@ -3,7 +3,9 @@
  * STATUS.C -  Icinga Status CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 07-03-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 05-15-2010
  *
  * License:
  * 
@@ -1598,7 +1600,7 @@ void show_service_detail(void){
 				printf("<TD ALIGN=LEFT>\n");
 				printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 				printf("<TR>\n");
-				printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A></TD>\n",host_status_bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,temp_status->host_name);
+				printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A></TD>\n",host_status_bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 				printf("</TR>\n");
 				printf("</TABLE>\n");
 				printf("</TD>\n");
@@ -1681,7 +1683,7 @@ void show_service_detail(void){
 			printf("<TR>\n");
 			printf("<TD ALIGN=LEFT valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s",status_bg_class,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
 			printf("&service=%s'>",url_encode(temp_status->description));
-			printf("%s</A></TD>",temp_status->description);
+			printf("%s</A></TD>",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 			printf("</TR>\n");
 			printf("</TABLE>\n");
 			printf("</TD>\n");
@@ -2094,7 +2096,7 @@ void show_host_detail(void){
 			printf("<TD ALIGN=LEFT>\n");
 			printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 			printf("<TR>\n");
-			printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A>&nbsp;</TD>\n",status_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,temp_status->host_name);
+			printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A>&nbsp;</TD>\n",status_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			printf("</TR>\n");
 			printf("</TABLE>\n");
 			printf("</TD>\n");
@@ -3171,7 +3173,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup){
 		printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 		printf("<TR>\n");
 		printf("<TD align=left valign=center CLASS='status%s'>",host_status_class);
-		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),temp_host->name);
+		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("</TD>\n");
 		printf("</TR>\n");
 		printf("</TABLE>\n");
@@ -3524,7 +3526,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 
 	printf("<TABLE BORDER=0 WIDTH=100%% cellpadding=0 cellspacing=0>\n");
 	printf("<TR CLASS='status%s'>\n",status_bg_class);
-	printf("<TD CLASS='status%s'><A HREF='%s?host=%s&style=detail' title='%s'>%s</A></TD>\n",status_bg_class,STATUS_CGI,url_encode(hststatus->host_name),temp_host->address,hststatus->host_name);
+	printf("<TD CLASS='status%s'><A HREF='%s?host=%s&style=detail' title='%s'>%s</A></TD>\n",status_bg_class,STATUS_CGI,url_encode(hststatus->host_name),temp_host->address,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 
 	if(temp_host->icon_image!=NULL){
 		printf("<TD CLASS='status%s' WIDTH=5></TD>\n",status_bg_class);
@@ -4397,7 +4399,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 		printf("<TR>\n");
 		printf("<TD align=left valign=center CLASS='status%s'>",host_status_class);
-		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),temp_host->name);
+		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("</TD>\n");
 		printf("</TR>\n");
 		printf("</TABLE>\n");

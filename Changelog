@@ -9,6 +9,7 @@ ENHANCEMENTS
 * core: add in sync retention facility (Ton Voon, Opsera Ltd)
 * core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
 
+* cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
 
 * idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)

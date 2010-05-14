@@ -3,8 +3,9 @@
  * STATUSWRL.C - Icinga 3-D (VRML) Network Status View
  *
  * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified:   05-05-2009
+ * Last Modified:   05-14-2010
  *
  * Description:
  *
@@ -977,7 +978,7 @@ void draw_host(host *temp_host){
 	printf("}\n");
 
 	printf("]\n");
-	printf("description \"View status details for host '%s' (%s)\"\n",temp_host->name,temp_host->alias);
+	printf("description \"View status details for host '%s' (%s)\"\n",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,temp_host->alias);
 	printf("url \"%s?host=%s\"\n",STATUS_CGI,temp_host->name);
 	printf("}\n");
 
@@ -997,7 +998,7 @@ void draw_host(host *temp_host){
 			else if(temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE)
 				printf("font_color 1 0 0\n");
 	                }
-		printf("the_text [\"%s\", \"%s\", ",temp_host->name,temp_host->alias);
+		printf("the_text [\"%s\", \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,temp_host->alias);
 		if(temp_hoststatus==NULL)
 			strcpy(state_string,"UNKNOWN");
 		else{

@@ -3,7 +3,9 @@
  * EXTINFO.C -  Icinga Extended Information CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 06-17-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 05-14-2010
  *
  * License:
  * 
@@ -326,7 +328,7 @@ int main(void){
 			if(display_type==DISPLAY_HOST_INFO){
 				printf("<DIV CLASS='data'>Host</DIV>\n");
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_host->alias);
-				printf("<DIV CLASS='dataTitle'>(%s)</DIV><BR>\n",temp_host->name);
+				printf("<DIV CLASS='dataTitle'>(%s)</DIV><BR>\n",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 
 				if (temp_host->parent_hosts != NULL) {
 					/* print all parent hosts */
@@ -352,9 +354,9 @@ int main(void){
 				printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
 			        }
 			if(display_type==DISPLAY_SERVICE_INFO){
-				printf("<DIV CLASS='data'>Service</DIV><DIV CLASS='dataTitle'>%s</DIV><DIV CLASS='data'>On Host</DIV>\n",service_desc);
+				printf("<DIV CLASS='data'>Service</DIV><DIV CLASS='dataTitle'>%s</DIV><DIV CLASS='data'>On Host</DIV>\n",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_host->alias);
-				printf("<DIV CLASS='dataTitle'>(<A HREF='%s?type=%d&host=%s'>%s</a>)</DIV><BR>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),temp_host->name);
+				printf("<DIV CLASS='dataTitle'>(<A HREF='%s?type=%d&host=%s'>%s</a>)</DIV><BR>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
                                 printf("<DIV CLASS='data'>Member of</DIV><DIV CLASS='dataTitle'>");
                                 for(temp_servicegroup=servicegroup_list;temp_servicegroup!=NULL;temp_servicegroup=temp_servicegroup->next){
 					if(is_service_member_of_servicegroup(temp_servicegroup,temp_service)==TRUE){
@@ -1897,7 +1899,7 @@ void show_all_comments(void){
 		get_time_string(&temp_comment->entry_time,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		get_time_string(&temp_comment->expire_time,expire_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<tr CLASS='%s'>",bg_class);
-		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_comment->host_name),temp_comment->host_name);
+		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_comment->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("<td CLASS='%s'>%s</td><td CLASS='%s'>%s</td><td CLASS='%s'>%s</td><td CLASS='%s'>%ld</td><td CLASS='%s'>%s</td><td CLASS='%s'>%s</td><td CLASS='%s'>%s</td>",bg_class,date_time,bg_class,temp_comment->author,bg_class,temp_comment->comment_data,bg_class,temp_comment->comment_id,bg_class,(temp_comment->persistent)?"Yes":"No",bg_class,comment_type,bg_class,(temp_comment->expires==TRUE)?expire_time:"N/A");
 		printf("<td><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></td>",COMMAND_CGI,CMD_DEL_HOST_COMMENT,temp_comment->comment_id,url_images_path,DELETE_ICON);
 		printf("</tr>\n");
@@ -1930,6 +1932,7 @@ void show_all_comments(void){
 		if(temp_comment->comment_type!=SERVICE_COMMENT)
 			continue;
 
+		temp_host=find_host(temp_comment->host_name);
 		temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
 
 		/* make sure the user has rights to view service information */
@@ -1967,9 +1970,9 @@ void show_all_comments(void){
 		get_time_string(&temp_comment->entry_time,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		get_time_string(&temp_comment->expire_time,expire_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<tr CLASS='%s'>",bg_class);
-		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_comment->host_name),temp_comment->host_name);
+		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_comment->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s",bg_class,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_comment->host_name));
-		printf("&service=%s'>%s</A></td>",url_encode(temp_comment->service_description),temp_comment->service_description);
+		printf("&service=%s'>%s</A></td>",url_encode(temp_comment->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 		printf("<td CLASS='%s'>%s</td><td CLASS='%s'>%s</td><td CLASS='%s'>%s</td><td CLASS='%s'>%ld</td><td CLASS='%s'>%s</td><td CLASS='%s'>%s</td><td CLASS='%s'>%s</td>",bg_class,date_time,bg_class,temp_comment->author,bg_class,temp_comment->comment_data,bg_class,temp_comment->comment_id,bg_class,(temp_comment->persistent)?"Yes":"No",bg_class,comment_type,bg_class,(temp_comment->expires==TRUE)?expire_time:"N/A");
 		printf("<td><a href='%s?cmd_typ=%d&com_id=%ld'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></td>",COMMAND_CGI,CMD_DEL_SVC_COMMENT,temp_comment->comment_id,url_images_path,DELETE_ICON);
 		printf("</tr>\n");
@@ -2674,7 +2677,7 @@ void show_all_downtime(void){
 		        }
 
 		printf("<tr CLASS='%s'>",bg_class);
-		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_downtime->host_name),temp_downtime->host_name);
+		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_downtime->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		get_time_string(&temp_downtime->entry_time,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<td CLASS='%s'>%s</td>",bg_class,date_time);
 		printf("<td CLASS='%s'>%s</td>",bg_class,(temp_downtime->author==NULL)?"N/A":temp_downtime->author);
@@ -2723,7 +2726,8 @@ void show_all_downtime(void){
 
 		if(temp_downtime->type!=SERVICE_DOWNTIME)
 			continue;
-
+	
+		temp_host=find_host(temp_downtime->host_name);
 		temp_service=find_service(temp_downtime->host_name,temp_downtime->service_description);
 
 		/* make sure the user has rights to view service information */
@@ -2742,9 +2746,9 @@ void show_all_downtime(void){
 		        }
 
 		printf("<tr CLASS='%s'>",bg_class);
-		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_downtime->host_name),temp_downtime->host_name);
+		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_downtime->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s",bg_class,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_downtime->host_name));
-		printf("&service=%s'>%s</A></td>",url_encode(temp_downtime->service_description),temp_downtime->service_description);
+		printf("&service=%s'>%s</A></td>",url_encode(temp_downtime->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 		get_time_string(&temp_downtime->entry_time,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<td CLASS='%s'>%s</td>",bg_class,date_time);
 		printf("<td CLASS='%s'>%s</td>",bg_class,(temp_downtime->author==NULL)?"N/A":temp_downtime->author);
@@ -2781,6 +2785,8 @@ void show_all_downtime(void){
 /* shows check scheduling queue */
 void show_scheduling_queue(void){
 	sortdata *temp_sortdata;
+        host *temp_host=NULL;
+        service *temp_service=NULL;
 	servicestatus *temp_svcstatus=NULL;
 	hoststatus *temp_hststatus=NULL;
 	char date_time[MAX_DATETIME_LENGTH];
@@ -2866,15 +2872,21 @@ void show_scheduling_queue(void){
 			bgclass="Odd";
 		        }
 
+                /* find the host */
+                temp_host=find_host(temp_hststatus->host_name);
+
+                /* find the service */
+                temp_service=find_service(temp_svcstatus->host_name,temp_svcstatus->description);
+
 		printf("<TR CLASS='queue%s'>",bgclass);
 
 		/* get the service status */
 		if(temp_sortdata->is_service==TRUE){
 			
-			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_svcstatus->host_name),temp_svcstatus->host_name);
+			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_svcstatus->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			
 			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_svcstatus->host_name));
-			printf("&service=%s'>%s</A></TD>",url_encode(temp_svcstatus->description),temp_svcstatus->description);
+			printf("&service=%s'>%s</A></TD>",url_encode(temp_svcstatus->description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 
 			get_time_string(&temp_svcstatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			printf("<TD CLASS='queue%s'>%s</TD>",bgclass,(temp_svcstatus->last_check==(time_t)0)?"N/A":date_time);
