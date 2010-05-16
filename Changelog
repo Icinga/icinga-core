@@ -19,6 +19,7 @@ ENHANCEMENTS
 
 FIXES
 * core: fix scheduling downtime for all services AND the host (cgi url, external commands)
+* core: fix custom notifications being sent during downtimes (Sven Nierlein)
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)
 * core: fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)
 * core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)
