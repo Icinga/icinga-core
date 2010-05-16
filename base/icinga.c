@@ -343,8 +343,8 @@ int main(int argc, char **argv, char **env){
 			test_scheduling=TRUE;
 			break;
 
-        case 'S': /* scheduling check and show queue*/
-            show_schedule=TRUE;
+	        case 'S': /* scheduling check and show queue*/
+        		show_schedule=TRUE;
 			test_scheduling=TRUE;
 			break;
 
@@ -598,9 +598,9 @@ int main(int argc, char **argv, char **env){
 			/* initialize the event timing loop */
 			init_timing_loop();
 
-            /* display schedule */
+			/* display schedule */
 			if(show_schedule == TRUE)
-                display_schedule();
+        	        	display_schedule();
 
 			/* display scheduling information */
 			display_scheduling_info();

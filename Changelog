@@ -8,6 +8,8 @@ ENHANCEMENTS
 * core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
 * core: add in sync retention facility (Ton Voon, Opsera Ltd)
 * core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
+* core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, 
+        in addition to providing the summary data (Steven (Steven D. Morrey)
 
 * cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
