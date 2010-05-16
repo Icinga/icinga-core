@@ -101,6 +101,9 @@ extern int      daemon_dumps_core;
 extern int      nagios_pid;
 
 extern int	use_syslog;
+extern int	use_syslog_local_facility;
+extern int	syslog_local_facility;
+
 extern int      log_notifications;
 extern int      log_service_retries;
 extern int      log_host_retries;

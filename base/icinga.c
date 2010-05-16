@@ -87,6 +87,8 @@ int             use_regexp_matches=FALSE;
 int             use_true_regexp_matching=FALSE;
 
 int		use_syslog=DEFAULT_USE_SYSLOG;
+int		use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;
+int		syslog_local_facility=DEFAULT_SYSLOG_LOCAL_FACILITY;
 int             log_notifications=DEFAULT_NOTIFICATION_LOGGING;
 int             log_service_retries=DEFAULT_LOG_SERVICE_RETRIES;
 int             log_host_retries=DEFAULT_LOG_HOST_RETRIES;

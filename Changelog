@@ -10,6 +10,7 @@ ENHANCEMENTS
 * core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
 * core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, 
         in addition to providing the summary data (Steven (Steven D. Morrey)
+* core: icinga can send log messages to syslogd using a local facility instead of the default one
 
 * cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api

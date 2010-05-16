@@ -41,6 +41,8 @@ extern host     *host_list;
 extern service  *service_list;
 
 extern int	use_syslog;
+extern int	use_syslog_local_facility;
+extern int	syslog_local_facility;
 extern int      log_service_retries;
 extern int      log_initial_states;
 
@@ -207,6 +209,37 @@ int write_to_syslog(char *buffer, unsigned long data_type){
 		return OK;
 
 	/* write the buffer to the syslog facility */
+	if (use_syslog_local_facility) {
+		switch (syslog_local_facility) {
+			case 0:
+				syslog(LOG_LOCAL0|LOG_INFO,"%s",buffer);
+				return OK;
+			case 1:
+				syslog(LOG_LOCAL1|LOG_INFO,"%s",buffer);
+				return OK;
+			case 2:
+				syslog(LOG_LOCAL2|LOG_INFO,"%s",buffer);
+				return OK;
+			case 3:
+				syslog(LOG_LOCAL3|LOG_INFO,"%s",buffer);
+				return OK;
+			case 4:
+				syslog(LOG_LOCAL4|LOG_INFO,"%s",buffer);
+				return OK;
+			case 5:
+				syslog(LOG_LOCAL5|LOG_INFO,"%s",buffer);
+				return OK;
+			case 6:
+				syslog(LOG_LOCAL6|LOG_INFO,"%s",buffer);
+				return OK;
+			case 7:
+				syslog(LOG_LOCAL7|LOG_INFO,"%s",buffer);
+				return OK;
+			default:
+				break;
+		}
+	} 
+
 	syslog(LOG_USER|LOG_INFO,"%s",buffer);
 
 	return OK;
