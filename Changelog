@@ -27,7 +27,6 @@ FIXES
 * core: fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)
 * core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)
 * core: minor cleanups to icingastats.c (Eric Sesterhenn)
-* core: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * core: remove dead code (Andreas Ericsson)
 * core: introduce common/shared.c and include/shared.h (Andreas Ericsson)
 * core: move cgiutils.h compile time option macros to config.h (Andreas Ericsson)
@@ -55,6 +54,9 @@ FIXES
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
 * core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
+
+* cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
+* cgi: fix cmd.cgi incomplete output for command description
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
