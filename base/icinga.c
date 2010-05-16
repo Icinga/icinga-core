@@ -184,6 +184,7 @@ int             verify_config=FALSE;
 int             verify_object_relationships=TRUE;
 int             verify_circular_paths=TRUE;
 int             test_scheduling=FALSE;
+int             show_schedule=FALSE;
 int             precache_objects=FALSE;
 int             use_precached_objects=FALSE;
 
@@ -297,6 +298,7 @@ int main(int argc, char **argv, char **env){
 		{"verify-config",no_argument,0,'v'},
 		{"daemon",no_argument,0,'d'},
 		{"test-scheduling",no_argument,0,'s'},
+		{"show-scheduling",no_argument,0,'S'},
 		{"dont-verify-objects",no_argument,0,'o'},
 		{"dont-verify-paths",no_argument,0,'x'},
 		{"precache-objects",no_argument,0,'p'},
@@ -314,9 +316,9 @@ int main(int argc, char **argv, char **env){
 	while(1){
 
 #ifdef HAVE_GETOPT_H
-		c=getopt_long(argc,argv,"+hVvdsoxpu",long_options,&option_index);
+		c=getopt_long(argc,argv,"+hVvdsoxpuS",long_options,&option_index);
 #else
-		c=getopt(argc,argv,"+hVvdsoxpu");
+		c=getopt(argc,argv,"+hVvdsoxpuS");
 #endif
 
 		if(c==-1 || c==EOF)
@@ -338,6 +340,11 @@ int main(int argc, char **argv, char **env){
 			break;
 
 		case 's': /* scheduling check */
+			test_scheduling=TRUE;
+			break;
+
+        case 'S': /* scheduling check and show queue*/
+            show_schedule=TRUE;
 			test_scheduling=TRUE;
 			break;
 
@@ -418,6 +425,7 @@ int main(int argc, char **argv, char **env){
 		printf("  -v, --verify-config          Verify all configuration data\n");
 		printf("  -s, --test-scheduling        Shows projected/recommended check scheduling and other\n");
 		printf("                               diagnostic info based on the current configuration files.\n");
+		printf("  -S, --show-scheduling        Same as -s, but also show the scheduling queue\n");
 		/*printf("  -o, --dont-verify-objects    Don't verify object relationships - USE WITH CAUTION!\n");*/
 		printf("  -x, --dont-verify-paths      Don't check for circular object paths - USE WITH CAUTION!\n");
 		printf("  -p, --precache-objects       Precache object configuration - use with -v or -s options\n");
@@ -589,6 +597,10 @@ int main(int argc, char **argv, char **env){
 
 			/* initialize the event timing loop */
 			init_timing_loop();
+
+            /* display schedule */
+			if(show_schedule == TRUE)
+                display_schedule();
 
 			/* display scheduling information */
 			display_scheduling_info();
