@@ -54,6 +54,7 @@ FIXES
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
 * core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
+* core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
