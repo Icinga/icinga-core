@@ -12147,6 +12147,7 @@ int xodtemplate_expand_contactgroups(xodtemplate_memberlist **list, xodtemplate_
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding contact group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(contactgroup_names);
 				return ERROR;
 		                }
@@ -12266,6 +12267,7 @@ int xodtemplate_expand_contacts(xodtemplate_memberlist **list, xodtemplate_membe
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding contact names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(contact_names);
 				return ERROR;
 		                }
@@ -12489,6 +12491,7 @@ int xodtemplate_expand_hostgroups(xodtemplate_memberlist **list, xodtemplate_mem
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(hostgroup_names);
 				return ERROR;
 		                }
@@ -12608,6 +12611,7 @@ int xodtemplate_expand_hosts(xodtemplate_memberlist **list, xodtemplate_memberli
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(host_names);
 				return ERROR;
 		                }
@@ -12820,6 +12824,7 @@ int xodtemplate_expand_servicegroups(xodtemplate_memberlist **list, xodtemplate_
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding service group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(servicegroup_names);
 				return ERROR;
 		                }
@@ -12928,6 +12933,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 	/* compile regular expression for host name */
 	if(use_regexp_host==TRUE){
 		if(regcomp(&preg2,host_name,REG_EXTENDED))
+			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", host_name, xodtemplate_config_file_name(_config_file), _start_line);
 			return ERROR;
 	        }
 
@@ -12955,6 +12961,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 		/* compile regular expression for service description */
 		if(use_regexp_service==TRUE){
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding service names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				if(use_regexp_host==TRUE)
 					regfree(&preg2);
 				my_free(service_names);
@@ -13213,6 +13220,7 @@ int xodtemplate_get_hostgroup_names(xodtemplate_memberlist **list, xodtemplate_m
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(hostgroup_names);
 				return ERROR;
 		                }
@@ -13389,6 +13397,7 @@ int xodtemplate_get_contactgroup_names(xodtemplate_memberlist **list, xodtemplat
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding contact group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(contactgroup_names);
 				return ERROR;
 		                }
@@ -13565,6 +13574,7 @@ int xodtemplate_get_servicegroup_names(xodtemplate_memberlist **list, xodtemplat
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding service group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(servicegroup_names);
 				return ERROR;
 		                }
