@@ -2845,6 +2845,7 @@ void show_scheduling_queue(void){
 	/* display all services and hosts */
 	for(temp_sortdata=sortdata_list;temp_sortdata!=NULL;temp_sortdata=temp_sortdata->next){
 
+
 		/* skip hosts and services that shouldn't be scheduled */
 		if(temp_sortdata->is_service==TRUE){
 			temp_svcstatus=temp_sortdata->svcstatus;
@@ -2872,21 +2873,30 @@ void show_scheduling_queue(void){
 			bgclass="Odd";
 		        }
 
-                /* find the host */
-                temp_host=find_host(temp_hststatus->host_name);
-
-                /* find the service */
-                temp_service=find_service(temp_svcstatus->host_name,temp_svcstatus->description);
-
 		printf("<TR CLASS='queue%s'>",bgclass);
 
 		/* get the service status */
 		if(temp_sortdata->is_service==TRUE){
-			
-			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_svcstatus->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
-			
+                
+			/* find the host */
+	                temp_host=find_host(temp_svcstatus->host_name);
+
+        	        /* find the service */
+                	temp_service=find_service(temp_svcstatus->host_name,temp_svcstatus->host_name);
+		
+			if(temp_host!=NULL) {
+				printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_svcstatus->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+			} else {
+				printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_svcstatus->host_name),temp_svcstatus->host_name);
+			}			
+
 			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_svcstatus->host_name));
-			printf("&service=%s'>%s</A></TD>",url_encode(temp_svcstatus->description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+
+			if(temp_service!=NULL) {
+				printf("&service=%s'>%s</A></TD>",url_encode(temp_svcstatus->description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+			} else {
+				printf("&service=%s'>%s</A></TD>",url_encode(temp_svcstatus->description),temp_svcstatus->description);	
+			}
 
 			get_time_string(&temp_svcstatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			printf("<TD CLASS='queue%s'>%s</TD>",bgclass,(temp_svcstatus->last_check==(time_t)0)?"N/A":date_time);
@@ -2921,13 +2931,23 @@ void show_scheduling_queue(void){
 			printf("<a href='%s?cmd_typ=%d&host=%s",COMMAND_CGI,CMD_SCHEDULE_SVC_CHECK,url_encode(temp_svcstatus->host_name));
 			printf("&service=%s%s'><img src='%s%s' border=0 ALT='Re-schedule This Service Check' TITLE='Re-schedule This Service Check'></a>\n",url_encode(temp_svcstatus->description),(temp_svcstatus->checks_enabled==TRUE)?"&force_check":"",url_images_path,DELAY_ICON);
 			printf("</TD>\n");
+
+			free(temp_host);
+			free(temp_service);
 		        }
 
 		/* get the host status */
 		else{
-			
-			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hststatus->host_name),temp_hststatus->host_name);
-			
+                
+			/* find the host */
+	                temp_host=find_host(temp_hststatus->host_name);
+
+			if(temp_host!=NULL) {
+				printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hststatus->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+			} else {
+				printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hststatus->host_name),temp_hststatus->host_name);
+			}
+
 			printf("<TD CLASS='queue%s'>&nbsp;</TD>",bgclass);
 
 			get_time_string(&temp_hststatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
@@ -2963,6 +2983,8 @@ void show_scheduling_queue(void){
 			printf("<a href='%s?cmd_typ=%d&host=%s%s",COMMAND_CGI,CMD_SCHEDULE_HOST_CHECK,url_encode(temp_hststatus->host_name),(temp_hststatus->checks_enabled==TRUE)?"&force_check":"");
 			printf("'><img src='%s%s' border=0 ALT='Re-schedule This Host Check' TITLE='Re-schedule This Host Check'></a>\n",url_images_path,DELAY_ICON);
 			printf("</TD>\n");
+
+			free(temp_host);
 		        }
 
 		printf("</TR>\n");
