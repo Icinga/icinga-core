@@ -17,8 +17,8 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.0.1
-Release: 1%{?dist}
+Version: 1.0.2
+Release: 0rc1%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.icinga.org/
@@ -77,6 +77,11 @@ PHP api for %{name}
 
 %prep
 %setup -n %{name}-%{version}
+
+# If we buld for redhat use the redhat init-script
+%if "%{_vendor}" == "redhat"
+%{__cp} -f daemon-init-redhat.in daemon-init.in
+%endif
 
 # /usr/local/nagios is hardcoded in many places
 %{__perl} -pi.orig -e 's|/usr/local/nagios/var/rw|%{_localstatedir}/nagios/rw|g;' contrib/eventhandlers/submit_check_result
