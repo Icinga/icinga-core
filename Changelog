@@ -12,6 +12,7 @@ ENHANCEMENTS
         in addition to providing the summary data (Steven (Steven D. Morrey)
 * core: icinga can send log messages to syslogd using a local facility instead of the default one
 * core: enhanced diagnostic output when a regular expression fails to compile (Max Schubert)
+* core: add state-based escalation ranges (Mark Gius)
 
 * cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
