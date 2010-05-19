@@ -3,7 +3,9 @@
  * OUTAGES.C -  Icinga Network Outages CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 01-08-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 05-14-2010
  *
  * License:
  * 
@@ -403,7 +405,7 @@ void display_network_outages(void){
 		printf("<TR CLASS='%s'>\n",bg_class);
 
 		printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->severity);
-		printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>\n",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hostoutage->hst->name),temp_hostoutage->hst->name);
+		printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>\n",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hostoutage->hst->name),(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name);
 		printf("<TD CLASS='host%s'>%s</TD>\n",status,status);
 
 		total_comments=number_of_host_comments(temp_hostoutage->hst->name);

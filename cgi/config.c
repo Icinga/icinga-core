@@ -3,7 +3,9 @@
  * CONFIG.C - Icinga Configuration CGI (View Only)
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 05-15-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+* 
+ * Last Modified: 05-14-2010
  *
  * This CGI program will display various configuration information.
  *
@@ -488,6 +490,8 @@ void display_hosts(void){
 
 		printf("<TR CLASS='%s'>\n",bg_class);
 
+		/* find a solution to print display_name if once set in host definition */
+		/* printf("<TD CLASS='%s'><a name='%s'>%s</a></TD>\n",bg_class,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name); */
 		printf("<TD CLASS='%s'><a name='%s'>%s</a></TD>\n",bg_class,url_encode(temp_host->name),temp_host->name);
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,temp_host->alias);
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,temp_host->address);
@@ -1222,7 +1226,8 @@ void display_services(void){
 		printf("<TD CLASS='%s'><A NAME='%s;",bg_class,url_encode(temp_service->host_name));
 		printf("%s'></A>",url_encode(temp_service->description));
 		printf("<A HREF='%s?type=hosts#%s'>%s</A></TD>\n",CONFIG_CGI,url_encode(temp_service->host_name),temp_service->host_name);
-		
+	
+		/* find a way to show display_name if set once */	
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,temp_service->description);
 		
 		printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_service->max_attempts);
@@ -1246,7 +1251,7 @@ void display_services(void){
 
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->parallelize==TRUE)?"Yes":"No");
 
-		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->is_volatile==TRUE)?"Yes":"No");
+		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->is_volatile==FALSE)?"Yes":"No");
 
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->obsess_over_service==TRUE)?"Yes":"No");
 

@@ -134,7 +134,6 @@ int reap_check_results(void){
 	check_result *queued_check_result=NULL;
 	service *temp_service=NULL;
 	host *temp_host=NULL;
-	char *temp_buffer=NULL;
 	time_t current_time=0L;
 	time_t reaper_start_time=0L;
 	int reaped_checks=0;
@@ -480,7 +479,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	old_umask=umask(new_umask);
 	asprintf(&output_file,"%s/checkXXXXXX",temp_path);
 	check_result_info.output_file_fd=mkstemp(output_file);
-	if(check_result_info.output_file_fd>0)
+	if(check_result_info.output_file_fd>=0)
 		check_result_info.output_file_fp=fdopen(check_result_info.output_file_fd,"w");
 	else{
 		check_result_info.output_file_fp=NULL;
@@ -607,7 +606,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 				fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 				fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 				fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-				fprintf(check_result_info.output_file_fp,"output=%s\n",checkresult_dbuf.buf);
+				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
 
 				/* close the temp file */
 				fclose(check_result_info.output_file_fp);
@@ -748,7 +747,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 					fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 					fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 					fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-					fprintf(check_result_info.output_file_fp,"output=%s\n",checkresult_dbuf.buf);
+					fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
 
 					/* close the temp file */
 					fclose(check_result_info.output_file_fp);
@@ -1506,7 +1505,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			        }
 
 			/* else log the problem (again) if this service is flagged as being volatile */
-			else if(temp_service->is_volatile==TRUE){
+			else if(temp_service->is_volatile==FALSE){
 				log_service_event(temp_service);
 				state_was_logged=TRUE;
 			        }
@@ -1525,7 +1524,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			service_notification(temp_service,NOTIFICATION_NORMAL,NULL,NULL,NOTIFICATION_OPTION_NONE);
 
 			/* run the service event handler if we changed state from the last hard state or if this service is flagged as being volatile */
-			if(hard_state_change==TRUE || temp_service->is_volatile==TRUE)
+			if(hard_state_change==TRUE || temp_service->is_volatile==FALSE)
 				handle_service_event(temp_service);
 
 			/* save the last hard state */
@@ -2953,7 +2952,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	old_umask=umask(new_umask);
 	asprintf(&output_file,"%s/checkXXXXXX",temp_path);
 	check_result_info.output_file_fd=mkstemp(output_file);
-	if(check_result_info.output_file_fd>0)
+	if(check_result_info.output_file_fd>=0)
 		check_result_info.output_file_fp=fdopen(check_result_info.output_file_fd,"w");
 	else{
 		check_result_info.output_file_fp=NULL;
@@ -3122,7 +3121,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 				fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 				fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 				fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-				fprintf(check_result_info.output_file_fp,"output=%s\n",checkresult_dbuf.buf);
+				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
 
 				/* close the temp file */
 				fclose(check_result_info.output_file_fp);

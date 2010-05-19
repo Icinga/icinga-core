@@ -23,22 +23,14 @@
 #ifndef _CGIUTILS_H
 #define _CGIUTILS_H
 
+#include "config.h"
+#include "logging.h"
 #include "objects.h"
 #include "cgiauth.h"
 
 #ifdef __cplusplus
 extern "C" { 
 #endif
-
-/* should we compile and use the statusmap CGI? */
-#undef USE_STATUSMAP
-/* should we compile and use the statuswrl CGI? */
-#undef USE_STATUSWRL
-/* should we compile and use the trends CGI? */
-#undef USE_TRENDS
-/* should we compile and use the histogram CGI? */
-#undef USE_HISTOGRAM
-
 
 /**************************** CGI REFRESH RATE ******************************/
 
@@ -435,23 +427,9 @@ typedef struct lifo_struct{
         }lifo;
 
 
-/* MMAPFILE structure - used for reading files via mmap() */
-typedef struct mmapfile_struct{
-	char *path;
-	int mode;
-	int fd;
-	unsigned long file_size;
-	unsigned long current_position;
-	unsigned long current_line;
-	void *mmap_buf;
-        }mmapfile;
-
-
-
 /******************************** FUNCTIONS *******************************/
 
 void reset_cgi_vars(void);
-void free_cgi_vars(void);
 void free_memory(void);
 
 char * get_cgi_config_location(void);				/* gets location of the CGI config file to read */
@@ -462,31 +440,17 @@ int read_main_config_file(char *);
 int read_all_object_configuration_data(char *,int);
 int read_all_status_data(char *,int);
 
-int hashfunc(const char *name1, const char *name2, int hashslots);
-int compare_hashdata(const char *,const char *,const char *,const char *);
-
-void strip(char *);                                		/* strips newlines, carriage returns, and spaces from end of buffer */
 char *unescape_newlines(char *);
 void sanitize_plugin_output(char *);                            /* strips HTML and bad characters from plugin output */
 void strip_html_brackets(char *);				/* strips > and < from string */
 int process_macros(char *,char **,int);				/* processes macros in a string */
 
 void get_time_string(time_t *,char *,int,int);			/* gets a date/time string */
-void get_datetime_string(time_t *,char *,int,int);
 void get_interval_time_string(double,char *,int);		/* gets a time string for an interval of time */
-void get_expire_time_string(time_t *,char *,int);		/* gets a date/time string in the format used for Expire: tags*/
-
-char * my_strtok(char *,char *);				/* replacement for strtok() function - doesn't skip multiple tokens */
-char * my_strsep (char **, const char *);
-#ifdef REMOVED_10182007
-int my_free(void **);                                   	/* my wrapper for free() */
-#endif
 
 char * url_encode(char *);		        		/* encodes a string in proper URL format */
 char * html_encode(char *,int);					/* encodes a string in HTML format (for what the user sees) */
 char * escape_string(char *);					/* escape string for html form usage */
-
-void get_time_breakdown(unsigned long,int *,int *,int *,int *);	/* given total seconds, get days, hours, minutes, seconds */
 
 void get_log_archive_to_use(int,char *,int);			/* determines the name of the log archive to use */
 void determine_log_rotation_times(int);
@@ -517,11 +481,6 @@ int read_file_into_lifo(char *);				/* LIFO functions */
 void free_lifo_memory(void);
 int push_lifo(char *);
 char *pop_lifo(void);
-
-mmapfile *mmap_fopen(char *);					/* open a file read-only using mmap() */
-int mmap_fclose(mmapfile *);
-char *mmap_fgets(mmapfile *);
-char *mmap_fgets_multiline(mmapfile *);
 
 #ifdef __cplusplus
 }

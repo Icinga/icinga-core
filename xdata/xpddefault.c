@@ -161,6 +161,8 @@ int xpddefault_grab_config_directives(char *input){
 		xpddefault_service_perfdata_file=(char *)strdup(varvalue);
 
 	else if(!strcmp(varname,"host_perfdata_file_mode")){
+		xpddefault_host_perfdata_file_pipe=FALSE;
+
 		if(strstr(varvalue,"p")!=NULL)
 			xpddefault_host_perfdata_file_pipe=TRUE;
 		else if(strstr(varvalue,"w")!=NULL)
@@ -170,6 +172,8 @@ int xpddefault_grab_config_directives(char *input){
 	        }
 
 	else if(!strcmp(varname,"service_perfdata_file_mode")){
+		xpddefault_service_perfdata_file_pipe=FALSE;
+
 		if(strstr(varvalue,"p")!=NULL)
 			xpddefault_service_perfdata_file_pipe=TRUE;
 		else if(strstr(varvalue,"w")!=NULL)
@@ -571,7 +575,7 @@ int xpddefault_close_host_perfdata_file(void){
 
 	if(xpddefault_host_perfdata_fp!=NULL)
 		fclose(xpddefault_host_perfdata_fp);
-	if(xpddefault_host_perfdata_fd>0){
+	if(xpddefault_host_perfdata_fd>=0){
 		close(xpddefault_host_perfdata_fd);
 		xpddefault_host_perfdata_fd=-1;
 		}
@@ -585,7 +589,7 @@ int xpddefault_close_service_perfdata_file(void){
 
 	if(xpddefault_service_perfdata_fp!=NULL)
 		fclose(xpddefault_service_perfdata_fp);
-	if(xpddefault_service_perfdata_fd>0){
+	if(xpddefault_service_perfdata_fd>=0){
 		close(xpddefault_service_perfdata_fd);
 		xpddefault_service_perfdata_fd=-1;
 		}

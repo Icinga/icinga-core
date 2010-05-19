@@ -3,7 +3,9 @@
  * SUMMARY.C -  Icinga Alert Summary CGI
  *
  * Copyright (c) 2002-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 05-05-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * Last Modified: 05-14-2010
  *
  * License:
  * 
@@ -1744,6 +1746,8 @@ void display_recent_alerts(void){
 	char *status="";
 	char date_time[MAX_DATETIME_LENGTH];
 
+        host *temp_host=NULL;
+        service *temp_service=NULL;
 
 
 	printf("<BR>\n");
@@ -1779,13 +1783,19 @@ void display_recent_alerts(void){
 
 		printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert");
 
-		printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_event->host_name),temp_event->host_name);
+                /* find the host */
+                temp_host=find_host(temp_event->host_name);
+
+                /* find the service */
+                temp_service=find_service(temp_event->host_name,temp_event->service_description);
+
+		printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_event->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 
 		if(temp_event->event_type==AE_HOST_ALERT)
 			printf("<td CLASS='data%s'>N/A</td>",bgclass);
 		else{
 			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_event->host_name));
-			printf("&service=%s'>%s</a></td>",url_encode(temp_event->service_description),temp_event->service_description);
+			printf("&service=%s'>%s</a></td>",url_encode(temp_event->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 		        }
 
 		switch(temp_event->entry_type){

@@ -22,8 +22,8 @@
  *
  *****************************************************************************/
 
-#include "../include/common.h"
 #include "../include/config.h"
+#include "../include/common.h"
 #include "../include/objects.h"
 
 #include "../include/cgiutils.h"
@@ -44,7 +44,6 @@ int get_authentication_information(authdata *authinfo){
 	mmapfile *thefile;
 	char *input=NULL;
 	char *temp_ptr;
-	int needed_options;
 
 	if(authinfo==NULL)
 		return ERROR;

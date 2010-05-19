@@ -26,7 +26,7 @@ CGIEXTRAS=@CGIEXTRAS@
 
 CP=@CP@
 CC=@CC@
-CFLAGS=@CFLAGS@ @DEFS@ -DNSCGI
+CFLAGS=-Wall @CFLAGS@ @DEFS@ -DNSCGI
 
 # Compiler flags for optimization (overrides default)
 #CFLAGS=-O3 -Wall -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -DHAVE_CONFIG_H -DNSCGI
@@ -75,7 +75,7 @@ DDATAHDRS=
 DDATADEPS=$(DDATALIBS)
 
 # Common CGI functions (includes object and status functions)
-CGILIBS=getcgi.o cgiutils.o cgiauth.o macros-cgi.o skiplist.o $(SNPRINTF_O) $(ODATALIBS) $(SDATALIBS)
+CGILIBS=$(SRC_COMMON)/shared.o getcgi.o cgiutils.o cgiauth.o macros-cgi.o skiplist.o $(SNPRINTF_O) $(ODATALIBS) $(SDATALIBS)
 CGIHDRS=$(SRC_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/locations.h
 CGIDEPS=$(CGILIBS) $(ODATADEPS) $(SDATADEPS)
 
@@ -121,6 +121,8 @@ downtime-cgi.o: $(SRC_COMMON)/downtime.c $(SRC_INCLUDE)/downtime.h
 xdowntime-cgi.o: $(SRC_XDATA)/$(XDDC) $(SRC_XDATA)/$(XDDH)
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XDDC)
 
+$(SRC_COMMON)/shared.o: $(SRC_COMMON)/shared.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 ########## CGIS ##########
 

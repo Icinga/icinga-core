@@ -883,14 +883,8 @@ int add_downtime(int downtime_type, char *host_name, char *svc_description, time
 		return ERROR;
 
 	/* allocate memory for the downtime */
-	if((new_downtime=(scheduled_downtime *)malloc(sizeof(scheduled_downtime)))==NULL)
+	if((new_downtime=(scheduled_downtime *)calloc(1, sizeof(scheduled_downtime)))==NULL)
 		return ERROR;
-
-	/* initialize vars */
-	new_downtime->host_name=NULL;
-	new_downtime->service_description=NULL;
-	new_downtime->author=NULL;
-	new_downtime->comment=NULL;
 
 	/* duplicate vars */
 	if((new_downtime->host_name=(char *)strdup(host_name))==NULL)
@@ -926,12 +920,6 @@ int add_downtime(int downtime_type, char *host_name, char *svc_description, time
 	new_downtime->triggered_by=triggered_by;
 	new_downtime->duration=duration;
 	new_downtime->downtime_id=downtime_id;
-#ifdef NSCORE
-	new_downtime->comment_id=0;
-	new_downtime->is_in_effect=FALSE;
-	new_downtime->start_flex_downtime=FALSE;
-	new_downtime->incremented_pending_downtime=FALSE;
-#endif
 
 	if(defer_downtime_sorting){
 		new_downtime->next=scheduled_downtime_list;
@@ -1044,6 +1032,38 @@ scheduled_downtime *find_service_downtime(unsigned long downtime_id){
 	return find_downtime(SERVICE_DOWNTIME,downtime_id);
         }
 
+
+/* finds a specific downtime entry by similar content (in a distributed environment, downtime_ids are not synchronised) */
+scheduled_downtime *find_downtime_by_similar_content(int type, char *host_name, char *service_description, char *author, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long duration){
+	scheduled_downtime *temp_downtime=NULL;
+
+	if(service_description==NULL) {
+		if(type==ANY_DOWNTIME)
+			type=HOST_DOWNTIME;
+
+		/* Must specify a service_description if you are searching services - obviously! */
+		if(type==SERVICE_DOWNTIME)
+			return NULL;
+		}
+
+	for(temp_downtime=scheduled_downtime_list;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
+		
+		if(type!=ANY_DOWNTIME && temp_downtime->type!=type)
+			continue;
+
+		if(temp_downtime->start_time==start_time 
+			&& temp_downtime->end_time==end_time 
+			&& temp_downtime->fixed==fixed
+			&& temp_downtime->duration==duration
+			&& strcmp(temp_downtime->host_name,host_name)==0 
+			&& (service_description==NULL || (temp_downtime->type == SERVICE_DOWNTIME && strcmp(temp_downtime->service_description,service_description)==0)) 
+			&& strcmp(temp_downtime->author,author)==0 
+			&& strcmp(temp_downtime->comment,comment_data)==0)
+			return temp_downtime;
+			}
+
+	return NULL;
+	}
 
 
 /******************************************************************/

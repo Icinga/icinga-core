@@ -20,7 +20,17 @@
 					<a class="flag" href="docs/de/index.html" target="main"><img src="docs/images/flags/de.png" /></a><a class="flag" href="docs/en/index.html" target="main"><img src="docs/images/flags/um_gb.png" /></a>
 				</div>
 			</li>
-			<li class="menuli_style2"><a href="search.html" target="main">Search</a></li>
+			<!-- extended search based on idoutils and icinga api -->
+			<li class="menuli_style2"><a href="search.html" target="main">Extended Search</a></li>
+			<!-- classic search -->
+			<li class="menuli_style2">
+			<div class="navbarsearch">
+			<form method="get" action="@cgiurl@/status.cgi" target="main">
+			<input type='hidden' name='navbarsearch' value='1'>
+			<input type='text' name='host' size='20' class="NavBarSearchItem">
+			</form>
+			</div>
+			</li>
 		</ul>
 		<h2>Monitoring</h2>
 		<ul>

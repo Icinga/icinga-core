@@ -3,7 +3,8 @@
  * CONFIG.C - Configuration input and verification routines for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 12-14-2008
+ * Copyright (c) 2010 Icinga Core Development Team and Community Contributors
+ * Last Modified: 2010-05-16
  *
  * License:
  *
@@ -64,7 +65,9 @@ extern char     *illegal_output_chars;
 extern int      use_regexp_matches;
 extern int      use_true_regexp_matching;
 
-extern int	use_syslog;
+extern int      use_syslog;
+extern int      use_syslog_local_facility;
+extern int      syslog_local_facility;
 extern int      log_notifications;
 extern int      log_service_retries;
 extern int      log_host_retries;
@@ -523,6 +526,28 @@ int read_main_config_file(char *main_config_file){
 				}
 
 			use_syslog=(atoi(value)>0)?TRUE:FALSE;
+			}
+
+		else if(!strcmp(variable,"use_syslog_local_facility")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"Illegal value for use_syslog_local_facility");
+				error=TRUE;
+				break;
+				}
+
+			use_syslog_local_facility=(atoi(value)>0)?TRUE:FALSE;
+			}
+
+		else if(!strcmp(variable,"syslog_local_facility")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'7'){
+				asprintf(&error_message,"Illegal value for syslog_local_facility");
+				error=TRUE;
+				break;
+				}
+
+			syslog_local_facility=atoi(value);
 			}
 
 		else if(!strcmp(variable,"log_notifications")){
@@ -1347,6 +1372,8 @@ int read_main_config_file(char *main_config_file){
 			continue;
 		else if(strstr(input,"state_retention_file=")==input)
 			continue;
+                else if(strstr(input,"sync_retention_file=")==input)
+                        continue;
 		else if(strstr(input,"object_cache_file=")==input)
 			continue;
 		else if(strstr(input,"precached_object_file=")==input)

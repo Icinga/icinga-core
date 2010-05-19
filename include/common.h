@@ -22,6 +22,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  ************************************************************************/
 
+#include "shared.h"
 
 #define PROGRAM_NAME "Icinga"
 #define PROGRAM_NAME_UC "ICINGA"
@@ -303,6 +304,8 @@
 #define CMD_CHANGE_CONTACT_MODATTR                      167
 #define CMD_CHANGE_CONTACT_MODHATTR                     168
 #define CMD_CHANGE_CONTACT_MODSATTR                     169
+
+#define CMD_SYNC_STATE_INFORMATION                      170
 
 /* custom command introduced in Nagios 3.x */
 #define CMD_CUSTOM_COMMAND                              999

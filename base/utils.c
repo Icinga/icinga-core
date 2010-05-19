@@ -41,9 +41,6 @@ static PerlInterpreter *my_perl=NULL;
 int use_embedded_perl=TRUE;
 #endif
 
-char            *my_strtok_buffer=NULL;
-char            *original_my_strtok_buffer=NULL;
-
 extern char	*config_file;
 extern char	*log_file;
 extern char     *command_file;
@@ -104,6 +101,9 @@ extern int      daemon_dumps_core;
 extern int      nagios_pid;
 
 extern int	use_syslog;
+extern int	use_syslog_local_facility;
+extern int	syslog_local_facility;
+
 extern int      log_notifications;
 extern int      log_service_retries;
 extern int      log_host_retries;
@@ -1670,114 +1670,6 @@ time_t calculate_time_from_weekday_of_month(int year, int month, int weekday, in
 	}
 
 
-
-/* given a date/time in time_t format, produce a corresponding date/time string, including timezone */
-void get_datetime_string(time_t *raw_time, char *buffer, int buffer_length, int type){
-	time_t t;
-	struct tm *tm_ptr;
-	int hour;
-	int minute;
-	int second;
-	int month;
-	int day;
-	int year;
-	char *weekdays[7]={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-	char *months[12]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"};
-	char *tzone="";
-
-	if(raw_time==NULL)
-		time(&t);
-	else
-		t=*raw_time;
-
-	if(type==HTTP_DATE_TIME)
-		tm_ptr=gmtime(&t);
-	else
-		tm_ptr=localtime(&t);
-
-	hour=tm_ptr->tm_hour;
-	minute=tm_ptr->tm_min;
-	second=tm_ptr->tm_sec;
-	month=tm_ptr->tm_mon+1;
-	day=tm_ptr->tm_mday;
-	year=tm_ptr->tm_year+1900;
-
-#ifdef HAVE_TM_ZONE
-	tzone=(char *)(tm_ptr->tm_zone);
-#else
-	tzone=(tm_ptr->tm_isdst)?tzname[1]:tzname[0];
-#endif
-
-	/* ctime() style date/time */
-	if(type==LONG_DATE_TIME)
-		snprintf(buffer,buffer_length,"%s %s %d %02d:%02d:%02d %s %d",weekdays[tm_ptr->tm_wday],months[tm_ptr->tm_mon],day,hour,minute,second,tzone,year);
-
-	/* short date/time */
-	else if(type==SHORT_DATE_TIME){
-		if(date_format==DATE_FORMAT_EURO)
-			snprintf(buffer,buffer_length,"%02d-%02d-%04d %02d:%02d:%02d",day,month,year,hour,minute,second);
-		else if(date_format==DATE_FORMAT_ISO8601 || date_format==DATE_FORMAT_STRICT_ISO8601)
-			snprintf(buffer,buffer_length,"%04d-%02d-%02d%c%02d:%02d:%02d",year,month,day,(date_format==DATE_FORMAT_STRICT_ISO8601)?'T':' ',hour,minute,second);
-		else
-			snprintf(buffer,buffer_length,"%02d-%02d-%04d %02d:%02d:%02d",month,day,year,hour,minute,second);
-	        }
-
-	/* short date */
-	else if(type==SHORT_DATE){
-		if(date_format==DATE_FORMAT_EURO)
-			snprintf(buffer,buffer_length,"%02d-%02d-%04d",day,month,year);
-		else if(date_format==DATE_FORMAT_ISO8601 || date_format==DATE_FORMAT_STRICT_ISO8601)
-			snprintf(buffer,buffer_length,"%04d-%02d-%02d",year,month,day);
-		else
-			snprintf(buffer,buffer_length,"%02d-%02d-%04d",month,day,year);
-	        }
-
-	/* expiration date/time for HTTP headers */
-	else if(type==HTTP_DATE_TIME)
-		snprintf(buffer,buffer_length,"%s, %02d %s %d %02d:%02d:%02d GMT",weekdays[tm_ptr->tm_wday],day,months[tm_ptr->tm_mon],year,hour,minute,second);
-
-	/* short time */
-	else
-		snprintf(buffer,buffer_length,"%02d:%02d:%02d",hour,minute,second);
-
-	buffer[buffer_length-1]='\x0';
-
-	/* don't mess up other functions that might want to call a variable 'tzone' */
-#undef tzone
-
-	return;
-        }
-
-
-
-/* get days, hours, minutes, and seconds from a raw time_t format or total seconds */
-void get_time_breakdown(unsigned long raw_time, int *days, int *hours, int *minutes, int *seconds){
-	unsigned long temp_time=0;
-	int temp_days=0;
-	int temp_hours=0;
-	int temp_minutes=0;
-	int temp_seconds=0;
-
-	temp_time=raw_time;
-
-	temp_days=temp_time/86400;
-	temp_time-=(temp_days * 86400);
-	temp_hours=temp_time/3600;
-	temp_time-=(temp_hours * 3600);
-	temp_minutes=temp_time/60;
-	temp_time-=(temp_minutes * 60);
-	temp_seconds=(int)temp_time;
-
-	*days=temp_days;
-	*hours=temp_hours;
-	*minutes=temp_minutes;
-	*seconds=temp_seconds;
-
-	return;
-	}
-
-
-
 /* get the next time to schedule a log rotation */
 time_t get_next_log_rotation_time(void){
 	time_t current_time;
@@ -2234,7 +2126,7 @@ int move_check_result_to_queue(char *checkresult_file){
 	output_file_fd=mkstemp(output_file);
 
 	/* file created okay */
-	if(output_file_fd>0){
+	if(output_file_fd>=0){
 
 		log_debug_info(DEBUGL_CHECKS,2,"Moving temp check result file '%s' to queue file '%s'...\n",checkresult_file,output_file);
 
@@ -2254,7 +2146,7 @@ int move_check_result_to_queue(char *checkresult_file){
 
 		/* create an ok-to-go indicator file */
 		asprintf(&temp_buffer,"%s.ok",output_file);
-		if((output_file_fd=open(temp_buffer,O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR))>0)
+		if((output_file_fd=open(temp_buffer,O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR))>=0)
 			close(output_file_fd);
 		my_free(temp_buffer);
 
@@ -2365,7 +2257,6 @@ int process_check_result_queue(char *dirname){
 /* reads check result(s) from a file */
 int process_check_result_file(char *fname){
 	mmapfile *thefile=NULL;
-	char *temp_buffer=NULL;
 	char *input=NULL;
 	char *var=NULL;
 	char *val=NULL;
@@ -2827,7 +2718,7 @@ int parse_check_output(char *buf, char **short_output, char **long_output, char 
 	/* save long output */
 	if(long_output && (db1.buf && strcmp(db1.buf,""))){
 
-		if(escape_newlines==FALSE)
+		if(escape_newlines_please==FALSE)
 			*long_output=(char *)strdup(db1.buf);
 
 		else{
@@ -2967,49 +2858,6 @@ int close_command_file(void){
 /************************ STRING FUNCTIONS ************************/
 /******************************************************************/
 
-/* strip newline, carriage return, and tab characters from beginning and end of a string */
-void strip(char *buffer){
-	register int x=0;
-	register int y=0;
-	register int z=0;
-
-	if(buffer==NULL || buffer[0]=='\x0')
-		return;
-
-	/* strip end of string */
-	y=(int)strlen(buffer);
-	for(x=y-1;x>=0;x--){
-		if(buffer[x]==' ' || buffer[x]=='\n' || buffer[x]=='\r' || buffer[x]=='\t' || buffer[x]==13)
-			buffer[x]='\x0';
-		else
-			break;
-	        }
-	/* save last position for later... */
-	z=x;
-
-	/* strip beginning of string (by shifting) */
-	/* NOTE: this is very expensive to do, so avoid it whenever possible */
-	for(x=0;;x++){
-		if(buffer[x]==' ' || buffer[x]=='\n' || buffer[x]=='\r' || buffer[x]=='\t' || buffer[x]==13)
-			continue;
-		else
-			break;
-	        }
-	if(x>0){
-		/* new length of the string after we stripped the end */
-		y=z+1;
-
-		/* shift chars towards beginning of string to remove leading whitespace */
-		for(z=x;z<y;z++)
-			buffer[z-x]=buffer[z];
-		buffer[y-x]='\x0';
-	        }
-
-	return;
-	}
-
-
-
 /* gets the next string from a buffer in memory - strings are terminated by newlines, which are removed */
 char *get_next_string_from_buf(char *buf, int *start_index, int bufsize){
 	char *sptr=NULL;
@@ -3054,20 +2902,6 @@ int contains_illegal_object_chars(char *name){
 
 		ch=(int)name[x];
 
-		/* illegal ASCII characters */
-		/* REMOVED 09/26/07 to allow for multi-byte asian characters */
-		/*
-		if(ch<32 || ch==127)
-			return TRUE;
-		*/
-
-		/* REMOVED 3/11/05 to allow for non-english spellings, etc. */
-		/* illegal extended ASCII characters */
-		/*
-		if(ch>=166)
-			return TRUE;
-		*/
-
 		/* illegal user-specified characters */
 		if(illegal_object_chars!=NULL)
 			for(y=0;illegal_object_chars[y];y++)
@@ -3077,104 +2911,6 @@ int contains_illegal_object_chars(char *name){
 
 	return FALSE;
         }
-
-
-
-/* fix the problem with strtok() skipping empty options between tokens */
-char *my_strtok(char *buffer,char *tokens){
-	char *token_position=NULL;
-	char *sequence_head=NULL;
-
-	if(buffer!=NULL){
-		my_free(original_my_strtok_buffer);
-		if((my_strtok_buffer=(char *)strdup(buffer))==NULL)
-			return NULL;
-		original_my_strtok_buffer=my_strtok_buffer;
-	        }
-
-	if(my_strtok_buffer==NULL)
-		return NULL;
-
-	sequence_head=my_strtok_buffer;
-
-	if(sequence_head[0]=='\x0')
-		return NULL;
-
-	token_position=strchr(my_strtok_buffer,tokens[0]);
-
-	if(token_position==NULL){
-		my_strtok_buffer=strchr(my_strtok_buffer,'\x0');
-		return sequence_head;
-	        }
-
-	token_position[0]='\x0';
-	my_strtok_buffer=token_position+1;
-
-	return sequence_head;
-        }
-
-
-
-/* fixes compiler problems under Solaris, since strsep() isn't included */
-/* this code is taken from the glibc source */
-char *my_strsep (char **stringp, const char *delim){
-	char *begin=NULL;
-	char *end=NULL;
-	char ch='\x0';
-
-	begin=*stringp;
-	if(begin==NULL)
-		return NULL;
-
-	/* a frequent case is when the delimiter string contains only one character.  Here we don't need to call the expensive `strpbrk' function and instead work using `strchr'.  */
-	if(delim[0]=='\0' || delim[1]=='\0'){
-
-		ch=delim[0];
-
-		if(ch=='\0' || begin[0]=='\0')
-			end=NULL;
-		else{
-			if(*begin==ch)
-				end=begin;
-			else
-				end=strchr(begin+1,ch);
-			}
-		}
-
-	else
-		/* find the end of the token.  */
-		end=strpbrk(begin,delim);
-
-	if(end){
-
-		/* terminate the token and set *STRINGP past NUL character.  */
-		*end++='\0';
-		*stringp=end;
-		}
-	else
-		/* no more delimiters; this is the last token.  */
-		*stringp=NULL;
-
-	return begin;
-	}
-
-
-#ifdef REMOVED_10182007
-/* my wrapper for free() */
-int my_free(void **ptr){
-
-	if(ptr==NULL)
-		return ERROR;
-
-	/* I hate calling free() and then resetting the pointer to NULL, so lets do it together */
-	if(*ptr){
-		free(*ptr);
-		*ptr=NULL;
-	        }
-
-	return OK;
-        }
-#endif
 
 
 /* escapes newlines in a string */
@@ -3212,8 +2948,6 @@ char *escape_newlines(char *rawbuf){
 	}
 
 
-
-
 /* compares strings */
 int compare_strings(char *val1a, char *val2a){
 
@@ -3222,76 +2956,13 @@ int compare_strings(char *val1a, char *val2a){
         }
 
 
-
-/******************************************************************/
-/************************* HASH FUNCTIONS *************************/
-/******************************************************************/
-
-/* dual hash function */
-int hashfunc(const char *name1,const char *name2,int hashslots){
-	unsigned int i=0;
-	unsigned int result=0;
-
-	result=0;
-
-	if(name1)
-		for(i=0;i<strlen(name1);i++)
-			result+=name1[i];
-
-	if(name2)
-		for(i=0;i<strlen(name2);i++)
-			result+=name2[i];
-
-	result=result%hashslots;
-
-	return result;
-        }
-
-
-/* dual hash data comparison */
-int compare_hashdata(const char *val1a, const char *val1b, const char *val2a, const char *val2b){
-	int result=0;
-
-	/* NOTE: If hash calculation changes, update the compare_strings() function! */
-
-	/* check first name */
-	if(val1a==NULL && val2a==NULL)
-		result=0;
-	else if(val1a==NULL)
-		result=1;
-	else if(val2a==NULL)
-		result=-1;
-	else
-		result=strcmp(val1a,val2a);
-
-	/* check second name if necessary */
-	if(result==0){
-		if(val1b==NULL && val2b==NULL)
-			result=0;
-		else if(val1b==NULL)
-			result=1;
-		else if(val2b==NULL)
-			result=-1;
-		else
-			result=strcmp(val1b,val2b);
-	        }
-
-	return result;
-        }
-
-
-
 /******************************************************************/
 /************************* FILE FUNCTIONS *************************/
 /******************************************************************/
 
 /* renames a file - works across filesystems (Mike Wiacek) */
 int my_rename(char *source, char *dest){
-	char buffer[MAX_INPUT_BUFFER]={0};
 	int rename_result=0;
-	int source_fd=-1;
-	int dest_fd=-1;
-	int bytes_read=0;
 
 
 	/* make sure we have something */
@@ -3334,11 +3005,12 @@ int my_rename(char *source, char *dest){
 
 /* copies a file */
 int my_fcopy(char *source, char *dest){
-	char buffer[MAX_INPUT_BUFFER]={0};
 	int source_fd=-1;
 	int dest_fd=-1;
-	int bytes_read=0;
-
+        int rd_result = 0, wr_result = 0;
+        off_t tot_written = 0, tot_read = 0, buf_size = 0;
+        char *buf;
+        struct stat st;
 
 	/* make sure we have something */
 	if(source==NULL || dest==NULL)
@@ -3347,248 +3019,91 @@ int my_fcopy(char *source, char *dest){
 	/* unlink destination file first (not doing so can cause problems on network file systems like CIFS) */
 	unlink(dest);
 
+        /* open source file for reading */
+        if((source_fd=open(source,O_RDONLY,0644)) < 0){
+                logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open file '%s' for reading: %s\n",source,strerror(errno));
+                return ERROR;
+        }
+ 
+        /*
+         * find out how large the source-file is so we can be sure
+         * we've written all of it
+         */
+        if (fstat(source_fd, &st) < 0) {
+                logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to stat '%s' for my_fcopy(): %s\n", source, strerror(errno));
+                close(source_fd);
+                return ERROR;
+        }
+ 
+        /*
+         * If the file is huge, read it and write it in chunks.
+         * This value (128K) is the result of "pick-one-at-random"
+         * with some minimal testing and may not be optimal for all
+         * hardware setups, but it should work ok for most. It's
+         * faster than 1K buffers and 1M buffers, so change at your
+         * own peril. Note that it's useful to make it fit in the L2
+         * cache, so larger isn't necessarily better.
+         */
+        buf_size = st.st_size > 128 << 10 ? 128 << 10 : st.st_size;
+        buf = malloc(buf_size);
+        if (!buf) {
+                logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to malloc(%ld) bytes: %s\n", buf_size, strerror(errno));
+                close(source_fd);
+                return ERROR;
+        }
+
+
+
 	/* open destination file for writing */
-	if((dest_fd=open(dest,O_WRONLY|O_TRUNC|O_CREAT|O_APPEND,0644))>0){
+        if((dest_fd=open(dest,O_WRONLY|O_TRUNC|O_CREAT|O_APPEND,0644)) < 0){
+                logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open file '%s' for writing: %s\n",dest,strerror(errno));
+                close(source_fd);
+                free(buf);
+                return ERROR;
+        }
 
-		/* open source file for reading */
-		if((source_fd=open(source,O_RDONLY,0644))>0){
+        /* most of the times, this loop will be gone through once */
+        while (tot_written < st.st_size) {
+                int loop_wr = 0;
 
-			/* copy file contents */
-			while((bytes_read=read(source_fd,buffer,sizeof(buffer)))>0)
-				write(dest_fd,buffer,bytes_read);
+                rd_result = read(source_fd, buf, buf_size);
+                if (rd_result < 0) {
+                        if (errno == EAGAIN || errno == EINTR)
+                                continue;
+                        logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: my_fcopy() failed to read from '%s': %s\n", source, strerror(errno));
+                        break;
+                }
+                tot_read += rd_result;
+                while (loop_wr < rd_result) {
+                        wr_result = write(dest_fd, buf + loop_wr, rd_result - loop_wr);
+ 
+                        if (wr_result < 0) {
+                                if (errno == EAGAIN || errno == EINTR)
+                                        continue;
+                                logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: my_fcopy() failed to write to '%s': %s\n", dest, strerror(errno));
+                                break;
+                        }
+                        loop_wr += wr_result;
+                }
+                if (wr_result < 0)
+                        break;
+                tot_written += loop_wr;
+        }
 
-			close(source_fd);
-			close(dest_fd);
-			}
 
-		/* error opening the source file */
-		else{
-			close(dest_fd);
-			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open file '%s' for reading: %s\n",source,strerror(errno));
-			return ERROR;
-			}
-		}
-
-	/* error opening destination file */
-	else{
-		close(dest_fd);
-		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open file '%s' for writing: %s\n",dest,strerror(errno));
+        /* clean up irregardless of how things went */
+        close(source_fd);
+        close(dest_fd);
+        free(buf);
+ 
+        if (rd_result < 0 || wr_result < 0) {
+                /* don't leave half-written files around */
+                unlink(dest);
 		return ERROR;
-		}
+	}
 
 	return OK;
-        }
-
-
-
-/* open a file read-only via mmap() */
-mmapfile *mmap_fopen(char *filename){
-	mmapfile *new_mmapfile=NULL;
-	int fd=0;
-	void *mmap_buf=NULL;
-	struct stat statbuf;
-	int mode=O_RDONLY;
-	unsigned long file_size=0L;
-
-	if(filename==NULL)
-		return NULL;
-
-	/* allocate memory */
-	if((new_mmapfile=(mmapfile *)malloc(sizeof(mmapfile)))==NULL)
-		return NULL;
-
-	/* open the file */
-	if((fd=open(filename,mode))==-1){
-		my_free(new_mmapfile);
-		return NULL;
-	        }
-
-	/* get file info */
-	if((fstat(fd,&statbuf))==-1){
-		close(fd);
-		my_free(new_mmapfile);
-		return NULL;
-	        }
-
-	/* get file size */
-	file_size=(unsigned long)statbuf.st_size;
-
-	/* only mmap() if we have a file greater than 0 bytes */
-	if(file_size>0){
-
-		/* mmap() the file - allocate one extra byte for processing zero-byte files */
-		if((mmap_buf=(void *)mmap(0,file_size,PROT_READ,MAP_PRIVATE,fd,0))==MAP_FAILED){
-			close(fd);
-			my_free(new_mmapfile);
-			return NULL;
-			}
-		}
-	else
-		mmap_buf=NULL;
-
-	/* populate struct info for later use */
-	new_mmapfile->path=(char *)strdup(filename);
-	new_mmapfile->fd=fd;
-	new_mmapfile->file_size=(unsigned long)file_size;
-	new_mmapfile->current_position=0L;
-	new_mmapfile->current_line=0L;
-	new_mmapfile->mmap_buf=mmap_buf;
-
-	return new_mmapfile;
-        }
-
-
-/* close a file originally opened via mmap() */
-int mmap_fclose(mmapfile *temp_mmapfile){
-
-	if(temp_mmapfile==NULL)
-		return ERROR;
-
-	/* un-mmap() the file */
-	if(temp_mmapfile->file_size>0L)
-		munmap(temp_mmapfile->mmap_buf,temp_mmapfile->file_size);
-
-	/* close the file */
-	close(temp_mmapfile->fd);
-
-	/* free memory */
-	my_free(temp_mmapfile->path);
-	my_free(temp_mmapfile);
-
-	return OK;
-        }
-
-
-/* gets one line of input from an mmap()'ed file */
-char *mmap_fgets(mmapfile *temp_mmapfile){
-	char *buf=NULL;
-	unsigned long x=0L;
-	int len=0;
-
-	if(temp_mmapfile==NULL)
-		return NULL;
-
-	/* size of file is 0 bytes */
-	if(temp_mmapfile->file_size==0L)
-		return NULL;
-
-	/* we've reached the end of the file */
-	if(temp_mmapfile->current_position>=temp_mmapfile->file_size)
-		return NULL;
-
-	/* find the end of the string (or buffer) */
-	for(x=temp_mmapfile->current_position;x<temp_mmapfile->file_size;x++){
-		if(*((char *)(temp_mmapfile->mmap_buf)+x)=='\n'){
-			x++;
-			break;
-			}
-	        }
-
-	/* calculate length of line we just read */
-	len=(int)(x-temp_mmapfile->current_position);
-
-	/* allocate memory for the new line */
-	if((buf=(char *)malloc(len+1))==NULL)
-		return NULL;
-
-	/* copy string to newly allocated memory and terminate the string */
-	memcpy(buf,((char *)(temp_mmapfile->mmap_buf)+temp_mmapfile->current_position),len);
-	buf[len]='\x0';
-
-	/* update the current position */
-	temp_mmapfile->current_position=x;
-
-	/* increment the current line */
-	temp_mmapfile->current_line++;
-
-	return buf;
-        }
-
-
-
-/* gets one line of input from an mmap()'ed file (may be contained on more than one line in the source file) */
-char *mmap_fgets_multiline(mmapfile *temp_mmapfile){
-	char *buf=NULL;
-	char *tempbuf=NULL;
-	char *stripped=NULL;
-	int len=0;
-	int len2=0;
-	int end=0;
-
-	if(temp_mmapfile==NULL)
-		return NULL;
-
-	while(1){
-
-		my_free(tempbuf);
-
-		if((tempbuf=mmap_fgets(temp_mmapfile))==NULL)
-			break;
-
-		if(buf==NULL){
-			len=strlen(tempbuf);
-			if((buf=(char *)malloc(len+1))==NULL)
-				break;
-			memcpy(buf,tempbuf,len);
-			buf[len]='\x0';
-		        }
-		else{
-			/* strip leading white space from continuation lines */
-			stripped=tempbuf;
-			while(*stripped==' ' || *stripped=='\t')
-				stripped++;
-			len=strlen(stripped);
-			len2=strlen(buf);
-			if((buf=(char *)realloc(buf,len+len2+1))==NULL)
-				break;
-			strcat(buf,stripped);
-			len+=len2;
-			buf[len]='\x0';
-		        }
-
-		if(len==0)
-			break;
-
-
-		/* handle Windows/DOS CR/LF */
-		if(len>=2 && buf[len-2]=='\r')
-			end=len-3;
-		/* normal Unix LF */
-		else if(len>=1 && buf[len-1]=='\n')
-			end=len-2;
-		else
-			end=len-1;
-
-#ifdef DEBUG
-		printf("LEN: %d, END: %d, BUF=%s",len,end,buf);
-#endif
-
-		/* two backslashes found, so unescape first backslash first and break */
-		if(end>=1 && buf[end-1]=='\\' && buf[end]=='\\'){
-			buf[end]='\n';
-			buf[end+1]='\x0';
-			break;
-			}
-
-		/* one backslash found, so we should continue reading the next line */
-		else if(end>0 && buf[end]=='\\')
-			buf[end]='\x0';
-
-		/* else no continuation marker was found, so break */
-		else
-			break;
-	        }
-
-#ifdef DEBUG
-	printf("BUFNOW: %s",buf);
-#endif
-
-	my_free(tempbuf);
-
-	return buf;
-        }
-
-
+}
 
 
 /******************************************************************/
@@ -4662,10 +4177,6 @@ void free_memory(void){
 
 	/* reset the event pointer */
 	event_list_low=NULL;
-
-	/* free memory used by my_strtok() function and reset the my_strtok() buffers */
-	my_free(original_my_strtok_buffer);
-	my_strtok_buffer=NULL;
 
 	/* free memory for global event handlers */
 	my_free(global_host_event_handler);

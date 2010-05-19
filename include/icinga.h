@@ -26,6 +26,7 @@
 #endif
 
 #include "config.h"
+#include "logging.h"
 #include "common.h"
 #include "locations.h"
 #include "objects.h"
@@ -51,6 +52,9 @@ extern "C" {
 
 #define DEFAULT_LOG_LEVEL					1	/* log all events to main log file */
 #define DEFAULT_USE_SYSLOG					1	/* log events to syslog? 1=yes, 0=no */
+#define DEFAULT_USE_SYSLOG_LOCAL_FACILITY			0	/* log events to a local facility instead of the default? 1=yes, 0=no */
+#define DEFAULT_SYSLOG_LOCAL_FACILITY				5	/* log events to the specified loacl facility? 1=yes, 0=no */
+
 #define DEFAULT_SYSLOG_LEVEL					2	/* log only severe events to syslog */
 
 #define DEFAULT_NOTIFICATION_LOGGING				1	/* log notification events? 1=yes, 0=no */
@@ -132,67 +136,6 @@ extern "C" {
 #define UPDATE_CHECK_INTERVAL_WOBBLE                            60*60*4  /* 4 hour wobble on top of base interval */
 #define BASE_UPDATE_CHECK_RETRY_INTERVAL                        60*60*1  /* 1 hour base retry interval */
 #define UPDATE_CHECK_RETRY_INTERVAL_WOBBLE                      60*60*3  /* 3 hour wobble on top of base retry interval */
-
-
-/******************* LOGGING TYPES ********************/
-
-#define NSLOG_RUNTIME_ERROR		1
-#define NSLOG_RUNTIME_WARNING		2
-
-#define NSLOG_VERIFICATION_ERROR	4
-#define NSLOG_VERIFICATION_WARNING	8
-
-#define NSLOG_CONFIG_ERROR		16
-#define NSLOG_CONFIG_WARNING		32
-
-#define NSLOG_PROCESS_INFO		64
-#define NSLOG_EVENT_HANDLER		128
-/*#define NSLOG_NOTIFICATION		256*/	/* NOT USED ANYMORE - CAN BE REUSED */
-#define NSLOG_EXTERNAL_COMMAND		512
-
-#define NSLOG_HOST_UP      		1024
-#define NSLOG_HOST_DOWN			2048
-#define NSLOG_HOST_UNREACHABLE		4096
-
-#define NSLOG_SERVICE_OK		8192
-#define NSLOG_SERVICE_UNKNOWN		16384
-#define NSLOG_SERVICE_WARNING		32768
-#define NSLOG_SERVICE_CRITICAL		65536
-
-#define NSLOG_PASSIVE_CHECK		131072
-
-#define NSLOG_INFO_MESSAGE		262144
-
-#define NSLOG_HOST_NOTIFICATION		524288
-#define NSLOG_SERVICE_NOTIFICATION	1048576
-
-
-/***************** DEBUGGING LEVELS *******************/
-
-#define DEBUGL_ALL                      -1
-#define DEBUGL_NONE                     0
-#define DEBUGL_FUNCTIONS                1
-#define DEBUGL_CONFIG			2
-#define DEBUGL_PROCESS                  4
-#define DEBUGL_STATUSDATA               4
-#define DEBUGL_RETENTIONDATA            4
-#define DEBUGL_EVENTS                   8
-#define DEBUGL_CHECKS                   16
-#define DEBUGL_IPC                      16
-#define DEBUGL_FLAPPING                 16
-#define DEBUGL_EVENTHANDLERS            16
-#define DEBUGL_PERFDATA                 16
-#define DEBUGL_NOTIFICATIONS            32
-#define DEBUGL_EVENTBROKER              64
-#define DEBUGL_EXTERNALCOMMANDS         128
-#define DEBUGL_COMMANDS                 256
-#define DEBUGL_DOWNTIME                 512
-#define DEBUGL_COMMENTS                 1024
-#define DEBUGL_MACROS                   2048
-
-#define DEBUGV_BASIC                    0
-#define DEBUGV_MORE			1
-#define DEBUGV_MOST                     2
 
 
 /******************** HOST STATUS *********************/
@@ -430,18 +373,6 @@ typedef struct circular_buffer_struct{
         }circular_buffer;
 
 
-/* MMAPFILE structure - used for reading files via mmap() */
-typedef struct mmapfile_struct{
-	char *path;
-	int mode;
-	int fd;
-	unsigned long file_size;
-	unsigned long current_position;
-	unsigned long current_line;
-	void *mmap_buf;
-        }mmapfile;
-
-
 /* DBUF structure - dynamic string storage */
 typedef struct dbuf_struct{
 	char *buf;
@@ -622,27 +553,6 @@ time_t get_next_host_notification_time(host *,time_t);				/* calculates nex acce
 time_t get_next_service_notification_time(service *,time_t);			/* calculates nex acceptable re-notification time for a service */
 
 
-/**** Logging Functions ****/
-void logit(int,int,const char *, ...)
-	__attribute__((__format__(__printf__, 3, 4)));
-int write_to_logs_and_console(char *,unsigned long,int);	/* writes a string to screen and logs */
-int write_to_console(char *);                           /* writes a string to screen */
-int write_to_all_logs(char *,unsigned long);            /* writes a string to main log file and syslog facility */
-int write_to_all_logs_with_timestamp(char *,unsigned long,time_t *);	/* writes a string to main log file and syslog facility */
-int write_to_log(char *,unsigned long,time_t *);       	/* write a string to the main log file */
-int write_to_syslog(char *,unsigned long);             	/* write a string to the syslog facility */
-int log_service_event(service *);			/* logs a service event */
-int log_host_event(host *);				/* logs a host event */
-int log_host_states(int,time_t *);	                /* logs initial/current host states */
-int log_service_states(int,time_t *);                   /* logs initial/current service states */
-int rotate_log_file(time_t);			     	/* rotates the main log file */
-int write_log_file_info(time_t *); 			/* records log file/version info */
-int open_debug_log(void);
-int log_debug_info(int,int,const char *,...)
-	__attribute__((__format__(__printf__, 3, 4)));
-int close_debug_log(void);
-
-
 /**** Cleanup Functions ****/
 void cleanup(void);                                  	/* cleanup after ourselves (before quitting or restarting) */
 void free_memory(void);                              	/* free memory allocated to all linked lists in memory */
@@ -650,23 +560,11 @@ int reset_variables(void);                           	/* reset all global variab
 void free_notification_list(void);		     	/* frees all memory allocated to the notification list */
 
 
-/**** Hash Functions ****/
-int hashfunc(const char *name1, const char *name2, int hashslots);
-int compare_hashdata(const char *,const char *,const char *,const char *);
-
-
 /**** Miscellaneous Functions ****/
 void sighandler(int);                                	/* handles signals */
 void service_check_sighandler(int);                     /* handles timeouts when executing service checks */
 void host_check_sighandler(int);                        /* handles timeouts when executing host checks */
 void my_system_sighandler(int);				/* handles timeouts when executing commands via my_system() */
-void file_lock_sighandler(int);				/* handles timeouts while waiting for file locks */
-void strip(char *);                                  	/* strips whitespace from string */
-char *my_strtok(char *,char *);                      	/* my replacement for strtok() function (doesn't skip consecutive tokens) */
-char *my_strsep(char **,const char *);		     	/* Solaris doesn't have strsep(), so I took this from the glibc source code */
-#ifdef REMOVED_10182007
-int my_free(void **);                                   /* my wrapper for free() */
-#endif
 char *get_next_string_from_buf(char *buf, int *start_index, int bufsize);
 int compare_strings(char *,char *);                     /* compares two strings for equality */
 char *escape_newlines(char *);
@@ -679,8 +577,6 @@ int is_daterange_single_day(daterange *);
 time_t calculate_time_from_weekday_of_month(int,int,int,int);	/* calculates midnight time of specific (3rd, last, etc.) weekday of a particular month */
 time_t calculate_time_from_day_of_month(int,int,int);	/* calculates midnight time of specific (1st, last, etc.) day of a particular month */
 void get_next_valid_time(time_t, time_t *,timeperiod *);	/* get the next valid time in a time period */
-void get_datetime_string(time_t *,char *,int,int);	/* get a date/time string for use in output */
-void get_time_breakdown(unsigned long,int *,int *,int *, int *);
 time_t get_next_log_rotation_time(void);	     	/* determine the next time to schedule a log rotation */
 int init_embedded_perl(char **);			/* initialized embedded perl interpreter */
 int deinit_embedded_perl(void);				/* cleans up embedded perl */
@@ -711,7 +607,6 @@ int cmd_add_comment(int,time_t,char *);				/* add a service or host comment */
 int cmd_delete_comment(int,char *);				/* delete a service or host comment */
 int cmd_delete_all_comments(int,char *);			/* delete all comments associated with a host or service */
 int cmd_delay_notification(int,char *);				/* delay a service or host notification */
-int cmd_schedule_service_check(int,char *,int);			/* schedule an immediate or delayed service check */
 int cmd_schedule_check(int,char *);				/* schedule an immediate or delayed host check */
 int cmd_schedule_host_service_checks(int,char *,int);		/* schedule an immediate or delayed checks of all services on a host */
 int cmd_signal_process(int,char *);				/* schedules a program shutdown or restart */
@@ -792,11 +687,6 @@ void disable_contact_host_notifications(contact *);     /* disables host notific
 void enable_contact_service_notifications(contact *);   /* enables service notifications for a specific contact */
 void disable_contact_service_notifications(contact *);  /* disables service notifications for a specific contact */
 
-int init_check_result_worker_thread(void);
-int shutdown_check_result_worker_thread(void);
-void * check_result_worker_thread(void *);
-void cleanup_check_result_worker_thread(void *);
-
 int init_command_file_worker_thread(void);
 int shutdown_command_file_worker_thread(void);
 void * command_file_worker_thread(void *);
@@ -807,11 +697,6 @@ int submit_raw_external_command(char *,time_t *,int *);
 
 char *get_program_version(void);
 char *get_program_modification_date(void);
-
-mmapfile *mmap_fopen(char *);				/* open a file read-only via mmap() */
-int mmap_fclose(mmapfile *);
-char *mmap_fgets(mmapfile *);
-char *mmap_fgets_multiline(mmapfile *);
 
 
 #ifdef __cplusplus

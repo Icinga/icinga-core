@@ -9,7 +9,7 @@ SRC_BASE=../common
 SRC_CGI=../cgi
 
 CC=@CC@
-CFLAGS=@CFLAGS@ @DEFS@
+CFLAGS=-Wall @CFLAGS@ @DEFS@
 LDFLAGS=@LDFLAGS@ @LIBS@
 
 prefix=@prefix@

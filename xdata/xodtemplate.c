@@ -137,6 +137,14 @@ int presorted_objects=FALSE;
 #define xodtemplate_is_service_is_from_hostgroup(srv) \
 	((srv->have_initial_state & X_SERVICE_IS_FROM_HOSTGROUP) != 0)
 
+/* returns the name of a numbered config file */
+static char *xodtemplate_config_file_name(int config_file){
+        if(config_file<=xodtemplate_current_config_file)
+                return xodtemplate_config_files[config_file-1];
+
+        return "?";
+}
+
 
 /******************************************************************/
 /************* TOP-LEVEL CONFIG DATA INPUT FUNCTION ***************/
@@ -570,9 +578,7 @@ int xodtemplate_process_config_dir(char *dirname, int options){
 	/* open the directory for reading */
 	dirp=opendir(dirname);
         if(dirp==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not open config directory '%s' for reading.\n",dirname);
-#endif
 		return ERROR;
 	        }
 
@@ -589,9 +595,7 @@ int xodtemplate_process_config_dir(char *dirname, int options){
 
 		/* process this if it's a non-hidden config file... */
 		if(stat(file,&stat_buf)==-1){
-#ifdef NSCORE
 			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Could not open config directory member '%s' for reading.\n",file);
-#endif
 			closedir(dirp);
 			return ERROR;
 			}
@@ -665,9 +669,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 	/* open the config file for reading */
 	if((thefile=mmap_fopen(filename))==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Cannot open config file '%s' for reading: %s\n",filename,strerror(errno));
-#endif
 		return ERROR;
 	        }
 
@@ -718,36 +720,28 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 			/* make sure an object type is specified... */
 			if(input[0]=='\x0'){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No object type specified in file '%s' on line %d.\n",filename,current_line);
-#endif
 				result=ERROR;
 				break;
 			        }
 
 			/* check validity of object type */
 			if(strcmp(input,"timeperiod") && strcmp(input,"command") && strcmp(input,"contact") && strcmp(input,"contactgroup") && strcmp(input,"host") && strcmp(input,"hostgroup") && strcmp(input,"servicegroup") && strcmp(input,"service") && strcmp(input,"servicedependency") && strcmp(input,"serviceescalation") && strcmp(input,"hostgroupescalation") && strcmp(input,"hostdependency") && strcmp(input,"hostescalation") && strcmp(input,"hostextinfo") && strcmp(input,"serviceextinfo")){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid object definition type '%s' in file '%s' on line %d.\n",input,filename,current_line);
-#endif
 				result=ERROR;
 				break;
 			        }
 
 			/* we're already in an object definition... */
 			if(in_definition==TRUE){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Unexpected start of object definition in file '%s' on line %d.  Make sure you close preceding objects before starting a new one.\n",filename,current_line);
-#endif
 				result=ERROR;
 				break;
 			        }
 
 			/* start a new definition */
 			if(xodtemplate_begin_object_definition(input,options,xodtemplate_current_config_file,current_line)==ERROR){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add object definition in file '%s' on line %d.\n",filename,current_line);
-#endif
 				result=ERROR;
 				break;
 			        }
@@ -762,9 +756,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 			/* close out current definition */
 			if(xodtemplate_end_object_definition(options)==ERROR){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not complete object definition in file '%s' on line %d.\n",filename,current_line);
-#endif
 				result=ERROR;
 				break;
 			        }
@@ -780,9 +772,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 				/* close out current definition */
 				if(xodtemplate_end_object_definition(options)==ERROR){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not complete object definition in file '%s' on line %d.\n",filename,current_line);
-#endif
 					result=ERROR;
 					break;
 			                }
@@ -793,9 +783,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 				/* add directive to object definition */
 				if(xodtemplate_add_object_property(input,options)==ERROR){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add object property in file '%s' on line %d.\n",filename,current_line);
-#endif
 					result=ERROR;
 					break;
 				        }
@@ -830,9 +818,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 		/* unexpected token or statement */
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Unexpected token or statement in file '%s' on line %d.\n",filename,current_line);
-#endif
 			result=ERROR;
 			break;
 		        }
@@ -844,9 +830,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 	/* whoops - EOF while we were in the middle of an object definition... */
 	if(in_definition==TRUE && result==OK){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Unexpected EOF in file '%s' on line %d - check for a missing closing bracket.\n",filename,current_line);
-#endif
 		result=ERROR;
 	        }
 
@@ -860,6 +844,43 @@ int xodtemplate_process_config_file(char *filename, int options){
 /******************************************************************/
 /***************** OBJECT DEFINITION FUNCTIONS ********************/
 /******************************************************************/
+
+/*
+ * all objects start the same way, so we can get rid of quite
+ * a lot of code with this struct-offset-insensitive macro
+ * Credits to Andreas Ericsson
+ */
+#define xod_begin_def(type) \
+        do { \
+                new_##type = (xodtemplate_##type *)calloc(1, sizeof(*new_##type)); \
+                if (new_##type == NULL) \
+                        return ERROR; \
+                new_##type->register_object=TRUE; \
+                new_##type->_config_file=config_file; \
+                new_##type->_start_line=start_line; \
+        \
+                /* precached object files are already sorted, so add to tail */ \
+                if(presorted_objects==TRUE){ \
+                        \
+                        if(xodtemplate_##type##_list==NULL){ \
+                                xodtemplate_##type##_list=new_##type; \
+                                xodtemplate_##type##_list_tail=xodtemplate_##type##_list; \
+                        } else { \
+                                xodtemplate_##type##_list_tail->next=new_##type; \
+                                xodtemplate_##type##_list_tail=new_##type; \
+                        } \
+        \
+                        /* update current object pointer */ \
+                        xodtemplate_current_object=xodtemplate_##type##_list_tail; \
+                } else { \
+                        /* add new object to head of list in memory */ \
+                        new_##type->next=xodtemplate_##type##_list; \
+                        xodtemplate_##type##_list=new_##type; \
+        \
+                        /* update current object pointer */ \
+                        xodtemplate_current_object=xodtemplate_##type##_list; \
+                } \
+        } while (0)
 
 /* starts a new object definition */
 int xodtemplate_begin_object_definition(char *input, int options, int config_file, int start_line){
@@ -878,7 +899,6 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 	xodtemplate_hostescalation *new_hostescalation=NULL;
 	xodtemplate_hostextinfo *new_hostextinfo=NULL;
 	xodtemplate_serviceextinfo *new_serviceextinfo=NULL;
-	register int x=0;
 
 
 	if(!strcmp(input,"service"))
@@ -982,1046 +1002,108 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 	switch(xodtemplate_current_object_type){
 
 	case XODTEMPLATE_TIMEPERIOD:
-
-		/* allocate memory */
-		new_timeperiod=(xodtemplate_timeperiod *)malloc(sizeof(xodtemplate_timeperiod));
-		if(new_timeperiod==NULL)
-			return ERROR;
-
-		new_timeperiod->template=NULL;
-		new_timeperiod->name=NULL;
-
-		new_timeperiod->timeperiod_name=NULL;
-		new_timeperiod->alias=NULL;
-		for(x=0;x<7;x++)
-			new_timeperiod->timeranges[x]=NULL;
-		for(x=0;x<DATERANGE_TYPES;x++)
-			new_timeperiod->exceptions[x]=NULL;
-		new_timeperiod->exclusions=NULL;
-		new_timeperiod->has_been_resolved=FALSE;
-		new_timeperiod->register_object=TRUE;
-
-		new_timeperiod->_config_file=config_file;
-		new_timeperiod->_start_line=start_line;
-		new_timeperiod->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_timeperiod_list==NULL){
-				xodtemplate_timeperiod_list=new_timeperiod;
-				xodtemplate_timeperiod_list_tail=xodtemplate_timeperiod_list;
-				}
-			else{
-				xodtemplate_timeperiod_list_tail->next=new_timeperiod;
-				xodtemplate_timeperiod_list_tail=new_timeperiod;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_timeperiod_list_tail;
-			}
-
-		/* add new timeperiod to head of list in memory */
-		else{
-			new_timeperiod->next=xodtemplate_timeperiod_list;
-			xodtemplate_timeperiod_list=new_timeperiod;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_timeperiod_list;
-			}
-
+		xod_begin_def(timeperiod);
 		break;
 
 	case XODTEMPLATE_COMMAND:
-
-		/* allocate memory */
-		new_command=(xodtemplate_command *)malloc(sizeof(xodtemplate_command));
-		if(new_command==NULL)
-			return ERROR;
-		
-		new_command->template=NULL;
-		new_command->name=NULL;
-
-		new_command->command_name=NULL;
-		new_command->command_line=NULL;
-		new_command->has_been_resolved=FALSE;
-		new_command->register_object=TRUE;
-
-		new_command->_config_file=config_file;
-		new_command->_start_line=start_line;
-
-		new_command->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_command_list==NULL){
-				xodtemplate_command_list=new_command;
-				xodtemplate_command_list_tail=xodtemplate_command_list;
-				}
-			else{
-				xodtemplate_command_list_tail->next=new_command;
-				xodtemplate_command_list_tail=new_command;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_command_list_tail;
-			}
-
-		/* add new command to head of list in memory */
-		else{
-
-			new_command->next=xodtemplate_command_list;
-			xodtemplate_command_list=new_command;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_command_list;
-			}
-
+		xod_begin_def(command);
 		break;
 
 	case XODTEMPLATE_CONTACTGROUP:
-
-		/* allocate memory */
-		new_contactgroup=(xodtemplate_contactgroup *)malloc(sizeof(xodtemplate_contactgroup));
-		if(new_contactgroup==NULL)
-			return ERROR;
-		
-		new_contactgroup->template=NULL;
-		new_contactgroup->name=NULL;
-
-		new_contactgroup->contactgroup_name=NULL;
-		new_contactgroup->alias=NULL;
-		new_contactgroup->members=NULL;
-		new_contactgroup->have_members=FALSE;
-		new_contactgroup->contactgroup_members=NULL;
-		new_contactgroup->have_contactgroup_members=FALSE;
-		new_contactgroup->has_been_resolved=FALSE;
-		new_contactgroup->register_object=TRUE;
-
-		new_contactgroup->_config_file=config_file;
-		new_contactgroup->_start_line=start_line;
-		new_contactgroup->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_contactgroup_list==NULL){
-				xodtemplate_contactgroup_list=new_contactgroup;
-				xodtemplate_contactgroup_list_tail=xodtemplate_contactgroup_list;
-				}
-			else{
-				xodtemplate_contactgroup_list_tail->next=new_contactgroup;
-				xodtemplate_contactgroup_list_tail=new_contactgroup;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_contactgroup_list_tail;
-			}
-
-		/* add new contactgroup to head of list in memory */
-		else{
-
-			new_contactgroup->next=xodtemplate_contactgroup_list;
-			xodtemplate_contactgroup_list=new_contactgroup;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_contactgroup_list;
-			}
+		xod_begin_def(contactgroup);
 		break;
 
-
 	case XODTEMPLATE_HOSTGROUP:
-
-		/* allocate memory */
-		new_hostgroup=(xodtemplate_hostgroup *)malloc(sizeof(xodtemplate_hostgroup));
-		if(new_hostgroup==NULL)
-			return ERROR;
-		
-		new_hostgroup->template=NULL;
-		new_hostgroup->name=NULL;
-
-		new_hostgroup->hostgroup_name=NULL;
-		new_hostgroup->alias=NULL;
-		new_hostgroup->members=NULL;
-		new_hostgroup->notes=NULL;
-		new_hostgroup->notes_url=NULL;
-		new_hostgroup->action_url=NULL;
-		new_hostgroup->have_members=FALSE;
-		new_hostgroup->hostgroup_members=NULL;
-		new_hostgroup->have_hostgroup_members=FALSE;
-		new_hostgroup->have_notes=FALSE;
-		new_hostgroup->have_notes_url=FALSE;
-		new_hostgroup->have_action_url=FALSE;
-		new_hostgroup->has_been_resolved=FALSE;
-		new_hostgroup->register_object=TRUE;
-
-		new_hostgroup->_config_file=config_file;
-		new_hostgroup->_start_line=start_line;
-		new_hostgroup->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_hostgroup_list==NULL){
-				xodtemplate_hostgroup_list=new_hostgroup;
-				xodtemplate_hostgroup_list_tail=xodtemplate_hostgroup_list;
-				}
-			else{
-				xodtemplate_hostgroup_list_tail->next=new_hostgroup;
-				xodtemplate_hostgroup_list_tail=new_hostgroup;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostgroup_list_tail;
-			}
-
-		/* add new hostgroup to head of list in memory */
-		else{
-
-			new_hostgroup->next=xodtemplate_hostgroup_list;
-			xodtemplate_hostgroup_list=new_hostgroup;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostgroup_list;
-			}
+		xod_begin_def(hostgroup);
 		break;
 
 	case XODTEMPLATE_SERVICEGROUP:
-
-		/* allocate memory */
-		new_servicegroup=(xodtemplate_servicegroup *)malloc(sizeof(xodtemplate_servicegroup));
-		if(new_servicegroup==NULL)
-			return ERROR;
-		
-		new_servicegroup->template=NULL;
-		new_servicegroup->name=NULL;
-
-		new_servicegroup->servicegroup_name=NULL;
-		new_servicegroup->alias=NULL;
-		new_servicegroup->members=NULL;
-		new_servicegroup->notes=NULL;
-		new_servicegroup->notes_url=NULL;
-		new_servicegroup->action_url=NULL;
-		new_servicegroup->have_members=FALSE;
-		new_servicegroup->servicegroup_members=NULL;
-		new_servicegroup->have_servicegroup_members=FALSE;
-		new_servicegroup->have_notes=FALSE;
-		new_servicegroup->have_notes_url=FALSE;
-		new_servicegroup->have_action_url=FALSE;
-		new_servicegroup->has_been_resolved=FALSE;
-		new_servicegroup->register_object=TRUE;
-
-		new_servicegroup->_config_file=config_file;
-		new_servicegroup->_start_line=start_line;
-		new_servicegroup->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_servicegroup_list==NULL){
-				xodtemplate_servicegroup_list=new_servicegroup;
-				xodtemplate_servicegroup_list_tail=xodtemplate_servicegroup_list;
-				}
-			else{
-				xodtemplate_servicegroup_list_tail->next=new_servicegroup;
-				xodtemplate_servicegroup_list_tail=new_servicegroup;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_servicegroup_list_tail;
-			}
-
-		/* add new servicegroup to head of list in memory */
-		else{
-
-			new_servicegroup->next=xodtemplate_servicegroup_list;
-			xodtemplate_servicegroup_list=new_servicegroup;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_servicegroup_list;
-			}
-
+		xod_begin_def(servicegroup);
 		break;
 
 	case XODTEMPLATE_SERVICEDEPENDENCY:
-
-		/* allocate memory */
-		new_servicedependency=(xodtemplate_servicedependency *)malloc(sizeof(xodtemplate_servicedependency));
-		if(new_servicedependency==NULL)
-			return ERROR;
-		
-		new_servicedependency->template=NULL;
-		new_servicedependency->name=NULL;
-
-		new_servicedependency->host_name=NULL;
-		new_servicedependency->have_host_name=FALSE;
-		new_servicedependency->service_description=NULL;
-		new_servicedependency->have_service_description=FALSE;
-		new_servicedependency->dependent_host_name=NULL;
-		new_servicedependency->have_dependent_host_name=FALSE;
-		new_servicedependency->dependent_service_description=NULL;
-		new_servicedependency->have_dependent_service_description=FALSE;
-		new_servicedependency->servicegroup_name=NULL;
-		new_servicedependency->have_servicegroup_name=FALSE;
-		new_servicedependency->hostgroup_name=NULL;
-		new_servicedependency->have_hostgroup_name=FALSE;
-		new_servicedependency->dependent_servicegroup_name=NULL;
-		new_servicedependency->have_dependent_servicegroup_name=FALSE;
-		new_servicedependency->dependent_hostgroup_name=NULL;
-		new_servicedependency->have_dependent_hostgroup_name=FALSE;
-		new_servicedependency->dependency_period=NULL;
-		new_servicedependency->have_dependency_period=FALSE;
-		new_servicedependency->inherits_parent=FALSE;
-		new_servicedependency->fail_execute_on_ok=FALSE;
-		new_servicedependency->fail_execute_on_unknown=FALSE;
-		new_servicedependency->fail_execute_on_warning=FALSE;
-		new_servicedependency->fail_execute_on_critical=FALSE;
-		new_servicedependency->fail_execute_on_pending=FALSE;
-		new_servicedependency->fail_notify_on_ok=FALSE;
-		new_servicedependency->fail_notify_on_unknown=FALSE;
-		new_servicedependency->fail_notify_on_warning=FALSE;
-		new_servicedependency->fail_notify_on_critical=FALSE;
-		new_servicedependency->fail_notify_on_pending=FALSE;
-		new_servicedependency->have_inherits_parent=FALSE;
-		new_servicedependency->have_execution_dependency_options=FALSE;
-		new_servicedependency->have_notification_dependency_options=FALSE;
-		new_servicedependency->has_been_resolved=FALSE;
-		new_servicedependency->register_object=TRUE;
-
-		new_servicedependency->_config_file=config_file;
-		new_servicedependency->_start_line=start_line;
-		new_servicedependency->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_servicedependency_list==NULL){
-				xodtemplate_servicedependency_list=new_servicedependency;
-				xodtemplate_servicedependency_list_tail=xodtemplate_servicedependency_list;
-				}
-			else{
-				xodtemplate_servicedependency_list_tail->next=new_servicedependency;
-				xodtemplate_servicedependency_list_tail=new_servicedependency;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_servicedependency_list_tail;
-			}
-
-		/* add new servicedependency to head of list in memory */
-		else{
-
-			new_servicedependency->next=xodtemplate_servicedependency_list;
-			xodtemplate_servicedependency_list=new_servicedependency;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_servicedependency_list;
-			}
+		xod_begin_def(servicedependency);
 		break;
 
 	case XODTEMPLATE_SERVICEESCALATION:
-
-		/* allocate memory */
-		new_serviceescalation=(xodtemplate_serviceescalation *)malloc(sizeof(xodtemplate_serviceescalation));
-		if(new_serviceescalation==NULL)
-			return ERROR;
-		
-		new_serviceescalation->template=NULL;
-		new_serviceescalation->name=NULL;
-
-		new_serviceescalation->host_name=NULL;
-		new_serviceescalation->have_host_name=FALSE;
-		new_serviceescalation->service_description=NULL;
-		new_serviceescalation->have_service_description=FALSE;
-		new_serviceescalation->servicegroup_name=NULL;
-		new_serviceescalation->have_servicegroup_name=FALSE;
-		new_serviceescalation->hostgroup_name=NULL;
-		new_serviceescalation->have_hostgroup_name=FALSE;
-		new_serviceescalation->escalation_period=NULL;
-		new_serviceescalation->have_escalation_period=FALSE;
-		new_serviceescalation->contact_groups=NULL;
-		new_serviceescalation->have_contact_groups=FALSE;
-		new_serviceescalation->contacts=NULL;
-		new_serviceescalation->have_contacts=FALSE;
-		new_serviceescalation->first_notification=-2;
-		new_serviceescalation->last_notification=-2;
-		new_serviceescalation->notification_interval=-2.0;
-		new_serviceescalation->escalate_on_warning=FALSE;
-		new_serviceescalation->escalate_on_unknown=FALSE;
-		new_serviceescalation->escalate_on_critical=FALSE;
-		new_serviceescalation->escalate_on_recovery=FALSE;
-		new_serviceescalation->have_first_notification=FALSE;
-		new_serviceescalation->have_last_notification=FALSE;
-		new_serviceescalation->have_notification_interval=FALSE;
-		new_serviceescalation->have_escalation_options=FALSE;
-		new_serviceescalation->has_been_resolved=FALSE;
-		new_serviceescalation->register_object=TRUE;
-                new_serviceescalation->condition=NULL;
-
-		new_serviceescalation->_config_file=config_file;
-		new_serviceescalation->_start_line=start_line;
-		new_serviceescalation->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_serviceescalation_list==NULL){
-				xodtemplate_serviceescalation_list=new_serviceescalation;
-				xodtemplate_serviceescalation_list_tail=xodtemplate_serviceescalation_list;
-				}
-			else{
-				xodtemplate_serviceescalation_list_tail->next=new_serviceescalation;
-				xodtemplate_serviceescalation_list_tail=new_serviceescalation;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_serviceescalation_list_tail;
-			}
-
-		/* add new serviceescalation to head of list in memory */
-		else{
-
-			new_serviceescalation->next=xodtemplate_serviceescalation_list;
-			xodtemplate_serviceescalation_list=new_serviceescalation;
-			
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_serviceescalation_list;
-			}
+		xod_begin_def(serviceescalation);
 		break;
 
 	case XODTEMPLATE_CONTACT:
-
-		/* allocate memory */
-		new_contact=(xodtemplate_contact *)malloc(sizeof(xodtemplate_contact));
-		if(new_contact==NULL)
-			return ERROR;
-		
-		new_contact->template=NULL;
-		new_contact->name=NULL;
-
-		new_contact->contact_name=NULL;
-		new_contact->alias=NULL;
-		new_contact->contact_groups=NULL;
-		new_contact->have_contact_groups=FALSE;
-		new_contact->email=NULL;
-		new_contact->have_email=FALSE;
-		new_contact->pager=NULL;
-		new_contact->have_pager=FALSE;
-		for(x=0;x<MAX_XODTEMPLATE_CONTACT_ADDRESSES;x++){
-			new_contact->address[x]=NULL;
-			new_contact->have_address[x]=FALSE;
-		        }
-		new_contact->host_notification_period=NULL;
-		new_contact->have_host_notification_period=FALSE;
-		new_contact->host_notification_commands=NULL;
-		new_contact->have_host_notification_commands=FALSE;
-		new_contact->service_notification_period=NULL;
-		new_contact->have_service_notification_period=FALSE;
-		new_contact->service_notification_commands=NULL;
-		new_contact->have_service_notification_commands=FALSE;
-		new_contact->notify_on_host_down=FALSE;
-		new_contact->notify_on_host_unreachable=FALSE;
-		new_contact->notify_on_host_recovery=FALSE;
-		new_contact->notify_on_host_flapping=FALSE;
-		new_contact->notify_on_host_downtime=FALSE;
-		new_contact->notify_on_service_unknown=FALSE;
-		new_contact->notify_on_service_warning=FALSE;
-		new_contact->notify_on_service_critical=FALSE;
-		new_contact->notify_on_service_recovery=FALSE;
-		new_contact->notify_on_service_flapping=FALSE;
-		new_contact->notify_on_service_downtime=FALSE;
-		new_contact->have_host_notification_options=FALSE;
-		new_contact->have_service_notification_options=FALSE;
+		xod_begin_def(contact);
 		new_contact->host_notifications_enabled=TRUE;
-		new_contact->have_host_notifications_enabled=FALSE;
 		new_contact->service_notifications_enabled=TRUE;
-		new_contact->have_service_notifications_enabled=FALSE;
 		new_contact->can_submit_commands=TRUE;
-		new_contact->have_can_submit_commands=FALSE;
 		new_contact->retain_status_information=TRUE;
-		new_contact->have_retain_status_information=FALSE;
 		new_contact->retain_nonstatus_information=TRUE;
-		new_contact->have_retain_nonstatus_information=FALSE;
-		new_contact->custom_variables=NULL;
-		new_contact->has_been_resolved=FALSE;
-		new_contact->register_object=TRUE;
-
-		new_contact->_config_file=config_file;
-		new_contact->_start_line=start_line;
-		new_contact->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_contact_list==NULL){
-				xodtemplate_contact_list=new_contact;
-				xodtemplate_contact_list_tail=xodtemplate_contact_list;
-				}
-			else{
-				xodtemplate_contact_list_tail->next=new_contact;
-				xodtemplate_contact_list_tail=new_contact;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_contact_list_tail;
-			}
-
-		/* add new contact to head of list in memory */
-		else{
-
-			new_contact->next=xodtemplate_contact_list;
-			xodtemplate_contact_list=new_contact;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_contact_list;
-			}
 		break;
 
 	case XODTEMPLATE_HOST:
-
-		/* allocate memory */
-		new_host=(xodtemplate_host *)malloc(sizeof(xodtemplate_host));
-		if(new_host==NULL)
-			return ERROR;
-		
-		new_host->template=NULL;
-		new_host->name=NULL;
-
-		new_host->host_name=NULL;
-		new_host->display_name=NULL;
-		new_host->have_display_name=FALSE;
-		new_host->alias=NULL;
-		new_host->address=NULL;
-		new_host->parents=NULL;
-		new_host->have_parents=FALSE;
-		new_host->host_groups=NULL;
-		new_host->have_host_groups=FALSE;
-		new_host->check_command=NULL;
-		new_host->have_check_command=FALSE;
-		new_host->check_period=NULL;
-		new_host->have_check_period=FALSE;
-		new_host->event_handler=NULL;
-		new_host->have_event_handler=FALSE;
-		new_host->contact_groups=NULL;
-		new_host->have_contact_groups=FALSE;
-		new_host->contacts=NULL;
-		new_host->have_contacts=FALSE;
-		new_host->notification_period=NULL;
-		new_host->have_notification_period=FALSE;
-		new_host->failure_prediction_options=NULL;
-		new_host->have_failure_prediction_options=FALSE;
-		new_host->notes=NULL;
-		new_host->have_notes=FALSE;
-		new_host->notes_url=NULL;
-		new_host->have_notes_url=FALSE;
-		new_host->action_url=NULL;
-		new_host->have_action_url=FALSE;
-		new_host->icon_image=NULL;
-		new_host->have_icon_image=FALSE;
-		new_host->icon_image_alt=NULL;
-		new_host->have_icon_image_alt=FALSE;
-		new_host->vrml_image=NULL;
-		new_host->have_vrml_image=FALSE;
-		new_host->statusmap_image=NULL;
-		new_host->have_statusmap_image=FALSE;
-		new_host->initial_state=0; /* HOST_UP */
-		new_host->have_initial_state=FALSE;
+		xod_begin_def(host);
 		new_host->check_interval=5.0;
-		new_host->have_check_interval=FALSE;
 		new_host->retry_interval=1.0;
-		new_host->have_retry_interval=FALSE;
 		new_host->active_checks_enabled=TRUE;
-		new_host->have_active_checks_enabled=FALSE;
 		new_host->passive_checks_enabled=TRUE;
-		new_host->have_passive_checks_enabled=FALSE;
 		new_host->obsess_over_host=TRUE;
-		new_host->have_obsess_over_host=FALSE;
 		new_host->max_check_attempts=-2;
-		new_host->have_max_check_attempts=FALSE;
 		new_host->event_handler_enabled=TRUE;
-		new_host->have_event_handler_enabled=FALSE;
-		new_host->check_freshness=FALSE;
-		new_host->have_check_freshness=FALSE;
-		new_host->freshness_threshold=0;
-		new_host->have_freshness_threshold=0;
 		new_host->flap_detection_enabled=TRUE;
-		new_host->have_flap_detection_enabled=FALSE;
-		new_host->low_flap_threshold=0.0;
-		new_host->have_low_flap_threshold=FALSE;
-		new_host->high_flap_threshold=0.0;
-		new_host->have_high_flap_threshold=FALSE;
 		new_host->flap_detection_on_up=TRUE;
 		new_host->flap_detection_on_down=TRUE;
 		new_host->flap_detection_on_unreachable=TRUE;
-		new_host->have_flap_detection_options=FALSE;
-		new_host->notify_on_down=FALSE;
-		new_host->notify_on_unreachable=FALSE;
-		new_host->notify_on_recovery=FALSE;
-		new_host->notify_on_flapping=FALSE;
-		new_host->notify_on_downtime=FALSE;
-		new_host->have_notification_options=FALSE;
 		new_host->notifications_enabled=TRUE;
-		new_host->have_notifications_enabled=FALSE;
 		new_host->notification_interval=30.0;
-		new_host->have_notification_interval=FALSE;
-		new_host->first_notification_delay=0;
-		new_host->have_first_notification_delay=FALSE;
-		new_host->stalk_on_up=FALSE;
-		new_host->stalk_on_down=FALSE;
-		new_host->stalk_on_unreachable=FALSE;
-		new_host->have_stalking_options=FALSE;
 		new_host->process_perf_data=TRUE;
-		new_host->have_process_perf_data=FALSE;
 		new_host->failure_prediction_enabled=TRUE;
-		new_host->have_failure_prediction_enabled=FALSE;
 		new_host->x_2d=-1;
 		new_host->y_2d=-1;
-		new_host->x_3d=0.0;
-		new_host->y_3d=0.0;
-		new_host->z_3d=0.0;
-		new_host->have_2d_coords=FALSE;
-		new_host->have_3d_coords=FALSE;
 		new_host->retain_status_information=TRUE;
-		new_host->have_retain_status_information=FALSE;
 		new_host->retain_nonstatus_information=TRUE;
-		new_host->have_retain_nonstatus_information=FALSE;
-		new_host->custom_variables=NULL;
-		new_host->has_been_resolved=FALSE;
-		new_host->register_object=TRUE;
-
-		new_host->_config_file=config_file;
-		new_host->_start_line=start_line;
-		new_host->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_host_list==NULL){
-				xodtemplate_host_list=new_host;
-				xodtemplate_host_list_tail=xodtemplate_host_list;
-				}
-			else{
-				xodtemplate_host_list_tail->next=new_host;
-				xodtemplate_host_list_tail=new_host;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_host_list_tail;
-			}
-
-		/* add new host to head of list in memory */
-		else{
-
-			new_host->next=xodtemplate_host_list;
-			xodtemplate_host_list=new_host;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_host_list;
-			}
 		break;
 
 	case XODTEMPLATE_SERVICE:
-
-		/* allocate memory */
-		new_service=(xodtemplate_service *)malloc(sizeof(xodtemplate_service));
-		if(new_service==NULL)
-			return ERROR;
-		
-		new_service->template=NULL;
-		new_service->name=NULL;
-
-		new_service->host_name=NULL;
-		new_service->have_host_name=FALSE;
-		new_service->service_description=NULL;
-		new_service->have_service_description=FALSE;
-		new_service->display_name=NULL;
-		new_service->have_display_name=FALSE;
-		new_service->hostgroup_name=NULL;
-		new_service->have_hostgroup_name=FALSE;
-		new_service->service_groups=NULL;
-		new_service->have_service_groups=FALSE;
-		new_service->check_command=NULL;
-		new_service->have_check_command=FALSE;
-		new_service->have_important_check_command=FALSE;
-		new_service->check_period=NULL;
-		new_service->have_check_period=FALSE;
-		new_service->event_handler=NULL;
-		new_service->have_event_handler=FALSE;
-		new_service->notification_period=NULL;
-		new_service->have_notification_period=FALSE;
-		new_service->contact_groups=NULL;
-		new_service->have_contact_groups=FALSE;
-		new_service->contacts=NULL;
-		new_service->have_contacts=FALSE;
-		new_service->failure_prediction_options=NULL;
-		new_service->have_failure_prediction_options=FALSE;
+		xod_begin_def(service);
 		new_service->initial_state=STATE_OK;
-		new_service->have_initial_state=FALSE;
 		new_service->max_check_attempts=-2;
-		new_service->have_max_check_attempts=FALSE;
 		new_service->check_interval=5.0;
-		new_service->have_check_interval=FALSE;
 		new_service->retry_interval=1.0;
-		new_service->have_retry_interval=FALSE;
 		new_service->active_checks_enabled=TRUE;
-		new_service->have_active_checks_enabled=FALSE;
 		new_service->passive_checks_enabled=TRUE;
-		new_service->have_passive_checks_enabled=FALSE;
 		new_service->parallelize_check=TRUE;
-		new_service->have_parallelize_check=FALSE;
-		new_service->is_volatile=FALSE;
-		new_service->have_is_volatile=FALSE;
 		new_service->obsess_over_service=TRUE;
-		new_service->have_obsess_over_service=FALSE;
 		new_service->event_handler_enabled=TRUE;
-		new_service->have_event_handler_enabled=FALSE;
-		new_service->check_freshness=FALSE;
-		new_service->have_check_freshness=FALSE;
-		new_service->freshness_threshold=0;
-		new_service->have_freshness_threshold=FALSE;
 		new_service->flap_detection_enabled=TRUE;
-		new_service->have_flap_detection_enabled=FALSE;
-		new_service->low_flap_threshold=0.0;
-		new_service->have_low_flap_threshold=FALSE;
-		new_service->high_flap_threshold=0.0;
-		new_service->have_high_flap_threshold=FALSE;
 		new_service->flap_detection_on_ok=TRUE;
 		new_service->flap_detection_on_warning=TRUE;
 		new_service->flap_detection_on_unknown=TRUE;
 		new_service->flap_detection_on_critical=TRUE;
-		new_service->have_flap_detection_options=FALSE;
-		new_service->notify_on_unknown=FALSE;
-		new_service->notify_on_warning=FALSE;
-		new_service->notify_on_critical=FALSE;
-		new_service->notify_on_recovery=FALSE;
-		new_service->notify_on_flapping=FALSE;
-		new_service->notify_on_downtime=FALSE;
-		new_service->have_notification_options=FALSE;
 		new_service->notifications_enabled=TRUE;
-		new_service->have_notifications_enabled=FALSE;
 		new_service->notification_interval=30.0;
-		new_service->have_notification_interval=FALSE;
-		new_service->first_notification_delay=0;
-		new_service->have_first_notification_delay=FALSE;
-		new_service->stalk_on_ok=FALSE;
-		new_service->stalk_on_unknown=FALSE;
-		new_service->stalk_on_warning=FALSE;
-		new_service->stalk_on_critical=FALSE;
-		new_service->have_stalking_options=FALSE;
 		new_service->process_perf_data=TRUE;
-		new_service->have_process_perf_data=FALSE;
 		new_service->failure_prediction_enabled=TRUE;
-		new_service->have_failure_prediction_enabled=FALSE;
-		new_service->notes=NULL;
-		new_service->have_notes=FALSE;
-		new_service->notes_url=NULL;
-		new_service->have_notes_url=FALSE;
-		new_service->action_url=NULL;
-		new_service->have_action_url=FALSE;
-		new_service->icon_image=NULL;
-		new_service->have_icon_image=FALSE;
-		new_service->icon_image_alt=NULL;
-		new_service->have_icon_image_alt=FALSE;
 		new_service->retain_status_information=TRUE;
-		new_service->have_retain_status_information=FALSE;
 		new_service->retain_nonstatus_information=TRUE;
-		new_service->have_retain_nonstatus_information=FALSE;
-		new_service->custom_variables=NULL;
-		new_service->has_been_resolved=FALSE;
-		new_service->register_object=TRUE;
+		
 		/* true service, so is not from host group, must be set AFTER have_initial_state*/
 		xodtemplate_unset_service_is_from_hostgroup(new_service);
-
-		new_service->_config_file=config_file;
-		new_service->_start_line=start_line;
-		new_service->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_service_list==NULL){
-				xodtemplate_service_list=new_service;
-				xodtemplate_service_list_tail=xodtemplate_service_list;
-				}
-			else{
-				xodtemplate_service_list_tail->next=new_service;
-				xodtemplate_service_list_tail=new_service;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_service_list_tail;
-			}
-
-		/* add new service to head of list in memory */
-		else{
-
-			new_service->next=xodtemplate_service_list;
-			xodtemplate_service_list=new_service;
-
-			/* update current object pointer */
-			xodtemplate_current_object=new_service;
-			}
 		break;
 
 	case XODTEMPLATE_HOSTDEPENDENCY:
-
-		/* allocate memory */
-		new_hostdependency=(xodtemplate_hostdependency *)malloc(sizeof(xodtemplate_hostdependency));
-		if(new_hostdependency==NULL)
-			return ERROR;
-		
-		new_hostdependency->template=NULL;
-		new_hostdependency->name=NULL;
-
-		new_hostdependency->host_name=NULL;
-		new_hostdependency->have_host_name=FALSE;
-		new_hostdependency->dependent_host_name=NULL;
-		new_hostdependency->have_dependent_host_name=FALSE;
-		new_hostdependency->hostgroup_name=NULL;
-		new_hostdependency->have_hostgroup_name=FALSE;
-		new_hostdependency->dependent_hostgroup_name=NULL;
-		new_hostdependency->have_dependent_hostgroup_name=FALSE;
-		new_hostdependency->dependency_period=NULL;
-		new_hostdependency->have_dependency_period=FALSE;
-		new_hostdependency->inherits_parent=FALSE;
-		new_hostdependency->fail_notify_on_up=FALSE;
-		new_hostdependency->fail_notify_on_down=FALSE;
-		new_hostdependency->fail_notify_on_unreachable=FALSE;
-		new_hostdependency->fail_notify_on_pending=FALSE;
-		new_hostdependency->fail_execute_on_up=FALSE;
-		new_hostdependency->fail_execute_on_down=FALSE;
-		new_hostdependency->fail_execute_on_unreachable=FALSE;
-		new_hostdependency->fail_execute_on_pending=FALSE;
-		new_hostdependency->have_inherits_parent=FALSE;
-		new_hostdependency->have_notification_dependency_options=FALSE;
-		new_hostdependency->have_execution_dependency_options=FALSE;
-		new_hostdependency->has_been_resolved=FALSE;
-		new_hostdependency->register_object=TRUE;
-
-		new_hostdependency->_config_file=config_file;
-		new_hostdependency->_start_line=start_line;
-		new_hostdependency->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_hostdependency_list==NULL){
-				xodtemplate_hostdependency_list=new_hostdependency;
-				xodtemplate_hostdependency_list_tail=xodtemplate_hostdependency_list;
-				}
-			else{
-				xodtemplate_hostdependency_list_tail->next=new_hostdependency;
-				xodtemplate_hostdependency_list_tail=new_hostdependency;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostdependency_list_tail;
-			}
-
-		/* add new hostdependency to head of list in memory */
-		else{
-
-			new_hostdependency->next=xodtemplate_hostdependency_list;
-			xodtemplate_hostdependency_list=new_hostdependency;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostdependency_list;
-			}
+		xod_begin_def(hostdependency);
 		break;
 
 	case XODTEMPLATE_HOSTESCALATION:
-
-		/* allocate memory */
-		new_hostescalation=(xodtemplate_hostescalation *)malloc(sizeof(xodtemplate_hostescalation));
-		if(new_hostescalation==NULL)
-			return ERROR;
-		
-		new_hostescalation->template=NULL;
-		new_hostescalation->name=NULL;
-
-		new_hostescalation->hostgroup_name=NULL;
-		new_hostescalation->have_hostgroup_name=FALSE;
-		new_hostescalation->host_name=NULL;
-		new_hostescalation->have_host_name=FALSE;
-		new_hostescalation->escalation_period=NULL;
-		new_hostescalation->have_escalation_period=FALSE;
-		new_hostescalation->contact_groups=NULL;
-		new_hostescalation->have_contact_groups=FALSE;
-		new_hostescalation->contacts=NULL;
-		new_hostescalation->have_contacts=FALSE;
-		new_hostescalation->first_notification=-2;
-		new_hostescalation->last_notification=-2;
-		new_hostescalation->notification_interval=-2.0;
-		new_hostescalation->escalate_on_down=FALSE;
-		new_hostescalation->escalate_on_unreachable=FALSE;
-		new_hostescalation->escalate_on_recovery=FALSE;
-		new_hostescalation->have_first_notification=FALSE;
-		new_hostescalation->have_last_notification=FALSE;
-		new_hostescalation->have_notification_interval=FALSE;
-		new_hostescalation->have_escalation_options=FALSE;
-		new_hostescalation->has_been_resolved=FALSE;
-		new_hostescalation->register_object=TRUE;
-                new_hostescalation->condition=NULL;
-
-		new_hostescalation->_config_file=config_file;
-		new_hostescalation->_start_line=start_line;
-		new_hostescalation->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_hostescalation_list==NULL){
-				xodtemplate_hostescalation_list=new_hostescalation;
-				xodtemplate_hostescalation_list_tail=xodtemplate_hostescalation_list;
-				}
-			else{
-				xodtemplate_hostescalation_list_tail->next=new_hostescalation;
-				xodtemplate_hostescalation_list_tail=new_hostescalation;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostescalation_list_tail;
-			}
-
-		/* add new hostescalation to head of list in memory */
-		else{
-
-			new_hostescalation->next=xodtemplate_hostescalation_list;
-			xodtemplate_hostescalation_list=new_hostescalation;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostescalation_list;
-			}
+		xod_begin_def(hostescalation);
 		break;
 
 	case XODTEMPLATE_HOSTEXTINFO:
-
-		/* allocate memory */
-		new_hostextinfo=(xodtemplate_hostextinfo *)malloc(sizeof(xodtemplate_hostextinfo));
-		if(new_hostextinfo==NULL)
-			return ERROR;
-
-		new_hostextinfo->template=NULL;
-		new_hostextinfo->name=NULL;
-
-		new_hostextinfo->host_name=NULL;
-		new_hostextinfo->have_host_name=FALSE;
-		new_hostextinfo->hostgroup_name=NULL;
-		new_hostextinfo->have_hostgroup_name=FALSE;
-		new_hostextinfo->notes=NULL;
-		new_hostextinfo->have_notes=FALSE;
-		new_hostextinfo->notes_url=NULL;
-		new_hostextinfo->have_notes_url=FALSE;
-		new_hostextinfo->action_url=NULL;
-		new_hostextinfo->have_action_url=FALSE;
-		new_hostextinfo->icon_image=NULL;
-		new_hostextinfo->have_icon_image=FALSE;
-		new_hostextinfo->icon_image_alt=NULL;
-		new_hostextinfo->have_icon_image_alt=FALSE;
-		new_hostextinfo->vrml_image=NULL;
-		new_hostextinfo->have_vrml_image=FALSE;
-		new_hostextinfo->statusmap_image=NULL;
-		new_hostextinfo->have_statusmap_image=FALSE;
+		xod_begin_def(hostextinfo);
 		new_hostextinfo->x_2d=-1;
 		new_hostextinfo->y_2d=-1;
-		new_hostextinfo->x_3d=0.0;
-		new_hostextinfo->y_3d=0.0;
-		new_hostextinfo->z_3d=0.0;
-		new_hostextinfo->have_2d_coords=FALSE;
-		new_hostextinfo->have_3d_coords=FALSE;
-		new_hostextinfo->has_been_resolved=FALSE;
-		new_hostextinfo->register_object=TRUE;
-
-		new_hostextinfo->_config_file=config_file;
-		new_hostextinfo->_start_line=start_line;
-		new_hostextinfo->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_hostextinfo_list==NULL){
-				xodtemplate_hostextinfo_list=new_hostextinfo;
-				xodtemplate_hostextinfo_list_tail=xodtemplate_hostextinfo_list;
-				}
-			else{
-				xodtemplate_hostextinfo_list_tail->next=new_hostextinfo;
-				xodtemplate_hostextinfo_list_tail=new_hostextinfo;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostextinfo_list_tail;
-			}
-
-		/* add new extended host info to head of list in memory */
-		else{
-
-			new_hostextinfo->next=xodtemplate_hostextinfo_list;
-			xodtemplate_hostextinfo_list=new_hostextinfo;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_hostextinfo_list;
-			}
 		break;
 
 	case XODTEMPLATE_SERVICEEXTINFO:
-
-		/* allocate memory */
-		new_serviceextinfo=(xodtemplate_serviceextinfo *)malloc(sizeof(xodtemplate_serviceextinfo));
-		if(new_serviceextinfo==NULL)
-			return ERROR;
-
-		new_serviceextinfo->template=NULL;
-		new_serviceextinfo->name=NULL;
-
-		new_serviceextinfo->host_name=NULL;
-		new_serviceextinfo->have_host_name=FALSE;
-		new_serviceextinfo->hostgroup_name=NULL;
-		new_serviceextinfo->have_hostgroup_name=FALSE;
-		new_serviceextinfo->service_description=NULL;
-		new_serviceextinfo->have_service_description=FALSE;
-		new_serviceextinfo->notes=NULL;
-		new_serviceextinfo->have_notes=FALSE;
-		new_serviceextinfo->notes_url=NULL;
-		new_serviceextinfo->have_notes_url=FALSE;
-		new_serviceextinfo->action_url=NULL;
-		new_serviceextinfo->have_action_url=FALSE;
-		new_serviceextinfo->icon_image=NULL;
-		new_serviceextinfo->have_icon_image=FALSE;
-		new_serviceextinfo->icon_image_alt=NULL;
-		new_serviceextinfo->have_icon_image_alt=FALSE;
-		new_serviceextinfo->has_been_resolved=FALSE;
-		new_serviceextinfo->register_object=TRUE;
-
-		new_serviceextinfo->_config_file=config_file;
-		new_serviceextinfo->_start_line=start_line;
-		new_serviceextinfo->next=NULL;
-
-		/* precached object files are already sorted, so add to tail of list */
-		if(presorted_objects==TRUE){
-
-			if(xodtemplate_serviceextinfo_list==NULL){
-				xodtemplate_serviceextinfo_list=new_serviceextinfo;
-				xodtemplate_serviceextinfo_list_tail=xodtemplate_serviceextinfo_list;
-				}
-			else{
-				xodtemplate_serviceextinfo_list_tail->next=new_serviceextinfo;
-				xodtemplate_serviceextinfo_list_tail=new_serviceextinfo;
-				}
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_serviceextinfo_list_tail;
-			}
-
-		/* add new extended service info to head of list in memory */
-		else{
-
-			new_serviceextinfo->next=xodtemplate_serviceextinfo_list;
-			xodtemplate_serviceextinfo_list=new_serviceextinfo;
-
-			/* update current object pointer */
-			xodtemplate_current_object=xodtemplate_serviceextinfo_list;
-			}
+		xod_begin_def(serviceextinfo);
 		break;
 
 	default:
@@ -2031,7 +1113,7 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 
 	return result;
         }
-
+#undef xod_begin_def /* we don't need this anymore */
 
 
 /* adds a property to an object definition */
@@ -2171,9 +1253,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_TIMEPERIOD_SKIPLIST],(void *)temp_timeperiod);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for timeperiod '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_timeperiod->_config_file),temp_timeperiod->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2194,9 +1274,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_TIMEPERIOD_SKIPLIST],(void *)temp_timeperiod);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for timeperiod '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_timeperiod->_config_file),temp_timeperiod->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2212,26 +1290,6 @@ int xodtemplate_add_object_property(char *input, int options){
 			if((temp_timeperiod->alias=(char *)strdup(value))==NULL)
 				result=ERROR;
 		        }
-		/*
-		else if(!strcmp(variable,"monday") || !strcmp(variable,"tuesday") || !strcmp(variable,"wednesday") || !strcmp(variable,"thursday") || !strcmp(variable,"friday") || !strcmp(variable,"saturday") || !strcmp(variable,"sunday")){
-			if(!strcmp(variable,"monday"))
-				x=1;
-			else if(!strcmp(variable,"tuesday"))
-				x=2;
-			else if(!strcmp(variable,"wednesday"))
-				x=3;
-			else if(!strcmp(variable,"thursday"))
-				x=4;
-			else if(!strcmp(variable,"friday"))
-				x=5;
-			else if(!strcmp(variable,"saturday"))
-				x=6;
-			else
-				x=0;
-			if((temp_timeperiod->timeranges[x]=(char *)strdup(value))==NULL)
-				result=ERROR;
-		        }
-		*/
 		else if(!strcmp(variable,"exclude")){
 			if((temp_timeperiod->exclusions=(char *)strdup(value))==NULL)
 				result=ERROR;
@@ -2241,9 +1299,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(xodtemplate_parse_timeperiod_directive(temp_timeperiod,variable,value)==OK)
 			result=OK;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid timeperiod object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 		break;
@@ -2268,9 +1324,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_COMMAND_SKIPLIST],(void *)temp_command);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for command '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_command->_config_file),temp_command->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2291,9 +1345,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_COMMAND_SKIPLIST],(void *)temp_command);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for command '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_command->_config_file),temp_command->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2312,9 +1364,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_command->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid command object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -2338,9 +1388,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_CONTACTGROUP_SKIPLIST],(void *)temp_contactgroup);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for contactgroup '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_contactgroup->_config_file),temp_contactgroup->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2361,9 +1409,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_CONTACTGROUP_SKIPLIST],(void *)temp_contactgroup);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for contactgroup '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_contactgroup->_config_file),temp_contactgroup->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2414,9 +1460,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_contactgroup->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid contactgroup object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -2440,9 +1484,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_HOSTGROUP_SKIPLIST],(void *)temp_hostgroup);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for hostgroup '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_hostgroup->_config_file),temp_hostgroup->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2463,9 +1505,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_HOSTGROUP_SKIPLIST],(void *)temp_hostgroup);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for hostgroup '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_hostgroup->_config_file),temp_hostgroup->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2537,9 +1577,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_hostgroup->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid hostgroup object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -2564,9 +1602,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_SERVICEGROUP_SKIPLIST],(void *)temp_servicegroup);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for servicegroup '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_servicegroup->_config_file),temp_servicegroup->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2587,9 +1623,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_SERVICEGROUP_SKIPLIST],(void *)temp_servicegroup);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for servicegroup '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_servicegroup->_config_file),temp_servicegroup->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2661,9 +1695,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_servicegroup->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid servicegroup object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -2688,9 +1720,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_SERVICEDEPENDENCY_SKIPLIST],(void *)temp_servicedependency);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service dependency '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -2822,9 +1852,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_servicedependency->fail_execute_on_critical=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid execution dependency option '%s' in servicedependency definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -2857,9 +1885,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_servicedependency->fail_notify_on_pending=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid notification dependency option '%s' in servicedependency definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -2868,9 +1894,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_servicedependency->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid servicedependency object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -2895,9 +1919,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_SERVICEESCALATION_SKIPLIST],(void *)temp_serviceescalation);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service escalation '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_serviceescalation->_config_file),temp_serviceescalation->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3022,9 +2044,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_serviceescalation->escalate_on_recovery=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid escalation option '%s' in serviceescalation definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -3038,18 +2058,14 @@ int xodtemplate_add_object_property(char *input, int options){
                         }
                         else {
                                         my_free(temp_condition);
-#ifdef NSCORE
                                         logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not create escalation condition for serviceescalation .\n");
-#endif
                                         return ERROR;
                         }       
                 }
 		else if(!strcmp(variable,"register"))
 			temp_serviceescalation->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid serviceescalation object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -3074,9 +2090,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_CONTACT_SKIPLIST],(void *)temp_contact);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for contact '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_contact->_config_file),temp_contact->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3097,9 +2111,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_CONTACT_SKIPLIST],(void *)temp_contact);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for contact '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_contact->_config_file),temp_contact->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3202,9 +2214,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_contact->notify_on_host_downtime=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid host notification option '%s' in contact definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -3241,9 +2251,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_contact->notify_on_service_downtime=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid service notification option '%s' in contact definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -3278,9 +2286,7 @@ int xodtemplate_add_object_property(char *input, int options){
 
 			/* make sure we have a variable name */
 			if(customvarname==NULL || !strcmp(customvarname,"")){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Null custom variable name.\n");
-#endif
 				my_free(customvarname);
 				return ERROR;
 			        }
@@ -3303,9 +2309,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			my_free(customvarvalue);
 		        }
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid contact object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -3330,9 +2334,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_HOST_SKIPLIST],(void *)temp_host);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for host '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_host->_config_file),temp_host->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3353,9 +2355,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_HOST_SKIPLIST],(void *)temp_host);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for host '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_host->_config_file),temp_host->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3502,9 +2502,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			else if(!strcmp(value,"u") || !strcmp(value,"unreachable"))
 				temp_host->initial_state=2; /* HOST_UNREACHABLE */
 			else{
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid initial state '%s' in host definition.\n",value);
-#endif
 				result=ERROR;
 				}
 			temp_host->have_initial_state=TRUE;
@@ -3578,9 +2576,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_host->flap_detection_on_unreachable=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid flap detection option '%s' in host definition.\n",temp_ptr);
-#endif
 					result=ERROR;
 				        }
 			        }
@@ -3613,9 +2609,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_host->notify_on_downtime=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid notification option '%s' in host definition.\n",temp_ptr);
-#endif
 					result=ERROR;
 				        }
 			        }
@@ -3652,9 +2646,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_host->stalk_on_unreachable=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid stalking option '%s' in host definition.\n",temp_ptr);
-#endif
 					result=ERROR;
 				        }
 			        }
@@ -3670,16 +2662,12 @@ int xodtemplate_add_object_property(char *input, int options){
 		        }
 		else if(!strcmp(variable,"2d_coords")){
 			if((temp_ptr=strtok(value,", "))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 2d_coords value '%s' in host definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_host->x_2d=atoi(temp_ptr);
 			if((temp_ptr=strtok(NULL,", "))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 2d_coords value '%s' in host definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_host->y_2d=atoi(temp_ptr);
@@ -3687,23 +2675,17 @@ int xodtemplate_add_object_property(char *input, int options){
 		        }
 		else if(!strcmp(variable,"3d_coords")){
 			if((temp_ptr=strtok(value,", "))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 3d_coords value '%s' in host definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_host->x_3d=strtod(temp_ptr,NULL);
 			if((temp_ptr=strtok(NULL,", "))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 3d_coords value '%s' in host definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_host->y_3d=strtod(temp_ptr,NULL);
 			if((temp_ptr=strtok(NULL,", "))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 3d_coords value '%s' in host definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_host->z_3d=strtod(temp_ptr,NULL);
@@ -3730,9 +2712,7 @@ int xodtemplate_add_object_property(char *input, int options){
 
 			/* make sure we have a variable name */
 			if(customvarname==NULL || !strcmp(customvarname,"")){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Null custom variable name.\n");
-#endif
 				my_free(customvarname);
 				return ERROR;
 			        }
@@ -3754,9 +2734,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			my_free(customvarvalue);
 		        }
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid host object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -3780,9 +2758,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3807,9 +2783,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3834,9 +2808,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -3969,9 +2941,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			else if(!strcmp(value,"c") || !strcmp(value,"critical"))
 				temp_service->initial_state=STATE_CRITICAL;
 			else{
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid initial state '%s' in service definition.\n",value);
-#endif
 				result=ERROR;
 				}
 			temp_service->have_initial_state=TRUE;
@@ -4001,7 +2971,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			temp_service->have_parallelize_check=TRUE;
 		        }
 		else if(!strcmp(variable,"is_volatile")){
-			temp_service->is_volatile=(atoi(value)>0)?TRUE:FALSE;
+			temp_service->is_volatile=(atoi(value)>0)?((atoi(value)==2)?VOLATILE_WITH_RENOTIFICATION_INTERVAL:TRUE):FALSE;
 			temp_service->have_is_volatile=TRUE;
 		        }
 		else if(!strcmp(variable,"obsess_over_service")){
@@ -4062,9 +3032,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_service->flap_detection_on_critical=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid flap detection option '%s' in service definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -4101,9 +3069,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_service->notify_on_downtime=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid notification option '%s' in service definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -4144,9 +3110,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_service->stalk_on_critical=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid stalking option '%s' in service definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -4177,9 +3141,7 @@ int xodtemplate_add_object_property(char *input, int options){
 
 			/* make sure we have a variable name */
 			if(customvarname==NULL || !strcmp(customvarname,"")){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Null custom variable name.\n");
-#endif
 				my_free(customvarname);
 				return ERROR;
 			        }
@@ -4202,9 +3164,7 @@ int xodtemplate_add_object_property(char *input, int options){
 			my_free(customvarvalue);
 		        }
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid service object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -4228,9 +3188,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_HOSTDEPENDENCY_SKIPLIST],(void *)temp_hostdependency);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for host dependency '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_hostdependency->_config_file),temp_hostdependency->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -4318,9 +3276,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_hostdependency->fail_notify_on_pending=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid notification dependency option '%s' in hostdependency definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -4349,9 +3305,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_hostdependency->fail_execute_on_pending=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid execution dependency option '%s' in hostdependency definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -4360,9 +3314,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_hostdependency->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid hostdependency object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -4387,9 +3339,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_HOSTESCALATION_SKIPLIST],(void *)temp_hostescalation);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for host escalation '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_hostescalation->_config_file),temp_hostescalation->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -4481,9 +3431,7 @@ int xodtemplate_add_object_property(char *input, int options){
 					temp_hostescalation->escalate_on_recovery=TRUE;
 				        }
 				else{
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid escalation option '%s' in hostescalation definition.\n",temp_ptr);
-#endif
 					return ERROR;
 				        }
 			        }
@@ -4496,18 +3444,14 @@ int xodtemplate_add_object_property(char *input, int options){
                         }
                         else {
                                 my_free(temp_condition);
-#ifdef NSCORE
                                 logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not create escalation condition for hostescalation .\n");
-#endif
                                 return ERROR;
                         }
                 }
 		else if(!strcmp(variable,"register"))
 			temp_hostescalation->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid hostescalation object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -4531,9 +3475,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_HOSTEXTINFO_SKIPLIST],(void *)temp_hostextinfo);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for extended host info '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_hostextinfo->_config_file),temp_hostextinfo->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -4611,17 +3553,13 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"2d_coords")){
 			temp_ptr=strtok(value,", ");
 			if(temp_ptr==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 2d_coords value '%s' in extended host info definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_hostextinfo->x_2d=atoi(temp_ptr);
 			temp_ptr=strtok(NULL,", ");
 			if(temp_ptr==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 2d_coords value '%s' in extended host info definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_hostextinfo->y_2d=atoi(temp_ptr);
@@ -4630,25 +3568,19 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"3d_coords")){
 			temp_ptr=strtok(value,", ");
 			if(temp_ptr==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 3d_coords value '%s' in extended host info definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_hostextinfo->x_3d=strtod(temp_ptr,NULL);
 			temp_ptr=strtok(NULL,", ");
 			if(temp_ptr==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 3d_coords value '%s' in extended host info definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_hostextinfo->y_3d=strtod(temp_ptr,NULL);
 			temp_ptr=strtok(NULL,", ");
 			if(temp_ptr==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid 3d_coords value '%s' in extended host info definition.\n",temp_ptr);
-#endif
 				return ERROR;
 			        }
 			temp_hostextinfo->z_3d=strtod(temp_ptr,NULL);
@@ -4657,9 +3589,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_hostextinfo->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid hostextinfo object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -4683,9 +3613,7 @@ int xodtemplate_add_object_property(char *input, int options){
 				result=skiplist_insert(xobject_template_skiplists[X_SERVICEEXTINFO_SKIPLIST],(void *)temp_serviceextinfo);
 				switch(result){
 				case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for extended service info '%s' (config file '%s', starting on line %d)\n",value,xodtemplate_config_file_name(temp_serviceextinfo->_config_file),temp_serviceextinfo->_start_line);
-#endif
 					result=ERROR;
 					break;
 				case SKIPLIST_OK:
@@ -4756,9 +3684,7 @@ int xodtemplate_add_object_property(char *input, int options){
 		else if(!strcmp(variable,"register"))
 			temp_serviceextinfo->register_object=(atoi(value)>0)?TRUE:FALSE;
 		else{
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid serviceextinfo object directive '%s'.\n",variable);
-#endif
 			return ERROR;
 		        }
 
@@ -5228,9 +4154,7 @@ int xodtemplate_duplicate_services(void){
 		/* get list of hosts */
 		temp_memberlist=xodtemplate_expand_hostgroups_and_hosts(temp_service->hostgroup_name,temp_service->host_name,temp_service->_config_file,temp_service->_start_line);
 		if(temp_memberlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand hostgroups and/or hosts specified in service (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -5290,9 +4214,7 @@ int xodtemplate_duplicate_services(void){
                 result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
                 switch(result){
                 case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
                         logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' on host '%s' (config file '%s', starting on line %d)\n",temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
                         result=ERROR;
                         break;
                 case SKIPLIST_OK:
@@ -5326,9 +4248,7 @@ int xodtemplate_duplicate_services(void){
 		result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
 		switch(result){
 		case SKIPLIST_ERROR_DUPLICATE:
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' on host '%s' (config file '%s', starting on line %d)\n",temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
 			result=ERROR;
 			break;
 		case SKIPLIST_OK:
@@ -5379,9 +4299,7 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of hosts */
 		master_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_hostescalation->hostgroup_name,temp_hostescalation->host_name,temp_hostescalation->_config_file,temp_hostescalation->_start_line);
 		if(master_hostlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand hostgroups and/or hosts specified in host escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_hostescalation->_config_file),temp_hostescalation->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -5428,9 +4346,7 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of hosts */
 		master_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_serviceescalation->hostgroup_name,temp_serviceescalation->host_name,temp_serviceescalation->_config_file,temp_serviceescalation->_start_line);
 		if(master_hostlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand hostgroups and/or hosts specified in service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_serviceescalation->_config_file),temp_serviceescalation->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -5478,9 +4394,7 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of services */
 		master_servicelist=xodtemplate_expand_servicegroups_and_services(NULL,temp_serviceescalation->host_name,temp_serviceescalation->service_description,temp_serviceescalation->_config_file,temp_serviceescalation->_start_line);
 		if(master_servicelist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand services specified in service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_serviceescalation->_config_file),temp_serviceescalation->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -5529,9 +4443,7 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of services */
 		master_servicelist=xodtemplate_expand_servicegroups_and_services(temp_serviceescalation->servicegroup_name,NULL,NULL,temp_serviceescalation->_config_file,temp_serviceescalation->_start_line);
 		if(master_servicelist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand servicegroups specified in service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_serviceescalation->_config_file),temp_serviceescalation->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -5582,18 +4494,14 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of master host names */
 		master_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_hostdependency->hostgroup_name,temp_hostdependency->host_name,temp_hostdependency->_config_file,temp_hostdependency->_start_line);
 		if(master_hostlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand master hostgroups and/or hosts specified in host dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_hostdependency->_config_file),temp_hostdependency->_start_line);
-#endif
 			return ERROR;
 		        }
 
 		/* get list of dependent host names */
 		dependent_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_hostdependency->dependent_hostgroup_name,temp_hostdependency->dependent_host_name,temp_hostdependency->_config_file,temp_hostdependency->_start_line);
 		if(dependent_hostlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand dependent hostgroups and/or hosts specified in host dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_hostdependency->_config_file),temp_hostdependency->_start_line);
-#endif
 			xodtemplate_free_memberlist(&master_hostlist);
 			return ERROR;
 		        }
@@ -5645,9 +4553,7 @@ int xodtemplate_duplicate_objects(void){
 
 			master_servicelist=xodtemplate_expand_servicegroups_and_services(temp_servicedependency->servicegroup_name,NULL,NULL,temp_servicedependency->_config_file,temp_servicedependency->_start_line);
 			if(master_servicelist==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand master servicegroups specified in service dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 				return ERROR;
 				}
 
@@ -5728,9 +4634,7 @@ int xodtemplate_duplicate_objects(void){
 
 			master_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_servicedependency->hostgroup_name,temp_servicedependency->host_name,temp_servicedependency->_config_file,temp_servicedependency->_start_line);
 			if(master_hostlist==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand master hostgroups and/or hosts specified in service dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 				return ERROR;
 				}
 
@@ -5744,9 +4648,7 @@ int xodtemplate_duplicate_objects(void){
 
 				master_servicelist=xodtemplate_expand_servicegroups_and_services(NULL,temp_masterhost->name1,service_descriptions,temp_servicedependency->_config_file,temp_servicedependency->_start_line);
 				if(master_servicelist==NULL){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand master services specified in service dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 					return ERROR;
 					}
 
@@ -5820,9 +4722,7 @@ int xodtemplate_duplicate_objects(void){
 
 			dependent_servicelist=xodtemplate_expand_servicegroups_and_services(temp_servicedependency->dependent_servicegroup_name,NULL,NULL,temp_servicedependency->_config_file,temp_servicedependency->_start_line);
 			if(dependent_servicelist==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand dependent servicegroups specified in service dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 				return ERROR;
 				}
 
@@ -5913,9 +4813,7 @@ int xodtemplate_duplicate_objects(void){
 
 			dependent_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_servicedependency->dependent_hostgroup_name,temp_servicedependency->dependent_host_name,temp_servicedependency->_config_file,temp_servicedependency->_start_line);
 			if(dependent_hostlist==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand dependent hostgroups and/or hosts specified in service dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 				return ERROR;
 				}
 
@@ -5929,9 +4827,7 @@ int xodtemplate_duplicate_objects(void){
 
 				dependent_servicelist=xodtemplate_expand_servicegroups_and_services(NULL,temp_dependenthost->name1,service_descriptions,temp_servicedependency->_config_file,temp_servicedependency->_start_line);
 				if(dependent_servicelist==NULL){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand dependent services specified in service dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicedependency->_config_file),temp_servicedependency->_start_line);
-#endif
 					return ERROR;
 					}
 
@@ -6003,9 +4899,7 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of hosts */
 		master_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_hostextinfo->hostgroup_name,temp_hostextinfo->host_name,temp_hostextinfo->_config_file,temp_hostextinfo->_start_line);
 		if(master_hostlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand hostgroups and/or hosts specified in extended host info (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_hostextinfo->_config_file),temp_hostextinfo->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -6051,9 +4945,7 @@ int xodtemplate_duplicate_objects(void){
 		/* get list of hosts */
 		master_hostlist=xodtemplate_expand_hostgroups_and_hosts(temp_serviceextinfo->hostgroup_name,temp_serviceextinfo->host_name,temp_serviceextinfo->_config_file,temp_serviceextinfo->_start_line);
 		if(master_hostlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand hostgroups and/or hosts specified in extended service info (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_serviceextinfo->_config_file),temp_serviceextinfo->_start_line);
-#endif
 			return ERROR;
 		        }
 
@@ -7338,9 +6230,7 @@ int xodtemplate_resolve_timeperiod(xodtemplate_timeperiod *this_timeperiod){
 
 		template_timeperiod=xodtemplate_find_timeperiod(temp_ptr);
 		if(template_timeperiod==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in timeperiod definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7435,9 +6325,7 @@ int xodtemplate_resolve_command(xodtemplate_command *this_command){
 
 		template_command=xodtemplate_find_command(temp_ptr);
 		if(template_command==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in command definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_command->_config_file),this_command->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7487,9 +6375,7 @@ int xodtemplate_resolve_contactgroup(xodtemplate_contactgroup *this_contactgroup
 
 		template_contactgroup=xodtemplate_find_contactgroup(temp_ptr);
 		if(template_contactgroup==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in contactgroup definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_contactgroup->_config_file),this_contactgroup->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7543,9 +6429,7 @@ int xodtemplate_resolve_hostgroup(xodtemplate_hostgroup *this_hostgroup){
 
 		template_hostgroup=xodtemplate_find_hostgroup(temp_ptr);
 		if(template_hostgroup==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in hostgroup definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_hostgroup->_config_file),this_hostgroup->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7614,9 +6498,7 @@ int xodtemplate_resolve_servicegroup(xodtemplate_servicegroup *this_servicegroup
 
 		template_servicegroup=xodtemplate_find_servicegroup(temp_ptr);
 		if(template_servicegroup==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in servicegroup definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7683,9 +6565,7 @@ int xodtemplate_resolve_servicedependency(xodtemplate_servicedependency *this_se
 
 		template_servicedependency=xodtemplate_find_servicedependency(temp_ptr);
 		if(template_servicedependency==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in service dependency definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_servicedependency->_config_file),this_servicedependency->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7763,9 +6643,7 @@ int xodtemplate_resolve_serviceescalation(xodtemplate_serviceescalation *this_se
 
 		template_serviceescalation=xodtemplate_find_serviceescalation(temp_ptr);
 		if(template_serviceescalation==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in service escalation definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_serviceescalation->_config_file),this_serviceescalation->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7844,9 +6722,7 @@ int xodtemplate_resolve_contact(xodtemplate_contact *this_contact){
 
 		template_contact=xodtemplate_find_contact(temp_ptr);
 		if(template_contact==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in contact definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_contact->_config_file),this_contact->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -7981,9 +6857,7 @@ int xodtemplate_resolve_host(xodtemplate_host *this_host){
 
 		template_host=xodtemplate_find_host(temp_ptr);
 		if(template_host==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in host definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_host->_config_file),this_host->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -8232,9 +7106,7 @@ int xodtemplate_resolve_service(xodtemplate_service *this_service){
 
 		template_service=xodtemplate_find_service(temp_ptr);
 		if(template_service==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in service definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_service->_config_file),this_service->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -8476,9 +7348,7 @@ int xodtemplate_resolve_hostdependency(xodtemplate_hostdependency *this_hostdepe
 
 		template_hostdependency=xodtemplate_find_hostdependency(temp_ptr);
 		if(template_hostdependency==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in host dependency definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_hostdependency->_config_file),this_hostdependency->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -8551,9 +7421,7 @@ int xodtemplate_resolve_hostescalation(xodtemplate_hostescalation *this_hostesca
 
 		template_hostescalation=xodtemplate_find_hostescalation(temp_ptr);
 		if(template_hostescalation==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in host escalation definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_hostescalation->_config_file),this_hostescalation->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -8626,9 +7494,7 @@ int xodtemplate_resolve_hostextinfo(xodtemplate_hostextinfo *this_hostextinfo){
 
 		template_hostextinfo=xodtemplate_find_hostextinfo(temp_ptr);
 		if(template_hostextinfo==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in extended host info definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_hostextinfo->_config_file),this_hostextinfo->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -8729,9 +7595,7 @@ int xodtemplate_resolve_serviceextinfo(xodtemplate_serviceextinfo *this_servicee
 
 		template_serviceextinfo=xodtemplate_find_serviceextinfo(temp_ptr);
 		if(template_serviceextinfo==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Template '%s' specified in extended service info definition could not be not found (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_serviceextinfo->_config_file),this_serviceextinfo->_start_line);
-#endif
 			my_free(template_names);
 			return ERROR;
 	                }
@@ -8829,9 +7693,7 @@ int xodtemplate_recombobulate_contactgroups(void){
 			/* find the contactgroup */
 			temp_contactgroup=xodtemplate_find_real_contactgroup(temp_ptr);
 			if(temp_contactgroup==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find contactgroup '%s' specified in contact '%s' definition (config file '%s', starting on line %d)\n",temp_ptr,temp_contact->contact_name,xodtemplate_config_file_name(temp_contact->_config_file),temp_contact->_start_line);
-#endif
 				my_free(contactgroup_names);
 				return ERROR;
 			        }
@@ -8870,9 +7732,7 @@ int xodtemplate_recombobulate_contactgroups(void){
 
 		/* add all members to the contact group */
 		if(temp_memberlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand member contacts specified in contactgroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_contactgroup->_config_file),temp_contactgroup->_start_line);
-#endif
 			return ERROR;
 	                }
 		my_free(temp_contactgroup->members);
@@ -8933,9 +7793,7 @@ int xodtemplate_recombobulate_contactgroup_subgroups(xodtemplate_contactgroup *t
 
 			/* find subgroup and recurse */
 			if((sub_group=xodtemplate_find_real_contactgroup(buf))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find member group '%s' specified in contactgroup (config file '%s', starting on line %d)\n",buf,xodtemplate_config_file_name(temp_contactgroup->_config_file),temp_contactgroup->_start_line);
-#endif
 				return ERROR;
 				}
 			xodtemplate_recombobulate_contactgroup_subgroups(sub_group,&newmembers);
@@ -8966,185 +7824,13 @@ int xodtemplate_recombobulate_contactgroup_subgroups(xodtemplate_contactgroup *t
 	}
 
 
-
-/* NOTE: this was originally implemented in the late alpha cycle of 3.0 development, but was removed in 3.0b2, as flattening */
-/*       contactgroups into a list of contacts makes it impossible for NDOUtils to create a reverse mapping */
-/* recombobulates contacts in various object definitions */
+/* NOTE: this was originally implemented in the late alpha cycle of
+ * Nagios 3.0 development, but was removed in 3.0b2, as flattening
+ * contactgroups into a list of contacts makes it impossible for
+ * IDOUtils to create a reverse mapping */
 int xodtemplate_recombobulate_object_contacts(void){
-
 	return OK;
-
-#ifdef REMOVED_08152007
-	xodtemplate_host *temp_host=NULL;
-	xodtemplate_service *temp_service=NULL;
-	xodtemplate_hostescalation *temp_hostescalation=NULL;
-	xodtemplate_serviceescalation *temp_serviceescalation=NULL;
-	xodtemplate_memberlist *temp_memberlist=NULL;
-	xodtemplate_memberlist *this_memberlist=NULL;
-	char *new_contacts=NULL;
-/*#ifdef NSCORE*/
-	char *temp_buffer=NULL;
-/*#endif*/
-
-	/* expand contacts in host definitions */
-	for(temp_host=xodtemplate_host_list;temp_host;temp_host=temp_host->next){
-
-		/* skip this host if not contacts or contactgroups specified */
-		if(temp_host->contact_groups==NULL && temp_host->contacts==NULL)
-			continue;
-
-		/* get list of contacts for this host */
-		temp_memberlist=xodtemplate_expand_contactgroups_and_contacts(temp_host->contact_groups,temp_host->contacts,temp_host->_config_file,temp_host->_start_line);
-		if(temp_memberlist==NULL){
-#ifdef NSCORE
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand contacts specified in host (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_host->_config_file),temp_host->_start_line);
-#endif
-			return ERROR;
-	                }
-
-		/* add all contacts */
-		my_free(temp_host->contacts);
-		for(this_memberlist=temp_memberlist;this_memberlist;this_memberlist=this_memberlist->next){
-
-			/* add this contact */
-			if(temp_host->contacts==NULL)
-				temp_host->contacts=(char *)strdup(this_memberlist->name1);
-			else{
-				new_contacts=(char *)realloc(temp_host->contacts,strlen(temp_host->contacts)+strlen(this_memberlist->name1)+2);
-				if(new_contacts!=NULL){
-					temp_host->contacts=new_contacts;
-					strcat(temp_host->contacts,",");
-					strcat(temp_host->contacts,this_memberlist->name1);
-				        }
-			        }
-	                }
-		xodtemplate_free_memberlist(&temp_memberlist);
-
-		/* null out contactgroups member - we don't use it from here on out */
-		my_free(temp_host->contact_groups);
-	        }
-
-
-	/* expand contacts in service definitions */
-	for(temp_service=xodtemplate_service_list;temp_service;temp_service=temp_service->next){
-
-		/* skip this service if not contacts or contactgroups specified */
-		if(temp_service->contact_groups==NULL && temp_service->contacts==NULL)
-			continue;
-
-		/* get list of contacts for this service */
-		temp_memberlist=xodtemplate_expand_contactgroups_and_contacts(temp_service->contact_groups,temp_service->contacts,temp_service->_config_file,temp_service->_start_line);
-		if(temp_memberlist==NULL){
-#ifdef NSCORE
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand contacts specified in service (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
-			return ERROR;
-	                }
-
-		/* add all contacts */
-		my_free(temp_service->contacts);
-		for(this_memberlist=temp_memberlist;this_memberlist;this_memberlist=this_memberlist->next){
-
-			/* add this contact */
-			if(temp_service->contacts==NULL)
-				temp_service->contacts=(char *)strdup(this_memberlist->name1);
-			else{
-				new_contacts=(char *)realloc(temp_service->contacts,strlen(temp_service->contacts)+strlen(this_memberlist->name1)+2);
-				if(new_contacts!=NULL){
-					temp_service->contacts=new_contacts;
-					strcat(temp_service->contacts,",");
-					strcat(temp_service->contacts,this_memberlist->name1);
-				        }
-			        }
-	                }
-		xodtemplate_free_memberlist(&temp_memberlist);
-
-		/* null out contactgroups member - we don't use it from here on out */
-		my_free(temp_service->contact_groups);
-	        }
-
-
-	/* expand contacts in host escalation definitions */
-	for(temp_hostescalation=xodtemplate_hostescalation_list;temp_hostescalation;temp_hostescalation=temp_hostescalation->next){
-
-		/* skip this host escalation if not contacts or contactgroups specified */
-		if(temp_hostescalation->contact_groups==NULL && temp_hostescalation->contacts==NULL)
-			continue;
-
-		/* get list of contacts for this host escalation */
-		temp_memberlist=xodtemplate_expand_contactgroups_and_contacts(temp_hostescalation->contact_groups,temp_hostescalation->contacts,temp_hostescalation->_config_file,temp_hostescalation->_start_line);
-		if(temp_memberlist==NULL){
-#ifdef NSCORE
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand contacts specified in host escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_hostescalation->_config_file),temp_hostescalation->_start_line);
-#endif
-			return ERROR;
-	                }
-
-		/* add all contacts */
-		my_free(temp_hostescalation->contacts);
-		for(this_memberlist=temp_memberlist;this_memberlist;this_memberlist=this_memberlist->next){
-
-			/* add this contact */
-			if(temp_hostescalation->contacts==NULL)
-				temp_hostescalation->contacts=(char *)strdup(this_memberlist->name1);
-			else{
-				new_contacts=(char *)realloc(temp_hostescalation->contacts,strlen(temp_hostescalation->contacts)+strlen(this_memberlist->name1)+2);
-				if(new_contacts!=NULL){
-					temp_hostescalation->contacts=new_contacts;
-					strcat(temp_hostescalation->contacts,",");
-					strcat(temp_hostescalation->contacts,this_memberlist->name1);
-				        }
-			        }
-	                }
-		xodtemplate_free_memberlist(&temp_memberlist);
-
-		/* null out contactgroups member - we don't use it from here on out */
-		my_free(temp_hostescalation->contact_groups);
-	        }
-
-
-	/* expand contacts in service escalation definitions */
-	for(temp_serviceescalation=xodtemplate_serviceescalation_list;temp_serviceescalation;temp_serviceescalation=temp_serviceescalation->next){
-
-		/* skip this service escalation if not contacts or contactgroups specified */
-		if(temp_serviceescalation->contact_groups==NULL && temp_serviceescalation->contacts==NULL)
-			continue;
-
-		/* get list of contacts for this service escalation */
-		temp_memberlist=xodtemplate_expand_contactgroups_and_contacts(temp_serviceescalation->contact_groups,temp_serviceescalation->contacts,temp_serviceescalation->_config_file,temp_serviceescalation->_start_line);
-		if(temp_memberlist==NULL){
-#ifdef NSCORE
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand contacts specified in service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_serviceescalation->_config_file),temp_serviceescalation->_start_line);
-#endif
-			return ERROR;
-	                }
-
-		/* add all contacts */
-		my_free(temp_serviceescalation->contacts);
-		for(this_memberlist=temp_memberlist;this_memberlist;this_memberlist=this_memberlist->next){
-
-			/* add this contact */
-			if(temp_serviceescalation->contacts==NULL)
-				temp_serviceescalation->contacts=(char *)strdup(this_memberlist->name1);
-			else{
-				new_contacts=(char *)realloc(temp_serviceescalation->contacts,strlen(temp_serviceescalation->contacts)+strlen(this_memberlist->name1)+2);
-				if(new_contacts!=NULL){
-					temp_serviceescalation->contacts=new_contacts;
-					strcat(temp_serviceescalation->contacts,",");
-					strcat(temp_serviceescalation->contacts,this_memberlist->name1);
-				        }
-			        }
-	                }
-		xodtemplate_free_memberlist(&temp_memberlist);
-
-		/* null out contactgroups member - we don't use it from here on out */
-		my_free(temp_serviceescalation->contact_groups);
-	        }
-
-	return OK;
-#endif
-        }
-
+}
 
 
 /* recombobulates hostgroup definitions */
@@ -9193,9 +7879,7 @@ int xodtemplate_recombobulate_hostgroups(void){
 			/* find the hostgroup */
 			temp_hostgroup=xodtemplate_find_real_hostgroup(temp_ptr);
 			if(temp_hostgroup==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find hostgroup '%s' specified in host '%s' definition (config file '%s', starting on line %d)\n",temp_ptr,temp_host->host_name,xodtemplate_config_file_name(temp_host->_config_file),temp_host->_start_line);
-#endif
 				my_free(hostgroup_names);
 				return ERROR;
 			        }
@@ -9246,9 +7930,7 @@ int xodtemplate_recombobulate_hostgroups(void){
 
 		/* add all members to the host group */
 		if(temp_memberlist==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand members specified in hostgroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_hostgroup->_config_file),temp_hostgroup->_start_line);
-#endif
 			return ERROR;
 	                }
 		my_free(temp_hostgroup->members);
@@ -9320,9 +8002,7 @@ int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *temp_ho
 
 			/* find subgroup and recurse */
 			if((sub_group=xodtemplate_find_real_hostgroup(buf))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find member group '%s' specified in hostgroup (config file '%s', starting on line %d)\n",buf,xodtemplate_config_file_name(temp_hostgroup->_config_file),temp_hostgroup->_start_line);
-#endif
 				return ERROR;
 				}
 			xodtemplate_recombobulate_hostgroup_subgroups(sub_group,&newmembers);
@@ -9395,9 +8075,7 @@ int xodtemplate_recombobulate_servicegroups(void){
 			/* find the servicegroup */
 			temp_servicegroup=xodtemplate_find_real_servicegroup(temp_ptr);
 			if(temp_servicegroup==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find servicegroup '%s' specified in service '%s' on host '%s' definition (config file '%s', starting on line %d)\n",temp_ptr,temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-#endif
 				my_free(servicegroup_names);
 				return ERROR;
 			        }
@@ -9472,9 +8150,7 @@ int xodtemplate_recombobulate_servicegroups(void){
 
 				/* add all members to the service group */
 				if(temp_memberlist==NULL){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand member services specified in servicegroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicegroup->_config_file),temp_servicegroup->_start_line);
-#endif
 					my_free(member_names);
 					my_free(host_name);
 					my_free(service_description);
@@ -9514,62 +8190,11 @@ int xodtemplate_recombobulate_servicegroups(void){
 
 		/* error if there were an odd number of items specified (unmatched host/service pair) */
 		if(host_name!=NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Servicegroup members must be specified in <host_name>,<service_description> pairs (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicegroup->_config_file),temp_servicegroup->_start_line);
-#endif
 			my_free(host_name);
 			return ERROR;
 		        }
 	        }
-
-#ifdef REMOVED_02172008
-	/* expand members of (sub)servicegroups */
-	for(temp_servicegroup=xodtemplate_servicegroup_list;temp_servicegroup;temp_servicegroup=temp_servicegroup->next){
-
-		if(temp_servicegroup->servicegroup_members==NULL)
-			continue;
-
-		/* skip servicegroups that shouldn't be registered */
-		if(temp_servicegroup->register_object==FALSE)
-			continue;
-
-		/* get list of services in the servicegroup */
-		temp_memberlist=xodtemplate_expand_servicegroups_and_services(temp_servicegroup->servicegroup_members,NULL,NULL,temp_servicegroup->_config_file,temp_servicegroup->_start_line);
-
-		/* add all members to the service group */
-		if(temp_memberlist==NULL){
-#ifdef NSCORE
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not expand member servicegroups specified in servicegroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_servicegroup->_config_file),temp_servicegroup->_start_line);
-#endif
-			return ERROR;
-		        }
-
-		for(this_memberlist=temp_memberlist;this_memberlist;this_memberlist=this_memberlist->next){
-
-			/* add this service to the servicegroup members directive */
-			if(temp_servicegroup->members==NULL){
-				temp_servicegroup->members=(char *)malloc(strlen(this_memberlist->name1)+strlen(this_memberlist->name2)+2);
-				if(temp_servicegroup!=NULL){
-					strcpy(temp_servicegroup->members,this_memberlist->name1);
-					strcat(temp_servicegroup->members,",");
-					strcat(temp_servicegroup->members,this_memberlist->name2);
-				        }
-			        }
-			else{
-				new_members=(char *)realloc(temp_servicegroup->members,strlen(temp_servicegroup->members)+strlen(this_memberlist->name1)+strlen(this_memberlist->name2)+3);
-				if(new_members!=NULL){
-					temp_servicegroup->members=new_members;
-					strcat(temp_servicegroup->members,",");
-					strcat(temp_servicegroup->members,this_memberlist->name1);
-					strcat(temp_servicegroup->members,",");
-					strcat(temp_servicegroup->members,this_memberlist->name2);
-				        }
-			        }
-		        }
-
-		xodtemplate_free_memberlist(&temp_memberlist);
-	        }
-#endif
 
 	return OK;
         }
@@ -9612,9 +8237,7 @@ int xodtemplate_recombobulate_servicegroup_subgroups(xodtemplate_servicegroup *t
 
 			/* find subgroup and recurse */
 			if((sub_group=xodtemplate_find_real_servicegroup(buf))==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find member group '%s' specified in servicegroup (config file '%s', starting on line %d)\n",buf,xodtemplate_config_file_name(temp_servicegroup->_config_file),temp_servicegroup->_start_line);
-#endif
 				return ERROR;
 				}
 			xodtemplate_recombobulate_servicegroup_subgroups(sub_group,&newmembers);
@@ -10067,9 +8690,7 @@ int xodtemplate_register_timeperiod(xodtemplate_timeperiod *this_timeperiod){
 
 	/* return with an error if we couldn't add the timeperiod */
 	if(new_timeperiod==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register timeperiod (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10084,9 +8705,7 @@ int xodtemplate_register_timeperiod(xodtemplate_timeperiod *this_timeperiod){
 			/* add new exception to timeperiod */
 			new_daterange=add_exception_to_timeperiod(new_timeperiod,temp_daterange->type,temp_daterange->syear,temp_daterange->smon,temp_daterange->smday,temp_daterange->swday,temp_daterange->swday_offset,temp_daterange->eyear,temp_daterange->emon,temp_daterange->emday,temp_daterange->ewday,temp_daterange->ewday_offset,temp_daterange->skip_interval);
 			if(new_daterange==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add date exception to timeperiod (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 				return ERROR;
 			        }
 
@@ -10099,18 +8718,14 @@ int xodtemplate_register_timeperiod(xodtemplate_timeperiod *this_timeperiod){
 
 				/* get time ranges */
 				if(xodtemplate_get_time_ranges(day_range_start_buffer,&range_start_time,&range_end_time)==ERROR){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not parse timerange #%d of timeperiod (config file '%s', starting on line %d)\n",range,xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 					return ERROR;
 					}
 
 				/* add the new time range to the date range */
 				new_timerange=add_timerange_to_daterange(new_daterange,range_start_time,range_end_time);
 				if(new_timerange==NULL){
-#ifdef NSCORE
 					logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add timerange #%d to timeperiod (config file '%s', starting on line %d)\n",range,xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 					return ERROR;
 					}
 				}
@@ -10132,18 +8747,14 @@ int xodtemplate_register_timeperiod(xodtemplate_timeperiod *this_timeperiod){
 
 			/* get time ranges */
 			if(xodtemplate_get_time_ranges(day_range_start_buffer,&range_start_time,&range_end_time)==ERROR){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not parse timerange #%d for day %d of timeperiod (config file '%s', starting on line %d)\n",range,day,xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 				return ERROR;
 				}
 
 			/* add the new time range to the time period */
 			new_timerange=add_timerange_to_timeperiod(new_timeperiod,day,range_start_time,range_end_time);
 			if(new_timerange==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add timerange #%d for day %d to timeperiod (config file '%s', starting on line %d)\n",range,day,xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 				return ERROR;
 			        }
 		        }
@@ -10156,9 +8767,7 @@ int xodtemplate_register_timeperiod(xodtemplate_timeperiod *this_timeperiod){
 			strip(temp_ptr);
 			new_timeperiodexclusion=add_exclusion_to_timeperiod(new_timeperiod,temp_ptr);
 			if(new_timeperiodexclusion==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add excluded timeperiod '%s' to timeperiod (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(this_timeperiod->_config_file),this_timeperiod->_start_line);
-#endif
 				return ERROR;
 				}
 			}
@@ -10236,9 +8845,7 @@ int xodtemplate_register_command(xodtemplate_command *this_command){
 
 	/* return with an error if we couldn't add the command */
 	if(new_command==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register command (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_command->_config_file),this_command->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10262,30 +8869,17 @@ int xodtemplate_register_contactgroup(xodtemplate_contactgroup *this_contactgrou
 
 	/* return with an error if we couldn't add the contactgroup */
 	if(new_contactgroup==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register contactgroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_contactgroup->_config_file),this_contactgroup->_start_line);
-#endif
 		return ERROR;
 	        }
 
-	/* add all members to the contact group */
-#ifdef REMOVED_02032008
-	if(this_contactgroup->members==NULL){
-#ifdef NSCORE
-		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Contactgroup has no members (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_contactgroup->_config_file),this_contactgroup->_start_line);
-#endif
-		return ERROR;
-	        }
-#endif
 	/* Need to check for NULL because strtok could use a NULL value to check the previous string's token value */
 	if(this_contactgroup->members!=NULL){
 		for(contact_name=strtok(this_contactgroup->members,",");contact_name!=NULL;contact_name=strtok(NULL,",")){
 			strip(contact_name);
 			new_contactsmember=add_contact_to_contactgroup(new_contactgroup,contact_name);
 			if(new_contactsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contact '%s' to contactgroup (config file '%s', starting on line %d)\n",contact_name,xodtemplate_config_file_name(this_contactgroup->_config_file),this_contactgroup->_start_line);
-#endif
 				return ERROR;
 				}
 			}
@@ -10311,28 +8905,15 @@ int xodtemplate_register_hostgroup(xodtemplate_hostgroup *this_hostgroup){
 
 	/* return with an error if we couldn't add the hostgroup */
 	if(new_hostgroup==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register hostgroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostgroup->_config_file),this_hostgroup->_start_line);
-#endif
 		return ERROR;
 	        }
 
-	/* add all members to hostgroup */
-#ifdef REMOVED_02032008
-	if(this_hostgroup->members==NULL){
-#ifdef NSCORE
-		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Hostgroup has no members (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostgroup->_config_file),this_hostgroup->_start_line);
-#endif
-		return ERROR;
-	        }
-#endif
 	for(host_name=strtok(this_hostgroup->members,",");host_name!=NULL;host_name=strtok(NULL,",")){
 		strip(host_name);
 		new_hostsmember=add_host_to_hostgroup(new_hostgroup,host_name);
 		if(new_hostsmember==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add host '%s' to hostgroup (config file '%s', starting on line %d)\n",host_name,xodtemplate_config_file_name(this_hostgroup->_config_file),this_hostgroup->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10358,37 +8939,22 @@ int xodtemplate_register_servicegroup(xodtemplate_servicegroup *this_servicegrou
 
 	/* return with an error if we couldn't add the servicegroup */
 	if(new_servicegroup==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register servicegroup (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-#endif
 		return ERROR;
 	        }
 
-	/* add all members to servicegroup */
-#ifdef REMOVED_03022008
-	if(this_servicegroup->members==NULL){
-#ifdef NSCORE
-		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Servicegroup has no members (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-#endif
-		return ERROR;
-	        }
-#endif
 	for(host_name=strtok(this_servicegroup->members,",");host_name!=NULL;host_name=strtok(NULL,",")){
 		strip(host_name);
 		svc_description=strtok(NULL,",");
 		if(svc_description==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Missing service name in servicegroup definition (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-#endif
 			return ERROR;
 	                }
 		strip(svc_description);
 
 		new_servicesmember=add_service_to_servicegroup(new_servicegroup,host_name,svc_description);
 		if(new_servicesmember==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add service '%s' on host '%s' to servicegroup (config file '%s', starting on line %d)\n",svc_description,host_name,xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10408,9 +8974,7 @@ int xodtemplate_register_servicedependency(xodtemplate_servicedependency *this_s
 
 	/* throw a warning on servicedeps that have no options */
 	if(this_servicedependency->have_notification_dependency_options==FALSE && this_servicedependency->have_execution_dependency_options==FALSE){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Ignoring lame service dependency (config file '%s', line %d)\n",xodtemplate_config_file_name(this_servicedependency->_config_file),this_servicedependency->_start_line);
-#endif
 		return OK;
 	        }
 
@@ -10421,9 +8985,7 @@ int xodtemplate_register_servicedependency(xodtemplate_servicedependency *this_s
 
 		/* return with an error if we couldn't add the servicedependency */
 		if(new_servicedependency==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register service execution dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicedependency->_config_file),this_servicedependency->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10433,9 +8995,7 @@ int xodtemplate_register_servicedependency(xodtemplate_servicedependency *this_s
 
 		/* return with an error if we couldn't add the servicedependency */
 		if(new_servicedependency==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register service notification dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicedependency->_config_file),this_servicedependency->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10470,9 +9030,7 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
 
 	/* return with an error if we couldn't add the serviceescalation */
 	if(new_serviceescalation==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_serviceescalation->_config_file),this_serviceescalation->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10484,9 +9042,7 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
 			strip(contact_group);
 			new_contactgroupsmember=add_contactgroup_to_serviceescalation(new_serviceescalation,contact_group);
 			if(new_contactgroupsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contactgroup '%s' to service escalation (config file '%s', starting on line %d)\n",contact_group,xodtemplate_config_file_name(this_serviceescalation->_config_file),this_serviceescalation->_start_line);
-#endif
 				return ERROR;
 				}
 			}
@@ -10500,9 +9056,7 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
 			strip(contact_name);
 			new_contactsmember=add_contact_to_serviceescalation(new_serviceescalation,contact_name);
 			if(new_contactsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contact '%s' to service escalation (config file '%s', starting on line %d)\n",contact_name,xodtemplate_config_file_name(this_serviceescalation->_config_file),this_serviceescalation->_start_line);
-#endif
 				return ERROR;
 				}
 			}
@@ -10528,9 +9082,7 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
                         temp_condition=temp_condition->next;
                        
                         if(last_condition==NULL){
-#ifdef NSCORE
                                 logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add condition to service escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_serviceescalation->_config_file),this_serviceescalation->_start_line);
-#endif
                                 return ERROR;
                         }
                 }
@@ -10557,9 +9109,7 @@ int xodtemplate_register_contact(xodtemplate_contact *this_contact){
 
 	/* return with an error if we couldn't add the contact */
 	if(new_contact==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register contact (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_contact->_config_file),this_contact->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10569,9 +9119,7 @@ int xodtemplate_register_contact(xodtemplate_contact *this_contact){
 		for(command_name=strtok(this_contact->host_notification_commands,", ");command_name!=NULL;command_name=strtok(NULL,", ")){
 			new_commandsmember=add_host_notification_command_to_contact(new_contact,command_name);
 			if(new_commandsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add host notification command '%s' to contact (config file '%s', starting on line %d)\n",command_name,xodtemplate_config_file_name(this_contact->_config_file),this_contact->_start_line);
-#endif
 				return ERROR;
 			        }
 		        }
@@ -10583,9 +9131,7 @@ int xodtemplate_register_contact(xodtemplate_contact *this_contact){
 		for(command_name=strtok(this_contact->service_notification_commands,", ");command_name!=NULL;command_name=strtok(NULL,", ")){
 			new_commandsmember=add_service_notification_command_to_contact(new_contact,command_name);
 			if(new_commandsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add service notification command '%s' to contact (config file '%s', starting on line %d)\n",command_name,xodtemplate_config_file_name(this_contact->_config_file),this_contact->_start_line);
-#endif
 				return ERROR;
 			        }
 		        }
@@ -10594,9 +9140,7 @@ int xodtemplate_register_contact(xodtemplate_contact *this_contact){
 	/* add all custom variables */
 	for(temp_customvariablesmember=this_contact->custom_variables;temp_customvariablesmember!=NULL;temp_customvariablesmember=temp_customvariablesmember->next){
 		if((add_custom_variable_to_contact(new_contact,temp_customvariablesmember->variable_name,temp_customvariablesmember->variable_value))==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not custom variable to contact (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_contact->_config_file),this_contact->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10633,9 +9177,7 @@ int xodtemplate_register_host(xodtemplate_host *this_host){
 
 	/* return with an error if we couldn't add the host */
 	if(new_host==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register host (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_host->_config_file),this_host->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10646,9 +9188,7 @@ int xodtemplate_register_host(xodtemplate_host *this_host){
 			strip(parent_host);
 			new_hostsmember=add_parent_host_to_host(new_host,parent_host);
 			if(new_hostsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add parent host '%s' to host (config file '%s', starting on line %d)\n",parent_host,xodtemplate_config_file_name(this_host->_config_file),this_host->_start_line);
-#endif
 				return ERROR;
 			        }
 		        }
@@ -10662,9 +9202,7 @@ int xodtemplate_register_host(xodtemplate_host *this_host){
 			strip(contact_group);
 			new_contactgroupsmember=add_contactgroup_to_host(new_host,contact_group);
 			if(new_contactgroupsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contactgroup '%s' to host (config file '%s', starting on line %d)\n",contact_group,xodtemplate_config_file_name(this_host->_config_file),this_host->_start_line);
-#endif
 				return ERROR;
 			        }
 	                }
@@ -10678,9 +9216,7 @@ int xodtemplate_register_host(xodtemplate_host *this_host){
 			strip(contact_name);
 			new_contactsmember=add_contact_to_host(new_host,contact_name);
 			if(new_contactsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contact '%s' to host (config file '%s', starting on line %d)\n",contact_name,xodtemplate_config_file_name(this_host->_config_file),this_host->_start_line);
-#endif
 				return ERROR;
 			        }
 	                }
@@ -10689,9 +9225,7 @@ int xodtemplate_register_host(xodtemplate_host *this_host){
 	/* add all custom variables */
 	for(temp_customvariablesmember=this_host->custom_variables;temp_customvariablesmember!=NULL;temp_customvariablesmember=temp_customvariablesmember->next){
 		if((add_custom_variable_to_host(new_host,temp_customvariablesmember->variable_name,temp_customvariablesmember->variable_value))==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not custom variable to host (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_host->_config_file),this_host->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10719,9 +9253,7 @@ int xodtemplate_register_service(xodtemplate_service *this_service){
 
 	/* return with an error if we couldn't add the service */
 	if(new_service==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register service (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_service->_config_file),this_service->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10733,9 +9265,7 @@ int xodtemplate_register_service(xodtemplate_service *this_service){
 			strip(contact_group);
 			new_contactgroupsmember=add_contactgroup_to_service(new_service,contact_group);
 			if(new_contactgroupsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contactgroup '%s' to service (config file '%s', starting on line %d)\n",contact_group,xodtemplate_config_file_name(this_service->_config_file),this_service->_start_line);
-#endif
 				return ERROR;
 			        }
 	                }
@@ -10752,9 +9282,7 @@ int xodtemplate_register_service(xodtemplate_service *this_service){
 
 			/* stop adding contacts if we ran into an error */
 			if(new_contactsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contact '%s' to service (config file '%s', starting on line %d)\n",contact_name,xodtemplate_config_file_name(this_service->_config_file),this_service->_start_line);
-#endif
 				return ERROR;
 		                }
 		        }
@@ -10763,9 +9291,7 @@ int xodtemplate_register_service(xodtemplate_service *this_service){
 	/* add all custom variables */
 	for(temp_customvariablesmember=this_service->custom_variables;temp_customvariablesmember!=NULL;temp_customvariablesmember=temp_customvariablesmember->next){
 		if((add_custom_variable_to_service(new_service,temp_customvariablesmember->variable_name,temp_customvariablesmember->variable_value))==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not custom variable to service (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_service->_config_file),this_service->_start_line);
-#endif
 			return ERROR;
 		        }
 	        }
@@ -10790,9 +9316,7 @@ int xodtemplate_register_hostdependency(xodtemplate_hostdependency *this_hostdep
 
 		/* return with an error if we couldn't add the hostdependency */
 		if(new_hostdependency==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register host execution dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostdependency->_config_file),this_hostdependency->_start_line);
-#endif
 			return ERROR;
                         }
 	        }
@@ -10804,9 +9328,7 @@ int xodtemplate_register_hostdependency(xodtemplate_hostdependency *this_hostdep
 
 		/* return with an error if we couldn't add the hostdependency */
 		if(new_hostdependency==NULL){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register host notification dependency (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostdependency->_config_file),this_hostdependency->_start_line);
-#endif
 			return ERROR;
                         }
 	        }
@@ -10840,9 +9362,7 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
 
 	/* return with an error if we couldn't add the hostescalation */
 	if(new_hostescalation==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not register host escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostescalation->_config_file),this_hostescalation->_start_line);
-#endif
 		return ERROR;
 	        }
 
@@ -10854,9 +9374,7 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
 			strip(contact_group);
 			new_contactgroupsmember=add_contactgroup_to_hostescalation(new_hostescalation,contact_group);
 			if(new_contactgroupsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contactgroup '%s' to host escalation (config file '%s', starting on line %d)\n",contact_group,xodtemplate_config_file_name(this_hostescalation->_config_file),this_hostescalation->_start_line);
-#endif
 				return ERROR;
 			        }
 	                }
@@ -10870,9 +9388,7 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
 			strip(contact_name);
 			new_contactsmember=add_contact_to_hostescalation(new_hostescalation,contact_name);
 			if(new_contactsmember==NULL){
-#ifdef NSCORE
 				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add contact '%s' to host escalation (config file '%s', starting on line %d)\n",contact_name,xodtemplate_config_file_name(this_hostescalation->_config_file),this_hostescalation->_start_line);
-#endif
 				return ERROR;
 				}
 			}
@@ -10898,9 +9414,7 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
                         temp_condition=temp_condition->next;
                        
                         if(last_condition==NULL){
-#ifdef NSCORE
                                 logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add condition to host escalation (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_hostescalation->_config_file),this_hostescalation->_start_line);
-#endif
                                 return ERROR;
                         }
                 }
@@ -11704,17 +10218,6 @@ int xodtemplate_merge_extinfo_ojects(void){
 		xodtemplate_merge_service_extinfo_object(temp_service,temp_serviceextinfo);
 	        }
 
-#ifdef NSCORE
-	/* REMOVED 07/16/07 EG - mabye they'll stay in future versions? */
-	/*
-	if(xodtemplate_serviceextinfo_list!=NULL){
-#ifdef NSCORE
-		logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Extended service information (serviceextinfo) definitions are deprecated in Nagios 3.x and will not be supported in future versions.  Please merge variables in these definitions with your service definitions.");
-#endif
-	        }
-	*/
-#endif
-
 	/* merge host extinfo definitions */
 	for(temp_hostextinfo=xodtemplate_hostextinfo_list;temp_hostextinfo!=NULL;temp_hostextinfo=temp_hostextinfo->next){
 
@@ -11729,17 +10232,6 @@ int xodtemplate_merge_extinfo_ojects(void){
 		/* merge the definitions */
 		xodtemplate_merge_host_extinfo_object(temp_host,temp_hostextinfo);
 	        }
-
-#ifdef NSCORE
-	/* REMOVED 07/16/07 EG - mabye they'll stay in future versions? */
-	/*
-	if(xodtemplate_serviceextinfo_list!=NULL){
-#ifdef NSCORE
-		logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Extended host information (hostextinfo) definitions are deprecated in Nagios 3.x and will not be supported in future versions.  Please merge variables in these definitions with your host definitions.");
-#endif
-	        }
-	*/
-#endif
 
 	return OK;
         }
@@ -11841,9 +10333,7 @@ int xodtemplate_cache_objects(char *cache_file){
 	/* open the cache file for writing */
 	fp=fopen(cache_file,"w");
 	if(fp==NULL){
-#ifdef NSCORE
 		logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Could not open object cache file '%s' for writing!\n",cache_file);
-#endif
 		return ERROR;
 	        }
 
@@ -13657,6 +12147,7 @@ int xodtemplate_expand_contactgroups(xodtemplate_memberlist **list, xodtemplate_
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding contact group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(contactgroup_names);
 				return ERROR;
 		                }
@@ -13726,10 +12217,7 @@ int xodtemplate_expand_contactgroups(xodtemplate_memberlist **list, xodtemplate_
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any contactgroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-			return ERROR;
-#endif
 			break;
 	                }
 	        }
@@ -13779,6 +12267,7 @@ int xodtemplate_expand_contacts(xodtemplate_memberlist **list, xodtemplate_membe
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding contact names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(contact_names);
 				return ERROR;
 		                }
@@ -13851,9 +12340,7 @@ int xodtemplate_expand_contacts(xodtemplate_memberlist **list, xodtemplate_membe
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any contact matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 	                }
 	        }
@@ -13878,13 +12365,8 @@ int xodtemplate_add_contactgroup_members_to_memberlist(xodtemplate_memberlist **
 	if(list==NULL || temp_contactgroup==NULL)
 		return ERROR;
 
-	/* skip contactgroups with no defined members */
+	/* if we have no members, just return. Empty contactgroups are ok */
 	if(temp_contactgroup->members==NULL){
-#ifdef NSCORE
-#ifdef REMOVED_02032008
-		printf("Warning: Specified contactgroup '%s' has no members (config file '%s', starting on line %d)\n",temp_contactgroup->contactgroup_name,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
-#endif
 		return OK;
 		}
 
@@ -14009,6 +12491,7 @@ int xodtemplate_expand_hostgroups(xodtemplate_memberlist **list, xodtemplate_mem
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(hostgroup_names);
 				return ERROR;
 		                }
@@ -14078,9 +12561,7 @@ int xodtemplate_expand_hostgroups(xodtemplate_memberlist **list, xodtemplate_mem
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any hostgroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 	                }
 	        }
@@ -14130,6 +12611,7 @@ int xodtemplate_expand_hosts(xodtemplate_memberlist **list, xodtemplate_memberli
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(host_names);
 				return ERROR;
 		                }
@@ -14202,9 +12684,7 @@ int xodtemplate_expand_hosts(xodtemplate_memberlist **list, xodtemplate_memberli
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any host matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 	                }
 	        }
@@ -14228,13 +12708,8 @@ int xodtemplate_add_hostgroup_members_to_memberlist(xodtemplate_memberlist **lis
 	if(list==NULL || temp_hostgroup==NULL)
 		return ERROR;
 
-	/* skip hostgroups with no defined members */
+	/* if we have no members, just return. Empty hostgroups are ok */
 	if(temp_hostgroup->members==NULL){
-#ifdef NSCORE
-#ifdef REMOVED_02032008
-		printf("Warning: Specified hostgroup '%s' has no members (config file '%s', starting on line %d)\n",temp_hostgroup->hostgroup_name,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
-#endif
 		return OK;
 		}
 
@@ -14349,6 +12824,7 @@ int xodtemplate_expand_servicegroups(xodtemplate_memberlist **list, xodtemplate_
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding service group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(servicegroup_names);
 				return ERROR;
 		                }
@@ -14418,9 +12894,7 @@ int xodtemplate_expand_servicegroups(xodtemplate_memberlist **list, xodtemplate_
 
 		/* we didn't find a matching servicegroup */
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any servicegroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 		        }
 	        }
@@ -14459,6 +12933,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 	/* compile regular expression for host name */
 	if(use_regexp_host==TRUE){
 		if(regcomp(&preg2,host_name,REG_EXTENDED))
+			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", host_name, xodtemplate_config_file_name(_config_file), _start_line);
 			return ERROR;
 	        }
 
@@ -14486,6 +12961,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 		/* compile regular expression for service description */
 		if(use_regexp_service==TRUE){
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding service names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				if(use_regexp_host==TRUE)
 					regfree(&preg2);
 				my_free(service_names);
@@ -14584,9 +13060,7 @@ int xodtemplate_expand_services(xodtemplate_memberlist **list, xodtemplate_membe
 
 		/* we didn't find a match */
 		if(found_match==FALSE && reject_item==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find a service matching host name '%s' and description '%s' (config file '%s', starting on line %d)\n",host_name,temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 	                }
 	        }
@@ -14612,13 +13086,8 @@ int xodtemplate_add_servicegroup_members_to_memberlist(xodtemplate_memberlist **
 	if(list==NULL || temp_servicegroup==NULL)
 		return ERROR;
 
-	/* skip servicegroups with no defined members */
+	/* if we have no members, just return. Empty servicegroups are ok */
 	if(temp_servicegroup->members==NULL){
-#ifdef NSCORE
-#ifdef REMOVED_02032008
-		printf("Warning: Specified servicegroup '%s' has no members (config file '%s', starting on line %d)\n",temp_servicegroup->servicegroup_name,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
-#endif
 		return OK;
 		}
 
@@ -14751,6 +13220,7 @@ int xodtemplate_get_hostgroup_names(xodtemplate_memberlist **list, xodtemplate_m
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding host group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(hostgroup_names);
 				return ERROR;
 		                }
@@ -14820,10 +13290,7 @@ int xodtemplate_get_hostgroup_names(xodtemplate_memberlist **list, xodtemplate_m
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any hostgroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-			return ERROR;
-#endif
 			break;
 	                }
 	        }
@@ -14930,6 +13397,7 @@ int xodtemplate_get_contactgroup_names(xodtemplate_memberlist **list, xodtemplat
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding contact group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(contactgroup_names);
 				return ERROR;
 		                }
@@ -14999,9 +13467,7 @@ int xodtemplate_get_contactgroup_names(xodtemplate_memberlist **list, xodtemplat
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any contactgroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 	                }
 	        }
@@ -15108,6 +13574,7 @@ int xodtemplate_get_servicegroup_names(xodtemplate_memberlist **list, xodtemplat
 
 			/* compile regular expression */
 			if(regcomp(&preg,temp_ptr,REG_EXTENDED)){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Invalid regular expression '%s' found while expanding service group names in file '%s' starting on line %d. NOTE: regex could be inherited from a template in a different file.\n", temp_ptr, xodtemplate_config_file_name(_config_file), _start_line);
 				my_free(servicegroup_names);
 				return ERROR;
 		                }
@@ -15177,9 +13644,7 @@ int xodtemplate_get_servicegroup_names(xodtemplate_memberlist **list, xodtemplat
 		        }
 
 		if(found_match==FALSE){
-#ifdef NSCORE
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not find any servicegroup matching '%s' (config file '%s', starting on line %d)\n",temp_ptr,xodtemplate_config_file_name(_config_file),_start_line);
-#endif
 			break;
 	                }
 	        }
@@ -15193,16 +13658,6 @@ int xodtemplate_get_servicegroup_names(xodtemplate_memberlist **list, xodtemplat
 	return OK;
         }
 
-
-
-/* returns the name of a numbered config file */
-char *xodtemplate_config_file_name(int config_file){
-
-	if(config_file<=xodtemplate_current_config_file)
-		return xodtemplate_config_files[config_file-1];
-
-	return "?";
-        }
 
 
 #ifdef NSCORE
@@ -15457,9 +13912,7 @@ int xodtemplate_create_escalation_condition(char *value, xodtemplate_escalation_
                                 break;
                         }
                         else {  // no other chars alowed, something is wrong
-#ifdef NSCORE
                                 logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add escalation condition ( only d,w,c,o,u,&,| are alowed after = ).\n");
-#endif                         
                                 result=ERROR;
                                 break;
                         }

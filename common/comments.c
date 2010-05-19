@@ -198,10 +198,15 @@ int delete_comment(int type, unsigned long comment_id){
 		last_hash=NULL;
 		for(this_hash=comment_hashlist[hashslot];this_hash;this_hash=this_hash->nexthash){
 			if(this_hash==this_comment){
-				if(last_hash)
+				if(last_hash){
 					last_hash->nexthash=this_hash->nexthash;
-				else
-					comment_hashlist[hashslot]=NULL;
+				} else {
+					if (this_hash->nexthash){
+						comment_hashlist[hashslot]=this_hash->nexthash;
+					} else {
+						comment_hashlist[hashslot]=NULL;
+					}
+				}
 				break;
 			        }
 			last_hash=this_hash;
@@ -457,16 +462,8 @@ int add_comment(int comment_type, int entry_type, char *host_name, char *svc_des
 		return ERROR;
 
 	/* allocate memory for the comment */
-	if((new_comment=(comment *)malloc(sizeof(comment)))==NULL)
+	if((new_comment=(comment *)calloc(1, sizeof(comment)))==NULL)
 		return ERROR;
-
-	/* initialize vars */
-	new_comment->host_name=NULL;
-	new_comment->service_description=NULL;
-	new_comment->author=NULL;
-	new_comment->comment_data=NULL;
-	new_comment->next=NULL;
-	new_comment->nexthash=NULL;
 
 	/* duplicate vars */
 	if((new_comment->host_name=(char *)strdup(host_name))==NULL)
@@ -706,14 +703,29 @@ comment *find_comment(unsigned long comment_id, int comment_type){
 	comment *temp_comment=NULL;
 
 	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=temp_comment->next){
-		if(temp_comment->comment_id==comment_id && temp_comment->comment_type==comment_type)
-			return temp_comment;
+		if(comment_type!=ANY_COMMENT && temp_comment->comment_type!=comment_type)
+			continue;
+			if(temp_comment->comment_id==comment_id)
+				return temp_comment;
 	        }
 
 	return NULL;
         }
 
-
+/* find a comment by comment_type, host_name, service_desc (NULL if hostcomment), entry_time, author, comment_data */
+comment *find_comment_by_similar_content(int comment_type, char *hostname, char *service_description, char *author, char *comment_data){
+	comment *temp_comment=NULL;
+ 
+	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=temp_comment->next){
+		if(temp_comment->comment_type==comment_type 
+			&& strcmp(temp_comment->host_name,hostname)==0 
+			&& (service_description==NULL || strcmp(temp_comment->service_description,service_description)==0) 
+			&& strcmp(temp_comment->author,author)==0 
+			&& strcmp(temp_comment->comment_data,comment_data)==0)
+			return temp_comment;
+			}
+	return NULL;
+	}
 
 
 

@@ -216,15 +216,11 @@ int grab_host_macros(host *);                        	/* updates the host macro 
 int grab_servicegroup_macros(servicegroup *);           /* updates servicegroup macros */
 int grab_hostgroup_macros(hostgroup *);                 /* updates hostgroup macros */
 int grab_contact_macros(contact *);                  	/* updates the contact macro data */
-int grab_contactgroup_macros(contactgroup *);           /* updates contactgroup macros */
-int grab_datetime_macros(void);				/* updates date/time macros */
-int grab_on_demand_macro(char *);                       /* fetches an on-demand macro */
 
 char *get_url_encoded_string(char *);			/* URL encode a string */
 
 int init_macros(void);
 int init_macrox_names(void);
-int add_macrox_name(int,char *);
 int free_macrox_names(void);
 
 int clear_argv_macros(void);

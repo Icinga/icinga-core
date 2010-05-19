@@ -43,5 +43,6 @@ int xrddefault_grab_config_info(char *);
 int xrddefault_grab_config_directives(char *);
 int xrddefault_save_state_information(void);        /* saves all host and service state information */
 int xrddefault_read_state_information(void);        /* reads in initial host and service state information */
+int xrddefault_sync_state_information(void);        /* syncs in host and service state information via sync file */
 
 #endif
