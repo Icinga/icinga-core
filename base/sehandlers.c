@@ -747,8 +747,11 @@ int handle_host_state(host *hst){
 			check_pending_flex_host_downtime(hst);
 
 		/* notify contacts about the recovery or problem if its a "hard" state */
-		if(hst->state_type==HARD_STATE)
+		if(hst->state_type==HARD_STATE){
+			hst->current_down_notification_number=0;
+			hst->current_unreachable_notification_number=0;
 			host_notification(hst,NOTIFICATION_NORMAL,NULL,NULL,NOTIFICATION_OPTION_NONE);
+		}
 
 		/* handle the host state change */
 		handle_host_event(hst);
