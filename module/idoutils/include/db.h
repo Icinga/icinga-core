@@ -4,7 +4,7 @@
  * Copyright (c) 2005-2006 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 02-10-2010
+ * Last Modified: 05-19-2010
  *
  ************************************************************************/
 
@@ -14,7 +14,7 @@
 #include "../../../include/config.h"
 #include "ido2db.h"
 
-typedef struct ndo2db_dbconfig_struct{
+typedef struct ido2db_dbconfig_struct{
 	int server_type;
 	int port;
 	char *host;
@@ -32,126 +32,126 @@ typedef struct ndo2db_dbconfig_struct{
         unsigned long max_logentries_age;
         unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
-        }ndo2db_dbconfig;
+        }ido2db_dbconfig;
 
 /*************** DB server types ***************/
 
-#define NDO2DB_DBTABLE_INSTANCES                      0
-#define NDO2DB_DBTABLE_CONNINFO                       1
-#define NDO2DB_DBTABLE_OBJECTS                        2
-#define NDO2DB_DBTABLE_OBJECTTYPES                    3
-#define NDO2DB_DBTABLE_LOGENTRIES                     4
-#define NDO2DB_DBTABLE_SYSTEMCOMMANDS                 5
-#define NDO2DB_DBTABLE_EVENTHANDLERS                  6
-#define NDO2DB_DBTABLE_SERVICECHECKS                  7
-#define NDO2DB_DBTABLE_HOSTCHECKS                     8
-#define NDO2DB_DBTABLE_PROGRAMSTATUS                  9
-#define NDO2DB_DBTABLE_EXTERNALCOMMANDS               10
-#define NDO2DB_DBTABLE_SERVICESTATUS                  11
-#define NDO2DB_DBTABLE_HOSTSTATUS                     12
-#define NDO2DB_DBTABLE_PROCESSEVENTS                  13
-#define NDO2DB_DBTABLE_TIMEDEVENTS                    14
-#define NDO2DB_DBTABLE_TIMEDEVENTQUEUE                15
-#define NDO2DB_DBTABLE_FLAPPINGHISTORY                16
-#define NDO2DB_DBTABLE_COMMENTHISTORY                 17
-#define NDO2DB_DBTABLE_COMMENTS                       18
-#define NDO2DB_DBTABLE_NOTIFICATIONS                  19
-#define NDO2DB_DBTABLE_CONTACTNOTIFICATIONS           20
-#define NDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS     21
-#define NDO2DB_DBTABLE_ACKNOWLEDGEMENTS               22
-#define NDO2DB_DBTABLE_STATEHISTORY                   23
-#define NDO2DB_DBTABLE_DOWNTIMEHISTORY                24
-#define NDO2DB_DBTABLE_SCHEDULEDDOWNTIME              25
-#define NDO2DB_DBTABLE_CONFIGFILES                    26
-#define NDO2DB_DBTABLE_CONFIGFILEVARIABLES            27
-#define NDO2DB_DBTABLE_RUNTIMEVARIABLES               28
-#define NDO2DB_DBTABLE_CONTACTSTATUS                  29
-#define NDO2DB_DBTABLE_CUSTOMVARIABLESTATUS           30
-#define NDO2DB_DBTABLE_RESERVED31                     31
-#define NDO2DB_DBTABLE_RESERVED32                     32
-#define NDO2DB_DBTABLE_RESERVED33                     33
-#define NDO2DB_DBTABLE_RESERVED34                     34
-#define NDO2DB_DBTABLE_RESERVED35                     35
-#define NDO2DB_DBTABLE_RESERVED36                     36
-#define NDO2DB_DBTABLE_RESERVED37                     37
-#define NDO2DB_DBTABLE_RESERVED38                     38
-#define NDO2DB_DBTABLE_RESERVED39                     39
+#define IDO2DB_DBTABLE_INSTANCES                      0
+#define IDO2DB_DBTABLE_CONNINFO                       1
+#define IDO2DB_DBTABLE_OBJECTS                        2
+#define IDO2DB_DBTABLE_OBJECTTYPES                    3
+#define IDO2DB_DBTABLE_LOGENTRIES                     4
+#define IDO2DB_DBTABLE_SYSTEMCOMMANDS                 5
+#define IDO2DB_DBTABLE_EVENTHANDLERS                  6
+#define IDO2DB_DBTABLE_SERVICECHECKS                  7
+#define IDO2DB_DBTABLE_HOSTCHECKS                     8
+#define IDO2DB_DBTABLE_PROGRAMSTATUS                  9
+#define IDO2DB_DBTABLE_EXTERNALCOMMANDS               10
+#define IDO2DB_DBTABLE_SERVICESTATUS                  11
+#define IDO2DB_DBTABLE_HOSTSTATUS                     12
+#define IDO2DB_DBTABLE_PROCESSEVENTS                  13
+#define IDO2DB_DBTABLE_TIMEDEVENTS                    14
+#define IDO2DB_DBTABLE_TIMEDEVENTQUEUE                15
+#define IDO2DB_DBTABLE_FLAPPINGHISTORY                16
+#define IDO2DB_DBTABLE_COMMENTHISTORY                 17
+#define IDO2DB_DBTABLE_COMMENTS                       18
+#define IDO2DB_DBTABLE_NOTIFICATIONS                  19
+#define IDO2DB_DBTABLE_CONTACTNOTIFICATIONS           20
+#define IDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS     21
+#define IDO2DB_DBTABLE_ACKNOWLEDGEMENTS               22
+#define IDO2DB_DBTABLE_STATEHISTORY                   23
+#define IDO2DB_DBTABLE_DOWNTIMEHISTORY                24
+#define IDO2DB_DBTABLE_SCHEDULEDDOWNTIME              25
+#define IDO2DB_DBTABLE_CONFIGFILES                    26
+#define IDO2DB_DBTABLE_CONFIGFILEVARIABLES            27
+#define IDO2DB_DBTABLE_RUNTIMEVARIABLES               28
+#define IDO2DB_DBTABLE_CONTACTSTATUS                  29
+#define IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS           30
+#define IDO2DB_DBTABLE_RESERVED31                     31
+#define IDO2DB_DBTABLE_RESERVED32                     32
+#define IDO2DB_DBTABLE_RESERVED33                     33
+#define IDO2DB_DBTABLE_RESERVED34                     34
+#define IDO2DB_DBTABLE_RESERVED35                     35
+#define IDO2DB_DBTABLE_RESERVED36                     36
+#define IDO2DB_DBTABLE_RESERVED37                     37
+#define IDO2DB_DBTABLE_RESERVED38                     38
+#define IDO2DB_DBTABLE_RESERVED39                     39
 
-#define NDO2DB_DBTABLE_COMMANDS                       40
-#define NDO2DB_DBTABLE_TIMEPERIODS                    41
-#define NDO2DB_DBTABLE_TIMEPERIODTIMERANGES           42
-#define NDO2DB_DBTABLE_CONTACTGROUPS                  43
-#define NDO2DB_DBTABLE_CONTACTGROUPMEMBERS            44
-#define NDO2DB_DBTABLE_HOSTGROUPS                     45
-#define NDO2DB_DBTABLE_HOSTGROUPMEMBERS               46
-#define NDO2DB_DBTABLE_SERVICEGROUPS                  47
-#define NDO2DB_DBTABLE_SERVICEGROUPMEMBERS            48
-#define NDO2DB_DBTABLE_HOSTESCALATIONS                49
-#define NDO2DB_DBTABLE_HOSTESCALATIONCONTACTS         50
-#define NDO2DB_DBTABLE_SERVICEESCALATIONS             51
-#define NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS      52
-#define NDO2DB_DBTABLE_HOSTDEPENDENCIES               53
-#define NDO2DB_DBTABLE_SERVICEDEPENDENCIES            54
-#define NDO2DB_DBTABLE_CONTACTS                       55
-#define NDO2DB_DBTABLE_CONTACTADDRESSES               56
-#define NDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS    57
-#define NDO2DB_DBTABLE_HOSTS                          58
-#define NDO2DB_DBTABLE_HOSTPARENTHOSTS                59
-#define NDO2DB_DBTABLE_HOSTCONTACTS                   60
-#define NDO2DB_DBTABLE_SERVICES                       61
-#define NDO2DB_DBTABLE_SERVICECONTACTS                62
-#define NDO2DB_DBTABLE_CUSTOMVARIABLES                63
-#define NDO2DB_DBTABLE_HOSTCONTACTGROUPS              64
-#define NDO2DB_DBTABLE_SERVICECONTACTGROUPS           65
-#define NDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS    66
-#define NDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS 67
+#define IDO2DB_DBTABLE_COMMANDS                       40
+#define IDO2DB_DBTABLE_TIMEPERIODS                    41
+#define IDO2DB_DBTABLE_TIMEPERIODTIMERANGES           42
+#define IDO2DB_DBTABLE_CONTACTGROUPS                  43
+#define IDO2DB_DBTABLE_CONTACTGROUPMEMBERS            44
+#define IDO2DB_DBTABLE_HOSTGROUPS                     45
+#define IDO2DB_DBTABLE_HOSTGROUPMEMBERS               46
+#define IDO2DB_DBTABLE_SERVICEGROUPS                  47
+#define IDO2DB_DBTABLE_SERVICEGROUPMEMBERS            48
+#define IDO2DB_DBTABLE_HOSTESCALATIONS                49
+#define IDO2DB_DBTABLE_HOSTESCALATIONCONTACTS         50
+#define IDO2DB_DBTABLE_SERVICEESCALATIONS             51
+#define IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS      52
+#define IDO2DB_DBTABLE_HOSTDEPENDENCIES               53
+#define IDO2DB_DBTABLE_SERVICEDEPENDENCIES            54
+#define IDO2DB_DBTABLE_CONTACTS                       55
+#define IDO2DB_DBTABLE_CONTACTADDRESSES               56
+#define IDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS    57
+#define IDO2DB_DBTABLE_HOSTS                          58
+#define IDO2DB_DBTABLE_HOSTPARENTHOSTS                59
+#define IDO2DB_DBTABLE_HOSTCONTACTS                   60
+#define IDO2DB_DBTABLE_SERVICES                       61
+#define IDO2DB_DBTABLE_SERVICECONTACTS                62
+#define IDO2DB_DBTABLE_CUSTOMVARIABLES                63
+#define IDO2DB_DBTABLE_HOSTCONTACTGROUPS              64
+#define IDO2DB_DBTABLE_SERVICECONTACTGROUPS           65
+#define IDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS    66
+#define IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS 67
 
-#define NDO2DB_MAX_DBTABLES                           68
+#define IDO2DB_MAX_DBTABLES                           68
 
 
 /**************** Object types *****************/
 
-#define NDO2DB_OBJECTTYPE_HOST                1
-#define NDO2DB_OBJECTTYPE_SERVICE             2
-#define NDO2DB_OBJECTTYPE_HOSTGROUP           3
-#define NDO2DB_OBJECTTYPE_SERVICEGROUP        4
-#define NDO2DB_OBJECTTYPE_HOSTESCALATION      5
-#define NDO2DB_OBJECTTYPE_SERVICEESCALATION   6
-#define NDO2DB_OBJECTTYPE_HOSTDEPENDENCY      7
-#define NDO2DB_OBJECTTYPE_SERVICEDEPENDENCY   8
-#define NDO2DB_OBJECTTYPE_TIMEPERIOD          9
-#define NDO2DB_OBJECTTYPE_CONTACT             10
-#define NDO2DB_OBJECTTYPE_CONTACTGROUP        11
-#define NDO2DB_OBJECTTYPE_COMMAND             12
+#define IDO2DB_OBJECTTYPE_HOST                1
+#define IDO2DB_OBJECTTYPE_SERVICE             2
+#define IDO2DB_OBJECTTYPE_HOSTGROUP           3
+#define IDO2DB_OBJECTTYPE_SERVICEGROUP        4
+#define IDO2DB_OBJECTTYPE_HOSTESCALATION      5
+#define IDO2DB_OBJECTTYPE_SERVICEESCALATION   6
+#define IDO2DB_OBJECTTYPE_HOSTDEPENDENCY      7
+#define IDO2DB_OBJECTTYPE_SERVICEDEPENDENCY   8
+#define IDO2DB_OBJECTTYPE_TIMEPERIOD          9
+#define IDO2DB_OBJECTTYPE_CONTACT             10
+#define IDO2DB_OBJECTTYPE_CONTACTGROUP        11
+#define IDO2DB_OBJECTTYPE_COMMAND             12
 
 
 
-int ndo2db_db_init(ndo2db_idi *);
-int ndo2db_db_deinit(ndo2db_idi *);
+int ido2db_db_init(ido2db_idi *);
+int ido2db_db_deinit(ido2db_idi *);
 
-int ndo2db_db_connect(ndo2db_idi *);
-int ndo2db_db_disconnect(ndo2db_idi *);
+int ido2db_db_connect(ido2db_idi *);
+int ido2db_db_disconnect(ido2db_idi *);
 
-int ndo2db_db_hello(ndo2db_idi *);
-int ido2db_thread_db_hello(ndo2db_idi *);
-int ndo2db_db_goodbye(ndo2db_idi *);
-int ndo2db_db_checkin(ndo2db_idi *);
+int ido2db_db_hello(ido2db_idi *);
+int ido2db_thread_db_hello(ido2db_idi *);
+int ido2db_db_goodbye(ido2db_idi *);
+int ido2db_db_checkin(ido2db_idi *);
 
-char *ndo2db_db_escape_string(ndo2db_idi *,char *);
-char *ndo2db_db_timet_to_sql(ndo2db_idi *,time_t);
-char *ndo2db_db_sql_to_timet(ndo2db_idi *,char *);
-int ndo2db_db_query(ndo2db_idi *,char *);
-int ndo2db_db_free_query(ndo2db_idi *);
-int ndo2db_handle_db_error(ndo2db_idi *);
+char *ido2db_db_escape_string(ido2db_idi *,char *);
+char *ido2db_db_timet_to_sql(ido2db_idi *,time_t);
+char *ido2db_db_sql_to_timet(ido2db_idi *,char *);
+int ido2db_db_query(ido2db_idi *,char *);
+int ido2db_db_free_query(ido2db_idi *);
+int ido2db_handle_db_error(ido2db_idi *);
 
-int ndo2db_db_clear_table(ndo2db_idi *,char *);
-int ndo2db_db_get_latest_data_time(ndo2db_idi *,char *,char *,unsigned long *);
-int ndo2db_db_perform_maintenance(ndo2db_idi *);
-int ndo2db_db_trim_data_table(ndo2db_idi *,char *,char *,unsigned long);
+int ido2db_db_clear_table(ido2db_idi *,char *);
+int ido2db_db_get_latest_data_time(ido2db_idi *,char *,char *,unsigned long *);
+int ido2db_db_perform_maintenance(ido2db_idi *);
+int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 void ido2db_ocilib_err_handler(OCI_Error *);
-unsigned long ido2db_ocilib_insert_id(ndo2db_idi *, char *seq_name);
+unsigned long ido2db_ocilib_insert_id(ido2db_idi *, char *seq_name);
 #endif /* Oracle ocilib specific */
 
 #endif

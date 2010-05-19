@@ -1,5 +1,5 @@
 /***************************************************************
- * UTILS.C - NDO Utils
+ * UTILS.C - IDO Utils
  *
  * Copyright (c) 2005-2008 Ethan Galstad 
  * First Written: 01-25-2008
@@ -19,25 +19,25 @@
 /****************************************************************************/
 
 /* initializes a dynamic buffer */
-int ndo_dbuf_init(ndo_dbuf *db, int chunk_size){
+int ido_dbuf_init(ido_dbuf *db, int chunk_size){
 
 	if(db==NULL)
-		return NDO_ERROR;
+		return IDO_ERROR;
 
 	db->buf=NULL;
 	db->used_size=0L;
 	db->allocated_size=0L;
 	db->chunk_size=chunk_size;
 
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
 /* frees a dynamic buffer */
-int ndo_dbuf_free(ndo_dbuf *db){
+int ido_dbuf_free(ido_dbuf *db){
 
 	if(db==NULL)
-		return NDO_ERROR;
+		return IDO_ERROR;
 
 	if(db->buf!=NULL)
 		free(db->buf);
@@ -45,19 +45,19 @@ int ndo_dbuf_free(ndo_dbuf *db){
 	db->used_size=0L;
 	db->allocated_size=0L;
 
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
 /* dynamically expands a string */
-int ndo_dbuf_strcat(ndo_dbuf *db, char *buf){
+int ido_dbuf_strcat(ido_dbuf *db, char *buf){
 	char *newbuf=NULL;
 	unsigned long buflen=0L;
 	unsigned long new_size=0L;
 	unsigned long memory_needed=0L;
 
 	if(db==NULL || buf==NULL)
-		return NDO_ERROR;
+		return IDO_ERROR;
 
 	/* how much memory should we allocate (if any)? */
 	buflen=strlen(buf);
@@ -70,7 +70,7 @@ int ndo_dbuf_strcat(ndo_dbuf *db, char *buf){
 
 		/* allocate memory to store old and new string */
 		if((newbuf=(char *)realloc((void *)db->buf,(size_t)memory_needed))==NULL)
-			return NDO_ERROR;
+			return IDO_ERROR;
 
 		/* update buffer pointer */
 		db->buf=newbuf;
@@ -88,7 +88,7 @@ int ndo_dbuf_strcat(ndo_dbuf *db, char *buf){
 	/* update size allocated */
 	db->used_size+=buflen;
 
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
@@ -161,7 +161,7 @@ int my_rename(char *source, char *dest){
 /******************************************************************/
 
 /* strip newline, carriage return, and tab characters from beginning and end of a string */
-void ndomod_strip(char *buffer){
+void idomod_strip(char *buffer){
 	register int x=0;
 	register int y=0;
 	register int z=0;

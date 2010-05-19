@@ -57,6 +57,7 @@ FIXES
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
 * core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read
 * core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)
+* core: added icinga object version variable in neb api for usage with idomod
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
@@ -66,7 +67,7 @@ FIXES
 * idoutils: fix postgres wrong type in service_object_id
 * idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though
 * idoutils: fix for oracle when binding a NULL value on contactnotificationmethods
-
+* idoutils: completely renamed idoutils (s/ndo/ido/g etc), removing old sources
 
 1.0.1 - 03/03/2010
 

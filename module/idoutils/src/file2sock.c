@@ -1,11 +1,13 @@
 /***************************************************************
  * FILE2SOCK.c - File to Socket Dump Utility
  *
- * Copyright (c) 20052-2007 Ethan Galstad 
+ * Copyright (c) 20052-2007 Ethan Galstad
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *  
  * License: GPL v2
  *
  * First Written: 05-13-2005
- * Last Modified: 01-03-2009
+ * Last Modified: 05-19-2010
  *
  **************************************************************/
 
@@ -23,11 +25,11 @@ int process_arguments(int,char **);
 
 char *source_name=NULL;
 char *dest_name=NULL;
-int socket_type=NDO_SINK_UNIXSOCKET;
+int socket_type=IDO_SINK_UNIXSOCKET;
 int tcp_port=0;
-int show_version=NDO_FALSE;
-int show_license=NDO_FALSE;
-int show_help=NDO_FALSE;
+int show_version=IDO_FALSE;
+int show_license=IDO_FALSE;
+int show_help=IDO_FALSE;
 
 int main(int argc, char **argv){
 	int sd=0;
@@ -38,13 +40,14 @@ int main(int argc, char **argv){
 
 	result=process_arguments(argc,argv);
 
-        if(result!=NDO_OK || show_help==NDO_TRUE || show_license==NDO_TRUE || show_version==NDO_TRUE){
+        if(result!=IDO_OK || show_help==IDO_TRUE || show_license==IDO_TRUE || show_version==IDO_TRUE){
 
-		if(result!=NDO_OK)
+		if(result!=IDO_OK)
 			printf("Incorrect command line arguments supplied\n");
 
 		printf("\n");
 		printf("%s %s\n",FILE2SOCK_NAME,FILE2SOCK_VERSION);
+		printf("Copyright(c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Copyright(c) 2005-2007 Ethan Galstad (nagios@nagios.org)\n");
 		printf("Last Modified: %s\n",FILE2SOCK_DATE);
 		printf("License: GPL v2\n");
@@ -76,7 +79,7 @@ int main(int argc, char **argv){
 	        }
 
 	/* open data sink */
-	if(ndo_sink_open(dest_name,sd,socket_type,tcp_port,0,&sd)==NDO_ERROR){
+	if(ido_sink_open(dest_name,sd,socket_type,tcp_port,0,&sd)==IDO_ERROR){
 		perror("Cannot open destination socket");
 		close(fd);
 		exit(1);
@@ -114,8 +117,8 @@ int main(int argc, char **argv){
 #endif
 
 	/* close the data sink */
-	ndo_sink_flush(sd);
-	ndo_sink_close(sd);
+	ido_sink_flush(sd);
+	ido_sink_close(sd);
 
 	/* close the source file */
 	close(fd);
@@ -145,8 +148,8 @@ int process_arguments(int argc, char **argv){
 
 	/* no options were supplied */
 	if(argc<2){
-		show_help=NDO_TRUE;
-		return NDO_OK;
+		show_help=IDO_TRUE;
+		return IDO_OK;
 	        }
 
 	snprintf(optchars,sizeof(optchars),"s:d:t:p:hlV");
@@ -165,26 +168,26 @@ int process_arguments(int argc, char **argv){
 
 		case '?':
 		case 'h':
-			show_help=NDO_TRUE;
+			show_help=IDO_TRUE;
 			break;
 		case 'V':
-			show_version=NDO_TRUE;
+			show_version=IDO_TRUE;
 			break;
 		case 'l':
-			show_license=NDO_TRUE;
+			show_license=IDO_TRUE;
 			break;
 		case 't':
 			if(!strcmp(optarg,"tcp"))
-				socket_type=NDO_SINK_TCPSOCKET;
+				socket_type=IDO_SINK_TCPSOCKET;
 			else if(!strcmp(optarg,"unix"))
-				socket_type=NDO_SINK_UNIXSOCKET;
+				socket_type=IDO_SINK_UNIXSOCKET;
 			else
-				return NDO_ERROR;
+				return IDO_ERROR;
 			break;
 		case 'p':
 			tcp_port=atoi(optarg);
 			if(tcp_port<=0)
-				return NDO_ERROR;
+				return IDO_ERROR;
 			break;
 		case 's':
 			source_name=strdup(optarg);
@@ -193,15 +196,15 @@ int process_arguments(int argc, char **argv){
 			dest_name=strdup(optarg);
 			break;
 		default:
-			return NDO_ERROR;
+			return IDO_ERROR;
 			break;
 		        }
 	        }
 
 	/* make sure required args were supplied */
-	if((source_name==NULL || dest_name==NULL) && show_help==NDO_FALSE && show_version==NDO_FALSE  && show_license==NDO_FALSE)
-		return NDO_ERROR;
+	if((source_name==NULL || dest_name==NULL) && show_help==IDO_FALSE && show_version==IDO_FALSE  && show_license==IDO_FALSE)
+		return IDO_ERROR;
 
-	return NDO_OK;
+	return IDO_OK;
         }
 

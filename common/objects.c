@@ -59,7 +59,10 @@ skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
 
 
 #ifdef NSCORE
+/* keep this for compatibility */
 int __nagios_object_structure_version=CURRENT_OBJECT_STRUCTURE_VERSION;
+/* this will be used for IDOUtils, Michael Friedrich, 05-19-2010 */
+int __icinga_object_structure_version=CURRENT_OBJECT_STRUCTURE_VERSION;
 extern int use_precached_objects;
 #endif
 

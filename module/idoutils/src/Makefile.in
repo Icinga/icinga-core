@@ -1,5 +1,5 @@
 ###############################
-# Makefile for NDO
+# Makefile for IDO
 #
 # Last Modified: 10-02-2007
 ###############################
@@ -45,23 +45,23 @@ COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h 
 COMMON_SRC=io.c utils.c
 COMMON_OBJS=io.o utils.o
 
-NDO_INC=$(SRC_INCLUDE)/ido2db.h $(SRC_INCLUDE)/db.h
-NDO_SRC=db.c
-NDO_OBJS=db.o
+IDO_INC=$(SRC_INCLUDE)/ido2db.h $(SRC_INCLUDE)/db.h
+IDO_SRC=db.c
+IDO_OBJS=db.o
 
 CP=@CP@
 
 
-all: file2sock log2ndo ido2db idomod.o sockdebug
+all: file2sock log2ido ido2db idomod.o sockdebug
 
 file2sock: file2sock.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ file2sock.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
-log2ndo: log2ndo.c $(COMMON_INC) $(COMMON_OBJS)
-	$(CC) $(CFLAGS) -o $@ log2ndo.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
+log2ido: log2ido.c $(COMMON_INC) $(COMMON_OBJS)
+	$(CC) $(CFLAGS) -o $@ log2ido.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
-ido2db: ido2db.c $(NDO_INC) $(NDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o dbqueries.o
-	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o dbqueries.o $(COMMON_OBJS) $(NDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(THREADLIBS) $(MATHLIBS) $(OTHERLIBS)
+ido2db: ido2db.c $(IDO_INC) $(IDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o dbqueries.o
+	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o dbqueries.o $(COMMON_OBJS) $(IDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(THREADLIBS) $(MATHLIBS) $(OTHERLIBS)
 
 idomod.o: idomod.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o idomod.o idomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -85,7 +85,7 @@ dbqueries.o: dbqueries.c $(SRC_INCLUDE)/dbqueries.h
 	$(CC) $(CFLAGS) -c -o $@ dbqueries.c
 
 clean:
-	rm -f core file2sock log2ndo ido2db sockdebug *.o
+	rm -f core file2sock log2ido ido2db sockdebug *.o
 	rm -f *~ */*~
 
 distclean: clean
