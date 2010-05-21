@@ -1360,7 +1360,7 @@ int read_status_file(void){
                 		else if(strstr(var,"PROFILE_") && !strstr(var,"null"))
                 		{
                     			if(strstr(var,"COUNTER"))
-                        		profile_object_update_count(var+strlen("PROFILE_COUNTER_"),strtod(val,NULL));
+                        			profile_object_update_count(var+strlen("PROFILE_COUNTER_"),strtod(val,NULL));
 
                     			if(strstr(var,"ELAPSED"))
                         			profile_object_update_elapsed(var+strlen("PROFILE_ELAPSED_"),atoi(val));

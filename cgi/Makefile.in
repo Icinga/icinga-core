@@ -60,7 +60,7 @@ ODATAHDRS=
 ODATADEPS=$(ODATALIBS)
 
 # Host, service, and program status functions
-SDATALIBS=statusdata-cgi.o xstatusdata-cgi.o comments-cgi.o downtime-cgi.o
+SDATALIBS=statusdata-cgi.o xstatusdata-cgi.o comments-cgi.o downtime-cgi.o 
 SDATAHDRS=
 SDATADEPS=$(SDATALIBS)
 
@@ -107,7 +107,7 @@ statusdata-cgi.o: $(SRC_COMMON)/statusdata.c $(SRC_INCLUDE)/statusdata.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/statusdata.c
 
 xstatusdata-cgi.o: $(SRC_XDATA)/$(XSDC) $(SRC_XDATA)/$(XSDH)
-	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XSDC)
+	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XSDC) 
 
 comments-cgi.o: $(SRC_COMMON)/comments.c $(SRC_INCLUDE)/comments.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/comments.c
@@ -127,58 +127,58 @@ $(SRC_COMMON)/shared.o: $(SRC_COMMON)/shared.c
 ########## CGIS ##########
 
 avail.cgi: avail.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ avail.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ avail.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 checksanity.cgi: checksanity.c $(CGIDEPS) $(CDATADEPS) $(DDATADEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ checksanity.c $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)
 
 cmd.cgi: cmd.c $(CGIDEPS) $(CDATADEPS) $(DDATADEPS) extcmd_list.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ cmd.c extcmd_list.o $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ cmd.c ../base/statsprofiler.c extcmd_list.o $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)
 
 config.cgi: config.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ config.c  $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ config.c ../base/statsprofiler.c  $(CGILIBS) $(LIBS)
 
 extinfo.cgi: extinfo.c $(CGIDEPS) $(CDATADEPS) $(DDATADEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ extinfo.c $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ extinfo.c ../base/statsprofiler.c $(CGILIBS) $(CDATALIBS) $(DDATALIBS) $(LIBS)
 
 history.cgi: history.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ history.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ history.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 ministatus.cgi: ministatus.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ ministatus.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ ministatus.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 notifications.cgi: notifications.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ notifications.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ notifications.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 outages.cgi: outages.c $(CGIDEPS) $(CDATADEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ outages.c $(CGILIBS) $(CDATALIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ outages.c ../base/statsprofiler.c $(CGILIBS) $(CDATALIBS) $(LIBS)
 
 showlog.cgi: showlog.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ showlog.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ showlog.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 status.cgi: status.c $(CGIDEPS) $(CDATADEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ status.c $(CGILIBS) $(CDATALIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ status.c ../base/statsprofiler.c $(CGILIBS) $(CDATALIBS) $(LIBS)
 
 statuswml.cgi: statuswml.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statuswml.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statuswml.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 statusmap.cgi: statusmap.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statusmap.c $(CGILIBS) $(GDLIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statusmap.c ../base/statsprofiler.c $(CGILIBS) $(GDLIBS) $(LIBS)
 
 statuswrl.cgi: statuswrl.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statuswrl.c $(CGILIBS) $(MATHLIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statuswrl.c ../base/statsprofiler.c $(CGILIBS) $(MATHLIBS) $(LIBS)
 
 summary.cgi: summary.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ summary.c $(CGILIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ summary.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 tac.cgi: tac.c $(CGIDEPS) $(CDATADEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ tac.c $(CGILIBS) $(CDATALIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ tac.c ../base/statsprofiler.c $(CGILIBS) $(CDATALIBS) $(LIBS)
 
 trends.cgi: trends.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ trends.c $(CGILIBS) $(GDLIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ trends.c ../base/statsprofiler.c $(CGILIBS) $(GDLIBS) $(LIBS)
 
 histogram.cgi: histogram.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ histogram.c $(CGILIBS) $(GDLIBS) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ histogram.c ../base/statsprofiler.c $(CGILIBS) $(GDLIBS) $(LIBS)
 
 clean:
 	rm -f $(CGIS)
