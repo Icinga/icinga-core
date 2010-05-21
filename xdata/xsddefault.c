@@ -35,6 +35,8 @@
 #include "../include/macros.h"
 #include "../include/skiplist.h"
 
+#include "../include/profiler.h"
+
 #ifdef NSCORE
 #include "../include/icinga.h"
 #endif
@@ -125,6 +127,7 @@ extern char           *global_host_event_handler;
 extern char           *global_service_event_handler;
 
 extern check_stats    check_statistics[MAX_CHECK_STATS_TYPES];
+extern	event_profiling_enabled;
 #endif
 
 
@@ -455,6 +458,12 @@ int xsddefault_save_status_data(void){
 
 	fprintf(fp,"\tparallel_host_check_stats=%d,%d,%d\n",check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[0],check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[1],check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[2]);
 	fprintf(fp,"\tserial_host_check_stats=%d,%d,%d\n",check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[0],check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[1],check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[2]);
+
+	fprintf(fp,"\tevent_profiling_enabled=%d\n",event_profiling_enabled);
+
+	if(event_profiling_enabled)
+    		profiler_output(fp);
+
 	fprintf(fp,"\t}\n\n");
 
 

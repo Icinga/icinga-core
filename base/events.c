@@ -31,6 +31,7 @@
 #include "../include/broker.h"
 #include "../include/sretention.h"
 
+#include "../include/profiler.h"
 
 extern char	*config_file;
 
@@ -84,6 +85,8 @@ extern int      execute_host_checks;
 extern int      child_processes_fork_twice;
 
 extern int      time_change_threshold;
+
+extern int 	event_profiling_enabled;
 
 timed_event *event_list_low=NULL;
 timed_event *event_list_low_tail=NULL;
@@ -1069,6 +1072,7 @@ int event_execution_loop(void){
 	struct timespec delay;
 	pid_t wait_result;
 
+	struct timeval start;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"event_execution_loop() start\n");
 
@@ -1087,7 +1091,10 @@ int event_execution_loop(void){
 	sleep_event.next=NULL;
 	sleep_event.prev=NULL;
 
-	while(1){
+	while(1)
+	{
+		if(event_profiling_enabled)
+        		gettimeofday(&start,NULL);
 
 		/* see if we should exit or restart (a signal was encountered) */
 		if(sigshutdown==TRUE || sigrestart==TRUE)
@@ -1326,6 +1333,10 @@ int event_execution_loop(void){
 			last_status_update=current_time;
 			update_program_status(FALSE);
 			}
+
+		if(event_profiling_enabled)
+            		profiler_update(EVENT_LOOP_COMPLETION, start);
+
 	        }
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"event_execution_loop() end\n");
@@ -1342,7 +1353,8 @@ int handle_timed_event(timed_event *event){
 	void (*userfunc)(void *);
 	struct timeval tv;
 	double latency=0.0;
-
+	struct timeval start;
+	gettimeofday(&start,NULL);
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"handle_timed_event() start\n");
 
@@ -1536,6 +1548,9 @@ int handle_timed_event(timed_event *event){
 	        }
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"handle_timed_event() end\n");
+
+	if(event_profiling_enabled)
+		profiler_update(event->event_type,start);
 
 	return OK;
         }

@@ -1377,4 +1377,5 @@ debug_file=@localstatedir@/icinga.debug
 
 max_debug_file_size=1000000
 
-
+# this option enables or disables event profiling for stats of event counts and time taken for events
+event_profiling_enabled=1

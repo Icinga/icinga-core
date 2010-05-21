@@ -216,6 +216,7 @@ extern char             *debug_file;
 extern int              debug_level;
 extern int              debug_verbosity;
 extern unsigned long    max_debug_file_size;
+extern int              event_profiling_enabled;
 
 
 
@@ -1333,6 +1334,11 @@ int read_main_config_file(char *main_config_file){
 
 		else if(!strcmp(variable,"bare_update_check"))
 			bare_update_check=(atoi(value)>0)?TRUE:FALSE;
+
+               else if(!strcmp(variable,"event_profiling_enabled"))
+                       event_profiling_enabled=(atoi(value)>0)?TRUE:FALSE;
+
+
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/
 		else if(!strcmp(variable,"auth_file")){
