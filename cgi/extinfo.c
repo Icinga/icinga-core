@@ -2511,7 +2511,7 @@ void show_performance_data(void){
     			t=profile_object_find_by_name("EVENT_LOOP_COMPLETION");
     			total_time = t->elapsed;
 
-       			printf("<tr><td class='dataVar'>%s&nbsp;</td><td class='dataVal'>%f</td><td class='dataVal'>%d</td><td class='dataVal'>%f</td><td class='dataVal'>%f</td></tr>",name,elapsed,count,safe_divide(elapsed,count,0),safe_divide(total_time,count,1));
+       			printf("<tr><td class='dataVar'>%s&nbsp;</td><td class='dataVal'>%.2f</td><td class='dataVal'>%d</td><td class='dataVal'>%.3f</td><td class='dataVal'>%.3f</td></tr>",name,elapsed,count,safe_divide(elapsed,count,0),safe_divide(total_time,count,1));
        			p = p->next;
 		}
 
