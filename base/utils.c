@@ -4115,6 +4115,12 @@ char *get_program_modification_date(void){
 	return (char *)PROGRAM_MODIFICATION_DATE;
         }
 
+int has_shell_metachars(const char *s){
+	if (strpbrk(s,"!$^&*()~[]\\|{};<>?'\""))
+		return 1;
+	else
+		return 0;
+}
 
 
 /******************************************************************/

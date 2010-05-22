@@ -45,6 +45,7 @@ extern "C" {
    command file. EG 10/19/07
 */
 #define MAX_PLUGIN_OUTPUT_LENGTH                8192    /* max length of plugin output (including perf data) */
+#define MAXCHLDARGS    20
 
 
 
@@ -697,6 +698,7 @@ int submit_raw_external_command(char *,time_t *,int *);
 
 char *get_program_version(void);
 char *get_program_modification_date(void);
+int has_shell_metachars(const char *);
 
 
 #ifdef __cplusplus

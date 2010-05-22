@@ -337,7 +337,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	int fork_error=FALSE;
 	int wait_result=0;
 	host *temp_host=NULL;
-	FILE *fp=NULL;
+	FILE *fp=NULL, *chldfp;;
 	int pclose_result=0;
 	mode_t new_umask=077;
 	mode_t old_umask;
@@ -345,6 +345,10 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	double old_latency=0.0;
 	dbuf checkresult_dbuf;
 	int dbuf_chunk=1024;
+	int pipefds[2], chldstatus, i;
+	char *chldargs[MAXCHLDARGS];
+	char *s , *p;
+
 #ifdef USE_EVENT_BROKER
 	int neb_result=OK;
 #endif
@@ -770,23 +774,105 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 
      
 			/* run the plugin check command */
-			fp=popen(processed_command,"r");
-			if(fp==NULL)
-				_exit(STATE_UNKNOWN);
 
-			/* initialize buffer */
-			strcpy(output_buffer,"");
+            		if (!has_shell_metachars(processed_command)){
+                		if (pipe(pipefds) == -1){
+                    			logit(NSLOG_RUNTIME_WARNING,TRUE,"error creating pipe: %s\n",strerror(errno));
+                    			_exit(STATE_UNKNOWN);
+                		}
 
-			/* get all lines of plugin output - escape newlines */
-			while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
-				temp_buffer=escape_newlines(output_buffer);
-				dbuf_strcat(&checkresult_dbuf,temp_buffer);
-				my_free(temp_buffer);
-				}
 
-			/* close the process */
-			pclose_result=pclose(fp);
+                		pid = fork();
+                		if (pid == -1){
+                    			logit(NSLOG_RUNTIME_WARNING,TRUE,"fork error\n");
+                    			_exit(STATE_UNKNOWN);
+                		}
 
+	                     if (pid == 0){
+	                     close(pipefds[0]);
+	 
+	                     if (dup2(pipefds[1],STDOUT_FILENO) == -1){
+	                         logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
+	                         _exit(EXIT_FAILURE);
+	                     }
+	 
+	                     if (dup2(pipefds[1],STDERR_FILENO) == -1){
+	                         logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
+	                         _exit(EXIT_FAILURE);
+	                     }
+	                     close(pipefds[0]);
+	 
+	                     s = strchr(processed_command,' ');
+	                     if (s){
+	                         *s = '\0';
+	                         p = s+1;
+	 
+	                         chldargs[0] = processed_command;
+	                         for(i=1;i<MAXCHLDARGS-2;i++){
+	                             s = strchr(p,' ');
+	                             chldargs[i] = p;
+	 
+	                             if (s){
+	                                 *s = '\0';
+	                                 p = s+1;
+	                             }
+	 
+	                             if (!s)
+	                                 break;
+	                         }
+	 
+	                         if (i >= MAXCHLDARGS-2){
+	                             logit(NSLOG_RUNTIME_WARNING,TRUE,"overlimit args for command %s\n",chldargs[0]);
+	                             _exit(EXIT_FAILURE);
+	                         }
+	                         else
+	                             chldargs[++i] = '\0';
+	                     }
+	                     else{
+	                         chldargs[0] = processed_command;
+	                         chldargs[1] = '\0';
+	                     }
+	 
+	                     log_debug_info(DEBUGL_CHECKS,0,"running process %s via execv\n",processed_command);
+	                     execv(chldargs[0],chldargs);
+                     	    _exit(EXIT_FAILURE);
+			}
+
+
+	               	close(pipefds[1]);
+	
+	                chldfp = fdopen(pipefds[0],"r");
+	                if (chldfp == NULL){
+	                    logit(NSLOG_RUNTIME_WARNING,TRUE,"fdopen error\n");
+	                    _exit(EXIT_FAILURE);
+	                }
+	
+	                while(fgets(output_buffer,sizeof(output_buffer)-1,chldfp)){
+	                    temp_buffer=escape_newlines(output_buffer);
+	                    dbuf_strcat(&checkresult_dbuf,temp_buffer);
+	                    my_free(temp_buffer);
+	                }
+	
+	                fclose(chldfp);
+	                waitpid(pid,&chldstatus,0);
+	                pclose_result=WEXITSTATUS(chldstatus);
+	            }
+	            else{
+	                log_debug_info(DEBUGL_CHECKS,0,"running process %s via popen\n",processed_command);
+	                fp=popen(processed_command,"r");
+	                if(fp==NULL)
+	                    _exit(STATE_UNKNOWN);
+	    
+	                strcpy(output_buffer,"");
+	    
+	                while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
+	                    temp_buffer=escape_newlines(output_buffer);
+	                    dbuf_strcat(&checkresult_dbuf,temp_buffer);
+	                    my_free(temp_buffer);
+	                    }
+	    
+	                pclose_result=pclose(fp);
+	            }
 			/* reset the alarm */
 			alarm(0);
 
