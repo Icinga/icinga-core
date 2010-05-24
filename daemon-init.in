@@ -214,7 +214,7 @@ case "$1" in
 		;;
 
 	restart)
-		#chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
+		chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
 		$0 stop
 		$0 start
 		;;
