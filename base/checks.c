@@ -806,6 +806,8 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	                     if (s){
 	                         *s = '\0';
 	                         p = s+1;
+				 for(;isspace(*p);p++)
+					;
 	 
 	                         chldargs[0] = processed_command;
 	                         for(i=1;i<MAXCHLDARGS-2;i++){
@@ -815,6 +817,8 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	                             if (s){
 	                                 *s = '\0';
 	                                 p = s+1;
+					 for(;isspace(*p);p++)
+						;
 	                             }
 	 
 	                             if (!s)
