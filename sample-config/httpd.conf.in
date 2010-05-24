@@ -22,9 +22,9 @@ ScriptAlias @cgiurl@ "@sbindir@"
    Require valid-user
 </Directory>
 
-Alias @htmurl@ "@datadir@"
+Alias @htmurl@ "@datadir@/"
 
-<Directory "@datadir@">
+<Directory "@datadir@/">
 #  SSLRequireSSL
    Options None
    AllowOverride None

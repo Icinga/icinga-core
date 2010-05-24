@@ -22,6 +22,8 @@ ENHANCEMENTS
 * idoutils: change select * into select [*_]id if unused results
 * idoutils: add syslog output, if ido2db is unable to do initial db query
 
+* config: add trailing slash in apache config for html dir
+
 FIXES
 * core: fix scheduling downtime for all services AND the host (cgi url, external commands)
 * core: fix custom notifications being sent during downtimes (Sven Nierlein)
