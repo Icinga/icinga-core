@@ -84,7 +84,7 @@ pid_icinga ()
 {
 
 	if test ! -f $IcingaRunFile; then
-		echo "No lock file found in $IcingaRunFile"
+		echo "Icinga not running. No lock file found in $IcingaRunFile"
 		exit 1
 	fi
 
@@ -166,7 +166,15 @@ case "$1" in
 		chown $IcingaUser:$IcingaGroup $IcingaRunFile
 		$IcingaBin -d $IcingaCfgFile
 		if [ -d $IcingaLockDir ]; then touch $IcingaLockDir/$IcingaLockFile; fi
-		echo "Starting icinga done."
+
+                #check if icinga did bailout because of initialization errors
+		pid_icinga
+                if status_icinga > /dev/null; then
+                        echo " done."
+                else
+                        echo " failed. Please check the log!"
+			rm -f $IcingaStatusFile $IcingaRunFile $IcingaLockDir/$IcingaLockFile $IcingaCommandFile
+                fi
 		exit 0
 		;;
 

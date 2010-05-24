@@ -41,16 +41,15 @@
 status_ido2db ()
 {
 
-	pid_ido2db
-
 	if ps -p $Ido2dbPID > /dev/null 2>&1; then
 		return 0
 	else
-		if test -f $Ido2dbLockDir/$Ido2dbLockFile; then
-       			return 2
-		else
-			return 1
-		fi
+		return 1
+		#if test -f $Ido2dbLockDir/$Ido2dbLockFile; then
+       		#	return 2
+		#else
+		#	return 1
+		#fi
         fi
 
         return 1
@@ -71,7 +70,7 @@ printstatus_ido2db()
 killproc_ido2db ()
 {
 
-	kill $2 $1
+	kill $2 $Ido2dbPID
 
 }
 
@@ -80,22 +79,21 @@ pid_ido2db ()
 {
 
 	if test ! -f $Ido2dbRunFile; then
-		echo "PID file $Ido2dbRunFile not found"
+		echo "ido2db not running. PID file $Ido2dbRunFile not found"
 		exit 1
 	fi
 
 	Ido2dbPID=`head -n 1 $Ido2dbRunFile`
-	return 0
 }
 
-checkpid_ido2db() {
-        local i
-
-        for i in $* ; do
-                [ -d "/proc/$i" ] && return 0
-        done
-        return 1
-}
+#checkpid_ido2db() {
+#        local i
+#
+#        for i in $* ; do
+#                [ -d "/proc/$i" ] && return 0
+#        done
+#        return 1
+#}
 
 
 
@@ -139,8 +137,11 @@ fi
 case "$1" in
 
 	start)
-		if [ -f $Ido2dbRunFile ]; then
-			echo "$servicename already started (found pidfile $Ido2dbRunFile)..."
+		#check if ido2db is already running
+		$0 status > /dev/null
+		if [ $? -eq 0 ]; then
+			pid_ido2db
+			echo "$servicename is already running. PID: $Ido2dbPID"
 			exit 1
 		fi
 		echo -n "Starting $servicename:"
@@ -148,22 +149,23 @@ case "$1" in
 		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
 		$Ido2dbBin -c $Ido2dbCfgFile
 		if [ -d $Ido2dbLockDir ]; then touch $Ido2dbLockDir/$Ido2dbLockFile; fi
-		echo " done."
+	
+		#check if ido2db did bailout because of initialization errors
+		pid_ido2db
+		if status_ido2db > /dev/null; then
+			echo " done."
+		else
+			echo " failed. Please check the log!"
+			rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
+		fi
 		exit 0
 		;;
 
 	stop)
-		status_ido2db
-		if ! [ $? -eq 0 ]; then
-			echo "$servicename was not running... could not stop"
-			exit 1
-		fi
 		echo -n "Stopping $servicename: "
 
-		# Set up $Ido2dbPID, exist if it does not work
 		pid_ido2db 
-		# Kill the process
-		killproc_ido2db $Ido2dbPID
+		killproc_ido2db ido2db
 
  		# now we have to wait for ido2db to exit and remove its
  		# own Ido2dbRunFile, otherwise a following "start" could
@@ -171,25 +173,26 @@ case "$1" in
  		# new Ido2dbRunFile, allowing multiple ido2db daemons
  		# to (sooner or later) run - John Sellens
  		for i in 1 2 3 4 5 6 7 8 9 10 ; do
- 		    if checkpid_ido2db $Ido2dbPID > /dev/null; then
+ 		    if status_ido2db > /dev/null; then
  			echo -n '.'
  			sleep 1
  		    else
  			break
  		    fi
  		done
- 		if checkpid_ido2db $Ido2dbPID > /dev/null; then
+ 		if status_ido2db > /dev/null; then
  		    echo ''
- 		    echo 'Warning - $servicename did not exit in a timely manner'
+ 		    echo "Warning - $servicename did not exit in a timely manner"
  		else
- 		    echo 'done.'
+ 		    echo "done."
+		    rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
  		fi
 
-		rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
 		;;
 
         status)
-		printstatus_ido2db
+		pid_ido2db
+		printstatus_ido2db ido2db
                 ;;
 
 	restart)

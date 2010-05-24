@@ -6,6 +6,7 @@ Icinga 1.0.x Change Log
 
 ENHANCEMENTS
 * core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
+* core: check if icinga running after init script 'start', if not, show error and remove lockfile
 * core: add in sync retention facility (Ton Voon, Opsera Ltd)
 * core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
 * core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, 
@@ -21,6 +22,8 @@ ENHANCEMENTS
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 * idoutils: change select * into select [*_]id if unused results
 * idoutils: add syslog output, if ido2db is unable to do initial db query
+* idoutils: rewrite initscript not only depending on lockfile
+* idoutils: check if ido2db running after init script 'start', if not, show error and remove lockfile 
 
 * config: add trailing slash in apache config for html dir
 
