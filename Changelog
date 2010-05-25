@@ -65,6 +65,7 @@ FIXES
 * core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)
 * core: added icinga object version variable in neb api for usage with idomod
 * core: fix notification_period inheritance for services (Gordon Messmer)
+* core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
