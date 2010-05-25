@@ -326,6 +326,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 /* checks the viability of sending out a service alert (top level filters) */
 int check_service_notification_viability(service *svc, int type, int options){
 	host *temp_host;
+	timeperiod *temp_period;
 	time_t current_time;
 	time_t timeperiod_start;
 	
@@ -356,8 +357,14 @@ int check_service_notification_viability(service *svc, int type, int options){
 		return ERROR;
 	        }
 
+	/* if the service has no notification period, inherit one from the host */
+	temp_period = svc->notification_period_ptr;
+	if(temp_period == NULL){
+		temp_period = temp_host->notification_period_ptr;
+	}
+
 	/* see if the service can have notifications sent out at this time */
-	if(check_time_against_period(current_time,svc->notification_period_ptr)==ERROR){
+	if(check_time_against_period(current_time,temp_period)==ERROR){
 
 		log_debug_info(DEBUGL_NOTIFICATIONS,1,"This service shouldn't have notifications sent out at this time.\n");
 
