@@ -859,7 +859,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	
 	                fclose(chldfp);
 	                waitpid(pid,&chldstatus,0);
-	                pclose_result=WEXITSTATUS(chldstatus);
+	                pclose_result=chldstatus;
 	            }
 	            else{
 	                log_debug_info(DEBUGL_CHECKS,0,"running process %s via popen\n",processed_command);
