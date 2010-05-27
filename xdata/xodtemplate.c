@@ -650,6 +650,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 	register int x=0;
 	register int y=0;
 	char *ptr=NULL;
+	xodtemplate_service *temp_service=NULL;
 
 
 #ifdef NSCORE
@@ -751,6 +752,20 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 		/* this is the close of an object definition */
 		else if(!strcmp(input,"}") && in_definition==TRUE){
+
+			switch(xodtemplate_current_object_type){
+				case XODTEMPLATE_SERVICE:{
+					temp_service=(xodtemplate_service *)xodtemplate_current_object;
+					if (temp_service->register_object && (!temp_service->service_description)){
+						logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Ending service definition without description in '%s' on line %d.\n",filename,current_line);
+						result=ERROR;
+						break;
+					}
+					break;
+				}
+				default:
+					break;
+			}
 
 			in_definition=FALSE;
 
