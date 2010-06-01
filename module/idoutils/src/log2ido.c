@@ -4,8 +4,6 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org) 
  *
- * Last Modified: 05-19-2010
- *
  **************************************************************/
 
 #include "../../../include/config.h"

@@ -1,6 +1,0 @@
-Makefile
-test_logging
-*.dSYM
-test_events
-test_icinga_config
-test_timeperiods

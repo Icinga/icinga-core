@@ -5,9 +5,6 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * First Written: 05-19-2005
- * Last Modified: 05-19-2010
- *
  *****************************************************************************/
 
 /* include our project's header files */
@@ -713,44 +710,54 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			if(result==IDO_OK){
 
 				if(reconnect==IDO_TRUE){
-					asprintf(&temp_buffer,"idomod: Successfully reconnected to data sink!  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
+					if(asprintf(&temp_buffer,"idomod: Successfully reconnected to data sink!  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items)==-1)
+						temp_buffer=NULL;
+
 					idomod_hello_sink(TRUE,TRUE);
-				        }
-				else{
-					if(sinkbuf.overflow==0L)
-						asprintf(&temp_buffer,"idomod: Successfully connected to data sink.  %lu queued items to flush.",sinkbuf.items);
-					else
-						asprintf(&temp_buffer,"idomod: Successfully connected to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
-					idomod_hello_sink(FALSE,FALSE);
-				        }
+				        
+				} else {
+					if(sinkbuf.overflow==0L) {
+						if(asprintf(&temp_buffer,"idomod: Successfully connected to data sink.  %lu queued items to flush.",sinkbuf.items)==-1)
+							;//temp_buffer=NULL;
+					} else {
+						if(asprintf(&temp_buffer,"idomod: Successfully connected to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items)==-1)
+							;//temp_buffer=NULL;
+					}
+
+					idomod_hello_sink(FALSE,FALSE);        
+				}
 
 				idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 				free(temp_buffer);
 				temp_buffer=NULL;
 
 				/* reset sink overflow */
-				sinkbuf.overflow=0L;
-				}
+				sinkbuf.overflow=0L;	
 
 			/* sink could not be (re)opened... */
-			else{
+			} else {
 
 				if((unsigned long)((unsigned long)current_time-idomod_sink_reconnect_warning_interval)>(unsigned long)idomod_sink_last_reconnect_warning){
-					if(reconnect==IDO_TRUE)
-						asprintf(&temp_buffer,"idomod: Still unable to reconnect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
-					else if(idomod_sink_connect_attempt==1)
-						asprintf(&temp_buffer,"idomod: Could not open data sink!  I'll keep trying, but some output may get lost...");
-					else
-						asprintf(&temp_buffer,"idomod: Still unable to connect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items);
+					if(reconnect==IDO_TRUE) {
+						if(asprintf(&temp_buffer,"idomod: Still unable to reconnect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items)==-1)
+							temp_buffer=NULL;
+					} else if(idomod_sink_connect_attempt==1) {
+						if(asprintf(&temp_buffer,"idomod: Could not open data sink!  I'll keep trying, but some output may get lost...")==-1)
+							temp_buffer=NULL;
+					} else {
+						if(asprintf(&temp_buffer,"idomod: Still unable to connect to data sink.  %lu items lost, %lu queued items to flush.",sinkbuf.overflow,sinkbuf.items)==-1)
+							temp_buffer=NULL;
+					}
+
 					idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 					free(temp_buffer);
 					temp_buffer=NULL;
 
 					idomod_sink_last_reconnect_warning=current_time;
-					}
 				}
 			}
-	        }
+		}
+	}
 
 	/* we weren't able to (re)connect */
 	if(idomod_sink_is_open==IDO_FALSE){
@@ -785,7 +792,9 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 					/* close the sink */
 					idomod_close_sink();
 
-					asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost.  %lu queued items to flush.",sinkbuf.items);
+					if(asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost.  %lu queued items to flush.",sinkbuf.items)==-1)
+						temp_buffer=NULL;
+
 					idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 					free(temp_buffer);
 					temp_buffer=NULL;
@@ -807,7 +816,9 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			idomod_sink_buffer_pop(&sinkbuf);
 		        }
 
-		asprintf(&temp_buffer,"idomod: Successfully flushed %lu queued items to data sink.",items_to_flush);
+		if(asprintf(&temp_buffer,"idomod: Successfully flushed %lu queued items to data sink.",items_to_flush)==-1)
+			temp_buffer=NULL;
+
 		idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 		free(temp_buffer);
 		temp_buffer=NULL;
@@ -833,10 +844,15 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer){
 			idomod_sink_last_reconnect_attempt=current_time;
 			idomod_sink_last_reconnect_warning=current_time;
 
-			asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost...");
+			if(asprintf(&temp_buffer,"idomod: Error writing to data sink!  Some output may get lost...")==-1)
+				temp_buffer=NULL;
+
 			idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 			free(temp_buffer);
-			asprintf(&temp_buffer,"idomod: Please check remote ido2db log, database connection or SSL Parameters");
+
+			if(asprintf(&temp_buffer,"idomod: Please check remote ido2db log, database connection or SSL Parameters")==-1)
+				temp_buffer=NULL;
+
 			idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 			free(temp_buffer);
 			temp_buffer=NULL;
@@ -4446,7 +4462,7 @@ int idomod_write_main_config_file(void){
 	/* get current time */
 	gettimeofday(&now,NULL);
 
-	asprintf(&temp_buffer
+	if(asprintf(&temp_buffer
 		 ,"\n%d:\n%d=%ld.%ld\n%d=%s\n"
 		 ,IDO_API_MAINCONFIGFILEVARIABLES
 		 ,IDO_DATA_TIMESTAMP
@@ -4454,7 +4470,9 @@ int idomod_write_main_config_file(void){
 		 ,now.tv_usec
 		 ,IDO_DATA_CONFIGFILENAME
 		 ,config_file
-		);
+		)==-1)
+		temp_buffer=NULL;
+
 	idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 	free(temp_buffer);
 	temp_buffer=NULL;
@@ -4478,12 +4496,14 @@ int idomod_write_main_config_file(void){
 				continue;
 			val=strtok(NULL,"\n");
 
-			asprintf(&temp_buffer
+			if(asprintf(&temp_buffer
 				 ,"%d=%s=%s\n"
 				 ,IDO_DATA_CONFIGFILEVARIABLE
 				 ,var
 				 ,(val==NULL)?"":val
-				);
+				)==-1)
+				temp_buffer=NULL;
+
 			idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 			free(temp_buffer);
 			temp_buffer=NULL;
@@ -4492,10 +4512,12 @@ int idomod_write_main_config_file(void){
 		fclose(fp);
 	        }
 
-	asprintf(&temp_buffer
+	if(asprintf(&temp_buffer
 		 ,"%d\n\n"
 		 ,IDO_API_ENDDATA
-		);
+		)==-1)
+		temp_buffer=NULL;
+
 	idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 	free(temp_buffer);
 	temp_buffer=NULL;
@@ -4549,30 +4571,34 @@ int idomod_write_runtime_variables(void){
 	/* get current time */
 	gettimeofday(&now,NULL);
 
-	asprintf(&temp_buffer
+	if(asprintf(&temp_buffer
 		 ,"\n%d:\n%d=%ld.%ld\n"
 		 ,IDO_API_RUNTIMEVARIABLES
 		 ,IDO_DATA_TIMESTAMP
 		 ,now.tv_sec
 		 ,now.tv_usec
-		);
+		)==-1)
+		temp_buffer=NULL;
+
 	idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 	free(temp_buffer);
 	temp_buffer=NULL;
 
 	/* write out main config file name */
-	asprintf(&temp_buffer
+	if(asprintf(&temp_buffer
 		 ,"%d=%s=%s\n"
 		 ,IDO_DATA_RUNTIMEVARIABLE
 		 ,"config_file"
 		 ,config_file
-		);
+		)==-1)
+		temp_buffer=NULL;
+
 	idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 	free(temp_buffer);
 	temp_buffer=NULL;
 
 	/* write out vars determined after startup */
-	asprintf(&temp_buffer
+	if(asprintf(&temp_buffer
 		 ,"%d=%s=%d\n%d=%s=%d\n%d=%s=%d\n%d=%s=%d\n%d=%s=%lf\n%d=%s=%lf\n%d=%s=%lu\n%d=%s=%lu\n%d=%s=%lf\n%d=%s=%lf\n%d=%s=%lf\n%d=%s=%lf\n%d=%s=%lf\n%d=%s=%lf\n%d=%s=%d\n%d=%s=%d\n%d=%s=%d\n"
 		 ,IDO_DATA_RUNTIMEVARIABLE
 		 ,"total_services"
@@ -4625,15 +4651,19 @@ int idomod_write_runtime_variables(void){
 		 ,IDO_DATA_RUNTIMEVARIABLE
 		 ,"max_host_check_spread"
 		 ,scheduling_info.max_host_check_spread
-		);
+		)==-1)
+		temp_buffer=NULL;
+
 	idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 	free(temp_buffer);
 	temp_buffer=NULL;
 
-	asprintf(&temp_buffer
+	if(asprintf(&temp_buffer
 		 ,"%d\n\n"
 		 ,IDO_API_ENDDATA
-		);
+		)==-1)
+		temp_buffer=NULL;
+
 	idomod_write_to_sink(temp_buffer,IDO_TRUE,IDO_TRUE);
 	free(temp_buffer);
 	temp_buffer=NULL;
@@ -4712,7 +4742,9 @@ int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...){
                 idomod_close_debug_log();
 
                 /* rotate the log file */
-                asprintf(&temp_path,"%s.old",idomod_debug_file);
+                if(asprintf(&temp_path,"%s.old",idomod_debug_file)==-1)
+			temp_path=NULL;			
+
                 if(temp_path){
 
                         /* unlink the old debug file */

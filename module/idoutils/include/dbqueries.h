@@ -3,8 +3,6 @@
  * DBQUERIES.H - IDO2DB DB QUERY Handler Include File
  *
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
- *
- * Last Modified: 05-19-2010
  * 
  ************************************************************************/
 
@@ -18,6 +16,7 @@
 /* TIMEDEVENTS */
 int ido2db_query_insert_or_update_timedevents_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **data);
 
 /* SYSTEMCOMMANDS */

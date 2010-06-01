@@ -6,9 +6,6 @@
  *  
  * License: GPL v2
  *
- * First Written: 05-13-2005
- * Last Modified: 05-19-2010
- *
  **************************************************************/
 
 #include "../../../include/config.h"

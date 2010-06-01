@@ -4,8 +4,6 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-19-2010
- *
  ************************************************************************/
 
 #ifndef _IDO2DB_IDO2DB_H
@@ -336,36 +334,41 @@ typedef struct ido2db_input_data_info_struct{
 
 /***************** functions *******************/
 
+/* config */
 int ido2db_process_arguments(int,char **);
-
 int ido2db_process_config_var(char *);
 int ido2db_process_config_file(char *);
 
+/* init */
 int ido2db_initialize_variables(void);
-
 int ido2db_check_init_reqs(void);
 
+/* daemonize */
 int ido2db_drop_privileges(char *,char *);
 int ido2db_daemonize(void);
 int ido2db_cleanup_socket(void);
 void ido2db_parent_sighandler(int);
 void ido2db_child_sighandler(int);
 
+/* cleanup */
 int ido2db_free_program_memory(void);
 int ido2db_free_input_memory(ido2db_idi *);
 int ido2db_free_connection_memory(ido2db_idi *);
 
+/* client connection */
 int ido2db_wait_for_connections(void);
 int ido2db_handle_client_connection(int);
 int ido2db_idi_init(ido2db_idi *);
 int ido2db_check_for_client_input(ido2db_idi *,ido_dbuf *, pthread_t *);
 int ido2db_handle_client_input(ido2db_idi *,char *, pthread_t *);
 
+/* data handling */
 int ido2db_start_input_data(ido2db_idi *);
 int ido2db_end_input_data(ido2db_idi *);
 int ido2db_add_input_data_item(ido2db_idi *,int,char *);
 int ido2db_add_input_data_mbuf(ido2db_idi *,int,int,char *);
 
+/* conversion */
 int ido2db_convert_standard_data_elements(ido2db_idi *,int *,int *,int *,struct timeval *);
 int ido2db_convert_string_to_int(char *,int *);
 int ido2db_convert_string_to_float(char *,float *);
@@ -374,7 +377,10 @@ int ido2db_convert_string_to_long(char *,long *);
 int ido2db_convert_string_to_unsignedlong(char *,unsigned long *);
 int ido2db_convert_string_to_timeval(char *,struct timeval *);
 
+/* logging */
+int ido2db_log_debug_info(int , int , const char *, ...);
+
+/* threads */
 void *ido2db_thread_cleanup(void *);
-static void *ido2db_thread_cleanup_exit_handler(void *);
 
 #endif

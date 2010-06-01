@@ -3,8 +3,6 @@
  * DBHANDLERS.H - IDO2DB DB Handler Include File
  * Copyright (c) 2005-2006 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
- * 
- * Last Modified: 05-19-2010
  *
  ************************************************************************/
 
@@ -75,5 +73,4 @@ int ido2db_handle_contactdefinition(ido2db_idi *);
 int ido2db_handle_contactgroupdefinition(ido2db_idi *);
 int ido2db_save_custom_variables(ido2db_idi *,int, unsigned long, char *, unsigned long);
 
-int ido2db_log_debug_info(int , int , const char *, ...);
 #endif

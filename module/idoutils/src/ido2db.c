@@ -4,9 +4,6 @@
  * Copyright (c) 2005-2008 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * First Written: 05-19-2005
- * Last Modified: 05-19-2010
- *
  **************************************************************/
 
 /*#define DEBUG_MEMORY 1*/
@@ -76,6 +73,8 @@ extern int ido2db_check_dbd_driver(void);
 int ido2db_open_debug_log(void);
 int ido2db_close_debug_log(void);
 
+static void *ido2db_thread_cleanup_exit_handler(void *);
+
 /*#define DEBUG_IDO2DB 1*/                         /* don't daemonize */
 /*#define DEBUG_IDO2DB_EXIT_AFTER_CONNECTION 1*/    /* exit after first client disconnects */
 /*#define DEBUG_IDO2DB2 1 */
@@ -99,8 +98,12 @@ int main(int argc, char **argv){
 	char seedfile[FILENAME_MAX];
 	int i,c;
 #endif
+#ifndef USE_ORACLE
+	dbi_driver driver;
+	int numdrivers;	
 
-
+	driver = NULL;
+#endif
 	result=ido2db_process_arguments(argc,argv);
 
         if(result!=IDO_OK || ido2db_show_help==IDO_TRUE || ido2db_show_license==IDO_TRUE || ido2db_show_version==IDO_TRUE){
@@ -202,15 +205,15 @@ int main(int argc, char **argv){
 #ifndef USE_ORACLE /* everything else will be libdbi */
 	if(ido2db_check_dbd_driver()==IDO_FALSE){
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
-		dbi_driver driver;
-		driver = NULL;
-		int numdrivers = dbi_initialize(NULL);
-		  fprintf(stderr, "%d drivers available: ", numdrivers);
-		  while ((driver = dbi_driver_list(driver)) != NULL) {
-		    fprintf(stderr, "%s ", dbi_driver_get_name(driver));
-		  }
-		  fprintf(stderr, "\n");
+		
+		numdrivers = dbi_initialize(NULL);
+		
+		fprintf(stderr, "%d drivers available: ", numdrivers);
+		while ((driver = dbi_driver_list(driver)) != NULL) {
 
+			fprintf(stderr, "%s ", dbi_driver_get_name(driver));
+		}
+		fprintf(stderr, "\n");
 
 #ifdef HAVE_SSL
 		if(use_ssl==IDO_TRUE)
@@ -749,7 +752,8 @@ int ido2db_daemonize(void){
 	if(lock_file){
 		lockfile=open(lock_file,O_RDWR | O_CREAT, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
 		if(lockfile<0){
-			asprintf(&msg,"Failed to obtain lock on file %s: %s\n", lock_file, strerror(errno));
+			if(asprintf(&msg,"Failed to obtain lock on file %s: %s\n", lock_file, strerror(errno))==-1)
+				msg=NULL;
 			perror(msg);
 			ido2db_cleanup_socket();
 			return IDO_ERROR;
@@ -757,7 +761,8 @@ int ido2db_daemonize(void){
 
 		/* see if we can read the contents of the lockfile */
 		if((val=read(lockfile,buf,(size_t)10))<0){
-			asprintf(&msg,"Lockfile exists but cannot be read");
+			if(asprintf(&msg,"Lockfile exists but cannot be read")==-1)
+				msg=NULL;
 			perror(msg);
 			ido2db_cleanup_socket();
 			return IDO_ERROR;
@@ -771,11 +776,13 @@ int ido2db_daemonize(void){
 		if(fcntl(lockfile,F_SETLK,&lock)<0){
 			if(errno==EACCES || errno==EAGAIN){
 				fcntl(lockfile,F_GETLK,&lock);
-				asprintf(&msg,"Lockfile '%s' looks like its already held by another instance (%d).  Bailing out...",lock_file,(int)lock.l_pid);
-				}
-			else
-				asprintf(&msg,"Cannot lock lockfile '%s': %s. Bailing out...",lock_file,strerror(errno));
-
+				if(asprintf(&msg,"Lockfile '%s' looks like its already held by another instance (%d).  Bailing out...",lock_file,(int)lock.l_pid)==-1)
+					msg=NULL;
+			}
+			else  {
+				if(asprintf(&msg,"Cannot lock lockfile '%s': %s. Bailing out...",lock_file,strerror(errno))==-1)
+					msg=NULL;
+			}
 			perror(msg);
 			ido2db_cleanup_socket();
 			return IDO_ERROR;
@@ -1104,7 +1111,6 @@ int ido2db_handle_client_connection(int sd){
 
 	int pthread_ret=0;
 	pthread_t thread_pool[1];
-// HENDRIK1
 #ifdef HAVE_SSL
 	SSL *ssl=NULL;
 #endif
@@ -1369,9 +1375,6 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf, pthread_t *thread_poo
 	int data_type=IDO_DATA_NONE;
 	int input_type=IDO2DB_INPUT_DATA_NONE;
 
-	int pthread_ret = 0;
-	// pthread_t th[1];
-
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input() start\n");
 
 #ifdef DEBUG_IDO2DB2
@@ -1427,12 +1430,6 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf, pthread_t *thread_poo
 			/* save connection info to DB */
 			ido2db_db_hello(idi);
 
-			/* create cleanup thread */
-/*			if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, idi)) != 0) {
-				syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
-				exit(EXIT_FAILURE);
-			}
-*/
 		        }
 
 		else if(!strcmp(var,IDO_API_PROTOCOL))
@@ -2443,7 +2440,9 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...){
 		ido2db_close_debug_log();
 
 		/* rotate the log file */
-		asprintf(&temp_path,"%s.old",ido2db_debug_file);
+		if(asprintf(&temp_path,"%s.old",ido2db_debug_file)==-1)
+			temp_path=NULL; 
+
 		if(temp_path){
 
 			/* unlink the old debug file */
@@ -2481,7 +2480,7 @@ void * ido2db_thread_cleanup(void *data) {
 	delay.tv_nsec = 500;
 
 	/* it might happen that db connection comes to fast after main thread so sleep a while */
-	delay.tv_sec = 5;
+	delay.tv_sec = 60;
 	nanosleep(&delay, NULL);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");

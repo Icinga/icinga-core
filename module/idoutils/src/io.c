@@ -4,8 +4,6 @@
  * Copyright (c) 2005-2006 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  * 
- * First Written: 05-20-2006
- *
  *
  **************************************************************/
 
@@ -150,7 +148,9 @@ int ido_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 	struct hostent *hp=NULL;
 	mode_t mode=S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
 	int newfd=0;
+#ifdef HAVE_SSL
 	int rc=0;
+#endif
 
 	/* use file */
 	if(type==IDO_SINK_FILE){

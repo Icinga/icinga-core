@@ -3,8 +3,6 @@
  *
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-19-2010
- *
  **************************************************************/
 
 /* include our project's header files */
@@ -44,11 +42,10 @@ extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
 int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
 	char * query1 = NULL;
 	char * query2 = NULL;
-	unsigned long i = 666;
-	int id = 0;
+#endif
 
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add() start\n");
 
@@ -175,11 +172,10 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 
 int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
 	char * query1 = NULL;
 	char * query2 = NULL;
-	unsigned long i = 666;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add() start\n");
 
         if (idi == NULL)
@@ -305,10 +301,10 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 
 int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_execute() start\n");
 
         if (idi == NULL)
@@ -436,10 +432,10 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 
 int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() start\n");
 
         if (idi == NULL)
@@ -602,10 +598,10 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 
 int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() start\n");
 
         if (idi == NULL)
@@ -811,10 +807,10 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 
 int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() start\n");
 
         if (idi == NULL)
@@ -984,10 +980,10 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 
 int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationdata_add() start\n");
 
         if (idi == NULL)
@@ -1110,10 +1106,10 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 
 int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationmethoddata_add() start\n");
 
         if (idi == NULL)
@@ -1252,10 +1248,10 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 
 int ido2db_query_insert_or_update_servicecheckdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicecheckdata_add() start\n");
 
         if (idi == NULL)
@@ -1486,11 +1482,10 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ido2db_idi *idi, void **d
 
 int ido2db_query_insert_or_update_hostcheckdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-	int i = 0;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostcheckdata_add() start\n");
 
         if (idi == NULL)
@@ -1724,10 +1719,10 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ido2db_idi *idi, void **data
 
 int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_add() start\n");
 
         if (idi == NULL)
@@ -1896,10 +1891,10 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 
 int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_history_add() start\n");
 
         if (idi == NULL)
@@ -2073,10 +2068,10 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 
 int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add() start\n");
 
         if (idi == NULL)
@@ -2234,10 +2229,10 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 
 int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_downtime_history_add() start\n");
 
         if (idi == NULL)
@@ -2402,10 +2397,10 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 
 int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_programstatusdata_add() start\n");
 
         if (idi == NULL)
@@ -2641,10 +2636,10 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 
 int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() start\n");
 
         if (idi == NULL)
@@ -3049,10 +3044,10 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 
 int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() start\n");
 
         if (idi == NULL)
@@ -3466,10 +3461,10 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 
 int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactstatusdata_add() start\n");
 
         if (idi == NULL)
@@ -3622,10 +3617,10 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 
 int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_configfilevariables_add() start\n");
 
         if (idi == NULL)
@@ -3734,10 +3729,10 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_runtimevariables_add() start\n");
 
         if (idi == NULL)
@@ -3839,10 +3834,10 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 
 int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -4317,10 +4312,10 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 
 int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_parenthosts_add() start\n");
 
         if (idi == NULL)
@@ -4418,10 +4413,10 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 
 int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contactgroups_add() start\n");
 
         if (idi == NULL)
@@ -4519,10 +4514,10 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 
 int ido2db_query_insert_or_update_hostdefinition_contacts_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contacts_add() start\n");
 
         if (idi == NULL)
@@ -4534,7 +4529,7 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ido2db_idi *idi, v
 #ifndef USE_ORACLE /* everything else will be libdbi */
         switch (idi->dbinfo.server_type) {
                 case IDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, host_id, contact_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id='%d', host_id='%lu', contact_object_id='%lu'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, host_id, contact_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu, host_id=%lu, contact_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
@@ -4548,7 +4543,7 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ido2db_idi *idi, v
 			free(query1);
                         break;
                 case IDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s SET instance_id='%d', host_id='%lu', contact_object_id='%lu' WHERE instance_id=%lu AND host_id=%lu AND contact_object_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET instance_id=%lu, host_id=%lu, contact_object_id=%lu WHERE instance_id=%lu AND host_id=%lu AND contact_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTS],
                                         *(unsigned long *) data[0],     /* update start */
                                         *(unsigned long *) data[1],
@@ -4629,10 +4624,10 @@ int ido2db_query_insert_or_update_hostdefinition_contacts_add(ido2db_idi *idi, v
 
 int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -4737,10 +4732,10 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 
 int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add() start\n");
 
         if (idi == NULL)
@@ -4842,10 +4837,10 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 
 int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -5279,10 +5274,10 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 
 int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contactgroups_add() start\n");
 
         if (idi == NULL)
@@ -5380,10 +5375,10 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 
 int ido2db_query_insert_or_update_servicedefinition_contacts_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contacts_add() start\n");
 
         if (idi == NULL)
@@ -5490,10 +5485,10 @@ int ido2db_query_insert_or_update_servicedefinition_contacts_add(ido2db_idi *idi
 
 int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -5597,10 +5592,10 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 
 int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_members_add() start\n");
 
         if (idi == NULL)
@@ -5703,10 +5698,10 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 
 int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdependencydefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -5850,10 +5845,10 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 
 int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedependencydefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -6003,10 +5998,10 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 
 int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -6030,7 +6025,8 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
                                         *(int *) data[7],
                                         *(int *) data[8],
                                         *(int *) data[9],		/* insert end */
-                                        *(int *) data[7],		/* update start */
+                                        *(double *) data[6],		/* update start */
+                                        *(int *) data[7],		
                                         *(int *) data[8],
                                         *(int *) data[9]		/* update end */
                         );
@@ -6041,7 +6037,8 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
                 case IDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET notification_interval=%lf, escalate_on_recovery=%d, escalate_on_down=%d, escalate_on_unreachable=%d WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
-                                        *(int *) data[7],		/* update start */
+                                        *(double *) data[6],		/* update start */
+                                        *(int *) data[7],		
                                         *(int *) data[8],
                                         *(int *) data[9],		/* update end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
@@ -6049,8 +6046,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
                                         *(unsigned long *) data[2],
                                         *(unsigned long *) data[3],
                                         *(int *) data[4],
-                                        *(int *) data[5],
-                                        *(double *) data[6]		/* unique constraint end */
+                                        *(int *) data[5]		/* unique constraint end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -6148,10 +6144,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 
 int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add() start\n");
 
         if (idi == NULL)
@@ -6248,10 +6244,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 
 int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_contacts_add() start\n");
 
         if (idi == NULL)
@@ -6263,7 +6259,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 #ifndef USE_ORACLE /* everything else will be libdbi */
         switch (idi->dbinfo.server_type) {
                 case IDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, hostescalation_id, contact_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id='%d', hostescalation_id='%lu', contact_object_id='%lu'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, hostescalation_id, contact_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu, hostescalation_id=%lu, contact_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],     
@@ -6277,7 +6273,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 			free(query1);
                         break;
                 case IDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s SET instance_id='%d', hostescalation_id='%lu', contact_object_id='%lu' WHERE instance_id=%lu AND hostescalation_id=%lu AND contact_object_id=%lu",
+                        asprintf(&query1, "UPDATE %s SET instance_id=%lu, hostescalation_id=%lu, contact_object_id=%lu WHERE instance_id=%lu AND hostescalation_id=%lu AND contact_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
                                         *(unsigned long *) data[0],     /* update start */
                                         *(unsigned long *) data[1],     
@@ -6358,10 +6354,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 
 int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -6511,10 +6507,10 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 
 int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add() start\n");
 
         if (idi == NULL)
@@ -6612,10 +6608,10 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 
 int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add() start\n");
 
         if (idi == NULL)
@@ -6627,7 +6623,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 #ifndef USE_ORACLE /* everything else will be libdbi */
         switch (idi->dbinfo.server_type) {
                 case IDO2DB_DBSERVER_MYSQL:
-                        asprintf(&query1, "INSERT INTO %s (instance_id, serviceescalation_id, contact_object_id) VALUES ('%lu', '%lu', '%lu') ON DUPLICATE KEY UPDATE instance_id='%d', serviceescalation_id='%lu', contact_object_id='%lu'",
+                        asprintf(&query1, "INSERT INTO %s (instance_id, serviceescalation_id, contact_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu, serviceescalation_id=%lu, contact_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],     
@@ -6641,7 +6637,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 			free(query1);
                         break;
                 case IDO2DB_DBSERVER_PGSQL:
-                        asprintf(&query1, "UPDATE %s SET instance_id='%d', serviceescalation_id='%lu', contact_object_id='%lu' WHERE instance_id='%d' AND serviceescalation_id='%lu' AND contact_object_id='%lu'",
+                        asprintf(&query1, "UPDATE %s SET instance_id=%lu, serviceescalation_id=%lu, contact_object_id=%lu WHERE instance_id=%lu AND serviceescalation_id=%lu AND contact_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
                                         *(unsigned long *) data[0],     /* update start */
                                         *(unsigned long *) data[1],     
@@ -6657,7 +6653,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
                         /* check result if update was ok */
 			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
                                 /* try insert instead */
-                                asprintf(&query2, "INSERT INTO %s (instance_id, serviceescalation_id, contact_object_id) VALUES ('%lu', '%lu', '%lu')",
+                                asprintf(&query2, "INSERT INTO %s (instance_id, serviceescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],     
@@ -6722,10 +6718,10 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 
 int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commanddefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -6834,10 +6830,10 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 
 int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -6941,10 +6937,10 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 
 int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_timeranges_add() start\n");
 
         if (idi == NULL)
@@ -7056,10 +7052,10 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 
 int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -7289,10 +7285,10 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 
 int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_addresses_add() start\n");
 
         if (idi == NULL)
@@ -7397,10 +7393,10 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 
 int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_notificationcommands_add() start\n");
 
         if (idi == NULL)
@@ -7510,10 +7506,10 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 
 int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_add() start\n");
 
         if (idi == NULL)
@@ -7627,10 +7623,10 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 
 int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariables_add() start\n");
 
         if (idi == NULL)
@@ -7648,8 +7644,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         *(unsigned long *) data[1],
                                         *(int *) data[2],
                                         *(int *) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5],		/* insert end */
+                                        (data[4]==NULL)?"":*(char **) data[4],
+                                        (data[5]==NULL)?"":*(char **) data[5],		/* insert end */
                                         *(unsigned long *) data[0],     /* update start */
                                         *(int *) data[2],
                                         *(int *) data[3],
@@ -7666,9 +7662,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         *(unsigned long *) data[0],     /* update start */
                                         *(int *) data[2],
                                         *(int *) data[3],
-                                        *(char **) data[5],		/* update end */
+                                        (data[5]==NULL)?"":*(char **) data[5],		/* update end */
                                         *(unsigned long *) data[1],	/* unique constraint start */
-                                        *(char **) data[4]		/* unique constraint end */
+                                        (data[4]==NULL)?"":*(char **) data[4]		/* unique constraint end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -7683,8 +7679,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         *(unsigned long *) data[1],
                                         *(int *) data[2],
                                         *(int *) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5]		/* insert end */
+                                        (data[4]==NULL)?"":*(char **) data[4],
+                                        (data[5]==NULL)?"":*(char **) data[5]		/* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -7724,12 +7720,16 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X4"), (int *) data[3])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X5"), *(char **) data[4], 0)) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X6"), *(char **) data[5], 0)) {
-                                return IDO_ERROR;
-                        }
+			if(data[4]!=NULL) {
+	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X5"), *(char **) data[4], 0)) {
+        	                        return IDO_ERROR;
+                	        }
+			}
+			if(data[5]!=NULL) {
+	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X6"), *(char **) data[5], 0)) {
+	                                return IDO_ERROR;
+        	                }
+			}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_save_custom_variables_customvariables)) {
@@ -7750,10 +7750,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 
 int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add() start\n");
 
         if (idi == NULL)
@@ -7771,8 +7771,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         *(unsigned long *) data[1],
                                         *(char **) data[2],
                                         *(int *) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5],             /* insert end */
+                                        (data[4]==NULL)?"":*(char **) data[4],
+                                        (data[5]==NULL)?"":*(char **) data[5],             /* insert end */
                                         *(unsigned long *) data[0],     /* update start */
                                         *(char **) data[2],
                                         *(int *) data[3],
@@ -7788,9 +7788,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         *(unsigned long *) data[0],     /* update start */
                                         *(char **) data[2],
                                         *(int *) data[3],
-                                        *(char **) data[5],             /* update end */
+                                        (data[5]==NULL)?"":*(char **) data[5],             /* update end */
                                         *(unsigned long *) data[1],     /* unique constraint start */
-                                        *(char **) data[4]      /* unique constraint end */
+                                        (data[4]==NULL)?"":*(char **) data[4]      /* unique constraint end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -7803,10 +7803,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS],
                                         *(unsigned long *) data[0],     /* insert start */
                                         *(unsigned long *) data[1],
-                                        *(int *) data[2],
+                                        *(char **) data[2],
                                         *(int *) data[3],
-                                        *(char **) data[4],
-                                        *(char **) data[5]             /* insert end */
+                                        (data[4]==NULL)?"":*(char **) data[4],
+                                        (data[5]==NULL)?"":*(char **) data[5]             /* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -7852,12 +7852,16 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X4"), (int *) data[3])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X5"), *(char **) data[4], 0)) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X6"), *(char **) data[5], 0)) {
-                                return IDO_ERROR;
-                        }
+			if(data[4]!=NULL) {
+	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X5"), *(char **) data[4], 0)) {
+        	                        return IDO_ERROR;
+                	        }
+			}
+			if(data[5]!=NULL) {
+	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X6"), *(char **) data[5], 0)) {
+        	                        return IDO_ERROR;
+                	        }
+			}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus)) {
@@ -7882,10 +7886,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 
 int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_definition_add() start\n");
 
         if (idi == NULL)
@@ -7989,10 +7993,10 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 
 int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add(ido2db_idi *idi, void **data) {
         int result = IDO_OK;
-        const char *dbi_error;
+#ifndef USE_ORACLE
         char * query1 = NULL;
         char * query2 = NULL;
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add() start\n");
 
         if (idi == NULL)

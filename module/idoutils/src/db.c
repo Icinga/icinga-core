@@ -4,8 +4,6 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-19-2010
- *
  **************************************************************/
 
 /* include our project's header files */
@@ -343,8 +341,9 @@ int ido2db_db_deinit(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_connect(ido2db_idi *idi) {
 	int result = IDO_OK;
+#ifndef USE_ORACLE
 	const char *dbi_error;
-
+#endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() start\n");
 
 	if (idi == NULL)
@@ -1058,9 +1057,11 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 /* post-connect routines            */
 /************************************/
 int ido2db_db_hello(ido2db_idi *idi) {
+#ifndef USE_ORACLE
 	char *buf = NULL;
 	char *buf1 = NULL;
 	char *ts = NULL;
+#endif
 	int result = IDO_OK;
 	int have_instance = IDO_FALSE;
 	time_t current_time;
@@ -1403,15 +1404,18 @@ int ido2db_db_hello(ido2db_idi *idi) {
 /* threading post-connect routines  */
 /************************************/
 int ido2db_thread_db_hello(ido2db_idi *idi) {
+#ifndef USE_ORACLE
         char *buf = NULL;
         char *buf1 = NULL;
         char *ts = NULL;
+#endif
         int result = IDO_OK;
         int have_instance = IDO_FALSE;
         time_t current_time;
 
+#ifdef USE_ORACLE 
 	void *data[9];
-
+#endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() start\n");
 
         /* make sure we have an instance name */
@@ -1452,7 +1456,6 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 #else /* Oracle ocilib specific */
 
         /* get existing instance */
-        //void *data[9];
         data[0] = (void *) &idi->instance_name;
 
         if(!OCI_BindString(idi->dbinfo.oci_statement_instances_select, MT(":X1"), *(char **) data[0], 0)) {
@@ -1668,9 +1671,10 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_goodbye(ido2db_idi *idi) {
 	int result = IDO_OK;
+#ifndef USE_ORACLE
 	char *buf = NULL;
 	char *ts = NULL;
-
+#endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_goodbye() start\n");
 
 #ifndef USE_ORACLE /* everything else will be libdbi */
@@ -1737,7 +1741,9 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_checkin(ido2db_idi *idi) {
 	int result = IDO_OK;
+#ifndef USE_ORACLE
 	char *buf = NULL;
+#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_checkin() start\n");
 
@@ -1890,11 +1896,13 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 
 	switch (idi->dbinfo.server_type) {
 		case IDO2DB_DBSERVER_MYSQL:
-			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
+			if(asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t)==-1)
+				buf=NULL;
 			break;
 		case IDO2DB_DBSERVER_PGSQL:
 			/* from_unixtime is a PL/SQL function (defined in db/pgsql.sql) */
-			asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t);
+			if(asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t)==-1)
+				buf=NULL;
 			break;
                 case IDO2DB_DBSERVER_DB2:
                         break;
@@ -1910,7 +1918,8 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                         /* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
-                        asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t);
+                        if(asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t)==-1)
+				buf=NULL;
 #endif /* Oracle ocilib specific */
 
                         break;
@@ -1937,11 +1946,13 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 
 	switch (idi->dbinfo.server_type) { 
 		case IDO2DB_DBSERVER_MYSQL:
-                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
+                        if(asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field)==-1)
+				buf=NULL;
 			break;
                 case IDO2DB_DBSERVER_PGSQL:
                         /* unix_timestamp is a PL/SQL function (defined in db/pgsql.sql) */
-                        asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field);
+                        if(asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field)==-1)
+				buf=NULL;
 			break;
                 case IDO2DB_DBSERVER_DB2:
                         break;
@@ -1956,7 +1967,8 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
                 case IDO2DB_DBSERVER_ORACLE:
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-			asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field);
+			if(asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field)==-1)
+				buf=NULL;
 #endif/* Oracle ocilib specific */
 
                         break;
@@ -1978,7 +1990,9 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 /************************************/
 int ido2db_db_query(ido2db_idi *idi, char *buf) {
 	int result = IDO_OK;
+#ifndef USE_ORACLE
 	const char *error_msg;
+#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_query() start\n");
 
@@ -2087,9 +2101,13 @@ int ido2db_handle_db_error(ido2db_idi *idi) {
 /* clears data from a given table (current instance only) */
 /**********************************************************/
 int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
+#ifndef USE_ORACLE
 	char *buf = NULL;
+#endif
 	int result = IDO_OK;
-	int oci_res = 0;
+#ifdef USE_ORACLE 
+        void *data[2];
+#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table() start\n");
 
@@ -2103,21 +2121,11 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	free(buf);
 
 #else /* Oracle ocilib specific */
 
-/*
-        if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
-                buf = NULL;
-
-        result = ido2db_db_query(idi, buf);
-	
-	OCI_Commit(idi->dbinfo.oci_connection);
-
-	OCI_StatementFree(idi->dbinfo.oci_statement);
-*/
 	/* procedure approach */
-        void *data[2];
         data[0] = (void *) &table_name;
         data[1] = (void *) &idi->dbinfo.instance_id;	
 
@@ -2136,8 +2144,6 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
                         OCI_Commit(idi->dbinfo.oci_connection);
 
 #endif /* Oracle ocilib specific */
-
-	free(buf);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table() end\n");
 	return result;
@@ -2263,16 +2269,6 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
                         }
 
                         OCI_Commit(idi->dbinfo.oci_connection);
-/*
-
-        if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
-                        table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
-                buf = NULL;
-
-        result = ido2db_db_query(idi, buf);
-
-	OCI_StatementFree(idi->dbinfo.oci_statement);
-*/
 #endif /* Oracle ocilib specific */
 
 	free(buf);
