@@ -1078,7 +1078,57 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 /*#define TEST_TIMEPERIODS_B 1*/
 
 /* Separate this out from public get_next_valid_time for testing, so we can mock current_time */
+
 void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_time, timeperiod *tperiod){
+	time_t preferred_time=(time_t)0L;
+	preferred_time=(pref_time<current_time)?current_time:pref_time;
+
+	if(tperiod==NULL){
+		*valid_time=preferred_time;
+		return;
+		}
+
+	if(check_time_against_period(preferred_time,tperiod)==OK){
+#ifdef TEST_TIMEPERIODS_B
+		printf("PREF TIME IS VALID\n");
+#endif
+		*valid_time=preferred_time;
+		return;
+		}
+
+	get_earliest_time(preferred_time,valid_time,current_time,tperiod,0);
+}
+
+void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod,int level){
+
+	time_t earliest_time;
+	timeperiodexclusion *temp_timeperiodexclusion=NULL;
+	timeperiodexclusion *first_timeperiodexclusion=NULL;
+
+	if((level%2) == 0){
+		_get_next_valid_time_per_timeperiod(pref_time,&earliest_time,current_time,tperiod);
+		if(*valid_time == 0)
+			*valid_time=earliest_time;	
+		else if(earliest_time<*valid_time)
+			*valid_time=earliest_time;
+	}
+	else{
+		get_min_invalid_time_per_timeperiod(pref_time,&earliest_time,current_time,tperiod);
+		if(*valid_time == 0)
+			*valid_time=earliest_time;
+		else if(earliest_time<*valid_time)
+			*valid_time=earliest_time+1;
+	}
+
+	first_timeperiodexclusion=tperiod->exclusions;
+	tperiod->exclusions=NULL;
+	for(temp_timeperiodexclusion=first_timeperiodexclusion;temp_timeperiodexclusion!=NULL;temp_timeperiodexclusion=temp_timeperiodexclusion->next){
+		get_earliest_time(pref_time,valid_time,current_time,temp_timeperiodexclusion->timeperiod_ptr,level+1);
+	}
+	tperiod->exclusions=first_timeperiodexclusion;
+}
+
+void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod){
 	time_t preferred_time=(time_t)0L;
 	timerange *temp_timerange;
 	daterange *temp_daterange;
@@ -1112,21 +1162,10 @@ void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_t
 	int current_time_wday=0;
 
 	/* preferred time must be now or in the future */
-	preferred_time=(pref_time<current_time)?current_time:pref_time;
+	preferred_time=pref_time;
 
 	/* if no timeperiod, go with preferred time */
 	if(tperiod==NULL){
-		*valid_time=preferred_time;
-		return;
-		}
-
-	/* if the preferred time is valid in timeperiod, go with it */
-	/* this is necessary because the code below won't catch exceptions where preferred day is last (or only) date in timeperiod (date range) and last valid time has already passed */
-	/* performing this check and bailing out early allows us to skip having to check the next instance of a date range exception or weekday to determine the next valid time */
-	if(check_time_against_period(preferred_time,tperiod)==OK){
-#ifdef TEST_TIMEPERIODS_B
-		printf("PREF TIME IS VALID\n");
-#endif
 		*valid_time=preferred_time;
 		return;
 		}
@@ -1264,7 +1303,7 @@ void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_t
 				break;
 			case DATERANGE_MONTH_DAY:
 				/* use same year and month as was calculated for start time above */
-				end_time=calculate_time_from_day_of_month(year,month,temp_daterange->emday);
+				end_time=calculate_time_from_day_of_month(year,month,temp_daterange->emday+1);
 				break;
 			case DATERANGE_MONTH_WEEK_DAY:
 				/* use same year as was calculated for start time above */
@@ -1482,6 +1521,350 @@ void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_t
 
 	return;
         }
+
+void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod){
+	time_t preferred_time=(time_t)0L;
+	timerange *temp_timerange;
+	daterange *temp_daterange;
+	unsigned long midnight=0L;
+	struct tm *t;
+	time_t day_start=(time_t)0L;
+	time_t day_range_start=(time_t)0L;
+	time_t day_range_end=(time_t)0L;
+	time_t start_time=(time_t)0L;
+	time_t end_time=(time_t)0L;
+	int have_latest_time=FALSE;
+	time_t latest_time=(time_t)0L;
+	time_t earliest_day=(time_t)0L;
+	time_t potential_time=(time_t)0L;
+	int weekday=0;
+	int has_looped=FALSE;
+	int days_into_the_future=0;
+	int daterange_type=0;
+	unsigned long days=0L;
+	unsigned long advance_interval=0L;
+	int year=0; /* new */
+	int month=0; /* new */
+	
+	int pref_time_year=0;
+	int pref_time_mon=0;
+	int pref_time_mday=0;
+	int pref_time_wday=0;
+	int current_time_year=0;
+	int current_time_mon=0;
+	int current_time_mday=0;
+	int current_time_wday=0;
+
+
+	log_debug_info(DEBUGL_FUNCTIONS,0,"get_next_valid_time_per_timeperiod()\n");
+
+	preferred_time=pref_time;
+
+	/* if no timeperiod, go with preferred time */
+	if(tperiod==NULL){
+		*valid_time=preferred_time;
+		return;
+		}
+
+	/* calculate the start of the day (midnight, 00:00 hours) of preferred time */
+	t=localtime((time_t *)&preferred_time);
+	t->tm_sec=0;
+	t->tm_min=0;
+	t->tm_hour=0;
+        t->tm_isdst=-1;
+	midnight=(unsigned long)mktime(t);
+
+	/* save pref time values for later */
+	pref_time_year=t->tm_year;
+	pref_time_mon=t->tm_mon;
+	pref_time_mday=t->tm_mday;
+	pref_time_wday=t->tm_wday;
+	
+	/* save current time values for later */
+	t=localtime((time_t *)&current_time);
+	current_time_year=t->tm_year;
+	current_time_mon=t->tm_mon;
+	current_time_mday=t->tm_mday;
+	current_time_wday=t->tm_wday;
+
+	/**** check exceptions (in this timeperiod definition) first ****/
+	for(daterange_type=0;daterange_type<DATERANGE_TYPES;daterange_type++){
+
+		for(temp_daterange=tperiod->exceptions[daterange_type];temp_daterange!=NULL;temp_daterange=temp_daterange->next){
+
+			/* get the start time */
+			switch(daterange_type){
+			case DATERANGE_CALENDAR_DATE: /* 2009-08-11 */
+				t->tm_sec=0;
+				t->tm_min=0;
+				t->tm_hour=0;
+				t->tm_mday=temp_daterange->smday;
+				t->tm_mon=temp_daterange->smon;
+				t->tm_year=(temp_daterange->syear-1900);
+                                t->tm_isdst=-1;
+				start_time=mktime(t);
+				break;
+			case DATERANGE_MONTH_DATE:  /* january 1 */
+				/* what year should we use? */
+				year=(pref_time_year < current_time_year)?current_time_year:pref_time_year;
+				/* advance an additional year if we already passed the end month date */
+				if((temp_daterange->emon < current_time_mon) || ((temp_daterange->emon == current_time_mon) && temp_daterange->emday < current_time_mday))
+					year++;
+				start_time=calculate_time_from_day_of_month(year,temp_daterange->smon,temp_daterange->smday);
+				break;
+			case DATERANGE_MONTH_DAY:  /* day 3 */
+				/* what year should we use? */
+				year=(pref_time_year < current_time_year)?current_time_year:pref_time_year;
+				/* use current month */
+				month=current_time_mon;
+				/* advance an additional month (and possibly the year) if we already passed the end day of month */
+				if(temp_daterange->emday < current_time_mday){
+					/*if(month==1){*/
+					if(month==11){
+						month=0;
+						year++;
+						}
+					else
+						month++;
+					}
+				start_time=calculate_time_from_day_of_month(year,month,temp_daterange->smday);
+				break;
+			case DATERANGE_MONTH_WEEK_DAY: /* thursday 2 april */
+				/* what year should we use? */
+				year=(pref_time_year < current_time_year)?current_time_year:pref_time_year;
+				/* calculate time of specified weekday of specific month */
+				start_time=calculate_time_from_weekday_of_month(year,temp_daterange->smon,temp_daterange->swday,temp_daterange->swday_offset);
+				/* advance to next year if we've passed this month weekday already this year */
+				if(start_time < preferred_time){
+					year++;
+					start_time=calculate_time_from_weekday_of_month(year,temp_daterange->smon,temp_daterange->swday,temp_daterange->swday_offset);
+					}
+				break;
+			case DATERANGE_WEEK_DAY: /* wednesday 1 */
+				/* what year should we use? */
+				year=(pref_time_year < current_time_year)?current_time_year:pref_time_year;
+				/* calculate time of specified weekday of month */
+				start_time=calculate_time_from_weekday_of_month(year,pref_time_mon,temp_daterange->swday,temp_daterange->swday_offset);
+				/* advance to next month (or year) if we've passed this weekday of this month already */
+				if(start_time < preferred_time){
+					month=pref_time_mon;
+					if(month==11){
+						month=0;
+						year++;
+						}
+					else
+						month++;
+					start_time=calculate_time_from_weekday_of_month(year,month,temp_daterange->swday,temp_daterange->swday_offset);
+					}
+				break;
+			default:
+				continue;
+				break;
+				}
+
+			/* get the end time */
+			switch(daterange_type){
+			case DATERANGE_CALENDAR_DATE:
+				t->tm_sec=0;
+				t->tm_min=0;
+				t->tm_hour=0;
+				t->tm_mday=temp_daterange->emday;
+				t->tm_mon=temp_daterange->emon;
+				t->tm_year=(temp_daterange->eyear-1900);
+                                t->tm_isdst=-1;
+				end_time=mktime(t);
+				break;
+			case DATERANGE_MONTH_DATE:
+				/* use same year as was calculated for start time above */
+				end_time=calculate_time_from_day_of_month(year,temp_daterange->emon,temp_daterange->emday);
+				/* advance a year if necessary: august 5 - feburary 2 */
+				if(end_time<start_time){
+					year++;
+					end_time=calculate_time_from_day_of_month(year,temp_daterange->emon,temp_daterange->emday);
+					}
+				break;
+			case DATERANGE_MONTH_DAY:
+				/* use same year and month as was calculated for start time above */
+				end_time=calculate_time_from_day_of_month(year,month,temp_daterange->emday+1);
+				break;
+			case DATERANGE_MONTH_WEEK_DAY:
+				/* use same year as was calculated for start time above */
+				end_time=calculate_time_from_weekday_of_month(year,temp_daterange->emon,temp_daterange->ewday,temp_daterange->ewday_offset);
+				/* advance a year if necessary: thursday 2 august - monday 3 february */
+				if(end_time<start_time){
+					year++;
+					end_time=calculate_time_from_weekday_of_month(year,temp_daterange->emon,temp_daterange->ewday,temp_daterange->ewday_offset);
+					}
+				break;
+			case DATERANGE_WEEK_DAY:
+				/* use same year and month as was calculated for start time above */
+				end_time=calculate_time_from_weekday_of_month(year,month,temp_daterange->ewday,temp_daterange->ewday_offset);
+				break;
+			default:
+				continue;
+				break;
+				}
+
+			/* start date was bad, so skip this date range */
+			if((unsigned long)start_time==0L)
+				continue;
+
+			/* end date was bad - see if we can handle the error */
+			if((unsigned long)end_time==0L){
+				switch(daterange_type){
+				case DATERANGE_CALENDAR_DATE:
+					continue;
+					break;
+				case DATERANGE_MONTH_DATE:
+					/* end date can't be helped, so skip it */
+					if(temp_daterange->emday<0)
+						continue;
+
+					/* else end date slipped past end of month, so use last day of month as end date */
+					end_time=calculate_time_from_day_of_month(year,temp_daterange->emon,-1);
+					break;
+				case DATERANGE_MONTH_DAY:
+					/* end date can't be helped, so skip it */
+					if(temp_daterange->emday<0)
+						continue;
+
+					/* else end date slipped past end of month, so use last day of month as end date */
+					end_time=calculate_time_from_day_of_month(year,month,-1);
+					break;
+				case DATERANGE_MONTH_WEEK_DAY:
+					/* end date can't be helped, so skip it */
+					if(temp_daterange->ewday_offset<0)
+						continue;
+
+					/* else end date slipped past end of month, so use last day of month as end date */
+					end_time=calculate_time_from_day_of_month(year,pref_time_mon,-1);
+					break;
+				case DATERANGE_WEEK_DAY:
+					/* end date can't be helped, so skip it */
+					if(temp_daterange->ewday_offset<0)
+						continue;
+
+					/* else end date slipped past end of month, so use last day of month as end date */
+					end_time=calculate_time_from_day_of_month(year,month,-1);
+					break;
+				default:
+					continue;
+					break;
+					}
+				}
+
+
+			/* if skipping days... */
+			if(temp_daterange->skip_interval>1){
+
+				/* advance to the next possible skip date */
+				if(start_time<preferred_time){
+
+					/* how many days have passed between skip start date and preferred time? */
+					days=(midnight-(unsigned long)start_time)/(3600*24);
+
+					/* advance start date to next skip day */
+					if((days % temp_daterange->skip_interval)==0)
+						start_time+=(days*3600*24);
+					else
+						start_time+=((days-(days % temp_daterange->skip_interval)+temp_daterange->skip_interval)*3600*24);
+					}
+
+				/* if skipping has no end, use start date as end */
+				if((daterange_type==DATERANGE_CALENDAR_DATE) && is_daterange_single_day(temp_daterange)==TRUE)
+					end_time=start_time;
+				}
+
+			/* skip this date range its out of bounds with what we want */
+			if(preferred_time > end_time)
+				continue;
+
+			/* how many days at a time should we advance? */
+			if(temp_daterange->skip_interval>1)
+				advance_interval=temp_daterange->skip_interval;
+			else
+				advance_interval=1;
+
+			/* advance through the date range */
+			for(day_start=start_time;day_start<=end_time;day_start+=(advance_interval*3600*24)){
+
+				/* we already found a time from a higher-precendence date range exception */
+				if(day_start>=earliest_day && have_latest_time==TRUE)
+					continue;
+
+				for(temp_timerange=temp_daterange->times;temp_timerange!=NULL;temp_timerange=temp_timerange->next){
+
+					day_range_start=(time_t)(day_start + temp_timerange->range_start);
+					day_range_end=(time_t)(day_start + temp_timerange->range_end);
+
+					/* range is out of bounds */
+					if(day_range_end<preferred_time)
+						continue;
+
+					potential_time=day_range_end;
+
+					/* is this the earliest time found thus far? */
+					if(have_latest_time==FALSE || potential_time<latest_time){
+						have_latest_time=TRUE;
+						latest_time=potential_time;
+						earliest_day=day_start;
+						}
+					}
+				}
+			}
+
+		}
+
+
+	/**** find next available time from normal, weekly rotating schedule (in this timeperiod definition) ****/
+
+	/* check a one week rotation of time */
+	has_looped=FALSE;
+	for(weekday=pref_time_wday,days_into_the_future=0;;weekday++,days_into_the_future++){
+
+		/* break out of the loop if we have checked an entire week already */
+		if(has_looped==TRUE && weekday >= pref_time_wday)
+			break;
+
+		if(weekday>=7){
+			weekday-=7;
+			has_looped=TRUE;
+			}
+
+		/* calculate start of this future weekday */
+		day_start=(time_t)(midnight + (days_into_the_future*3600*24));
+
+		/* we already found a time from a higher-precendence date range exception */
+		if(day_start==earliest_day)
+			continue;
+
+		/* check all time ranges for this day of the week */
+		for(temp_timerange=tperiod->days[weekday];temp_timerange!=NULL;temp_timerange=temp_timerange->next){
+
+			/* calculate the time for the start of this time range */
+			day_range_start=(time_t)(day_start + temp_timerange->range_start);
+			day_range_end=(time_t)(day_start + temp_timerange->range_end);
+
+			if((have_latest_time==FALSE || day_range_end<latest_time) && day_range_end>=preferred_time){
+				have_latest_time=TRUE;
+				latest_time=day_range_end;
+				earliest_day=day_start;
+				}
+			}
+		}
+
+
+	/* if we couldn't find a time period there must be none defined */
+	if(have_latest_time==FALSE || latest_time==(time_t)0)
+		*valid_time=(time_t)preferred_time;
+
+	/* else use the calculated time */
+	else
+		*valid_time=latest_time;
+
+	return;
+        }
+
 
 
 /* given a preferred time, get the next valid time within a time period */ 

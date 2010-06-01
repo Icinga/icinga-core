@@ -578,6 +578,9 @@ int is_daterange_single_day(daterange *);
 time_t calculate_time_from_weekday_of_month(int,int,int,int);	/* calculates midnight time of specific (3rd, last, etc.) weekday of a particular month */
 time_t calculate_time_from_day_of_month(int,int,int);	/* calculates midnight time of specific (1st, last, etc.) day of a particular month */
 void get_next_valid_time(time_t, time_t *,timeperiod *);	/* get the next valid time in a time period */
+void _get_next_valid_time_per_timeperiod(time_t, time_t *, time_t, timeperiod *);
+void get_earliest_time(time_t, time_t *, time_t, timeperiod *, int);
+void get_min_invalid_time_per_timeperiod(time_t, time_t *, time_t, timeperiod *);
 time_t get_next_log_rotation_time(void);	     	/* determine the next time to schedule a log rotation */
 int init_embedded_perl(char **);			/* initialized embedded perl interpreter */
 int deinit_embedded_perl(void);				/* cleans up embedded perl */
