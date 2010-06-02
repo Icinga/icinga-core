@@ -691,6 +691,7 @@ void enable_contact_host_notifications(contact *);      /* enables host notifica
 void disable_contact_host_notifications(contact *);     /* disables host notifications for a specific contact */
 void enable_contact_service_notifications(contact *);   /* enables service notifications for a specific contact */
 void disable_contact_service_notifications(contact *);  /* disables service notifications for a specific contact */
+void display_schedule(void);				/* display scheduling queue */
 
 int init_command_file_worker_thread(void);
 int shutdown_command_file_worker_thread(void);

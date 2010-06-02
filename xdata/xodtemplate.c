@@ -124,6 +124,9 @@ char *xodtemplate_precache_file=NULL;
 
 int presorted_objects=FALSE;
 
+
+int xodtemplate_create_escalation_condition(char*, xodtemplate_escalation_condition*);
+
 /*
  * Macro magic used to determine if a service is assigned
  * via hostgroup_name or host_name. Those assigned via host_name

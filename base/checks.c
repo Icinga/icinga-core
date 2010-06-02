@@ -337,7 +337,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	int fork_error=FALSE;
 	int wait_result=0;
 	host *temp_host=NULL;
-	FILE *fp=NULL, *chldfp;;
+	FILE *fp=NULL, *chldfp;
 	int pclose_result=0;
 	mode_t new_umask=077;
 	mode_t old_umask;
@@ -356,8 +356,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	char fname[512]="";
 	char *args[5]={"",DO_CLEAN, "", "", NULL };
 	char *perl_plugin_output=NULL;
-	SV *plugin_hndlr_cr;
-	STRLEN n_a ;
+	SV *plugin_hndlr_cr=NULL; /* perl.h holds typedef struct */
 	int count ;
 	int use_epn=FALSE;
 #ifdef aTHX
@@ -625,7 +624,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 			/* free check result memory */
 			free_check_result(&check_result_info);
 
-			return;
+			return ERROR;
 			}
 		else{
 

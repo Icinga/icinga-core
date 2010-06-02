@@ -621,20 +621,23 @@ void init_timing_loop(void){
 /*gives information about a particular event*/
 void display_event_data(timed_event* event, int priority){
 
+	service *temp_service=NULL;
+	host *temp_host=NULL;
+
 	printf("\t\tEvent:");
 
    	switch(event->event_type){
 
         case EVENT_SERVICE_CHECK:
 		printf("\t\t(service check)\n");
-		service* temp_service=(service *)event->event_data;
+		temp_service=(service *)event->event_data;
 		printf("\t\tService Description: %s\n",temp_service->description);
 		printf("\t\tAssociated Host:     %s\n",temp_service->host_name);
         break;
 
         case EVENT_HOST_CHECK:
         	printf("\t\t(host check)\n");
-        	host* temp_host=(host *)event->event_data;
+        	temp_host=(host *)event->event_data;
         	printf("\t\tHost:     %s\n",temp_host->name);
             	/* run a host check */
         break;
@@ -718,10 +721,10 @@ void display_event_data(timed_event* event, int priority){
 
 /* displays the service check scheduling queue */
 void display_schedule(void){
-    	timed_event* high_event;
-    	timed_event* low_event;
-    	timed_event* event;
-    	int priority;
+    	timed_event* high_event=NULL;
+    	timed_event* low_event=NULL;
+    	timed_event* event=NULL;
+    	int priority=0;
     
 	printf("*** The current scheduling queue is listed below ***\n");
 

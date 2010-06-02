@@ -36,6 +36,7 @@
 #include "../include/skiplist.h"
 
 #include "../include/statsprofiler.h"
+#include "../include/profiler.h"
 
 #ifdef NSCORE
 #include "../include/icinga.h"
@@ -129,7 +130,7 @@ extern char           *global_host_event_handler;
 extern char           *global_service_event_handler;
 
 extern check_stats    check_statistics[MAX_CHECK_STATS_TYPES];
-extern	event_profiling_enabled;
+extern int event_profiling_enabled;
 #endif
 
 

@@ -238,8 +238,8 @@ int main(int argc, char **argv){
 	char image_template[MAX_INPUT_BUFFER];
 	char start_timestring[MAX_INPUT_BUFFER];
 	char end_timestring[MAX_INPUT_BUFFER];
-	host *temp_host;
-	service *temp_service;
+	host *temp_host=NULL;
+	service *temp_service=NULL;
 	int is_authorized=TRUE;
 	int found=FALSE;
 	int days,hours,minutes,seconds;

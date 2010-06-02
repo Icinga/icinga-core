@@ -1,3 +1,27 @@
+/*****************************************************************************
+ *
+ * EXTCMD_LIST.C for Icinga CGIs
+ *
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ *
+ * License:
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *****************************************************************************/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -191,7 +215,6 @@ struct nagios_extcmd in_core_commands[] =
 #ifndef ARRAY_SIZE
 # define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 #endif
-static int extcmd_entries, extcmd_slots;
 
 const char *extcmd_get_name(int id)
 {

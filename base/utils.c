@@ -310,8 +310,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 #ifdef EMBEDDEDPERL
 	char fname[512]="";
 	char *args[5]={"",DO_CLEAN, "", "", NULL };
-	SV *plugin_hndlr_cr;
-	STRLEN n_a ;
+	SV *plugin_hndlr_cr=NULL; /* perl.h holds typedef struct */
 	char *perl_output=NULL;
 	int count;
 	int use_epn=FALSE;
@@ -3575,10 +3574,8 @@ int dbuf_strcat(dbuf *db, char *buf){
 /* initializes embedded perl interpreter */
 int init_embedded_perl(char **env){
 #ifdef EMBEDDEDPERL
-	void **embedding;
+	void **embedding=NULL;
 	int exitstatus=0;
-	char *temp_buffer=NULL;
-	int argc=2;
 	struct stat stat_buf;
 
 	/* make sure the P1 file exists... */
@@ -4392,7 +4389,7 @@ int query_update_api(void){
 	}
 
 	/* generate the HTTP request */
-	asprintf(&buf,"POST %s HTTP/1.0\r\nUser-Agent: Nagios/%s\r\nConnection: close\r\nHost: %s\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %d\r\n\r\n%s\r\n",api_path, PROGRAM_VERSION, api_server, strlen(api_query), api_query);
+	asprintf(&buf,"POST %s HTTP/1.0\r\nUser-Agent: Nagios/%s\r\nConnection: close\r\nHost: %s\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %lu\r\n\r\n%s\r\n",api_path, PROGRAM_VERSION, api_server, (unsigned long)strlen(api_query), api_query);
 
 	/*
 	printf("SENDING...\n");

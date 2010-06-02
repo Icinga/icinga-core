@@ -45,10 +45,10 @@
 
 
 typedef struct profiler_item{
-    int   state;
-    int    counter;
-    double elapsed;
-    char * name;
+	int   state;
+	int    counter;
+	double elapsed;
+	char * name;
 }profiler_item;
 
 extern profiler_item * profiler;
@@ -61,6 +61,6 @@ void profiler_item_reset(profiler_item *p);
 void profiler_add(int event, char *name);
 void profiler_setstate(int event,int state);
 void profiler_rename(int p, char * name);
-int profiler_update(int event, struct timeval start);
+void profiler_update(int event, struct timeval start);
 void profiler_output(FILE* fp);
 #endif

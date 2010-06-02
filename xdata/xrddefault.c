@@ -101,7 +101,7 @@ char *xrddefault_sync_retention_file=NULL;
 char *xrddefault_temp_file=NULL;
 
 
-
+int xrddefault_read_retention_file_information(char*, int);
 
 /******************************************************************/
 /********************* CONFIG INITIALIZATION  *********************/

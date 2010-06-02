@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * MACROS.C - Common macro functions for Nagios
+ * MACROS.C - Common macro functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
@@ -135,7 +135,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(temp_buffer)+1);
 			strcat(*output_buffer,temp_buffer);
 
-			log_debug_info(DEBUGL_MACROS,2,"  Not currently in macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
+			log_debug_info(DEBUGL_MACROS,2,"  Not currently in macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 
 			in_macro=TRUE;
 			}
@@ -164,7 +164,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			/* an escaped $ is done by specifying two $$ next to each other */
 			else if(!strcmp(temp_buffer,"")){
 
-				log_debug_info(DEBUGL_MACROS,2,"  Escaped $.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
+				log_debug_info(DEBUGL_MACROS,2,"  Escaped $.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 
 				*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+2);
 				strcat(*output_buffer,"$");
@@ -173,7 +173,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			/* a non-macro, just some user-defined string between two $s */
 			else{
 
-				log_debug_info(DEBUGL_MACROS,2,"  Non-macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
+				log_debug_info(DEBUGL_MACROS,2,"  Non-macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 
 				/* add the plain text to the end of the already processed buffer */
 				*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(temp_buffer)+3);
@@ -211,7 +211,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 						*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(cleaned_macro)+1);
 						strcat(*output_buffer,cleaned_macro);
 
-						log_debug_info(DEBUGL_MACROS,2,"  Cleaned macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
+						log_debug_info(DEBUGL_MACROS,2,"  Cleaned macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 						}
 					}
 
@@ -222,7 +222,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 						*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(selected_macro)+1);
 						strcat(*output_buffer,selected_macro);
 
-						log_debug_info(DEBUGL_MACROS,2,"  Uncleaned macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
+						log_debug_info(DEBUGL_MACROS,2,"  Uncleaned macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 						}
 					}
 
@@ -230,7 +230,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 				if(free_macro==TRUE)
 					my_free(selected_macro);
 
-				log_debug_info(DEBUGL_MACROS,2,"  Just finished macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
+				log_debug_info(DEBUGL_MACROS,2,"  Just finished macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 				}
 
 			in_macro=FALSE;

@@ -497,8 +497,8 @@ void display_notifications(void){
 	int notification_detail_type=NOTIFICATION_SERVICE_CRITICAL;
 	int odd=0;
 	time_t t;
-	host *temp_host;
-	service *temp_service;
+	host *temp_host=NULL;
+	service *temp_service=NULL;
 	int result;
 
 	if(use_lifo==TRUE){

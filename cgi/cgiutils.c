@@ -140,6 +140,7 @@ extern char     *tzname[2];
 #endif
 #endif
 
+int check_daemon_running(void);
 
 /*
  * These function stubs allow us to compile a lot of the

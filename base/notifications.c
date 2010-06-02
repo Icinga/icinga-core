@@ -50,7 +50,7 @@ extern char            *macro_x[MACRO_X_COUNT];
 
 extern char            *generic_summary;
 
-
+int check_escalation_condition(escalation_condition*);
 
 /******************************************************************/
 /***************** SERVICE NOTIFICATION FUNCTIONS *****************/
@@ -325,8 +325,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 
 /* checks the viability of sending out a service alert (top level filters) */
 int check_service_notification_viability(service *svc, int type, int options){
-	host *temp_host;
-	timeperiod *temp_period;
+	host *temp_host=NULL;
+	timeperiod *temp_period=NULL;
 	time_t current_time;
 	time_t timeperiod_start;
 	
@@ -894,7 +894,7 @@ int is_valid_escalation_for_service_notification(service *svc, serviceescalation
 	 * only skip if none of the notifications numbers match */
 
 	widematch=1;
-	if(se->last_notification == -2 || se->last_notification!=0 && se->last_notification < notification_number)
+	if(se->last_notification == -2 || ((se->last_notification!=0) && (se->last_notification < notification_number)))
 		widematch=0;
 
 
@@ -1895,18 +1895,18 @@ int is_valid_escalation_for_host_notification(host *hst, hostescalation *he, int
 
 	/* skip this escalation if it has already passed. only skip if none match */
 	widematch=1;
-	if(he->last_notification == -2 || he->last_notification!=0 && he->last_notification < notification_number)
+	if((he->last_notification == -2) || ((he->last_notification!=0) && (he->last_notification < notification_number)))
 		widematch=0;
 
 	if (!widematch){
 		switch (hst->current_state){
 			case HOST_DOWN:{
-				if (he->last_down_notification == -2 || he->last_down_notification!=0 && he->last_down_notification < down_notification_number)
+				if ((he->last_down_notification == -2) || ((he->last_down_notification!=0) && (he->last_down_notification < down_notification_number)))
 					return FALSE;
 				break;
 			}
 			case HOST_UNREACHABLE:{
-				if (he->last_unreachable_notification == -2 || he->last_unreachable_notification && he->last_unreachable_notification < unreachable_notification_number)
+				if ((he->last_unreachable_notification == -2) || ((he->last_unreachable_notification) && (he->last_unreachable_notification < unreachable_notification_number)))
 					return FALSE;
 				break;
 			}
