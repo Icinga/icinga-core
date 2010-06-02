@@ -69,6 +69,7 @@ FIXES
 * core: fix notification_period inheritance for services (Gordon Messmer)
 * core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
 * core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
+* core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
