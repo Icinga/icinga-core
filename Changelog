@@ -79,6 +79,7 @@ FIXES
 * cgi: fix typo: "stye" instead of "style" in cgi/tac.c
 * cgi: check_daemon_running() not working on MacOS (Hendrik Baecker)
 * cgi: fix CGIs don't show correct error on missing archived icinga-DATE.log file
+* cgi: fix missing js files
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
