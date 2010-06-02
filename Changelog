@@ -68,6 +68,7 @@ FIXES
 * core: added icinga object version variable in neb api for usage with idomod
 * core: fix notification_period inheritance for services (Gordon Messmer)
 * core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
+* core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
@@ -354,6 +355,11 @@ FIXES
 #####################
 Nagios 3.x Change Log
 #####################
+
+This is an archived Changelog, all changes on the Icinga Core will be marked and 
+referenced through issues marking on dev.icinga.org regarding their origin.
+
+Look at www.nagios.org for an actual changelog of Nagios Core.
 
 
 3.2.1 ????
