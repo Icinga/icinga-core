@@ -145,9 +145,9 @@ db_pass=icinga
 # that particular table should NOT be automatically trimmed.
 #
 # Remember: There are no optimized settings, it depends on your rdbm install,
-# number/checkinterval of host/service-checks and your desired time of data savings - 
-# historical vs live-data. Please keep in mind that low delete intervals may interfere 
-# with insert/update data from Icinga.
+# number/checkinterval of host/service-checks and your desired time of data 
+# savings - historical vs live-data. Please keep in mind that low delete 
+# intervals may interfere with insert/update data from Icinga.
 
 # ***DEFAULT***
 
@@ -169,6 +169,8 @@ max_eventhandlers_age=10080
 # Keep external commands for 1 week
 max_externalcommands_age=10080
 
+# ***OPTIONAL***
+
 # Keep logentries for 31 days
 # max_logentries_age=44640
 
@@ -176,26 +178,26 @@ max_externalcommands_age=10080
 # max_acknowledgements_age=44640
 
 
-# ***MORE HISTORICAL***
+## CLEAN REALTIME TABLES AT CORE STARTUP
+# If you don't want to clean all those tables, set this option to 0.
+# This can be useful if the deletes slow down the normal data
+# processing. 
+# Values: 0 - don't clean
+#         1 - clean (default)
 
-# Keep timed events for 24 hours
-# max_timedevents_age=1440
+clean_realtime_tables_on_core_startup=1
 
-# Keep system commands for 1 week
-# max_systemcommands_age=10080
 
-# Keep service checks for 1 week
-# max_servicechecks_age=10080
+## CLEAN CONFIG TABLES AT CORE STARTUP
+# If you don't want to clean all those tables, set this option to 0.
+# This can be useful if the deletes slow down the normal data 
+# processing.
+# Furthermore if you need to keep e.g. the state of customvariables 
+# or any other tables not directly linked to the objects table.
+# Values: 0 - don't clean
+#         1 - clean (default)
 
-# Keep host checks for 1 week
-# max_hostchecks_age=10080
-
-# Keep event handlers for 31 days
-# max_eventhandlers_age=44640
-
-# Keep external commands for 31 days
-# max_externalcommands_age=44640
-
+clean_config_tables_on_core_startup=1
 
 
 # ***EXPERIMENTAL*** DB TRIMMING INTERVAL

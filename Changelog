@@ -18,6 +18,8 @@ ENHANCEMENTS
 * cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
 
+* idoutils: add config options to allow users decision on clearing realtime and config tables on Icinga core startup
+	Actual config objects are marked as (in)active, because disabling the clearing results in historical config
 * idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 * idoutils: change select * into select [*_]id if unused results
