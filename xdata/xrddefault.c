@@ -705,6 +705,10 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 	contact_host_attribute_mask=retained_contact_host_attribute_mask;
 	contact_service_attribute_mask=retained_contact_service_attribute_mask;
 
+	/* big speedup when reading retention.dat in bulk, adapted from status.dat in xsddefault.c */
+	defer_downtime_sorting=1;
+	defer_comment_sorting=1;
+
 	/* read all lines in the retention file */
 	while(1){
 
@@ -1933,6 +1937,11 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 	/* free memory and close the file */
 	my_free(inputbuf);
 	mmap_fclose(thefile);
+
+	if(sort_downtime()!=OK)
+		return ERROR;
+	if(sort_comments()!=OK)
+		return ERROR;
 
 	/* If this is a sync file, remove the file */
 	if(overwrite_data==FALSE)
