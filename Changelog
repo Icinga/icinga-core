@@ -77,6 +77,7 @@ FIXES
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
 * cgi: fix typo: "stye" instead of "style" in cgi/tac.c
+* cgi: fix CGIs don't show correct error on missing archived icinga-DATE.log file
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)

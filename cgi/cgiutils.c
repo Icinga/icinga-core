@@ -1132,6 +1132,18 @@ void get_log_archive_to_use(int archive,char *buffer,int buffer_length){
 	if((fd = fopen(buffer, "r")) == NULL){
 		snprintf(buffer,buffer_length,"%snagios-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
 		buffer[buffer_length-1]='\x0';
+
+		/* 06-02-2010 Michael Friedrich
+		   Yeah, and if no log has been written, nagios- will fail with the wrong error message
+		   leading the user to the assumption that the logfile is not even created - if the logfile
+		   was not rotated by the core after this date */
+		if((fd = fopen(buffer, "r")) == NULL){
+			snprintf(buffer,buffer_length,"%sicinga-%02d-%02d-%d-%02d.log",log_archive_path, t->tm_mon+1, t->tm_mday, t->tm_year+1900, t->tm_hour);
+			buffer[buffer_length-1]='\x0';
+		}
+		else {
+			fclose(fd);
+		}
 	}
 	else {
 		fclose(fd);
