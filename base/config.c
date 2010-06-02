@@ -3,8 +3,7 @@
  * CONFIG.C - Configuration input and verification routines for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2010 Icinga Core Development Team and Community Contributors
- * Last Modified: 2010-05-16
+ * Copyright (c) 2009-2010 Icinga Development Team
  *
  * License:
  *

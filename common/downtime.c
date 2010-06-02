@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * DOWNTIME.C - Scheduled downtime functions for Nagios
+ * DOWNTIME.C - Scheduled downtime functions for Icinga
  *
  * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 15-12-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

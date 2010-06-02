@@ -5,8 +5,6 @@
  * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified:   05-14-2010
- *
  * Description:
  *
  * This CGI will dynamically create a 3-D VRML model of all hosts that are
@@ -51,7 +49,7 @@ extern service *service_list;
 extern int default_statuswrl_layout_method;
 
 
-#define NAGIOS_VRML_IMAGE               "nagiosvrml.png"
+#define ICINGA_VRML_IMAGE               "icingavrml.png"
 
 #define DEFAULT_NODE_WIDTH		0.5
 #define DEFAULT_HORIZONTAL_SPACING	1.0
@@ -1130,7 +1128,7 @@ void draw_process_icon(void){
 	printf("}\n");
 	if(use_textures==TRUE){
 		printf("texture ImageTexture{\n");
-		printf("url \"%s%s\"\n",url_logo_images_path,NAGIOS_VRML_IMAGE);
+		printf("url \"%s%s\"\n",url_logo_images_path,ICINGA_VRML_IMAGE);
 		printf("}\n");
 		}
 	printf("}\n");

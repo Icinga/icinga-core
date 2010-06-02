@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * SRETENTION.C - State retention routines for Nagios
+ * SRETENTION.C - State retention routines for Icinga
  *
- * Copyright (c) 1999-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   10-18-2006
+ * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

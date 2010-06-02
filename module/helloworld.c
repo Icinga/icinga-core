@@ -2,9 +2,8 @@
  *
  * HELLOWORLD.C - Example of a simple NEB module
  *
- * Copyright (c) 2003-2007 Ethan Galstad (http://www.nagios.org)
- *
- * Last Modified: 12-26-2007
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *

@@ -4,7 +4,7 @@
  *
  * Copyright (c) 1999,2008 Ethan Galstad (egalstad@nagios.org)
  * Portions Copyright (c) 1999-2008 Nagios Plugin development team
- * Last Modified: 12-04-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

@@ -2,7 +2,6 @@
 
 # REDUNDANCY EVENT HANDLER SCRIPT
 # Written By: Ethan Galstad (egalstad@nagios.org)
-# Last Modified: 05-30-2006
 #
 # This is an example script for implementing redundancy.
 # Read the HTML documentation on redundant monitoring for more
@@ -13,7 +12,7 @@ echocmd="/bin/echo"
 mailcmd="/bin/mail"
 
 # Location of the event handlers
-eventhandlerdir="/usr/local/nagios/libexec/eventhandlers"
+eventhandlerdir="/usr/local/icinga/libexec/eventhandlers"
 
 
 # Only take action on hard service states...
@@ -23,7 +22,7 @@ HARD)
 	case "$1" in
 	CRITICAL)
 
-		# The master Nagios process is not running!
+		# The master Icinga process is not running!
 		# We should now become the master host and
 		# take over the responsibility of monitoring
 		# the network, so enable active checks...
@@ -33,7 +32,7 @@ HARD)
 
 	WARNING|UNKNOWN)
 
-		# The master Nagios process may or may not
+		# The master Icinga process may or may not
 		# be running.. We won't do anything here, but
 		# to be on the safe side you may decide you 
 		# want the slave host to become the master in
@@ -42,7 +41,7 @@ HARD)
 
 	OK)
 
-		# The master Nagios process running again!
+		# The master Icinga process running again!
 		# We should go back to being the slave host, 
 		# so disable active checks
 

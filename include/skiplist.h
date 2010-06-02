@@ -2,8 +2,8 @@
  *
  * SKIPLIST.H - Skiplist data structures and functions
  *
- * Copyright (c) 2008 Ethan Galstad
- * Last Modified: 02-24-2008
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

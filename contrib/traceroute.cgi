@@ -6,13 +6,13 @@
 # based on traceroute.cgi of Ian Cass Knowledge Matters Ltd
 # (c)1999 Ian Cass Knowledge Matters Ltd
 #
-# This script should be put in your Nagios cgi-bin directory
-# (usually /usr/local/nagios/sbin)
+# This script should be put in your Icinga cgi-bin directory
+# (usually /usr/local/icinga/sbin)
 #
-# It will perform a traceroute from your Nagios box to
+# It will perform a traceroute from your Icinga box to
 # the machine that the check_ping plugin is pinging,
 # output includes links to host status and status map
-# for hosts known to Nagios
+# for hosts known to Icinga
 #
 # This software is provided as-is, without any express or implied 
 # warranty. In no event will the author be held liable for any mental 
@@ -28,8 +28,8 @@ use POSIX qw(strftime);
 # Global Settings
 #----------------
 $| = 1;
-my($nagios)  = "/usr/local/nagios";
-my($urlbase) = "/nagios";
+my($icinga)  = "/usr/local/icinga";
+my($urlbase) = "/icinga";
 my($refresh) = 30;
 my($self) = basename($0);
 my($traceroute) = "/usr/sbin/traceroute -m 20 -q 1";
@@ -69,7 +69,7 @@ print "<div class='infoBoxTitle'>traceroute</div>";
 print "Genereated by $self<br>";
 print "Last Updated: $mdate<br>";
 print "Updated every $refresh seconds<br>";
-print "Nagios&reg; - <a href='http://www.nagios.org' target='_new' class='homepageURL'>www.nagios.org</a><br>";
+print "Icinga&reg; - <a href='http://www.icinga.org' target='_new' class='homepageURL'>www.icinga.org</a><br>";
 print "Logged in as <i>$ENV{'REMOTE_USER'}</i><br>";
 print "</td></tr>";
 print "</table>";
@@ -79,14 +79,14 @@ print "Traceroute to Host $addr</div><p>\n";
 
 print "<table border=0 class='status'>\n";
 
-# read in nagios hosts
+# read in icinga hosts
 #---------------------
 my(@cfg);
 my($entry);
 my($bla);
 my($host);
 my(@hostlist);
-open(HOSTS, "$nagios/etc/hosts.cfg");
+open(HOSTS, "$icinga/etc/hosts.cfg");
     @cfg = grep {!/#/ && /host_name/} <HOSTS>;
 close(HOSTS);
 
@@ -143,7 +143,7 @@ while (<TRACEROUTE>) {
         $arr[2] =~ s/\(//; 
   	$arr[2] =~ s/\)//;
 
-	# check if host is known to nagios
+	# check if host is known to icinga
 	#---------------------------------
 	$known_host = 0;
 	foreach $host (@hostlist) {

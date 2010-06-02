@@ -1,15 +1,9 @@
 /*****************************************************************************
  *
- * PROFILER.C - Event Profiler For Nagios
+ * PROFILER.C - Event Profiler For Icinga
  *
- * Program: Nagios
- * Version: 2.12
- * License: GPL
  * Copyright: (c) 2009 Intellectual Reserve Inc.
- * Author:  Steven D. Morrey (nagios-devel@lists.sourceforge.net
- *
- * First Written:   06-09-2009 (start of development)
- * Last Modified:   06-09-2009
+ * Author:  Steven D. Morrey (nagios-devel@lists.sourceforge.net)
  *
  * Description:
  *

@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * XCDDEFAULT.C - Default external comment data routines for Nagios
+ * XCDDEFAULT.C - Default external comment data routines for Icinga
  *
- * Copyright (c) 2000-2007 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   09-04-2007
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

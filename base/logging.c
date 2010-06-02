@@ -2,9 +2,8 @@
  *
  * LOGGING.C - Log file functions for use with Icinga
  *
- * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-11-2009
+ * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

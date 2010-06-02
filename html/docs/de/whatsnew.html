@@ -29,13 +29,9 @@
 <a name="whatsnew"></a>Was gibt es Neues in Icinga Core 1.0.1 und Icinga Web 0.9.1-beta</h2></div></div></div>
   
 
-  <p>
-    <span class="bold"><strong>Icinga Core:</strong></span>
-  </p>
+  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-  <p>
-    <span class="bold"><strong>Erweiterungen:</strong></span>
-  </p>
+  <p><span class="bold"><strong>Erweiterungen:</strong></span></p>
 
   <p>* core: neue Variable für Services service_check_timeout_state</p>
 
@@ -56,16 +52,14 @@
 
   <p>* idoutils: Hinzufügen des DB-Namens in der Verbindungsmeldung im Syslog</p>
 
-  <p>* idoutils: ändern der MySQL-Datenbank-Engine zu innodb (kein Tabellenlocking, bessere Transaktionen)</p>
+  <p>* idoutils: ändern der MySQL-Datenbank-Engine zu innodb (kein Tabellen-Locking, bessere Transaktionen)</p>
 
   <p>* idoutils: hinzugefügte Option im configure-Skript --with-oracle-lib=/path/to/instantclient, Export von LD_LIBRARY_PATH wenn der
   Instantclient nicht in PATH installiert wurde - bitte schauen Sie in die Dokumentation für weitere Informationen: <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">quickstart-idoutils</a></p>
 
   <p>* idoutils: Hinzufügen von max_logentries_age und max_acknowledgements_age zu ido2db (siehe ido2db.cfg)</p>
 
-  <p>
-    <span class="bold"><strong>Fixes:</strong></span>
-  </p>
+  <p><span class="bold"><strong>Fixes:</strong></span></p>
 
   <p>* core: Fix segfault in cmd.cgi</p>
 
@@ -90,14 +84,10 @@
   <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>
-        <a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">„Changelog of the Icinga Core“</a>
-      </p>
+      <p><a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">„Changelog of the Icinga Core“</a></p>
     </li></ul></div>
 
-  <p>
-    <span class="bold"><strong>Icinga Web:</strong></span>
-  </p>
+  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
 
   <p>* Added some icinga specific principal target classes</p>
 
@@ -128,22 +118,16 @@
   <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>
-        <a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">„Changelog of the Icinga Web“</a>
-      </p>
+      <p><a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">„Changelog of the Icinga Web“</a></p>
     </li></ul></div>
 
-  <p>
-    <span class="bold"><strong>Icinga Api:</strong></span>
-  </p>
+  <p><span class="bold"><strong>Icinga API:</strong></span></p>
 
   <p>* Restrukturierter Datenbank-Zugriff für die zukünftige Unterstützung von weiteren RDBM's</p>
 
   <p>* Diverse Fixes für Tabellen prefix und Ausnahmebehandlung</p>
 
-  <p>
-    <span class="bold"><strong>Icinga Docs:</strong></span>
-  </p>
+  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
 
   <p>* Aktualisierung der Schnellstart-Anleitungen</p>
 
@@ -157,21 +141,15 @@
 
   <p>Bitte berichten Sie Probleme hier:</p>
 
-  <p>
-    <a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Problembericht Icinga Core</a>
-  </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Problembericht Icinga Core</a></p>
 
-  <p>
-    <a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Problembericht Icinga Web</a>
-  </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Problembericht Icinga Web</a></p>
 
-  <p>
-    <a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Problembericht Icinga Api</a>
-  </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Problembericht Icinga API</a></p>
 
-  <p>
-    <a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga Docs</a>
-  </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga Docs</a></p>
+
+  <a class="indexterm" name="id3634163"></a>
 
   <div class="section" title="Changelog of the Icinga Core">
 <div class="titlepage"><div><div><h3 class="title">
@@ -188,7 +166,7 @@
 
   <p>* core: permanently remove sleep on run_event == FALSE in main loop (Max Schubert)</p>
 
-  <p>* core: add service_check_timeout_state configuration variable This setting determines the state Icinga will report when a service
+  <p>* core: add service_check_timeout_state configuration variable. This setting determines the state Icinga will report when a service
   check times out - it does not respond within service_check_timeout seconds.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -281,13 +259,6 @@
 
   <div class="itemizedlist">
 <p>query rewrite:</p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">4x DELETE</li>
-<li class="listitem">52x MERGE</li>
-<li class="listitem">9x INSERT</li>
-<li class="listitem">9x UPDATE</li>
-<li class="listitem">5x SELECT</li>
-</ul></div>
 <ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>1x SELECT latest data time as is (called only at startup)</p>
@@ -299,7 +270,27 @@
       <p>dynamic binded procedure for DELETE on tably by instance_id, field&lt;time called during periodic cleanup in threaded
       housekeeper</p>
     </li>
-<li class="listitem">all other queries are prepared with their own statement handler</li>
+<li class="listitem">
+      <p>all other queries are prepared with their own statement handler</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>4x DELETE</p>
+        </li>
+<li class="listitem">
+          <p>52x MERGE</p>
+        </li>
+<li class="listitem">
+          <p>9x INSERT</p>
+        </li>
+<li class="listitem">
+          <p>9x UPDATE</p>
+        </li>
+<li class="listitem">
+          <p>5x SELECT</p>
+        </li>
+</ul></div>
+    </li>
 <li class="listitem">
       <p>rewritten getting cached object_id using select</p>
     </li>
@@ -644,7 +635,7 @@
 
   <p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it</p>
 
-  <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction layer,
+  <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as an abstraction layer,
   enable compile try with "configure --enable-idoutils"</p>
 
   <p>* Included a new stylesheet/icon theme based on Vautour Style. Vautour Style have been created by Yoann LAMY.</p>
@@ -654,7 +645,7 @@
 
   <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
 
-  <a class="indexterm" name="id3013967"></a>
+  <a class="indexterm" name="id3635284"></a>
 </div>
 
   <div class="section" title="Changelog of the Icinga Web">
@@ -808,10 +799,8 @@
 
   <p>* This is the initial release, prototyping, testing, think about features</p>
 
-  <a class="indexterm" name="id3014255"></a>
+  <a class="indexterm" name="id3635567"></a>
 </div>
-
-  <a class="indexterm" name="id3014245"></a>
 </div>
 <div class="navfooter">
 <hr>

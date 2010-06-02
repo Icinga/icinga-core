@@ -29,49 +29,49 @@
 <a name="icinga-api"></a>Installation und Benutzung der Icinga API</h2></div></div></div>
   
 
+  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+
+  <p>Sie benötigen Icinga, um die Icinga API nutzen zu können.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Falls Sie noch kein Icinga haben, dann folgen Sie den Anweisungen in der "<a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">quickstart-idoutils</a>" Dokumentation.</p>
+  </td></tr>
+</table></div>
+
+  <p><a name="icinga-api_installation"></a><span class="bold"><strong>Installation und Konfiguration</strong></span></p>
+
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p><span class="bold"><strong>Software</strong></span></p>
 
-      <p>Klonen Sie von icinga-api.git, um einen neuen Branch zu
-      bekommen</p>
+      <p>Klonen Sie von icinga-api.git, um einen neuen Branch zu bekommen</p>
 
       <pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git</pre>
 
       <p>oder laden Sie die Software von <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Die Installation</strong></span></p>
+      <p><span class="bold"><strong>Installation</strong></span></p>
 
-      <p>Entpacken Sie die Software und verschieben Sie das Verzeichnis in
-      die Icinga-Sourcecode-Struktur</p>
+      <p>Entpacken Sie die Software und verschieben Sie das Verzeichnis in die Icinga-Sourcecode-Struktur</p>
 
       <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
  # mv icinga-api/* /usr/src/icinga-core/module/icinga-api</pre>
 
-      <p>Rekompilieren Sie den Code (ggf. müssen Sie erneut ./configure
-      ausführen).</p>
+      <p>Rekompilieren Sie den Icinga-Code (ggf. müssen Sie erneut ./configure ausführen).</p>
 
       <pre class="programlisting"> # make all
  # make install</pre>
-
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-        <p>Falls Sie noch kein Icinga haben, dann folgen Sie den
-        Anweisungen in der "<a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">quickstart-idoutils</a>"
-        Dokumentation.</p>
-      </td></tr>
-</table></div>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Konfiguration</strong></span></p>
 
-      <p>Die Konfiguration besteht aus einem assoziativen Array.
-      </p>
+      <p>Die Konfiguration besteht aus einem assoziativen Array. </p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
     'host'         =&gt; '&lt;Database hostname&gt;', 
@@ -93,6 +93,11 @@
     'table_prefix' =&gt; 'icinga_',
  );</pre>
     </li>
+</ol></div>
+
+  <p><a name="icinga-api_use"></a> <span class="bold"><strong>Benutzung</strong></span></p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p><span class="bold"><strong>Datenermittlung</strong></span></p>
 
@@ -101,16 +106,15 @@
       <p>Erzeugen Sie eine Instant der Klasse IcingaApi:</p>
 
       <pre class="programlisting"> $api = IcingaApi::getConnection(IcingaApi::CONNECTION_IDO, $idoConfig);</pre>
-<p>Erzeugen
-      Sie die Suchkriterien:</p>
+<p>Erzeugen Sie die
+      Suchkriterien:</p>
 
       <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
  -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
  -&gt;fetch();</pre>
 
-      <p>Mit Hilfe von setSearchFilter() können Sie Filter benutzen, um die
-      Suche einzuschränken:</p>
+      <p>Mit Hilfe von setSearchFilter() können Sie Filter benutzen, um die Suche einzuschränken:</p>
 
       <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
@@ -143,8 +147,7 @@
  Host switch77 has the current state 0</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Kompletter Code ohne die Nutzung von
-      Filtern</strong></span></p>
+      <p><span class="bold"><strong>Kompletter Code ohne die Nutzung von Filtern</strong></span></p>
 
       <pre class="programlisting"> &lt;?
  // Path to icinga api file
@@ -179,11 +182,14 @@
  }
  ?&gt;</pre>
 
-      <p>Für nähere Informationen werfen Sie bitte einen Blick in das <a class="link" href="http://git.icinga.org/" target="_top">git repository</a>.</p>
+      <p>Für nähere Informationen werfen Sie bitte einen Blick in das <a class="link" href="http://git.icinga.org/" target="_top">git repository</a>
+      oder die Beispiele im doc/examples-Verzeichnis.</p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id3102815"></a>
-  <a class="indexterm" name="id3102829"></a>
+
+  <a class="indexterm" name="id3725214"></a>
+
+  <a class="indexterm" name="id3725229"></a>
 </div>
 <div class="navfooter">
 <hr>

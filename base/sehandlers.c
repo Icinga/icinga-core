@@ -3,7 +3,7 @@
  * SEHANDLERS.C - Service and host event and state handlers for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   01-02-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

@@ -1,8 +1,9 @@
 /************************************************************************
  *
  * CGIUTILS.H - Header file for common CGI functions
+ *
  * Copyright (c) 1999-2008  Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-15-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org) 
  *
  * License:
  * 

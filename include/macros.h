@@ -1,8 +1,9 @@
 /************************************************************************
  *
  * MACROS.H - Common macro functions
- * Written By: Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-28-2007
+ *
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

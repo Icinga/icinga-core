@@ -3,7 +3,7 @@
  * FLAPPING.C - State flap detection and handling routines for Icinga
  *
  * Copyright (c) 2001-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 12-16-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

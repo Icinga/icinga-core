@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Installation Icinga web frontend from scratch</title>
+<title>Installation of the Icinga web frontend from scratch</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Installation Icinga web frontend from scratch</th></tr>
+<tr><th colspan="3" align="center">Installation of the Icinga web frontend from scratch</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="epnplugins.html">Prev</a> </td>
@@ -24,19 +24,17 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Installation Icinga web frontend from scratch">
+<div class="section" title="Installation of the Icinga web frontend from scratch">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-scratch"></a>Installation Icinga web frontend from scratch</h2></div></div></div>
+<a name="icinga-web-scratch"></a>Installation of the Icinga web frontend from scratch</h2></div></div></div>
   
-
-  <p><span class="emphasis"><em>Install icinga-web standalone from scratch</em></span></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
-      <p>Based on the fact that you have a running mysql and php (with PEAR and CLI) environment and Icinga and IDOUtils are running as
-      well you can continue with the second step. Otherwise:</p>
+      <p>Based on the fact that you have a running mysql and php (with PEAR and CLI) environment and Icinga, Icinga-API and IDOUtils are
+      running as well you can continue with the second step. Otherwise:</p>
 
       <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
@@ -48,8 +46,8 @@
 
       <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
-      <p><span class="emphasis"><em>Please use yast to install the packages "php5-pear", "php5-xmlrpc" und "php5-xsl". The CLI is contained in the php5
-      package.</em></span></p>
+      <p>Please use yast to install the packages "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
+      "php5-gettext", "php5-ldap" und "php5-gd". The CLI is contained in the php5 package.</p>
 
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -60,7 +58,9 @@
           <p>At least in SLES10 SP2 the function "hash_hmac" is missing.</p>
         </td></tr>
 </table></div>
-<p><span class="emphasis"><em> </em></span></p>
+
+      <p>Installing Icinga with IDOUtils and Icinga-API is described in the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">Icinga Quickstart Guide</a> and
+      the <a class="link" href="icinga-api.html" title="Installation and use of the Icinga API">Icinga-API</a> section.</p>
 
       <p>Take your clone from the icinga-web.git to get a fresh branch</p>
 
@@ -69,19 +69,39 @@
 <li class="listitem">
       <p><span class="bold"><strong>The installation</strong></span></p>
 
-      <pre class="programlisting"> # tar xzvf icinga-web-0.9.1-beta.tar.gz
- # cd icinga-web</pre>
+      <p>If you downloaded an archive then please unpack it first</p>
 
-      <p>Recently work has been started on setting up an installer for the new Icinga-web UI, use:</p>
+      <pre class="programlisting"> # tar xzvf icinga-web-0.9.1-beta.tar.gz
+</pre>
+
+      <p>Then change to the directory:</p>
+
+      <pre class="programlisting"> # cd icinga-web</pre>
+
+      <p>Recently work has been started on setting up an installer for the new Icinga-web UI, so please use:</p>
 
       <pre class="programlisting"> # ./configure --help</pre>
 
       <p>to see all configure options.</p>
 
-      <p>Default the Icinga Webinterface will be installed to /usr/local/icinga-web by:</p>
+      <p>Per default the Icinga Webinterface will be installed to /usr/local/icinga-web by:</p>
 
       <pre class="programlisting"> # ./configure
  # make install</pre>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Using no options the installer expects the icinga-API to be found at /usr/local/icinga-api but you can use the option
+        "--with-icinga-api" to specify another location. If you installed Icinga using the quickstart guide you should use the following
+        syntax:</p>
+
+        <pre class="programlisting"> # ./configure --with-icinga-api=/usr/local/icinga/share/icinga-api</pre>
+      </td></tr>
+</table></div>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>PHP dependencies</strong></span></p>
@@ -92,7 +112,8 @@
 
       <p>All required tests should pass successfully. Maybe you have to alter the php.ini for the framework.</p>
 
-      <p>In case of the gpc_magic_quote setting, you have to disable both entries (apache and cli php.ini).</p>
+      <p>In case of the gpc_magic_quote setting, you have to disable both entries (apache and cli php.ini). The locations depend on the
+      distributions used.</p>
 
       <pre class="programlisting"> # vi /etc/php5/apache/php.ini
    magic_quotes_gpc = off
@@ -116,21 +137,47 @@
 
       <p><span class="bold"><strong>Manual creation</strong></span></p>
 
-      <p>Create a database and a user you like. The user needs at least the following privileges: SELECT, UPDATE, INSERT, DELETE, CREATE,
-      DROP, ALTER, INDEX. Import the schemes etc/database/deploy/init.sql and etc/database/deploy/db-deploy.sql to your database. That's
-      all.</p>
+      <p>Create a database and a user of your choice. The user needs at least the following privileges: SELECT, UPDATE, INSERT, DELETE,
+      CREATE, DROP, ALTER, INDEX. Import the following schemes into your database: etc/database/rescue/&lt;rdbm&gt;/rescue_schema.sql and
+      etc/database/rescue/&lt;rdbm&gt;/rescue_data.sql. That's all.</p>
+
+      <pre class="programlisting"> # mysql -u root -p
+  
+ mysql&gt; CREATE DATABASE icinga_web;
+  
+ GRANT USAGE ON *.* TO 'icinga_user'@'localhost' IDENTIFIED BY 'icinga_pass' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+   
+ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX ON icinga_web.* TO 'icinga_user'@'localhost';
+ 
+ FLUSH PRIVILEGES ;
+
+ quit</pre>
+
+      <pre class="programlisting"> # cd /path/to/icinga-web/etc/database/deploy/mysql
+ # mysql -u root -p icinga_web &lt; init.sql
+ # mysql -u root -p icinga_web &lt; db-deploy.sql</pre>
 
       <p><span class="bold"><strong>Auto creation</strong></span></p>
 
-      <p>Create a database user with scheme and data privileges (CREATE, DROP, ALTER, INDEX). Go to the etc dir and copy the
-      build.properties to a safe place (e.g. /tmp). Alter the database settings within the properties file. You can also set you database
-      root user to create your scheme. Go to /usr/local/icinga-web/etc and call the phing deploy task:</p>
+      <p>Create a database user with scheme and data privileges (CREATE, DROP, ALTER, INDEX). Go to the <span class="emphasis"><em>etc</em></span> dir and
+      copy <span class="emphasis"><em>build.properties</em></span> to a safe place (e.g. /tmp). Alter the database settings within the properties file. You
+      can also set your database root user to create your scheme. Go to /usr/local/icinga-web/etc and call the phing deploy task:</p>
 
       <pre class="programlisting"> # cd /usr/local/icinga-web/etc
  # /usr/local/icinga-web/bin/phing -Dproperties=/usr/local/icinga-web/etc/build.properties db-initialize</pre>
 
       <p>You have to manually create a database user to access your database. Add the default data privileges that icinga-web can work
       with the newly created database.</p>
+
+      <pre class="programlisting"> # mysql -u root -p
+  
+ mysql&gt; GRANT USAGE ON icinga_web.* TO 'icinga_user'@'localhost' IDENTIFIED BY 'icinga_pass' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+   
+ GRANT SELECT, INSERT, UPDATE, DELETE ON icinga_web.* TO 'icinga_user'@'localhost';
+ 
+ FLUSH PRIVILEGES ;
+
+ quit</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Icinga-web settings</strong></span></p>
@@ -159,15 +206,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-         Please keep in mind that you have to install 
-
-        IDOUtils
-
-         before (according to the 
-
-        <a class="xref" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">“Icinga with IDOUtils Quickstart”</a>
-
-         ) 
+        <p>Please keep in mind that you have to install IDOUtils before (according to the <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Icinga IDOUtils Quickstart Guide</a> )</p>
       </td></tr>
 </table></div>
 
@@ -210,16 +249,16 @@
 
       <pre class="programlisting"> # ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
 
-      <p>Using OpenSuSE you have to edit the file "/etc/sysconfig/apache2". The module "rewrite" has to be appended to the line
-      "APACHE_MODULES=...".</p>
+      <p>Using OpenSuSE you can use "a2enmod rewrite" to activate the module. If that doesn't work you have to edit the file
+      "/etc/sysconfig/apache2". The module "rewrite" has to be appended to the line "APACHE_MODULES=...".</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>Any htaccess enabled alias settings</p>
         </li></ul></div>
 
-      <p>Edit your .htaccess in /usr/local/icinga-web/pub :</p>
+      <p>Edit your .htaccess in /usr/local/icinga-web/pub:</p>
 
-      <p>At line 14, change the RewriteBase direction to suite your needs:</p>
+      <p>At line 14, change the RewriteBase direction to suit your needs:</p>
 <pre class="programlisting"> DirectoryIndex index.php
 
  Options -MultiViews -Indexes +FollowSymLinks
@@ -264,9 +303,9 @@
  #       require valid-user
  #&lt;/IfModule&gt;</pre>
 
-      <p>Go to the webservers configuration directory and create a new alias (maybe in /etc/apache2/conf.d/icinga.conf) :</p>
+      <p>Go to the webservers configuration directory and create a new alias (maybe in /etc/apache2/conf.d/icinga-web.conf) :</p>
 
-      <pre class="programlisting"> # vi /etc/apache2/conf.d/icinga.conf
+      <pre class="programlisting"> # vi /etc/apache2/conf.d/icinga-web.conf
   Alias /icinga-web /usr/local/icinga-web/pub
   &lt;directory /usr/local/icinga-web/pub&gt;
         AllowOverride All
@@ -283,6 +322,10 @@
       <p>or</p>
 
       <pre class="programlisting"> # /etc/init.d/apache2 restart</pre>
+
+      <p>or</p>
+
+      <pre class="programlisting"> # /etc/init.d/httpd restart</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Try</strong></span></p>
@@ -296,9 +339,9 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id4790800"></a>
+  <a class="indexterm" name="id1563947"></a>
 
-  <a class="indexterm" name="id4790799"></a>
+  <a class="indexterm" name="id1563971"></a>
 </div>
 <div class="navfooter">
 <hr>

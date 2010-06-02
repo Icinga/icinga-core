@@ -2,9 +2,8 @@
  *
  * CGIUTILS.C - Common utilities for Icinga CGIs
  * 
- * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-05-2009
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

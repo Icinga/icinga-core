@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * XDDDEFAULT.C - Default scheduled downtime data routines for Nagios
+ * XDDDEFAULT.C - Default scheduled downtime data routines for Icinga
  *
- * Copyright (c) 2001-2007 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   09-04-2007
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

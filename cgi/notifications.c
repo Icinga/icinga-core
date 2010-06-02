@@ -1,11 +1,9 @@
-/************************************************************************
+/*****************************************************************************
  *
  * NOTIFICATIONS.C - Icinga Notifications CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
- *
- * Last Modified: 05-14-2010
  *
  * This CGI program will display the notification events for 
  * a given host or contact or for all contacts/hosts.
@@ -24,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- ***********************************************************************/
+ *****************************************************************************/
 
 #include "../include/config.h"
 #include "../include/common.h"

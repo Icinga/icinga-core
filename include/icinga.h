@@ -1,8 +1,9 @@
 /************************************************************************
  *
  * Icinga Main Header File
- * Written By: Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 12-14-2008
+ *
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -18,8 +19,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  ************************************************************************/
 
-#ifndef _NAGIOS_H
-#define _NAGIOS_H
+#ifndef _ICINGA_H
+#define _ICINGA_H
 
 #ifndef __GNUC__
 # define __attribute__(x) /* nothing */

@@ -27,148 +27,128 @@
 <div class="section" title="What's New in Icinga Core 1.0.1 and Icinga Web 0.9.1-beta">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>What's New in Icinga Core 1.0.1 and Icinga Web 0.9.1-beta</h2></div></div></div>
-    
+  
 
-    <p></p>
+  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-    <p>
-        <span class="bold"><strong>Icinga Core:</strong></span>
-    </p>
+  <p><span class="bold"><strong>Enhancements:</strong></span></p>
 
-    <p>
-        <span class="bold"><strong>Enhancements:</strong></span>
-    </p>
+  <p>* core: add service_check_timeout_state configuration variable</p>
 
-    <p>* core: add service_check_timeout_state configuration variable</p>
+  <p>* core: add escalation_condition definition</p>
 
-    <p>* core: add escalation_condition definition</p>
+  <p>* idoutils: add ido2db threaded housekeeper</p>
 
-    <p>* idoutils: add ido2db threaded housekeeper</p>
+  <p>* idoutils: add indexes for delete/select statements</p>
 
-    <p>* idoutils: add indexes for delete/select statements</p>
+  <p>* idoutils: reorganize db setup files for MySQL/Postgresql/Oracle</p>
 
-    <p>* idoutils: reorganize db setup files for MySQL/Postgresql/Oracle</p>
+  <p>* idoutils: complete oracle rewrite to improve performance</p>
 
-    <p>* idoutils: complete oracle rewrite to improve performance</p>
+  <p>* idoutils: add upgrade path for mysql/pgsql/oracle for 1.0.1 – check docs for more information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
 
-    <p>* idoutils: add upgrade path for mysql/pgsql/oracle for 1.0.1 – check docs for more information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
+  <p>* idoutils: add initial debug output for idomod (to be set in idomod.cfg)</p>
 
-    <p>* idoutils: add initial debug output for idomod (to be set in idomod.cfg)</p>
+  <p>* idoutils: add database name in connection msg to syslog</p>
 
-    <p>* idoutils: add database name in connection msg to syslog</p>
+  <p>* idoutils: change mysql db engine to innodb (no table locking, better transcations)</p>
 
-    <p>* idoutils: change mysql db engine to innodb (no table locking, better transcations)</p>
+  <p>* idoutils: add --with-oracle-lib=/path/to/instantclient for runtime, export of LD_LIBRARY_PATH if instantclient not installed to
+  path – check docs for more information <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a></p>
 
-    <p>* idoutils: add --with-oracle-lib=/path/to/instantclient for runtime, export of LD_LIBRARY_PATH if instantclient not installed to path –
-    check docs for more information <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a></p>
+  <p>* idoutils: add max_logentries_age and max_acknowledgements_age to ido2db (check ido2db.cfg)</p>
 
-    <p>* idoutils: add max_logentries_age and max_acknowledgements_age to ido2db (check ido2db.cfg)</p>
+  <p><span class="bold"><strong>Fixes:</strong></span></p>
 
-    <p>
-        <span class="bold"><strong>Fixes:</strong></span>
-    </p>
+  <p>* core: fix segfault in cmd.cgi</p>
 
-    <p>* core: fix segfault in cmd.cgi</p>
+  <p>* core: fix event broker callback function self de-registering for callbacks</p>
 
-    <p>* core: fix event broker callback function self de-registering for callbacks</p>
+  <p>* core: fix idomod doesn't de-initialize after config error</p>
 
-    <p>* core: fix idomod doesn't de-initialize after config error</p>
+  <p>* core: fix make fullinstall/idoutils without enabled idoutils during configure</p>
 
-    <p>* core: fix make fullinstall/idoutils without enabled idoutils during configure</p>
+  <p>* core: fix sending two identical service_status events to neb module</p>
 
-    <p>* core: fix sending two identical service_status events to neb module</p>
+  <p>* idoutils: modify string escaping for mysql and pgsql</p>
 
-    <p>* idoutils: modify string escaping for mysql and pgsql</p>
+  <p>* idoutils: fix pgsql table systemcommands (missing column 'output')</p>
 
-    <p>* idoutils: fix pgsql table systemcommands (missing column 'output')</p>
+  <p>* idoutils: fix acknowledgments query, wrong buffer freed/set as query to db</p>
 
-    <p>* idoutils: fix acknowledgments query, wrong buffer freed/set as query to db</p>
+  <p>* idoutils: fix contactnotification data array, command args were not provided</p>
 
-    <p>* idoutils: fix contactnotification data array, command args were not provided</p>
+  <p>* idoutils: fix custom_variables object_id type int = unsigned long</p>
 
-    <p>* idoutils: fix custom_variables object_id type int = unsigned long</p>
+  <p>To have a deeper look, please visit the Changelog</p>
 
-    <p>To have a deeper look, please visit the Changelog</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>See: <a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">“Changelog of the Icinga Core”</a></p>
+    </li></ul></div>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-            <p>See: <a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">“Changelog of the Icinga Core”</a></p>
-        </li></ul></div>
+  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
 
-    <p>
-        <span class="bold"><strong>Icinga Web:</strong></span>
-    </p>
+  <p>* Added some icinga specific principal target classes</p>
 
-    <p>* Added some icinga specific principal target classes</p>
+  <p>* Finished editing of principal targets for users and groups</p>
 
-    <p>* Finished editing of principal targets for users and groups</p>
+  <p>* Added editing models for principals</p>
 
-    <p>* Added editing models for principals</p>
+  <p>* Finished principal target filtering in xml temlates</p>
 
-    <p>* Finished principal target filtering in xml temlates</p>
+  <p>* Added principal target toolkit for api search queries</p>
 
-    <p>* Added principal target toolkit for api search queries</p>
+  <p>* Added full command specification</p>
 
-    <p>* Added full command specification</p>
+  <p>* Added host- / service status filter</p>
 
-    <p>* Added host- / service status filter</p>
+  <p>* Added some more state (flapping, downtime)</p>
 
-    <p>* Added some more state (flapping, downtime)</p>
+  <p>* Global xml replacements within the templates (view proc)</p>
 
-    <p>* Global xml replacements within the templates (view proc)</p>
+  <p>* Updating ExtJS to 3.1</p>
 
-    <p>* Updating ExtJS to 3.1</p>
+  <p>* Implemented categories for the cronks</p>
 
-    <p>* Implemented categories for the cronks</p>
+  <p>* Cronks for usergroups only</p>
 
-    <p>* Cronks for usergroups only</p>
+  <p>* Tactical overview template engine</p>
 
-    <p>* Tactical overview template engine</p>
+  <p>To have a deeper look, please visit the changelog-web</p>
 
-    <p>To have a deeper look, please visit the changelog-web</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>See: <a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">“Changelog of the Icinga Web”</a></p>
+    </li></ul></div>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-            <p>See: <a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">“Changelog of the Icinga Web”</a></p>
-        </li></ul></div>
+  <p><span class="bold"><strong>Icinga API:</strong></span></p>
 
-    <p>
-        <span class="bold"><strong>Icinga Api:</strong></span>
-    </p>
+  <p>* Restructured DB access for upcoming RDBM support</p>
 
-    <p>* Restructured DB access for upcoming RDBM support</p>
+  <p>* Made several fixes for table prefix, exception handling</p>
 
-    <p>* Made several fixes for table prefix, exception handling</p>
+  <p>* Started a ‘how-to’ guide for upcoming documentation</p>
 
-    <p>* Started a ‘how-to’ guide for upcoming documentation</p>
+  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
 
-    <p>
-        <span class="bold"><strong>Icinga Docs:</strong></span>
-    </p>
+  <p>* Updates and fixes for quickstart guides</p>
 
-    <p>* Updates and fixes for quickstart guides</p>
+  <p>* Updates and fixes for upgrading Icinga and IDOUtils, visit the docs for more Information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
 
-    <p>* Updates and fixes for upgrading Icinga and IDOUtils, visit the docs for more Information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
+  <p>* New Api-section</p>
 
-    <p>* New Api-section</p>
+  <p>Should you find any issues, please report them to the following links:</p>
 
-    <p>Should you find any issues, please report them to the following links:</p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a></p>
 
-    <p>
-        <a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a>
-    </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a></p>
 
-    <p>
-        <a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a>
-    </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga API</a></p>
 
-    <p>
-        <a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga Api</a>
-    </p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
 
-    <p>
-        <a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a>
-    </p>
+  <a class="indexterm" name="id1471445"></a>
 
-    <div class="section" title="Changelog of the Icinga Core">
+  <div class="section" title="Changelog of the Icinga Core">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-core"></a>Changelog of the Icinga Core</h3></div></div></div>
   
@@ -183,7 +163,7 @@
 
   <p>* core: permanently remove sleep on run_event == FALSE in main loop (Max Schubert)</p>
 
-  <p>* core: add service_check_timeout_state configuration variable This setting determines the state Icinga will report when a service
+  <p>* core: add service_check_timeout_state configuration variable. This setting determines the state Icinga will report when a service
   check times out - it does not respond within service_check_timeout seconds.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -276,13 +256,6 @@
 
   <div class="itemizedlist">
 <p>query rewrite:</p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">4x DELETE</li>
-<li class="listitem">52x MERGE</li>
-<li class="listitem">9x INSERT</li>
-<li class="listitem">9x UPDATE</li>
-<li class="listitem">5x SELECT</li>
-</ul></div>
 <ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>1x SELECT latest data time as is (called only at startup)</p>
@@ -294,7 +267,27 @@
       <p>dynamic binded procedure for DELETE on tably by instance_id, field&lt;time called during periodic cleanup in threaded
       housekeeper</p>
     </li>
-<li class="listitem">all other queries are prepared with their own statement handler</li>
+<li class="listitem">
+      <p>all other queries are prepared with their own statement handler</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>4x DELETE</p>
+        </li>
+<li class="listitem">
+          <p>52x MERGE</p>
+        </li>
+<li class="listitem">
+          <p>9x INSERT</p>
+        </li>
+<li class="listitem">
+          <p>9x UPDATE</p>
+        </li>
+<li class="listitem">
+          <p>5x SELECT</p>
+        </li>
+</ul></div>
+    </li>
 <li class="listitem">
       <p>rewritten getting cached object_id using select</p>
     </li>
@@ -639,7 +632,7 @@
 
   <p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it</p>
 
-  <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as a abstraction layer,
+  <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as an abstraction layer,
   enable compile try with "configure --enable-idoutils"</p>
 
   <p>* Included a new stylesheet/icon theme based on Vautour Style. Vautour Style have been created by Yoann LAMY.</p>
@@ -649,10 +642,10 @@
 
   <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
 
-  <a class="indexterm" name="id4700461"></a>
+  <a class="indexterm" name="id1472570"></a>
 </div>
 
-    <div class="section" title="Changelog of the Icinga Web">
+  <div class="section" title="Changelog of the Icinga Web">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-web"></a>Changelog of the Icinga Web</h3></div></div></div>
   
@@ -803,10 +796,8 @@
 
   <p>* This is the initial release, prototyping, testing, think about features</p>
 
-  <a class="indexterm" name="id4700748"></a>
+  <a class="indexterm" name="id1472852"></a>
 </div>
-
-    <a class="indexterm" name="id4700740"></a>
 </div>
 <div class="navfooter">
 <hr>

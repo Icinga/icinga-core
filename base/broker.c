@@ -2,8 +2,8 @@
  *
  * BROKER.C - Event broker routines for Icinga
  *
- * Copyright (c) 2002-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   10-18-2007
+ * Copyright (c) 2002-2008 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
