@@ -37,7 +37,7 @@ extern servicegroup    *servicegroup_list;
 extern int             use_authentication;
 extern int             use_ssl_authentication;
 
-
+extern int	       show_all_services_host_is_authorized_for;
 
 /* get current authentication information */
 int get_authentication_information(authdata *authinfo){
@@ -295,7 +295,9 @@ int is_authorized_for_service(service *svc, authdata *authinfo){
 		return FALSE;
 
 	/* if this user is authorized for this host, they are for all services on it as well... */
-	if(is_authorized_for_host(temp_host,authinfo)==TRUE)
+	/* 06-02-2010 added config option, if set FALSE, this condition won't match and 
+	   user must be authorized for the services too in order to view them 			*/
+	if(is_authorized_for_host(temp_host,authinfo)==TRUE && show_all_services_host_is_authorized_for==TRUE)
 		return TRUE;
 
 	/* find the contact */

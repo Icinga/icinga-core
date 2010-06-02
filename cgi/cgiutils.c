@@ -97,6 +97,7 @@ int             use_authentication=TRUE;
 int             interval_length=60;
 
 int             show_context_help=FALSE;
+int		show_all_services_host_is_authorized_for=TRUE;
 
 int             use_pending_states=TRUE;
 
@@ -307,6 +308,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"show_context_help"))
 			show_context_help=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"show_all_services_host_is_authorized_for"))
+			show_all_services_host_is_authorized_for=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"use_pending_states"))
 			use_pending_states=(atoi(val)>0)?TRUE:FALSE;
