@@ -1844,33 +1844,12 @@ int check_daemon_running(void) {
                 return ERROR;
         }
 
-	if((fk=mmap_fopen(lock_file))==NULL) {
-
-		/* no lock file found try program name instead */
-                if(asprintf(&proc_file,"/bin/ps -o pid -C %s",PROGRAM_NAME_LC)==-1) {
-                        free(proc_file);
-                        return ERROR;
-                }
-
-                if((fp=popen(proc_file, "r"))==NULL) {
-                        free(proc_file);
-                        return ERROR;
-                }
-
-                fgets(input_buffer,CHARLEN-1,fp);
-                fgets(input_buffer,CHARLEN-1,fp);
-
-		pclose(fp);
-		free(proc_file);
-
-                /* check if entry found */
-                if (sscanf(input_buffer,"%d",&testpid)!=1) {
-                        return ERROR;
-                } else {
-			/* daemon is running */
-			return OK;
-		}
-	}
+	/* since 'ps -C process' is no working on macosx, we'll drop that again
+	   the init script of the core is now safe - if the core segfaulted after
+	   after starting up, the lockfile is removed. so if there is no lockfile
+	   no daemon is assumed running  */
+	if((fk=mmap_fopen(lock_file))==NULL) 
+		return ERROR;
         
 	if((input=mmap_fgets(fk))==NULL) {
 		mmap_fclose(fk);
