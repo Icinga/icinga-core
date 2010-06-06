@@ -29,6 +29,7 @@ ENHANCEMENTS
 * idoutils: add syslog output, if ido2db is unable to do initial db query
 * idoutils: rewrite initscript not only depending on lockfile
 * idoutils: check if ido2db running after init script 'start', if not, show error and remove lockfile 
+* idoutils: add upgrade scripts to fix object relations to historical data
 
 * config: add trailing slash in apache config for html dir
 
