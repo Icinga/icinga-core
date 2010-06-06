@@ -444,7 +444,7 @@ SET i5.object_id=i4.object_id;
 -- failed restart first (end_time=0)
 -- -----------------------------------------
 
-DELETE FROM icinga_statehistory WHERE start_time LIKE '%1970-01-01 01:00:00%';
+DELETE FROM icinga_statehistory WHERE state_time LIKE '%1970-01-01 01:00:00%';
 
 
 -- -----------------------------------------
