@@ -58,7 +58,6 @@ FIXES
 * core: fix checking of the open(2) system call (David Glick)
 * core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)
 * core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)
-* core: common/objects.c: Remove unused functions (Andreas Ericsson)
 * core: header files: Remove dead prototypes (Andreas Ericsson)
 * core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)
 * core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
