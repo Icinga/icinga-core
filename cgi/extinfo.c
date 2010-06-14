@@ -439,25 +439,29 @@ int main(void){
 		if(display_type==DISPLAY_HOST_INFO && temp_host!=NULL){
 			printf("<TABLE BORDER='0'>\n");
 			if(temp_host->action_url!=NULL && strcmp(temp_host->action_url,"")){
+				process_macros(temp_host->action_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
-				process_macros(temp_host->action_url,&processed_string,0);
 				printf("%s",processed_string);
-				free(processed_string);
-				printf("' TARGET='%s'><img src='%s%s' border=0 alt='Perform Additional Actions On This Host' title='Perform Additional Actions On This Host'></A>\n",(action_url_target==NULL)?"_blank":action_url_target,url_images_path,ACTION_ICON);
+				printf("' TARGET='%s'><img src='%s%s%s' border=0 alt='Perform Additional Actions On This Host' title='Perform Additional Actions On This Host'></A>\n",(action_url_target==NULL)?"_blank":action_url_target,url_images_path,MU_iconstr,ACTION_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Actions</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
 				printf("</TD></TR>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 			        }
 			if(temp_host->notes_url!=NULL && strcmp(temp_host->notes_url,"")){
+				process_macros(temp_host->notes_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
-				process_macros(temp_host->notes_url,&processed_string,0);
 				printf("%s",processed_string);
-				free(processed_string);
 				/*print_extra_host_url(temp_host->name,temp_host->notes_url);*/
-				printf("' TARGET='%s'><img src='%s%s' border=0 alt='View Additional Notes For This Host' title='View Additional Notes For This Host'></A>\n",(notes_url_target==NULL)?"_blank":notes_url_target,url_images_path,NOTES_ICON);
+				printf("' TARGET='%s'><img src='%s%s%s' border=0 alt='View Additional Notes For This Host' title='View Additional Notes For This Host'></A>\n",(notes_url_target==NULL)?"_blank":notes_url_target,url_images_path,MU_iconstr,NOTES_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Notes</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
 				printf("</TD></TR>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 			        }
 			printf("</TABLE>\n");
 	                }
@@ -465,20 +469,24 @@ int main(void){
 		else if(display_type==DISPLAY_SERVICE_INFO && temp_service!=NULL){
 			printf("<TABLE BORDER='0'><TR><TD ALIGN='right'>\n");
 			if(temp_service->action_url!=NULL && strcmp(temp_service->action_url,"")){
-				printf("<A HREF='");
 				process_macros(temp_service->action_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
+				printf("<A HREF='");
 				printf("%s",processed_string);
-				free(processed_string);
-				printf("' TARGET='%s'><img src='%s%s' border=0 alt='Perform Additional Actions On This Service' title='Perform Additional Actions On This Service'></A>\n",(action_url_target==NULL)?"_blank":action_url_target,url_images_path,ACTION_ICON);
+				printf("' TARGET='%s'><img src='%s%s%s' border=0 alt='Perform Additional Actions On This Service' title='Perform Additional Actions On This Service'></A>\n",(action_url_target==NULL)?"_blank":action_url_target,url_images_path,MU_iconstr,ACTION_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Actions</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 			        }
 			if(temp_service->notes_url!=NULL && strcmp(temp_service->notes_url,"")){
-				printf("<A HREF='");
 				process_macros(temp_service->notes_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
+				printf("<A HREF='");
 				printf("%s",processed_string);
-				free(processed_string);
-				printf("' TARGET='%s'><img src='%s%s' border=0 alt='View Additional Notes For This Service' title='View Additional Notes For This Service'></A>\n",(notes_url_target==NULL)?"_blank":notes_url_target,url_images_path,NOTES_ICON);
+				printf("' TARGET='%s'><img src='%s%s%s' border=0 alt='View Additional Notes For This Service' title='View Additional Notes For This Service'></A>\n",(notes_url_target==NULL)?"_blank":notes_url_target,url_images_path,MU_iconstr,NOTES_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Notes</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 			        }
 			printf("</TD></TR></TABLE>\n");
 	                }

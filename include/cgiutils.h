@@ -483,6 +483,51 @@ void free_lifo_memory(void);
 int push_lifo(char *);
 char *pop_lifo(void);
 
+/******************************** MULTIURL PATCH *******************************/
+
+#ifndef DISABLE_MULTIURL
+
+#define MU_PATCH_ID	"+MU"
+
+int MU_lasturl, MU_thisurl;
+char MU_iconstr[16], *MU_origstr, *MU_ptr;
+
+/* Have process_macros() generate processed_string *BEFORE* starting the loop */
+
+#define	BEGIN_MULTIURL_LOOP										\
+	/* Init counters */	MU_lasturl=0; MU_iconstr[0]='\0';					\
+	/* MAIN LOOP */		for (MU_origstr=MU_ptr=processed_string; (*MU_ptr)!='\0'; ) {		\
+		/* Internal init */	MU_thisurl=MU_lasturl;						\
+		/* Skip whitespace */	for (;isspace(*MU_ptr);MU_ptr++) ;				\
+		/* Detect+skip ap. */	for (;(*MU_ptr)=='\'';MU_ptr++) MU_thisurl=MU_lasturl+1;	\
+		/* Ap. found? */	if (MU_thisurl>MU_lasturl) {					\
+			/* yes->split str */	sprintf(MU_iconstr,"%u-",MU_thisurl);			\
+						processed_string=MU_ptr;				\
+						for (;((*MU_ptr)!='\0')&&((*MU_ptr)!='\'');MU_ptr++) ;	\
+						if ((*MU_ptr)=='\'') { (*MU_ptr)='\0'; MU_ptr++;	\
+							for (;isspace(*MU_ptr);MU_ptr++) ; }		\
+					} else {							\
+			/* no->end loop */	MU_iconstr[0]='\0'; MU_ptr="";				\
+					}
+
+/* Do the original printf()s, additionally inserting MU_iconstr between icon path and icon (file)name */
+
+#define	END_MULTIURL_LOOP										\
+		/* Int -> ext ctr */	MU_lasturl=MU_thisurl; processed_string=MU_ptr;			\
+	/* MAIN LOOP */		}									\
+	/* Hide evidence */	processed_string=MU_origstr;
+
+/* Do the free(processed_string) *AFTER* ending the loop */
+
+#else /* ndef DISABLE_MULTIURL */
+
+#define MU_PATCH_ID	""
+char *MU_iconstr="";
+
+#endif /* ndef DISABLE_MULTIURL */
+
+
+
 #ifdef __cplusplus
 }
 #endif

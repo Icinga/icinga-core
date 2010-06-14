@@ -20,6 +20,7 @@ ENHANCEMENTS
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
 * cgi: add config option show_all_services_host_is_authorized_for to cgi.cfg
 	It's possible to disable that the user can see all services only being an authorized contact for the host
+* cgi: add multiple urls for notes|action_url on host|service object definition (Jochen Bernd)
 
 * idoutils: add config options to allow users decision on clearing realtime and config tables on Icinga core startup
 	Actual config objects are marked as (in)active, because disabling the clearing results in historical config
