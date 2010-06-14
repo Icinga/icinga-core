@@ -14,10 +14,16 @@ ENHANCEMENTS
 * core: icinga can send log messages to syslogd using a local facility instead of the default one
 * core: enhanced diagnostic output when a regular expression fails to compile (Max Schubert)
 * core: add state-based escalation ranges (Mark Gius)
+        The directives first_notification and last_notification apply to the
+        total count of notifications on a particular service or host.  It is
+        sometimes desirable to escalate after the Nth critical notification,
+        rather than after a total number of N notifications have been sent.
+* core: add event profiling option for stats of event counts and time taken for events
 * core: retention file loading speedup (Matthieu Kermagoret)
 
 * cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
 * cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
+* cgi: add event profiling stats of event counts and time taken for events in 'Performance Info'
 * cgi: add config option show_all_services_host_is_authorized_for to cgi.cfg
 	It's possible to disable that the user can see all services only being an authorized contact for the host
 * cgi: add multiple urls for notes|action_url on host|service object definition (Jochen Bernd)
@@ -74,6 +80,8 @@ FIXES
 * core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
 * core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
 * core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)
+* core: error out on services without description in service object definition
+* core: fix servicechecks with timeperiods containing 'exclude' directives are incorrectly re-scheduled
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
 * cgi: fix cmd.cgi incomplete output for command description
