@@ -79,7 +79,7 @@ FIXES
 * core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
 * core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
 * core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)
-* core: error out on services without description in service object definition
+* core: error out if services defined without description in service object definition (service def and/or used templates)
 * core: fix servicechecks with timeperiods containing 'exclude' directives are incorrectly re-scheduled
 
 * cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)

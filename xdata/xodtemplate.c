@@ -653,7 +653,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 	register int x=0;
 	register int y=0;
 	char *ptr=NULL;
-	xodtemplate_service *temp_service=NULL;
+	//xodtemplate_service *temp_service=NULL;
 
 
 #ifdef NSCORE
@@ -756,12 +756,15 @@ int xodtemplate_process_config_file(char *filename, int options){
 		/* this is the close of an object definition */
 		else if(!strcmp(input,"}") && in_definition==TRUE){
 
+			/* 2010-06-17 MF we should only warn if a service_description is not found on service definition
+			   regarding the fact that we resolve the object with templates afterwards, we cannot throw a
+			   warning here. commented out for future rework */
+			/*
 			switch(xodtemplate_current_object_type){
 				case XODTEMPLATE_SERVICE:{
 					temp_service=(xodtemplate_service *)xodtemplate_current_object;
 					if (temp_service->register_object && (!temp_service->service_description)){
-						logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Ending service definition without description in '%s' on line %d.\n",filename,current_line);
-						result=ERROR;
+						logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Ending service definition without description in '%s' on line %d.\n",filename,current_line);
 						break;
 					}
 					break;
@@ -769,7 +772,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 				default:
 					break;
 			}
-
+			*/
 			in_definition=FALSE;
 
 			/* close out current definition */
@@ -4277,8 +4280,15 @@ int xodtemplate_duplicate_services(void){
                         continue;
 
                 /* skip service definitions without enough data */
-                if(temp_service->host_name==NULL || temp_service->service_description==NULL)
-                        continue;
+                if(temp_service->host_name==NULL){
+			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
+			return ERROR;
+		}
+
+		if(temp_service->service_description==NULL){
+                        logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No service_description found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
+			return ERROR;
+		}
 
 		if(xodtemplate_is_service_is_from_hostgroup(temp_service)){
 			continue;
@@ -4310,8 +4320,15 @@ int xodtemplate_duplicate_services(void){
 			continue;
 
 		/* skip service definitions without enough data */
-		if(temp_service->host_name==NULL || temp_service->service_description==NULL)
-			continue;
+                if(temp_service->host_name==NULL){
+                        logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
+                        return ERROR;
+                }
+
+                if(temp_service->service_description==NULL){
+                        logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No service_description found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
+                        return ERROR;
+                }
 
 	        if(!xodtemplate_is_service_is_from_hostgroup(temp_service)){
                         continue;
