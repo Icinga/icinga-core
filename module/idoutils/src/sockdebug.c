@@ -7,6 +7,7 @@
  **************************************************************/
 
 #include "../../../include/config.h"
+#include "../include/io.h"
 
 #define SOCKDEBUG_VERSION "1.0.1"
 #define SOCKDEBUG_NAME "SOCKDEBUG"

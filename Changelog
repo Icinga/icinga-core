@@ -96,6 +96,7 @@ FIXES
 * idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though
 * idoutils: fix for oracle when binding a NULL value on contactnotificationmethods
 * idoutils: completely renamed idoutils (s/ndo/ido/g etc), removing old sources
+* idoutils: fix compilation error of SUN_LEN on Solaris
 
 1.0.1 - 03/03/2010
 
