@@ -9,7 +9,7 @@ SRC_INCLUDE=../include
 SRC_XDATA=../xdata
 
 CC=@CC@
-CFLAGS=-Wall @CFLAGS@ @DEFS@ -DNSCORE
+CFLAGS=@CFLAGS@ @DEFS@ -DNSCORE
 
 # Compiler flags for use with gprof
 #CFLAGS=-pg -DHAVE_CONFIG_H -DNSCORE

@@ -3576,6 +3576,7 @@ int init_embedded_perl(char **env){
 #ifdef EMBEDDEDPERL
 	void **embedding=NULL;
 	int exitstatus=0;
+	int argc=2;
 	struct stat stat_buf;
 
 	/* make sure the P1 file exists... */

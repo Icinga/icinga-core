@@ -69,7 +69,6 @@ FIXES
 * core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)
 * core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
 * core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)
-* core: enable compiler flag -Wall by default (base/cgi/common/idoutils)
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
 * core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
