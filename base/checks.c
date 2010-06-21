@@ -357,6 +357,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	char *args[5]={"",DO_CLEAN, "", "", NULL };
 	char *perl_plugin_output=NULL;
 	SV *plugin_hndlr_cr=NULL; /* perl.h holds typedef struct */
+	STRLEN n_a ;
 	int count ;
 	int use_epn=FALSE;
 #ifdef aTHX
