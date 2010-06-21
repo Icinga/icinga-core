@@ -112,6 +112,12 @@ AC_SEARCH_LIBS([connect],[socket],
 AC_SUBST(SOCKETLIBS)
 AC_CHECK_FUNCS(initgroups setenv strdup strstr strtoul unsetenv)
 
+dnl Check for gethostbyname (requires libnsl on Solaris)
+AC_SEARCH_LIBS([gethostbyname], [nsl],
+	[if test "$ac_cv_search_gethostbyname" != "none required"; then
+		SOCKETLIBS="$SOCKETLIBS -lnsl"
+	fi])
+
 dnl Check for getopt_long (Solaris)
 AC_CHECK_FUNCS([getopt_long],,AC_CHECK_LIB([iberty],[getopt_long],OTHERLIBS="$OTHERLIBS -liberty"))
 AC_SUBST(OTHERLIBS)
