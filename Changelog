@@ -97,6 +97,7 @@ FIXES
 * idoutils: completely renamed idoutils (s/ndo/ido/g etc), removing old sources
 * idoutils: fix compilation error of SUN_LEN on Solaris
 * idoutils: add configure check for gethostbyname including -nsl on Solaris (Alexander Skwar)
+* idoutils: fix host 2d y coord not stored properly
 
 1.0.1 - 03/03/2010
 

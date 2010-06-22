@@ -4928,7 +4928,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_HIGHHOSTFLAPTHRESHOLD], &high_flap_threshold);
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HAVE2DCOORDS], &have_2d_coords);
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_X2D], &x_2d);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_Y3D], &y_2d);
+	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_Y2D], &y_2d);
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HAVE3DCOORDS], &have_3d_coords);
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_X3D], &x_3d);
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_Y3D], &y_3d);
