@@ -2,9 +2,8 @@
  *
  * LOGGING.C - Log file functions for use with Icinga
  *
- * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-11-2009
+ * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -41,6 +40,8 @@ extern host     *host_list;
 extern service  *service_list;
 
 extern int	use_syslog;
+extern int	use_syslog_local_facility;
+extern int	syslog_local_facility;
 extern int      log_service_retries;
 extern int      log_initial_states;
 
@@ -68,29 +69,16 @@ FILE            *debug_file_fp=NULL;
 /************************ LOGGING FUNCTIONS ***********************/
 /******************************************************************/
 
-/* This needs to be a function rather than a macro. C99 introduces
- * variadic macros, but we need to support compilers that aren't
- * C99 compliant in that area, so a function it is. Hopefully most
- * compilers will just optimize this call away, as it's easily
- * recognizable as not doing anything at all */
-void logit(int data_type, int display, const char *fmt, ...){
-	int len;
-	va_list ap;
-	char *buffer=NULL;
-
-	va_start(ap,fmt);
-	if((len=vasprintf(&buffer,fmt,ap))>0){
-		write_to_logs_and_console(buffer,data_type,display);
-		free(buffer);
-		}
-	va_end(ap);
-
-	return;
-	}
+/* write something to the console */
+static void write_to_console(char *buffer){
+        /* should we print to the console? */
+        if(daemon_mode==FALSE)
+                printf("%s\n",buffer);
+}
 
 
 /* write something to the log file, syslog, and possibly the console */
-int write_to_logs_and_console(char *buffer, unsigned long data_type, int display){
+static void write_to_logs_and_console(char *buffer, unsigned long data_type, int display){
 	register int len=0;
 	register int x=0;
 
@@ -101,7 +89,7 @@ int write_to_logs_and_console(char *buffer, unsigned long data_type, int display
 			buffer[x]='\x0';
 		else
 			break;
-	        }
+	}
 
 	/* write messages to the logs */
 	write_to_all_logs(buffer,data_type);
@@ -111,24 +99,24 @@ int write_to_logs_and_console(char *buffer, unsigned long data_type, int display
 
 		/* don't display warnings if we're just testing scheduling */
 		if(test_scheduling==TRUE && data_type==NSLOG_VERIFICATION_WARNING)
-			return OK;
+			return;
 
 		write_to_console(buffer);
-	        }
+	}
+}
 
-	return OK;
+
+/* The main logging function */
+void logit(int data_type, int display, const char *fmt, ...){
+        va_list ap;
+        char *buffer=NULL;
+        va_start(ap,fmt);
+        if (vasprintf(&buffer, fmt, ap) > 0) {
+                write_to_logs_and_console(buffer,data_type,display);
+                free(buffer);
         }
-
-
-/* write something to the console */
-int write_to_console(char *buffer){
-
-	/* should we print to the console? */
-	if(daemon_mode==FALSE)
-		printf("%s\n",buffer);
-
-	return OK;
-        }
+        va_end(ap);
+}
 
 
 /* write something to the log file and syslog facility */
@@ -145,16 +133,14 @@ int write_to_all_logs(char *buffer, unsigned long data_type){
 
 
 /* write something to the log file and syslog facility */
-int write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time_t *timestamp){
+static void write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time_t *timestamp){
 
 	/* write to syslog */
 	write_to_syslog(buffer,data_type);
 
 	/* write to main log */
 	write_to_log(buffer,data_type,timestamp);
-
-	return OK;
-        }
+}
 
 
 /* write something to the icinga log file */
@@ -222,6 +208,37 @@ int write_to_syslog(char *buffer, unsigned long data_type){
 		return OK;
 
 	/* write the buffer to the syslog facility */
+	if (use_syslog_local_facility) {
+		switch (syslog_local_facility) {
+			case 0:
+				syslog(LOG_LOCAL0|LOG_INFO,"%s",buffer);
+				return OK;
+			case 1:
+				syslog(LOG_LOCAL1|LOG_INFO,"%s",buffer);
+				return OK;
+			case 2:
+				syslog(LOG_LOCAL2|LOG_INFO,"%s",buffer);
+				return OK;
+			case 3:
+				syslog(LOG_LOCAL3|LOG_INFO,"%s",buffer);
+				return OK;
+			case 4:
+				syslog(LOG_LOCAL4|LOG_INFO,"%s",buffer);
+				return OK;
+			case 5:
+				syslog(LOG_LOCAL5|LOG_INFO,"%s",buffer);
+				return OK;
+			case 6:
+				syslog(LOG_LOCAL6|LOG_INFO,"%s",buffer);
+				return OK;
+			case 7:
+				syslog(LOG_LOCAL7|LOG_INFO,"%s",buffer);
+				return OK;
+			default:
+				break;
+		}
+	} 
+
 	syslog(LOG_USER|LOG_INFO,"%s",buffer);
 
 	return OK;
@@ -407,14 +424,6 @@ int rotate_log_file(time_t rotation_time){
 		my_free(log_archive);
 		return ERROR;
 	        }
-
-#ifdef USE_EVENT_BROKER
-	/* REMOVED - log rotation events are already handled by NEBTYPE_TIMEDEVENT_EXECUTE... */
-	/* send data to the event broker */
-        /*
-	broker_log_data(NEBTYPE_LOG_ROTATION,NEBFLAG_NONE,NEBATTR_NONE,log_archive,log_rotation_method,0,NULL);
-	*/
-#endif
 
 	/* record the log rotation after it has been done... */
 	asprintf(&temp_buffer,"LOG ROTATION: %s\n",method_string);

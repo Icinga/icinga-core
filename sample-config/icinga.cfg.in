@@ -277,6 +277,22 @@ use_syslog=1
 
 
 
+# SYSLOG FACILITY
+# If you enabled use_syslog you can set icinga to use a local facility
+# instead of the default.To enable set this option to 1, if not, set it to 0.
+
+use_syslog_local_facility=0
+
+
+
+# SYSLOG LOCAL FACILITY
+# If you specified the use_syslog_local_facility you can chose which
+# local facility to use. Valid values are from 0 to 7
+
+syslog_local_facility=5
+
+
+
 # NOTIFICATION LOGGING OPTION
 # If you don't want notifications to be logged, set this value to 0.
 # If notifications should be logged, set the value to 1.
@@ -639,6 +655,32 @@ retain_state_information=1
 # variable is set to 1.
 
 state_retention_file=@localstatedir@/retention.dat
+
+
+
+# SYNC FILE
+# This is an advanced facility to pass a subset of retention 
+# information into Icinga on a running system. This is similar 
+# to the state retention file with the following difference:
+#
+# - if the last_check value is less than the current last_check, 
+#   then the state information is ignored (this must be specified 
+#   immediately after the object identifiers)
+#
+# - downtimes and comments are not identified by an id number, but 
+#   by other "similar characteristics". This is required to work in 
+#   a distributed Nagios environment
+#    * downtimes: hostname, servicename (if appropriate), author, 
+#      comment, start_time, end_time, fixed, duration
+#    * comments:  hostname, servicename, author, comment
+#
+# If this variable is set, then on Icinga startup, the sync file 
+# will be read after the retention file has been processed. If the 
+# file is read successfully, it will be removed.
+# If the file does not exist, no error will appear.
+# There is also an API that will force a read of the sync file.
+
+#sync_retention_file=@localstatedir@/sync.dat
 
 
 
@@ -1335,4 +1377,10 @@ debug_file=@localstatedir@/icinga.debug
 
 max_debug_file_size=1000000
 
+# EVENT PROFILING
+# This option enables or disables event profiling for stats of event counts 
+# and time taken for events.
+# Values: 0 - disabled
+#         1 - enabled
 
+event_profiling_enabled=0

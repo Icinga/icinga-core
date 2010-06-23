@@ -1,9 +1,8 @@
 /***************************************************************
- * LOG2NDO.C - Sends archived logs files to NDO2DB daemon
+ * LOG2IDO.C - Sends archived logs files to IDO2DB daemon
  *
- * Copyright (c) 2005-2007 Ethan Galstad 
- *
- * Last Modified: 01-03-2009
+ * Copyright (c) 2005-2007 Ethan Galstad
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org) 
  *
  **************************************************************/
 
@@ -12,9 +11,9 @@
 #include "../include/io.h"
 #include "../include/protoapi.h"
 
-#define LOG2NDO_VERSION "1.0.1"
-#define LOG2NDO_NAME "LOG2NDO"
-#define LOG2NDO_DATE "03-03-2010"
+#define LOG2IDO_VERSION "1.0.1"
+#define LOG2IDO_NAME "LOG2IDO"
+#define LOG2IDO_DATE "03-03-2010"
 
 
 
@@ -23,15 +22,15 @@ int process_arguments(int,char **);
 char *source_name=NULL;
 char *dest_name=NULL;
 char *instance_name=NULL;
-int socket_type=NDO_SINK_UNIXSOCKET;
+int socket_type=IDO_SINK_UNIXSOCKET;
 int tcp_port=0;
-int show_version=NDO_FALSE;
-int show_license=NDO_FALSE;
-int show_help=NDO_FALSE;
+int show_version=IDO_FALSE;
+int show_license=IDO_FALSE;
+int show_help=IDO_FALSE;
 
 
 int main(int argc, char **argv){
-	ndo_mmapfile *thefile=NULL;
+	ido_mmapfile *thefile=NULL;
 	char *connection_type=NULL;
 	char *input=NULL;
 	char *input2=NULL;
@@ -42,20 +41,21 @@ int main(int argc, char **argv){
 
 	result=process_arguments(argc,argv);
 
-        if(result!=NDO_OK || show_help==NDO_TRUE || show_license==NDO_TRUE || show_version==NDO_TRUE){
+        if(result!=IDO_OK || show_help==IDO_TRUE || show_license==IDO_TRUE || show_version==IDO_TRUE){
 
-		if(result!=NDO_OK)
+		if(result!=IDO_OK)
 			printf("Incorrect command line arguments supplied\n");
 
 		printf("\n");
-		printf("%s %s\n",LOG2NDO_NAME,LOG2NDO_VERSION);
+		printf("%s %s\n",LOG2IDO_NAME,LOG2IDO_VERSION);
+		printf("Copyright(c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Copyright(c) 2005-2007 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Last Mofieid: %s\n",LOG2NDO_DATE);
+		printf("Last Mofieid: %s\n",LOG2IDO_DATE);
 		printf("License: GPL v2\n");
 		printf("\n");
 		printf("Sends the contents of an archived Icinga log file to STDOUT,\n");
 		printf("a TCP socket, or a Unix domain socket in a format that is understood by the\n");
-		printf("NDO2DB daemon.\n");
+		printf("IDO2DB daemon.\n");
 		printf("\n");
 		printf("Usage: %s -s <source> -d <dest> -i <instance> [-t <type>] [-p <port>]\n",argv[0]);
 		printf("\n");
@@ -75,18 +75,18 @@ int main(int argc, char **argv){
 	/* send output to STDOUT rather than a socket */
 	if(!strcmp(dest_name,"-")){
 		sd=STDOUT_FILENO;
-		socket_type=NDO_SINK_FD;
+		socket_type=IDO_SINK_FD;
 	        }
 
 	/* open the file for reading */
-	if((thefile=ndo_mmap_fopen(source_name))==NULL){
+	if((thefile=ido_mmap_fopen(source_name))==NULL){
 		perror("Unable to open source file for reading");
 		exit(1);
 	        }
 
 	/* open the destination */
-	if(ndo_sink_open(dest_name,sd,socket_type,tcp_port,0,&sd)==NDO_ERROR){
-		ndo_mmap_fclose(thefile);
+	if(ido_sink_open(dest_name,sd,socket_type,tcp_port,0,&sd)==IDO_ERROR){
+		ido_mmap_fclose(thefile);
 		exit(1);
 	        }
 
@@ -94,46 +94,46 @@ int main(int argc, char **argv){
 	/***** SEND HEADER INFORMATION *****/
 
 	/* get the connection type string */
-	if(socket_type==NDO_SINK_FD || socket_type==NDO_SINK_FILE)
-		connection_type=NDO_API_CONNECTION_FILE;
-	else if(socket_type==NDO_SINK_TCPSOCKET)
-		connection_type=NDO_API_CONNECTION_TCPSOCKET;
+	if(socket_type==IDO_SINK_FD || socket_type==IDO_SINK_FILE)
+		connection_type=IDO_API_CONNECTION_FILE;
+	else if(socket_type==IDO_SINK_TCPSOCKET)
+		connection_type=IDO_API_CONNECTION_TCPSOCKET;
 	else
-		connection_type=NDO_API_CONNECTION_UNIXSOCKET;
+		connection_type=IDO_API_CONNECTION_UNIXSOCKET;
 
 	snprintf(tempbuf,sizeof(tempbuf)-1
 		 ,"%s\n%s: %d\n%s: %s\n%s: %s\n%s: %lu\n%s: %s\n%s: %s\n%s: %s\n%s: %s\n%s\n\n"
-		 ,NDO_API_HELLO
-		 ,NDO_API_PROTOCOL
-		 ,NDO_API_PROTOVERSION
-		 ,NDO_API_AGENT
-		 ,LOG2NDO_NAME
-		 ,NDO_API_AGENTVERSION
-		 ,LOG2NDO_VERSION
-		 ,NDO_API_STARTTIME
+		 ,IDO_API_HELLO
+		 ,IDO_API_PROTOCOL
+		 ,IDO_API_PROTOVERSION
+		 ,IDO_API_AGENT
+		 ,LOG2IDO_NAME
+		 ,IDO_API_AGENTVERSION
+		 ,LOG2IDO_VERSION
+		 ,IDO_API_STARTTIME
 		 ,(unsigned long)time(NULL)
-		 ,NDO_API_DISPOSITION
-		 ,NDO_API_DISPOSITION_ARCHIVED
-		 ,NDO_API_CONNECTION
+		 ,IDO_API_DISPOSITION
+		 ,IDO_API_DISPOSITION_ARCHIVED
+		 ,IDO_API_CONNECTION
 		 ,connection_type
-		 ,NDO_API_CONNECTTYPE
-		 ,NDO_API_CONNECTTYPE_INITIAL
-		 ,NDO_API_INSTANCENAME
+		 ,IDO_API_CONNECTTYPE
+		 ,IDO_API_CONNECTTYPE_INITIAL
+		 ,IDO_API_INSTANCENAME
 		 ,(instance_name==NULL)?"default":instance_name
-		 ,NDO_API_STARTDATADUMP
+		 ,IDO_API_STARTDATADUMP
 		);
 	tempbuf[sizeof(tempbuf)-1]='\x0';
-	ndo_sink_write(sd,tempbuf,strlen(tempbuf));
+	ido_sink_write(sd,tempbuf,strlen(tempbuf));
 
 
 
 	/***** SEND THE LOG CONTENTS *****/
 
-	while((input=ndo_mmap_fgets(thefile))){
+	while((input=ido_mmap_fgets(thefile))){
 
 		/* strip and escape log entry */
-		ndo_strip_buffer(input);
-		if((input2=ndo_escape_buffer(input))==NULL){
+		ido_strip_buffer(input);
+		if((input2=ido_escape_buffer(input))==NULL){
 			free(input);
 			input2=NULL;
 			continue;
@@ -142,13 +142,13 @@ int main(int argc, char **argv){
 		/* write log entry header */
 		snprintf(tempbuf,sizeof(tempbuf)-1
 			 ,"%d:\n%d=%s\n%d\n\n"
-			 ,NDO_API_LOGENTRY
-			 ,NDO_DATA_LOGENTRY
+			 ,IDO_API_LOGENTRY
+			 ,IDO_DATA_LOGENTRY
 			 ,input2
-			 ,NDO_API_ENDDATA
+			 ,IDO_API_ENDDATA
 			);
 		tempbuf[sizeof(tempbuf)-1]='\x0';
-		ndo_sink_write(sd,tempbuf,strlen(tempbuf));
+		ido_sink_write(sd,tempbuf,strlen(tempbuf));
 
 		/* free allocated memory */
 		free(input);
@@ -162,22 +162,22 @@ int main(int argc, char **argv){
 	/***** SAY GOODBYE *****/
 
 	snprintf(tempbuf,sizeof(tempbuf)-1,"\n%d\n%s: %lu\n%s\n"
-		 ,NDO_API_ENDDATADUMP
-		 ,NDO_API_ENDTIME
+		 ,IDO_API_ENDDATADUMP
+		 ,IDO_API_ENDTIME
 		 ,(unsigned long)time(NULL)
-		 ,NDO_API_GOODBYE
+		 ,IDO_API_GOODBYE
 		);
 	tempbuf[sizeof(tempbuf)-1]='\x0';
-	ndo_sink_write(sd,tempbuf,strlen(tempbuf));
+	ido_sink_write(sd,tempbuf,strlen(tempbuf));
 
 
 
 	/* close the destination */
-	ndo_sink_flush(sd);
-	ndo_sink_close(sd);
+	ido_sink_flush(sd);
+	ido_sink_close(sd);
 
 	/* close the file */
-	ndo_mmap_fclose(thefile);
+	ido_mmap_fclose(thefile);
 
 	return 0;
         }
@@ -205,8 +205,8 @@ int process_arguments(int argc, char **argv){
 
 	/* no options were supplied */
 	if(argc<2){
-		show_help=NDO_TRUE;
-		return NDO_OK;
+		show_help=IDO_TRUE;
+		return IDO_OK;
 	        }
 
 	snprintf(optchars,sizeof(optchars),"s:d:i:t:p:hlV");
@@ -225,26 +225,26 @@ int process_arguments(int argc, char **argv){
 
 		case '?':
 		case 'h':
-			show_help=NDO_TRUE;
+			show_help=IDO_TRUE;
 			break;
 		case 'V':
-			show_version=NDO_TRUE;
+			show_version=IDO_TRUE;
 			break;
 		case 'l':
-			show_license=NDO_TRUE;
+			show_license=IDO_TRUE;
 			break;
 		case 't':
 			if(!strcmp(optarg,"tcp"))
-				socket_type=NDO_SINK_TCPSOCKET;
+				socket_type=IDO_SINK_TCPSOCKET;
 			else if(!strcmp(optarg,"unix"))
-				socket_type=NDO_SINK_UNIXSOCKET;
+				socket_type=IDO_SINK_UNIXSOCKET;
 			else
-				return NDO_ERROR;
+				return IDO_ERROR;
 			break;
 		case 'p':
 			tcp_port=atoi(optarg);
 			if(tcp_port<=0)
-				return NDO_ERROR;
+				return IDO_ERROR;
 			break;
 		case 's':
 			source_name=strdup(optarg);
@@ -256,15 +256,15 @@ int process_arguments(int argc, char **argv){
 			instance_name=strdup(optarg);
 			break;
 		default:
-			return NDO_ERROR;
+			return IDO_ERROR;
 			break;
 		        }
 	        }
 
 	/* make sure required args were supplied */
-	if((source_name==NULL || dest_name==NULL || instance_name==NULL) && show_help==NDO_FALSE && show_version==NDO_FALSE  && show_license==NDO_FALSE)
-		return NDO_ERROR;
+	if((source_name==NULL || dest_name==NULL || instance_name==NULL) && show_help==IDO_FALSE && show_version==IDO_FALSE  && show_license==IDO_FALSE)
+		return IDO_ERROR;
 
-	return NDO_OK;
+	return IDO_OK;
         }
 

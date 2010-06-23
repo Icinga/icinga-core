@@ -1,7 +1,5 @@
 ###############################
 # Makefile for contrib software
-#
-# Last Modified: 05-19-2008
 ###############################
 
 CC=@CC@

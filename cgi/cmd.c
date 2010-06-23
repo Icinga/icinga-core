@@ -799,7 +799,7 @@ void request_command_data(int cmd){
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-		printf("schedule downtime for all services for a particular host");
+		printf("schedule downtime for all services for a particular host and the host itsself");
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
@@ -1918,11 +1918,13 @@ static int cmd_submitf(int id, const char *fmt, ...){
 	if (len < 0)
 		return ERROR;
 
-	va_start(ap, fmt);
-	len2 = vsnprintf(&cmd[len], sizeof(cmd) - len - 1, fmt, ap);
-	va_end(ap);
-	if (len2 < 0)
-		return ERROR;
+	if(fmt) {
+		va_start(ap, fmt);
+		len2 = vsnprintf(&cmd[len], sizeof(cmd) - len - 1, fmt, ap);
+		va_end(ap);
+		if (len2 < 0)
+			return ERROR;
+	}
 
 	return write_command_to_file(cmd);
 	}
@@ -1931,7 +1933,6 @@ static int cmd_submitf(int id, const char *fmt, ...){
 
 /* commits a command for processing */
 int commit_command(int cmd){
-	char command_buffer[MAX_INPUT_BUFFER];
 	time_t current_time;
 	time_t scheduled_time;
 	time_t notification_time;
@@ -1986,7 +1987,7 @@ int commit_command(int cmd){
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		result = cmd_submitf(cmd,"");
+		result = cmd_submitf(cmd,NULL);
 		break;
 
 		/** simple host commands **/
@@ -2552,6 +2553,7 @@ void show_command_help(cmd){
 		printf("This command is used to schedule downtime for a particular service.  During the specified downtime, %s will not send notifications out about the service.\n", PROGRAM_NAME);
 		printf("When the scheduled downtime expires, %s will send out notifications for this service as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
 		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
+		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
 		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when the service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
 		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
 		break;

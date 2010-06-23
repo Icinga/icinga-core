@@ -6,7 +6,7 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Development">
-<link rel="prev" href="icinga-web-scratch.html" title="Installation Icinga web frontend from scratch">
+<link rel="prev" href="icinga-web-scratch.html" title="Installation of the Icinga web frontend from scratch">
 <link rel="next" href="ix01.html" title="Index">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -29,49 +29,49 @@
 <a name="icinga-api"></a>Installation and use of the Icinga API</h2></div></div></div>
   
 
+  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+
+  <p>You need Icinga to run the API.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>If you don't have Icinga yet please follow the instructions given in the "<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a>" documentation.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Installation and Configuration</strong></span></p>
+
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Software</strong></span></p>
+      <p><span class="bold"><strong>Download</strong></span></p>
 
-      <p>Take your clone from the icinga-api.git to get a fresh
-      branch</p>
+      <p>Take your clone from the icinga-api.git to get a fresh branch</p>
 
       <pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git</pre>
 
       <p>or download the software using <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>The installation</strong></span></p>
+      <p><span class="bold"><strong>Installation</strong></span></p>
 
-      <p>Unpack the software and move it to the Icinga source code
-      tree</p>
+      <p>Unpack the software and move it to the Icinga source code tree</p>
 
       <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
  # mv icinga-api/* /usr/src/icinga-core/module/icinga-api</pre>
 
-      <p>Recompile the code (you may have to rerun ./configure
-      again).</p>
+      <p>Recompile the Icinga code (you may have to rerun ./configure again).</p>
 
       <pre class="programlisting"> # make all
  # make install</pre>
-
-      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-        <p>If you don't have Icinga yet please follow the instructions
-        given in the "<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a>"
-        documentation.</p>
-      </td></tr>
-</table></div>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Configuration</strong></span></p>
 
-      <p>Configuration is simply done by using an associative array.
-      </p>
+      <p>Configuration is simply done by using an associative array. </p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
     'host'         =&gt; '&lt;Database hostname&gt;', 
@@ -93,6 +93,11 @@
     'table_prefix' =&gt; 'icinga_',
  );</pre>
     </li>
+</ol></div>
+
+  <p><span class="bold"><strong>Use of the API</strong></span></p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p><span class="bold"><strong>Fetching data</strong></span></p>
 
@@ -101,16 +106,15 @@
       <p>Create an instance of class IcingaApi:</p>
 
       <pre class="programlisting"> $api = IcingaApi::getConnection(IcingaApi::CONNECTION_IDO, $idoConfig);</pre>
-<p>Create
-      your search:</p>
+<p>Create your
+      search:</p>
 
       <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
  -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
  -&gt;fetch();</pre>
 
-      <p>By using setSearchFilter() you can define filters to narrow down
-      the result set:</p>
+      <p>By using setSearchFilter() you can define filters to narrow down the result set:</p>
 
       <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
@@ -143,8 +147,7 @@
  Host switch77 has the current state 0</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Complete code without use of
-      filters</strong></span></p>
+      <p><span class="bold"><strong>Complete code without use of filters</strong></span></p>
 
       <pre class="programlisting"> &lt;?
  // Path to icinga api file
@@ -179,11 +182,14 @@
  }
  ?&gt;</pre>
 
-      <p>Please have a look at the <a class="link" href="http://git.icinga.org/" target="_top">git repository</a> for further information.</p>
+      <p>Please have a look at the <a class="link" href="http://git.icinga.org/" target="_top">git repository</a> for further information or consult the
+      exmaples in the doc/examples folder.</p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id4791057"></a>
-  <a class="indexterm" name="id4791035"></a>
+
+  <a class="indexterm" name="id1564236"></a>
+
+  <a class="indexterm" name="id1564252"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -196,7 +202,7 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Installation Icinga web frontend from scratch </td>
+<td width="40%" align="left" valign="top">Installation of the Icinga web frontend from scratch </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
 <td width="40%" align="right" valign="top"> Index</td>
 </tr>

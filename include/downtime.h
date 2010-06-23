@@ -2,8 +2,8 @@
  *
  * DOWNTIME.H - Header file for scheduled downtime functions
  *
- * Copyright (c) 2001-2005 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   11-25-2005
+ * Copyright (c) 2001-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -98,6 +98,7 @@ int sort_downtime(void);
 scheduled_downtime *find_downtime(int,unsigned long);
 scheduled_downtime *find_host_downtime(unsigned long);
 scheduled_downtime *find_service_downtime(unsigned long);
+scheduled_downtime *find_downtime_by_similar_content(int,char *,char *,char *,char *,time_t,time_t,int,unsigned long);
 
 void free_downtime_data(void);                                       /* frees memory allocated to scheduled downtime list */
 

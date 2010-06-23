@@ -1,9 +1,9 @@
 /***************************************************************
- * IO.C - NDO I/O Functions
+ * IO.C - IDO I/O Functions
  *
- * Copyright (c) 2005-2006 Ethan Galstad 
- * First Written: 05-20-2006
- *
+ * Copyright (c) 2005-2006 Ethan Galstad
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * 
  *
  **************************************************************/
 
@@ -15,9 +15,9 @@
 SSL_METHOD *meth;
 SSL_CTX *ctx;
 SSL *ssl;
-int use_ssl=NDO_FALSE;
+int use_ssl=IDO_FALSE;
 #else
-int use_ssl=NDO_FALSE;
+int use_ssl=IDO_FALSE;
 #endif
 
 
@@ -27,15 +27,15 @@ int use_ssl=NDO_FALSE;
 /**************************************************************/
 
 /* open a file read-only via mmap() */
-ndo_mmapfile *ndo_mmap_fopen(char *filename){
-	ndo_mmapfile *new_mmapfile;
+ido_mmapfile *ido_mmap_fopen(char *filename){
+	ido_mmapfile *new_mmapfile;
 	int fd;
 	void *mmap_buf;
 	struct stat statbuf;
 	int mode=O_RDONLY;
 
 	/* allocate memory */
-	if((new_mmapfile=(ndo_mmapfile *)malloc(sizeof(ndo_mmapfile)))==NULL)
+	if((new_mmapfile=(ido_mmapfile *)malloc(sizeof(ido_mmapfile)))==NULL)
 		return NULL;
 
 	/* open the file */
@@ -72,10 +72,10 @@ ndo_mmapfile *ndo_mmap_fopen(char *filename){
 
 
 /* close a file originally opened via mmap() */
-int ndo_mmap_fclose(ndo_mmapfile *temp_mmapfile){
+int ido_mmap_fclose(ido_mmapfile *temp_mmapfile){
 
 	if(temp_mmapfile==NULL)
-		return NDO_ERROR;
+		return IDO_ERROR;
 
 	/* un-mmap() the file */
 	munmap(temp_mmapfile->mmap_buf,temp_mmapfile->file_size);
@@ -88,12 +88,12 @@ int ndo_mmap_fclose(ndo_mmapfile *temp_mmapfile){
 		free(temp_mmapfile->path);
 	free(temp_mmapfile);
 	
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
 /* gets one line of input from an mmap()'ed file */
-char *ndo_mmap_fgets(ndo_mmapfile *temp_mmapfile){
+char *ido_mmap_fgets(ido_mmapfile *temp_mmapfile){
 	char *buf=NULL;
 	unsigned long x=0L;
 	int len=0;
@@ -142,37 +142,39 @@ char *ndo_mmap_fgets(ndo_mmapfile *temp_mmapfile){
 
 
 /* opens data sink */
-int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
+int ido_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 	struct sockaddr_un server_address_u;
 	struct sockaddr_in server_address_i;
 	struct hostent *hp=NULL;
 	mode_t mode=S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
 	int newfd=0;
+#ifdef HAVE_SSL
 	int rc=0;
+#endif
 
 	/* use file */
-	if(type==NDO_SINK_FILE){
+	if(type==IDO_SINK_FILE){
 		if((newfd=open(name,flags,mode))==-1)
-			return NDO_ERROR;
+			return IDO_ERROR;
 	        }
 
 	/* use existing file descriptor */
-	else if(type==NDO_SINK_FD){
+	else if(type==IDO_SINK_FD){
 		if(fd<0)
-			return NDO_ERROR;
+			return IDO_ERROR;
 		else
 			newfd=fd;
 	        }
 
 	/* we are sending output to a unix domain socket */
-	else if(type==NDO_SINK_UNIXSOCKET){
+	else if(type==IDO_SINK_UNIXSOCKET){
 
 		if(name==NULL)
-			return NDO_ERROR;
+			return IDO_ERROR;
 
 		/* create a socket */
 		if(!(newfd=socket(PF_UNIX,SOCK_STREAM,0)))
-			return NDO_ERROR;
+			return IDO_ERROR;
 
 		/* copy the socket address/path */
 		strncpy(server_address_u.sun_path,name,sizeof(server_address_u.sun_path)); 
@@ -181,18 +183,18 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 		/* connect to the socket */
 		if((connect(newfd,(struct sockaddr *)&server_address_u,SUN_LEN(&server_address_u)))){
 			close(newfd);
-			return NDO_ERROR;
+			return IDO_ERROR;
 			}
 	        }
 
 	/* we are sending output to a TCP socket */
-	else if(type==NDO_SINK_TCPSOCKET){
+	else if(type==IDO_SINK_TCPSOCKET){
 
 		if(name==NULL)
-			return NDO_ERROR;
+			return IDO_ERROR;
 		
 #ifdef HAVE_SSL
-		if(use_ssl==NDO_TRUE){
+		if(use_ssl==IDO_TRUE){
 			SSL_library_init();
 			SSLeay_add_ssl_algorithms();
 			meth=SSLv23_client_method();
@@ -200,7 +202,7 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 
 			if((ctx=SSL_CTX_new(meth))==NULL){
 					printf("IDOUtils: Error - could not create SSL context.\n");
-					return NDO_ERROR;
+					return IDO_ERROR;
 			}
 			/* ADDED 01/19/2004 */
 			/* use only TLSv1 protocol */
@@ -212,18 +214,18 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 		bzero((char *)&server_address_i,sizeof(server_address_i));
 
 		/* try to bypass using a DNS lookup if this is just an IP address */
-		if(!ndo_inet_aton(name,&server_address_i.sin_addr)){
+		if(!ido_inet_aton(name,&server_address_i.sin_addr)){
 
 			/* else do a DNS lookup */
 			if((hp=gethostbyname((const char *)name))==NULL)
-				return NDO_ERROR;
+				return IDO_ERROR;
 
 			memcpy(&server_address_i.sin_addr,hp->h_addr,hp->h_length);
 	                }
 
 		/* create a socket */
 		if(!(newfd=socket(PF_INET,SOCK_STREAM,0)))
-			return NDO_ERROR;
+			return IDO_ERROR;
 
 		/* copy the host/ip address and port */
 		server_address_i.sin_family=AF_INET; 
@@ -232,11 +234,11 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 		/* connect to the socket */
 		if((connect(newfd,(struct sockaddr *)&server_address_i,sizeof(server_address_i)))){
 			close(newfd);
-			return NDO_ERROR;
+			return IDO_ERROR;
 		        }
 
 #ifdef HAVE_SSL
-		if(use_ssl==NDO_TRUE){
+		if(use_ssl==IDO_TRUE){
 			if((ssl=SSL_new(ctx))!=NULL){
 				SSL_CTX_set_cipher_list(ctx,"ADH");
 				SSL_set_fd(ssl,newfd);
@@ -244,11 +246,11 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 					printf("Error - Could not complete SSL handshake.\n");
 					SSL_CTX_free(ctx);
 					close(newfd);
-					return NDO_ERROR;
+					return IDO_ERROR;
 				}
 			} else {
 				printf("IDOUtils: Error - Could not create SSL connection structure.\n");
-				return NDO_ERROR;
+				return IDO_ERROR;
 			}
 		}
 #endif
@@ -256,22 +258,22 @@ int ndo_sink_open(char *name, int fd, int type, int port, int flags, int *nfd){
 
 	/* unknown sink type */
 	else
-		return NDO_ERROR;
+		return IDO_ERROR;
 
 	/* save the new file descriptor */
 	*nfd=newfd;
 
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
 /* writes to data sink */
-int ndo_sink_write(int fd, char *buf, int buflen){
+int ido_sink_write(int fd, char *buf, int buflen){
 	int tbytes=0;
 	int result=0;
 
 	if(buf==NULL)
-		return NDO_ERROR;
+		return IDO_ERROR;
 	if(buflen<=0)
 		return 0;
 
@@ -279,7 +281,7 @@ int ndo_sink_write(int fd, char *buf, int buflen){
 
 		/* try to write everything we have left */
 #ifdef HAVE_SSL
-		if (use_ssl == NDO_TRUE)
+		if (use_ssl == IDO_TRUE)
 			result=SSL_write(ssl, buf+tbytes, buflen-tbytes);
 		else
 #endif
@@ -290,7 +292,7 @@ int ndo_sink_write(int fd, char *buf, int buflen){
 
 			/* unless we encountered a recoverable error, bail out */
 			if(errno!=EAGAIN && errno!=EINTR)
-				return NDO_ERROR;
+				return IDO_ERROR;
 		        }
 
 		/* update the number of bytes we've written */
@@ -302,40 +304,40 @@ int ndo_sink_write(int fd, char *buf, int buflen){
 
 
 /* writes a newline to data sink */
-int ndo_sink_write_newline(int fd){
+int ido_sink_write_newline(int fd){
 
-	return ndo_sink_write(fd,"\n",1);
+	return ido_sink_write(fd,"\n",1);
         }
 
 
 /* flushes data sink */
-int ndo_sink_flush(int fd){
+int ido_sink_flush(int fd){
 
 	/* flush sink */
 	fsync(fd);
 
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
 /* closes data sink */
-int ndo_sink_close(int fd){
+int ido_sink_close(int fd){
 
 	/* no need to close STDOUT */
 	if(fd==STDOUT_FILENO)
-		return NDO_OK;
+		return IDO_OK;
 
 	/* close the socket */
 	shutdown(fd,2);
 	close(fd);
 
-	return NDO_OK;
+	return IDO_OK;
         }
 
 
 /* This code was taken from Fyodor's nmap utility, which was originally taken from
    the GLIBC 2.0.6 libraries because Solaris doesn't contain the inet_aton() funtion. */
-int ndo_inet_aton(register const char *cp, struct in_addr *addr){
+int ido_inet_aton(register const char *cp, struct in_addr *addr){
 	register unsigned int val;	/* changed from u_long --david */
 	register int base, n;
 	register char c;
@@ -439,7 +441,7 @@ int ndo_inet_aton(register const char *cp, struct in_addr *addr){
 /******************************************************************/
 
 /* strip newline and carriage return characters from end of a string */
-void ndo_strip_buffer(char *buffer){
+void ido_strip_buffer(char *buffer){
 	register int x;
 	register int y;
 
@@ -460,7 +462,7 @@ void ndo_strip_buffer(char *buffer){
 
 
 /* escape special characters in string */
-char *ndo_escape_buffer(char *buffer){
+char *ido_escape_buffer(char *buffer){
 	char *newbuf;
 	register int x=0;
 	register int y=0;
@@ -506,7 +508,7 @@ char *ndo_escape_buffer(char *buffer){
 
 
 /* unescape special characters in string */
-char *ndo_unescape_buffer(char *buffer){
+char *ido_unescape_buffer(char *buffer){
 	register int x=0;
 	register int y=0;
 	register int len=0;

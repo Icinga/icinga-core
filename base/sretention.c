@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * SRETENTION.C - State retention routines for Nagios
+ * SRETENTION.C - State retention routines for Icinga
  *
- * Copyright (c) 1999-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   10-18-2006
+ * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -141,5 +141,22 @@ int read_initial_state_information(void){
 	return OK;
         }
 
+/* syncs host and state information from sync file */
+/* Should this go within read_state_information()? */
+int sync_state_information(void){
+        int result=OK;
+ 
+        if(retain_state_information==FALSE)
+                return OK;
+ 
+        /********* IMPLEMENTATION-SPECIFIC INPUT FUNCTION ********/
+#ifdef USE_XRDDEFAULT
+        result=xrddefault_sync_state_information();
+#endif
+ 
+        if(result==ERROR)
+                return ERROR;
 
+        return OK;
+        }
 

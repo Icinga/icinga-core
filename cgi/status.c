@@ -3,7 +3,7 @@
  * STATUS.C -  Icinga Status CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 07-03-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  * 
@@ -1598,7 +1598,7 @@ void show_service_detail(void){
 				printf("<TD ALIGN=LEFT>\n");
 				printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 				printf("<TR>\n");
-				printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A></TD>\n",host_status_bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,temp_status->host_name);
+				printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A></TD>\n",host_status_bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 				printf("</TR>\n");
 				printf("</TABLE>\n");
 				printf("</TD>\n");
@@ -1627,26 +1627,30 @@ void show_service_detail(void){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is currently in a period of scheduled downtime' TITLE='This host is currently in a period of scheduled downtime'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				        }
 				if(temp_host->notes_url!=NULL){
+					process_macros(temp_host->notes_url,&processed_string,0);
+					BEGIN_MULTIURL_LOOP
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='");
-					process_macros(temp_host->notes_url,&processed_string,0);
 					printf("%s",processed_string);
-					free(processed_string);
 					printf("' TARGET='%s'>",(notes_url_target==NULL)?"_blank":notes_url_target);
-					printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
+					printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
 					printf("</A>");
 					printf("</TD>\n");
+					END_MULTIURL_LOOP
+					free(processed_string);
 				        }
 				if(temp_host->action_url!=NULL){
+					process_macros(temp_host->action_url,&processed_string,0);
+					BEGIN_MULTIURL_LOOP
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='");
-					process_macros(temp_host->action_url,&processed_string,0);
 					printf("%s",processed_string);
-					free(processed_string);
 					printf("' TARGET='%s'>",(action_url_target==NULL)?"_blank":action_url_target);
-					printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
+					printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
 					printf("</A>");
 					printf("</TD>\n");
+					END_MULTIURL_LOOP
+					free(processed_string);
 				        }
 				if(temp_host->icon_image!=NULL){
 					printf("<TD align=center valign=center>");
@@ -1681,7 +1685,7 @@ void show_service_detail(void){
 			printf("<TR>\n");
 			printf("<TD ALIGN=LEFT valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s",status_bg_class,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
 			printf("&service=%s'>",url_encode(temp_status->description));
-			printf("%s</A></TD>",temp_status->description);
+			printf("%s</A></TD>",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 			printf("</TR>\n");
 			printf("</TABLE>\n");
 			printf("</TD>\n");
@@ -1721,26 +1725,30 @@ void show_service_detail(void){
 				printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This service is currently in a period of scheduled downtime' TITLE='This service is currently in a period of scheduled downtime'></A></TD>",url_encode(temp_status->description),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 			        }
 			if(temp_service->notes_url!=NULL){
+				process_macros(temp_service->notes_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
 				printf("<TD align=center valign=center>");
 				printf("<A HREF='");
-				process_macros(temp_service->notes_url,&processed_string,0);
 				printf("%s",processed_string);
-				free(processed_string);
 				printf("' TARGET='%s'>",(notes_url_target==NULL)?"_blank":notes_url_target);
-				printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Service Notes","View Extra Service Notes");
+				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,MU_iconstr,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Service Notes","View Extra Service Notes");
 				printf("</A>");
 				printf("</TD>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 				}
 			if(temp_service->action_url!=NULL){
+				process_macros(temp_service->action_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
 				printf("<TD align=center valign=center>");
 				printf("<A HREF='");
-				process_macros(temp_service->action_url,&processed_string,0);
 				printf("%s",processed_string);
-				free(processed_string);
 				printf("' TARGET='%s'>",(action_url_target==NULL)?"_blank":action_url_target);
-				printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Service Actions","Perform Extra Service Actions");
+				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,MU_iconstr,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Service Actions","Perform Extra Service Actions");
 				printf("</A>");
 				printf("</TD>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 				}
 			if(temp_service->icon_image!=NULL){
 				printf("<TD ALIGN=center valign=center>");
@@ -2094,7 +2102,7 @@ void show_host_detail(void){
 			printf("<TD ALIGN=LEFT>\n");
 			printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 			printf("<TR>\n");
-			printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A>&nbsp;</TD>\n",status_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,temp_status->host_name);
+			printf("<TD align=left valign=center CLASS='status%s'><A HREF='%s?type=%d&host=%s' title='%s'>%s</A>&nbsp;</TD>\n",status_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),temp_host->address,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			printf("</TR>\n");
 			printf("</TABLE>\n");
 			printf("</TD>\n");
@@ -2120,26 +2128,30 @@ void show_host_detail(void){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is currently in a period of scheduled downtime' TITLE='This host is currently in a period of scheduled downtime'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 			        }
 			if(temp_host->notes_url!=NULL){
+				process_macros(temp_host->notes_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
 				printf("<TD align=center valign=center>");
 				printf("<A HREF='");
-				process_macros(temp_host->notes_url,&processed_string,0);
 				printf("%s",processed_string);
-				free(processed_string);
 				printf("' TARGET='%s'>",(notes_url_target==NULL)?"_blank":notes_url_target);
-				printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
+				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
 				printf("</A>");
 				printf("</TD>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 			        }
 			if(temp_host->action_url!=NULL){
+				process_macros(temp_host->action_url,&processed_string,0);
+				BEGIN_MULTIURL_LOOP
 				printf("<TD align=center valign=center>");
 				printf("<A HREF='");
-				process_macros(temp_host->action_url,&processed_string,0);
 				printf("%s",processed_string);
-				free(processed_string);
 				printf("' TARGET='%s'>",(action_url_target==NULL)?"_blank":action_url_target);
-				printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
+				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");	
 				printf("</A>");
 				printf("</TD>\n");
+				END_MULTIURL_LOOP
+				free(processed_string);
 			        }
 			if(temp_host->icon_image!=NULL){
 				printf("<TD align=center valign=center>");
@@ -3171,7 +3183,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup){
 		printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 		printf("<TR>\n");
 		printf("<TD align=left valign=center CLASS='status%s'>",host_status_class);
-		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),temp_host->name);
+		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("</TD>\n");
 		printf("</TR>\n");
 		printf("</TABLE>\n");
@@ -3247,22 +3259,26 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup){
 		printf("</A>");
 
 		if(temp_host->notes_url!=NULL){
-			printf("<A HREF='");
 			process_macros(temp_host->notes_url,&processed_string,0);
+			BEGIN_MULTIURL_LOOP
+			printf("<A HREF='");
 			printf("%s",processed_string);
-			free(processed_string);
 			printf("' TARGET='%s'>",(notes_url_target==NULL)?"_blank":notes_url_target);
-			printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
+			printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
 			printf("</A>");
+			END_MULTIURL_LOOP
+			free(processed_string);
 		        }
 		if(temp_host->action_url!=NULL){
-			printf("<A HREF='");
 			process_macros(temp_host->action_url,&processed_string,0);
+			BEGIN_MULTIURL_LOOP
+			printf("<A HREF='");
 			printf("%s",processed_string);
-			free(processed_string);
 			printf("' TARGET='%s'>",(action_url_target==NULL)?"blank":action_url_target);
-			printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
+			printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
 			printf("</A>");
+			END_MULTIURL_LOOP
+			free(processed_string);
 		        }
 
 		printf("<a href='%s?host=%s'><img src='%s%s' border=0 alt='View Service Details For This Host' title='View Service Details For This Host'></a>\n",STATUS_CGI,url_encode(temp_host->name),url_images_path,STATUS_DETAIL_ICON);
@@ -3524,7 +3540,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 
 	printf("<TABLE BORDER=0 WIDTH=100%% cellpadding=0 cellspacing=0>\n");
 	printf("<TR CLASS='status%s'>\n",status_bg_class);
-	printf("<TD CLASS='status%s'><A HREF='%s?host=%s&style=detail' title='%s'>%s</A></TD>\n",status_bg_class,STATUS_CGI,url_encode(hststatus->host_name),temp_host->address,hststatus->host_name);
+	printf("<TD CLASS='status%s'><A HREF='%s?host=%s&style=detail' title='%s'>%s</A></TD>\n",status_bg_class,STATUS_CGI,url_encode(hststatus->host_name),temp_host->address,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 
 	if(temp_host->icon_image!=NULL){
 		printf("<TD CLASS='status%s' WIDTH=5></TD>\n",status_bg_class);
@@ -3550,23 +3566,28 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 
 	printf("<td valign=center CLASS='status%s'>",status_bg_class);
 	printf("<a href='%s?type=%d&host=%s'><img src='%s%s' border=0 alt='View Extended Information For This Host' title='View Extended Information For This Host'></a>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(hststatus->host_name),url_images_path,DETAIL_ICON);
+
 	if(temp_host->notes_url!=NULL){
-		printf("<A HREF='");
 		process_macros(temp_host->notes_url,&processed_string,0);
+		BEGIN_MULTIURL_LOOP
+		printf("<A HREF='");
 		printf("%s",processed_string);
-		free(processed_string);
 		printf("' TARGET='%s'>",(notes_url_target==NULL)?"_blank":notes_url_target);
-		printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
+		printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
 		printf("</A>");
+		END_MULTIURL_LOOP
+		free(processed_string);
 	        }
 	if(temp_host->action_url!=NULL){
-		printf("<A HREF='");
 		process_macros(temp_host->action_url,&processed_string,0);
+		BEGIN_MULTIURL_LOOP
+		printf("<A HREF='");
 		printf("%s",processed_string);
-		free(processed_string);
 		printf("' TARGET='%s'>",(action_url_target==NULL)?"_blank":action_url_target);
-		printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
+		printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
 		printf("</A>");
+		END_MULTIURL_LOOP
+		free(processed_string);
 	        }
 	printf("<a href='%s?host=%s'><img src='%s%s' border=0 alt='View Service Details For This Host' title='View Service Details For This Host'></a>\n",STATUS_CGI,url_encode(hststatus->host_name),url_images_path,STATUS_DETAIL_ICON);
 #ifdef USE_STATUSMAP
@@ -4397,7 +4418,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		printf("<TABLE BORDER=0 cellpadding=0 cellspacing=0>\n");
 		printf("<TR>\n");
 		printf("<TD align=left valign=center CLASS='status%s'>",host_status_class);
-		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),temp_host->name);
+		printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		printf("</TD>\n");
 		printf("</TR>\n");
 		printf("</TABLE>\n");
@@ -4476,22 +4497,26 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		printf("</A>");
 
 		if(temp_host->notes_url!=NULL){
-			printf("<A HREF='");
 			process_macros(temp_host->notes_url,&processed_string,0);
+			BEGIN_MULTIURL_LOOP
+			printf("<A HREF='");
 			printf("%s",processed_string);
-			free(processed_string);
 			printf("' TARGET='%s'>",(notes_url_target==NULL)?"_blank":notes_url_target);
-			printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
+			printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,NOTES_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extra Host Notes","View Extra Host Notes");
 			printf("</A>");
+			END_MULTIURL_LOOP
+			free(processed_string);
 		        }
 		if(temp_host->action_url!=NULL){
-			printf("<A HREF='");
 			process_macros(temp_host->action_url,&processed_string,0);
+			BEGIN_MULTIURL_LOOP
+			printf("<A HREF='");
 			printf("%s",processed_string);
-			free(processed_string);
 			printf("' TARGET='%s'>",(action_url_target==NULL)?"_blank":action_url_target);
-			printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
+			printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,MU_iconstr,ACTION_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"Perform Extra Host Actions","Perform Extra Host Actions");
 			printf("</A>");
+			END_MULTIURL_LOOP
+			free(processed_string);
 		        }
 
 		printf("<a href='%s?host=%s'><img src='%s%s' border=0 alt='View Service Details For This Host' title='View Service Details For This Host'></a>\n",STATUS_CGI,url_encode(temp_host->name),url_images_path,STATUS_DETAIL_ICON);

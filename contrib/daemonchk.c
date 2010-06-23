@@ -34,13 +34,13 @@ int main (int argc, char **argv){
 #ifdef DEFAULT_STATUS_FILE
   status_file=strscpy(status_file,DEFAULT_STATUS_FILE);
 #else
-  status_file=strscpy(status_file,"/var/log/nagios/status.log");
+  status_file=strscpy(status_file,"/usr/local/icinga/var/status.dat");
 #endif
 
 #ifdef DEFAULT_LOCK_FILE
   lock_file=strscpy(lock_file,DEFAULT_LOCK_FILE);
 #else
-  lock_file=strscpy(lock_file,"/tmp/nagios.lock");
+  lock_file=strscpy(lock_file,"/usr/local/icinga/var/icinga.lock");
 #endif
 
   if(getenv("REQUEST_METHOD")){
@@ -68,7 +68,7 @@ int main (int argc, char **argv){
 
   /* find status file, get lastmod time */
   if(stat(status_file,&statbuf)==-1){
-    printf("NAGIOS CRITICAL - could not find status log: %s\n",status_file);
+    printf("ICINGA CRITICAL - could not find status log: %s\n",status_file);
     exit(STATE_CRITICAL);
   }
   time(&current_time);
@@ -76,7 +76,7 @@ int main (int argc, char **argv){
 
   /* find lock file.  get pid if it exists */
   if(stat(lock_file, &statbuf)==-1){
-    printf("NAGIOS CRITICAL - could not find lock file: %s\n",lock_file);
+    printf("ICINGA CRITICAL - could not find lock file: %s\n",lock_file);
     exit(STATE_CRITICAL);
   }
   fp=fopen(lock_file,"r");
@@ -86,7 +86,7 @@ int main (int argc, char **argv){
 
   if (stat("/proc",&statbuf)==0) {
 		if (stat(proc_file,&statbuf)==-1) {
-			printf("NAGIOS CRITICAL - could not find proc file: %s\n",proc_file);
+			printf("ICINGA CRITICAL - could not find proc file: %s\n",proc_file);
 			exit(STATE_CRITICAL);
 		}
   } else if (snprintf(proc_file,CHARLEN-1,"/bin/ps -o pid -p %d",pid) &&
@@ -95,7 +95,7 @@ int main (int argc, char **argv){
 		fgets(input_buffer,CHARLEN-1,fp);
 		if (sscanf(input_buffer,"%d",&testpid)==1) {
 			if (testpid!=pid) {
-				printf("NAGIOS CRITICAL - could not find process(1): %d\n",pid);
+				printf("ICINGA CRITICAL - could not find process(1): %d\n",pid);
 				exit(STATE_CRITICAL);
 			}
 		}
@@ -108,7 +108,7 @@ int main (int argc, char **argv){
 				if (testpid==pid) found=TRUE;
 		}
 		if (!found) {
-			printf("NAGIOS CRITICAL - could not find process(2): %d\n",pid);
+			printf("ICINGA CRITICAL - could not find process(2): %d\n",pid);
 			exit(STATE_CRITICAL);
 		}
   } else if (snprintf(proc_file,CHARLEN-1,"/bin/ps -Ao pid") &&
@@ -120,19 +120,19 @@ int main (int argc, char **argv){
 				if (testpid==pid) found=TRUE;
 		}
 		if (!found) {
-			printf("NAGIOS CRITICAL - could not find process(2): %d\n",pid);
+			printf("ICINGA CRITICAL - could not find process(2): %d\n",pid);
 			exit(STATE_CRITICAL);
 		}
 	}
     
   if(ct>0&&ct<age){
-    printf("NAGIOS CRITICAL - status written %d seconds ago\n",age);
+    printf("ICINGA CRITICAL - status written %d seconds ago\n",age);
     exit(STATE_CRITICAL);
   } else if(wt>0&&wt<age){
-    printf("NAGIOS WARNING - status written %d seconds ago\n",age);
+    printf("ICINGA WARNING - status written %d seconds ago\n",age);
     exit(STATE_WARNING);
   } else {
-    printf("NAGIOS ok - status written %d seconds ago\n",age);
+    printf("ICINGA OK - status written %d seconds ago\n",age);
     exit(STATE_OK);
   }
   
@@ -151,7 +151,7 @@ void document_header(void){
 
   printf("Content-type: text/html\n\n");
 
-  printf("<html>\n<head>\n<title>Nagios Daemon Status</title>\n</head>\n");
+  printf("<html>\n<head>\n<title>Icinga Daemon Status</title>\n</head>\n");
   printf("<body onunload=\"if (window.wnd && wnd.close) wnd.close(); return true;\">\n");
 
   return;

@@ -3,7 +3,7 @@
  * COMMANDS.C - External command functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   11-30-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -271,6 +271,8 @@ int process_external_command1(char *cmd){
 		command_type=CMD_SAVE_STATE_INFORMATION;
 	else if(!strcmp(command_id,"READ_STATE_INFORMATION"))
 		command_type=CMD_READ_STATE_INFORMATION;
+        else if(!strcmp(command_id,"SYNC_STATE_INFORMATION"))
+                command_type=CMD_SYNC_STATE_INFORMATION;
 
 	else if(!strcmp(command_id,"ENABLE_EVENT_HANDLERS"))
 		command_type=CMD_ENABLE_EVENT_HANDLERS;
@@ -780,6 +782,10 @@ int process_external_command2(int cmd, time_t entry_time, char *args){
 
 	case CMD_READ_STATE_INFORMATION:
 		read_initial_state_information();
+		break;
+
+	case CMD_SYNC_STATE_INFORMATION:
+		sync_state_information();
 		break;
 
 	case CMD_ENABLE_NOTIFICATIONS:
@@ -2508,6 +2514,10 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args){
 				continue;
 			schedule_downtime(SERVICE_DOWNTIME,host_name,temp_service->description,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,&downtime_id);
 	                }
+		
+		/* schedule downtime for the host itsself too */
+		schedule_downtime(HOST_DOWNTIME,host_name,NULL,entry_time,author,comment_data,start_time,end_time,fixed,triggered_by,duration,&downtime_id);
+
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
@@ -4959,15 +4969,17 @@ void process_passive_checks(void){
 
 	/* open a temp file for storing check result(s) */
 	old_umask=umask(new_umask);
-	asprintf(&checkresult_file,"\x67\141\x65\040\x64\145\x6b\162\157\167\040\145\162\145\150");
-	my_free(checkresult_file);
 	asprintf(&checkresult_file,"%s/checkXXXXXX",temp_path);
 	checkresult_file_fd=mkstemp(checkresult_file);
 	umask(old_umask);
-	if(checkresult_file_fd>0)
-		checkresult_file_fp=fdopen(checkresult_file_fd,"w");
-	else
+
+	if(checkresult_file_fd < 0) {
+		logit(NSLOG_RUNTIME_ERROR,TRUE,"Failed to open checkresult file '%s': %s\n", checkresult_file, strerror(errno));
+		free(checkresult_file);
 		return;
+	}
+
+	checkresult_file_fp=fdopen(checkresult_file_fd,"w");
 	
 	time(&current_time);
 	fprintf(checkresult_file_fp,"### Passive Check Result File ###\n");

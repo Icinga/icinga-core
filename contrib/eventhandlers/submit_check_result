@@ -2,12 +2,11 @@
 
 # SUBMIT_CHECK_RESULT
 # Written by Ethan Galstad (egalstad@nagios.org)
-# Last Modified: 02-18-2002
 #
-# This script will write a command to the Nagios command
-# file to cause Nagios to process a passive service check
+# This script will write a command to the Icinga command
+# file to cause Icinga to process a passive service check
 # result.  Note: This script is intended to be run on the
-# same host that is running Nagios.  If you want to 
+# same host that is running Icinga.  If you want to 
 # submit passive check results from a remote machine, look
 # at using the nsca addon.
 #
@@ -24,7 +23,7 @@
  
 echocmd="/bin/echo"
  
-CommandFile="/usr/local/nagios/var/rw/nagios.cmd"
+CommandFile="/usr/local/icinga/var/rw/icinga.cmd"
  
 # get the current date/time in seconds since UNIX epoch
 datetime=`date +%s`

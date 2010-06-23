@@ -6,25 +6,98 @@ Icinga 1.0.x Change Log
 
 ENHANCEMENTS
 * core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner
+* core: check if icinga running before starting; if died remove lockfile first
+* core: add in sync retention facility (Ton Voon, Opsera Ltd)
+* core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
+* core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, 
+        in addition to providing the summary data (Steven (Steven D. Morrey)
+* core: icinga can send log messages to syslogd using a local facility instead of the default one
+* core: enhanced diagnostic output when a regular expression fails to compile (Max Schubert)
+* core: add state-based escalation ranges (Mark Gius)
+        The directives first_notification and last_notification apply to the
+        total count of notifications on a particular service or host.  It is
+        sometimes desirable to escalate after the Nth critical notification,
+        rather than after a total number of N notifications have been sent.
+* core: add event profiling option for stats of event counts and time taken for events
+* core: retention file loading speedup (Matthieu Kermagoret)
 
+* cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui
+* cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api
+* cgi: add event profiling stats of event counts and time taken for events in 'Performance Info'
+* cgi: add config option show_all_services_host_is_authorized_for to cgi.cfg
+	It's possible to disable that the user can see all services only being an authorized contact for the host
+* cgi: add multiple urls for notes|action_url on host|service object definition (Jochen Bernd)
+
+* idoutils: add config options to allow users decision on clearing realtime and config tables on Icinga core startup
+	Actual config objects are marked as (in)active, because disabling the clearing results in historical config
 * idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)
 * idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)
 * idoutils: change select * into select [*_]id if unused results
 * idoutils: add syslog output, if ido2db is unable to do initial db query
+* idoutils: rewrite initscript not only depending on lockfile
+* idoutils: check if ido2db running before starting; if died remove lockfile first
+* idoutils: add upgrade scripts to fix object relations to historical data
+
+* config: add trailing slash in apache config for html dir
 
 FIXES
+* core: fix scheduling downtime for all services AND the host (cgi url, external commands)
+* core: fix custom notifications being sent during downtimes (Sven Nierlein)
 * core: fix spurious dollar signs added to command_lines (Alexander Wirt)
 * core: fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)
 * core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)
 * core: minor cleanups to icingastats.c (Eric Sesterhenn)
-* core: minor cleanups to cgiutils.c (Eric Sestersenn)
+* core: remove dead code (Andreas Ericsson)
+* core: introduce common/shared.c and include/shared.h (Andreas Ericsson)
+* core: move cgiutils.h compile time option macros to config.h (Andreas Ericsson)
+* core: icinga.c: remove conditional main() configuration (Andreas Ericsson)
+* core: icinga.c: replace asprintf() + write_to_logs_and_console() with logit() (Andreas Ericsson)
+* core: revamp logging somewhat (Andreas Ericsson)
+* core: create logging.h, with stubs for the common function in cgiutils.c (Andreas Ericsson)
+* core: Janitor patch: Remove unused variables (Andreas Ericsson)
+* core: base/utils.c: typo-fix s/escape_newlines==/escape_newlines_please==/ (Andreas Ericsson)
+* core: cgi/cmd.c: Squelch warning about empty gnu_printf format string  (Andreas Ericsson)
+* core: more linker tricks and less #ifdef's - log_debug_info() stubbed (Andreas Ericsson)
+* core: common/objects.c: Use calloc() instead of malloc() + manual NULL'ing (Andreas Ericsson)
+* core: macros: Protect against typos in macro names (Andreas Ericsson)
+* core: macros: Add NOTIFICATIONISESCALATED to the list of macro names (Marc Powell)
+* core: comments: Remove one comment at a time from hashlist (Hiren Patel)
+* core: fix checking of the open(2) system call (David Glick)
+* core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)
+* core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)
+* core: header files: Remove dead prototypes (Andreas Ericsson)
+* core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)
+* core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
+* core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)
+* core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
+* core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
+* core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
+* core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read
+* core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)
+* core: added icinga object version variable in neb api for usage with idomod
+* core: fix notification_period inheritance for services (Gordon Messmer)
+* core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
+* core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
+* core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)
+* core: error out if services defined without description in service object definition (service def and/or used templates)
+* core: fix servicechecks with timeperiods containing 'exclude' directives are incorrectly re-scheduled
+
+* cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)
+* cgi: fix cmd.cgi incomplete output for command description
+* cgi: fix typo: "stye" instead of "style" in cgi/tac.c
+* cgi: check_daemon_running() not working on MacOS (Hendrik Baecker)
+* cgi: fix CGIs don't show correct error on missing archived icinga-DATE.log file
+* cgi: fix missing js files
 
 * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)
 * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)
 * idoutils: fix postgres wrong type in service_object_id
 * idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though
 * idoutils: fix for oracle when binding a NULL value on contactnotificationmethods
-
+* idoutils: completely renamed idoutils (s/ndo/ido/g etc), removing old sources
+* idoutils: fix compilation error of SUN_LEN on Solaris
+* idoutils: add configure check for gethostbyname including -nsl on Solaris (Alexander Skwar)
+* idoutils: fix host 2d y coord not stored properly
 
 1.0.1 - 03/03/2010
 
@@ -300,6 +373,11 @@ FIXES
 #####################
 Nagios 3.x Change Log
 #####################
+
+This is an archived Changelog, all changes on the Icinga Core will be marked and 
+referenced through issues marking on dev.icinga.org regarding their origin.
+
+Look at www.nagios.org for an actual changelog of Nagios Core.
 
 
 3.2.1 ????

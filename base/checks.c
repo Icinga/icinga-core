@@ -3,7 +3,7 @@
  * CHECKS.C - Service and host check functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 06-23-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -134,7 +134,6 @@ int reap_check_results(void){
 	check_result *queued_check_result=NULL;
 	service *temp_service=NULL;
 	host *temp_host=NULL;
-	char *temp_buffer=NULL;
 	time_t current_time=0L;
 	time_t reaper_start_time=0L;
 	int reaped_checks=0;
@@ -338,7 +337,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	int fork_error=FALSE;
 	int wait_result=0;
 	host *temp_host=NULL;
-	FILE *fp=NULL;
+	FILE *fp=NULL, *chldfp;
 	int pclose_result=0;
 	mode_t new_umask=077;
 	mode_t old_umask;
@@ -346,6 +345,10 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	double old_latency=0.0;
 	dbuf checkresult_dbuf;
 	int dbuf_chunk=1024;
+	int pipefds[2], chldstatus, i;
+	char *chldargs[MAXCHLDARGS];
+	char *s , *p;
+
 #ifdef USE_EVENT_BROKER
 	int neb_result=OK;
 #endif
@@ -353,7 +356,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	char fname[512]="";
 	char *args[5]={"",DO_CLEAN, "", "", NULL };
 	char *perl_plugin_output=NULL;
-	SV *plugin_hndlr_cr;
+	SV *plugin_hndlr_cr=NULL; /* perl.h holds typedef struct */
 	STRLEN n_a ;
 	int count ;
 	int use_epn=FALSE;
@@ -480,7 +483,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	old_umask=umask(new_umask);
 	asprintf(&output_file,"%s/checkXXXXXX",temp_path);
 	check_result_info.output_file_fd=mkstemp(output_file);
-	if(check_result_info.output_file_fd>0)
+	if(check_result_info.output_file_fd>=0)
 		check_result_info.output_file_fp=fdopen(check_result_info.output_file_fd,"w");
 	else{
 		check_result_info.output_file_fp=NULL;
@@ -607,7 +610,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 				fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 				fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 				fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-				fprintf(check_result_info.output_file_fp,"output=%s\n",checkresult_dbuf.buf);
+				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
 
 				/* close the temp file */
 				fclose(check_result_info.output_file_fp);
@@ -622,7 +625,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 			/* free check result memory */
 			free_check_result(&check_result_info);
 
-			return;
+			return ERROR;
 			}
 		else{
 
@@ -748,7 +751,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 					fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 					fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 					fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-					fprintf(check_result_info.output_file_fp,"output=%s\n",checkresult_dbuf.buf);
+					fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
 
 					/* close the temp file */
 					fclose(check_result_info.output_file_fp);
@@ -771,23 +774,109 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 
      
 			/* run the plugin check command */
-			fp=popen(processed_command,"r");
-			if(fp==NULL)
-				_exit(STATE_UNKNOWN);
 
-			/* initialize buffer */
-			strcpy(output_buffer,"");
+            		if (!has_shell_metachars(processed_command)){
+                		if (pipe(pipefds) == -1){
+                    			logit(NSLOG_RUNTIME_WARNING,TRUE,"error creating pipe: %s\n",strerror(errno));
+                    			_exit(STATE_UNKNOWN);
+                		}
 
-			/* get all lines of plugin output - escape newlines */
-			while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
-				temp_buffer=escape_newlines(output_buffer);
-				dbuf_strcat(&checkresult_dbuf,temp_buffer);
-				my_free(temp_buffer);
-				}
 
-			/* close the process */
-			pclose_result=pclose(fp);
+                		pid = fork();
+                		if (pid == -1){
+                    			logit(NSLOG_RUNTIME_WARNING,TRUE,"fork error\n");
+                    			_exit(STATE_UNKNOWN);
+                		}
 
+	                     if (pid == 0){
+	                     close(pipefds[0]);
+	 
+	                     if (dup2(pipefds[1],STDOUT_FILENO) == -1){
+	                         logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
+	                         _exit(EXIT_FAILURE);
+	                     }
+	 
+	                     if (dup2(pipefds[1],STDERR_FILENO) == -1){
+	                         logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
+	                         _exit(EXIT_FAILURE);
+	                     }
+	                     close(pipefds[0]);
+	 
+	                     s = strchr(processed_command,' ');
+	                     if (s){
+	                         *s = '\0';
+	                         p = s+1;
+				 for(;isspace(*p);p++)
+					;
+	 
+	                         chldargs[0] = processed_command;
+	                         for(i=1;i<MAXCHLDARGS-2;i++){
+	                             s = strchr(p,' ');
+	                             chldargs[i] = p;
+	 
+	                             if (s){
+	                                 *s = '\0';
+	                                 p = s+1;
+					 for(;isspace(*p);p++)
+						;
+	                             }
+	 
+	                             if (!s)
+	                                 break;
+	                         }
+	 
+	                         if (i >= MAXCHLDARGS-2){
+	                             logit(NSLOG_RUNTIME_WARNING,TRUE,"overlimit args for command %s\n",chldargs[0]);
+	                             _exit(EXIT_FAILURE);
+	                         }
+	                         else
+	                             chldargs[++i] = '\0';
+	                     }
+	                     else{
+	                         chldargs[0] = processed_command;
+	                         chldargs[1] = '\0';
+	                     }
+	 
+	                     log_debug_info(DEBUGL_CHECKS,0,"running process %s via execv\n",processed_command);
+	                     execv(chldargs[0],chldargs);
+                     	    _exit(EXIT_FAILURE);
+			}
+
+
+	               	close(pipefds[1]);
+	
+	                chldfp = fdopen(pipefds[0],"r");
+	                if (chldfp == NULL){
+	                    logit(NSLOG_RUNTIME_WARNING,TRUE,"fdopen error\n");
+	                    _exit(EXIT_FAILURE);
+	                }
+	
+	                while(fgets(output_buffer,sizeof(output_buffer)-1,chldfp)){
+	                    temp_buffer=escape_newlines(output_buffer);
+	                    dbuf_strcat(&checkresult_dbuf,temp_buffer);
+	                    my_free(temp_buffer);
+	                }
+	
+	                fclose(chldfp);
+	                waitpid(pid,&chldstatus,0);
+	                pclose_result=chldstatus;
+	            }
+	            else{
+	                log_debug_info(DEBUGL_CHECKS,0,"running process %s via popen\n",processed_command);
+	                fp=popen(processed_command,"r");
+	                if(fp==NULL)
+	                    _exit(STATE_UNKNOWN);
+	    
+	                strcpy(output_buffer,"");
+	    
+	                while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
+	                    temp_buffer=escape_newlines(output_buffer);
+	                    dbuf_strcat(&checkresult_dbuf,temp_buffer);
+	                    my_free(temp_buffer);
+	                    }
+	    
+	                pclose_result=pclose(fp);
+	            }
 			/* reset the alarm */
 			alarm(0);
 
@@ -1292,6 +1381,9 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		temp_service->last_notification=(time_t)0;
 		temp_service->next_notification=(time_t)0;
 		temp_service->current_notification_number=0;
+		temp_service->current_warning_notification_number=0;
+		temp_service->current_critical_notification_number=0;
+		temp_service->current_unknown_notification_number=0;
 		temp_service->problem_has_been_acknowledged=FALSE;
 		temp_service->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
 		temp_service->notified_on_unknown=FALSE;
@@ -1506,7 +1598,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			        }
 
 			/* else log the problem (again) if this service is flagged as being volatile */
-			else if(temp_service->is_volatile==TRUE){
+			else if(temp_service->is_volatile==FALSE){
 				log_service_event(temp_service);
 				state_was_logged=TRUE;
 			        }
@@ -1521,11 +1613,17 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			check_for_host_flapping(temp_host,TRUE,FALSE,TRUE);
 			flapping_check_done=TRUE;
 
+			if (hard_state_change==TRUE){
+				temp_service->current_warning_notification_number=0;
+				temp_service->current_critical_notification_number=0;
+				temp_service->current_unknown_notification_number=0;
+			}
+
 			/* (re)send notifications out about this service problem if the host is up (and was at last check also) and the dependencies were okay... */
 			service_notification(temp_service,NOTIFICATION_NORMAL,NULL,NULL,NOTIFICATION_OPTION_NONE);
 
 			/* run the service event handler if we changed state from the last hard state or if this service is flagged as being volatile */
-			if(hard_state_change==TRUE || temp_service->is_volatile==TRUE)
+			if(hard_state_change==TRUE || temp_service->is_volatile==FALSE)
 				handle_service_event(temp_service);
 
 			/* save the last hard state */
@@ -2953,7 +3051,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	old_umask=umask(new_umask);
 	asprintf(&output_file,"%s/checkXXXXXX",temp_path);
 	check_result_info.output_file_fd=mkstemp(output_file);
-	if(check_result_info.output_file_fd>0)
+	if(check_result_info.output_file_fd>=0)
 		check_result_info.output_file_fp=fdopen(check_result_info.output_file_fd,"w");
 	else{
 		check_result_info.output_file_fp=NULL;
@@ -3122,7 +3220,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 				fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 				fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 				fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-				fprintf(check_result_info.output_file_fp,"output=%s\n",checkresult_dbuf.buf);
+				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
 
 				/* close the temp file */
 				fclose(check_result_info.output_file_fp);

@@ -2,8 +2,8 @@
  *
  * BROKER.H - Event broker includes for Icinga
  *
- * Copyright (c) 2002-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   12-12-2006
+ * Copyright (c) 2002-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -48,7 +48,7 @@
 #define BROKER_COMMENT_DATA         	256	/* DONE */
 #define BROKER_DOWNTIME_DATA		512     /* DONE */
 #define BROKER_SYSTEM_COMMANDS          1024	/* DONE */
-#define BROKER_OCP_DATA                 2048	/* DONE */
+#define BROKER_OCP_DATA_UNUSED          2048	/* reusable */
 #define BROKER_STATUS_DATA              4096    /* DONE */
 #define BROKER_ADAPTIVE_DATA            8192    /* DONE */
 #define BROKER_EXTERNALCOMMAND_DATA     16384   /* DONE */
@@ -189,7 +189,6 @@ void broker_program_state(int,int,int,struct timeval *);
 void broker_timed_event(int,int,int,timed_event *,struct timeval *);
 void broker_log_data(int,int,int,char *,unsigned long,time_t,struct timeval *);
 void broker_event_handler(int,int,int,int,void *,int,int,struct timeval,struct timeval,double,int,int,int,char *,char *,char *,struct timeval *);
-void broker_ocp_data(int,int,int,void *,int,int,double,int,int,struct timeval *);
 void broker_system_command(int,int,int,struct timeval,struct timeval,double,int,int,int,char *,char *,struct timeval *);
 int broker_host_check(int,int,int,host *,int,int,int,struct timeval,struct timeval,char *,double,double,int,int,int,char *,char *,char *,char *,struct timeval *);
 int broker_service_check(int,int,int,service *,int,struct timeval,struct timeval,char *,double,double,int,int,int,char *,struct timeval *);

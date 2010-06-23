@@ -3,8 +3,7 @@
  * STATUSWRL.C - Icinga 3-D (VRML) Network Status View
  *
  * Copyright (c) 1999-2007 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified:   05-05-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -50,7 +49,7 @@ extern service *service_list;
 extern int default_statuswrl_layout_method;
 
 
-#define NAGIOS_VRML_IMAGE               "nagiosvrml.png"
+#define ICINGA_VRML_IMAGE               "icingavrml.png"
 
 #define DEFAULT_NODE_WIDTH		0.5
 #define DEFAULT_HORIZONTAL_SPACING	1.0
@@ -977,7 +976,7 @@ void draw_host(host *temp_host){
 	printf("}\n");
 
 	printf("]\n");
-	printf("description \"View status details for host '%s' (%s)\"\n",temp_host->name,temp_host->alias);
+	printf("description \"View status details for host '%s' (%s)\"\n",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,temp_host->alias);
 	printf("url \"%s?host=%s\"\n",STATUS_CGI,temp_host->name);
 	printf("}\n");
 
@@ -997,7 +996,7 @@ void draw_host(host *temp_host){
 			else if(temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE)
 				printf("font_color 1 0 0\n");
 	                }
-		printf("the_text [\"%s\", \"%s\", ",temp_host->name,temp_host->alias);
+		printf("the_text [\"%s\", \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,temp_host->alias);
 		if(temp_hoststatus==NULL)
 			strcpy(state_string,"UNKNOWN");
 		else{
@@ -1129,7 +1128,7 @@ void draw_process_icon(void){
 	printf("}\n");
 	if(use_textures==TRUE){
 		printf("texture ImageTexture{\n");
-		printf("url \"%s%s\"\n",url_logo_images_path,NAGIOS_VRML_IMAGE);
+		printf("url \"%s%s\"\n",url_logo_images_path,ICINGA_VRML_IMAGE);
 		printf("}\n");
 		}
 	printf("}\n");

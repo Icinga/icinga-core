@@ -2,8 +2,8 @@
  *
  * XRDDEFAULT.H - Header file for default state retention routines
  *
- * Copyright (c) 1999-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   03-01-2006
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -43,5 +43,6 @@ int xrddefault_grab_config_info(char *);
 int xrddefault_grab_config_directives(char *);
 int xrddefault_save_state_information(void);        /* saves all host and service state information */
 int xrddefault_read_state_information(void);        /* reads in initial host and service state information */
+int xrddefault_sync_state_information(void);        /* syncs in host and service state information via sync file */
 
 #endif

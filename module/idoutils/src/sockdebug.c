@@ -2,13 +2,12 @@
  * SOCKDEBUG.C - Socket Debugging Utility
  *
  * Copyright (c) 2005-2007 Ethan Galstad 
- *
- * First Written: 05-13-2005
- * Last Modified: 01-03-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  **************************************************************/
 
 #include "../../../include/config.h"
+#include "../include/io.h"
 
 #define SOCKDEBUG_VERSION "1.0.1"
 #define SOCKDEBUG_NAME "SOCKDEBUG"
@@ -34,6 +33,7 @@ int main(int argc, char **argv){
 
 	if(argc<2){
 		printf("%s %s\n",SOCKDEBUG_NAME,SOCKDEBUG_VERSION);
+		printf("Copyright(c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Copyright(c) 2005-2007 Ethan Galstad\n");
 		printf("Last Modified: %s\n",SOCKDEBUG_DATE);
 		printf("License: GPL v2\n");

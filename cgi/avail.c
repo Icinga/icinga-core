@@ -3,8 +3,7 @@
  * AVAIL.C -  Icinga Availability CGI
  *
  * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-05-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org) 
  *
  * License:
  * 
@@ -454,18 +453,24 @@ int main(int argc, char **argv){
 
 		if(display_type!=DISPLAY_NO_AVAIL && get_date_parts==FALSE){
 
+	                /* find the host */
+	                temp_host=find_host(host_name);
+
+        	        /* find the service */
+	                temp_service=find_service(host_name,svc_description);
+
 			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 			if(display_type==DISPLAY_HOST_AVAIL){
 				if(show_all_hosts==TRUE)
 					printf("All Hosts");
 				else
-					printf("Host '%s'",host_name);
+					printf("Host '%s'",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			        }
 			else if(display_type==DISPLAY_SERVICE_AVAIL){
 				if(show_all_services==TRUE)
 					printf("All Services");
 				else
-					printf("Service '%s' On Host '%s'",svc_description,host_name);
+					printf("Service '%s' On Host '%s'",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		                }
 			else if(display_type==DISPLAY_HOSTGROUP_AVAIL){
 				if(show_all_hostgroups==TRUE)
@@ -871,7 +876,7 @@ int main(int argc, char **argv){
 		printf("<option value='all'>** ALL HOSTS **\n");
 		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 			if(is_authorized_for_host(temp_host,&current_authdata)==TRUE)
-				printf("<option value='%s'>%s\n",escape_string(temp_host->name),temp_host->name);
+				printf("<option value='%s'>%s\n",escape_string(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 		        }
 		printf("</select>\n");
 		printf("</td></tr>\n");
@@ -953,7 +958,7 @@ int main(int argc, char **argv){
 		printf("<option value='all'>** ALL SERVICES **\n");
 		for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 			if(is_authorized_for_service(temp_service,&current_authdata)==TRUE)
-				printf("<option value='%s'>%s;%s\n",escape_string(temp_service->description),temp_service->host_name,temp_service->description);
+				printf("<option value='%s'>%s;%s\n",escape_string(temp_service->description),temp_service->host_name,(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 		        }
 
 		printf("</select>\n");
@@ -3806,7 +3811,7 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		if(strcmp(temp_subject->host_name,last_host))
 			host_report_url(temp_subject->host_name,temp_subject->host_name);
 		printf("</td><td CLASS='data%s'>",bgclass);
-		service_report_url(temp_subject->host_name,temp_subject->service_description,temp_subject->service_description);
+		service_report_url(temp_subject->host_name,temp_subject->service_description,(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 		printf("</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s'>%2.3f%%</td></tr>\n",percent_time_ok,percent_time_ok_known,percent_time_warning,percent_time_warning_known,percent_time_unknown,percent_time_unknown_known,percent_time_critical,percent_time_critical_known,bgclass,percent_time_indeterminate);
 
 		strncpy(last_host,temp_subject->host_name,sizeof(last_host)-1);

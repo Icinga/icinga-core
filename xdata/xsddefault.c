@@ -1,10 +1,10 @@
 /*****************************************************************************
  *
- * XSDDEFAULT.C - Default external status data input routines for Nagios
+ * XSDDEFAULT.C - Default external status data input routines for Icinga
  *
  * Copyright (c) 2009 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2000-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 07-31-2009
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -34,6 +34,9 @@
 #include "../include/downtime.h"
 #include "../include/macros.h"
 #include "../include/skiplist.h"
+
+#include "../include/statsprofiler.h"
+#include "../include/profiler.h"
 
 #ifdef NSCORE
 #include "../include/icinga.h"
@@ -70,6 +73,8 @@ int process_performance_data;
 int nagios_pid;
 int buffer_stats[1][3];
 int program_stats[MAX_CHECK_STATS_TYPES][3];
+int event_profiling_enabled;
+profile_object* profiled_data = NULL;
 #endif
 
 #ifdef NSCORE
@@ -125,6 +130,7 @@ extern char           *global_host_event_handler;
 extern char           *global_service_event_handler;
 
 extern check_stats    check_statistics[MAX_CHECK_STATS_TYPES];
+extern int event_profiling_enabled;
 #endif
 
 
@@ -338,7 +344,6 @@ int xsddefault_save_status_data(void){
 	FILE *fp=NULL;
 	int used_external_command_buffer_slots=0;
 	int high_external_command_buffer_slots=0;
-	void *ptr=NULL;
 	int result=OK;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"save_status_data()\n");
@@ -355,9 +360,7 @@ int xsddefault_save_status_data(void){
 	if((fd=mkstemp(temp_file))==-1){
 
 		/* log an error */
-#ifdef NSCORE
 		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to create temp file for writing status data!\n");
-#endif
 
 		/* free memory */
 		my_free(temp_file);
@@ -371,9 +374,7 @@ int xsddefault_save_status_data(void){
 		unlink(temp_file);
 
 		/* log an error */
-#ifdef NSCORE
 		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open temp file '%s' for writing status data!\n",temp_file);
-#endif
 
 		/* free memory */
 		my_free(temp_file);
@@ -460,6 +461,12 @@ int xsddefault_save_status_data(void){
 
 	fprintf(fp,"\tparallel_host_check_stats=%d,%d,%d\n",check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[0],check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[1],check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[2]);
 	fprintf(fp,"\tserial_host_check_stats=%d,%d,%d\n",check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[0],check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[1],check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[2]);
+
+	fprintf(fp,"\tevent_profiling_enabled=%d\n",event_profiling_enabled);
+
+	if(event_profiling_enabled)
+    		profiler_output(fp);
+
 	fprintf(fp,"\t}\n\n");
 
 
@@ -506,6 +513,8 @@ int xsddefault_save_status_data(void){
 		fprintf(fp,"\tnext_notification=%lu\n",temp_host->next_host_notification);
 		fprintf(fp,"\tno_more_notifications=%d\n",temp_host->no_more_notifications);
 		fprintf(fp,"\tcurrent_notification_number=%d\n",temp_host->current_notification_number);
+		fprintf(fp,"\tcurrent_down_notification_number=%d\n",temp_host->current_down_notification_number);
+		fprintf(fp,"\tcurrent_unreachable_notification_number=%d\n",temp_host->current_unreachable_notification_number);
 		fprintf(fp,"\tcurrent_notification_id=%lu\n",temp_host->current_notification_id);
 		fprintf(fp,"\tnotifications_enabled=%d\n",temp_host->notifications_enabled);
 		fprintf(fp,"\tproblem_has_been_acknowledged=%d\n",temp_host->problem_has_been_acknowledged);
@@ -577,6 +586,9 @@ int xsddefault_save_status_data(void){
 		fprintf(fp,"\tnext_check=%lu\n",temp_service->next_check);
 		fprintf(fp,"\tcheck_options=%d\n",temp_service->check_options);
 		fprintf(fp,"\tcurrent_notification_number=%d\n",temp_service->current_notification_number);
+		fprintf(fp,"\tcurrent_warning_notification_number=%d\n",temp_service->current_warning_notification_number);
+		fprintf(fp,"\tcurrent_critical_notification_number=%d\n",temp_service->current_critical_notification_number);
+		fprintf(fp,"\tcurrent_unknown_notification_number=%d\n",temp_service->current_unknown_notification_number);
 		fprintf(fp,"\tcurrent_notification_id=%lu\n",temp_service->current_notification_id);
 		fprintf(fp,"\tlast_notification=%lu\n",temp_service->last_notification);
 		fprintf(fp,"\tnext_notification=%lu\n",temp_service->next_notification);
@@ -698,9 +710,7 @@ int xsddefault_save_status_data(void){
 		/* move the temp file to the status log (overwrite the old status log) */
 		if(my_rename(temp_file,xsddefault_status_log)){
 			unlink(temp_file);
-#ifdef NSCORE
 			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to update status data file '%s': %s",xsddefault_status_log,strerror(errno));
-#endif
 			result=ERROR;
 			}
 		}
@@ -985,6 +995,16 @@ int xsddefault_read_status_data(char *config_file,int options){
 					enable_failure_prediction=(atoi(val)>0)?TRUE:FALSE;
 				else if(!strcmp(var,"process_performance_data"))
 					process_performance_data=(atoi(val)>0)?TRUE:FALSE;
+				else if(!strcmp(var,"event_profiling_enabled"))
+					event_profiling_enabled=atoi(val);
+
+				else if(strstr(var,"PROFILE_")){
+                                        if(strstr(var,"COUNTER"))
+                                                profile_object_update_count(var+strlen("PROFILE_COUNTER_"),strtod(val,NULL));
+
+                                        if(strstr(var,"ELAPSED"))
+                                                profile_object_update_elapsed(var+strlen("PROFILE_ELAPSED_"),atoi(val));
+                                }
 
 				else if (!strcmp(var,"total_external_command_buffer_slots"))
 					buffer_stats[0][0]=atoi(val);
@@ -1094,6 +1114,10 @@ int xsddefault_read_status_data(char *config_file,int options){
 						temp_hoststatus->no_more_notifications=(atoi(val)>0)?TRUE:FALSE;
 					else if(!strcmp(var,"current_notification_number"))
 						temp_hoststatus->current_notification_number=atoi(val);
+					else if(!strcmp(var,"current_down_notification_number"))
+						temp_hoststatus->current_down_notification_number=atoi(val);
+					else if(!strcmp(var,"current_unreachable_notification_number"))
+						temp_hoststatus->current_unreachable_notification_number=atoi(val);
 					else if(!strcmp(var,"notifications_enabled"))
 						temp_hoststatus->notifications_enabled=(atoi(val)>0)?TRUE:FALSE;
 					else if(!strcmp(var,"problem_has_been_acknowledged"))
@@ -1190,6 +1214,12 @@ int xsddefault_read_status_data(char *config_file,int options){
 						temp_servicestatus->check_options=atoi(val);
 					else if(!strcmp(var,"current_notification_number"))
 						temp_servicestatus->current_notification_number=atoi(val);
+					else if(!strcmp(var,"current_warning_notification_number"))
+						temp_servicestatus->current_warning_notification_number=atoi(val);
+					else if(!strcmp(var,"current_critical_notification_number"))
+						temp_servicestatus->current_critical_notification_number=atoi(val);
+					else if(!strcmp(var,"current_unknown_notification_number"))
+						temp_servicestatus->current_unknown_notification_number=atoi(val);
 					else if(!strcmp(var,"last_notification"))
 						temp_servicestatus->last_notification=strtoul(val,NULL,10);
 					else if(!strcmp(var,"next_notification"))

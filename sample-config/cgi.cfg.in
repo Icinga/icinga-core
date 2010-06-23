@@ -180,6 +180,15 @@ authorized_for_all_host_commands=icingaadmin
 #authorized_for_read_only=user1,user2
 
 
+# SHOW ALL SERVICES THE HOST IS AUTHORIZED FOR
+# By default, a user can see all services on a host, if the user is 
+# authorized as contact for the host only. By disabling this option, 
+# the user must be an authorized contact for the service too in order 
+# to view it.
+# Values: 0 - disabled, user must be authorized for services too
+#         1 - enabled, user can view all services on authorized host
+
+show_all_services_host_is_authorized_for=1
 
 
 # STATUSMAP BACKGROUND IMAGE

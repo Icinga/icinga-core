@@ -2,12 +2,11 @@
 
 # SUBMIT_CHECK_RESULT_VIA_NSCA
 # Written by Ethan Galstad (egalstad@nagios.org)
-# Last Modified: 10-15-2008
 #
 # This script will send passive check results to the
-# nsca daemon that runs on the central Nagios server.
+# nsca daemon that runs on the central Icinga server.
 # If you simply want to submit passive checks from the 
-# same machine that Nagios is running on, look at the
+# same machine that Icinga is running on, look at the
 # submit_check_result script.
 #
 # Arguments:
@@ -28,12 +27,12 @@
 
 printfcmd="/usr/bin/printf"
 
-NscaBin="/usr/local/nagios/libexec/send_nsca" 
-NscaCfg="/usr/local/nagios/etc/send_nsca.cfg"
-NagiosHost="nagioshost"
+NscaBin="/usr/local/icinga/libexec/send_nsca" 
+NscaCfg="/usr/local/icinga/etc/send_nsca.cfg"
+IcingaHost="icingahost"
 
 # Fire the data off to the NSCA daemon using the send_nsca script 
-$printfcmd "%s\t%s\t%s\t%s\n" "$1" "$2" "$3" "$4" | $NscaBin -H $NagiosHost -c $NscaCfg
+$printfcmd "%s\t%s\t%s\t%s\n" "$1" "$2" "$3" "$4" | $NscaBin -H $IcingaHost -c $NscaCfg
 
 # EOF
 

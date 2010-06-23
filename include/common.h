@@ -1,10 +1,9 @@
 /************************************************************************
  *
  * Icinga Common Header File
- * Written By: Ethan Galstad (egalstad@nagios.org)
- * Modified By: Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-11-2009
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -22,6 +21,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  ************************************************************************/
 
+#include "shared.h"
 
 #define PROGRAM_NAME "Icinga"
 #define PROGRAM_NAME_UC "ICINGA"
@@ -303,6 +303,8 @@
 #define CMD_CHANGE_CONTACT_MODATTR                      167
 #define CMD_CHANGE_CONTACT_MODHATTR                     168
 #define CMD_CHANGE_CONTACT_MODSATTR                     169
+
+#define CMD_SYNC_STATE_INFORMATION                      170
 
 /* custom command introduced in Nagios 3.x */
 #define CMD_CUSTOM_COMMAND                              999

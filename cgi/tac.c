@@ -3,8 +3,7 @@
  * TAC.C - Icinga Tactical Monitoring Overview CGI
  *
  * Copyright (c) 2001-2008 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-05-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * This CGI program will display the contents of the Icinga
  * log file.
@@ -1306,11 +1305,11 @@ void display_tac_overview(void){
 	printf("<tr><td colspan=5 height=20 class='serviceTitle'>&nbsp;Services</td></tr>\n");
 
 	printf("<tr>\n");
-	printf("<td class='serviceHeader' width=125><a href='%s?host=all&stye=detail&servicestatustypes=%d' class='serviceHeader'>%d Critical</a></td>\n",STATUS_CGI,SERVICE_CRITICAL,services_critical);
-	printf("<td class='serviceHeader' width=125><a href='%s?host=all&stye=detail&servicestatustypes=%d' class='serviceHeader'>%d Warning</a></td>\n",STATUS_CGI,SERVICE_WARNING,services_warning);
-	printf("<td class='serviceHeader' width=125><a href='%s?host=all&stye=detail&servicestatustypes=%d' class='serviceHeader'>%d Unknown</a></td>\n",STATUS_CGI,SERVICE_UNKNOWN,services_unknown);
-	printf("<td class='serviceHeader' width=125><a href='%s?host=all&stye=detail&servicestatustypes=%d' class='serviceHeader'>%d Ok</a></td>\n",STATUS_CGI,SERVICE_OK,services_ok);
-	printf("<td class='serviceHeader' width=125><a href='%s?host=all&stye=detail&servicestatustypes=%d' class='serviceHeader'>%d Pending</a></td>\n",STATUS_CGI,SERVICE_PENDING,services_pending);
+	printf("<td class='serviceHeader' width=125><a href='%s?host=all&style=detail&servicestatustypes=%d' class='serviceHeader'>%d Critical</a></td>\n",STATUS_CGI,SERVICE_CRITICAL,services_critical);
+	printf("<td class='serviceHeader' width=125><a href='%s?host=all&style=detail&servicestatustypes=%d' class='serviceHeader'>%d Warning</a></td>\n",STATUS_CGI,SERVICE_WARNING,services_warning);
+	printf("<td class='serviceHeader' width=125><a href='%s?host=all&style=detail&servicestatustypes=%d' class='serviceHeader'>%d Unknown</a></td>\n",STATUS_CGI,SERVICE_UNKNOWN,services_unknown);
+	printf("<td class='serviceHeader' width=125><a href='%s?host=all&style=detail&servicestatustypes=%d' class='serviceHeader'>%d Ok</a></td>\n",STATUS_CGI,SERVICE_OK,services_ok);
+	printf("<td class='serviceHeader' width=125><a href='%s?host=all&style=detail&servicestatustypes=%d' class='serviceHeader'>%d Pending</a></td>\n",STATUS_CGI,SERVICE_PENDING,services_pending);
 	printf("</tr>\n");
 
 	printf("<tr>\n");

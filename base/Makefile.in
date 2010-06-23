@@ -1,7 +1,5 @@
 ############################
 # Makefile for Icinga
-#
-# Last Modified: 12-05-2008
 ############################
 
 
@@ -122,7 +120,7 @@ DDATAHDRS=
 DDATADEPS=$(DDATALIBS)
 
 
-OBJS=$(BROKER_O) checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(DDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
+OBJS=$(BROKER_O) $(SRC_COMMON)/shared.o checks.o config.o commands.o events.o flapping.o logging.o macros-base.o netutils.o notifications.o sehandlers.o skiplist.o utils.o profiler.o $(RDATALIBS) $(CDATALIBS) $(ODATALIBS) $(SDATALIBS) $(PDATALIBS) $(DDATALIBS) $(BASEEXTRALIBS) $(SNPRINTF_O) $(PERLXSI_O)
 OBJDEPS=$(ODATADEPS) $(ODATADEPS) $(RDATADEPS) $(CDATADEPS) $(SDATADEPS) $(PDATADEPS) $(DDATADEPS) $(BROKER_H)
 
 all: icinga icingastats
@@ -172,15 +170,17 @@ retention-base.o: sretention.c $(SRC_INCLUDE)/sretention.h
 xretention-base.o: $(SRC_XDATA)/$(XRDC) $(SRC_XDATA)/$(XRDH)
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XRDC)
 
+$(SRC_COMMON)/shared.o: $(SRC_COMMON)/shared.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 
-########## Icinga ##########
+########## ICINGA ##########
 
 icinga: icinga.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/icinga.h $(SRC_INCLUDE)/locations.h
 	$(CC) $(CFLAGS) -o $@ icinga.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
 
 icingastats: icingastats.c $(SRC_INCLUDE)/locations.h
-	$(CC) $(CFLAGS) -o $@ icingastats.c $(LDFLAGS) $(MATHLIBS) $(LIBS)
+	$(CC) $(CFLAGS) -o $@ statsprofiler.c icingastats.c $(LDFLAGS) $(MATHLIBS) $(LIBS)
 
 $(OBJS): $(SRC_INCLUDE)/locations.h
 

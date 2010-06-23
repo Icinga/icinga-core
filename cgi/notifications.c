@@ -1,9 +1,9 @@
-/************************************************************************
+/*****************************************************************************
  *
  * NOTIFICATIONS.C - Icinga Notifications CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 01-08-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * This CGI program will display the notification events for 
  * a given host or contact or for all contacts/hosts.
@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- ***********************************************************************/
+ *****************************************************************************/
 
 #include "../include/config.h"
 #include "../include/common.h"
@@ -497,8 +497,8 @@ void display_notifications(void){
 	int notification_detail_type=NOTIFICATION_SERVICE_CRITICAL;
 	int odd=0;
 	time_t t;
-	host *temp_host;
-	service *temp_service;
+	host *temp_host=NULL;
+	service *temp_service=NULL;
 	int result;
 
 	if(use_lifo==TRUE){
@@ -718,6 +718,7 @@ void display_notifications(void){
 					show_entry=FALSE;
 			        }
 			else{
+				temp_host=find_host(host_name);
 				temp_service=find_service(host_name,service_name);
 				if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 					show_entry=FALSE;
@@ -735,10 +736,10 @@ void display_notifications(void){
 					odd=1;
 					printf("<tr CLASS='notificationsEven'>\n");
 				        }
-				printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n",(odd)?"Even":"Odd",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name),host_name);
+				printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n",(odd)?"Even":"Odd",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 				if(notification_type==SERVICE_NOTIFICATION){
 					printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s",(odd)?"Even":"Odd",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(host_name));
-					printf("&service=%s'>%s</a></td>\n",url_encode(service_name),service_name);
+					printf("&service=%s'>%s</a></td>\n",url_encode(service_name),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 				        }
 				else
 					printf("<td CLASS='notifications%s'>N/A</td>\n",(odd)?"Even":"Odd");

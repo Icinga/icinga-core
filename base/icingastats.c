@@ -2,12 +2,11 @@
  *
  * ICINGASTATS.C - Displays Icinga Statistics
  *
- * Program: Icingastats (based on Nagiostats)
+ * Program: Icingastats
  * Version: 1.0.1
  * License: GPL
  * Copyright (c) 2003-2008 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified:   
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -31,16 +30,19 @@
 #include "../include/icinga.h"
 #include "../include/locations.h"
 
+#include "../include/statsprofiler.h"
+
 #define STATUS_NO_DATA             0
 #define STATUS_INFO_DATA           1
 #define STATUS_PROGRAM_DATA        2
 #define STATUS_HOST_DATA           3
 #define STATUS_SERVICE_DATA        4
 
+profile_object* profiled_data = NULL;
 
 char *main_config_file=NULL;
 char *status_file=NULL;
-char *nagiostats_file=NULL;
+char *icingastats_file=NULL;
 char *mrtg_variables=NULL;
 char *mrtg_delimiter="\n";
 
@@ -197,6 +199,7 @@ int external_commands_last_15min=0;
 int total_external_command_buffer_slots=0;
 int used_external_command_buffer_slots=0;
 int high_external_command_buffer_slots=0;
+int event_profiling_enabled=0;
 
 
 
@@ -206,7 +209,7 @@ int read_config_file(void);
 int read_status_file(void);
 void strip(char *);
 void get_time_breakdown(unsigned long,int *,int *,int *,int *);
-
+int read_icingastats_file(void);
 
 int main(int argc, char **argv){
 	int result;
@@ -214,6 +217,7 @@ int main(int argc, char **argv){
 	int display_license=FALSE;
 	int display_help=FALSE;
 	int c;
+	profile_object *p=NULL;
 
 #ifdef HAVE_GETOPT_H
 	int option_index=0;
@@ -265,7 +269,7 @@ int main(int argc, char **argv){
 			main_config_file=strdup(optarg);
 			break;
 		case 's':
-			nagiostats_file=strdup(optarg);
+			icingastats_file=strdup(optarg);
 			break;
 		case 'm':
 			mrtg_mode=TRUE;
@@ -391,6 +395,29 @@ int main(int argc, char **argv){
 		printf(" NUMPSVSVCCHECKSxM    number of passive service checks occuring in last 1/5/15 minutes.\n");
 		printf(" NUMEXTCMDSxM         number of external commands processed in last 1/5/15 minutes.\n");
 
+       		 /* read main config file */
+        	result=read_config_file();
+        	if(result==ERROR && mrtg_mode==FALSE)
+        	{
+            		printf("Error processing config file '%s'\n",main_config_file);
+            		return ERROR;
+        	}
+
+        	/* read the status file */
+        	result=read_status_file();
+        	if(result==ERROR && mrtg_mode==FALSE)
+        	{
+            		printf("Error reading status file '%s'\n",status_file);
+            		return ERROR;
+        	}
+
+        	p = profiled_data;
+        	while(p)
+        	{
+            		printf("PROFILE_(COUNTER/ELAPSED/EVENTPS)_%s\t\tdynamically generated profile data.\n",p->name);
+            		p = p->next;
+        	}
+
 		printf("\n");
 		printf(" Note: Replace x's in MRTG variable names with 'MIN', 'MAX', 'AVG', or the\n");
 		printf("       the appropriate number (i.e. '1', '5', '15', or '60').\n");
@@ -400,10 +427,10 @@ int main(int argc, char **argv){
 		}
 
 	/* read pre-processed stats file */
-	if(nagiostats_file){
-		result=read_nagiostats_file();
+	if(icingastats_file){
+		result=read_icingastats_file();
 		if(result==ERROR && mrtg_mode==FALSE){
-			printf("Error reading stats file '%s': %s\n",nagiostats_file,strerror(errno));
+			printf("Error reading stats file '%s': %s\n",icingastats_file,strerror(errno));
 			return ERROR;
 			}
 		}
@@ -431,8 +458,8 @@ int main(int argc, char **argv){
 	else
 		display_mrtg_values();
 
-	if(nagiostats_file)
-		free(nagiostats_file);
+	if(icingastats_file)
+		free(icingastats_file);
 
 	/* Opsera patch - return based on error, because mrtg_mode was always returning OK */
 	if(result==ERROR)
@@ -760,6 +787,8 @@ int display_mrtg_values(void){
 		else if(!strcmp(temp_ptr,"NUMHSTDOWNTIME"))
 			printf("%d%s",hosts_in_downtime,mrtg_delimiter);
 
+        	else if(strstr(temp_ptr,"PROFILE_") && event_profiling_enabled)
+            		profile_data_output_mrtg(temp_ptr+strlen("PROFILE_"),mrtg_delimiter);
 		else
 			printf("%s%s",temp_ptr,mrtg_delimiter);
 	        }
@@ -784,7 +813,7 @@ int display_stats(void){
 
 	printf("CURRENT STATUS DATA\n");
 	printf("------------------------------------------------------\n");
-	printf("Status File:                            %s\n",(nagiostats_file!=NULL)?nagiostats_file:status_file);
+	printf("Status File:                            %s\n",(icingastats_file!=NULL)?icingastats_file:status_file);
 	time_difference=(current_time-status_creation_date);
 	get_time_breakdown(time_difference,&days,&hours,&minutes,&seconds);
 	printf("Status File Age:                        %dd %dh %dm %ds\n",days,hours,minutes,seconds);
@@ -847,6 +876,14 @@ int display_stats(void){
 	printf("External Commands Last 1/5/15 min:      %d / %d / %d\n",external_commands_last_1min,external_commands_last_5min,external_commands_last_15min);
 	printf("\n");
 	printf("\n");
+
+
+	if(event_profiling_enabled){
+		printf("\n\nEVENT PROFILE DATA:\t\ttotal seconds spent / number of events / avg time per event / events per second \n");
+		printf("----------------------------------------------------\n");
+
+		profile_data_print();
+	}
 
 
 	/*
@@ -1317,6 +1354,17 @@ int read_status_file(void){
 					if((temp_ptr=strtok(NULL,",")))
 						serial_host_checks_last_15min=atoi(temp_ptr);
 					}
+				else if(!strcmp(var,"event_profiling_enabled")){
+					event_profiling_enabled=atoi(val);
+					}
+                		else if(strstr(var,"PROFILE_") && !strstr(var,"null"))
+                		{
+                    			if(strstr(var,"COUNTER"))
+                        			profile_object_update_count(var+strlen("PROFILE_COUNTER_"),strtod(val,NULL));
+
+                    			if(strstr(var,"ELAPSED"))
+                        			profile_object_update_elapsed(var+strlen("PROFILE_ELAPSED_"),atoi(val));
+                		}
 				break;
 
 			case STATUS_HOST_DATA:
@@ -1378,7 +1426,7 @@ int read_status_file(void){
         }
 
 
-int read_nagiostats_file(void){
+int read_icingastats_file(void){
 	char temp_buffer[MAX_INPUT_BUFFER];
 	FILE *fp=NULL;
 	char *var=NULL;
@@ -1388,7 +1436,7 @@ int read_nagiostats_file(void){
 
 	time(&current_time);
 
-	fp=fopen(nagiostats_file,"r");
+	fp=fopen(icingastats_file,"r");
 	if(fp==NULL)
 		return ERROR;
 

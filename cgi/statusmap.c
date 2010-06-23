@@ -3,7 +3,7 @@
  * STATUSMAP.C - Icinga Network Status Map CGI
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 05-19-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -1800,7 +1800,7 @@ void draw_hosts(void){
 
 
 			/* draw host name, status, etc. */
-			draw_host_text(temp_host->name,x1+(DEFAULT_NODE_WIDTH/2),y1+DEFAULT_NODE_HEIGHT);
+			draw_host_text((temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,x1+(DEFAULT_NODE_WIDTH/2),y1+DEFAULT_NODE_HEIGHT);
 		        }
 
 		/* we're creating HTML image map... */

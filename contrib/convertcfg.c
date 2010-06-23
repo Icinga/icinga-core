@@ -3,7 +3,6 @@
  * CONVERTCFG.C - Config File Convertor
  *
  * Copyright (c) 2001-2005 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 08-12-2005
  *
  * License:
  *

@@ -4,12 +4,10 @@
  * Copyright (c) 2005-2007 Ethan Galstad
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 02-10-2010
- *
  ************************************************************************/
 
-#ifndef _IDO2DB_NDO2DB_H
-#define _IDO2DB_NDO2DB_H
+#ifndef _IDO2DB_IDO2DB_H
+#define _IDO2DB_IDO2DB_H
 
 #include "../../../include/config.h"
 #include "utils.h"
@@ -27,43 +25,43 @@
 #endif
 
 /*************** mbuf definitions *************/
-#define NDO2DB_MBUF_CONTACTGROUP                        0
-#define NDO2DB_MBUF_CONTACTGROUPMEMBER                  1
-#define NDO2DB_MBUF_SERVICEGROUPMEMBER                  2
-#define NDO2DB_MBUF_HOSTGROUPMEMBER                     3
-#define NDO2DB_MBUF_SERVICENOTIFICATIONCOMMAND          4
-#define NDO2DB_MBUF_HOSTNOTIFICATIONCOMMAND             5
-#define NDO2DB_MBUF_CONTACTADDRESS                      6
-#define NDO2DB_MBUF_TIMERANGE                           7
-#define NDO2DB_MBUF_PARENTHOST                          8
-#define NDO2DB_MBUF_CONFIGFILEVARIABLE                  9
-#define NDO2DB_MBUF_CONFIGVARIABLE                      10
-#define NDO2DB_MBUF_RUNTIMEVARIABLE                     11
-#define NDO2DB_MBUF_CUSTOMVARIABLE                      12
-#define NDO2DB_MBUF_CONTACT                             13
+#define IDO2DB_MBUF_CONTACTGROUP                        0
+#define IDO2DB_MBUF_CONTACTGROUPMEMBER                  1
+#define IDO2DB_MBUF_SERVICEGROUPMEMBER                  2
+#define IDO2DB_MBUF_HOSTGROUPMEMBER                     3
+#define IDO2DB_MBUF_SERVICENOTIFICATIONCOMMAND          4
+#define IDO2DB_MBUF_HOSTNOTIFICATIONCOMMAND             5
+#define IDO2DB_MBUF_CONTACTADDRESS                      6
+#define IDO2DB_MBUF_TIMERANGE                           7
+#define IDO2DB_MBUF_PARENTHOST                          8
+#define IDO2DB_MBUF_CONFIGFILEVARIABLE                  9
+#define IDO2DB_MBUF_CONFIGVARIABLE                      10
+#define IDO2DB_MBUF_RUNTIMEVARIABLE                     11
+#define IDO2DB_MBUF_CUSTOMVARIABLE                      12
+#define IDO2DB_MBUF_CONTACT                             13
 
-#define NDO2DB_MAX_MBUF_ITEMS                           14
+#define IDO2DB_MAX_MBUF_ITEMS                           14
 
 
 /***************** structures *****************/
 
-typedef struct ndo2db_mbuf_struct{
+typedef struct ido2db_mbuf_struct{
 	int used_lines;
 	int allocated_lines;
 	char **buffer;
-        }ndo2db_mbuf;
+        }ido2db_mbuf;
 
 
-typedef struct ndo2db_dbobject_struct{
+typedef struct ido2db_dbobject_struct{
 	char *name1;
 	char *name2;
 	int object_type;
 	unsigned long object_id;
-	struct ndo2db_dbobject_struct *nexthash;
-        }ndo2db_dbobject;
+	struct ido2db_dbobject_struct *nexthash;
+        }ido2db_dbobject;
 
 
-typedef struct ndo2db_dbconninfo_struct{
+typedef struct ido2db_dbconninfo_struct{
 	int server_type;
 	int connected;
 	int error;
@@ -187,14 +185,16 @@ typedef struct ndo2db_dbconninfo_struct{
 	unsigned long max_logentries_age;
 	unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
+	unsigned long clean_realtime_tables_on_core_startup;
+	unsigned long clean_config_tables_on_core_startup;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
 	char *last_logentry_data;
-	ndo2db_dbobject **object_hashlist;
-        }ndo2db_dbconninfo;
+	ido2db_dbobject **object_hashlist;
+        }ido2db_dbconninfo;
 
 
-typedef struct ndo2db_input_data_info_struct{
+typedef struct ido2db_input_data_info_struct{
 	int protocol_version;
 	int disconnect_client;
 	int ignore_client_data;
@@ -213,24 +213,24 @@ typedef struct ndo2db_input_data_info_struct{
 	unsigned long data_end_time;
 	int current_object_config_type;
 	char **buffered_input;
-	ndo2db_mbuf mbuf[NDO2DB_MAX_MBUF_ITEMS];
-	ndo2db_dbconninfo dbinfo;
-        }ndo2db_idi;
+	ido2db_mbuf mbuf[IDO2DB_MAX_MBUF_ITEMS];
+	ido2db_dbconninfo dbinfo;
+        }ido2db_idi;
 
 
 
 /*************** DB server types ***************/
-#define NDO2DB_DBSERVER_NONE                            0
-#define NDO2DB_DBSERVER_MYSQL                           1
-#define NDO2DB_DBSERVER_PGSQL                           2
-#define NDO2DB_DBSERVER_DB2                             3
-#define NDO2DB_DBSERVER_FIREBIRD                        4
-#define NDO2DB_DBSERVER_FREETDS                         5
-#define NDO2DB_DBSERVER_INGRES                          6
-#define NDO2DB_DBSERVER_MSQL                            7
-#define NDO2DB_DBSERVER_ORACLE                          8
-#define NDO2DB_DBSERVER_SQLITE                          9
-#define NDO2DB_DBSERVER_SQLITE3                         10
+#define IDO2DB_DBSERVER_NONE                            0
+#define IDO2DB_DBSERVER_MYSQL                           1
+#define IDO2DB_DBSERVER_PGSQL                           2
+#define IDO2DB_DBSERVER_DB2                             3
+#define IDO2DB_DBSERVER_FIREBIRD                        4
+#define IDO2DB_DBSERVER_FREETDS                         5
+#define IDO2DB_DBSERVER_INGRES                          6
+#define IDO2DB_DBSERVER_MSQL                            7
+#define IDO2DB_DBSERVER_ORACLE                          8
+#define IDO2DB_DBSERVER_SQLITE                          9
+#define IDO2DB_DBSERVER_SQLITE3                         10
 
 /*************** DBI Driver names **************/
 #define IDO2DB_DBI_DRIVER_MYSQL				"mysql"
@@ -245,90 +245,90 @@ typedef struct ndo2db_input_data_info_struct{
 #define IDO2DB_DBI_DRIVER_SQLITE3			"sqlite3"
 
 /*************** misc definitions **************/
-#define NDO2DB_INPUT_BUFFER                             1024
-/* #define NDO2DB_OBJECT_HASHSLOTS                         1024 */
-#define NDO2DB_OBJECT_HASHSLOTS                         50240	/* Altinity patch: Spread the list of linked lists thinner */
+#define IDO2DB_INPUT_BUFFER                             1024
+/* #define IDO2DB_OBJECT_HASHSLOTS                         1024 */
+#define IDO2DB_OBJECT_HASHSLOTS                         50240	/* Altinity patch: Spread the list of linked lists thinner */
 
 
 /*********** types of input sections ***********/
-#define NDO2DB_INPUT_SECTION_NONE                       0
-#define NDO2DB_INPUT_SECTION_HEADER                     1
-#define NDO2DB_INPUT_SECTION_FOOTER                     2
-#define NDO2DB_INPUT_SECTION_DATA                       3
+#define IDO2DB_INPUT_SECTION_NONE                       0
+#define IDO2DB_INPUT_SECTION_HEADER                     1
+#define IDO2DB_INPUT_SECTION_FOOTER                     2
+#define IDO2DB_INPUT_SECTION_DATA                       3
 
 
 /************* types of input data *************/
-#define NDO2DB_INPUT_DATA_NONE                          0
+#define IDO2DB_INPUT_DATA_NONE                          0
 
-#define NDO2DB_INPUT_DATA_CONFIGDUMPSTART               1
-#define NDO2DB_INPUT_DATA_CONFIGDUMPEND                 2
+#define IDO2DB_INPUT_DATA_CONFIGDUMPSTART               1
+#define IDO2DB_INPUT_DATA_CONFIGDUMPEND                 2
 
-#define NDO2DB_INPUT_DATA_LOGENTRY                      10
+#define IDO2DB_INPUT_DATA_LOGENTRY                      10
 
-#define NDO2DB_INPUT_DATA_PROCESSDATA                   20
-#define NDO2DB_INPUT_DATA_TIMEDEVENTDATA                21
-#define NDO2DB_INPUT_DATA_LOGDATA                       22
-#define NDO2DB_INPUT_DATA_SYSTEMCOMMANDDATA             23
-#define NDO2DB_INPUT_DATA_EVENTHANDLERDATA              24
-#define NDO2DB_INPUT_DATA_NOTIFICATIONDATA              25
-#define NDO2DB_INPUT_DATA_SERVICECHECKDATA              26
-#define NDO2DB_INPUT_DATA_HOSTCHECKDATA                 27
-#define NDO2DB_INPUT_DATA_COMMENTDATA                   28
-#define NDO2DB_INPUT_DATA_DOWNTIMEDATA                  29
-#define NDO2DB_INPUT_DATA_FLAPPINGDATA                  30
-#define NDO2DB_INPUT_DATA_PROGRAMSTATUSDATA             31
-#define NDO2DB_INPUT_DATA_HOSTSTATUSDATA                32
-#define NDO2DB_INPUT_DATA_SERVICESTATUSDATA             33
-#define NDO2DB_INPUT_DATA_ADAPTIVEPROGRAMDATA           34
-#define NDO2DB_INPUT_DATA_ADAPTIVEHOSTDATA              35
-#define NDO2DB_INPUT_DATA_ADAPTIVESERVICEDATA           36
-#define NDO2DB_INPUT_DATA_EXTERNALCOMMANDDATA           37
-#define NDO2DB_INPUT_DATA_AGGREGATEDSTATUSDATA          38
-#define NDO2DB_INPUT_DATA_RETENTIONDATA                 39
-#define NDO2DB_INPUT_DATA_CONTACTNOTIFICATIONDATA       40
-#define NDO2DB_INPUT_DATA_CONTACTNOTIFICATIONMETHODDATA 41
-#define NDO2DB_INPUT_DATA_ACKNOWLEDGEMENTDATA           42
-#define NDO2DB_INPUT_DATA_STATECHANGEDATA               43
-#define NDO2DB_INPUT_DATA_CONTACTSTATUSDATA             44
-#define NDO2DB_INPUT_DATA_ADAPTIVECONTACTDATA           45
+#define IDO2DB_INPUT_DATA_PROCESSDATA                   20
+#define IDO2DB_INPUT_DATA_TIMEDEVENTDATA                21
+#define IDO2DB_INPUT_DATA_LOGDATA                       22
+#define IDO2DB_INPUT_DATA_SYSTEMCOMMANDDATA             23
+#define IDO2DB_INPUT_DATA_EVENTHANDLERDATA              24
+#define IDO2DB_INPUT_DATA_NOTIFICATIONDATA              25
+#define IDO2DB_INPUT_DATA_SERVICECHECKDATA              26
+#define IDO2DB_INPUT_DATA_HOSTCHECKDATA                 27
+#define IDO2DB_INPUT_DATA_COMMENTDATA                   28
+#define IDO2DB_INPUT_DATA_DOWNTIMEDATA                  29
+#define IDO2DB_INPUT_DATA_FLAPPINGDATA                  30
+#define IDO2DB_INPUT_DATA_PROGRAMSTATUSDATA             31
+#define IDO2DB_INPUT_DATA_HOSTSTATUSDATA                32
+#define IDO2DB_INPUT_DATA_SERVICESTATUSDATA             33
+#define IDO2DB_INPUT_DATA_ADAPTIVEPROGRAMDATA           34
+#define IDO2DB_INPUT_DATA_ADAPTIVEHOSTDATA              35
+#define IDO2DB_INPUT_DATA_ADAPTIVESERVICEDATA           36
+#define IDO2DB_INPUT_DATA_EXTERNALCOMMANDDATA           37
+#define IDO2DB_INPUT_DATA_AGGREGATEDSTATUSDATA          38
+#define IDO2DB_INPUT_DATA_RETENTIONDATA                 39
+#define IDO2DB_INPUT_DATA_CONTACTNOTIFICATIONDATA       40
+#define IDO2DB_INPUT_DATA_CONTACTNOTIFICATIONMETHODDATA 41
+#define IDO2DB_INPUT_DATA_ACKNOWLEDGEMENTDATA           42
+#define IDO2DB_INPUT_DATA_STATECHANGEDATA               43
+#define IDO2DB_INPUT_DATA_CONTACTSTATUSDATA             44
+#define IDO2DB_INPUT_DATA_ADAPTIVECONTACTDATA           45
 
-#define NDO2DB_INPUT_DATA_MAINCONFIGFILEVARIABLES       50
-#define NDO2DB_INPUT_DATA_RESOURCECONFIGFILEVARIABLES   51
-#define NDO2DB_INPUT_DATA_CONFIGVARIABLES               52
-#define NDO2DB_INPUT_DATA_RUNTIMEVARIABLES              53
+#define IDO2DB_INPUT_DATA_MAINCONFIGFILEVARIABLES       50
+#define IDO2DB_INPUT_DATA_RESOURCECONFIGFILEVARIABLES   51
+#define IDO2DB_INPUT_DATA_CONFIGVARIABLES               52
+#define IDO2DB_INPUT_DATA_RUNTIMEVARIABLES              53
 
-#define NDO2DB_INPUT_DATA_HOSTDEFINITION                61
-#define NDO2DB_INPUT_DATA_HOSTGROUPDEFINITION           62
-#define NDO2DB_INPUT_DATA_SERVICEDEFINITION             63
-#define NDO2DB_INPUT_DATA_SERVICEGROUPDEFINITION        64
-#define NDO2DB_INPUT_DATA_HOSTDEPENDENCYDEFINITION      65
-#define NDO2DB_INPUT_DATA_SERVICEDEPENDENCYDEFINITION   66
-#define NDO2DB_INPUT_DATA_HOSTESCALATIONDEFINITION      67
-#define NDO2DB_INPUT_DATA_SERVICEESCALATIONDEFINITION   68
-#define NDO2DB_INPUT_DATA_COMMANDDEFINITION             69
-#define NDO2DB_INPUT_DATA_TIMEPERIODDEFINITION          70
-#define NDO2DB_INPUT_DATA_CONTACTDEFINITION             71
-#define NDO2DB_INPUT_DATA_CONTACTGROUPDEFINITION        72
-#define NDO2DB_INPUT_DATA_HOSTEXTINFODEFINITION         73
-#define NDO2DB_INPUT_DATA_SERVICEEXTINFODEFINITION      74
+#define IDO2DB_INPUT_DATA_HOSTDEFINITION                61
+#define IDO2DB_INPUT_DATA_HOSTGROUPDEFINITION           62
+#define IDO2DB_INPUT_DATA_SERVICEDEFINITION             63
+#define IDO2DB_INPUT_DATA_SERVICEGROUPDEFINITION        64
+#define IDO2DB_INPUT_DATA_HOSTDEPENDENCYDEFINITION      65
+#define IDO2DB_INPUT_DATA_SERVICEDEPENDENCYDEFINITION   66
+#define IDO2DB_INPUT_DATA_HOSTESCALATIONDEFINITION      67
+#define IDO2DB_INPUT_DATA_SERVICEESCALATIONDEFINITION   68
+#define IDO2DB_INPUT_DATA_COMMANDDEFINITION             69
+#define IDO2DB_INPUT_DATA_TIMEPERIODDEFINITION          70
+#define IDO2DB_INPUT_DATA_CONTACTDEFINITION             71
+#define IDO2DB_INPUT_DATA_CONTACTGROUPDEFINITION        72
+#define IDO2DB_INPUT_DATA_HOSTEXTINFODEFINITION         73
+#define IDO2DB_INPUT_DATA_SERVICEEXTINFODEFINITION      74
 
 
 /************* types of config data ************/
-#define NDO2DB_CONFIGTYPE_ORIGINAL                      0
-#define NDO2DB_CONFIGTYPE_RETAINED                      1
+#define IDO2DB_CONFIGTYPE_ORIGINAL                      0
+#define IDO2DB_CONFIGTYPE_RETAINED                      1
 
 
 
 /************* debugging levels ****************/
 
-#define NDO2DB_DEBUGL_ALL                      -1
-#define NDO2DB_DEBUGL_NONE                     0
-#define NDO2DB_DEBUGL_PROCESSINFO              1
-#define NDO2DB_DEBUGL_SQL                      2
+#define IDO2DB_DEBUGL_ALL                      -1
+#define IDO2DB_DEBUGL_NONE                     0
+#define IDO2DB_DEBUGL_PROCESSINFO              1
+#define IDO2DB_DEBUGL_SQL                      2
 
-#define NDO2DB_DEBUGV_BASIC                    0
-#define NDO2DB_DEBUGV_MORE		       1
-#define NDO2DB_DEBUGV_MOST                     2
+#define IDO2DB_DEBUGV_BASIC                    0
+#define IDO2DB_DEBUGV_MORE		       1
+#define IDO2DB_DEBUGV_MOST                     2
 
 /************* default trim db interval ********/
 
@@ -336,45 +336,53 @@ typedef struct ndo2db_input_data_info_struct{
 
 /***************** functions *******************/
 
-int ndo2db_process_arguments(int,char **);
+/* config */
+int ido2db_process_arguments(int,char **);
+int ido2db_process_config_var(char *);
+int ido2db_process_config_file(char *);
 
-int ndo2db_process_config_var(char *);
-int ndo2db_process_config_file(char *);
+/* init */
+int ido2db_initialize_variables(void);
+int ido2db_check_init_reqs(void);
 
-int ndo2db_initialize_variables(void);
+/* daemonize */
+int ido2db_drop_privileges(char *,char *);
+int ido2db_daemonize(void);
+int ido2db_cleanup_socket(void);
+void ido2db_parent_sighandler(int);
+void ido2db_child_sighandler(int);
 
-int ndo2db_check_init_reqs(void);
+/* cleanup */
+int ido2db_free_program_memory(void);
+int ido2db_free_input_memory(ido2db_idi *);
+int ido2db_free_connection_memory(ido2db_idi *);
 
-int ndo2db_drop_privileges(char *,char *);
-int ndo2db_daemonize(void);
-int ndo2db_cleanup_socket(void);
-void ndo2db_parent_sighandler(int);
-void ndo2db_child_sighandler(int);
+/* client connection */
+int ido2db_wait_for_connections(void);
+int ido2db_handle_client_connection(int);
+int ido2db_idi_init(ido2db_idi *);
+int ido2db_check_for_client_input(ido2db_idi *,ido_dbuf *, pthread_t *);
+int ido2db_handle_client_input(ido2db_idi *,char *, pthread_t *);
 
-int ndo2db_free_program_memory(void);
-int ndo2db_free_input_memory(ndo2db_idi *);
-int ndo2db_free_connection_memory(ndo2db_idi *);
+/* data handling */
+int ido2db_start_input_data(ido2db_idi *);
+int ido2db_end_input_data(ido2db_idi *);
+int ido2db_add_input_data_item(ido2db_idi *,int,char *);
+int ido2db_add_input_data_mbuf(ido2db_idi *,int,int,char *);
 
-int ndo2db_wait_for_connections(void);
-int ndo2db_handle_client_connection(int);
-int ndo2db_idi_init(ndo2db_idi *);
-int ndo2db_check_for_client_input(ndo2db_idi *,ndo_dbuf *, pthread_t *);
-int ndo2db_handle_client_input(ndo2db_idi *,char *, pthread_t *);
+/* conversion */
+int ido2db_convert_standard_data_elements(ido2db_idi *,int *,int *,int *,struct timeval *);
+int ido2db_convert_string_to_int(char *,int *);
+int ido2db_convert_string_to_float(char *,float *);
+int ido2db_convert_string_to_double(char *,double *);
+int ido2db_convert_string_to_long(char *,long *);
+int ido2db_convert_string_to_unsignedlong(char *,unsigned long *);
+int ido2db_convert_string_to_timeval(char *,struct timeval *);
 
-int ndo2db_start_input_data(ndo2db_idi *);
-int ndo2db_end_input_data(ndo2db_idi *);
-int ndo2db_add_input_data_item(ndo2db_idi *,int,char *);
-int ndo2db_add_input_data_mbuf(ndo2db_idi *,int,int,char *);
+/* logging */
+int ido2db_log_debug_info(int , int , const char *, ...);
 
-int ndo2db_convert_standard_data_elements(ndo2db_idi *,int *,int *,int *,struct timeval *);
-int ndo2db_convert_string_to_int(char *,int *);
-int ndo2db_convert_string_to_float(char *,float *);
-int ndo2db_convert_string_to_double(char *,double *);
-int ndo2db_convert_string_to_long(char *,long *);
-int ndo2db_convert_string_to_unsignedlong(char *,unsigned long *);
-int ndo2db_convert_string_to_timeval(char *,struct timeval *);
-
+/* threads */
 void *ido2db_thread_cleanup(void *);
-static void *ido2db_thread_cleanup_exit_handler(void *);
 
 #endif

@@ -3,7 +3,7 @@
  * CONFIG.C - Icinga Configuration CGI (View Only)
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 05-15-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * This CGI program will display various configuration information.
  *
@@ -488,6 +488,8 @@ void display_hosts(void){
 
 		printf("<TR CLASS='%s'>\n",bg_class);
 
+		/* find a solution to print display_name if once set in host definition */
+		/* printf("<TD CLASS='%s'><a name='%s'>%s</a></TD>\n",bg_class,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name); */
 		printf("<TD CLASS='%s'><a name='%s'>%s</a></TD>\n",bg_class,url_encode(temp_host->name),temp_host->name);
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,temp_host->alias);
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,temp_host->address);
@@ -1222,7 +1224,8 @@ void display_services(void){
 		printf("<TD CLASS='%s'><A NAME='%s;",bg_class,url_encode(temp_service->host_name));
 		printf("%s'></A>",url_encode(temp_service->description));
 		printf("<A HREF='%s?type=hosts#%s'>%s</A></TD>\n",CONFIG_CGI,url_encode(temp_service->host_name),temp_service->host_name);
-		
+	
+		/* find a way to show display_name if set once */	
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,temp_service->description);
 		
 		printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_service->max_attempts);
@@ -1246,7 +1249,7 @@ void display_services(void){
 
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->parallelize==TRUE)?"Yes":"No");
 
-		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->is_volatile==TRUE)?"Yes":"No");
+		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->is_volatile==FALSE)?"Yes":"No");
 
 		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_service->obsess_over_service==TRUE)?"Yes":"No");
 
@@ -1867,13 +1870,26 @@ void display_serviceescalations(void){
 			printf("&nbsp;");
 		printf("</TD>\n");
 
-		printf("<TD CLASS='%s'>%d</TD>",bg_class,temp_se->first_notification);
+		printf("<TD CLASS='%s'>%d, %d, %d, %d</TD>",bg_class,temp_se->first_notification,temp_se->first_warning_notification,temp_se->first_critical_notification, temp_se->first_unknown_notification);
 
 		printf("<TD CLASS='%s'>",bg_class);
+
 		if(temp_se->last_notification==0)
+			printf("Infinity, ");
+		else
+			printf("%d, ",temp_se->last_notification);
+		if(temp_se->last_warning_notification==0)
+			printf("Infinity, ");
+		else
+			printf("%d, ",temp_se->last_warning_notification);
+		if(temp_se->last_critical_notification==0)
 			printf("Infinity");
 		else
-			printf("%d",temp_se->last_notification);
+			printf("%d",temp_se->last_critical_notification);
+		if(temp_se->last_unknown_notification==0)
+			printf("Infinity");
+		else
+			printf("%d", temp_se->last_unknown_notification);
 		printf("</TD>\n");
 
 		get_interval_time_string(temp_se->notification_interval,time_string,sizeof(time_string));
@@ -2076,13 +2092,21 @@ void display_hostescalations(void){
 			printf("&nbsp;");
 		printf("</TD>\n");
 
-		printf("<TD CLASS='%s'>%d</TD>",bg_class,temp_he->first_notification);
+		printf("<TD CLASS='%s'>%d, %d, %d</TD>",bg_class,temp_he->first_notification,temp_he->first_down_notification,temp_he->first_unreachable_notification);
 
 		printf("<TD CLASS='%s'>",bg_class);
 		if(temp_he->last_notification==0)
+			printf("Infinity, ");
+		else
+			printf("%d, ",temp_he->last_notification);
+		if(temp_he->last_down_notification==0)
+			printf("Infinity, ");
+		else
+			printf("%d, ",temp_he->last_down_notification);
+		if(temp_he->last_unreachable_notification==0)
 			printf("Infinity");
 		else
-			printf("%d",temp_he->last_notification);
+			printf("%d",temp_he->last_unreachable_notification);
 		printf("</TD>\n");
 
 		get_interval_time_string(temp_he->notification_interval,time_string,sizeof(time_string));

@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * XDDDEFAULT.C - Default scheduled downtime data routines for Nagios
+ * XDDDEFAULT.C - Default scheduled downtime data routines for Icinga
  *
- * Copyright (c) 2001-2007 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   09-04-2007
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -252,11 +252,6 @@ int xdddefault_delete_downtime(int type, unsigned long downtime_id){
 int xdddefault_save_downtime_data(void){
 
 	/* don't update the status file now (too inefficent), let aggregated status updates do it */
-#ifdef REMOVED_03052007
-	/* update the main status log */
-	update_all_status_data();
-#endif
-
 	return OK;
         }
 

@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * MACROS.C - Common macro functions for Nagios
+ * MACROS.C - Common macro functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 06-23-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -92,9 +92,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 	int macro_options=0;
 
 
-#ifdef NSCORE
 	log_debug_info(DEBUGL_FUNCTIONS,0,"process_macros()\n");
-#endif
 
 	if(output_buffer==NULL)
 		return ERROR;
@@ -106,10 +104,8 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 
 	in_macro=FALSE;
 
-#ifdef NSCORE
 	log_debug_info(DEBUGL_MACROS,1,"**** BEGIN MACRO PROCESSING ***********\n");
 	log_debug_info(DEBUGL_MACROS,1,"Processing: '%s'\n",input_buffer);
-#endif
 
 	buf_ptr=input_buffer;
 	while(buf_ptr){
@@ -126,9 +122,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 		else
 			buf_ptr=NULL;
 
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,2,"  Processing part: '%s'\n",temp_buffer);
-#endif
 
 		selected_macro=NULL;
 		found_macro_x=FALSE;
@@ -141,9 +135,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(temp_buffer)+1);
 			strcat(*output_buffer,temp_buffer);
 
-#ifdef NSCORE
-			log_debug_info(DEBUGL_MACROS,2,"  Not currently in macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
-#endif
+			log_debug_info(DEBUGL_MACROS,2,"  Not currently in macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 
 			in_macro=TRUE;
 			}
@@ -156,15 +148,11 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 
 			/* grab the macro value */
 			result=grab_macro_value(temp_buffer,&selected_macro,&clean_options,&free_macro);
-#ifdef NSCORE
 			log_debug_info(DEBUGL_MACROS,2,"  Processed '%s', Clean Options: %d, Free: %d\n",temp_buffer,clean_options,free_macro);
-#endif
 
 			/* an error occurred - we couldn't parse the macro, so continue on */
 			if(result==ERROR){
-#ifdef NSCORE
 				log_debug_info(DEBUGL_MACROS,0," WARNING: An error occurred processing macro '%s'!\n",temp_buffer);
-#endif
 				if(free_macro==TRUE)
 					my_free(selected_macro);
 				}
@@ -176,9 +164,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			/* an escaped $ is done by specifying two $$ next to each other */
 			else if(!strcmp(temp_buffer,"")){
 
-#ifdef NSCORE
-				log_debug_info(DEBUGL_MACROS,2,"  Escaped $.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
-#endif
+				log_debug_info(DEBUGL_MACROS,2,"  Escaped $.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 
 				*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+2);
 				strcat(*output_buffer,"$");
@@ -187,9 +173,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			/* a non-macro, just some user-defined string between two $s */
 			else{
 
-#ifdef NSCORE
-				log_debug_info(DEBUGL_MACROS,2,"  Non-macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
-#endif
+				log_debug_info(DEBUGL_MACROS,2,"  Non-macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 
 				/* add the plain text to the end of the already processed buffer */
 				*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(temp_buffer)+3);
@@ -202,16 +186,12 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 			/* insert macro */
 			if(selected_macro!=NULL){
 
-#ifdef NSCORE
 				log_debug_info(DEBUGL_MACROS,2,"  Processed '%s', Clean Options: %d, Free: %d\n",temp_buffer,clean_options,free_macro);
-#endif
 
 				/* include any cleaning options passed back to us */
 				macro_options=(options | clean_options);
 
-#ifdef NSCORE
 				log_debug_info(DEBUGL_MACROS,2,"  Cleaning options: global=%d, local=%d, effective=%d\n",options,clean_options,macro_options);
-#endif
 
 				/* URL encode the macro if requested - this allocates new memory */
 				if(macro_options & URL_ENCODE_MACRO_CHARS){
@@ -231,9 +211,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 						*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(cleaned_macro)+1);
 						strcat(*output_buffer,cleaned_macro);
 
-#ifdef NSCORE
-						log_debug_info(DEBUGL_MACROS,2,"  Cleaned macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
-#endif
+						log_debug_info(DEBUGL_MACROS,2,"  Cleaned macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 						}
 					}
 
@@ -244,9 +222,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 						*output_buffer=(char *)realloc(*output_buffer,strlen(*output_buffer)+strlen(selected_macro)+1);
 						strcat(*output_buffer,selected_macro);
 
-#ifdef NSCORE
-						log_debug_info(DEBUGL_MACROS,2,"  Uncleaned macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
-#endif
+						log_debug_info(DEBUGL_MACROS,2,"  Uncleaned macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 						}
 					}
 
@@ -254,19 +230,15 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 				if(free_macro==TRUE)
 					my_free(selected_macro);
 
-#ifdef NSCORE
-				log_debug_info(DEBUGL_MACROS,2,"  Just finished macro.  Running output (%d): '%s'\n",strlen(*output_buffer),*output_buffer);
-#endif
+				log_debug_info(DEBUGL_MACROS,2,"  Just finished macro.  Running output (%lu): '%s'\n",(unsigned long)strlen(*output_buffer),*output_buffer);
 				}
 
 			in_macro=FALSE;
 			}
 		}
 
-#ifdef NSCORE
 	log_debug_info(DEBUGL_MACROS,1,"  Done.  Final output: '%s'\n",*output_buffer);
 	log_debug_info(DEBUGL_MACROS,1,"**** END MACRO PROCESSING *************\n");
-#endif
 
 	return OK;
 	}
@@ -384,24 +356,6 @@ int grab_contact_macros(contact *cntct){
 
 
 
-/* grab contactgroup macros */
-int grab_contactgroup_macros(contactgroup *cg){
-
-	/* clear contactgroup macros */
-	clear_contactgroup_macros();
-
-	/* save pointer to contactgroup for later */
-	macro_contactgroup_ptr=cg;
-
-	if(cg==NULL)
-		return ERROR;
-
-	return OK;
-	}
-
-
-
-
 /******************************************************************/
 /******************* MACRO GENERATION FUNCTIONS *******************/
 /******************************************************************/
@@ -468,9 +422,7 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 
 		if(!strcmp(macro_name,macro_x_names[x])){
 
-#ifdef NSCORE
 			log_debug_info(DEBUGL_MACROS,2,"  macro_x[%d] (%s) match.\n",x,macro_x_names[x]);
-#endif
 
 			/* get the macro value */
 			result=grab_macrox_value(x,arg[0],arg[1],output,free_macro);
@@ -479,16 +431,12 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 			/* host/service output/perfdata and author/comment macros should get cleaned */
 			if((x>=16 && x<=19) ||(x>=49 && x<=52) || (x>=99 && x<=100) || (x>=124 && x<=127)){
 				*clean_options|=(STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
-#ifdef NSCORE
 				log_debug_info(DEBUGL_MACROS,2,"  New clean options: %d\n",*clean_options);
-#endif
 				}
 			/* url macros should get cleaned */
 			if((x>=125 && x<=126) ||(x>=128 && x<=129) || (x>=77 && x<=78) || (x>=74 && x<=75)){
 				*clean_options|=URL_ENCODE_MACRO_CHARS;
-#ifdef NSCORE
 				log_debug_info(DEBUGL_MACROS,2,"  New clean options: %d\n",*clean_options);
-#endif
 				}
 
 
@@ -622,9 +570,7 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 
 	/* no macro matched... */
 	else{
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0," WARNING: Could not find a macro matching '%s'!\n",macro_name);
-#endif
 		result=ERROR;
 		}
 	
@@ -1259,11 +1205,8 @@ int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int
 		break;
 
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	return result;
@@ -1832,11 +1775,8 @@ int grab_standard_host_macro(int macro_type, host *temp_host, char **output, int
 		break;
 
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED HOST MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	/* post-processing */
@@ -1905,11 +1845,8 @@ int grab_standard_hostgroup_macro(int macro_type, hostgroup *temp_hostgroup, cha
 			*output=(char *)strdup(temp_hostgroup->notes);
 		break;
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED HOSTGROUP MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	/* post-processing */
@@ -2143,11 +2080,8 @@ int grab_standard_service_macro(int macro_type, service *temp_service, char **ou
 		break;
 
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED SERVICE MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	/* post-processing */
@@ -2221,11 +2155,8 @@ int grab_standard_servicegroup_macro(int macro_type, servicegroup *temp_serviceg
 			*output=(char *)strdup(temp_servicegroup->notes);
 		break;
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED SERVICEGROUP MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	/* post-processing */
@@ -2299,11 +2230,8 @@ int grab_standard_contact_macro(int macro_type, contact *temp_contact, char **ou
 		break;
 #endif
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED CONTACT MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	return OK;
@@ -2359,11 +2287,8 @@ int grab_standard_contactgroup_macro(int macro_type, contactgroup *temp_contactg
 			}
 		break;
 	default:
-#ifdef NSCORE
 		log_debug_info(DEBUGL_MACROS,0,"UNHANDLED CONTACTGROUP MACRO #%d! THIS IS A BUG!\n",macro_type);
-#endif
 		return ERROR;
-		break;
 		}
 
 	return OK;
@@ -2553,7 +2478,12 @@ int init_macros(void){
 
 
 
-/* initializes the names of macros */
+/*
+ * initializes the names of macros, using this nifty little macro
+ * which ensures we never add any typos to the list
+ * ##name appends as astring, #name makes sure that param is trated as string
+ */
+#define add_macrox_name(name) macro_x_names[MACRO_##name] = strdup(#name)
 int init_macrox_names(void){
 	register int x=0;
 
@@ -2562,172 +2492,162 @@ int init_macrox_names(void){
 		macro_x_names[x]=NULL;
 
 	/* initialize each macro name */
-	add_macrox_name(MACRO_HOSTNAME,"HOSTNAME");
-	add_macrox_name(MACRO_HOSTALIAS,"HOSTALIAS");
-	add_macrox_name(MACRO_HOSTADDRESS,"HOSTADDRESS");
-	add_macrox_name(MACRO_SERVICEDESC,"SERVICEDESC");
-	add_macrox_name(MACRO_SERVICESTATE,"SERVICESTATE");
-	add_macrox_name(MACRO_SERVICESTATEID,"SERVICESTATEID");
-	add_macrox_name(MACRO_SERVICEATTEMPT,"SERVICEATTEMPT");
-	add_macrox_name(MACRO_SERVICEISVOLATILE,"SERVICEISVOLATILE");
-	add_macrox_name(MACRO_LONGDATETIME,"LONGDATETIME");
-	add_macrox_name(MACRO_SHORTDATETIME,"SHORTDATETIME");
-	add_macrox_name(MACRO_DATE,"DATE");
-	add_macrox_name(MACRO_TIME,"TIME");
-	add_macrox_name(MACRO_TIMET,"TIMET");
-	add_macrox_name(MACRO_LASTHOSTCHECK,"LASTHOSTCHECK");
-	add_macrox_name(MACRO_LASTSERVICECHECK,"LASTSERVICECHECK");
-	add_macrox_name(MACRO_LASTHOSTSTATECHANGE,"LASTHOSTSTATECHANGE");
-	add_macrox_name(MACRO_LASTSERVICESTATECHANGE,"LASTSERVICESTATECHANGE");
-	add_macrox_name(MACRO_HOSTOUTPUT,"HOSTOUTPUT");
-	add_macrox_name(MACRO_SERVICEOUTPUT,"SERVICEOUTPUT");
-	add_macrox_name(MACRO_HOSTPERFDATA,"HOSTPERFDATA");
-	add_macrox_name(MACRO_SERVICEPERFDATA,"SERVICEPERFDATA");
-	add_macrox_name(MACRO_CONTACTNAME,"CONTACTNAME");
-	add_macrox_name(MACRO_CONTACTALIAS,"CONTACTALIAS");
-	add_macrox_name(MACRO_CONTACTEMAIL,"CONTACTEMAIL");
-	add_macrox_name(MACRO_CONTACTPAGER,"CONTACTPAGER");
-	add_macrox_name(MACRO_ADMINEMAIL,"ADMINEMAIL");
-	add_macrox_name(MACRO_ADMINPAGER,"ADMINPAGER");
-	add_macrox_name(MACRO_HOSTSTATE,"HOSTSTATE");
-	add_macrox_name(MACRO_HOSTSTATEID,"HOSTSTATEID");
-	add_macrox_name(MACRO_HOSTATTEMPT,"HOSTATTEMPT");
-	add_macrox_name(MACRO_NOTIFICATIONTYPE,"NOTIFICATIONTYPE");
-	add_macrox_name(MACRO_NOTIFICATIONNUMBER,"NOTIFICATIONNUMBER");
-	add_macrox_name(MACRO_HOSTEXECUTIONTIME,"HOSTEXECUTIONTIME");
-	add_macrox_name(MACRO_SERVICEEXECUTIONTIME,"SERVICEEXECUTIONTIME");
-	add_macrox_name(MACRO_HOSTLATENCY,"HOSTLATENCY");
-	add_macrox_name(MACRO_SERVICELATENCY,"SERVICELATENCY");
-	add_macrox_name(MACRO_HOSTDURATION,"HOSTDURATION");
-	add_macrox_name(MACRO_SERVICEDURATION,"SERVICEDURATION");
-	add_macrox_name(MACRO_HOSTDURATIONSEC,"HOSTDURATIONSEC");
-	add_macrox_name(MACRO_SERVICEDURATIONSEC,"SERVICEDURATIONSEC");
-	add_macrox_name(MACRO_HOSTDOWNTIME,"HOSTDOWNTIME");
-	add_macrox_name(MACRO_SERVICEDOWNTIME,"SERVICEDOWNTIME");
-	add_macrox_name(MACRO_HOSTSTATETYPE,"HOSTSTATETYPE");
-	add_macrox_name(MACRO_SERVICESTATETYPE,"SERVICESTATETYPE");
-	add_macrox_name(MACRO_HOSTPERCENTCHANGE,"HOSTPERCENTCHANGE");
-	add_macrox_name(MACRO_SERVICEPERCENTCHANGE,"SERVICEPERCENTCHANGE");
-	add_macrox_name(MACRO_HOSTGROUPNAME,"HOSTGROUPNAME");
-	add_macrox_name(MACRO_HOSTGROUPALIAS,"HOSTGROUPALIAS");
-	add_macrox_name(MACRO_SERVICEGROUPNAME,"SERVICEGROUPNAME");
-	add_macrox_name(MACRO_SERVICEGROUPALIAS,"SERVICEGROUPALIAS");
-	add_macrox_name(MACRO_HOSTACKAUTHOR,"HOSTACKAUTHOR");
-	add_macrox_name(MACRO_HOSTACKCOMMENT,"HOSTACKCOMMENT");
-	add_macrox_name(MACRO_SERVICEACKAUTHOR,"SERVICEACKAUTHOR");
-	add_macrox_name(MACRO_SERVICEACKCOMMENT,"SERVICEACKCOMMENT");
-	add_macrox_name(MACRO_LASTSERVICEOK,"LASTSERVICEOK");
-	add_macrox_name(MACRO_LASTSERVICEWARNING,"LASTSERVICEWARNING");
-	add_macrox_name(MACRO_LASTSERVICEUNKNOWN,"LASTSERVICEUNKNOWN");
-	add_macrox_name(MACRO_LASTSERVICECRITICAL,"LASTSERVICECRITICAL");
-	add_macrox_name(MACRO_LASTHOSTUP,"LASTHOSTUP");
-	add_macrox_name(MACRO_LASTHOSTDOWN,"LASTHOSTDOWN");
-	add_macrox_name(MACRO_LASTHOSTUNREACHABLE,"LASTHOSTUNREACHABLE");
-	add_macrox_name(MACRO_SERVICECHECKCOMMAND,"SERVICECHECKCOMMAND");
-	add_macrox_name(MACRO_HOSTCHECKCOMMAND,"HOSTCHECKCOMMAND");
-	add_macrox_name(MACRO_MAINCONFIGFILE,"MAINCONFIGFILE");
-	add_macrox_name(MACRO_STATUSDATAFILE,"STATUSDATAFILE");
-	add_macrox_name(MACRO_HOSTDISPLAYNAME,"HOSTDISPLAYNAME");
-	add_macrox_name(MACRO_SERVICEDISPLAYNAME,"SERVICEDISPLAYNAME");
-	add_macrox_name(MACRO_RETENTIONDATAFILE,"RETENTIONDATAFILE");
-	add_macrox_name(MACRO_OBJECTCACHEFILE,"OBJECTCACHEFILE");
-	add_macrox_name(MACRO_TEMPFILE,"TEMPFILE");
-	add_macrox_name(MACRO_LOGFILE,"LOGFILE");
-	add_macrox_name(MACRO_RESOURCEFILE,"RESOURCEFILE");
-	add_macrox_name(MACRO_COMMANDFILE,"COMMANDFILE");
-	add_macrox_name(MACRO_HOSTPERFDATAFILE,"HOSTPERFDATAFILE");
-	add_macrox_name(MACRO_SERVICEPERFDATAFILE,"SERVICEPERFDATAFILE");
-	add_macrox_name(MACRO_HOSTACTIONURL,"HOSTACTIONURL");
-	add_macrox_name(MACRO_HOSTNOTESURL,"HOSTNOTESURL");
-	add_macrox_name(MACRO_HOSTNOTES,"HOSTNOTES");
-	add_macrox_name(MACRO_SERVICEACTIONURL,"SERVICEACTIONURL");
-	add_macrox_name(MACRO_SERVICENOTESURL,"SERVICENOTESURL");
-	add_macrox_name(MACRO_SERVICENOTES,"SERVICENOTES");
-	add_macrox_name(MACRO_TOTALHOSTSUP,"TOTALHOSTSUP");
-	add_macrox_name(MACRO_TOTALHOSTSDOWN,"TOTALHOSTSDOWN");
-	add_macrox_name(MACRO_TOTALHOSTSUNREACHABLE,"TOTALHOSTSUNREACHABLE");
-	add_macrox_name(MACRO_TOTALHOSTSDOWNUNHANDLED,"TOTALHOSTSDOWNUNHANDLED");
-	add_macrox_name(MACRO_TOTALHOSTSUNREACHABLEUNHANDLED,"TOTALHOSTSUNREACHABLEUNHANDLED");
-	add_macrox_name(MACRO_TOTALHOSTPROBLEMS,"TOTALHOSTPROBLEMS");
-	add_macrox_name(MACRO_TOTALHOSTPROBLEMSUNHANDLED,"TOTALHOSTPROBLEMSUNHANDLED");
-	add_macrox_name(MACRO_TOTALSERVICESOK,"TOTALSERVICESOK");
-	add_macrox_name(MACRO_TOTALSERVICESWARNING,"TOTALSERVICESWARNING");
-	add_macrox_name(MACRO_TOTALSERVICESCRITICAL,"TOTALSERVICESCRITICAL");
-	add_macrox_name(MACRO_TOTALSERVICESUNKNOWN,"TOTALSERVICESUNKNOWN");
-	add_macrox_name(MACRO_TOTALSERVICESWARNINGUNHANDLED,"TOTALSERVICESWARNINGUNHANDLED");
-	add_macrox_name(MACRO_TOTALSERVICESCRITICALUNHANDLED,"TOTALSERVICESCRITICALUNHANDLED");
-	add_macrox_name(MACRO_TOTALSERVICESUNKNOWNUNHANDLED,"TOTALSERVICESUNKNOWNUNHANDLED");
-	add_macrox_name(MACRO_TOTALSERVICEPROBLEMS,"TOTALSERVICEPROBLEMS");
-	add_macrox_name(MACRO_TOTALSERVICEPROBLEMSUNHANDLED,"TOTALSERVICEPROBLEMSUNHANDLED");
-	add_macrox_name(MACRO_PROCESSSTARTTIME,"PROCESSSTARTTIME");
-	add_macrox_name(MACRO_HOSTCHECKTYPE,"HOSTCHECKTYPE");
-	add_macrox_name(MACRO_SERVICECHECKTYPE,"SERVICECHECKTYPE");
-	add_macrox_name(MACRO_LONGHOSTOUTPUT,"LONGHOSTOUTPUT");
-	add_macrox_name(MACRO_LONGSERVICEOUTPUT,"LONGSERVICEOUTPUT");
-	add_macrox_name(MACRO_TEMPPATH,"TEMPPATH");
-	add_macrox_name(MACRO_HOSTNOTIFICATIONNUMBER,"HOSTNOTIFICATIONNUMBER");
-	add_macrox_name(MACRO_SERVICENOTIFICATIONNUMBER,"SERVICENOTIFICATIONNUMBER");
-	add_macrox_name(MACRO_HOSTNOTIFICATIONID,"HOSTNOTIFICATIONID");
-	add_macrox_name(MACRO_SERVICENOTIFICATIONID,"SERVICENOTIFICATIONID");
-	add_macrox_name(MACRO_HOSTEVENTID,"HOSTEVENTID");
-	add_macrox_name(MACRO_LASTHOSTEVENTID,"LASTHOSTEVENTID");
-	add_macrox_name(MACRO_SERVICEEVENTID,"SERVICEEVENTID");
-	add_macrox_name(MACRO_LASTSERVICEEVENTID,"LASTSERVICEEVENTID");
-	add_macrox_name(MACRO_HOSTGROUPNAMES,"HOSTGROUPNAMES");
-	add_macrox_name(MACRO_SERVICEGROUPNAMES,"SERVICEGROUPNAMES");
-	add_macrox_name(MACRO_HOSTACKAUTHORNAME,"HOSTACKAUTHORNAME");
-	add_macrox_name(MACRO_HOSTACKAUTHORALIAS,"HOSTACKAUTHORALIAS");
-	add_macrox_name(MACRO_SERVICEACKAUTHORNAME,"SERVICEACKAUTHORNAME");
-	add_macrox_name(MACRO_SERVICEACKAUTHORALIAS,"SERVICEACKAUTHORALIAS");
-	add_macrox_name(MACRO_MAXHOSTATTEMPTS,"MAXHOSTATTEMPTS");
-	add_macrox_name(MACRO_MAXSERVICEATTEMPTS,"MAXSERVICEATTEMPTS");
-	add_macrox_name(MACRO_TOTALHOSTSERVICES,"TOTALHOSTSERVICES");
-	add_macrox_name(MACRO_TOTALHOSTSERVICESOK,"TOTALHOSTSERVICESOK");
-	add_macrox_name(MACRO_TOTALHOSTSERVICESWARNING,"TOTALHOSTSERVICESWARNING");
-	add_macrox_name(MACRO_TOTALHOSTSERVICESUNKNOWN,"TOTALHOSTSERVICESUNKNOWN");
-	add_macrox_name(MACRO_TOTALHOSTSERVICESCRITICAL,"TOTALHOSTSERVICESCRITICAL");
-	add_macrox_name(MACRO_HOSTGROUPNOTES,"HOSTGROUPNOTES");
-	add_macrox_name(MACRO_HOSTGROUPNOTESURL,"HOSTGROUPNOTESURL");
-	add_macrox_name(MACRO_HOSTGROUPACTIONURL,"HOSTGROUPACTIONURL");
-	add_macrox_name(MACRO_SERVICEGROUPNOTES,"SERVICEGROUPNOTES");
-	add_macrox_name(MACRO_SERVICEGROUPNOTESURL,"SERVICEGROUPNOTESURL");
-	add_macrox_name(MACRO_SERVICEGROUPACTIONURL,"SERVICEGROUPACTIONURL");
-	add_macrox_name(MACRO_HOSTGROUPMEMBERS,"HOSTGROUPMEMBERS");
-	add_macrox_name(MACRO_SERVICEGROUPMEMBERS,"SERVICEGROUPMEMBERS");
-	add_macrox_name(MACRO_CONTACTGROUPNAME,"CONTACTGROUPNAME");
-	add_macrox_name(MACRO_CONTACTGROUPALIAS,"CONTACTGROUPALIAS");
-	add_macrox_name(MACRO_CONTACTGROUPMEMBERS,"CONTACTGROUPMEMBERS");
-	add_macrox_name(MACRO_CONTACTGROUPNAMES,"CONTACTGROUPNAMES");
-	add_macrox_name(MACRO_NOTIFICATIONRECIPIENTS,"NOTIFICATIONRECIPIENTS");
-	add_macrox_name(MACRO_NOTIFICATIONAUTHOR,"NOTIFICATIONAUTHOR");
-	add_macrox_name(MACRO_NOTIFICATIONAUTHORNAME,"NOTIFICATIONAUTHORNAME");
-	add_macrox_name(MACRO_NOTIFICATIONAUTHORALIAS,"NOTIFICATIONAUTHORALIAS");
-	add_macrox_name(MACRO_NOTIFICATIONCOMMENT,"NOTIFICATIONCOMMENT");
-	add_macrox_name(MACRO_EVENTSTARTTIME,"EVENTSTARTTIME");
-	add_macrox_name(MACRO_HOSTPROBLEMID,"HOSTPROBLEMID");
-	add_macrox_name(MACRO_LASTHOSTPROBLEMID,"LASTHOSTPROBLEMID");
-	add_macrox_name(MACRO_SERVICEPROBLEMID,"SERVICEPROBLEMID");
-	add_macrox_name(MACRO_LASTSERVICEPROBLEMID,"LASTSERVICEPROBLEMID");
-	add_macrox_name(MACRO_ISVALIDTIME,"ISVALIDTIME");
-	add_macrox_name(MACRO_NEXTVALIDTIME,"NEXTVALIDTIME");
-	add_macrox_name(MACRO_LASTHOSTSTATE,"LASTHOSTSTATE");
-	add_macrox_name(MACRO_LASTHOSTSTATEID,"LASTHOSTSTATEID");
-	add_macrox_name(MACRO_LASTSERVICESTATE,"LASTSERVICESTATE");
-	add_macrox_name(MACRO_LASTSERVICESTATEID,"LASTSERVICESTATEID");
+	add_macrox_name(HOSTNAME);
+	add_macrox_name(HOSTALIAS);
+	add_macrox_name(HOSTADDRESS);
+	add_macrox_name(SERVICEDESC);
+	add_macrox_name(SERVICESTATE);
+	add_macrox_name(SERVICESTATEID);
+	add_macrox_name(SERVICEATTEMPT);
+	add_macrox_name(SERVICEISVOLATILE);
+	add_macrox_name(LONGDATETIME);
+	add_macrox_name(SHORTDATETIME);
+	add_macrox_name(DATE);
+	add_macrox_name(TIME);
+	add_macrox_name(TIMET);
+	add_macrox_name(LASTHOSTCHECK);
+	add_macrox_name(LASTSERVICECHECK);
+	add_macrox_name(LASTHOSTSTATECHANGE);
+	add_macrox_name(LASTSERVICESTATECHANGE);
+	add_macrox_name(HOSTOUTPUT);
+	add_macrox_name(SERVICEOUTPUT);
+	add_macrox_name(HOSTPERFDATA);
+	add_macrox_name(SERVICEPERFDATA);
+	add_macrox_name(CONTACTNAME);
+	add_macrox_name(CONTACTALIAS);
+	add_macrox_name(CONTACTEMAIL);
+	add_macrox_name(CONTACTPAGER);
+	add_macrox_name(ADMINEMAIL);
+	add_macrox_name(ADMINPAGER);
+	add_macrox_name(HOSTSTATE);
+	add_macrox_name(HOSTSTATEID);
+	add_macrox_name(HOSTATTEMPT);
+	add_macrox_name(NOTIFICATIONTYPE);
+	add_macrox_name(NOTIFICATIONNUMBER);
+	add_macrox_name(NOTIFICATIONISESCALATED);
+	add_macrox_name(HOSTEXECUTIONTIME);
+	add_macrox_name(SERVICEEXECUTIONTIME);
+	add_macrox_name(HOSTLATENCY);
+	add_macrox_name(SERVICELATENCY);
+	add_macrox_name(HOSTDURATION);
+	add_macrox_name(SERVICEDURATION);
+	add_macrox_name(HOSTDURATIONSEC);
+	add_macrox_name(SERVICEDURATIONSEC);
+	add_macrox_name(HOSTDOWNTIME);
+	add_macrox_name(SERVICEDOWNTIME);
+	add_macrox_name(HOSTSTATETYPE);
+	add_macrox_name(SERVICESTATETYPE);
+	add_macrox_name(HOSTPERCENTCHANGE);
+	add_macrox_name(SERVICEPERCENTCHANGE);
+	add_macrox_name(HOSTGROUPNAME);
+	add_macrox_name(HOSTGROUPALIAS);
+	add_macrox_name(SERVICEGROUPNAME);
+	add_macrox_name(SERVICEGROUPALIAS);
+	add_macrox_name(HOSTACKAUTHOR);
+	add_macrox_name(HOSTACKCOMMENT);
+	add_macrox_name(SERVICEACKAUTHOR);
+	add_macrox_name(SERVICEACKCOMMENT);
+	add_macrox_name(LASTSERVICEOK);
+	add_macrox_name(LASTSERVICEWARNING);
+	add_macrox_name(LASTSERVICEUNKNOWN);
+	add_macrox_name(LASTSERVICECRITICAL);
+	add_macrox_name(LASTHOSTUP);
+	add_macrox_name(LASTHOSTDOWN);
+	add_macrox_name(LASTHOSTUNREACHABLE);
+	add_macrox_name(SERVICECHECKCOMMAND);
+	add_macrox_name(HOSTCHECKCOMMAND);
+	add_macrox_name(MAINCONFIGFILE);
+	add_macrox_name(STATUSDATAFILE);
+	add_macrox_name(HOSTDISPLAYNAME);
+	add_macrox_name(SERVICEDISPLAYNAME);
+	add_macrox_name(RETENTIONDATAFILE);
+	add_macrox_name(OBJECTCACHEFILE);
+	add_macrox_name(TEMPFILE);
+	add_macrox_name(LOGFILE);
+	add_macrox_name(RESOURCEFILE);
+	add_macrox_name(COMMANDFILE);
+	add_macrox_name(HOSTPERFDATAFILE);
+	add_macrox_name(SERVICEPERFDATAFILE);
+	add_macrox_name(HOSTACTIONURL);
+	add_macrox_name(HOSTNOTESURL);
+	add_macrox_name(HOSTNOTES);
+	add_macrox_name(SERVICEACTIONURL);
+	add_macrox_name(SERVICENOTESURL);
+	add_macrox_name(SERVICENOTES);
+	add_macrox_name(TOTALHOSTSUP);
+	add_macrox_name(TOTALHOSTSDOWN);
+	add_macrox_name(TOTALHOSTSUNREACHABLE);
+	add_macrox_name(TOTALHOSTSDOWNUNHANDLED);
+	add_macrox_name(TOTALHOSTSUNREACHABLEUNHANDLED);
+	add_macrox_name(TOTALHOSTPROBLEMS);
+	add_macrox_name(TOTALHOSTPROBLEMSUNHANDLED);
+	add_macrox_name(TOTALSERVICESOK);
+	add_macrox_name(TOTALSERVICESWARNING);
+	add_macrox_name(TOTALSERVICESCRITICAL);
+	add_macrox_name(TOTALSERVICESUNKNOWN);
+	add_macrox_name(TOTALSERVICESWARNINGUNHANDLED);
+	add_macrox_name(TOTALSERVICESCRITICALUNHANDLED);
+	add_macrox_name(TOTALSERVICESUNKNOWNUNHANDLED);
+	add_macrox_name(TOTALSERVICEPROBLEMS);
+	add_macrox_name(TOTALSERVICEPROBLEMSUNHANDLED);
+	add_macrox_name(PROCESSSTARTTIME);
+	add_macrox_name(HOSTCHECKTYPE);
+	add_macrox_name(SERVICECHECKTYPE);
+	add_macrox_name(LONGHOSTOUTPUT);
+	add_macrox_name(LONGSERVICEOUTPUT);
+	add_macrox_name(TEMPPATH);
+	add_macrox_name(HOSTNOTIFICATIONNUMBER);
+	add_macrox_name(SERVICENOTIFICATIONNUMBER);
+	add_macrox_name(HOSTNOTIFICATIONID);
+	add_macrox_name(SERVICENOTIFICATIONID);
+	add_macrox_name(HOSTEVENTID);
+	add_macrox_name(LASTHOSTEVENTID);
+	add_macrox_name(SERVICEEVENTID);
+	add_macrox_name(LASTSERVICEEVENTID);
+	add_macrox_name(HOSTGROUPNAMES);
+	add_macrox_name(SERVICEGROUPNAMES);
+	add_macrox_name(HOSTACKAUTHORNAME);
+	add_macrox_name(HOSTACKAUTHORALIAS);
+	add_macrox_name(SERVICEACKAUTHORNAME);
+	add_macrox_name(SERVICEACKAUTHORALIAS);
+	add_macrox_name(MAXHOSTATTEMPTS);
+	add_macrox_name(MAXSERVICEATTEMPTS);
+	add_macrox_name(TOTALHOSTSERVICES);
+	add_macrox_name(TOTALHOSTSERVICESOK);
+	add_macrox_name(TOTALHOSTSERVICESWARNING);
+	add_macrox_name(TOTALHOSTSERVICESUNKNOWN);
+	add_macrox_name(TOTALHOSTSERVICESCRITICAL);
+	add_macrox_name(HOSTGROUPNOTES);
+	add_macrox_name(HOSTGROUPNOTESURL);
+	add_macrox_name(HOSTGROUPACTIONURL);
+	add_macrox_name(SERVICEGROUPNOTES);
+	add_macrox_name(SERVICEGROUPNOTESURL);
+	add_macrox_name(SERVICEGROUPACTIONURL);
+	add_macrox_name(HOSTGROUPMEMBERS);
+	add_macrox_name(SERVICEGROUPMEMBERS);
+	add_macrox_name(CONTACTGROUPNAME);
+	add_macrox_name(CONTACTGROUPALIAS);
+	add_macrox_name(CONTACTGROUPMEMBERS);
+	add_macrox_name(CONTACTGROUPNAMES);
+	add_macrox_name(NOTIFICATIONRECIPIENTS);
+	add_macrox_name(NOTIFICATIONAUTHOR);
+	add_macrox_name(NOTIFICATIONAUTHORNAME);
+	add_macrox_name(NOTIFICATIONAUTHORALIAS);
+	add_macrox_name(NOTIFICATIONCOMMENT);
+	add_macrox_name(EVENTSTARTTIME);
+	add_macrox_name(HOSTPROBLEMID);
+	add_macrox_name(LASTHOSTPROBLEMID);
+	add_macrox_name(SERVICEPROBLEMID);
+	add_macrox_name(LASTSERVICEPROBLEMID);
+	add_macrox_name(ISVALIDTIME);
+	add_macrox_name(NEXTVALIDTIME);
+	add_macrox_name(LASTHOSTSTATE);
+	add_macrox_name(LASTHOSTSTATEID);
+	add_macrox_name(LASTSERVICESTATE);
+	add_macrox_name(LASTSERVICESTATEID);
 
 	return OK;
         }
-
-
-/* saves the name of a macro */
-int add_macrox_name(int i, char *name){
-
-	/* dup the macro name */
-	macro_x_names[i]=(char *)strdup(name);
-
-	return OK;
-        }
-
 
 
 /******************************************************************/

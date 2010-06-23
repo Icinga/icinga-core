@@ -1,9 +1,9 @@
 /*****************************************************************************
  *
- * XCDDEFAULT.C - Default external comment data routines for Nagios
+ * XCDDEFAULT.C - Default external comment data routines for Icinga
  *
- * Copyright (c) 2000-2007 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   09-04-2007
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -180,11 +180,6 @@ int xcddefault_delete_service_comment(unsigned long comment_id){
 int xcddefault_save_comment_data(void){
 
 	/* don't update the status file now (too inefficent), let aggregated status updates do it */
-#ifdef REMOVED_03052007
-	/* update the main status log */
-	update_all_status_data();
-#endif
-
 	return OK;
         }
 

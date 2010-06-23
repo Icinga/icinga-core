@@ -3,7 +3,7 @@
  * CGIAUTH.C - Authorization utilities for Icinga CGIs
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   11-30-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org) 
  *
  * License:
  *
@@ -22,8 +22,8 @@
  *
  *****************************************************************************/
 
-#include "../include/common.h"
 #include "../include/config.h"
+#include "../include/common.h"
 #include "../include/objects.h"
 
 #include "../include/cgiutils.h"
@@ -37,14 +37,13 @@ extern servicegroup    *servicegroup_list;
 extern int             use_authentication;
 extern int             use_ssl_authentication;
 
-
+extern int	       show_all_services_host_is_authorized_for;
 
 /* get current authentication information */
 int get_authentication_information(authdata *authinfo){
 	mmapfile *thefile;
 	char *input=NULL;
 	char *temp_ptr;
-	int needed_options;
 
 	if(authinfo==NULL)
 		return ERROR;
@@ -296,7 +295,9 @@ int is_authorized_for_service(service *svc, authdata *authinfo){
 		return FALSE;
 
 	/* if this user is authorized for this host, they are for all services on it as well... */
-	if(is_authorized_for_host(temp_host,authinfo)==TRUE)
+	/* 06-02-2010 added config option, if set FALSE, this condition won't match and 
+	   user must be authorized for the services too in order to view them 			*/
+	if(is_authorized_for_host(temp_host,authinfo)==TRUE && show_all_services_host_is_authorized_for==TRUE)
 		return TRUE;
 
 	/* find the contact */

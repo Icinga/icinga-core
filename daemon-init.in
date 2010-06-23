@@ -84,7 +84,7 @@ pid_icinga ()
 {
 
 	if test ! -f $IcingaRunFile; then
-		echo "No lock file found in $IcingaRunFile"
+		echo "Icinga not running. No lock file found in $IcingaRunFile"
 		exit 1
 	fi
 
@@ -155,8 +155,14 @@ case "$1" in
 	        $0 status > /dev/null
                 if [ $? -eq 0 ]; then
                         pid_icinga
-                        echo "Icinga is already running. PID: $IcingaPID"
-                        exit 1
+			# check if pid can be found running
+			if status_icinga > /dev/null; then
+	                        echo "Icinga is already running. PID: $IcingaPID"
+				exit 1
+			else
+				echo "Icinga PID $IcingaPID not running. Removing lockfile."
+				rm -f $IcingaStatusFile $IcingaRunFile $IcingaLockDir/$IcingaLockFile $IcingaCommandFile
+			fi
                 fi
 
 		echo -n "Starting icinga: "
@@ -214,7 +220,7 @@ case "$1" in
 		;;
 
 	restart)
-		#chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
+		chk_config " CONFIG ERROR!  Restart aborted.  See $IcingaChkFile for details."
 		$0 stop
 		$0 start
 		;;

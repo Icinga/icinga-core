@@ -1,13 +1,9 @@
-/***********************************************************************
+/*****************************************************************************
  *
  * HISTORY.C - Icinga History CGI
  *
- * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-05-2009
- *
- * This CGI program will display the history for the specified host.
- * If no host is specified, the history for all hosts will be displayed.
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -23,7 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- ***********************************************************************/
+ *
+ *****************************************************************************/
 
 #include "../include/config.h"
 #include "../include/common.h"

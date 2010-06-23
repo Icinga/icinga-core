@@ -1,21 +1,21 @@
 /************************************************************************
  *
- * COMMON.H - NDBXT Protocol Definition
+ * COMMON.H - Protocol Definition
  * Copyright (c) 2005 Ethan Galstad
- * Last Modified: 05-19-2005
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  ************************************************************************/
 
-#ifndef _NDO_COMMON_H
-#define _NDO_COMMON_H
+#ifndef _IDO_COMMON_H
+#define _IDO_COMMON_H
 
 
 
-#define NDO_TRUE      1
-#define NDO_FALSE     0
+#define IDO_TRUE      1
+#define IDO_FALSE     0
 
-#define NDO_ERROR     -1
-#define NDO_OK        0
+#define IDO_ERROR     -1
+#define IDO_OK        0
 
 
 #endif

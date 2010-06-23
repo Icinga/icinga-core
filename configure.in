@@ -5,7 +5,7 @@ define([AC_CACHE_LOAD],)
 define([AC_CACHE_SAVE],)
 
 AC_INIT(base/icinga.c)
-AC_CONFIG_HEADER(include/config.h include/snprintf.h include/cgiutils.h)
+AC_CONFIG_HEADER(include/config.h include/snprintf.h)
 AC_PREFIX_DEFAULT(/usr/local/icinga)
 
 PKG_NAME=icinga-core
@@ -111,6 +111,12 @@ AC_SEARCH_LIBS([connect],[socket],
 	fi])
 AC_SUBST(SOCKETLIBS)
 AC_CHECK_FUNCS(initgroups setenv strdup strstr strtoul unsetenv)
+
+dnl Check for gethostbyname (requires libnsl on Solaris)
+AC_SEARCH_LIBS([gethostbyname], [nsl],
+	[if test "$ac_cv_search_gethostbyname" != "none required"; then
+		SOCKETLIBS="$SOCKETLIBS -lnsl"
+	fi])
 
 dnl Check for getopt_long (Solaris)
 AC_CHECK_FUNCS([getopt_long],,AC_CHECK_LIB([iberty],[getopt_long],OTHERLIBS="$OTHERLIBS -liberty"))

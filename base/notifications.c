@@ -3,7 +3,8 @@
  * NOTIFICATIONS.C - Service and host notification functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 10-15-2008
+ * Copyright (c) 2009-2010 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -50,7 +51,7 @@ extern char            *macro_x[MACRO_X_COUNT];
 
 extern char            *generic_summary;
 
-
+int check_escalation_condition(escalation_condition*);
 
 /******************************************************************/
 /***************** SERVICE NOTIFICATION FUNCTIONS *****************/
@@ -98,10 +99,23 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	/* should the notification number be increased? */
 	if(type==NOTIFICATION_NORMAL || (options & NOTIFICATION_OPTION_INCREMENT)){
 		svc->current_notification_number++;
+		/* also increment the warning/critical/unknown state counter */
+		if (svc->current_state == STATE_WARNING) {
+			svc->current_warning_notification_number++;
+		}
+		if (svc->current_state == STATE_CRITICAL) {
+			svc->current_critical_notification_number++;
+		}
+		if (svc->current_state == STATE_UNKNOWN) {
+			svc->current_unknown_notification_number++;
+		}
 		increment_notification_number=TRUE;
 		}
 
 	log_debug_info(DEBUGL_NOTIFICATIONS,1,"Current notification number: %d (%s)\n",svc->current_notification_number,(increment_notification_number==TRUE)?"incremented":"unchanged");
+	log_debug_info(DEBUGL_NOTIFICATIONS,1,"Current warning notification number: %d (%s)\n",svc->current_warning_notification_number,(increment_notification_number==TRUE)?"incremented":"unchanged");
+	log_debug_info(DEBUGL_NOTIFICATIONS,1,"Current critical notification number: %d (%s)\n",svc->current_critical_notification_number,(increment_notification_number==TRUE)?"incremented":"unchanged");
+	log_debug_info(DEBUGL_NOTIFICATIONS,1,"Current unknown notification number: %d (%s)\n",svc->current_unknown_notification_number,(increment_notification_number==TRUE)?"incremented":"unchanged");
 
 	/* save and increase the current notification id */
 	svc->current_notification_id=next_notification_id;
@@ -256,6 +270,15 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 
 				/* adjust current notification number */
 				svc->current_notification_number--;
+				if (svc->current_state == STATE_WARNING) {
+					svc->current_warning_notification_number--;
+				}
+				if (svc->current_state == STATE_CRITICAL) {
+					svc->current_critical_notification_number--;
+				}
+				if (svc->current_state == STATE_UNKNOWN) {
+					svc->current_unknown_notification_number--;
+				}
 
 				log_debug_info(DEBUGL_NOTIFICATIONS,0,"No contacts were notified.  Next possible notification time: %s",ctime(&svc->next_notification));
 				}
@@ -269,8 +292,18 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	else{
 
 		/* readjust current notification number, since one didn't go out */
-		if(increment_notification_number==TRUE)
+		if(increment_notification_number==TRUE) {
 			svc->current_notification_number--;
+			if (svc->current_state == STATE_WARNING) {
+				svc->current_warning_notification_number--;
+			}
+			if (svc->current_state == STATE_CRITICAL) {
+				svc->current_critical_notification_number--;
+			}
+			if (svc->current_state == STATE_UNKNOWN) {
+				svc->current_unknown_notification_number--;
+			}
+		}
 
 		log_debug_info(DEBUGL_NOTIFICATIONS,0,"No contacts were found for notification purposes.  No notification was sent out.\n");
 	        }
@@ -293,9 +326,11 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 
 /* checks the viability of sending out a service alert (top level filters) */
 int check_service_notification_viability(service *svc, int type, int options){
-	host *temp_host;
+	host *temp_host=NULL;
+	timeperiod *temp_period=NULL;
 	time_t current_time;
 	time_t timeperiod_start;
+	time_t first_problem_time;
 	
 	log_debug_info(DEBUGL_FUNCTIONS,0,"check_service_notification_viability()\n");
 
@@ -324,8 +359,14 @@ int check_service_notification_viability(service *svc, int type, int options){
 		return ERROR;
 	        }
 
+	/* if the service has no notification period, inherit one from the host */
+	temp_period = svc->notification_period_ptr;
+	if(temp_period == NULL){
+		temp_period = temp_host->notification_period_ptr;
+	}
+
 	/* see if the service can have notifications sent out at this time */
-	if(check_time_against_period(current_time,svc->notification_period_ptr)==ERROR){
+	if(check_time_against_period(current_time,temp_period)==ERROR){
 
 		log_debug_info(DEBUGL_NOTIFICATIONS,1,"This service shouldn't have notifications sent out at this time.\n");
 
@@ -360,8 +401,13 @@ int check_service_notification_viability(service *svc, int type, int options){
 	/*********************************************/
 
 	/* custom notifications are good to go at this point... */
-	if(type==NOTIFICATION_CUSTOM)
+	if(type==NOTIFICATION_CUSTOM) {
+		if(svc->scheduled_downtime_depth>0 || temp_host->scheduled_downtime_depth>0){
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"We shouldn't send custom notification during scheduled downtime.\n");
+			return ERROR;
+		}
 		return OK;
+	}
 
 
 	/****************************************/
@@ -411,7 +457,7 @@ int check_service_notification_viability(service *svc, int type, int options){
 	/****************************************/
 
 	/* downtime notifications only have to pass three general filters */
-	if(type==NOTIFICATION_DOWNTIMESTART || type==NOTIFICATION_DOWNTIMEEND || type==NOTIFICATION_DOWNTIMEEND){
+	if(type==NOTIFICATION_DOWNTIMESTART || type==NOTIFICATION_DOWNTIMEEND || type==NOTIFICATION_DOWNTIMECANCELLED){
 
 		/* don't send a notification if we're not supposed to... */
 		if(svc->notify_on_downtime==FALSE){
@@ -485,10 +531,23 @@ int check_service_notification_viability(service *svc, int type, int options){
 	/* see if enough time has elapsed for first notification (Mathias Sundman) */
 	/* 10/02/07 don't place restrictions on recoveries or non-normal notifications, must use last time ok (or program start) in calculation */
 	/* it is reasonable to assume that if the host was never up, the program start time should be used in this calculation */
-	if(type==NOTIFICATION_NORMAL && svc->current_notification_number==0 && svc->current_state!=STATE_OK && (current_time < (time_t)((svc->last_time_ok==(time_t)0L)?program_start:svc->last_time_ok + (svc->first_notification_delay*interval_length)))){
-		log_debug_info(DEBUGL_NOTIFICATIONS,1,"Not enough time has elapsed since the service changed to a non-OK state, so we should not notify about this problem yet\n");
-		return ERROR;
-	        }
+	if(type==NOTIFICATION_NORMAL && svc->current_notification_number==0 && svc->current_state!=STATE_OK){
+
+		/* determine the time to use of the first problem point */
+		first_problem_time=svc->last_time_ok; /* not accurate, but its the earliest time we could use in the comparison */
+
+		if((svc->last_time_warning < first_problem_time) && (svc->last_time_warning > svc->last_time_ok))
+			first_problem_time=svc->last_time_warning;
+		if((svc->last_time_unknown < first_problem_time) && (svc->last_time_unknown > svc->last_time_ok))
+			first_problem_time=svc->last_time_unknown;
+		if((svc->last_time_critical < first_problem_time) && (svc->last_time_critical > svc->last_time_ok))
+			first_problem_time=svc->last_time_critical;
+
+		if(current_time < (time_t)((first_problem_time==(time_t)0L)?program_start:first_problem_time + (svc->first_notification_delay*interval_length))){
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"Not enough time has elapsed since the service changed to a non-OK state, so we should not notify about this problem yet\n");
+			return ERROR;
+		}
+	}
 
 	/* if this service is currently flapping, don't send the notification */
 	if(svc->is_flapping==TRUE){
@@ -513,10 +572,12 @@ int check_service_notification_viability(service *svc, int type, int options){
 	        }
 	
 	/* don't notify if we haven't waited long enough since the last time (and the service is not marked as being volatile) */
-	if((current_time < svc->next_notification) && svc->is_volatile==FALSE){
-		log_debug_info(DEBUGL_NOTIFICATIONS,1,"We haven't waited long enough to re-notify contacts about this service.\n");
-		log_debug_info(DEBUGL_NOTIFICATIONS,1,"Next valid notification time: %s",ctime(&svc->next_notification));
-		return ERROR;
+	if((current_time < svc->next_notification)){
+		if (svc->is_volatile==FALSE || svc->is_volatile==VOLATILE_WITH_RENOTIFICATION_INTERVAL) {
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"We haven't waited long enough to re-notify contacts about this service.\n");
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"Next valid notification time: %s",ctime(&svc->next_notification));
+			return ERROR;
+			}
 	        }
 
 	/* if this service is currently in a scheduled downtime period, don't send the notification */
@@ -786,6 +847,10 @@ int notify_contact_of_service(contact *cntct, service *svc, int type, char *not_
 /* checks to see if a service escalation entry is a match for the current service notification */
 int is_valid_escalation_for_service_notification(service *svc, serviceescalation *se, int options){
 	int notification_number=0;
+	int warning_notification_number=0;
+	int critical_notification_number=0;
+	int unknown_notification_number=0;
+	int widematch=1;
 	time_t current_time=0L;
 	service *temp_service=NULL;
 
@@ -795,10 +860,14 @@ int is_valid_escalation_for_service_notification(service *svc, serviceescalation
 	time(&current_time);
 
 	/* if this is a recovery, really we check for who got notified about a previous problem */
-	if(svc->current_state==STATE_OK)
+	if(svc->current_state==STATE_OK) 
 		notification_number=svc->current_notification_number-1;
 	else
 		notification_number=svc->current_notification_number;
+	/* These will not be incremented in the case of a recovery, so use the current values regardless of the state */
+	warning_notification_number=svc->current_warning_notification_number;
+	critical_notification_number=svc->current_critical_notification_number;
+	unknown_notification_number=svc->current_unknown_notification_number;
 
 	/* this entry if it is not for this service */
 	temp_service=se->service_ptr;
@@ -810,13 +879,59 @@ int is_valid_escalation_for_service_notification(service *svc, serviceescalation
 	if(options & NOTIFICATION_OPTION_BROADCAST)
 		return TRUE;
 
-	/* skip this escalation if it happens later */
-	if(se->first_notification > notification_number)
-		return FALSE;
+	/* skip this escalation if it happens later 
+	 * Only skip if none of the notifications numbers match */
+	
+	if(se->first_notification == -2 || se->first_notification > notification_number)
+		widematch=0;
 
-	/* skip this escalation if it has already passed */
-	if(se->last_notification!=0 && se->last_notification < notification_number)
-		return FALSE;
+	if (!widematch){
+		switch (svc->current_state){
+			case STATE_WARNING:{
+				if (se->first_warning_notification == -2 || se->first_warning_notification > warning_notification_number)
+					return FALSE;
+				break;
+			}
+			case STATE_CRITICAL:{
+				if (se->first_critical_notification == -2 || se->first_critical_notification > critical_notification_number)
+					return FALSE;
+				break;
+			}
+			case STATE_UNKNOWN:{
+				if (se->first_unknown_notification == -2 || se->first_unknown_notification > unknown_notification_number)
+					return FALSE;
+				break;
+			}
+		}
+	}
+
+	/* skip this escalation if it has already passed 
+	 * only skip if none of the notifications numbers match */
+
+	widematch=1;
+	if(se->last_notification == -2 || ((se->last_notification!=0) && (se->last_notification < notification_number)))
+		widematch=0;
+
+
+	if (!widematch){
+		switch (svc->current_state){
+			case STATE_WARNING:{
+				if (se->last_warning_notification == -2 || ((se->last_warning_notification!=0) && (se->last_warning_notification < warning_notification_number)))
+					return FALSE;
+				break;
+			}
+			case STATE_CRITICAL:{
+				if (se->last_critical_notification == -2 || ((se->last_critical_notification!=0) && (se->last_critical_notification < critical_notification_number)))
+					return FALSE;
+				break;
+			}
+			case STATE_UNKNOWN:{
+				if (se->last_unknown_notification == -2 || ((se->last_unknown_notification!=0) && (se->last_unknown_notification < unknown_notification_number)))
+					return FALSE;
+				break;
+			}
+		}
+	}
 
 	/* skip this escalation if it has a timeperiod and the current time isn't valid */
 	if(se->escalation_period!=NULL && check_time_against_period(current_time,se->escalation_period_ptr)==ERROR)
@@ -1069,6 +1184,13 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	/* should the notification number be increased? */
 	if(type==NOTIFICATION_NORMAL || (options & NOTIFICATION_OPTION_INCREMENT)){
 		hst->current_notification_number++;
+		/* also increment down/unreachable state counter */
+		if (hst->current_state == HOST_DOWN) {
+			hst->current_down_notification_number++;
+		}
+		if (hst->current_state == HOST_UNREACHABLE) {
+			hst->current_unreachable_notification_number++;
+		}
 		increment_notification_number=TRUE;
 		}
 
@@ -1224,6 +1346,12 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 
 				/* adjust current notification number */
 				hst->current_notification_number--;
+				if (hst->current_state == HOST_DOWN) {
+					hst->current_down_notification_number--;
+				}
+				if (hst->current_state == HOST_UNREACHABLE) {
+					hst->current_unreachable_notification_number--;
+				}
 
 				log_debug_info(DEBUGL_NOTIFICATIONS,0,"No contacts were notified.  Next possible notification time: %s",ctime(&hst->next_host_notification));
 				}
@@ -1236,8 +1364,15 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	else{
 
 		/* adjust notification number, since no notification actually went out */
-		if(increment_notification_number==TRUE)
+		if(increment_notification_number==TRUE) {
 			hst->current_notification_number--;
+			if (hst->current_state == HOST_DOWN) {
+				hst->current_down_notification_number--;
+			}
+			if (hst->current_state == HOST_UNREACHABLE) {
+				hst->current_unreachable_notification_number--;
+			}
+		}
 
 		log_debug_info(DEBUGL_NOTIFICATIONS,0,"No contacts were found for notification purposes.  No notification was sent out.\n");
 	        }
@@ -1262,6 +1397,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 int check_host_notification_viability(host *hst, int type, int options){
 	time_t current_time;
 	time_t timeperiod_start;
+	time_t first_problem_time;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"check_host_notification_viability()\n");
 
@@ -1433,10 +1569,21 @@ int check_host_notification_viability(host *hst, int type, int options){
 	/* see if enough time has elapsed for first notification (Mathias Sundman) */
 	/* 10/02/07 don't place restrictions on recoveries or non-normal notifications, must use last time up (or program start) in calculation */
 	/* it is reasonable to assume that if the host was never up, the program start time should be used in this calculation */
-	if(type==NOTIFICATION_NORMAL && hst->current_notification_number==0 && hst->current_state!=HOST_UP && (current_time < (time_t)((hst->last_time_up==(time_t)0L)?program_start:hst->last_time_up + (hst->first_notification_delay*interval_length)))){
-		log_debug_info(DEBUGL_NOTIFICATIONS,1,"Not enough time has elapsed since the host changed to a non-UP state (or since program start), so we shouldn't notify about this problem yet.\n");
-		return ERROR;
-	        }
+	if(type==NOTIFICATION_NORMAL && hst->current_notification_number==0 && hst->current_state!=HOST_UP){
+
+		/* determine the time to use of the first problem point */
+		first_problem_time=hst->last_time_up; /* not accurate, but its the earliest time we could use in the comparison */
+
+		if((hst->last_time_down < first_problem_time) && (hst->last_time_down > hst->last_time_up))
+			first_problem_time=hst->last_time_down;
+		if((hst->last_time_unreachable < first_problem_time) && (hst->last_time_unreachable > hst->last_time_unreachable))
+			first_problem_time=hst->last_time_unreachable;
+
+		if(current_time < (time_t)((first_problem_time==(time_t)0L)?program_start:first_problem_time + (hst->first_notification_delay*interval_length))){
+			log_debug_info(DEBUGL_NOTIFICATIONS,1,"Not enough time has elapsed since the host changed to a non-UP state (or since program start), so we shouldn't notify about this problem yet.\n");
+			return ERROR;
+		}
+        }
 
 	/* if this host is currently flapping, don't send the notification */
 	if(hst->is_flapping==TRUE){
@@ -1723,7 +1870,10 @@ int notify_contact_of_host(contact *cntct, host *hst, int type, char *not_author
 /* checks to see if a host escalation entry is a match for the current host notification */
 int is_valid_escalation_for_host_notification(host *hst, hostescalation *he, int options){
 	int notification_number=0;
+	int down_notification_number=0;
+	int unreachable_notification_number=0;
 	time_t current_time=0L;
+	int widematch=1;
 	host *temp_host=NULL;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"is_valid_escalation_for_host_notification()\n");
@@ -1736,6 +1886,10 @@ int is_valid_escalation_for_host_notification(host *hst, hostescalation *he, int
 		notification_number=hst->current_notification_number-1;
 	else
 		notification_number=hst->current_notification_number;
+	/* these are not incremented in the case of recovery, so don't need special handling */
+	down_notification_number=hst->current_down_notification_number;
+	unreachable_notification_number=hst->current_unreachable_notification_number;
+
 
 	/* find the host this escalation entry is associated with */
 	temp_host=he->host_ptr;
@@ -1748,12 +1902,43 @@ int is_valid_escalation_for_host_notification(host *hst, hostescalation *he, int
 		return TRUE;
 
 	/* skip this escalation if it happens later */
-	if(he->first_notification > notification_number)
-		return FALSE;
+	if(he->first_notification == -2 || he->first_notification > notification_number)
+		widematch=0;
 
-	/* skip this escalation if it has already passed */
-	if(he->last_notification!=0 && he->last_notification < notification_number)
-		return FALSE;
+	if (!widematch){
+		switch (hst->current_state){
+			case HOST_DOWN:{
+				if (he->first_down_notification == -2 || he->first_down_notification > down_notification_number)
+					return FALSE;
+				break;
+			}
+			case HOST_UNREACHABLE:{
+				if (he->first_unreachable_notification == -2 || he->first_unreachable_notification > unreachable_notification_number)
+					return FALSE;
+				break;
+			}
+		}
+	}
+
+	/* skip this escalation if it has already passed. only skip if none match */
+	widematch=1;
+	if((he->last_notification == -2) || ((he->last_notification!=0) && (he->last_notification < notification_number)))
+		widematch=0;
+
+	if (!widematch){
+		switch (hst->current_state){
+			case HOST_DOWN:{
+				if ((he->last_down_notification == -2) || ((he->last_down_notification!=0) && (he->last_down_notification < down_notification_number)))
+					return FALSE;
+				break;
+			}
+			case HOST_UNREACHABLE:{
+				if ((he->last_unreachable_notification == -2) || ((he->last_unreachable_notification) && (he->last_unreachable_notification < unreachable_notification_number)))
+					return FALSE;
+				break;
+			}
+		}
+	}
 
 	/* skip this escalation if it has a timeperiod and the current time isn't valid */
 	if(he->escalation_period!=NULL && check_time_against_period(current_time,he->escalation_period_ptr)==ERROR)

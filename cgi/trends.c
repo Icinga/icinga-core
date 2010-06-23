@@ -1,13 +1,12 @@
-/**************************************************************************
+/*****************************************************************************
  *
  * TRENDS.C -  Icinga State Trends CGI
  *
- * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- *
- * Last Modified: 05-05-2009
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -20,7 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *************************************************************************/
+ *
+ *****************************************************************************/
 
 #include "../include/config.h"
 #include "../include/common.h"
@@ -257,8 +257,8 @@ int main(int argc, char **argv){
 	int string_height;
 	char start_timestring[MAX_INPUT_BUFFER];
 	char end_timestring[MAX_INPUT_BUFFER];
-	host *temp_host;
-	service *temp_service;
+	host *temp_host = NULL;
+	service *temp_service = NULL;
 	int is_authorized=TRUE;
 	int found=FALSE;
 	int days,hours,minutes,seconds;
@@ -419,11 +419,18 @@ int main(int argc, char **argv){
 
 		if(display_type!=DISPLAY_NO_TRENDS && input_type==GET_INPUT_NONE){
 
+
+	                /* find the host */
+                	temp_host=find_host(host_name);
+
+        	        /* find the service */
+	                temp_service=find_service(host_name,svc_description);
+
 			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 			if(display_type==DISPLAY_HOST_TRENDS)
-				printf("Host '%s'",host_name);
+				printf("Host '%s'",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			else if(display_type==DISPLAY_SERVICE_TRENDS)
-				printf("Service '%s' On Host '%s'",svc_description,host_name);
+				printf("Service '%s' On Host '%s'",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			printf("</DIV>\n");
 
 			printf("<BR>\n");
@@ -686,6 +693,12 @@ int main(int argc, char **argv){
 
 		if(small_image==FALSE){
 
+		        /* find the host */
+		        temp_host=find_host(host_name);
+
+		        /* find the service */
+		        temp_service=find_service(host_name,svc_description);
+
 			/* title */
 			snprintf(start_time,sizeof(start_time)-1,"%s",ctime(&t1));
 			start_time[sizeof(start_time)-1]='\x0';
@@ -697,9 +710,9 @@ int main(int argc, char **argv){
 			string_height=gdFontSmall->h;
 
 			if(display_type==DISPLAY_HOST_TRENDS)
-				snprintf(temp_buffer,sizeof(temp_buffer)-1,"State History For Host '%s'",host_name);
+				snprintf(temp_buffer,sizeof(temp_buffer)-1,"State History For Host '%s'",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			else
-				snprintf(temp_buffer,sizeof(temp_buffer)-1,"State History For Service '%s' On Host '%s'",svc_description,host_name);
+				snprintf(temp_buffer,sizeof(temp_buffer)-1,"State History For Service '%s' On Host '%s'",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
 			string_width=gdFontSmall->w*strlen(temp_buffer);
 			gdImageString(trends_image,gdFontSmall,(drawing_width/2)-(string_width/2)+drawing_x_offset,string_height,(unsigned char *)temp_buffer,color_black);
@@ -811,7 +824,7 @@ int main(int argc, char **argv){
 
 			for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 				if(is_authorized_for_host(temp_host,&current_authdata)==TRUE)
-					printf("<option value='%s'>%s\n",escape_string(temp_host->name),temp_host->name);
+					printf("<option value='%s'>%s\n",escape_string(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 			        }
 
 			printf("</select>\n");
@@ -868,7 +881,8 @@ int main(int argc, char **argv){
 
 			for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 				if(is_authorized_for_service(temp_service,&current_authdata)==TRUE)
-					printf("<option value='%s'>%s;%s\n",escape_string(temp_service->description),temp_service->host_name,temp_service->description);
+					temp_host=find_host(temp_service->host_name);
+					printf("<option value='%s'>%s;%s\n",escape_string(temp_service->description),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 		                }
 
 			printf("</select>\n");

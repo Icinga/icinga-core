@@ -1,7 +1,5 @@
 ############################
 # Makefile for Icinga
-#
-# Last Modified: 05-01-2009
 ############################
 
 # Source code directories

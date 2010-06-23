@@ -2,8 +2,8 @@
  *
  * XODTEMPLATE.H - Template-based object configuration data header file
  *
- * Copyright (c) 2001-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   02-17-2008
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -595,6 +595,12 @@ typedef struct xodtemplate_serviceescalation_struct{
 	char      *hostgroup_name;
 	int       first_notification;
 	int       last_notification;
+	int       first_warning_notification;
+	int       last_warning_notification;
+	int       first_critical_notification;
+	int       last_critical_notification;
+	int       first_unknown_notification;
+	int       last_unknown_notification;
 	double    notification_interval;
 	char      *escalation_period;
 	int       escalate_on_warning;
@@ -614,6 +620,12 @@ typedef struct xodtemplate_serviceescalation_struct{
 
 	int       have_first_notification;
 	int       have_last_notification;
+	int       have_first_warning_notification;
+	int       have_last_warning_notification;
+	int       have_first_critical_notification;
+	int       have_last_critical_notification;
+	int       have_first_unknown_notification;
+	int       have_last_unknown_notification;
 	int       have_notification_interval;
 	int       have_escalation_options;
 
@@ -674,6 +686,10 @@ typedef struct xodtemplate_hostescalation_struct{
 	char      *hostgroup_name;
 	int       first_notification;
 	int       last_notification;
+	int       first_down_notification;
+	int       last_down_notification;
+	int       first_unreachable_notification;
+	int       last_unreachable_notification;
 	double    notification_interval;
 	char      *escalation_period;
 	int       escalate_on_down;
@@ -690,6 +706,10 @@ typedef struct xodtemplate_hostescalation_struct{
 
 	int       have_first_notification;
 	int       have_last_notification;
+	int       have_first_down_notification;
+	int       have_last_down_notification;
+	int       have_first_unreachable_notification;
+	int       have_last_unreachable_notification;
 	int       have_notification_interval;
 	int       have_escalation_options;
 
@@ -820,8 +840,6 @@ int xodtemplate_process_config_file(char *,int);            /* process data in a
 int xodtemplate_process_config_dir(char *,int);             /* process all files in a specific config directory */
 
 #ifdef NSCORE
-char *xodtemplate_config_file_name(int);                    /* returns the name of a numbered config file */
-
 xodtemplate_memberlist *xodtemplate_expand_contactgroups_and_contacts(char *,char *,int,int);
 int xodtemplate_expand_contactgroups(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
 int xodtemplate_expand_contacts(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);

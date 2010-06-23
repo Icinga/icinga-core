@@ -2,7 +2,8 @@
  *
  * CGIAUTH.H - Authorization utilities header file
  *
- * Last Modified:   11-24-2005
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

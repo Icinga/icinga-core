@@ -2,8 +2,8 @@
  *
  * SRETENTION.H - Header for state retention routines
  *
- * Copyright (c) 1999-2006 Ethan Galstad (egalstad@nagios.org)
- * Last Modified:   02-28-2006
+ * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -30,6 +30,7 @@ int initialize_retention_data(char *);
 int cleanup_retention_data(char *);
 int save_state_information(int);                 /* saves all host and state information */
 int read_initial_state_information(void);        /* reads in initial host and state information */
+int sync_state_information(void);                /* syncs hosts and state information from sync file */
 
 #ifdef __cplusplus
   }

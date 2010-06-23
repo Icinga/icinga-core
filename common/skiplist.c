@@ -3,7 +3,7 @@
  * SKIPLIST.C - Skiplist functions for use in Icinga event/object lists
  *
  * Copyright (c) 2008 Ethan Galstad
- * Last Modified: 02-28-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * Notes:
  * 

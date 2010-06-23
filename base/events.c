@@ -3,7 +3,7 @@
  * EVENTS.C - Timed event functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 06-16-2009
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -31,6 +31,7 @@
 #include "../include/broker.h"
 #include "../include/sretention.h"
 
+#include "../include/profiler.h"
 
 extern char	*config_file;
 
@@ -84,6 +85,8 @@ extern int      execute_host_checks;
 extern int      child_processes_fork_twice;
 
 extern int      time_change_threshold;
+
+extern int 	event_profiling_enabled;
 
 timed_event *event_list_low=NULL;
 timed_event *event_list_low_tail=NULL;
@@ -615,6 +618,148 @@ void init_timing_loop(void){
         }
 
 
+/*gives information about a particular event*/
+void display_event_data(timed_event* event, int priority){
+
+	service *temp_service=NULL;
+	host *temp_host=NULL;
+
+	printf("\t\tEvent:");
+
+   	switch(event->event_type){
+
+        case EVENT_SERVICE_CHECK:
+		printf("\t\t(service check)\n");
+		temp_service=(service *)event->event_data;
+		printf("\t\tService Description: %s\n",temp_service->description);
+		printf("\t\tAssociated Host:     %s\n",temp_service->host_name);
+        break;
+
+        case EVENT_HOST_CHECK:
+        	printf("\t\t(host check)\n");
+        	temp_host=(host *)event->event_data;
+        	printf("\t\tHost:     %s\n",temp_host->name);
+            	/* run a host check */
+        break;
+
+        case EVENT_COMMAND_CHECK:
+            	printf("\t\t(external command check)\n");
+        break;
+
+        case EVENT_LOG_ROTATION:
+            	printf("\t\t(log file rotation)\n");
+        break;
+
+        case EVENT_PROGRAM_SHUTDOWN:
+            	printf("\t\t(program shutdown)\n");
+        break;
+
+        case EVENT_PROGRAM_RESTART:
+            	printf("\t\t(program restart)\n");
+        break;
+
+        case EVENT_CHECK_REAPER:
+            	printf("\t\t(service check reaper)\n");
+        break;
+
+        case EVENT_ORPHAN_CHECK:
+            	printf("\t\t(orphaned service check)\n");
+        break;
+
+        case EVENT_RETENTION_SAVE:
+            	printf("\t\t(retention save)\n");
+        break;
+
+        case EVENT_STATUS_SAVE:
+            	printf("\t\t(status save)\n");
+        break;
+
+        case EVENT_SCHEDULED_DOWNTIME:
+            	printf("\t\t(scheduled downtime)\n");
+        break;
+
+        case EVENT_SFRESHNESS_CHECK:
+            	printf("\t\t(service result freshness check)\n");
+        break;
+
+        case EVENT_HFRESHNESS_CHECK:
+            	printf("\t\t(host result freshness check)\n");
+        break;
+
+        case EVENT_EXPIRE_DOWNTIME:
+            	printf("\t\t(expire downtime)\n");
+        break;
+
+        case EVENT_RESCHEDULE_CHECKS:
+            	printf("\t\t(reschedule checks)\n");
+        break;
+
+        case EVENT_EXPIRE_COMMENT:
+            	printf("\t\t(expire comment)\n");
+        break;
+
+        case EVENT_CHECK_PROGRAM_UPDATE:
+            	printf("\t\t(check for Icinga updates)");
+        break;
+
+        case EVENT_USER_FUNCTION:
+            	printf("\t\t(user function)\n");
+        break;
+
+        default:
+            	printf("\t\t(Unknown!!!)\n");
+        break;
+
+    	}
+
+    	printf("\t\tPriority %s\n", (priority == 0 ?"Low":"High"));
+	printf("\t\tInterval: %lu\n",event->event_interval);
+    	printf("\t\tEvent Time: %s\n",ctime(&event->run_time));
+    	printf("\n\n");
+}
+
+
+/* displays the service check scheduling queue */
+void display_schedule(void){
+    	timed_event* high_event=NULL;
+    	timed_event* low_event=NULL;
+    	timed_event* event=NULL;
+    	int priority=0;
+    
+	printf("*** The current scheduling queue is listed below ***\n");
+
+	high_event = event_list_high;
+    	low_event = event_list_low;
+
+    	while(high_event || low_event){
+	        if(low_event && high_event){
+            		if(low_event->run_time < high_event->run_time){
+                		event = low_event;
+                		low_event = low_event->next;
+                		priority = 0;
+            		}else{
+                		event = high_event;
+                		high_event = high_event->next;
+                		priority = 1;
+            		}
+        	}else{
+            		if(high_event){
+                		event = high_event;
+                		high_event = high_event->next;
+                		priority = 1;
+            		}
+
+            		if(low_event){
+                		event = low_event;
+                		low_event = low_event->next;
+                		priority = 0;
+            		}
+        	}
+
+        	display_event_data(event, priority);
+    	}
+}
+
 
 /* displays service check scheduling information */
 void display_scheduling_info(void){
@@ -930,6 +1075,7 @@ int event_execution_loop(void){
 	struct timespec delay;
 	pid_t wait_result;
 
+	struct timeval start;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"event_execution_loop() start\n");
 
@@ -948,7 +1094,10 @@ int event_execution_loop(void){
 	sleep_event.next=NULL;
 	sleep_event.prev=NULL;
 
-	while(1){
+	while(1)
+	{
+		if(event_profiling_enabled)
+        		gettimeofday(&start,NULL);
 
 		/* see if we should exit or restart (a signal was encountered) */
 		if(sigshutdown==TRUE || sigrestart==TRUE)
@@ -1187,6 +1336,10 @@ int event_execution_loop(void){
 			last_status_update=current_time;
 			update_program_status(FALSE);
 			}
+
+		if(event_profiling_enabled)
+            		profiler_update(EVENT_LOOP_COMPLETION, start);
+
 	        }
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"event_execution_loop() end\n");
@@ -1203,7 +1356,8 @@ int handle_timed_event(timed_event *event){
 	void (*userfunc)(void *);
 	struct timeval tv;
 	double latency=0.0;
-
+	struct timeval start;
+	gettimeofday(&start,NULL);
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"handle_timed_event() start\n");
 
@@ -1397,6 +1551,9 @@ int handle_timed_event(timed_event *event){
 	        }
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"handle_timed_event() end\n");
+
+	if(event_profiling_enabled)
+		profiler_update(event->event_type,start);
 
 	return OK;
         }

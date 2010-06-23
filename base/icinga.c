@@ -2,13 +2,11 @@
  *
  * ICINGA.C - Core Program Code For Icinga
  *
- * Program: Icinga (Nagios)
+ * Program: Icinga
  * Version: 1.0.1
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
- *
- * First Written:   01-28-1999 (start of development)
- * Last Modified:   
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -48,6 +46,7 @@
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
+#include "../include/profiler.h"
 
 /*#define DEBUG_MEMORY 1*/
 #ifdef DEBUG_MEMORY
@@ -87,6 +86,8 @@ int             use_regexp_matches=FALSE;
 int             use_true_regexp_matching=FALSE;
 
 int		use_syslog=DEFAULT_USE_SYSLOG;
+int		use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;
+int		syslog_local_facility=DEFAULT_SYSLOG_LOCAL_FACILITY;
 int             log_notifications=DEFAULT_NOTIFICATION_LOGGING;
 int             log_service_retries=DEFAULT_LOG_SERVICE_RETRIES;
 int             log_host_retries=DEFAULT_LOG_HOST_RETRIES;
@@ -184,6 +185,7 @@ int             verify_config=FALSE;
 int             verify_object_relationships=TRUE;
 int             verify_circular_paths=TRUE;
 int             test_scheduling=FALSE;
+int             show_schedule=FALSE;
 int             precache_objects=FALSE;
 int             use_precached_objects=FALSE;
 
@@ -242,6 +244,7 @@ int             command_file_fd;
 FILE            *command_file_fp;
 int             command_file_created=FALSE;
 
+int             event_profiling_enabled=FALSE;
 
 extern contact	       *contact_list;
 extern contactgroup    *contactgroup_list;
@@ -274,11 +277,7 @@ unsigned long   max_debug_file_size=DEFAULT_MAX_DEBUG_FILE_SIZE;
 
 
 /* Following main() declaration required by older versions of Perl ut 5.00503 */
-#ifdef EMBEDDEDPERL
 int main(int argc, char **argv, char **env){
-#else
-int main(int argc, char **argv){
-#endif
 	int result;
 	int error=FALSE;
 	char *buffer=NULL;
@@ -301,6 +300,7 @@ int main(int argc, char **argv){
 		{"verify-config",no_argument,0,'v'},
 		{"daemon",no_argument,0,'d'},
 		{"test-scheduling",no_argument,0,'s'},
+		{"show-scheduling",no_argument,0,'S'},
 		{"dont-verify-objects",no_argument,0,'o'},
 		{"dont-verify-paths",no_argument,0,'x'},
 		{"precache-objects",no_argument,0,'p'},
@@ -318,9 +318,9 @@ int main(int argc, char **argv){
 	while(1){
 
 #ifdef HAVE_GETOPT_H
-		c=getopt_long(argc,argv,"+hVvdsoxpu",long_options,&option_index);
+		c=getopt_long(argc,argv,"+hVvdsoxpuS",long_options,&option_index);
 #else
-		c=getopt(argc,argv,"+hVvdsoxpu");
+		c=getopt(argc,argv,"+hVvdsoxpuS");
 #endif
 
 		if(c==-1 || c==EOF)
@@ -342,6 +342,11 @@ int main(int argc, char **argv){
 			break;
 
 		case 's': /* scheduling check */
+			test_scheduling=TRUE;
+			break;
+
+	        case 'S': /* scheduling check and show queue*/
+        		show_schedule=TRUE;
 			test_scheduling=TRUE;
 			break;
 
@@ -382,9 +387,11 @@ int main(int argc, char **argv){
 #ifdef DEBUG_MEMORY
 	mtrace();
 #endif
+	profiler_init();
 
 	if(daemon_mode==FALSE){
 		printf("\n%s %s\n", PROGRAM_NAME ,PROGRAM_VERSION);
+		printf("Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Copyright (c) 2009 Nagios Core Development Team and Community Contributors\n");
 		printf("Copyright (c) 1999-2009 Ethan Galstad\n");
 		printf("Last Modified: %s\n",PROGRAM_MODIFICATION_DATE);
@@ -422,6 +429,7 @@ int main(int argc, char **argv){
 		printf("  -v, --verify-config          Verify all configuration data\n");
 		printf("  -s, --test-scheduling        Shows projected/recommended check scheduling and other\n");
 		printf("                               diagnostic info based on the current configuration files.\n");
+		printf("  -S, --show-scheduling        Same as -s, but also show the scheduling queue\n");
 		/*printf("  -o, --dont-verify-objects    Don't verify object relationships - USE WITH CAUTION!\n");*/
 		printf("  -x, --dont-verify-paths      Don't check for circular object paths - USE WITH CAUTION!\n");
 		printf("  -p, --precache-objects       Precache object configuration - use with -v or -s options\n");
@@ -594,6 +602,10 @@ int main(int argc, char **argv){
 			/* initialize the event timing loop */
 			init_timing_loop();
 
+			/* display schedule */
+			if(show_schedule == TRUE)
+        	        	display_schedule();
+
 			/* display scheduling information */
 			display_scheduling_info();
 
@@ -675,9 +687,7 @@ int main(int argc, char **argv){
 			now=time(NULL);
 			tm=localtime(&now);
 			strftime(datestring,sizeof(datestring),"%a %b %d %H:%M:%S %Z %Y",tm);
-			asprintf(&buffer,"Local time is %s\n",datestring);
-			write_to_logs_and_console(buffer,NSLOG_PROCESS_INFO,TRUE);
-			my_free(buffer);
+			logit(NSLOG_PROCESS_INFO,TRUE,"Local time is %s",datestring);
 
 			/* write log version/info */
 			write_log_file_info(NULL);
@@ -804,6 +814,7 @@ int main(int argc, char **argv){
 			/* read initial service and host state information  */
 			initialize_retention_data(config_file);
 			read_initial_state_information();
+			sync_state_information();
 
 			/* initialize comment data */
 			initialize_comment_data(config_file);

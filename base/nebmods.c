@@ -3,7 +3,7 @@
  * NEBMODS.C - Event Broker Module Functions
  *
  * Copyright (c) 2002-2008 Ethan Galstad (egalstad@nagios.org)
- * Last Modified: 11-02-2008
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -167,10 +167,6 @@ int neb_load_module(nebmodule *mod){
 	int (*initfunc)(int,char *,void *);
 	int *module_version_ptr=NULL;
 	char *output_file=NULL;
-	int dest_fd=-1;
-	int source_fd=-1;
-	char buffer[MAX_INPUT_BUFFER]={0};
-	int bytes_read=0;
 	int result=OK;
 
 	if(mod==NULL || mod->filename==NULL)
@@ -200,22 +196,11 @@ int neb_load_module(nebmodule *mod){
 
 	/* open a temp file for copying the module */
 	asprintf(&output_file,"%s/nebmodXXXXXX",temp_path);
-	if((dest_fd=mkstemp(output_file))==-1){
-		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Could not safely copy module '%s'.  The module will not be loaded: %s\n",mod->filename,strerror(errno));
+	if (my_fcopy(mod->filename, output_file) == ERROR) {
+		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Failed to safely copy module '%s'. The module will not be loaded\n", mod->filename);
+		free(output_file);
 		return ERROR;
-		}
-	/* open module file for reading and copy it */
-	if((source_fd=open(mod->filename,O_RDONLY,0644))>0){
-		while((bytes_read=read(source_fd,buffer,sizeof(buffer)))>0)
-			write(dest_fd,buffer,bytes_read);
-		close(source_fd);
-		close(dest_fd);
-		}
-	else{
-		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Could not safely copy module '%s'.  The module will not be loaded: %s\n",mod->filename,strerror(errno));
-		return ERROR;
-		}
-
+	}
 	/* load the module (use the temp copy we just made) */
 #ifdef USE_LTDL
 	mod->module_handle=lt_dlopen(output_file);

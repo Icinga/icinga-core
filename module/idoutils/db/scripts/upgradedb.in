@@ -9,7 +9,7 @@ my $usage = "upgradedb -u user -p password -h hostname -d database";
 #
 # COPYRIGHT:
 #	Copyright (C) 2005 Altinity Limited
-#	Copyright is freely given to Ethan Galstad if included in the NDOUtils distribution
+#	Copyright is freely given to Ethan Galstad if included in the IDOUtils distribution
 #
 # LICENCE:
 #	GNU GPLv2
@@ -57,11 +57,11 @@ my $thisversion="1.0.1";
 my $lastversion="1.0.1";
 my $legacyversion="1.0.1";
 
-$version = $dbh->selectrow_array("SELECT version FROM icinga_dbversion WHERE name='ndoutils'");
+$version = $dbh->selectrow_array("SELECT version FROM icinga_dbversion WHERE name='idoutils'");
 if ($version eq "") {
 	# Assume last legacy release (didn't have version table)
 	print "*** Assuming version $legacyversion of nodutils installed",$/;
-	$dbh->do("INSERT icinga_dbversion SET name='ndoutils', version='$legacyversion';");
+	$dbh->do("INSERT icinga_dbversion SET name='idoutils', version='$legacyversion';");
 	$version = $legacyversion
 };
 
@@ -88,4 +88,4 @@ else{
 }
 
 # Update db version record
-$dbh->do("UPDATE icinga_dbversion SET version='$thisversion' WHERE name='ndoutils';");
+$dbh->do("UPDATE icinga_dbversion SET version='$thisversion' WHERE name='idoutils';");

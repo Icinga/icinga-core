@@ -9,7 +9,7 @@ my $usage = "installdb -u user -p password -h hostname -d database";
 #
 # COPYRIGHT:
 #	Copyright (C) 2005 Altinity Limited
-#	Copyright is freely given to Ethan Galstad if included in the NDOUtils distribution
+#	Copyright is freely given to Ethan Galstad if included in the IDOUtils distribution
 #
 # LICENCE:
 #	GNU GPLv2
@@ -63,7 +63,7 @@ if ($@) {
 	}
 
 	print "** Updating table icinga_dbversion",$/;
-	$dbh->do("INSERT icinga_dbversion SET name='ndoutils', version='$thisversion';");
+	$dbh->do("INSERT icinga_dbversion SET name='idoutils', version='$thisversion';");
 
 	print "Done!",$/;
 }
