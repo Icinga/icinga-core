@@ -68,9 +68,7 @@ FIXES
 * core: header files: Remove dead prototypes (Andreas Ericsson)
 * core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)
 * core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
-* core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
-* core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
 * core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read
 * core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)
