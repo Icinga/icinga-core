@@ -74,7 +74,6 @@ FIXES
 * core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)
 * core: added icinga object version variable in neb api for usage with idomod
 * core: fix notification_period inheritance for services (Gordon Messmer)
-* core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
 * core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
 * core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)
 * core: error out if services defined without description in service object definition (service def and/or used templates)
