@@ -449,7 +449,7 @@ WHERE i6.id=i4.notification_id
 -- failed restart first (end_time=0)
 -- -----------------------------------------
 
-DELETE FROM statehistory WHERE start_time='01-01-70';
+DELETE FROM statehistory WHERE state_time='01-01-70';
 
 
 -- -----------------------------------------
