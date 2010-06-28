@@ -1,12 +1,15 @@
-###############################
+####################################################################
 # Makefile for Icinga
+####################################################################
+
+
 ###############################
-
-
 # Source code directories
+###############################
 SRC_BASE=@srcdir@/base
 SRC_CGI=@srcdir@/cgi
 SRC_HTM=@srcdir@/html
+SRC_DOCS=@srcdir@/html/docs
 SRC_MODULE=@srcdir@/module
 SRC_INCLUDE=@srcdir@/include
 SRC_COMMON=@srcdir@/common
@@ -16,7 +19,13 @@ SRC_IDOUTILS=@srcdir@/module/idoutils
 SRC_TTAP=@srcdir@/t-tap
 SRC_TAP=@srcdir@/tap
 SRC_ICINGAAPI=@srcdir@/module/icinga-api
+SRC_DOCBOOK=@srcdir@/docbook
+SRC_DOCBOOK_DE=@srcdir@/docbook/de
+SRC_DOCBOOK_EN=@srcdir@/docbook/en
 
+###############################
+# Compiler Settings
+###############################
 CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@
 LDFLAGS=@LDFLAGS@ @LIBS@
@@ -39,6 +48,9 @@ INIT_OPTS=@INIT_OPTS@
 CGICFGDIR=$(CGIDIR)
 PERLDIR=@PERLDIR@
 
+###############################
+# Modules
+###############################
 USE_EVENTBROKER=@USE_EVENTBROKER@
 USE_IDOUTILS=@USE_IDOUTILS@
 USE_ICINGAAPI=@USE_ICINGAAPI@
@@ -48,20 +60,57 @@ INSTALLPERLSTUFF=@INSTALLPERLSTUFF@
 
 CGIEXTRAS=@CGIEXTRAS@
 
+###############################
+# snprintf (Solaris)
+###############################
 SNPRINTF_O=@SNPRINTF_O@
+
+###############################
+# Global
+###############################
+ICINGA_VERSION=1.0.1
 
 CP=@CP@
 
 @SET_MAKE@
 
 none:
-		@echo "Please supply a command line argument (i.e. 'make all').  Other targets are:"
-		@echo "   icinga cgis contrib modules idoutils"
-		@echo "   clean distclean"
-		@echo "   install install-base install-cgis install-html install-config install-init install-commandmode install-idoutils install-api install-webconf fullinstall"
-#		@echo "   uninstall"
+	@printf "Please supply a command line argument (i.e. 'make all').\n\n"
+	@printf "Generic targets: all, fullinstall, clean\n\n"
+	@printf "Other useful targets:\n"
+	@printf "\t%-23s - %s\n" "distclean" "make source ready for commit or packaging"
+	@printf "\t%-23s - %s\n" "create-tarball" "create tarball for packaging"
+	@printf "\t%-23s - %s\n" "create-tarball-nightly" "create nightly build tarball"
+	@printf "\t%-23s - %s\n" "create-docs" "generate html docs from docbook"
+	@printf "\t%-23s - %s\n" "submodule-init" "init git submodules"
+	@printf "\t%-23s - %s\n" "submodule-update" "update git submodules"
+	@printf "\t%-23s - %s\n" "submodule-update-latest" "update git submodules, pull latest master"
+
+	@printf "\nCompile targets:\n"
+	@printf "\t%-23s - %s\n" "icinga" "icinga core"
+	@printf "\t%-23s - %s\n" "cgis" "classical web"
+	@printf "\t%-23s - %s\n" "contrib" "contrib dir"
+	@printf "\t%-23s - %s\n" "modules" "icinga modules"
+	@printf "\t%-23s - %s\n" "idoutils" "icinga idoutils"
+
+	@printf "\nInstall targets:\n"
+	@printf "\t%-23s - %s\n" "install" "install core, cgis, api, html"
+	@printf "\t%-23s - %s\n" "install-base" "install core"
+	@printf "\t%-23s - %s\n" "install-cgis" "install classical web"
+	@printf "\t%-23s - %s\n" "install-html" "install html files"
+	@printf "\t%-23s - %s\n" "install-config" "install sample config"
+	@printf "\t%-23s - %s\n" "install-webconf" "install apache config for classical web"
+	@printf "\t%-23s - %s\n" "install-init" "install init script"
+	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
+	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
+	@printf "\t%-23s - %s\n" "install-api" "install php api"
+
 
 # FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
+
+###############################
+# Compile
+###############################
 
 all:
 	cd $(SRC_BASE) && $(MAKE)
@@ -84,7 +133,8 @@ all:
 	@echo "without any arguments for a list of all possible options):"
 	@echo ""
 	@echo "  make install"
-	@echo "     - This installs the main program, CGIs, API, and HTML files"
+	@echo "     - This installs the main programi (Icinga Core), CGIs"
+	@echo "       (Classical Web), API, and HTML files"
 	@echo ""
 	@echo "  make install-init"
 	@echo "     - This installs the init script in $(DESTDIR)$(INIT_DIR)"
@@ -109,8 +159,8 @@ all:
 	@echo "       things get monitored!"
 	@echo ""
 	@echo "  make install-webconf"
-	@echo "     - This installs the Apache config file for the Icinga"
-	@echo "       web interface"
+	@echo "     - This installs the Apache config file for the classical"
+	@echo "       Icinga web interface"
 	@echo ""
 	@echo ""
 	@echo "*** Support Notes *******************************************"
@@ -172,6 +222,10 @@ contrib:
 modules:
 	cd $(SRC_MODULE) && $(MAKE)
 
+###############################
+# Clean
+###############################
+
 clean:
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
@@ -220,6 +274,10 @@ distclean: clean
 
 devclean: distclean
 
+###############################
+# Test
+###############################
+
 test:
 	$(MAKE) test-perl
 	$(MAKE) test-tap
@@ -236,6 +294,49 @@ tap/src/tap.o:
 
 test-perl:
 	cd t && $(MAKE) test
+
+###############################
+# Package
+###############################
+
+create-docs:
+	#${MAKE} submodule-init
+	#${MAKE} submodule-update
+	#${MAKE} submodule-update-latest
+	cd ${SRC_DOCBOOK_EN} && make en
+	cd ${SRC_DOCBOOK_DE} && make de
+	@echo "updated docs :)"
+
+create-tarball:
+	./make-tarball --prefix icinga-${ICINGA_VERSION}/
+
+create-tarball-nightly:
+	#git pull origin `git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'` #user must pull himself, some brnaches are not remote
+	${MAKE} submodule-update-latest
+	${MAKE} create-docs
+	./make-tarball --prefix icinga-${ICINGA_VERSION}-`date +%Y%m%d`-`git rev-parse --short HEAD`/
+
+###############################
+# GIT
+###############################
+
+submodule-init:
+	git submodule init docbook
+	git submodule init module/icinga-api
+
+submodule-update:
+	git submodule update
+
+submodule-update-latest:
+	cd ${SRC_DOCBOOK} && git checkout master && git pull origin master
+	cd ${SRC_ICINGAAPI} && git checkout master && git pull origin master 
+	@echo "pulled latest docbook & icinga-api :)"
+
+
+###############################
+# Install
+###############################
+
 
 install-html:
 	cd $(SRC_HTM) && $(MAKE) install
