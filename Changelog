@@ -66,7 +66,6 @@ FIXES
 * core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)
 * core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)
 * core: header files: Remove dead prototypes (Andreas Ericsson)
-* core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)
 * core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
