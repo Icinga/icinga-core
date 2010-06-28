@@ -18,6 +18,7 @@ ENHANCEMENTS
         total count of notifications on a particular service or host.  It is
         sometimes desirable to escalate after the Nth critical notification,
         rather than after a total number of N notifications have been sent.
+	NOTE: This can be enabled through configure, it is currently incompaitble with mk_livestatus!
 * core: add event profiling option for stats of event counts and time taken for events
 * core: retention file loading speedup (Matthieu Kermagoret)
 

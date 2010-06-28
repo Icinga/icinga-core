@@ -667,6 +667,13 @@ if test x$USE_EVENTBROKER = xyes; then
 	AC_SUBST(BROKER_H)
 fi
 
+dnl Configure state based escalation ranges
+USE_STATE_BASED_ESCAL_RANGES=no                                  
+AC_ARG_ENABLE(state-based-escal-ranges,AC_HELP_STRING([--enable-state-based-escal-ranges],[enables state based escalation ranges - attention: interferes with mk_livestatus neb module]),USE_STATE_BASED_ESCAL_RANGES=$enableval,USE_STATE_BASED_ESCAL_RANGES=no)
+if test x$USE_STATE_BASED_ESCAL_RANGES = xyes; then
+	AC_DEFINE_UNQUOTED(USE_ST_BASED_ESCAL_RANGES)
+fi
+
 dnl Configure IDOUtils
 
 dnl set dummy for ocilib

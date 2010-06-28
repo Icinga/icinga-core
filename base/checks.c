@@ -1381,9 +1381,11 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		temp_service->last_notification=(time_t)0;
 		temp_service->next_notification=(time_t)0;
 		temp_service->current_notification_number=0;
+#ifdef USE_ST_BASED_ESCAL_RANGES
 		temp_service->current_warning_notification_number=0;
 		temp_service->current_critical_notification_number=0;
 		temp_service->current_unknown_notification_number=0;
+#endif
 		temp_service->problem_has_been_acknowledged=FALSE;
 		temp_service->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
 		temp_service->notified_on_unknown=FALSE;
@@ -1613,12 +1615,13 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			check_for_host_flapping(temp_host,TRUE,FALSE,TRUE);
 			flapping_check_done=TRUE;
 
+#ifdef USE_ST_BASED_ESCAL_RANGES
 			if (hard_state_change==TRUE){
 				temp_service->current_warning_notification_number=0;
 				temp_service->current_critical_notification_number=0;
 				temp_service->current_unknown_notification_number=0;
 			}
-
+#endif
 			/* (re)send notifications out about this service problem if the host is up (and was at last check also) and the dependencies were okay... */
 			service_notification(temp_service,NOTIFICATION_NORMAL,NULL,NULL,NOTIFICATION_OPTION_NONE);
 
