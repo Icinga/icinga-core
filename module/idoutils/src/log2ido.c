@@ -11,9 +11,9 @@
 #include "../include/io.h"
 #include "../include/protoapi.h"
 
-#define LOG2IDO_VERSION "1.0.1"
+#define LOG2IDO_VERSION "1.0.2"
 #define LOG2IDO_NAME "LOG2IDO"
-#define LOG2IDO_DATE "03-03-2010"
+#define LOG2IDO_DATE "06-30-2010"
 
 
 

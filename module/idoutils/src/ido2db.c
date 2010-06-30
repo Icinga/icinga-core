@@ -22,14 +22,14 @@
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
 
-#define IDO2DB_VERSION "1.0.1"
+#define IDO2DB_VERSION "1.0.2"
 
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
 #endif
 
 #define IDO2DB_NAME "IDO2DB"
-#define IDO2DB_DATE "03-03-2010"
+#define IDO2DB_DATE "06-30-2010"
 
 #ifdef HAVE_SSL
 SSL_METHOD *meth;
