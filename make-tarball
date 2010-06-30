@@ -187,5 +187,9 @@ TAR_NAME=${PREFIX%/}
 mv $OUT_FILE/icinga-core.tar.gz ../$TAR_NAME.tar.gz
 
 echo "../$TAR_NAME.tar.gz created for uploading..."
-#echo "Please rename ../icinga-core.tar.gz to ../icinga-VERSIONSTRING.tar.gz and upload..."
+
+cd ..
+md5sum $TAR_NAME.tar.gz > $TAR_NAME.tar.gz.md5
+
+echo "../$TAR_NAME.tar.gz.md5 created for uploading..."
 

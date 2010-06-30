@@ -43,6 +43,8 @@ fi
 
 # Update version number in Makefile.in
 perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" Makefile.in
+# needs to be done in current Makefile too (not dependant on configure!)
+perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" Makefile
 
 # Update version number and release date in main HTML page
 perl -i -p -e "s/>Version .*</>Version $newversion</;" html/main.html
