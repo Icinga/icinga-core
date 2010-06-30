@@ -4,7 +4,7 @@
 <title>Icinga aktualisieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
 <link rel="next" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">
@@ -41,46 +41,40 @@
 
   <p><a name="upgrading-icinga"></a> <span class="bold"><strong>Aktualisierung von Icinga</strong></span></p>
 
-  <p>Sobald neuere Alpha-, Beta- oder stabile Versionen von Icinga herauskommen, sollten Sie dringend über eine Aktualisierung
-  nachdenken. Neuere Ausgaben enthalten Behebungen kritischer Fehler, so dass es wichtig ist, aktuell zu sein. Wenn Sie bereits
-  Icinga wie in den <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitungen</a> beschrieben aus dem Quellcode installiert haben, dann
-  können Sie einfach neuere Versionen installieren. Sie müssen dazu noch nicht einmal root-Berechtigungen haben, weil bereits alles passiert
-  ist, was als root-Benutzer getan werden muss. Hier der Aktualisierungsprozess...</p>
+  <p>Sobald neuere Versionen von Icinga herauskommen, sollten Sie dringend über eine Aktualisierung nachdenken. Neuere Ausgaben
+  enthalten Behebungen kritischer Fehler, so dass es wichtig ist, aktuell zu sein. Wenn Sie bereits Icinga, wie in den
+  Schnellstartanleitungen beschrieben, aus dem Quellcode installiert haben, dann können Sie einfach neuere Versionen installieren. Sie
+  müssen dazu noch nicht einmal root-Berechtigungen haben, weil bereits alles passiert ist, was als root-Benutzer getan werden muss. Das ist
+  allerdings abhängig davon, welche Präferenzen Sie diesbezüglich haben.</p>
 
   <p>Stellen Sie sicher, dass Sie eine gute Datensicherung Ihrer bestehenden Icinga-Installation und der Konfigurationsdateien
   haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre alte Icinga-Version
   wiederherstellen.</p>
 
-  <p>Werden Sie der icinga-Benutzer. Debian/Ubuntu-Benutzer sollten <span class="emphasis"><em>sudo -s icinga</em></span> benutzen.</p>
+  <p>Werden Sie der icinga-Benutzer. Debian/Ubuntu-Benutzer sollten sudo -s icinga benutzen.</p>
 
-  <pre class="screen"> su -l icinga</pre>
+  <pre class="programlisting"> $&gt; su -l icinga</pre>
 
-  <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
-
-  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0.1</em></span>.tar.gz</pre>
-
-  <p>Entpacken Sie das Quellcode-Archiv.</p>
-
-  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>1.0.1</em></span>.tar.gz
- cd icinga-<span class="emphasis"><em>1.0.1</em></span> </pre>
+  <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie http://www.icinga.org/ für den Verweis auf die letzte
+  Version) und entpacken Sie das Quellcode-Archiv.</p>
 
   <p>Starten Sie das Icinga-configure-Script mit den gleichen Optionen wie bei der letzten Installation, z.B. so:</p>
 
-  <pre class="screen"> ./configure --with-command-group=nagcmd</pre>
+  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
 
   <p>Kompilieren Sie den Icinga-Quellcode.</p>
 
-  <pre class="screen"> make all</pre>
+  <pre class="programlisting"> #&gt; make all</pre>
 
   <p>Installieren Sie aktualisierte Programme, Dokumentation und Web-Interface. Ihre vorhandenen Konfigurationsdaten werden in diesem
   Schritt nicht überschrieben.</p>
 
-  <pre class="screen"> make install</pre>
+  <pre class="programlisting"> #&gt; make install install-base install-cgis install-html install-init install-commandmode install-idoutils</pre>
 
   <p>Überprüfen Sie Ihre Konfigurationsdateien und starten Sie Icinga erneut.</p>
 
-  <pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
- /etc/init.d/icinga restart</pre>
+  <pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig
+ #&gt; /etc/init.d/icinga restart</pre>
 
   <p>Das war's - Sie sind fertig!</p>
 
@@ -91,11 +85,11 @@
   <p>Falls Sie einen Upgrade von Nagios-Version 3.0.x durchführen, dann fehlt Ihnen ggf. PHP.</p>
 
   <p><span class="emphasis"><em>Debian / Ubuntu</em></span> </p>
-<pre class="screen"> apt-get install php5 libapache2-mod-php5</pre>
+<pre class="screen"> #&gt; apt-get install php5 libapache2-mod-php5</pre>
 
   <p><span class="emphasis"><em>Fedora / RedHat</em></span></p>
 
-  <pre class="screen"> yum install php mod_php</pre>
+  <pre class="screen"> #&gt; yum install php mod_php</pre>
 
   <p><span class="emphasis"><em>openSuSE / SLES:</em></span> Nutzen Sie yast zur Installation der Pakete <span class="emphasis"><em>php5</em></span> und
   <span class="emphasis"><em>apache2-mod_php5</em></span>.</p>
@@ -106,48 +100,52 @@
 
   <p>Werden Sie der nagios-Benutzer. Debian/Ubuntu-Benutzer sollten <span class="emphasis"><em>sudo -s nagios</em></span> benutzen.</p>
 
-  <pre class="screen"> su -l nagios</pre>
+  <pre class="screen"> $ su -l nagios</pre>
 
   <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-  <pre class="screen"> wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0.1</em></span>.tar.gz</pre>
+  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0.2</em></span>.tar.gz</pre>
 
   <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-  <pre class="screen"> tar xzf icinga-<span class="emphasis"><em>1.0.1</em></span>.tar.gz
- cd icinga-<span class="emphasis"><em>1.0.1</em></span> </pre>
+  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.0.2</em></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><em>1.0.2</em></span> </pre>
 
   <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim ./configure von Nagios benutzt haben. Den
   Aufruf finden Sie in der Datei config.log. Beispiel:</p>
 
-  <pre class="screen"> ./configure --with-command-group=nagcmd</pre>
+  <pre class="screen"> #&gt; ./configure --with-command-group=nagcmd</pre>
 
   <p>Kompilieren Sie den Icinga-Quellcode.</p>
 
-  <pre class="screen"> make all</pre>
+  <pre class="screen"> #&gt; make all</pre>
 
   <p>Installieren Sie aktualisierte Programme, Dokumentation, Web-Interface und das Init-Script. Ihre vorhandenen Konfigurationsdaten
   werden in diesem Schritt nicht überschrieben.</p>
 
-  <pre class="screen"> make install
- make install-init</pre>
+  <pre class="screen"> #&gt; make install
+ #&gt; make install-init</pre>
 
   <p>Kopieren Sie Ihre Konfigurationsdateien nach /usr/local/icinga/etc bzw. /usr/local/icinga/etc/object. Benennen Sie die
-  Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.conf</em></span> in <span class="emphasis"><em>icinga.conf</em></span> um und ändern Sie in /usr/local/icinga/etc/icinga.cfg die
-  Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group".</p>
+  Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.cfg</em></span> in <span class="emphasis"><em>icinga.cfg</em></span> um und ändern Sie in /usr/local/icinga/etc/icinga.cfg die
+  Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group". Das betrifft ggf. auch die Pfade in der Datei.</p>
+  <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
+
+  <p>Ändern Sie in der CGI-Konfigurationsdatei <span class="emphasis"><em>cgi.cfg</em></span> die Pfad-Angaben.</p>
+	  <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./cgi.cfg/</pre>
 
   <p>Überprüfen Sie Ihre Konfigurationsdateien und starten Sie Icinga.</p>
 
-  <pre class="screen"> /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
- /etc/init.d/icinga start</pre>
+  <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg
+ #&gt; /etc/init.d/icinga start</pre>
 
   <p>Das war's - Sie sind fertig!</p>
 
   <p><a name="upgrading-nagios2x"></a> <span class="bold"><strong>Upgrade von Nagios 2.x</strong></span></p>
 
-  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.0.1 zu aktualisieren. Die Aktualisierung ist
+  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.0.2 zu aktualisieren. Die Aktualisierung ist
   im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre Konfigurationsdateien ein
-  wenig ändern, damit sie mit Icinga 1.0.1 funktionieren:</p>
+  wenig ändern, damit sie mit Icinga 1.0.2 funktionieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -186,7 +184,7 @@
     </li>
 </ul></div>
 
-  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="Was gibt es Neues in Icinga Core 1.0.1 und Icinga Web 0.9.1-beta">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
+  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="Was gibt es Neues in Icinga Core 1.0.2 und Icinga Web 1.0.1">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
   Er beschreibt all die Änderungen am Icinga-Code.</p>
 
   <p><a name="upgrading-rpm"></a> <span class="bold"><strong>Aktualisierung einer RPM-Installation</strong></span></p>
@@ -253,13 +251,13 @@
   Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder APT-Paket
   entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-  <a class="indexterm" name="id3639161"></a>
+  <a class="indexterm" name="id5527108"></a>
 
-  <a class="indexterm" name="id3639190"></a>
+  <a class="indexterm" name="id5527138"></a>
 
-  <a class="indexterm" name="id3639204"></a>
+  <a class="indexterm" name="id5527152"></a>
 
-  <a class="indexterm" name="id3639218"></a>
+  <a class="indexterm" name="id5527164"></a>
 </div>
 <div class="navfooter">
 <hr>

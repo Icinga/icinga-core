@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Was gibt es Neues in Icinga Core 1.0.1 und Icinga Web 0.9.1-beta</title>
+<title>Was gibt es Neues in Icinga Core 1.0.2 und Icinga Web 1.0.1</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
 <link rel="up" href="ch01.html" title="Kapitel 1. Über">
 <link rel="prev" href="about.html" title="Über Icinga">
 <link rel="next" href="ch02.html" title="Kapitel 2. Los geht's">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Was gibt es Neues in Icinga Core 1.0.1 und Icinga Web 0.9.1-beta</th></tr>
+<tr><th colspan="3" align="center">Was gibt es Neues in Icinga Core 1.0.2 und Icinga Web 1.0.1</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="about.html">Zurück</a> </td>
@@ -24,62 +24,45 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Was gibt es Neues in Icinga Core 1.0.1 und Icinga Web 0.9.1-beta">
+<div class="section" title="Was gibt es Neues in Icinga Core 1.0.2 und Icinga Web 1.0.1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>Was gibt es Neues in Icinga Core 1.0.1 und Icinga Web 0.9.1-beta</h2></div></div></div>
+<a name="whatsnew"></a>Was gibt es Neues in Icinga Core 1.0.2 und Icinga Web 1.0.1</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
   <p><span class="bold"><strong>Erweiterungen:</strong></span></p>
 
-  <p>* core: neue Variable für Services service_check_timeout_state</p>
+  <p>* core: Scheduled Downtimes für Host und alle Services arbeiten nun wie gewünscht</p>
 
-  <p>* core: neue escalation_condition-Definition</p>
+  <p>* core: Scheduling für Servicechecks mit ausgenommenen Timezones funktionieren nun wie erwartet</p>
 
-  <p>* idoutils: ido2db mit threaded housekeeper</p>
+  <p>* core: Geschwindigkeitsverbesserungen beim Einlesen der retention.dat</p>
 
-  <p>* idoutils: Indizes für DELETE/SELECT- Anweisungen</p>
+  <p>* core: Bessere Installation unter Solaris</p>
 
-  <p>* idoutils: reorganisierte DB-Installationsdatei für MySQL/Postgresql/Oracle</p>
+  <p>* core: Verbesserungen beim Logging nach Syslog</p>
 
-  <p>* idoutils: kompletter rewrite der Oracle-Parts zur Performance-Verbesserung</p>
+  <p>* core: Implementierung verschiedenster Patches von Mailinglist und Tracker</p>
 
-  <p>* idoutils: neuer Pfad für die mysql/pgsql/oracle-Aktualisierungen - für mehr Informationen schauen Sie bitte in die Dokumentation
-  <a class="link" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">Upgrading der IDOUtils</a></p>
+  <p>* core: Fehlermeldung beim Fehlen der service_description in der Servicedefinition</p>
 
-  <p>* idoutils: initiale Debug-Ausgabe für idomod (zu setzen in der idomod.cfg)</p>
+  <p>* core: Überarbeitetes Init-Skript, Ausgabe von Konfigurationsfehlern</p>
 
-  <p>* idoutils: Hinzufügen des DB-Namens in der Verbindungsmeldung im Syslog</p>
+  <p>* cgis: Mehrere URLs bei notes und action URLs möglich im Classic UI</p>
 
-  <p>* idoutils: ändern der MySQL-Datenbank-Engine zu innodb (kein Tabellen-Locking, bessere Transaktionen)</p>
-
-  <p>* idoutils: hinzugefügte Option im configure-Skript --with-oracle-lib=/path/to/instantclient, Export von LD_LIBRARY_PATH wenn der
-  Instantclient nicht in PATH installiert wurde - bitte schauen Sie in die Dokumentation für weitere Informationen: <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">quickstart-idoutils</a></p>
-
-  <p>* idoutils: Hinzufügen von max_logentries_age und max_acknowledgements_age zu ido2db (siehe ido2db.cfg)</p>
+  <p>* cgis: Anzeige von display_name in host/service-Definition im Classic UI </p>
+  
+  <p>* idoutils: Performanceverbesserungen von SQL queries und objects hash list</p>
 
   <p><span class="bold"><strong>Fixes:</strong></span></p>
 
-  <p>* core: Fix segfault in cmd.cgi</p>
+  <p>* core: Fehler bei der Erzeugung von Benachrichtigungen</p>
 
-  <p>* core: Fix event broker callback function self de-registering for callbacks</p>
+  <p>* core: Implementierung verschiedenster Patches von Mailinglist und Tracker
+</p>
 
-  <p>* core: Fix idomod De-Initialisierung nach Konfigurationsfehler</p>
-
-  <p>* core: Fix make fullinstall/idoutils ohne enabled idoutils während des configure</p>
-
-  <p>* core: Fix für das Senden von zwei identischen service_status-Events zu neb module</p>
-
-  <p>* idoutils: geändertes string escaping für mysql und pgsql</p>
-
-  <p>* idoutils: Fix für pgsql Tabelle systemcommands (fehlende Spalte 'output')</p>
-
-  <p>* idoutils: Fix für acknowledgments Queries, wrong buffer freed/set as query to db</p>
-
-  <p>* idoutils: Fix contactnotification data array, command args were not provided</p>
-
-  <p>* idoutils: Fix custom_variables object_id type int = unsigned long</p>
+  <p>* idoutils: Fehlerbehebungen und massive Geschwindigkeitsverbesserungen in den IDOUtils</p>
 
   <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog.</p>
 
@@ -89,43 +72,33 @@
 
   <p><span class="bold"><strong>Icinga Web:</strong></span></p>
 
-  <p>* Added some icinga specific principal target classes</p>
+  <p>* Neue, schnellere Cronk Liste inkl. Kategorien</p>
 
-  <p>* Finished editing of principal targets for users and groups</p>
+  <p>* Umstellung Doppelklick auf Einfachklick</p>
 
-  <p>* Added editing models for principals</p>
+  <p>* Modularer Aufbau von Code und Konfiguration</p>
 
-  <p>* Finished principal target filtering in xml temlates</p>
+  <p>* Implementierung Framework für Agavi/Icinga-web Module</p>
 
-  <p>* Added principal target toolkit for api search queries</p>
+  <p>* Verbessertes Berechtigungsmodell</p>
 
-  <p>* Hinzugefügte volle command-Spezifikation</p>
+  <p>* Unterstützung für mehrere Icinga Instanzen im Webinterface</p>
 
-  <p>* Filter für host/service hinzugefügt</p>
+  <p>* Verbesserte Filter auf Ajax Basis</p>
 
-  <p>* Hinzufügen von mehr Statis (flapping, downtime)</p>
+  <p>* REST/Json Schnittstelle für die IcingaApi</p>
 
-  <p>* Globale xml-Ersetzungen durch die Templates (view proc)</p>
+  <p>* Implementierung des neuen, schnelleren Dashboard Cronk</p>
 
-  <p>* Aktualisierung von ExtJS to 3.1</p>
+  <p>* Mehrsprachige Benutzeroberfläche (unvollständig)</p>
 
-  <p>* Implementierung von Kategorien für die Cronks</p>
+<p> Insidertips und mehr Dokumentation rund ums Webinterface finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
 
-  <p>* Cronks für Usergruppen</p>
-
-  <p>* Tactical overview template engine</p>
-
-  <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog:</p>
+    <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p><a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">„Changelog of the Icinga Web“</a></p>
     </li></ul></div>
-
-  <p><span class="bold"><strong>Icinga API:</strong></span></p>
-
-  <p>* Restrukturierter Datenbank-Zugriff für die zukünftige Unterstützung von weiteren RDBM's</p>
-
-  <p>* Diverse Fixes für Tabellen prefix und Ausnahmebehandlung</p>
 
   <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
 
@@ -133,11 +106,19 @@
 
   <p>* Aktualisierung der Upgrade-Anleitung von Icinga und IDOUtils</p>
 
-  <p>* Aktualisierung der Anleitung für die Installation des neuen Webinterfaces</p>
+  <p>* Aktualisierung der Anleitung für die Installation des Webinterfaces</p>
 
-  <p>* neue Dokumente für Thanks und README</p>
+  <p>* Neue erweiterte Dokumentation zu den IDOUtils (Kapitel 11)</p>
 
-  <p>* neues Dokument zur API</p>
+  <p>* Aktualisierung der Anleitung zur Icinga Api</p>
+
+  <p>* Aktualisierung der Objektdefinitionen</p>
+
+ <p>* Neues Dokument zu Running icinga - "Diagnostics"</p>
+
+<p> Neue Testanleitungen für Icinga finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Icinga-Development</a></p>
+
+<p> Insidertips und mehr Dokumentation rund ums Webinterface finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
 
   <p>Bitte berichten Sie Probleme hier:</p>
 
@@ -149,12 +130,170 @@
 
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga Docs</a></p>
 
-  <a class="indexterm" name="id3634163"></a>
+  <a class="indexterm" name="id5521608"></a>
 
   <div class="section" title="Changelog of the Icinga Core">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-core"></a>Changelog of the Icinga Core</h3></div></div></div>
   
+<p><span class="bold"><strong>Icinga Core 1.0.2 - 30/06/2010 </strong></span></p>
+
+<p>* core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner</p>
+
+<p>* core: check if icinga running before starting; if died remove lockfile first</p>
+
+<p>* core: add in sync retention facility (Ton Voon, Opsera Ltd)</p>
+
+<p>* core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)</p>
+
+<p>* core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, in addition to providing the summary data (Steven (Steven D. Morrey)</p>
+<p>* core: icinga can send log messages to syslogd using a local facility instead of the default one</p>
+<p>* core: enhanced diagnostic output when a regular expression fails to compile (Max Schubert)</p>
+<p>* core: add state-based escalation ranges (Mark Gius)
+The directives first_notification and last_notification apply to the
+total count of notifications on a particular service or host.  It is
+sometimes desirable to escalate after the Nth critical notification,
+rather than after a total number of N notifications have been sent.</p>
+
+<p>* core: add event profiling option for stats of event counts and time taken for events</p>
+
+<p>* core: retention file loading speedup (Matthieu Kermagoret) </p>
+
+<p>* cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui</p>
+
+<p>* cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api</p>
+
+<p>* cgi: add event profiling stats of event counts and time taken for events in 'Performance Info'</p>
+
+<p>* cgi: add config option show_all_services_host_is_authorized_for to cgi.cfg
+It's possible to disable that the user can see all services only being an authorized contact for the host</p>
+
+<p>* cgi: add multiple urls for notes|action_url on host|service object definition (Jochen Bernd). </p>
+
+<p>* idoutils: add config options to allow users decision on clearing realtime and config tables on Icinga core startup. Actual config objects are marked as (in)active, because disabling the clearing results in historical config</p>
+
+<p>* idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)</p>
+
+<p>* idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)</p>
+
+<p>* idoutils: change select * into select [*_]id if unused results</p>
+
+<p>* idoutils: add syslog output, if ido2db is unable to do initial db query</p>
+<p>* idoutils: rewrite initscript not only depending on lockfile</p>
+<p>* idoutils: check if ido2db running before starting; if died remove lockfile first</p>
+
+<p>* idoutils: add upgrade scripts to fix object relations to historical data</p>
+
+ <p>* config: add trailing slash in apache config for html dir</p>
+<p><span class="bold"><strong>FIXES</strong></span></p>
+<p>* core: fix scheduling downtime for all services AND the host (cgi url, external commands)</p>
+
+  <p>* core: fix custom notifications being sent during downtimes (Sven Nierlein)</p>
+
+  <p>* core: fix spurious dollar signs added to command_lines (Alexander Wirt)</p>
+
+  <p>* core: fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)</p>
+
+  <p>* core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)</p>
+
+  <p>* core: minor cleanups to icingastats.c (Eric Sesterhenn)</p>
+
+  <p>* core: remove dead code (Andreas Ericsson)</p>
+
+  <p>* core: introduce common/shared.c and include/shared.h (Andreas Ericsson)</p>
+
+  <p>* core: move cgiutils.h compile time option macros to config.h (Andreas Ericsson)</p>
+
+  <p>* core: icinga.c: remove conditional main() configuration (Andreas Ericsson)</p>
+
+  <p>* core: icinga.c: replace asprintf() + write_to_logs_and_console() with logit() (Andreas Ericsson)</p>
+
+  <p>* core: revamp logging somewhat (Andreas Ericsson)</p>
+
+  <p>* core: create logging.h, with stubs for the common function in cgiutils.c (Andreas Ericsson)</p>
+
+  <p>* core: Janitor patch: Remove unused variables (Andreas Ericsson)</p>
+
+  <p>* core: base/utils.c: typo-fix s/escape_newlines==/escape_newlines_please==/ (Andreas Ericsson)</p>
+
+  <p>* core: cgi/cmd.c: Squelch warning about empty gnu_printf format string  (Andreas Ericsson)</p>
+
+  <p>* core: more linker tricks and less #ifdef's - log_debug_info() stubbed (Andreas Ericsson)</p>
+
+  <p>* core: common/objects.c: Use calloc() instead of malloc() + manual NULL'ing (Andreas Ericsson)</p>
+
+  <p>* core: macros: Protect against typos in macro names (Andreas Ericsson)</p>
+
+  <p>* core: macros: Add NOTIFICATIONISESCALATED to the list of macro names (Marc Powell)</p>
+
+  <p>* core: comments: Remove one comment at a time from hashlist (Hiren Patel)</p>
+
+  <p>* core: fix checking of the open(2) system call (David Glick)</p>
+
+  <p>* core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)</p>
+
+  <p> * core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)</p>
+
+  <p> * core: header files: Remove dead prototypes (Andreas Ericsson)</p>
+
+  <p>* core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)</p>
+
+  <p>* core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)</p>
+
+  <p>* core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)</p>
+
+  <p>* core: enable compiler flag -Wall by default (base/cgi/common/idoutils)</p>
+
+  <p>* core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)</p>
+
+  <p>* core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)</p>
+
+  <p>* core: xdata/xpddefault.c: Close perfdata files if fd's are &gt;= 0 (Andreas Ericsson)</p>
+
+  <p>* core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read</p>
+
+  <p>* core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)</p>
+
+  <p> * core: added icinga object version variable in neb api for usage with idomod</p>
+
+  <p>* core: fix notification_period inheritance for services (Gordon Messmer)</p>
+
+  <p>* core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)</p>
+
+  <p> * core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)</p>
+
+  <p>* core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)</p>
+
+  <p> * core: error out on services without description in service object definition</p>
+
+  <p>* core: fix servicechecks with timeperiods containing 'exclude' directives are incorrectly re-scheduled</p>
+
+  <p>* cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)</p>
+
+  <p> * cgi: fix cmd.cgi incomplete output for command description</p>
+
+  <p>* cgi: fix typo: "stye" instead of "style" in cgi/tac.c</p>
+
+  <p>* cgi: check_daemon_running() not working on MacOS (Hendrik Baecker)</p>
+
+  <p>* cgi: fix CGIs don't show correct error on missing archived icinga-DATE.log file</p>
+
+  <p>* cgi: fix missing js files</p>
+
+  <p> * idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)</p>
+
+  <p> * idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)</p>
+
+  <p>* idoutils: fix postgres wrong type in service_object_id</p>
+
+  <p> * idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though</p>
+
+  <p> * idoutils: fix for oracle when binding a NULL value on contactnotificationmethods</p>
+
+  <p> * idoutils: completely renamed idoutils (s/ndo/ido/g etc), removing old sources</p>
+
+  <p> * idoutils: fix compilation error of SUN_LEN on Solaris</p>
+
 
   <p><span class="bold"><strong>Icinga Core 1.0.1 - 03/03/2010 </strong></span></p>
 
@@ -645,13 +784,36 @@
 
   <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
 
-  <a class="indexterm" name="id3635284"></a>
+  <a class="indexterm" name="id5523090"></a>
 </div>
 
   <div class="section" title="Changelog of the Icinga Web">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-web"></a>Changelog of the Icinga Web</h3></div></div></div>
   
+<p><span class="bold"><strong>Icinga Web 1.0.1 30/06/2010</strong></span></p>
+
+    <p>* Core code reduced and made more robust</p>
+
+    <p>* Core code detatached to its owning modules</p>
+
+    <p>* Module framework defined, extractor and installer</p>
+
+    <p>* Principals now works in one step (one function code)</p>
+
+    <p>* Instances included</p>
+
+    <p>* Ajax driven filters, made some new filters</p>
+
+    <p>* REST/Json api interface (web/api, <a class="link" href="https://dev.icinga.org/issues/305" target="_top">https://dev.icinga.org/issues/305</a>)</p>
+
+    <p>* New summary cronk (faster, faster, faster)</p>
+
+    <p>* New cronk list (also categories, faster, faster, faster)</p>
+
+    <p>* Single click in the web interface</p>
+
+    <p>* Translation (not complete)</p>
 
   <p><span class="bold"><strong>Icinga Web 0.9.1-beta- 03/03/2010</strong></span></p>
 
@@ -799,7 +961,7 @@
 
   <p>* This is the initial release, prototyping, testing, think about features</p>
 
-  <a class="indexterm" name="id3635567"></a>
+  <a class="indexterm" name="id5523437"></a>
 </div>
 </div>
 <div class="navfooter">

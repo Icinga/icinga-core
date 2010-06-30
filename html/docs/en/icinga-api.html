@@ -4,10 +4,10 @@
 <title>Installation and use of the Icinga API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Development">
-<link rel="prev" href="icinga-web-scratch.html" title="Installation of the Icinga web frontend from scratch">
-<link rel="next" href="ix01.html" title="Index">
+<link rel="prev" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">
+<link rel="next" href="ch11.html" title="Chapter 11. IDOUtils">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -18,7 +18,7 @@
 <td width="20%" align="left">
 <a accesskey="p" href="icinga-web-scratch.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 10. Development</th>
-<td width="20%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+<td width="20%" align="right"> <a accesskey="n" href="ch11.html">Next</a>
 </td>
 </tr>
 </table>
@@ -27,51 +27,69 @@
 <div class="section" title="Installation and use of the Icinga API">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-api"></a>Installation and use of the Icinga API</h2></div></div></div>
-  
+    
 
-  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+    <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
-  <p>You need Icinga to run the API.</p>
+    <p>You need Icinga Core and IDOUtils or <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a>
+    installed and running in order to use the API.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you don't have Icinga yet please follow the instructions given in the "<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a>" documentation.</p>
-  </td></tr>
+        <p>If you don't have Icinga yet please follow the instructions given in the "<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a>" documentation.</p>
+    </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Installation and Configuration</strong></span></p>
+    <p>If you are using IDOUtils database as data source, install PHP-PDO.</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <p><span class="bold"><strong>RHEL/Fedora/CentOS</strong></span></p>
+
+    <p>Make sure you have a repository/packages for PHP 5.2.x - RHEL/CentOS only support 5.1.6 out of the box.</p>
+
+    <pre class="programlisting"># yum install php-pdo php-mysql|pgsql</pre>
+
+    <p><span class="bold"><strong>Debian/Ubuntu</strong></span></p>
+
+    <pre class="programlisting"># apt-get install php5 php5-mysql|pgsql</pre>
+
+    <p><span class="bold"><strong>Installation and Configuration</strong></span></p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Download</strong></span></p>
+            <p><span class="bold"><strong>Download</strong></span></p>
 
-      <p>Take your clone from the icinga-api.git to get a fresh branch</p>
+            <p>Take your clone from the icinga-api.git to get a fresh branch</p>
 
-      <pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git</pre>
+            <pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git</pre>
 
-      <p>or download the software using <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
-    </li>
+            <p>or if you just need an update:</p>
+
+            <pre class="programlisting"># cd icinga-api &amp;&amp; git pull origin master</pre>
+
+            <p>or download the software using <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
+        </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Installation</strong></span></p>
+            <p><span class="bold"><strong>Installation</strong></span></p>
 
-      <p>Unpack the software and move it to the Icinga source code tree</p>
+            <p>Unpack Icinga API run configure and install it.</p>
 
-      <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
- # mv icinga-api/* /usr/src/icinga-core/module/icinga-api</pre>
+            <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
+ # ./configure</pre>
+<p>You can set the prefix where it will be installed, and point Icinga API where your Icinga and IDOUtils config is located and which users are required to run (those settings are directly applied when installing the API through Icinga Core Installation).</p>
+<pre class="programlisting"># ./configure --datarootdir=/usr/local/icinga/share --sysconfdir=/usr/local/icinga/etc --with-command-user=icinga-cmd --with-command-group=icinga-cmd --with-icinga-user=icinga --with-icinga-group=icinga</pre>
 
-      <p>Recompile the Icinga code (you may have to rerun ./configure again).</p>
+<pre class="programlisting"># make install</pre>
 
-      <pre class="programlisting"> # make all
- # make install</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Configuration</strong></span></p>
+            <p><span class="bold"><strong>Configuration</strong></span></p>
 
-      <p>Configuration is simply done by using an associative array. </p>
+            <p>If you are developing you own Addon based on the Icinga API, you need the following associative array.
+</p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
     'host'         =&gt; '&lt;Database hostname&gt;', 
@@ -83,7 +101,7 @@
  );</pre>
 <p> Example:</p>
 
-      <pre class="programlisting"> $idoConfig = array (
+            <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; 'mysql',
     'host'         =&gt; 'localhost',
     'database'     =&gt; 'ido',
@@ -92,52 +110,52 @@
     'persistent'   =&gt; true,
     'table_prefix' =&gt; 'icinga_',
  );</pre>
-    </li>
+        </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Use of the API</strong></span></p>
+    <p><span class="bold"><strong>Use of the API</strong></span></p>
+<p>Examples can be found in doc/examples</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Fetching data</strong></span></p>
+            <p><span class="bold"><strong>Fetching data</strong></span></p>
 
-      <p>hostnames and corresponding states</p>
+            <p>hostnames and corresponding states</p>
 
-      <p>Create an instance of class IcingaApi:</p>
+            <p>Create an instance of class IcingaApi:</p>
 
-      <pre class="programlisting"> $api = IcingaApi::getConnection(IcingaApi::CONNECTION_IDO, $idoConfig);</pre>
-<p>Create your
-      search:</p>
+            <pre class="programlisting"> $api = IcingaApi::getConnection(IcingaApi::CONNECTION_IDO, $idoConfig);</pre>
+<p>Create your search:</p>
 
-      <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
+            <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
  -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
  -&gt;fetch();</pre>
 
-      <p>By using setSearchFilter() you can define filters to narrow down the result set:</p>
+            <p>By using setSearchFilter() you can define filters to narrow down the result set:</p>
 
-      <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
+            <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
  -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
  -&gt;setSearchFilter(HOST_NAME, ‘Switch%’, IcingaApi::MATCH_LIKE)
  -&gt;fetch();</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Processing results</strong></span></p>
+            <p><span class="bold"><strong>Processing results</strong></span></p>
 
-      <pre class="programlisting"> foreach($apiRes as $apiHandle){
+            <pre class="programlisting"> foreach($apiRes as $apiHandle){
     echo ‘Host ‘.$apiHandle-&gt;HOST_NAME.’ has state ‘.$apiHandle-&gt;HOST_CURRENT_STATE.’&lt;br /&gt;’;
  }</pre>
 <p>Output without filter:</p>
 
-      <pre class="programlisting"> Host localhost has state 0
+            <pre class="programlisting"> Host localhost has state 0
  Host MySql has state 0
  Host router-01 has state 0
  Host windows100 has state 0
  Host Apache_01 has state 0</pre>
 <p>Output with filter:</p>
 
-      <pre class="programlisting"> Host switch70 has the current state 0
+            <pre class="programlisting"> Host switch70 has the current state 0
  Host switch71 has the current state 0
  Host switch72 has the current state 0
  Host switch73 has the current state 0
@@ -145,11 +163,11 @@
  Host switch75 has the current state 0
  Host switch76 has the current state 0
  Host switch77 has the current state 0</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Complete code without use of filters</strong></span></p>
+            <p><span class="bold"><strong>Complete code without use of filters</strong></span></p>
 
-      <pre class="programlisting"> &lt;?
+            <pre class="programlisting"> &lt;?
  // Path to icinga api file
  $apiFile = ‘icinga-api/IcingaApi.php’;
  
@@ -182,14 +200,14 @@
  }
  ?&gt;</pre>
 
-      <p>Please have a look at the <a class="link" href="http://git.icinga.org/" target="_top">git repository</a> for further information or consult the
-      exmaples in the doc/examples folder.</p>
-    </li>
+            <p>Please have a look at the <a class="link" href="http://git.icinga.org/" target="_top">git repository</a> for further information or consult the
+            exmaples in the doc/examples folder.</p>
+        </li>
 </ol></div>
 
-  <a class="indexterm" name="id1564236"></a>
+    <a class="indexterm" name="id2011013"></a>
 
-  <a class="indexterm" name="id1564252"></a>
+    <a class="indexterm" name="id2011029"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -198,13 +216,13 @@
 <td width="40%" align="left">
 <a accesskey="p" href="icinga-web-scratch.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="ch11.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Installation of the Icinga web frontend from scratch </td>
+<td width="40%" align="left" valign="top">Installation of the Icinga Web Frontend </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Index</td>
+<td width="40%" align="right" valign="top"> Chapter 11. IDOUtils</td>
 </tr>
 </table>
 </div>
