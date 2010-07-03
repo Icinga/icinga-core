@@ -838,7 +838,11 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	                     }
 	 
 	                     log_debug_info(DEBUGL_CHECKS,0,"running process %s via execv\n",processed_command);
-	                     execv(chldargs[0],chldargs);
+                             if (access(chldargs[0], R_OK|X_OK) == 0) {
+	                         execv(chldargs[0],chldargs);
+                             } else {
+                               logit(NSLOG_RUNTIME_WARNING,TRUE,"wrong permissions on plugin %s\n",chldargs[0]);
+                             }
                      	    _exit(EXIT_FAILURE);
 			}
 
