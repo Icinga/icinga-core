@@ -1,0 +1,215 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Beispielkonfigurationen</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
+<link rel="up" href="ch11.html" title="Kapitel 11. IDOUtils">
+<link rel="prev" href="components.html" title="Komponenten">
+<link rel="next" href="db_model.html" title="IDOUtils Database Model">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Beispielkonfigurationen</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="components.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 11. IDOUtils</th>
+<td width="20%" align="right"> <a accesskey="n" href="db_model.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Beispielkonfigurationen">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="example-configs"></a>Beispielkonfigurationen</h2></div></div></div>
+  
+
+  <div class="section" title="Einzelner Server, einzelne Instanz">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5615413"></a>Einzelner Server, einzelne Instanz</h3></div></div></div>
+    
+
+    <p>Die einfachste Konfiguration tritt auf, wenn in Ihrem Netzwerk eine einzelne Icinga-Instanz läuft. In diesem Fall ist die
+    Installation und Konfiguration der einzelnen Komponenten ziemlich geradeaus.</p>
+
+    <p>Das folgende Schaubild zeigt, wie die einzelnen Komponenten in diesem Einzelserver, Einzel-Icinga-Instanz-Aufbau
+    zusammenspielen...</p>
+
+    <div class="figure">
+<a name="id5615430"></a><p class="title"><b>Abbildung 11.11. Einzelserver, Einzelinstanz</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig11.png" alt="Einzelserver, Einzelinstanz"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Hier eine Beschreibung, was an jedem Punkt des Schaubilds passiert:</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>Das IDOMOD-Modul wird mit einem Instanznamen "default" konfiguriert, weil es lediglich eine Icinga-Instanz im Netzwerk
+        gibt.</p>
+      </li>
+<li class="listitem">
+        <p>Während der Icinga-Daemon läuft und die üblichen Aufgaben zur Überwachung des Netzwerks ausführt, sendet das
+        IDOMOD-Modul Konfigurationsdaten und Ereignisinformationen an den TCP- oder Unix-Domain-Socket, der durch den IDO2DB-Daemon angelegt
+        wurde.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon liest die Daten, die durch den Socket vom IDOMOD-Modul kommen.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon verarbeitet und überträgt die Daten, die vom IDOMOD-Modul empfanden wurden.</p>
+      </li>
+<li class="listitem">
+        <p>Die verarbeiteten Daten werden für spätere Abfragen und Verarbeitung in einer Datenbank gespeichert.</p>
+      </li>
+</ol></div>
+
+    <p>Dieses Beispiel setzt voraus, dass:</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>Icinga konfiguriert wurde, um das IDOMOD-Modul beim Start zu laden.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon läuft (der ein separater, vom Icinga-Daemon unabhängiger, Prozess ist).</p>
+      </li>
+</ol></div>
+  </div>
+
+  <div class="section" title="Einzelner Server, mehrere Instanzen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5615519"></a>Einzelner Server, mehrere Instanzen</h3></div></div></div>
+    
+
+    <p>Eine weitere einfache Konfiguration kann genutzt werden, wenn Sie mehrere Icinga-Instanzen haben, die auf einem einzigen
+    Server laufen. Installation und Konfiguration der verschiedenen Komponenten des IDOUtils-Addons ist ähnlich zum vorigen
+    Beispiel.</p>
+
+    <p>Das folgende Schaubild zeigt, wie die verschiedenen Komponenten in diesem "einzelner Server, mehrere
+    Icinga-Instanzen"-Aufbau zusammenspielen...</p>
+
+    <div class="figure">
+<a name="id5615542"></a><p class="title"><b>Abbildung 11.12. Einzelner Server, mehrere Instanzen</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig12.png" alt="Einzelner Server, mehrere Instanzen"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Sie werden bemerken, dass das obige Schaubild ähnlich zu dem "einzelner Server, einzelne Instanz"-Aufbau ist. Der Hauptunterschied
+    besteht darin, dass es nun drei (3) verschiedene Icinga-Daemons statt eines einzelnen gibt.</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>Jeder Icinga-Daemon lädt das IDOMOD-Modul beim Start mit einem eindeutigen Instanznamen. In diesem Beispiel werden die
+        Instanzen einfach "Icinga1", "Icinga2" und "Icinga3" benannt.</p>
+      </li>
+<li class="listitem">
+        <p>Jedes IDOMOD-Modul sendet Konfigurationsdaten und Ereignisinformationen seiner Instanz des Icinga-Daemons an den TCP-
+        oder Unix-Domain-Sockets, der vom IDO2DB-Daemon angelegt wurde.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon liest die Daten, die durch den Socket von den drei IDOMOD-Modulen kommen.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon verarbeitet und überträgt die Daten, die von den IDOMOD-Modules empfangen wurden.</p>
+      </li>
+<li class="listitem">
+        <p>Die verarbeiteten Daten werden für spätere Abfragen und Verarbeitung in einer Datenbank gespeichert. Die Daten jeder
+        Icinga-Instanz werden (mit Hilfe des eindeutigen Instanznamens) in der Datenbank getrennt voneinander gehalten.</p>
+      </li>
+</ol></div>
+  </div>
+
+  <div class="section" title="Einzelner Server, einzelne Instanz, Log-Datei-Import">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5615615"></a>Einzelner Server, einzelne Instanz, Log-Datei-Import</h3></div></div></div>
+    
+
+    <p>Es gibt zwei Gründe, warum Sie vielleicht Ihre Icinga-Log-Dateien in die gleiche Datenbank importieren möchte, die
+    Icinga-Konfigurations- und Ereignisdaten enthält:</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>Historische Log-Datei-Daten werden nicht automatisch in die Datenbank importiert und möglicherweise ist es wünschenswert,
+        Einträge von Ereignisse zu haben, die vor der Implementierung des IDOUtils-Addon eintraten.</p>
+      </li>
+<li class="listitem">
+        <p>Das IDOMOD-Modul ist nicht in der Lage, Echtzeit-Log-Einträge von direkt nach dem Start des Icinga-Daemon bis zum
+        Zeitpunkt des Ladens des IDOMOD-Moduls durch den Icinga-Daemon zu verarbeiten. Diese "Blackout-Periode" ist unvermeidbar und
+        führt zu Log-Einträgen wie "Icinga 1.0 starting...", die das IDOMOD-Modul nicht mitbekommt. Daher wird das Importieren der
+        Logdateien des vorangegangenen Tages auf täglicher Basis (über einen cron-Job) empfohlen.</p>
+      </li>
+</ol></div>
+
+    <div class="figure">
+<a name="id5615644"></a><p class="title"><b>Abbildung 11.13. Einzelner Server, einzelne Instanz, Log-Datei-Import</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig13.png" alt="Einzelner Server, einzelne Instanz, Log-Datei-Import"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Hier eine Beschreibung, was an jedem Punkt des Schaubilds passiert:</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>Historische Icinga-Log-Dateien werden vom LOG2IDO-Utility gelesen.</p>
+      </li>
+<li class="listitem">
+        <p>Das LOG2IDO-Utility verarbeitet den Inhalt der Log-Dateien und versieht sie mit dem Instanznamen "default". Dieser Instanzname
+        muss mit dem Instanznamen übereinstimmen, der vom IDOMOD-Modul im Icinga-Daemon verwendet wird.</p>
+      </li>
+<li class="listitem">
+        <p>Historische Log-Datei-Daten werden in einem Format an den TCP- oder Unix-Domain-Socket geschickt, das der IDO2DB-Daemon
+        verstehen kann.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon liest die Log-Datei-Daten vom TCP- oder Unix-Domani-Socket.</p>
+      </li>
+<li class="listitem">
+        <p>Der IDO2DB-Daemon verarbeitet die Log-Datei-Daten.</p>
+      </li>
+<li class="listitem">
+        <p>Historische Log-Datei-Daten werden für spätere Abfragen und Verarbeitung in einer Datenbank gespeichert. Der IDO2DB-Daemon
+        wird einige Prüfungen durchführen, um das mehrfache importieren der gleichen historischen Log-Einträge zu verhindern, so dass der
+        Aufruf des LOG2IDO-Utilitys mit den gleichen Dateien keine negativen Auswirkungen haben sollte.</p>
+      </li>
+</ol></div>
+
+    <p>Das war's! Ziemlich einfach.</p>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="components.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch11.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="db_model.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Komponenten </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> IDOUtils Database Model</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

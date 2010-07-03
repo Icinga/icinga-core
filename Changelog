@@ -18,6 +18,7 @@ ENHANCEMENTS
         total count of notifications on a particular service or host.  It is
         sometimes desirable to escalate after the Nth critical notification,
         rather than after a total number of N notifications have been sent.
+	NOTE: This can be enabled through configure, it is currently incompaitble with mk_livestatus!
 * core: add event profiling option for stats of event counts and time taken for events
 * core: retention file loading speedup (Matthieu Kermagoret)
 
@@ -66,17 +67,13 @@ FIXES
 * core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)
 * core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)
 * core: header files: Remove dead prototypes (Andreas Ericsson)
-* core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)
 * core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)
-* core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)
 * core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)
-* core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)
 * core: xdata/xpddefault.c: Close perfdata files if fd's are >= 0 (Andreas Ericsson)
 * core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read
 * core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)
 * core: added icinga object version variable in neb api for usage with idomod
 * core: fix notification_period inheritance for services (Gordon Messmer)
-* core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)
 * core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)
 * core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel Malachowski)(Ethan Galstad)
 * core: error out if services defined without description in service object definition (service def and/or used templates)

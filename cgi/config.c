@@ -1870,11 +1870,17 @@ void display_serviceescalations(void){
 			printf("&nbsp;");
 		printf("</TD>\n");
 
+#ifndef USE_ST_BASED_ESCAL_RANGES
+		printf("<TD CLASS='%s'>%d</TD>",bg_class,temp_se->first_notification);
+#else
 		printf("<TD CLASS='%s'>%d, %d, %d, %d</TD>",bg_class,temp_se->first_notification,temp_se->first_warning_notification,temp_se->first_critical_notification, temp_se->first_unknown_notification);
+#endif
 
 		printf("<TD CLASS='%s'>",bg_class);
 
 		if(temp_se->last_notification==0)
+
+#ifdef USE_ST_BASED_ESCAL_RANGES
 			printf("Infinity, ");
 		else
 			printf("%d, ",temp_se->last_notification);
@@ -1883,13 +1889,18 @@ void display_serviceescalations(void){
 		else
 			printf("%d, ",temp_se->last_warning_notification);
 		if(temp_se->last_critical_notification==0)
+#endif
 			printf("Infinity");
 		else
+#ifndef USE_ST_BASED_ESCAL_RANGES
+			printf("%d",temp_se->last_notification);
+#else
 			printf("%d",temp_se->last_critical_notification);
 		if(temp_se->last_unknown_notification==0)
 			printf("Infinity");
 		else
 			printf("%d", temp_se->last_unknown_notification);
+#endif
 		printf("</TD>\n");
 
 		get_interval_time_string(temp_se->notification_interval,time_string,sizeof(time_string));
@@ -2092,10 +2103,16 @@ void display_hostescalations(void){
 			printf("&nbsp;");
 		printf("</TD>\n");
 
+#ifndef USE_ST_BASED_ESCAL_RANGES
+		printf("<TD CLASS='%s'>%d</TD>",bg_class,temp_he->first_notification);
+#else
 		printf("<TD CLASS='%s'>%d, %d, %d</TD>",bg_class,temp_he->first_notification,temp_he->first_down_notification,temp_he->first_unreachable_notification);
+#endif
 
 		printf("<TD CLASS='%s'>",bg_class);
 		if(temp_he->last_notification==0)
+
+#ifdef USE_ST_BASED_ESCAL_RANGES
 			printf("Infinity, ");
 		else
 			printf("%d, ",temp_he->last_notification);
@@ -2104,9 +2121,14 @@ void display_hostescalations(void){
 		else
 			printf("%d, ",temp_he->last_down_notification);
 		if(temp_he->last_unreachable_notification==0)
+#endif
 			printf("Infinity");
 		else
+#ifndef USE_ST_BASED_ESCAL_RANGES
+			printf("%d",temp_he->last_notification);
+#else
 			printf("%d",temp_he->last_unreachable_notification);
+#endif
 		printf("</TD>\n");
 
 		get_interval_time_string(temp_he->notification_interval,time_string,sizeof(time_string));

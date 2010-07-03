@@ -1,0 +1,203 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Components</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="up" href="ch11.html" title="Chapter 11. IDOUtils">
+<link rel="prev" href="db_intro.html" title="Introduction">
+<link rel="next" href="db_example-configs.html" title="Example Configurations">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Components</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="db_intro.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 11. IDOUtils</th>
+<td width="20%" align="right"> <a accesskey="n" href="db_example-configs.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Components">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="db_components"></a>Components</h2></div></div></div>
+  
+
+  <div class="section" title="Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2011247"></a>Overview</h3></div></div></div>
+    
+
+    <p>There are four main components that make up the IDO utilities:</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>IDOMOD Event Broker Module</p>
+      </li>
+<li class="listitem">
+        <p>LOG2IDO Utility</p>
+      </li>
+<li class="listitem">
+        <p>FILE2SOCK Utility</p>
+      </li>
+<li class="listitem">
+        <p>IDO2DB Daemon</p>
+      </li>
+</ol></div>
+
+    <p>Each component is described in more detail on the following pages.</p>
+  </div>
+
+  <div class="section" title="IDOMOD">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2011295"></a>IDOMOD</h3></div></div></div>
+    
+
+    <p>The IDO utilities includes an Icinga event broker module (IDOMOD.O) that exports data from the Icinga daemon.</p>
+
+    <p>Assuming that Icinga has been compiled with the event broker enabled (this is the default), you can configure Icinga
+    to load the IDOMOD module during runtime. Once the module has been loaded by the Icinga daemon, it can access all of the data and
+    logic present in the running Icinga process.</p>
+
+    <div class="figure">
+<a name="id2011312"></a><p class="title"><b>Figure 11.5. Loaded IDOMOD Event broker Module</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig5.png" alt="Loaded IDOMOD Event broker Module"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>The IDOMOD module has been designed to export configuration data, as well as information about various runtime events that occur
+    in the monitoring process, from the Icinga daemon. The module can send this data to a standard file, a Unix domain socket, or a
+    TCP socket.</p>
+
+    <div class="figure">
+<a name="id2011349"></a><p class="title"><b>Figure 11.6. IDOMOD Capabilities</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig6.png" alt="IDOMOD Capabilities"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>The IDOMOD module writes data in a format that the IDO2DB daemon (described later) can understand.</p>
+
+    <p>If the IDOMOD module is writing its output to a file, you can configure it to periodically rotate and/or process the output file
+    using a predefined Icinga command. This can be useful if you want to transfer the output file to another physical machine (using
+    SSH, etc. ) and send its contents to the IDO2DB daemon using the FILE2SOCK utility (described later).</p>
+
+    <p>If the IDOMOD module is writing its output to a TCP or Unix domain socket, it has some resistance to connection dropouts. The
+    module will attempt to cache its output until it can (re)connect to the socket for writing. This is helpful if the process that creates
+    and listens on the socket needs to be restarted, etc.</p>
+  </div>
+
+  <div class="section" title="LOG2IDO">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2011387"></a>LOG2IDO</h3></div></div></div>
+    
+
+    <p>The LOG2IDO utility has been designed to allow you to import historical Icinga, Nagios and NetSaint log files into a
+    database via the IDO2DB daemon (<a class="link" href="db_components.html#IDO2DB-description" title="IDO2DB">described later</a>). The utility works by sending historical log
+    file data to a standard file, a Unix domain socket, or a TCP socket in a format the IDO2DB daemon understands. The IDO2DB daemon can
+    then be used to process that output and store the historical logfile information in a database.</p>
+
+    <div class="figure">
+<a name="id2011398"></a><p class="title"><b>Figure 11.7. LOG2IDO Utility</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig7.png" alt="LOG2IDO Utility"></div>
+    </div>
+</div>
+<br class="figure-break">
+  </div>
+
+  <div class="section" title="FILE2SOCK">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2011421"></a>FILE2SOCK</h3></div></div></div>
+    
+
+    <p>The FILE2SOCK utility is quite simple. It reads input from a standard file (or STDIN) and writes all of that data to either a Unix
+    domain socket or TCP socket. The data that is read is not processed in any way before it is sent to the socket.</p>
+
+    <div class="figure">
+<a name="id2011438"></a><p class="title"><b>Figure 11.8. FILE2SOCK Utility</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig8.png" alt="FILE2SOCK Utility"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>This utility is useful if you are directing the output of the IDOMOD event broker module and/or LOG2IDO utility to a standard
+    file. Once these components finish writing their output to a file, you can use the FILE2SOCK utility to send the contents of the file to
+    the IDO2DB daemon's TCP or Unix domain socket.</p>
+  </div>
+
+  <div class="section" title="IDO2DB">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="IDO2DB-description"></a>IDO2DB</h3></div></div></div>
+    
+
+    <p>The IDO2DB utility is designed to take the data output from the IDOMOD and LOG2IDO components and store it in a MySQL, Oracle, or PostgreSQL database.</p>
+
+    <p>When it starts, the IDO2DB daemon creates either a TCP or Unix domain socket and waits for clients to connect. IDO2DB can run
+    either as a standalone, multi-process daemon or under INETD (if using a TCP socket).</p>
+
+    <div class="figure">
+<a name="id2011488"></a><p class="title"><b>Figure 11.9. IDO2DB Daemon</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig9.png" alt="IDO2DB Daemon"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Multiple clients can connect to the IDO2DB daemon's socket and transmit data simultaneously. A separate IDO2DB process is spawned
+    to handle each new client that connects. Data is read from each client and stored in a user-specified database for later retrieval and
+    processing.</p>
+
+    <div class="figure">
+<a name="id2011516"></a><p class="title"><b>Figure 11.10. IDO2DB with multiple Clients</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig10.png" alt="IDO2DB with multiple Clients"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>The IDO2DB daemon currently supports MySQL, Oracle, and PostgreSQL databases.</p>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="db_intro.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="db_example-configs.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Introduction </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Example Configurations</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

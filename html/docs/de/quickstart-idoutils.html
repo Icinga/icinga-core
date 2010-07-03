@@ -4,7 +4,7 @@
 <title>Icinga-Schnellstart mit IDOUtils</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">
 <link rel="next" href="upgrading.html" title="Icinga aktualisieren">
@@ -55,7 +55,7 @@
       Plattenbelegung, usw.)</p>
     </li>
 <li class="listitem">
-      <p>Das Icinga-Web-Interface ist erreichbar unter http://localhost/icinga/</p>
+      <p>Das klassische Icinga-Web-Interface ist erreichbar unter http://localhost/icinga/</p>
     </li>
 <li class="listitem">
       <p>Eine Datenbank, die von Icinga mit Hilfe von IDOUtils gefüllt wird</p>
@@ -126,9 +126,9 @@
   <p>Download des ocilib-Treiber von http://orclib.sourceforge.net/ und verweisen Sie beim configure auf Ihre Oracle-Libraries und die Header-Files, z.B.
   die des Oracle Instant-Client:</p>
 
-  <pre class="programlisting"> # ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include --with-oracle-lib-path=/path/to/instantclient/
- # make
- # make install</pre>
+  <pre class="programlisting"> #&gt; ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include --with-oracle-lib-path=/path/to/instantclient/
+ #&gt; make
+ #&gt; make install</pre>
 
   <p><span class="bold"><strong>Installation der Pakete</strong></span></p>
 
@@ -136,21 +136,21 @@
 
   <p><span class="bold"><strong>Fedora / RedHat / CentOS:</strong></span></p>
 
-  <pre class="programlisting"> # yum install httpd gcc glibc glibc-common gd gd-devel
- # yum install libjpeg libjpeg-devel libpng libpng-devel</pre>
+  <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
+ #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel</pre>
 
   <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-  <pre class="programlisting"> # yum install mysql mysql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
+  <pre class="programlisting"> #&gt; yum install mysql mysql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
 
   <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-  <pre class="programlisting"> # yum install postgresql postgresql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-pgsql</pre>
+  <pre class="programlisting"> #&gt; yum install postgresql postgresql-server libdbi libdbi-devel libdbi-drivers libdbi-dbd-pgsql</pre>
 
   <p><span class="bold"><strong>Debian / Ubuntu:</strong></span></p>
 
-  <pre class="programlisting"> # apt-get install apache2 build-essential libgd2-xpm-dev
- # apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev</pre>
+  <pre class="programlisting"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
+ #&gt; apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -164,11 +164,11 @@
 
   <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-  <pre class="programlisting"> # apt-get install mysql-server mysql-client libdbi0 libdbi0-dev libdbd-mysql</pre>
+  <pre class="programlisting"> #&gt; apt-get install mysql-server mysql-client libdbi0 libdbi0-dev libdbd-mysql</pre>
 
   <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-  <pre class="programlisting"> # apt-get install postgresql libdbi0 libdbi0-dev libdbd-pgsql</pre>
+  <pre class="programlisting"> #&gt; apt-get install postgresql libdbi0 libdbi0-dev libdbd-pgsql</pre>
 
   <p><span class="bold"><strong>openSuSE:</strong></span></p>
 
@@ -188,24 +188,24 @@
 
       <p><a class="link" href="http://libdbi-drivers.sourceforge.net/download.html" target="_top">http://libdbi-drivers.sourceforge.net/download.html</a></p>
 
-      <pre class="programlisting"> # tar xvzf libdbi-0.8.3.tar.gz
- # tar xvzf libdbi-drivers-0.8.3-1.tar.gz</pre>
+      <pre class="programlisting"> #&gt; tar xvzf libdbi-0.8.3.tar.gz
+ #&gt; tar xvzf libdbi-drivers-0.8.3-1.tar.gz</pre>
     </li>
 <li class="listitem">
       <p>Installieren Sie die libdbi. Möglicherweise brauchen Sie beim configure weitere Optionen (set --prefix=/usr ... )</p>
 
-      <pre class="programlisting"> # cd libdbi-0.8.3
- # ./configure --disable-docs
- # make
- # make install</pre>
+      <pre class="programlisting"> #&gt; cd libdbi-0.8.3
+ #&gt; ./configure --disable-docs
+ #&gt; make
+ #&gt; make install</pre>
     </li>
 <li class="listitem">
       <p>Installieren Sie die libdbi-Treiber</p>
 
-      <pre class="programlisting"> # cd libdbi-drivers-0.8.3-1
- # ./configure --with-&lt;rdbm&gt; --disable-docs
- # make
- # make install</pre>
+      <pre class="programlisting"> #&gt; cd libdbi-drivers-0.8.3-1
+ #&gt; ./configure --with-&lt;rdbm&gt; --disable-docs
+ #&gt; make
+ #&gt; make install</pre>
 
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -215,7 +215,7 @@
 <tr><td align="left" valign="top">
         <p>Bei den 64-bit-Versionen müssen Sie die Pfade zu den include- und lib-dir-Verzeichnissen explizit angeben:</p>
 
-        <pre class="programlisting"> # ./configure --with--&lt;rdbm&gt; --with-&lt;rdbm&gt;-incdir=/usr/include/&lt;rdbm&gt;/ --with-&lt;rdbm&gt;-libdir=/usr/lib64/ --disable-docs</pre>
+        <pre class="programlisting"> #&gt; ./configure --with-&lt;rdbm&gt; --with-&lt;rdbm&gt;-incdir=/usr/include/&lt;rdbm&gt;/ --with-&lt;rdbm&gt;-libdir=/usr/lib64/ --disable-docs</pre>
       </td></tr>
 </table></div>
     </li>
@@ -225,23 +225,23 @@
 
   <p>Werden Sie zum root-Benutzer.</p>
 
-  <pre class="programlisting"> # su -l</pre>
+  <pre class="programlisting"> $&gt; su -l</pre>
 
   <p>Erstellen Sie ein neues Benutzerkonto <span class="emphasis"><em>icinga</em></span> und vergeben Sie ein Passwort:</p>
 
-  <pre class="programlisting"> # /usr/sbin/useradd -m icinga 
- # passwd icinga  </pre>
+  <pre class="programlisting"> #&gt; /usr/sbin/useradd -m icinga 
+ #&gt; passwd icinga  </pre>
 
   <p>Bei einigen Distributionen müssen Sie die Gruppe in einem gesonderten Schritt anlegen:</p>
 
-  <pre class="programlisting"> # /usr/sbin/groupadd icinga</pre>
+  <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga</pre>
 
-  <p>Damit Sie über das Webinterface Befehle an Icinga senden können, legen Sie noch eine neue Gruppe icinga-cmd an und fügen Sie
-  den Webbenutzer und den Icingabenutzer dieser Gruppe hinzu.</p>
+  <p>Damit Sie über das klassische Web-Interface Befehle an Icinga senden können, legen Sie noch eine neue Gruppe icinga-cmd an
+  und fügen Sie den Webbenutzer und den Icingabenutzer dieser Gruppe hinzu.</p>
 
-  <pre class="programlisting"> # /usr/sbin/groupadd icinga-cmd
- # /usr/sbin/usermod -a -G icinga-cmd icinga
- # /usr/sbin/usermod -a -G icinga-cmd www-data (oder www, wwwrun, apache je nach Distribution)</pre>
+  <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
+ #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
+ #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data (oder www, wwwrun, apache je nach Distribution)</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -257,10 +257,10 @@
 
   <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
 
-  <pre class="programlisting"> # cd /usr/src</pre>
+  <pre class="programlisting"> #&gt; cd /usr/src</pre>
 
   <p>Holen Sie den aktuellen icinga-core-Snapshot aus dem Icinga GIT </p>
-<pre class="programlisting"> # git clone git://git.icinga.org/icinga-core.git</pre>
+<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-core.git</pre>
 <p>
   oder von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga-Website</a>.</p>
 
@@ -270,28 +270,41 @@
 
   <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
-  <pre class="programlisting"> # cd /usr/src/ 
- # tar xvzf icinga-1.0.1.tar.gz 
- # cd icinga-1.0.1</pre>
+  <pre class="programlisting"> #&gt; cd /usr/src/ 
+ #&gt; tar xvzf icinga-1.0.2.tar.gz 
+ #&gt; cd icinga-1.0.2</pre>
 
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
-  <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
+  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
+
+  <div class="caution" title="Achtung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Achtung]" src="../images/caution.png"></td>
+<th align="left">Achtung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Das Kompilieren auf Solaris kann wegen unerfüllten Bibliotheksabhängigkeiten von gethostbyname fehlschlagen. Wenn dies der Fall
+    ist, führen Sie folgenden Befehl vor configure aus:</p>
+
+    <pre class="programlisting"> #&gt; export LIBS=-lsocket -lnsl</pre>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Mit <span class="bold"><strong>SSL</strong></span>-Verschlüsselung:</strong></span></p>
 
-  <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
+  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
 
   <p><span class="bold"><strong>Mit Oracle-Datenbankunterstützung:</strong></span></p>
 
-  <pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle</pre>
-<p> Wenn Ihre Oracle
-  Libraries nicht in der Path-Variablen enthalten sind, können Sie sie im configure angeben: </p>
-<pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle \
+  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle</pre>
+<p> Wenn Ihre
+  Oracle Libraries nicht in der Path-Variablen enthalten sind, können Sie sie im configure angeben: </p>
+<pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle \
  --with-oracle-lib=/path/to/instantclient</pre>
 <p> Wenn Sie die ocilib nicht im Standardpfad (/usr/local) installiert haben, können
   Sie configure die lib/inc Verzeichnisse angeben:</p>
-<pre class="programlisting"> # ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle \
+<pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle \
  --with-ocilib-lib=/path/to/ocilib/lib --with-ocilib-inc=/path/to/ocilib/include</pre>
 <p> </p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -305,28 +318,34 @@
     </td></tr>
 </table></div>
 <p> </p>
-<pre class="programlisting"> # make distclean
- # ./configure --enable-idoutils</pre>
+<pre class="programlisting"> #&gt; make distclean
+ #&gt; ./configure --enable-idoutils</pre>
 <p> Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für
   IDOUtils (<span class="emphasis"><em>make idoutils</em></span>), wenn Sie nur dieses Module erneut kompilieren möchten. Um mögliche Optionen zu
   sehen, rufen Sie lediglich "make" auf.</p>
-<pre class="programlisting"> # make all</pre>
+<pre class="programlisting"> #&gt; make all</pre>
 <p> Installieren Sie die Binaries, das Init-Script,
   Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das External-Command-Verzeichnis. </p>
-<pre class="programlisting"> # make install 
- # make install-init 
- # make install-config 
- # make install-commandmode 
+<pre class="programlisting"> #&gt; make install 
+ #&gt; make install-init 
+ #&gt; make install-config 
+ #&gt; make install-commandmode 
  # make install-idoutils</pre>
 <p> oder kürzer </p>
-<pre class="programlisting"> # make fullinstall</pre>
+<pre class="programlisting"> #&gt; make fullinstall</pre>
+
+  <p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-API (nach)installieren möchten, nutzen Sie:
+  </p>
+<pre class="programlisting"> #&gt; make install-api</pre>
+<p>Die Icinga-API ist Voraussetzung für das Icinga Web-Interface (nicht für die
+  klassische Ansicht!).</p>
 
   <p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
 
   <p><span class="bold"><strong>Anpassen der Konfiguration</strong></span></p>
 
   <p>Beispiel-Konfigurationsdateien werden durch </p>
-<pre class="programlisting"> # make install-config</pre>
+<pre class="programlisting"> #&gt; make install-config</pre>
 <p>in /usr/local/icinga/etc/
   installiert.</p>
 
@@ -334,11 +353,11 @@
   passen die e-Mail-Adresse in der <span class="emphasis"><em>icingaadmin</em></span>-Kontaktdefinition an, so dass sie die Adresse enthält, die im Falle von
   Alarmen benachrichtigt werden soll.</p>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
 
-  <pre class="programlisting"> # cd /usr/local/icinga/etc
- # mv idomod.cfg-sample idomod.cfg
- # mv ido2db.cfg-sample ido2db.cfg</pre>
+  <pre class="programlisting"> #&gt; cd /usr/local/icinga/etc
+ #&gt; mv idomod.cfg-sample idomod.cfg
+ #&gt; mv ido2db.cfg-sample ido2db.cfg</pre>
 
   <p>Wenn Sie die IDOUtils mit ssl kompiliert haben, aktivieren Sie ssl in der idomod.cfg mit</p>
 
@@ -349,7 +368,7 @@
   <p>(Passen Sie die IP-Adresse an, wenn sich Ihre Datenbank nicht auf localhost befindet!) und der ido2db.cfg mit</p>
 
   <pre class="programlisting"> use_ssl=1
-socket_type=tcp </pre>
+ socket_type=tcp </pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -357,8 +376,7 @@ socket_type=tcp </pre>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>!!! Vergessen Sie nicht, alle anderen idomod-Clients auch neu zu kompilieren und auf ssl umzustellen, anderenfalls werden Sie
-    Daten verlieren!!!</p>
+    <p>Vergessen Sie nicht, alle anderen idomod-Clients auch neu zu kompilieren und auf ssl umzustellen, <span class="bold"><strong>anderenfalls werden Sie Daten verlieren</strong></span>!!!</p>
   </td></tr>
 </table></div>
 
@@ -384,7 +402,7 @@ socket_type=tcp </pre>
 
   <p><span class="emphasis"><em>Anlegen von Datenbank, Benutzer und Berechtigungen</em></span></p>
 
-  <pre class="programlisting"> # mysql -u root -p
+  <pre class="programlisting"> #&gt; mysql -u root -p
   
  mysql&gt; CREATE DATABASE icinga;
   
@@ -396,10 +414,10 @@ socket_type=tcp </pre>
 
  quit</pre>
 
-  <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db/mysql
- # mysql -u root -p icinga &lt; mysql.sql</pre>
+  <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
+ #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/ido2db.cfg
+  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
   
  db_servertype=mysql
  db_port=3306
@@ -410,7 +428,7 @@ socket_type=tcp </pre>
 
   <p><span class="emphasis"><em>Anlegen von Datenbank und Benutzer</em></span></p>
 
-  <pre class="programlisting"> # su - postgres
+  <pre class="programlisting"> #&gt; su - postgres
   $psql
   postgres=# CREATE USER icinga;
   postgres=# ALTER USER icinga WITH PASSWORD 'icinga';
@@ -418,11 +436,11 @@ socket_type=tcp </pre>
 
   <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> # vi /etc/postgresql/8.x/main/pg_hba.conf</pre>
+  <pre class="programlisting"> #&gt; vi /etc/postgresql/8.x/main/pg_hba.conf</pre>
 
   <p><span class="bold"><strong>Fedora / RedHat / CentOS:</strong></span></p>
 
-  <pre class="programlisting"> # vi /var/lib/pgsql/data/pg_hba.conf</pre>
+  <pre class="programlisting"> #&gt; vi /var/lib/pgsql/data/pg_hba.conf</pre>
 
   <p>Editieren Sie die Konfiguration z.B. wie folgt (dem lokalen Benutzer muss vertraut werden)</p>
 
@@ -440,14 +458,14 @@ socket_type=tcp </pre>
 
   <p>Neuladen und konfigurieren des Datenbankschemas</p>
 
-  <pre class="programlisting"> # /etc/init.d/postgresql-8.x reload</pre>
+  <pre class="programlisting"> #&gt; /etc/init.d/postgresql-8.x reload</pre>
 
-  <pre class="programlisting"> # cd /path/to/icinga-src/module/idoutils/db/pgsql/
- # psql -U icinga -d icinga &lt; pgsql.sql</pre>
+  <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/pgsql/
+ #&gt; psql -U icinga -d icinga &lt; pgsql.sql</pre>
 
   <p>Editieren der DB-Konfigurationsdatei, um die IDOUtils anzupassen</p>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/ido2db.cfg
+  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
  db_servertype=pgsql
  db_port=5432
  db_user=icinga
@@ -459,30 +477,39 @@ socket_type=tcp </pre>
   http://www.oracle.com oder fragen Sie Ihren DBA). Importieren Sie das Datenbank-Schema mit sqlplus (oder Ihrer bevorzugten Methode). Kopieren Sie
   module/idoutils/db/oracle/oracle.sql nach $ORACLE_HOME</p>
 
-  <pre class="programlisting"> # su - oracle
+  <pre class="programlisting"> #&gt; su - oracle
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle.sql</pre>
 
   <p>Editieren Sie das DB-Config-File, um die IDOUtils anzupassen. Denken Sie daran, dass Oracle den DB-Host ignoriert, nutzen Sie
   statt dessen db_name, um auf //DBSERVER/DBNAME zu verweisen</p>
 
-  <pre class="programlisting"># vi /usr/local/icinga/etc/ido2db.cfg
+  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
   db_servertype=oracle
   db_port=1521
   db_user=icinga
   db_pass=icinga</pre>
 
-  <p><span class="bold"><strong>Konfigurieren des Web-Interface</strong></span></p>
+  <p><span class="bold"><strong>Installieren und konfigurieren des klassischen Web-Interface</strong></span></p>
+
+  <p>Icinga stellt das klassische Web-Interface zur Verfügung ("Classic Web", "die CGIs"). Sie können dieses wie folgt
+  installieren:</p>
+
+  <pre class="programlisting"> #&gt; make cgis
+ #&gt; make install-cgis</pre>
+
+  <p>Wenn Sie stattdessen das neue Icinga Web installieren wollen, lesen Sie bitte <a class="link" href="icinga-web-scratch.html" title="Installation des neuen Icinga Web Frontend">Installation des
+  Web-Interface</a>.</p>
 
   <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache conf.d-Verzeichnis.</p>
 
-  <pre class="screen"> # cd /path/to/icinga-src
- # make install-webconf</pre>
+  <pre class="screen"> #&gt; cd /path/to/icinga-src
+ #&gt; make install-webconf</pre>
 
-  <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am Web-Interface anmelden zu können. Merken Sie sich das Passwort,
-  das Sie diesem Konto geben - Sie brauchen es später.</p>
+  <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am klassischen Web-Interface anmelden zu können. Merken Sie sich
+  das Passwort, das Sie diesem Konto geben - Sie brauchen es später.</p>
 
-  <pre class="screen"> # htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+  <pre class="screen"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -496,21 +523,21 @@ socket_type=tcp </pre>
 
   <p>Wenn Sie das Passwort später ändern oder einen weiteren Benutzer hinzufügen möchten, verwenden Sie den folgenden Befehl:</p>
 
-  <pre class="programlisting"> # htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+  <pre class="programlisting"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
 
   <p>Starten Sie Apache neu, damit die Änderungen wirksam werden.</p>
 
   <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span>:</p>
 
-  <pre class="programlisting"> # service httpd restart</pre>
+  <pre class="programlisting"> #&gt; service httpd restart</pre>
 
   <p><span class="bold"><strong>Ubuntu / openSuSE:</strong></span></p>
 
-  <pre class="programlisting"># service apache2 restart</pre>
+  <pre class="programlisting"> #&gt; service apache2 restart</pre>
 
   <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> # /etc/init.d/apache2 reload</pre>
+  <pre class="programlisting"> #&gt; /etc/init.d/apache2 reload</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -527,15 +554,15 @@ socket_type=tcp </pre>
 
   <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
 
-  <pre class="screen"> # cd /usr/src
- # tar xzf nagios-plugins-1.4.14.tar.gz
- # cd nagios-plugins-1.4.14</pre>
+  <pre class="screen"> #&gt; cd /usr/src
+ #&gt; tar xzf nagios-plugins-1.4.14.tar.gz
+ #&gt; cd nagios-plugins-1.4.14</pre>
 
   <p>Kompilieren und installieren Sie die Plugins.</p>
 
-  <pre class="screen"> # ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga
- # make
- # make install</pre>
+  <pre class="screen"> #&gt; ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga
+ #&gt; make
+ #&gt; make install</pre>
 
   <p><span class="bold"><strong>IDOUtils und Icinga starten</strong></span></p>
 
@@ -545,21 +572,21 @@ socket_type=tcp </pre>
 
   <p><span class="bold"><strong>Fedora / openSuSE/Ubuntu:</strong></span></p>
 
-  <pre class="programlisting"> # service ido2db start</pre>
+  <pre class="programlisting"> #&gt; service ido2db start</pre>
 
   <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> # /etc/init.d/ido2db start </pre>
+  <pre class="programlisting"> #&gt; /etc/init.d/ido2db start </pre>
 
   <p><span class="bold"><strong>IDOUtils beenden</strong></span></p>
 
   <p><span class="bold"><strong>Fedora / openSuSE/Ubuntu:</strong></span></p>
 
-  <pre class="programlisting"> # service ido2db stop</pre>
+  <pre class="programlisting"> #&gt; service ido2db stop</pre>
 
   <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"># /etc/init.d/ido2db stop</pre>
+  <pre class="programlisting"> #&gt; /etc/init.d/ido2db stop</pre>
 
   <p><span class="bold"><strong>Automatischer Start von IDOUtils</strong></span></p>
 
@@ -568,11 +595,11 @@ socket_type=tcp </pre>
 
   <p><span class="bold"><strong>Fedora / openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> # chkconfig --add ido2db
- # chkconfig ido2db on </pre>
+  <pre class="programlisting"> #&gt; chkconfig --add ido2db
+ #&gt; chkconfig ido2db on </pre>
 
   <p><span class="bold"><strong>Debian / Ubuntu:</strong></span> </p>
-<pre class="programlisting"> # update-rc.d ido2db defaults</pre>
+<pre class="programlisting"> #&gt; update-rc.d ido2db defaults</pre>
 <p>
   <span class="bold"><strong>Icinga starten:</strong></span></p>
 
@@ -580,17 +607,17 @@ socket_type=tcp </pre>
 
   <p>Überprüfen Sie die Icinga-Beispielkonfigurationsdateien.</p>
 
-  <pre class="programlisting"> # /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
   <p>Wenn es dabei keine Fehler gibt, starten Sie Icinga.</p>
 
   <p><span class="bold"><strong>Fedora / openSuSE/Ubuntu:</strong></span></p>
 
-  <pre class="programlisting"> # service icinga start</pre>
+  <pre class="programlisting"> #&gt; service icinga start</pre>
 
   <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> # /etc/init.d/icinga start</pre>
+  <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
 
   <p><span class="bold"><strong>Automatischer Start von Icinga</strong></span></p>
 
@@ -599,12 +626,12 @@ socket_type=tcp </pre>
 
   <p><span class="bold"><strong>Fedora / openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> # chkconfig --add icinga 
- # chkconfig icinga on </pre>
+  <pre class="programlisting"> #&gt; chkconfig --add icinga 
+ #&gt; chkconfig icinga on </pre>
 
   <p><span class="bold"><strong>Debian / Ubuntu:</strong></span></p>
 
-  <pre class="programlisting"> # update-rc.d icinga defaults</pre>
+  <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
 
   <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
 
@@ -613,11 +640,11 @@ socket_type=tcp </pre>
 
   <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
 
-  <pre class="screen"> # getenforce</pre>
+  <pre class="screen"> #&gt; getenforce</pre>
 
   <p>Setzen Sie SELinux in den "Permissive"-Modus.</p>
 
-  <pre class="screen"> # setenforce 0</pre>
+  <pre class="screen"> #&gt; setenforce 0</pre>
 
   <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
   System neustarten.</p>
@@ -625,15 +652,15 @@ socket_type=tcp </pre>
   <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
   CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
 
-  <pre class="screen"> # chcon -R -t httpd_sys_content_t /usr/local/icinga/sbin/
- # chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
+  <pre class="screen"> #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/sbin/
+ #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
 
   <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
   Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
 
-  <p><span class="bold"><strong>Anmelden am Web-Interface</strong></span></p>
+  <p><span class="bold"><strong>Anmelden am klassischen Web-Interface</strong></span></p>
 
-  <p>Sie sollten nun auf das Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
+  <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
   (<span class="emphasis"><em>nagiosadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
 
   <pre class="screen"> http://localhost/icinga/</pre>
@@ -648,10 +675,10 @@ socket_type=tcp </pre>
 
   <p><span class="bold"><strong>Andere Anpassungen:</strong></span></p>
 
-  <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das Web-Interface ermöglichen, wenn Sie von
-  anderen Rechnern darauf zugreifen wollen.</p>
+  <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermöglichen, wenn
+  Sie von anderen Rechnern darauf zugreifen wollen.</p>
 
-  <pre class="programlisting"> # iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
+  <pre class="programlisting"> #&gt; iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
 
   <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
   e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
@@ -664,7 +691,8 @@ socket_type=tcp </pre>
   <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie werden ohne
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
-  <a class="indexterm" name="id3638519"></a>
+
+  <a class="indexterm" name="id5526489"></a>
 </div>
 <div class="navfooter">
 <hr>

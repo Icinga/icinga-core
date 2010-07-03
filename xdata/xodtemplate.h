@@ -595,12 +595,14 @@ typedef struct xodtemplate_serviceescalation_struct{
 	char      *hostgroup_name;
 	int       first_notification;
 	int       last_notification;
+#ifdef USE_ST_BASED_ESCAL_RANGES
 	int       first_warning_notification;
 	int       last_warning_notification;
 	int       first_critical_notification;
 	int       last_critical_notification;
 	int       first_unknown_notification;
 	int       last_unknown_notification;
+#endif
 	double    notification_interval;
 	char      *escalation_period;
 	int       escalate_on_warning;
@@ -620,12 +622,14 @@ typedef struct xodtemplate_serviceescalation_struct{
 
 	int       have_first_notification;
 	int       have_last_notification;
+#ifdef USE_ST_BASED_ESCAL_RANGES
 	int       have_first_warning_notification;
 	int       have_last_warning_notification;
 	int       have_first_critical_notification;
 	int       have_last_critical_notification;
 	int       have_first_unknown_notification;
 	int       have_last_unknown_notification;
+#endif
 	int       have_notification_interval;
 	int       have_escalation_options;
 
@@ -686,10 +690,12 @@ typedef struct xodtemplate_hostescalation_struct{
 	char      *hostgroup_name;
 	int       first_notification;
 	int       last_notification;
+#ifdef USE_ST_BASED_ESCAL_RANGES
 	int       first_down_notification;
 	int       last_down_notification;
 	int       first_unreachable_notification;
 	int       last_unreachable_notification;
+#endif
 	double    notification_interval;
 	char      *escalation_period;
 	int       escalate_on_down;
@@ -706,10 +712,12 @@ typedef struct xodtemplate_hostescalation_struct{
 
 	int       have_first_notification;
 	int       have_last_notification;
+#ifdef USE_ST_BASED_ESCAL_RANGES
 	int       have_first_down_notification;
 	int       have_last_down_notification;
 	int       have_first_unreachable_notification;
 	int       have_last_unreachable_notification;
+#endif
 	int       have_notification_interval;
 	int       have_escalation_options;
 

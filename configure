@@ -739,6 +739,7 @@ with_cgiurl
 with_htmurl
 enable_nanosleep
 enable_event_broker
+enable_state_based_escal_ranges
 enable_idoutils
 enable_oracle
 with_ocilib_lib
@@ -1383,6 +1384,9 @@ Optional Features:
   --enable-nanosleep      enables use of nanosleep (instead sleep) in event
                           timing
   --enable-event-broker   enables integration of event broker routines
+  --enable-state-based-escal-ranges
+                          enables state based escalation ranges - attention:
+                          interferes with mk_livestatus neb module
   --enable-idoutils       enables database connectivity using idoutils
   --enable-oracle         enables idoutils with ocilib and oracle
   --enable-embedded-perl  will enable embedded Perl interpreter
@@ -2357,9 +2361,9 @@ ac_config_headers="$ac_config_headers include/config.h include/snprintf.h"
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.0.1"
+PKG_VERSION="1.0.2"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="03-03-2010"
+PKG_REL_DATE="06-30-2010"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -5984,6 +5988,21 @@ _ACEOF
 	BROKER_O="broker.o nebmods.o"
 
 	BROKER_H="../include/broker.h ../include/nebmods.h ../include/nebmodules.h ../include/nebcallbacks.h ../include/neberrors.h"
+
+fi
+
+USE_STATE_BASED_ESCAL_RANGES=no
+# Check whether --enable-state-based-escal-ranges was given.
+if test "${enable_state_based_escal_ranges+set}" = set; then :
+  enableval=$enable_state_based_escal_ranges; USE_STATE_BASED_ESCAL_RANGES=$enableval
+else
+  USE_STATE_BASED_ESCAL_RANGES=no
+fi
+
+if test x$USE_STATE_BASED_ESCAL_RANGES = xyes; then
+	cat >>confdefs.h <<_ACEOF
+#define USE_ST_BASED_ESCAL_RANGES 1
+_ACEOF
 
 fi
 

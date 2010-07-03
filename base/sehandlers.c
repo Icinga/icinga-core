@@ -748,8 +748,11 @@ int handle_host_state(host *hst){
 
 		/* notify contacts about the recovery or problem if its a "hard" state */
 		if(hst->state_type==HARD_STATE){
+
+#ifdef USE_ST_BASED_ESCAL_RANGES
 			hst->current_down_notification_number=0;
 			hst->current_unreachable_notification_number=0;
+#endif
 			host_notification(hst,NOTIFICATION_NORMAL,NULL,NULL,NOTIFICATION_OPTION_NONE);
 		}
 

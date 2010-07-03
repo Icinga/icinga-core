@@ -4,7 +4,7 @@
 <title>Icinga starten und stoppen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
 <link rel="up" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prüfen">
 <link rel="prev" href="verifyconfig.html" title="Überprüfen Ihrer Icinga-Konfiguration">
 <link rel="next" href="ch05.html" title="Kapitel 5. Die Grundlagen">
@@ -29,51 +29,50 @@
 <a name="startstop"></a>Icinga starten und stoppen</h2></div></div></div>
   
 
-  <p>Es gibt mehr als einen Weg, um Icinga zu starten, zu stoppen und erneut zu starten. Hier einige der
-  üblichen...</p>
+  <p>Es gibt mehr als einen Weg, um Icinga zu starten, zu stoppen und erneut zu starten. Hier einige der üblichen...</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Stellen Sie immer sicher, dass Sie Ihre <a class="link" href="verifyconfig.html" title="Überprüfen Ihrer Icinga-Konfiguration">Konfiguration
-  überprüfen</a>, bevor Sie Icinga (neu)starten.</p>
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Stellen Sie immer sicher, dass Sie Ihre <a class="link" href="verifyconfig.html" title="Überprüfen Ihrer Icinga-Konfiguration">Konfiguration überprüfen</a>,
+  bevor Sie Icinga (neu)starten.</p>
 
   <p><span class="bold"><strong>Icinga starten</strong></span></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Init-Script:</strong></span> Der einfachste Weg, den Icinga-Daemon zu starten, ist die Nutzung
-      des Init-Scripts:</p>
+      <p><span class="bold"><strong>Init-Script:</strong></span> Der einfachste Weg, den Icinga-Daemon zu starten, ist die Nutzung des
+      Init-Scripts:</p>
 
-      <pre class="screen"> /etc/rc.d/init.d/nagios start</pre>
+      <pre class="screen"> #&gt; /etc/rc.d/init.d/nagios start</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>manuell:</strong></span> Sie können Icinga manuell mit der <span class="bold"><strong>-d</strong></span>-Kommandozeilenoption wie folgt starten:</p>
 
-      <pre class="screen"> /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
+      <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Debug Modus:</strong></span> Im ziemlich seltenen Fall, dass Icinga sich still ohne Hinweise
-      in den verschiedenen Log-Dateien beendet, können Sie Icinga durch das Weglassen der Daemon-Option starten:
-      </p>
-<pre class="programlisting"> /usr/local/icinga/bin/icinga /usr/local/icinga/etc/icinga.cfg</pre>
-<p> Auf diese Weise wird es im Vordergrund gestartet, so
-      dass eine Menge von Meldungen über den Bildschirm laufen, aber es könnte zu einem Hinweis ganz am Ende führen.</p>
+      <p><span class="bold"><strong>Debug Modus:</strong></span> Im ziemlich seltenen Fall, dass Icinga sich still ohne Hinweise in den
+      verschiedenen Log-Dateien beendet, können Sie Icinga durch das Weglassen der Daemon-Option starten: </p>
+<pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga /usr/local/icinga/etc/icinga.cfg</pre>
+<p>
+      Auf diese Weise wird es im Vordergrund gestartet, so dass eine Menge von Meldungen über den Bildschirm laufen, aber es könnte zu einem
+      Hinweis ganz am Ende führen.</p>
     </li>
 </ol></div>
 
   <p><span class="bold"><strong>Icinga erneut starten</strong></span></p>
 
-  <p>Ein Neustart bzw. neu laden ist notwendig, wenn Sie Ihre Konfigurationsdateien verändert haben und diese Änderungen aktiv
-  werden sollen.</p>
+  <p>Ein Neustart bzw. neu laden ist notwendig, wenn Sie Ihre Konfigurationsdateien verändert haben und diese Änderungen aktiv werden
+  sollen.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Init-Script:</strong></span> Der einfachste Weg, den Icinga-Daemon neu zu starten, ist die
-      Nutzung des Init-Scripts:</p>
+      <p><span class="bold"><strong>Init-Script:</strong></span> Der einfachste Weg, den Icinga-Daemon neu zu starten, ist die Nutzung des
+      Init-Scripts:</p>
 
-      <pre class="screen"> /etc/rc.d/init.d/nagios reload</pre>
+      <pre class="screen"> #&gt; /etc/rc.d/init.d/nagios reload</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Web-Interface:</strong></span> Sie können Icinga mit Hilfe des Web-Interfaces neu starten.
-      Klicken Sie auf den "Process Info"-Navigations-Link und wählen Sie "Restart the Icinga process":</p>
+      <p><span class="bold"><strong>Web-Interface:</strong></span> Sie können Icinga mit Hilfe des Web-Interfaces neu starten. Klicken Sie
+      auf den "Process Info"-Navigations-Link und wählen Sie "Restart the Icinga process":</p>
 
       <p><span class="inlinemediaobject"><img src="../images/stoprestart.png"></span></p>
     </li>
@@ -81,7 +80,7 @@
       <p><span class="bold"><strong>manuell:</strong></span> Sie können den Icinga-Prozess durch Senden eines SIGHUP-Signals neu
       starten:</p>
 
-      <pre class="screen"> kill -HUP &lt;nagios_pid&gt;</pre>
+      <pre class="screen"> #&gt; kill -HUP &lt;nagios_pid&gt;</pre>
     </li>
 </ol></div>
 
@@ -89,14 +88,14 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Init-Script:</strong></span> Der einfachste Weg, den Icinga-Daemon zu stoppen, ist die Nutzung
-      des Init-Script:</p>
+      <p><span class="bold"><strong>Init-Script:</strong></span> Der einfachste Weg, den Icinga-Daemon zu stoppen, ist die Nutzung des
+      Init-Script:</p>
 
-      <pre class="screen"> /etc/rc.d/init.d/nagios stop</pre>
+      <pre class="screen"> #&gt; /etc/rc.d/init.d/nagios stop</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Web-Interface:</strong></span> Sie können Icinga mit Hilfe des Web-Interfaces stoppen. Klicken
-      Sie auf den "Process Info"-Navigations-Link und wählen Sie "Shutdown the Icinga process":</p>
+      <p><span class="bold"><strong>Web-Interface:</strong></span> Sie können Icinga mit Hilfe des Web-Interfaces stoppen. Klicken Sie auf
+      den "Process Info"-Navigations-Link und wählen Sie "Shutdown the Icinga process":</p>
 
       <p><span class="inlinemediaobject"><img src="../images/stoprestart.png"></span></p>
     </li>
@@ -104,10 +103,19 @@
       <p><span class="bold"><strong>manuell:</strong></span> Sie können den Icinga-Prozess durch Senden eines SIGTERM-Signals
       stoppen:</p>
 
-      <pre class="screen"> kill &lt;nagios_pid&gt;</pre>
+      <pre class="screen"> #&gt; kill &lt;nagios_pid&gt;</pre>
     </li>
 </ol></div>
-  <a class="indexterm" name="id3678714"></a>
+
+  <p><span class="bold"><strong>Verschiedene Optionen</strong></span></p>
+
+  <p>Falls Sie große Verzögerungen zwischen dem Start von Icinga und den ersten Prüfungen feststellen, dann gibt es verschiedene
+  Optionen, die <a class="link" href="faststartup.html" title="Schnellstart-Optionen">hier</a> näher beschrieben sind. Dort finden Sie auch die Option -S, die nähere Informationen
+  zur Scheduling Queue ausgibt.</p>
+
+  <a class="indexterm" name="id5567836"></a>
+
+  <a class="indexterm" name="id5567846"></a>
 </div>
 <div class="navfooter">
 <hr>

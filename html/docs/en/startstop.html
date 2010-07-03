@@ -4,7 +4,7 @@
 <title>Starting and Stopping Icinga</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
 <link rel="up" href="ch04.html" title="Chapter 4. Running Icinga">
 <link rel="prev" href="verifyconfig.html" title="Verifying Your Configuration">
 <link rel="next" href="ch05.html" title="Chapter 5. The Basics">
@@ -13,8 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Starting and Stopping
-  Icinga</th></tr>
+<tr><th colspan="3" align="center">Starting and Stopping Icinga</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="verifyconfig.html">Prev</a> </td>
@@ -27,17 +26,15 @@
 </div>
 <div class="section" title="Starting and Stopping Icinga">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="startstop"></a><a name="start_stop"></a>Starting and Stopping
-  Icinga</h2></div></div></div>
+<a name="startstop"></a><a name="start_stop"></a>Starting and Stopping Icinga</h2></div></div></div>
   
 
-  <p>There are different ways to start, stop, and restart Icinga.
-  Depending on your installation, the most common example will be shown... In
-  case of using the init script make sure you have performed </p>
-<pre class="programlisting"> make install-init</pre>
-<p>
-  or </p>
-<pre class="programlisting"> make fullinstall</pre>
+  <p>There are different ways to start, stop, and restart Icinga. Depending on your installation, the most common example will be
+  shown... In case of using the init script make sure you have performed </p>
+<pre class="programlisting"> #&gt; make install-init</pre>
+<p> or
+  </p>
+<pre class="programlisting"> #&gt; make fullinstall</pre>
 
   <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
@@ -45,8 +42,7 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Always make sure you're <a class="xref" href="verifyconfig.html" title="Verifying Your Configuration">“Verifying Your Configuration”</a> before you
-    (re)start Icinga.</p>
+    <p>Always make sure you're <a class="link" href="verifyconfig.html" title="Verifying Your Configuration">verified your configuration</a> before you (re)start Icinga.</p>
   </td></tr>
 </table></div>
 
@@ -54,58 +50,47 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
-      start Icinga is by using the init script: </p>
-<pre class="programlisting"># /etc/init.d/icinga start</pre>
-    </li>
-<li class="listitem">
-      <p><span class="bold"><strong>Manually:</strong></span> You can start
-      Icinga manually with the <span class="bold"><strong>-d</strong></span>
-      command line option: </p>
-<pre class="programlisting"># /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
-    </li>
-<li class="listitem">
-      <p><span class="bold"><strong>Debugging Mode:</strong></span> In the very rare
-      case that Icinga ends silently without any hints in the various
-      log files you can start Icinga by omitting the daemon option:
+      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to start Icinga is by using the init script:
       </p>
-<pre class="programlisting"> /usr/local/icinga/bin/icinga /usr/local/icinga/etc/icinga.cfg</pre>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Manually:</strong></span> You can start Icinga manually launching the daemon mode with the <span class="bold"><strong>-d</strong></span> command line option: </p>
+<pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Debugging Mode:</strong></span> In the very rare case that Icinga ends silently without any hints in the
+      various log files you can start Icinga by omitting the daemon option: </p>
+<pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga /usr/local/icinga/etc/icinga.cfg</pre>
 <p>
-      This way it is started in the foreground which will lead to a lot of
-      messages scrolling down the screen but it may result in a clue at the
-      very end.</p>
+      This way it is started in the foreground which will lead to a lot of messages scrolling down the screen but it may result in a clue at
+      the very end.</p>
     </li>
 </ol></div>
 
   <p><span class="bold"><strong>Restarting Icinga</strong></span></p>
 
-  <p>Restarting/reloading is necessary if you modify your configuration
-  files and want those changes to take effect.</p>
+  <p>Restarting/reloading is necessary if you modify your configuration files and want those changes to take effect.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
-      reload/restart Icinga is by using the init script:
+      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to reload/restart Icinga is by using the init script:
       </p>
-<pre class="programlisting"># /etc/init.d/icinga reload</pre>
-<p> or
-      </p>
-<pre class="programlisting"> /etc/init.d/icinga restart</pre>
-<p> The
-      difference between the two is that the latter will actually end the
-      Icinga process and start it again. The first rereads the configuration
-      files which is faster but in some cases may not be sufficient.</p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga reload</pre>
+<p> or </p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga restart</pre>
+<p>
+      The difference between the two is that the latter will actually end the Icinga process and start it again. The first rereads the
+      configuration files which is faster but in some cases may not be sufficient.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Web-Interface:</strong></span> You can restart
-      Icinga using the web interface. Click on the "Process Info"
-      navigation link and select "Restart the Icinga Process"</p>
+      <p><span class="bold"><strong>Web-Interface:</strong></span> You can restart Icinga using the web interface. Click on the "Process
+      Info" navigation link and select "Restart the Icinga Process"</p>
 
       <p><span class="inlinemediaobject"><img src="../images/stoprestart.png"></span></p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Manually:</strong></span> You can restart
-      Icinga by sending it a SIGHUP signal: </p>
+      <p><span class="bold"><strong>Manually:</strong></span> You can restart Icinga by sending it a SIGHUP signal: </p>
 <pre class="programlisting"># kill -HUP &lt;icinga_pid&gt;</pre>
     </li>
 </ol></div>
@@ -114,25 +99,28 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to
-      stop Icinga is by using the init script: </p>
+      <p><span class="bold"><strong>Init Script:</strong></span> The easiest way to stop Icinga is by using the init script:
+      </p>
 <pre class="programlisting"># /etc/init.d/icinga stop</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Web-Interface:</strong></span> You can stop
-      Icinga using the Web-Interface Click on the "Process Info"
+      <p><span class="bold"><strong>Web-Interface:</strong></span> You can stop Icinga using the Web-Interface Click on the "Process Info"
       navigation link and select "Shutdown the Icinga Process"</p>
-
       <p><span class="inlinemediaobject"><img src="../images/stoprestart.png"></span></p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Manually:</strong></span> You can stop by sending
-      it a SIGTERM signal: </p>
+      <p><span class="bold"><strong>Manually:</strong></span> You can stop by sending it a SIGTERM signal: </p>
 <pre class="programlisting"># kill &lt;icinga_pid&gt;</pre>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1517717"></a>
+  <p><span class="bold"><strong>Miscellaneous options</strong></span></p>
+
+  <p>If you experience long delays between starting Icinga and the first checks you can use several other options which are shown
+  <a class="link" href="faststartup.html" title="Fast Startup Options">here</a>. How to have a look at the scheduling queue (-S) is described there as well.</p>
+
+  <a class="indexterm" name="id1964021"></a>
+  <a class="indexterm" name="id1964037"></a>
 </div>
 <div class="navfooter">
 <hr>

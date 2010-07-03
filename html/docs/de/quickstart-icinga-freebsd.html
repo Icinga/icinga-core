@@ -4,7 +4,7 @@
 <title>Icinga-Schnellstart auf FreeBSD</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">
 <link rel="next" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
@@ -27,129 +27,129 @@
 <div class="section" title="Icinga-Schnellstart auf FreeBSD">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="quickstart-icinga-freebsd"></a>Icinga-Schnellstart auf FreeBSD</h2></div></div></div>
-  
+    
 
-  <p><span class="bold"><strong><a name="introduction_icinga_freebsd"></a>Einführung</strong></span></p>
+    <p><span class="bold"><strong><a name="introduction_icinga_freebsd"></a>Einführung</strong></span></p>
 
-  <p>Diese Schnellstartanleitung ist dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von 20 Minuten
-  aus dem Quellcode installieren und Ihren lokalen Rechner damit überwachen.</p>
+    <p>Diese Schnellstartanleitung ist dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von 20 Minuten aus dem
+    Quellcode installieren und Ihren lokalen Rechner damit überwachen.</p>
 
-  <p>Hier werden keine fortgeschrittenen Installationsoptionen vorgestellt - lediglich die Grundlagen, die für 95% aller Benutzer
-  funktionieren, die anfangen wollen.</p>
+    <p>Hier werden keine fortgeschrittenen Installationsoptionen vorgestellt - lediglich die Grundlagen, die für 95% aller Benutzer funktionieren,
+    die anfangen wollen.</p>
 
-  <p>Diese Anleitung enthält Anweisungen für <a class="link" href="" target="_top">FreeBSD</a> 7.2.</p>
+    <p>Diese Anleitung enthält Anweisungen für <a class="link" href="" target="_top">FreeBSD</a> 7.2.</p>
 
-  <p>Spätere Distributionen von FreeBSD werden wahrscheinlich auch mit diesen Anweisungen funktionieren.</p>
+    <p>Spätere Distributionen von FreeBSD werden wahrscheinlich auch mit diesen Anweisungen funktionieren.</p>
 
-  <p><span class="bold"><strong>Was dabei herauskommt</strong></span></p>
+    <p><span class="bold"><strong>Was dabei herauskommt</strong></span></p>
 
-  <p>Wenn Sie diesen Anweisungen folgen, werden Sie am Ende folgendes haben:</p>
+    <p>Wenn Sie diesen Anweisungen folgen, werden Sie am Ende folgendes haben:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Icinga und die Plugins werden unterhalb von /usr/local/icinga</p>
-    </li>
+            <p>Icinga und die Plugins werden unterhalb von /usr/local/icinga</p>
+        </li>
 <li class="listitem">
-      <p>Icinga wird so konfiguriert sein, dass es einige Dinge auf Ihrem lokalen System überwacht (CPU-Auslastung,
-      Plattenbelegung, usw.)</p>
-    </li>
+            <p>Icinga wird so konfiguriert sein, dass es einige Dinge auf Ihrem lokalen System überwacht (CPU-Auslastung, Plattenbelegung,
+            usw.)</p>
+        </li>
 <li class="listitem">
-      <p>das Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/nagios/</code> oder
-      <code class="uri">http://yourdomain.com/icinga/</code></p>
-    </li>
+            <p>das klassische Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/nagios/</code> oder
+            <code class="uri">http://yourdomain.com/icinga/</code></p>
+        </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+    <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-  <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
+    <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
 
-  <p>Stellen Sie sicher, dass die folgenden Pakete installiert sind, bevor Sie fortfahren.</p>
+    <p>Stellen Sie sicher, dass die folgenden Pakete installiert sind, bevor Sie fortfahren.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="http://www.apache.org" target="_top">Apache</a></p>
-    </li>
+            <p><a class="link" href="http://www.apache.org" target="_top">Apache</a></p>
+        </li>
 <li class="listitem">
-      <p>GCC compiler</p>
-    </li>
+            <p>GCC compiler</p>
+        </li>
 <li class="listitem">
-      <p>C/C++ development libraries</p>
-    </li>
+            <p>C/C++ development libraries</p>
+        </li>
 <li class="listitem">
-      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
-    </li>
+            <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
+        </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Installieren Sie die Ports</strong></span></p>
+    <p><span class="bold"><strong>Installieren Sie die Ports</strong></span></p>
 
-  <p>Sie können diese Ports mit den folgenden Befehlen installieren (als root):</p>
+    <p>Sie können diese Ports mit den folgenden Befehlen installieren (als root):</p>
 
-  <p>Bitte aktualisieren Sie Ihre Ports bevor Sie beginnen.</p>
+    <p>Bitte aktualisieren Sie Ihre Ports bevor Sie beginnen.</p>
 
-  <pre class="programlisting"> # cd /usr/ports/devel/libtool22/ &amp;&amp; make deinstall &amp;&amp; make clean &amp;&amp; make &amp;&amp; make install 
+    <pre class="programlisting"> # cd /usr/ports/devel/libtool22/ &amp;&amp; make deinstall &amp;&amp; make clean &amp;&amp; make &amp;&amp; make install 
  # cd /usr/ports/graphics/jpeg &amp;&amp; make deinstall &amp;&amp; make clean &amp;&amp; make &amp;&amp; make install
  # cd /usr/ports/graphics/png &amp;&amp; make deinstall &amp;&amp; make clean &amp;&amp; make &amp;&amp; make install
  # cd /usr/ports/graphics/gd &amp;&amp; make deinstall &amp;&amp; make clean &amp;&amp; make &amp;&amp; make install</pre>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte stellen Sie sicher, dass Apache installiert ist - das Vorgehen wird hier nicht beschrieben, aber ein Hinweis ist
-    <span class="emphasis"><em># cd /usr/ports/www/apache22 &amp;&amp; make clean &amp;&amp; make</em></span>.</p>
-  </td></tr>
+        <p>Bitte stellen Sie sicher, dass Apache installiert ist - das Vorgehen wird hier nicht beschrieben, aber ein Hinweis ist
+        <span class="emphasis"><em>#&gt; cd /usr/ports/www/apache22 &amp;&amp; make clean &amp;&amp; make</em></span>.</p>
+    </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Benutzerinformationen erstellen</strong></span></p>
+    <p><span class="bold"><strong>Benutzerinformationen erstellen</strong></span></p>
 
-  <p>Werden Sie zum root-Benutzer.</p>
+    <p>Werden Sie zum root-Benutzer.</p>
 
-  <pre class="programlisting"> # su -l</pre>
+    <pre class="programlisting"> # su -l</pre>
 
-  <p>Erstellen Sie ein neues Benutzerkonto <span class="emphasis"><em>icinga</em></span> ohne Passwort und ohne die Möglichkeit, sich anzumelden (setzen
-  Sie kein Passwort, wenn Sie danach gefragt werden):</p>
+    <p>Erstellen Sie ein neues Benutzerkonto <span class="emphasis"><em>icinga</em></span> ohne Passwort und ohne die Möglichkeit, sich anzumelden (setzen Sie kein
+    Passwort, wenn Sie danach gefragt werden):</p>
 
-  <pre class="programlisting"> # adduser -D -w no -s nologin</pre>
+    <pre class="programlisting"> # adduser -D -w no -s nologin</pre>
 
-  <p>Damit Sie über das Webinterface Befehle an Icinga senden können, legen Sie noch eine neue Gruppe icinga-cmd an und fügen Sie
-  den Web-Server-Benutzer (www) und den Icinga-Benutzer dieser Gruppe hinzu:</p>
+    <p>Damit Sie über das klassische Webinterface Befehle an Icinga senden können, legen Sie noch eine neue Gruppe icinga-cmd an und fügen
+    Sie den Web-Server-Benutzer (www) und den Icinga-Benutzer dieser Gruppe hinzu:</p>
 
-  <pre class="programlisting"> # pw groupadd -n icinga-cmd -M icinga,www </pre>
+    <pre class="programlisting"> # pw groupadd -n icinga-cmd -M icinga,www </pre>
 
-  <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
+    <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
 
-  <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z:b. ~/src</p>
+    <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z:b. ~/src</p>
 
-  <pre class="programlisting"> # mkdir ~/src
+    <pre class="programlisting"> # mkdir ~/src
  # cd ~/src</pre>
 
-  <p>Holen Sie den aktuellen icinga-core-Snapshot aus dem Icinga GIT </p>
+    <p>Holen Sie den aktuellen icinga-core-Snapshot aus dem Icinga GIT </p>
 <pre class="programlisting"> # git clone git://git.icinga.org/icinga-core.git</pre>
 <p>oder
-  von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
+    von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
 
-  <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios-Plugins</a> .</p>
+    <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios-Plugins</a> .</p>
 
-  <p><span class="bold"><strong>Icinga kompilieren und installieren</strong></span></p>
+    <p><span class="bold"><strong>Icinga kompilieren und installieren</strong></span></p>
 
-  <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT-Snapshot)</p>
+    <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT-Snapshot)</p>
 
-  <pre class="programlisting"> # cd ~/src/ 
- # tar xvzf icinga-1.0.1.tar.gz 
- # cd icinga-1.0.1</pre>
+    <pre class="programlisting"> # cd ~/src/ 
+ # tar xvzf icinga-1.0.2.tar.gz 
+ # cd icinga-1.0.2</pre>
 
-  <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
+    <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
-  <pre class="programlisting"> # ./configure --with-httpd-conf=/usr/local/etc/apache22/Includes/ --with-gd-lib=/usr/local/lib/ --with-gd-inc=/usr/local/include/ --with-command-group=icinga-cmd</pre>
+    <pre class="programlisting"> # ./configure --with-httpd-conf=/usr/local/etc/apache22/Includes/ --with-gd-lib=/usr/local/lib/ --with-gd-inc=/usr/local/include/ --with-command-group=icinga-cmd</pre>
 
-  <p>Kompilieren Sie den Icinga-Source-Code. Um mögliche Optionen zu sehen, rufen Sie lediglich "make" auf.</p>
+    <p>Kompilieren Sie den Icinga-Source-Code. Um mögliche Optionen zu sehen, rufen Sie lediglich "make" auf.</p>
 
-  <pre class="programlisting"> # make all</pre>
+    <pre class="programlisting"> # make all</pre>
 
-  <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das
-  External-Command-Verzeichnis.</p>
+    <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das
+    External-Command-Verzeichnis.</p>
 <pre class="programlisting"> # make install 
  # make install-init 
  # make install-config 
@@ -157,118 +157,131 @@
 <p> oder kürzer </p>
 <pre class="programlisting"> # make fullinstall</pre>
 
-  <p>Starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
+    <p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-API (nach)installieren möchten, nutzen Sie:
+    </p>
+<pre class="programlisting"> # make install-api</pre>
+<p>Die Icinga-API ist Voraussetzung für das Icinga Web-Interface (nicht für die klassische
+    Ansicht!).</p>
 
-  <p><span class="bold"><strong>Anpassen der Konfiguration</strong></span></p>
+    <p>Starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
 
-  <p>Beispiel-Konfigurationsdateien werden durch </p>
+    <p><span class="bold"><strong>Anpassen der Konfiguration</strong></span></p>
+
+    <p>Beispiel-Konfigurationsdateien werden durch </p>
 <pre class="programlisting"> # make install-config</pre>
-<p>in /usr/local/icinga/etc/
-  installiert. Nun fehlt nur noch eine Änderung, bevor Sie fortfahren können...</p>
+<p>in /usr/local/icinga/etc/ installiert.
+    Nun fehlt nur noch eine Änderung, bevor Sie fortfahren können...</p>
 
-  <p>Ändern Sie die <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span>-Konfigurationsdatei mit Ihrem bevorzugten Editor und
-  passen die e-Mail-Adresse in der <span class="emphasis"><em>icingaadmin</em></span>-Kontaktdefinition an, so dass sie die Adresse enthält, die im Falle von
-  Alarmen benachrichtigt werden soll.</p>
+    <p>Ändern Sie die <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span>-Konfigurationsdatei mit Ihrem bevorzugten Editor und passen
+    die e-Mail-Adresse in der <span class="emphasis"><em>icingaadmin</em></span>-Kontaktdefinition an, so dass sie die Adresse enthält, die im Falle von Alarmen
+    benachrichtigt werden soll.</p>
 
-  <pre class="programlisting"> # vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+    <pre class="programlisting"> # vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
 
-  <p><span class="bold"><strong>Konfigurieren des Web-Interface</strong></span></p>
+    <p><span class="bold"><strong>Installieren und konfigurieren des klassischen Web-Interface</strong></span></p>
 
-  <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache-Konfigurationsverzeichnis.</p>
+    <p>Icinga stellt das klassische Web-Interface zur Verfügung ("Classic Web", "die CGIs"). Sie können dieses wie folgt installieren:</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <pre class="programlisting"> # make cgis
+ # make install-cgis</pre>
+
+    <p>Wenn Sie stattdessen das neue Icinga Web installieren wollen, lesen Sie bitte <a class="link" href="icinga-web-scratch.html" title="Installation des neuen Icinga Web Frontend">Installation des
+    Web-Interface</a>.</p>
+
+    <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache-Konfigurationsverzeichnis.</p>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Es gibt momentan einen Bug im Icinga-Makefile, der die Ausfühung dieses <span class="emphasis"><em>make</em></span>-Befehls unter FreeBSD
-    verhindert, daher editieren Sie die Makefile-Datei im Icinga-Source-Verzeichnis und ändern Sie die Zeile </p>
+        <p>Es gibt momentan einen Bug im Icinga-Makefile, der die Ausführung dieses <span class="emphasis"><em>make</em></span>-Befehls unter FreeBSD
+        verhindert, daher editieren Sie die Makefile-Datei im Icinga-Source-Verzeichnis und ändern Sie die Zeile </p>
 <pre class="programlisting"> $(INSTALL) -D -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf</pre>
 <p>
-    in </p>
+        in </p>
 <pre class="programlisting"> $(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf</pre>
-  </td></tr>
+    </td></tr>
 </table></div>
 
-  <pre class="programlisting"> # make install-webconf</pre>
+    <pre class="programlisting"> # make install-webconf</pre>
 
-  <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am Web-Interface anmelden zu können. Merken Sie sich das Passwort,
-  das Sie diesem Konto geben - Sie brauchen es später.</p>
+    <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am klassischen Web-Interface anmelden zu können. Merken Sie sich das
+    Passwort, das Sie diesem Konto geben - Sie brauchen es später.</p>
 
-  <pre class="programlisting"> # htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+    <pre class="programlisting"> # htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
 
-  <p>Wenn Sie das Passwort später ändern oder einen weiteren Benutzer hinzufügen möchten, verwenden Sie den folgenden Befehl:</p>
+    <p>Wenn Sie das Passwort später ändern oder einen weiteren Benutzer hinzufügen möchten, verwenden Sie den folgenden Befehl:</p>
 
-  <pre class="programlisting"> # htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+    <pre class="programlisting"> # htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
 
-  <p>Starten Sie Apache neu, damit die Änderungen wirksam werden.</p>
+    <p>Starten Sie Apache neu, damit die Änderungen wirksam werden.</p>
 
-  <pre class="programlisting"> # /usr/local/etc/rc.d/apache22 reload</pre>
+    <pre class="programlisting"> # /usr/local/etc/rc.d/apache2 reload</pre>
 
-  <p><span class="bold"><strong>Kompilieren und installieren der Nagios-Plugins</strong></span></p>
+    <p><span class="bold"><strong>Kompilieren und installieren der Nagios-Plugins</strong></span></p>
 
-  <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
+    <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
 
-  <pre class="programlisting"> # cd ~/src 
+    <pre class="programlisting"> # cd ~/src 
  # tar xvzf nagios-plugins-1.4.14.tar.gz
  # cd nagios-plugins-1.4.14 </pre>
 
-  <p>Kompilieren und installieren Sie die Plugins, indem Sie das Installationverzeichnis auf /usr/local/icinga</p>
+    <p>Kompilieren und installieren Sie die Plugins, indem Sie das Installationverzeichnis auf /usr/local/icinga</p>
 
-  <pre class="programlisting"> # ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga 
+    <pre class="programlisting"> # ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga 
  # make 
  # make install </pre>
 
-  <p><span class="bold"><strong>Icinga starten</strong></span></p>
+    <p><span class="bold"><strong>Icinga starten</strong></span></p>
 
-  <p>Fügen Sie Icinga zur Liste der System-Services hinzu, damit es automatisch beim Start des Systems gestartet wird (stellen Sie
-  sicher, dass Sie das Init-Script vorher installiert haben).</p>
+    <p>Fügen Sie Icinga zur Liste der System-Services hinzu, damit es automatisch beim Start des Systems gestartet wird (stellen Sie sicher,
+    dass Sie das Init-Script vorher installiert haben).</p>
 
-  <pre class="programlisting"> # echo icinga_enable=\"YES\" &gt;&gt; /etc/rc.conf</pre>
+    <pre class="programlisting"> # echo icinga_enable=\"YES\" &gt;&gt; /etc/rc.conf</pre>
 
-  <p>Überprüfen Sie die Icinga-Konfigurationsdateien.</p>
+    <p>Überprüfen Sie die Icinga-Konfigurationsdateien.</p>
 
-  <pre class="programlisting"> # /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+    <pre class="programlisting"> # /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <p>Wenn es dabei keine Fehler gibt, starten Sie Icinga.</p>
+    <p>Wenn es dabei keine Fehler gibt, starten Sie Icinga.</p>
 
-  <pre class="programlisting"> # /usr/local/etc/rc.d/icinga start</pre>
+    <pre class="programlisting"> # /usr/local/etc/rc.d/icinga start</pre>
 
-  <p><span class="bold"><strong>Anmelden am Web-Interface</strong></span></p>
+    <p><span class="bold"><strong>Anmelden am klassischen Web-Interface</strong></span></p>
 
-  <p>Sie sollten nun auf das Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
-  (<span class="emphasis"><em>icingaadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
+    <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
+    (<span class="emphasis"><em>icingaadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
 
-  <pre class="programlisting"> http://localhost/icinga/</pre>
+    <pre class="programlisting"> http://localhost/icinga/</pre>
 
-  <p>oder</p>
+    <p>oder</p>
 
-  <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
+    <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
 
-  <p>Klicken Sie auf den "Service Detail"-Verweis in der Navigationsleiste, um Details darüber zu erhalten, was auf Ihrer lokalen
-  Maschine überwacht wird. Es wird ein paar Minuten dauern, bis Icinga alle mit Ihrer Maschine verbundenen Services geprüft hat, weil
-  die Prüfungen über eine gewisse Zeit verteilt werden.</p>
+    <p>Klicken Sie auf den "Service Detail"-Verweis in der Navigationsleiste, um Details darüber zu erhalten, was auf Ihrer lokalen Maschine
+    überwacht wird. Es wird ein paar Minuten dauern, bis Icinga alle mit Ihrer Maschine verbundenen Services geprüft hat, weil die Prüfungen
+    über eine gewisse Zeit verteilt werden.</p>
 
-  <p><span class="bold"><strong>Andere Modifikationen</strong></span></p>
+    <p><span class="bold"><strong>Andere Modifikationen</strong></span></p>
 
-  <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das Web-Interface ermöglichen, wenn Sie von
-  anderen Rechnern darauf zugreifen wollen.</p>
+    <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermöglichen, wenn Sie von
+    anderen Rechnern darauf zugreifen wollen.</p>
 
-  <pre class="programlisting">TCP port 80</pre>
+    <pre class="programlisting"> TCP port 80</pre>
 
-  <p>Die Installation eines Mail Transfer Agent (MTA) wie exim, sendmail oder postfix ist nicht Gegenstand dieser Anleitung.
-  Icinga ist konfiguriert, um e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein
-  Mail-Programm installiert bzw. konfiguriert. Schauen Sie in Ihre Systemdokumentation oder suchen Sie im Web nach weiteren
-  Informationen.</p>
+    <p>Die Installation eines Mail Transfer Agent (MTA) wie exim, sendmail oder postfix ist nicht Gegenstand dieser Anleitung. Icinga ist
+    konfiguriert, um e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw.
+    konfiguriert. Schauen Sie in Ihre Systemdokumentation oder suchen Sie im Web nach weiteren Informationen.</p>
 
-  <p><span class="bold"><strong>Fertig</strong></span></p>
+    <p><span class="bold"><strong>Fertig</strong></span></p>
 
-  <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. hre Reise in die Überwachung hat gerade begonnen.</p>
+    <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. hre Reise in die Überwachung hat gerade begonnen.</p>
 
-  <p>Sie werden ohne Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen sollten...</p>
+    <p>Sie werden ohne Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen sollten...</p>
 
-  <a class="indexterm" name="id3637105"></a>
+    <a class="indexterm" name="id5525000"></a>
 </div>
 <div class="navfooter">
 <hr>

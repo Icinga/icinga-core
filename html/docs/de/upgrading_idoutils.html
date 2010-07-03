@@ -4,7 +4,7 @@
 <title>IDOUtils-Datenbank aktualisieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="upgrading.html" title="Icinga aktualisieren">
 <link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
@@ -82,7 +82,45 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 
-  <a name="upgrading_idoutils_1.1"></a>
+  <a name="upgrading_idoutils_1.0.2"></a>
+
+  <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.0.2</strong></span></p>
+
+  <p>Es gab einen signifikanten Bug in den IDOUtils, der erst in Icinga 1.0.2 bereinigt werden konnte.</p>
+
+  <p>Bei jedem Core Restart wurde die gesamte Menge an Objekten in der Objekttabelle erneut hinzugefuegt, anstelle die alten weiterhin zu
+  verwenden und wie Relationen auf den neuesten Stand zu bringen.</p>
+
+  <p>Beispielsweise bei 4000 Objekten (Hosts, Services, Contacts, etc) hat ein zweimaliger Core Restartet 4000+4000+4000 = 12000 Objekte
+  bedeutet.</p>
+
+  <p>In Bezug auf die Konfiguration und die Statusdaten ist dies nicht relevant, da deren Relationen zur Objekttabelle bei jeden Neustart
+  bereinigt werden.</p>
+
+  <p>Historische Daten allerdings behalten diese unterschiedliche Beziehung zur Objekttabelle bei - vor und nach dem Restart sind die
+  Relationen unterschiedlich.</p>
+
+  <p>Diese Dateninkonsistenz ist natürlich nicht wünschenswert und es wurde dementsprechend versucht, eine einfache Lösungsmöglichkeit zu
+  finden.</p>
+
+  <p>Neben den normale SQL Scripts für 1.0.2 (z.B. mysql-upgrade-1.0.2.sql) stehen erweiterte SQL Scripts zur Verfügung.</p>
+
+  <p>Das Script arbeitet jeweils auf einer historischen Tabelle und holt sich mit Hilfe einer gestaffelten Query die notwendigen Daten
+  aus den beiden Tabellen - historisch 1..1 Objekte. Desweiteren werden kaputte Eintraege zur Zeit des Restarts bereinigt.</p>
+
+  <p>Bitte verwenden Sie diese Scripts wie Sie möchten - wahlweise direkt ausgeführt oder Schritt für Schritt, wie der Ablauf innerhalb
+  des Scripts ist. Beachten Sie allerdings bitte, dass diese Scripts ohne Garantie auf ihr eigenes Risiko verwendet werden können.</p>
+
+  <p>Falls Sie lediglich Livedaten verwenden, ist unter Umständen eine Neuinstallation des Datenbankschemas die einfachere Option.</p>
+
+  <p>* &lt;rdbms&gt;-upgrade-1.0.2-fix-object-relations.sql</p>
+
+  <p>Das "normale" Upgrade Script ist in 1.0.2 nur für MySQL verfügbar. Es wurden binäre Casts entfernt, da case sensistives Vergleichen
+  auch mit einer Anpassung der Collation erreicht werden kann und so massive Performanceeinbrüche verhindert werden können.</p>
+
+  <p>* mysql-upgrade-1.0.2.sql</p>
+
+  <a name="upgrading_idoutils_1.0.1"></a>
 
   <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.0.1</strong></span></p>
 
@@ -221,7 +259,7 @@
   <p>Falls Sie vorher etwas an den Keys verändert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in IDOUtils
   1.0RC benutzen, andernfalls wird das Script fehlschlagen.</p>
 
-  <a class="indexterm" name="id3639640"></a>
+  <a class="indexterm" name="id5527663"></a>
 </div>
 <div class="navfooter">
 <hr>

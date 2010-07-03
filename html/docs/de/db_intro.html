@@ -1,0 +1,162 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Einleitung</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
+<link rel="up" href="ch11.html" title="Kapitel 11. IDOUtils">
+<link rel="prev" href="ch11.html" title="Kapitel 11. IDOUtils">
+<link rel="next" href="components.html" title="Komponenten">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Einleitung</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch11.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 11. IDOUtils</th>
+<td width="20%" align="right"> <a accesskey="n" href="components.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Einleitung">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="db_intro"></a>Einleitung</h2></div></div></div>
+  
+
+  <p>Das IDOUtils-Addon basiert auf den NDOUtils, die ursprünglich vom Nagios (R)-Entwickler Ethan Galstad erstellt
+  wurden, so dass die Grundlagen sowohl auf Nagios als auch auf Icinga zutreffen.</p>
+
+  <div class="section" title="Zweck">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5614905"></a>Zweck</h3></div></div></div>
+    
+
+    <p>Das IDOUtils-Addon dient dazu, alle Konfigurations- und Ereignisdaten von Icinga in einer relationalen Datenbank zu
+    abzulegen. Das Speichern der Informationen von Icinga in einem RDBMS erlaubt die schnellere Abfrage und Verarbeitun der Daten.
+    Die Icinga-API nutzt diese Daten.</p>
+
+    <p>Bisher werden MySQL, Oracle und PostgreSQL von diesem Addon unterstützt. Andere Datenbanksysteme werden ggf. unterstützt, wenn
+    sich genügend interessierte Benutzer und vor allem Benutzer finden, die Tests durchführen.</p>
+  </div>
+
+  <div class="section" title="Design-Überblick">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5614922"></a>Design-Überblick</h3></div></div></div>
+    
+
+    <p>Das IDOUtils-Addon wurde entwickelt für Benutzer mit:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>einer Icinga-Installation</p>
+      </li>
+<li class="listitem">
+        <p>mehrere einzelnen oder "Vanilla"-Icinga-Installationen</p>
+      </li>
+<li class="listitem">
+        <p>mehrere Icinga-Installationen in verteilten, redundanten und/oder Umgebungen mit Ausfallsicherung</p>
+      </li>
+</ul></div>
+
+    <p>Daten eines Icinga-Prozesses (im weiteren als "Instanz" bezeichnet) können entweder in der gleichen oder in verschiedenen
+    Datenbanken wie die Daten von anderen Icinga-Instanzen gespeichert werden.</p>
+
+    <div class="figure">
+<a name="id5614962"></a><p class="title"><b>Abbildung 11.1. Mögliche Anordnungen</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig1.png" alt="Mögliche Anordnungen"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Obwohl es bisher nicht unterstützt wird, könnten in der Zukunft die Daten einer beliebigen Instanz in mehrere Datenbanken
+    gespeichert werden, falls das gewünscht wird..</p>
+
+    <div class="figure">
+<a name="id5614977"></a><p class="title"><b>Abbildung 11.2. zukünfte Entwicklung: Eine Instanz, mehrere Datenbanken</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig2.png" alt="zukünfte Entwicklung: Eine Instanz, mehrere Datenbanken"></div>
+    </div>
+</div>
+<br class="figure-break">
+  </div>
+
+  <div class="section" title="Instanzen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5615005"></a>Instanzen</h3></div></div></div>
+    
+
+    <p>Jeder Icinga-Prozess, egal ob es ein einzelner Überwachungsserver oder Teil eines verteilten, redundanten Setups ist, ggf.
+    mit Ausfallsicherung, wird als "Instanz" bezeichnet. Um die Integrität der gespeicherten Daten zu gewährleisten muss jede
+    Icinga-Instanz mit einem eindeutigen Bezeichner oder Namen gekennzeichnet werden.</p>
+
+    <p>Sie können den Namen jeder Icinga-Instanz Ihren Bedürfnissen anpassen. So können Sie z.B. die Icinga-Instanzen
+    aufgrund des geografischen Standorts bezeichnen....</p>
+
+    <div class="figure">
+<a name="id5615029"></a><p class="title"><b>Abbildung 11.3. Instanznamen basierend auf dem geografischen Standorts</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig3.png" alt="Instanznamen basierend auf dem geografischen Standorts"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Oder Sie können die Icinga-Instanen nach dem Zweck benennen...</p>
+
+    <div class="figure">
+<a name="id5615054"></a><p class="title"><b>Abbildung 11.4. Instanznamen basierend auf dem Zweck</b></p>
+<div class="figure-contents">
+      
+
+      <div class="mediaobject"><img src="../images/fig4.png" alt="Instanznamen basierend auf dem Zweck"></div>
+    </div>
+</div>
+<br class="figure-break">
+
+    <p>Wie Sie die Icinga-Instanzen nennen, bestimmen Sie. Wichtig ist dabei lediglich, dass jeder einzelne Icinga-Prozess
+    einen eindeutigen Instanznamen erhält.</p>
+
+    <p>Mehr Informationen dazu, welche Rolle die Instanznamen spielen, gibt es in den nächsten Abschnitten.</p>
+  </div>
+
+  <div class="section" title="Installation">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id5615085"></a>Installation</h3></div></div></div>
+    
+
+    <p>Die installation der IDOUtils wird im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Quickstart IDOUtils</a>
+    beschrieben.</p>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch11.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch11.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="components.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Kapitel 11. IDOUtils </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Komponenten</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

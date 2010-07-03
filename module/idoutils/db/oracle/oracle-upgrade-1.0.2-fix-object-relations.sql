@@ -197,7 +197,7 @@ SELECT i4.id FROM (
             FROM (
                   SELECT object_id AS o_id,
                          id AS hc_id
-                  FROM hostchecks i1
+                  FROM acknowledgements i1
             ) i2
            JOIN objects obj1
            ON i2.o_id=obj1.id
@@ -449,7 +449,7 @@ WHERE i6.id=i4.notification_id
 -- failed restart first (end_time=0)
 -- -----------------------------------------
 
-DELETE FROM statehistory WHERE start_time='01-01-70';
+DELETE FROM statehistory WHERE state_time='01-01-70';
 
 
 -- -----------------------------------------

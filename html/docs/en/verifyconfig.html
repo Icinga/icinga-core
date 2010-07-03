@@ -4,7 +4,7 @@
 <title>Verifying Your Configuration</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.1 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
 <link rel="up" href="ch04.html" title="Chapter 4. Running Icinga">
 <link rel="prev" href="ch04.html" title="Chapter 4. Running Icinga">
 <link rel="next" href="startstop.html" title="Starting and Stopping Icinga">
@@ -29,32 +29,48 @@
 <a name="verifyconfig"></a><a name="verify_config"></a>Verifying Your Configuration</h2></div></div></div>
   
 
-  <p>Every time you modify your configuration files, you also have to restart Icinga. It is important to run a sanity
-  check on your configuration files because in case of an error Icinga will not be (re)started.</p>
+  <p>Every time you modify your configuration files, you also have to restart Icinga. It is important to run a sanity check on
+  your configuration files because in case of an error Icinga will not be (re)started.</p>
 
-  <p>In order to verify your configuration, run Icinga using the <span class="bold"><strong>-v</strong></span> command line
-  option:</p>
+  <p>In order to verify your configuration, run Icinga using the <span class="bold"><strong>-v</strong></span> command line option:</p>
 
-  <pre class="programlisting"># /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg  </pre>
+  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg  </pre>
 
-  <p>If you've forgotten to enter some critical data or misconfigured things, Icinga will show a warning or error
-  message that should point you to the location of the problem.</p>
+  <p>If you've forgotten to enter some critical data or misconfigured things, Icinga will show a warning or error message that
+  should point you to the location of the problem.</p>
 
   <p>Error messages generally print out the line in the configuration file that seems to be the source of the problem.</p>
 
-  <p>On errors, Icinga will often exit the pre-flight check and return to the command prompt after printing only the
-  first error that it has encountered.</p>
+  <p>On errors, Icinga will often exit the pre-flight check and return to the command prompt after printing only the first error
+  that it has encountered.</p>
 
-  <p>This is done because one error might lead to consecutive errors as the remainder of the configuration data is
-  verified.</p>
+  <p>This is done because one error might lead to consecutive errors as the remainder of the configuration data is verified.</p>
 
-  <p>If you get any error messages you'll need to go and edit your configuration files to remedy the problem. Warning messages
-  can <span class="emphasis"><em>generally</em></span> be safely ignored, since they are only recommendations and not requirements.</p>
+  <p>If you get any error messages you'll need to go and edit your configuration files to remedy the problem. Warning messages can
+  <span class="emphasis"><em>generally</em></span> be safely ignored, since they are only recommendations and not requirements.</p>
 
-  <p>Once you've verified your configuration files and fixed possible errors you can go ahead with <a class="xref" href="startstop.html" title="Starting and Stopping Icinga">“Starting and Stopping
-  Icinga”</a>.</p>
-  <a class="indexterm" name="id1517436"></a>
-  <a class="indexterm" name="id1517445"></a>
+  <p>Instead of specifying the paths to binary and config file you can issue </p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig</pre>
+<p>which
+  results in just a non-zero return code if your config contains any errors. This might be useful if you want to restart Icinga
+  automatically.</p>
+
+  <p>Using </p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
+<p>the command will create a file containing the errors found.
+  If there are any the contents of the file is shown ("show-errors" starting with Icinga 1.0.2).</p>
+
+  <p>Once you've verified your configuration files and fixed possible errors you can go ahead with <a class="xref" href="startstop.html" title="Starting and Stopping Icinga">“Starting and Stopping Icinga”</a>.</p>
+
+  <a class="indexterm" name="id1963680"></a>
+
+  <a class="indexterm" name="id1963695"></a>
+
+  <a class="indexterm" name="id1963710"></a>
+
+  <a class="indexterm" name="id1963723"></a>
+
+  <a class="indexterm" name="id1963737"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -69,8 +85,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Chapter 4. Running Icinga </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Starting and Stopping
-  Icinga</td>
+<td width="40%" align="right" valign="top"> Starting and Stopping Icinga</td>
 </tr>
 </table>
 </div>
