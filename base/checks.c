@@ -837,12 +837,18 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	                         chldargs[1] = '\0';
 	                     }
 	 
+                             if (access(chldargs[0], R_OK)) {
+                                  logit(NSLOG_RUNTIME_WARNING,TRUE,"plugin %s does not exists or is not readable\n",chldargs[0]);
+                                  _exit(STATE_UNKNOWN);
+                             } 
+
+                             if (access(chldargs[0], X_OK) != 0  ) {
+                                 logit(NSLOG_RUNTIME_WARNING,TRUE,"wrong execution permissions on plugin %s\n",chldargs[0]);
+                                 _exit(STATE_UNKNOWN);
+                             }  
+
 	                     log_debug_info(DEBUGL_CHECKS,0,"running process %s via execv\n",processed_command);
-                             if (access(chldargs[0], R_OK|X_OK) == 0) {
-	                         execv(chldargs[0],chldargs);
-                             } else {
-                               logit(NSLOG_RUNTIME_WARNING,TRUE,"wrong permissions on plugin %s\n",chldargs[0]);
-                             }
+	                     execv(chldargs[0],chldargs);
                      	    _exit(EXIT_FAILURE);
 			}
 
