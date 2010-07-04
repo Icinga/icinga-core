@@ -446,16 +446,13 @@ int read_main_config_file(char *main_config_file){
 				}
 			closedir(tmpdir);
 
-			my_free(temp_path);
-			if((temp_path=(char *)strdup(value))){
-				strip(temp_path);
-				/* make sure we don't have a trailing slash */
-				if(temp_path[strlen(temp_path)-1]=='/')
-					temp_path[strlen(temp_path)-1]='\x0';
-			        }
-
 			my_free(check_result_path);
-			check_result_path=(char *)strdup(temp_path);
+			if((check_result_path=(char *)strdup(value))){
+				strip(check_result_path);
+				/* make sure we don't have a trailing slash */
+				if(check_result_path[strlen(check_result_path)-1]=='/')
+					check_result_path[strlen(check_result_path)-1]='\x0';
+			        }
 			}
 
 		else if(!strcmp(variable,"max_check_result_file_age"))
