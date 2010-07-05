@@ -359,6 +359,8 @@ install-unstripped:
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
+	
+	$(MAKE) install-api
 	$(MAKE) install-basic
 
 install-basic:
