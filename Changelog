@@ -2,6 +2,23 @@
 Icinga 1.0.x Change Log
 #######################
 
+1.0.3 - 18/08/2010
+
+ENHANCEMENTS
+
+FIXES
+* core: check permissions before calling execv on a command
+* core: fix temp_path overwritten by check_result_path in base/config.c
+* core: modify execv to execvp, accepting 4096 cmd args, for both host and service checks with adapted error handling
+
+* classic ui: fix image urls ins stylesheets
+
+* install: fix api not installed using make install-unstripped
+* install: enable debuginfo in spec file
+
+* idoutils: adapt oracle-drop.sql for current schema
+
+
 1.0.2 - 30/06/2010
 
 ENHANCEMENTS
@@ -9,7 +26,7 @@ ENHANCEMENTS
 * core: check if icinga running before starting; if died remove lockfile first
 * core: add in sync retention facility (Ton Voon, Opsera Ltd)
 * core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)
-* core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, 
+* core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run,
         in addition to providing the summary data (Steven (Steven D. Morrey)
 * core: icinga can send log messages to syslogd using a local facility instead of the default one
 * core: enhanced diagnostic output when a regular expression fails to compile (Max Schubert)
@@ -107,7 +124,7 @@ ENHANCEMENTS
 * core: add service_check_timeout_state	configuration variable
 	This setting determines the state Icinga will report when a
 	service check times out - it does not respond within
-	service_check_timeout seconds.  
+	service_check_timeout seconds.
 	c - Critical (default)
 	u - Unknown
 	w - Warning
@@ -119,7 +136,7 @@ ENHANCEMENTS
 	escalation_condition <condition> ( [ & / | ] <condition> )*
 	where <condition> is either host hostname = [u,d,o] or
 	service hostname.service_description] = [w,u,c,o].
-	The escalation_condition accepts a list of one or more conditions 
+	The escalation_condition accepts a list of one or more conditions
 	separated by & (logical AND) or | (logical OR).
 	w = WARNING
 	u = UNKNOWN
@@ -149,7 +166,7 @@ ENHANCEMENTS
 		- dynamic binded procedure for DELETE on table by instance_id called at startup
 		  for cleaning config/status
 		- dynamic binded procedure for DELETE on tably by instance_id, field<time called
-		  during periodic cleanup in threaded housekeeper 
+		  during periodic cleanup in threaded housekeeper
 		- all other queries are prepared with their own statement handler
 			 4x DELETE
 			 52x MERGE
@@ -171,7 +188,7 @@ ENHANCEMENTS
 * idoutils: add initial debug output for idomod (to be set in idomod.cfg)
 * idoutils: add database name in connection msg to syslog
 * idoutils: change mysql db engine to innodb (no table locking, better transcations)
-* idoutils: add --with-oracle-lib=/path/to/instantclient for runtime export of 
+* idoutils: add --with-oracle-lib=/path/to/instantclient for runtime export of
 	LD_LIBRARY_PATH if instantclient not installed to path
 * idoutils: add max_logentries_age and max_acknowledgements_age to ido2db (check ido2db.cfg)
 
@@ -181,7 +198,7 @@ FIXES
 * core: fix event broker callback function self de-registering for callbacks (Sean Millichamp)
 * core: add missing sound.js provided by scriptaculous
 * core: string replaces for icinga
-* core: typo fix in mrtg.cfg (Dennis van Zuijlekom) 
+* core: typo fix in mrtg.cfg (Dennis van Zuijlekom)
 * core: add init info as required by LSB
 * core: fix perl tests
 * core: fix missing clean & distclean against tap/ directory
@@ -195,7 +212,7 @@ FIXES
 * core: fix idomod doesn't de-initialize after config error
 * core: fix make fullinstall/idoutils without enabled idoutils during configure
 * core: fix sending two identical service_status events to neb module
-* core: fix segmentation fault crash when a non-existant host or service is passed to the command pipe 
+* core: fix segmentation fault crash when a non-existant host or service is passed to the command pipe
 * core: add check for NULL for event_list_high
 
 * idoutils: modify string escaping for mysql and pgsql
@@ -320,7 +337,7 @@ FIXES
 * idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms
 * idoutils: modify insert-or-update queries, build data array for functions
 * idoutils: fix string escaping for postgresql
-* idoutils: fix last insert id for postgresql - needs defined sequence id for table 
+* idoutils: fix last insert id for postgresql - needs defined sequence id for table
 * idoutils: modify command_line in commands table to varchar(1024)
 * idoutils: add more debug output
 * idoutils: Support 8192 chars of perfdata
@@ -371,7 +388,7 @@ FIXES
 Nagios 3.x Change Log
 #####################
 
-This is an archived Changelog, all changes on the Icinga Core will be marked and 
+This is an archived Changelog, all changes on the Icinga Core will be marked and
 referenced through issues marking on dev.icinga.org regarding their origin.
 
 Look at www.nagios.org for an actual changelog of Nagios Core.
@@ -493,7 +510,7 @@ WARNINGS
 
 3.0.5 - 11/04/2008
 ------------------
-* Security fix for Cross Site Request Forgery (CSRF) bug reported by Tim Starling. 
+* Security fix for Cross Site Request Forgery (CSRF) bug reported by Tim Starling.
 * Sample audio files for CGIs removed from distribution
 * Fix for mutliline config file continuation bug
 * Minor fix to RPM spec file
@@ -622,7 +639,7 @@ WARNINGS
 * Fix for compilation bug on systems that don't support setenv() (e.g. Solaris)
 * Support for line continuation/breaks in config files - end lines with one backslash (\) to continue on next line
 * Fixed bug with not deleting old check result files that contained results for invalid host/service
-* Fixed bug with init script option to check Nagios config 
+* Fixed bug with init script option to check Nagios config
 * Auto-filled comment/author fields for acknowledging problems through WAP interface
 * Fixed bug with processing of CONTACTGROUPNAMES, NOTES, NOTESURL, and ACTIONURL macros
 * Doc fix regarding soft state dependencies
@@ -704,7 +721,7 @@ WARNINGS
 * New macros: $HOSTGROUPMEMBERS$, $HOSTGROUPNOTES$, $HOSTGROUPNOTESURL$, $HOSTGROUPACTIONURL$, $SERVICEGROUPMEMBERS$, $SERVICEGROUPNOTES$, $SERVICEGROUPNOTESURL$, $SERVICEGROUPACTIONURL$, $CONTACTGROUPALIAS$, $CONTACTGROUPMEMBERS$, $NOTIFICATIONRECIPIENTS$, $NOTIFICATIONAUTHOR$, $NOTIFICATIONAUTHORNAME$, $NOTIFICATIONAUTHORALIAS$, $NOTIFICATIONCOMMENT$
 * Removed host/service downtime author/comment macros introduced in 3.0b2 in favor of more generic $NOTIFICATION...$ macros
 * Fix for segfault when cancelling active scheduled host downtime
-* Macro code cleanup 
+* Macro code cleanup
 * Added on-demand contact and contactgroup macro support
 * More complete (but still partial) support for macros in CGIs ($xNOTES$, $xNOTESURL$, and $xACTIONURL$ macros)
 * Fixed bug in config CGI with displaying incorrect notification interval for escalations
@@ -723,7 +740,7 @@ WARNINGS
 ------------------
 * Minor bug fix for debug logging of macros
 * Version number is now printed in CGI pages
-* HTML documentation cleanup (HTML Tidy, link checking, etc.) 
+* HTML documentation cleanup (HTML Tidy, link checking, etc.)
 * Fixed bug where notifications would not be sent out host/service contact group members
 
 
@@ -963,5 +980,5 @@ Here are all the changes since Nagios 2.x:
        and $SERVICEACKAUTHORALIAS$ macros
 
 
- 
+
 
