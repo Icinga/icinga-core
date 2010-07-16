@@ -7,9 +7,9 @@ Icinga 1.0.x Change Log
 ENHANCEMENTS
 
 FIXES
-* core: check permissions before calling execv on a command
 * core: fix temp_path overwritten by check_result_path in base/config.c
 * core: modify execv to execvp, accepting 4096 cmd args, for both host and service checks with adapted error handling
+* core: execvp searches in PATH too like popen, and returns if error, outputting the errno string
 
 * classic ui: fix image urls ins stylesheets
 
@@ -17,6 +17,7 @@ FIXES
 * install: enable debuginfo in spec file
 
 * idoutils: adapt oracle-drop.sql for current schema
+* idoutils: fix binding null values to prepared statements in oracle
 
 
 1.0.2 - 30/06/2010

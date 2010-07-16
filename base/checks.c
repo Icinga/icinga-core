@@ -226,24 +226,17 @@ static int run_check(char *processed_command,dbuf *checkresult_dbuf){
 			/* extract command args for execv */
 			parse_command_line(processed_command,argv);
 
-			if(!argv[0])
-				_exit(STATE_UNKNOWN);
-
-			/* check if plugin there/executable */
-			if (access(argv[0], R_OK) !=0 ) {
-				fprintf(stdout,"plugin %s does not exist or is not readable\n",argv[0]);
-				logit(NSLOG_RUNTIME_WARNING,TRUE,"plugin %s does not exists or is not readable\n",argv[0]);
+			if(!argv[0]){
+				logit(NSLOG_RUNTIME_WARNING,TRUE,"plugin command definition empty\n");
 				_exit(STATE_UNKNOWN);
 			}
 
-			if (access(argv[0], X_OK) != 0  ) {
-				fprintf(stdout,"wrong execution permissions on plugin %s\n",argv[0]);
-				logit(NSLOG_RUNTIME_WARNING,TRUE,"wrong execution permissions on plugin %s\n",argv[0]);
+			log_debug_info(DEBUGL_CHECKS,0,"running command %s via execvp\n",processed_command);
+
+			if(execvp(argv[0], argv)<0){ /* execvp only returns in case of an error */
+				logit(NSLOG_RUNTIME_WARNING,TRUE,"error executing command '%s': %s. Make sure that the file actually exists (in PATH, if set) and is executable!\n",processed_command, strerror(errno));
 				_exit(STATE_UNKNOWN);
 			}
-
-			log_debug_info(DEBUGL_CHECKS,0,"running process %s via execv\n",processed_command);
-			execvp(argv[0], argv); /* instead of execvp since we don't use path */
 			_exit(STATE_UNKNOWN);
 		}
 
@@ -266,7 +259,7 @@ static int run_check(char *processed_command,dbuf *checkresult_dbuf){
 			retval=-1;
 	}
 	else{
-		log_debug_info(DEBUGL_CHECKS,0,"running process %s via popen\n",processed_command);
+		log_debug_info(DEBUGL_CHECKS,0,"running command %s via popen\n",processed_command);
 		fp=popen(processed_command,"r");
 
 		if(fp==NULL)
