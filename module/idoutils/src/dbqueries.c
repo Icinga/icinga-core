@@ -1130,11 +1130,11 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],     
-                                        *(char **) data[7],     	/* insert end */
+                                        (data[7]==NULL)?"":*(char **) data[7],     	/* insert end */
                                         *(char **) data[4],     	/* update start */
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],
-                                        *(char **) data[7]      	/* update end */
+                                        (data[7]==NULL)?"":*(char **) data[7]      	/* update end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -1146,7 +1146,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         *(char **) data[4],             /* update start */
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],
-                                        *(char **) data[7],             /* update end */
+                                        (data[7]==NULL)?"":*(char **) data[7],             /* update end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(unsigned long *) data[1],
                                         *(char **) data[2],
@@ -1168,7 +1168,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],     
-                                        *(char **) data[7]             /* insert end */
+                                        (data[7]==NULL)?"":*(char **) data[7]             /* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -1196,7 +1196,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
         }
 #else /* Oracle ocilib specific */
 
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_contactnotificationmethoddata() %lu, %lu, %lu, %lu, %lu, %lu, %lu, %s \n", *(unsigned long *) data[0], *(unsigned long *) data[1], *(unsigned long *) data[8], *(unsigned long *) data[3], *(unsigned long *) data[9], *(unsigned long *) data[5], *(unsigned long *) data[6], *(char **) data[7]);
+			//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_contactnotificationmethoddata() %lu, %lu, %lu, %lu, %lu, %lu, %lu, %s \n", *(unsigned long *) data[0], *(unsigned long *) data[1], *(unsigned long *) data[8], *(unsigned long *) data[3], *(unsigned long *) data[9], *(unsigned long *) data[5], *(unsigned long *) data[6], *(char **) data[7]);
 
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X1"), (big_uint *) data[0])) {
                                 return IDO_ERROR;
@@ -1219,10 +1219,13 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
-                        if(*(char **) data[7] != NULL) {
+                        if(data[7]!=NULL) {
 				if(!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
-        	                        return IDO_ERROR;
+					OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_contactnotificationmethoddata,":X8"));
+        	                        //return IDO_ERROR;
 	                        }
+			} else {
+				OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_contactnotificationmethoddata,":X8"));
 			}
 
                         /* execute statement */
@@ -7722,14 +7725,20 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                         }
 			if(data[4]!=NULL) {
 	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X5"), *(char **) data[4], 0)) {
-        	                        return IDO_ERROR;
+					OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X5"));
+        	                        //return IDO_ERROR;
                 	        }
-			}
+                        } else {
+                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X5"));
+                        }
 			if(data[5]!=NULL) {
 	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X6"), *(char **) data[5], 0)) {
-	                                return IDO_ERROR;
+	                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X6"));
+					//return IDO_ERROR;
         	                }
-			}
+                        } else {
+                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X6"));
+                        }
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_save_custom_variables_customvariables)) {
@@ -7854,14 +7863,20 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                         }
 			if(data[4]!=NULL) {
 	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X5"), *(char **) data[4], 0)) {
-        	                        return IDO_ERROR;
+					OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X5"));
+        	                        //return IDO_ERROR;
                 	        }
-			}
+                        } else {
+                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X5"));
+                        }
 			if(data[5]!=NULL) {
 	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X6"), *(char **) data[5], 0)) {
-        	                        return IDO_ERROR;
+					OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X6"));
+        	                        //return IDO_ERROR;
                 	        }
-			}
+                        } else {
+                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X6"));
+                        }
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus)) {
