@@ -516,13 +516,13 @@ int read_main_config_file(char *main_config_file){
 
 		else if(!strcmp(variable,"use_syslog")){
 
-			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'2'){
 				asprintf(&error_message,"Illegal value for use_syslog");
 				error=TRUE;
 				break;
 				}
 
-			use_syslog=(atoi(value)>0)?TRUE:FALSE;
+			use_syslog=atoi(value)
 			}
 
 		else if(!strcmp(variable,"use_syslog_local_facility")){
