@@ -353,14 +353,17 @@
 #endif
 
 /* define to use state based escalation ranges */
-#undef USE_ST_BASED_ESCAL_RANGES 
+#undef USE_ST_BASED_ESCAL_RANGES
 
 /* Define to 1 if you have the <dbi/dbi.h> header file. */
 #undef HAVE_DBI_DBI_H
-#ifdef HAVE_DBI_DBI_H
-#include <dbi/dbi.h>
-#endif
+#undef USE_LIBDBI
 
+/* define to 1 if you have the libpq-fe.h header file. */
+#undef HAVE_LIBPQ_FE_H
+#undef USE_PGSQL
+
+/* oracle */
 #undef USE_ORACLE
 #undef HAVE_ORACLE
 #ifdef USE_ORACLE

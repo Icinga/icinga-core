@@ -66,7 +66,7 @@ unsigned long ido2db_max_debug_file_size=0L;
 
 extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 extern int ido2db_check_dbd_driver(void);
 #endif
 
@@ -98,9 +98,9 @@ int main(int argc, char **argv){
 	char seedfile[FILENAME_MAX];
 	int i,c;
 #endif
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	dbi_driver driver;
-	int numdrivers;	
+	int numdrivers;
 
 	driver = NULL;
 #endif
@@ -202,12 +202,14 @@ int main(int argc, char **argv){
 	        }
 
 	/* make sure we support the db option chosen... */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+
+/******************************/
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	if(ido2db_check_dbd_driver()==IDO_FALSE){
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
-		
+
 		numdrivers = dbi_initialize(NULL);
-		
+
 		fprintf(stderr, "%d drivers available: ", numdrivers);
 		while ((driver = dbi_driver_list(driver)) != NULL) {
 
@@ -228,7 +230,16 @@ int main(int argc, char **argv){
 		printf("Support for libdbi Oracle driver is not yet working.\n");
 		exit(1);
 	}
-#else /* Oracle ocilib specific */
+#endif
+
+/******************************/
+#ifdef USE_PGSQL /* pgsql */
+
+	/* we don't have a driver check here */
+#endif
+
+/******************************/
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
 	if(OCI_GetOCIRuntimeVersion == OCI_UNKNOWN) {
@@ -243,6 +254,7 @@ int main(int argc, char **argv){
 	}
 
 #endif /* Oracle ocilib specific */
+/******************************/
 
 	/* initialize signal handling */
 	signal(SIGQUIT,ido2db_parent_sighandler);
@@ -1046,6 +1058,7 @@ int ido2db_wait_for_connections(void){
 
 			new_sd=accept(ido2db_sd,(ido2db_socket_type==IDO_SINK_TCPSOCKET)?(struct sockaddr *)&client_address_i:(struct sockaddr *)&client_address_u,(socklen_t *)&client_address_length);
 
+
 			/* ToDo:  Hendrik 08/12/2009
 			 * If both ends think differently about SSL encryption, data from a idomod will
 			 * be lost forever (likewise on database errors/misconfiguration)
@@ -1057,6 +1070,7 @@ int ido2db_wait_for_connections(void){
 
 			if(new_sd>=0)
 				/* data available */
+				syslog(LOG_USER | LOG_INFO, "Client connected, data available.\n");
 				break;
 			if(errno == EINTR) {
 				/* continue */
@@ -1135,6 +1149,7 @@ int ido2db_handle_client_connection(int sd){
 	/* open syslog facility */
 	/*openlog("ido2db",0,LOG_DAEMON);*/
 
+	syslog(LOG_USER | LOG_INFO, "Handling Client connection...\n");
 	/* re-open debug log */
 	ido2db_close_debug_log();
 	ido2db_open_debug_log();
@@ -2525,7 +2540,7 @@ void * ido2db_thread_cleanup(void *data) {
 
 	/* copy needed idi information */
 	thread_idi.instance_name = idi->instance_name;
-	thread_idi.agent_name = "IDOMOD Trimming Thread";
+	thread_idi.agent_name = "IDO2DB Trimming Thread";
 	thread_idi.agent_version = idi->agent_version;
 	thread_idi.disposition = idi->disposition;
 	thread_idi.connect_source = idi->connect_source;

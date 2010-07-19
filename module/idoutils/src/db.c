@@ -229,7 +229,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 		        case IDO2DB_DBSERVER_MSQL:
 		                if ((ido2db_db_tablenames[x] = (char *) malloc(strlen(ido2db_db_rawtablenames[x]) + ((ido2db_db_settings.dbprefix==NULL) ? 0 : strlen(ido2db_db_settings.dbprefix)) + 1))==NULL)
                 		        return IDO_ERROR;
-				
+
 				sprintf(ido2db_db_tablenames[x], "%s%s", (ido2db_db_settings.dbprefix==NULL) ? "" : ido2db_db_settings.dbprefix,ido2db_db_rawtablenames[x]);
 				break;
 		        case IDO2DB_DBSERVER_ORACLE:
@@ -245,7 +245,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 		        case IDO2DB_DBSERVER_SQLITE3:
 		                if ((ido2db_db_tablenames[x] = (char *) malloc(strlen(ido2db_db_rawtablenames[x]) + ((ido2db_db_settings.dbprefix==NULL) ? 0 : strlen(ido2db_db_settings.dbprefix)) + 1))==NULL)
                 		        return IDO_ERROR;
-		                
+
 				sprintf(ido2db_db_tablenames[x], "%s%s", (ido2db_db_settings.dbprefix==NULL) ? "" : ido2db_db_settings.dbprefix,ido2db_db_rawtablenames[x]);
 				break;
 		        default:
@@ -282,13 +282,28 @@ int ido2db_db_init(ido2db_idi *idi) {
 	idi->dbinfo.object_hashlist = NULL;
 
 	/* initialize db structures, etc. */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	if (dbi_initialize(NULL) == -1) {
 		syslog(LOG_USER | LOG_INFO, "Error: dbi_initialize() failed\n");
 		return IDO_ERROR;
 	}
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+        /* check if config matches */
+        if(idi->dbinfo.server_type != IDO2DB_DBSERVER_PGSQL) {
+                syslog(LOG_USER | LOG_INFO, "Error: ido2db.cfg not correctly configured. Please recheck for PGSQL!\n");
+                return IDO_ERROR;
+        }
+
+	idi->dbinfo.pg_conn=NULL;
+	idi->dbinfo.pg_result=NULL;
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         /* check if config matches */
         if(idi->dbinfo.server_type != IDO2DB_DBSERVER_ORACLE) {
@@ -301,7 +316,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 		syslog(LOG_USER | LOG_INFO, "Error:  OCI_Initialize() failed\n");
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "OCI_Initialize() failed\n");
 		return IDO_ERROR;
-	} 
+	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "OCI_Initialize() ok\n");
 
@@ -341,7 +356,8 @@ int ido2db_db_deinit(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_connect(ido2db_idi *idi) {
 	int result = IDO_OK;
-#ifndef USE_ORACLE
+	char *temp_port = NULL;
+#ifdef USE_LIBDBI
 	const char *dbi_error;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() start\n");
@@ -355,7 +371,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		return IDO_OK;
 	}
 
-#ifndef USE_ORACLE /* Oracle ocilib specific */
+#ifdef USE_LIBDBI /* Oracle ocilib specific */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		idi->dbinfo.dbi_conn = dbi_conn_new(IDO2DB_DBI_DRIVER_MYSQL);
@@ -389,7 +405,13 @@ int ido2db_db_connect(ido2db_idi *idi) {
 	default:
 		break;
 	}
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql start somewhere\n");
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* for ocilib there is no such statement next below */
 
@@ -398,7 +420,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 
 	/* Check if the dbi connection was created successful */
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (idi->dbinfo.dbi_conn == NULL) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
 		syslog(LOG_USER | LOG_INFO, "Error: Could  not dbi_conn_new(): %s", dbi_error);
@@ -422,7 +444,45 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		idi->dbinfo.connected = IDO_TRUE;
 		syslog(LOG_USER | LOG_INFO, "Successfully connected to %s database", ido2db_db_settings.dbserver);
 	}
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+	asprintf(&temp_port, "%d", ido2db_db_settings.port);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql start\n");
+
+        /* check if config matches */
+        if(idi->dbinfo.server_type != IDO2DB_DBSERVER_PGSQL) {
+                syslog(LOG_USER | LOG_INFO, "Error: ido2db.cfg not correctly configured. Please recheck for PGSQL!\n");
+                return IDO_ERROR;
+        }
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql trying to connect host: %s, port: %s, dbname: %s, user: %s, pass: %s\n", ido2db_db_settings.host, temp_port, ido2db_db_settings.dbname,ido2db_db_settings.username,ido2db_db_settings.password);
+
+	/* create db connection instantly */
+	idi->dbinfo.pg_conn = PQsetdbLogin(ido2db_db_settings.host,
+						"",/*temp_port,*/
+						"", /* pgoptions */
+						"", /* pgtty*/
+						ido2db_db_settings.dbname,
+						ido2db_db_settings.username,
+						ido2db_db_settings.password);
+
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql segfault?\n"); 
+
+	if(PQstatus(idi->dbinfo.pg_conn) != CONNECTION_OK) {
+                syslog(LOG_USER | LOG_INFO, "Error: Could not connect to pgsql database: %s", PQerrorMessage(idi->dbinfo.pg_conn));
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to %s database\n", ido2db_db_settings.dbserver);
+                result = IDO_ERROR;
+                idi->disconnect_client = IDO_TRUE;
+        } else {
+                idi->dbinfo.connected = IDO_TRUE;
+                syslog(LOG_USER | LOG_INFO, "Successfully connected to pgsql database");
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to %s database\n", ido2db_db_settings.dbserver);
+	}
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         /* check if config matches */
         if(idi->dbinfo.server_type != IDO2DB_DBSERVER_ORACLE) {
@@ -432,7 +492,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 
 	/* create db connection instantly */
 	idi->dbinfo.oci_connection = OCI_ConnectionCreate((mtext *)ido2db_db_settings.dbname, (mtext *)ido2db_db_settings.username, (mtext *)ido2db_db_settings.password, OCI_SESSION_DEFAULT);
-	
+
 	if(idi->dbinfo.oci_connection == NULL) {
 		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to oracle database: %s", OCI_ErrorGetString(OCI_GetLastError()));
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Error: Could not connect to %s database\n", ido2db_db_settings.dbserver);
@@ -820,7 +880,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
-        /* objects select cached */  
+        /* objects select cached */
         if(ido2db_oci_prepared_statement_objects_select_cached(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
                 return IDO_ERROR;
@@ -866,7 +926,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
         if(ido2db_oci_prepared_statement_timedeventqueue_delete_more(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
                 return IDO_ERROR;
-      	} 
+      	}
 
         /* comment history update  */
         if(ido2db_oci_prepared_statement_comment_history_update(idi) == IDO_ERROR) {
@@ -951,12 +1011,22 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	if (idi->dbinfo.connected == IDO_FALSE)
 		return IDO_OK;
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_conn_close(idi->dbinfo.dbi_conn);
 	dbi_shutdown();
 
 	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from %s database", ido2db_db_settings.dbserver);
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+	PQfinish(idi->dbinfo.pg_conn);
+
+	syslog(LOG_USER | LOG_INFO, "Successfully disconnected from %s database", ido2db_db_settings.dbserver);
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* close prepared statements */
 	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents);
@@ -1035,7 +1105,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	OCI_StatementFree(idi->dbinfo.oci_statement_instances_select);
 	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo_update);
 	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo_update_checkin);
-	
+
 	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete);
 	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete_time);
 
@@ -1057,7 +1127,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 /* post-connect routines            */
 /************************************/
 int ido2db_db_hello(ido2db_idi *idi) {
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	char *buf = NULL;
 	char *buf1 = NULL;
 	char *ts = NULL;
@@ -1072,7 +1142,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	if (idi->instance_name == NULL)
 		idi->instance_name = strdup("default");
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	/* get existing instance */
 	if (asprintf(&buf, "SELECT instance_id FROM %s WHERE instance_name='%s'",
@@ -1108,7 +1178,15 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+	//FIXME
+
+	syslog(LOG_USER | LOG_INFO, "Error: Initial pgsql database query failed! Please check pgsql database configuration and schema!");
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         /* get existing instance */
         void *data[9];
@@ -1129,7 +1207,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 		/* cleanup the socket */
 		ido2db_cleanup_socket();
-		
+
 		/* free memory */
 		ido2db_free_program_memory();
 
@@ -1165,7 +1243,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	/* insert new instance if necessary */
 	if (have_instance == IDO_FALSE) {
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')", ido2db_db_tablenames[IDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
 			buf = NULL;
 		if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
@@ -1179,7 +1257,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	                                /* depending on tableprefix/tablename a sequence will be used */
 	                                if(asprintf(&buf1, "%s_instance_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_INSTANCES]) == -1)
         	                                buf1 = NULL;
-	
+
 	                                idi->dbinfo.instance_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
         	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(%s=%lu) instance_id\n", buf1, idi->dbinfo.instance_id);
 	                                free(buf1);
@@ -1205,10 +1283,16 @@ int ido2db_db_hello(ido2db_idi *idi) {
         	        }
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
-		
+
 		free(buf);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	        void *data[1];
 	        data[0] = (void *) &idi->instance_name;
@@ -1243,7 +1327,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	}
 
 	/* record initial connection information */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	ts = ido2db_db_timet_to_sql(idi, idi->data_start_time);
 
@@ -1294,7 +1378,13 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	free(buf);
 	free(ts);
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	unsigned long n_zero = 0;
 
@@ -1404,7 +1494,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 /* threading post-connect routines  */
 /************************************/
 int ido2db_thread_db_hello(ido2db_idi *idi) {
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
         char *buf = NULL;
         char *buf1 = NULL;
         char *ts = NULL;
@@ -1422,7 +1512,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         if (idi->instance_name == NULL)
                 idi->instance_name = strdup("default");
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
         /* get existing instance */
         if (asprintf(&buf, "SELECT instance_id FROM %s WHERE instance_name='%s'",
@@ -1439,7 +1529,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
                         }
                 }
         }
-        else {  
+        else {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
                 /* cleanup the socket */
                 ido2db_cleanup_socket();
@@ -1453,7 +1543,13 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         dbi_result_free(idi->dbinfo.dbi_result);
         free(buf);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         /* get existing instance */
         data[0] = (void *) &idi->instance_name;
@@ -1462,7 +1558,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
-        /* execute statement */ 
+        /* execute statement */
         if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
@@ -1508,7 +1604,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 	}
 
         /* record initial connection information */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
         ts = ido2db_db_timet_to_sql(idi, idi->data_start_time);
 
@@ -1559,7 +1655,13 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 
         free(buf);
         free(ts);
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         unsigned long n_zero = 0;
 
@@ -1671,13 +1773,13 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_goodbye(ido2db_idi *idi) {
 	int result = IDO_OK;
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	char *buf = NULL;
 	char *ts = NULL;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_goodbye() start\n");
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	ts = ido2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
@@ -1694,7 +1796,13 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 	free(buf);
 	free(ts);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         void *data[5];
         data[0] = (void *) &idi->data_end_time;
@@ -1741,14 +1849,14 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_checkin(ido2db_idi *idi) {
 	int result = IDO_OK;
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	char *buf = NULL;
 #endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_checkin() start\n");
 
 	/* record last connection information */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=NOW(), bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
@@ -1760,7 +1868,13 @@ int ido2db_db_checkin(ido2db_idi *idi) {
         dbi_result_free(idi->dbinfo.dbi_result);
         free(buf);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         void *data[4];
         data[0] = (void *) &idi->bytes_processed;
@@ -1820,7 +1934,7 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 	z = strlen(buf);
 
 	/* escape characters */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	/* allocate space for the new string */
 
         if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
@@ -1859,11 +1973,34 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
         return newbuf;
 
         //size_t res = dbi_conn_quote_string(idi->dbinfo.dbi_conn, &buf);
- 
+
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) end\n", buf);
         //return buf;
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+        if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
+                return NULL;
+
+        for (x = 0, y = 0; x < z; x++) {
+
+                if (buf[x] == '\'' || buf[x] == '[' || buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
+                	newbuf[y++] = '\\';
+
+                newbuf[y++] = buf[x];
+        }
+
+        /* terminate escape string */
+        newbuf[y] = '\0';
+
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) end\n", newbuf);
+        return newbuf;
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* allocate space for the new string */
 	if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
@@ -1990,7 +2127,7 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 /************************************/
 int ido2db_db_query(ido2db_idi *idi, char *buf) {
 	int result = IDO_OK;
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	const char *error_msg;
 #endif
 
@@ -2012,7 +2149,7 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 0, "%s\n", buf);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	/* send query */
 	idi->dbinfo.dbi_result = dbi_conn_query(idi->dbinfo.dbi_conn, buf);
@@ -2025,7 +2162,22 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 		ido2db_handle_db_error(idi);
 		result = IDO_ERROR;
 	}
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+	idi->dbinfo.pg_result = PQexec(idi->dbinfo.pg_conn, buf);
+
+	if(PQresultStatus(idi->dbinfo.pg_result)!=PGRES_COMMAND_OK) {
+                syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s': %s\n", buf, PQerrorMessage(idi->dbinfo.pg_conn));
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Error: database query failed for '%s': %s\n", buf, PQerrorMessage(idi->dbinfo.pg_conn));
+
+                ido2db_handle_db_error(idi);
+                result = IDO_ERROR;
+	}
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	int oci_res = 0;
 
@@ -2040,7 +2192,7 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 
 	/* check for errors */
 	if(!oci_res) {
-		
+
 		syslog(LOG_USER | LOG_INFO, "Error: database query failed for '%s'\n", buf);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Error: database query failed for: '%s'\n", buf);
 
@@ -2101,11 +2253,11 @@ int ido2db_handle_db_error(ido2db_idi *idi) {
 /* clears data from a given table (current instance only) */
 /**********************************************************/
 int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	char *buf = NULL;
 #endif
 	int result = IDO_OK;
-#ifdef USE_ORACLE 
+#ifdef USE_ORACLE
         void *data[2];
 #endif
 
@@ -2114,7 +2266,7 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 	if (idi == NULL || table_name == NULL)
 		return IDO_ERROR;
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
 		buf = NULL;
 
@@ -2123,11 +2275,17 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 	dbi_result_free(idi->dbinfo.dbi_result);
 	free(buf);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* procedure approach */
         data[0] = (void *) &table_name;
-        data[1] = (void *) &idi->dbinfo.instance_id;	
+        data[1] = (void *) &idi->dbinfo.instance_id;
 
                         if(!OCI_BindString(idi->dbinfo.oci_statement_instances_delete, MT(":X1"), *(char **) data[0], 0)) {
                                 return IDO_ERROR;
@@ -2165,7 +2323,7 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 	*t = (time_t) 0L;
 	ts[0] = ido2db_db_sql_to_timet(idi, field_name);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	if (asprintf(&buf,"SELECT %s AS latest_time FROM %s WHERE instance_id='%lu' ORDER BY %s DESC LIMIT 1 OFFSET 0",
 			field_name, table_name, idi->dbinfo.instance_id, field_name) == -1)
@@ -2179,7 +2337,13 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 		}
 	}
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         if( asprintf(&buf,"SELECT ( ( ( SELECT * FROM ( SELECT %s FROM %s WHERE instance_id='%lu' ORDER BY %s DESC) WHERE ROWNUM = 1 ) - to_date( '01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss' )) * 86400) AS latest_time FROM DUAL"
                     ,(field_name==NULL)?"":field_name
@@ -2203,9 +2367,15 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 
 #endif /* Oracle ocilib specific */
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
         dbi_result_free(idi->dbinfo.dbi_result);
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	OCI_StatementFree(idi->dbinfo.oci_statement);
 
@@ -2233,7 +2403,7 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
 
 	ts[0] = ido2db_db_timet_to_sql(idi, (time_t) t);
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
 			table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
@@ -2242,7 +2412,13 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
 	result = ido2db_db_query(idi, buf);
         dbi_result_free(idi->dbinfo.dbi_result);
 
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
         void *data[4];
         data[0] = (void *) &table_name;
@@ -2320,7 +2496,7 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 /* check database driver (libdbi)   */
 /************************************/
 
-#ifndef USE_ORACLE /* everything else will be libdbi */
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 
 int ido2db_check_dbd_driver(void) {
 
