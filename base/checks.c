@@ -1110,11 +1110,16 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	/* make sure the return code is within bounds */
 	else if(queued_check_result->return_code<0 || queued_check_result->return_code>3){
 
-		logit(NSLOG_RUNTIME_WARNING,TRUE,"Warning: Return code of %d for check of service '%s' on host '%s' was out of bounds.%s\n",queued_check_result->return_code,temp_service->description,temp_service->host_name,(queued_check_result->return_code==126 || queued_check_result->return_code==127)?" Make sure the plugin you're trying to run actually exists.":"");
+		if ( queued_check_result->return_code==126 ) {
+			asprintf(&temp_service->plugin_output,"The command defined for service %s is not an executable\n", queued_check_result->service_description);
+		} else if  ( queued_check_result->return_code==127 ) {
+			asprintf(&temp_service->plugin_output,"The command defined for service %s does not exist\n", queued_check_result->service_description);
+		} else {
+			asprintf(&temp_service->plugin_output, "Return code of %d is out of bounds", queued_check_result->return_code);
+		}
+		logit(NSLOG_RUNTIME_WARNING,TRUE,"%s",temp_service->plugin_output);
 
-		asprintf(&temp_service->plugin_output,"(Return code of %d is out of bounds%s)",queued_check_result->return_code,(queued_check_result->return_code==126 || queued_check_result->return_code==127)?" - plugin may be missing":"");
-
-		temp_service->current_state=STATE_CRITICAL;
+		temp_service->current_state=STATE_CRITICAL; 
 	}
 
 	/* else the return code is okay... */
