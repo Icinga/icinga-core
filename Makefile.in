@@ -120,7 +120,7 @@ all:
 	if [ x$(USE_EVENTBROKER) = xyes ]; then \
 		cd $(SRC_MODULE) && $(MAKE); \
 	fi
-	
+
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
 		cd $(SRC_IDOUTILS) && $(MAKE); \
 	fi
@@ -133,7 +133,7 @@ all:
 	@echo "without any arguments for a list of all possible options):"
 	@echo ""
 	@echo "  make install"
-	@echo "     - This installs the main programi (Icinga Core), CGIs"
+	@echo "     - This installs the main program (Icinga Core), CGIs"
 	@echo "       (Classical Web), API, and HTML files"
 	@echo ""
 	@echo "  make install-init"
@@ -329,7 +329,7 @@ submodule-update:
 
 submodule-update-latest:
 	cd ${SRC_DOCBOOK} && git checkout master && git pull origin master
-	cd ${SRC_ICINGAAPI} && git checkout master && git pull origin master 
+	cd ${SRC_ICINGAAPI} && git checkout master && git pull origin master
 	@echo "pulled latest docbook & icinga-api :)"
 
 
@@ -359,7 +359,7 @@ install-unstripped:
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
-	
+
 	$(MAKE) install-api
 	$(MAKE) install-basic
 
@@ -446,6 +446,12 @@ install-idoutils:
 install-api:
 	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
                 cd $(SRC_ICINGAAPI) && $(MAKE) install; \
+	else \
+		echo "" ;\
+		echo "Sorry, Icinga API not available!" ;\
+		echo "Check md5 and source in $(SRC_ICINGAAPI)" ;\
+		echo "If using GIT, try # git submodule init && git submodule update" ;\
+		echo "" ;\
         fi
 
 install-init: install-daemoninit
