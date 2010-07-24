@@ -46,8 +46,7 @@ extern "C" {
    command file. EG 10/19/07
 */
 #define MAX_PLUGIN_OUTPUT_LENGTH                8192    /* max length of plugin output (including perf data) */
-#define MAXCHLDARGS    20
-
+#define MAX_CMD_ARGS 				4096	/* max number of arguments for command call on plugin */
 
 
 /******************* DEFAULT VALUES *******************/

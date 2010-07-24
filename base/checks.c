@@ -121,8 +121,159 @@ extern unsigned long max_debug_file_size;
 extern int      use_embedded_perl;
 #endif
 
+/******************************************************************/
+/********************* MISCELLANEOUS FUNCTIONS ********************/
+/******************************************************************/
 
+/* extract check result */
+static void extract_check_result(FILE *fp,dbuf *checkresult_dbuf){
+	char output_buffer[MAX_INPUT_BUFFER]="";
+	char *temp_buffer;
 
+	/* initialize buffer */
+	strcpy(output_buffer,"");
+
+	/* get all lines of plugin output - escape newlines */
+	while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
+		temp_buffer=escape_newlines(output_buffer);
+		dbuf_strcat(checkresult_dbuf,temp_buffer);
+		my_free(temp_buffer);
+	}
+}
+
+/* convert a command line to an array of arguments, suitable for exec* functions */
+static int parse_command_line(char *cmd, char *argv[MAX_CMD_ARGS]){
+	unsigned int argc=0;
+	char *parsed_cmd;
+
+	/* Skip initial white-space characters. */
+	for(parsed_cmd=cmd;isspace(*cmd);++cmd)
+		;
+
+	/* Parse command line. */
+	while(*cmd&&(argc<MAX_CMD_ARGS-1)){
+		argv[argc++]=parsed_cmd;
+
+		switch(*cmd){
+			case '\'':
+				while((*cmd)&&(*cmd!='\''))
+					*(parsed_cmd++)=*(cmd++);
+				if(*cmd)
+					++cmd;
+				break;
+			case '"':
+				while((*cmd)&&(*cmd!='"')){
+					if((*cmd=='\\')&&cmd[1]&&strchr("\"\\\n",cmd[1]))
+						++cmd;
+					*(parsed_cmd++)=*(cmd++);
+				}
+				if(*cmd)
+					++cmd;
+				break;
+			default:
+				while((*cmd)&&!isspace(*cmd)){
+					if((*cmd=='\\')&&cmd[1])
+						++cmd;
+					*(parsed_cmd++)=*(cmd++);
+				}
+		}
+
+		while(isspace(*cmd))
+			++cmd;
+
+		if(argc>=MAX_CMD_ARGS-1){
+			logit(NSLOG_RUNTIME_WARNING,TRUE,"overlimit args for command %s\n",argv[0]);
+			_exit(STATE_UNKNOWN);
+		}
+		else
+			*(parsed_cmd++)='\0';
+	}
+
+	argv[argc]=NULL;
+
+	return OK;
+}
+
+/* run a check */
+static int run_check(char *processed_command,dbuf *checkresult_dbuf){
+	char *argv[MAX_CMD_ARGS];
+	FILE *fp;
+	pid_t pid;
+	int pipefds[2];
+	int retval;
+
+	/* check for check execution method (shell or execvp) */
+	if(!has_shell_metachars(processed_command)){
+
+		if(pipe(pipefds)<0){
+			logit(NSLOG_RUNTIME_WARNING,TRUE,"error creating pipe: %s\n", strerror(errno));
+			_exit(STATE_UNKNOWN);
+		}
+		if((pid=fork())<0){
+			logit(NSLOG_RUNTIME_WARNING,TRUE,"fork error\n");
+			_exit(STATE_UNKNOWN);
+		}
+		else if(!pid){
+			/* child replaces stdout/stderr with output of the pipe */
+			if((dup2(pipefds[1],STDOUT_FILENO)<0)||(dup2(pipefds[1],STDERR_FILENO)<0)){
+				logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
+				_exit(STATE_UNKNOWN);
+			}
+
+			/* close unused half of pipe */
+			close(pipefds[1]);
+
+			/* extract command args for execv */
+			parse_command_line(processed_command,argv);
+
+			if(!argv[0]){
+				logit(NSLOG_RUNTIME_WARNING,TRUE,"plugin command definition empty\n");
+				_exit(STATE_UNKNOWN);
+			}
+
+			log_debug_info(DEBUGL_CHECKS,0,"running command %s via execvp\n",processed_command);
+
+			if(execvp(argv[0], argv)<0){ /* execvp only returns in case of an error */
+				logit(NSLOG_RUNTIME_WARNING,TRUE,"error executing command '%s': %s. Make sure that the file actually exists (in PATH, if set) and is executable!\n",processed_command, strerror(errno));
+				_exit(STATE_UNKNOWN);
+			}
+			_exit(STATE_UNKNOWN);
+		}
+
+		/* prepare pipe reading */
+		close(pipefds[1]);
+		fp=fdopen(pipefds[0],"r");
+		if(!fp){
+			logit(NSLOG_RUNTIME_WARNING,TRUE,"fdopen error\n");
+			_exit(STATE_UNKNOWN);
+		}
+
+		/* extract check result */
+		extract_check_result(fp,checkresult_dbuf);
+
+		/* close the process */
+		fclose(fp);
+		close(pipefds[0]);
+
+		if(waitpid(pid,&retval,0)!=pid)
+			retval=-1;
+	}
+	else{
+		log_debug_info(DEBUGL_CHECKS,0,"running command %s via popen\n",processed_command);
+		fp=popen(processed_command,"r");
+
+		if(fp==NULL)
+			_exit(STATE_UNKNOWN);
+
+		/* extract check result */
+		extract_check_result(fp,checkresult_dbuf);
+
+		/* close the process */
+		retval=pclose(fp);
+	}
+
+	return retval;
+}
 
 
 /******************************************************************/
@@ -330,14 +481,12 @@ int run_scheduled_service_check(service *svc, int check_options, double latency)
 int run_async_service_check(service *svc, int check_options, double latency, int scheduled_check, int reschedule_check, int *time_is_valid, time_t *preferred_time){
 	char *raw_command=NULL;
 	char *processed_command=NULL;
-	char output_buffer[MAX_INPUT_BUFFER]="";
 	char *temp_buffer=NULL;
 	struct timeval start_time,end_time;
 	pid_t pid=0;
 	int fork_error=FALSE;
 	int wait_result=0;
 	host *temp_host=NULL;
-	FILE *fp=NULL, *chldfp;
 	int pclose_result=0;
 	mode_t new_umask=077;
 	mode_t old_umask;
@@ -346,7 +495,6 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	dbuf checkresult_dbuf;
 	int dbuf_chunk=1024;
 	int pipefds[2], chldstatus, i;
-	char *chldargs[MAXCHLDARGS];
 	char *s , *p;
 
 #ifdef USE_EVENT_BROKER
@@ -557,7 +705,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		else
 			args[3]=processed_command+strlen(fname)+1;
 
-		ENTER; 
+		ENTER;
 		SAVETMPS;
 		PUSHMARK(SP);
 		XPUSHs(sv_2mortal(newSVpv(args[0],0)));
@@ -610,7 +758,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 				fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 				fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 				fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
+				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf);
 
 				/* close the temp file */
 				fclose(check_result_info.output_file_fp);
@@ -702,7 +850,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 				/* execute our previously compiled script - from call_pv("Embed::Persistent::eval_file",..) */
 				/* NB. args[2] is _now_ a code ref (to the Perl subroutine corresp to the plugin) returned by eval_file() */
 
-				ENTER; 
+				ENTER;
 				SAVETMPS;
 				PUSHMARK(SP);
 
@@ -751,7 +899,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 					fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 					fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 					fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-					fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
+					fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf);
 
 					/* close the temp file */
 					fclose(check_result_info.output_file_fp);
@@ -774,121 +922,8 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 
 
 			/* run the plugin check command */
+			pclose_result=run_check(processed_command,&checkresult_dbuf);
 
-			if (!has_shell_metachars(processed_command)){
-				if (pipe(pipefds) == -1){
-					logit(NSLOG_RUNTIME_WARNING,TRUE,"error creating pipe: %s\n",strerror(errno));
-					_exit(STATE_UNKNOWN);
-				}
-
-
-				pid = fork();
-				if (pid == -1){
-					logit(NSLOG_RUNTIME_WARNING,TRUE,"fork error\n");
-					_exit(STATE_UNKNOWN);
-				}
-
-				if (pid == 0){
-					close(pipefds[0]);
-
-					if (dup2(pipefds[1],STDOUT_FILENO) == -1){
-						logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
-						_exit(EXIT_FAILURE);
-					}
-
-					if (dup2(pipefds[1],STDERR_FILENO) == -1){
-						logit(NSLOG_RUNTIME_WARNING,TRUE,"dup2 error\n");
-						_exit(EXIT_FAILURE);
-					}
-					close(pipefds[0]);
-
-					s = strchr(processed_command,' ');
-					if (s){
-						*s = '\0';
-						p = s+1;
-						for(;isspace(*p);p++)
-							;
-
-						chldargs[0] = processed_command;
-						for(i=1;i<MAXCHLDARGS-2;i++){
-							s = strchr(p,' ');
-							chldargs[i] = p;
-
-							if (s){
-								*s = '\0';
-								p = s+1;
-								for(;isspace(*p);p++)
-									;
-							}
-
-							if (!s)
-								break;
-						}
-
-						if (i >= MAXCHLDARGS-2){
-							logit(NSLOG_RUNTIME_WARNING,TRUE,"overlimit args for command %s\n",chldargs[0]);
-							_exit(EXIT_FAILURE);
-						}
-						else
-							chldargs[++i] = '\0';
-					}
-					else{
-						chldargs[0] = processed_command;
-						chldargs[1] = '\0';
-					}
-
-					if (access(chldargs[0], R_OK) !=0 ) {
-						fprintf(stdout,"plugin %s does not exist or is not readable\n",chldargs[0]);
-						logit(NSLOG_RUNTIME_WARNING,TRUE,"plugin %s does not exists or is not readable\n",chldargs[0]);
-						_exit(STATE_UNKNOWN);
-					}
-
-					if (access(chldargs[0], X_OK) != 0  ) {
-						fprintf(stdout,"wrong execution permissions on plugin %s\n",chldargs[0]);
-						logit(NSLOG_RUNTIME_WARNING,TRUE,"wrong execution permissions on plugin %s\n",chldargs[0]);
-						_exit(STATE_UNKNOWN);
-					}
-
-					log_debug_info(DEBUGL_CHECKS,0,"running process %s via execv\n",processed_command);
-					execv(chldargs[0],chldargs);
-					_exit(EXIT_FAILURE);
-				}
-
-
-				close(pipefds[1]);
-
-				chldfp = fdopen(pipefds[0],"r");
-				if (chldfp == NULL){
-					logit(NSLOG_RUNTIME_WARNING,TRUE,"fdopen error\n");
-					_exit(EXIT_FAILURE);
-				}
-
-				while(fgets(output_buffer,sizeof(output_buffer)-1,chldfp)){
-					temp_buffer=escape_newlines(output_buffer);
-					dbuf_strcat(&checkresult_dbuf,temp_buffer);
-					my_free(temp_buffer);
-				}
-
-				fclose(chldfp);
-				waitpid(pid,&chldstatus,0);
-				pclose_result=chldstatus;
-			}
-			else{
-				log_debug_info(DEBUGL_CHECKS,0,"running process %s via popen\n",processed_command);
-				fp=popen(processed_command,"r");
-				if(fp==NULL)
-					_exit(STATE_UNKNOWN);
-
-				strcpy(output_buffer,"");
-
-				while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
-					temp_buffer=escape_newlines(output_buffer);
-					dbuf_strcat(&checkresult_dbuf,temp_buffer);
-					my_free(temp_buffer);
-				}
-
-				pclose_result=pclose(fp);
-			}
 			/* reset the alarm */
 			alarm(0);
 
@@ -1057,7 +1092,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 
 	/* DISCARD INVALID FRESHNESS CHECK RESULTS */
 	/* If a services goes stale, Icinga will initiate a forced check in order to freshen it.  There is a race condition whereby a passive check
-	   could arrive between the 1) initiation of the forced check and 2) the time when the forced check result is processed here.  This would 
+	   could arrive between the 1) initiation of the forced check and 2) the time when the forced check result is processed here.  This would
 	   make the service fresh again, so we do a quick check to make sure the service is still stale before we accept the check result. */
 	if((queued_check_result->check_options & CHECK_OPTION_FRESHNESS_CHECK) && is_service_result_fresh(temp_service,current_time,FALSE)==TRUE){
 		log_debug_info(DEBUGL_CHECKS,0,"Discarding service freshness check result because the service is currently fresh (race condition avoided).\n");
@@ -2963,13 +2998,11 @@ int run_scheduled_host_check_3x(host *hst, int check_options, double latency){
 int run_async_host_check_3x(host *hst, int check_options, double latency, int scheduled_check, int reschedule_check, int *time_is_valid, time_t *preferred_time){
 	char *raw_command=NULL;
 	char *processed_command=NULL;
-	char output_buffer[MAX_INPUT_BUFFER]="";
 	char *temp_buffer=NULL;
 	struct timeval start_time,end_time;
 	pid_t pid=0;
 	int fork_error=FALSE;
 	int wait_result=0;
-	FILE *fp=NULL;
 	int pclose_result=0;
 	mode_t new_umask=077;
 	mode_t old_umask;
@@ -3193,22 +3226,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 			max_debug_file_size=0L;
 
 			/* run the plugin check command */
-			fp=popen(processed_command,"r");
-			if(fp==NULL)
-				_exit(STATE_UNKNOWN);
-
-			/* initialize buffer */
-			strcpy(output_buffer,"");
-
-			/* get all lines of plugin output - escape newlines */
-			while(fgets(output_buffer,sizeof(output_buffer)-1,fp)){
-				temp_buffer=escape_newlines(output_buffer);
-				dbuf_strcat(&checkresult_dbuf,temp_buffer);
-				my_free(temp_buffer);
-			}
-
-			/* close the process */
-			pclose_result=pclose(fp);
+			pclose_result=run_check(processed_command,&checkresult_dbuf);
 
 			/* reset the alarm */
 			alarm(0);
@@ -3240,7 +3258,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 				fprintf(check_result_info.output_file_fp,"early_timeout=%d\n",check_result_info.early_timeout);
 				fprintf(check_result_info.output_file_fp,"exited_ok=%d\n",check_result_info.exited_ok);
 				fprintf(check_result_info.output_file_fp,"return_code=%d\n",check_result_info.return_code);
-				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf); 
+				fprintf(check_result_info.output_file_fp,"output=%s\n",(checkresult_dbuf.buf==NULL)?"(null)":checkresult_dbuf.buf);
 
 				/* close the temp file */
 				fclose(check_result_info.output_file_fp);
@@ -3359,7 +3377,7 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 
 	/* DISCARD INVALID FRESHNESS CHECK RESULTS */
 	/* If a host goes stale, Icinga will initiate a forced check in order to freshen it.  There is a race condition whereby a passive check
-	   could arrive between the 1) initiation of the forced check and 2) the time when the forced check result is processed here.  This would 
+	   could arrive between the 1) initiation of the forced check and 2) the time when the forced check result is processed here.  This would
 	   make the host fresh again, so we do a quick check to make sure the host is still stale before we accept the check result. */
 	if((queued_check_result->check_options & CHECK_OPTION_FRESHNESS_CHECK) && is_host_result_fresh(temp_host,current_time,FALSE)==TRUE){
 		log_debug_info(DEBUGL_CHECKS,0,"Discarding host freshness check result because the host is currently fresh (race condition avoided).\n");
