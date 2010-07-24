@@ -118,7 +118,6 @@ int process_cgivars(void);
 int string_to_time(char *,time_t *);
 
 
-
 int main(void){
 	int result=OK;
 	
@@ -661,7 +660,7 @@ void request_command_data(int cmd){
 	char buffer[MAX_INPUT_BUFFER];
 	contact *temp_contact;
 	scheduled_downtime *temp_downtime;
-
+	host *temp_host=NULL; 
 
 	/* get default name to use for comment author */
 	temp_contact=find_contact(current_authdata.username);
@@ -1189,6 +1188,12 @@ void request_command_data(int cmd){
 		for(temp_downtime=scheduled_downtime_list;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
 			if(temp_downtime->type!=HOST_DOWNTIME)
 				continue;
+			/* find the host... */
+			 temp_host=find_host(temp_downtime->host_name);
+			 /* make sure user has rights to view this host */
+			if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
+			 continue; 
+
 			printf("<option value='%lu'>",temp_downtime->downtime_id);
 			get_time_string(&temp_downtime->start_time,start_time,sizeof(start_time),SHORT_DATE_TIME);
 			printf("ID: %lu, Host '%s' starting @ %s\n",temp_downtime->downtime_id,temp_downtime->host_name,start_time);
