@@ -11,34 +11,6 @@
 # Short-Description: start and stop Icinga monitoring daemon
 # Description: Icinga is a service monitoring system
 ### END INIT INFO
-#
-# File : icinga
-#
-# Author : Jorge Sanchez Aymar (jsanchez@lanchile.cl)
-# 
-# Changelog :
-#
-# 1999-07-09 Karl DeBisschop <kdebisschop@infoplease.com>
-#  - setup for autoconf
-#  - add reload function
-# 1999-08-06 Ethan Galstad <egalstad@nagios.org>
-#  - Added configuration info for use with RedHat's chkconfig tool
-#    per Fran Boon's suggestion
-# 1999-08-13 Jim Popovitch <jimpop@rocketship.com>
-#  - added variable for icinga/var directory
-#  - cd into icinga/var directory before creating tmp files on startup
-# 1999-08-16 Ethan Galstad <egalstad@nagios.org>
-#  - Added test for rc.d directory as suggested by Karl DeBisschop
-# 2000-07-23 Karl DeBisschop <kdebisschop@users.sourceforge.net>
-#  - Clean out redhat macros and other dependencies
-# 2003-01-11 Ethan Galstad <egalstad@nagios.org>
-#  - Updated su syntax (Gary Miller)
-# 2010-04-20 Michael Friedrich <michael.friedrich@univie.ac.at>
-#  - Added show-errors, improved configuration checks (Wolfgang Nieder)
-#
-# Description: Starts and stops the Icinga monitor
-#              used to provide network services status.
-#
   
 status_icinga ()
 {
