@@ -522,7 +522,7 @@ int read_main_config_file(char *main_config_file){
 				break;
 				}
 
-			use_syslog=atoi(value)
+			use_syslog=atoi(value);
 			}
 
 		else if(!strcmp(variable,"use_syslog_local_facility")){
