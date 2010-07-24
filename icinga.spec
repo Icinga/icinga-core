@@ -78,11 +78,6 @@ PHP api for %{name}
 %prep
 %setup -n %{name}-%{version}
 
-# If we buld for redhat use the redhat init-script
-%if "%{_vendor}" == "redhat"
-%{__cp} -f daemon-init-redhat.in daemon-init.in
-%endif
-
 # /usr/local/nagios is hardcoded in many places
 %{__perl} -pi.orig -e 's|/usr/local/nagios/var/rw|%{_localstatedir}/nagios/rw|g;' contrib/eventhandlers/submit_check_result
 
@@ -118,8 +113,13 @@ PHP api for %{name}
 %install
 %{__rm} -rf %{buildroot}
 %{__mkdir} -p %{buildroot}/%{apacheconfdir}
-%{__make} install-unstripped install-init install-commandmode install-config \
-    install-webconf install-idoutils \
+%{__make} install-unstripped \
+    install-init \
+    install-commandmode \
+    install-config \
+    install-webconf \
+    install-idoutils \
+    install-api \
     DESTDIR="%{buildroot}" \
     INSTALL_OPTS="" \
     COMMAND_OPTS="" \
