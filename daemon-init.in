@@ -15,18 +15,10 @@
 status_icinga ()
 {
 
-	if test -x $IcingaCGI/daemonchk.cgi; then
-		if $IcingaCGI/daemonchk.cgi -l $IcingaRunFile; then
-		        return 0
-		else
-			return 1
-		fi
+	if ps -p $IcingaPID > /dev/null 2>&1; then
+	        return 0
 	else
-		if ps -p $IcingaPID > /dev/null 2>&1; then
-		        return 0
-		else
-			return 1
-		fi
+		return 1
 	fi
 
 	return 1
@@ -101,7 +93,6 @@ IcingaVarDir=@localstatedir@
 IcingaRunFile=@lockfile@
 IcingaLockDir=/var/lock/subsys
 IcingaLockFile=icinga
-IcingaCGIDir=@sbindir@
 IcingaUser=@icinga_user@
 IcingaGroup=@icinga_grp@
 IcingaChkFile=@localstatedir@/icinga.chk
