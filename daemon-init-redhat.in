@@ -68,10 +68,12 @@ force_reload() {
 check_config() {
         $nice runuser -s /bin/bash - $user -c "$corelimit >/dev/null 2>&1 ; $exec -v $config > /dev/null 2>&1"
 	RETVAL=$?
-	if [ $RETVAL -ne 0 ] ; then
-		echo "Configuration error: please check the config by runing \"$exec -v $config\""
-		exit 1
-	fi
+        if [ $RETVAL -ne 0 ] ; then
+                echo -n $"Configuration validation failed"
+                failure
+                echo
+                exit 1
+        fi
 }
 
 case "$1" in
@@ -104,7 +106,10 @@ case "$1" in
         restart
         ;;
    configtest)
-	check_config
+        echo -n  $"Checking config for $prog: "
+        check_config && success
+        echo
+
 	;;
     *)
         echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest}"
