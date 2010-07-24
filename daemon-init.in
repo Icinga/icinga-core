@@ -1,5 +1,5 @@
 #!/bin/sh
-# 
+#
 # chkconfig: 345 99 01
 # description: Icinga network monitor
 ### BEGIN INIT INFO
@@ -11,22 +11,14 @@
 # Short-Description: start and stop Icinga monitoring daemon
 # Description: Icinga is a service monitoring system
 ### END INIT INFO
-  
+
 status_icinga ()
 {
 
-	if test -x $IcingaCGI/daemonchk.cgi; then
-		if $IcingaCGI/daemonchk.cgi -l $IcingaRunFile; then
-		        return 0
-		else
-			return 1
-		fi
+	if ps -p $IcingaPID > /dev/null 2>&1; then
+	        return 0
 	else
-		if ps -p $IcingaPID > /dev/null 2>&1; then
-		        return 0
-		else
-			return 1
-		fi
+		return 1
 	fi
 
 	return 1
@@ -101,11 +93,10 @@ IcingaVarDir=@localstatedir@
 IcingaRunFile=@lockfile@
 IcingaLockDir=/var/lock/subsys
 IcingaLockFile=icinga
-IcingaCGIDir=@sbindir@
 IcingaUser=@icinga_user@
 IcingaGroup=@icinga_grp@
 IcingaChkFile=@localstatedir@/icinga.chk
-          
+
 
 # Check that icinga exists.
 if [ ! -f $IcingaBin ]; then
@@ -144,7 +135,7 @@ start(){
 	exit 0
 
 }
-          
+
 # See how we were called.
 case "$1" in
 
@@ -225,5 +216,5 @@ case "$1" in
 		;;
 
 esac
-  
+
 # End of this script
