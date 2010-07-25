@@ -109,8 +109,6 @@ int             refresh_rate=DEFAULT_REFRESH_RATE;
 
 int             escape_html_tags=FALSE;
 
-int             persistent_ack_comments=FALSE;
-
 int             use_ssl_authentication=FALSE;
 
 int             default_statusmap_layout_method=0;
@@ -430,9 +428,6 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"escape_html_tags"))
 			escape_html_tags=(atoi(val)>0)?TRUE:FALSE;
-
-		else if(!strcmp(var,"persistent_ack_comments"))
-			persistent_ack_comments=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"lock_author_names"))
 			lock_author_names=(atoi(val)>0)?TRUE:FALSE;
