@@ -50,6 +50,8 @@ extern int  use_authentication;
 
 extern int  lock_author_names;
 
+extern int  persistent_ack_comments;
+
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
 
@@ -960,7 +962,11 @@ void request_command_data(int cmd){
 			printf("</b></td></tr>\n");
 		        }
 		printf("<tr><td CLASS='optBoxItem'>Persistent%s:</td><td><b>",(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM)?" Comment":"");
-		printf("<INPUT TYPE='checkbox' NAME='persistent' %s>",(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM)?"":"CHECKED");
+		if ( (persistent_ack_comments==TRUE) || (cmd==CMD_ADD_HOST_COMMENT) ) {
+			printf("<INPUT TYPE='checkbox' NAME='persistent' %s>","CHECKED");
+		} else {
+			printf("<INPUT TYPE='checkbox' NAME='persistent' %s>","");
+		}
 		printf("</b></td></tr>\n");
 		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
 		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
@@ -986,7 +992,11 @@ void request_command_data(int cmd){
 			printf("</b></td></tr>\n");
 		        }
 		printf("<tr><td CLASS='optBoxItem'>Persistent%s:</td><td><b>",(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM)?" Comment":"");
-		printf("<INPUT TYPE='checkbox' NAME='persistent' %s",(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM)?"":"CHECKED");
+		if ( (persistent_ack_comments==TRUE) || (cmd==CMD_ADD_SVC_COMMENT) ){
+			printf("<INPUT TYPE='checkbox' NAME='persistent' %s","CHECKED");
+		} else {
+			printf("<INPUT TYPE='checkbox' NAME='persistent' %s","");
+		}
 		printf("</b></td></tr>\n");
 		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
 		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
