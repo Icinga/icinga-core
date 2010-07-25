@@ -292,6 +292,14 @@ escape_html_tags=1
 
 
 
+# PERSISTENT ACKNOWLEDGEMENT COMMENTS
+# This options determines whether wether the initial state
+# of the checkbox "Persistent Comment:" for service and host
+# problem acknowledgements is checked or uncheckd
+
+persistent_ack_comments=0
+
+
 
 # SOUND OPTIONS
 # These options allow you to specify an optional audio file
