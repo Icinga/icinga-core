@@ -64,6 +64,7 @@ extern int      enable_failure_prediction;
 extern int      process_performance_data;
 
 extern int      log_external_commands;
+extern int	log_external_commands_user;
 extern int      log_passive_checks;
 
 extern unsigned long    modified_host_process_attributes;
@@ -217,6 +218,7 @@ int process_external_command1(char *cmd){
 	time_t entry_time=0L;
 	int command_type=CMD_NONE;
 	char *temp_ptr=NULL;
+	char *username=NULL;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"process_external_command1()\n");
 
@@ -241,11 +243,39 @@ int process_external_command1(char *cmd){
 	if((command_id=(char *)strdup(temp_ptr+1))==NULL)
 		return ERROR;
 
-	/* get the command arguments */
-	if((temp_ptr=my_strtok(NULL,"\n"))==NULL)
-		args=(char *)strdup("");
-	else
-		args=(char *)strdup(temp_ptr);
+	if(log_external_commands_user==TRUE){
+                /* get the command arguments incl username */
+                if((temp_ptr=my_strtok(NULL,"\n"))==NULL)
+                        temp_buffer=(char *)strdup("");
+                else
+                        temp_buffer=(char *)strdup(temp_ptr);
+
+                /* get the command username */
+                if((temp_ptr=my_strtok(temp_buffer,";"))==NULL)
+                        username=(char *)strdup("");
+                else
+                        username=(char *)strdup(temp_ptr);
+
+		//logit(NSLOG_EXTERNAL_COMMAND | NSLOG_RUNTIME_WARNING,TRUE,"external command username: %s\n",username);
+
+                /* get the command args */
+                if((temp_ptr=my_strtok(NULL,"\n"))==NULL)
+                        args=(char *)strdup("");
+                else
+                        args=(char *)strdup(temp_ptr);
+
+		//logit(NSLOG_EXTERNAL_COMMAND | NSLOG_RUNTIME_WARNING,TRUE,"external command args: %s\n",args);
+
+		my_free(temp_buffer);
+	} else {
+		/* get the command arguments */
+		if((temp_ptr=my_strtok(NULL,"\n"))==NULL)
+			args=(char *)strdup("");
+		else
+			args=(char *)strdup(temp_ptr);
+	}
+
+
 	if(args==NULL){
 		my_free(command_id);
 		return ERROR;
@@ -256,7 +286,7 @@ int process_external_command1(char *cmd){
 	/**************************/
 	/**** PROCESS COMMANDS ****/
 	/**************************/
-	
+
 	if(!strcmp(command_id,"ENTER_STANDBY_MODE") || !strcmp(command_id,"DISABLE_NOTIFICATIONS"))
 		command_type=CMD_DISABLE_NOTIFICATIONS;
 	else if(!strcmp(command_id,"ENTER_ACTIVE_MODE") || !strcmp(command_id,"ENABLE_NOTIFICATIONS"))
@@ -386,7 +416,7 @@ int process_external_command1(char *cmd){
 		command_type=CMD_ENABLE_PASSIVE_HOST_CHECKS;
 	else if(!strcmp(command_id,"DISABLE_PASSIVE_HOST_CHECKS"))
 		command_type=CMD_DISABLE_PASSIVE_HOST_CHECKS;
-	
+
 	else if(!strcmp(command_id,"SCHEDULE_HOST_SVC_CHECKS"))
 		command_type=CMD_SCHEDULE_HOST_SVC_CHECKS;
 	else if(!strcmp(command_id,"SCHEDULE_FORCED_HOST_SVC_CHECKS"))
@@ -694,7 +724,7 @@ int process_external_command1(char *cmd){
 	else if(!strcmp(command_id,"PROCESS_FILE"))
 		command_type=CMD_PROCESS_FILE;
 
-	
+
 
 	/****************************/
 	/****** CUSTOM COMMANDS *****/
@@ -721,7 +751,12 @@ int process_external_command1(char *cmd){
 	update_check_stats(EXTERNAL_COMMAND_STATS,time(NULL));
 
 	/* log the external command */
-	asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s\n",command_id,args);
+	if(log_external_commands_user==TRUE){
+		asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s;%s\n",command_id,username,args);
+	} else {
+		asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s\n",command_id,args);
+	}
+
 	if(command_type==CMD_PROCESS_SERVICE_CHECK_RESULT || command_type==CMD_PROCESS_HOST_CHECK_RESULT){
 		/* passive checks are logged in checks.c as well, as some my bypass external commands by getting dropped in checkresults dir */
 		if(log_passive_checks==TRUE)
@@ -1874,7 +1909,7 @@ int cmd_delay_notification(int cmd,char *args){
 		temp_host->next_host_notification=delay_time;
 	else
 		temp_service->next_notification=delay_time;
-	
+
 	return OK;
         }
 
@@ -1900,7 +1935,6 @@ int cmd_schedule_check(int cmd,char *args){
 		if((temp_host=find_host(host_name))==NULL)
 			return ERROR;
 	        }
-	
 	else{
 
 		/* get the service description */

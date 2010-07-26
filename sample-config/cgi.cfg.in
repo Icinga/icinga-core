@@ -300,7 +300,6 @@ escape_html_tags=1
 persistent_ack_comments=0
 
 
-
 # SOUND OPTIONS
 # These options allow you to specify an optional audio file
 # that should be played in your browser window when there are

@@ -7,7 +7,7 @@
  * Last Modified: 05-05-2009
  *
  * License:
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -51,6 +51,8 @@ extern int  use_authentication;
 extern int  lock_author_names;
 
 extern int  persistent_ack_comments;
+
+extern int  log_external_commands_user;
 
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
@@ -122,7 +124,7 @@ int string_to_time(char *,time_t *);
 
 int main(void){
 	int result=OK;
-	
+
 	/* get the arguments passed in the URL */
 	process_cgivars();
 
@@ -662,7 +664,7 @@ void request_command_data(int cmd){
 	char buffer[MAX_INPUT_BUFFER];
 	contact *temp_contact;
 	scheduled_downtime *temp_downtime;
-	host *temp_host=NULL; 
+	host *temp_host=NULL;
 
 	/* get default name to use for comment author */
 	temp_contact=find_contact(current_authdata.username);
@@ -685,7 +687,7 @@ void request_command_data(int cmd){
 	case CMD_DEL_SVC_COMMENT:
 		printf("delete a %s comment",(cmd==CMD_DEL_HOST_COMMENT)?"host":"service");
 		break;
-		
+
 	case CMD_DELAY_HOST_NOTIFICATION:
 	case CMD_DELAY_SVC_NOTIFICATION:
 		printf("delay a %s notification",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"host":"service");
@@ -699,12 +701,12 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_SVC_CHECK:
 		printf("%s active checks of a particular service",(cmd==CMD_ENABLE_SVC_CHECK)?"enable":"disable");
 		break;
-		
+
 	case CMD_ENABLE_NOTIFICATIONS:
 	case CMD_DISABLE_NOTIFICATIONS:
 		printf("%s notifications",(cmd==CMD_ENABLE_NOTIFICATIONS)?"enable":"disable");
 		break;
-		
+
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
 		printf("%s the %s process",(cmd==CMD_SHUTDOWN_PROCESS)?"shutdown":"restart", PROGRAM_NAME);
@@ -975,7 +977,7 @@ void request_command_data(int cmd){
 		printf("<INPUT TYPE='TEXT' NAME='com_data' VALUE='%s' SIZE=40>",escape_string(comment_data));
 		printf("</b></td></tr>\n");
 		break;
-		
+
 	case CMD_ADD_SVC_COMMENT:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
 		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
@@ -1012,7 +1014,7 @@ void request_command_data(int cmd){
 		printf("<INPUT TYPE='TEXT' NAME='com_id' VALUE='%lu'>",comment_id);
 		printf("</b></td></tr>\n");
 		break;
-		
+
 	case CMD_DELAY_HOST_NOTIFICATION:
 		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
 		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
@@ -1075,7 +1077,7 @@ void request_command_data(int cmd){
 		printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
 		printf("</b></td></tr>\n");
 		break;
-		
+
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 	case CMD_DISABLE_HOST_SVC_CHECKS:
 	case CMD_DEL_ALL_HOST_COMMENTS:
@@ -1137,7 +1139,7 @@ void request_command_data(int cmd){
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 		printf("<tr><td CLASS='optBoxItem' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>");
 		break;
-		
+
 	case CMD_PROCESS_HOST_CHECK_RESULT:
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
 		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
@@ -1170,7 +1172,7 @@ void request_command_data(int cmd){
 		printf("<INPUT TYPE='TEXT' NAME='performance_data' VALUE=''>");
 		printf("</b></td></tr>\n");
 		break;
-		
+
 	case CMD_SCHEDULE_HOST_DOWNTIME:
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 	case CMD_SCHEDULE_SVC_DOWNTIME:
@@ -1202,7 +1204,7 @@ void request_command_data(int cmd){
 			 temp_host=find_host(temp_downtime->host_name);
 			 /* make sure user has rights to view this host */
 			if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
-			 continue; 
+			 continue;
 
 			printf("<option value='%lu'>",temp_downtime->downtime_id);
 			get_time_string(&temp_downtime->start_time,start_time,sizeof(start_time),SHORT_DATE_TIME);
@@ -1278,7 +1280,7 @@ void request_command_data(int cmd){
 			printf("</b></td></tr>\n");
 		        }
 		break;
-		
+
 	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
 	case CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
@@ -1294,7 +1296,7 @@ void request_command_data(int cmd){
 			printf("</b></td></tr>\n");
 		        }
 		break;
-		
+
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
 		printf("<tr><td CLASS='optBoxRequiredItem'>Scheduled Downtime ID:</td><td><b>");
@@ -1393,7 +1395,7 @@ void request_command_data(int cmd){
 	printf("<tr><td CLASS='optBoxItem'></td><td CLASS='optBoxItem'><INPUT TYPE='submit' NAME='btnSubmit' VALUE='Commit'> <INPUT TYPE='reset' VALUE='Reset'></td></tr>\n");
 
 	printf("</table>\n");
-	printf("</form>\n");	
+	printf("</form>\n");
 	printf("</td>\n");
 	printf("</tr>\n");
 	printf("</table>\n");
@@ -1403,7 +1405,7 @@ void request_command_data(int cmd){
 
 	/* show information about the command... */
 	show_command_help(cmd);
-	
+
 	printf("</td>\n");
 	printf("</tr>\n");
 	printf("</table>\n");
@@ -1465,13 +1467,13 @@ void commit_command_data(int cmd){
 		if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
 			authorized=TRUE;
 		break;
-		
+
 	case CMD_ADD_SVC_COMMENT:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
 
 		/* make sure we have author name, and comment data... */
 		if(!strcmp(comment_author,"")){
-			if(!error_string) 
+			if(!error_string)
 				error_string=strdup("Author was not entered");
 			}
 		if(!strcmp(comment_data,"")){
@@ -1520,7 +1522,7 @@ void commit_command_data(int cmd){
 		free_comment_data();
 
 		break;
-		
+
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
 
@@ -1552,7 +1554,7 @@ void commit_command_data(int cmd){
 		free_downtime_data();
 
 		break;
-		
+
 	case CMD_SCHEDULE_SVC_CHECK:
 	case CMD_ENABLE_SVC_CHECK:
 	case CMD_DISABLE_SVC_CHECK:
@@ -1620,7 +1622,7 @@ void commit_command_data(int cmd){
 			}
 
 		break;
-		
+
 	case CMD_ENABLE_NOTIFICATIONS:
 	case CMD_DISABLE_NOTIFICATIONS:
 	case CMD_SHUTDOWN_PROCESS:
@@ -1650,7 +1652,7 @@ void commit_command_data(int cmd){
 		if(is_authorized_for_system_commands(&current_authdata)==TRUE)
 			authorized=TRUE;
 		break;
-		
+
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 	case CMD_DISABLE_HOST_SVC_CHECKS:
 	case CMD_DEL_ALL_HOST_COMMENTS:
@@ -1883,7 +1885,7 @@ void commit_command_data(int cmd){
 			printf("<A HREF='javascript:window.history.go(-2)'>Return from whence you came</A></DIV></P>\n");
 		        }
 	        }
-	
+
 	/* everything looks okay, so let's go ahead and commit the command... */
 	else{
 
@@ -1929,7 +1931,13 @@ static int cmd_submitf(int id, const char *fmt, ...){
 	if (!command || (strlen(command) > 6 && !memcmp("CHANGE", command, 6)))
 		return ERROR;
 
-	len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;", time(NULL), command);
+        if(log_external_commands_user==TRUE){
+                get_authentication_information(&current_authdata);
+		len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;%s;", time(NULL), command, current_authdata.username);
+	} else {
+		len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;", time(NULL), command);
+	}
+
 	if (len < 0)
 		return ERROR;
 
@@ -1942,7 +1950,7 @@ static int cmd_submitf(int id, const char *fmt, ...){
 	}
 
 	return write_command_to_file(cmd);
-	}
+}
 
 
 
@@ -2040,7 +2048,7 @@ int commit_command(int cmd){
 	case CMD_REMOVE_SVC_ACKNOWLEDGEMENT:
 		result = cmd_submitf(cmd,"%s;%s",host_name,service_desc);
 		break;
-		
+
 	case CMD_ADD_HOST_COMMENT:
 		result = cmd_submitf(cmd,"%s;%d;%s;%s",host_name,persistent_comment,comment_author,comment_data);
 		break;
@@ -2053,7 +2061,7 @@ int commit_command(int cmd){
 	case CMD_DEL_SVC_COMMENT:
 		result = cmd_submitf(cmd,"%lu",comment_id);
 		break;
-		
+
 	case CMD_DELAY_HOST_NOTIFICATION:
 		result = cmd_submitf(cmd,"%s;%lu",host_name,notification_time);
 		break;
@@ -2084,7 +2092,7 @@ int commit_command(int cmd){
 			result |= cmd_submitf(cmd,"%s",host_name);
 			}
 		break;
-		
+
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
 		if (force_check == TRUE)
 			cmd = CMD_SCHEDULE_FORCED_HOST_SVC_CHECKS;
@@ -2097,7 +2105,7 @@ int commit_command(int cmd){
 			cmd = (cmd == CMD_ENABLE_HOST_NOTIFICATIONS) ? CMD_ENABLE_HOST_AND_CHILD_NOTIFICATIONS : CMD_DISABLE_HOST_AND_CHILD_NOTIFICATIONS;
 		result = cmd_submitf(cmd,"%s",host_name);
 		break;
-		
+
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_SVC_NOTIFICATIONS:
 		result = cmd_submitf(cmd,"%s",host_name);
@@ -2106,11 +2114,11 @@ int commit_command(int cmd){
 			result |= cmd_submitf(cmd,"%s",host_name);
 			}
 		break;
-		
+
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
 		result = cmd_submitf(cmd,"%s;%d;%d;%d;%s;%s",host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
 		break;
-		
+
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
 		result = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%s;%s",host_name,service_desc,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
 		break;
@@ -2118,20 +2126,20 @@ int commit_command(int cmd){
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
 		result = cmd_submitf(cmd,"%s;%s;%d;%s|%s",host_name,service_desc,plugin_state,plugin_output,performance_data);
 		break;
-		
+
 	case CMD_PROCESS_HOST_CHECK_RESULT:
 		result = cmd_submitf(cmd,"%s;%d;%s|%s",host_name,plugin_state,plugin_output,performance_data);
 		break;
-		
+
 	case CMD_SCHEDULE_HOST_DOWNTIME:
 		if(child_options==1)
 			cmd = CMD_SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;
 		else if (child_options == 2)
 			cmd = CMD_SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;
-		
+
 		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
 		break;
-		
+
         case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
                 break;
@@ -2139,7 +2147,7 @@ int commit_command(int cmd){
 	case CMD_SCHEDULE_SVC_DOWNTIME:
 		result = cmd_submitf(cmd,"%s;%s;%lu;%lu;%d;%lu;%lu;%s;%s",host_name,service_desc,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
 		break;
-		
+
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
 		result = cmd_submitf(cmd,"%lu",downtime_id);
@@ -2303,7 +2311,7 @@ void clean_comment_data(char *buffer){
 	int y;
 
 	y=(int)strlen(buffer);
-	
+
 	for(x=0;x<y;x++){
 		if(buffer[x]==';')
 			buffer[x]=' ';
@@ -2328,7 +2336,7 @@ void show_command_help(cmd){
 		printf("that is having problems if more than one of you may be working on it.  If you do not check the 'persistent' option, the comment will be automatically be deleted\n");
 		printf("the next time %s is restarted.\n", PROGRAM_NAME);
 		break;
-		
+
 	case CMD_ADD_SVC_COMMENT:
 		printf("This command is used to add a comment for the specified service.  If you work with other administrators, you may find it useful to share information about a host\n");
 		printf("or service that is having problems if more than one of you may be working on it.  If you do not check the 'persistent' option, the comment will automatically be\n");
@@ -2338,11 +2346,11 @@ void show_command_help(cmd){
 	case CMD_DEL_HOST_COMMENT:
 		printf("This command is used to delete a specific host comment.\n");
 		break;
-		
+
 	case CMD_DEL_SVC_COMMENT:
 		printf("This command is used to delete a specific service comment.\n");
 		break;
-		
+
 	case CMD_DELAY_HOST_NOTIFICATION:
 		printf("This command is used to delay the next problem notification that is sent out for the specified host.  The notification delay will be disregarded if\n");
 		printf("the host changes state before the next notification is scheduled to be sent out.  This command has no effect if the host is currently UP.\n");
@@ -2361,19 +2369,19 @@ void show_command_help(cmd){
 	case CMD_ENABLE_SVC_CHECK:
 		printf("This command is used to enable active checks of a service.\n");
 		break;
-		
+
 	case CMD_DISABLE_SVC_CHECK:
 		printf("This command is used to disable active checks of a service.\n");
 		break;
-		
+
 	case CMD_DISABLE_NOTIFICATIONS:
 		printf("This command is used to disable host and service notifications on a program-wide basis.\n");
 		break;
-		
+
 	case CMD_ENABLE_NOTIFICATIONS:
 		printf("This command is used to enable host and service notifications on a program-wide basis.\n");
 		break;
-		
+
 	case CMD_SHUTDOWN_PROCESS:
 		printf("This command is used to shutdown the %s process. Note: Once the %s has been shutdown, it cannot be restarted via the web interface!\n", PROGRAM_NAME, PROGRAM_NAME);
 		break;
@@ -2386,13 +2394,13 @@ void show_command_help(cmd){
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 		printf("This command is used to enable active checks of all services associated with the specified host.  This <i>does not</i> enable checks of the host unless you check the 'Enable for host too' option.\n");
 		break;
-		
+
 	case CMD_DISABLE_HOST_SVC_CHECKS:
 		printf("This command is used to disable active checks of all services associated with the specified host.  When a service is disabled %s will not monitor the service.  Doing this will prevent any notifications being sent out for\n", PROGRAM_NAME);
 		printf("the specified service while it is disabled.  In order to have %s check the service in the future you will have to re-enable the service.\n", PROGRAM_NAME);
 		printf("Note that disabling service checks may not necessarily prevent notifications from being sent out about the host which those services are associated with.  This <i>does not</i> disable checks of the host unless you check the 'Disable for host too' option.\n");
 		break;
-		
+
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
 		printf("This command is used to scheduled the next check of all services on the specified host.  If you select the <i>force check</i> option, %s will force a check of all services on the host regardless of both what time the scheduled checks occur and whether or not checks are enabled for those services.\n", PROGRAM_NAME);
 		break;
@@ -2400,7 +2408,7 @@ void show_command_help(cmd){
 	case CMD_DEL_ALL_HOST_COMMENTS:
 		printf("This command is used to delete all comments associated with the specified host.\n");
 		break;
-		
+
 	case CMD_DEL_ALL_SVC_COMMENTS:
 		printf("This command is used to delete all comments associated with the specified service.\n");
 		break;
@@ -2435,7 +2443,7 @@ void show_command_help(cmd){
 		printf("This command is used to temporarily prevent notifications from being sent out for all hosts and services that lie\n");
 		printf("\"beyone\" the specified host (from the view of %s).\n", PROGRAM_NAME);
 		break;
-		
+
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
 		printf("This command is used to enable notifications for all services on the specified host.  Notifications will only be sent out for the\n");
 		printf("service state types you defined in your service definition.  This <i>does not</i> enable notifications for the host unless you check the 'Enable for host too' option.\n");
@@ -2620,7 +2628,7 @@ void show_command_help(cmd){
 	case CMD_ENABLE_HOSTGROUP_SVC_CHECKS:
 		printf("This command is used to enable active checks of all services in the specified hostgroup.  This <i>does not</i> enable active checks of the hosts in the hostgroup unless you check the 'Enable for hosts too' option.\n");
 		break;
-		
+
 	case CMD_DISABLE_HOSTGROUP_SVC_CHECKS:
 		printf("This command is used to disable active checks of all services in the specified hostgroup.  This <i>does not</i> disable checks of the hosts in the hostgroup unless you check the 'Disable for hosts too' option.\n");
 		break;
@@ -2744,7 +2752,7 @@ void show_command_help(cmd){
 	case CMD_ENABLE_SERVICEGROUP_SVC_CHECKS:
 		printf("This command is used to enable active checks of all services in the specified servicegroup.  This <i>does not</i> enable active checks of the hosts in the servicegroup unless you check the 'Enable for hosts too' option.\n");
 		break;
-		
+
 	case CMD_DISABLE_SERVICEGROUP_SVC_CHECKS:
 		printf("This command is used to disable active checks of all services in the specified servicegroup.  This <i>does not</i> disable checks of the hosts in the servicegroup unless you check the 'Disable for hosts too' option.\n");
 		break;
@@ -2795,7 +2803,7 @@ int string_to_time(char *buffer, time_t *t){
 	/* Initialize some variables just in case they don't get parsed
 	   by the sscanf() call.  A better solution is to also check the
 	   CGI input for validity, but this should suffice to prevent
-	   strange problems if the input is not valid. 
+	   strange problems if the input is not valid.
 	   Jan 15 2003  Steve Bonds */
 	lt.tm_mon=0;
 	lt.tm_mday=1;

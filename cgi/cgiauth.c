@@ -181,7 +181,6 @@ int get_authentication_information(authdata *authinfo){
         }
 
 
-
 /* check if user is authorized to view information about a particular host */
 int is_authorized_for_host(host *hst, authdata *authinfo){
 	contact *temp_contact;
