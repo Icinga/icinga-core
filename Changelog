@@ -10,6 +10,7 @@ FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c
 * core: modify execv to execvp, accepting 4096 cmd args, for both host and service checks with adapted error handling
 * core: execvp searches in PATH too like popen, and returns if error, outputting the errno string
+* core: fix possible overflows and increase command lenght limit in mini_epn's (Thomas Guyot-Sionnest)
 
 * classic ui: fix image urls ins stylesheets
 
