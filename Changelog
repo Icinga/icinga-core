@@ -20,6 +20,7 @@ FIXES
 
 * idoutils: adapt oracle-drop.sql for current schema
 * idoutils: fix binding null values to prepared statements in oracle
+* idoutils: fix typo in servicedepencies query for oracle
 
 
 1.0.2 - 30/06/2010
