@@ -58,12 +58,12 @@ Requires: httpd
 This package contains the webgui (html,css,cgi etc.) for %{name}
 
 %package idoutils
-Summary: Web content for %{name}
+Summary: database broker module for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 
 %description idoutils
-This package contains the idoutils addon for %{name} wich provides 
+This package contains the idoutils broker module for %{name} which provides 
 database storage via libdbi.
 
 %package api
