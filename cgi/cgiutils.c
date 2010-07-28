@@ -598,10 +598,16 @@ int read_all_status_data(char *config_file,int options){
 	if(options & READ_SERVICE_STATUS)
 		service_status_has_been_read=TRUE;
 
+	/*
+	  2010-07-28 Michael Friedrich: removed for now,
+	  it only brought problems, benefit was zero
+	*/
         /* return error if daemon is not running */
+	/*
         if(check_daemon_running()==ERROR) {
                 return ERROR;
         }
+	*/
 
 	return result;
         }

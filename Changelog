@@ -15,6 +15,7 @@ FIXES
 * core: fix wrong is_volatile conditions causing wrong service alerts in the logs
 
 * classic ui: fix image urls ins stylesheets
+* classic ui: remove check_daemon_running, remains useless
 
 * install: fix api not installed using make install-unstripped
 * install: enable debuginfo in spec file
