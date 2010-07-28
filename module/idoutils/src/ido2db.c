@@ -22,7 +22,6 @@
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
 
-#define IDO2DB_VERSION "1.0.2"
 
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
@@ -30,39 +29,11 @@
 
 #define IDO2DB_NAME "IDO2DB"
 #define IDO2DB_DATE "06-30-2010"
+#define IDO2DB_VERSION "1.0.2"
 
-#ifdef HAVE_SSL
-SSL_METHOD *meth;
-SSL_CTX *ctx;
-int allow_weak_random_seed = IDO_FALSE;
-#endif
 extern int use_ssl;
 
 extern int errno;
-
-char *ido2db_config_file=NULL;
-char *lock_file=NULL;
-char *ido2db_user=NULL;
-char *ido2db_group=NULL;
-int ido2db_sd=0;
-int ido2db_socket_type=IDO_SINK_UNIXSOCKET;
-char *ido2db_socket_name=NULL;
-int ido2db_tcp_port=IDO_DEFAULT_TCP_PORT;
-int ido2db_use_inetd=IDO_FALSE;
-int ido2db_show_version=IDO_FALSE;
-int ido2db_show_license=IDO_FALSE;
-int ido2db_show_help=IDO_FALSE;
-int ido2db_run_foreground=IDO_FALSE;
-
-ido2db_dbconfig ido2db_db_settings;
-time_t ido2db_db_last_checkin_time=0L;
-
-char *ido2db_debug_file=NULL;
-int ido2db_debug_level=IDO2DB_DEBUGL_NONE;
-int ido2db_debug_verbosity=IDO2DB_DEBUGV_BASIC;
-int stop_signal_detected=IDO_FALSE;
-FILE *ido2db_debug_file_fp=NULL;
-unsigned long ido2db_max_debug_file_size=0L;
 
 extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
@@ -70,21 +41,50 @@ extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 extern int ido2db_check_dbd_driver(void);
 #endif
 
+#ifdef HAVE_SSL
+SSL_METHOD *meth;
+SSL_CTX *ctx;
+int allow_weak_random_seed = IDO_FALSE;
+#endif
+
+char *ido2db_config_file=NULL;
+char *lock_file=NULL;
+char *ido2db_user=NULL;
+char *ido2db_group=NULL;
+
+int ido2db_sd=0;
+int ido2db_socket_type=IDO_SINK_UNIXSOCKET;
+char *ido2db_socket_name=NULL;
+
+int ido2db_tcp_port=IDO_DEFAULT_TCP_PORT;
+int ido2db_use_inetd=IDO_FALSE;
+
+int ido2db_show_version=IDO_FALSE;
+int ido2db_show_license=IDO_FALSE;
+int ido2db_show_help=IDO_FALSE;
+
+int ido2db_run_foreground=IDO_FALSE;
+
+ido2db_dbconfig ido2db_db_settings;
+
+time_t ido2db_db_last_checkin_time=0L;
+
+char *ido2db_debug_file=NULL;
+int ido2db_debug_level=IDO2DB_DEBUGL_NONE;
+int ido2db_debug_verbosity=IDO2DB_DEBUGV_BASIC;
+FILE *ido2db_debug_file_fp=NULL;
+unsigned long ido2db_max_debug_file_size=0L;
+
+int stop_signal_detected=IDO_FALSE;
+
+char *sigs[35]={"EXIT","HUP","INT","QUIT","ILL","TRAP","ABRT","BUS","FPE","KILL","USR1","SEGV","USR2","PIPE","ALRM","TERM","STKFLT","CHLD","CONT","STOP","TSTP","TTIN","TTOU","URG","XCPU","XFSZ","VTALRM","PROF","WINCH","IO","PWR","UNUSED","ZERR","DEBUG",(char *)NULL};
+
+
 int ido2db_open_debug_log(void);
 int ido2db_close_debug_log(void);
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 
-/*#define DEBUG_IDO2DB 1*/                         /* don't daemonize */
-/*#define DEBUG_IDO2DB_EXIT_AFTER_CONNECTION 1*/    /* exit after first client disconnects */
-/*#define DEBUG_IDO2DB2 1 */
-/*#define IDO2DB_DEBUG_MBUF 1*/
-/*
-#ifdef IDO2DB_DEBUG_MBUF
-unsigned long mbuf_bytes_allocated=0L;
-unsigned long mbuf_data_allocated=0L;
-#endif
-*/
 
 
 int main(int argc, char **argv){
@@ -141,6 +141,10 @@ int main(int argc, char **argv){
 		printf("Error processing config file '%s'.\n",ido2db_config_file);
 		exit(1);
         }
+
+	/* print starting info to syslog */
+	syslog(LOG_USER | LOG_INFO, "%s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org))", IDO2DB_NAME, IDO2DB_VERSION, IDO2DB_DATE);
+	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO2DB_VERSION, (int)getpid() );
 
 	if (ido2db_socket_type==IDO_SINK_UNIXSOCKET && use_ssl == IDO_TRUE){
 		printf("SSL is not allowed on socket_type=unix\n");
@@ -288,6 +292,9 @@ int main(int argc, char **argv){
 		if(ido2db_wait_for_connections()==IDO_ERROR)
 			return 1;
 	        }
+
+	/* tell the log we're done */
+	syslog(LOG_USER | LOG_INFO, "Successfully shutdown... (PID=%d)\n",(int)getpid());
 
 	/* close debug log */
 	ido2db_close_debug_log();
@@ -914,6 +921,10 @@ void ido2db_parent_sighandler(int sig){
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_parent_sighandler() start\n");
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "processing signal '%d'\n", sig);
+
+	/* not possible as parent */
+        /* syslog(LOG_USER | LOG_INFO, "Processing SIG%s...\n", sigs[sig]); */
+
 	switch (sig){
 	case SIGTERM:
 	case SIGINT:
@@ -950,6 +961,8 @@ void ido2db_child_sighandler(int sig){
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_child_sighandler() start\n");
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Child caught signal '%d' exiting\n", sig);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_child_sighandler() end\n");
+
+	syslog(LOG_USER | LOG_INFO, "Caught SIG%s, cleaning up and exiting...\n", sigs[sig]);
 
 	if(ido2db_run_foreground == IDO_TRUE){
 		/* cleanup the socket */
@@ -1049,6 +1062,7 @@ int ido2db_wait_for_connections(void){
 	if(ido2db_run_foreground == IDO_FALSE) {
 		if(ido2db_daemonize()!=IDO_OK)
 		return IDO_ERROR;
+		syslog(LOG_USER | LOG_INFO, "Finished daemonizing... (New PID=%d)\n",(int)getpid());
 	}
 
 	/* accept connections... */
@@ -1149,7 +1163,7 @@ int ido2db_handle_client_connection(int sd){
 	/* open syslog facility */
 	/*openlog("ido2db",0,LOG_DAEMON);*/
 
-	syslog(LOG_USER | LOG_INFO, "Handling Client connection...\n");
+	syslog(LOG_USER | LOG_INFO, "Handling client connection...\n");
 	/* re-open debug log */
 	ido2db_close_debug_log();
 	ido2db_open_debug_log();
@@ -1162,8 +1176,6 @@ int ido2db_handle_client_connection(int sd){
 	signal(SIGFPE,ido2db_child_sighandler);
 
 	/* create cleanup thread */
-
-	
 	if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, &idi)) != 0) {
 		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 		exit(EXIT_FAILURE);

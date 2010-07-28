@@ -5,7 +5,9 @@ Icinga 1.0.x Change Log
 1.0.3 - 18/08/2010
 
 ENHANCEMENTS
-* add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd
+* core: add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd
+
+* idoutils: add syslog output for start/stop, client connecting
 
 FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c
