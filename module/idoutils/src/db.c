@@ -1136,6 +1136,10 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	int have_instance = IDO_FALSE;
 	time_t current_time;
 
+#ifdef USE_ORACLE
+	unsigned long n_zero = 0;
+        void *data[9];
+#endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() start\n");
 
 	/* make sure we have an instance name */
@@ -1189,7 +1193,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
         /* get existing instance */
-        void *data[9];
         data[0] = (void *) &idi->instance_name;
 
         if(!OCI_BindString(idi->dbinfo.oci_statement_instances_select, MT(":X1"), *(char **) data[0], 0)) {
@@ -1222,7 +1225,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
         idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_instances_select);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query ok\n");
-			
+
 	if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() fetchnext ok\n");
 		idi->dbinfo.instance_id	= OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
@@ -1231,7 +1234,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 			have_instance = IDO_FALSE;
 		} else {
 			have_instance = IDO_TRUE;
-		}		
+		}
 	} else {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() fetchnext not ok\n");
 	}
@@ -1239,7 +1242,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 
 #endif /* Oracle ocilib specific */
-	
+
 
 	/* insert new instance if necessary */
 	if (have_instance == IDO_FALSE) {
@@ -1294,7 +1297,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	        void *data[1];
 	        data[0] = (void *) &idi->instance_name;
 
                 if(!OCI_BindString(idi->dbinfo.oci_statement_instances, MT(":X1"), *(char **) data[0], 0)) {
@@ -1386,9 +1388,8 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	unsigned long n_zero = 0;
+	n_zero = 0;
 
-        //void *data[9];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &n_zero;
         data[2] = (void *) &n_zero;
@@ -1503,7 +1504,8 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         int have_instance = IDO_FALSE;
         time_t current_time;
 
-#ifdef USE_ORACLE 
+#ifdef USE_ORACLE
+        unsigned long n_zero = 0;
 	void *data[9];
 #endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() start\n");
@@ -1597,7 +1599,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 
-	
+
 	/* check if instance found */
 	if(have_instance == IDO_FALSE) {
 		return IDO_ERROR;
@@ -1663,9 +1665,8 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-        unsigned long n_zero = 0;
+        n_zero = 0;
 
-        //void *data[9];
         data[0] = (void *) &idi->dbinfo.instance_id;
         data[1] = (void *) &n_zero;
         data[2] = (void *) &n_zero;
@@ -1777,6 +1778,10 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 	char *buf = NULL;
 	char *ts = NULL;
 #endif
+
+#ifdef USE_ORACLE
+        void *data[5];
+#endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_goodbye() start\n");
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -1804,7 +1809,6 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-        void *data[5];
         data[0] = (void *) &idi->data_end_time;
         data[1] = (void *) &idi->bytes_processed;
         data[2] = (void *) &idi->lines_processed;
@@ -1853,6 +1857,10 @@ int ido2db_db_checkin(ido2db_idi *idi) {
 	char *buf = NULL;
 #endif
 
+#ifdef USE_ORACLE
+        void *data[4];
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_checkin() start\n");
 
 	/* record last connection information */
@@ -1876,7 +1884,6 @@ int ido2db_db_checkin(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-        void *data[4];
         data[0] = (void *) &idi->bytes_processed;
         data[1] = (void *) &idi->lines_processed;
         data[2] = (void *) &idi->entries_processed;
@@ -2066,7 +2073,7 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
                         break;
                 default:
                         break;
-	} 
+	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql() end\n");
 
@@ -2081,7 +2088,7 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet() start\n");
 
-	switch (idi->dbinfo.server_type) { 
+	switch (idi->dbinfo.server_type) {
 		case IDO2DB_DBSERVER_MYSQL:
                         if(asprintf(&buf,"UNIX_TIMESTAMP(%s)",(field==NULL)?"":field)==-1)
 				buf=NULL;
@@ -2115,8 +2122,8 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
                         break;
                 default:
                         break;
-        } 
-	
+        }
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet() end\n");
 
 	return buf;
@@ -2129,6 +2136,10 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
 	const char *error_msg;
+#endif
+
+#ifdef USE_ORACLE
+        int oci_res = 0;
 #endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_query() start\n");
@@ -2179,7 +2190,7 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	int oci_res = 0;
+	oci_res = 0;
 
         /* create statement handler */
         idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
@@ -2396,6 +2407,10 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
 	char *ts[1];
 	int result = IDO_OK;
 
+#ifdef USE_ORACLE
+        void *data[4];
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_trim_data_table() start, time=%lu\n", t);
 
 	if (idi == NULL || table_name == NULL || field_name == NULL)
@@ -2420,7 +2435,6 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-        void *data[4];
         data[0] = (void *) &table_name;
         data[1] = (void *) &idi->dbinfo.instance_id;
         data[2] = (void *) &field_name;
@@ -2435,7 +2449,7 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
                         if(!OCI_BindString(idi->dbinfo.oci_statement_instances_delete_time, MT(":X3"), *(char **) data[2], 0)) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_instances_delete_time, MT(":X4"), (big_uint *) data[3])) { // unixtimestamp instead of time2sql 
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_instances_delete_time, MT(":X4"), (big_uint *) data[3])) { // unixtimestamp instead of time2sql
                                 return IDO_ERROR;
                         }
 

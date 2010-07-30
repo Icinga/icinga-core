@@ -962,7 +962,8 @@ void ido2db_child_sighandler(int sig){
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Child caught signal '%d' exiting\n", sig);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_child_sighandler() end\n");
 
-	syslog(LOG_USER | LOG_INFO, "Caught SIG%s, cleaning up and exiting...\n", sigs[sig]);
+	/* don't run into a race condition */
+	//syslog(LOG_USER | LOG_INFO, "Caught SIG%s, cleaning up and exiting...\n", sigs[sig]);
 
 	if(ido2db_run_foreground == IDO_TRUE){
 		/* cleanup the socket */
