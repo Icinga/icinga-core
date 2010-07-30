@@ -123,14 +123,11 @@ void logit(int data_type, int display, const char *fmt, ...){
 int write_to_all_logs(char *buffer, unsigned long data_type){
 
 	/* write to syslog */
-        if(use_syslog) {
-		write_to_syslog(buffer,data_type);
-	}
+	write_to_syslog(buffer,data_type);
 
 	/* write to main log */
-	if(use_syslog != 2) {
-		write_to_log(buffer,data_type,NULL);
-	}
+	write_to_log(buffer,data_type,NULL);
+
 	return OK;
         }
 
@@ -139,14 +136,10 @@ int write_to_all_logs(char *buffer, unsigned long data_type){
 static void write_to_all_logs_with_timestamp(char *buffer, unsigned long data_type, time_t *timestamp){
 
 	/* write to syslog */
-	if(use_syslog) {
-		write_to_syslog(buffer,data_type);
-	}
+	write_to_syslog(buffer,data_type);
 
 	/* write to main log */
-	if(use_syslog != 2) {
-		write_to_log(buffer,data_type,timestamp);
-	}
+	write_to_log(buffer,data_type,timestamp);
 }
 
 

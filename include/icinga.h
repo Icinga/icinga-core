@@ -52,7 +52,7 @@ extern "C" {
 /******************* DEFAULT VALUES *******************/
 
 #define DEFAULT_LOG_LEVEL					1	/* log all events to main log file */
-#define DEFAULT_USE_SYSLOG					1	/* log events to syslog? 0=no 1=yes 2=sylog only */
+#define DEFAULT_USE_SYSLOG					1	/* log events to syslog? 1=yes, 0=no */
 #define DEFAULT_USE_SYSLOG_LOCAL_FACILITY			0	/* log events to a local facility instead of the default? 1=yes, 0=no */
 #define DEFAULT_SYSLOG_LOCAL_FACILITY				5	/* log events to the specified loacl facility? 1=yes, 0=no */
 
