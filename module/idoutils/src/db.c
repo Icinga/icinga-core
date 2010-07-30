@@ -5752,4 +5752,45 @@ int ido2db_oci_prepared_statement_instances_delete_time(ido2db_idi *idi) {
         return IDO_OK;
 }
 
+
+/****************************************************************************/
+/* MISC FUNCTIONS                                                           */
+/****************************************************************************/
+
+/************************************/
+/* NULL BINDING                     */
+/************************************/
+
+int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *oci_statement_null, char *param_name) {
+
+        char *oci_tmp;
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_bind_null_param() start\n");
+	//syslog(LOG_USER | LOG_INFO, "bind null param %s\n", param_name);
+
+        asprintf(&oci_tmp, "a"); /* just malloc sth that ocilib is happy */
+
+	if(param_name==NULL)
+		return IDO_ERROR;
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_bind_null_param() param=%s\n", param_name);
+
+	/* bind to dummy value */
+	if(!OCI_BindString(oci_statement_null, MT(param_name), oci_tmp, 0)) {
+		return IDO_ERROR;
+	}
+
+	/* free dummy */
+	free(oci_tmp);
+
+	/* get bind ptr, set to NULL */
+	if(!OCI_BindSetNull(OCI_GetBind2(oci_statement_null,MT(param_name)))){
+		return IDO_ERROR;
+	}
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_bind_null_param() end\n");
+
+	return IDO_OK;
+}
+
 #endif /* Oracle ocilib specific */

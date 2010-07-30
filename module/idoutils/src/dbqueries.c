@@ -477,7 +477,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                                         *(int *) data[7],
                                         *(double *) data[8],
                                         *(int *) data[9],
-                                        *(char **) data[10],     	
+                                        *(char **) data[10],
                                         *(char **) data[11],     	/* insert end */
                                         *(char **) data[3],             /* update start */
                                         *(unsigned long *) data[4],
@@ -486,7 +486,7 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                                         *(int *) data[7],
                                         *(double *) data[8],
                                         *(int *) data[9],
-                                        *(char **) data[10],             
+                                        *(char **) data[10],
                                         *(char **) data[11]             /* update end */
                         );
                         /* send query to db */
@@ -503,8 +503,8 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                                         *(int *) data[7],
                                         *(double *) data[8],
                                         *(int *) data[9],
-                                        *(char **) data[10],                                                  
-                                        *(char **) data[11],             /* update end */                                     
+                                        *(char **) data[10],
+                                        *(char **) data[11],             /* update end */
 					*(unsigned long *) data[0],     /* unique constraint start */
                                         *(char **) data[1],
                                         *(unsigned long *) data[2]      /* unique constraint end */
@@ -528,8 +528,8 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                                         *(int *) data[7],
                                         *(double *) data[8],
                                         *(int *) data[9],
-                                        *(char **) data[10],                                          
-                                        *(char **) data[11]            /* insert end */                              
+                                        *(char **) data[10],
+                                        *(char **) data[11]            /* insert end */
 				);
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -577,9 +577,15 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_systemcommanddata, MT(":X5"), (big_uint *) data[4])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_systemcommanddata, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_systemcommanddata, MT(":X7"), (int *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -592,13 +598,24 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_systemcommanddata, MT(":X10"), (int *) data[9])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[10]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_systemcommanddata, ":X11")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X11"), *(char **) data[10], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[11]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_systemcommanddata, ":X12")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X12"), *(char **) data[11], 0)) {
                                 return IDO_ERROR;
                         }
-
+	}
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_systemcommanddata)) {
                                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_systemcommanddata() execute error\n");
@@ -670,7 +687,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
                                         *(int *) data[13],
                                         *(double *) data[14],
                                         *(int *) data[15],
-                                        *(char **) data[16],            
+                                        *(char **) data[16],
                                         *(char **) data[17]            /* update end */
 			);
                         /* send query to db */
@@ -694,7 +711,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
                                         *(double *) data[14],
                                         *(int *) data[15],
                                         *(char **) data[16],
-                                        *(char **) data[17],            /* update end */                                       
+                                        *(char **) data[17],            /* update end */
 					*(unsigned long *) data[0],     /* unique constraint start */
                                         *(char **) data[5],
                                         *(unsigned long *) data[6]      /* unique constraint end */
@@ -789,12 +806,24 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X10"), (big_uint *) data[9])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[10]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_eventhandlerdata, ":X11")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X11"), *(char **) data[10], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[11]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_eventhandlerdata, ":X12")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X12"), *(char **) data[11], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X13"), (int *) data[12])) {
                                 return IDO_ERROR;
                         }
@@ -807,13 +836,24 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X16"), (int *) data[15])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[16]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_eventhandlerdata, ":X17")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X17"), *(char **) data[16], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[17]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_eventhandlerdata, ":X18")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X18"), *(char **) data[17], 0)) {
                                 return IDO_ERROR;
                         }
-
+	}
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_eventhandlerdata)) {
                                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_() execute error\n");
@@ -980,12 +1020,26 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_notificationdata, MT(":X9"), (int *) data[8])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[9]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_notificationdata, ":X10")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+
                         if(!OCI_BindString(idi->dbinfo.oci_statement_notificationdata, MT(":X10"), *(char **) data[9], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[10]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_notificationdata, ":X11")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+
                         if(!OCI_BindString(idi->dbinfo.oci_statement_notificationdata, MT(":X11"), *(char **) data[10], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_notificationdata, MT(":X12"), (int *) data[11])) {
                                 return IDO_ERROR;
                         }
@@ -1249,8 +1303,6 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-			//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_contactnotificationmethoddata() %lu, %lu, %lu, %lu, %lu, %lu, %lu, %s \n", *(unsigned long *) data[0], *(unsigned long *) data[1], *(unsigned long *) data[8], *(unsigned long *) data[3], *(unsigned long *) data[9], *(unsigned long *) data[5], *(unsigned long *) data[6], *(char **) data[7]);
-
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X1"), (big_uint *) data[0])) {
                                 return IDO_ERROR;
                         }
@@ -1272,18 +1324,15 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
-                        if(data[7]!=NULL) {
-				if(!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
-	                                oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_contactnotificationmethoddata, ":X8");
-        	                        OCI_BindSetNull(oci_bind);
-					//OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_contactnotificationmethoddata,":X8"));
-        	                        //return IDO_ERROR;
-	                        }
-			} else {
-                                        oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_contactnotificationmethoddata, ":X8");
-                                        OCI_BindSetNull(oci_bind);
-				//OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_contactnotificationmethoddata,":X8"));
-			}
+        if(*(char **) data[7]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contactnotificationmethoddata, ":X8")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                                if(!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
+                                        return IDO_ERROR;
+                                }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_contactnotificationmethoddata)) {
@@ -1506,25 +1555,54 @@ int ido2db_query_insert_or_update_servicecheckdata_add(ido2db_idi *idi, void **d
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X16"), (int *) data[15])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[16]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicechecks, ":X17")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X17"), *(char **) data[16], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[17]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicechecks, ":X18")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X18"), *(char **) data[17], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[18]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicechecks, ":X19")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X19"), *(char **) data[18], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicechecks, MT(":X20"), (big_uint *) data[19])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[20]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicechecks, ":X21")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X21"), *(char **) data[20], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[21]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicechecks, ":X22")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X22"), *(char **) data[21], 0)) {
                                 return IDO_ERROR;
                         }
-
+	}
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_servicechecks)) {
                                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicechecks() execute error\n");
@@ -1701,12 +1779,24 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ido2db_idi *idi, void **data
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X1"), (big_uint *) data[0])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostchecks, ":X2")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X2"), *(char **) data[1], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[2]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostchecks, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X3"), *(char **) data[2], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostchecks, MT(":X4"), (big_uint *) data[3])) {
                                 return IDO_ERROR;
                         }
@@ -1758,15 +1848,33 @@ int ido2db_query_insert_or_update_hostcheckdata_add(ido2db_idi *idi, void **data
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_hostchecks, MT(":X20"), (int *) data[19])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[20]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostchecks, ":X21")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X21"), *(char **) data[20], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[21]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostchecks, ":X22")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X22"), *(char **) data[21], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[22]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostchecks, ":X23")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X23"), *(char **) data[22], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_hostchecks)) {
@@ -1931,12 +2039,24 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_commentdata, MT(":X8"), (big_uint *) data[7])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[8]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_commentdata, ":X9")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_commentdata, MT(":X9"), *(char **) data[8], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[9]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_commentdata, ":X10")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_commentdata, MT(":X10"), *(char **) data[9], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_commentdata, MT(":X11"), (int *) data[10])) {
                                 return IDO_ERROR;
                         }
@@ -2110,12 +2230,24 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_commentdata_history, MT(":X8"), (big_uint *) data[7])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[8]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_commentdata_history, ":X9")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_commentdata_history, MT(":X9"), *(char **) data[8], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[9]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_commentdata_history, ":X10")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_commentdata_history, MT(":X10"), *(char **) data[9], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_commentdata_history, MT(":X11"), (int *) data[10])) {
                                 return IDO_ERROR;
                         }
@@ -2276,12 +2408,24 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X4"), (big_uint *) data[12])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -2442,14 +2586,26 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
                                 return IDO_ERROR;
                         }
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X4"), (big_uint *) data[12])) { /* unixtimestamp instead of time2sql */
-                                return IDO_ERROR; 
+                                return IDO_ERROR;
                         }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_downtimedata_downtime_history, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_downtimedata_downtime_history, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -2464,7 +2620,7 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
                         }
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X11"), (big_uint *) data[13])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
-                        } 
+                        }
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X12"), (big_uint *) data[14])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
@@ -2708,12 +2864,24 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_programstatus, MT(":X20"), (big_uint *) data[19])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[20]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_programstatus, ":X21")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_programstatus, MT(":X21"), *(char **) data[20], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[21]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_programstatus, ":X22")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_programstatus, MT(":X22"), *(char **) data[21], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_programstatus)) {
@@ -3000,15 +3168,33 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X3"), (big_uint *) data[46])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hoststatus, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hoststatus, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hoststatus, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X7"), (int *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -3114,12 +3300,24 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hoststatus, MT(":X41"), (big_uint *) data[40])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[41]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hoststatus, ":X42")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X42"), *(char **) data[41], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[42]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hoststatus, ":X43")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X43"), *(char **) data[42], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X44"), (double *) data[43])) {
                                 return IDO_ERROR;
                         }
@@ -3409,7 +3607,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-			/* bind params to prepared statement */ 
+			/* bind params to prepared statement */
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X1"), (big_uint *) data[0])) {
                                 return IDO_ERROR;
                         }
@@ -3419,15 +3617,33 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X3"), (big_uint *) data[47])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicestatus, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicestatus, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicestatus, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X7"), (int *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -3536,12 +3752,24 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicestatus, MT(":X42"), (big_uint *) data[41])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[42]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicestatus, ":X43")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X43"), *(char **) data[42], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[43]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicestatus, ":X44")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X44"), *(char **) data[43], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X45"), (double *) data[44])) {
                                 return IDO_ERROR;
                         }
@@ -3828,9 +4056,15 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_configfilevariables, MT(":X2"), (int *) data[1])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[2]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_configfilevariables, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables, MT(":X3"), *(char **) data[2], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_configfilevariables)) {
@@ -3936,12 +4170,24 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_runtimevariables, MT(":X1"), (big_uint *) data[0])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_runtimevariables, ":X2")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_runtimevariables, MT(":X2"), *(char **) data[1], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[2]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_runtimevariables, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_runtimevariables, MT(":X3"), *(char **) data[2], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_runtimevariables)) {
@@ -4268,36 +4514,72 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X3"), (big_uint *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[7]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X8")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X8"), *(char **) data[7], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X9"), (big_uint *) data[8])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[9]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X10")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X10"), *(char **) data[9], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X11"), (big_uint *) data[10])) {
                                 return IDO_ERROR;
                         }
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X12"), (big_uint *) data[11])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[12]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X13")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X13"), *(char **) data[12], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindDouble(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X14"), (double *) data[13])) {
                                 return IDO_ERROR;
                         }
@@ -4388,27 +4670,69 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X43"), (int *) data[42])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[43]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X44")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X44"), *(char **) data[43], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[44]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X45")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X45"), *(char **) data[44], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[45]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X46")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X46"), *(char **) data[45], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	if(*(char **) data[46]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X47")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X47"), *(char **) data[46], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[47]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X48")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X48"), *(char **) data[47], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[48]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X49")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X49"), *(char **) data[48], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[49]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostdefinition_definition, ":X50")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X50"), *(char **) data[49], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X51"), (int *) data[50])) {
                                 return IDO_ERROR;
                         }
@@ -4871,9 +5195,15 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostgroupdefinition_definition, MT(":X3"), (big_uint *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hostgroupdefinition_definition, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_hostgroupdefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_hostgroupdefinition_definition)) {
@@ -5287,30 +5617,62 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X4"), (big_uint *) data[3])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here1\n");
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X6"), (big_uint *) data[5])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[6]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X7")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X7"), *(char **) data[6], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here2\n");
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X8"), (big_uint *) data[7])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[8]==NULL) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here2.1\n");
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X9")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here2.2\n");
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X9"), *(char **) data[8], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here3\n");
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X10"), (big_uint *) data[9])) {
                                 return IDO_ERROR;
                         }
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X11"), (big_uint *) data[10])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[11]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X12")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X12"), *(char **) data[11], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here4\n");
+
                         if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X13"), (double *) data[12])) {
                                 return IDO_ERROR;
                         }
@@ -5413,21 +5775,55 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X46"), (int *) data[45])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[46]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X47")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X47"), *(char **) data[46], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here5\n");
+        if(*(char **) data[47]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X48")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X48"), *(char **) data[47], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here6\n");
+        if(*(char **) data[48]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X49")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X49"), *(char **) data[48], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here7\n");
+        if(*(char **) data[49]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X50")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X50"), *(char **) data[49], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() here8\n");
+        if(*(char **) data[50]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicedefinition_definition, ":X51")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X51"), *(char **) data[50], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_servicedefinition_definition)) {
@@ -5761,9 +6157,15 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicegroupdefinition_definition, MT(":X3"), (big_uint *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicegroupdefinition_definition, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_servicegroupdefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_servicegroupdefinition_definition)) {
@@ -7054,9 +7456,15 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_commanddefinition_definition, MT(":X3"), (int *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_commanddefinition_definition, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_commanddefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_commanddefinition_definition)) {
@@ -7172,9 +7580,15 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timeperiodefinition_definition, MT(":X3"), (big_uint *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_timeperiodefinition_definition, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_timeperiodefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_timeperiodefinition_definition)) {
@@ -7478,15 +7892,33 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactdefinition_definition, MT(":X3"), (big_uint *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contactdefinition_definition, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_contactdefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contactdefinition_definition, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_contactdefinition_definition, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contactdefinition_definition, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_contactdefinition_definition, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactdefinition_definition, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -7646,9 +8078,15 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_contactdefinition_addresses, MT(":X3"), (int *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contactdefinition_addresses, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_contactdefinition_addresses, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_contactdefinition_addresses)) {
@@ -7765,9 +8203,15 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X4"), (big_uint *) data[3])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contact_notificationcommands, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_contact_notificationcommands)) {
@@ -8014,22 +8458,25 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X4"), (int *) data[3])) {
                                 return IDO_ERROR;
                         }
-			if(data[4]!=NULL) {
-	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X5"), *(char **) data[4], 0)) {
-					OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X5"));
-        	                        //return IDO_ERROR;
-                	        }
-                        } else {
-                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X5"));
-                        }
-			if(data[5]!=NULL) {
-	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X6"), *(char **) data[5], 0)) {
-	                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X6"));
-					//return IDO_ERROR;
-        	                }
-                        } else {
-                                OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariables,":X6"));
-                        }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_save_custom_variables_customvariables, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X5"), *(char **) data[4], 0)) {
+                	return IDO_ERROR;
+                }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_save_custom_variables_customvariables, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariables, MT(":X6"), *(char **) data[5], 0)) {
+                	return IDO_ERROR;
+                }
+	}
+
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_save_custom_variables_customvariables)) {
@@ -8152,9 +8599,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                 return IDO_ERROR;
                         }
 			/* we need to check if time was provided, and then explicitely bind value to NULL */
-			if(((big_uint *) data[6]) < 0) {
-				oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X3");
-				OCI_BindSetNull(oci_bind);
+			if((*(big_uint *) data[6]) < 0) {
+		                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X3")==IDO_ERROR) {
+                		        return IDO_ERROR;
+		                }
 			} else { /* fine */
 	                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X3"), (big_uint *) data[6])) { /* unixtimestamp instead of time2sql */
                                 	return IDO_ERROR;
@@ -8163,30 +8611,26 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X4"), (int *) data[3])) {
                                 return IDO_ERROR;
                         }
-			if(data[4]!=NULL) {
-	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X5"), *(char **) data[4], 0)) {
-	                                oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X5");
-        	                        OCI_BindSetNull(oci_bind);
-					//OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X5"));
-        	                        //return IDO_ERROR;
-                	        }
-                        } else {
-				oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X5");
-                                OCI_BindSetNull(oci_bind);
-                                //OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X5"));
-                        }
-			if(data[5]!=NULL) {
-	                        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X6"), *(char **) data[5], 0)) {
-	                                oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X6");
-        	                        OCI_BindSetNull(oci_bind);
-					//OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X6"));
-        	                        //return IDO_ERROR;
-                	        }
-                        } else {
-                                oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X6");
-                                OCI_BindSetNull(oci_bind);
-                                //OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,":X6"));
-                        }
+
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+	        if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X5"), *(char **) data[4], 0)) {
+                	return IDO_ERROR;
+                }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                if(!OCI_BindString(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus, MT(":X6"), *(char **) data[5], 0)) {
+                        return IDO_ERROR;
+                }
+	}
+
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus)) {
@@ -8301,9 +8745,15 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactgroupdefinition_definition, MT(":X3"), (big_uint *) data[2])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[3]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_contactgroupdefinition_definition, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_contactgroupdefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_contactgroupdefinition_definition)) {

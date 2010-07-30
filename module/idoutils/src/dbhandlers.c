@@ -467,8 +467,6 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	es[0] = ido2db_db_escape_string(idi, name1);
 	es[1] = ido2db_db_escape_string(idi, name2);
 
-	asprintf(&oci_tmp, "\0"); /* just malloc sth that ocilib is happy */
-
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() name1=%s, name2=%s\n", es[0], es[1]);
 
 #ifdef DEBUG_IDO2DB
@@ -490,67 +488,24 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 
 	/* check if name1/2 would be NULL, explicitely bind that to NULL so that the IS NULL from the selects match */
 	if(name1==NULL) {
-#ifdef DEBUG_IDO2DB
-		syslog(LOG_USER | LOG_INFO, "bind null name1=%s\n", es[0]);
-#endif
-		/* bind to dummy value */
-                if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X3"), oci_tmp, 0)) {
-                        return IDO_ERROR;
-                }
-
-		/*
-                if(!OCI_SetNull2(idi->dbinfo.oci_statement_objects_insert, ":X3")){
-                        syslog(LOG_USER | LOG_INFO, "bind null name1 FAIL\n");
-                }*/
-
-		/*
-                oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_objects_insert, ":X3");
-                if(!OCI_BindSetNull(oci_bind)){
-			syslog(LOG_USER | LOG_INFO, "bind null name1 FAIL\n");
-		}*/
-
-		if(!OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_objects_insert,MT(":X3")))){
-#ifdef DEBUG_IDO2DB
-			syslog(LOG_USER | LOG_INFO, "bind null name1 FAIL\n");
-#endif
+		if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_insert, ":X3")==IDO_ERROR) {
+			//syslog(LOG_USER | LOG_INFO, "bind null name1=%s FAIL\n", es[0]);
 			return IDO_ERROR;
 		}
 	} else {
-		syslog(LOG_USER | LOG_INFO, "bind value name1=%s\n", es[0]);
+		//syslog(LOG_USER | LOG_INFO, "bind value name1=%s\n", es[0]);
 	        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X3"), *(char **) data[2], 0)) {
         		return IDO_ERROR;
 	        }
 	}
 
         if(name2==NULL) {
-#ifdef DEBUG_IDO2DB
-		syslog(LOG_USER | LOG_INFO, "bind null name2=%s\n", es[1]);
-#endif
-
-		/* bind to dummy value */
-                if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X4"), oci_tmp, 0)) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_insert, ":X4")==IDO_ERROR) {
+                        //syslog(LOG_USER | LOG_INFO, "bind null name2=%s FAIL\n", es[1]);
                         return IDO_ERROR;
                 }
-
-
-		/*
-                if(!OCI_SetNull2(idi->dbinfo.oci_statement_objects_insert, ":X3")){
-                        syslog(LOG_USER | LOG_INFO, "bind null name1 FAIL\n");
-                }*/
-
-		/*
-                oci_bind = OCI_GetBind2(idi->dbinfo.oci_statement_objects_insert, ":X4");
-                if(!OCI_BindSetNull(oci_bind)){
-                        syslog(LOG_USER | LOG_INFO, "bind null name2 FAIL\n");
-                }*/
-
-                if(!OCI_BindSetNull(OCI_GetBind2(idi->dbinfo.oci_statement_objects_insert,MT(":X4")))){
-#ifdef DEBUG_IDO2DB
-			syslog(LOG_USER | LOG_INFO, "bind null name2 FAIL\n");
-#endif
-		}
         } else {
-		syslog(LOG_USER | LOG_INFO, "bind value name2=%s\n", es[1]);
+		//syslog(LOG_USER | LOG_INFO, "bind value name2=%s\n", es[1]);
 	        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X4"), *(char **) data[3], 0)) {
 		        return IDO_ERROR;
 	        }
@@ -568,9 +523,9 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 
         if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
                 *object_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db(%lu) insert_id\n", *object_id);
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert(%lu) insert_id\n", *object_id);
         } else {
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db() isert_id could not be fetched\n");
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert() insert_id could not be fetched\n");
         }
 
 
@@ -641,7 +596,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	data[0] = (void *) & idi->dbinfo.instance_id;
+	data[0] = (void *) &idi->dbinfo.instance_id;
 
         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_cached, MT(":X1"), (big_uint *) data[0])) {
 	        return IDO_ERROR;
@@ -1112,15 +1067,15 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	data[1] = (void *) &etime;
 	data[2] = (void *) &es[0];
 
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_select, MT(":X1"), (big_uint *) data[0])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_select, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_select, MT(":X3"), *(char **) data[2], 0)) {
-                                return IDO_ERROR;
-                        }
+	if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_select, MT(":X1"), (big_uint *) data[0])) {
+        	return IDO_ERROR;
+	}
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_select, MT(":X2"), (big_uint *) data[1])) { /* unixtimestamp instead of time2sql */
+        	return IDO_ERROR;
+        }
+        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_select, MT(":X3"), *(char **) data[2], 0)) {
+        	return IDO_ERROR;
+        }
 
         /* execute statement */
         if(!OCI_Execute(idi->dbinfo.oci_statement_logentries_select)) {
@@ -1176,8 +1131,6 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 
 	/* set only values needed */
 	n_zero = 0;
-	if(es[0] == NULL)
-		es[0] = "";
 
 	data[0] = (void *) &idi->dbinfo.instance_id;
 	data[1] = (void *) &etime;
@@ -1188,43 +1141,49 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	data[6] = (void *) &n_zero;
 	data[7] = (void *) &n_zero;
 
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X1"), (big_uint *) data[0])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X2"), *(char **) data[1], 0)) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X3"), *(char **) data[2], 0)) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X4"), (big_uint *) data[3])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X5"), (big_uint *) data[4])) {
-                                return IDO_ERROR;
-                        }
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X1"), (big_uint *) data[0])) {
+        	return IDO_ERROR;
+        }
+        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X2"), *(char **) data[1], 0)) {
+        	return IDO_ERROR;
+        }
+        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X3"), *(char **) data[2], 0)) {
+        	return IDO_ERROR;
+        }
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X4"), (big_uint *) data[3])) {
+        	return IDO_ERROR;
+        }
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X5"), (big_uint *) data[4])) {
+        	return IDO_ERROR;
+        }
 
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X6"), *(char **) data[5], 0)) {
-                                return IDO_ERROR;
-                        }
+	if(es[0]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_logentries_insert, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+	} else {
+		if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X6"), *(char **) data[5], 0)) {
+                	 return IDO_ERROR;
+                }
+	}
 
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X7"), (big_uint *) data[6])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X8"), (big_uint *) data[7])) {
-                                return IDO_ERROR;
-                        }
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X7"), (big_uint *) data[6])) {
+        	return IDO_ERROR;
+        }
+        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X8"), (big_uint *) data[7])) {
+        	return IDO_ERROR;
+        }
 
-                        /* execute statement */
-                        if(!OCI_Execute(idi->dbinfo.oci_statement_logentries_insert)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_logentries_insert() execute error\n");
-                                return IDO_ERROR;
-                        }
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_logentries_insert)) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_logentries_insert() execute error\n");
+                return IDO_ERROR;
+        }
 
-                        /* commit statement */
-                        OCI_Commit(idi->dbinfo.oci_connection);
+        /* commit statement */
+        OCI_Commit(idi->dbinfo.oci_connection);
 
-                        /* do not free statement yet! */
+        /* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
 
@@ -1240,7 +1199,6 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 
 	/* free memory */
         for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
-		if(es[x]=="") continue;
                 free(es[x]);
 	}
         for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -1286,18 +1244,13 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 
-	es[0] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_PROGRAMNAME]);
-	es[1] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_PROGRAMVERSION]);
-	es[2] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_PROGRAMDATE]);
+	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PROGRAMNAME]);
+	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PROGRAMVERSION]);
+	es[2] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PROGRAMDATE]);
 
 	/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(
-			&buf,
-			"INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) VALUES ('%lu', '%d', %s, '%lu', '%lu', '%s', '%s', '%s')",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) VALUES ('%lu', '%d', %s, '%lu', '%lu', '%s', '%s', '%s')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_PROCESSEVENTS],
 			idi->dbinfo.instance_id, type, ts[0], tstamp.tv_usec, process_id,
 			es[0], es[1], es[2]) == -1)
@@ -1527,9 +1480,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI
 	char *buf = NULL;
 #endif
-#ifdef USE_ORACLE
         void *data[9];
-#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timedeventdata() start\n");
 
@@ -1541,18 +1492,14 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 			&tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(
-			idi->buffered_input[IDO_DATA_EVENTTYPE], &event_type);
-	result = ido2db_convert_string_to_int(
-			idi->buffered_input[IDO_DATA_RECURRING], &recurring_event);
-	result = ido2db_convert_string_to_unsignedlong(
-			idi->buffered_input[IDO_DATA_RUNTIME], &run_time);
+	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTTYPE], &event_type);
+	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RECURRING], &recurring_event);
+	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_RUNTIME], &run_time);
 
 	/* skip sleep events.... */
 	if (type == NEBTYPE_TIMEDEVENT_SLEEP) {
 
 		/* we could do some maintenance here if we wanted.... */
-
 		return IDO_OK;
 	}
 
@@ -1560,19 +1507,11 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 	ts[1] = ido2db_db_timet_to_sql(idi, run_time);
 
 	/* get the object id (if applicable) */
-	if (event_type == EVENT_SERVICE_CHECK || (event_type
-			== EVENT_SCHEDULED_DOWNTIME
-			&& idi->buffered_input[IDO_DATA_SERVICE] != NULL && strcmp(
-			idi->buffered_input[IDO_DATA_SERVICE], "")))
-		result = ido2db_get_object_id_with_insert(idi,
-				IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST],
-				idi->buffered_input[IDO_DATA_SERVICE], &object_id);
-	if (event_type == EVENT_HOST_CHECK || (event_type
-			== EVENT_SCHEDULED_DOWNTIME
-			&& (idi->buffered_input[IDO_DATA_SERVICE] == NULL || !strcmp(
-					idi->buffered_input[IDO_DATA_SERVICE], ""))))
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
-				idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+	if (event_type == EVENT_SERVICE_CHECK || (event_type == EVENT_SCHEDULED_DOWNTIME && idi->buffered_input[IDO_DATA_SERVICE] != NULL && strcmp(idi->buffered_input[IDO_DATA_SERVICE], "")))
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+
+	if (event_type == EVENT_HOST_CHECK || (event_type == EVENT_SCHEDULED_DOWNTIME && (idi->buffered_input[IDO_DATA_SERVICE] == NULL || !strcmp(idi->buffered_input[IDO_DATA_SERVICE], ""))))
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* HISTORICAL TIMED EVENTS */
 
@@ -1645,9 +1584,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 		/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		if (asprintf(
-				&buf,
-				"UPDATE %s SET deletion_time=%s, deletion_time_usec='%lu' WHERE instance_id='%lu' AND event_type='%d' AND scheduled_time=%s AND recurring_event='%d' AND object_id='%lu'",
+		if (asprintf(&buf, "UPDATE %s SET deletion_time=%s, deletion_time_usec='%lu' WHERE instance_id='%lu' AND event_type='%d' AND scheduled_time=%s AND recurring_event='%d' AND object_id='%lu'",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS], ts[0],
 				tstamp.tv_usec, idi->dbinfo.instance_id, event_type, ts[1],
 				recurring_event, object_id) == -1)
@@ -1657,7 +1594,6 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		free(buf);
-
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -1861,8 +1797,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 		/* if we are executing a low-priority event, remove older events from the queue, as we know they've already been executed */
 		/* THIS IS A HACK!  It shouldn't be necessary, but for some reason it is...  Otherwise not all events are removed from the queue. :-( */
-		if (type == NEBTYPE_TIMEDEVENT_EXECUTE && (event_type
-				== EVENT_SERVICE_CHECK || event_type == EVENT_HOST_CHECK)) {
+		if (type == NEBTYPE_TIMEDEVENT_EXECUTE && (event_type == EVENT_SERVICE_CHECK || event_type == EVENT_HOST_CHECK)) {
 
 			/* clear entries from db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -1967,9 +1902,7 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	/* save entry to db */
-	if (asprintf(
-			&buf,
-			"INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES ('%lu', %s, %s, '%lu', '%lu', '%s', '1', '1')",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES ('%lu', %s, %s, '%lu', '%lu', '%s', '1', '1')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
 			es[0]) == -1)
@@ -2011,9 +1944,17 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X5"), (big_uint *) data[4])) {
                                 return IDO_ERROR;
                         }
+
+        if(es[0]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_logentries_insert, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_logentries_insert, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_logentries_insert, MT(":X7"), (big_uint *) data[6])) {
                                 return IDO_ERROR;
                         }
@@ -2253,6 +2194,10 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI
 	char *buf = NULL;
 #endif
+#ifdef USE_ORACLE
+	char *seq_name = NULL;
+#endif
+
         void *data[15];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata() start\n");
@@ -2353,7 +2298,6 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		char *seq_name = NULL;
 		if(asprintf(&seq_name, "seq_notifications")==-1)
 			seq_name=NULL;
                 idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -2398,6 +2342,9 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 	int x = 0;
 #ifdef USE_LIBDBI
 	char *buf = NULL;
+#endif
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
 #endif
         void *data[9];
 
@@ -2485,7 +2432,6 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_contactnotifications")==-1)
 			seq_name=NULL;
                 idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -2662,11 +2608,8 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 			idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 
 	/* get the command id */
-	if (idi->buffered_input[IDO_DATA_COMMANDNAME] != NULL && strcmp(
-			idi->buffered_input[IDO_DATA_COMMANDNAME], ""))
-		result = ido2db_get_object_id_with_insert(idi,
-				IDO2DB_OBJECTTYPE_COMMAND,
-				idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
+	if (idi->buffered_input[IDO_DATA_COMMANDNAME] != NULL && strcmp(idi->buffered_input[IDO_DATA_COMMANDNAME], ""))
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
 	else
 		command_id = 0L;
 
@@ -2764,8 +2707,7 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 	 */
 
 	/* skip precheck events - they aren't useful to us */
-	if (type == NEBTYPE_HOSTCHECK_ASYNC_PRECHECK || type
-			== NEBTYPE_HOSTCHECK_SYNC_PRECHECK)
+	if (type == NEBTYPE_HOSTCHECK_ASYNC_PRECHECK || type == NEBTYPE_HOSTCHECK_SYNC_PRECHECK)
 		return IDO_OK;
 
 	/* covert vars */
@@ -2792,21 +2734,16 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 	ts[1] = ido2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
-			idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* get the command id */
-	if (idi->buffered_input[IDO_DATA_COMMANDNAME] != NULL && strcmp(
-			idi->buffered_input[IDO_DATA_COMMANDNAME], ""))
-		result = ido2db_get_object_id_with_insert(idi,
-				IDO2DB_OBJECTTYPE_COMMAND,
-				idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
+	if (idi->buffered_input[IDO_DATA_COMMANDNAME] != NULL && strcmp(idi->buffered_input[IDO_DATA_COMMANDNAME], ""))
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
 	else
 		command_id = 0L;
 
 	/* is this a raw check? */
-	if (type == NEBTYPE_HOSTCHECK_RAW_START || type
-			== NEBTYPE_HOSTCHECK_RAW_END)
+	if (type == NEBTYPE_HOSTCHECK_RAW_START || type == NEBTYPE_HOSTCHECK_RAW_END)
 		is_raw_check = 1;
 	else
 		is_raw_check = 0;
@@ -2913,12 +2850,10 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 
 	/* get the object id */
 	if (comment_type == SERVICE_COMMENT)
-		result = ido2db_get_object_id_with_insert(idi,
-				IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST],
-				idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+
 	if (comment_type == HOST_COMMENT)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
-				idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* ADD HISTORICAL COMMENTS */
 	/* save a record of comments that get added (or get loaded and weren't previously recorded).... */
@@ -3158,8 +3093,8 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE
 	unsigned long was_started = 1;
-        void *data[15];
 #endif
+        void *data[15];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_downtimedata() start\n");
 
@@ -4491,8 +4426,7 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 
 	/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf,
-			"INSERT INTO %s (instance_id, command_type, entry_time, command_name, command_args) VALUES ('%lu', '%d', %s, '%s', '%s')",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, command_type, entry_time, command_name, command_args) VALUES ('%lu', '%d', %s, '%s', '%s')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_EXTERNALCOMMANDS],
 			idi->dbinfo.instance_id, command_type, ts, es[0], es[1]) == -1)
 		buf = NULL;
@@ -4522,13 +4456,24 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_external_commands, MT(":X3"), (big_uint *) data[2])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
+        if(es[0]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_external_commands, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_external_commands, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(es[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_external_commands, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_external_commands, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
-
+	}
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_external_commands)) {
                                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_external_commands() execute error\n");
@@ -4701,12 +4646,24 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X6"), (int *) data[5])) {
                                 return IDO_ERROR;
                         }
+        if(es[0]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_acknowledgements, ":X7")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_acknowledgements, MT(":X7"), *(char **) data[6], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(es[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_acknowledgements, ":X8")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_acknowledgements, MT(":X8"), *(char **) data[7], 0)) {
                                 return IDO_ERROR;
                         }
+	}
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X9"), (int *) data[8])) {
                                 return IDO_ERROR;
                         }
@@ -4869,13 +4826,24 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X11"), (int *) data[10])) {
                                 return IDO_ERROR;
                         }
+        if(es[0]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_statehistory, ":X12")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_statehistory, MT(":X12"), *(char **) data[11], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(es[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_statehistory, ":X13")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_statehistory, MT(":X13"), *(char **) data[12], 0)) {
                                 return IDO_ERROR;
                         }
-
+	}
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_statehistory)) {
                                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_statehistory() execute error\n");
@@ -4920,6 +4888,9 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	char *varname = NULL;
 	char *varvalue = NULL;
 	ido2db_mbuf mbuf;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[4];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables() start\n");
@@ -4994,7 +4965,6 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_configfiles")==-1)
 			seq_name=NULL;
                 configfile_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -5067,13 +5037,24 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X2"), (big_uint *) data[1])) {
                                 return IDO_ERROR;
                         }
+        if(es[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_configfilevariables_insert, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X3"), *(char **) data[2], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(es[2]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_configfilevariables_insert, ":X4")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X4"), *(char **) data[3], 0)) {
                                 return IDO_ERROR;
                         }
-
+	}
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_configfilevariables_insert)) {
                                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_configfilevariables_insert() execute error\n");
@@ -5257,6 +5238,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	ido2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[57];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() start\n");
@@ -5347,13 +5331,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_HOSTNOTIFICATIONPERIOD], NULL, &notification_timeperiod_id);
 
 	/* add definition to db */
-
-	/* prepare var handler for data array */
-	for(x = 0; x < 13; x++) {
-		if(es[x] == NULL) {
-			es[x] = "";
-		}
-	}	
 
 	/* save entry to db */
         data[0] = (void *) &idi->dbinfo.instance_id;
@@ -5460,7 +5437,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_hosts")==-1)
 			seq_name=NULL;
                 host_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -5484,9 +5460,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
-		/* before we've prepared NULL values with "", but string literals cannot be free'd! */
-		if(es[x] == "") 
-			continue;
 		free(es[x]);
 	}
 
@@ -5612,6 +5585,9 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	char *buf = NULL;
 #endif
 	ido2db_mbuf mbuf;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[4];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition() start\n");
@@ -5686,7 +5662,6 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_hostgroups")==-1)
 			seq_name=NULL;
 		group_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -5803,6 +5778,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	ido2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[51];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() start\n");
@@ -5890,13 +5868,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_SERVICENOTIFICATIONPERIOD], NULL, &notification_timeperiod_id);
 
 	/* add definition to db */
-
-        /* prepare var handler for data array */
-        for(x = 0; x < 9; x++) {
-                if(es[x] == NULL) {
-                        es[x] = "";
-                }
-        }
 
 	/* save entry to db */
         data[0] = (void *) &idi->dbinfo.instance_id;
@@ -5997,7 +5968,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_services")==-1)
 			seq_name=NULL;
 		service_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -6021,9 +5991,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
-                /* before we've prepared NULL values with "", but string literals cannot be free'd! */
-                if(es[x] == "")
-                        continue;
 		free(es[x]);
 	}
 
@@ -6117,6 +6084,9 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	ido2db_mbuf mbuf;
 	char *hptr = NULL;
 	char *sptr = NULL;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[4];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition() start\n");
@@ -6132,13 +6102,10 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
-	es[0] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_SERVICEGROUPALIAS]);
+	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_SERVICEGROUPALIAS]);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi,
-			IDO2DB_OBJECTTYPE_SERVICEGROUP,
-			idi->buffered_input[IDO_DATA_SERVICEGROUPNAME], NULL, &object_id);
+	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICEGROUP, idi->buffered_input[IDO_DATA_SERVICEGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
 	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_SERVICEGROUP, object_id);
@@ -6195,7 +6162,6 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_servicegroups")==-1)
 			seq_name=NULL;
 		group_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -6426,6 +6392,9 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 	char *buf = NULL;
 #endif
 	ido2db_mbuf mbuf;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[10];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition() start\n");
@@ -6513,7 +6482,6 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_hostescalations")==-1)
 			seq_name=NULL;
                 escalation_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -6628,6 +6596,9 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 	char *buf = NULL;
 #endif
 	ido2db_mbuf mbuf;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[11];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicetescalationdefinition() start\n");
@@ -6717,7 +6688,6 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_serviceescalations")==-1)
 			seq_name=NULL;
                 escalation_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -6834,12 +6804,10 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
-	es[0] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_COMMANDLINE]);
+	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDLINE]);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND,
-			idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &object_id);
+	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &object_id);
 
 	/* flag the object as being active */
 	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_COMMAND, object_id);
@@ -6891,6 +6859,9 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	char *buf = NULL;
 #endif
 	ido2db_mbuf mbuf;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[5];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() start\n");
@@ -6906,13 +6877,10 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
-	es[0] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_TIMEPERIODALIAS]);
+	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_TIMEPERIODALIAS]);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi,
-			IDO2DB_OBJECTTYPE_TIMEPERIOD,
-			idi->buffered_input[IDO_DATA_TIMEPERIODNAME], NULL, &object_id);
+	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_TIMEPERIODNAME], NULL, &object_id);
 
 	/* flag the object as being active */
 	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, object_id);
@@ -6969,7 +6937,6 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_timeperiods")==-1)
 			seq_name=NULL;
                 timeperiod_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -7074,6 +7041,9 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	int address_number = 0;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[22];
 
 	int tmp1 = HOST_NOTIFICATION;
@@ -7198,7 +7168,6 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 if(asprintf(&seq_name, "seq_contacts")==-1)
 			seq_name=NULL;
                 contact_id = ido2db_ocilib_insert_id(idi, seq_name);
@@ -7282,10 +7251,6 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 		es[0] = ido2db_db_escape_string(idi, argptr);
 
-		if(es[0] == NULL) {
-			es[0] = "";
-		}
-
 		/* save entry to db */
 	        data[0] = (void *) &idi->dbinfo.instance_id;
 	        data[1] = (void *) &contact_id;
@@ -7309,9 +7274,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 
-		if(es[0] != "") {
-			free(es[0]);
-		}
+		free(es[0]);
 	}
 
 	/* save service notification commands to db */
@@ -7332,10 +7295,6 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
 		es[0] = ido2db_db_escape_string(idi, argptr);
-
-                if(es[0] == NULL) {
-                        es[0] = "";
-                }
 
 		/* save entry to db */
 
@@ -7361,9 +7320,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 
-		if(es[0] != "") {
-			free(es[0]);
-		}
+		free(es[0]);
 	}
 
 	/* save custom variables to db */
@@ -7425,6 +7382,7 @@ int ido2db_save_custom_variables(ido2db_idi *idi,int table_idx, unsigned long o_
 		        data[5] = (es[1]==NULL)?NULL:(void *) &es[1];
 
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_save_custom_variables() instance_id=%lu, object_id=%lu, config_type=%d, modified=%d, varname=%s, varvalue=%s\n", idi->dbinfo.instance_id, o_id, idi->current_object_config_type, has_been_modified, es[0], es[1]);
+
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariables_add(idi, data);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -7454,6 +7412,7 @@ int ido2db_save_custom_variables(ido2db_idi *idi,int table_idx, unsigned long o_
 			data[6] = (void *) &tstamp;
 
                         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_save_custom_variablestatus() instance_id=%lu, object_id=%lu, ts=%s, modified=%d, varname=%s, varvalue=%s\n", idi->dbinfo.instance_id, o_id, ts, has_been_modified, es[0], es[1]);
+
 		        result = ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(idi, data);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -7494,6 +7453,9 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	char *buf = NULL;
 #endif
 	ido2db_mbuf mbuf;
+#ifdef USE_ORACLE
+        char *seq_name = NULL;
+#endif
         void *data[4];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition() start\n");
@@ -7502,20 +7464,16 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
-			&tstamp);
+	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
-	es[0] = ido2db_db_escape_string(idi,
-			idi->buffered_input[IDO_DATA_CONTACTGROUPALIAS]);
+	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_CONTACTGROUPALIAS]);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi,
-			IDO2DB_OBJECTTYPE_CONTACTGROUP,
-			idi->buffered_input[IDO_DATA_CONTACTGROUPNAME], NULL, &object_id);
+	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACTGROUP, idi->buffered_input[IDO_DATA_CONTACTGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
 	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_CONTACTGROUP, object_id);
@@ -7572,7 +7530,6 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                char *seq_name = NULL;
                 asprintf(&seq_name, "seq_contactgroups");
                 group_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", group_id);
