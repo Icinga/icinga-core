@@ -109,6 +109,7 @@ extern int      log_service_retries;
 extern int      log_host_retries;
 extern int      log_event_handlers;
 extern int      log_external_commands;
+extern int      log_external_commands_user;
 extern int      log_passive_checks;
 
 extern unsigned long      logging_options;
@@ -4602,6 +4603,7 @@ int reset_variables(void){
 	log_notifications=DEFAULT_NOTIFICATION_LOGGING;
 	log_event_handlers=DEFAULT_LOG_EVENT_HANDLERS;
 	log_external_commands=DEFAULT_LOG_EXTERNAL_COMMANDS;
+	log_external_commands_user=DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
 	log_passive_checks=DEFAULT_LOG_PASSIVE_CHECKS;
 
 	logging_options=NSLOG_RUNTIME_ERROR | NSLOG_RUNTIME_WARNING | NSLOG_VERIFICATION_ERROR | NSLOG_VERIFICATION_WARNING | NSLOG_CONFIG_ERROR | NSLOG_CONFIG_WARNING | NSLOG_PROCESS_INFO | NSLOG_HOST_NOTIFICATION | NSLOG_SERVICE_NOTIFICATION | NSLOG_EVENT_HANDLER | NSLOG_EXTERNAL_COMMAND | NSLOG_PASSIVE_CHECK | NSLOG_HOST_UP | NSLOG_HOST_DOWN | NSLOG_HOST_UNREACHABLE | NSLOG_SERVICE_OK | NSLOG_SERVICE_WARNING | NSLOG_SERVICE_UNKNOWN | NSLOG_SERVICE_CRITICAL | NSLOG_INFO_MESSAGE;

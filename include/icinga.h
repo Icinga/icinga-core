@@ -92,6 +92,7 @@ extern "C" {
 #define DEFAULT_LOG_EVENT_HANDLERS				1	/* log event handlers */
 #define DEFAULT_LOG_INITIAL_STATES				0	/* don't log initial service and host states */
 #define DEFAULT_LOG_EXTERNAL_COMMANDS				1	/* log external commands */
+#define DEFAULT_LOG_EXTERNAL_COMMANDS_USER			0	/* log external commands user*/
 #define DEFAULT_LOG_PASSIVE_CHECKS				1	/* log passive service checks */
 
 #define DEFAULT_DEBUG_LEVEL                                     0       /* don't log any debugging information */

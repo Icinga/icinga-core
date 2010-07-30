@@ -7,6 +7,8 @@
 #include <perl.h>
 #include "epn_icinga.h"
 
+#define MAX_INPUT_CHARS 1024
+
 static PerlInterpreter *my_perl = NULL;
 
 int main(int argc, char **argv, char **env) {
@@ -19,14 +21,14 @@ int main(int argc, char **argv, char **env) {
 
 	char *embedding[] = { "", "p1.pl" };
 	char *plugin_output ;
-	char fname[64];
+	char fname[MAX_INPUT_CHARS];
 	char *args[] = {"","0", "", "", NULL };
-	char command_line[80];
+	char command_line[MAX_INPUT_CHARS];
 	int exitstatus;
 	int pclose_result;
 
 	if((my_perl=perl_alloc())==NULL){
-		printf("%s\n","Error: Could not allocate memory for embedded Perl interpreter!"); 
+		printf("%s\n","Error: Could not allocate memory for embedded Perl interpreter!");
 		exit(1);
 	}
 	perl_construct(my_perl);
@@ -35,7 +37,7 @@ int main(int argc, char **argv, char **env) {
 
 		exitstatus=perl_run(my_perl);
 
-	        while(printf("Enter file name: ") && fgets(command_line, 80, stdin)) {
+	        while(printf("Enter file name: ") && fgets(command_line, MAX_INPUT_CHARS-1, stdin)) {
 			SV *plugin_hndlr_cr;
 		        STRLEN n_a;
 			int count = 0 ;
@@ -53,7 +55,7 @@ int main(int argc, char **argv, char **env) {
 
 			/* call our perl interpreter to compile and optionally cache the command */
 
-			ENTER; 
+			ENTER;
 			SAVETMPS;
 			PUSHMARK(SP);
 

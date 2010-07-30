@@ -1,7 +1,7 @@
 /***********************************************************************
  *
  * CGIUTILS.C - Common utilities for Icinga CGIs
- * 
+ *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
@@ -83,6 +83,8 @@ extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 
 int             check_external_commands=0;
+
+int             log_external_commands_user=FALSE;
 
 int             date_format=DATE_FORMAT_US;
 
@@ -394,7 +396,7 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"color_transparency_index_r"))
 			color_transparency_index_r=atoi(val);
-                
+
 		else if(!strcmp(var,"color_transparency_index_g"))
 			color_transparency_index_g=atoi(val);
 
@@ -459,7 +461,7 @@ int read_main_config_file(char *filename){
 	char *temp_buffer;
 	mmapfile *thefile;
 
-	
+
 	if((thefile=mmap_fopen(filename))==NULL)
 		return ERROR;
 
@@ -527,6 +529,12 @@ int read_main_config_file(char *filename){
 			check_external_commands=(temp_buffer==NULL)?0:atoi(temp_buffer);
 		        }
 
+                else if(strstr(input,"log_external_commands_user=")==input){
+                        temp_buffer=strtok(input,"=");
+                        temp_buffer=strtok(NULL,"\x0");
+                        log_external_commands_user=(temp_buffer==NULL)?0:atoi(temp_buffer);
+                        }
+
 		else if(strstr(input,"date_format=")==input){
 			temp_buffer=strtok(input,"=");
 			temp_buffer=strtok(NULL,"\x0");
@@ -590,10 +598,16 @@ int read_all_status_data(char *config_file,int options){
 	if(options & READ_SERVICE_STATUS)
 		service_status_has_been_read=TRUE;
 
+	/*
+	  2010-07-28 Michael Friedrich: removed for now,
+	  it only brought problems, benefit was zero
+	*/
         /* return error if daemon is not running */
+	/*
         if(check_daemon_running()==ERROR) {
                 return ERROR;
         }
+	*/
 
 	return result;
         }
@@ -821,7 +835,7 @@ void get_time_string(time_t *raw_time,char *buffer,int buffer_length,int type){
 
 	if(raw_time==NULL)
 		time(&t);
-	else 
+	else
 		t=*raw_time;
 
 	if(type==HTTP_DATE_TIME)
@@ -1596,7 +1610,7 @@ void include_ssi_file(char *filename){
 			return;
 		        }
 	        }
-	    
+ 
 	fp=fopen(filename,"r");
 	if(fp==NULL)
 		return;
@@ -1606,7 +1620,7 @@ void include_ssi_file(char *filename){
 		printf("%s",buffer);
 
 	fclose(fp);
-	
+
 	return;
         }
 
@@ -1853,9 +1867,9 @@ int check_daemon_running(void) {
 	   the init script of the core is now safe - if the core segfaulted after
 	   after starting up, the lockfile is removed. so if there is no lockfile
 	   no daemon is assumed running  */
-	if((fk=mmap_fopen(lock_file))==NULL) 
+	if((fk=mmap_fopen(lock_file))==NULL)
 		return ERROR;
-        
+
 	if((input=mmap_fgets(fk))==NULL) {
 		mmap_fclose(fk);
 		free(lock_file);
@@ -1891,9 +1905,9 @@ int check_daemon_running(void) {
 	                free(proc_file);
 			return ERROR;
 		}
-	} 
+	}
 
-	free(proc_file);	
+	free(proc_file);
 
 	return OK;
 }

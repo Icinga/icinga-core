@@ -11,7 +11,7 @@
 
 # LOG FILE
 # This is the main log file where service and host events are logged
-# for historical purposes.  This should be the first option specified 
+# for historical purposes.  This should be the first option specified
 # in the config file!!!
 
 log_file=@localstatedir@/icinga.log
@@ -57,7 +57,7 @@ cfg_file=@sysconfdir@/objects/localhost.cfg
 
 # OBJECT CACHE FILE
 # This option determines where object definitions are cached when
-# Icinga starts/restarts.  The CGIs read object definitions from 
+# Icinga starts/restarts.  The CGIs read object definitions from
 # this cache file (rather than looking at the object config files
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Icinga starts.
@@ -73,7 +73,7 @@ object_cache_file=@localstatedir@/objects.cache
 # file.  You can then start Icinga with the -u option to have it read
 # object definitions from this precached file, rather than the standard
 # object configuration files (see the cfg_file and cfg_dir options above).
-# Using a precached object file can speed up the time needed to (re)start 
+# Using a precached object file can speed up the time needed to (re)start
 # the Icinga process if you've got a large and/or complex configuration.
 # Read the documentation section on optimizing Icinga to find our more
 # about how this feature works.
@@ -356,6 +356,17 @@ log_external_commands=1
 
 log_passive_checks=1
 
+
+# LOG EXTERNAL COMMAND USER
+# This option allows you to enable the logging of the current user
+# of external commands.
+# The syntax will be CMD;username;cmdargs instead of CMD;cmdargs
+# written to the logs, if the external application sends that
+# correctly.
+# Since this will break compatibility with existing log parsers,
+# it is intentionally disabled by default.
+
+log_external_commands_user=0
 
 
 # GLOBAL HOST AND SERVICE EVENT HANDLERS

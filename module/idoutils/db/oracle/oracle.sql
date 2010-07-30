@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- oracle.sql
 -- DB definition for Oracle
--- 
+--
 -- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
 --
 -- requires ocilib, oracle (instantclient) libs+sdk to work
@@ -12,12 +12,12 @@
 --
 -- enable ocilib in Icinga with
 -- ./configure --enable-idoutils --enable--oracle
--- 
--- copy to $ORACLE_HOME 
+--
+-- copy to $ORACLE_HOME
 -- # sqlplus username/password
 -- SQL> @oracle.sql
 --
--- Hints: 
+-- Hints:
 -- * set open_cursors to an appropriate value, not the default 50
 --   http://www.orafaq.com/node/758
 -- * if you are going into performance issues, consider setting commit_write to nowait
@@ -28,7 +28,7 @@
 --
 --
 -- initial version: 2008-02-20 David Schmidt
--- current version: 2010-02-10 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- current version: 2010-07-26 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 --
 -- -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE OR REPLACE PROCEDURE clean_table_by_instance
 BEGIN
 	v_stmt_str := 'DELETE FROM '
 	|| p_table_name
-	|| ' WHERE instance_id=' 
+	|| ' WHERE instance_id='
 	|| p_id;
 	EXECUTE IMMEDIATE v_stmt_str;
 END;
@@ -107,9 +107,9 @@ END;
 -- --------------------------------------------------------
 
 
--- 
+--
 -- Table structure for table acknowledgements
--- 
+--
 
 CREATE TABLE acknowledgements (
   id number(11) NOT NULL,
@@ -1224,7 +1224,7 @@ CREATE TABLE services (
   config_type number(6) default 0 NOT NULL,
   host_object_id number(11) default 0 NOT NULL,
   service_object_id number(11) default 0 NOT NULL,
-  display_name varchar2(64),
+  display_name varchar2(255),
   check_command_object_id number(11) default 0 NOT NULL,
   check_command_args varchar2(255),
   eventhandler_command_object_id number(11) default 0 NOT NULL,

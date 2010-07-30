@@ -12,6 +12,7 @@
 										 */
 
 #define DO_CLEAN "0"
+#define MAX_INPUT_CHARS 1024
 
 static PerlInterpreter *my_perl = NULL;
 
@@ -60,7 +61,7 @@ void run_plugin(char *command_line) {
 	int count = 0 ;
 	int pclose_result;
 	char *plugin_output;
-	char fname[128];
+	char fname[MAX_INPUT_CHARS];
 	char *args[] = {"", "", "", "", NULL };
 
 	dSP;
@@ -108,7 +109,7 @@ void run_plugin(char *command_line) {
 		return;
 	} else {
 		plugin_hndlr_cr = newSVsv(POPs);
-                
+
 		PUTBACK ;
 		FREETMPS ;
 		LEAVE ;
@@ -117,7 +118,7 @@ void run_plugin(char *command_line) {
 										 * Push the arguments to Embed::Persistent::run_package onto
 										 * the Perl stack.
 										 */
-	ENTER; 
+	ENTER;
 	SAVETMPS;
 	PUSHMARK(SP);
 
@@ -158,7 +159,7 @@ SV * my_eval_pv(char *pv) {
 
 char * get_command_line(void) {
 
-										/* debug 
+										/* debug
 										 * printf("%s\n", INIT_TERM_READLINE) ;
 										 */
 	SV *cmd_line ;
@@ -176,7 +177,7 @@ void init_term_readline(void) {
 
 void init_embedded_perl(void) {
 	char *embedding[] = { "", "p1.pl" };
-										/* embedding takes the place of argv[] ($argv[0] is the program name. 
+										/* embedding takes the place of argv[] ($argv[0] is the program name.
 										 * - which is not given to Perl).
 										 * Note that the number of args (ie the number of elements in embedding
 										 * [argc] is the third argument of perl_parse().
@@ -196,7 +197,7 @@ void init_embedded_perl(void) {
 	PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
 										/* Why is perl_run() necessary ?
 										 * It is needed if the code parsed by perl_parse() has
-										 * any runtime semantics (eg code that gets eval'd, 
+										 * any runtime semantics (eg code that gets eval'd,
 										 * behaviour that depends on constants etc).
 										 */
 	exitstatus=perl_run(my_perl);
@@ -217,10 +218,10 @@ void deinit_embedded_perl(void){
 
 int main(int argc, char **argv, char **env) {
 
-	char command_line[128];
+	char command_line[MAX_INPUT_CHARS];
 
 	init_embedded_perl();
-										/* Calls Perl to load and construct a new 
+										/* Calls Perl to load and construct a new
 										 * Term::ReadLine object.
 										 */
 
@@ -231,7 +232,8 @@ int main(int argc, char **argv, char **env) {
 										 * get_command_line calls Perl to get a scalar from stdin
 										 */
 
-		strncpy(command_line, get_command_line(), 128) ;
+		strncpy(command_line, get_command_line(), MAX_INPUT_CHARS-1) ;
+		command_line[MAX_INPUT_CHARS-1] = '\0';
 
 										/* Perl Term::ReadLine::readline() method chomps the "\n"
 										 * from the end of the input.

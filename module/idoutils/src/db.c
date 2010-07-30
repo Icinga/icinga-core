@@ -4730,7 +4730,7 @@ int ido2db_oci_prepared_statement_servicedependencydefinition_definition(ido2db_
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (nstance_id=:X1 AND config_type=:X2 AND service_object_id=:X3 AND dependent_service_object_id=:X4 AND dependency_type=:X5 AND inherits_parent=:X6 AND fail_on_ok=:X8 AND fail_on_warning=:X9 AND fail_on_unknown=:X10 AND fail_on_critical=:X11) WHEN MATCHED THEN UPDATE SET timeperiod_object_id=:X7 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, service_object_id, dependent_service_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_ok, fail_on_warning, fail_on_unknown, fail_on_critical) VALUES (seq_servicedependencies.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11)",
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND config_type=:X2 AND service_object_id=:X3 AND dependent_service_object_id=:X4 AND dependency_type=:X5 AND inherits_parent=:X6 AND fail_on_ok=:X8 AND fail_on_warning=:X9 AND fail_on_unknown=:X10 AND fail_on_critical=:X11) WHEN MATCHED THEN UPDATE SET timeperiod_object_id=:X7 WHEN NOT MATCHED THEN INSERT (id, instance_id, config_type, service_object_id, dependent_service_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_ok, fail_on_warning, fail_on_unknown, fail_on_critical) VALUES (seq_servicedependencies.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEDEPENDENCIES]) == -1) {
                         buf = NULL;
         }
