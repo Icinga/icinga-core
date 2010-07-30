@@ -1154,7 +1154,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		}
 		logit(NSLOG_RUNTIME_WARNING,TRUE,"%s",temp_service->plugin_output);
 
-		temp_service->current_state=STATE_CRITICAL; 
+		temp_service->current_state=STATE_CRITICAL;
 	}
 
 	/* else the return code is okay... */
