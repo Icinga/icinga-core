@@ -44,6 +44,7 @@ extern int	use_syslog_local_facility;
 extern int	syslog_local_facility;
 extern int      log_service_retries;
 extern int      log_initial_states;
+extern int      log_current_states;
 
 extern unsigned long      logging_options;
 extern unsigned long      syslog_options;
@@ -237,7 +238,7 @@ int write_to_syslog(char *buffer, unsigned long data_type){
 			default:
 				break;
 		}
-	} 
+	}
 
 	syslog(LOG_USER|LOG_INFO,"%s",buffer);
 
@@ -336,7 +337,7 @@ int log_host_states(int type, time_t *timestamp){
 
 		asprintf(&temp_buffer,"%s HOST STATE: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\n",(type==INITIAL_STATES)?"INITIAL":"CURRENT",temp_host->name,(temp_host->plugin_output==NULL)?"":temp_host->plugin_output);
 		process_macros(temp_buffer,&processed_buffer,0);
-		
+
 		write_to_all_logs_with_timestamp(processed_buffer,NSLOG_INFO_MESSAGE,timestamp);
 
 		my_free(temp_buffer);
@@ -438,9 +439,11 @@ int rotate_log_file(time_t rotation_time){
 		chown(log_file, log_file_stat.st_uid, log_file_stat.st_gid);
 		}
 
-	/* log current host and service state */
-	log_host_states(CURRENT_STATES,&rotation_time);
-	log_service_states(CURRENT_STATES,&rotation_time);
+	/* log current host and service state if activated*/
+	if(log_current_states==TRUE) {
+		log_host_states(CURRENT_STATES,&rotation_time);
+		log_service_states(CURRENT_STATES,&rotation_time);
+	}
 
 	/* free memory */
 	my_free(log_archive);
@@ -485,7 +488,7 @@ int close_debug_log(void){
 
 	if(debug_file_fp!=NULL)
 		fclose(debug_file_fp);
-	
+
 	debug_file_fp=NULL;
 
 	return OK;
