@@ -5,9 +5,12 @@ Icinga 1.0.x Change Log
 1.0.3 - 18/08/2010
 
 ENHANCEMENTS
+* core: new config option to set initial state of persistence for acknowledgements
 * core: add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd
 
+
 * idoutils: add syslog output for start/stop, client connecting
+* idoutils: add db trimming thread startup delay config option
 
 FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c
@@ -15,16 +18,32 @@ FIXES
 * core: execvp searches in PATH too like popen, and returns if error, outputting the errno string
 * core: fix possible overflows and increase command length limit in mini_epn's (Thomas Guyot-Sionnest)
 * core: fix wrong is_volatile conditions causing wrong service alerts in the logs
+* core: fix notify-service-by-email command from the stock template cuts off service check output
+* core: fix service checks should recognize that exit code 126 means plugin is not executable
 
-* classic ui: fix image urls ins stylesheets
+* core: remove daemonchk.cgi from init-script
+* core: improve output of rhel init-script
+* core: add install-api to make call in specfile
+* core: add config checks for start, reload and restart on rhel init script
+* core: fix duplicated configcheck on restart in init-script
+* core: fix specfile for idoutils description
+* core: fix Makefile output if Icinga API not available
+
+* classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless
+* classic ui: fix multiurl action/status icon wrong name
+* classic ui: cmd.cgi "his" instead of "its" in command description
+* classic ui: fix customers can see machines from other customers when entering a downtime
+
 
 * install: fix api not installed using make install-unstripped
 * install: enable debuginfo in spec file
 
 * idoutils: adapt oracle-drop.sql for current schema
-* idoutils: fix binding null values to prepared statements in oracle
+* idoutils: fix binding null values to name1/name2 in oracle
 * idoutils: fix typo in servicedepencies query for oracle
+* idoutils: fix oracle prep statement contactnotifmethoddata
+* idoutils: full rewrite of binding NULL values for oracle with ocilib
 
 
 1.0.2 - 30/06/2010
