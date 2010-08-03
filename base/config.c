@@ -74,6 +74,7 @@ extern int      log_event_handlers;
 extern int      log_external_commands;
 extern int      log_external_commands_user;
 extern int      log_passive_checks;
+extern int      log_long_plugin_output;
 
 extern int      service_check_timeout;
 extern int      service_check_timeout_state;
@@ -624,6 +625,17 @@ int read_main_config_file(char *main_config_file){
 			        }
 
 			log_passive_checks=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
+		else if(!strcmp(variable,"log_long_plugin_output")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"Illegal value for log_long_plugin_output");
+				error=TRUE;
+				break;
+			        }
+
+			log_long_plugin_output=(atoi(value)>0)?TRUE:FALSE;
 		        }
 
 		else if(!strcmp(variable,"log_initial_states")){

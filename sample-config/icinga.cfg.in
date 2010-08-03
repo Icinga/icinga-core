@@ -366,6 +366,7 @@ log_external_commands=1
 log_passive_checks=1
 
 
+
 # LOG EXTERNAL COMMAND USER
 # This option allows you to enable the logging of the current user
 # of external commands.
@@ -376,6 +377,16 @@ log_passive_checks=1
 # it is intentionally disabled by default.
 
 log_external_commands_user=0
+
+
+
+# LONG PLUGIN OUTPUT LOGGING OPTION
+# If you want Icinga to log the complete text of the plugin output
+# to the log instead of only the first line then set this value to 1.
+# Default value is 0.
+
+log_long_plugin_output=0
+
 
 
 # GLOBAL HOST AND SERVICE EVENT HANDLERS

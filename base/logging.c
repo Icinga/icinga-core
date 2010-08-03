@@ -45,6 +45,7 @@ extern int	syslog_local_facility;
 extern int      log_service_retries;
 extern int      log_initial_states;
 extern int      log_current_states;
+extern int      log_long_plugin_output;
 
 extern unsigned long      logging_options;
 extern unsigned long      syslog_options;
@@ -276,7 +277,13 @@ int log_service_event(service *svc){
 	grab_host_macros(temp_host);
 	grab_service_macros(svc);
 
-	asprintf(&temp_buffer,"SERVICE ALERT: %s;%s;$SERVICESTATE$;$SERVICESTATETYPE$;$SERVICEATTEMPT$;%s\n",svc->host_name,svc->description,(svc->plugin_output==NULL)?"":svc->plugin_output);
+	/* either log only the output, or if enabled, add long_output */
+	if(log_long_plugin_output==TRUE && svc->long_plugin_output!=NULL) {
+		asprintf(&temp_buffer,"SERVICE ALERT: %s;%s;$SERVICESTATE$;$SERVICESTATETYPE$;$SERVICEATTEMPT$;%s\\n%s\n",svc->host_name,svc->description,(svc->plugin_output==NULL)?"":svc->plugin_output,svc->long_plugin_output);
+	} else {
+		asprintf(&temp_buffer,"SERVICE ALERT: %s;%s;$SERVICESTATE$;$SERVICESTATETYPE$;$SERVICEATTEMPT$;%s\n",svc->host_name,svc->description,(svc->plugin_output==NULL)?"":svc->plugin_output);
+	}
+
 	process_macros(temp_buffer,&processed_buffer,0);
 
 	write_to_all_logs(processed_buffer,log_options);
@@ -307,7 +314,13 @@ int log_host_event(host *hst){
 		log_options=NSLOG_HOST_UP;
 
 
-	asprintf(&temp_buffer,"HOST ALERT: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\n",hst->name,(hst->plugin_output==NULL)?"":hst->plugin_output);
+	/* either log only the output, or if enabled, add long_output */
+	if(log_long_plugin_output==TRUE && hst->long_plugin_output!=NULL) {
+		asprintf(&temp_buffer,"HOST ALERT: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\\n%s\n",hst->name,(hst->plugin_output==NULL)?"":hst->plugin_output,hst->long_plugin_output);
+	} else {
+		asprintf(&temp_buffer,"HOST ALERT: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\n",hst->name,(hst->plugin_output==NULL)?"":hst->plugin_output);
+	}
+
 	process_macros(temp_buffer,&processed_buffer,0);
 
 	write_to_all_logs(processed_buffer,log_options);
