@@ -34,7 +34,7 @@ socket_type=unix
 
 
 # SOCKET NAME
-# This option determines the name and path of the UNIX domain 
+# This option determines the name and path of the UNIX domain
 # socket that the daemon will create and accept connections from.
 # This option is only valid if the socket type specified above
 # is "unix".
@@ -53,10 +53,10 @@ tcp_port=5668
 
 
 # ENCRYPTION
-# This option determines if the ido2db daemon will accept SSL to encrypt the 
+# This option determines if the ido2db daemon will accept SSL to encrypt the
 # network traffic between module and ido2db daemon.
 # Both sides have to enable this feature which depends on SSL Libraries
-# like openssl or kerberos 
+# like openssl or kerberos
 # This option is only valid if the output type
 # option specified above is "tcpsocket".
 #
@@ -80,7 +80,7 @@ use_ssl=0
 #	oracle   = Oracle
 #	sqlite   = SQLite
 #	sqlite3  = SQLite3
-# Currently supported: 
+# Currently supported:
 #	libdbi: mysql, pgsql
 #	ocilib: oracle
 
@@ -145,8 +145,8 @@ db_pass=icinga
 # that particular table should NOT be automatically trimmed.
 #
 # Remember: There are no optimized settings, it depends on your rdbm install,
-# number/checkinterval of host/service-checks and your desired time of data 
-# savings - historical vs live-data. Please keep in mind that low delete 
+# number/checkinterval of host/service-checks and your desired time of data
+# savings - historical vs live-data. Please keep in mind that low delete
 # intervals may interfere with insert/update data from Icinga.
 
 # ***DEFAULT***
@@ -181,7 +181,7 @@ max_externalcommands_age=10080
 ## CLEAN REALTIME TABLES AT CORE STARTUP
 # If you don't want to clean all those tables, set this option to 0.
 # This can be useful if the deletes slow down the normal data
-# processing. 
+# processing.
 # Values: 0 - don't clean
 #         1 - clean (default)
 
@@ -190,9 +190,9 @@ clean_realtime_tables_on_core_startup=1
 
 ## CLEAN CONFIG TABLES AT CORE STARTUP
 # If you don't want to clean all those tables, set this option to 0.
-# This can be useful if the deletes slow down the normal data 
+# This can be useful if the deletes slow down the normal data
 # processing.
-# Furthermore if you need to keep e.g. the state of customvariables 
+# Furthermore if you need to keep e.g. the state of customvariables
 # or any other tables not directly linked to the objects table.
 # Values: 0 - don't clean
 #         1 - clean (default)
@@ -206,8 +206,16 @@ clean_config_tables_on_core_startup=1
 # highly experimental!!!
 # Modify at your own risk to set the interval DB trimming interval
 # to an appropriate value. If left blank, it defaults to 60 seconds.
+
 trim_db_interval=60
 
+
+# DB TRIMMING THREAD DELAY ON STARTUP
+# ido2db spawns a thread for parallel db trimming. This option can be
+# modified to extend/minimize the initial wait delay at startup.
+# Default is set to 60 seconds in order to allow startup routines.
+
+housekeeping_thread_startup_delay=60
 
 
 # DEBUG LEVEL

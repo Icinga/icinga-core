@@ -276,6 +276,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 	idi->dbinfo.max_logentries_age=ido2db_db_settings.max_logentries_age;
 	idi->dbinfo.max_acknowledgements_age=ido2db_db_settings.max_acknowledgements_age;
 	idi->dbinfo.trim_db_interval=ido2db_db_settings.trim_db_interval;
+	idi->dbinfo.housekeeping_thread_startup_delay=ido2db_db_settings.housekeeping_thread_startup_delay;
 	idi->dbinfo.last_table_trim_time = (time_t) 0L;
 	idi->dbinfo.last_logentry_time = (time_t) 0L;
 	idi->dbinfo.last_logentry_data = NULL;
@@ -596,6 +597,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
         /* contactnotificationdata */
         if(ido2db_oci_prepared_statement_contactnotificationdata(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationdata() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* contactnotificationmethoddata */
+        if(ido2db_oci_prepared_statement_contactnotificationmethoddata(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactnotificationmethoddata() failed\n");
                 return IDO_ERROR;
         }
 
@@ -1412,21 +1419,51 @@ int ido2db_db_hello(ido2db_idi *idi) {
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X4"), (big_uint *) data[3])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[6]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X7")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X7"), *(char **) data[6], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[7]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X8")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X8"), *(char **) data[7], 0)) {
                                 return IDO_ERROR;
                         }
+	}
+        if(*(char **) data[8]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X9")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X9"), *(char **) data[8], 0)) {
                                 return IDO_ERROR;
                         }
+	}
 
         /* execute statement */
         if(!OCI_Execute(idi->dbinfo.oci_statement_conninfo)) {
@@ -1689,21 +1726,52 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
                         if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_conninfo, MT(":X4"), (big_uint *) data[3])) {
                                 return IDO_ERROR;
                         }
+        if(*(char **) data[4]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X5")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X5"), *(char **) data[4], 0)) {
                                 return IDO_ERROR;
                         }
+        }
+        if(*(char **) data[5]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X6")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X6"), *(char **) data[5], 0)) {
                                 return IDO_ERROR;
                         }
+        }
+        if(*(char **) data[6]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X7")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X7"), *(char **) data[6], 0)) {
                                 return IDO_ERROR;
                         }
+        }
+        if(*(char **) data[7]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X8")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X8"), *(char **) data[7], 0)) {
                                 return IDO_ERROR;
                         }
+        }
+        if(*(char **) data[8]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_conninfo, ":X9")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
                         if(!OCI_BindString(idi->dbinfo.oci_statement_conninfo, MT(":X9"), *(char **) data[8], 0)) {
                                 return IDO_ERROR;
                         }
+        }
+
 
         /* execute statement */
         if(!OCI_Execute(idi->dbinfo.oci_statement_conninfo)) {

@@ -30,6 +30,7 @@ typedef struct ido2db_dbconfig_struct{
         unsigned long max_logentries_age;
         unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
+	unsigned long housekeeping_thread_startup_delay;
         unsigned long clean_realtime_tables_on_core_startup;
         unsigned long clean_config_tables_on_core_startup;
         }ido2db_dbconfig;

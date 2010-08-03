@@ -205,6 +205,7 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long max_logentries_age;
 	unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
+	unsigned long housekeeping_thread_startup_delay;
 	unsigned long clean_realtime_tables_on_core_startup;
 	unsigned long clean_config_tables_on_core_startup;
 	time_t last_table_trim_time;
@@ -353,6 +354,10 @@ typedef struct ido2db_input_data_info_struct{
 /************* default trim db interval ********/
 
 #define DEFAULT_TRIM_DB_INTERVAL 60
+
+/* default housekeeping thread startup delay  **/
+
+#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 60
 
 /***************** functions *******************/
 

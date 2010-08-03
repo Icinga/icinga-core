@@ -540,6 +540,9 @@ int ido2db_process_config_var(char *arg){
 	else if(!strcmp(var,"trim_db_interval"))
 		ido2db_db_settings.trim_db_interval=strtoul(val,NULL,0);
 
+	else if(!strcmp(var,"housekeeping_thread_startup_delay"))
+		ido2db_db_settings.housekeeping_thread_startup_delay=strtoul(val,NULL,0);
+
 	else if((!strcmp(var,"ido2db_user"))||(!strcmp(var,"ido2db_user")))
 		ido2db_user=strdup(val);
 	else if((!strcmp(var,"ido2db_group"))||(!strcmp(var,"ido2db_group")))
@@ -576,11 +579,6 @@ int ido2db_process_config_var(char *arg){
 		ido2db_db_settings.clean_config_tables_on_core_startup=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
 	}
 
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() max_logentries=%lu, max_ack=%lu\n", ido2db_db_settings.max_logentries_age, ido2db_db_settings.max_acknowledgements_age);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() config set: lock_file=%s, socket_type=%d, socket_name=%s, tcp_port=%d, db_servertype=%d, db_host=%s, db_port=%d, db_user=%s, db_pass=%s, db_name=%s, db_prefix=%s, max_timedevents_age=%lu, max_systemcommands_age=%lu, max_servicechecks_age=%lu, max_hostchecks_age=%lu, max_eventhandlers_age=%lu, max_externalcommands_age=%lu, trim_db_interval=%lu, ido2db_user=%s, ido2db_group=%s, debug_file=%s, debug_level=%d, debug_verbosity=%d, max_debug_file_size=%lu\n", lock_file, ido2db_socket_type, ido2db_socket_name, ido2db_tcp_port, ido2db_db_settings.server_type, ido2db_db_settings.host, ido2db_db_settings.port, ido2db_db_settings.username, ido2db_db_settings.password, ido2db_db_settings.dbname, ido2db_db_settings.dbprefix, ido2db_db_settings.max_timedevents_age, ido2db_db_settings.max_systemcommands_age, ido2db_db_settings.max_servicechecks_age, ido2db_db_settings.max_hostchecks_age, ido2db_db_settings.max_eventhandlers_age, ido2db_db_settings.max_externalcommands_age, ido2db_db_settings.trim_db_interval, ido2db_user, ido2db_group, ido2db_debug_level, ido2db_debug_verbosity, ido2db_max_debug_file_size);
-
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() end\n");
 
 	return IDO_OK;
@@ -608,6 +606,7 @@ int ido2db_initialize_variables(void){
 	ido2db_db_settings.max_logentries_age=0L;
 	ido2db_db_settings.max_acknowledgements_age=0L;
 	ido2db_db_settings.trim_db_interval=(unsigned long)DEFAULT_TRIM_DB_INTERVAL; /* set the default if missing in ido2db.cfg */
+	ido2db_db_settings.housekeeping_thread_startup_delay=(unsigned long)DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.clean_realtime_tables_on_core_startup=IDO_TRUE; /* default is cleaning on startup */
 	ido2db_db_settings.clean_config_tables_on_core_startup=IDO_TRUE;
 
@@ -1184,6 +1183,7 @@ int ido2db_handle_client_connection(int sd){
 
 	/* initialize input data information */
 	ido2db_idi_init(&idi);
+
 
 	/* initialize dynamic buffer (2KB chunk size) */
 	ido_dbuf_init(&dbuf,dbuf_chunk);
@@ -2523,7 +2523,9 @@ void * ido2db_thread_cleanup(void *data) {
 	delay.tv_nsec = 500;
 
 	/* it might happen that db connection comes to fast after main thread so sleep a while */
-	delay.tv_sec = 60;
+	//delay.tv_sec = 60;
+	/* allowed to be set in config */
+	delay.tv_sec = ido2db_db_settings.housekeeping_thread_startup_delay;
 	nanosleep(&delay, NULL);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
@@ -2535,7 +2537,7 @@ void * ido2db_thread_cleanup(void *data) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread db connection\n");
 	/* initialize database connection */
 	ido2db_db_init(&thread_idi);
-	
+
 	//ido2db_thread_db_connect(&thread_idi);
 	ido2db_db_connect(&thread_idi);
 
