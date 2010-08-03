@@ -28,6 +28,7 @@ FIXES
 * core: fix duplicated configcheck on restart in init-script
 * core: fix specfile for idoutils description
 * core: fix Makefile output if Icinga API not available
+* core: fix t/ and daemon-ini-redhat in distclean
 
 * classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless
