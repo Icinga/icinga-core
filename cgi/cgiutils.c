@@ -122,6 +122,8 @@ int		color_transparency_index_r=255;
 int		color_transparency_index_g=255;
 int		color_transparency_index_b=255;
 
+int		status_show_long_plugin_output=FALSE;
+
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
 extern command         *command_list;
@@ -441,6 +443,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"use_ssl_authentication"))
 			use_ssl_authentication=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"status_show_long_plugin_output"))
+			status_show_long_plugin_output=(atoi(val)>0)?TRUE:FALSE;
  	        }
 
 	/* free memory and close the file */

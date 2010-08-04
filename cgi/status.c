@@ -58,6 +58,8 @@ extern int suppress_alert_window;
 
 extern int enable_splunk_integration;
 
+extern int status_show_long_plugin_output;
+
 extern host *host_list;
 extern service *service_list;
 extern hostgroup *hostgroup_list;
@@ -1802,7 +1804,14 @@ void show_service_detail(void){
 			printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,state_duration);
 			printf("<TD CLASS='status%s'>%d/%d</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts);
 			printf("<TD CLASS='status%s' valign='center'>",status_bg_class);
-			printf("%s&nbsp;",(temp_status->plugin_output==NULL)?"":html_encode(temp_status->plugin_output,TRUE));
+			if (status_show_long_plugin_output!=FALSE && temp_status->long_plugin_output!=NULL) {
+				printf("%s<BR>%s",html_encode(temp_status->plugin_output,TRUE), html_encode(temp_status->long_plugin_output,TRUE));
+			} else if (temp_status->plugin_output!=NULL) {
+				printf("%s&nbsp;",html_encode(temp_status->plugin_output,TRUE));
+			} else {
+				printf("&nbsp;");
+			}
+
 			/*
 			if(enable_splunk_integration==TRUE)
 				display_splunk_service_url(temp_service);
@@ -2208,7 +2217,14 @@ void show_host_detail(void){
 			printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,date_time);
 			printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,state_duration);
 			printf("<TD CLASS='status%s' valign='center'>",status_bg_class);
-			printf("%s&nbsp;",(temp_status->plugin_output==NULL)?"":html_encode(temp_status->plugin_output,TRUE));
+			if (status_show_long_plugin_output!=FALSE && temp_status->long_plugin_output!=NULL) {
+				printf("%s<BR>%s",html_encode(temp_status->plugin_output,TRUE), html_encode(temp_status->long_plugin_output,TRUE));
+			} else if (temp_status->plugin_output!=NULL) {
+				printf("%s&nbsp;",html_encode(temp_status->plugin_output,TRUE));
+			} else {
+				printf("&nbsp;");
+			}
+
 			/*
 			if(enable_splunk_integration==TRUE)
 				display_splunk_host_url(temp_host);
