@@ -2975,8 +2975,6 @@ void show_scheduling_queue(void){
 			printf("&service=%s%s'><img src='%s%s' border=0 ALT='Re-schedule This Service Check' TITLE='Re-schedule This Service Check'></a>\n",url_encode(temp_svcstatus->description),(temp_svcstatus->checks_enabled==TRUE)?"&force_check":"",url_images_path,DELAY_ICON);
 			printf("</TD>\n");
 
-			free(temp_host);
-			free(temp_service);
 		        }
 
 		/* get the host status */
@@ -3027,7 +3025,6 @@ void show_scheduling_queue(void){
 			printf("'><img src='%s%s' border=0 ALT='Re-schedule This Host Check' TITLE='Re-schedule This Host Check'></a>\n",url_images_path,DELAY_ICON);
 			printf("</TD>\n");
 
-			free(temp_host);
 		        }
 
 		printf("</TR>\n");
