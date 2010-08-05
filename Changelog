@@ -23,15 +23,8 @@ FIXES
 * core: fix wrong is_volatile conditions causing wrong service alerts in the logs
 * core: fix notify-service-by-email command from the stock template cuts off service check output
 * core: fix service checks should recognize that exit code 126 means plugin is not executable
-
-* core: remove daemonchk.cgi from init-script
-* core: improve output of rhel init-script
-* core: add install-api to make call in specfile
-* core: add config checks for start, reload and restart on rhel init script
-* core: fix duplicated configcheck on restart in init-script
-* core: fix specfile for idoutils description
-* core: fix Makefile output if Icinga API not available
-* core: fix t/ and daemon-ini-redhat in distclean
+* core: fix service event handlers when service problem becomes hard during host down
+* core: fix service in soft state after hard state without recovery
 
 * classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless
@@ -42,6 +35,14 @@ FIXES
 
 * install: fix api not installed using make install-unstripped
 * install: enable debuginfo in spec file
+* install: remove daemonchk.cgi from init-script
+* install: improve output of rhel init-script
+* install: add config checks for start, reload and restart on rhel init script
+* install: fix duplicated configcheck on restart in init-script
+* install: fix specfile for idoutils description
+* install: fix Makefile output if Icinga API not available
+* install: fix t/ and daemon-ini-redhat in distclean
+
 
 * idoutils: adapt oracle-drop.sql for current schema
 * idoutils: fix binding null values to name1/name2 in oracle

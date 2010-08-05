@@ -1595,6 +1595,9 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 				if(hard_state_change==TRUE){
 					log_service_event(temp_service);
 					state_was_logged=TRUE;
+
+					/* run the service event handler to handle the hard state */
+					handle_service_event(temp_service);
 				}
 			}
 
@@ -1604,7 +1607,9 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 				log_debug_info(DEBUGL_CHECKS,1,"Host is UP, so we'll retry the service check...\n");
 
 				/* this is a soft state */
-				temp_service->state_type=SOFT_STATE;
+				if (temp_service->current_attempt < temp_service->max_attempts) {
+					temp_service->state_type=SOFT_STATE;
+				}
 
 				/* log the service check retry */
 				log_service_event(temp_service);
