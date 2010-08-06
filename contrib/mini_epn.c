@@ -78,14 +78,14 @@ int main(int argc, char **argv, char **env) {
 				printf("embedded perl ran %s with error %s\n",fname,SvPVX(ERRSV));
 				continue;
 			} else {
-		                plugin_hndlr_cr = newSVsv(POPs);         
+		                plugin_hndlr_cr = newSVsv(POPs);
 
 	               		PUTBACK;
                 		FREETMPS;
                 		LEAVE;
         		}
 
-			ENTER; 
+			ENTER;
 			SAVETMPS;
 			PUSHMARK(SP);
 
@@ -113,7 +113,7 @@ int main(int argc, char **argv, char **env) {
 
 	}
 
-	
+
         PL_perl_destruct_level = 0;
         perl_destruct(my_perl);
         perl_free(my_perl);
