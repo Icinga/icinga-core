@@ -2,11 +2,11 @@
  *
  * STATUS.C -  Icinga Status CGI
  *
- * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -1017,21 +1017,20 @@ void show_host_status_totals(void){
 
 		if(display_type==DISPLAY_HOSTS && (show_all_hosts==TRUE || !strcmp(host_name,temp_hoststatus->host_name)))
 			count_host=1;
+
 		else if(display_type==DISPLAY_SERVICEGROUPS){
-			if(show_all_servicegroups==TRUE)
+
+			if(show_all_servicegroups==TRUE) {
 				count_host=1;
-			else{
+			} else {
 				for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
-					if(strcmp(temp_servicestatus->host_name,temp_hoststatus->host_name))
-						continue;
-					temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
-					if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
-						continue;
-					count_host=1;
-					break;
-				        }
-			        }
-		        }
+					if(is_host_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_host)==TRUE){
+                                                count_host=1;
+                                                break;
+                                        }
+				}
+			}
+	        }
 		else if(display_type==DISPLAY_HOSTGROUPS && (show_all_hostgroups==TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name),temp_host)==TRUE)))
 			count_host=1;
 
@@ -1039,23 +1038,25 @@ void show_host_status_totals(void){
 
 			if(temp_hoststatus->status==HOST_UP)
 				total_up++;
+
 			else if(temp_hoststatus->status==HOST_DOWN){
 				total_down++;
+
 				if(temp_hoststatus->problem_has_been_acknowledged==FALSE && temp_hoststatus->notifications_enabled==TRUE && temp_hoststatus->checks_enabled==TRUE && temp_hoststatus->scheduled_downtime_depth==0)
 					problem_hosts_down++;
-			        }
+               		}
 			else if(temp_hoststatus->status==HOST_UNREACHABLE){
 				total_unreachable++;
 				if(temp_hoststatus->problem_has_been_acknowledged==FALSE && temp_hoststatus->notifications_enabled==TRUE && temp_hoststatus->checks_enabled==TRUE && temp_hoststatus->scheduled_downtime_depth==0)
 					problem_hosts_unreachable++;
-			        }
+			}
 
 			else if(temp_hoststatus->status==HOST_PENDING)
 				total_pending++;
 			else
 				total_up++;
-		        }
 	        }
+        }
 
 	total_hosts=total_up+total_down+total_unreachable+total_pending;
 	total_problems=total_down+total_unreachable;

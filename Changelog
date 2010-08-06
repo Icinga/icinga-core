@@ -34,6 +34,7 @@ FIXES
 * classic ui: fix customers can see machines from other customers when entering a downtime
 * classic ui: fix invalid pointer in extinfo.cgi type=7
 * classic ui: for new Splunk integration query parameters
+* classic ui: fix for incorrect host state counts in status CGI when viewing servicegroups
 
 * install: fix api not installed using make install-unstripped
 * install: enable debuginfo in spec file
