@@ -74,7 +74,7 @@ extern int enable_flap_detection;
 
 extern int nagios_process_state;
 
-
+extern int tac_show_only_hard_state;
 
 
 void analyze_status_data(void);
@@ -358,7 +358,7 @@ int main(void){
 	printf("T8: %lu\n",(unsigned long)t8);
 	printf("T9: %lu\n",(unsigned long)t9);
 #endif
-	
+
 	return OK;
         }
 
@@ -453,7 +453,7 @@ int process_cgivars(void){
 		/* we received an invalid argument */
 		else
 			error=TRUE;
-	
+
 	        }
 
 	/* free memory allocated to the CGI variables */
@@ -479,6 +479,11 @@ void analyze_status_data(void){
 		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
+
+		/* check if only hard states to be shown */
+		if(tac_show_only_hard_state==TRUE && temp_servicestatus->state_type!=HARD_STATE)
+			continue;
+
 
 		/******** CHECK FEATURES *******/
 
@@ -638,6 +643,10 @@ void analyze_status_data(void){
 		temp_host=find_host(temp_hoststatus->host_name);
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
+
+                /* check if only hard states to be shown */
+                if(tac_show_only_hard_state==TRUE && temp_hoststatus->state_type!=HARD_STATE)
+                        continue;
 
 		/******** CHECK FEATURES *******/
 

@@ -16,6 +16,7 @@ ENHANCEMENTS
 * idoutils: add db trimming thread startup delay config option
 
 * classic ui: cgi config option to show long_plugin_output in status.cgi (Ricardo Bartels)
+* classic ui: add config option to only show HARD states in tac.cgi
 
 FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c

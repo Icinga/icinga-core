@@ -357,6 +357,15 @@ status_show_long_plugin_output=0
 
 
 
+# SHOW ONLY HARD STATES IN TAC OPTION
+# This options allows you to specify if the tactical overview
+# should only show hard states on hosts and services.
+# By default disabled, all states will be shown.
+
+tac_show_only_hard_state=0
+
+
+
 # SPLUNK INTEGRATION OPTIONS
 # These options allow you to enable integration with Splunk
 # in the web interface.  If enabled, you'll be presented with
