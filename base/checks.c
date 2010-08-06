@@ -2,7 +2,7 @@
  *
  * CHECKS.C - Service and host check functions for Icinga
  *
- * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
@@ -1662,8 +1662,8 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 				state_was_logged=TRUE;
 			}
 
-			/* check for start of flexible (non-fixed) scheduled downtime if we just had a hard error */
-			if(hard_state_change==TRUE && temp_service->pending_flex_downtime>0)
+			/* check for start of flexible (non-fixed) scheduled downtime if we just had a hard/soft error */
+			if(state_change==TRUE && temp_service->pending_flex_downtime>0)
 				check_pending_flex_service_downtime(temp_service);
 
 			/* 10/04/07 check to see if the service and/or associate host is flapping */

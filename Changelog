@@ -28,6 +28,7 @@ FIXES
 * core: fix all comments disappear after restart if one user comment is non-persistent (Ricardo Bartels)
 * core: fix macro processing (Jochen Bern)
 * core: fix non-scheduled hosts/services not being updated in IDO*
+* core: scheduled downtime can now start on SOFT error states
 
 * classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless

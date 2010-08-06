@@ -2,7 +2,7 @@
  *
  * SEHANDLERS.C - Service and host event and state handlers for Icinga
  *
- * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
@@ -742,9 +742,8 @@ int handle_host_state(host *hst){
 		if(hst->state_type==HARD_STATE || (hst->state_type==SOFT_STATE && log_host_retries==TRUE))
 			log_host_event(hst);
 
-		/* check for start of flexible (non-fixed) scheduled downtime */
-		if(hst->state_type==HARD_STATE)
-			check_pending_flex_host_downtime(hst);
+		/* check for start of flexible (non-fixed) scheduled downtime in soft/hard states */
+		check_pending_flex_host_downtime(hst);
 
 		/* notify contacts about the recovery or problem if its a "hard" state */
 		if(hst->state_type==HARD_STATE){
