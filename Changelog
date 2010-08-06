@@ -35,6 +35,7 @@ FIXES
 * classic ui: fix invalid pointer in extinfo.cgi type=7
 * classic ui: for new Splunk integration query parameters
 * classic ui: fix for incorrect host state counts in status CGI when viewing servicegroups
+* classic ui: fix for extra colum in CSV export
 
 * install: fix api not installed using make install-unstripped
 * install: enable debuginfo in spec file
