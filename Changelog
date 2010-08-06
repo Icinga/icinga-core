@@ -26,6 +26,7 @@ FIXES
 * core: fix service event handlers when service problem becomes hard during host down
 * core: fix service in soft state after hard state without recovery
 * core: fix all comments disappear after restart if one user comment is non-persistent (Ricardo Bartels)
+* core: fix macro processing (Jochen Bern)
 
 * classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless
