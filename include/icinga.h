@@ -131,9 +131,12 @@ extern "C" {
 #define DEFAULT_ENABLE_EMBEDDED_PERL                            0       /* enable embedded Perl interpreter (if compiled in) */
 #define DEFAULT_USE_EMBEDDED_PERL_IMPLICITLY                    1       /* by default, embedded Perl is used for Perl plugins that don't explicitly disable it */
 
+#define DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS               0       /* by default do not run event handlers for stalked hosts */
+#define DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES            0       /* by default do not run event handlers for stalked services */
+
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Icinga */
 
-#define DEFAULT_CHECK_FOR_UPDATES                               0       /* should we check for new Icinga releases? */
+#define DEFAULT_CHECK_FOR_UPDATES                               0       /* should we check for new Icinga releases? */ /* not used */
 #define DEFAULT_BARE_UPDATE_CHECK                               1       /* report current version and new installs */
 #define MINIMUM_UPDATE_CHECK_INTERVAL                           60*60*22 /* 22 hours minimum between checks - please be kind to our servers! */
 #define BASE_UPDATE_CHECK_INTERVAL                              60*60*22 /* 22 hours base interval */

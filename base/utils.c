@@ -238,6 +238,9 @@ extern int      child_processes_fork_twice;
 extern int      enable_embedded_perl;
 extern int      use_embedded_perl_implicitly;
 
+extern int      stalking_event_handlers_for_hosts;
+extern int      stalking_event_handlers_for_services;
+
 extern int      date_format;
 
 extern contact		*contact_list;
@@ -4714,6 +4717,9 @@ int reset_variables(void){
 
         enable_embedded_perl=DEFAULT_ENABLE_EMBEDDED_PERL;
 	use_embedded_perl_implicitly=DEFAULT_USE_EMBEDDED_PERL_IMPLICITLY;
+
+	stalking_event_handlers_for_hosts=DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
+	stalking_event_handlers_for_services=DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
 
 	external_command_buffer_slots=DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS;
 

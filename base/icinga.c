@@ -240,6 +240,9 @@ int             enable_embedded_perl=DEFAULT_ENABLE_EMBEDDED_PERL;
 int             use_embedded_perl_implicitly=DEFAULT_USE_EMBEDDED_PERL_IMPLICITLY;
 int             embedded_perl_initialized=FALSE;
 
+int             stalking_event_handlers_for_hosts=DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
+int             stalking_event_handlers_for_services=DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
+
 int             date_format=DATE_FORMAT_US;
 char            *use_timezone=NULL;
 

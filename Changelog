@@ -9,6 +9,7 @@ ENHANCEMENTS
 * core: add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd
 * core: add config option to disable the logging of current state in log after rotation (Ricardo Bartels)
 * core: add config option to log long plugin output (Ricardo Bartels)
+* core: add config option to enable event handlers for stalked hosts/services (Petya Kohts)
 
 * idoutils: add syslog output for start/stop, client connecting
 * idoutils: add db trimming thread startup delay config option

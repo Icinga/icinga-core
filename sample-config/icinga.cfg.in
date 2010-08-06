@@ -1228,6 +1228,16 @@ use_embedded_perl_implicitly=1
 
 
 
+# EVENT HANDLERS FOR STALKED HOSTS/SERVICES
+# Allow running event handlers for stalked hosts/services in order
+# to forward to external systems.
+# Values: 0 = disabled (default), 1 = enabled
+
+stalking_event_handlers_for_hosts=0
+stalking_event_handlers_for_services=0
+
+
+
 # ILLEGAL OBJECT NAME CHARACTERS
 # This option allows you to specify illegal characters that cannot
 # be used in host names, service descriptions, or names of other

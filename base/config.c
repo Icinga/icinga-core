@@ -190,6 +190,9 @@ extern int      child_processes_fork_twice;
 extern int      enable_embedded_perl;
 extern int      use_embedded_perl_implicitly;
 
+extern int      stalking_event_handlers_for_hosts;
+extern int      stalking_event_handlers_for_services;
+
 extern int      date_format;
 extern char     *use_timezone;
 
@@ -1356,6 +1359,28 @@ int read_main_config_file(char *main_config_file){
 			        }
 
 			use_embedded_perl_implicitly=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
+		else if(!strcmp(variable,"stalking_event_handlers_for_hosts")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"stalking_event_handlers_for_hosts");
+				error=TRUE;
+				break;
+			        }
+
+			stalking_event_handlers_for_hosts=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
+		else if(!strcmp(variable,"stalking_event_handlers_for_services")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"stalking_event_handlers_for_services");
+				error=TRUE;
+				break;
+			        }
+
+			stalking_event_handlers_for_services=(atoi(value)>0)?TRUE:FALSE;
 		        }
 
 		else if(!strcmp(variable,"external_command_buffer_slots"))

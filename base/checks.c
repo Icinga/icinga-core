@@ -96,6 +96,9 @@ extern int      use_large_installation_tweaks;
 extern int      free_child_process_memory;
 extern int      child_processes_fork_twice;
 
+extern int      stalking_event_handlers_for_hosts;
+extern int      stalking_event_handlers_for_services;
+
 extern time_t   program_start;
 extern time_t   event_start;
 
@@ -120,6 +123,7 @@ extern unsigned long max_debug_file_size;
 #ifdef EMBEDDEDPERL
 extern int      use_embedded_perl;
 #endif
+
 
 /******************************************************************/
 /********************* MISCELLANEOUS FUNCTIONS ********************/
@@ -1736,17 +1740,39 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	/* if we're stalking this state type and state was not already logged AND the plugin output changed since last check, log it now.. */
 	if(temp_service->state_type==HARD_STATE && state_change==FALSE && state_was_logged==FALSE && compare_strings(old_plugin_output,temp_service->plugin_output)){
 
-		if((temp_service->current_state==STATE_OK && temp_service->stalk_on_ok==TRUE))
+		if((temp_service->current_state==STATE_OK && temp_service->stalk_on_ok==TRUE)) {
+
 			log_service_event(temp_service);
 
-		else if((temp_service->current_state==STATE_WARNING && temp_service->stalk_on_warning==TRUE))
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_services==TRUE)
+				handle_service_event(temp_service);
+
+		} else if((temp_service->current_state==STATE_WARNING && temp_service->stalk_on_warning==TRUE)) {
+
 			log_service_event(temp_service);
 
-		else if((temp_service->current_state==STATE_UNKNOWN && temp_service->stalk_on_unknown==TRUE))
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_services==TRUE)
+				handle_service_event(temp_service);
+
+		} else if((temp_service->current_state==STATE_UNKNOWN && temp_service->stalk_on_unknown==TRUE)) {
+
 			log_service_event(temp_service);
 
-		else if((temp_service->current_state==STATE_CRITICAL && temp_service->stalk_on_critical==TRUE))
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_services==TRUE)
+				handle_service_event(temp_service);
+
+		} else if((temp_service->current_state==STATE_CRITICAL && temp_service->stalk_on_critical==TRUE)) {
+
 			log_service_event(temp_service);
+
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_services==TRUE)
+				handle_service_event(temp_service);
+
+		}
 	}
 
 #ifdef USE_EVENT_BROKER
@@ -3892,14 +3918,30 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 	/* if the plugin output differs from previous check and no state change, log the current state/output if state stalking is enabled */
 	if(hst->last_state==hst->current_state && compare_strings(old_plugin_output,hst->plugin_output)){
 
-		if(hst->current_state==HOST_UP && hst->stalk_on_up==TRUE)
+		if(hst->current_state==HOST_UP && hst->stalk_on_up==TRUE) {
+
 			log_host_event(hst);
 
-		else if(hst->current_state==HOST_DOWN && hst->stalk_on_down==TRUE)
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_hosts==TRUE)
+				handle_host_event(hst);
+
+		} else if(hst->current_state==HOST_DOWN && hst->stalk_on_down==TRUE) {
+
 			log_host_event(hst);
 
-		else if(hst->current_state==HOST_UNREACHABLE && hst->stalk_on_unreachable==TRUE)
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_hosts==TRUE)
+				handle_host_event(hst);
+
+		} else if(hst->current_state==HOST_UNREACHABLE && hst->stalk_on_unreachable==TRUE) {
+
 			log_host_event(hst);
+
+			/* should we run event handlers ? */
+			if (stalking_event_handlers_for_hosts==TRUE)
+				handle_host_event(hst);
+		}
 	}
 
 	/* check to see if the associated host is flapping */
