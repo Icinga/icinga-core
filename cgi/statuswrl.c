@@ -511,7 +511,7 @@ void calculate_host_coords(void){
 	int layer_members=0;
 	int current_layer_member=0;
 	int max_drawing_width=0;
-  
+
 
 	/******************************/
 	/***** MANUAL LAYOUT MODE *****/

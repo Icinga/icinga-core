@@ -6,7 +6,7 @@
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -54,7 +54,7 @@ extern int       log_rotation_method;
 #define REPORT_RECENT_ALERTS           1
 #define REPORT_ALERT_TOTALS            2
 #define REPORT_TOP_ALERTS              3
-#define REPORT_HOSTGROUP_ALERT_TOTALS  4 
+#define REPORT_HOSTGROUP_ALERT_TOTALS  4
 #define REPORT_HOST_ALERT_TOTALS       5
 #define REPORT_SERVICE_ALERT_TOTALS    6
 #define REPORT_SERVICEGROUP_ALERT_TOTALS 7
@@ -1585,7 +1585,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 		if(new_event->host_name!=NULL)
 			strcpy(new_event->host_name,host_name);
 	        }
-	else 
+	else
 		new_event->host_name=NULL;
 
 	/* allocate memory for the service description */
@@ -1594,7 +1594,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 		if(new_event->service_description!=NULL)
 			strcpy(new_event->service_description,svc_description);
 	        }
-	else 
+	else
 		new_event->service_description=NULL;
 
 	/* allocate memory for the event info */
@@ -1603,7 +1603,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 		if(new_event->event_info!=NULL)
 			strcpy(new_event->event_info,event_info);
 	        }
-	else 
+	else
 		new_event->event_info=NULL;
 
 	new_event->event_type=event_type;
@@ -2651,7 +2651,7 @@ alert_producer *add_producer(int producer_type, char *host_name, char *service_d
 		if(new_producer->host_name!=NULL)
 			strcpy(new_producer->host_name,host_name);
 	        }
-	else 
+	else
 		new_producer->host_name=NULL;
 
 	/* allocate memory for the service description */
@@ -2660,7 +2660,7 @@ alert_producer *add_producer(int producer_type, char *host_name, char *service_d
 		if(new_producer->service_description!=NULL)
 			strcpy(new_producer->service_description,service_description);
 	        }
-	else 
+	else
 		new_producer->service_description=NULL;
 
 	new_producer->producer_type=producer_type;

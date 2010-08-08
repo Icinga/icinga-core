@@ -58,7 +58,7 @@ ODATAHDRS=
 ODATADEPS=$(ODATALIBS)
 
 # Host, service, and program status functions
-SDATALIBS=statusdata-cgi.o xstatusdata-cgi.o comments-cgi.o downtime-cgi.o 
+SDATALIBS=statusdata-cgi.o xstatusdata-cgi.o comments-cgi.o downtime-cgi.o
 SDATAHDRS=
 SDATADEPS=$(SDATALIBS)
 
@@ -105,7 +105,7 @@ statusdata-cgi.o: $(SRC_COMMON)/statusdata.c $(SRC_INCLUDE)/statusdata.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/statusdata.c
 
 xstatusdata-cgi.o: $(SRC_XDATA)/$(XSDC) $(SRC_XDATA)/$(XSDH)
-	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XSDC) 
+	$(CC) $(CFLAGS) -c -o $@ $(SRC_XDATA)/$(XSDC)
 
 comments-cgi.o: $(SRC_COMMON)/comments.c $(SRC_INCLUDE)/comments.h
 	$(CC) $(CFLAGS) -c -o $@ $(SRC_COMMON)/comments.c

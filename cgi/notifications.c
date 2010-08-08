@@ -5,7 +5,7 @@
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * This CGI program will display the notification events for 
+ * This CGI program will display the notification events for
  * a given host or contact or for all contacts/hosts.
  *
  * License:
@@ -456,11 +456,11 @@ int process_cgivars(void){
 			daemon_check=FALSE;
                 }
 
-	/* 
+	/*
 	 * Set some default values if not already set.
 	 * Done here as they won't be set if variable
-	 * not provided via cgi parameters 
-	 * Only required for hosts & contacts, not services 
+	 * not provided via cgi parameters
+	 * Only required for hosts & contacts, not services
 	 * as there is no service_name=all option
 	 */
 	if(query_type == FIND_HOST && strlen(query_host_name) == 0) {
@@ -538,11 +538,11 @@ void display_notifications(void){
 	printf("</tr>\n");
 
 	total_notifications=0;
-  
+
 	while(1){
 
 		free(input);
-    
+
 		if(use_lifo==TRUE){
 			if((input=pop_lifo())==NULL)
 				break;
@@ -561,7 +561,7 @@ void display_notifications(void){
 				notification_type=HOST_NOTIFICATION;
 			else
 				notification_type=SERVICE_NOTIFICATION;
-      
+
 			/* get the date/time */
 			temp_buffer=(char *)strtok(input,"]");
 			t=(time_t)(temp_buffer==NULL)?0L:strtoul(temp_buffer+1,NULL,10);
@@ -677,7 +677,7 @@ void display_notifications(void){
 			temp_buffer=strtok(NULL,";");
 
 			show_entry=FALSE;
-      
+
 			/* if we're searching by contact, filter out unwanted contact */
 			if(query_type==FIND_CONTACT){
 				if(find_all==TRUE)
@@ -707,7 +707,7 @@ void display_notifications(void){
 					show_entry=TRUE;
 				else if(notification_detail_type & notification_options)
 					show_entry=TRUE;
-				else 
+				else
 					show_entry=FALSE;
 			        }
 

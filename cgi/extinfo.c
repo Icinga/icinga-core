@@ -2920,7 +2920,7 @@ void show_scheduling_queue(void){
 
 		/* get the service status */
 		if(temp_sortdata->is_service==TRUE){
-                
+
 			/* find the host */
 	                temp_host=find_host(temp_svcstatus->host_name);
 
@@ -2979,7 +2979,7 @@ void show_scheduling_queue(void){
 
 		/* get the host status */
 		else{
-                
+
 			/* find the host */
 	                temp_host=find_host(temp_hststatus->host_name);
 

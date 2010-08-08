@@ -17,6 +17,7 @@ ENHANCEMENTS
 
 * classic ui: cgi config option to show long_plugin_output in status.cgi (Ricardo Bartels)
 * classic ui: add config option to only show HARD states in tac.cgi
+* classic ui: added extra column in host and service detail views with checkboxes. It is now possible to check off the hosts you want to send commands to Icinga. Ex: schedule downtime for a custom selection of hosts or X number of services.
 
 FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c

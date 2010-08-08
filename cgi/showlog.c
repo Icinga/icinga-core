@@ -336,7 +336,7 @@ int display_log(void){
 	        }
 
 	if(use_lifo==FALSE){
-  
+
 		if((thefile=mmap_fopen(log_file_to_use))==NULL){
 			printf("<HR>\n");
 			printf("<P><DIV CLASS='errorMessage'>Error: Could not open log file '%s' for reading!</DIV></P>",log_file_to_use);

@@ -910,7 +910,7 @@ void display_contacts(void){
 	printf("<DIV ALIGN=CENTER>\n");
 
 	printf("<TABLE CLASS='data'>\n");
-    
+
 	printf("<TR>\n");
 	printf("<TH CLASS='data'>Contact Name</TH>");
 	printf("<TH CLASS='data'>Alias</TH>");

@@ -82,7 +82,7 @@ unsigned char hex_to_char(char *input){
 
 	sscanf(tempbuf,"%X",&outint);
 
-	/* only convert "normal" ASCII characters - we don't want the rest.  Normally you would 
+	/* only convert "normal" ASCII characters - we don't want the rest.  Normally you would
 	   convert all characters (i.e. for allowing users to post binary files), but since we
 	   aren't doing this, stay on the cautious side of things and reject outsiders... */
 #ifdef PARANOID_CGI_INPUT
@@ -248,7 +248,7 @@ char **getcgivars(void){
 	        }
 
 	/* terminate the list */
-	pairlist[paircount]='\x0';    
+	pairlist[paircount]='\x0';
 
 	/* extract the names and values from the pairlist */
 	cgivars=(char **)malloc((paircount*2+1)*sizeof(char **));
@@ -262,7 +262,7 @@ char **getcgivars(void){
 		if((eqpos=strchr(pairlist[i],'='))!=NULL){
 			*eqpos='\0';
 			unescape_cgi_input(cgivars[i*2+1]=strdup(eqpos+1));
-		        } 
+		        }
 		else
 			unescape_cgi_input(cgivars[i*2+1]=strdup(""));
 
@@ -272,7 +272,7 @@ char **getcgivars(void){
 
 	/* terminate the name-value list */
 	cgivars[paircount*2]='\x0';
-    
+
 	/* free allocated memory */
 	free(cgiinput);
 	for(i=0;pairlist[i]!=NULL;i++)

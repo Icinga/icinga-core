@@ -836,7 +836,7 @@ void get_history(void){
 						display_line=TRUE;
 					else if((history_type==HOST_HISTORY || history_type==SERVICE_HISTORY) && (history_detail_type & history_options))
 						display_line=TRUE;
-					else 
+					else
 						display_line=FALSE;
 			                }
 
@@ -870,7 +870,7 @@ void get_history(void){
 						display_line=TRUE;
 					else if(history_options & history_detail_type)
 						display_line=TRUE;
-					else 
+					else
 						display_line=FALSE;
 			                }
 

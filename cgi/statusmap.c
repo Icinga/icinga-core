@@ -876,7 +876,7 @@ void calculate_host_coords(void){
 	int layer_members=0;
 	int current_layer_member=0;
 	int max_drawing_width=0;
-  
+
 
 	/******************************/
 	/***** MANUAL LAYOUT MODE *****/
@@ -2290,7 +2290,7 @@ void write_popup_code(void){
 
 	printf("document.popup.style.visibility = \"visible\";\n");
 	printf("} \n");
- 
+
 
 	printf("else{\n");
 	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n",padding,border,border_color);
