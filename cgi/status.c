@@ -5415,7 +5415,6 @@ void show_filters(void){
 void show_servicecommand_table(void){
         /* A new div for the command table */
         printf("<DIV CLASS='serviceTotals'>Commands for checked services</DIV>\n");
-
         /* DropDown menu */
         printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)'>");
                 printf("<option value='nothing'>Select command</option>");
@@ -5426,12 +5425,14 @@ void show_servicecommand_table(void){
                 printf("<option value='%d' title='%s%s'>Submit Passive Check Result For Checked Service(s)</option>",CMD_PROCESS_SERVICE_CHECK_RESULT,url_images_path,PASSIVE_ICON);
                 printf("<option value='%d' title='%s%s'>Stop Accepting Passive Checks For Checked Service(s)</option>",CMD_DISABLE_PASSIVE_SVC_CHECKS,url_images_path,DISABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Start Accepting Passive Checks For Checked Service(s)</option>",CMD_ENABLE_PASSIVE_SVC_CHECKS,url_images_path,ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Stop Obsessing Over Checked Service(s)</option>",CMD_STOP_OBSESSING_OVER_SVC,url_images_path,DISABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Start Obsessing Over Checked Service(s)</option>",CMD_START_OBSESSING_OVER_SVC,url_images_path,ENABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Acknowledge Checked Service(s) Problem</option>",CMD_ACKNOWLEDGE_SVC_PROBLEM,url_images_path,ACKNOWLEDGEMENT_ICON);
                 printf("<option value='%d' title='%s%s'>Remove Problem Acknowledgement for Checked Service(s)</option>",CMD_REMOVE_SVC_ACKNOWLEDGEMENT,url_images_path,REMOVE_ACKNOWLEDGEMENT_ICON);
                 printf("<option value='%d' title='%s%s'>Disable Notifications For Checked Service(s)</option>",CMD_DISABLE_SVC_NOTIFICATIONS,url_images_path,DISABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Enable Notifications For Checked Service(s)</option>",CMD_ENABLE_SVC_NOTIFICATIONS,url_images_path,ENABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Send Custom Notification For Checked Service(s)</option>",CMD_SEND_CUSTOM_SVC_NOTIFICATION,url_images_path,NOTIFICATION_ICON);
+                printf("<option value='%d' title='%s%s'>Delay Next Notification For Checked Service(s)</option>",CMD_DELAY_SVC_NOTIFICATION,url_images_path,DELAY_ICON);
                 printf("<option value='%d' title='%s%s'>Schedule Downtime For Checked Service(s)</option>",CMD_SCHEDULE_SVC_DOWNTIME,url_images_path,DOWNTIME_ICON);
                 printf("<option value='%d' title='%s%s'>Disable Event Handler For Checked Service(s)</option>",CMD_DISABLE_SVC_EVENT_HANDLER,url_images_path,DISABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Enable Event Handler For Checked Service(s)</option>",CMD_ENABLE_SVC_EVENT_HANDLER,url_images_path,ENABLED_ICON);
