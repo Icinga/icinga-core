@@ -84,6 +84,13 @@ a.serviceTotals:hover { color: #000; }
 .serviceTotalsPENDING { text-align: center; background-color: #acacac; color: #fff; border: 0 }
 .serviceTotalsPROBLEMS { text-align: center; background-color: #6ec2fd; color: #fff; border: 0 }
 
+div.serviceTotalsCommands { text-align: right; font-weight: bold; font-size: 10pt; }
+table.serviceTotalsCommands { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
+th.serviceTotalsCommands,A.serviceTotalsCommands { text-align: right; font-size: 10pt; background-color: #707677; color: #fff; border: 0; }
+td.serviceTotalsCommands { text-align: right; background-color: #e9e9e9; border: 0; }
+a.serviceTotalsCommands:hover { color: #000; }
+serviceTotalsCommands a:hover { color: #fff; }
+
 div.hostTotals { text-align: center; font-weight: bold; font-size: 10pt; }
 table.hostTotals { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
 th.hostTotals,A.hostTotals { text-align: center; font-size: 10pt; background-color: #707677; color: #fff; border: 0; }
@@ -95,6 +102,13 @@ a.hostTotals:hover { color: #000; }
 .hostTotalsUNREACHABLE { text-align: center; background-color: #bf44b2; color: #fff; border: 0 }
 .hostTotalsPENDING { text-align: center; background-color: #acacac; color: #fff; border: 0 }
 .hostTotalsPROBLEMS { text-align: center; background-color: #6ec2fd; color: #fff; border: 0 }
+
+div.hostTotalsCommands { text-align: right; font-weight: bold; font-size: 10pt; }
+table.hostTotalsCommands { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
+th.hostTotalsCommands,A.hostTotalsCommands { text-align: right; font-size: 10pt; background-color: #707677; color: #fff; border: 0; }
+td.hostTotalsCommands { text-align: right; background-color: #e9e9e9; border: 0; }
+a.hostTotalsCommands:hover { color: #000; }
+hostTotalsCommands a:hover { color: #fff; }
 
 .miniStatusPENDING { background-color: #acacac;  text-align: center; }
 .miniStatusOK { background-color: #00cc33;  text-align: center; }

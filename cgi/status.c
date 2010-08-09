@@ -314,17 +314,67 @@ int main(void){
 	if(display_header==TRUE){
 
 		/* begin top table */
+		/* network status, hosts/service status totals */
+
 		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
-
 		/* info table */
 		display_info_table("Current Network Status",TRUE,&current_authdata, daemon_check);
+                printf("</td>\n");
 
-		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
-		printf("<TR><TD CLASS='linkBox'>\n");
+                /* middle column of top row */
+                printf("<td align=center valign=top width=22%%>\n");
+                show_host_status_totals();
+                printf("</td>\n");
+
+                /* right hand column of top row */
+                printf("<td align=center valign=top width=22%%>\n");
+                show_service_status_totals();
+                printf("</td>\n");
+
+                /* display context-sensitive help */
+                printf("<td align=right valign=bottom>\n");
+                if(display_type==DISPLAY_HOSTS)
+                        display_context_help(CONTEXTHELP_STATUS_DETAIL);
+                else if(display_type==DISPLAY_SERVICEGROUPS){
+                        if(group_style_type==STYLE_HOST_DETAIL)
+                                display_context_help(CONTEXTHELP_STATUS_DETAIL);
+                        else if(group_style_type==STYLE_OVERVIEW)
+                                display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
+                        else if(group_style_type==STYLE_SUMMARY)
+                                display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
+                        else if(group_style_type==STYLE_GRID)
+                                display_context_help(CONTEXTHELP_STATUS_SGGRID);
+                        }
+                else{
+                        if(group_style_type==STYLE_HOST_DETAIL)
+                                display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+                        else if(group_style_type==STYLE_OVERVIEW)
+                                display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
+                        else if(group_style_type==STYLE_SUMMARY)
+                                display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
+                        else if(group_style_type==STYLE_GRID)
+                                display_context_help(CONTEXTHELP_STATUS_HGGRID);
+                        }
+                printf("</td>\n");
+                printf("</tr>\n");
+                printf("</table>\n");
+
+		/* second table below */
+                printf("<br>\n");
+		/* Links & Commands */
+
+		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+                printf("<tr>\n");
+
+                /* left column of the first row */
+                printf("<td align=left valign=top width=50%%>\n");
+
+		printf("<table border=1 cellpading=0 cellspacing=0 class='linkBox'>\n");
+		printf("<tr><td class='linkBox'>\n");
 
 		if(display_type==DISPLAY_HOSTS){
 			printf("<a href='%s?host=%s'>View History For %s</a><br>\n",HISTORY_CGI,(show_all_hosts==TRUE)?"all":url_encode(host_name),(show_all_hosts==TRUE)?"all hosts":"This Host");
@@ -407,24 +457,13 @@ int main(void){
 		                }
 	                }
 
-		printf("</TD></TR>\n");
-		printf("</TABLE>\n");
+		printf("</td></tr>\n");
+		printf("</table>\n");
 
-		printf("</td>\n");
-
-		/* middle column of top row */
-		printf("<td align=center valign=top width=22%%>\n");
-		show_host_status_totals();
-		printf("</td>\n");
-
-		/* right hand column of top row */
-		printf("<td align=center valign=top width=22%%>\n");
-		show_service_status_totals();
 		printf("</td>\n");
 
 		/* Command table */
-		/* righter hand column of top row */
-		printf("<td align=center valign=top width=22%%>\n");
+                printf("<td align=right width=50%%>\n");
                 if(display_type==DISPLAY_HOSTS)
                         show_servicecommand_table();
                 else if(display_type==DISPLAY_SERVICEGROUPS){
@@ -435,9 +474,9 @@ int main(void){
                         else if(group_style_type==STYLE_SUMMARY)
                                 printf("<br>");
                         else if(group_style_type==STYLE_GRID)
-				printf("<br>");
+                                printf("<br>");
                         else { show_servicecommand_table(); }
-			}
+                        }
                 else{
                         if(group_style_type==STYLE_HOST_DETAIL)
                                 show_hostcommand_table();
@@ -447,38 +486,12 @@ int main(void){
                                 printf("<br>");
                         else if(group_style_type==STYLE_GRID)
                                 printf("<br>");
-			else { show_hostcommand_table(); }
-			}
+                        else { show_hostcommand_table(); }
+                        }
                 printf("</td>\n");
-
-		/* display context-sensitive help */
-		printf("<td align=right valign=bottom>\n");
-		if(display_type==DISPLAY_HOSTS)
-			display_context_help(CONTEXTHELP_STATUS_DETAIL);
-		else if(display_type==DISPLAY_SERVICEGROUPS){
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-			else if(group_style_type==STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
-			else if(group_style_type==STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
-			else if(group_style_type==STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_SGGRID);
-		        }
-		else{
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else if(group_style_type==STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
-			else if(group_style_type==STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
-			else if(group_style_type==STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_HGGRID);
-		        }
-		printf("</td>\n");
-
-		/* end of top table */
 		printf("</tr>\n");
+
+		/* end of second table */
 		printf("</table>\n");
 	        }
 
@@ -5415,9 +5428,9 @@ void show_filters(void){
 /* Display a table with the commands for checked checkboxes, for services */
 void show_servicecommand_table(void){
         /* A new div for the command table */
-        printf("<DIV CLASS='serviceTotals'>Commands for checked services</DIV>\n");
+        printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
         /* DropDown menu */
-        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)'>");
+        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)'CLASS='serviceTotalsCommands'>");
                 printf("<option value='nothing'>Select command</option>");
                 printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
                 printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5440,16 +5453,17 @@ void show_servicecommand_table(void){
                 printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>",CMD_DISABLE_SVC_FLAP_DETECTION,url_images_path,DISABLED_ICON);
                 printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
         printf("</select>");
-        printf("<br><br><b><a onClick=cmd_submit()>Submit</a></b>\n");
+        //printf("<br><br><b><a class='serviceTotalsCommands' onClick=cmd_submit()>Submit</a></b>\n");
+        printf("<br><br><b><input type=\"button\" name=\"serviceTotalsCommandsButton\" value=\"Submit\" class=\"serviceTotalsCommands\" onClick=cmd_submit()></b>\n");
         }
 
 /* Display a table with the commands for checked checkboxes, for hosts */
 void show_hostcommand_table(void){
         /* A new div for the command table */
-        printf("<DIV CLASS='serviceTotals'>Commands for checked host(s)</DIV>\n");
+        printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 
         /* DropDown menu */
-        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)'>");
+        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)' CLASS='hostTotalsCommands'>");
                 printf("<option value='nothing'>Select command</option>");
                 printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
                 printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
@@ -5478,6 +5492,7 @@ void show_hostcommand_table(void){
                 printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>",CMD_DISABLE_HOST_FLAP_DETECTION,url_images_path,DISABLED_ICON);
                 printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
         printf("</select>");
-        printf("<br><br><b><a onClick=cmd_submit()>Submit</a></b>\n");
+        //printf("<br><br><b><a class='hostTotalsCommands' onClick=cmd_submit()>Submit</a></b>\n");
+        printf("<br><br><b><input type=\"button\" name=\"hostTotalsCommandsButton\" value=\"Submit\" class=\"hostTotalsCommands\" onClick=cmd_submit()></b>\n");
         }
 /* The cake is a lie! */
