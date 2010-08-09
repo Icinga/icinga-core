@@ -449,6 +449,9 @@ install-idoutils:
 install-api:
 	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
                 cd $(SRC_ICINGAAPI) && $(MAKE) install; \
+                echo "" ;\
+                echo "*** API installed ***" ;\
+		echo "" ;\
 	else \
 		echo "" ;\
 		echo "Sorry, Icinga API not available!" ;\

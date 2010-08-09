@@ -57,6 +57,7 @@ FIXES
 * install: fix specfile for idoutils description
 * install: fix Makefile output if Icinga API not available
 * install: fix t/ and daemon-ini-redhat in distclean
+* install: add note about api installed successfully
 
 
 * idoutils: adapt oracle-drop.sql for current schema
