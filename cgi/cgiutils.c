@@ -43,6 +43,7 @@ char            url_context_help_path[MAX_FILENAME_LENGTH];
 char            url_images_path[MAX_FILENAME_LENGTH];
 char            url_logo_images_path[MAX_FILENAME_LENGTH];
 char            url_stylesheets_path[MAX_FILENAME_LENGTH];
+char            url_js_path[MAX_FILENAME_LENGTH];
 char            url_media_path[MAX_FILENAME_LENGTH];
 
 char            *service_critical_sound=NULL;
@@ -178,6 +179,7 @@ void reset_cgi_vars(void){
 	strcpy(url_docs_path,"");
 	strcpy(url_context_help_path,"");
 	strcpy(url_stylesheets_path,"");
+	strcpy(url_js_path,"");
 	strcpy(url_media_path,"");
 	strcpy(url_images_path,"");
 
@@ -371,6 +373,9 @@ int read_cgi_config_file(char *filename){
 
 			snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
 			url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+
+			snprintf(url_js_path,sizeof(url_js_path),"%sjs/",url_html_path);
+			url_js_path[sizeof(url_js_path)-1]='\x0';
 
 			snprintf(url_media_path,sizeof(url_media_path),"%smedia/",url_html_path);
 			url_media_path[sizeof(url_media_path)-1]='\x0';

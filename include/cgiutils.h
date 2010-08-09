@@ -82,6 +82,16 @@ extern "C" {
 #define MINISTATUS_CSS          "ministatus.css"
 #define SUMMARY_CSS             "summary.css"
 
+#define JQUERY_DD_CSS		"dd.css"
+
+
+/**************************** JAVASCRIPT NAMES ******************************/
+
+#define MARK_CHECKBOXES_JS	"mark-checkboxes.js"
+#define READ_CHECKBOXES_JS	"read-checkboxes.js"
+#define JQUERY_MAIN_JS		"jquery-1.3.2.min.js"
+#define JQUERY_DD_JS		"jquery.dd.js"
+
 
 /********************************* ICONS ************************************/
 

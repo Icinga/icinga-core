@@ -50,6 +50,7 @@ extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
 extern char   url_images_path[MAX_FILENAME_LENGTH];
 extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char   url_media_path[MAX_FILENAME_LENGTH];
 
 extern int    refresh_rate;

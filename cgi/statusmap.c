@@ -53,6 +53,7 @@ extern char physical_images_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern host *host_list;
 extern hostgroup *hostgroup_list;

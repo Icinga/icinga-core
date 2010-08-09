@@ -42,6 +42,7 @@ extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_docs_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_media_path[MAX_FILENAME_LENGTH];
 extern char log_file[MAX_FILENAME_LENGTH];
@@ -578,16 +579,16 @@ void document_header(int use_stylesheet){
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>",url_stylesheets_path,STATUS_CSS);
 	        }
         /* JavaScript for (un)checking all checkboxes */
-        printf("<script type='text/javascript' src='/icinga/js/mark-checkboxes.js'></script>");
+        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,MARK_CHECKBOXES_JS);
 
         /* JavaScript to read the 'value' of all checked checkboxes */
-        printf("<script type='text/javascript' src='/icinga/js/read-checkboxes.js'></script>");
+        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,READ_CHECKBOXES_JS);
 
         /* JavaScript for dropdown menu WITH images */
-        printf("<script type='text/javascript' src='/icinga/js/jquery-1.3.2.min.js'></script>");
-        printf("<script type='text/javascript' src='/icinga/js/jquery.dd.js'></script>");
+        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,JQUERY_MAIN_JS);
+        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,JQUERY_DD_JS);
         /* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
-        printf("<link rel='stylesheet' type='text/css' href='%s/dd.css'/>\n",url_stylesheets_path);
+        printf("<link rel='stylesheet' type='text/css' href='%s%s'/>\n",url_stylesheets_path,JQUERY_DD_CSS);
 
         /* Check if the dropdown choice is valid and enable submit button */
         printf("<script language='javascript' type='text/javascript'>");

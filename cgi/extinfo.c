@@ -64,6 +64,7 @@ extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char url_docs_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];

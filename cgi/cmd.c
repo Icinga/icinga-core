@@ -42,6 +42,7 @@ extern char command_file[MAX_FILENAME_LENGTH];
 extern char comment_file[MAX_FILENAME_LENGTH];
 
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern int  nagios_process_state;
 
