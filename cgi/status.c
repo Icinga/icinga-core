@@ -604,56 +604,11 @@ void document_header(int use_stylesheet){
         printf("<link rel='stylesheet' type='text/css' href='%s%s'/>\n",url_stylesheets_path,JQUERY_DD_CSS);
 
         /* Check if the dropdown choice is valid and enable submit button */
-        printf("<script language='javascript' type='text/javascript'>");
-        printf("function showValue(arg) {");
-        printf("if (arg!='nothing'){");
-        printf("        document.tableform.hiddencmdfield.value = arg;");
-        printf("        if (arg==%d || arg==%d) {",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-        printf("                document.tableform.hiddenforcefield.value = 'yes';");
-        printf("        } else {");
-        printf("                document.tableform.hiddenforcefield.value = 'no';");
-        printf("        } ");
-        printf(" } else {");
-        printf(" }");
-        printf("}");
-        printf("</script>");
+	printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,SHOWVALUE_JS);
 
 	/* Create and follow the URL */
-        printf("<!-- JavaScript by Rune Darrud -->\n");
-        printf("<!--        For Icinga         -->\n");
-        printf("<script type='text/javascript' language='javascript'>\n");
-        printf("function replaceCGIString(string){");
-        printf(" sInString = string.replace( \"%s\", \"%s\" );",STATUS_CGI,COMMAND_CGI);
-        printf(" return sInString;");
-        printf("}");
-        printf("function replaceArgString(string){");
-        printf(" ToBeStripped = location.search;");
-        printf(" sInString = string.replace( ToBeStripped, '' );");
-        printf(" return sInString;");
-        printf("}");
-        printf("function cmd_submit()\n");
-        printf("{\n");
-        printf("        CMD_CGI = '%s';\n",COMMAND_CGI);
-        printf("        STATUS_CGI ='%s';\n",STATUS_CGI);
-        printf("        command_arguments = get_check_value();\n");
-        printf("        cmd_typ = 'cmd_typ=' + document.tableform.hiddencmdfield.value\n");
-        printf("        if (document.tableform.hiddenforcefield.value == 'yes')\n");
-        printf("        {\n");
-        printf("                arguments = cmd_typ + command_arguments + '&force_check';\n");
-        printf("        }\n");
-        printf("        else\n");
-        printf("        {\n");
-        printf("                arguments = cmd_typ + command_arguments;\n");
-        printf("        }\n");
-        printf("        bazinga = '?' + arguments;\n");
-        printf("        fullurl = replaceCGIString(location.href);\n");
-        printf("        fullurl = replaceArgString(fullurl);");
-        printf("        fullurl = fullurl + bazinga;");
-        printf("        self.location.assign(fullurl);");
-        printf("        return fullurl;");
-        printf("} \n");
-        printf("</script>\n");
-        printf("<!-- JavaScript by Rune Darrud -->\n");
+        printf("<!-- JavaScript by Rune Darrud for Icinga -->\n");
+        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,CHECKBOXESNBUTTONS_JS);
 
 	printf("</head>\n");
 
@@ -661,7 +616,7 @@ void document_header(int use_stylesheet){
 
         /* Set everything in a form, so checkboxes can be searched after and checked. */
         printf("<form name='tableform' id='tableform'>");
-        printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield>");
+        printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>");
 
         /* Print out the activator for the dropdown (which must be between the body tags */
         printf("<script language='javascript'>");
@@ -1526,7 +1481,7 @@ void show_service_detail(void){
 	printf("<TH CLASS='status'>Status Information</TH>\n");
 
 	/* Add checkbox so every service can be checked */
-	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);'></TH>\n");
+	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);isValidForSubmit();'></TH>\n");
 
 	printf("</TR>\n");
 
@@ -1947,7 +1902,7 @@ void show_service_detail(void){
 			}
 
 			/* Checkbox for service(s) */
-			printf("<TD CLASS='status%s' nowrap><input type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
+			printf("<TD CLASS='status%s' nowrap><input onclick='isValidForSubmit();' type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
 			printf("&service=%s'></TD>\n",url_encode(temp_status->description));
 
 			/*
@@ -2127,7 +2082,7 @@ void show_host_detail(void){
 	printf("<TH CLASS='status'>Status Information</TH>\n");
 
 	/* Add a checkbox so every host can be checked */
-	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);'></TH>\n");
+	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);isValidForSubmit();'></TH>\n");
 
 	printf("</TR>\n");
 
@@ -2369,7 +2324,7 @@ void show_host_detail(void){
  	
 
                         /* Checkbox for host(s) */
-                        printf("<TD CLASS='status%s' valign='center'><input type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
+                        printf("<TD CLASS='status%s' valign='center'><input onClick='isValidForSubmit();' type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
 
 			/*
 			if(enable_splunk_integration==TRUE)
@@ -5430,7 +5385,7 @@ void show_servicecommand_table(void){
         /* A new div for the command table */
         printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
         /* DropDown menu */
-        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)'CLASS='serviceTotalsCommands'>");
+        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)'CLASS='serviceTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
                 printf("<option value='nothing'>Select command</option>");
                 printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
                 printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5454,7 +5409,7 @@ void show_servicecommand_table(void){
                 printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
         printf("</select>");
         //printf("<br><br><b><a class='serviceTotalsCommands' onClick=cmd_submit()>Submit</a></b>\n");
-        printf("<br><br><b><input type=\"button\" name=\"serviceTotalsCommandsButton\" value=\"Submit\" class=\"serviceTotalsCommands\" onClick=cmd_submit()></b>\n");
+        printf("<br><br><b><input type=\"button\"name=\"serviceTotalsCommandsButton\" value=\"Submit\" class=\"serviceTotalsCommands\" onClick=cmd_submit() disabled=\"disabled\"></b>\n");
         }
 
 /* Display a table with the commands for checked checkboxes, for hosts */
@@ -5463,7 +5418,7 @@ void show_hostcommand_table(void){
         printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 
         /* DropDown menu */
-        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value)' CLASS='hostTotalsCommands'>");
+        printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)' CLASS='hostTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
                 printf("<option value='nothing'>Select command</option>");
                 printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
                 printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
@@ -5493,6 +5448,6 @@ void show_hostcommand_table(void){
                 printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
         printf("</select>");
         //printf("<br><br><b><a class='hostTotalsCommands' onClick=cmd_submit()>Submit</a></b>\n");
-        printf("<br><br><b><input type=\"button\" name=\"hostTotalsCommandsButton\" value=\"Submit\" class=\"hostTotalsCommands\" onClick=cmd_submit()></b>\n");
+        printf("<br><br><b><input type=\"button\" name=\"hostTotalsCommandsButton\" value=\"Submit\" class=\"hostTotalsCommands\" onClick=cmd_submit() disabled=\"disabled\"></b>\n");
         }
 /* The cake is a lie! */

@@ -91,6 +91,8 @@ extern "C" {
 #define READ_CHECKBOXES_JS	"read-checkboxes.js"
 #define JQUERY_MAIN_JS		"jquery-1.3.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
+#define SHOWVALUE_JS            "showValue.js"
+#define CHECKBOXESNBUTTONS_JS	"checkboxesNbutton.js"
 
 
 /********************************* ICONS ************************************/
