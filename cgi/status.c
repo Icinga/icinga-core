@@ -326,12 +326,12 @@ int main(void){
                 printf("</td>\n");
 
                 /* middle column of top row */
-                printf("<td align=center valign=top width=22%%>\n");
+                printf("<td align=center valign=top width=33%%>\n");
                 show_host_status_totals();
                 printf("</td>\n");
 
                 /* right hand column of top row */
-                printf("<td align=center valign=top width=22%%>\n");
+                printf("<td align=center valign=top width=33%%>\n");
                 show_service_status_totals();
                 printf("</td>\n");
 
