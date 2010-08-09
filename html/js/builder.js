@@ -1,10 +1,10 @@
-// script.aculo.us builder.js v1.8.2, Tue Nov 18 18:30:58 +0100 2008
- 
-// Copyright (c) 2005-2008 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
+// script.aculo.us builder.js v1.8.3, Thu Oct 08 11:23:33 +0200 2009
+
+// Copyright (c) 2005-2009 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //
 // script.aculo.us is freely distributable under the terms of an MIT-style license.
 // For details, see the script.aculo.us web site: http://script.aculo.us/
- 
+
 var Builder = {
   NODEMAP: {
     AREA: 'map',
@@ -26,7 +26,7 @@ var Builder = {
   //       due to a Firefox bug
   node: function(elementName) {
     elementName = elementName.toUpperCase();
- 
+
     // try innerHTML approach
     var parentTag = this.NODEMAP[elementName] || 'div';
     var parentElement = document.createElement(parentTag);
@@ -34,17 +34,17 @@ var Builder = {
       parentElement.innerHTML = "<" + elementName + "></" + elementName + ">";
     } catch(e) {}
     var element = parentElement.firstChild || null;
- 
+
     // see if browser added wrapping tags
     if(element && (element.tagName.toUpperCase() != elementName))
       element = element.getElementsByTagName(elementName)[0];
- 
+
     // fallback to createElement approach
     if(!element) element = document.createElement(elementName);
- 
+
     // abort if nothing could be created
     if(!element) return;
- 
+
     // attributes (or text)
     if(arguments[1])
       if(this._isStringOrNumber(arguments[1]) ||
@@ -69,22 +69,22 @@ var Builder = {
               element = parentElement.getElementsByTagName(elementName)[0];
           }
         }
- 
+
     // text, or array of children
     if(arguments[2])
       this._children(element, arguments[2]);
- 
+
      return $(element);
   },
   _text: function(text) {
      return document.createTextNode(text);
   },
- 
+
   ATTR_MAP: {
     'className': 'class',
     'htmlFor': 'for'
   },
- 
+
   _attributes: function(attributes) {
     var attrs = [];
     for(attribute in attributes)
@@ -119,14 +119,14 @@ var Builder = {
   },
   dump: function(scope) {
     if(typeof scope != 'object' && typeof scope != 'function') scope = window; //global scope
- 
+
     var tags = ("A ABBR ACRONYM ADDRESS APPLET AREA B BASE BASEFONT BDO BIG BLOCKQUOTE BODY " +
       "BR BUTTON CAPTION CENTER CITE CODE COL COLGROUP DD DEL DFN DIR DIV DL DT EM FIELDSET " +
       "FONT FORM FRAME FRAMESET H1 H2 H3 H4 H5 H6 HEAD HR HTML I IFRAME IMG INPUT INS ISINDEX "+
       "KBD LABEL LEGEND LI LINK MAP MENU META NOFRAMES NOSCRIPT OBJECT OL OPTGROUP OPTION P "+
       "PARAM PRE Q S SAMP SCRIPT SELECT SMALL SPAN STRIKE STRONG STYLE SUB SUP TABLE TBODY TD "+
       "TEXTAREA TFOOT TH THEAD TITLE TR TT U UL VAR").split(/\s+/);
- 
+
     tags.each( function(tag){
       scope[tag] = function() {
         return Builder.node.apply(Builder, [tag].concat($A(arguments)));
@@ -134,5 +134,3 @@ var Builder = {
     });
   }
 };
-
-

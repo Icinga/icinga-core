@@ -24,10 +24,12 @@ function cmd_submit()
 			arguments = cmd_typ + command_arguments;
 	}
 	bazinga = '?' + arguments;
-	fullurl = replaceCGIString(location.href);
+	fullurl = replaceCGIString(location.href,'status.cgi','cmd.cgi');
 	fullurl = replaceArgString(fullurl);
         fullurl = fullurl + bazinga;
         self.location.assign(fullurl);
+	// Remove comment below for debugging of the URL
+	//alert(fullurl);
         return fullurl;
 }
 function isValidForSubmit()
