@@ -486,7 +486,7 @@ int main(void){
                                 printf("<br>");
                         else if(group_style_type==STYLE_GRID)
                                 printf("<br>");
-                        else { show_hostcommand_table(); }
+                        else { show_servicecommand_table(); }
                         }
                 printf("</td>\n");
 		printf("</tr>\n");
