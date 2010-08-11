@@ -95,6 +95,7 @@ int process_cgivars(void);
 authdata current_authdata;
 
 int embedded=FALSE;
+int refresh=TRUE;
 int display_header=FALSE;
 int daemon_check=TRUE;
 
@@ -275,7 +276,7 @@ int main(void){
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("Tactical Status Overview",TRUE,&current_authdata, daemon_check);
+		display_info_table("Tactical Status Overview",refresh,&current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
@@ -373,7 +374,9 @@ void document_header(int use_stylesheet){
 
 	printf("Cache-Control: no-store\r\n");
 	printf("Pragma: no-cache\r\n");
-	printf("Refresh: %d\r\n",refresh_rate);
+
+	if(refresh=TRUE)
+		printf("Refresh: %d\r\n",refresh_rate);
 
 	time(&current_time);
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
@@ -446,6 +449,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+                /* we found the pause option */
+                else if(!strcmp(variables[x],"paused"))
+                        refresh=FALSE;
 
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))
@@ -960,7 +967,7 @@ void display_tac_overview(void){
 	/* left column */
 	printf("<td align=left valign=top width=50%%>\n");
 
-	display_info_table("Tactical Monitoring Overview",TRUE,&current_authdata, daemon_check);
+	display_info_table("Tactical Monitoring Overview",refresh,&current_authdata, daemon_check);
 
 	printf("</td>\n");
 

@@ -21,6 +21,8 @@ ENHANCEMENTS
 	- added extra column in host and service status with checkboxes using jquery
 	- It is now possible to check off the hosts you want to send commands to Icinga.
 	- Ex: schedule downtime for a custom selection of hosts or X number of services.
+* classic ui: add a pause/continue update button (main parts by Steve Koenig)
+	- affects status.cgi and allows to select and run commands w/o page reload
 
 FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c
