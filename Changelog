@@ -67,7 +67,9 @@ FIXES
 * idoutils: fix typo in servicedepencies query for oracle
 * idoutils: fix oracle prep statement contactnotifmethoddata
 * idoutils: full rewrite of binding NULL values for oracle with ocilib
-
+* idoutils: change display_name to varchar(255) for mysql/oracle
+* idoutils: update pgsql schema, replace varchar(n) by text
+* idoutils: change configfilevariables varvalue to 1024 length for mysql/oracle
 
 1.0.2 - 30/06/2010
 
