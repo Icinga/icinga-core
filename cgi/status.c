@@ -186,6 +186,7 @@ int problem_services_unknown=0;
 
 int embedded=FALSE;
 int display_header=TRUE;
+int refresh=TRUE;
 int daemon_check=TRUE;
 
 
@@ -322,7 +323,7 @@ int main(void){
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
 		/* info table */
-		display_info_table("Current Network Status",TRUE,&current_authdata, daemon_check);
+		display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
                 printf("</td>\n");
 
                 /* middle column of top row */
@@ -486,7 +487,7 @@ int main(void){
                                 printf("<br>");
                         else if(group_style_type==STYLE_GRID)
                                 printf("<br>");
-                        else { show_hostcommand_table(); }
+                        else { show_servicecommand_table(); }
                         }
                 printf("</td>\n");
 		printf("</tr>\n");
@@ -566,7 +567,9 @@ void document_header(int use_stylesheet){
 
 	printf("Cache-Control: no-store\r\n");
 	printf("Pragma: no-cache\r\n");
-	printf("Refresh: %d\r\n",refresh_rate);
+
+	if(refresh==TRUE)
+		printf("Refresh: %d\r\n",refresh_rate);
 
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
 	printf("Last-Modified: %s\r\n",date_time);
@@ -841,6 +844,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+                /* we found the pause option */
+                else if(!strcmp(variables[x],"paused"))
+                        refresh=FALSE;
 
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))

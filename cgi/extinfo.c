@@ -131,6 +131,7 @@ int sort_type=SORT_ASCENDING;
 int sort_option=SORT_NEXTCHECKTIME;
 
 int embedded=FALSE;
+int refresh=TRUE;
 int display_header=TRUE;
 int daemon_check=TRUE;
 
@@ -146,7 +147,7 @@ int main(void){
 	hostgroup *temp_hostgroup=NULL;
 	service *temp_service=NULL;
 	servicegroup *temp_servicegroup=NULL;
-	
+
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -161,7 +162,7 @@ int main(void){
 		cgi_config_file_error(get_cgi_config_location());
 		document_footer();
 		return ERROR;
-	        }
+	}
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
@@ -170,7 +171,7 @@ int main(void){
 		main_config_file_error(main_config_file);
 		document_footer();
 		return ERROR;
-	        }
+	}
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
@@ -179,7 +180,7 @@ int main(void){
 		object_data_error();
 		document_footer();
 		return ERROR;
-                }
+        }
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
@@ -189,7 +190,7 @@ int main(void){
 		document_footer();
 		free_memory();
 		return ERROR;
-                }
+	}
 
 	/* initialize macros */
 	init_macros();
@@ -227,8 +228,10 @@ int main(void){
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Check Scheduling Queue");
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Icinga Process Information");
+
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,TRUE,&current_authdata, daemon_check);
+
+		display_info_table(temp_buffer,refresh,&current_authdata, daemon_check);
 
 		/* find the host */
 		if(display_type==DISPLAY_HOST_INFO || display_type==DISPLAY_SERVICE_INFO){
@@ -239,7 +242,7 @@ int main(void){
 			if(display_type==DISPLAY_SERVICE_INFO){
 				temp_service=find_service(host_name,service_desc);
 				grab_service_macros(temp_service);
-				}
+			}
 
 			/* write some Javascript helper functions */
 			if(temp_host!=NULL){
@@ -254,24 +257,25 @@ int main(void){
 					printf("function nagios_get_service_description()\n{\n");
 					printf("return \"%s\";\n",temp_service->description);
 					printf("}\n");
-				        }
-				printf("//-->\n</SCRIPT>\n");
 			        }
+				printf("//-->\n</SCRIPT>\n");
 		        }
+	        }
 
 		/* find the hostgroup */
 		else if(display_type==DISPLAY_HOSTGROUP_INFO){
 			temp_hostgroup=find_hostgroup(hostgroup_name);
 			grab_hostgroup_macros(temp_hostgroup);
-			}
+		}
 
 		/* find the servicegroup */
 		else if(display_type==DISPLAY_SERVICEGROUP_INFO){
 			temp_servicegroup=find_servicegroup(servicegroup_name);
 			grab_servicegroup_macros(temp_servicegroup);
-			}
+		}
 
 		if((display_type==DISPLAY_HOST_INFO && temp_host!=NULL) || (display_type==DISPLAY_SERVICE_INFO && temp_host!=NULL && temp_service!=NULL) || (display_type==DISPLAY_HOSTGROUP_INFO && temp_hostgroup!=NULL) || (display_type==DISPLAY_SERVICEGROUP_INFO && temp_servicegroup!=NULL)){
+
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 			printf("<TR><TD CLASS='linkBox'>\n");
 			if(display_type==DISPLAY_SERVICE_INFO)
@@ -288,7 +292,7 @@ int main(void){
 #endif
 				printf("<A HREF='%s?host=%s&show_log_entries'>View Availability Report For This Host</A><BR>\n",AVAIL_CGI,url_encode(host_name));
 				printf("<A HREF='%s?host=%s'>View Notifications For This Host</A>\n",NOTIFICATIONS_CGI,url_encode(host_name));
-		                }
+	                }
 			else if(display_type==DISPLAY_SERVICE_INFO){
 				printf("<A HREF='%s?host=%s&",HISTORY_CGI,url_encode(host_name));
 				printf("service=%s'>View Alert History For This Service</A><BR>\n",url_encode(service_desc));
@@ -304,22 +308,22 @@ int main(void){
 				printf("service=%s&show_log_entries'>View Availability Report For This Service</A><BR>\n",url_encode(service_desc));
 				printf("<A HREF='%s?host=%s&",NOTIFICATIONS_CGI,url_encode(host_name));
 				printf("service=%s'>View Notifications For This Service</A>\n",url_encode(service_desc));
-		                }
+	                }
 			else if(display_type==DISPLAY_HOSTGROUP_INFO){
 				printf("<A HREF='%s?hostgroup=%s&style=detail'>View Status Detail For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
 				printf("<A HREF='%s?hostgroup=%s&style=overview'>View Status Overview For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
 				printf("<A HREF='%s?hostgroup=%s&style=grid'>View Status Grid For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
 				printf("<A HREF='%s?hostgroup=%s'>View Availability For This Hostgroup</A><BR>\n",AVAIL_CGI,url_encode(hostgroup_name));
-		                }
+	                }
 			else if(display_type==DISPLAY_SERVICEGROUP_INFO){
 				printf("<A HREF='%s?servicegroup=%s&style=detail'>View Status Detail For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
 				printf("<A HREF='%s?servicegroup=%s&style=overview'>View Status Overview For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
 				printf("<A HREF='%s?servicegroup=%s&style=grid'>View Status Grid For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
 				printf("<A HREF='%s?servicegroup=%s'>View Availability For This Servicegroup</A><BR>\n",AVAIL_CGI,url_encode(servicegroup_name));
-		                }
+	                }
 			printf("</TD></TR>\n");
 			printf("</TABLE>\n");
-	                }
+                }
 
 		printf("</td>\n");
 
@@ -329,6 +333,7 @@ int main(void){
 		if((display_type==DISPLAY_HOST_INFO && temp_host!=NULL) || (display_type==DISPLAY_SERVICE_INFO && temp_host!=NULL && temp_service!=NULL) || (display_type==DISPLAY_HOSTGROUP_INFO && temp_hostgroup!=NULL) || (display_type==DISPLAY_SERVICEGROUP_INFO && temp_servicegroup!=NULL)){
 
 			if(display_type==DISPLAY_HOST_INFO){
+
 				printf("<DIV CLASS='data'>Host</DIV>\n");
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_host->alias);
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV><BR>\n",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
@@ -342,29 +347,35 @@ int main(void){
 				}
 
 				printf("<DIV CLASS='data'>Member of</DIV><DIV CLASS='dataTitle'>");
+
 				for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 					if(is_host_member_of_hostgroup(temp_hostgroup,temp_host)==TRUE){
 						if(found==TRUE)
-							printf(", ");	
+							printf(", ");
+
 						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),temp_hostgroup->group_name);
 						found=TRUE;
 						}
 					}
-			
+
 				if(found==FALSE)
 					printf("No hostgroups");
+
 				printf("</DIV><BR>\n");
 				printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
-			        }
+		        }
 			if(display_type==DISPLAY_SERVICE_INFO){
+
 				printf("<DIV CLASS='data'>Service</DIV><DIV CLASS='dataTitle'>%s</DIV><DIV CLASS='data'>On Host</DIV>\n",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_host->alias);
 				printf("<DIV CLASS='dataTitle'>(<A HREF='%s?type=%d&host=%s'>%s</a>)</DIV><BR>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
                                 printf("<DIV CLASS='data'>Member of</DIV><DIV CLASS='dataTitle'>");
+
                                 for(temp_servicegroup=servicegroup_list;temp_servicegroup!=NULL;temp_servicegroup=temp_servicegroup->next){
 					if(is_service_member_of_servicegroup(temp_servicegroup,temp_service)==TRUE){
 						if(found==TRUE)
 							printf(", ");
+
 						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),temp_servicegroup->group_name);
 						found=TRUE;
 					        }
@@ -375,27 +386,31 @@ int main(void){
                                 printf("</DIV><BR>\n");
 
 				printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
-				}
+			}
 			if(display_type==DISPLAY_HOSTGROUP_INFO){
+
 				printf("<DIV CLASS='data'>Hostgroup</DIV>\n");
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_hostgroup->alias);
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV>\n",temp_hostgroup->group_name);
+
 				if(temp_hostgroup->notes!=NULL){
 					process_macros(temp_hostgroup->notes,&processed_string,0);
 					printf("<p>%s</p>",processed_string);
 					free(processed_string);
-					}
-			        }
+				}
+		        }
 			if(display_type==DISPLAY_SERVICEGROUP_INFO){
+
 				printf("<DIV CLASS='data'>Servicegroup</DIV>\n");
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_servicegroup->alias);
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV>\n",temp_servicegroup->group_name);
+
 				if(temp_servicegroup->notes!=NULL){
 					process_macros(temp_servicegroup->notes,&processed_string,0);
 					printf("<p>%s</p>",processed_string);
 					free(processed_string);
-					}
-			        }
+				}
+		        }
 
 			if(display_type==DISPLAY_SERVICE_INFO){
 				if(temp_service->icon_image!=NULL){
@@ -404,15 +419,15 @@ int main(void){
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' border=0 alt='%s' title='%s'><BR CLEAR=ALL>",(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt,(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt);
-					}
+				}
 				if(temp_service->icon_image_alt!=NULL)
 					printf("<font size=-1><i>( %s )</i></font>\n",temp_service->icon_image_alt);
 				if(temp_service->notes!=NULL){
 					process_macros(temp_service->notes,&processed_string,0);
 					printf("<p>%s</p>\n",processed_string);
 					free(processed_string);
-					}
-			        }
+				}
+		        }
 
 			if(display_type==DISPLAY_HOST_INFO){
 				if(temp_host->icon_image!=NULL){
@@ -421,16 +436,16 @@ int main(void){
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' border=0 alt='%s' title='%s'><BR CLEAR=ALL>",(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
-					}
+				}
 				if(temp_host->icon_image_alt!=NULL)
 					printf("<font size=-1><i>( %s )</i><font>\n",temp_host->icon_image_alt);
 				if(temp_host->notes!=NULL){
 					process_macros(temp_host->notes,&processed_string,0);
 					printf("<p>%s</p>\n",processed_string);
 					free(processed_string);
-					}
-		                }
- 	                }
+				}
+	                }
+                }
 
 		printf("</td>\n");
 
@@ -438,6 +453,7 @@ int main(void){
 		printf("<td align=right valign=bottom width=33%%>\n");
 
 		if(display_type==DISPLAY_HOST_INFO && temp_host!=NULL){
+
 			printf("<TABLE BORDER='0'>\n");
 			if(temp_host->action_url!=NULL && strcmp(temp_host->action_url,"")){
 				process_macros(temp_host->action_url,&processed_string,0);
@@ -450,7 +466,7 @@ int main(void){
 				printf("</TD></TR>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
-			        }
+		        }
 			if(temp_host->notes_url!=NULL && strcmp(temp_host->notes_url,"")){
 				process_macros(temp_host->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
@@ -463,12 +479,14 @@ int main(void){
 				printf("</TD></TR>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
-			        }
+		        }
 			printf("</TABLE>\n");
-	                }
+                }
 
 		else if(display_type==DISPLAY_SERVICE_INFO && temp_service!=NULL){
+
 			printf("<TABLE BORDER='0'><TR><TD ALIGN='right'>\n");
+
 			if(temp_service->action_url!=NULL && strcmp(temp_service->action_url,"")){
 				process_macros(temp_service->action_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
@@ -478,7 +496,7 @@ int main(void){
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Actions</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
-			        }
+		        }
 			if(temp_service->notes_url!=NULL && strcmp(temp_service->notes_url,"")){
 				process_macros(temp_service->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
@@ -488,12 +506,13 @@ int main(void){
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Notes</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
-			        }
+		        }
 			printf("</TD></TR></TABLE>\n");
-	                }
+		}
 
 		if(display_type==DISPLAY_HOSTGROUP_INFO && temp_hostgroup!=NULL){
 			printf("<TABLE BORDER='0'>\n");
+
 			if(temp_hostgroup->action_url!=NULL && strcmp(temp_hostgroup->action_url,"")){
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
@@ -501,7 +520,7 @@ int main(void){
 				printf("' TARGET='%s'><img src='%s%s' border=0 alt='Perform Additional Actions On This Hostgroup' title='Perform Additional Actions On This Hostgroup'></A>\n",(action_url_target==NULL)?"_blank":action_url_target,url_images_path,ACTION_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Actions</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
 				printf("</TD></TR>\n");
-			        }
+		        }
 			if(temp_hostgroup->notes_url!=NULL && strcmp(temp_hostgroup->notes_url,"")){
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
@@ -509,26 +528,27 @@ int main(void){
 				printf("' TARGET='%s'><img src='%s%s' border=0 alt='View Additional Notes For This Hostgroup' title='View Additional Notes For This Hostgroup'></A>\n",(notes_url_target==NULL)?"_blank":notes_url_target,url_images_path,NOTES_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Notes</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
 				printf("</TD></TR>\n");
-			        }
+		        }
 			printf("</TABLE>\n");
-	                }
+                }
 
 		else if(display_type==DISPLAY_SERVICEGROUP_INFO && temp_servicegroup!=NULL){
 			printf("<TABLE BORDER='0'>\n");
+
 			if(temp_servicegroup->action_url!=NULL && strcmp(temp_servicegroup->action_url,"")){
 				printf("<A HREF='");
 				print_extra_servicegroup_url(temp_servicegroup->group_name,temp_servicegroup->action_url);
 				printf("' TARGET='%s'><img src='%s%s' border=0 alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></A>\n",(action_url_target==NULL)?"_blank":action_url_target,url_images_path,ACTION_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Actions</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
-			        }
+		        }
 			if(temp_servicegroup->notes_url!=NULL && strcmp(temp_servicegroup->notes_url,"")){
 				printf("<A HREF='");
 				print_extra_servicegroup_url(temp_servicegroup->group_name,temp_servicegroup->notes_url);
 				printf("' TARGET='%s'><img src='%s%s' border=0 alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></A>\n",(notes_url_target==NULL)?"_blank":notes_url_target,url_images_path,NOTES_ICON);
 				printf("<BR CLEAR=ALL><FONT SIZE=-1><I>Extra Notes</I></FONT><BR CLEAR=ALL><BR CLEAR=ALL>\n");
-			        }
+		        }
 			printf("</TABLE>\n");
-	                }
+                }
 
 		/* display context-sensitive help */
 		if(display_type==DISPLAY_HOST_INFO)
@@ -556,7 +576,7 @@ int main(void){
 		printf("</tr>\n");
 		printf("</table>\n");
 
-	        }
+        }
 
 	printf("<BR>\n");
 
@@ -587,7 +607,7 @@ int main(void){
 	free_downtime_data();
 
 	return OK;
-        }
+}
 
 
 
@@ -598,7 +618,9 @@ void document_header(int use_stylesheet){
 
 	printf("Cache-Control: no-store\r\n");
 	printf("Pragma: no-cache\r\n");
-	printf("Refresh: %d\r\n",refresh_rate);
+
+	if(refresh==TRUE)
+		printf("Refresh: %d\r\n",refresh_rate);
 
 	time(&current_time);
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
@@ -779,6 +801,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the pause option */
+		else if(!strcmp(variables[x],"paused"))
+			refresh=FALSE;
 
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))

@@ -223,7 +223,7 @@ CREATE TABLE configfilevariables (
   instance_id number(11) default 0 NOT NULL,
   configfile_id number(11) default 0 NOT NULL,
   varname varchar2(64),
-  varvalue varchar2(255),
+  varvalue varchar2(1024),
   PRIMARY KEY  (id),
   CONSTRAINT configfilevariables UNIQUE (instance_id,configfile_id,varname)
 );

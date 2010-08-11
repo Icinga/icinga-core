@@ -1339,8 +1339,15 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),LONG_DATE_TIME);
 
 	printf("Last Updated: %s<BR>\n",date_time);
-	if(refresh==TRUE)
-		printf("Updated every %d seconds<br>\n",refresh_rate);
+
+	/* decide if refresh is paused or not */
+	if(refresh==TRUE) {
+		/* if refresh, add paused query to url and set location.href */
+		printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n",refresh_rate);
+	} else {
+		/* if no refresh, remove the paused query from url and set location.href */
+		printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n",refresh_rate);
+	}
 
 	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);
 
