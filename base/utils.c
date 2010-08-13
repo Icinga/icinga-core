@@ -4599,6 +4599,8 @@ int reset_variables(void){
 	use_true_regexp_matching=FALSE;
 
 	use_syslog=DEFAULT_USE_SYSLOG;
+	use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;
+	syslog_local_facility=DEFAULT_SYSLOG_LOCAL_FACILITY;
 	log_service_retries=DEFAULT_LOG_SERVICE_RETRIES;
 	log_host_retries=DEFAULT_LOG_HOST_RETRIES;
 	log_initial_states=DEFAULT_LOG_INITIAL_STATES;
