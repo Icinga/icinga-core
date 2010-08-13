@@ -6,6 +6,7 @@ Icinga 1.0.x Change Log
 
 ENHANCEMENTS
 * core: add eventhandler override (Sven Nierlein)
+* core: add config option to disable logging in to the daemon log file
 
 * classic ui: add commands expander to config display (Jochen Bern)
 	- $ARGn$ substitution will be shown between command_line and
