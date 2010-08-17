@@ -4,7 +4,7 @@
 <title>Enhanced CGI Security and Authentication</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Security and Performance Tuning">
 <link rel="prev" href="security.html" title="Security Considerations">
 <link rel="next" href="tuning.html" title="Tuning Icinga For Maximum Performance">
@@ -104,7 +104,7 @@ ScriptAlias /icinga/cgi-bin "/usr/local/icinga/sbin"
    Allow from all
    AuthType Digest
    AuthName "Icinga Access"
-   AuthUserFile /usr/local/icinga/etc/.digest_pw
+   AuthDigestFile /usr/local/icinga/etc/.digest_pw
    Require valid-user
 &lt;/Directory&gt;
 
@@ -116,7 +116,7 @@ Alias /icinga "/usr/local/icinga/share"
    Allow from all
    AuthType Digest
    AuthName "Icinga Access"
-   AuthUserFile /usr/local/icinga/etc/.digest_pw
+   AuthDigestFile /usr/local/icinga/etc/.digest_pw
    Require valid-user
 &lt;/Directory&gt;
 ## END APACHE CONFIG SNIPPETS</pre>
@@ -233,15 +233,15 @@ Alias /icinga "/usr/local/icinga/share"
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id2004775"></a>
+  <a class="indexterm" name="id3672064"></a>
 
-  <a class="indexterm" name="id2004837"></a>
+  <a class="indexterm" name="id3672111"></a>
 
-  <a class="indexterm" name="id2004851"></a>
+  <a class="indexterm" name="id3672125"></a>
 
-  <a class="indexterm" name="id2004864"></a>
+  <a class="indexterm" name="id3672138"></a>
 
-  <a class="indexterm" name="id2004878"></a>
+  <a class="indexterm" name="id3672152"></a>
 </div>
 <div class="navfooter">
 <hr>

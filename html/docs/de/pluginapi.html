@@ -4,7 +4,7 @@
 <title>Nagios Plugin API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch10.html" title="Kapitel 10. Entwicklung">
 <link rel="prev" href="ch10.html" title="Kapitel 10. Entwicklung">
 <link rel="next" href="epnplugins.html" title="Entwickeln von Plugins für die Nutzung mit Embedded Perl">
@@ -216,11 +216,13 @@
 
   <p><span class="bold"><strong>Längenbeschränkungen von Plugin-Ausgaben</strong></span></p>
 
-  <p>Icinga wird nur die ersten vier KB an Daten lesen, die ein Plugin zurückliefert. Dies wird getan, um durchgedrehte
-  Plugins davon abzuhalten, Megabyte oder Gigabyte an Daten an Icinga zurückzuliefern. Diese Beschränkung von vier KB kann
+  <p>Icinga wird nur die ersten acht KB an Daten lesen, die ein Plugin zurückliefert. Dies wird getan, um durchgedrehte
+  Plugins davon abzuhalten, Megabyte oder Gigabyte an Daten an Icinga zurückzuliefern. Diese Beschränkung von acht KB kann
   einfach geändert werden, wenn Sie das brauchen. Ändern Sie einfach den Wert der MAX_PLUGIN_OUTPUT_LENGTH-Definition in der
-  <span class="emphasis"><em>include/nagios.h.in</em></span>-Datei der Source-Code-Distribution und rekompilieren Sie Icinga. Mehr müssen Sie
-  nicht tun!</p>
+  <span class="emphasis"><em>include/nagios.h.in</em></span>-Datei der Source-Code-Distribution und rekompilieren Sie Icinga.
+  Wenn Sie die Kapazität von acht KB durch Anpassung dieses Wertes ändern, dann stellen Sie sicht, dass Sie vor dem Kompilieren
+  auch den Wert von MAX_EXTERNAL_COMMAND_LENGTH in include/common.h erhöhen, damit Resultate von passiven Prüfungen in dieser Länge
+  durch das External Command File empfangen werden können.</p>
 
   <p><span class="bold"><strong>Beispiele</strong></span></p>
 
@@ -233,7 +235,7 @@
   <p>Icinga bietet einen optionalen <a class="link" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">eingebauten Perl-Interpreter</a> (embedded Perl
   interpreter), der die Ausführung von Perl-Plugins beschleunigen kann. Mehr Informationen zur Entwicklung von Perl-Plugins zur
   Nutzung mit dem eingebauten Perl-Interpreter finden Sie <a class="link" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">hier</a>.</p>
-  <a class="indexterm" name="id5613226"></a>
+  <a class="indexterm" name="id4548659"></a>
 </div>
 <div class="navfooter">
 <hr>

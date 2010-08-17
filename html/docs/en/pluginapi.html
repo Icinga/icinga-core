@@ -4,7 +4,7 @@
 <title>Icinga Plugin API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Development">
 <link rel="prev" href="ch10.html" title="Chapter 10. Development">
 <link rel="next" href="epnplugins.html" title="Developing Plugins For Use With Embedded Perl">
@@ -220,10 +220,12 @@
 
   <p><span class="bold"><strong>Plugin Output Length Restrictions</strong></span></p>
 
-  <p>Icinga will only read the first 4 KB of data that a plugin returns. This is done in order to prevent runaway
-  plugins from dumping megs or gigs of data back to Icinga. This 4 KB output limit is fairly easy to change if you need.
+  <p>Icinga will only read the first 8 KB of data that a plugin returns. This is done in order to prevent runaway
+  plugins from dumping megs or gigs of data back to Icinga. This 8 KB output limit is fairly easy to change if you need.
   Simply edit the value of the MAX_PLUGIN_OUTPUT_LENGTH definition in the <span class="emphasis"><em>include/icinga.h.in</em></span> file of the
-  source code distribution and recompile Icinga. There's nothing else you need to change!</p>
+  source code distribution and recompile Icinga. If you increase the 8k cap by modifying this value make sure that you also 
+  increase the value of MAX_EXTERNAL_COMMAND_LENGTH in include/common.h before you compile to allow for passive checks results 
+  of this length to be received through the external command file.</p>
 
   <p><span class="bold"><strong>Examples</strong></span></p>
 
@@ -236,7 +238,7 @@
   <p>Icinga features an optional <a class="link" href="embeddedperl.html" title="Using The Embedded Perl Interpreter">embedded Perl interpreter</a> which can speed up the
   execution of Perl plugins. More information on developing Perl plugins for use with the embedded Perl interpreter can be found
   <a class="link" href="embeddedperl.html" title="Using The Embedded Perl Interpreter">here</a>.</p>
-  <a class="indexterm" name="id2009461"></a>
+  <a class="indexterm" name="id3676729"></a>
 </div>
 <div class="navfooter">
 <hr>

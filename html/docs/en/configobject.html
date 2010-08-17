@@ -4,7 +4,7 @@
 <title>Object Configuration Overview</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="configmain.html" title="Main Configuration File Options">
 <link rel="next" href="objectdefinitions.html" title="Object Definitions">
@@ -72,6 +72,24 @@
 
   <p>Objects can be defined in one or more configuration files and/or directories that you specify using the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> and/or <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directives in the main
   configuration file.</p>
+
+  <p><a name="configobject-include_file"></a></p>
+  <p><a name="configobject-include_dir"></a></p>
+
+  <p><span class="bold"><strong>include_file / include_dir</strong></span></p>
+
+  <p>An object definition file can include other object definition files with the use of the <span class="bold"><strong>include_file=&lt;
+  file_name&gt;</strong></span> and <span class="bold"><strong>include_dir=&lt;directory_name&gt;</strong></span> directives. The former includes
+  the single file specified, the latter will process all files ending in the <span class="emphasis"><em>.cfg</em></span> extension in the directory
+  specified. These directives may be repeated to include multiple files/directories.</p>
+  <p>The directives are not allowed within the actual definition of an object, and should appear before, after, or in between any
+  object definitions. They are closely related to the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a> and
+  <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a> directives in the main configuration file.</p>
+  <p>These directives may be chained; e.g. an object definition file included from the main configuration file with a
+  <span class="bold"><strong>cfg_file=</strong></span> or <span class="bold"><strong>cfg_dir=</strong></span> directive can use
+  <span class="bold"><strong>include_file=</strong></span> or <span class="bold"><strong>include_dir=</strong></span> to include another object definition
+  file, which in turn can also use <span class="bold"><strong>include_file=</strong></span> or <span class="bold"><strong>include_dir=</strong></span> to
+  include yet another object definition file, and so on.</p>
 
   <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
@@ -279,7 +297,7 @@
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1943712"></a>
+  <a class="indexterm" name="id3610518"></a>
 </div>
 <div class="navfooter">
 <hr>

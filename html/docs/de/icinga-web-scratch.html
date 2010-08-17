@@ -4,7 +4,7 @@
 <title>Installation des neuen Icinga Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch10.html" title="Kapitel 10. Entwicklung">
 <link rel="prev" href="epnplugins.html" title="Entwickeln von Plugins für die Nutzung mit Embedded Perl">
 <link rel="next" href="icinga-api.html" title="Installation und Benutzung der Icinga API">
@@ -47,12 +47,15 @@
 <li class="listitem">
                     <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
-                    <pre class="programlisting"># apt-get install php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd</pre>
+                    <pre class="programlisting"># apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd</pre>
                 </li>
 <li class="listitem">
                     <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
 
-                    <pre class="programlisting"># yum install php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-gd</pre>
+                    <p>Stellen Sie sicher, dass Sie ein Repository bzw. Pakete für PHP 5.2.3 und PCRE 7.6 haben - RHEL/CentOS enthalten bisher
+                    lediglich PHP 5.1.6 und PCRE 6.6.</p>
+
+                    <pre class="programlisting"># yum install php php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-gd</pre>
 
                     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -60,15 +63,15 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-                        <p>Aktuelle Pakete für PHP und PRCE finden Sie beispielsweise hier: <a class="link" href="http://www.jasonlitka.com/category/yum-repo-news" target="_top">http://www.jasonlitka.com/category/yum-repo-news/</a></p>
+                        <p>Aktuelle Pakete für PHP und PRCE finden Sie beispielsweise unter: <a class="link" href="http://blog.famillecollet.com/pages/Config-en" target="_top">Les RPM de Remi</a> oder <a class="link" href="http://www.jasonlitka.com/category/yum-repo-news" target="_top">http://www.jasonlitka.com/category/yum-repo-news/</a></p>
                     </td></tr>
 </table></div>
                 </li>
 <li class="listitem">
                     <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
-                    <p>Benutzen Sie yast, um die Pakete "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap", "php5-gettext",
-                    "php5-pdo", "php5-ldap" und "php5-gd" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
+                    <p>Benutzen Sie yast, um die Pakete "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
+                    "php5-gettext", "php5-pdo", "php5-ldap" und "php5-gd" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
 
                     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -95,7 +98,7 @@
 
             <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-            <pre class="programlisting"># tar xzvf icinga-web-1.0.1.tar.gz</pre>
+            <pre class="programlisting"># tar xzvf icinga-web-1.0.3.tar.gz</pre>
 
             <p>Wechseln Sie in das Verzeichnis:</p>
 
@@ -313,96 +316,86 @@ SQL&gt; FLUSH PRIVILEGES;</pre>
                 </td></tr>
 </table></div>
 <p> </p>
-<pre class="programlisting"> &lt;!-- icinga-api data interface --&gt;
+<pre class="programlisting">                                &lt;!--
+                                        See doc/icinga-api-types.txt for options
+                                --/&gt;
+                                &lt;setting name="api.interfaces.data"/&gt;
+                                        &lt;!-- IcingaApi connection interface --/&gt;
+                                        &lt;ae:parameter name="api_type"/&gt;IcingaApi::CONNECTION_IDO&lt;/ae:parameter/&gt;
 
-                &lt;parameter name="IcingaData"&gt;
+                                        &lt;!-- Suits for all interfaes --/&gt;
+                                        &lt;ae:parameter name="config_type"/&gt;mysql&lt;/ae:parameter/&gt;
+                                        &lt;ae:parameter name="config_host"/&gt;localhost&lt;/ae:parameter/&gt;
+                                        &lt;ae:parameter name="config_port"/&gt;3306&lt;/ae:parameter/&gt;
 
-                        &lt;parameter name="class"&gt;IcingaData&lt;/parameter&gt;
+                                        &lt;!-- ###BEGIN_CONNECTION_IDO### --/&gt;
+                                        &lt;!-- Database specific (IcingaApi::CONNECTION_IDO) --/&gt;
+                                        &lt;ae:parameter name="config_database"/&gt;icinga&lt;/ae:parameter/&gt;
+                                        &lt;ae:parameter name="config_user"/&gt;icinga&lt;/ae:parameter/&gt;
+                                        &lt;ae:parameter name="config_password"/&gt;icinga&lt;/ae:parameter/&gt;
+                                        &lt;ae:parameter name="config_table_prefix"/&gt;icinga_&lt;/ae:parameter/&gt;
+                                        &lt;!-- ###END_CONNECTION_IDO### --/&gt;
 
-                        &lt;parameter name="file"&gt;%core.root_dir%/app/lib/icinga/factory/IcingaData.class.php&lt;/parameter&gt;
-
-                        &lt;parameter name="requiredClasses"&gt;
-
-                                &lt;!-- NONE --&gt;
-
-                        &lt;/parameter&gt;
-
-                        &lt;parameter name="api_file"&gt;%core.root_dir%/lib/icinga-api/IcingaApi.php&lt;/parameter&gt;
-
-                        &lt;!--
-
-                                API connection type
-
-                        --&gt;
-
-                        &lt;parameter name="api_type"&gt;IcingaApi::CONNECTION_IDO&lt;/parameter&gt;
-
-                         &lt;parameter name="config_type"&gt;mysql&lt;/parameter&gt;
-
-                         &lt;parameter name="config_host"&gt;127.0.0.1&lt;/parameter&gt;
-
-                         &lt;parameter name="config_port"&gt;3306&lt;/parameter&gt;
-
-                         &lt;parameter name="config_database"&gt;icinga&lt;/parameter&gt;
-
-                         &lt;parameter name="config_user"&gt;your-ido-user&lt;/parameter&gt;
-
-                         &lt;parameter name="config_password"&gt;your-ido-pw&lt;/parameter&gt;
-
-                         &lt;parameter name="config_table_prefix"&gt;icinga_&lt;/parameter&gt;
-                &lt;/parameter&gt;</pre>
+                                &lt;/setting/&gt;</pre>
 
             <p>In IcingaCommand können Sie einstellen, wie Befehle an die Icinga Core command pipe gesendet werden - lokal or remote via SSH.
-            Abhängig davon, ob die jeweilige Option 'enabled' ist, wird diese verwendet/nicht verwendet. Standardmässig wird die lokale Pipe
+            Abhängig davon, ob die jeweilige Option 'enabled' ist, wird diese verwendet/nicht verwendet. Standardmäßig wird die lokale Pipe
             verwendet.</p>
 
-            <pre class="programlisting"> &lt;parameter name="IcingaCommand"&gt;
+            <pre class="programlisting">                                &lt;setting name="api.interfaces.command"&gt;
+                                        &lt;ae:parameter name="pipe1"&gt;
+                                                &lt;ae:parameter name="type"&gt;IcingaApi::COMMAND_PIPE&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="enabled"&gt;true&lt;/ae:parameter&gt;
 
-                        &lt;parameter name="class"&gt;IcingaCommand&lt;/parameter&gt;
+                                                &lt;ae:parameter name="pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/ae:parameter&gt;
 
-                        &lt;parameter name="file"&gt;%core.root_dir%/app/lib/icinga/factory/IcingaCommand.class.php&lt;/parameter&gt;
+                                                &lt;ae:parameter name="instance"&gt;default&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="broadcast"&gt;false&lt;/ae:parameter&gt;
+                                        &lt;/ae:parameter&gt;
 
-                        &lt;parameter name="requiredClasses"&gt;
+                                        &lt;!--
 
-                                &lt;!-- NONE --&gt;
+                                                * This examples show how to send commands to specific instances
+                                                * Use 'instance' to send commands to this instance only
+                                                * Use 'brodcast' to send all commands to this instances!
 
-                        &lt;/parameter&gt;
+                                        &lt;ae:parameter name="pipe1-instance-test"&gt;
+                                                &lt;ae:parameter name="type"&gt;IcingaApi::COMMAND_PIPE&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="enabled"&gt;true&lt;/ae:parameter&gt;
 
-                        &lt;parameter name="api_file"&gt;%core.root_dir%/lib/icinga-api/IcingaApi.php&lt;/parameter&gt;
+                                                &lt;ae:parameter name="pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/ae:parameter&gt;
 
-                        &lt;parameter name="interfaces"&gt;
+                                                &lt;ae:parameter name="instance"&gt;test&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="broadcast"&gt;false&lt;/ae:parameter&gt;
+                                        &lt;/ae:parameter&gt;
 
-                                &lt;parameter name="pipe1"&gt;
+                                        &lt;ae:parameter name="pipe1-broadcast"&gt;
+                                                &lt;ae:parameter name="type"&gt;IcingaApi::COMMAND_PIPE&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="enabled"&gt;false&lt;/ae:parameter&gt;
 
-                                        &lt;parameter name="enabled"&gt;true&lt;/parameter&gt;
+                                                &lt;ae:parameter name="pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/ae:parameter&gt;
 
-                                        &lt;parameter name="type"&gt;IcingaApi::COMMAND_PIPE&lt;/parameter&gt;
+                                                &lt;ae:parameter name="instance"&gt;&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="broadcast"&gt;true&lt;/ae:parameter&gt;
+                                        &lt;/ae:parameter&gt;
 
-                                        &lt;parameter name="pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/parameter&gt;
+                                        --&gt;
 
-                                &lt;/parameter&gt;
+                                        &lt;ae:parameter name="ssh1"&gt;
+                                                &lt;ae:parameter name="type"&gt;IcingaApi::COMMAND_SSH&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="enabled"&gt;false&lt;/ae:parameter&gt;
 
-                                &lt;parameter name="ssh1"&gt;
+                                                &lt;ae:parameter name="ssh_bin"&gt;/usr/bin/ssh&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="ssh_user"&gt;icinga&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="ssh_host"&gt;127.0.0.15&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="ssh_port"&gt;22&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="ssh_timeout"&gt;20&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="ssh_pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/ae:parameter&gt;
 
-                                        &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
-
-                                        &lt;parameter name="type"&gt;IcingaApi::COMMAND_SSH&lt;/parameter&gt;
-
-                                        &lt;parameter name="ssh_bin"&gt;/usr/bin/ssh&lt;/parameter&gt;
-
-                                        &lt;parameter name="ssh_user"&gt;icinga&lt;/parameter&gt;
-
-                                        &lt;parameter name="ssh_host"&gt;127.0.0.15&lt;/parameter&gt;
-
-                                        &lt;parameter name="ssh_port"&gt;22&lt;/parameter&gt;
-
-                                        &lt;parameter name="ssh_timeout"&gt;20&lt;/parameter&gt;
-
-                                        &lt;parameter name="ssh_pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/parameter&gt;
-
-                                &lt;/parameter&gt;
-
-                        &lt;/parameter&gt;</pre>
+                                                &lt;ae:parameter name="instance"&gt;default&lt;/ae:parameter&gt;
+                                                &lt;ae:parameter name="broadcast"&gt;false&lt;/ae:parameter&gt;
+                                        &lt;/ae:parameter&gt;
+                                &lt;/setting&gt; </pre>
 
             <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -518,7 +511,7 @@ SQL&gt; FLUSH PRIVILEGES;</pre>
             <p>Viel Spaß :-)</p>
         </li>
 <li class="listitem">
-            <p><span class="bold"><strong>Fehler?</strong></span></p>
+            <p><span class="bold"><strong>Test &amp;Fehler?</strong></span></p>
 
             <p>Diese Sammlung beinhaltet einige nützliche Informationen wie Sie Fehler finden und lösen können. Ebenso wird darauf hingewiesen,
             welche Informationen Sie im Fehlerfall angeben sollen, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
@@ -562,13 +555,57 @@ SQL&gt; FLUSH PRIVILEGES;</pre>
 
             <p>* Sockets sind korrekt definiert? =&gt; Unix oder TCP Socket, TCP wahlweise mit oder ohne SSL</p>
 
+            <p><span class="bold"><strong>Testing the Web: </strong></span></p>
+
+            <pre class="programlisting"># cd etc/tests/
+# php icingaWebTesting.php</pre>
+
+            <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Nicht vergessen - Ändern von php- Einstellungen in der php.ini erfordert einen apache reload/restart!</p>
+            </td></tr>
+</table></div>
+
+            <p>* PHP Fatal error: Allowed memory size of ... bytes exhausted (tried to allocate ... bytes) =&gt; Überprüfen Sie ihre php.ini
+            (apache2 und cli) und setzen Sie den Wert memory_limit auf 128M oder höher.</p>
+
+            <p>* Keine Verbindung zur API. The API Connector returned the following message: getConnection failed: Database connection failed:
+            SQLSTATE[28000] [1045] Access denied for user 'icinga'@'localhost' (using password: YES))</p>
+
+            <p>=&gt; Überprüfen Sie ihre IDOUtils DB Referenzen in der ido2db.cfg und fügen Sie diese in app/module/Web/config/module.xml als API
+            Referenzen ein. Ab Icinga Web1.0.3 können die Werte direkt während des configure gesetzt werden.</p>
+
+            <p>* touch: cannot touch `/usr/local/icinga-web/.../cache/testfile.txt': Permission denied</p>
+
+            <p>=&gt; Die Konfiguration in den xml Dateien wird vom Framework ge-'pre-cached'. Daher müssen spezielle Berechtigungen für den
+            Caching-Verzeichnisse gesetzt werden. Durch die Ausführung von icingaWebTesting.php in etc/tests können die richtigen Berechtigungen
+            automatisch gesetzt werden.</p>
+
+            <p>* PHP Fatal error: Uncaught exception '...' with message 'Couldn't locate driver named mysql' =&gt; Stellen Sie sicher, dass php pdo
+            installiert und geladen ist, auch wenn testdeps sagt, dass alles in Ordnung ist.</p>
+
+            <p>* Das Login wird nicht angezeigt =&gt; Aktivieren Sie short_open_tag in ihrer php.ini</p>
+
+            <p>=&gt; Editieren Sie open_basedir in ihrer php.ini und fügen Sie die Installationsverzeichnisse von Icinga Web und von Icinga API
+            (z.B. /usr/local/icinga/share/) hinzu.</p>
+
+            <p>* Leeres Icinga Web? =&gt; Wenn mod_rewrite aktiviert ist und 'index.php' erscheint in der angefragten URL dann funktioniert das
+            Portal nicht. Entfernen Sie index.php aus ihrer URL und alles sollte funktionieren</p>
+
+            <p>* Die Ergebnisse in den Status Cronks passen nicht zu ihrer Konfiguration? =&gt; Überprüfen Sie in ihrem Backend, e.g. IDOUtils DB,
+            welche Werte für die Status Tabellen selektiert werden.</p>
+
             <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht uns diese mitzuteilen! :-)</p>
         </li>
 </ol></div>
 
-    <a class="indexterm" name="id5614347"></a>
+    <a class="indexterm" name="id4549807"></a>
 
-    <a class="indexterm" name="id5614440"></a>
+    <a class="indexterm" name="id4549992"></a>
 </div>
 <div class="navfooter">
 <hr>
