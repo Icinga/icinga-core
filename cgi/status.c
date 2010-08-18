@@ -1908,6 +1908,8 @@ void show_service_detail(void){
 				printf("&nbsp;");
 			}
 
+                        printf("</TD>\n");
+
 			/* Checkbox for service(s) */
 			printf("<TD CLASS='status%s' nowrap><input onclick='isValidForSubmit();' type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
 			printf("&service=%s'></TD>\n",url_encode(temp_status->description));
@@ -1916,7 +1918,6 @@ void show_service_detail(void){
 			if(enable_splunk_integration==TRUE)
 				display_splunk_service_url(temp_service);
 			*/
-			printf("</TD>\n");
 
 			printf("</TR>\n");
 
@@ -2089,7 +2090,6 @@ void show_host_detail(void){
 	printf("<TH CLASS='status'>Status Information</TH>\n");
 
 	/* Add a checkbox so every host can be checked */
-	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);isValidForSubmit();'></TH>\n");
 
 	printf("</TR>\n");
 
@@ -2329,6 +2329,7 @@ void show_host_detail(void){
 				printf("&nbsp;");
 			}
  	
+                       printf("</TD>\n");
 
                         /* Checkbox for host(s) */
                         printf("<TD CLASS='status%s' valign='center'><input onClick='isValidForSubmit();' type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
@@ -2337,7 +2338,6 @@ void show_host_detail(void){
 			if(enable_splunk_integration==TRUE)
 				display_splunk_host_url(temp_host);
 			*/
-			printf("</TD>\n");
 
 			printf("</TR>\n");
 		        }
