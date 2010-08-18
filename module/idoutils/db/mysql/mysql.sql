@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `icinga_configfilevariables` (
   `instance_id` smallint(6) NOT NULL default '0',
   `configfile_id` int(11) NOT NULL default '0',
   `varname` varchar(64) character set latin1 NOT NULL default '',
-  `varvalue` varchar(255) character set latin1 NOT NULL default '',
+  `varvalue` varchar(1024) character set latin1 NOT NULL default '',
   PRIMARY KEY  (`configfilevariable_id`)
 ) ENGINE=InnoDB  COMMENT='Configuration file variables';
 

@@ -77,6 +77,7 @@ contactgroup    *macro_contactgroup_ptr=NULL;
 /* replace macros in notification commands with their values */
 int process_macros(char *input_buffer, char **output_buffer, int options){
 	char *temp_buffer=NULL;
+	char *save_buffer=NULL;
 	char *buf_ptr=NULL;
 	char *delim_ptr=NULL;
 	int in_macro=FALSE;
@@ -107,7 +108,9 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 	log_debug_info(DEBUGL_MACROS,1,"**** BEGIN MACRO PROCESSING ***********\n");
 	log_debug_info(DEBUGL_MACROS,1,"Processing: '%s'\n",input_buffer);
 
-	buf_ptr=input_buffer;
+	/* save original input_buffer ptr for later free'ing */
+	save_buffer=buf_ptr=(input_buffer?strdup(input_buffer):NULL);
+
 	while(buf_ptr){
 
 		/* save pointer to this working part of buffer */
@@ -202,7 +205,7 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 						}
 					free_macro=TRUE;
 					}
-				
+
 				/* some macros are cleaned... */
 				if(clean_macro==TRUE || ((macro_options & STRIP_ILLEGAL_MACRO_CHARS) || (macro_options & ESCAPE_MACRO_CHARS))){
 
@@ -239,6 +242,9 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 
 	log_debug_info(DEBUGL_MACROS,1,"  Done.  Final output: '%s'\n",*output_buffer);
 	log_debug_info(DEBUGL_MACROS,1,"**** END MACRO PROCESSING *************\n");
+
+	if (save_buffer)
+		free(save_buffer);
 
 	return OK;
 	}
@@ -506,7 +512,7 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 
 		/* regular macro */
 		if(arg[0]==NULL){
-			
+
 			/* use the saved pointer */
 			if((temp_contact=macro_contact_ptr)==NULL){
 				my_free(buf);
@@ -527,7 +533,7 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 					return ERROR;
 
 				delimiter_len=strlen(arg[1]);
-				
+
 				/* concatenate macro values for all contactgroup members */
 				for(temp_contactsmember=temp_contactgroup->members;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
 
@@ -543,7 +549,7 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 
 					if(temp_buffer==NULL)
 						continue;
-				
+
 					/* add macro value to already running macro */
 					if(*output==NULL)
 						*output=(char *)strdup(temp_buffer);
@@ -588,13 +594,13 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 		log_debug_info(DEBUGL_MACROS,0," WARNING: Could not find a macro matching '%s'!\n",macro_name);
 		result=ERROR;
 		}
-	
+
 	/* free memory */
 	my_free(buf);
 
 	return result;
 	}
-	
+
 
 
 int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int *free_macro){
@@ -734,7 +740,7 @@ int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int
 
 				if(temp_buffer==NULL)
 					continue;
-				
+
 				/* add macro value to already running macro */
 				if(*output==NULL)
 					*output=(char *)strdup(temp_buffer);
@@ -878,7 +884,7 @@ int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int
 
 					if(temp_buffer==NULL)
 						continue;
-				
+
 					/* add macro value to already running macro */
 					if(*output==NULL)
 						*output=(char *)strdup(temp_buffer);
@@ -972,7 +978,7 @@ int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int
 
 				if(temp_buffer==NULL)
 					continue;
-				
+
 				/* add macro value to already running macro */
 				if(*output==NULL)
 					*output=(char *)strdup(temp_buffer);
@@ -1099,7 +1105,7 @@ int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int
 
 				if(authorized==TRUE){
 					problem=TRUE;
-			
+
 					if(temp_host->current_state==HOST_UP && temp_host->has_been_checked==TRUE)
 						hosts_up++;
 					else if(temp_host->current_state==HOST_DOWN){
@@ -1139,7 +1145,7 @@ int grab_macrox_value(int macro_type, char *arg1, char *arg2, char **output, int
 
 				if(authorized==TRUE){
 					problem=TRUE;
-			
+
 					if(temp_service->current_state==STATE_OK && temp_service->has_been_checked==TRUE)
 						services_ok++;
 					else if(temp_service->current_state==STATE_WARNING){
@@ -1290,7 +1296,7 @@ int grab_custom_macro_value(char *macro_name, char *arg1, char *arg2, char **out
 
 				if(temp_buffer==NULL)
 					continue;
-				
+
 				/* add macro value to already running macro */
 				if(*output==NULL)
 					*output=(char *)strdup(temp_buffer);
@@ -1354,7 +1360,7 @@ int grab_custom_macro_value(char *macro_name, char *arg1, char *arg2, char **out
 
 					if(temp_buffer==NULL)
 						continue;
-				
+
 					/* add macro value to already running macro */
 					if(*output==NULL)
 						*output=(char *)strdup(temp_buffer);
@@ -1414,7 +1420,7 @@ int grab_custom_macro_value(char *macro_name, char *arg1, char *arg2, char **out
 
 				if(temp_buffer==NULL)
 					continue;
-				
+
 				/* add macro value to already running macro */
 				if(*output==NULL)
 					*output=(char *)strdup(temp_buffer);
@@ -2360,7 +2366,7 @@ char *clean_macro_chars(char *macro,int options){
 	if(options & STRIP_ILLEGAL_MACRO_CHARS){
 
 		for(y=0,x=0;x<len;x++){
-			
+
 			/*ch=(int)macro[x];*/
 			/* allow non-ASCII characters (Japanese, etc) */
 			ch=macro[x] & 0xff;
@@ -2368,13 +2374,6 @@ char *clean_macro_chars(char *macro,int options){
 			/* illegal ASCII characters */
 			if(ch<32 || ch==127)
 				continue;
-
-			/* REMOVED 3/11/05 to allow for non-english spellings, etc. */
-			/* illegal extended ASCII characters */
-			/*
-			if(ch>=166)
-				continue;
-			*/
 
 			/* illegal user-specified characters */
 			illegal_char=FALSE;
@@ -2386,7 +2385,7 @@ char *clean_macro_chars(char *macro,int options){
 					        }
 				        }
 			        }
-				
+
 		        if(illegal_char==FALSE)
 				macro[y++]=macro[x];
 		        }
@@ -2782,7 +2781,7 @@ int clear_service_macros(void){
 	register int x;
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
-	
+
 	for(x=0;x<MACRO_X_COUNT;x++){
 		switch(x){
 		case MACRO_SERVICEDESC:
@@ -2849,7 +2848,7 @@ int clear_host_macros(void){
 	register int x;
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
-	
+
 	for(x=0;x<MACRO_X_COUNT;x++){
 		switch(x){
 		case MACRO_HOSTNAME:
@@ -2919,7 +2918,7 @@ int clear_host_macros(void){
 /* clear hostgroup macros */
 int clear_hostgroup_macros(void){
 	register int x;
-	
+
 	for(x=0;x<MACRO_X_COUNT;x++){
 		switch(x){
 		case MACRO_HOSTGROUPNAME:
@@ -2945,7 +2944,7 @@ int clear_hostgroup_macros(void){
 /* clear servicegroup macros */
 int clear_servicegroup_macros(void){
 	register int x;
-	
+
 	for(x=0;x<MACRO_X_COUNT;x++){
 		switch(x){
 		case MACRO_SERVICEGROUPNAME:
@@ -2973,7 +2972,7 @@ int clear_contact_macros(void){
 	register int x;
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
-	
+
 	for(x=0;x<MACRO_X_COUNT;x++){
 		switch(x){
 		case MACRO_CONTACTNAME:
@@ -3012,7 +3011,7 @@ int clear_contact_macros(void){
 /* clear contactgroup macros */
 int clear_contactgroup_macros(void){
 	register int x;
-	
+
 	for(x=0;x<MACRO_X_COUNT;x++){
 		switch(x){
 		case MACRO_CONTACTGROUPNAME:

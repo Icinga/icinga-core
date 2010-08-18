@@ -22,7 +22,6 @@
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
 
-#define IDO2DB_VERSION "1.0.2"
 
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
@@ -30,61 +29,62 @@
 
 #define IDO2DB_NAME "IDO2DB"
 #define IDO2DB_DATE "06-30-2010"
+#define IDO2DB_VERSION "1.0.2"
+
+extern int use_ssl;
+
+extern int errno;
+
+extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
+
+#ifdef USE_LIBDBI
+extern int ido2db_check_dbd_driver(void);
+#endif
 
 #ifdef HAVE_SSL
 SSL_METHOD *meth;
 SSL_CTX *ctx;
 int allow_weak_random_seed = IDO_FALSE;
 #endif
-extern int use_ssl;
-
-extern int errno;
 
 char *ido2db_config_file=NULL;
 char *lock_file=NULL;
 char *ido2db_user=NULL;
 char *ido2db_group=NULL;
+
 int ido2db_sd=0;
 int ido2db_socket_type=IDO_SINK_UNIXSOCKET;
 char *ido2db_socket_name=NULL;
+
 int ido2db_tcp_port=IDO_DEFAULT_TCP_PORT;
 int ido2db_use_inetd=IDO_FALSE;
+
 int ido2db_show_version=IDO_FALSE;
 int ido2db_show_license=IDO_FALSE;
 int ido2db_show_help=IDO_FALSE;
+
 int ido2db_run_foreground=IDO_FALSE;
 
 ido2db_dbconfig ido2db_db_settings;
+
 time_t ido2db_db_last_checkin_time=0L;
 
 char *ido2db_debug_file=NULL;
 int ido2db_debug_level=IDO2DB_DEBUGL_NONE;
 int ido2db_debug_verbosity=IDO2DB_DEBUGV_BASIC;
-int stop_signal_detected=IDO_FALSE;
 FILE *ido2db_debug_file_fp=NULL;
 unsigned long ido2db_max_debug_file_size=0L;
 
-extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
+int stop_signal_detected=IDO_FALSE;
 
-#ifndef USE_ORACLE
-extern int ido2db_check_dbd_driver(void);
-#endif
+char *sigs[35]={"EXIT","HUP","INT","QUIT","ILL","TRAP","ABRT","BUS","FPE","KILL","USR1","SEGV","USR2","PIPE","ALRM","TERM","STKFLT","CHLD","CONT","STOP","TSTP","TTIN","TTOU","URG","XCPU","XFSZ","VTALRM","PROF","WINCH","IO","PWR","UNUSED","ZERR","DEBUG",(char *)NULL};
+
 
 int ido2db_open_debug_log(void);
 int ido2db_close_debug_log(void);
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 
-/*#define DEBUG_IDO2DB 1*/                         /* don't daemonize */
-/*#define DEBUG_IDO2DB_EXIT_AFTER_CONNECTION 1*/    /* exit after first client disconnects */
-/*#define DEBUG_IDO2DB2 1 */
-/*#define IDO2DB_DEBUG_MBUF 1*/
-/*
-#ifdef IDO2DB_DEBUG_MBUF
-unsigned long mbuf_bytes_allocated=0L;
-unsigned long mbuf_data_allocated=0L;
-#endif
-*/
 
 
 int main(int argc, char **argv){
@@ -98,9 +98,9 @@ int main(int argc, char **argv){
 	char seedfile[FILENAME_MAX];
 	int i,c;
 #endif
-#ifndef USE_ORACLE
+#ifdef USE_LIBDBI
 	dbi_driver driver;
-	int numdrivers;	
+	int numdrivers;
 
 	driver = NULL;
 #endif
@@ -141,6 +141,10 @@ int main(int argc, char **argv){
 		printf("Error processing config file '%s'.\n",ido2db_config_file);
 		exit(1);
         }
+
+	/* print starting info to syslog */
+	syslog(LOG_USER | LOG_INFO, "%s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org))", IDO2DB_NAME, IDO2DB_VERSION, IDO2DB_DATE);
+	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO2DB_VERSION, (int)getpid() );
 
 	if (ido2db_socket_type==IDO_SINK_UNIXSOCKET && use_ssl == IDO_TRUE){
 		printf("SSL is not allowed on socket_type=unix\n");
@@ -202,12 +206,14 @@ int main(int argc, char **argv){
 	        }
 
 	/* make sure we support the db option chosen... */
-#ifndef USE_ORACLE /* everything else will be libdbi */
+
+/******************************/
+#ifdef USE_LIBDBI /* everything else will be libdbi */
 	if(ido2db_check_dbd_driver()==IDO_FALSE){
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
-		
+
 		numdrivers = dbi_initialize(NULL);
-		
+
 		fprintf(stderr, "%d drivers available: ", numdrivers);
 		while ((driver = dbi_driver_list(driver)) != NULL) {
 
@@ -228,7 +234,16 @@ int main(int argc, char **argv){
 		printf("Support for libdbi Oracle driver is not yet working.\n");
 		exit(1);
 	}
-#else /* Oracle ocilib specific */
+#endif
+
+/******************************/
+#ifdef USE_PGSQL /* pgsql */
+
+	/* we don't have a driver check here */
+#endif
+
+/******************************/
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
 	if(OCI_GetOCIRuntimeVersion == OCI_UNKNOWN) {
@@ -243,6 +258,7 @@ int main(int argc, char **argv){
 	}
 
 #endif /* Oracle ocilib specific */
+/******************************/
 
 	/* initialize signal handling */
 	signal(SIGQUIT,ido2db_parent_sighandler);
@@ -276,6 +292,9 @@ int main(int argc, char **argv){
 		if(ido2db_wait_for_connections()==IDO_ERROR)
 			return 1;
 	        }
+
+	/* tell the log we're done */
+	syslog(LOG_USER | LOG_INFO, "Successfully shutdown... (PID=%d)\n",(int)getpid());
 
 	/* close debug log */
 	ido2db_close_debug_log();
@@ -521,6 +540,9 @@ int ido2db_process_config_var(char *arg){
 	else if(!strcmp(var,"trim_db_interval"))
 		ido2db_db_settings.trim_db_interval=strtoul(val,NULL,0);
 
+	else if(!strcmp(var,"housekeeping_thread_startup_delay"))
+		ido2db_db_settings.housekeeping_thread_startup_delay=strtoul(val,NULL,0);
+
 	else if((!strcmp(var,"ido2db_user"))||(!strcmp(var,"ido2db_user")))
 		ido2db_user=strdup(val);
 	else if((!strcmp(var,"ido2db_group"))||(!strcmp(var,"ido2db_group")))
@@ -557,11 +579,6 @@ int ido2db_process_config_var(char *arg){
 		ido2db_db_settings.clean_config_tables_on_core_startup=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
 	}
 
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() max_logentries=%lu, max_ack=%lu\n", ido2db_db_settings.max_logentries_age, ido2db_db_settings.max_acknowledgements_age);
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() config set: lock_file=%s, socket_type=%d, socket_name=%s, tcp_port=%d, db_servertype=%d, db_host=%s, db_port=%d, db_user=%s, db_pass=%s, db_name=%s, db_prefix=%s, max_timedevents_age=%lu, max_systemcommands_age=%lu, max_servicechecks_age=%lu, max_hostchecks_age=%lu, max_eventhandlers_age=%lu, max_externalcommands_age=%lu, trim_db_interval=%lu, ido2db_user=%s, ido2db_group=%s, debug_file=%s, debug_level=%d, debug_verbosity=%d, max_debug_file_size=%lu\n", lock_file, ido2db_socket_type, ido2db_socket_name, ido2db_tcp_port, ido2db_db_settings.server_type, ido2db_db_settings.host, ido2db_db_settings.port, ido2db_db_settings.username, ido2db_db_settings.password, ido2db_db_settings.dbname, ido2db_db_settings.dbprefix, ido2db_db_settings.max_timedevents_age, ido2db_db_settings.max_systemcommands_age, ido2db_db_settings.max_servicechecks_age, ido2db_db_settings.max_hostchecks_age, ido2db_db_settings.max_eventhandlers_age, ido2db_db_settings.max_externalcommands_age, ido2db_db_settings.trim_db_interval, ido2db_user, ido2db_group, ido2db_debug_level, ido2db_debug_verbosity, ido2db_max_debug_file_size);
-
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() end\n");
 
 	return IDO_OK;
@@ -589,6 +606,7 @@ int ido2db_initialize_variables(void){
 	ido2db_db_settings.max_logentries_age=0L;
 	ido2db_db_settings.max_acknowledgements_age=0L;
 	ido2db_db_settings.trim_db_interval=(unsigned long)DEFAULT_TRIM_DB_INTERVAL; /* set the default if missing in ido2db.cfg */
+	ido2db_db_settings.housekeeping_thread_startup_delay=(unsigned long)DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.clean_realtime_tables_on_core_startup=IDO_TRUE; /* default is cleaning on startup */
 	ido2db_db_settings.clean_config_tables_on_core_startup=IDO_TRUE;
 
@@ -902,6 +920,10 @@ void ido2db_parent_sighandler(int sig){
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_parent_sighandler() start\n");
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "processing signal '%d'\n", sig);
+
+	/* not possible as parent */
+        /* syslog(LOG_USER | LOG_INFO, "Processing SIG%s...\n", sigs[sig]); */
+
 	switch (sig){
 	case SIGTERM:
 	case SIGINT:
@@ -938,6 +960,9 @@ void ido2db_child_sighandler(int sig){
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_child_sighandler() start\n");
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Child caught signal '%d' exiting\n", sig);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_child_sighandler() end\n");
+
+	/* don't run into a race condition */
+	//syslog(LOG_USER | LOG_INFO, "Caught SIG%s, cleaning up and exiting...\n", sigs[sig]);
 
 	if(ido2db_run_foreground == IDO_TRUE){
 		/* cleanup the socket */
@@ -1037,6 +1062,7 @@ int ido2db_wait_for_connections(void){
 	if(ido2db_run_foreground == IDO_FALSE) {
 		if(ido2db_daemonize()!=IDO_OK)
 		return IDO_ERROR;
+		syslog(LOG_USER | LOG_INFO, "Finished daemonizing... (New PID=%d)\n",(int)getpid());
 	}
 
 	/* accept connections... */
@@ -1045,6 +1071,7 @@ int ido2db_wait_for_connections(void){
 		while(1){
 
 			new_sd=accept(ido2db_sd,(ido2db_socket_type==IDO_SINK_TCPSOCKET)?(struct sockaddr *)&client_address_i:(struct sockaddr *)&client_address_u,(socklen_t *)&client_address_length);
+
 
 			/* ToDo:  Hendrik 08/12/2009
 			 * If both ends think differently about SSL encryption, data from a idomod will
@@ -1057,6 +1084,7 @@ int ido2db_wait_for_connections(void){
 
 			if(new_sd>=0)
 				/* data available */
+				syslog(LOG_USER | LOG_INFO, "Client connected, data available.\n");
 				break;
 			if(errno == EINTR) {
 				/* continue */
@@ -1135,6 +1163,7 @@ int ido2db_handle_client_connection(int sd){
 	/* open syslog facility */
 	/*openlog("ido2db",0,LOG_DAEMON);*/
 
+	syslog(LOG_USER | LOG_INFO, "Handling client connection...\n");
 	/* re-open debug log */
 	ido2db_close_debug_log();
 	ido2db_open_debug_log();
@@ -1147,8 +1176,6 @@ int ido2db_handle_client_connection(int sd){
 	signal(SIGFPE,ido2db_child_sighandler);
 
 	/* create cleanup thread */
-
-	
 	if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, &idi)) != 0) {
 		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 		exit(EXIT_FAILURE);
@@ -1156,6 +1183,7 @@ int ido2db_handle_client_connection(int sd){
 
 	/* initialize input data information */
 	ido2db_idi_init(&idi);
+
 
 	/* initialize dynamic buffer (2KB chunk size) */
 	ido_dbuf_init(&dbuf,dbuf_chunk);
@@ -2495,7 +2523,9 @@ void * ido2db_thread_cleanup(void *data) {
 	delay.tv_nsec = 500;
 
 	/* it might happen that db connection comes to fast after main thread so sleep a while */
-	delay.tv_sec = 60;
+	//delay.tv_sec = 60;
+	/* allowed to be set in config */
+	delay.tv_sec = ido2db_db_settings.housekeeping_thread_startup_delay;
 	nanosleep(&delay, NULL);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
@@ -2507,7 +2537,7 @@ void * ido2db_thread_cleanup(void *data) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread db connection\n");
 	/* initialize database connection */
 	ido2db_db_init(&thread_idi);
-	
+
 	//ido2db_thread_db_connect(&thread_idi);
 	ido2db_db_connect(&thread_idi);
 
@@ -2525,7 +2555,7 @@ void * ido2db_thread_cleanup(void *data) {
 
 	/* copy needed idi information */
 	thread_idi.instance_name = idi->instance_name;
-	thread_idi.agent_name = "IDOMOD Trimming Thread";
+	thread_idi.agent_name = "IDO2DB Trimming Thread";
 	thread_idi.agent_version = idi->agent_version;
 	thread_idi.disposition = idi->disposition;
 	thread_idi.connect_source = idi->connect_source;

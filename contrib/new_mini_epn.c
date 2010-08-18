@@ -217,8 +217,7 @@ void deinit_embedded_perl(void){
 
 
 int main(int argc, char **argv, char **env) {
-
-	char command_line[MAX_INPUT_CHARS];
+	char *cmd,*end;
 
 	init_embedded_perl();
 										/* Calls Perl to load and construct a new
@@ -232,13 +231,25 @@ int main(int argc, char **argv, char **env) {
 										 * get_command_line calls Perl to get a scalar from stdin
 										 */
 
-		strncpy(command_line, get_command_line(), MAX_INPUT_CHARS-1) ;
-		command_line[MAX_INPUT_CHARS-1] = '\0';
-
 										/* Perl Term::ReadLine::readline() method chomps the "\n"
 										 * from the end of the input.
 										 */
-		run_plugin(command_line) ;
+
+		/* Allow any length command line */
+		cmd = (get_command_line ()) ;
+
+		/* trim leading whitespace */
+		while (isspace (*cmd)) cmd++;
+
+		/* trim trailing whitespace */
+		end = cmd + strlen (cmd) - 1;
+		while (end > cmd && isspace (*end)) end--;
+
+		/* write new null terminator */
+		*(end+1) = 0;
+
+		run_plugin (cmd) ;
+
 	}
 
 	deinit_embedded_perl();

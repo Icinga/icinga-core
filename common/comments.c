@@ -74,7 +74,7 @@ int initialize_comment_data(char *config_file){
 /* removes old/invalid comments */
 int cleanup_comment_data(char *config_file){
 	int result=OK;
-	
+
 	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
 #ifdef USE_XCDDEFAULT
 	result=xcddefault_cleanup_comment_data(config_file);
@@ -217,7 +217,11 @@ int delete_comment(int type, unsigned long comment_id){
 			comment_list=this_comment->next;
 		else
 			last_comment->next=next_comment;
-		
+
+		/* if sorting is defered then decrease the amount of unsorted comments by one */
+		if (defer_comment_sorting)
+			unsorted_comments--;
+
 		/* free memory */
 		my_free(this_comment->host_name);
 		my_free(this_comment->service_description);
@@ -229,7 +233,7 @@ int delete_comment(int type, unsigned long comment_id){
 	        }
 	else
 		result=ERROR;
-	
+
 	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
 #ifdef USE_XCDDEFAULT
 	if(type==HOST_COMMENT)
@@ -248,7 +252,7 @@ int delete_host_comment(unsigned long comment_id){
 
 	/* delete the comment from memory */
 	result=delete_comment(HOST_COMMENT,comment_id);
-	
+
 	return result;
         }
 
@@ -257,10 +261,10 @@ int delete_host_comment(unsigned long comment_id){
 /* deletes a service comment */
 int delete_service_comment(unsigned long comment_id){
 	int result=OK;
-	
+
 	/* delete the comment from memory */
 	result=delete_comment(SERVICE_COMMENT,comment_id);
-	
+
 	return result;
         }
 
@@ -285,7 +289,7 @@ int delete_all_host_comments(char *host_name){
 
 	if(host_name==NULL)
 		return ERROR;
-	
+
 	/* delete host comments from memory */
 	for(temp_comment=get_first_comment_by_host(host_name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(host_name,temp_comment)){
 		if(temp_comment->comment_type==HOST_COMMENT)
@@ -303,7 +307,7 @@ int delete_host_acknowledgement_comments(host *hst){
 
 	if(hst==NULL)
 		return ERROR;
-	
+
 	/* delete comments from memory */
 	for(temp_comment=get_first_comment_by_host(hst->name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(hst->name,temp_comment)){
 		if(temp_comment->comment_type==HOST_COMMENT && temp_comment->entry_type==ACKNOWLEDGEMENT_COMMENT && temp_comment->persistent==FALSE)
@@ -322,7 +326,7 @@ int delete_all_service_comments(char *host_name, char *svc_description){
 
 	if(host_name==NULL || svc_description==NULL)
 		return ERROR;
-	
+
 	/* delete service comments from memory */
 	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=next_comment){
 		next_comment=temp_comment->next;
@@ -342,7 +346,7 @@ int delete_service_acknowledgement_comments(service *svc){
 
 	if(svc==NULL)
 		return ERROR;
-	
+
 	/* delete comments from memory */
 	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=next_comment){
 		next_comment=temp_comment->next;
@@ -395,7 +399,7 @@ int add_comment_to_hashlist(comment *new_comment){
 		comment_hashlist=(comment **)malloc(sizeof(comment *)*COMMENT_HASHSLOTS);
 		if(comment_hashlist==NULL)
 			return 0;
-		
+
 		for(i=0;i<COMMENT_HASHSLOTS;i++)
 			comment_hashlist[i]=NULL;
 	        }
@@ -686,14 +690,14 @@ comment *get_next_comment_by_host(char *host_name, comment *start){
 
 /* find a service comment by id */
 comment *find_service_comment(unsigned long comment_id){
-	
+
 	return find_comment(comment_id,SERVICE_COMMENT);
         }
 
 
 /* find a host comment by id */
 comment *find_host_comment(unsigned long comment_id){
-	
+
 	return find_comment(comment_id,HOST_COMMENT);
         }
 
@@ -715,12 +719,12 @@ comment *find_comment(unsigned long comment_id, int comment_type){
 /* find a comment by comment_type, host_name, service_desc (NULL if hostcomment), entry_time, author, comment_data */
 comment *find_comment_by_similar_content(int comment_type, char *hostname, char *service_description, char *author, char *comment_data){
 	comment *temp_comment=NULL;
- 
+
 	for(temp_comment=comment_list;temp_comment!=NULL;temp_comment=temp_comment->next){
-		if(temp_comment->comment_type==comment_type 
-			&& strcmp(temp_comment->host_name,hostname)==0 
-			&& (service_description==NULL || strcmp(temp_comment->service_description,service_description)==0) 
-			&& strcmp(temp_comment->author,author)==0 
+		if(temp_comment->comment_type==comment_type
+			&& strcmp(temp_comment->host_name,hostname)==0
+			&& (service_description==NULL || strcmp(temp_comment->service_description,service_description)==0)
+			&& strcmp(temp_comment->author,author)==0
 			&& strcmp(temp_comment->comment_data,comment_data)==0)
 			return temp_comment;
 			}

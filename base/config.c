@@ -74,6 +74,7 @@ extern int      log_event_handlers;
 extern int      log_external_commands;
 extern int      log_external_commands_user;
 extern int      log_passive_checks;
+extern int      log_long_plugin_output;
 
 extern int      service_check_timeout;
 extern int      service_check_timeout_state;
@@ -84,6 +85,7 @@ extern int      ocsp_timeout;
 extern int      ochp_timeout;
 
 extern int      log_initial_states;
+extern int      log_current_states;
 
 extern int      daemon_mode;
 extern int      daemon_dumps_core;
@@ -187,6 +189,9 @@ extern int      child_processes_fork_twice;
 
 extern int      enable_embedded_perl;
 extern int      use_embedded_perl_implicitly;
+
+extern int      stalking_event_handlers_for_hosts;
+extern int      stalking_event_handlers_for_services;
 
 extern int      date_format;
 extern char     *use_timezone;
@@ -625,6 +630,17 @@ int read_main_config_file(char *main_config_file){
 			log_passive_checks=(atoi(value)>0)?TRUE:FALSE;
 		        }
 
+		else if(!strcmp(variable,"log_long_plugin_output")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"Illegal value for log_long_plugin_output");
+				error=TRUE;
+				break;
+			        }
+
+			log_long_plugin_output=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
 		else if(!strcmp(variable,"log_initial_states")){
 
 			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
@@ -634,6 +650,17 @@ int read_main_config_file(char *main_config_file){
 			        }
 
 			log_initial_states=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
+		else if(!strcmp(variable,"log_current_states")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"Illegal value for log_current_states");
+				error=TRUE;
+				break;
+			        }
+
+			log_current_states=(atoi(value)>0)?TRUE:FALSE;
 		        }
 
 		else if(!strcmp(variable,"retain_state_information")){
@@ -1332,6 +1359,28 @@ int read_main_config_file(char *main_config_file){
 			        }
 
 			use_embedded_perl_implicitly=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
+		else if(!strcmp(variable,"stalking_event_handlers_for_hosts")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"stalking_event_handlers_for_hosts");
+				error=TRUE;
+				break;
+			        }
+
+			stalking_event_handlers_for_hosts=(atoi(value)>0)?TRUE:FALSE;
+		        }
+
+		else if(!strcmp(variable,"stalking_event_handlers_for_services")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"stalking_event_handlers_for_services");
+				error=TRUE;
+				break;
+			        }
+
+			stalking_event_handlers_for_services=(atoi(value)>0)?TRUE:FALSE;
 		        }
 
 		else if(!strcmp(variable,"external_command_buffer_slots"))

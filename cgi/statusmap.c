@@ -53,6 +53,7 @@ extern char physical_images_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern host *host_list;
 extern hostgroup *hostgroup_list;
@@ -178,6 +179,7 @@ int show_all_hosts=TRUE;
 char *host_name="all";
 
 int embedded=FALSE;
+int refresh=TRUE;
 int display_header=TRUE;
 int daemon_check=TRUE;
 int display_popups=TRUE;
@@ -315,7 +317,9 @@ void document_header(int use_stylesheet){
 	if(create_type==CREATE_HTML){
 		printf("Cache-Control: no-store\r\n");
 		printf("Pragma: no-cache\r\n");
-		printf("Refresh: %d\r\n",refresh_rate);
+
+		if(refresh=TRUE)
+			printf("Refresh: %d\r\n",refresh_rate);
 
 		time(&current_time);
 		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
@@ -581,6 +585,11 @@ int process_cgivars(void){
 			strip_html_brackets(variables[x]);
 			add_layer(variables[x]);
 		        }
+
+                /* we found the pause option */
+                else if(!strcmp(variables[x],"paused"))
+                        refresh=FALSE;
+
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))
 			daemon_check=FALSE;
@@ -625,7 +634,7 @@ void display_page_header(void){
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Network Map For Host <I>%s</I>",host_name);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
-		display_info_table(temp_buffer,TRUE,&current_authdata, daemon_check);
+		display_info_table(temp_buffer,refresh,&current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
@@ -876,7 +885,7 @@ void calculate_host_coords(void){
 	int layer_members=0;
 	int current_layer_member=0;
 	int max_drawing_width=0;
-  
+
 
 	/******************************/
 	/***** MANUAL LAYOUT MODE *****/
@@ -2290,7 +2299,7 @@ void write_popup_code(void){
 
 	printf("document.popup.style.visibility = \"visible\";\n");
 	printf("} \n");
- 
+
 
 	printf("else{\n");
 	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n",padding,border,border_color);

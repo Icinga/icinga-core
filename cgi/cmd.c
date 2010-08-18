@@ -3,8 +3,9 @@
  * CMD.C - Icinga Command CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
- * Last Modified: 05-05-2009
+ * Last Modified: 08-08-2010
  *
  * License:
  *
@@ -41,6 +42,7 @@ extern char command_file[MAX_FILENAME_LENGTH];
 extern char comment_file[MAX_FILENAME_LENGTH];
 
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern int  nagios_process_state;
 
@@ -121,7 +123,20 @@ int process_cgivars(void);
 
 int string_to_time(char *,time_t *);
 
+/* Set a limit of 500 structs, which is around 125 checks total*/
+#define NUMBER_OF_STRUCTS 500
 
+/* Struct to hold information for batch processing */
+struct hostlist {
+	char *host_name;
+	char *description;
+};
+
+
+/* Initialize the struct */
+struct hostlist commands[NUMBER_OF_STRUCTS];
+
+/* Everything needs a main */
 int main(void){
 	int result=OK;
 
@@ -304,9 +319,11 @@ int process_cgivars(void){
 	char **variables;
 	int error=FALSE;
 	int x;
+	int y;
 
 	variables=getcgivars();
 
+	/* Process the variables */
 	for(x=0;variables[x]!=NULL;x++){
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
@@ -418,6 +435,10 @@ int process_cgivars(void){
 			if((host_name=(char *)strdup(variables[x]))==NULL)
 				host_name="";
 			strip_html_brackets(host_name);
+
+			/* Store hostname in struct */
+			y = x;
+			commands[y].host_name = host_name;
 			}
 
 		/* we found the hostgroup name */
@@ -444,6 +465,10 @@ int process_cgivars(void){
 			if((service_desc=(char *)strdup(variables[x]))==NULL)
 				service_desc="";
 			strip_html_brackets(service_desc);
+
+                        /* Store service description in struct */
+                        y = x - 2;
+                        commands[y].description = service_desc;
 			}
 
 		/* we found the servicegroup name */
@@ -665,6 +690,11 @@ void request_command_data(int cmd){
 	contact *temp_contact;
 	scheduled_downtime *temp_downtime;
 	host *temp_host=NULL;
+
+	/* Define X for loop */
+	int x;
+	/* Default COLSPAN in tables */
+	int colspan=2;
 
 	/* get default name to use for comment author */
 	temp_contact=find_contact(current_authdata.username);
@@ -944,7 +974,9 @@ void request_command_data(int cmd){
 	printf("<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=1 CLASS='optBox'>\n");
 	printf("<TR><TD CLASS='optBoxItem'>\n");
 	printf("<form method='post' action='%s'>\n", COMMAND_CGI);
-	printf("<TABLE CELLSPACING=0 CELLPADDING=0 CLASS='optBox'>\n");
+	printf("<TABLE CELLSPACING=0 CELLPADDING=0 COLS=2 CLASS='optBox'>\n");
+
+	printf("<TBODY>");
 
 	printf("<tr><td><INPUT TYPE='HIDDEN' NAME='cmd_typ' VALUE='%d'><INPUT TYPE='HIDDEN' NAME='cmd_mod' VALUE='%d'></td></tr>\n",cmd,CMDMODE_COMMIT);
 
@@ -952,9 +984,13 @@ void request_command_data(int cmd){
 
 	case CMD_ADD_HOST_COMMENT:
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
+                printf("<tr><td CLASS='optBoxRequiredItem'>Targets</td></tr>");
+                printf("<tr><th colspan=%d>Host</th></tr>",colspan);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                	printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td></tr>",colspan,escape_string(commands[x].host_name));
+                }
 		if(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM){
 			printf("<tr><td CLASS='optBoxItem'>Sticky Acknowledgement:</td><td><b>");
 			printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED>");
@@ -980,11 +1016,25 @@ void request_command_data(int cmd){
 
 	case CMD_ADD_SVC_COMMENT:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
+                printf("<tr><td CLASS='optBoxRequiredItem'>Targets</td></tr>");
+                /* Added to allow more then one */
+		if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM||CMD_ADD_SVC_COMMENT){
+			colspan=1;
+		}
+                printf("<tr><b><th colspan=%d>Host</th>",colspan);
+                if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM||CMD_ADD_SVC_COMMENT){
+                        printf("<th colspan=%d>Service</th>",colspan);
+                }
+                printf("</b></tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM||CMD_ADD_SVC_COMMENT){
+                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+                        }
+                        printf("</tr>");
+                }
 		if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM){
 			printf("<tr><td CLASS='optBoxItem'>Sticky Acknowledgement:</td><td><b>");
 			printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED>");
@@ -1016,20 +1066,33 @@ void request_command_data(int cmd){
 		break;
 
 	case CMD_DELAY_HOST_NOTIFICATION:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        printf("</tr>");
+                }
 		printf("<tr><td CLASS='optBoxRequiredItem'>Notification Delay (minutes from now):</td><td><b>");
 		printf("<INPUT TYPE='TEXT' NAME='not_dly' VALUE='%d'>",notification_delay);
 		printf("</b></td></tr>\n");
 		break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                colspan=1;
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                printf("<td colspan=%d>Service</td>",colspan);
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+                        printf("</tr>");
+                }
 		printf("<tr><td CLASS='optBoxRequiredItem'>Notification Delay (minutes from now):</td><td><b>");
 		printf("<INPUT TYPE='TEXT' NAME='not_dly' VALUE='%d'>",notification_delay);
 		printf("</b></td></tr>\n");
@@ -1038,14 +1101,24 @@ void request_command_data(int cmd){
 	case CMD_SCHEDULE_SVC_CHECK:
 	case CMD_SCHEDULE_HOST_CHECK:
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
+		printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                if(cmd==CMD_SCHEDULE_SVC_CHECK){
+                        colspan=1;
+                }
+		printf("<tr><td colspan=%d>Host</td>",colspan);
 		if(cmd==CMD_SCHEDULE_SVC_CHECK){
-			printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-			printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
-			printf("</b></td></tr>\n");
-		        }
+			printf("<td colspan=%d>Service</td>",colspan);
+		}
+		printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+			if(cmd==CMD_SCHEDULE_SVC_CHECK){
+				printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+			}
+			printf("</tr>");
+		}
 		time(&t);
 		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
 		printf("<tr><td CLASS='optBoxRequiredItem'>Check Time:</td><td><b>");
@@ -1070,12 +1143,18 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_SVC_FLAP_DETECTION:
 	case CMD_START_OBSESSING_OVER_SVC:
 	case CMD_STOP_OBSESSING_OVER_SVC:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
-		printf("</b></td></tr>\n");
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                colspan=1;
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                printf("<td colspan=%d>Service</td>",colspan);
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+                        printf("</tr>");
+                }
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
@@ -1098,9 +1177,15 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST:
 	case CMD_STOP_OBSESSING_OVER_HOST:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        printf("</tr>");
+                }
 		if(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_SVC_NOTIFICATIONS){
 			printf("<tr><td CLASS='optBoxItem'>%s For Host Too:</td><td><b>",(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)?"Enable":"Disable");
 			printf("<INPUT TYPE='checkbox' NAME='ahas'>");
@@ -1142,14 +1227,24 @@ void request_command_data(int cmd){
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
-		if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
-			printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-			printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
-			printf("</b></td></tr>\n");
-		        }
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
+                        colspan=1;
+                }
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
+                        printf("<td colspan=%d>Service</td>",colspan);
+                }
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
+                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+                        }
+                        printf("</tr>");
+                }
 		printf("<tr><td CLASS='optBoxRequiredItem'>Check Result:</td><td><b>");
 		printf("<SELECT NAME='plugin_state'>");
 		if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
@@ -1176,14 +1271,24 @@ void request_command_data(int cmd){
 	case CMD_SCHEDULE_HOST_DOWNTIME:
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 	case CMD_SCHEDULE_SVC_DOWNTIME:
-
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
-		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
-			printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-			printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
-		        }
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
+                        colspan=1;
+                }
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
+                        printf("<td colspan=%d>Service</td>",colspan);
+                }
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
+                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+                        }
+                        printf("</tr>");
+                }
 		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
 		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
 		printf("</b></td></tr>\n");
@@ -1360,16 +1465,24 @@ void request_command_data(int cmd){
 
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Host Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='host' VALUE='%s'>",escape_string(host_name));
-		printf("</b></td></tr>\n");
-
-		if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
-			printf("<tr><td CLASS='optBoxRequiredItem'>Service:</td><td><b>");
-			printf("<INPUT TYPE='TEXT' NAME='service' VALUE='%s'>",escape_string(service_desc));
-			printf("</b></td></tr>\n");
-			}
-
+                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
+                if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
+                        colspan=1;
+                }
+                printf("<tr><td colspan=%d>Host</td>",colspan);
+                if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
+                        printf("<td colspan=%d>Service</td>",colspan);
+                }
+                printf("</tr>");
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
+                        if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
+                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
+                        }
+                        printf("</tr>");
+                }
 		printf("<tr><td CLASS='optBoxItem'>Forced:</td><td><b>");
 		printf("<INPUT TYPE='checkbox' NAME='force_notification' ");
 		printf("</b></td></tr>\n");
@@ -1393,6 +1506,8 @@ void request_command_data(int cmd){
 
 	printf("<tr><td CLASS='optBoxItem' COLSPAN=2></td></tr>\n");
 	printf("<tr><td CLASS='optBoxItem'></td><td CLASS='optBoxItem'><INPUT TYPE='submit' NAME='btnSubmit' VALUE='Commit'> <INPUT TYPE='reset' VALUE='Reset'></td></tr>\n");
+
+	printf("</TBODY>");
 
 	printf("</table>\n");
 	printf("</form>\n");
@@ -1961,6 +2076,8 @@ int commit_command(int cmd){
 	time_t notification_time;
 	int result;
 
+	int x;
+
 	/* get the current time */
 	time(&current_time);
 
@@ -2028,7 +2145,13 @@ int commit_command(int cmd){
 	case CMD_ENABLE_HOST_CHECK:
 	case CMD_DISABLE_HOST_CHECK:
 	case CMD_REMOVE_HOST_ACKNOWLEDGEMENT:
-		result = cmd_submitf(cmd,"%s",host_name);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			result = cmd_submitf(cmd,"%s",commands[x].host_name);
+			if (result == 0)
+				continue;
+                }
 		break;
 
 		/** simple service commands **/
@@ -2046,15 +2169,33 @@ int commit_command(int cmd){
 	case CMD_ENABLE_SVC_CHECK:
 	case CMD_DISABLE_SVC_CHECK:
 	case CMD_REMOVE_SVC_ACKNOWLEDGEMENT:
-		result = cmd_submitf(cmd,"%s;%s",host_name,service_desc);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%s",commands[x].host_name,commands[x].description);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_ADD_HOST_COMMENT:
-		result = cmd_submitf(cmd,"%s;%d;%s;%s",host_name,persistent_comment,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%d;%s;%s",commands[x].host_name,persistent_comment,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_ADD_SVC_COMMENT:
-		result = cmd_submitf(cmd,"%s;%s;%d;%s;%s",host_name,service_desc,persistent_comment,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%s;%d;%s;%s",commands[x].host_name,commands[x].description,persistent_comment,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_DEL_HOST_COMMENT:
@@ -2063,18 +2204,36 @@ int commit_command(int cmd){
 		break;
 
 	case CMD_DELAY_HOST_NOTIFICATION:
-		result = cmd_submitf(cmd,"%s;%lu",host_name,notification_time);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,notification_time);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
-		result = cmd_submitf(cmd,"%s;%s;%lu",host_name,service_desc,notification_time);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%s;%lu",commands[x].host_name,commands[x].description,notification_time);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_SCHEDULE_SVC_CHECK:
 	case CMD_SCHEDULE_FORCED_SVC_CHECK:
 		if(force_check==TRUE)
 			cmd=CMD_SCHEDULE_FORCED_SVC_CHECK;
-		result = cmd_submitf(cmd,"%s;%s;%lu",host_name,service_desc,start_time);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue; /* Continue the loop if its null */
+                        result = cmd_submitf(cmd,"%s;%s;%lu",commands[x].host_name,commands[x].description,start_time);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_DISABLE_NOTIFICATIONS:
@@ -2086,11 +2245,24 @@ int commit_command(int cmd){
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 	case CMD_DISABLE_HOST_SVC_CHECKS:
-		result = cmd_submitf(cmd,"%s",host_name);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s",commands[x].host_name);
+                        if (result == 0)
+                                continue;
+                }
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_HOST_SVC_CHECKS) ? CMD_ENABLE_HOST_CHECK : CMD_DISABLE_HOST_CHECK;
+	                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+	                        if (commands[x].host_name == NULL)
+	                                continue;
+	                        result |= cmd_submitf(cmd,"%s",commands[x].host_name);
+	                        if (result == 0)
+	                                continue;
+	                }
 			result |= cmd_submitf(cmd,"%s",host_name);
-			}
+		}
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
@@ -2103,32 +2275,75 @@ int commit_command(int cmd){
 	case CMD_DISABLE_HOST_NOTIFICATIONS:
 		if(propagate_to_children==TRUE)
 			cmd = (cmd == CMD_ENABLE_HOST_NOTIFICATIONS) ? CMD_ENABLE_HOST_AND_CHILD_NOTIFICATIONS : CMD_DISABLE_HOST_AND_CHILD_NOTIFICATIONS;
-		result = cmd_submitf(cmd,"%s",host_name);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s",commands[x].host_name);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_SVC_NOTIFICATIONS:
-		result = cmd_submitf(cmd,"%s",host_name);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s",commands[x].host_name);
+                        if (result == 0)
+                                continue;
+                }
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_HOST_SVC_NOTIFICATIONS) ? CMD_ENABLE_HOST_NOTIFICATIONS : CMD_DISABLE_HOST_NOTIFICATIONS;
-			result |= cmd_submitf(cmd,"%s",host_name);
-			}
+	                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+	                        if (commands[x].host_name == NULL)
+	                                continue;
+	                        result |= cmd_submitf(cmd,"%s",commands[x].host_name);
+	                        if (result == 0)
+	       	                        continue;
+
+	       	        }
+		}
 		break;
 
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
-		result = cmd_submitf(cmd,"%s;%d;%d;%d;%s;%s",host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%d;%d;%d;%s;%s",commands[x].host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-		result = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%s;%s",host_name,service_desc,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+	                result = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%s;%s",commands[x].host_name,commands[x].description,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
-		result = cmd_submitf(cmd,"%s;%s;%d;%s|%s",host_name,service_desc,plugin_state,plugin_output,performance_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+	                result = cmd_submitf(cmd,"%s;%s;%d;%s|%s",commands[x].host_name,commands[x].description,plugin_state,plugin_output,performance_data);
+                        if (result == 0)
+                                continue;
+		}
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
-		result = cmd_submitf(cmd,"%s;%d;%s|%s",host_name,plugin_state,plugin_output,performance_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%d;%s|%s",commands[x].host_name,plugin_state,plugin_output,performance_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_SCHEDULE_HOST_DOWNTIME:
@@ -2136,16 +2351,33 @@ int commit_command(int cmd){
 			cmd = CMD_SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;
 		else if (child_options == 2)
 			cmd = CMD_SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;
-
-		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+		}
 		break;
 
         case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
                 break;
 
 	case CMD_SCHEDULE_SVC_DOWNTIME:
-		result = cmd_submitf(cmd,"%s;%s;%lu;%lu;%d;%lu;%lu;%s;%s",host_name,service_desc,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,commands[x].description,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_DEL_HOST_DOWNTIME:
@@ -2156,15 +2388,33 @@ int commit_command(int cmd){
 	case CMD_SCHEDULE_HOST_CHECK:
 		if (force_check == TRUE)
 			cmd = CMD_SCHEDULE_FORCED_HOST_CHECK;
-		result = cmd_submitf(cmd,"%s;%lu",host_name,start_time);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			result = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,start_time);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
-		result = cmd_submitf(cmd,"%s;%d;%s;%s",host_name,(force_notification | broadcast_notification),comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			result = cmd_submitf(cmd,"%s;%d;%s;%s",commands[x].host_name,(force_notification | broadcast_notification),comment_author,comment_data);
+                        if (result == 0)
+				continue;
+                }
 		break;
 
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-		result = cmd_submitf(cmd,"%s;%s;%d;%s;%s",host_name,service_desc,(force_notification | broadcast_notification),comment_author,comment_data);
+                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+                        result = cmd_submitf(cmd,"%s;%s;%d;%s;%s",commands[x].host_name,commands[x].description,(force_notification | broadcast_notification),comment_author,comment_data);
+                        if (result == 0)
+                                continue;
+                }
 		break;
 
 

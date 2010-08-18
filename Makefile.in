@@ -18,6 +18,7 @@ SRC_CONTRIB=@srcdir@/contrib
 SRC_IDOUTILS=@srcdir@/module/idoutils
 SRC_TTAP=@srcdir@/t-tap
 SRC_TAP=@srcdir@/tap
+SRC_T=@srcdir@/t
 SRC_ICINGAAPI=@srcdir@/module/icinga-api
 SRC_DOCBOOK=@srcdir@/docbook
 SRC_DOCBOOK_DE=@srcdir@/docbook/de
@@ -237,6 +238,7 @@ clean:
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
+	cd $(SRC_T) && $(MAKE) $@
 	@if [ x$(USE_LIBTAP) = xyes ]; then \
 		cd $(SRC_TAP) && $(MAKE) $@; \
 	fi
@@ -258,6 +260,7 @@ distclean: clean
 	cd $(SRC_MODULE) && $(MAKE) $@
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
+	cd $(SRC_T) && $(MAKE) $@
 	@if [ x$(USE_LIBTAP) = xyes ]; then \
 		cd $(SRC_TAP) && $(MAKE) $@; \
 	fi
@@ -266,7 +269,7 @@ distclean: clean
 	fi
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
-	rm -f daemon-init pkginfo rc.ido2db
+	rm -f daemon-init pkginfo rc.ido2db daemon-init-redhat
 	rm -f include/dh.h
 	rm -f Makefile subst
 	rm -f config.log config.status config.cache
@@ -446,6 +449,9 @@ install-idoutils:
 install-api:
 	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
                 cd $(SRC_ICINGAAPI) && $(MAKE) install; \
+                echo "" ;\
+                echo "*** API installed ***" ;\
+		echo "" ;\
 	else \
 		echo "" ;\
 		echo "Sorry, Icinga API not available!" ;\

@@ -2,7 +2,7 @@
  *
  * EVENTS.C - Timed event functions for Icinga
  *
- * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
@@ -394,6 +394,9 @@ void init_timing_loop(void){
 	/* add scheduled service checks to event queue */
 	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
+		/* update status of all services (scheduled or not) */
+		update_service_status(temp_service,FALSE);
+
 		/* skip most services that shouldn't be scheduled */
 		if(temp_service->should_be_scheduled==FALSE){
 
@@ -434,7 +437,7 @@ void init_timing_loop(void){
 		/* be dumb and just schedule checks 1 second apart */
 		scheduling_info.host_inter_check_delay=1.0;
 		break;
-		
+
 	case ICD_USER:
 
 		/* the user specified a delay, so don't try to calculate one */
@@ -519,12 +522,15 @@ void init_timing_loop(void){
 
 		mult_factor++;
 	        }
-	
+
 	if(test_scheduling==TRUE)
 		gettimeofday(&tv[7],NULL);
 
 	/* add scheduled host checks to event queue */
 	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+
+		/* update status of all hosts (scheduled or not) */
+		update_host_status(temp_host,FALSE);
 
 		/* skip most hosts that shouldn't be scheduled */
 		if(temp_host->should_be_scheduled==FALSE){
@@ -1418,7 +1424,7 @@ int handle_timed_event(timed_event *event){
 		break;
 
 	case EVENT_PROGRAM_SHUTDOWN:
-		
+
 		log_debug_info(DEBUGL_EVENTS,0,"** Program Shutdown Event\n");
 
 		/* set the shutdown flag */

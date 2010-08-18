@@ -34,6 +34,7 @@ extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
 extern char   url_images_path[MAX_FILENAME_LENGTH];
 extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern int    log_rotation_method;
 
@@ -336,7 +337,7 @@ int display_log(void){
 	        }
 
 	if(use_lifo==FALSE){
-  
+
 		if((thefile=mmap_fopen(log_file_to_use))==NULL){
 			printf("<HR>\n");
 			printf("<P><DIV CLASS='errorMessage'>Error: Could not open log file '%s' for reading!</DIV></P>",log_file_to_use);

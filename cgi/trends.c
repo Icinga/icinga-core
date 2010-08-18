@@ -43,6 +43,7 @@ extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char physical_images_path[MAX_FILENAME_LENGTH];
 
 extern int     log_rotation_method;
@@ -66,7 +67,7 @@ extern skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
 #define AS_SVC_WARNING		8
 #define AS_SVC_CRITICAL		9
 
-#define AS_SOFT_STATE           1 
+#define AS_SOFT_STATE           1
 #define AS_HARD_STATE           2
 
 /* display types */
@@ -2631,7 +2632,7 @@ void write_popup_code(void){
 	printf("document.popup.style.top  = (document.all ? eventObj.y : eventObj.layerY) + %d;\n",y_offset);
 	printf("document.popup.style.visibility = \"visible\";\n");
 	printf("} \n");
- 
+
 
 	printf("else{\n");
 	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n",padding,border,border_color);

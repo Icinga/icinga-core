@@ -6,7 +6,7 @@
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -42,6 +42,7 @@ extern servicestatus *servicestatus_list;
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char log_file[MAX_FILENAME_LENGTH];
@@ -95,6 +96,7 @@ hostoutagesort *hostoutagesort_list=NULL;
 int service_severity_divisor=4;            /* default = services are 1/4 as important as hosts */
 
 int embedded=FALSE;
+int refresh=TRUE;
 int display_header=TRUE;
 int daemon_check=TRUE;
 
@@ -103,7 +105,7 @@ int daemon_check=TRUE;
 
 int main(void){
 	int result=OK;
-	
+
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -206,7 +208,9 @@ void document_header(int use_stylesheet){
 
 	printf("Cache-Control: no-store\r\n");
 	printf("Pragma: no-cache\r\n");
-	printf("Refresh: %d\r\n",refresh_rate);
+
+	if(refresh==TRUE)
+		printf("Refresh: %d\r\n",refresh_rate);
 
 	time(&current_time);
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
@@ -294,6 +298,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+                /* we found the pause option */
+                else if(!strcmp(variables[x],"paused"))
+                        refresh=FALSE;
 
 		/* we found the nodaemoncheck option */
                 else if(!strcmp(variables[x],"nodaemoncheck"))

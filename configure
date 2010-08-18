@@ -742,9 +742,12 @@ enable_event_broker
 enable_state_based_escal_ranges
 enable_idoutils
 enable_oracle
+enable_pgsql
 with_ocilib_lib
 with_ocilib_inc
 with_oracle_lib
+with_pgsql_lib
+with_psql_inc
 with_dbi_lib
 with_dbi_inc
 enable_embedded_perl
@@ -1389,6 +1392,7 @@ Optional Features:
                           interferes with mk_livestatus neb module
   --enable-idoutils       enables database connectivity using idoutils
   --enable-oracle         enables idoutils with ocilib and oracle
+  --enable-pgsql          enables idoutils with libpq and pgsql
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         Enable built-in libtap for unit-testing (default:
@@ -1425,6 +1429,8 @@ Optional Packages:
   --with-ocilib-lib=DIR   sets location of the ocilib library
   --with-ocilib-inc=DIR   sets location of the ocilib include files,
   --with-oracle-lib=DIR   sets location of the oracle library
+  --with-pgsql-lib=DIR    sets location of the pgsql library
+  --with-pgsql-inc=DIR    sets location of the pgsql include files,
   --with-dbi-lib=DIR      sets location of the libdbi library
   --with-dbi-inc=DIR      sets location of the libdbi include files,
   --with-perlcache        turns on cacheing of internally compiled Perl
@@ -4915,7 +4921,7 @@ else
 
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking if we need -pthread for threads" >&5
 $as_echo_n "checking if we need -pthread for threads... " >&6; }
-		if test "${ac_ldflag_pthread+set}" = set; then :
+		if test "${ac_cv_ldflag_pthread+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
 
@@ -4935,9 +4941,9 @@ pthread_create();
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  eval "ac_ldflag_pthread=yes"
+  eval "ac_cv_ldflag_pthread=yes"
 else
-  eval "ac_ldflag_pthread=no"
+  eval "ac_cv_ldflag_pthread=no"
 
 fi
 rm -f core conftest.err conftest.$ac_objext \
@@ -4946,7 +4952,7 @@ rm -f core conftest.err conftest.$ac_objext \
 
 fi
 
-		if eval "test \"`echo $ac_ldflag_pthread`\" = yes"; then
+		if eval "test \"`echo $ac_cv_ldflag_pthread`\" = yes"; then
 			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 		else
@@ -6023,13 +6029,24 @@ if test x$USE_IDOUTILS = xyes; then
 	fi
 
 
+
 		USE_OCILIB=no
+	USE_LIBPQ=no
+
 	# Check whether --enable-oracle was given.
 if test "${enable_oracle+set}" = set; then :
   enableval=$enable_oracle; USE_OCILIB=$enableval
 else
   USE_OCILIB=no
 fi
+
+	# Check whether --enable-pgsql was given.
+if test "${enable_pgsql+set}" = set; then :
+  enableval=$enable_pgsql; USE_LIBPQ=$enableval
+else
+  USE_LIBPQ=no
+fi
+
 
 	if test x$USE_OCILIB = xyes; then
 
@@ -6125,11 +6142,101 @@ fi
 		DBLIBS="${DBLIBS} ${DBLIBS_OCI}"
 
 
-				 cat >>confdefs.h <<_ACEOF
+				cat >>confdefs.h <<_ACEOF
 #define USE_ORACLE 1
 _ACEOF
 
-	else
+
+	fi
+
+		if test x$USE_LIBPQ = xyes; then
+
+		LIBPQ_INC=""
+		LIBPQ_LIB=""
+
+
+# Check whether --with-pgsql-lib was given.
+if test "${with_pgsql_lib+set}" = set; then :
+  withval=$with_pgsql_lib;
+                        LIBPQ_LIB="-L${withval}"
+
+fi
+
+
+# Check whether --with-psql-inc was given.
+if test "${with_psql_inc+set}" = set; then :
+  withval=$with_psql_inc;
+                        LIBPQ_INC="-I${withval}"
+
+fi
+
+
+                CFLAGS="$CFLAGS $LIBPQ_INC"
+                LDFLAGS="$LDFLAGS $LIBPQ_LIB"
+
+                for ac_header in libpq-fe.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "libpq-fe.h" "ac_cv_header_libpq_fe_h" "$ac_includes_default"
+if test "x$ac_cv_header_libpq_fe_h" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBPQ_FE_H 1
+_ACEOF
+
+fi
+
+done
+
+                $as_echo "#define HAVE_LIBPQ_FE_H \"1\"" >>confdefs.h
+
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking for lpq" >&5
+$as_echo_n "checking for lpq... " >&6; }
+                { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lpq" >&5
+$as_echo_n "checking for main in -lpq... " >&6; }
+if test "${ac_cv_lib_pq_main+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpq  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_pq_main=yes
+else
+  ac_cv_lib_pq_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pq_main" >&5
+$as_echo "$ac_cv_lib_pq_main" >&6; }
+if test "x$ac_cv_lib_pq_main" = x""yes; then :
+  DBLIBS_PQ="${DBCFLAGS} -lpq"
+else
+  as_fn_error "ERROR - We really need a libpq to link against" "$LINENO" 5
+fi
+
+                DBLIBS="${DBLIBS} ${DBLIBS_PQ}"
+
+
+				cat >>confdefs.h <<_ACEOF
+#define USE_PGSQL 1
+_ACEOF
+
+	fi
+
+	if test x$USE_LIBPQ = xno && test x$USE_OCILIB = xno; then
+
 	        				LIBDBI_INC=""
 				LIBDBI_LIB=""
 
@@ -6167,8 +6274,8 @@ done
 
 	        $as_echo "#define HAVE_DBI_DBI_H \"1\"" >>confdefs.h
 
-	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for libdi" >&5
-$as_echo_n "checking for libdi... " >&6; }
+	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for libdbi" >&5
+$as_echo_n "checking for libdbi... " >&6; }
 	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -ldbi" >&5
 $as_echo_n "checking for main in -ldbi... " >&6; }
 if test "${ac_cv_lib_dbi_main+set}" = set; then :
@@ -6206,6 +6313,11 @@ else
 fi
 
 		DBLIBS="${DBLIBS} ${DBLIBS_DBI}"
+
+
+				cat >>confdefs.h <<_ACEOF
+#define USE_LIBDBI 1
+_ACEOF
 
 
 	fi
@@ -8036,7 +8148,6 @@ echo "Creating sample config files in module/idoutils/config/ ..."
 perl subst $srcdir/module/idoutils/config/icinga.cfg
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
-
 
 
 

@@ -17,3 +17,4 @@
 -- --------------------------------------------------------
 
 ALTER TABLE services MODIFY display_name varchar2(255);
+ALTER TABLE configfilevariables MODIFY varvalue varchar2(1024);

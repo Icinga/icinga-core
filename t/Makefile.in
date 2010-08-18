@@ -8,4 +8,5 @@ test:
 clean:
 
 distclean:
+	rm -f Makefile
 

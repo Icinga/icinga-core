@@ -43,6 +43,7 @@ char            url_context_help_path[MAX_FILENAME_LENGTH];
 char            url_images_path[MAX_FILENAME_LENGTH];
 char            url_logo_images_path[MAX_FILENAME_LENGTH];
 char            url_stylesheets_path[MAX_FILENAME_LENGTH];
+char            url_js_path[MAX_FILENAME_LENGTH];
 char            url_media_path[MAX_FILENAME_LENGTH];
 
 char            *service_critical_sound=NULL;
@@ -122,6 +123,9 @@ int		color_transparency_index_r=255;
 int		color_transparency_index_g=255;
 int		color_transparency_index_b=255;
 
+int		status_show_long_plugin_output=FALSE;
+int		tac_show_only_hard_state=FALSE;
+
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
 extern command         *command_list;
@@ -175,6 +179,7 @@ void reset_cgi_vars(void){
 	strcpy(url_docs_path,"");
 	strcpy(url_context_help_path,"");
 	strcpy(url_stylesheets_path,"");
+	strcpy(url_js_path,"");
 	strcpy(url_media_path,"");
 	strcpy(url_images_path,"");
 
@@ -369,6 +374,9 @@ int read_cgi_config_file(char *filename){
 			snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
 			url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
 
+			snprintf(url_js_path,sizeof(url_js_path),"%sjs/",url_html_path);
+			url_js_path[sizeof(url_js_path)-1]='\x0';
+
 			snprintf(url_media_path,sizeof(url_media_path),"%smedia/",url_html_path);
 			url_media_path[sizeof(url_media_path)-1]='\x0';
 		        }
@@ -441,6 +449,12 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"use_ssl_authentication"))
 			use_ssl_authentication=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"status_show_long_plugin_output"))
+			status_show_long_plugin_output=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"tac_show_only_hard_state"))
+			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
  	        }
 
 	/* free memory and close the file */
@@ -1325,8 +1339,15 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),LONG_DATE_TIME);
 
 	printf("Last Updated: %s<BR>\n",date_time);
-	if(refresh==TRUE)
-		printf("Updated every %d seconds<br>\n",refresh_rate);
+
+	/* decide if refresh is paused or not */
+	if(refresh==TRUE) {
+		/* if refresh, add paused query to url and set location.href */
+		printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n",refresh_rate);
+	} else {
+		/* if no refresh, remove the paused query from url and set location.href */
+		printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n",refresh_rate);
+	}
 
 	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);
 
@@ -1610,7 +1631,7 @@ void include_ssi_file(char *filename){
 			return;
 		        }
 	        }
- 
+
 	fp=fopen(filename,"r");
 	if(fp==NULL)
 		return;
@@ -1769,7 +1790,7 @@ void display_splunk_host_url(host *hst){
 	if(hst==NULL)
 		return;
 
-	printf("<a href='%s?q=%s' target='_blank'><img src='%s%s' alt='Splunk It' title='Splunk It' border='0'></a>\n",splunk_url,url_encode(hst->name),url_images_path,SPLUNK_SMALL_WHITE_ICON);
+	printf("<a href='%s?q=search %s' target='_blank'><img src='%s%s' alt='Splunk It' title='Splunk It' border='0'></a>\n",splunk_url,url_encode(hst->name),url_images_path,SPLUNK_SMALL_WHITE_ICON);
 
 	return;
 	}
@@ -1783,7 +1804,7 @@ void display_splunk_service_url(service *svc){
 	if(svc==NULL)
 		return;
 
-	printf("<a href='%s?q=%s%%20",splunk_url,url_encode(svc->host_name));
+	printf("<a href='%s?q=search %s%%20",splunk_url,url_encode(svc->host_name));
 	printf("%s' target='_blank'><img src='%s%s' alt='Splunk It' title='Splunk It' border='0'></a>\n",url_encode(svc->description),url_images_path,SPLUNK_SMALL_WHITE_ICON);
 
 	return;
@@ -1804,7 +1825,8 @@ void display_splunk_generic_url(char *buf, int icon){
 
 	strip_splunk_query_terms(newbuf);
 
-	printf("<a href='%s?q=%s' target='_blank'>",splunk_url,url_encode(newbuf));
+	printf("<a href='%s?q=search %s' target='_blank'>",splunk_url,url_encode(newbuf));
+
 	if(icon>0)
 		printf("<img src='%s%s' alt='Splunk It' title='Splunk It' border='0'>",url_images_path,(icon==1)?SPLUNK_SMALL_WHITE_ICON:SPLUNK_SMALL_BLACK_ICON);
 	printf("</a>\n");
