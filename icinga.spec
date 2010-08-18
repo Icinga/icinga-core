@@ -17,8 +17,8 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.0.2
-Release: 2%{?dist}
+Version: 1.0.3
+Release: 1%{?dist}
 License: GPL
 Group: Applications/System
 URL: http://www.icinga.org/
@@ -63,7 +63,7 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 
 %description idoutils
-This package contains the idoutils broker module for %{name} which provides 
+This package contains the idoutils broker module for %{name} which provides
 database storage via libdbi.
 
 %package api
@@ -241,6 +241,9 @@ fi
 
 
 %changelog
+* Wed Aug 18 2010 Christoph Maser <cmaser@gmx.de> - 1.0.3-1
+- Update to 1.0.3-1
+
 * Thu Jul 05 2010 Christoph Maser <cmaser@gmx.de> - 1.0.2-2
 - Enable debuginfo
 

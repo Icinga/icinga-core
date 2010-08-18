@@ -14,7 +14,7 @@
 
 #define FILE2SOCK_VERSION "1.0.3"
 #define FILE2SOCK_NAME "FILE2SOCK"
-#define FILE2SOCK_DATE "08-17-2010"
+#define FILE2SOCK_DATE "08-18-2010"
 
 
 int process_arguments(int,char **);

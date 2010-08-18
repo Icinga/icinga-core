@@ -13,7 +13,7 @@ fi
 CURRENTVERSION=1.0.3
 
 # Last date
-LASTDATE=08-17-2010
+LASTDATE=08-18-2010
 
 if [ "x$1" = "x" ]
 then
@@ -40,6 +40,9 @@ then
     # No new version number, just a new version date
     newversion=$CURRENTVERSION
 fi
+
+# Update version number icinga.spec
+perl -i -p -e "s/Version: .*/Version: $newversion/;" icinga.spec
 
 # Update version number in Makefile.in
 perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" Makefile.in
