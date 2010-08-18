@@ -39,6 +39,7 @@ FIXES
 * core: fix macro processing (Jochen Bern)
 * core: fix non-scheduled hosts/services not being updated in IDO*
 * core: move the malloc block in insert_skiplist below dupcheck to avoid memory leaks (Thomas Guyot-Sionnest, Holger Weiss)
+* core: fix missing variable reset for use_syslog_local_facility and syslog_local_facility
 
 * classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless

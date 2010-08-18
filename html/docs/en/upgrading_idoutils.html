@@ -4,7 +4,7 @@
 <title>Upgrading IDOUtils Database</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="upgrading.html" title="Upgrading (to) Icinga">
 <link rel="next" href="monitoring-windows.html" title="Monitoring Windows Machines">
@@ -80,6 +80,27 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 <p> </p>
+<a name="upgrading_idoutils_1.0.3"></a>
+
+    <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.3</strong></span></p>
+
+    <p>There were some few minor changes:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <p>change display_name to varchar(255) for mysql/oracle</p>
+        </li>
+<li class="listitem">
+            <p>update pgsql schema, replace varchar(n) by text</p>
+        </li>
+<li class="listitem">
+            <p>change configfile variables value to 1024 length for mysql/oracle</p>
+        </li>
+</ul></div>
+
+    <p>Apply the upgrading scripts for IDOUtils 1.0.3 as the general procedure applies for your RDBMS.
+</p>
+
 <a name="upgrading_idoutils_1.0.2"></a>
     <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.2</strong></span></p>
 
@@ -229,7 +250,7 @@
     <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the script
     will fail.</p>
 
-    <a class="indexterm" name="id1921202"></a>
+    <a class="indexterm" name="id3429789"></a>
 </div>
 <div class="navfooter">
 <hr>

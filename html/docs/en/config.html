@@ -4,7 +4,7 @@
 <title>Configuration Overview</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="next" href="configmain.html" title="Main Configuration File Options">
@@ -73,13 +73,18 @@
 
   <p>An introduction to object definitions, and how they relate to each other, can be found <a class="link" href="configobject.html" title="Object Configuration Overview">here</a>.</p>
 
+  <p>Your object definition files can in turn include other files using the <a class="link" href="configobject.html#configobject-include_file">include_file</a>
+  or <a class="link" href="configobject.html#configobject-include_dir">include_dir</a> directives. These can only occur outside of the actual object
+  definitions, and behave very much like the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a> and
+  <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a> directives in the main configuration file.</p>
+
   <p><span class="bold"><strong>CGI Configuration File</strong></span></p>
 
   <p>The CGI configuration file contains a number of directives that affect the operation of the <a class="link" href="cgis.html" title="Information On The CGIs">CGIs</a>. It also contains a reference the main configuration file, so the CGIs know how you've configured
   Icinga and where your object defintions are stored.</p>
 
   <p>Documentation for the CGI configuration file can be found <a class="link" href="configcgi.html" title="CGI Configuration File Options">here</a>.</p>
-  <a class="indexterm" name="id1924276"></a>
+  <a class="indexterm" name="id3432892"></a>
 </div>
 <div class="navfooter">
 <hr>

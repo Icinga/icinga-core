@@ -1885,7 +1885,7 @@ void show_all_comments(void){
 	printf("<DIV CLASS='commentTitle'>Host Comments</DIV>\n");
 
 	printf("<div CLASS='comment'><img src='%s%s' border=0>&nbsp;",url_images_path,COMMENT_ICON);
-	printf("<a href='%s?cmd_typ=%d'>",COMMAND_CGI,CMD_ADD_HOST_COMMENT);
+	printf("<a href='%s?cmd_typ=%d&host='>",COMMAND_CGI,CMD_ADD_HOST_COMMENT);
 	printf("Add a new host comment</a></div>\n");
 
 	printf("<BR />\n");
@@ -1955,7 +1955,7 @@ void show_all_comments(void){
 	printf("<DIV CLASS='commentTitle'>Service Comments</DIV>\n");
 
 	printf("<div CLASS='comment'><img src='%s%s' border=0>&nbsp;",url_images_path,COMMENT_ICON);
-	printf("<a href='%s?cmd_typ=%d'>",COMMAND_CGI,CMD_ADD_SVC_COMMENT);
+	printf("<a href='%s?cmd_typ=%d&host=&service='>",COMMAND_CGI,CMD_ADD_SVC_COMMENT);
 	printf("Add a new service comment</a></div>\n");
 
 	printf("<BR />\n");
@@ -2715,7 +2715,7 @@ void show_all_downtime(void){
 	printf("<DIV CLASS='downtimeTitle'>Scheduled Host Downtime</DIV>\n");
 
 	printf("<div CLASS='comment'><img src='%s%s' border=0>&nbsp;",url_images_path,DOWNTIME_ICON);
-	printf("<a href='%s?cmd_typ=%d'>",COMMAND_CGI,CMD_SCHEDULE_HOST_DOWNTIME);
+	printf("<a href='%s?cmd_typ=%d&host='>",COMMAND_CGI,CMD_SCHEDULE_HOST_DOWNTIME);
 	printf("Schedule host downtime</a></div>\n");
 
 	printf("<BR />\n");
@@ -2783,7 +2783,7 @@ void show_all_downtime(void){
 	printf("<DIV CLASS='downtimeTitle'>Scheduled Service Downtime</DIV>\n");
 
 	printf("<div CLASS='comment'><img src='%s%s' border=0>&nbsp;",url_images_path,DOWNTIME_ICON);
-	printf("<a href='%s?cmd_typ=%d'>",COMMAND_CGI,CMD_SCHEDULE_SVC_DOWNTIME);
+	printf("<a href='%s?cmd_typ=%d&host=&service='>",COMMAND_CGI,CMD_SCHEDULE_SVC_DOWNTIME);
 	printf("Schedule service downtime</a></div>\n");
 
 	printf("<BR />\n");

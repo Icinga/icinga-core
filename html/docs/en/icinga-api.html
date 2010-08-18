@@ -4,7 +4,7 @@
 <title>Installation and use of the Icinga API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Development">
 <link rel="prev" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">
 <link rel="next" href="ch11.html" title="Chapter 11. IDOUtils">
@@ -46,17 +46,50 @@
 
     <p>If you are using IDOUtils database as data source, install PHP-PDO.</p>
 
-    <p><span class="bold"><strong>RHEL/Fedora/CentOS</strong></span></p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <p><span class="bold"><strong>RHEL/Fedora/CentOS</strong></span></p>
 
-    <p>Make sure you have a repository/packages for PHP 5.2.x - RHEL/CentOS only support 5.1.6 out of the box.</p>
+            <p>Make sure you have a repository/packages for PHP 5.2.x - RHEL/CentOS only support 5.1.6 out of the box.</p>
 
-    <pre class="programlisting"># yum install php-pdo php-mysql|pgsql</pre>
+            <pre class="programlisting"> # yum install php-pdo php-mysql|pgsql</pre>
+        </li>
+<li class="listitem">
+            <p><span class="bold"><strong>Debian/Ubuntu</strong></span></p>
 
-    <p><span class="bold"><strong>Debian/Ubuntu</strong></span></p>
+            <pre class="programlisting"> # apt-get install php5 php5-mysql|pgsql</pre>
+        </li>
+<li class="listitem">
+            <p><span class="bold"><strong>openSuSE</strong></span></p>
 
-    <pre class="programlisting"># apt-get install php5 php5-mysql|pgsql</pre>
+            <p>Please use yast to install the packages php5, php5-pdo, and php5-mysql|php5-pgsql.</p>
+        </li>
+</ul></div>
 
     <p><span class="bold"><strong>Installation and Configuration</strong></span></p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Icinga API is already included in the package with Core, IDOUtils and docs and also installed during 'make install'. If you
+        already installed this package, there's no need to install Icinga API. It is located by default in /usr/local/icinga/share/icinga-api/ and you
+        can skip this section!</p>
+    </td></tr>
+</table></div>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>If you just require Icinga API for Icinga-Web, and already installed the Core with IDOUtils, skip this Howto and refer directly
+        to <a class="link" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">installing Icinga Web</a>.</p>
+    </td></tr>
+</table></div>
 
     <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -68,7 +101,7 @@
 
             <p>or if you just need an update:</p>
 
-            <pre class="programlisting"># cd icinga-api &amp;&amp; git pull origin master</pre>
+            <pre class="programlisting"> # cd icinga-api &amp;&amp; git pull origin master</pre>
 
             <p>or download the software using <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
         </li>
@@ -79,17 +112,24 @@
 
             <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
  # ./configure</pre>
-<p>You can set the prefix where it will be installed, and point Icinga API where your Icinga and IDOUtils config is located and which users are required to run (those settings are directly applied when installing the API through Icinga Core Installation).</p>
-<pre class="programlisting"># ./configure --datarootdir=/usr/local/icinga/share --sysconfdir=/usr/local/icinga/etc --with-command-user=icinga-cmd --with-command-group=icinga-cmd --with-icinga-user=icinga --with-icinga-group=icinga</pre>
 
-<pre class="programlisting"># make install</pre>
+            <p>You can set the prefix where it will be installed, and point Icinga API where your Icinga and IDOUtils config is located and which
+            users are required to run (those settings are directly applied when installing the API through Icinga Core Installation).</p>
 
+            <pre class="programlisting"> # ./configure --datarootdir=/usr/local/icinga/share \
+   --sysconfdir=/usr/local/icinga/etc \
+   --with-command-user=icinga-cmd \
+   --with-command-group=icinga-cmd \
+   --with-icinga-user=icinga \
+   --with-icinga-group=icinga</pre>
+
+            <pre class="programlisting"> # make install</pre>
         </li>
-<li class="listitem">
-            <p><span class="bold"><strong>Configuration</strong></span></p>
+</ol></div>
 
-            <p>If you are developing you own Addon based on the Icinga API, you need the following associative array.
-</p>
+    <p><span class="bold"><strong>Configuration</strong></span></p>
+
+    <p>If you are developing you own Addon based on the Icinga API, you need the following associative array. </p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
     'host'         =&gt; '&lt;Database hostname&gt;', 
@@ -101,7 +141,7 @@
  );</pre>
 <p> Example:</p>
 
-            <pre class="programlisting"> $idoConfig = array (
+    <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; 'mysql',
     'host'         =&gt; 'localhost',
     'database'     =&gt; 'ido',
@@ -110,11 +150,25 @@
     'persistent'   =&gt; true,
     'table_prefix' =&gt; 'icinga_',
  );</pre>
-        </li>
-</ol></div>
+
+    <p><span class="bold"><strong>Supported Backends</strong></span></p>
+
+    <p>Currently the following backend types are available. More information about that can be found in doc/icinga-api-types.txt. </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>IDOUtils DB - OK</p>
+            </li>
+<li class="listitem">
+                <p>Livestatus Module - experimental, not for productive usage</p>
+            </li>
+<li class="listitem">
+                <p>Filebased, status.dat - experimental, not for productive usage</p>
+            </li>
+</ul></div>
 
     <p><span class="bold"><strong>Use of the API</strong></span></p>
-<p>Examples can be found in doc/examples</p>
+
+    <p>Examples can be found in doc/examples</p>
 
     <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -205,9 +259,9 @@
         </li>
 </ol></div>
 
-    <a class="indexterm" name="id2011013"></a>
+    <a class="indexterm" name="id3520758"></a>
 
-    <a class="indexterm" name="id2011029"></a>
+    <a class="indexterm" name="id3520994"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>What's New in Icinga Core 1.0.2 and Icinga Web 1.0.1</title>
+<title>What's New in Icinga Core 1.0.3 and Icinga Web 1.0.3</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch01.html" title="Chapter 1. About">
 <link rel="prev" href="about.html" title="About Icinga">
 <link rel="next" href="ch02.html" title="Chapter 2. Getting Started">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">What's New in Icinga Core 1.0.2 and Icinga Web 1.0.1</th></tr>
+<tr><th colspan="3" align="center">What's New in Icinga Core 1.0.3 and Icinga Web 1.0.3</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="about.html">Prev</a> </td>
@@ -24,51 +24,64 @@
 </table>
 <hr>
 </div>
-<div class="section" title="What's New in Icinga Core 1.0.2 and Icinga Web 1.0.1">
+<div class="section" title="What's New in Icinga Core 1.0.3 and Icinga Web 1.0.3">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>What's New in Icinga Core 1.0.2 and Icinga Web 1.0.1</h2></div></div></div>
+<a name="whatsnew"></a>What's New in Icinga Core 1.0.3 and Icinga Web 1.0.3</h2></div></div></div>
     
 
     <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-    <p><span class="bold"><strong>Enhancements:</strong></span></p>
+    <p>* Config options: </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                <p>set initial state of persistence for acknowledgements</p>
+            </li>
+<li class="listitem">
+                <p>log_external_commands_user, user will be logged by core if sent through cmd pipe</p>
+            </li>
+<li class="listitem">
+                <p>disable logging of current state after rotation</p>
+            </li>
+<li class="listitem">
+                <p>log long plugin output</p>
+            </li>
+<li class="listitem">
+                <p>enable event handlers for stalked hosts/services</p>
+            </li>
+</ul></div>
 
-    <p>* core: Schedule Downtime for host and all services now works as expected</p>
+    <p>* Scheduled downtime can now start on SOFT error states</p>
 
-    <p>* core: Servicechecks with excluded timeperiods are correctly re-scheduled</p>
+    <p>* Rewrite execv check execution into execvp, allowing plugins in PATH and accepting 4k cmd args, with adapted error handling</p>
 
-    <p>* core: Error out if service_description is missing in service definition</p>
+    <p>* Fix all comments disappear after restart if one comment is non-persistent</p>
 
-    <p>* core: Added syslogd local facility</p>
+    <p>* Fix wrong is_volatile conditions causing wrong service alerts in the logs</p>
 
-    <p>* core: Use execv for active checks w/o metacharacters</p>
+    <p>* Fixes for mini_epn's; temp_path overwritten by check_result_path; service event handlers when service problem becomes hard during host
+    down</p>
 
-    <p>* core: Speed up loading retention.dat into the Core</p>
+    <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
 
-    <p>* core: Initscripts handle the lock file now correctly and outputs config errors</p>
+    <p>* Add syslog output for start/stop, client connecting</p>
 
-    <p>* core: Better Solaris detection (in progress)</p>
+    <p>* Add database trimming thread startup delay option</p>
 
-    <p>* core: Add event profiling option and dumping entire scheduling queue</p>
+    <p>* Full rewrite of binding NULL values for oracle with ocilib; fix select name1/name2</p>
 
-    <p>* cgis: display_name on host/service definition will be displayed in classical UI</p>
+    <p>* Modifiy and extend columns length for mysql/pgsql/oracle</p>
 
-    <p>* cgis: multiple urls for notes|action_url on host|service definition in classical UI</p>
+    <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
 
-    <p>* cgis: removing a comment on the classical UI does not delete all of them anymore</p>
+    <p>* Multiple commands sending to cmd.cgi</p>
 
-    <p>* idoutils: IDOMOD now has it's own object version on the NEB API, this requires both Icinga and IDOUtils to be upgraded to 1.0.2 – check
-    docs for more information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
+    <p>* Multiple host/service checkbox selection in status pages and sending commands from dropdown</p>
 
-    <p>* idoutils: Performance improvements on SQL queries and objects hash list</p>
+    <p>* Pause and continue page reload, useful for multiple commands sending</p>
 
-    <p><span class="bold"><strong>Fixes:</strong></span></p>
+    <p>* Add config options to: show long_output in status.cgi; show only HARD states in tac.cgi</p>
 
-    <p>* core: Fixes for Notification not/incorrectly being sent/calculated</p>
-
-    <p>* core: A long list of patches pending on mailinglists and trackers, check the Changelog for more information</p>
-
-    <p>* idoutils: Fixed major bug on IDOUtils object relations, causing huge performance issues - added upgrade scripts too</p>
+    <p>* Fix multiurl wrong names and macro processing</p>
 
     <p>To have a deeper look, please visit the Changelog</p>
 
@@ -78,29 +91,21 @@
 
     <p><span class="bold"><strong>Icinga Web:</strong></span></p>
 
-    <p>* Core code reduced and made more robust</p>
+    <p>* Adding new TacticalOverview template implementation</p>
 
-    <p>* Core code detatached to its owning modules</p>
+    <p>* Several IE compatibility fixes</p>
 
-    <p>* Module framework defined, extractor and installer</p>
+    <p>* Better commands, sending commands to its instances </p>
 
-    <p>* Principals now works in one step (one function code)</p>
+    <p>* Check for valid session and warn if expired</p>
 
-    <p>* Instances included</p>
+    <p>* Adding default welcome cronk setting</p>
 
-    <p>* Ajax driven filters, made some new filters</p>
+    <p>* Reorganized icon structure</p>
 
-    <p>* REST/Json api interface (web/api, <a class="link" href="https://dev.icinga.org/issues/305" target="_top">https://dev.icinga.org/issues/305</a>)</p>
+    <p>* Rewritten config namespace</p>
 
-    <p>* New summary cronk (faster, faster, faster)</p>
-
-    <p>* New cronk list (also categories, faster, faster, faster)</p>
-
-    <p>* Single click in the web interface</p>
-
-    <p>* Translation (not complete)</p>
-
- <p> Insidertips and more Documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
+    <p>Insidertips and more Documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
 
     <p>To have a deeper look, please visit the changelog-web</p>
 
@@ -118,15 +123,13 @@
 
     <p>* Updates and fixes for Web-Install-Section</p>
 
-    <p>* Updates for objectdefinitions</p>
+    <p>* Updates for objectdefinitions and Classic UI configuration options.</p>
 
-    <p>* New extended docs for the IDOUtils, Chapter 11.</p>
+    <p>* Updates for extended docs for the IDOUtils, Chapter 11.</p>
 
-    <p>* New section Running icinga - "Diagnostics"</p>
+    <p>* New testing guides for Icinga: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Icinga-Development</a></p>
 
-<p>* New testing guides for Icinga: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Icinga-Development</a></p>
-
-<p> Insidertips and more Documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
+    <p>Insidertips and more Documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
 
     <p>Should you find any issues, please report them to the following links:</p>
 
@@ -138,13 +141,75 @@
 
     <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
 
-    <a class="indexterm" name="id1915490"></a>
+    <a class="indexterm" name="id3423508"></a>
 
     <div class="section" title="Changelog of the Icinga Core">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-core"></a>Changelog of the Icinga Core</h3></div></div></div>
     
-
+<p><span class="bold"><strong>Icinga Core 1.0.3 - 18/08/2010 </strong></span></p>
+<p>* core: new config option to set initial state of persistence for acknowledgements</p>
+<p>* core: add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd</p>
+<p>* core: add config option to disable the logging of current state in log after rotation (Ricardo Bartels)</p>
+<p>* core: add config option to log long plugin output (Ricardo Bartels)</p>
+<p>* core: add config option to enable event handlers for stalked hosts/services (Petya Kohts)</p>
+<p>* core: scheduled downtime can now start on SOFT error states</p>
+<p>* idoutils: add syslog output for start/stop, client connecting</p>
+<p>* idoutils: add db trimming thread startup delay config option</p>
+<p>* classic ui: cgi config option to show long_plugin_output in status.cgi (Ricardo Bartels)</p>
+<p>* classic ui: add config option to only show HARD states in tac.cgi</p>
+<p>* classic ui: add multiple selection/command sending to host/service status page
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>added extra column in host and service status with checkboxes using jquery</p></li>
+<li class="listitem"><p>It is now possible to check off the hosts you want to send commands to Icinga.</p></li>
+<li class="listitem"><p>Ex: schedule downtime for a custom selection of hosts or X number of services.</p></li>
+</ul></div>
+<p>
+</p>
+<p>* classic ui: add a pause/continue update button (main parts by Steve Koenig). Affects status.cgi and allows to select and run commands w/o page reload</p>
+<p><span class="bold"><strong>FIXES:</strong></span></p>
+<p>* core: fix temp_path overwritten by check_result_path in base/config.c</p>
+<p>* core: modify execv to execvp, accepting 4096 cmd args, for both host and service checks with adapted error handling</p>
+<p>* core: execvp searches in PATH too like popen, and returns if error, outputting the errno string</p>
+<p>* core: fix possible overflows and increase command length limit in mini_epn's (Thomas Guyot-Sionnest)</p>
+<p>* core: fix new_mini_epn to allow any command line length without breaking on extra trailing or leading whitespace (Ray Bengen)</p>
+<p>* core: fix wrong is_volatile conditions causing wrong service alerts in the logs</p>
+<p>* core: fix notify-service-by-email command from the stock template cuts off service check output</p>
+<p>* core: fix service checks should recognize that exit code 126 means plugin is not executable</p>
+<p>* core: fix service event handlers when service problem becomes hard during host down</p>
+<p>* core: fix service in soft state after hard state without recovery</p>
+<p>* core: fix all comments disappear after restart if one user comment is non-persistent (Ricardo Bartels)</p>
+<p>* core: fix macro processing (Jochen Bern)</p>
+<p>* core: fix non-scheduled hosts/services not being updated in IDO*</p>
+<p>* core: move the malloc block in insert_skiplist below dupcheck to avoid memory leaks (Thomas Guyot-Sionnest, Holger Weiss)</p>
+<p>* classic ui: fix image urls in stylesheets</p>
+<p>* classic ui: remove check_daemon_running, remains useless</p>
+<p>* classic ui: fix multiurl action/status icon wrong name</p>
+<p>* classic ui: cmd.cgi "his" instead of "its" in command description</p>
+<p>* classic ui: fix customers can see machines from other customers when entering a downtime</p>
+<p>* classic ui: fix invalid pointer in extinfo.cgi type=7</p>
+<p>* classic ui: for new Splunk integration query parameters</p>
+<p>* classic ui: fix for incorrect host state counts in status CGI when viewing servicegroups</p>
+<p>* classic ui: fix for extra colum in CSV export</p>
+<p>* install: fix api not installed using make install-unstripped</p>
+<p>* install: enable debuginfo in spec file</p>
+<p>* install: remove daemonchk.cgi from init-script</p>
+<p>* install: improve output of rhel init-script</p>
+<p>* install: add config checks for start, reload and restart on rhel init script</p>
+<p>* install: fix duplicated configcheck on restart in init-script</p>
+<p>* install: fix specfile for idoutils description</p>
+<p>* install: fix Makefile output if Icinga API not available</p>
+<p>* install: fix t/ and daemon-ini-redhat in distclean</p>
+<p>* install: add note about api installed successfully</p>
+<p>* idoutils: adapt oracle-drop.sql for current schema</p>
+<p>* idoutils: fix binding null values to name1/name2 in oracle</p>
+<p>* idoutils: fix typo in servicedepencies query for oracle</p>
+<p>* idoutils: fix oracle prep statement contactnotifmethoddata</p>
+<p>* idoutils: full rewrite of binding NULL values for oracle with ocilib</p>
+<p>* idoutils: change display_name to varchar(255) for mysql/oracle</p>
+<p>* idoutils: update pgsql schema, replace varchar(n) by text</p>
+<p>* idoutils: change configfilevariables varvalue to 1024 length for mysql/oracle</p>
     <p><span class="bold"><strong>Icinga Core 1.0.2 - 30/06/2010 </strong></span></p>
 
     <p>* core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner</p>
@@ -800,15 +865,123 @@
 
     <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
 
-    <a class="indexterm" name="id1916970"></a>
+    <a class="indexterm" name="id3425269"></a>
 </div>
 
     <div class="section" title="Changelog of the Icinga Web">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-web"></a>Changelog of the Icinga Web</h3></div></div></div>
-  
+    
 
-<p><span class="bold"><strong>Icinga Web 1.0.1 30/06/2010</strong></span></p>
+    <p><span class="bold"><strong>Icinga Web 1.0.3 18/08/2010</strong></span></p>
+
+    <p>* Unify configure switches</p>
+
+    <p>* Added external version for configure</p>
+
+    <p>* Change login text to some more 'generic' (fixes #714)</p>
+
+    <p>* Changed icinga-api path to unify icinga style (fixes #445)</p>
+
+    <p>* Simplified js redirect</p>
+
+    <p>* Adding apache configuration for including</p>
+
+    <p>* Adding api connection switches (fixes #630)</p>
+
+    <p>* Fixed release string in HelloCronk</p>
+
+    <p>* Configure handling (ref #630)</p>
+
+    <p>* Substitude web:module.xml for api connection</p>
+
+    <p>* Doc for icinga-api connections</p>
+
+    <p>* Cleaned up namespaces</p>
+
+    <p>* Cleaned up icinga.xml</p>
+
+    <p>* Prepared version in configure</p>
+
+    <p>* Added normalizing in module configuration</p>
+
+    <p>* Files for Makefile</p>
+
+    <p>* Fix for 'groupsonly' cronk filter (Thanks to Birger)</p>
+
+    <p>* Modularized css and js files</p>
+
+    <p>* Global module namespace for module config</p>
+
+    <p>* Rewritten config namespace</p>
+
+    <p>* Reorganized the icon structure</p>
+
+    <p>* Fix for preferences settings for not logged in users</p>
+
+    <p>* Readded stateful log cronk</p>
+
+    <p>* Purge userprefs from the userpref screen</p>
+
+    <p>* Adding default welcome cronk setting</p>
+
+    <p>* Added hideable bars on cronk portal</p>
+
+    <p>* Fixed portlet resize issue (fixes #383)</p>
+
+    <p>* Better commands, sending commands to its instances (fixes #561)</p>
+
+    <p>* Adding per user grid attributes (fixes #567)</p>
+
+    <p>* Check valid session and warn if expired (fixes #606)</p>
+
+    <p>* Changed process of grid count queries</p>
+
+    <p>* Activated clean target (clean-&gt;distclean) (fixes #634)</p>
+
+    <p>* Bugfix for AM/PM times (fixes #360)</p>
+
+    <p>* Adding xtype to Cronk.factory to avoid empty cronks after reload</p>
+
+    <p>* Adding new icinga-throbber (Thanks Karo)</p>
+
+    <p>* Added position field for categories</p>
+
+    <p>* Adding charts template based on Ext pie charts</p>
+
+    <p>* Makefile files regeneration</p>
+
+    <p>* Splitted the xml templates into directories</p>
+
+    <p>* Finished host- / servicegroup to templates, Splitting templates into parts</p>
+
+    <p>* Icinga stateinfo class text wrapper</p>
+
+    <p>* Fixed Makefile files.mk (#fixes 619)</p>
+
+    <p>* Several IE compatibility fixes</p>
+
+    <p>* Adding new TacticalOverview template implementation</p>
+
+    <p>* Fixed Portlet view. Maybe persistence problems can occur</p>
+
+    <p>* Added disappeared validator in User/Edit.xml for altering connection</p>
+
+    <p>* Removed premilinary (and forgotten) email RegExp with a real one</p>
+
+    <p>* Recreated configure.ac for new version</p>
+
+    <p>* Add make-tarball for make create-tarball(-nightly)it is now possible to create git archived tarballs including submodules</p>
+
+    <p>* make create-tarball, creates normal tgz+md5</p>
+
+    <p>* make create-tarball-nightly, creates tgz+md5 with $date-$shortcommithash</p>
+
+    <p>* Disabled cache for squish loader, works better at the moment</p>
+
+    <p></p>
+
+    <p><span class="bold"><strong>Icinga Web 1.0.1 30/06/2010</strong></span></p>
 
     <p>* Core code reduced and made more robust</p>
 
@@ -832,153 +1005,153 @@
 
     <p>* Translation (not complete)</p>
 
-  <p><span class="bold"><strong>Icinga Web 0.9.1-beta- 03/03/2010</strong></span></p>
+    <p><span class="bold"><strong>Icinga Web 0.9.1-beta- 03/03/2010</strong></span></p>
 
-  <p>* Added some Icinga specific principal target classes</p>
+    <p>* Added some Icinga specific principal target classes</p>
 
-  <p>* Finished editing of principal targets for users and groups</p>
+    <p>* Finished editing of principal targets for users and groups</p>
 
-  <p>* Added editing models for principals</p>
+    <p>* Added editing models for principals</p>
 
-  <p>* Finished principal target filtering in xml templates</p>
+    <p>* Finished principal target filtering in xml templates</p>
 
-  <p>* Added default Icinga filter targets</p>
+    <p>* Added default Icinga filter targets</p>
 
-  <p>* Moved icinga lib to a new place</p>
+    <p>* Moved icinga lib to a new place</p>
 
-  <p>* Added principal target toolkit for api search queries</p>
+    <p>* Added principal target toolkit for api search queries</p>
 
-  <p>* Finished principal target framework</p>
+    <p>* Finished principal target framework</p>
 
-  <p>* Added full command specification</p>
+    <p>* Added full command specification</p>
 
-  <p>* Fixed filter window bug (#232)</p>
+    <p>* Fixed filter window bug (#232)</p>
 
-  <p>* Added host- / service status filter</p>
+    <p>* Added host- / service status filter</p>
 
-  <p>* Host- / serviceinfo info icons</p>
+    <p>* Host- / serviceinfo info icons</p>
 
-  <p>* ExtJs update to version 3.1</p>
+    <p>* ExtJs update to version 3.1</p>
 
-  <p>* DB field for class length 80 (principal target)</p>
+    <p>* DB field for class length 80 (principal target)</p>
 
-  <p>* CVs different for host and service (schema changes)</p>
+    <p>* CVs different for host and service (schema changes)</p>
 
-  <p>* Make fix for files (make)</p>
+    <p>* Make fix for files (make)</p>
 
-  <p>* Removed temp files</p>
+    <p>* Removed temp files</p>
 
-  <p>* Changes status icon files (from icinga theme, smaller)</p>
+    <p>* Changes status icon files (from icinga theme, smaller)</p>
 
-  <p>* Added some more state (flapping, downtime)</p>
+    <p>* Added some more state (flapping, downtime)</p>
 
-  <p>* Makefile bin permission (#245)</p>
+    <p>* Makefile bin permission (#245)</p>
 
-  <p>* Drop decision for phing</p>
+    <p>* Drop decision for phing</p>
 
-  <p>* Adapted the phing db targets to gnu make</p>
+    <p>* Adapted the phing db targets to gnu make</p>
 
-  <p>* Some makefile fixes, help text, targets</p>
+    <p>* Some makefile fixes, help text, targets</p>
 
-  <p>* Updated phing to stable version 2.3.3</p>
+    <p>* Updated phing to stable version 2.3.3</p>
 
-  <p>* Added AC options for db installing</p>
+    <p>* Added AC options for db installing</p>
 
-  <p>* AC rewrites build.properties for phing</p>
+    <p>* AC rewrites build.properties for phing</p>
 
-  <p>* Database.xml is now substituted by AC</p>
+    <p>* Database.xml is now substituted by AC</p>
 
-  <p>* Write some doc for the new install process</p>
+    <p>* Write some doc for the new install process</p>
 
-  <p>* Stateful framework is running</p>
+    <p>* Stateful framework is running</p>
 
-  <p>* Changed cookie encoding method to json</p>
+    <p>* Changed cookie encoding method to json</p>
 
-  <p>* Tabpanel is persistent</p>
+    <p>* Tabpanel is persistent</p>
 
-  <p>* Cookie write filter merges the data</p>
+    <p>* Cookie write filter merges the data</p>
 
-  <p>* Static content (tactical overview)</p>
+    <p>* Static content (tactical overview)</p>
 
-  <p>* ExtJS persistent fixes</p>
+    <p>* ExtJS persistent fixes</p>
 
-  <p>* Portal is persistent (column models)</p>
+    <p>* Portal is persistent (column models)</p>
 
-  <p>* Portal columns determined when dragging over</p>
+    <p>* Portal columns determined when dragging over</p>
 
-  <p>* Tactical overview</p>
+    <p>* Tactical overview</p>
 
-  <p>* Portalcronks height persistent</p>
+    <p>* Portalcronks height persistent</p>
 
-  <p>* Async cronk creation (Render hidden, render, show)</p>
+    <p>* Async cronk creation (Render hidden, render, show)</p>
 
-  <p>* Tactical overview template engine (ready)</p>
+    <p>* Tactical overview template engine (ready)</p>
 
-  <p>* Wrapped static content into a div</p>
+    <p>* Wrapped static content into a div</p>
 
-  <p>* Auto refresh grid panels (settings)</p>
+    <p>* Auto refresh grid panels (settings)</p>
 
-  <p>* Grid filters are persistent</p>
+    <p>* Grid filters are persistent</p>
 
-  <p>* Default font style</p>
+    <p>* Default font style</p>
 
-  <p>* Head elements (still missing ???)</p>
+    <p>* Head elements (still missing ???)</p>
 
-  <p>* Auth framework changed (Multiple, simultaneous)</p>
+    <p>* Auth framework changed (Multiple, simultaneous)</p>
 
-  <p>* Checked persistent, user specific data</p>
+    <p>* Checked persistent, user specific data</p>
 
-  <p>* Reducing mass persistent data of filter settings</p>
+    <p>* Reducing mass persistent data of filter settings</p>
 
-  <p>* Implemented categories for the cronks</p>
+    <p>* Implemented categories for the cronks</p>
 
-  <p>* Cronks for usergroups only (#262)</p>
+    <p>* Cronks for usergroups only (#262)</p>
 
-  <p><span class="bold"><strong>Icinga Web 0.9.1-alpha-16/12/2009</strong></span></p>
+    <p><span class="bold"><strong>Icinga Web 0.9.1-alpha-16/12/2009</strong></span></p>
 
-  <p>* Updated install-fromscratch.txt: Apache settings ...</p>
+    <p>* Updated install-fromscratch.txt: Apache settings ...</p>
 
-  <p>* Removed the yui top menu and implemented top nav with ExtJ</p>
+    <p>* Removed the yui top menu and implemented top nav with ExtJ</p>
 
-  <p>* Removed yui</p>
+    <p>* Removed yui</p>
 
-  <p>* Removed unused libraries (gc-prettify, jquery, firebug-lite)</p>
+    <p>* Removed unused libraries (gc-prettify, jquery, firebug-lite)</p>
 
-  <p>* Cherry-picked Hendriks makefile changes</p>
+    <p>* Cherry-picked Hendriks makefile changes</p>
 
-  <p>* Changed installer toolkit to make basic installs</p>
+    <p>* Changed installer toolkit to make basic installs</p>
 
-  <p>* Installer fixes: paths and permissions</p>
+    <p>* Installer fixes: paths and permissions</p>
 
-  <p>* Added explicit bin owner for webfiles</p>
+    <p>* Added explicit bin owner for webfiles</p>
 
-  <p>* Added rabbit dropping script to clear temp and bak files</p>
+    <p>* Added rabbit dropping script to clear temp and bak files</p>
 
-  <p>* Added deflate to htaccess</p>
+    <p>* Added deflate to htaccess</p>
 
-  <p>* Fixed guest users for the menuextender (adding items before admin submenu)</p>
+    <p>* Fixed guest users for the menuextender (adding items before admin submenu)</p>
 
-  <p>* Commands should work (Templates, Ajax proc, command factory, auth, ...)</p>
+    <p>* Commands should work (Templates, Ajax proc, command factory, auth, ...)</p>
 
-  <p>* Changing API result keys to uppercase</p>
+    <p>* Changing API result keys to uppercase</p>
 
-  <p>* Opera array type fixes (notification baloon)</p>
+    <p>* Opera array type fixes (notification baloon)</p>
 
-  <p>* Added AC macro to detect the web user</p>
+    <p>* Added AC macro to detect the web user</p>
 
-  <p>* Global xml replacements within the templates (view proc)</p>
+    <p>* Global xml replacements within the templates (view proc)</p>
 
-  <p>* Updating ExtJS to 3.0.3</p>
+    <p>* Updating ExtJS to 3.0.3</p>
 
-  <p>* Removed php notice warnings (isset, undef vars)</p>
+    <p>* Removed php notice warnings (isset, undef vars)</p>
 
-  <p>* Fixed make error (#206)</p>
+    <p>* Fixed make error (#206)</p>
 
-  <p><span class="bold"><strong>Icinga Web 0.9.0-alpha -28/10/2009</strong></span></p>
+    <p><span class="bold"><strong>Icinga Web 0.9.0-alpha -28/10/2009</strong></span></p>
 
-  <p>* This is the initial release, prototyping, testing, think about features</p>
+    <p>* This is the initial release, prototyping, testing, think about features</p>
 
-  <a class="indexterm" name="id1917318"></a>
+    <a class="indexterm" name="id3425843"></a>
 </div>
 </div>
 <div class="navfooter">
