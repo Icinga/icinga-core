@@ -2090,6 +2090,7 @@ void show_host_detail(void){
 	printf("<TH CLASS='status'>Status Information</TH>\n");
 
 	/* Add a checkbox so every host can be checked */
+	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);isValidForSubmit();'></TH>\n");
 
 	printf("</TR>\n");
 
