@@ -11,9 +11,9 @@ function replaceArgString(string)
 	sInString = string.replace( ToBeStripped, '' ); 
 	return sInString;
 }
-function cmd_submit()
+function cmd_submit(form)
 {
-	command_arguments = get_check_value();
+	command_arguments = get_check_value(form);
 	cmd_typ = 'cmd_typ=' + document.tableform.hiddencmdfield.value
 	if (document.tableform.hiddenforcefield.value == 'yes')
 	{
@@ -32,9 +32,9 @@ function cmd_submit()
 	//alert(fullurl);
         return fullurl;
 }
-function isValidForSubmit()
+function isValidForSubmit(form)
 {
-        var group = document.getElementById('tableform');
+        var group = document.getElementById(form);
         var x, len = group.length;
         for(x=0; x<len; x++)
         {

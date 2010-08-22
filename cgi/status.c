@@ -622,7 +622,7 @@ void document_header(int use_stylesheet){
         printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>");
 
         /* Print out the activator for the dropdown (which must be between the body tags */
-        printf("<script language='javascript'>");
+        /* printf("<script language='javascript'>");
         printf("$(document).ready(function(e) {");
         printf("try {");
         printf("$('body select').msDropDown();");
@@ -631,7 +631,7 @@ void document_header(int use_stylesheet){
         printf("}");
         printf("});");
         printf("</script>\n");
-
+	*/
 	/* include user SSI header */
 	include_ssi_files(STATUS_CGI,SSI_HEADER);
 
@@ -1488,7 +1488,7 @@ void show_service_detail(void){
 	printf("<TH CLASS='status'>Status Information</TH>\n");
 
 	/* Add checkbox so every service can be checked */
-	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);isValidForSubmit();'></TH>\n");
+	printf("<TH CLASS='status'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
 
 	printf("</TR>\n");
 
@@ -1911,7 +1911,7 @@ void show_service_detail(void){
                         printf("</TD>\n");
 
 			/* Checkbox for service(s) */
-			printf("<TD CLASS='status%s' nowrap><input onclick='isValidForSubmit();' type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
+			printf("<TD CLASS='status%s' nowrap><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
 			printf("&service=%s'></TD>\n",url_encode(temp_status->description));
 
 			/*
@@ -2090,7 +2090,7 @@ void show_host_detail(void){
 	printf("<TH CLASS='status'>Status Information</TH>\n");
 
 	/* Add a checkbox so every host can be checked */
-	printf("<TH CLASS='status'><input type='checkbox' value=all onclick='checkAll(tableform);isValidForSubmit();'></TH>\n");
+	printf("<TH CLASS='status'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
 
 	printf("</TR>\n");
 
@@ -2333,7 +2333,7 @@ void show_host_detail(void){
                        printf("</TD>\n");
 
                         /* Checkbox for host(s) */
-                        printf("<TD CLASS='status%s' valign='center'><input onClick='isValidForSubmit();' type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
+                        printf("<TD CLASS='status%s' valign='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
 
 			/*
 			if(enable_splunk_integration==TRUE)
@@ -5417,7 +5417,7 @@ void show_servicecommand_table(void){
                 printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
         printf("</select>");
         //printf("<br><br><b><a class='serviceTotalsCommands' onClick=cmd_submit()>Submit</a></b>\n");
-        printf("<br><br><b><input type=\"button\"name=\"serviceTotalsCommandsButton\" value=\"Submit\" class=\"serviceTotalsCommands\" onClick=cmd_submit() disabled=\"disabled\"></b>\n");
+        printf("<br><br><b><input type=\"button\"name=\"serviceTotalsCommandsButton\" value=\"Submit\" class=\"serviceTotalsCommands\" onClick=\"cmd_submit('tableform')\" disabled=\"disabled\"></b>\n");
         }
 
 /* Display a table with the commands for checked checkboxes, for hosts */
@@ -5456,6 +5456,6 @@ void show_hostcommand_table(void){
                 printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
         printf("</select>");
         //printf("<br><br><b><a class='hostTotalsCommands' onClick=cmd_submit()>Submit</a></b>\n");
-        printf("<br><br><b><input type=\"button\" name=\"hostTotalsCommandsButton\" value=\"Submit\" class=\"hostTotalsCommands\" onClick=cmd_submit() disabled=\"disabled\"></b>\n");
+        printf("<br><br><b><input type=\"button\" name=\"hostTotalsCommandsButton\" value=\"Submit\" class=\"hostTotalsCommands\" onClick=\"cmd_submit('tableform')\" disabled=\"disabled\"></b>\n");
         }
 /* The cake is a lie! */
