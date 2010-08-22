@@ -622,7 +622,7 @@ void document_header(int use_stylesheet){
         printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>");
 
         /* Print out the activator for the dropdown (which must be between the body tags */
-        /* printf("<script language='javascript'>");
+        printf("<script language='javascript'>");
         printf("$(document).ready(function(e) {");
         printf("try {");
         printf("$('body select').msDropDown();");
@@ -631,7 +631,7 @@ void document_header(int use_stylesheet){
         printf("}");
         printf("});");
         printf("</script>\n");
-	*/
+
 	/* include user SSI header */
 	include_ssi_files(STATUS_CGI,SSI_HEADER);
 
