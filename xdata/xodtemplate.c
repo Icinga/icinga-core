@@ -5479,6 +5479,7 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
                         return ERROR;
                 
                 /* string defaults */
+		new_escalationcondition->next=NULL;
                 new_escalationcondition->host_name=NULL;
                 new_escalationcondition->service_description=NULL;
                 
@@ -5502,6 +5503,7 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
                 new_escalationcondition->escalate_on_unknown=temp_escalationcondition->escalate_on_unknown;
                 new_escalationcondition->escalate_on_unreachable=temp_escalationcondition->escalate_on_unreachable;
                 new_escalationcondition->escalate_on_warning=temp_escalationcondition->escalate_on_warning;
+		new_escalationcondition->connector=temp_escalationcondition->connector;
                 
                 /* first escalation condition is head of the condition list */
                 if(new_hostescalation->condition==NULL){
@@ -5632,6 +5634,7 @@ int xodtemplate_duplicate_serviceescalation(xodtemplate_serviceescalation *temp_
                         return ERROR;
  
                 /* string defaults */
+		new_escalationcondition->next=NULL;
                 new_escalationcondition->host_name=NULL;
                 new_escalationcondition->service_description=NULL;
  
@@ -5655,6 +5658,7 @@ int xodtemplate_duplicate_serviceescalation(xodtemplate_serviceescalation *temp_
                 new_escalationcondition->escalate_on_unknown=temp_escalationcondition->escalate_on_unknown;
                 new_escalationcondition->escalate_on_unreachable=temp_escalationcondition->escalate_on_unreachable;
                 new_escalationcondition->escalate_on_warning=temp_escalationcondition->escalate_on_warning;
+		new_escalationcondition->connector=temp_escalationcondition->connector;
                 
                 /* first escalation condition is head of the condition list */
                 if(new_serviceescalation->condition==NULL){
