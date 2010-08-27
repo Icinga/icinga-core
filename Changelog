@@ -7,6 +7,8 @@ Icinga 1.0.x Change Log
 ENHANCEMENTS
 * core: add eventhandler override (Sven Nierlein)
 
+* classic ui: change menu, add unhandled host/service problems
+
 
 FIXES
 * core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret)
