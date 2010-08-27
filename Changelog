@@ -7,6 +7,10 @@ Icinga 1.0.x Change Log
 ENHANCEMENTS
 * core: add eventhandler override (Sven Nierlein)
 
+* classic ui: add commands expander to config display (Jochen Bern)
+	- $ARGn$ substitution will be shown between command_line and
+	  check_command associated for hosts, services, etc and help
+	  getting to know/use commands the core will execute.
 * classic ui: change menu, add unhandled host/service problems
 
 
