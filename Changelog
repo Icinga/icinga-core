@@ -9,6 +9,8 @@ ENHANCEMENTS
 
 
 FIXES
+* core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret)
+
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
 
 
