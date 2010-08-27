@@ -2,6 +2,16 @@
 Icinga 1.0.x Change Log
 #######################
 
+1.0.4 - 06/10/2010
+
+ENHANCEMENTS
+* core: add eventhandler override (Sven Nierlein)
+
+
+FIXES
+* classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
+
+
 1.0.3 - 18/08/2010
 
 ENHANCEMENTS
