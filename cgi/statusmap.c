@@ -39,8 +39,6 @@
 #include <gd.h>			/* Boutell's GD library function */
 #include <gdfonts.h>		/* GD library small font definition */
 
-extern int             refresh_rate;
-
 /*#define DEBUG*/
 
 #define UNKNOWN_GD2_ICON      "unknown.gd2"
@@ -82,9 +80,6 @@ extern int default_statusmap_layout_method;
 
 #define CIRCULAR_DRAWING_RADIUS         100
 
-#define CREATE_HTML	0
-#define CREATE_IMAGE	1
-
 #define LAYOUT_USER_SUPPLIED            0
 #define LAYOUT_SUBLAYERS                1
 #define LAYOUT_COLLAPSED_TREE           2
@@ -99,9 +94,6 @@ typedef struct layer_struct{
 	struct layer_struct *next;
         }layer;
 
-
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 void display_page_header(void);
@@ -119,7 +111,6 @@ void draw_host_links(void);
 void draw_hosts(void);
 void draw_host_text(char *,int,int);
 void draw_text(char *,int,int,int);
-void write_popup_code(void);
 void write_host_popup_text(host *);
 
 int initialize_graphics(void);
@@ -153,7 +144,7 @@ char physical_logo_images_path[MAX_FILENAME_LENGTH];
 
 authdata current_authdata;
 
-int create_type=CREATE_HTML;
+extern int content_type;
 
 gdImagePtr unknown_logo_image=NULL;
 gdImagePtr logo_image=NULL;
@@ -178,10 +169,11 @@ extern int color_transparency_index_b;
 int show_all_hosts=TRUE;
 char *host_name="all";
 
-int embedded=FALSE;
-int refresh=TRUE;
-int display_header=TRUE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int refresh;
+extern int display_header;
+extern int daemon_check;
+
 int display_popups=TRUE;
 int use_links=TRUE;
 int use_text=TRUE;
@@ -229,9 +221,7 @@ layer *layer_list=NULL;
 int exclude_layers=TRUE;
 int all_layers=FALSE;
 
-
-
-
+int CGI_ID=STATUSMAP_CGI_ID;
 
 int main(int argc, char **argv){
 	int result;
@@ -242,10 +232,10 @@ int main(int argc, char **argv){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
-		if(create_type==CREATE_HTML)
+		document_header(CGI_ID,FALSE);
+		if(content_type==HTML_CONTENT)
 			cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
@@ -258,30 +248,30 @@ int main(int argc, char **argv){
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
-		if(create_type==CREATE_HTML)
+		document_header(CGI_ID,FALSE);
+		if(content_type==HTML_CONTENT)
 			main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
-		if(create_type==CREATE_HTML)
+		document_header(CGI_ID,FALSE);
+		if(content_type==HTML_CONTENT)
 			object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		document_header(FALSE);
-		if(create_type==CREATE_HTML)
+		document_header(CGI_ID,FALSE);
+		if(content_type==HTML_CONTENT)
 			status_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
                 }
@@ -290,7 +280,7 @@ int main(int argc, char **argv){
 	init_macros();
 
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -298,7 +288,7 @@ int main(int argc, char **argv){
 	/* display the network map... */
 	display_map();
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free all allocated memory */
 	free_memory();
@@ -306,96 +296,6 @@ int main(int argc, char **argv){
 
 	return OK;
         }
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	if(create_type==CREATE_HTML){
-		printf("Cache-Control: no-store\r\n");
-		printf("Pragma: no-cache\r\n");
-
-		if(refresh=TRUE)
-			printf("Refresh: %d\r\n",refresh_rate);
-
-		time(&current_time);
-		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Last-Modified: %s\r\n",date_time);
-
-		expire_time=0L;
-		get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Expires: %s\r\n",date_time);
-
-		printf("Content-Type: text/html\r\n\r\n");
-
-		if(embedded==TRUE)
-			return;
-
-		printf("<html>\n");
-		printf("<head>\n");
-		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-		printf("<title>\n");
-		printf("Network Map\n");
-		printf("</title>\n");
-
-		if(use_stylesheet==TRUE){
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,STATUSMAP_CSS);
-		        }
-
-		/* write JavaScript code for popup window */
-		write_popup_code();
-
-		printf("</head>\n");
-		
-		printf("<body CLASS='statusmap' name='mappage' id='mappage'>\n");
-
-		/* include user SSI header */
-		include_ssi_files(STATUSMAP_CGI,SSI_HEADER);
-
-		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
-	        }
-
-	else{
-		printf("Cache-Control: no-store\n");
-		printf("Pragma: no-cache\n");
-
-		time(&current_time);
-		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Last-Modified: %s\n",date_time);
-
-		expire_time=(time_t)0L;
-		get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Expires: %s\n",date_time);
-
-		printf("Content-Type: image/png\n\n");
-	        }
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	if(create_type==CREATE_HTML){
-
-		/* include user SSI footer */
-		include_ssi_files(STATUSMAP_CGI,SSI_FOOTER);
-
-		printf("</body>\n");
-		printf("</html>\n");
-	        }
-
-	return;
-        }
-
-
 
 int process_cgivars(void){
 	char **variables;
@@ -433,7 +333,7 @@ int process_cgivars(void){
 
 		/* we found the image creation option */
 		else if(!strcmp(variables[x],"createimage")){
-			create_type=CREATE_IMAGE;
+			content_type=IMAGE_CONTENT;
 		        }
 
 		/* we found the embed option */
@@ -617,7 +517,7 @@ void display_page_header(void){
 	int found=0;
 
 
-	if(create_type!=CREATE_HTML)
+	if(content_type!=HTML_CONTENT)
 		return;
 
 	if(display_header==TRUE){
@@ -838,12 +738,12 @@ void display_map(void){
 	draw_background_extras();
 	draw_host_links();
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		printf("<map name='statusmap'>\n");
 
 	draw_hosts();
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		printf("</map>\n");
 
 	write_graphics();
@@ -851,7 +751,7 @@ void display_map(void){
 
 
 	/* write the URL location for the image we just generated - the web browser will come and get it... */
-	if(create_type==CREATE_HTML){
+	if(content_type==HTML_CONTENT){
 		printf("<P><DIV ALIGN=center>\n");
 		printf("<img src='%s?host=%s&createimage&time=%lu",STATUSMAP_CGI,url_encode(host_name),(unsigned long)time(NULL));
 		printf("&canvas_x=%d&canvas_y=%d&canvas_width=%d&canvas_height=%d&max_width=%d&max_height=%d&layout=%d%s%s%s",canvas_x,canvas_y,canvas_width,canvas_height,max_image_width,max_image_height,layout_method,(use_links==FALSE)?"&nolinks":"",(use_text==FALSE)?"&notext":"",(use_highlights==FALSE)?"&nohighlights":"");
@@ -1396,7 +1296,7 @@ void load_background_image(void){
 	        }
 
 	/* if we are just creating the html, we don't need the image anymore */
-	if(create_type==CREATE_HTML && background_image!=NULL)
+	if(content_type==HTML_CONTENT && background_image!=NULL)
 		gdImageDestroy(background_image);
 
 	return;
@@ -1407,7 +1307,7 @@ void load_background_image(void){
 void draw_background_image(void){
 
 	/* bail out if we shouldn't be drawing a background image */
-	if(create_type==CREATE_HTML || layout_method!=LAYOUT_USER_SUPPLIED || statusmap_background_image==NULL)
+	if(content_type==HTML_CONTENT || layout_method!=LAYOUT_USER_SUPPLIED || statusmap_background_image==NULL)
 		return;
 
 	/* bail out if we don't have an image */
@@ -1429,7 +1329,7 @@ void draw_background_image(void){
 void draw_background_extras(void){
 
 	/* bail out if we shouldn't be here */
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	/* circular layout stuff... */
@@ -1458,7 +1358,7 @@ void draw_host_links(void){
 	int x=0;
 	int y=0;
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	if(use_links==FALSE)
@@ -1602,7 +1502,7 @@ void draw_hosts(void){
 	/* user didn't supply any coordinates for hosts, so display a warning */
 	if(coordinates_were_specified==FALSE){
 
-		if(create_type==CREATE_IMAGE){
+		if(content_type==IMAGE_CONTENT){
 			draw_text("You have not supplied any host drawing coordinates, so you cannot use this layout method.",(COORDS_WARNING_WIDTH/2),30,color_black);
 			draw_text("Read the FAQs for more information on specifying drawing coordinates or select a different layout method.",(COORDS_WARNING_WIDTH/2),45,color_black);
 		        }
@@ -1640,7 +1540,7 @@ void draw_hosts(void){
 			draw_line(x2,y1,x1,y1,color_black);
 	                }
 
-		if(create_type==CREATE_IMAGE)
+		if(content_type==IMAGE_CONTENT)
 			draw_text("Icinga Process",x1+(DEFAULT_NODE_WIDTH/2),y1+DEFAULT_NODE_HEIGHT,color_black);
 	        }
 
@@ -1665,7 +1565,7 @@ void draw_hosts(void){
 		y1=temp_host->y_2d-canvas_y;
 		y2=y1+DEFAULT_NODE_HEIGHT;
 
-		if(create_type==CREATE_IMAGE){
+		if(content_type==IMAGE_CONTENT){
 
 
 			temp_hoststatus=find_hoststatus(temp_host->name);
@@ -2047,7 +1947,7 @@ void write_host_popup_text(host *hst){
 /* draws a solid line */
 void draw_line(int x1,int y1,int x2,int y2,int color){
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	gdImageLine(map_image,x1,y1,x2,y2,color);
@@ -2118,7 +2018,7 @@ void draw_dashed_line(int x1,int y1,int x2,int y2,int color){
 int initialize_graphics(void){
 	char image_input_file[MAX_INPUT_BUFFER];
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return ERROR;
 
 	/* allocate buffer for storing image */
@@ -2218,7 +2118,7 @@ gdImagePtr load_image_from_file(char *filename){
 void write_graphics(void){
 	FILE *image_output_file=NULL;
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	/* use STDOUT for writing the image data... */
@@ -2237,7 +2137,7 @@ void write_graphics(void){
 /* cleanup graphics resources */
 void cleanup_graphics(void){
 
-	if(create_type==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	/* free memory allocated to image */
@@ -2252,94 +2152,6 @@ void cleanup_graphics(void){
 /******************************************************************/
 /************************* MISC FUNCTIONS *************************/
 /******************************************************************/
-
-
-/* write JavaScript code an layer for popup window */
-void write_popup_code(void){
-	char *border_color="#000000";
-	char *background_color="#ffffcc";
-	int border=1;
-	int padding=3;
-	int x_offset=3;
-	int y_offset=3;
-
-	printf("<SCRIPT LANGUAGE='JavaScript'>\n");
-	printf("<!--\n");
-	printf("// JavaScript popup based on code originally found at http://www.helpmaster.com/htmlhelp/javascript/popjbpopup.htm\n");
-	printf("function showPopup(text, eventObj){\n");
-	printf("if(!document.all && document.getElementById)\n");
-	printf("{ document.all=document.getElementsByTagName(\"*\")}\n");
-	printf("ieLayer = 'document.all[\\'popup\\']';\n");
-	printf("nnLayer = 'document.layers[\\'popup\\']';\n");
-	printf("moLayer = 'document.getElementById(\\'popup\\')';\n");
-
-	printf("if(!(document.all||document.layers||document.documentElement)) return;\n");
-
-	printf("if(document.all) { document.popup=eval(ieLayer); }\n");
-	printf("else {\n");
-	printf("  if (document.documentElement) document.popup=eval(moLayer);\n");
-	printf("  else document.popup=eval(nnLayer);\n");
-	printf("}\n");
-
-	printf("var table = \"\";\n");
-
-	printf("if (document.all||document.documentElement){\n");
-	printf("table += \"<table bgcolor='%s' border=%d cellpadding=%d cellspacing=0>\";\n",background_color,border,padding);
-	printf("table += \"<tr><td>\";\n");
-	printf("table += \"<table cellspacing=0 cellpadding=%d>\";\n",padding);
-	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr>\";\n",background_color);
-	printf("table += \"</table></td></tr></table>\"\n");
-	printf("document.popup.innerHTML = table;\n");
-	printf("document.popup.style.left = document.body.scrollLeft + %d;\n",x_offset);
-	printf("document.popup.style.top = document.body.scrollTop + %d;\n",y_offset);
-	/*
-	printf("document.popup.style.left = (document.all ? eventObj.x : eventObj.layerX) + %d;\n",x_offset);
-	printf("document.popup.style.top  = (document.all ? eventObj.y : eventObj.layerY) + %d;\n",y_offset);
-	*/
-
-	printf("document.popup.style.visibility = \"visible\";\n");
-	printf("} \n");
-
-
-	printf("else{\n");
-	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n",padding,border,border_color);
-	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr></table>\";\n",background_color);
-	printf("document.popup.document.open();\n");
-	printf("document.popup.document.write(table);\n");
-	printf("document.popup.document.close();\n");
-
-	/* set x coordinate */
-	printf("document.popup.left = eventObj.layerX + %d;\n",x_offset);
-	
-	/* make sure we don't overlap the right side of the screen */
-	printf("if(document.popup.left + document.popup.document.width + %d > window.innerWidth) document.popup.left = window.innerWidth - document.popup.document.width - %d - 16;\n",x_offset,x_offset);
-		
-	/* set y coordinate */
-	printf("document.popup.top  = eventObj.layerY + %d;\n",y_offset);
-	
-	/* make sure we don't overlap the bottom edge of the screen */
-	printf("if(document.popup.top + document.popup.document.height + %d > window.innerHeight) document.popup.top = window.innerHeight - document.popup.document.height - %d - 16;\n",y_offset,y_offset);
-		
-	/* make the popup visible */
-	printf("document.popup.visibility = \"visible\";\n");
-	printf("}\n");
-	printf("}\n");
-
-	printf("function hidePopup(){ \n");
-	printf("if (!(document.all || document.layers || document.documentElement)) return;\n");
-	printf("if (document.popup == null){ }\n");
-	printf("else if (document.all||document.documentElement) document.popup.style.visibility = \"hidden\";\n");
-	printf("else document.popup.visibility = \"hidden\";\n");
-	printf("document.popup = null;\n");
-	printf("}\n");
-	printf("//-->\n");
-
-	printf("</SCRIPT>\n");
-
-	return;
-        }
-
-
 
 /* adds a layer to the list in memory */
 int add_layer(char *group_name){

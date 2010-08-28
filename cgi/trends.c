@@ -82,10 +82,6 @@ extern skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
 #define GET_INPUT_SERVICE_TARGET 3
 #define GET_INPUT_OPTIONS       4
 
-/* modes */
-#define CREATE_HTML		0
-#define CREATE_IMAGE		1
-
 /* standard report times */
 #define TIMEPERIOD_CUSTOM	0
 #define TIMEPERIOD_TODAY	1
@@ -139,7 +135,7 @@ int end_month=1;
 int end_year=2000;
 
 int display_type=DISPLAY_NO_TRENDS;
-int mode=CREATE_HTML;
+extern int content_type;
 int input_type=GET_INPUT_NONE;
 int timeperiod_type=TIMEPERIOD_LAST24HOURS;
 int compute_time_from_parts=FALSE;
@@ -147,9 +143,9 @@ int compute_time_from_parts=FALSE;
 int display_popups=TRUE;
 int use_map=TRUE;
 int small_image=FALSE;
-int embedded=FALSE;
-int display_header=TRUE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int display_header;
+extern int daemon_check;
 
 int assume_initial_states=TRUE;
 int assume_state_retention=TRUE;
@@ -179,10 +175,7 @@ void convert_timeperiod_to_times(int);
 void compute_report_times(void);
 void get_time_breakdown_string(unsigned long,unsigned long,char *,char *buffer,int);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
-void write_popup_code(void);
 
 gdImagePtr trends_image=0;
 int color_white=0;
@@ -245,8 +238,7 @@ unsigned long time_warning=0L;
 unsigned long time_unknown=0L;
 unsigned long time_critical=0L;
 
-
-
+int CGI_ID=TRENDS_CGI_ID;
 
 int main(int argc, char **argv){
 	int result=OK;
@@ -275,10 +267,10 @@ int main(int argc, char **argv){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			cgi_config_file_error(get_cgi_config_location());
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
 	        }
@@ -286,10 +278,10 @@ int main(int argc, char **argv){
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			main_config_file_error(main_config_file);
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
 	        }
@@ -327,10 +319,10 @@ int main(int argc, char **argv){
 
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			object_data_error();
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
                 }
@@ -338,15 +330,15 @@ int main(int argc, char **argv){
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			status_data_error();
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
                 }
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	if(compute_time_from_parts==TRUE)
 		compute_report_times();
@@ -365,7 +357,7 @@ int main(int argc, char **argv){
 			t1=t2-(60*60*24);
 	        }
 			
-	if(mode==CREATE_HTML && display_header==TRUE){
+	if(content_type==HTML_CONTENT && display_header==TRUE){
 
 		/* begin top table */
 		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
@@ -582,10 +574,10 @@ int main(int argc, char **argv){
 	        }
 	if(is_authorized==FALSE){
 
-		if(mode==CREATE_HTML)
+		if(content_type==HTML_CONTENT)
 			printf("<P><DIV ALIGN=CENTER CLASS='errorMessage'>It appears as though you are not authorized to view information for the specified %s...</DIV></P>\n",(display_type==DISPLAY_HOST_TRENDS)?"host":"service");
 
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
 	        }
@@ -639,7 +631,7 @@ int main(int argc, char **argv){
 
 
 	/* initialize PNG image */
-	if(display_type!=DISPLAY_NO_TRENDS && mode==CREATE_IMAGE){
+	if(display_type!=DISPLAY_NO_TRENDS && content_type==IMAGE_CONTENT){
 
 		if(small_image==TRUE){
 			trends_image=gdImageCreate(image_width,image_height);
@@ -735,7 +727,7 @@ int main(int argc, char **argv){
 	if(display_type!=DISPLAY_NO_TRENDS && input_type==GET_INPUT_NONE){
 
 
-		if(mode==CREATE_IMAGE || (mode==CREATE_HTML && use_map==TRUE)){
+		if(content_type==IMAGE_CONTENT || (content_type==HTML_CONTENT && use_map==TRUE)){
 
 			/* read in all necessary archived state data */
 			read_archived_state_data();
@@ -745,7 +737,7 @@ int main(int argc, char **argv){
 		        }
 
 		/* print URL to image */
-		if(mode==CREATE_HTML){
+		if(content_type==HTML_CONTENT){
 
 			printf("<BR><BR>\n");
 			printf("<DIV ALIGN=CENTER>\n");
@@ -766,7 +758,7 @@ int main(int argc, char **argv){
 			printf("</DIV>\n");
 		        }
 
-		if(mode==CREATE_IMAGE || (mode==CREATE_HTML && use_map==TRUE)){
+		if(content_type==IMAGE_CONTENT || (content_type==HTML_CONTENT && use_map==TRUE)){
 
 			/* draw timestamps */
 			draw_timestamps();
@@ -778,7 +770,7 @@ int main(int argc, char **argv){
 			draw_time_breakdowns();
 		        }
 
-		if(mode==CREATE_IMAGE){
+		if(content_type==IMAGE_CONTENT){
 
 			/* use STDOUT for writing the image data... */
 			image_file=stdout;
@@ -1101,7 +1093,7 @@ int main(int argc, char **argv){
 		
                 }
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free memory allocated to the archived state data list */
 	free_archived_state_list();
@@ -1111,95 +1103,6 @@ int main(int argc, char **argv){
 
 	return OK;
         }
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	if(mode==CREATE_HTML){
-		printf("Cache-Control: no-store\r\n");
-		printf("Pragma: no-cache\r\n");
-
-		time(&current_time);
-		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Last-Modified: %s\r\n",date_time);
-
-		expire_time=(time_t)0;
-		get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Expires: %s\r\n",date_time);
-
-		printf("Content-type: text/html\r\n\r\n");
-
-		if(embedded==TRUE)
-			return;
-
-		printf("<html>\n");
-		printf("<head>\n");
-		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-		printf("<title>\n");
-		printf("%s Trends\n", PROGRAM_NAME);
-		printf("</title>\n");
-
-		if(use_stylesheet==TRUE){
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,TRENDS_CSS);
-		        }
-		
-		/* write JavaScript code for popup window */
-		if(display_type!=DISPLAY_NO_TRENDS)
-			write_popup_code();
-
-		printf("</head>\n");
-
-		printf("<BODY CLASS='trends'>\n");
-
-		/* include user SSI header */
-		include_ssi_files(TRENDS_CGI,SSI_HEADER);
-
-		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
-	        }
-
-	else{
-		printf("Cache-Control: no-store\r\n");
-		printf("Pragma: no-cache\r\n");
-
-		time(&current_time);
-		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Last-Modified: %s\r\n",date_time);
-
-		expire_time=(time_t)0L;
-		get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Expires: %s\r\n",date_time);
-
-		printf("Content-Type: image/png\r\n\r\n");
-	        }
-
-	return;
-        }
-
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	if(mode==CREATE_HTML){
-
-		/* include user SSI footer */
-		include_ssi_files(TRENDS_CGI,SSI_FOOTER);
-
-		printf("</body>\n");
-		printf("</html>\n");
-	        }
-
-	return;
-        }
-
-
 
 int process_cgivars(void){
 	char **variables;
@@ -1272,7 +1175,7 @@ int process_cgivars(void){
 
 		/* we found the image creation option */
 		else if(!strcmp(variables[x],"createimage")){
-			mode=CREATE_IMAGE;
+			content_type=IMAGE_CONTENT;
 		        }
 
 		/* we found the assume initial states option */
@@ -1854,7 +1757,7 @@ void graph_all_trend_data(void){
 
 
 	/* if we're creating the HTML, start map code... */
-	if(mode==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		printf("<MAP name='trendsmap'>\n");
 
 	last_as=NULL;
@@ -1976,7 +1879,7 @@ void graph_all_trend_data(void){
 
 
 	/* if we're creating the HTML, close the map code */
-	if(mode==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		printf("</MAP>\n");
 
 	return;
@@ -2096,7 +1999,7 @@ void graph_trend_data(int first_state,int last_state,time_t real_start_time,time
 
 
 	/* we're creating the image, so draw... */
-	if(mode==CREATE_IMAGE){
+	if(content_type==IMAGE_CONTENT){
 
 		/* figure out the color to use for drawing */
 		switch(start_state){
@@ -2436,7 +2339,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 	int state_type=0;
 
 	/* print something so browser doesn't time out */
-	if(mode==CREATE_HTML){
+	if(content_type==HTML_CONTENT){
 		printf(" ");
 		fflush(NULL);
 	        }
@@ -2589,91 +2492,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 	
 	return;
         }
-	
-
-
-/* write JavaScript code and layer for popup window */
-void write_popup_code(void){
-	char *border_color="#000000";
-	char *background_color="#ffffcc";
-	int border=1;
-	int padding=3;
-	int x_offset=3;
-	int y_offset=3;
-
-	printf("<SCRIPT LANGUAGE='JavaScript'>\n");
-	printf("<!--\n");
-	printf("// JavaScript popup based on code originally found at http://www.helpmaster.com/htmlhelp/javascript/popjbpopup.htm\n");
-	printf("function showPopup(text, eventObj){\n");
-	printf("if(!document.all && document.getElementById)\n");
-	printf("{ document.all=document.getElementsByTagName(\"*\")}\n");
-	printf("ieLayer = 'document.all[\\'popup\\']';\n");
-	printf("nnLayer = 'document.layers[\\'popup\\']';\n");
-	printf("moLayer = 'document.getElementById(\\'popup\\')';\n");
-
-	printf("if(!(document.all||document.layers||document.documentElement)) return;\n");
-
-	printf("if(document.all) { document.popup=eval(ieLayer); }\n");
-	printf("else {\n");
-	printf("  if (document.documentElement) document.popup=eval(moLayer);\n");
-	printf("  else document.popup=eval(nnLayer);\n");
-	printf("}\n");
-
-	printf("var table = \"\";\n");
-
-	printf("if (document.all||document.documentElement){\n");
-	printf("table += \"<table bgcolor='%s' border=%d cellpadding=%d cellspacing=0>\";\n",background_color,border,padding);
-	printf("table += \"<tr><td>\";\n");
-	printf("table += \"<table cellspacing=0 cellpadding=%d>\";\n",padding);
-	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr>\";\n",background_color);
-	printf("table += \"</table></td></tr></table>\"\n");
-	printf("document.popup.innerHTML = table;\n");
-	printf("document.popup.style.left = (document.all ? eventObj.x : eventObj.layerX) + %d;\n",x_offset);
-	printf("document.popup.style.top  = (document.all ? eventObj.y : eventObj.layerY) + %d;\n",y_offset);
-	printf("document.popup.style.visibility = \"visible\";\n");
-	printf("} \n");
-
-
-	printf("else{\n");
-	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n",padding,border,border_color);
-	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr></table>\";\n",background_color);
-	printf("document.popup.document.open();\n");
-	printf("document.popup.document.write(table);\n");
-	printf("document.popup.document.close();\n");
-
-	/* set x coordinate */
-	printf("document.popup.left = eventObj.layerX + %d;\n",x_offset);
-	
-	/* make sure we don't overlap the right side of the screen */
-	printf("if(document.popup.left + document.popup.document.width + %d > window.innerWidth) document.popup.left = window.innerWidth - document.popup.document.width - %d - 16;\n",x_offset,x_offset);
-		
-	/* set y coordinate */
-	printf("document.popup.top  = eventObj.layerY + %d;\n",y_offset);
-	
-	/* make sure we don't overlap the bottom edge of the screen */
-	printf("if(document.popup.top + document.popup.document.height + %d > window.innerHeight) document.popup.top = window.innerHeight - document.popup.document.height - %d - 16;\n",y_offset,y_offset);
-		
-	/* make the popup visible */
-	printf("document.popup.visibility = \"visible\";\n");
-	printf("}\n");
-	printf("}\n");
-
-	printf("function hidePopup(){ \n");
-	printf("if (!(document.all || document.layers || document.documentElement)) return;\n");
-	printf("if (document.popup == null){ }\n");
-	printf("else if (document.all||document.documentElement) document.popup.style.visibility = \"hidden\";\n");
-	printf("else document.popup.visibility = \"hidden\";\n");
-	printf("document.popup = null;\n");
-	printf("}\n");
-	printf("//-->\n");
-
-	printf("</SCRIPT>\n");
-
-	return;
-        }
-
-
-
 
 /* write timestamps */
 void draw_timestamps(void){
@@ -2682,7 +2500,7 @@ void draw_timestamps(void){
 	double start_pixel_ratio;
 	int start_pixel;
 
-	if(mode!=CREATE_IMAGE)
+	if(content_type!=IMAGE_CONTENT)
 		return;
 
 	/* draw first timestamp */
@@ -2744,7 +2562,7 @@ void draw_time_breakdowns(void){
 	unsigned long time_indeterminate=0L;
 	int string_height;
 
-	if(mode==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	if(small_image==TRUE)
@@ -2976,7 +2794,7 @@ void draw_dashed_line(int x1,int y1,int x2,int y2,int color){
 /* draws horizontal grid lines */
 void draw_horizontal_grid_lines(void){
 
-	if(mode==CREATE_HTML)
+	if(content_type==HTML_CONTENT)
 		return;
 
 	if(small_image==TRUE)

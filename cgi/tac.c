@@ -53,8 +53,6 @@ extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
 extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char   url_media_path[MAX_FILENAME_LENGTH];
 
-extern int    refresh_rate;
-
 extern char *service_critical_sound;
 extern char *service_warning_sound;
 extern char *service_unknown_sound;
@@ -88,16 +86,14 @@ int number_of_host_services(host *);
 void add_hostoutage(host *);
 void free_hostoutage_list(void);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 authdata current_authdata;
 
-int embedded=FALSE;
-int refresh=TRUE;
-int display_header=FALSE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int refresh;
+extern int display_header;
+extern int daemon_check;
 
 hostoutage *hostoutage_list=NULL;
 
@@ -189,6 +185,7 @@ int services_critical_disabled=0;
 int services_critical_unacknowledged=0;
 int services_critical=0;
 
+int CGI_ID=TAC_CGI_ID;
 
 /*efine DEBUG 1*/
 
@@ -213,9 +210,9 @@ int main(void){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
@@ -226,9 +223,9 @@ int main(void){
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
@@ -239,9 +236,9 @@ int main(void){
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
@@ -252,9 +249,9 @@ int main(void){
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		status_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
                 }
@@ -263,37 +260,10 @@ int main(void){
 	time(&t5);
 #endif
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
-
-	if(display_header==TRUE){
-
-		/* begin top table */
-		printf("<table border=0 width=100%% cellpadding=0 cellspacing=0>\n");
-		printf("<tr>\n");
-
-		/* left column of top table - info box */
-		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("Tactical Status Overview",refresh,&current_authdata, daemon_check);
-		printf("</td>\n");
-
-		/* middle column of top table - log file navigation options */
-		printf("<td align=center valign=top width=33%%>\n");
-		printf("</td>\n");
-
-		/* right hand column of top row */
-		printf("<td align=right valign=top width=33%%>\n");
-		printf("</td>\n");
-
-		/* end of top table */
-		printf("</tr>\n");
-		printf("</table>\n");
-		printf("</p>\n");
-
-	        }
-
 
 #ifdef DEBUG
 	time(&t6);
@@ -341,7 +311,7 @@ int main(void){
 	time(&t9);
 #endif
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free memory allocated to the host outage list */
 	free_hostoutage_list();
@@ -363,70 +333,6 @@ int main(void){
 
 	return OK;
         }
-
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	if(refresh=TRUE)
-		printf("Refresh: %d\r\n",refresh_rate);
-
-	time(&current_time);
-	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=(time_t)0L;
-	get_time_string(&expire_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	printf("Content-type: text/html\r\n\r\n");
-
-	if(embedded==TRUE)
-		return;
-
-	printf("<HTML>\n");
-	printf("<HEAD>\n");
-	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-	printf("<TITLE>\n");
-	printf("%s Tactical Monitoring Overview\n", PROGRAM_NAME);
-	printf("</TITLE>\n");
-
-	if(use_stylesheet==TRUE){
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,TAC_CSS);
-	        }
-
-	printf("</HEAD>\n");
-	printf("<BODY CLASS='tac' marginwidth=2 marginheight=2 topmargin=0 leftmargin=0 rightmargin=0>\n");
-
-	/* include user SSI header */
-	include_ssi_files(TAC_CGI,SSI_HEADER);
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	/* include user SSI footer */
-	include_ssi_files(TAC_CGI,SSI_FOOTER);
-
-	printf("</BODY>\n");
-	printf("</HTML>\n");
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;
@@ -958,95 +864,94 @@ void display_tac_overview(void){
 	char host_health_image[16];
 	char service_health_image[16];
 
+        if(display_header==TRUE){
+        	printf("<p align=left>\n");
 
-	printf("<p align=left>\n");
+        	printf("<table border=0 align=left width=100%% cellspacing=4 cellpadding=0>\n");
+        	printf("<tr>\n");
 
-	printf("<table border=0 align=left width=100%% cellspacing=4 cellpadding=0>\n");
-	printf("<tr>\n");
+        	/* left column */
+        	printf("<td align=left valign=top width=50%%>\n");
 
-	/* left column */
-	printf("<td align=left valign=top width=50%%>\n");
+        	display_info_table("Tactical Monitoring Overview",refresh,&current_authdata, daemon_check);
 
-	display_info_table("Tactical Monitoring Overview",refresh,&current_authdata, daemon_check);
-
-	printf("</td>\n");
+        	printf("</td>\n");
 
 
-	/* right column */
-	printf("<td align=right valign=bottom width=50%%>\n");
+        	/* right column */
+        	printf("<td align=right valign=bottom width=50%%>\n");
 
-	printf("<table border=0 cellspacing=0 cellspadding=0>\n");
+        	printf("<table border=0 cellspacing=0 cellspadding=0>\n");
 
-	printf("<tr>\n");
+        	printf("<tr>\n");
 
-	printf("<td valign=bottom align=right>\n");
+        	printf("<td valign=bottom align=right>\n");
 
-	/* display context-sensitive help */
-	display_context_help(CONTEXTHELP_TAC);
+        	/* display context-sensitive help */
+        	display_context_help(CONTEXTHELP_TAC);
 
-	printf("</td>\n");
+        	printf("</td>\n");
 
-	printf("<td>\n");
+        	printf("<td>\n");
 
-	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
-	printf("<tr>\n");
-	printf("<td class='perfTitle'>&nbsp;<a href='%s?type=%d' class='perfTitle'>Monitoring Performance</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE);
-	printf("</tr>\n");
+        	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
+        	printf("<tr>\n");
+        	printf("<td class='perfTitle'>&nbsp;<a href='%s?type=%d' class='perfTitle'>Monitoring Performance</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE);
+        	printf("</tr>\n");
 
-	printf("<tr>\n");
-	printf("<td>\n");
+        	printf("<tr>\n");
+        	printf("<td>\n");
 
-	printf("<table border=0 cellspacing=0 cellspadding=0>\n");
-	printf("<tr>\n");
-	printf("<td class='perfBox'>\n");
-	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
-	printf("<tr>\n");
-	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Service Check Execution Time:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_service_execution_time,max_service_execution_time,average_service_execution_time);
-	printf("</tr>\n");
-	printf("<tr>\n");
-	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Service Check Latency:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_service_latency,max_service_latency,average_service_latency);
-	printf("</tr>\n");
-	printf("<tr>\n");
-	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Host Check Execution Time:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_host_execution_time,max_host_execution_time,average_host_execution_time);
-	printf("</tr>\n");
-	printf("<tr>\n");
-	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Host Check Latency:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %2.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_host_latency,max_host_latency,average_host_latency);
-	printf("</tr>\n");
-	printf("<tr>\n");
-	printf("<td align=left valign=center class='perfItem'><a href='%s?host=all&serviceprops=%d' class='perfItem'># Active Host / Service Checks:</a></td>",STATUS_CGI,SERVICE_ACTIVE_CHECK);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?hostgroup=all&hostprops=%d&style=hostdetail' class='perfValue'>%d</a> / <a href='%s?host=all&serviceprops=%d' class='perfValue'>%d</a></td>\n",STATUS_CGI,HOST_ACTIVE_CHECK,total_active_host_checks,STATUS_CGI,SERVICE_ACTIVE_CHECK,total_active_service_checks);
-	printf("</tr>\n");
-	printf("<tr>\n");
-	printf("<td align=left valign=center class='perfItem'><a href='%s?host=all&serviceprops=%d' class='perfItem'># Passive Host / Service Checks:</a></td>",STATUS_CGI,SERVICE_PASSIVE_CHECK);
-	printf("<td valign=top class='perfValue' nowrap><a href='%s?hostgroup=all&hostprops=%d&style=hostdetail' class='perfValue'>%d</a> / <a href='%s?host=all&serviceprops=%d' class='perfValue'>%d</a></td>\n",STATUS_CGI,HOST_PASSIVE_CHECK,total_passive_host_checks,STATUS_CGI,SERVICE_PASSIVE_CHECK,total_passive_service_checks);
-	printf("</tr>\n");
-	printf("</table>\n");
-	printf("</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
+        	printf("<table border=0 cellspacing=0 cellspadding=0>\n");
+        	printf("<tr>\n");
+        	printf("<td class='perfBox'>\n");
+        	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
+        	printf("<tr>\n");
+        	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Service Check Execution Time:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
+        	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_service_execution_time,max_service_execution_time,average_service_execution_time);
+        	printf("</tr>\n");
+        	printf("<tr>\n");
+        	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Service Check Latency:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
+        	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_service_latency,max_service_latency,average_service_latency);
+        	printf("</tr>\n");
+        	printf("<tr>\n");
+        	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Host Check Execution Time:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
+        	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_host_execution_time,max_host_execution_time,average_host_execution_time);
+        	printf("</tr>\n");
+        	printf("<tr>\n");
+        	printf("<td align=left valign=center class='perfItem'><a href='%s?type=%d' class='perfItem'>Host Check Latency:</a></td>",EXTINFO_CGI,DISPLAY_PERFORMANCE);
+        	printf("<td valign=top class='perfValue' nowrap><a href='%s?type=%d' class='perfValue'>%.2f / %.2f / %2.3f sec</a></td>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_host_latency,max_host_latency,average_host_latency);
+        	printf("</tr>\n");
+        	printf("<tr>\n");
+        	printf("<td align=left valign=center class='perfItem'><a href='%s?host=all&serviceprops=%d' class='perfItem'># Active Host / Service Checks:</a></td>",STATUS_CGI,SERVICE_ACTIVE_CHECK);
+        	printf("<td valign=top class='perfValue' nowrap><a href='%s?hostgroup=all&hostprops=%d&style=hostdetail' class='perfValue'>%d</a> / <a href='%s?host=all&serviceprops=%d' class='perfValue'>%d</a></td>\n",STATUS_CGI,HOST_ACTIVE_CHECK,total_active_host_checks,STATUS_CGI,SERVICE_ACTIVE_CHECK,total_active_service_checks);
+        	printf("</tr>\n");
+        	printf("<tr>\n");
+        	printf("<td align=left valign=center class='perfItem'><a href='%s?host=all&serviceprops=%d' class='perfItem'># Passive Host / Service Checks:</a></td>",STATUS_CGI,SERVICE_PASSIVE_CHECK);
+        	printf("<td valign=top class='perfValue' nowrap><a href='%s?hostgroup=all&hostprops=%d&style=hostdetail' class='perfValue'>%d</a> / <a href='%s?host=all&serviceprops=%d' class='perfValue'>%d</a></td>\n",STATUS_CGI,HOST_PASSIVE_CHECK,total_passive_host_checks,STATUS_CGI,SERVICE_PASSIVE_CHECK,total_passive_service_checks);
+        	printf("</tr>\n");
+        	printf("</table>\n");
+        	printf("</td>\n");
+        	printf("</tr>\n");
+        	printf("</table>\n");
 
-	printf("</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
+        	printf("</td>\n");
+        	printf("</tr>\n");
+        	printf("</table>\n");
 
-	printf("</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
+        	printf("</td>\n");
+        	printf("</tr>\n");
+        	printf("</table>\n");
 
-	printf("</td>\n");
+        	printf("</td>\n");
 
-	printf("</tr>\n");
-	printf("</table>\n");
-	printf("</p>\n");
+        	printf("</tr>\n");
+        	printf("</table>\n");
+        	printf("</p>\n");
+        }
 
 	printf("<br clear=all>\n");
 	printf("<br>\n");
-
-
 
 
 	printf("<table border=0 cellspacing=0 cellpadding=0 width=100%%>\n");
@@ -1513,7 +1418,7 @@ void display_tac_overview(void){
 	printf("<td valign=top>\n");
 	printf("<table border=0 width=135 cellspacing=0 cellpadding=0>\n");
 	printf("<tr>\n");
-	printf("<td valign=top><a href='%s?cmd_typ=%d'><img src='%s%s' border=0 alt='Flap Detection %s' title='Flap Detection %s'></a></td>\n",COMMAND_CGI,(enable_flap_detection==TRUE)?CMD_DISABLE_FLAP_DETECTION:CMD_ENABLE_FLAP_DETECTION,url_images_path,(enable_flap_detection==TRUE)?TAC_ENABLED_ICON:TAC_DISABLED_ICON,(enable_flap_detection==TRUE)?"Enabled":"Disabled",(enable_flap_detection==TRUE)?"Enabled":"Disabled");
+	printf("<td valign=top><a href='%s?cmd_typ=%d'><img src='%s%s' border=0 alt='Flap Detection %s' title='Flap Detection %s'></a></td>\n",CMD_CGI,(enable_flap_detection==TRUE)?CMD_DISABLE_FLAP_DETECTION:CMD_ENABLE_FLAP_DETECTION,url_images_path,(enable_flap_detection==TRUE)?TAC_ENABLED_ICON:TAC_DISABLED_ICON,(enable_flap_detection==TRUE)?"Enabled":"Disabled",(enable_flap_detection==TRUE)?"Enabled":"Disabled");
 	printf("<Td width=10>&nbsp;</td>\n");
 	if(enable_flap_detection==TRUE){
 		printf("<Td valign=top width=100%% class='featureEnabledFlapDetection'>\n");
@@ -1554,7 +1459,7 @@ void display_tac_overview(void){
 	printf("<td valign=top>\n");
 	printf("<table border=0 width=135 cellspacing=0 cellpadding=0>\n");
 	printf("<tr>\n");
-	printf("<td valign=top><a href='%s?cmd_typ=%d'><img src='%s%s' border=0 alt='Notifications %s' title='Notifications %s'></a></td>\n",COMMAND_CGI,(enable_notifications==TRUE)?CMD_DISABLE_NOTIFICATIONS:CMD_ENABLE_NOTIFICATIONS,url_images_path,(enable_notifications==TRUE)?TAC_ENABLED_ICON:TAC_DISABLED_ICON,(enable_notifications==TRUE)?"Enabled":"Disabled",(enable_notifications==TRUE)?"Enabled":"Disabled");
+	printf("<td valign=top><a href='%s?cmd_typ=%d'><img src='%s%s' border=0 alt='Notifications %s' title='Notifications %s'></a></td>\n",CMD_CGI,(enable_notifications==TRUE)?CMD_DISABLE_NOTIFICATIONS:CMD_ENABLE_NOTIFICATIONS,url_images_path,(enable_notifications==TRUE)?TAC_ENABLED_ICON:TAC_DISABLED_ICON,(enable_notifications==TRUE)?"Enabled":"Disabled",(enable_notifications==TRUE)?"Enabled":"Disabled");
 	printf("<Td width=10>&nbsp;</td>\n");
 	if(enable_notifications==TRUE){
 		printf("<Td valign=top width=100%% class='featureEnabledNotifications'>\n");
@@ -1586,7 +1491,7 @@ void display_tac_overview(void){
 	printf("<td valign=top>\n");
 	printf("<table border=0 width=135 cellspacing=0 cellpadding=0>\n");
 	printf("<tr>\n");
-	printf("<td valign=top><a href='%s?cmd_typ=%d'><img src='%s%s' border=0 alt='Event Handlers %s' title='Event Handlers %s'></a></td>\n",COMMAND_CGI,(enable_event_handlers==TRUE)?CMD_DISABLE_EVENT_HANDLERS:CMD_ENABLE_EVENT_HANDLERS,url_images_path,(enable_event_handlers==TRUE)?TAC_ENABLED_ICON:TAC_DISABLED_ICON,(enable_event_handlers==TRUE)?"Enabled":"Disabled",(enable_event_handlers==TRUE)?"Enabled":"Disabled");
+	printf("<td valign=top><a href='%s?cmd_typ=%d'><img src='%s%s' border=0 alt='Event Handlers %s' title='Event Handlers %s'></a></td>\n",CMD_CGI,(enable_event_handlers==TRUE)?CMD_DISABLE_EVENT_HANDLERS:CMD_ENABLE_EVENT_HANDLERS,url_images_path,(enable_event_handlers==TRUE)?TAC_ENABLED_ICON:TAC_DISABLED_ICON,(enable_event_handlers==TRUE)?"Enabled":"Disabled",(enable_event_handlers==TRUE)?"Enabled":"Disabled");
 	printf("<Td width=10>&nbsp;</td>\n");
 	if(enable_event_handlers==TRUE){
 		printf("<Td valign=top width=100%% class='featureEnabledHandlers'>\n");

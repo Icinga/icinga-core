@@ -61,12 +61,8 @@ extern comment *comment_list;
 
 extern int date_format;
 
-
 #define MAX_AUTHOR_LENGTH	64
 #define MAX_COMMENT_LENGTH	1024
-
-#define HTML_CONTENT   0
-#define WML_CONTENT    1
 
 
 char *host_name="";
@@ -103,10 +99,9 @@ int broadcast_notification=0;
 int command_type=CMD_NONE;
 int command_mode=CMDMODE_REQUEST;
 
-int content_type=HTML_CONTENT;
-
-int display_header=TRUE;
-int daemon_check=TRUE;
+extern int content_type;
+extern int display_header;
+extern int daemon_check;
 
 authdata current_authdata;
 
@@ -117,8 +112,6 @@ int commit_command(int);
 int write_command_to_file(char *);
 void clean_comment_data(char *);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 int string_to_time(char *,time_t *);
@@ -136,6 +129,8 @@ struct hostlist {
 /* Initialize the struct */
 struct hostlist commands[NUMBER_OF_STRUCTS];
 
+int CGI_ID=CMD_CGI_ID;
+
 /* Everything needs a main */
 int main(void){
 	int result=OK;
@@ -149,24 +144,24 @@ int main(void){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not open CGI config file!</p>\n");
 		else
 			cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not open main config file!</p>\n");
 		else
 			main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
@@ -181,16 +176,16 @@ int main(void){
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not read object config data!</p>\n");
 		else
 			object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -242,7 +237,7 @@ int main(void){
 	else if(command_mode==CMDMODE_COMMIT)
 		commit_command_data(command_type);
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free allocated memory */
 	free_memory();
@@ -250,70 +245,6 @@ int main(void){
 
 	return OK;
         }
-
-
-
-void document_header(int use_stylesheet){
-
-	if(content_type==WML_CONTENT){
-
-		printf("Content-type: text/vnd.wap.wml\r\n\r\n");
-
-		printf("<?xml version=\"1.0\"?>\n");
-		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
-
-		printf("<wml>\n");
-
-		printf("<card id='card1' title='Command Results'>\n");
-	        }
-
-	else{
-
-		printf("Content-type: text/html\r\n\r\n");
-
-		printf("<html>\n");
-		printf("<head>\n");
-		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-		printf("<title>\n");
-		printf("External Command Interface\n");
-		printf("</title>\n");
-
-		if(use_stylesheet==TRUE){
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMAND_CSS);
-		        }
-
-		printf("</head>\n");
-
-		printf("<body CLASS='cmd'>\n");
-
-		/* include user SSI header */
-		include_ssi_files(COMMAND_CGI,SSI_HEADER);
-	        }
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	if(content_type==WML_CONTENT){
-		printf("</card>\n");
-		printf("</wml>\n");
-	        }
-
-	else{
-
-		/* include user SSI footer */
-		include_ssi_files(COMMAND_CGI,SSI_FOOTER);
-
-		printf("</body>\n");
-		printf("</html>\n");
-	        }
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;
@@ -973,7 +904,7 @@ void request_command_data(int cmd){
 
 	printf("<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=1 CLASS='optBox'>\n");
 	printf("<TR><TD CLASS='optBoxItem'>\n");
-	printf("<form method='post' action='%s'>\n", COMMAND_CGI);
+	printf("<form method='post' action='%s'>\n", CMD_CGI);
 	printf("<TABLE CELLSPACING=0 CELLPADDING=0 COLS=2 CLASS='optBox'>\n");
 
 	printf("<TBODY>");

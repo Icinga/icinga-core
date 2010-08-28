@@ -34,7 +34,6 @@
 #include "../include/getcgi.h"
 #include "../include/cgiauth.h"
 
-extern int             refresh_rate;
 extern time_t          program_start;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
@@ -70,7 +69,6 @@ extern servicegroup *servicegroup_list;
 extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 
-
 #define MAX_MESSAGE_BUFFER		4096
 
 #define DISPLAY_HOSTS			0
@@ -80,8 +78,8 @@ extern servicestatus *servicestatus_list;
 #define STYLE_OVERVIEW			0
 #define STYLE_DETAIL			1
 #define STYLE_SUMMARY			2
-#define STYLE_GRID                      3
-#define STYLE_HOST_DETAIL               4
+#define STYLE_GRID			3
+#define STYLE_HOST_DETAIL		4
 
 /* HOSTSORT structure */
 typedef struct hostsort_struct{
@@ -136,8 +134,6 @@ void show_filters(void);
 int passes_host_properties_filter(hoststatus *);
 int passes_service_properties_filter(servicestatus *);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 
@@ -172,9 +168,6 @@ int all_host_problems=HOST_DOWN|HOST_UNREACHABLE;
 unsigned long host_properties=0L;
 unsigned long service_properties=0L;
 
-
-
-
 int sort_type=SORT_NONE;
 int sort_option=SORT_HOSTNAME;
 
@@ -184,12 +177,13 @@ int problem_services_critical=0;
 int problem_services_warning=0;
 int problem_services_unknown=0;
 
-int embedded=FALSE;
-int display_header=TRUE;
-int refresh=TRUE;
-int daemon_check=TRUE;
+extern int refresh;
+extern int embedded;
+extern int display_header;
+extern int daemon_check;
+extern int output_format;
 
-
+int CGI_ID=STATUS_CGI_ID;
 
 int main(void){
 	int result=OK;
@@ -211,36 +205,36 @@ int main(void){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		status_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
                 }
@@ -248,7 +242,7 @@ int main(void){
 	/* initialize macros */
 	init_macros();
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -547,7 +541,7 @@ int main(void){
 			show_service_detail();
 	        }
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free all allocated memory */
 	free_memory();
@@ -559,103 +553,6 @@ int main(void){
 
 	return OK;
         }
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t expire_time;
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	if(refresh==TRUE)
-		printf("Refresh: %d\r\n",refresh_rate);
-
-	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=(time_t)0L;
-	get_time_string(&expire_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	printf("Content-type: text/html\r\n\r\n");
-
-	if(embedded==TRUE)
-		return;
-
-	printf("<html>\n");
-	printf("<head>\n");
-	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-	printf("<title>\n");
-	printf("Current Network Status\n");
-	printf("</title>\n");
-
-	if(use_stylesheet==TRUE){
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>",url_stylesheets_path,COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>",url_stylesheets_path,STATUS_CSS);
-	        }
-        /* JavaScript for (un)checking all checkboxes */
-        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,MARK_CHECKBOXES_JS);
-
-        /* JavaScript to read the 'value' of all checked checkboxes */
-        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,READ_CHECKBOXES_JS);
-
-        /* JavaScript for dropdown menu WITH images */
-        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,JQUERY_MAIN_JS);
-        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,JQUERY_DD_JS);
-        /* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
-        printf("<link rel='stylesheet' type='text/css' href='%s%s'/>\n",url_stylesheets_path,JQUERY_DD_CSS);
-
-        /* Check if the dropdown choice is valid and enable submit button */
-	printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,SHOWVALUE_JS);
-
-	/* Create and follow the URL */
-        printf("<!-- JavaScript by Rune Darrud for Icinga -->\n");
-        printf("<script type='text/javascript' src='%s%s'></script>",url_js_path,CHECKBOXESNBUTTONS_JS);
-
-	printf("</head>\n");
-
-	printf("<body CLASS='status'>\n");
-
-        /* Set everything in a form, so checkboxes can be searched after and checked. */
-        printf("<form name='tableform' id='tableform'>");
-        printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>");
-
-        /* Print out the activator for the dropdown (which must be between the body tags */
-        printf("<script language='javascript'>");
-        printf("$(document).ready(function(e) {");
-        printf("try {");
-        printf("$('body select').msDropDown();");
-        printf("} catch(e) {");
-        printf("alert(e.message);");
-        printf("}");
-        printf("});");
-        printf("</script>\n");
-
-	/* include user SSI header */
-	include_ssi_files(STATUS_CGI,SSI_HEADER);
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	/* include user SSI footer */
-	include_ssi_files(STATUS_CGI,SSI_FOOTER);
-
-	/* Close the form */
-	printf("</form>\n");
-
-	printf("</body>\n");
-	printf("</html>\n");
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;
