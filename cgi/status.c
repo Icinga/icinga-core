@@ -136,6 +136,8 @@ int passes_service_properties_filter(servicestatus *);
 
 int process_cgivars(void);
 
+void print_comment_icon(char *,char *);
+
 
 authdata current_authdata;
 time_t current_time;
@@ -970,8 +972,6 @@ void show_service_status_totals(void){
 	printf("</TD></TR>\n");
 	printf("</TABLE>\n");
 
-	printf("</DIV>\n");
-
 	return;
         }
 
@@ -1204,8 +1204,6 @@ void show_host_status_totals(void){
 
 	printf("</TD></TR>\n");
 	printf("</TABLE>\n");
-
-	printf("</DIV>\n");
 
 	return;
         }
@@ -1603,24 +1601,24 @@ void show_service_detail(void){
 				total_comments=number_of_host_comments(temp_host->name);
 				if(temp_hoststatus->problem_has_been_acknowledged==TRUE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host problem has been acknowledged' TITLE='This host problem has been acknowledged'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,ACKNOWLEDGEMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			                }
+					}
 				/* only show comments if this is a non-read-only user */
 				if(is_authorized_for_read_only(&current_authdata)==FALSE){
 					if(total_comments>0)
-						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host has %d comment%s associated with it' TITLE='This host has %d comment%s associated with it'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,COMMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,total_comments,(total_comments==1)?"":"s",total_comments,(total_comments==1)?"":"s");
+						print_comment_icon(temp_host->name,NULL);
 					}
 				if(temp_hoststatus->notifications_enabled==FALSE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,NOTIFICATIONS_DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			                }
+					}
 				if(temp_hoststatus->checks_enabled==FALSE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Checks of this host have been disabled'd TITLE='Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-				        }
+					}
 				if(temp_hoststatus->is_flapping==TRUE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is flapping between states' TITLE='This host is flapping between states'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,FLAPPING_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-				        }
+					}
 				if(temp_hoststatus->scheduled_downtime_depth>0){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is currently in a period of scheduled downtime' TITLE='This host is currently in a period of scheduled downtime'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-				        }
+					}
 				if(temp_host->notes_url!=NULL){
 					process_macros(temp_host->notes_url,&processed_string,0);
 					BEGIN_MULTIURL_LOOP
@@ -1633,7 +1631,7 @@ void show_service_detail(void){
 					printf("</TD>\n");
 					END_MULTIURL_LOOP
 					free(processed_string);
-				        }
+					}
 				if(temp_host->action_url!=NULL){
 					process_macros(temp_host->action_url,&processed_string,0);
 					BEGIN_MULTIURL_LOOP
@@ -1646,7 +1644,7 @@ void show_service_detail(void){
 					printf("</TD>\n");
 					END_MULTIURL_LOOP
 					free(processed_string);
-				        }
+					}
 				if(temp_host->icon_image!=NULL){
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='%s?type=%d&host=%s'>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name));
@@ -1657,13 +1655,13 @@ void show_service_detail(void){
 					printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
 					printf("</A>");
 					printf("</TD>\n");
-				        }
+					}
 				printf("</TR>\n");
 				printf("</TABLE>\n");
 				printf("</TD>\n");
 				printf("</TR>\n");
 				printf("</TABLE>\n");
-			        }
+				}
 			else
 				printf("<TD>");
 			printf("</TD>\n");
@@ -1691,8 +1689,7 @@ void show_service_detail(void){
 			/* only show comments if this is a non-read-only user */
 			if(is_authorized_for_read_only(&current_authdata)==FALSE){
 				if(total_comments>0){
-					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
-					printf("&service=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This service has %d comment%s associated with it' TITLE='This service has %d comment%s associated with it'></A></TD>",url_encode(temp_status->description),url_images_path,COMMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,total_comments,(total_comments==1)?"":"s",total_comments,(total_comments==1)?"":"s");
+					print_comment_icon(temp_host->name,temp_service->description);
 					}
 				}
 			if(temp_status->problem_has_been_acknowledged==TRUE){
@@ -2123,21 +2120,21 @@ void show_host_detail(void){
 			total_comments=number_of_host_comments(temp_host->name);
 			if(temp_status->problem_has_been_acknowledged==TRUE){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host problem has been acknowledged' TITLE='This host problem has been acknowledged'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,ACKNOWLEDGEMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-		                }
+				}
 			if(total_comments>0)
-				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host has %d comment%s associated with it' TITLE='This host has %d comment%s associated with it'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,COMMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,total_comments,(total_comments==1)?"":"s",total_comments,(total_comments==1)?"":"s");
+				print_comment_icon(temp_host->name,NULL);
 			if(temp_status->notifications_enabled==FALSE){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,NOTIFICATIONS_DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-		                }
+				}
 			if(temp_status->checks_enabled==FALSE){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Checks of this host have been disabled' TITLE='Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			        }
+				}
 			if(temp_status->is_flapping==TRUE){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is flapping between states' TITLE='This host is flapping between states'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,FLAPPING_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			        }
+				}
 			if(temp_status->scheduled_downtime_depth>0){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is currently in a period of scheduled downtime' TITLE='This host is currently in a period of scheduled downtime'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			        }
+				}
 			if(temp_host->notes_url!=NULL){
 				process_macros(temp_host->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
@@ -2150,7 +2147,7 @@ void show_host_detail(void){
 				printf("</TD>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
-			        }
+				}
 			if(temp_host->action_url!=NULL){
 				process_macros(temp_host->action_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
@@ -2163,7 +2160,7 @@ void show_host_detail(void){
 				printf("</TD>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
-			        }
+				}
 			if(temp_host->icon_image!=NULL){
 				printf("<TD align=center valign=center>");
 				printf("<A HREF='%s?type=%d&host=%s'>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name));
@@ -2174,7 +2171,7 @@ void show_host_detail(void){
 				printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
 				printf("</A>");
 				printf("</TD>\n");
-			        }
+				}
 			if(enable_splunk_integration==TRUE){
 				printf("<TD ALIGN=center valign=center>");
 				display_splunk_host_url(temp_host);
@@ -5356,3 +5353,48 @@ void show_hostcommand_table(void){
         printf("<br><br><b><input type=\"button\" name=\"hostTotalsCommandsButton\" value=\"Submit\" class=\"hostTotalsCommands\" onClick=cmd_submit() disabled=\"disabled\"></b>\n");
         }
 /* The cake is a lie! */
+
+/******************************************************************/
+/*********  print a tooltip to show comments  *********************/
+/******************************************************************/
+void print_comment_icon(char *host_name, char *svc_description) {
+	comment *temp_comment=NULL;
+	char *comment_entry_type="";
+	char comment_data[200];			// Limit the outpot in tooltip
+
+	if(svc_description==NULL){
+		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name));
+	} else {
+		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(host_name));
+		printf("&service=%s#comments'",url_encode(svc_description));
+	}
+	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
+	if(TRUE){
+		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%%>");
+		printf("<tr style=font-weight:bold;><td>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Comment</td></tr>");
+		for(temp_comment=get_first_comment_by_host(host_name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(host_name,temp_comment)){
+			if((svc_description==NULL && temp_comment->comment_type==HOST_COMMENT) || \
+			   (svc_description!=NULL && temp_comment->comment_type==SERVICE_COMMENT && !strcmp(temp_comment->service_description,svc_description))) {
+				switch(temp_comment->entry_type) {
+					case USER_COMMENT:
+						comment_entry_type="User";
+						break;
+					case DOWNTIME_COMMENT:
+						comment_entry_type="Downtime";
+						break;
+					case FLAPPING_COMMENT:
+						comment_entry_type="Flapping";
+						break;
+					case ACKNOWLEDGEMENT_COMMENT:
+						comment_entry_type="Ack";
+						break;
+				}
+				snprintf(comment_data,sizeof(comment_data)-1,"%s",temp_comment->comment_data);
+				printf("<tr><td nowrap>%s</td><td nowrap>%s</td></tr>",comment_entry_type,html_encode(comment_data,TRUE));
+			}
+		}
+		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
+		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:100%%, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
+	}
+	printf("><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d></A></TD>",url_images_path,COMMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+}

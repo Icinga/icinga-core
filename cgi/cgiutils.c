@@ -949,6 +949,7 @@ void document_header(int cgi_id, int use_stylesheet){
 	/* include user SSI header */
 	include_ssi_files(cgi_name,SSI_HEADER);
 
+        /* this line was also in histogram.c, is this necessary??? */
 	if(cgi_id==HISTOGRAM_CGI_ID || cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID)
 		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
 
@@ -967,6 +968,10 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("}");
 		printf("});");
 		printf("</script>\n");
+
+		/* Javascript lib to show tooltips */
+		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n",url_js_path,SKINNYTIP_JS);
+		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
 	}
 
 	return;

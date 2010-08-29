@@ -122,6 +122,7 @@ extern "C" {
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SHOWVALUE_JS		"showValue.js"
 #define CHECKBOXESNBUTTONS_JS	"checkboxesNbutton.js"
+#define SKINNYTIP_JS		"skinnytip.js"
 
 
 /********************************* ICONS ************************************/
