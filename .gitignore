@@ -18,4 +18,6 @@ Debug
 tags
 *.dSYM
 :2*
-.AppleDouble
+.Apple*
+._*
+
