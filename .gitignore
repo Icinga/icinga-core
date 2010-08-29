@@ -17,3 +17,5 @@ Debug
 .settings
 tags
 *.dSYM
+:2*
+.Apple*
