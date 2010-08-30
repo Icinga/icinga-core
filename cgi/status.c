@@ -193,8 +193,10 @@ int main(void){
 	host *temp_host=NULL;
 	hostgroup *temp_hostgroup=NULL;
 	servicegroup *temp_servicegroup=NULL;
+	servicestatus *temp_servicestatus=NULL;
 	int regex_i=1,i=0;
 	int len;
+	int host_has_no_service=TRUE;
 
 	time(&current_time);
 
@@ -290,6 +292,17 @@ int main(void){
 						}
 					}
 				}
+			/* if host has no services attached, show host status detail */
+			if(temp_host!=NULL){
+				for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
+				    if(!strcmp(temp_servicestatus->host_name,temp_host->name)) {
+					host_has_no_service=FALSE;
+					break;
+				    }
+				}
+				if(host_has_no_service)
+				    group_style_type=STYLE_HOST_DETAIL;
+			}
 			/* last effort, search hostgroups then servicegroups */
 			if(temp_host==NULL){
 				if((temp_hostgroup=find_hostgroup(host_name))!=NULL){
@@ -335,7 +348,10 @@ int main(void){
                 /* display context-sensitive help */
                 printf("<td align=right valign=bottom>\n");
                 if(display_type==DISPLAY_HOSTS)
-                        display_context_help(CONTEXTHELP_STATUS_DETAIL);
+			if(group_style_type==STYLE_HOST_DETAIL)
+                                display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+			else
+				display_context_help(CONTEXTHELP_STATUS_DETAIL);
                 else if(display_type==DISPLAY_SERVICEGROUPS){
                         if(group_style_type==STYLE_HOST_DETAIL)
                                 display_context_help(CONTEXTHELP_STATUS_DETAIL);
@@ -462,7 +478,10 @@ int main(void){
 		/* Command table */
                 printf("<td align=right width=50%%>\n");
                 if(display_type==DISPLAY_HOSTS)
-                        show_servicecommand_table();
+			if(group_style_type==STYLE_HOST_DETAIL)
+				show_hostcommand_table();
+			else
+				show_servicecommand_table();
                 else if(display_type==DISPLAY_SERVICEGROUPS){
                         if(group_style_type==STYLE_HOST_DETAIL)
                                 show_servicecommand_table();
@@ -516,8 +535,12 @@ int main(void){
 
 
 	/* bottom portion of screen - service or hostgroup detail */
-	if(display_type==DISPLAY_HOSTS)
-		show_service_detail();
+	if(display_type==DISPLAY_HOSTS) {
+		if(group_style_type==STYLE_HOST_DETAIL)
+			show_host_detail();
+		else
+			show_service_detail();
+		}
 	else if(display_type==DISPLAY_SERVICEGROUPS){
 		if(group_style_type==STYLE_OVERVIEW)
 			show_servicegroup_overviews();
@@ -1284,7 +1307,7 @@ void show_service_detail(void){
 		if(show_all_servicegroups==TRUE)
 			printf("All Service Groups");
 		else
-			printf("Service Group '%s'",url_encode(servicegroup_name));
+			printf("Service Group '%s'",servicegroup_name);
 	        }
 	else{
 		if(show_all_hostgroups==TRUE)
@@ -1901,7 +1924,10 @@ void show_host_detail(void){
 	printf("<td valign=top align=center width=33%%>\n");
 
 	printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Host Status Details For ");
-	if(show_all_hostgroups==TRUE)
+
+	if(show_all_hosts==FALSE)
+		printf("Host '%s'",host_name);
+	else if(show_all_hostgroups==TRUE)
 		printf("All Host Groups");
 	else
 		printf("Host Group '%s'",hostgroup_name);
@@ -1938,7 +1964,10 @@ void show_host_detail(void){
 
 	snprintf(temp_url,sizeof(temp_url)-1,"%s?",STATUS_CGI);
 	temp_url[sizeof(temp_url)-1]='\x0';
-	snprintf(temp_buffer,sizeof(temp_buffer)-1,"hostgroup=%s&style=hostdetail",url_encode(hostgroup_name));
+	if(display_type==DISPLAY_HOSTS)
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"host=%s&style=hostdetail",url_encode(host_name));
+	else
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"hostgroup=%s&style=hostdetail",url_encode(hostgroup_name));
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	strncat(temp_url,temp_buffer,sizeof(temp_url)-strlen(temp_url)-1);
 	temp_url[sizeof(temp_url)-1]='\x0';
@@ -2021,6 +2050,10 @@ void show_host_detail(void){
 		if(temp_host==NULL)
 			continue;
 
+		/* If user searched for a single host without any services then show only this one */
+		if(show_all_hosts==FALSE && strcmp(host_name,temp_status->host_name))
+			continue;
+
 		/* make sure user has rights to see this... */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
@@ -2051,7 +2084,8 @@ void show_host_detail(void){
 		grab_host_macros(temp_host);
 
 
-		if(display_type==DISPLAY_HOSTGROUPS){
+
+		if(display_type==DISPLAY_HOSTGROUPS||display_type==DISPLAY_HOSTS){
 
 			if(odd)
 				odd=0;
