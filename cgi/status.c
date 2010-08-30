@@ -5394,7 +5394,7 @@ void show_hostcommand_table(void){
 void print_comment_icon(char *host_name, char *svc_description) {
 	comment *temp_comment=NULL;
 	char *comment_entry_type="";
-	char comment_data[200];			// Limit the outpot in tooltip
+	char comment_data[MAX_INPUT_BUFFER];
 
 	if(svc_description==NULL){
 		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name));
@@ -5403,9 +5403,10 @@ void print_comment_icon(char *host_name, char *svc_description) {
 		printf("&service=%s#comments'",url_encode(svc_description));
 	}
 	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
+	/* but who wouldn't like to these fancy tooltips ;-) */
 	if(TRUE){
 		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%%>");
-		printf("<tr style=font-weight:bold;><td>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Comment</td></tr>");
+		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Comment</td></tr>");
 		for(temp_comment=get_first_comment_by_host(host_name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(host_name,temp_comment)){
 			if((svc_description==NULL && temp_comment->comment_type==HOST_COMMENT) || \
 			   (svc_description!=NULL && temp_comment->comment_type==SERVICE_COMMENT && !strcmp(temp_comment->service_description,svc_description))) {
@@ -5424,11 +5425,11 @@ void print_comment_icon(char *host_name, char *svc_description) {
 						break;
 				}
 				snprintf(comment_data,sizeof(comment_data)-1,"%s",temp_comment->comment_data);
-				printf("<tr><td nowrap>%s</td><td nowrap>%s</td></tr>",comment_entry_type,html_encode(comment_data,TRUE));
+				printf("<tr><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,html_encode(comment_data,TRUE));
 			}
 		}
 		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
-		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:100%%, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
+		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:600, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
 	}
 	printf("><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d></A></TD>",url_images_path,COMMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 }
