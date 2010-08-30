@@ -64,8 +64,6 @@ extern char     *ping_syntax;
 #define DISPLAY_HOST_SUMMARY            0
 #define DISPLAY_HOST_SERVICES           1
 
-void document_header(void);
-void document_footer(void);
 int process_cgivars(void);
 int validate_arguments(void);
 int is_valid_hostip(char *hostip);
@@ -93,12 +91,12 @@ char *ping_address="";
 char *traceroute_address="";
 
 int show_all_hostgroups=TRUE;
-int daemon_check=TRUE;
+extern int daemon_check;
 
 
 authdata current_authdata;
 
-
+int CGI_ID=STATUSWML_CGI_ID;
 
 int main(void){
 	int result=OK;
@@ -109,12 +107,12 @@ int main(void){
 	/* reset internal variables */
 	reset_cgi_vars();
 
-	document_header();
+	document_header(CGI_ID,TRUE);
 
 	/* validate arguments in URL */
 	result=validate_arguments();
 	if(result==ERROR){
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 	
@@ -122,7 +120,7 @@ int main(void){
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
 		printf("<P>Error: Could not open CGI configuration file '%s' for reading!</P>\n",get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
@@ -130,7 +128,7 @@ int main(void){
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
 		printf("<P>Error: Could not open main configuration file '%s' for reading!</P>\n",main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
@@ -138,7 +136,7 @@ int main(void){
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
 		printf("<P>Error: Could not read some or all object configuration data!</P>\n");
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
@@ -146,7 +144,7 @@ int main(void){
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
 		printf("<P>Error: Could not read host and service status information!</P>\n");
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
                 }
@@ -178,54 +176,13 @@ int main(void){
 	else
 		display_index();
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free all allocated memory */
 	free_memory();
 
 	return OK;
         }
-
-
-void document_header(void){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t expire_time;
-	time_t current_time;
-
-	time(&current_time);
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=(time_t)0L;
-	get_time_string(&expire_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	printf("Content-type: text/vnd.wap.wml\r\n\r\n");
-
-	printf("<?xml version=\"1.0\"?>\n");
-	printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
-
-	printf("<wml>\n");
-	
-	printf("<head>\n");
-	printf("<meta forua=\"true\" http-equiv=\"Cache-Control\" content=\"max-age=0\"/>\n");
-	printf("</head>\n");
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	printf("</wml>\n");
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;
@@ -517,14 +474,14 @@ void display_process(void){
 	printf("<b>Process Commands</b><br/>\n");
 
 	if(enable_notifications==FALSE)
-		printf("<b><anchor title='Enable Notifications'>Enable Notifications<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,CMD_ENABLE_NOTIFICATIONS,CMDMODE_COMMIT);
+		printf("<b><anchor title='Enable Notifications'>Enable Notifications<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,CMD_ENABLE_NOTIFICATIONS,CMDMODE_COMMIT);
 	else
-		printf("<b><anchor title='Disable Notifications'>Disable Notifications<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,CMD_DISABLE_NOTIFICATIONS,CMDMODE_COMMIT);
+		printf("<b><anchor title='Disable Notifications'>Disable Notifications<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,CMD_DISABLE_NOTIFICATIONS,CMDMODE_COMMIT);
 
 	if(execute_service_checks==FALSE)
-		printf("<b><anchor title='Enable Check Execution'>Enable Check Execution<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,CMD_START_EXECUTING_SVC_CHECKS,CMDMODE_COMMIT);
+		printf("<b><anchor title='Enable Check Execution'>Enable Check Execution<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,CMD_START_EXECUTING_SVC_CHECKS,CMDMODE_COMMIT);
 	else
-		printf("<b><anchor title='Disable Check Execution'>Disable Check Execution<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,CMD_STOP_EXECUTING_SVC_CHECKS,CMDMODE_COMMIT);
+		printf("<b><anchor title='Disable Check Execution'>Disable Check Execution<go href='%s' method='post'><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,CMD_STOP_EXECUTING_SVC_CHECKS,CMDMODE_COMMIT);
 
 	printf("</p>\n");
 
@@ -963,23 +920,23 @@ void display_host(void){
 		printf("<b><anchor title='Acknowledge Problem'>Acknowledge Problem<go href='#card3'/></anchor></b>\n");
 
 	if(temp_hoststatus->checks_enabled==FALSE)
-		printf("<b><anchor title='Enable Host Checks'>Enable Host Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_ENABLE_HOST_CHECK,CMDMODE_COMMIT);
+		printf("<b><anchor title='Enable Host Checks'>Enable Host Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_ENABLE_HOST_CHECK,CMDMODE_COMMIT);
 	else
-		printf("<b><anchor title='Disable Host Checks'>Disable Host Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_DISABLE_HOST_CHECK,CMDMODE_COMMIT);
+		printf("<b><anchor title='Disable Host Checks'>Disable Host Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_DISABLE_HOST_CHECK,CMDMODE_COMMIT);
 
 	if(temp_hoststatus->notifications_enabled==FALSE)
-		printf("<b><anchor title='Enable Host Notifications'>Enable Host Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_ENABLE_HOST_NOTIFICATIONS,CMDMODE_COMMIT);
+		printf("<b><anchor title='Enable Host Notifications'>Enable Host Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_ENABLE_HOST_NOTIFICATIONS,CMDMODE_COMMIT);
 	else
-		printf("<b><anchor title='Disable Host Notifications'>Disable Host Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_DISABLE_HOST_NOTIFICATIONS,CMDMODE_COMMIT);
+		printf("<b><anchor title='Disable Host Notifications'>Disable Host Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_DISABLE_HOST_NOTIFICATIONS,CMDMODE_COMMIT);
 
 
-	printf("<b><anchor title='Enable All Service Checks'>Enable All Service Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_ENABLE_HOST_SVC_CHECKS,CMDMODE_COMMIT);
+	printf("<b><anchor title='Enable All Service Checks'>Enable All Service Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_ENABLE_HOST_SVC_CHECKS,CMDMODE_COMMIT);
 
-	printf("<b><anchor title='Disable All Service Checks'>Disable All Service Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_DISABLE_HOST_SVC_CHECKS,CMDMODE_COMMIT);
+	printf("<b><anchor title='Disable All Service Checks'>Disable All Service Checks<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_DISABLE_HOST_SVC_CHECKS,CMDMODE_COMMIT);
 
-	printf("<b><anchor title='Enable All Service Notifications'>Enable All Service Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_ENABLE_HOST_SVC_NOTIFICATIONS,CMDMODE_COMMIT);
+	printf("<b><anchor title='Enable All Service Notifications'>Enable All Service Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_ENABLE_HOST_SVC_NOTIFICATIONS,CMDMODE_COMMIT);
 
-	printf("<b><anchor title='Disable All Service Notifications'>Disable All Service Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",COMMAND_CGI,escape_string(host_name),CMD_DISABLE_HOST_SVC_NOTIFICATIONS,CMDMODE_COMMIT);
+	printf("<b><anchor title='Disable All Service Notifications'>Disable All Service Notifications<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",CMD_CGI,escape_string(host_name),CMD_DISABLE_HOST_SVC_NOTIFICATIONS,CMDMODE_COMMIT);
 
 	printf("</p>\n");
 
@@ -999,7 +956,7 @@ void display_host(void){
 	printf("<input name='comment' value='acknowledged by WAP'/>\n");
 
 	printf("<do type='accept'>\n");
-	printf("<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='com_author' value='$(name)'/><postfield name='com_data' value='$(comment)'/><postfield name='persistent' value=''/><postfield name='send_notification' value=''/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go>\n",COMMAND_CGI,escape_string(host_name),CMD_ACKNOWLEDGE_HOST_PROBLEM,CMDMODE_COMMIT);
+	printf("<go href='%s' method='post'><postfield name='host' value='%s'/><postfield name='com_author' value='$(name)'/><postfield name='com_data' value='$(comment)'/><postfield name='persistent' value=''/><postfield name='send_notification' value=''/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go>\n",CMD_CGI,escape_string(host_name),CMD_ACKNOWLEDGE_HOST_PROBLEM,CMDMODE_COMMIT);
 	printf("</do>\n");
 
 	printf("</p>\n");
@@ -1177,23 +1134,23 @@ void display_service(void){
 		printf("<b><anchor title='Acknowledge Problem'>Acknowledge Problem<go href='#card3'/></anchor></b>\n");
 
 	if(temp_servicestatus->checks_enabled==FALSE){
-		printf("<b><anchor title='Enable Checks'>Enable Checks<go href='%s' method='post'><postfield name='host' value='%s'/>",COMMAND_CGI,escape_string(host_name));
+		printf("<b><anchor title='Enable Checks'>Enable Checks<go href='%s' method='post'><postfield name='host' value='%s'/>",CMD_CGI,escape_string(host_name));
 		printf("<postfield name='service' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",escape_string(service_desc),CMD_ENABLE_SVC_CHECK,CMDMODE_COMMIT);
 		}
 	else{
-		printf("<b><anchor title='Disable Checks'>Disable Checks<go href='%s' method='post'><postfield name='host' value='%s'/>",COMMAND_CGI,escape_string(host_name));
+		printf("<b><anchor title='Disable Checks'>Disable Checks<go href='%s' method='post'><postfield name='host' value='%s'/>",CMD_CGI,escape_string(host_name));
 		printf("<postfield name='service' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",escape_string(service_desc),CMD_DISABLE_SVC_CHECK,CMDMODE_COMMIT);
 
-		printf("<b><anchor title='Schedule Immediate Check'>Schedule Immediate Check<go href='%s' method='post'><postfield name='host' value='%s'/>",COMMAND_CGI,escape_string(host_name));
+		printf("<b><anchor title='Schedule Immediate Check'>Schedule Immediate Check<go href='%s' method='post'><postfield name='host' value='%s'/>",CMD_CGI,escape_string(host_name));
 		printf("<postfield name='service' value='%s'/><postfield name='start_time' value='%lu'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",escape_string(service_desc),(unsigned long)current_time,CMD_SCHEDULE_SVC_CHECK,CMDMODE_COMMIT);
 	        }
 
 	if(temp_servicestatus->notifications_enabled==FALSE){
-		printf("<b><anchor title='Enable Notifications'>Enable Notifications<go href='%s' method='post'><postfield name='host' value='%s'/>",COMMAND_CGI,escape_string(host_name));
+		printf("<b><anchor title='Enable Notifications'>Enable Notifications<go href='%s' method='post'><postfield name='host' value='%s'/>",CMD_CGI,escape_string(host_name));
 		printf("<postfield name='service' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",escape_string(service_desc),CMD_ENABLE_SVC_NOTIFICATIONS,CMDMODE_COMMIT);
 		}
 	else{
-		printf("<b><anchor title='Disable Notifications'>Disable Notifications<go href='%s' method='post'><postfield name='host' value='%s'/>",COMMAND_CGI,escape_string(host_name));
+		printf("<b><anchor title='Disable Notifications'>Disable Notifications<go href='%s' method='post'><postfield name='host' value='%s'/>",CMD_CGI,escape_string(host_name));
 		printf("<postfield name='service' value='%s'/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go></anchor></b><br/>\n",escape_string(service_desc),CMD_DISABLE_SVC_NOTIFICATIONS,CMDMODE_COMMIT);
 		}
 
@@ -1215,7 +1172,7 @@ void display_service(void){
 	printf("<input name='comment' value='acknowledged by WAP'/>\n");
 
 	printf("<do type='accept'>\n");
-	printf("<go href='%s' method='post'><postfield name='host' value='%s'/>",COMMAND_CGI,escape_string(host_name));
+	printf("<go href='%s' method='post'><postfield name='host' value='%s'/>",CMD_CGI,escape_string(host_name));
 	printf("<postfield name='service' value='%s'/><postfield name='com_author' value='$(name)'/><postfield name='com_data' value='$(comment)'/><postfield name='persistent' value=''/><postfield name='send_notification' value=''/><postfield name='cmd_typ' value='%d'/><postfield name='cmd_mod' value='%d'/><postfield name='content' value='wml'/></go>\n",escape_string(service_desc),CMD_ACKNOWLEDGE_SVC_PROBLEM,CMDMODE_COMMIT);
 	printf("</do>\n");
 

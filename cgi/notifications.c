@@ -55,8 +55,6 @@ extern int    log_rotation_method;
 
 void display_notifications(void);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 authdata current_authdata;
@@ -73,10 +71,11 @@ char *query_svc_description="";
 int notification_options=NOTIFICATION_ALL;
 int use_lifo=TRUE;
 
-int embedded=FALSE;
-int display_header=TRUE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int display_header;
+extern int daemon_check;
 
+int CGI_ID=NOTIFICATIONS_CGI_ID;
 
 int main(void){
 	int result=OK;
@@ -93,32 +92,32 @@ int main(void){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -279,75 +278,13 @@ int main(void){
 	/* display notifications */
 	display_notifications();
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free allocated memory */
 	free_memory();
 	
 	return OK;
         }
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	time(&current_time);
-	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=(time_t)0L;
-	get_time_string(&expire_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	printf("Content-type: text/html\r\n\r\n");
-
-	if(embedded==TRUE)
-		return;
-
-	printf("<html>\n");
-	printf("<head>\n");
-	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-	printf("<title>\n");
-	printf("Alert Notifications\n");
-	printf("</title>\n");
-
-	if(use_stylesheet==TRUE){
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,NOTIFICATIONS_CSS);
-	        }
-	
-	printf("</head>\n");
-
-	printf("<body CLASS='notifications'>\n");
-
-	/* include user SSI header */
-	include_ssi_files(NOTIFICATIONS_CGI,SSI_HEADER);
-
-	return;
-        }
-
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	/* include user SSI footer */
-	include_ssi_files(NOTIFICATIONS_CGI,SSI_FOOTER);
-
-	printf("</body>\n");
-	printf("</html>\n");
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;

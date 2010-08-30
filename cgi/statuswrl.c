@@ -76,7 +76,6 @@ void draw_process_icon(void);
 void draw_host(host *);
 void draw_host_links(void);
 void draw_host_link(host *,double,double,double,double,double,double);
-void document_header(void);
 int process_cgivars(void);
 
 int number_of_host_layer_members(host *,int);
@@ -130,10 +129,9 @@ int layout_method=LAYOUT_USER_SUPPLIED;
 
 int coordinates_were_specified=FALSE;   /* were drawing coordinates specified with extended host info entries? */
 
-int daemon_check=TRUE;
+extern int daemon_check;
 
-
-
+int CGI_ID=STATUSWRL_CGI_ID;
 
 int main(int argc, char **argv){
 	int result;
@@ -144,7 +142,7 @@ int main(int argc, char **argv){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header();
+		document_header(CGI_ID,TRUE);
 		return ERROR;
 	        }
 
@@ -154,7 +152,7 @@ int main(int argc, char **argv){
 	/* get the arguments passed in the URL */
 	process_cgivars();
 
-	document_header();
+	document_header(CGI_ID,TRUE);
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
@@ -184,32 +182,6 @@ int main(int argc, char **argv){
 
 	return OK;
         }
-
-
-
-void document_header(void){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	time(&current_time);
-	get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=0L;
-	get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	printf("Content-Type: x-world/x-vrml\r\n\r\n");
-
-	return;
-        }
-
-
 
 int process_cgivars(void){
 	char **variables;

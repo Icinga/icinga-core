@@ -68,8 +68,6 @@ extern hostescalation *hostescalation_list;
 #define DISPLAY_SERVICEGROUPS            15
 #define DISPLAY_COMMAND_EXPANSION        16211
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 void display_options(void);
@@ -90,7 +88,6 @@ void display_command_expansion(void);
 
 void unauthorized_message(void);
 
-
 authdata current_authdata;
 
 int display_type=DISPLAY_NONE;
@@ -98,8 +95,10 @@ char to_expand[MAX_COMMAND_BUFFER];
 char *command_args[MAX_COMMAND_ARGUMENTS];
 char hashed_color[8];
 
-int embedded=FALSE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int daemon_check;
+
+int CGI_ID=CONFIG_CGI_ID;
 
 void print_expand_input(int type){
 	char *seldesc="";
@@ -127,34 +126,34 @@ int main(void){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
 	/* initialize macros */
 	init_macros();
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -301,68 +300,10 @@ int main(void){
 		break;
 	        }
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	return OK;
         }
-
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t t;
-
-	if(embedded==TRUE)
-		return;
-
-	time(&t);
-	get_time_string(&t,date_time,sizeof(date_time),HTTP_DATE_TIME);
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-	printf("Last-Modified: %s\r\n",date_time);
-	printf("Expires: %s\r\n",date_time);
-	printf("Content-type: text/html\r\n\r\n");
-
-	printf("<html>\n");
-	printf("<head>\n");
-	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
-	printf("<title>\n");
-	printf("Configuration\n");
-	printf("</title>\n");
-
-	if(use_stylesheet==TRUE){
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,CONFIG_CSS);
-	        }
-
-	printf("</head>\n");
-
-	printf("<body CLASS='config'>\n");
-
-	/* include user SSI header */
-	include_ssi_files(CONFIG_CGI,SSI_HEADER);
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	/* include user SSI footer */
-	include_ssi_files(CONFIG_CGI,SSI_FOOTER);
-
-	printf("</body>\n");
-	printf("</html>\n");
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;
