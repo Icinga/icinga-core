@@ -21,6 +21,7 @@ FIXES
 * core: fix for event execution loop re-scheduling host checks instead of executing them if service checks are disabled (Ethan Galstad)
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
+* classic ui: fix delay sorting of comments/downtimes (Ton Voon)
 
 
 1.0.3 - 18/08/2010
