@@ -53,6 +53,7 @@ Summary: Web content for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: httpd
+Requires: php
 
 %description gui
 This package contains the webgui (html,css,cgi etc.) for %{name}
@@ -244,6 +245,7 @@ fi
 %changelog
 * Tue Aug 31 2010 Christoph Maser <cmaser@gmx.de> - 1.0.3-2
 - Set icinga-api logdir ownership to apache user 
+- add php dependency for icinga-gui subpackage
 
 * Wed Aug 18 2010 Christoph Maser <cmaser@gmx.de> - 1.0.3-1
 - Update to 1.0.3-1
