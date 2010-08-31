@@ -238,9 +238,13 @@ fi
 %files api
 %defattr(-,icinga,icinga,-)
 %{_datadir}/icinga/icinga-api
+%(-,%{apacheuser},%{apacheuser}) %{_datadir}/icinga/icinga-api/log
 
 
 %changelog
+* Tue Aug 31 2010 Christoph Maser <cmaser@gmx.de> - 1.0.3-2
+- Set icinga-api logdir ownership to apache user 
+
 * Wed Aug 18 2010 Christoph Maser <cmaser@gmx.de> - 1.0.3-1
 - Update to 1.0.3-1
 
