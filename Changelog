@@ -19,6 +19,7 @@ FIXES
 * core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret)
 * core: fix segfault in escalation conditions when using object tricks (Vitali Voroth)
 * core: fix for event execution loop re-scheduling host checks instead of executing them if service checks are disabled (Ethan Galstad)
+* core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch)
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
 * classic ui: fix delay sorting of comments/downtimes (Ton Voon)
