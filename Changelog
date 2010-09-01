@@ -1,29 +1,34 @@
 #######################
-Icinga 1.0.x Change Log
+Icinga 1.2.x Change Log
 #######################
 
-1.0.4 - 06/10/2010
+1.2.0 - 06/10/2010
 
 ENHANCEMENTS
 * core: add eventhandler override (Sven Nierlein)
-* core: add config option to disable logging in to the daemon log file
+* core: add config option to disable logging in tothe daemon log file
+* core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch)
 
 * classic ui: add commands expander to config display (Jochen Bern)
 	- $ARGn$ substitution will be shown between command_line and
 	  check_command associated for hosts, services, etc and help
 	  getting to know/use commands the core will execute.
 * classic ui: change menu, add unhandled host/service problems
+* classic ui: allow searching for host without service attached to it
+* classic ui: added tooltip for comments in status.cgi
 
 
 FIXES
 * core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret)
 * core: fix segfault in escalation conditions when using object tricks (Vitali Voroth)
 * core: fix for event execution loop re-scheduling host checks instead of executing them if service checks are disabled (Ethan Galstad)
-* core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch)
 * core: fix for retaining host display name and alias, as well as service display name (Folkert van Heusden)
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
 * classic ui: fix delay sorting of comments/downtimes (Ton Voon)
+* classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id
+* classic ui: removed double header in tac.c
+* classic ui: changed size of checkbox column to 16
 
 
 1.0.3 - 18/08/2010
