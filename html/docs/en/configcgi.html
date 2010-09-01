@@ -4,7 +4,7 @@
 <title>CGI Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="customobjectvars.html" title="Custom Object Variables">
 <link rel="next" href="cgiauth.html" title="Authentication And Authorization In The CGIs">
@@ -119,6 +119,10 @@
       <p><a class="link" href="configcgi.html#configcgi-lock_author_names">Lock author names</a></p>
     </li></ul></div>
 
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-status_show_long_plugin_output">Status show long plugin output</a></p>
+    </li></ul></div>
+
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-statusmap_background_image">Statusmap CGI background image</a></p>
@@ -159,7 +163,9 @@
       <p><a class="link" href="configcgi.html#configcgi-action_url_target">Action URL target</a></p>
     </li>
 </ul></div>
-
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-show_only_hard_states">Tac Show Only Hard State</a></p>
+    </li></ul></div>
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-enable_splunk_integration">Splunk integration option</a></p>
@@ -571,6 +577,48 @@
       <p>1 = Prevent users from changing author names (default)</p>
     </li>
 </ul></div>
+
+  <p><a name="configcgi-status_show_long_plugin_output"></a> <span class="bold"><strong>Status Show Long Plugin Output</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>status_show_long_plugin_output=[0/1]</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option allows you to specify the length of status information in output of status.cgi. If you set the value to 1 it shows the
+  full plugin output instead of the first line only. Default value is 0.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Display only the first line of plugin output (default)</p>
+    </li>
+<li class="listitem">
+      <p>1 = Display the complete plugin output</p>
+    </li>
+</ul></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>This option is available starting with Icinga 1.0.3.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-statusmap_background_image"></a> <span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
 
@@ -1014,6 +1062,29 @@
   <p>This option determines the name of the frame target that action URLs should be displayed in. Valid options include
   <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span>, or any other valid
   target name.</p>
+<p><a name="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>tac_show_only_hard_state=[0/1]</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+<p>This options allows you to specify if the tactical overview should only show hard states on hosts and services. If you set this option to 1 the tactical overview shows only states on hosts and services.
+By default disabled, all states will be shown.</p>
 
   <p><a name="configcgi-enable_splunk_integration"></a> <span class="bold"><strong>Splunk Integration Option</strong></span></p>
 
@@ -1065,53 +1136,96 @@
 
   <p>This option is used to define the base URL to your Splunk interface. This URL is used by the CGIs when creating links if the <a class="link" href="configcgi.html#configcgi-enable_splunk_integration">enable_splunk_integration</a> option is enabled.</p>
 
-  <a class="indexterm" name="id1962243"></a>
+  <p><a name="configcgi-persistent_ack_comments"></a> <span class="bold"><strong>Persistent Acknowledge Comments</strong></span></p>
 
-  <a class="indexterm" name="id1962277"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>persistent_ack_comments=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>persistent_ack_comments=1</strong></span>
+          </span> </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id1962290"></a>
+  <p>This option controls the initial state of the check box "persistent comment" to acknowledge problem hosts or services.
+  It can be used to reinstate the behaviour of Nagios 2. Default is "0" to be compatible with Nagios 3.</p>
 
-  <a class="indexterm" name="id1962302"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Leave check box "persistent comment" unchecked (default)</p>
+    </li>
+<li class="listitem">
+      <p>1 = Set check box "persistent comment"</p>
+    </li>
+</ul></div>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>This option is available starting with Icinga 1.0.3.</p></td></tr>
+</table></div>
 
-  <a class="indexterm" name="id1962315"></a>
+  <a class="indexterm" name="id3472020"></a>
 
-  <a class="indexterm" name="id1962329"></a>
+  <a class="indexterm" name="id3472027"></a>
 
-  <a class="indexterm" name="id1962316"></a>
+  <a class="indexterm" name="id3472039"></a>
 
-  <a class="indexterm" name="id1962356"></a>
+  <a class="indexterm" name="id3472052"></a>
 
-  <a class="indexterm" name="id1962344"></a>
+  <a class="indexterm" name="id3472065"></a>
 
-  <a class="indexterm" name="id1962384"></a>
+  <a class="indexterm" name="id3472079"></a>
 
-  <a class="indexterm" name="id1962398"></a>
+  <a class="indexterm" name="id3472093"></a>
 
-  <a class="indexterm" name="id1962411"></a>
+  <a class="indexterm" name="id3472106"></a>
 
-  <a class="indexterm" name="id1962399"></a>
+  <a class="indexterm" name="id3472121"></a>
 
-  <a class="indexterm" name="id1962440"></a>
+  <a class="indexterm" name="id3472107"></a>
 
-  <a class="indexterm" name="id1962454"></a>
+  <a class="indexterm" name="id3472108"></a>
 
-  <a class="indexterm" name="id1962441"></a>
+  <a class="indexterm" name="id3472150"></a>
 
-  <a class="indexterm" name="id1962482"></a>
+  <a class="indexterm" name="id3472176"></a>
 
-  <a class="indexterm" name="id1962468"></a>
+  <a class="indexterm" name="id3472163"></a>
 
-  <a class="indexterm" name="id1962510"></a>
+  <a class="indexterm" name="id3472206"></a>
 
-  <a class="indexterm" name="id1962522"></a>
+  <a class="indexterm" name="id3472191"></a>
 
-  <a class="indexterm" name="id1962535"></a>
+  <a class="indexterm" name="id3472231"></a>
 
-  <a class="indexterm" name="id1962524"></a>
+  <a class="indexterm" name="id3472217"></a>
 
-  <a class="indexterm" name="id1962537"></a>
+  <a class="indexterm" name="id3472261"></a>
 
-  <a class="indexterm" name="id1962576"></a>
+  <a class="indexterm" name="id3472246"></a>
+
+  <a class="indexterm" name="id3472287"></a>
+
+  <a class="indexterm" name="id3472302"></a>
+<a class="indexterm" name="id3472315"></a>
+  <a class="indexterm" name="id3472328"></a>
+
+  <a class="indexterm" name="id3472340"></a>
+
+  <a class="indexterm" name="id3472355"></a>
 </div>
 <div class="navfooter">
 <hr>

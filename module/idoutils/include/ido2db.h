@@ -12,6 +12,9 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
+/*************** RDBMS headers *************/
+
+/* oracle */
 #ifdef USE_ORACLE
 
 #ifdef HAVE_CONFIG_H
@@ -23,6 +26,17 @@
 #endif
 
 #endif
+
+/* pgsql */
+#ifdef HAVE_LIBPQ_FE_H
+#include <libpq-fe.h>
+#endif
+
+/* libdbi */
+#ifdef HAVE_DBI_DBI_H
+#include <dbi/dbi.h>
+#endif
+
 
 /*************** mbuf definitions *************/
 #define IDO2DB_MBUF_CONTACTGROUP                        0
@@ -65,11 +79,17 @@ typedef struct ido2db_dbconninfo_struct{
 	int server_type;
 	int connected;
 	int error;
-#ifndef USE_ORACLE /* libdbi specific */
-	/* libdbi */
+#ifdef USE_LIBDBI /* libdbi specific */
 	dbi_conn dbi_conn;
 	dbi_result dbi_result;
-#else /* Oracle ocilib specific */
+#endif
+
+#ifdef USE_PGSQL /* pgsql specific */
+	PGconn *pg_conn;
+	PGresult *pg_result;
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 	OCI_Connection* oci_connection;
 	OCI_Statement* oci_statement;
 	OCI_Resultset* oci_resultset;
@@ -185,6 +205,7 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long max_logentries_age;
 	unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
+	unsigned long housekeeping_thread_startup_delay;
 	unsigned long clean_realtime_tables_on_core_startup;
 	unsigned long clean_config_tables_on_core_startup;
 	time_t last_table_trim_time;
@@ -333,6 +354,10 @@ typedef struct ido2db_input_data_info_struct{
 /************* default trim db interval ********/
 
 #define DEFAULT_TRIM_DB_INTERVAL 60
+
+/* default housekeeping thread startup delay  **/
+
+#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 60
 
 /***************** functions *******************/
 

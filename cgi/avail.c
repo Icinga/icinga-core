@@ -2,11 +2,11 @@
  *
  * AVAIL.C -  Icinga Availability CGI
  *
- * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org) 
+ * Copyright (c) 2000-2010 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * License:
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -36,6 +36,7 @@ extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern host      *host_list;
 extern hostgroup *hostgroup_list;
@@ -289,7 +290,7 @@ int main(int argc, char **argv){
 
 	/* reset internal CGI variables */
 	reset_cgi_vars();
-	
+
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
@@ -368,14 +369,14 @@ int main(int argc, char **argv){
 		t2=t1;
 		t1=t3;
 	        }
-			
+
 	/* don't let user create reports in the future */
 	if(t2>current_time){
 		t2=current_time;
 		if(t1>t2)
 			t1=t2-(60*60*24);
 	        }
-			
+
 	if(display_header==TRUE){
 
 		/* begin top table */
@@ -937,7 +938,7 @@ int main(int argc, char **argv){
 				printf(", \"%s\"",temp_service->host_name);
 		                }
 		        }
-		
+
 		printf(" ]\n");
 		printf("return hostnames[hostindex];\n");
 		printf("}\n");
@@ -1107,7 +1108,7 @@ void document_header(int use_stylesheet){
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,AVAIL_CSS);
 	        }
-	
+
 	printf("</head>\n");
 
 	printf("<BODY CLASS='avail'>\n");
@@ -1843,7 +1844,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time){
 				initial_assumed_time=t1;
 			else
 				initial_assumed_time=subject->as_list->time_stamp-1;
-			
+
 			if(subject->type==HOST_SUBJECT)
 				add_archived_state(initial_assumed_state,AS_HARD_STATE,initial_assumed_time,"First Host State Assumed (Faked Log Entry)",subject);
 			else
@@ -1870,7 +1871,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time){
 
 
 
-	
+
 	last_as=NULL;
 	subject->earliest_time=t2;
 	subject->latest_time=t1;
@@ -1915,7 +1916,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time){
 
 			/* only graph this data if its on the graph */
 			else if(b>t1){
-				
+
 				/* clip last time if it exceeds graph limits */
 				if(b>t2)
 					b=t2;
@@ -1947,7 +1948,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time){
 			        }
                         }
 
-		
+
 		/* keep track of the last item */
 		last_as=temp_as;
 	        }
@@ -2051,7 +2052,7 @@ void compute_subject_availability_times(int first_state,int last_state,time_t re
 #endif
 			/* check all time ranges for this day of the week */
 			for(temp_timerange=current_timeperiod->days[weekday];temp_timerange!=NULL;temp_timerange=temp_timerange->next){
-					
+
 #ifdef DEBUG
 				printf("<li>Matching in timerange[%d]: %d -> %d (%ld -> %ld)<br>\n",weekday,temp_timerange->range_start,temp_timerange->range_end,temp_start,temp_end);
 #endif
@@ -2063,7 +2064,7 @@ void compute_subject_availability_times(int first_state,int last_state,time_t re
 #ifdef DEBUG
 					printf("<li>Matched time: %ld -> %ld = %d<br>\n",start, end, temp_duration);
 #endif
-				        } 
+				        }
 #ifdef DEBUG
 				else
 					printf("<li>Ignored time: %ld -> %ld<br>\n",start, end);
@@ -2287,9 +2288,9 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 		return;
 	if(start_time<t1 || end_time>t2)
 		return;
-		
+
 	/* find starting point in archived state list */
-	if(sd==NULL){ 
+	if(sd==NULL){
 #ifdef DEBUG2
 		printf("<P>TEMP_AS=SUBJECT->AS_LIST </P>");
 #endif
@@ -2363,7 +2364,7 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 		if(saved_status!=temp_as->entry_type){
 
 			/* is outside schedule time, use end schdule downtime */
-			if(temp_as->time_stamp>end_time){ 
+			if(temp_as->time_stamp>end_time){
 				if(saved_stamp<start_time)
 					compute_subject_downtime_part_times(start_time,end_time,saved_status,subject);
 				else
@@ -2376,7 +2377,7 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 					compute_subject_downtime_part_times(saved_stamp,temp_as->time_stamp,saved_status,subject);
 				}
 			saved_status=temp_as->entry_type;
-			saved_stamp=temp_as->time_stamp;			
+			saved_stamp=temp_as->time_stamp;
 			}
 		}
 
@@ -2385,7 +2386,7 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 		compute_subject_downtime_part_times(start_time,end_time,part_subject_state,subject);
 	else{
 		/* is outside scheduled time, use end schdule downtime */
-		if(last->time_stamp>end_time) 
+		if(last->time_stamp>end_time)
 			compute_subject_downtime_part_times(saved_stamp,end_time,saved_status,subject);
 		else
 			compute_subject_downtime_part_times(saved_stamp,last->time_stamp,saved_status,subject);
@@ -2603,7 +2604,7 @@ void add_subject(int subject_type, char *hn, char *sd){
 		if(new_subject->host_name!=NULL)
 			strcpy(new_subject->host_name,hn);
 	        }
-	else 
+	else
 		new_subject->host_name=NULL;
 
 	/* allocate memory for the service description */
@@ -2996,7 +2997,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 
 				if(show_scheduled_downtime==FALSE)
 					continue;
-			
+
 				if(strstr(input,";STARTED;"))
 					add_scheduled_downtime(AS_HOST_DOWNTIME_START,time_stamp,temp_subject);
 				else
@@ -3075,7 +3076,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 
 				if(show_scheduled_downtime==FALSE)
 					continue;
-			
+
 				if(strstr(input,";STARTED;"))
 					add_scheduled_downtime(AS_SVC_DOWNTIME_START,time_stamp,temp_subject);
 				else
@@ -3093,7 +3094,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 
 				/* this host downtime entry must be added to all service subjects associated with the host! */
 				for(temp_subject=subject_list;temp_subject!=NULL;temp_subject=temp_subject->next){
-					
+
 					if(temp_subject->type!=SERVICE_SUBJECT)
 						continue;
 
@@ -3102,7 +3103,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 
 					if(show_scheduled_downtime==FALSE)
 						continue;
-			
+
 					if(strstr(input,";STARTED;"))
 						add_scheduled_downtime(AS_HOST_DOWNTIME_START,time_stamp,temp_subject);
 					else
@@ -3110,17 +3111,17 @@ void scan_log_file_for_archived_state_data(char *filename){
 				        }
 			        }
 		        }
-		
+
 	        }
 
 	/* free memory and close the file */
 	free(input);
 	free(input2);
 	mmap_fclose(thefile);
-	
+
 	return;
         }
-	
+
 
 
 
@@ -3438,7 +3439,7 @@ void write_log_entries(avail_subject *subject){
 
 	return;
         }
- 
+
 
 
 /* display hostgroup availability */
@@ -3532,7 +3533,7 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 
 		time_determinate=temp_subject->time_up+temp_subject->time_down+temp_subject->time_unreachable;
 		time_indeterminate=total_time-time_determinate;
-	
+
 		if(total_time>0){
 			percent_time_up=(double)(((double)temp_subject->time_up*100.0)/(double)total_time);
 			percent_time_down=(double)(((double)temp_subject->time_down*100.0)/(double)total_time);
@@ -3694,7 +3695,7 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 
 		time_determinate=temp_subject->time_up+temp_subject->time_down+temp_subject->time_unreachable;
 		time_indeterminate=total_time-time_determinate;
-	
+
 		if(total_time>0){
 			percent_time_up=(double)(((double)temp_subject->time_up*100.0)/(double)total_time);
 			percent_time_down=(double)(((double)temp_subject->time_down*100.0)/(double)total_time);
@@ -4195,13 +4196,13 @@ void display_host_availability(void){
 
 			printf(" TIME_UNDETERMINED_NOT_RUNNING, PERCENT_TIME_UNDETERMINED_NOT_RUNNING, TIME_UNDETERMINED_NO_DATA, PERCENT_TIME_UNDETERMINED_NO_DATA, TOTAL_TIME_UNDETERMINED, PERCENT_TOTAL_TIME_UNDETERMINED\n");
 		        }
-		   
+
 
 		for(temp_subject=subject_list;temp_subject!=NULL;temp_subject=temp_subject->next){
 
 			if(temp_subject->type!=HOST_SUBJECT)
 				continue;
-			
+
 			temp_host=find_host(temp_subject->host_name);
 			if(temp_host==NULL)
 				continue;
@@ -4242,7 +4243,7 @@ void display_host_availability(void){
 			percent_time_unreachable_known=0.0;
 			percent_time_unreachable_scheduled_known=0.0;
 			percent_time_unreachable_unscheduled_known=0.0;
-	
+
 			if(total_time>0){
 				percent_time_up=(double)(((double)temp_subject->time_up*100.0)/(double)total_time);
 				percent_time_up_scheduled=(double)(((double)temp_subject->scheduled_time_up*100.0)/(double)total_time);
@@ -4290,7 +4291,7 @@ void display_host_availability(void){
 
 				/* host name */
 				printf("\"%s\",",temp_subject->host_name);
-				
+
 				/* up times */
 				printf(" %lu, %2.3f%%, %2.3f%%, %lu, %2.3f%%, %2.3f%%, %lu, %2.3f%%, %2.3f%%,",temp_subject->scheduled_time_up,percent_time_up_scheduled,percent_time_up_scheduled_known,temp_subject->time_up-temp_subject->scheduled_time_up,percent_time_up_unscheduled,percent_time_up_unscheduled_known,temp_subject->time_up,percent_time_up,percent_time_up_known);
 
@@ -4431,7 +4432,7 @@ void display_service_availability(void){
 
 		time_determinate=temp_subject->time_ok+temp_subject->time_warning+temp_subject->time_unknown+temp_subject->time_critical;
 		time_indeterminate=total_time-time_determinate;
-	
+
 		/* adjust indeterminate time due to insufficient data (not all was caught) */
 		temp_subject->time_indeterminate_nodata=time_indeterminate-temp_subject->time_indeterminate_notrunning;
 
@@ -4594,7 +4595,7 @@ void display_service_availability(void){
 
 			printf(" TIME_OK_SCHEDULED, PERCENT_TIME_OK_SCHEDULED, PERCENT_KNOWN_TIME_OK_SCHEDULED, TIME_OK_UNSCHEDULED, PERCENT_TIME_OK_UNSCHEDULED, PERCENT_KNOWN_TIME_OK_UNSCHEDULED, TOTAL_TIME_OK, PERCENT_TOTAL_TIME_OK, PERCENT_KNOWN_TIME_OK,");
 
-			printf(" TIME_WARNING_SCHEDULED, PERCENT_TIME_WARNING_SCHEDULED, PERCENT_KNOWN_TIME_WARNING_SCHEDULED, TIME_WARNING_UNSCHEDULED, PERCENT_TIME_WARNING_UNSCHEDULED, PERCENT_KNOWN_TIME_WARNING_UNSCHEDULED, TOTAL_TIME_WARNING, PERCENT_TOTAL_TIME_WARNING, PERCENT_KNOWN_TIME_WARNING,TRUE,");
+			printf(" TIME_WARNING_SCHEDULED, PERCENT_TIME_WARNING_SCHEDULED, PERCENT_KNOWN_TIME_WARNING_SCHEDULED, TIME_WARNING_UNSCHEDULED, PERCENT_TIME_WARNING_UNSCHEDULED, PERCENT_KNOWN_TIME_WARNING_UNSCHEDULED, TOTAL_TIME_WARNING, PERCENT_TOTAL_TIME_WARNING, PERCENT_KNOWN_TIME_WARNING,");
 
 			printf(" TIME_UNKNOWN_SCHEDULED, PERCENT_TIME_UNKNOWN_SCHEDULED, PERCENT_KNOWN_TIME_UNKNOWN_SCHEDULED, TIME_UNKNOWN_UNSCHEDULED, PERCENT_TIME_UNKNOWN_UNSCHEDULED, PERCENT_KNOWN_TIME_UNKNOWN_UNSCHEDULED, TOTAL_TIME_UNKNOWN, PERCENT_TOTAL_TIME_UNKNOWN, PERCENT_KNOWN_TIME_UNKNOWN,");
 
@@ -4602,7 +4603,7 @@ void display_service_availability(void){
 
 			printf(" TIME_UNDETERMINED_NOT_RUNNING, PERCENT_TIME_UNDETERMINED_NOT_RUNNING, TIME_UNDETERMINED_NO_DATA, PERCENT_TIME_UNDETERMINED_NO_DATA, TOTAL_TIME_UNDETERMINED, PERCENT_TOTAL_TIME_UNDETERMINED\n");
 		        }
-		   
+
 
 		for(temp_subject=subject_list;temp_subject!=NULL;temp_subject=temp_subject->next){
 
@@ -4655,7 +4656,7 @@ void display_service_availability(void){
 			percent_time_critical_known=0.0;
 			percent_time_critical_scheduled_known=0.0;
 			percent_time_critical_unscheduled_known=0.0;
-	
+
 			if(total_time>0){
 				percent_time_ok=(double)(((double)temp_subject->time_ok*100.0)/(double)total_time);
 				percent_time_ok_scheduled=(double)(((double)temp_subject->scheduled_time_ok*100.0)/(double)total_time);

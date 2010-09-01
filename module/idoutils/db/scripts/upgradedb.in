@@ -53,9 +53,9 @@ if ($@) {
 
 # Get current database version
 my $version;
-my $thisversion="1.0.2";
-my $lastversion="1.0.2";
-my $legacyversion="1.0.2";
+my $thisversion="1.0.3";
+my $lastversion="1.0.3";
+my $legacyversion="1.0.3";
 
 $version = $dbh->selectrow_array("SELECT version FROM icinga_dbversion WHERE name='idoutils'");
 if ($version eq "") {

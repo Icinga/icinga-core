@@ -36,6 +36,7 @@ extern char   url_docs_path[MAX_FILENAME_LENGTH];
 extern char   url_images_path[MAX_FILENAME_LENGTH];
 extern char   url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char   url_js_path[MAX_FILENAME_LENGTH];
 
 extern host *host_list;
 extern service *service_list;
@@ -910,7 +911,7 @@ void display_contacts(void){
 	printf("<DIV ALIGN=CENTER>\n");
 
 	printf("<TABLE CLASS='data'>\n");
-    
+
 	printf("<TR>\n");
 	printf("<TH CLASS='data'>Contact Name</TH>");
 	printf("<TH CLASS='data'>Alias</TH>");

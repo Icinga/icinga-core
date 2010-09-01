@@ -4,7 +4,7 @@
 <title>Überblick Objektkonfiguration</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">
 <link rel="next" href="objectdefinitions.html" title="Objektdefinitionen">
@@ -75,6 +75,25 @@
   <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>- und/oder <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktiven in
   der Hauptkonfigurationsdatei angeben.</p>
 
+  <p><a name="configobject-include_file"></a></p>
+  <p><a name="configobject-include_dir"></a></p>
+
+  <p><span class="bold"><strong>include_file / include_dir</strong></span></p>
+
+  <p>Eine Objektdefinitionsdatei kann andere Objektdefinitionsdateien einschließen mit Hilfe der
+  <span class="bold"><strong>include_file=&lt; file_name&gt;</strong></span>- und <span class="bold"><strong>include_dir=&lt;directory_name&gt;</strong></span>
+  -Direktiven. Die erste schließt nur die einzelne angegebene Datei ein, die zweite wird im angegebenen Verzeichnis alle Dateien
+  mit der Endung <span class="emphasis"><em>.cfg</em></span> einschließen. Diese Direktiven können mehrfach angegeben werden, um mehrere Dateien und/oder
+  Verzeichnisse einzuschließen.</p>
+  <p>Die Direktiven sind nicht in den eigentlichen Definitionen eines Objektes erlaubt, sondern sollten vor, nach oder zwischen
+  Objektdefinitionen auftreten. Sie sind eng mit den <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a>- und
+  <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a>-Direktiven in der Hauptkonfigurationsdatei verwandt.</p>
+  <p>Diese Direktiven können verkettet werden, d.h. eine Objektdefinitionsdatei, die in der Hauptkonfigurationsdatei durch eine
+  <span class="bold"><strong>cfg_file=</strong></span>- oder <span class="bold"><strong>cfg_dir=</strong></span>-Direktive eingeschlossen wird, kann
+  <span class="bold"><strong>include_file=</strong></span> oder <span class="bold"><strong>include_dir=</strong></span> enthalten, um eine weitere
+  Objektdefinitionsdatei einzuschließen, die ebenfalls <span class="bold"><strong>include_file=</strong></span> oder
+  <span class="bold"><strong>include_dir=</strong></span> enthält, um eine weitere Datei einzuschließen, und so fort.</p>
+
   <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen,
   werden verschiedene Beispiel-Objektkonfigurationsdateien in <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span> abgelegt. Sie
   können diese Beispieldateien benutzen, um zu sehen, wie Objektvererbung funktioniert und lernen, wie Sie Ihre eigenen
@@ -101,7 +120,7 @@
 <col>
 </colgroup>
 <tbody><tr>
-<td align="center" valign="top">
+<td align="left" valign="top">
 <p> <a class="link" href="objectdefinitions.html#objectdefinitions-host">
                
 
@@ -134,7 +153,7 @@
             </a> sind Gruppen von einem oder mehreren Hosts. Hostgruppen können es einfacher machen, (1) den Status von in
           Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
-<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
 </tr></tbody>
 </table>
   </div>
@@ -146,7 +165,7 @@
 <col>
 </colgroup>
 <tbody><tr>
-<td align="center" valign="top">
+<td align="left" valign="top">
 <p> <a class="link" href="objectdefinitions.html#objectdefinitions-service">
                
 
@@ -173,7 +192,7 @@
             </a> sind Gruppen von einem oder mehreren Services. Servicegruppen können es einfacher machen, (1) den Status von
           in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
-<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
 </tr></tbody>
 </table>
   </div>
@@ -185,7 +204,7 @@
 <col>
 </colgroup>
 <tbody><tr>
-<td align="center" valign="top">
+<td align="left" valign="top">
 <p> <a class="link" href="objectdefinitions.html#objectdefinitions-contact">
                
 
@@ -209,7 +228,7 @@
             </a> sind Gruppen von einem oder mehreren Kontakten. Kontaktgruppen können es einfacher machen, alle Leute zu
           definieren, die informiert werden, wenn bestimmte Host- oder Serviceprobleme auftreten.</p>
 </td>
-<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> </p></td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> </p></td>
 </tr></tbody>
 </table>
   </div>
@@ -221,7 +240,7 @@
 <col>
 </colgroup>
 <tbody><tr>
-<td align="center" valign="top">
+<td align="left" valign="top">
 <p> <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">
                
 
@@ -237,7 +256,7 @@
               </li>
 </ul></div> <p>Informationen darüber, wie Zeitfenster arbeiten, finden Sie <a class="link" href="timeperiods.html" title="Zeitfenster">hier</a>.</p>
 </td>
-<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span> </p></td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span> </p></td>
 </tr></tbody>
 </table>
   </div>
@@ -249,7 +268,7 @@
 <col>
 </colgroup>
 <tbody><tr>
-<td align="center" valign="top">
+<td align="left" valign="top">
 <p> <a class="link" href="objectdefinitions.html#objectdefinitions-command">
                
 
@@ -272,11 +291,11 @@
               </li>
 </ul></div>
 </td>
-<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-commands.png"></span> </p></td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-commands.png"></span> </p></td>
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id5548556"></a>
+  <a class="indexterm" name="id1905800"></a>
 </div>
 <div class="navfooter">
 <hr>

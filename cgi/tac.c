@@ -50,6 +50,7 @@ extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
 extern char   url_images_path[MAX_FILENAME_LENGTH];
 extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char   url_media_path[MAX_FILENAME_LENGTH];
 
 extern int    refresh_rate;
@@ -74,7 +75,7 @@ extern int enable_flap_detection;
 
 extern int nagios_process_state;
 
-
+extern int tac_show_only_hard_state;
 
 
 void analyze_status_data(void);
@@ -94,6 +95,7 @@ int process_cgivars(void);
 authdata current_authdata;
 
 int embedded=FALSE;
+int refresh=TRUE;
 int display_header=FALSE;
 int daemon_check=TRUE;
 
@@ -274,7 +276,7 @@ int main(void){
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("Tactical Status Overview",TRUE,&current_authdata, daemon_check);
+		display_info_table("Tactical Status Overview",refresh,&current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
@@ -358,7 +360,7 @@ int main(void){
 	printf("T8: %lu\n",(unsigned long)t8);
 	printf("T9: %lu\n",(unsigned long)t9);
 #endif
-	
+
 	return OK;
         }
 
@@ -372,7 +374,9 @@ void document_header(int use_stylesheet){
 
 	printf("Cache-Control: no-store\r\n");
 	printf("Pragma: no-cache\r\n");
-	printf("Refresh: %d\r\n",refresh_rate);
+
+	if(refresh=TRUE)
+		printf("Refresh: %d\r\n",refresh_rate);
 
 	time(&current_time);
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
@@ -446,6 +450,10 @@ int process_cgivars(void){
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
 
+                /* we found the pause option */
+                else if(!strcmp(variables[x],"paused"))
+                        refresh=FALSE;
+
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))
 			daemon_check=FALSE;
@@ -453,7 +461,7 @@ int process_cgivars(void){
 		/* we received an invalid argument */
 		else
 			error=TRUE;
-	
+
 	        }
 
 	/* free memory allocated to the CGI variables */
@@ -479,6 +487,11 @@ void analyze_status_data(void){
 		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
+
+		/* check if only hard states to be shown */
+		if(tac_show_only_hard_state==TRUE && temp_servicestatus->state_type!=HARD_STATE)
+			continue;
+
 
 		/******** CHECK FEATURES *******/
 
@@ -638,6 +651,10 @@ void analyze_status_data(void){
 		temp_host=find_host(temp_hoststatus->host_name);
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
+
+                /* check if only hard states to be shown */
+                if(tac_show_only_hard_state==TRUE && temp_hoststatus->state_type!=HARD_STATE)
+                        continue;
 
 		/******** CHECK FEATURES *******/
 
@@ -950,7 +967,7 @@ void display_tac_overview(void){
 	/* left column */
 	printf("<td align=left valign=top width=50%%>\n");
 
-	display_info_table("Tactical Monitoring Overview",TRUE,&current_authdata, daemon_check);
+	display_info_table("Tactical Monitoring Overview",refresh,&current_authdata, daemon_check);
 
 	printf("</td>\n");
 

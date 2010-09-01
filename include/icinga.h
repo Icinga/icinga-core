@@ -91,9 +91,11 @@ extern "C" {
 #define DEFAULT_LOG_SERVICE_RETRIES				0	/* don't log service retries */
 #define DEFAULT_LOG_EVENT_HANDLERS				1	/* log event handlers */
 #define DEFAULT_LOG_INITIAL_STATES				0	/* don't log initial service and host states */
+#define DEFAULT_LOG_CURRENT_STATES				1	/* log current service and host states after rotating log*/
 #define DEFAULT_LOG_EXTERNAL_COMMANDS				1	/* log external commands */
 #define DEFAULT_LOG_EXTERNAL_COMMANDS_USER			0	/* log external commands user*/
 #define DEFAULT_LOG_PASSIVE_CHECKS				1	/* log passive service checks */
+#define DEFAULT_LOG_LONG_PLUGIN_OUTPUT				0	/* don't log long plugin output */
 
 #define DEFAULT_DEBUG_LEVEL                                     0       /* don't log any debugging information */
 #define DEFAULT_DEBUG_VERBOSITY                                 1
@@ -129,9 +131,12 @@ extern "C" {
 #define DEFAULT_ENABLE_EMBEDDED_PERL                            0       /* enable embedded Perl interpreter (if compiled in) */
 #define DEFAULT_USE_EMBEDDED_PERL_IMPLICITLY                    1       /* by default, embedded Perl is used for Perl plugins that don't explicitly disable it */
 
+#define DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS               0       /* by default do not run event handlers for stalked hosts */
+#define DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES            0       /* by default do not run event handlers for stalked services */
+
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Icinga */
 
-#define DEFAULT_CHECK_FOR_UPDATES                               0       /* should we check for new Icinga releases? */
+#define DEFAULT_CHECK_FOR_UPDATES                               0       /* should we check for new Icinga releases? */ /* not used */
 #define DEFAULT_BARE_UPDATE_CHECK                               1       /* report current version and new installs */
 #define MINIMUM_UPDATE_CHECK_INTERVAL                           60*60*22 /* 22 hours minimum between checks - please be kind to our servers! */
 #define BASE_UPDATE_CHECK_INTERVAL                              60*60*22 /* 22 hours base interval */

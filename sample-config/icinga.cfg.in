@@ -338,6 +338,15 @@ log_initial_states=0
 
 
 
+# CURRENT STATES LOGGING OPTION
+# If you don't want Icinga to log all current host and service states
+# after log has been rotated to the main log file, you can disable this
+# option by setting this value to 0. Default value is 1.
+
+log_current_states=1
+
+
+
 # EXTERNAL COMMANDS LOGGING OPTION
 # If you don't want Icinga to log external commands, set this value
 # to 0.  If external commands should be logged, set this value to 1.
@@ -357,6 +366,7 @@ log_external_commands=1
 log_passive_checks=1
 
 
+
 # LOG EXTERNAL COMMAND USER
 # This option allows you to enable the logging of the current user
 # of external commands.
@@ -367,6 +377,16 @@ log_passive_checks=1
 # it is intentionally disabled by default.
 
 log_external_commands_user=0
+
+
+
+# LONG PLUGIN OUTPUT LOGGING OPTION
+# If you want Icinga to log the complete text of the plugin output
+# to the log instead of only the first line then set this value to 1.
+# Default value is 0.
+
+log_long_plugin_output=0
+
 
 
 # GLOBAL HOST AND SERVICE EVENT HANDLERS
@@ -1205,6 +1225,16 @@ enable_embedded_perl=1
 # information on how this option works.
 
 use_embedded_perl_implicitly=1
+
+
+
+# EVENT HANDLERS FOR STALKED HOSTS/SERVICES
+# Allow running event handlers for stalked hosts/services in order
+# to forward to external systems.
+# Values: 0 = disabled (default), 1 = enabled
+
+stalking_event_handlers_for_hosts=0
+stalking_event_handlers_for_services=0
 
 
 

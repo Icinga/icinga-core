@@ -3,7 +3,7 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Program: Icinga
- * Version: 1.0.2
+ * Version: 1.0.3
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
@@ -93,9 +93,11 @@ int             log_service_retries=DEFAULT_LOG_SERVICE_RETRIES;
 int             log_host_retries=DEFAULT_LOG_HOST_RETRIES;
 int             log_event_handlers=DEFAULT_LOG_EVENT_HANDLERS;
 int             log_initial_states=DEFAULT_LOG_INITIAL_STATES;
+int             log_current_states=DEFAULT_LOG_CURRENT_STATES;
 int             log_external_commands=DEFAULT_LOG_EXTERNAL_COMMANDS;
 int             log_external_commands_user=DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
 int             log_passive_checks=DEFAULT_LOG_PASSIVE_CHECKS;
+int             log_long_plugin_output=DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
 
 unsigned long   logging_options=0;
 unsigned long   syslog_options=0;
@@ -237,6 +239,9 @@ int             child_processes_fork_twice=-1;
 int             enable_embedded_perl=DEFAULT_ENABLE_EMBEDDED_PERL;
 int             use_embedded_perl_implicitly=DEFAULT_USE_EMBEDDED_PERL_IMPLICITLY;
 int             embedded_perl_initialized=FALSE;
+
+int             stalking_event_handlers_for_hosts=DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
+int             stalking_event_handlers_for_services=DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
 
 int             date_format=DATE_FORMAT_US;
 char            *use_timezone=NULL;

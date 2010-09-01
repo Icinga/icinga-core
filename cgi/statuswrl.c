@@ -40,6 +40,7 @@ extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
+extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern char *statuswrl_include;
 
@@ -511,7 +512,7 @@ void calculate_host_coords(void){
 	int layer_members=0;
 	int current_layer_member=0;
 	int max_drawing_width=0;
-  
+
 
 	/******************************/
 	/***** MANUAL LAYOUT MODE *****/

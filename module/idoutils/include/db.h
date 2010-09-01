@@ -30,6 +30,7 @@ typedef struct ido2db_dbconfig_struct{
         unsigned long max_logentries_age;
         unsigned long max_acknowledgements_age;
 	unsigned long trim_db_interval;
+	unsigned long housekeeping_thread_startup_delay;
         unsigned long clean_realtime_tables_on_core_startup;
         unsigned long clean_config_tables_on_core_startup;
         }ido2db_dbconfig;
@@ -151,7 +152,8 @@ int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 void ido2db_ocilib_err_handler(OCI_Error *);
-unsigned long ido2db_ocilib_insert_id(ido2db_idi *, char *seq_name);
+unsigned long ido2db_ocilib_insert_id(ido2db_idi *, char *);
+int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *, char *);
 #endif /* Oracle ocilib specific */
 
 #endif

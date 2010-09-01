@@ -5,25 +5,72 @@ Icinga 1.0.x Change Log
 1.0.3 - 18/08/2010
 
 ENHANCEMENTS
-* add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd
+* core: new config option to set initial state of persistence for acknowledgements
+* core: add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd
+* core: add config option to disable the logging of current state in log after rotation (Ricardo Bartels)
+* core: add config option to log long plugin output (Ricardo Bartels)
+* core: add config option to enable event handlers for stalked hosts/services (Petya Kohts)
+* core: scheduled downtime can now start on SOFT error states
+
+* idoutils: add syslog output for start/stop, client connecting
+* idoutils: add db trimming thread startup delay config option
+
+* classic ui: cgi config option to show long_plugin_output in status.cgi (Ricardo Bartels)
+* classic ui: add config option to only show HARD states in tac.cgi
+* classic ui: add multiple selection/command sending to host/service status page
+	- added extra column in host and service status with checkboxes using jquery
+	- It is now possible to check off the hosts you want to send commands to Icinga.
+	- Ex: schedule downtime for a custom selection of hosts or X number of services.
+* classic ui: add a pause/continue update button (main parts by Steve Koenig)
+	- affects status.cgi and allows to select and run commands w/o page reload
 
 FIXES
 * core: fix temp_path overwritten by check_result_path in base/config.c
 * core: modify execv to execvp, accepting 4096 cmd args, for both host and service checks with adapted error handling
 * core: execvp searches in PATH too like popen, and returns if error, outputting the errno string
 * core: fix possible overflows and increase command length limit in mini_epn's (Thomas Guyot-Sionnest)
+* core: fix new_mini_epn to allow any command line length without breaking on extra trailing or leading whitespace (Ray Bengen)
 * core: fix wrong is_volatile conditions causing wrong service alerts in the logs
+* core: fix notify-service-by-email command from the stock template cuts off service check output
+* core: fix service checks should recognize that exit code 126 means plugin is not executable
+* core: fix service event handlers when service problem becomes hard during host down
+* core: fix service in soft state after hard state without recovery
+* core: fix all comments disappear after restart if one user comment is non-persistent (Ricardo Bartels)
+* core: fix macro processing (Jochen Bern)
+* core: fix non-scheduled hosts/services not being updated in IDO*
+* core: move the malloc block in insert_skiplist below dupcheck to avoid memory leaks (Thomas Guyot-Sionnest, Holger Weiss)
+* core: fix missing variable reset for use_syslog_local_facility and syslog_local_facility
 
-* classic ui: fix image urls ins stylesheets
+* classic ui: fix image urls in stylesheets
 * classic ui: remove check_daemon_running, remains useless
+* classic ui: fix multiurl action/status icon wrong name
+* classic ui: cmd.cgi "his" instead of "its" in command description
+* classic ui: fix customers can see machines from other customers when entering a downtime
+* classic ui: fix invalid pointer in extinfo.cgi type=7
+* classic ui: for new Splunk integration query parameters
+* classic ui: fix for incorrect host state counts in status CGI when viewing servicegroups
+* classic ui: fix for extra colum in CSV export
 
 * install: fix api not installed using make install-unstripped
 * install: enable debuginfo in spec file
+* install: remove daemonchk.cgi from init-script
+* install: improve output of rhel init-script
+* install: add config checks for start, reload and restart on rhel init script
+* install: fix duplicated configcheck on restart in init-script
+* install: fix specfile for idoutils description
+* install: fix Makefile output if Icinga API not available
+* install: fix t/ and daemon-ini-redhat in distclean
+* install: add note about api installed successfully
+
 
 * idoutils: adapt oracle-drop.sql for current schema
-* idoutils: fix binding null values to prepared statements in oracle
+* idoutils: fix binding null values to name1/name2 in oracle
 * idoutils: fix typo in servicedepencies query for oracle
-
+* idoutils: fix oracle prep statement contactnotifmethoddata
+* idoutils: full rewrite of binding NULL values for oracle with ocilib
+* idoutils: change display_name to varchar(255) for mysql/oracle
+* idoutils: update pgsql schema, replace varchar(n) by text
+* idoutils: change configfilevariables varvalue to 1024 length for mysql/oracle
 
 1.0.2 - 30/06/2010
 
