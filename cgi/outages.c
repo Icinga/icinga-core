@@ -31,7 +31,6 @@
 #include "../include/getcgi.h"
 #include "../include/cgiauth.h"
 
-extern int              refresh_rate;
 extern time_t		program_start;
 
 extern host *host_list;
@@ -71,9 +70,6 @@ typedef struct hostoutagesort_struct{
 	struct hostoutagesort_struct *next;
         }hostoutagesort;
 
-
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 void display_network_outages(void);
@@ -95,13 +91,12 @@ hostoutagesort *hostoutagesort_list=NULL;
 
 int service_severity_divisor=4;            /* default = services are 1/4 as important as hosts */
 
-int embedded=FALSE;
-int refresh=TRUE;
-int display_header=TRUE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int refresh;
+extern int display_header;
+extern int daemon_check;
 
-
-
+int CGI_ID=OUTAGES_CGI_ID;
 
 int main(void){
 	int result=OK;
@@ -116,41 +111,41 @@ int main(void){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		status_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
                 }
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -188,7 +183,7 @@ int main(void){
 	/* display network outage info */
 	display_network_outages();
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free memory allocated to comment data */
 	free_comment_data();
@@ -198,70 +193,6 @@ int main(void){
 
 	return OK;
         }
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	if(refresh==TRUE)
-		printf("Refresh: %d\r\n",refresh_rate);
-
-	time(&current_time);
-	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=(time_t)0L;
-	get_time_string(&expire_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	printf("Content-type: text/html\r\n\r\n");
-
-	if(embedded==TRUE)
-		return;
-
-	printf("<html>\n");
-	printf("<head>\n");
-	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-	printf("<title>\n");
-	printf("Network Outages\n");
-	printf("</title>\n");
-
-	if(use_stylesheet==TRUE){
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>",url_stylesheets_path,COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>",url_stylesheets_path,OUTAGES_CSS);
-	        }
-
-	printf("</head>\n");
-
-	printf("<body CLASS='outages'>\n");
-
-	/* include user SSI header */
-	include_ssi_files(OUTAGES_CGI,SSI_HEADER);
-
-	return;
-        }
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	/* include user SSI footer */
-	include_ssi_files(OUTAGES_CGI,SSI_FOOTER);
-
-	printf("</body>\n");
-	printf("</html>\n");
-
-	return;
-        }
-
 
 int process_cgivars(void){
 	char **variables;
@@ -444,7 +375,7 @@ void display_network_outages(void){
 		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n",STATUSMAP_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSMAP_ICON);
 #endif
 #ifdef USE_STATUSWRL
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View 3-D status map for this host and its children' TITLE='View 3-D status map for this host and its children'></A>\n",STATUSWORLD_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSWORLD_ICON);
+		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View 3-D status map for this host and its children' TITLE='View 3-D status map for this host and its children'></A>\n",STATUSWRL_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSWORLD_ICON);
 #endif
 #ifdef USE_TRENDS
 		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View trends for this host' TITLE='View trends for this host'></A>\n",TRENDS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,TRENDS_ICON);

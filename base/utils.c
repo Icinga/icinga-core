@@ -100,6 +100,7 @@ extern int      daemon_dumps_core;
 
 extern int      nagios_pid;
 
+extern int      use_daemon_log;
 extern int	use_syslog;
 extern int	use_syslog_local_facility;
 extern int	syslog_local_facility;
@@ -4597,6 +4598,8 @@ int reset_variables(void){
 
 	use_regexp_matches=FALSE;
 	use_true_regexp_matching=FALSE;
+
+	use_daemon_log=DEFAULT_USE_DAEMON_LOG;
 
 	use_syslog=DEFAULT_USE_SYSLOG;
 	use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;

@@ -1,7 +1,7 @@
-function get_check_value()
+function get_check_value(form)
 {
 var check_value = '';
-var checkboxes= document.getElementById('tableform');
+var checkboxes= document.getElementById(form);
 checked = true
 for (var i =0; i < checkboxes.elements.length; i++)
 {

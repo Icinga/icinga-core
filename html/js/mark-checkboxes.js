@@ -4,8 +4,8 @@
 <!-- Free javascripts @ http://www.hscripts.com -->
 
 checked=false;
-function checkAll (tableform) {
-		var checkboxes= document.getElementById('tableform');
+function checkAll (form) {
+		var checkboxes= document.getElementById(form);
 		if (checked == false)
 		{
 				checked = true

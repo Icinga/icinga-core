@@ -149,7 +149,14 @@ extern char     *tzname[2];
 #endif
 #endif
 
-int check_daemon_running(void);
+int output_format=HTML_OUTPUT;
+int content_type=HTML_CONTENT;
+
+int embedded=FALSE;
+int display_header=TRUE;
+int refresh=TRUE;
+int daemon_check=TRUE;
+
 
 /*
  * These function stubs allow us to compile a lot of the
@@ -731,7 +738,409 @@ char *pop_lifo(void){
 	return buf;
         }
 
+/**********************************************************
+ *************** COMMON HEADER AND FOOTER *****************
+ **********************************************************/
+ 
+void document_header(int cgi_id, int use_stylesheet){
+	char date_time[MAX_DATETIME_LENGTH];
+	char *cgi_name, *cgi_css, *cgi_title, *cgi_body_class;
+	time_t expire_time;
+	time_t current_time;
 
+	switch(cgi_id) {
+		case STATUS_CGI_ID:
+			cgi_name        = STATUS_CGI;
+			cgi_css         = STATUS_CSS;
+			cgi_title       = "Current Network Status";
+			cgi_body_class  = "status";
+			break;
+		case AVAIL_CGI_ID:
+			cgi_name        = AVAIL_CGI;
+			cgi_css         = AVAIL_CSS;
+			cgi_title       = "Availability";
+			cgi_body_class  = "avail";
+			break;
+		case CMD_CGI_ID:
+			cgi_name        = CMD_CGI;
+			cgi_css         = CMD_CSS;
+			cgi_title       = "External Command Interface";
+			cgi_body_class  = "cmd";
+			refresh         = FALSE;
+			break;
+                case CONFIG_CGI_ID:
+                        cgi_name        = CONFIG_CGI;
+                        cgi_css         = CONFIG_CSS;
+                        cgi_title       = "Configuration";
+                        cgi_body_class  = "config";
+                        break;
+                case EXTINFO_CGI_ID:
+                        cgi_name        = EXTINFO_CGI;
+                        cgi_css         = EXTINFO_CSS;
+                        cgi_title       = "Extended Information";
+                        cgi_body_class  = "extinfo";
+                        break;
+                case HISTOGRAM_CGI_ID:
+                        cgi_name        = HISTOGRAM_CGI;
+                        cgi_css         = HISTOGRAM_CSS;
+                        cgi_title       = "Histogram";
+                        cgi_body_class  = "histogram";
+                        break;
+                case HISTORY_CGI_ID:
+                        cgi_name        = HISTORY_CGI;
+                        cgi_css         = HISTORY_CSS;
+                        cgi_title       = "History";
+                        cgi_body_class  = "history";
+                        break;
+                case NOTIFICATIONS_CGI_ID:
+                        cgi_name        = NOTIFICATIONS_CGI;
+                        cgi_css         = NOTIFICATIONS_CSS;
+                        cgi_title       = "Alert Notifications";
+                        cgi_body_class  = "notifications";
+                        break;
+                case OUTAGES_CGI_ID:
+                        cgi_name        = OUTAGES_CGI;
+                        cgi_css         = OUTAGES_CSS;
+                        cgi_title       = "Network Outages";
+                        cgi_body_class  = "outages";
+                        break;
+                case SHOWLOG_CGI_ID:
+                        cgi_name        = SHOWLOG_CGI;
+                        cgi_css         = SHOWLOG_CSS;
+                        cgi_title       = "Log File";
+                        cgi_body_class  = "showlog";
+                        break;
+                case STATUSMAP_CGI_ID:
+                        cgi_name        = STATUSMAP_CGI;
+                        cgi_css         = STATUSMAP_CSS;
+                        cgi_title       = "Network Map";
+                        cgi_body_class  = "statusmap";
+                        break;
+                case SUMMARY_CGI_ID:
+                        cgi_name        = SUMMARY_CGI;
+                        cgi_css         = SUMMARY_CSS;
+                        cgi_title       = "Event Summary";
+                        cgi_body_class  = "summary";
+                        break;
+                case TAC_CGI_ID:
+                        cgi_name        = TAC_CGI;
+                        cgi_css         = TAC_CSS;
+                        cgi_title       = "Tactical Monitoring Overview";
+                        cgi_body_class  = "tac";
+                        break;
+                case TRENDS_CGI_ID:
+                        cgi_name        = TRENDS_CGI;
+                        cgi_css         = TRENDS_CSS;
+                        cgi_title       = "Trends";
+                        cgi_body_class  = "trends";
+                        break;
+        }
+
+	if(content_type==WML_CONTENT){
+                /* used by cmd.cgi */
+		printf("Content-type: text/vnd.wap.wml\r\n\r\n");
+
+		printf("<?xml version=\"1.0\"?>\n");
+		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
+
+		printf("<wml>\n");
+
+		printf("<card id='card1' title='Command Results'>\n");
+
+		return;
+	}
+
+	printf("Cache-Control: no-store\r\n");
+	printf("Pragma: no-cache\r\n");
+
+	if(refresh)
+		printf("Refresh: %d\r\n",refresh_rate);
+
+	get_time_string(&current_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
+	printf("Last-Modified: %s\r\n",date_time);
+
+	expire_time=(time_t)0L;
+	get_time_string(&expire_time,date_time,(int)sizeof(date_time),HTTP_DATE_TIME);
+	printf("Expires: %s\r\n",date_time);
+
+	if(cgi_id==STATUSWRL_CGI_ID) {
+		printf("Content-Type: x-world/x-vrml\r\n\r\n");
+		return;
+	}
+	if(cgi_id==STATUSWML_CGI_ID) {
+
+		printf("Content-type: text/vnd.wap.wml\r\n\r\n");
+
+		printf("<?xml version=\"1.0\"?>\n");
+		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
+
+		printf("<wml>\n");
+
+		printf("<head>\n");
+		printf("<meta forua=\"true\" http-equiv=\"Cache-Control\" content=\"max-age=0\"/>\n");
+		printf("</head>\n");
+
+		return;
+	}
+	if(content_type==IMAGE_CONTENT) {
+		printf("Content-Type: image/png\r\n\r\n");
+		return;
+	}
+
+	if(output_format==HTML_OUTPUT)
+		printf("Content-type: text/html\r\n\r\n");
+	else{
+		printf("Content-type: text/plain\r\n\r\n");
+		return;
+	}
+
+	if(embedded==TRUE || output_format==CSV_OUTPUT)
+		return;
+
+	printf("<html>\n");
+	printf("<head>\n");
+	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
+	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
+	printf("<title>\n");
+	printf("%s\n",cgi_title);
+	printf("</title>\n");
+
+	if(use_stylesheet){
+		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
+		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,cgi_css);
+	}
+
+	if(cgi_id == STATUS_CGI_ID) {
+		/* JavaScript for (un)checking all checkboxes */
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,MARK_CHECKBOXES_JS);
+
+		/* JavaScript to read the 'value' of all checked checkboxes */
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,READ_CHECKBOXES_JS);
+
+		/* JavaScript for dropdown menu WITH images */
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,JQUERY_MAIN_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,JQUERY_DD_JS);
+		/* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'/>\n",url_stylesheets_path,JQUERY_DD_CSS);
+
+		/* Check if the dropdown choice is valid and enable submit button */
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,SHOWVALUE_JS);
+
+		/* Create and follow the URL */
+		printf("<!-- JavaScript by Rune Darrud for Icinga -->\n");
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,CHECKBOXESNBUTTONS_JS);
+	}
+
+
+	if(cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID) {
+		/* write JavaScript code for popup window */
+		write_popup_code(cgi_id);
+	}
+
+	printf("</head>\n");
+
+	if(cgi_id==STATUSMAP_CGI_ID)
+		printf("<body CLASS='%s' name='mappage' id='mappage'>\n",cgi_body_class);
+	else if(cgi_id==TAC_CGI_ID)
+		printf("<body CLASS='%s' marginwidth=2 marginheight=2 topmargin=0 leftmargin=0 rightmargin=0>\n",cgi_body_class);
+	else
+		printf("<body CLASS='%s'>\n",cgi_body_class);
+
+	/* include user SSI header */
+	include_ssi_files(cgi_name,SSI_HEADER);
+
+        /* this line was also in histogram.c, is this necessary??? */
+	if(cgi_id==HISTOGRAM_CGI_ID || cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID)
+		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
+
+	if(cgi_id == STATUS_CGI_ID) {
+		/* Set everything in a form, so checkboxes can be searched after and checked. */
+		printf("<form name='tableform' id='tableform'>\n");
+		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>\n");
+
+		/* Print out the activator for the dropdown (which must be between the body tags */
+		printf("<script language='javascript'>");
+		printf("$(document).ready(function(e) {");
+		printf("try {");
+		printf("$('body select').msDropDown();");
+		printf("} catch(e) {");
+		printf("alert(e.message);");
+		printf("}");
+		printf("});");
+		printf("</script>\n");
+
+		/* Javascript lib to show tooltips */
+		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n",url_js_path,SKINNYTIP_JS);
+		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
+	}
+
+	return;
+}
+
+
+void document_footer(int cgi_id){
+	char *cgi_name;
+
+	switch(cgi_id) {
+                case STATUS_CGI_ID:
+                        cgi_name = STATUS_CGI;
+                        break;
+                case AVAIL_CGI_ID:
+                        cgi_name = AVAIL_CGI;
+                        break;
+                case CMD_CGI_ID:
+                        cgi_name = CMD_CGI;
+                        break;
+                case CONFIG_CGI_ID:
+                        cgi_name = CONFIG_CGI;
+                        break;
+                case EXTINFO_CGI_ID:
+                        cgi_name = EXTINFO_CGI;
+                        break;
+                case HISTOGRAM_CGI_ID:
+                        cgi_name = HISTOGRAM_CGI;
+                        break;
+                case HISTORY_CGI_ID:
+                        cgi_name = HISTORY_CGI;
+                        break;
+                case NOTIFICATIONS_CGI_ID:
+                        cgi_name = NOTIFICATIONS_CGI;
+                        break;
+                case OUTAGES_CGI_ID:
+                        cgi_name = OUTAGES_CGI;
+                        break;
+                case SHOWLOG_CGI_ID:
+                        cgi_name = SHOWLOG_CGI;
+                        break;
+                case STATUSMAP_CGI_ID:
+                        cgi_name = STATUSMAP_CGI;
+                        break;
+                case SUMMARY_CGI_ID:
+                        cgi_name = SUMMARY_CGI;
+                        break;
+                case TAC_CGI_ID:
+                        cgi_name = TAC_CGI;
+                        break;
+                case TRENDS_CGI_ID:
+                        cgi_name = TRENDS_CGI;
+                        break;
+	}
+
+	if(embedded || output_format!=HTML_OUTPUT)
+		return;
+
+	if(content_type==WML_CONTENT){
+		/* used by cmd.cgi */
+		printf("</card>\n");
+		printf("</wml>\n");
+		return;
+	}
+
+	if(cgi_id==STATUSWML_CGI_ID) {
+		printf("</wml>\n");
+		return;
+	}
+
+	if(cgi_id == STATUS_CGI_ID) {
+		/* Close the form */
+		printf("</form>\n");
+	}
+
+	/* include user SSI footer */
+	include_ssi_files(cgi_name,SSI_FOOTER);
+
+	printf("</body>\n");
+	printf("</html>\n");
+
+	return;
+}
+
+/* write JavaScript code an layer for popup window */
+void write_popup_code(int cgi_id){
+	char *border_color="#000000";
+	char *background_color="#ffffcc";
+	int border=1;
+	int padding=3;
+	int x_offset=3;
+	int y_offset=3;
+
+	printf("<SCRIPT LANGUAGE='JavaScript'>\n");
+	printf("<!--\n");
+	printf("// JavaScript popup based on code originally found at http://www.helpmaster.com/htmlhelp/javascript/popjbpopup.htm\n");
+	printf("function showPopup(text, eventObj){\n");
+	printf("if(!document.all && document.getElementById)\n");
+	printf("{ document.all=document.getElementsByTagName(\"*\")}\n");
+	printf("ieLayer = 'document.all[\\'popup\\']';\n");
+	printf("nnLayer = 'document.layers[\\'popup\\']';\n");
+	printf("moLayer = 'document.getElementById(\\'popup\\')';\n");
+
+	printf("if(!(document.all||document.layers||document.documentElement)) return;\n");
+
+	printf("if(document.all) { document.popup=eval(ieLayer); }\n");
+	printf("else {\n");
+	printf("  if (document.documentElement) document.popup=eval(moLayer);\n");
+	printf("  else document.popup=eval(nnLayer);\n");
+	printf("}\n");
+
+	printf("var table = \"\";\n");
+
+	printf("if (document.all||document.documentElement){\n");
+	printf("table += \"<table bgcolor='%s' border=%d cellpadding=%d cellspacing=0>\";\n",background_color,border,padding);
+	printf("table += \"<tr><td>\";\n");
+	printf("table += \"<table cellspacing=0 cellpadding=%d>\";\n",padding);
+	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr>\";\n",background_color);
+	printf("table += \"</table></td></tr></table>\"\n");
+	printf("document.popup.innerHTML = table;\n");
+	
+	if (cgi_id==STATUSMAP_CGI_ID) {
+	        printf("document.popup.style.left = document.body.scrollLeft + %d;\n",x_offset);
+	        printf("document.popup.style.top = document.body.scrollTop + %d;\n",y_offset);
+        } else if (cgi_id==TRENDS_CGI_ID){
+	        printf("document.popup.style.left = (document.all ? eventObj.x : eventObj.layerX) + %d;\n",x_offset);
+	        printf("document.popup.style.top  = (document.all ? eventObj.y : eventObj.layerY) + %d;\n",y_offset);
+	}
+
+	printf("document.popup.style.visibility = \"visible\";\n");
+	printf("} \n");
+
+
+	printf("else{\n");
+	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n",padding,border,border_color);
+	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr></table>\";\n",background_color);
+	printf("document.popup.document.open();\n");
+	printf("document.popup.document.write(table);\n");
+	printf("document.popup.document.close();\n");
+
+	/* set x coordinate */
+	printf("document.popup.left = eventObj.layerX + %d;\n",x_offset);
+	
+	/* make sure we don't overlap the right side of the screen */
+	printf("if(document.popup.left + document.popup.document.width + %d > window.innerWidth) document.popup.left = window.innerWidth - document.popup.document.width - %d - 16;\n",x_offset,x_offset);
+		
+	/* set y coordinate */
+	printf("document.popup.top  = eventObj.layerY + %d;\n",y_offset);
+	
+	/* make sure we don't overlap the bottom edge of the screen */
+	printf("if(document.popup.top + document.popup.document.height + %d > window.innerHeight) document.popup.top = window.innerHeight - document.popup.document.height - %d - 16;\n",y_offset,y_offset);
+		
+	/* make the popup visible */
+	printf("document.popup.visibility = \"visible\";\n");
+	printf("}\n");
+	printf("}\n");
+
+	printf("function hidePopup(){ \n");
+	printf("if (!(document.all || document.layers || document.documentElement)) return;\n");
+	printf("if (document.popup == null){ }\n");
+	printf("else if (document.all||document.documentElement) document.popup.style.visibility = \"hidden\";\n");
+	printf("else document.popup.visibility = \"hidden\";\n");
+	printf("document.popup = null;\n");
+	printf("}\n");
+	printf("//-->\n");
+
+	printf("</SCRIPT>\n");
+
+	return;
+}
 
 
 /**********************************************************
@@ -1569,14 +1978,14 @@ void include_ssi_files(char *cgi_name, int type){
 		cgi_ssi_file[x]=tolower(cgi_ssi_file[x]);
 
 	if(type==SSI_HEADER){
-		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad. -->\n", PROGRAM_NAME, PROGRAM_NAME);
+		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)\nCopyright (c) 2009-2010 Icinga Development Team -->\n", PROGRAM_NAME, PROGRAM_NAME_LC);
 		include_ssi_file(common_ssi_file);
 		include_ssi_file(cgi_ssi_file);
 	        }
 	else{
 		include_ssi_file(cgi_ssi_file);
 		include_ssi_file(common_ssi_file);
-		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2007 Ethan Galstad. -->\n", PROGRAM_NAME, PROGRAM_NAME);
+		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)\nCopyright (c) 2009-2010 Icinga Development Team -->\n", PROGRAM_NAME, PROGRAM_NAME_LC);
 	        }
 
 	return;

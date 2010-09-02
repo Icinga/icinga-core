@@ -269,7 +269,15 @@ log_archive_path=@localstatedir@/archives
 
 
 
-# LOGGING OPTIONS
+# LOGGING OPTIONS FOR DAEMON
+# If you want messages logged to the daemon log file (usually icinga.log).
+# Default option is 1 (yes), the other valid option is 0 (no)
+
+use_daemon_log=1
+
+
+
+# LOGGING OPTIONS FOR SYSLOG
 # If you want messages logged to the syslog facility, as well as the
 # Icinga log file set this option to 1.  If not, set it to 0.
 

@@ -53,13 +53,6 @@ extern int       log_rotation_method;
 #define min(a,b)  (((a) < (b)) ? (a) : (b))
 #endif
 
-
-
-/* output types */
-#define HTML_OUTPUT             0
-#define CSV_OUTPUT              1
-
-
 /* archived state types */
 #define AS_CURRENT_STATE        -1   /* special case for initial assumed state */
 #define AS_NO_DATA		0
@@ -249,25 +242,20 @@ void scan_log_file_for_archived_state_data(char *);
 void convert_timeperiod_to_times(int);
 unsigned long calculate_total_time(time_t,time_t);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
-
-
 
 int backtrack_archives=2;
 int earliest_archive=0;
 
-int embedded=FALSE;
-int display_header=TRUE;
-int daemon_check=TRUE;
-
+extern int embedded;
+extern int display_header;
+extern int daemon_check;
+extern int output_format;
+extern int refresh;
 
 timeperiod *current_timeperiod=NULL;
 
-int output_format=HTML_OUTPUT;
-
-
+int CGI_ID=AVAIL_CGI_ID;
 
 int main(int argc, char **argv){
 	int result=OK;
@@ -294,36 +282,36 @@ int main(int argc, char **argv){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		cgi_config_file_error(get_cgi_config_location());
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		main_config_file_error(main_config_file);
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
 	        }
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		object_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		document_header(FALSE);
+		document_header(CGI_ID,FALSE);
 		status_data_error();
-		document_footer();
+		document_footer(CGI_ID);
 		return ERROR;
                 }
 
@@ -354,7 +342,7 @@ int main(int argc, char **argv){
 	/* get the arguments passed in the URL */
 	process_cgivars();
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -1061,84 +1049,13 @@ int main(int argc, char **argv){
 	        }
 
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free all other allocated memory */
 	free_memory();
 
 	return OK;
         }
-
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	printf("Cache-Control: no-store\r\n");
-	printf("Pragma: no-cache\r\n");
-
-	time(&current_time);
-	get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-	printf("Last-Modified: %s\r\n",date_time);
-
-	expire_time=(time_t)0;
-	get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-	printf("Expires: %s\r\n",date_time);
-
-	if(output_format==HTML_OUTPUT)
-		printf("Content-type: text/html\r\n\r\n");
-	else{
-		printf("Content-type: text/plain\r\n\r\n");
-		return;
-	        }
-
-	if(embedded==TRUE || output_format==CSV_OUTPUT)
-		return;
-
-	printf("<html>\n");
-	printf("<head>\n");
-	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-	printf("<title>\n");
-	printf("%s Availability\n", PROGRAM_VERSION);
-	printf("</title>\n");
-
-	if(use_stylesheet==TRUE){
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,AVAIL_CSS);
-	        }
-
-	printf("</head>\n");
-
-	printf("<BODY CLASS='avail'>\n");
-
-	/* include user SSI header */
-	include_ssi_files(AVAIL_CGI,SSI_HEADER);
-
-	return;
-        }
-
-
-
-void document_footer(void){
-
-	if(output_format!=HTML_OUTPUT)
-		return;
-
-	if(embedded==TRUE)
-		return;
-
-	/* include user SSI footer */
-	include_ssi_files(AVAIL_CGI,SSI_FOOTER);
-
-	printf("</body>\n");
-	printf("</html>\n");
-
-	return;
-        }
-
-
 
 int process_cgivars(void){
 	char **variables;

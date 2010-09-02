@@ -41,9 +41,9 @@
 #define HISTOGRAM_IMAGE         "histogram.png"
 
 /* archived state types */
-#define AS_NO_DATA              0
-#define AS_PROGRAM_START        1
-#define AS_PROGRAM_END          2
+#define AS_NO_DATA		0
+#define AS_PROGRAM_START	1
+#define AS_PROGRAM_END		2
 #define AS_HOST_UP		3
 #define AS_HOST_DOWN		4
 #define AS_HOST_UNREACHABLE	5
@@ -54,26 +54,22 @@
 
 
 /* display types */
-#define DISPLAY_HOST_HISTOGRAM	        0
+#define DISPLAY_HOST_HISTOGRAM		0
 #define DISPLAY_SERVICE_HISTOGRAM	1
-#define DISPLAY_NO_HISTOGRAM    	2
+#define DISPLAY_NO_HISTOGRAM		2
 
 /* input types */
-#define GET_INPUT_NONE                  0
-#define GET_INPUT_TARGET_TYPE           1
-#define GET_INPUT_HOST_TARGET           2
-#define GET_INPUT_SERVICE_TARGET        3
-#define GET_INPUT_OPTIONS               4
+#define GET_INPUT_NONE			0
+#define GET_INPUT_TARGET_TYPE		1
+#define GET_INPUT_HOST_TARGET		2
+#define GET_INPUT_SERVICE_TARGET	3
+#define GET_INPUT_OPTIONS		4
 
 /* breakdown types */
-#define BREAKDOWN_MONTHLY       0
-#define BREAKDOWN_DAY_OF_MONTH  1
-#define BREAKDOWN_DAY_OF_WEEK   2
-#define BREAKDOWN_HOURLY        3
-
-/* modes */
-#define CREATE_HTML		0
-#define CREATE_IMAGE		1
+#define BREAKDOWN_MONTHLY	0
+#define BREAKDOWN_DAY_OF_MONTH	1
+#define BREAKDOWN_DAY_OF_WEEK	2
+#define BREAKDOWN_HOURLY	3
 
 /* standard report times */
 #define TIMEPERIOD_CUSTOM	0
@@ -89,17 +85,17 @@
 #define TIMEPERIOD_LASTYEAR	10
 #define TIMEPERIOD_LAST24HOURS	11
 #define TIMEPERIOD_LAST7DAYS	12
-#define TIMEPERIOD_LAST31DAYS   13
+#define TIMEPERIOD_LAST31DAYS	13
 
 
 #define MAX_ARCHIVE_SPREAD	65
 #define MAX_ARCHIVE		65
 #define MAX_ARCHIVE_BACKTRACKS	60
 
-#define DRAWING_WIDTH	        550
-#define DRAWING_HEIGHT	        195
+#define DRAWING_WIDTH		550
+#define DRAWING_HEIGHT		195
 #define DRAWING_X_OFFSET	60
-#define DRAWING_Y_OFFSET        235
+#define DRAWING_Y_OFFSET	235
 
 #define GRAPH_HOST_UP                   1
 #define GRAPH_HOST_DOWN                 2
@@ -165,8 +161,6 @@ void scan_log_file_for_archived_state_data(char *);
 void draw_line(int,int,int,int,int);
 void draw_dashed_line(int,int,int,int,int);
 
-void document_header(int);
-void document_footer(void);
 int process_cgivars(void);
 
 
@@ -187,7 +181,7 @@ int end_month=1;
 int end_year=2000;
 
 int display_type=DISPLAY_NO_HISTOGRAM;
-int mode=CREATE_HTML;
+extern int content_type;
 int input_type=GET_INPUT_NONE;
 int timeperiod_type=TIMEPERIOD_LAST24HOURS;
 int breakdown_type=BREAKDOWN_HOURLY;
@@ -203,9 +197,9 @@ int program_restart_has_occurred=FALSE;
 int graph_events=GRAPH_EVERYTHING;
 int graph_statetypes=GRAPH_HARD_STATETYPES;
 
-int embedded=FALSE;
-int display_header=TRUE;
-int daemon_check=TRUE;
+extern int embedded;
+extern int display_header;
+extern int daemon_check;
 
 char *host_name="";
 char *svc_description="";
@@ -231,7 +225,7 @@ int image_height=320;
 
 int total_buckets=96;
 
-
+int CGI_ID=HISTOGRAM_CGI_ID;
 
 int main(int argc, char **argv){
 	int result=OK;
@@ -263,10 +257,10 @@ int main(int argc, char **argv){
 	/* read the CGI configuration file */
 	result=read_cgi_config_file(get_cgi_config_location());
 	if(result==ERROR){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			cgi_config_file_error(get_cgi_config_location());
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
 	        }
@@ -274,10 +268,10 @@ int main(int argc, char **argv){
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
 	if(result==ERROR){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			main_config_file_error(main_config_file);
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
 	        }
@@ -285,10 +279,10 @@ int main(int argc, char **argv){
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
 	if(result==ERROR){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			object_data_error();
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		return ERROR;
                 }
@@ -296,16 +290,16 @@ int main(int argc, char **argv){
 	/* read all status data */
 	result=read_all_status_data(get_cgi_config_location(),READ_ALL_STATUS_DATA);
 	if(result==ERROR && daemon_check==TRUE){
-		if(mode==CREATE_HTML){
-			document_header(FALSE);
+		if(content_type==HTML_CONTENT){
+			document_header(CGI_ID,FALSE);
 			status_data_error();
-			document_footer();
+			document_footer(CGI_ID);
 		        }
 		free_memory();
 		return ERROR;
                 }
 
-	document_header(TRUE);
+	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -321,7 +315,7 @@ int main(int argc, char **argv){
 	        }
 			
 
-	if(mode==CREATE_HTML && display_header==TRUE){
+	if(content_type==HTML_CONTENT && display_header==TRUE){
 
 		/* begin top table */
 		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
@@ -543,10 +537,10 @@ int main(int argc, char **argv){
 	        }
 	if(is_authorized==FALSE){
 
-		if(mode==CREATE_HTML)
+		if(content_type==HTML_CONTENT)
 			printf("<P><DIV ALIGN=CENTER CLASS='errorMessage'>It appears as though you are not authorized to view information for the specified %s...</DIV></P>\n",(display_type==DISPLAY_HOST_HISTOGRAM)?"host":"service");
 
-		document_footer();
+		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
 	        }
@@ -554,7 +548,7 @@ int main(int argc, char **argv){
 	if(display_type!=DISPLAY_NO_HISTOGRAM && input_type==GET_INPUT_NONE){
 
 		/* print URL to image */
-		if(mode==CREATE_HTML){
+		if(content_type==HTML_CONTENT){
 
 			printf("<BR><BR>\n");
 			printf("<DIV ALIGN=CENTER>\n");
@@ -978,97 +972,13 @@ int main(int argc, char **argv){
 		
                 }
 
-	document_footer();
+	document_footer(CGI_ID);
 
 	/* free all other allocated memory */
 	free_memory();
 
 	return OK;
         }
-
-
-void document_header(int use_stylesheet){
-	char date_time[MAX_DATETIME_LENGTH];
-	time_t current_time;
-	time_t expire_time;
-
-	if(mode==CREATE_HTML){
-		printf("Cache-Control: no-store\r\n");
-		printf("Pragma: no-cache\r\n");
-
-		time(&current_time);
-		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Last-Modified: %s\r\n",date_time);
-
-		expire_time=(time_t)0;
-		get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Expires: %s\r\n",date_time);
-
-		printf("Content-type: text/html\r\n\r\n");
-
-		if(embedded==TRUE)
-			return;
-
-		printf("<html>\n");
-		printf("<head>\n");
-		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
-		printf("<title>\n");
-		printf("%s Histogram\n", PROGRAM_NAME);
-		printf("</title>\n");
-
-		if(use_stylesheet==TRUE){
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,COMMON_CSS);
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,HISTOGRAM_CSS);
-		        }
-	
-		printf("</head>\n");
-
-		printf("<BODY CLASS='histogram'>\n");
-
-		/* include user SSI header */
-		include_ssi_files(HISTOGRAM_CGI,SSI_HEADER);
-
-		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
-	        }
-
-	else{
-		printf("Cache-Control: no-store\r\n");
-		printf("Pragma: no-cache\r\n");
-
-		time(&current_time);
-		get_time_string(&current_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Last-Modified: %s\r\n",date_time);
-
-		expire_time=(time_t)0L;
-		get_time_string(&expire_time,date_time,sizeof(date_time),HTTP_DATE_TIME);
-		printf("Expires: %s\r\n",date_time);
-
-		printf("Content-Type: image/png\r\n\r\n");
-	        }
-
-	return;
-        }
-
-
-
-void document_footer(void){
-
-	if(embedded==TRUE)
-		return;
-
-	if(mode==CREATE_HTML){
-
-		/* include user SSI footer */
-		include_ssi_files(HISTOGRAM_CGI,SSI_FOOTER);
-
-		printf("</body>\n");
-		printf("</html>\n");
-	        }
-
-	return;
-        }
-
-
 
 int process_cgivars(void){
 	char **variables;
@@ -1141,7 +1051,7 @@ int process_cgivars(void){
 
 		/* we found the image creation option */
 		else if(!strcmp(variables[x],"createimage")){
-			mode=CREATE_IMAGE;
+			content_type=IMAGE_CONTENT;
 		        }
 
 		/* we found the backtrack archives argument */
@@ -2221,7 +2131,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 	mmapfile *thefile;
 
 	/* print something so browser doesn't time out */
-	if(mode==CREATE_HTML){
+	if(content_type==HTML_CONTENT){
 		printf(" ");
 		fflush(NULL);
 	        }
