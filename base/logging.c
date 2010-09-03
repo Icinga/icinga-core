@@ -39,6 +39,7 @@ extern char     *macro_x[MACRO_X_COUNT];
 extern host     *host_list;
 extern service  *service_list;
 
+extern int      use_daemon_log;
 extern int	use_syslog;
 extern int	use_syslog_local_facility;
 extern int	syslog_local_facility;
@@ -155,6 +156,10 @@ int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp){
 
 	/* don't log anything if we're not actually running... */
 	if(verify_config==TRUE || test_scheduling==TRUE)
+		return OK;
+
+	/* bail out if we shouldn't write to daemon log */
+	if(use_daemon_log==FALSE)
 		return OK;
 
 	/* make sure we can log this type of entry */

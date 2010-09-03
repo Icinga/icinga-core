@@ -85,6 +85,7 @@ char            *illegal_output_chars=NULL;
 int             use_regexp_matches=FALSE;
 int             use_true_regexp_matching=FALSE;
 
+int             use_daemon_log=DEFAULT_USE_DAEMON_LOG;
 int		use_syslog=DEFAULT_USE_SYSLOG;
 int		use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;
 int		syslog_local_facility=DEFAULT_SYSLOG_LOCAL_FACILITY;

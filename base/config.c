@@ -64,6 +64,7 @@ extern char     *illegal_output_chars;
 extern int      use_regexp_matches;
 extern int      use_true_regexp_matching;
 
+extern int      use_daemon_log;
 extern int      use_syslog;
 extern int      use_syslog_local_facility;
 extern int      syslog_local_facility;
@@ -519,6 +520,17 @@ int read_main_config_file(char *main_config_file){
 			my_free(macro_x[MACRO_ADMINPAGER]);
 			macro_x[MACRO_ADMINPAGER]=(char *)strdup(value);
 		        }
+
+        else if(!strcmp(variable,"use_daemon_log")){
+
+			if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+				asprintf(&error_message,"Illegal value for use_daemon_log");
+				error=TRUE;
+				break;
+				}
+
+			use_daemon_log=(atoi(value)>0)?TRUE:FALSE;
+            }
 
 		else if(!strcmp(variable,"use_syslog")){
 

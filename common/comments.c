@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * COMMENTS.C - Comment functions for Nagios
+ * COMMENTS.C - Comment functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
@@ -45,7 +45,6 @@
 
 comment     *comment_list=NULL;
 int	    defer_comment_sorting = 0;
-static int  unsorted_comments = 0;
 comment     **comment_hashlist=NULL;
 
 
@@ -217,10 +216,6 @@ int delete_comment(int type, unsigned long comment_id){
 			comment_list=this_comment->next;
 		else
 			last_comment->next=next_comment;
-
-		/* if sorting is defered then decrease the amount of unsorted comments by one */
-		if (defer_comment_sorting)
-			unsorted_comments--;
 
 		/* free memory */
 		my_free(this_comment->host_name);
@@ -509,7 +504,6 @@ int add_comment(int comment_type, int entry_type, char *host_name, char *svc_des
 	if(defer_comment_sorting){
 		new_comment->next=comment_list;
 		comment_list=new_comment;
-		unsorted_comments++;
 		}
 	else{
 		/* add new comment to comment list, sorted by comment id */
@@ -539,7 +533,7 @@ int add_comment(int comment_type, int entry_type, char *host_name, char *svc_des
 #ifdef NSCORE
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_comment_data(NEBTYPE_COMMENT_LOAD,NEBFLAG_NONE,NEBATTR_NONE,comment_type,entry_type,host_name,svc_description,entry_time,author,comment_data,persistent,source,expires,entry_time,comment_id,NULL);
+	broker_comment_data(NEBTYPE_COMMENT_LOAD,NEBFLAG_NONE,NEBATTR_NONE,comment_type,entry_type,host_name,svc_description,entry_time,author,comment_data,persistent,source,expires,expire_time,comment_id,NULL);
 #endif
 #endif
 
@@ -553,34 +547,37 @@ static int comment_compar(const void *p1, const void *p2){
 	}
 
 int sort_comments(void){
-	comment **array, *last_comment;
-	int i = 0;
+	comment **array, *temp_comment;
+	unsigned long i=0, unsorted_comments=0;
 
 	if(!defer_comment_sorting)
 		return OK;
 	defer_comment_sorting=0;
+
+	temp_comment = comment_list;
+	while(temp_comment!=NULL) {
+		temp_comment = temp_comment->next;
+		unsorted_comments++;
+		}
 
 	if(!unsorted_comments)
 		return OK;
 
 	if(!(array=malloc(sizeof(*array)*unsorted_comments)))
 		return ERROR;
-	while(comment_list && i<unsorted_comments){
+	while(comment_list){
 		array[i++]=comment_list;
 		comment_list=comment_list->next;
 	}
-	if (comment_list || i<unsorted_comments)
-		return ERROR;
 
 	qsort((void *)array, i, sizeof(*array), comment_compar);
-	comment_list = last_comment = array[0];
+	comment_list = temp_comment = array[0];
 	for (i=1; i<unsorted_comments;i++){
-		last_comment->next = array[i];
-		last_comment = last_comment->next;
+		temp_comment->next = array[i];
+		temp_comment = temp_comment->next;
 		}
-	last_comment->next = NULL;
+	temp_comment->next = NULL;
 	my_free(array);
-	unsorted_comments = 0;
 	return OK;
 	}
 

@@ -33,6 +33,7 @@
 extern "C" { 
 #endif
 
+
 /**************************** CGI REFRESH RATE ******************************/
 
 #define DEFAULT_REFRESH_RATE	60	/* 60 second refresh rate for CGIs */
@@ -40,59 +41,88 @@ extern "C" {
 
 /******************************* CGI NAMES **********************************/
 
+#define AVAIL_CGI		"avail.cgi"
+#define CMD_CGI			"cmd.cgi"
+#define CONFIG_CGI		"config.cgi"
+#define EXTINFO_CGI		"extinfo.cgi"
+#define HISTOGRAM_CGI		"histogram.cgi"
+#define HISTORY_CGI		"history.cgi"
+#define NOTIFICATIONS_CGI	"notifications.cgi"
+#define OUTAGES_CGI		"outages.cgi"
+#define SHOWLOG_CGI		"showlog.cgi"
 #define STATUS_CGI		"status.cgi"
 #define STATUSMAP_CGI		"statusmap.cgi"
-#define STATUSWORLD_CGI	        "statuswrl.cgi"
-#define COMMAND_CGI		"cmd.cgi"
-#define EXTINFO_CGI		"extinfo.cgi"
-#define SHOWLOG_CGI		"showlog.cgi"
-#define NOTIFICATIONS_CGI	"notifications.cgi"
-#define HISTORY_CGI		"history.cgi"
-#define CONFIG_CGI              "config.cgi"
-#define OUTAGES_CGI		"outages.cgi"
-#define TRENDS_CGI		"trends.cgi"
-#define AVAIL_CGI		"avail.cgi"
+#define STATUSWML_CGI		"statuswml.cgi"
+#define STATUSWRL_CGI		"statuswrl.cgi"
+#define SUMMARY_CGI		"summary.cgi"
 #define TAC_CGI			"tac.cgi"
-#define STATUSWML_CGI           "statuswml.cgi"
+#define TRENDS_CGI		"trends.cgi"
+
+/* Are these ones still in use??? */
 #define TRACEROUTE_CGI		"traceroute.cgi"
-#define HISTOGRAM_CGI		"histogram.cgi"
-#define CHECKSANITY_CGI	   	"checksanity.cgi"
-#define MINISTATUS_CGI          "ministatus.cgi"
-#define SUMMARY_CGI	        "summary.cgi"
+#define CHECKSANITY_CGI		"checksanity.cgi"
+#define MINISTATUS_CGI		"ministatus.cgi"
+
+
+/******************************* CGI IDS **********************************/
+
+#define AVAIL_CGI_ID		1
+#define CMD_CGI_ID		2
+#define CONFIG_CGI_ID		3
+#define EXTINFO_CGI_ID		4
+#define HISTOGRAM_CGI_ID	5
+#define HISTORY_CGI_ID		6
+#define NOTIFICATIONS_CGI_ID	7
+#define OUTAGES_CGI_ID		8
+#define SHOWLOG_CGI_ID		9
+#define STATUS_CGI_ID		10
+#define STATUSMAP_CGI_ID	11
+#define STATUSWML_CGI_ID	12
+#define STATUSWRL_CGI_ID	13
+#define SUMMARY_CGI_ID		14
+#define TAC_CGI_ID		15
+#define TRENDS_CGI_ID		16
+
+/* Are these ones still in use??? */
+#define TRACEROUTE_CGI_ID	17
+#define CHECKSANITY_CGI_ID	18
+#define MINISTATUS_CGI_ID	19
 
 
 /**************************** STYLE SHEET NAMES ******************************/
 
 #define COMMON_CSS		"common.css"
+#define JQUERY_DD_CSS		"dd.css"
 
+#define AVAIL_CSS		"avail.css"
+#define CMD_CSS 		"cmd.css"
+#define CONFIG_CSS		"config.css"
+#define EXTINFO_CSS		"extinfo.css"
+#define HISTOGRAM_CSS		"histogram.css"
+#define HISTORY_CSS		"history.css"
+#define NOTIFICATIONS_CSS	"notifications.css"
+#define OUTAGES_CSS		"outages.css"
 #define SHOWLOG_CSS		"showlog.css"
 #define STATUS_CSS		"status.css"
 #define STATUSMAP_CSS		"statusmap.css"
-#define COMMAND_CSS		"cmd.css"
-#define EXTINFO_CSS		"extinfo.css"
-#define NOTIFICATIONS_CSS	"notifications.css"
-#define HISTORY_CSS		"history.css"
-#define CONFIG_CSS		"config.css"
-#define OUTAGES_CSS		"outages.css"
-#define TRENDS_CSS		"trends.css"
-#define AVAIL_CSS		"avail.css"
+#define SUMMARY_CSS		"summary.css"
 #define TAC_CSS			"tac.css"
-#define HISTOGRAM_CSS		"histogram.css"
-#define CHECKSANITY_CSS		"checksanity.css"
-#define MINISTATUS_CSS          "ministatus.css"
-#define SUMMARY_CSS             "summary.css"
+#define TRENDS_CSS		"trends.css"
 
-#define JQUERY_DD_CSS		"dd.css"
+/* Are these ones still in use??? */
+#define CHECKSANITY_CSS		"checksanity.css"
+#define MINISTATUS_CSS		"ministatus.css"
 
 
 /**************************** JAVASCRIPT NAMES ******************************/
 
 #define MARK_CHECKBOXES_JS	"mark-checkboxes.js"
 #define READ_CHECKBOXES_JS	"read-checkboxes.js"
-#define JQUERY_MAIN_JS		"jquery-1.3.2.min.js"
+#define JQUERY_MAIN_JS		"jquery-1.4.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
-#define SHOWVALUE_JS            "showValue.js"
+#define SHOWVALUE_JS		"showValue.js"
 #define CHECKBOXESNBUTTONS_JS	"checkboxesNbutton.js"
+#define SKINNYTIP_JS		"skinnytip.js"
 
 
 /********************************* ICONS ************************************/
@@ -106,28 +136,28 @@ extern "C" {
 #define START_ICON_ALT			"Program Start"
 #define STOP_ICON			"stop.gif"
 #define STOP_ICON_ALT			"Program End"
-#define RESTART_ICON			"restart.gif" 
+#define RESTART_ICON			"restart.gif"
 #define RESTART_ICON_ALT		"Program Restart"
-#define OK_ICON				"recovery.png" 
+#define OK_ICON				"recovery.png"
 #define OK_ICON_ALT			"Service Ok"
-#define CRITICAL_ICON			"critical.png" 
+#define CRITICAL_ICON			"critical.png"
 #define CRITICAL_ICON_ALT		"Service Critical"
-#define WARNING_ICON			"warning.png" 
+#define WARNING_ICON			"warning.png"
 #define WARNING_ICON_ALT		"Service Warning"
-#define UNKNOWN_ICON			"unknown.png" 
+#define UNKNOWN_ICON			"unknown.png"
 #define UNKNOWN_ICON_ALT		"Service Unknown"
-#define NOTIFICATION_ICON		"notify.gif" 
+#define NOTIFICATION_ICON		"notify.gif"
 #define NOTIFICATION_ICON_ALT		"Service Notification"
-#define LOG_ROTATION_ICON		"logrotate.png" 
+#define LOG_ROTATION_ICON		"logrotate.png"
 #define LOG_ROTATION_ICON_ALT		"Log Rotation"
-#define EXTERNAL_COMMAND_ICON		"command.png" 
+#define EXTERNAL_COMMAND_ICON		"command.png"
 #define EXTERNAL_COMMAND_ICON_ALT	"External Command"
 
 #define STATUS_DETAIL_ICON		"status2.gif"
 #define STATUS_OVERVIEW_ICON		"status.gif"
-#define STATUSMAP_ICON                  "status3.gif"
-#define STATUSWORLD_ICON                "status4.gif"
-#define EXTINFO_ICON                	"extinfo.gif"
+#define STATUSMAP_ICON			"status3.gif"
+#define STATUSWORLD_ICON		"status4.gif"
+#define EXTINFO_ICON			"extinfo.gif"
 #define HISTORY_ICON			"history.gif"
 #define CONTACTGROUP_ICON		"contactgroup.gif"
 #define TRENDS_ICON			"trends.gif"
@@ -136,8 +166,8 @@ extern "C" {
 #define ENABLED_ICON			"enabled.gif"
 #define PASSIVE_ONLY_ICON		"passiveonly.gif"
 #define NOTIFICATIONS_DISABLED_ICON	"ndisabled.gif"
-#define ACKNOWLEDGEMENT_ICON            "ack.gif"
-#define REMOVE_ACKNOWLEDGEMENT_ICON     "noack.gif"
+#define ACKNOWLEDGEMENT_ICON		"ack.gif"
+#define REMOVE_ACKNOWLEDGEMENT_ICON	"noack.gif"
 #define COMMENT_ICON			"comment.gif"
 #define DELETE_ICON			"delete.gif"
 #define DELAY_ICON			"delay.gif"
@@ -152,9 +182,9 @@ extern "C" {
 #define EMPTY_ICON			"empty.gif"
 
 #define ACTIVE_ICON			"active.gif"
-#define ACTIVE_ICON_ALT                 "Active Mode"
+#define ACTIVE_ICON_ALT			"Active Mode"
 #define STANDBY_ICON			"standby.gif"
-#define STANDBY_ICON_ALT                "Standby Mode"
+#define STANDBY_ICON_ALT		"Standby Mode"
 
 #define HOST_DOWN_ICON			"critical.png"
 #define HOST_DOWN_ICON_ALT		"Host Down"
@@ -177,7 +207,7 @@ extern "C" {
 #define CONFIGURATION_ICON		"config.gif"
 #define NOTES_ICON			"notes.gif"
 #define ACTION_ICON			"action.gif"
-#define DETAIL_ICON                     "detail.gif"
+#define DETAIL_ICON			"detail.gif"
 
 #define PARENT_TRAVERSAL_ICON		"parentup.gif"
 
@@ -192,7 +222,6 @@ extern "C" {
 
 #define SPLUNK_SMALL_WHITE_ICON		"splunk1.gif"
 #define SPLUNK_SMALL_BLACK_ICON		"splunk2.gif"
-
 
 
 /************************** PLUGIN RETURN VALUES ****************************/
@@ -213,15 +242,25 @@ extern "C" {
 #define DISPLAY_HOSTGROUP_INFO		5
 #define DISPLAY_DOWNTIME		6
 #define DISPLAY_SCHEDULING_QUEUE	7
-#define DISPLAY_SERVICEGROUP_INFO       8
+#define DISPLAY_SERVICEGROUP_INFO	8
 
 
 /************************ COMMAND CGI COMMAND MODES *************************/
 
-#define CMDMODE_NONE            0
-#define CMDMODE_REQUEST         1
-#define CMDMODE_COMMIT          2
+#define CMDMODE_NONE		0
+#define CMDMODE_REQUEST		1
+#define CMDMODE_COMMIT		2
 
+
+/************************ CGI OUTPUT TYPE ***********************************/
+#define HTML_OUTPUT		0
+#define CSV_OUTPUT		1
+
+
+/************************ CGI CONTENT TYPE *********************************/
+#define HTML_CONTENT		0
+#define WML_CONTENT		1
+#define IMAGE_CONTENT		2
 
 
 /******************** HOST AND SERVICE NOTIFICATION TYPES ******************/
@@ -240,8 +279,8 @@ extern "C" {
 #define NOTIFICATION_HOST_ACK		1024
 #define NOTIFICATION_SERVICE_FLAP	2048
 #define NOTIFICATION_HOST_FLAP		4096
-#define NOTIFICATION_SERVICE_CUSTOM     8192
-#define NOTIFICATION_HOST_CUSTOM        16384
+#define NOTIFICATION_SERVICE_CUSTOM	8192
+#define NOTIFICATION_HOST_CUSTOM	16384
 
 
 /********************** HOST AND SERVICE ALERT TYPES **********************/
@@ -275,7 +314,7 @@ extern "C" {
 #define SORT_CURRENTATTEMPT		5
 #define SORT_STATEDURATION		6
 #define SORT_NEXTCHECKTIME		7
-#define SORT_HOSTSTATUS                 8
+#define SORT_HOSTSTATUS			8
 
 
 /****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
@@ -296,8 +335,8 @@ extern "C" {
 #define HOST_NOTIFICATIONS_ENABLED	8192
 #define HOST_PASSIVE_CHECKS_DISABLED	16384
 #define HOST_PASSIVE_CHECKS_ENABLED	32768
-#define HOST_PASSIVE_CHECK           	65536
-#define HOST_ACTIVE_CHECK            	131072
+#define HOST_PASSIVE_CHECK		65536
+#define HOST_ACTIVE_CHECK		131072
 #define HOST_HARD_STATE			262144
 #define HOST_SOFT_STATE			524288
 
@@ -318,17 +357,16 @@ extern "C" {
 #define SERVICE_NOTIFICATIONS_ENABLED	8192
 #define SERVICE_PASSIVE_CHECKS_DISABLED	16384
 #define SERVICE_PASSIVE_CHECKS_ENABLED	32768
-#define SERVICE_PASSIVE_CHECK           65536
-#define SERVICE_ACTIVE_CHECK            131072
+#define SERVICE_PASSIVE_CHECK		65536
+#define SERVICE_ACTIVE_CHECK		131072
 #define SERVICE_HARD_STATE		262144
 #define SERVICE_SOFT_STATE		524288
 
 
 /****************************** SSI TYPES  ********************************/
 
-#define SSI_HEADER                      0
-#define SSI_FOOTER                      1
-
+#define SSI_HEADER			0
+#define SSI_FOOTER			1
 
 
 /************************ CONTEXT-SENSITIVE HELP  *************************/
@@ -338,11 +376,11 @@ extern "C" {
 #define CONTEXTHELP_STATUS_HGSUMMARY	"A3"
 #define CONTEXTHELP_STATUS_HGGRID	"A4"
 #define CONTEXTHELP_STATUS_SVCPROBLEMS	"A5"
-#define CONTEXTHELP_STATUS_HOST_DETAIL  "A6"
-#define CONTEXTHELP_STATUS_HOSTPROBLEMS "A7"
-#define CONTEXTHELP_STATUS_SGOVERVIEW   "A8"
-#define CONTEXTHELP_STATUS_SGSUMMARY    "A9"
-#define CONTEXTHELP_STATUS_SGGRID       "A10"
+#define CONTEXTHELP_STATUS_HOST_DETAIL	"A6"
+#define CONTEXTHELP_STATUS_HOSTPROBLEMS	"A7"
+#define CONTEXTHELP_STATUS_SGOVERVIEW	"A8"
+#define CONTEXTHELP_STATUS_SGSUMMARY	"A9"
+#define CONTEXTHELP_STATUS_SGGRID	"A10"
 
 #define CONTEXTHELP_TAC			"B1"
 
@@ -401,7 +439,7 @@ extern "C" {
 #define CONTEXTHELP_CONFIG_COMMANDS		"L13"
 #define CONTEXTHELP_CONFIG_HOSTEXTINFO		"L14"
 #define CONTEXTHELP_CONFIG_SERVICEEXTINFO	"L15"
-#define CONTEXTHELP_CONFIG_SERVICEGROUPS        "L16"
+#define CONTEXTHELP_CONFIG_SERVICEGROUPS	"L16"
 
 #define CONTEXTHELP_HISTOGRAM_MENU1	"M1"
 #define CONTEXTHELP_HISTOGRAM_MENU2	"M2"
@@ -410,14 +448,14 @@ extern "C" {
 #define CONTEXTHELP_HISTOGRAM_HOST	"M5"
 #define CONTEXTHELP_HISTOGRAM_SERVICE	"M6"
 
-#define CONTEXTHELP_SUMMARY_MENU                   "N1"
-#define CONTEXTHELP_SUMMARY_RECENT_ALERTS          "N2"
-#define CONTEXTHELP_SUMMARY_ALERT_TOTALS           "N3"
-#define CONTEXTHELP_SUMMARY_HOSTGROUP_ALERT_TOTALS "N4"
-#define CONTEXTHELP_SUMMARY_HOST_ALERT_TOTALS      "N5"
-#define CONTEXTHELP_SUMMARY_SERVICE_ALERT_TOTALS   "N6"
-#define CONTEXTHELP_SUMMARY_ALERT_PRODUCERS        "N7"
-#define CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS "N8"
+#define CONTEXTHELP_SUMMARY_MENU			"N1"
+#define CONTEXTHELP_SUMMARY_RECENT_ALERTS		"N2"
+#define CONTEXTHELP_SUMMARY_ALERT_TOTALS		"N3"
+#define CONTEXTHELP_SUMMARY_HOSTGROUP_ALERT_TOTALS	"N4"
+#define CONTEXTHELP_SUMMARY_HOST_ALERT_TOTALS		"N5"
+#define CONTEXTHELP_SUMMARY_SERVICE_ALERT_TOTALS	"N6"
+#define CONTEXTHELP_SUMMARY_ALERT_PRODUCERS		"N7"
+#define CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS	"N8"
 
 
 /************************** LIFO RETURN CODES  ****************************/
@@ -426,9 +464,6 @@ extern "C" {
 #define LIFO_ERROR_MEMORY	1
 #define LIFO_ERROR_FILE		2
 #define LIFO_ERROR_DATA		3
-
-
-
 
 
 /*************************** DATA STRUCTURES  *****************************/
@@ -454,14 +489,14 @@ int read_all_object_configuration_data(char *,int);
 int read_all_status_data(char *,int);
 
 char *unescape_newlines(char *);
-void sanitize_plugin_output(char *);                            /* strips HTML and bad characters from plugin output */
+void sanitize_plugin_output(char *);				/* strips HTML and bad characters from plugin output */
 void strip_html_brackets(char *);				/* strips > and < from string */
 int process_macros(char *,char **,int);				/* processes macros in a string */
 
 void get_time_string(time_t *,char *,int,int);			/* gets a date/time string */
 void get_interval_time_string(double,char *,int);		/* gets a time string for an interval of time */
 
-char * url_encode(char *);		        		/* encodes a string in proper URL format */
+char * url_encode(char *);					/* encodes a string in proper URL format */
 char * html_encode(char *,int);					/* encodes a string in HTML format (for what the user sees) */
 char * escape_string(char *);					/* escape string for html form usage */
 
@@ -480,8 +515,8 @@ void display_splunk_service_url(service *);
 void display_splunk_generic_url(char *,int);
 void strip_splunk_query_terms(char *);
 
-void include_ssi_files(char *,int);                             /* include user-defined SSI footers/headers */
-void include_ssi_file(char *);                                  /* include user-defined SSI footer/header */
+void include_ssi_files(char *,int);				/* include user-defined SSI footers/headers */
+void include_ssi_file(char *);					/* include user-defined SSI footer/header */
 
 void cgi_config_file_error(char *);
 void main_config_file_error(char *);
@@ -494,6 +529,13 @@ int read_file_into_lifo(char *);				/* LIFO functions */
 void free_lifo_memory(void);
 int push_lifo(char *);
 char *pop_lifo(void);
+
+void document_header(int,int);					/* print document header */
+void document_footer(int);					/* print document footer */
+
+void write_popup_code(int);					/* PopUp's for graphics */
+int check_daemon_running(void);
+
 
 /******************************** MULTIURL PATCH *******************************/
 

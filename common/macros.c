@@ -584,9 +584,6 @@ int grab_macro_value(char *macro_buffer, char **output, int *clean_options, int 
 		/* get the macro value */
 		result=grab_custom_macro_value(macro_name,arg[0],arg[1],output);
 
-		/* custom variable values get cleaned */
-		if(result==OK)
-			*clean_options|=(STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
 		}
 
 	/* no macro matched... */
