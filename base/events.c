@@ -1234,9 +1234,6 @@ int event_execution_loop(void){
 
 			        }
 
-			/* reset flag */
-			run_event=TRUE;
-
 			/* run a few checks before executing a host check... */
 			if(event_list_low->event_type==EVENT_HOST_CHECK){
 
