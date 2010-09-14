@@ -317,7 +317,7 @@ create-tarball-nightly:
 	#git pull origin `git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'` #user must pull himself, some brnaches are not remote
 	${MAKE} submodule-update-latest
 	${MAKE} create-docs
-	./make-tarball --prefix icinga-${ICINGA_VERSION}-`date +%Y%m%d`-`git rev-parse --short HEAD`/
+	./make-tarball --prefix icinga-${ICINGA_VERSION}_`date +%Y%m%d`_`git rev-parse --short HEAD`/
 
 ###############################
 # GIT
