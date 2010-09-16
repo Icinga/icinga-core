@@ -30,6 +30,8 @@ FIXES
 * classic ui: removed double header in tac.c
 * classic ui: changed size of checkbox column to 16
 
+* idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client
+
 
 1.0.3 - 18/08/2010
 
