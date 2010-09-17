@@ -1190,7 +1190,33 @@ int ido2db_handle_client_connection(int sd){
 
 	/* initialize database connection */
 	ido2db_db_init(&idi);
-	ido2db_db_connect(&idi);
+
+	/* check if connection to database was successful */
+	if(ido2db_db_connect(&idi)==IDO_ERROR) {
+		if(idi.dbinfo.connected!=IDO_TRUE) {
+
+			/* we did not get a db connection and the client should be disconnected */
+			syslog(LOG_USER | LOG_INFO,"Error: database connection failed, forced client disconnect...\n");
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() idi.dbinfo.connected is '%d'\n", idi.dbinfo.connected);
+
+			/* kill sub threads */
+			pthread_kill(thread_pool[0], SIGINT);
+			pthread_cancel(thread_pool[0]);
+
+		        /* free memory allocated to dynamic buffer */
+			ido_dbuf_free(&dbuf);
+
+		        /* reset db credentials */
+		        ido2db_db_deinit(&idi);
+
+		        /* free memory */
+		        ido2db_free_input_memory(&idi);
+		        ido2db_free_connection_memory(&idi);
+
+			/* return error signalling that child is terminating */
+			return IDO_ERROR;
+		}
+	}
 
 #ifdef HAVE_SSL
 	if(use_ssl==IDO_TRUE){

@@ -32,6 +32,8 @@ FIXES
 * classic ui: changed size of checkbox column to 16
 * classic ui: remove useless utils.inc.php since check-program-updates is dropped from core
 
+* idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client
+
 
 1.0.3 - 18/08/2010
 
