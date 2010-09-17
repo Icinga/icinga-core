@@ -129,9 +129,6 @@ extern int      auto_reschedule_checks;
 
 extern int      additional_freshness_latency;
 
-extern int      check_for_updates;
-extern int      bare_update_check;
-
 extern int      use_aggressive_host_checking;
 extern unsigned long cached_host_check_horizon;
 extern unsigned long cached_service_check_horizon;
@@ -1398,11 +1395,15 @@ int read_main_config_file(char *main_config_file){
 		else if(!strcmp(variable,"external_command_buffer_slots"))
 			external_command_buffer_slots=atoi(value);
 
-		else if(!strcmp(variable,"check_for_updates"))
-			check_for_updates=(atoi(value)>0)?TRUE:FALSE;
+		else if(!strcmp(variable,"check_for_updates")){
+			/* ignore it for compatibility reasons */
+			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: check_for_updates variable ignored. Icinga Core does not support program update checking");
+			}
 
-		else if(!strcmp(variable,"bare_update_check"))
-			bare_update_check=(atoi(value)>0)?TRUE:FALSE;
+		else if(!strcmp(variable,"bare_update_check")){
+			/* ignore it for compatibility reasons */
+			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: bare_update_check variable ignored. Icinga Core does not support program update checking");
+			}
 
                else if(!strcmp(variable,"event_profiling_enabled"))
                        event_profiling_enabled=(atoi(value)>0)?TRUE:FALSE;

@@ -23,12 +23,14 @@ FIXES
 * core: fix segfault in escalation conditions when using object tricks (Vitali Voroth)
 * core: fix for retaining host display name and alias, as well as service display name (Folkert van Heusden)
 * core: fix format errors for logging eventhandlers (Guillaume Rousse)
+* core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
 * classic ui: fix delay sorting of comments/downtimes (Ton Voon)
 * classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id
 * classic ui: removed double header in tac.c
 * classic ui: changed size of checkbox column to 16
+* classic ui: remove useless utils.inc.php since check-program-updates is dropped from core
 
 
 1.0.3 - 18/08/2010

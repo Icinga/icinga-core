@@ -704,10 +704,6 @@ void display_event_data(timed_event* event, int priority){
             	printf("\t\t(expire comment)\n");
         break;
 
-        case EVENT_CHECK_PROGRAM_UPDATE:
-            	printf("\t\t(check for Icinga updates)");
-        break;
-
         case EVENT_USER_FUNCTION:
             	printf("\t\t(user function)\n");
         break;
@@ -1530,14 +1526,6 @@ int handle_timed_event(timed_event *event){
 
 		/* check for expired comment */
 		check_for_expired_comment((unsigned long)event->event_data);
-		break;
-
-	case EVENT_CHECK_PROGRAM_UPDATE:
-
-		log_debug_info(DEBUGL_EVENTS,0,"** Check For Program Update\n");
-
-		/* check for new versions of Icinga */
-		check_for_nagios_updates(FALSE,TRUE);
 		break;
 
 	case EVENT_USER_FUNCTION:
