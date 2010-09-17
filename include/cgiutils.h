@@ -252,15 +252,16 @@ extern "C" {
 #define CMDMODE_COMMIT		2
 
 
-/************************ CGI OUTPUT TYPE ***********************************/
-#define HTML_OUTPUT		0
-#define CSV_OUTPUT		1
-
-
 /************************ CGI CONTENT TYPE *********************************/
 #define HTML_CONTENT		0
 #define WML_CONTENT		1
 #define IMAGE_CONTENT		2
+#define CSV_CONTENT		3
+
+
+/************************ CSV OUTPUT CHARACTERS ****************************/
+#define CSV_DELIMITER		";"
+#define CSV_DATA_ENCLOSURE	"'"
 
 
 /******************** HOST AND SERVICE NOTIFICATION TYPES ******************/
@@ -489,6 +490,7 @@ int read_all_object_configuration_data(char *,int);
 int read_all_status_data(char *,int);
 
 char *unescape_newlines(char *);
+char *escape_newlines(char *);
 void sanitize_plugin_output(char *);				/* strips HTML and bad characters from plugin output */
 void strip_html_brackets(char *);				/* strips > and < from string */
 int process_macros(char *,char **,int);				/* processes macros in a string */

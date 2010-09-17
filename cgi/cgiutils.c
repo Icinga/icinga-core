@@ -62,6 +62,9 @@ char            *action_url_target=NULL;
 
 char            *ping_syntax=NULL;
 
+char		*csv_delimiter=CSV_DELIMITER;
+char		*csv_data_enclosure=CSV_DATA_ENCLOSURE;
+
 char            nagios_check_command[MAX_INPUT_BUFFER]="";
 char            nagios_process_info[MAX_INPUT_BUFFER]="";
 int             nagios_process_state=STATE_OK;
@@ -149,9 +152,7 @@ extern char     *tzname[2];
 #endif
 #endif
 
-int output_format=HTML_OUTPUT;
 int content_type=HTML_CONTENT;
-
 int embedded=FALSE;
 int display_header=TRUE;
 int refresh=TRUE;
@@ -462,7 +463,14 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
- 	        }
+
+		else if(!strcmp(var,"csv_delimiter"))
+			csv_delimiter=strdup(val);
+
+		else if(!strcmp(var,"csv_data_enclosure"))
+			csv_data_enclosure=strdup(val);
+
+		}
 
 	/* free memory and close the file */
 	free(input);
@@ -887,14 +895,14 @@ void document_header(int cgi_id, int use_stylesheet){
 		return;
 	}
 
-	if(output_format==HTML_OUTPUT)
+	if(content_type==HTML_CONTENT)
 		printf("Content-type: text/html\r\n\r\n");
 	else{
 		printf("Content-type: text/plain\r\n\r\n");
 		return;
 	}
 
-	if(embedded==TRUE || output_format==CSV_OUTPUT)
+	if(embedded==TRUE || content_type==CSV_CONTENT)
 		return;
 
 	printf("<html>\n");
@@ -959,7 +967,7 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-		printf("<script language='javascript'>");
+/*		printf("<script language='javascript'>");
 		printf("$(document).ready(function(e) {");
 		printf("try {");
 		printf("$('body select').msDropDown();");
@@ -968,7 +976,7 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("}");
 		printf("});");
 		printf("</script>\n");
-
+*/
 		/* Javascript lib to show tooltips */
 		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n",url_js_path,SKINNYTIP_JS);
 		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
@@ -1026,7 +1034,7 @@ void document_footer(int cgi_id){
                         break;
 	}
 
-	if(embedded || output_format!=HTML_OUTPUT)
+	if(embedded || content_type!=HTML_CONTENT)
 		return;
 
 	if(content_type==WML_CONTENT){
@@ -1176,6 +1184,40 @@ char *unescape_newlines(char *rawbuf){
 
 	return rawbuf;
 	}
+
+/* escapes newlines in a string */
+char *escape_newlines(char *rawbuf) {
+	char *newbuf=NULL;
+	register int x,y;
+
+	if(rawbuf==NULL)
+		return NULL;
+
+	/* allocate enough memory to escape all chars if necessary */
+	if((newbuf=malloc((strlen(rawbuf)*2)+1))==NULL)
+		return NULL;
+
+	for(x=0,y=0;rawbuf[x]!=(char)'\x0';x++){
+
+		/* escape backslashes */
+		if(rawbuf[x]=='\\'){
+			newbuf[y++]='\\';
+			newbuf[y++]='\\';
+			}
+
+		/* escape newlines */
+		else if(rawbuf[x]=='\n'){
+			newbuf[y++]='\\';
+			newbuf[y++]='n';
+			}
+
+		else
+			newbuf[y++]=rawbuf[x];
+		}
+	newbuf[y]='\x0';
+
+	return newbuf;
+}
 
 
 /* strips HTML and bad stuff from plugin output */

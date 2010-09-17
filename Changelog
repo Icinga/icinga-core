@@ -16,6 +16,7 @@ ENHANCEMENTS
 * classic ui: change menu, add unhandled host/service problems
 * classic ui: allow searching for host without service attached to it
 * classic ui: added tooltip for comments in status.cgi
+* classic ui: added csv export to most cgi pages
 
 
 FIXES
