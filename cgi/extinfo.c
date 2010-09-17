@@ -104,9 +104,9 @@ void show_service_info(void);
 void show_performance_data(void);
 void show_hostgroup_info(void);
 void show_servicegroup_info(void);
-void show_all_downtime(void);
+void show_downtime(void);
 void show_scheduling_queue(void);
-void display_comments(int);
+void show_comments(int);
 
 int sort_data(int,int);
 int compare_sortdata_entries(int,int,sortdata *,sortdata *);
@@ -583,13 +583,13 @@ int main(void){
 
 	if(display_type==DISPLAY_HOST_INFO) {
 		if(content_type==CSV_CONTENT)
-			display_comments(HOST_COMMENT);
+			show_comments(HOST_COMMENT);
 		else
 			show_host_info();
 	}
 	else if(display_type==DISPLAY_SERVICE_INFO) {
 		if(content_type==CSV_CONTENT)
-			display_comments(SERVICE_COMMENT);
+			show_comments(SERVICE_COMMENT);
 		else
 			show_service_info();
 	}
@@ -598,8 +598,8 @@ int main(void){
 			printf("<DIV ALIGN=CENTER CLASS='infoMessage'>Your account does not have permissions to view comments.<br>\n");
 		else {
 			if(content_type==CSV_CONTENT) {
-				display_comments(HOST_COMMENT);
-				display_comments(SERVICE_COMMENT);
+				show_comments(HOST_COMMENT);
+				show_comments(SERVICE_COMMENT);
 			} else {
 				printf("<BR />\n");
 				printf("<DIV CLASS='commentNav'>[&nbsp;<A HREF='#HOSTCOMMENTS' CLASS='commentNav'>Host Comments</A>&nbsp;|&nbsp;<A HREF='#SERVICECOMMENTS' CLASS='commentNav'>Service Comments</A>&nbsp;]</DIV>\n");
@@ -608,9 +608,9 @@ int main(void){
 				// will this cause a probelm with buffer overlow
 				printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
 
-				display_comments(HOST_COMMENT);
+				show_comments(HOST_COMMENT);
 				printf("<BR />\n");
-				display_comments(SERVICE_COMMENT);
+				show_comments(SERVICE_COMMENT);
 			}
 		}
 	}
@@ -621,7 +621,7 @@ int main(void){
 	else if(display_type==DISPLAY_SERVICEGROUP_INFO)
 		show_servicegroup_info();
 	else if(display_type==DISPLAY_DOWNTIME)
-		show_all_downtime();
+		show_downtime();
 	else if(display_type==DISPLAY_SCHEDULING_QUEUE)
 		show_scheduling_queue();
 	else
@@ -1344,7 +1344,7 @@ void show_host_info(void){
 
 	if(is_authorized_for_read_only(&current_authdata)==FALSE){
 		/* display comments */
-		display_comments(HOST_COMMENT);
+		show_comments(HOST_COMMENT);
 		}
 	printf("</TD>\n");
 
@@ -1688,7 +1688,7 @@ void show_service_info(void){
 
 	if (is_authorized_for_read_only(&current_authdata)==FALSE) {
 		/* display comments */
-		display_comments(SERVICE_COMMENT);
+		show_comments(SERVICE_COMMENT);
 		}
 	printf("</TD>\n");
 	printf("</TR>\n");
@@ -2424,7 +2424,7 @@ void show_performance_data(void){
 	return;
         }
 
-void display_comments(int type){
+void show_comments(int type){
 	host *temp_host=NULL;
 	service *temp_service=NULL;
 	int total_comments=0;
@@ -2460,7 +2460,7 @@ void display_comments(int type){
 	}else{
 		printf("<A NAME=%sCOMMENTS></A>\n",(type==HOST_COMMENT)?"HOST":"SERVICE");
 		printf("<DIV CLASS='commentTitle'>%s Comments</DIV>\n",(type==HOST_COMMENT)?"Host":"Service");
-		
+
 		printf("<TABLE BORDER=0 align=center>\n");
 		printf("<tr CLASS='comment' valign=middle><td><img src='%s%s' border=0></td>",url_images_path,COMMENT_ICON);
 
@@ -2486,13 +2486,18 @@ void display_comments(int type){
 		printf("</tr>\n");
 		printf("</TABLE>\n");
 
+		printf("<form name='tableform%s' id='tableform%s'>",(type==HOST_COMMENT)?"host":"service",(type==HOST_COMMENT)?"host":"service");
+		printf("<input type=hidden name=buttonCheckboxChecked>");
+		printf("<input type=hidden name='hiddencmdfield' value=%d>",(type==HOST_COMMENT)?CMD_DEL_HOST_COMMENT:CMD_DEL_SVC_COMMENT);
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='comment'>\n");
 
 		if(display_type!=DISPLAY_COMMENTS) {
 			// will this cause a probelm with buffer overlow
-			printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+			printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI,strdup(getenv("QUERY_STRING")));			
 		}
+
+		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Comments' onClick=cmd_submit(\'tableform%s\') disabled=\"disabled\"></TD></TR>\n",colspan,(type==HOST_COMMENT)?"host":"service");
 
 		printf("<TR CLASS='comment'>");
 		if(display_type==DISPLAY_COMMENTS) {
@@ -2500,7 +2505,7 @@ void display_comments(int type){
 			if(type==SERVICE_COMMENT)
 				printf("<TH CLASS='comment'>Service</TH>");
 		}
-		printf("<TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Type</TH><TH CLASS='comment'>Expires</TH><TH CLASS='comment'>Actions</TH></TR>\n");
+		printf("<TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Type</TH><TH CLASS='comment'>Expires</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value=all onclick=\"checkAll(\'tableform%s\');isValidForSubmit(\'tableform%s\');\"></TH></TR>\n",(type==HOST_COMMENT)?"host":"service",(type==HOST_COMMENT)?"host":"service");
 	}
 
 	/* display all the service comments */
@@ -2590,8 +2595,9 @@ void display_comments(int type){
 				}
 			}
 			printf("<td>%s</td><td>%s</td><td>%s</td><td>%lu</td><td>%s</td><td>%s</td><td>%s</td>",date_time,temp_comment->author,temp_comment->comment_data,temp_comment->comment_id,(temp_comment->persistent)?"Yes":"No",comment_type,(temp_comment->expires==TRUE)?expire_time:"N/A");
-			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></td>",CMD_CGI,(type==HOST_COMMENT)?CMD_DEL_HOST_COMMENT:CMD_DEL_SVC_COMMENT,temp_comment->comment_id,url_images_path,DELETE_ICON);
-			printf("</tr>\n");
+			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>",CMD_CGI,(type==HOST_COMMENT)?CMD_DEL_HOST_COMMENT:CMD_DEL_SVC_COMMENT,temp_comment->comment_id,url_images_path,DELETE_ICON);
+			printf("<input onclick=\"isValidForSubmit(\'tableform%s\');\" type='checkbox' name='checkbox' value='&com_id=%lu'></td>",(type==HOST_COMMENT)?"host":"service",temp_comment->comment_id);			
+			printf("</td></tr>\n");
 		}
 		total_comments++;
 	}
@@ -2606,14 +2612,14 @@ void display_comments(int type){
 				printf("This %s has no comments associated with it",(type==HOST_COMMENT)?"host":"service");
 			printf("</TD></TR>\n");
 		}
-		printf("</TABLE></DIV>\n");
+		printf("</TABLE></FORM></DIV>\n");
 	}
 
 	return;
 }
 
-/* shows all service and host scheduled downtime */
-void show_all_downtime(void){
+/* shows service and host scheduled downtime */
+void show_downtime(void){
 	int total_downtime=0;
 	char *bg_class="";
 	int odd=0;
@@ -2669,14 +2675,21 @@ void show_all_downtime(void){
 
 			printf("<BR />\n");
 			printf("<DIV ALIGN=CENTER>\n");
+
+			printf("<form name='tableform%s' id='tableform%s'>",(type==HOST_DOWNTIME)?"host":"service",(type==HOST_DOWNTIME)?"host":"service");
+			printf("<input type=hidden name=buttonCheckboxChecked>");
+			printf("<input type=hidden name='hiddencmdfield' value=%d>",(type==HOST_DOWNTIME)?CMD_DEL_HOST_DOWNTIME:CMD_DEL_SVC_DOWNTIME);
+			
 			printf("<TABLE BORDER=0 CLASS='downtime'>\n");
+			printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Downtimes' onClick=cmd_submit(\'tableform%s\') disabled=\"disabled\"></TD></TR>\n",(type==HOST_DOWNTIME)?11:12,(type==HOST_DOWNTIME)?"host":"service");
+			
 			printf("<TR CLASS='downtime'><TH CLASS='downtime'>Host Name</TH>");
 			if(type==SERVICE_DOWNTIME)
 				printf("<TH CLASS='downtime'>Service</TH>");
-			printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='downtime'>Actions</TH></TR>\n");
+			printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%s\');isValidForSubmit(\'tableform%s\');\"></TH></TR>\n",(type==HOST_DOWNTIME)?"host":"service",(type==HOST_DOWNTIME)?"host":"service");
 		}
 
-		/* display all the host downtime */
+		/* display all the downtime */
 		for(temp_downtime=scheduled_downtime_list,total_downtime=0;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
 
 			if(type==HOST_DOWNTIME && temp_downtime->type!=HOST_DOWNTIME)
@@ -2758,7 +2771,6 @@ void show_all_downtime(void){
 				printf("<td CLASS='%s'>%lu</td>",bg_class,temp_downtime->downtime_id);
 				printf("<td CLASS='%s'>",bg_class);
 			}
-
 			if(temp_downtime->triggered_by==0)
 				printf("N/A");
 			else
@@ -2771,8 +2783,9 @@ void show_all_downtime(void){
 					printf("<td align='center'><a href='%s?cmd_typ=%d",CMD_CGI,CMD_DEL_HOST_DOWNTIME);
 				else
 					printf("<td align='center'><a href='%s?cmd_typ=%d",CMD_CGI,CMD_DEL_SVC_DOWNTIME);
-				printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></td>",temp_downtime->downtime_id,url_images_path,DELETE_ICON);
-				printf("</tr>\n");
+				printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>",temp_downtime->downtime_id,url_images_path,DELETE_ICON);
+				printf("<input onclick=\"isValidForSubmit(\'tableform%s\');\" type='checkbox' name='checkbox' value='&down_id=%lu'></td>",(type==HOST_DOWNTIME)?"host":"service",temp_downtime->downtime_id);
+				printf("</td></tr>\n");
 			}
 			total_downtime++;
 		}
@@ -2781,8 +2794,7 @@ void show_all_downtime(void){
 			printf("<TR CLASS='downtimeOdd'><TD COLSPAN=%d>There are no %s with scheduled downtime</TD></TR>",(type==HOST_DOWNTIME)?11:12,(type==HOST_DOWNTIME)?"host":"service");
 
 		if(content_type!=CSV_CONTENT){
-			printf("</TABLE>\n");
-			printf("</DIV>\n");
+			printf("</TABLE></FORM></DIV>\n");
 		}
 	}
 
@@ -2830,8 +2842,7 @@ void show_scheduling_queue(void){
 		printf("%sLAST_CHECK%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sNEXT_CHECK%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sTYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sACTIVE_CHECKS%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("\n");
+		printf("%sACTIVE_CHECKS%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<DIV ALIGN=CENTER CLASS='statusSort'>Entries sorted by <b>");
 		if(sort_option==SORT_HOSTNAME)

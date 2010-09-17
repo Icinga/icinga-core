@@ -17,6 +17,7 @@ ENHANCEMENTS
 * classic ui: allow searching for host without service attached to it
 * classic ui: added tooltip for comments in status.cgi
 * classic ui: added csv export to most cgi pages
+* classic ui: added possibility to delete multiple downtimes and comments (taken loads of ideas from Rune Darrud)
 
 
 FIXES

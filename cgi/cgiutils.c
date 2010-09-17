@@ -895,14 +895,15 @@ void document_header(int cgi_id, int use_stylesheet){
 		return;
 	}
 
-	if(content_type==HTML_CONTENT)
-		printf("Content-type: text/html\r\n\r\n");
-	else{
+	if(content_type==CSV_CONTENT) {
 		printf("Content-type: text/plain\r\n\r\n");
 		return;
 	}
 
-	if(embedded==TRUE || content_type==CSV_CONTENT)
+	// send HTML CONTENT
+	printf("Content-type: text/html\r\n\r\n");
+
+	if(embedded==TRUE)
 		return;
 
 	printf("<html>\n");
@@ -918,27 +919,17 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,cgi_css);
 	}
 
-	if(cgi_id == STATUS_CGI_ID) {
-		/* JavaScript for (un)checking all checkboxes */
-		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,MARK_CHECKBOXES_JS);
-
-		/* JavaScript to read the 'value' of all checked checkboxes */
-		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,READ_CHECKBOXES_JS);
-
+	if(cgi_id == STATUS_CGI_ID || cgi_id == EXTINFO_CGI_ID) {
 		/* JavaScript for dropdown menu WITH images */
 		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,JQUERY_MAIN_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,JQUERY_DD_JS);
+
 		/* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'/>\n",url_stylesheets_path,JQUERY_DD_CSS);
 
-		/* Check if the dropdown choice is valid and enable submit button */
-		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,SHOWVALUE_JS);
-
-		/* Create and follow the URL */
-		printf("<!-- JavaScript by Rune Darrud for Icinga -->\n");
-		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,CHECKBOXESNBUTTONS_JS);
+		/* functions to handle the checkboxes and dropdown menus */
+		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,CHECKBOX_FUNCTIONS_JS);
 	}
-
 
 	if(cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID) {
 		/* write JavaScript code for popup window */

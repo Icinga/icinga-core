@@ -30,7 +30,7 @@
 #include "cgiauth.h"
 
 #ifdef __cplusplus
-extern "C" { 
+extern "C" {
 #endif
 
 
@@ -116,12 +116,9 @@ extern "C" {
 
 /**************************** JAVASCRIPT NAMES ******************************/
 
-#define MARK_CHECKBOXES_JS	"mark-checkboxes.js"
-#define READ_CHECKBOXES_JS	"read-checkboxes.js"
+#define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
 #define JQUERY_MAIN_JS		"jquery-1.4.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
-#define SHOWVALUE_JS		"showValue.js"
-#define CHECKBOXESNBUTTONS_JS	"checkboxesNbutton.js"
 #define SKINNYTIP_JS		"skinnytip.js"
 
 
