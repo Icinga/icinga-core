@@ -184,10 +184,10 @@ int broker_event_handler(int type, int flags, int attr, int eventhandler_type, v
 	int return_code=OK;
 
 	if(!(event_broker_options & BROKER_EVENT_HANDLERS))
-		return;
+		return OK;
 	
 	if(data==NULL)
-		return;
+		return ERROR;
 
 	/* get command name/args */
 	if(cmd!=NULL){
