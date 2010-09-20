@@ -1105,7 +1105,6 @@ perl subst $srcdir/include/locations.h
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
 perl subst $srcdir/html/top.html
-perl subst $srcdir/html/search.html
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."
