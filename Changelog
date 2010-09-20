@@ -16,6 +16,7 @@ ENHANCEMENTS
 * classic ui: change menu, add unhandled host/service problems
 * classic ui: allow searching for host without service attached to it
 * classic ui: added tooltip for comments in status.cgi
+* classic ui: remove php dependency by dropping extended live search
 * classic ui: added csv export to most cgi pages
 * classic ui: added possibility to delete multiple downtimes and comments (taken loads of ideas from Rune Darrud)
 
@@ -23,16 +24,20 @@ ENHANCEMENTS
 FIXES
 * core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret)
 * core: fix segfault in escalation conditions when using object tricks (Vitali Voroth)
-* core: fix for event execution loop re-scheduling host checks instead of executing them if service checks are disabled (Ethan Galstad)
 * core: fix for retaining host display name and alias, as well as service display name (Folkert van Heusden)
+* core: fix format errors for logging eventhandlers (Guillaume Rousse)
+* core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
 * classic ui: fix delay sorting of comments/downtimes (Ton Voon)
 * classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id
 * classic ui: removed double header in tac.c
 * classic ui: changed size of checkbox column to 16
+* classic ui: remove useless utils.inc.php since check-program-updates is dropped from core
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client
+
+* install: remove php dependency and files for updatechecks/extended search in icinga.spec
 
 
 1.0.3 - 18/08/2010

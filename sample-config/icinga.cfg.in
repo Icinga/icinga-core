@@ -801,31 +801,6 @@ interval_length=60
 
 
 
-# CHECK FOR UPDATES
-# This option determines whether Icinga will automatically check to
-# see if new updates (releases) are available.  It is recommend that you
-# enable this option to ensure that you stay on top of the latest critical
-# patches to Icinga.  Icinga is critical to you - make sure you keep it in
-# good shape.  Icinga will check once a day for new updates. Data collected
-# by Icinga Enterprises from the update check is processed in accordance 
-# with our privacy policy - see http://api.icinga.org for details.
-
-check_for_updates=0
-
-
-
-# BARE UPDATE CHECK
-# This option deterines what data Icinga will send to api.icinga.org when
-# it checks for updates.  By default, Icinga will send information on the 
-# current version of Icinga you have installed, as well as an indicator as
-# to whether this was a new installation or not.  Icinga Enterprises uses
-# this data to determine the number of users running specific version of 
-# Icinga.  Enable this option if you do not want this information to be sent.
-
-bare_update_check=1
-
-
-
 # AGGRESSIVE HOST CHECKING OPTION
 # If you don't want to turn on aggressive host checking features, set
 # this value to 0 (the default).  Otherwise set this value to 1 to

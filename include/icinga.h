@@ -137,14 +137,6 @@ extern "C" {
 
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Icinga */
 
-#define DEFAULT_CHECK_FOR_UPDATES                               0       /* should we check for new Icinga releases? */ /* not used */
-#define DEFAULT_BARE_UPDATE_CHECK                               1       /* report current version and new installs */
-#define MINIMUM_UPDATE_CHECK_INTERVAL                           60*60*22 /* 22 hours minimum between checks - please be kind to our servers! */
-#define BASE_UPDATE_CHECK_INTERVAL                              60*60*22 /* 22 hours base interval */
-#define UPDATE_CHECK_INTERVAL_WOBBLE                            60*60*4  /* 4 hour wobble on top of base interval */
-#define BASE_UPDATE_CHECK_RETRY_INTERVAL                        60*60*1  /* 1 hour base retry interval */
-#define UPDATE_CHECK_RETRY_INTERVAL_WOBBLE                      60*60*3  /* 3 hour wobble on top of base retry interval */
-
 
 /******************** HOST STATUS *********************/
 
@@ -252,7 +244,6 @@ extern "C" {
 #define EVENT_HFRESHNESS_CHECK          13      /* checks host result "freshness" */
 #define EVENT_RESCHEDULE_CHECKS		14      /* adjust scheduling of host and service checks */
 #define EVENT_EXPIRE_COMMENT            15      /* removes expired comments */
-#define EVENT_CHECK_PROGRAM_UPDATE      16      /* checks for new version of Icinga */
 #define EVENT_SLEEP                     98      /* asynchronous sleep event that occurs when event queues are empty */
 #define EVENT_USER_FUNCTION             99      /* USER-defined function (modules) */
 
@@ -598,8 +589,6 @@ int dbuf_init(dbuf *,int);
 int dbuf_free(dbuf *);
 int dbuf_strcat(dbuf *,char *);
 int set_environment_var(char *,char *,int);             /* sets/clears and environment variable */
-int check_for_nagios_updates(int,int);                  /* checks to see if new version of Icinga are available */
-int query_update_api(void);                             /* checks to see if new version of Icinga are available */
 
 
 /**** External Command Functions ****/
