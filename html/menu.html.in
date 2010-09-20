@@ -20,8 +20,6 @@
 					<a class="flag" href="docs/de/index.html" target="main"><img src="docs/images/flags/de.png" /></a><a class="flag" href="docs/en/index.html" target="main"><img src="docs/images/flags/um_gb.png" /></a>
 				</div>
 			</li>
-			<!-- extended search based on idoutils and icinga api -->
-			<li class="menuli_style2"><a href="search.html" target="main">Extended Search</a></li>
 			<!-- classic search -->
 			<li class="menuli_style2">
 			<div class="navbarsearch">

@@ -16,6 +16,7 @@ ENHANCEMENTS
 * classic ui: change menu, add unhandled host/service problems
 * classic ui: allow searching for host without service attached to it
 * classic ui: added tooltip for comments in status.cgi
+* classic ui: remove php dependency by dropping extended live search
 
 
 FIXES
@@ -33,6 +34,8 @@ FIXES
 * classic ui: remove useless utils.inc.php since check-program-updates is dropped from core
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client
+
+* install: remove php dependency and files for updatechecks/extended search in icinga.spec
 
 
 1.0.3 - 18/08/2010
