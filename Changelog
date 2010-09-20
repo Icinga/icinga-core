@@ -35,6 +35,8 @@ FIXES
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client
 
+* install: remove php dependency and files for updatechecks/extended search in icinga.spec
+
 
 1.0.3 - 18/08/2010
 
