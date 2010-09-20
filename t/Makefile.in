@@ -1,9 +1,9 @@
-# Makefile for Nagios tests using perl
+# Makefile for Icinga tests using perl
 
 all:
 
 test:
-	prove *.t
+	prove -v *.t 2>&1 |tee tests.log
 
 clean:
 
