@@ -27,6 +27,7 @@ FIXES
 * core: fix for retaining host display name and alias, as well as service display name (Folkert van Heusden)
 * core: fix format errors for logging eventhandlers (Guillaume Rousse)
 * core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore
+* core: don't skip hostchecks when servicechecks are disabled (Stephen Gran) #778
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
 * classic ui: fix delay sorting of comments/downtimes (Ton Voon)
