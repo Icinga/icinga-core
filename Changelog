@@ -5,40 +5,40 @@ Icinga 1.2.x Change Log
 1.2.0 - 06/10/2010
 
 ENHANCEMENTS
-* core: add eventhandler override (Sven Nierlein)
-* core: add config option to disable logging in tothe daemon log file
-* core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch)
+i* core: add eventhandler override (Sven Nierlein) #731
+* core: add config option to disable logging into the daemon log file #311
+* core: fix delay sorting of comments/downtimes (Ton Voon) #753
+* core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch) #752
 
-* classic ui: add commands expander to config display (Jochen Bern)
+* classic ui: add commands expander to config display (Jochen Bern) #746
 	- $ARGn$ substitution will be shown between command_line and
 	  check_command associated for hosts, services, etc and help
 	  getting to know/use commands the core will execute.
-* classic ui: change menu, add unhandled host/service problems
-* classic ui: allow searching for host without service attached to it
-* classic ui: added tooltip for comments in status.cgi
-* classic ui: remove php dependency by dropping extended live search
-* classic ui: added csv export to most cgi pages
-* classic ui: added possibility to delete multiple downtimes and comments (taken loads of ideas from Rune Darrud)
+* classic ui: change menu, add unhandled host/service problems #745
+* classic ui: allow searching for host without service attached to it #601
+* classic ui: added tooltip for comments in status.cgi #805
+* classic ui: remove php dependency by dropping extended live search #800
+* classic ui: added csv export to most cgi pages #806
+* classic ui: added possibility to delete multiple downtimes and comments (taken loads of ideas from Rune Darrud) #523
 
 
 FIXES
-* core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret)
-* core: fix segfault in escalation conditions when using object tricks (Vitali Voroth)
-* core: fix for retaining host display name and alias, as well as service display name (Folkert van Heusden)
-* core: fix format errors for logging eventhandlers (Guillaume Rousse)
-* core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore
+* core: fix send comments to the broker with proper expiration_time (Matthieu Kermagoret) #747
+* core: fix segfault in escalation conditions when using object tricks (Vitali Voroth) #751
+* core: fix for retaining host display name and alias, as well as service display name (Folkert van Heusden) #760
+* core: fix format errors for logging eventhandlers (Guillaume Rousse) #779
+* core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore #790
 * core: don't skip hostchecks when servicechecks are disabled (Stephen Gran) #778
 
-* classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp
-* classic ui: fix delay sorting of comments/downtimes (Ton Voon)
-* classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id
-* classic ui: removed double header in tac.c
-* classic ui: changed size of checkbox column to 16
-* classic ui: remove useless utils.inc.php since check-program-updates is dropped from core
+* classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp #807
+* classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id #808
+* classic ui: removed double header in tac.c #808
+* classic ui: changed size of checkbox column to 16 #809
+* classic ui: remove useless utils.inc.php since check-program-updates is dropped from core #800
 
-* idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client
+* idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
-* install: remove php dependency and files for updatechecks/extended search in icinga.spec
+* install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
 
 
 1.0.3 - 18/08/2010
