@@ -36,6 +36,5 @@ $mech->cgi_application("$cgi_dir/extinfo.cgi");
 $mech->get_ok("http://localhost/");
 
 $mech->title_is("Extended Information");
-
 html_ok( $lint, $mech->content, "HTML correct" );
 
