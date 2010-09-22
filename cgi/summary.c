@@ -47,22 +47,22 @@ extern int       log_rotation_method;
 
 
 /* custom report types */
-#define REPORT_NONE                    0
-#define REPORT_RECENT_ALERTS           1
-#define REPORT_ALERT_TOTALS            2
-#define REPORT_TOP_ALERTS              3
-#define REPORT_HOSTGROUP_ALERT_TOTALS  4
-#define REPORT_HOST_ALERT_TOTALS       5
-#define REPORT_SERVICE_ALERT_TOTALS    6
-#define REPORT_SERVICEGROUP_ALERT_TOTALS 7
+#define REPORT_NONE				0
+#define REPORT_RECENT_ALERTS			1
+#define REPORT_ALERT_TOTALS			2
+#define REPORT_TOP_ALERTS			3
+#define REPORT_HOSTGROUP_ALERT_TOTALS		4
+#define REPORT_HOST_ALERT_TOTALS		5
+#define REPORT_SERVICE_ALERT_TOTALS		6
+#define REPORT_SERVICEGROUP_ALERT_TOTALS	7
 
 /* standard report types */
-#define SREPORT_NONE                   0
-#define SREPORT_RECENT_ALERTS          1
-#define SREPORT_RECENT_HOST_ALERTS     2
-#define SREPORT_RECENT_SERVICE_ALERTS  3
-#define SREPORT_TOP_HOST_ALERTS        4
-#define SREPORT_TOP_SERVICE_ALERTS     5
+#define SREPORT_NONE				0
+#define SREPORT_RECENT_ALERTS			1
+#define SREPORT_RECENT_HOST_ALERTS		2
+#define SREPORT_RECENT_SERVICE_ALERTS		3
+#define SREPORT_TOP_HOST_ALERTS			4
+#define SREPORT_TOP_SERVICE_ALERTS		5
 
 /* standard report times */
 #define TIMEPERIOD_CUSTOM	0
@@ -80,22 +80,22 @@ extern int       log_rotation_method;
 #define TIMEPERIOD_LAST7DAYS	12
 #define TIMEPERIOD_LAST31DAYS	13
 
-#define AE_SOFT_STATE           1
-#define AE_HARD_STATE           2
+#define AE_SOFT_STATE		1
+#define AE_HARD_STATE		2
 
-#define AE_HOST_ALERT           1
-#define AE_SERVICE_ALERT        2
+#define AE_HOST_ALERT		1
+#define AE_SERVICE_ALERT	2
 
-#define AE_HOST_PRODUCER        1
-#define AE_SERVICE_PRODUCER     2
+#define AE_HOST_PRODUCER	1
+#define AE_SERVICE_PRODUCER	2
 
-#define AE_HOST_DOWN            1
-#define AE_HOST_UNREACHABLE     2
-#define AE_HOST_UP              4
-#define AE_SERVICE_WARNING      8
-#define AE_SERVICE_UNKNOWN      16
-#define AE_SERVICE_CRITICAL     32
-#define AE_SERVICE_OK           64
+#define AE_HOST_DOWN		1
+#define AE_HOST_UNREACHABLE	2
+#define AE_HOST_UP		4
+#define AE_SERVICE_WARNING	8
+#define AE_SERVICE_UNKNOWN	16
+#define AE_SERVICE_CRITICAL	32
+#define AE_SERVICE_OK		64
 
 typedef struct archived_event_struct{
 	time_t  time_stamp;
@@ -107,7 +107,7 @@ typedef struct archived_event_struct{
 	int     state_type;
 	char    *event_info;
 	struct archived_event_struct *next;
-        }archived_event;
+	}archived_event;
 
 typedef struct alert_producer_struct{
 	int     producer_type;
@@ -115,8 +115,7 @@ typedef struct alert_producer_struct{
 	char    *service_description;
 	int     total_alerts;
 	struct alert_producer_struct *next;
-        }alert_producer;
-
+	}alert_producer;
 
 void read_archived_event_data(void);
 void scan_log_file_for_archived_event_data(char *);
@@ -131,19 +130,10 @@ void free_producer_list(void);
 
 void display_report(void);
 void display_recent_alerts(void);
-void display_alert_totals(void);
-void display_hostgroup_alert_totals(void);
-void display_specific_hostgroup_alert_totals(hostgroup *);
-void display_servicegroup_alert_totals(void);
-void display_specific_servicegroup_alert_totals(servicegroup *);
-void display_host_alert_totals(void);
-void display_specific_host_alert_totals(host *);
-void display_service_alert_totals(void);
-void display_specific_service_alert_totals(service *);
 void display_top_alerts(void);
+void display_alerts(void);
 
 int process_cgivars(void);
-
 
 archived_event *event_list=NULL;
 alert_producer *producer_list=NULL;
@@ -181,9 +171,10 @@ int show_all_hosts=TRUE;
 char *target_hostgroup_name="";
 char *target_servicegroup_name="";
 char *target_host_name="";
-hostgroup *target_hostgroup=NULL;
-servicegroup *target_servicegroup=NULL;
 host *target_host=NULL;
+hostgroup *target_hostgroup=NULL;
+service *target_service=NULL;
+servicegroup *target_servicegroup=NULL;
 
 int earliest_archive=0;
 int item_limit=25;
@@ -192,8 +183,11 @@ int total_items=0;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
+extern int content_type;
 
-extern int output_format;
+extern char *csv_delimiter;
+extern char *csv_data_enclosure;
+
 int display_type=REPORT_RECENT_ALERTS;
 int standard_report=SREPORT_NONE;
 int generate_report=FALSE;
@@ -267,8 +261,8 @@ int main(int argc, char **argv){
 		t3=t2;
 		t2=t1;
 		t1=t3;
-	        }
-			
+	}
+
 	if(display_header==TRUE){
 
 		/* begin top table */
@@ -435,7 +429,7 @@ int main(int argc, char **argv){
 		/* end of top table */
 		printf("</tr>\n");
 		printf("</table>\n");
-	        }
+	}
 
 
 	/*********************************/
@@ -445,7 +439,7 @@ int main(int argc, char **argv){
 	if(generate_report==TRUE){
 		read_archived_event_data();
 		display_report();
-	        }
+	}
 
 	/* ask user for report options */
 	else{
@@ -460,7 +454,7 @@ int main(int argc, char **argv){
 
 		printf("<DIV ALIGN=CENTER CLASS='dateSelectTitle'>Standard Reports:</DIV>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-	        printf("<form method=\"get\" action=\"%s\">\n",SUMMARY_CGI);
+		printf("<form method=\"get\" action=\"%s\">\n",SUMMARY_CGI);
 
 		printf("<input type='hidden' name='report' value='1'>\n");
 
@@ -662,7 +656,7 @@ int main(int argc, char **argv){
 
 		printf("</form>\n");
 		printf("</DIV>\n");
-	        }
+	}
 
 
 	document_footer(CGI_ID);
@@ -758,6 +752,12 @@ int process_cgivars(void){
 			convert_timeperiod_to_times(timeperiod_type);
 			compute_time_from_parts=FALSE;
 		        }
+
+		/* we found the CSV output option */
+		else if(!strcmp(variables[x],"csvoutput")){
+			display_header=FALSE;
+			content_type=CSV_CONTENT;
+			}
 
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -1120,8 +1120,6 @@ int process_cgivars(void){
 	return error;
         }
 
-
-	
 /* reads log files for archived event data */
 void read_archived_event_data(void){
 	char filename[MAX_FILENAME_LENGTH];
@@ -1150,8 +1148,6 @@ void read_archived_event_data(void){
 
 	return;
         }
-
-
 
 /* grabs archived event data from a log file */
 void scan_log_file_for_archived_event_data(char *filename){
@@ -1276,9 +1272,6 @@ void scan_log_file_for_archived_event_data(char *filename){
 	
 	return;
         }
-	
-
-
 
 void convert_timeperiod_to_times(int type){
 	time_t current_time;
@@ -1365,8 +1358,6 @@ void convert_timeperiod_to_times(int type){
 	return;
         }
 
-
-
 void compute_report_times(void){
 	time_t current_time;
 	struct tm *st;
@@ -1400,8 +1391,6 @@ void compute_report_times(void){
 	t2=mktime(et);
         }
 
-
-
 void free_event_list(void){
 	archived_event *this_event=NULL;
 	archived_event *next_event=NULL;
@@ -1422,7 +1411,6 @@ void free_event_list(void){
 
 	return;
         }
-
 
 /* adds an archived event entry to the list in memory */
 void add_archived_event(int event_type, time_t time_stamp, int entry_type, int state_type, char *host_name, char *svc_description, char *event_info){
@@ -1564,8 +1552,6 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 	return;
         }
 
-
-
 /* determines standard report options */
 void determine_standard_report_options(void){
 
@@ -1618,45 +1604,134 @@ void determine_standard_report_options(void){
 	return;
         }
 
-
-
 /* displays report */
 void display_report(void){
+	hostgroup *temp_hostgroup;
+	host *temp_host;
+	service *temp_service;
+	servicegroup* temp_servicegroup;
 
-	switch(display_type){
-
-	case REPORT_ALERT_TOTALS:
-		display_alert_totals();
-		break;
-
-	case REPORT_HOSTGROUP_ALERT_TOTALS:
-		display_hostgroup_alert_totals();
-		break;
-
-	case REPORT_HOST_ALERT_TOTALS:
-		display_host_alert_totals();
-		break;
-
-	case REPORT_SERVICEGROUP_ALERT_TOTALS:
-		display_servicegroup_alert_totals();
-		break;
-
-	case REPORT_SERVICE_ALERT_TOTALS:
-		display_service_alert_totals();
-		break;
-
-	case REPORT_TOP_ALERTS:
+	if(display_type==REPORT_TOP_ALERTS) {
 		display_top_alerts();
-		break;
+		return;
+	}
 
-	default:
+	if(display_type==REPORT_RECENT_ALERTS) {
 		display_recent_alerts();
-		break;
-	        }
+		return;
+	}
+
+	if(content_type==CSV_CONTENT) {
+		if(display_type==REPORT_HOST_ALERT_TOTALS || display_type==REPORT_SERVICE_ALERT_TOTALS)
+			printf("%sHOST_NAME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
+			printf("%sHOSTGROUP_NAME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		if(display_type==REPORT_SERVICE_ALERT_TOTALS)
+			printf("%sSERVICE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS)
+			printf("%sSERVICEGROUP_NAME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+
+		/* Host Alerts Data */
+		if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS){
+			printf("%sHOST_UP_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_UP_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_UP_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_DOWN_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_DOWN_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_DOWN_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_UNREACHABLE_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_UNREACHABLE_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_UNREACHABLE_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_ALL_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_ALL_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_ALL_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		}
+
+		/* Service Alerts Head */
+		if(alert_types & AE_SERVICE_ALERT){
+			printf("%sSERVICE_OK_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_OK_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_OK_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_WARNING_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_WARNING_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_WARNING_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_UNKNOWN_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_UNKNOWN_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_UNKNOWN_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_CRITICAL_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_CRITICAL_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_CRITICAL_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_ALL_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_ALL_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE_ALL_TOTAL%s\n",csv_data_enclosure,csv_data_enclosure);
+		}
+	} else {
+		printf("<BR>\n");
+
+		printf("<DIV ALIGN=CENTER>\n");
+		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>");
+		if(display_type==REPORT_ALERT_TOTALS)
+			printf("Overall Totals");
+		if(display_type==REPORT_HOST_ALERT_TOTALS)
+			printf("Totals By Host");
+		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
+			printf("Totals By Hostgroup");
+		if(display_type==REPORT_SERVICE_ALERT_TOTALS)
+			printf("Totals By Service");
+		if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS)
+			printf("Totals By Servicegroup");
+
+		printf("</DIV>\n");
+
+		/* will this cause a probelm with buffer overlow */
+		printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+	}
+
+	if(display_type==REPORT_ALERT_TOTALS) {
+		display_alerts();
+	}
+	if(display_type==REPORT_HOST_ALERT_TOTALS) {
+		if(show_all_hosts==FALSE)
+			display_alerts();
+		else{
+			for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next) {
+				target_host=temp_host;
+				display_alerts();
+			}
+		}
+	}
+	if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS) {
+		if(show_all_hostgroups==FALSE)
+			display_alerts();
+		else{
+			for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next) {
+				target_hostgroup=temp_hostgroup;
+				display_alerts();
+			}
+		}
+	}
+	if(display_type==REPORT_SERVICE_ALERT_TOTALS) {
+		for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next) {
+			target_service=temp_service;
+			display_alerts();
+		}
+	}
+	if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS) {
+		if(show_all_servicegroups==FALSE)
+			display_alerts();
+		else{
+			for(temp_servicegroup=servicegroup_list;temp_servicegroup!=NULL;temp_servicegroup=temp_servicegroup->next) {
+				target_servicegroup=temp_servicegroup;
+				display_alerts();
+			}
+		}
+	}
+
+	if(content_type!=CSV_CONTENT)
+		printf("</DIV>\n");
 
 	return;
-        }
-
+}
 
 /* displays recent alerts */
 void display_recent_alerts(void){
@@ -1668,21 +1743,32 @@ void display_recent_alerts(void){
 	char *status="";
 	char date_time[MAX_DATETIME_LENGTH];
 
-        host *temp_host=NULL;
-        service *temp_service=NULL;
+	host *temp_host=NULL;
+	service *temp_service=NULL;
 
+	if(content_type==CSV_CONTENT) {
+		printf("%sTIME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sALERT_TYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSERVICE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSTATE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSTATE_TYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sINFORMATION%s\n",csv_data_enclosure,csv_data_enclosure);
+	} else {
+		printf("<BR>\n");
 
-	printf("<BR>\n");
+		if(item_limit<=0 || total_items<=item_limit || total_items==0)
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alerts\n",total_items);
+		else
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying most recent %d of %d total matching alerts\n",item_limit,total_items);
 
-	if(item_limit<=0 || total_items<=item_limit || total_items==0)
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alerts\n",total_items);
-	else
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying most recent %d of %d total matching alerts\n",item_limit,total_items);
+		printf("<DIV ALIGN=CENTER>\n");
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
+		// will this cause a probelm with buffer overlow
+		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
 
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<TABLE BORDER=0 CLASS='data'>\n");
-	printf("<TR><TH CLASS='data'>Time</TH><TH CLASS='data'>Alert Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>State</TH><TH CLASS='data'>State Type</TH><TH CLASS='data'>Information</TH></TR>\n");
-
+		printf("<TR><TH CLASS='data'>Time</TH><TH CLASS='data'>Alert Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>State</TH><TH CLASS='data'>State Type</TH><TH CLASS='data'>Information</TH></TR>\n");
+	}
 
 	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next,current_item++){
 
@@ -1692,33 +1778,41 @@ void display_recent_alerts(void){
 		if(odd){
 			odd=0;
 			bgclass="Odd";
-	                }
-		else{
+		} else {
 			odd=1;
 			bgclass="Even";
-	                }
+		}
 
-		printf("<tr CLASS='data%s'>",bgclass);
+		/* find the host */
+		temp_host=find_host(temp_event->host_name);
+
+		/* find the service */
+		temp_service=find_service(temp_event->host_name,temp_event->service_description);
 
 		get_time_string(&temp_event->time_stamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
-		printf("<td CLASS='data%s'>%s</td>",bgclass,date_time);
 
-		printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert");
+		if(content_type==CSV_CONTENT) {
+			printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert",csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_event->event_type==AE_HOST_ALERT)?"":(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,csv_data_enclosure,csv_delimiter);
+		} else {
+			printf("<tr CLASS='data%s'>",bgclass);
 
-                /* find the host */
-                temp_host=find_host(temp_event->host_name);
+			printf("<td CLASS='data%s'>%s</td>",bgclass,date_time);
 
-                /* find the service */
-                temp_service=find_service(temp_event->host_name,temp_event->service_description);
+			printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert");
 
-		printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_event->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_event->host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
 
-		if(temp_event->event_type==AE_HOST_ALERT)
-			printf("<td CLASS='data%s'>N/A</td>",bgclass);
-		else{
-			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_event->host_name));
-			printf("&service=%s'>%s</a></td>",url_encode(temp_event->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
-		        }
+			if(temp_event->event_type==AE_HOST_ALERT)
+				printf("<td CLASS='data%s'>N/A</td>",bgclass);
+			else{
+				printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_event->host_name));
+				printf("&service=%s'>%s</a></td>",url_encode(temp_event->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+			}
+
+		}
 
 		switch(temp_event->entry_type){
 		case AE_HOST_UP:
@@ -1753,792 +1847,30 @@ void display_recent_alerts(void){
 			status_bgclass=bgclass;
 			status="???";
 			break;
-		        }
+		}
 
-		printf("<td CLASS='%s'>%s</td>",status_bgclass,status);
+		if(content_type==CSV_CONTENT) {
+			printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD",csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s\n",csv_data_enclosure,temp_event->event_info,csv_data_enclosure);
+		} else {
+			printf("<td CLASS='%s'>%s</td>",status_bgclass,status);
 
-		printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD");
+			printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD");
 
-		printf("<td CLASS='data%s'>%s</td>",bgclass,temp_event->event_info);
+			printf("<td CLASS='data%s'>%s</td>",bgclass,temp_event->event_info);
 
-		printf("</tr>\n");
-	        }
+			printf("</tr>\n");
+		}
+	}
 
-	printf("</TABLE>\n");
-	printf("</DIV>\n");
-
-	return;
-        }
-
-
-
-/* displays alerts totals */
-void display_alert_totals(void){
-	int hard_host_up_alerts=0;
-	int soft_host_up_alerts=0;
-	int hard_host_down_alerts=0;
-	int soft_host_down_alerts=0;
-	int hard_host_unreachable_alerts=0;
-	int soft_host_unreachable_alerts=0;
-	int hard_service_ok_alerts=0;
-	int soft_service_ok_alerts=0;
-	int hard_service_warning_alerts=0;
-	int soft_service_warning_alerts=0;
-	int hard_service_unknown_alerts=0;
-	int soft_service_unknown_alerts=0;
-	int hard_service_critical_alerts=0;
-	int soft_service_critical_alerts=0;
-	archived_event *temp_event;
-
-
-	/************************/
-	/**** OVERALL TOTALS ****/
-	/************************/
-
-	/* process all events */
-	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
-
-		/* host alerts */
-		if(temp_event->event_type==AE_HOST_ALERT){
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_HOST_UP)
-					soft_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					soft_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					soft_host_unreachable_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_HOST_UP)
-					hard_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					hard_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					hard_host_unreachable_alerts++;
-			        }
-		        }
-
-		/* service alerts */
-		else{
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					soft_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					soft_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					soft_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					soft_service_critical_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					hard_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					hard_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					hard_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					hard_service_critical_alerts++;
-			        }
-		        }
-	        }
-
-	printf("<BR>\n");
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Overall Totals</DIV>\n");
-	printf("<BR>\n");
-	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataOdd'><TR><TD>\n");
-	printf("<TABLE BORDER=0>\n");
-	printf("<TR>\n");
-
-	if(alert_types & AE_HOST_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Host Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUP'>UP</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_up_alerts,hard_host_up_alerts,soft_host_up_alerts+hard_host_up_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='hostDOWN'>DOWN</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_host_down_alerts,hard_host_down_alerts,soft_host_down_alerts+hard_host_down_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUNREACHABLE'>UNREACHABLE</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_unreachable_alerts,hard_host_unreachable_alerts,soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>All States</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'><B>%d</B></TD></TR>\n",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-
+	if(content_type!=CSV_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	if(alert_types & AE_SERVICE_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_ok_alerts,hard_service_ok_alerts,soft_service_ok_alerts+hard_service_ok_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_warning_alerts,hard_service_warning_alerts,soft_service_warning_alerts+hard_service_warning_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_unknown_alerts,hard_service_unknown_alerts,soft_service_unknown_alerts+hard_service_unknown_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_critical_alerts,hard_service_critical_alerts,soft_service_critical_alerts+hard_service_critical_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	printf("</TR>\n");
-	printf("</TABLE>\n");
-	printf("</TD></TR></TABLE>\n");
-	printf("</DIV>\n");
+	}
 
 	return;
-        }
-
-
-
-/* displays hostgroup alert totals  */
-void display_hostgroup_alert_totals(void){
-	hostgroup *temp_hostgroup;
-
-	/**************************/
-	/**** HOSTGROUP TOTALS ****/
-	/**************************/
-
-	printf("<BR>\n");
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Totals By Hostgroup</DIV>\n");
-
-	if(show_all_hostgroups==FALSE)
-		display_specific_hostgroup_alert_totals(target_hostgroup);
-	else{
-		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next)
-			display_specific_hostgroup_alert_totals(temp_hostgroup);
-	        }
-
-	printf("</DIV>\n");
-	
-	return;
-        }
-
-
-/* displays alert totals for a specific hostgroup */
-void display_specific_hostgroup_alert_totals(hostgroup *grp){
-	int hard_host_up_alerts=0;
-	int soft_host_up_alerts=0;
-	int hard_host_down_alerts=0;
-	int soft_host_down_alerts=0;
-	int hard_host_unreachable_alerts=0;
-	int soft_host_unreachable_alerts=0;
-	int hard_service_ok_alerts=0;
-	int soft_service_ok_alerts=0;
-	int hard_service_warning_alerts=0;
-	int soft_service_warning_alerts=0;
-	int hard_service_unknown_alerts=0;
-	int soft_service_unknown_alerts=0;
-	int hard_service_critical_alerts=0;
-	int soft_service_critical_alerts=0;
-	archived_event *temp_event;
-	host *temp_host;
-
-	if(grp==NULL)
-		return;
-
-	/* make sure the user is authorized to view this hostgroup */
-	if(is_authorized_for_hostgroup(grp,&current_authdata)==FALSE)
-		return;
-
-	/* process all events */
-	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
-
-		temp_host=find_host(temp_event->host_name);
-		if(is_host_member_of_hostgroup(grp,temp_host)==FALSE)
-			continue;
-
-		/* host alerts */
-		if(temp_event->event_type==AE_HOST_ALERT){
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_HOST_UP)
-					soft_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					soft_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					soft_host_unreachable_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_HOST_UP)
-					hard_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					hard_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					hard_host_unreachable_alerts++;
-			        }
-		        }
-
-		/* service alerts */
-		else{
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					soft_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					soft_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					soft_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					soft_service_critical_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					hard_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					hard_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					hard_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					hard_service_critical_alerts++;
-			        }
-		        }
-	        }
-
-
-	printf("<BR>\n");
-	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataEven'><TR><TD>\n");
-	printf("<TABLE BORDER=0>\n");
-
-	printf("<TR><TD COLSPAN=2 ALIGN=CENTER CLASS='dataSubTitle'>Hostgroup '%s' (%s)</TD></TR>\n",grp->group_name,grp->alias);
-
-	printf("<TR>\n");
-
-	if(alert_types & AE_HOST_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Host Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUP'>UP</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_up_alerts,hard_host_up_alerts,soft_host_up_alerts+hard_host_up_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='hostDOWN'>DOWN</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_host_down_alerts,hard_host_down_alerts,soft_host_down_alerts+hard_host_down_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUNREACHABLE'>UNREACHABLE</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_unreachable_alerts,hard_host_unreachable_alerts,soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>All States</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'><B>%d</B></TD></TR>\n",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	if(alert_types & AE_SERVICE_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_ok_alerts,hard_service_ok_alerts,soft_service_ok_alerts+hard_service_ok_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_warning_alerts,hard_service_warning_alerts,soft_service_warning_alerts+hard_service_warning_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_unknown_alerts,hard_service_unknown_alerts,soft_service_unknown_alerts+hard_service_unknown_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_critical_alerts,hard_service_critical_alerts,soft_service_critical_alerts+hard_service_critical_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	printf("</TR>\n");
-
-	printf("</TABLE>\n");
-	printf("</TD></TR></TABLE>\n");
-
-	return;
-        }
-
-
-
-/* displays host alert totals  */
-void display_host_alert_totals(void){
-	host *temp_host;
-
-	/*********************/
-	/**** HOST TOTALS ****/
-	/*********************/
-
-	printf("<BR>\n");
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Totals By Host</DIV>\n");
-
-	if(show_all_hosts==FALSE)
-		display_specific_host_alert_totals(target_host);
-	else{
-		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next)
-			display_specific_host_alert_totals(temp_host);
-	        }
-
-	printf("</DIV>\n");
-	
-	return;
-        }
-
-
-/* displays alert totals for a specific host */
-void display_specific_host_alert_totals(host *hst){
-	int hard_host_up_alerts=0;
-	int soft_host_up_alerts=0;
-	int hard_host_down_alerts=0;
-	int soft_host_down_alerts=0;
-	int hard_host_unreachable_alerts=0;
-	int soft_host_unreachable_alerts=0;
-	int hard_service_ok_alerts=0;
-	int soft_service_ok_alerts=0;
-	int hard_service_warning_alerts=0;
-	int soft_service_warning_alerts=0;
-	int hard_service_unknown_alerts=0;
-	int soft_service_unknown_alerts=0;
-	int hard_service_critical_alerts=0;
-	int soft_service_critical_alerts=0;
-	archived_event *temp_event;
-
-	if(hst==NULL)
-		return;
-
-	/* make sure the user is authorized to view this host */
-	if(is_authorized_for_host(hst,&current_authdata)==FALSE)
-		return;
-
-	if(show_all_hostgroups==FALSE && target_hostgroup!=NULL){
-		if(is_host_member_of_hostgroup(target_hostgroup,hst)==FALSE)
-			return;
-	        }
-
-	/* process all events */
-	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
-
-		if(strcmp(temp_event->host_name,hst->name))
-			continue;
-
-		/* host alerts */
-		if(temp_event->event_type==AE_HOST_ALERT){
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_HOST_UP)
-					soft_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					soft_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					soft_host_unreachable_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_HOST_UP)
-					hard_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					hard_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					hard_host_unreachable_alerts++;
-			        }
-		        }
-
-		/* service alerts */
-		else{
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					soft_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					soft_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					soft_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					soft_service_critical_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					hard_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					hard_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					hard_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					hard_service_critical_alerts++;
-			        }
-		        }
-	        }
-
-
-	printf("<BR>\n");
-	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataEven'><TR><TD>\n");
-	printf("<TABLE BORDER=0>\n");
-
-	printf("<TR><TD COLSPAN=2 ALIGN=CENTER CLASS='dataSubTitle'>Host '%s' (%s)</TD></TR>\n",hst->name,hst->alias);
-
-	printf("<TR>\n");
-
-	if(alert_types & AE_HOST_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Host Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUP'>UP</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_up_alerts,hard_host_up_alerts,soft_host_up_alerts+hard_host_up_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='hostDOWN'>DOWN</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_host_down_alerts,hard_host_down_alerts,soft_host_down_alerts+hard_host_down_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUNREACHABLE'>UNREACHABLE</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_unreachable_alerts,hard_host_unreachable_alerts,soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>All States</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'><B>%d</B></TD></TR>\n",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	if(alert_types & AE_SERVICE_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_ok_alerts,hard_service_ok_alerts,soft_service_ok_alerts+hard_service_ok_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_warning_alerts,hard_service_warning_alerts,soft_service_warning_alerts+hard_service_warning_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_unknown_alerts,hard_service_unknown_alerts,soft_service_unknown_alerts+hard_service_unknown_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_critical_alerts,hard_service_critical_alerts,soft_service_critical_alerts+hard_service_critical_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	printf("</TR>\n");
-
-	printf("</TABLE>\n");
-	printf("</TD></TR></TABLE>\n");
-
-	return;
-        }
-
-
-/* displays servicegroup alert totals  */
-void display_servicegroup_alert_totals(void){
-	servicegroup *temp_servicegroup;
-
-	/**************************/
-	/**** SERVICEGROUP TOTALS ****/
-	/**************************/
-
-	printf("<BR>\n");
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Totals By Servicegroup</DIV>\n");
-
-	if(show_all_servicegroups==FALSE)
-		display_specific_servicegroup_alert_totals(target_servicegroup);
-	else{
-		for(temp_servicegroup=servicegroup_list;temp_servicegroup!=NULL;temp_servicegroup=temp_servicegroup->next)
-			display_specific_servicegroup_alert_totals(temp_servicegroup);
-	        }
-
-	printf("</DIV>\n");
-	
-	return;
-        }
-
-
-/* displays alert totals for a specific servicegroup */
-void display_specific_servicegroup_alert_totals(servicegroup *grp){
-	int hard_host_up_alerts=0;
-	int soft_host_up_alerts=0;
-	int hard_host_down_alerts=0;
-	int soft_host_down_alerts=0;
-	int hard_host_unreachable_alerts=0;
-	int soft_host_unreachable_alerts=0;
-	int hard_service_ok_alerts=0;
-	int soft_service_ok_alerts=0;
-	int hard_service_warning_alerts=0;
-	int soft_service_warning_alerts=0;
-	int hard_service_unknown_alerts=0;
-	int soft_service_unknown_alerts=0;
-	int hard_service_critical_alerts=0;
-	int soft_service_critical_alerts=0;
-	archived_event *temp_event;
-	host *temp_host;
-	service *temp_service;
-
-	if(grp==NULL)
-		return;
-
-	/* make sure the user is authorized to view this servicegroup */
-	if(is_authorized_for_servicegroup(grp,&current_authdata)==FALSE)
-		return;
-
-	/* process all events */
-	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
-
-		if(temp_event->event_type==AE_HOST_ALERT){
-
-			temp_host=find_host(temp_event->host_name);
-			if(is_host_member_of_servicegroup(grp,temp_host)==FALSE)
-				continue;
-		        }
-		else{
-
-			temp_service=find_service(temp_event->host_name,temp_event->service_description);
-			if(is_service_member_of_servicegroup(grp,temp_service)==FALSE)
-				continue;
-		        }
-
-		/* host alerts */
-		if(temp_event->event_type==AE_HOST_ALERT){
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_HOST_UP)
-					soft_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					soft_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					soft_host_unreachable_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_HOST_UP)
-					hard_host_up_alerts++;
-				else if(temp_event->entry_type==AE_HOST_DOWN)
-					hard_host_down_alerts++;
-				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
-					hard_host_unreachable_alerts++;
-			        }
-		        }
-
-		/* service alerts */
-		else{
-			if(temp_event->state_type==AE_SOFT_STATE){
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					soft_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					soft_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					soft_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					soft_service_critical_alerts++;
-			        }
-			else{
-				if(temp_event->entry_type==AE_SERVICE_OK)
-					hard_service_ok_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_WARNING)
-					hard_service_warning_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-					hard_service_unknown_alerts++;
-				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-					hard_service_critical_alerts++;
-			        }
-		        }
-	        }
-
-
-	printf("<BR>\n");
-	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataEven'><TR><TD>\n");
-	printf("<TABLE BORDER=0>\n");
-
-	printf("<TR><TD COLSPAN=2 ALIGN=CENTER CLASS='dataSubTitle'>Servicegroup '%s' (%s)</TD></TR>\n",grp->group_name,grp->alias);
-
-	printf("<TR>\n");
-
-	if(alert_types & AE_HOST_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Host Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUP'>UP</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_up_alerts,hard_host_up_alerts,soft_host_up_alerts+hard_host_up_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='hostDOWN'>DOWN</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_host_down_alerts,hard_host_down_alerts,soft_host_down_alerts+hard_host_down_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='hostUNREACHABLE'>UNREACHABLE</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_unreachable_alerts,hard_host_unreachable_alerts,soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>All States</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'><B>%d</B></TD></TR>\n",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	if(alert_types & AE_SERVICE_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_ok_alerts,hard_service_ok_alerts,soft_service_ok_alerts+hard_service_ok_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_warning_alerts,hard_service_warning_alerts,soft_service_warning_alerts+hard_service_warning_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_unknown_alerts,hard_service_unknown_alerts,soft_service_unknown_alerts+hard_service_unknown_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_critical_alerts,hard_service_critical_alerts,soft_service_critical_alerts+hard_service_critical_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	printf("</TR>\n");
-
-	printf("</TABLE>\n");
-	printf("</TD></TR></TABLE>\n");
-
-	return;
-        }
-
-
-
-/* displays service alert totals  */
-void display_service_alert_totals(void){
-	service *temp_service;
-
-	/************************/
-	/**** SERVICE TOTALS ****/
-	/************************/
-
-	printf("<BR>\n");
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Totals By Service</DIV>\n");
-
-	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next)
-		display_specific_service_alert_totals(temp_service);
-
-	printf("</DIV>\n");
-	
-	return;
-        }
-
-
-/* displays alert totals for a specific service */
-void display_specific_service_alert_totals(service *svc){
-	int hard_service_ok_alerts=0;
-	int soft_service_ok_alerts=0;
-	int hard_service_warning_alerts=0;
-	int soft_service_warning_alerts=0;
-	int hard_service_unknown_alerts=0;
-	int soft_service_unknown_alerts=0;
-	int hard_service_critical_alerts=0;
-	int soft_service_critical_alerts=0;
-	archived_event *temp_event;
-	host *temp_host;
-
-	if(svc==NULL)
-		return;
-
-	/* make sure the user is authorized to view this service */
-	if(is_authorized_for_service(svc,&current_authdata)==FALSE)
-		return;
-
-	if(show_all_hostgroups==FALSE && target_hostgroup!=NULL){
-		temp_host=find_host(svc->host_name);
-		if(is_host_member_of_hostgroup(target_hostgroup,temp_host)==FALSE)
-			return;
-	        }
-
-	if(show_all_hosts==FALSE && target_host!=NULL){
-		if(strcmp(target_host->name,svc->host_name))
-			return;
-	        }
-
-	/* process all events */
-	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
-
-		if(temp_event->event_type!=AE_SERVICE_ALERT)
-			continue;
-
-		if(strcmp(temp_event->host_name,svc->host_name) || strcmp(temp_event->service_description,svc->description))
-			continue;
-
-		/* service alerts */
-		if(temp_event->state_type==AE_SOFT_STATE){
-			if(temp_event->entry_type==AE_SERVICE_OK)
-				soft_service_ok_alerts++;
-			else if(temp_event->entry_type==AE_SERVICE_WARNING)
-				soft_service_warning_alerts++;
-			else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-				soft_service_unknown_alerts++;
-			else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-				soft_service_critical_alerts++;
-		        }
-		else{
-			if(temp_event->entry_type==AE_SERVICE_OK)
-				hard_service_ok_alerts++;
-			else if(temp_event->entry_type==AE_SERVICE_WARNING)
-				hard_service_warning_alerts++;
-			else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
-				hard_service_unknown_alerts++;
-			else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
-				hard_service_critical_alerts++;
-		        }
-	        }
-
-
-	printf("<BR>\n");
-	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataEven'><TR><TD>\n");
-	printf("<TABLE BORDER=0>\n");
-
-	printf("<TR><TD COLSPAN=2 ALIGN=CENTER CLASS='dataSubTitle'>Service '%s' on Host '%s'</TD></TR>\n",svc->description,svc->host_name);
-
-	printf("<TR>\n");
-
-	if(alert_types & AE_SERVICE_ALERT){
-
-		printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
-
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
-
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_ok_alerts,hard_service_ok_alerts,soft_service_ok_alerts+hard_service_ok_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_warning_alerts,hard_service_warning_alerts,soft_service_warning_alerts+hard_service_warning_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_unknown_alerts,hard_service_unknown_alerts,soft_service_unknown_alerts+hard_service_unknown_alerts);
-		printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_critical_alerts,hard_service_critical_alerts,soft_service_critical_alerts+hard_service_critical_alerts);
-		printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
-
-		printf("</TABLE>\n");
-		printf("</DIV>\n");
-
-		printf("</TD>\n");
-	        }
-
-	printf("</TR>\n");
-
-	printf("</TABLE>\n");
-	printf("</TD></TR></TABLE>\n");
-
-	return;
-        }
-
+}
 
 /* find a specific alert producer */
 alert_producer *find_producer(int type, char *hname, char *sdesc){
@@ -2554,11 +1886,10 @@ alert_producer *find_producer(int type, char *hname, char *sdesc){
 			continue;
 
 		return temp_producer;
-	        }
+		}
 
 	return NULL;
-        }
-
+}
 
 /* adds a new producer to the list in memory */
 alert_producer *add_producer(int producer_type, char *host_name, char *service_description){
@@ -2597,8 +1928,6 @@ alert_producer *add_producer(int producer_type, char *host_name, char *service_d
 	return new_producer;
         }
 
-
-
 void free_producer_list(void){
 	alert_producer *this_producer=NULL;
 	alert_producer *next_producer=NULL;
@@ -2618,8 +1947,6 @@ void free_producer_list(void){
 	return;
         }
 
-
-
 /* displays top alerts */
 void display_top_alerts(void){
 	archived_event *temp_event=NULL;
@@ -2635,7 +1962,7 @@ void display_top_alerts(void){
 
 	/* process all events */
 	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
-		
+
 		producer_type=(temp_event->event_type==AE_HOST_ALERT)?AE_HOST_PRODUCER:AE_SERVICE_PRODUCER;
 
 		/* see if we already have a record for the producer */
@@ -2651,7 +1978,7 @@ void display_top_alerts(void){
 
 		/* update stats for producer */
 		temp_producer->total_alerts++;
-	        }
+	}
 
 
 	/* sort the producer list by total alerts (descending) */
@@ -2669,42 +1996,51 @@ void display_top_alerts(void){
 				else
 					last_producer->next=new_producer;
 				break;
-		                }
-			else
+			} else
 				last_producer=temp_producer;
-	                }
+		}
+
 		if(temp_list==NULL){
 			new_producer->next=NULL;
 			temp_list=new_producer;
-	                }
+		}
 		else if(temp_producer==NULL){
 			new_producer->next=NULL;
 			last_producer->next=new_producer;
-	                }
+		}
 
 		new_producer=next_producer;
 		total_items++;
-	        }
+	}
 	producer_list=temp_list;
 
 
-	printf("<BR>\n");
+	if(content_type==CSV_CONTENT) {
+		printf("%sRANK%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sPRODUCER_TYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSERVICE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sTOTAL_ALERTS%s\n",csv_data_enclosure,csv_data_enclosure);
+	}else{
+		printf("<BR>\n");
 
-	if(item_limit<=0 || total_items<=item_limit || total_items==0)
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alert producers\n",total_items);
-	else
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying top %d of %d total matching alert producers\n",item_limit,total_items);
+		if(item_limit<=0 || total_items<=item_limit || total_items==0)
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alert producers\n",total_items);
+		else
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying top %d of %d total matching alert producers\n",item_limit,total_items);
 
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<TABLE BORDER=0 CLASS='data'>\n");
-	printf("<TR><TH CLASS='data'>Rank</TH><TH CLASS='data'>Producer Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
-
+		printf("<DIV ALIGN=CENTER>\n");
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
+		// will this cause a probelm with buffer overlow
+		printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+		printf("<TR><TH CLASS='data'>Rank</TH><TH CLASS='data'>Producer Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
+	}
 
 
 	/* display top producers */
 	for(temp_producer=producer_list;temp_producer!=NULL;temp_producer=temp_producer->next){
 
-		if(current_item>=item_limit && item_limit>0)
+		if(current_item>=item_limit && item_limit>0 && content_type!=CSV_CONTENT)
 			break;
 
 		current_item++;
@@ -2712,34 +2048,312 @@ void display_top_alerts(void){
 		if(odd){
 			odd=0;
 			bgclass="Odd";
-	                }
-		else{
+		}else{
 			odd=1;
 			bgclass="Even";
-	                }
+		}
 
-		printf("<tr CLASS='data%s'>",bgclass);
+		if(content_type==CSV_CONTENT) {
+			printf("%s%d%s%s",csv_data_enclosure,current_item,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service",csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,temp_producer->host_name,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_producer->producer_type==AE_HOST_PRODUCER)?"N/A":temp_producer->service_description,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s\n",csv_data_enclosure,temp_producer->total_alerts,csv_data_enclosure);
+		}else{
+			printf("<tr CLASS='data%s'>",bgclass);
 
-		printf("<td CLASS='data%s'>#%d</td>",bgclass,current_item);
+			printf("<td CLASS='data%s'>#%d</td>",bgclass,current_item);
 
-		printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service");
+			printf("<td CLASS='data%s'>%s</td>",bgclass,(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service");
 
-		printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_producer->host_name),temp_producer->host_name);
+			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>",bgclass,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_producer->host_name),temp_producer->host_name);
 
-		if(temp_producer->producer_type==AE_HOST_PRODUCER)
-			printf("<td CLASS='data%s'>N/A</td>",bgclass);
+			if(temp_producer->producer_type==AE_HOST_PRODUCER)
+				printf("<td CLASS='data%s'>N/A</td>",bgclass);
+			else{
+				printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_producer->host_name));
+				printf("&service=%s'>%s</a></td>",url_encode(temp_producer->service_description),temp_producer->service_description);
+			}
+
+			printf("<td CLASS='data%s'>%d</td>",bgclass,temp_producer->total_alerts);
+
+			printf("</tr>\n");
+		}
+	}
+
+	if(content_type!=CSV_CONTENT) {
+		printf("</TABLE>\n");
+		printf("</DIV>\n");
+	}
+	
+	return;
+}
+
+/* displays alert totals */
+void display_alerts(void){
+	int hard_host_up_alerts=0;
+	int soft_host_up_alerts=0;
+	int hard_host_down_alerts=0;
+	int soft_host_down_alerts=0;
+	int hard_host_unreachable_alerts=0;
+	int soft_host_unreachable_alerts=0;
+	int hard_service_ok_alerts=0;
+	int soft_service_ok_alerts=0;
+	int hard_service_warning_alerts=0;
+	int soft_service_warning_alerts=0;
+	int hard_service_unknown_alerts=0;
+	int soft_service_unknown_alerts=0;
+	int hard_service_critical_alerts=0;
+	int soft_service_critical_alerts=0;
+
+	archived_event *temp_event;
+	host *temp_host;
+	service *temp_service;
+
+	if(display_type==REPORT_HOST_ALERT_TOTALS) {
+		if(target_host==NULL)
+			return;
+
+		/* make sure the user is authorized to view this host */
+		if(is_authorized_for_host(target_host,&current_authdata)==FALSE)
+			return;
+
+		if(show_all_hostgroups==FALSE && target_hostgroup!=NULL){
+			if(is_host_member_of_hostgroup(target_hostgroup,target_host)==FALSE)
+				return;
+			}
+	}
+
+	if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS) {
+		if(target_hostgroup==NULL)
+			return;
+
+		/* make sure the user is authorized to view this hostgroup */
+		if(is_authorized_for_hostgroup(target_hostgroup,&current_authdata)==FALSE)
+			return;
+	}
+	if(display_type==REPORT_SERVICE_ALERT_TOTALS) {
+		if(target_service==NULL)
+			return;
+
+		/* make sure the user is authorized to view this service */
+		if(is_authorized_for_service(target_service,&current_authdata)==FALSE)
+			return;
+
+		if(show_all_hostgroups==FALSE && target_hostgroup!=NULL){
+			temp_host=find_host(target_service->host_name);
+			if(is_host_member_of_hostgroup(target_hostgroup,temp_host)==FALSE)
+				return;
+			}
+
+		if(show_all_hosts==FALSE && target_host!=NULL){
+			if(strcmp(target_host->name,target_service->host_name))
+				return;
+			}
+	}
+
+	if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS) {
+		if(target_servicegroup==NULL)
+			return;
+
+		/* make sure the user is authorized to view this servicegroup */
+		if(is_authorized_for_servicegroup(target_servicegroup,&current_authdata)==FALSE)
+			return;
+	}
+
+	/* process all events */
+	for(temp_event=event_list;temp_event!=NULL;temp_event=temp_event->next){
+
+		if(display_type==REPORT_HOST_ALERT_TOTALS) {
+			if(strcmp(temp_event->host_name,target_host->name))
+				continue;
+		}
+
+		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS) {
+			temp_host=find_host(temp_event->host_name);
+			if(is_host_member_of_hostgroup(target_hostgroup,temp_host)==FALSE)
+				continue;
+		}
+
+		if(display_type==REPORT_SERVICE_ALERT_TOTALS) {
+			if(temp_event->event_type!=AE_SERVICE_ALERT)
+				continue;
+
+			if(strcmp(temp_event->host_name,target_service->host_name) || strcmp(temp_event->service_description,target_service->description))
+				continue;
+		}
+
+		if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS) {
+			if(temp_event->event_type==AE_HOST_ALERT){
+				temp_host=find_host(temp_event->host_name);
+				if(is_host_member_of_servicegroup(target_servicegroup,temp_host)==FALSE)
+					continue;
+			} else{
+				temp_service=find_service(temp_event->host_name,temp_event->service_description);
+				if(is_service_member_of_servicegroup(target_servicegroup,temp_service)==FALSE)
+					continue;
+			}
+		}
+
+		/* host alerts */
+		if(temp_event->event_type==AE_HOST_ALERT){
+			if(temp_event->state_type==AE_SOFT_STATE){
+				if(temp_event->entry_type==AE_HOST_UP)
+					soft_host_up_alerts++;
+				else if(temp_event->entry_type==AE_HOST_DOWN)
+					soft_host_down_alerts++;
+				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
+					soft_host_unreachable_alerts++;
+			} else{
+				if(temp_event->entry_type==AE_HOST_UP)
+					hard_host_up_alerts++;
+				else if(temp_event->entry_type==AE_HOST_DOWN)
+					hard_host_down_alerts++;
+				else if(temp_event->entry_type==AE_HOST_UNREACHABLE)
+					hard_host_unreachable_alerts++;
+			}
+		}
+
+		/* service alerts */
 		else{
-			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s",bgclass,EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_producer->host_name));
-			printf("&service=%s'>%s</a></td>",url_encode(temp_producer->service_description),temp_producer->service_description);
-		        }
+			if(temp_event->state_type==AE_SOFT_STATE){
+				if(temp_event->entry_type==AE_SERVICE_OK)
+					soft_service_ok_alerts++;
+				else if(temp_event->entry_type==AE_SERVICE_WARNING)
+					soft_service_warning_alerts++;
+				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
+					soft_service_unknown_alerts++;
+				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
+					soft_service_critical_alerts++;
+			}else{
+				if(temp_event->entry_type==AE_SERVICE_OK)
+					hard_service_ok_alerts++;
+				else if(temp_event->entry_type==AE_SERVICE_WARNING)
+					hard_service_warning_alerts++;
+				else if(temp_event->entry_type==AE_SERVICE_UNKNOWN)
+					hard_service_unknown_alerts++;
+				else if(temp_event->entry_type==AE_SERVICE_CRITICAL)
+					hard_service_critical_alerts++;
+			}
+		}
+	}
 
-		printf("<td CLASS='data%s'>%d</td>",bgclass,temp_producer->total_alerts);
 
-		printf("</tr>\n");
-	        }
+	if (content_type==CSV_CONTENT) {
+		if(display_type==REPORT_HOST_ALERT_TOTALS)
+			printf("%s%s%s%s",csv_data_enclosure,target_host->name,csv_data_enclosure,csv_delimiter);
+		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
+			printf("%s%s%s%s",csv_data_enclosure,target_hostgroup->group_name,csv_data_enclosure,csv_delimiter);
+		if(display_type==REPORT_SERVICE_ALERT_TOTALS) {
+			printf("%s%s%s%s",csv_data_enclosure,target_service->host_name,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,target_service->description,csv_data_enclosure,csv_delimiter);
+		}
+		if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS)
+			printf("%s%s%s%s",csv_data_enclosure,target_servicegroup->group_name,csv_data_enclosure,csv_delimiter);
 
-	printf("</TABLE>\n");
-	printf("</DIV>\n");
+		/* Host Alerts Data */
+		if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS){
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_up_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_host_up_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_up_alerts+hard_host_up_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_down_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_host_down_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_down_alerts+hard_host_down_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_unreachable_alerts+hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+		}
+
+		/* Service Alerts Data */
+		if(alert_types & AE_SERVICE_ALERT){
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_ok_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_service_ok_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_ok_alerts+hard_service_ok_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_warning_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_service_warning_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_warning_alerts+hard_service_warning_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_unknown_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_service_unknown_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_unknown_alerts+hard_service_unknown_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_critical_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_service_critical_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_critical_alerts+hard_service_critical_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s\n",csv_data_enclosure,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,csv_data_enclosure);
+		}
+	}else{
+		printf("<BR>\n");
+		printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataEven'><TR><TD>\n");
+		printf("<TABLE BORDER=0>\n");
+
+		printf("<TR><TD COLSPAN=2 ALIGN=CENTER CLASS='dataSubTitle'>");
+		if(display_type==REPORT_HOST_ALERT_TOTALS)
+			printf("Host '%s' (%s)",target_host->name,target_host->alias);
+
+		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
+			printf("Hostgroup '%s' (%s)",target_hostgroup->group_name,target_hostgroup->alias);
+
+		if(display_type==REPORT_SERVICE_ALERT_TOTALS)
+			printf("Service '%s' on Host '%s'",target_service->description,target_service->host_name);
+
+		if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS) 
+			printf("Servicegroup '%s' (%s)",target_servicegroup->group_name,target_servicegroup->alias);
+		printf("</TD></TR>\n");
+
+		printf("<TR>\n");
+
+		if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS){
+
+			printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
+
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Host Alerts</DIV>\n");
+
+			printf("<DIV ALIGN=CENTER>\n");
+			printf("<TABLE BORDER=0 CLASS='data'>\n");
+			printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
+
+			printf("<TR CLASS='dataOdd'><TD CLASS='hostUP'>UP</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_up_alerts,hard_host_up_alerts,soft_host_up_alerts+hard_host_up_alerts);
+			printf("<TR CLASS='dataEven'><TD CLASS='hostDOWN'>DOWN</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_host_down_alerts,hard_host_down_alerts,soft_host_down_alerts+hard_host_down_alerts);
+			printf("<TR CLASS='dataOdd'><TD CLASS='hostUNREACHABLE'>UNREACHABLE</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_host_unreachable_alerts,hard_host_unreachable_alerts,soft_host_unreachable_alerts+hard_host_unreachable_alerts);
+			printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>All States</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'><B>%d</B></TD></TR>\n",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
+
+			printf("</TABLE>\n");
+			printf("</DIV>\n");
+
+			printf("</TD>\n");
+		}
+
+		if(alert_types & AE_SERVICE_ALERT){
+
+			printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
+
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
+
+			printf("<DIV ALIGN=CENTER>\n");
+			printf("<TABLE BORDER=0 CLASS='data'>\n");
+			printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
+
+			printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_ok_alerts,hard_service_ok_alerts,soft_service_ok_alerts+hard_service_ok_alerts);
+			printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_warning_alerts,hard_service_warning_alerts,soft_service_warning_alerts+hard_service_warning_alerts);
+			printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n",soft_service_unknown_alerts,hard_service_unknown_alerts,soft_service_unknown_alerts+hard_service_unknown_alerts);
+			printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n",soft_service_critical_alerts,hard_service_critical_alerts,soft_service_critical_alerts+hard_service_critical_alerts);
+			printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
+
+			printf("</TABLE>\n");
+			printf("</DIV>\n");
+
+			printf("</TD>\n");
+		}
+
+		printf("</TR>\n");
+
+		printf("</TABLE>\n");
+		printf("</TD></TR></TABLE>\n");
+	}
 
 	return;
-        }
+}

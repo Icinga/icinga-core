@@ -162,3 +162,6 @@ a img {
 	border: none;
 	}
 
+.csv_export_link{
+	text-align: right;
+}
