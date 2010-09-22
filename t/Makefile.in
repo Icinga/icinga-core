@@ -6,7 +6,8 @@ test:
 	prove -v *.t 2>&1 |tee tests.log
 
 clean:
-
-distclean:
+	rm -f tests.log
+distclean: clean
 	rm -f Makefile
+
 
