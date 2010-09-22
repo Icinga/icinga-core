@@ -1048,9 +1048,9 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 
 	case XODTEMPLATE_SERVICEESCALATION:
 		xod_begin_def(serviceescalation);
-#ifdef USE_ST_BASED_ESCAL_RANGES
 		new_serviceescalation->first_notification=-2;
 		new_serviceescalation->last_notification=-2;
+#ifdef USE_ST_BASED_ESCAL_RANGES
 		new_serviceescalation->first_warning_notification=-2;
 		new_serviceescalation->last_warning_notification=-2;
 		new_serviceescalation->first_critical_notification=-2;
@@ -1126,9 +1126,9 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 
 	case XODTEMPLATE_HOSTESCALATION:
 		xod_begin_def(hostescalation);
-#ifdef USE_ST_BASED_ESCAL_RANGES
 		new_hostescalation->first_notification=-2;
 		new_hostescalation->last_notification=-2;
+#ifdef USE_ST_BASED_ESCAL_RANGE		
 		new_hostescalation->first_down_notification=-2;
 		new_hostescalation->last_down_notification=-2;
 		new_hostescalation->first_unreachable_notification=-2;
