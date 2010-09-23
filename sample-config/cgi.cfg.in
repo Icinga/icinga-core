@@ -366,6 +366,22 @@ tac_show_only_hard_state=0
 
 
 
+# CSV DELIMITER
+# This option determines the character which should act as
+# delimiter. Default is ";".
+
+#csv_delimiter=;
+
+
+
+# CSV DATA ENCLOSURE
+# This option determines the character which should act as
+# data enclosure to wrap in the data. Default is "'".
+
+#csv_data_enclosure='
+
+
+
 # SPLUNK INTEGRATION OPTIONS
 # These options allow you to enable integration with Splunk
 # in the web interface.  If enabled, you'll be presented with

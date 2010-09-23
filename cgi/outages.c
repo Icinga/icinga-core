@@ -95,6 +95,10 @@ extern int embedded;
 extern int refresh;
 extern int display_header;
 extern int daemon_check;
+extern int content_type;
+
+extern char *csv_delimiter;
+extern char *csv_data_enclosure;
 
 int CGI_ID=OUTAGES_CGI_ID;
 
@@ -220,9 +224,15 @@ int process_cgivars(void){
 			service_severity_divisor=atoi(variables[x]);
 			if(service_severity_divisor<1)
 				service_severity_divisor=1;
-		        }
+			}
 
-		/* we found the embed option */
+		/* we found the CSV output option */
+		else if(!strcmp(variables[x],"csvoutput")){
+			display_header=FALSE;
+			content_type=CSV_CONTENT;
+			}
+
+			/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
 			embedded=TRUE;
 
@@ -230,24 +240,21 @@ int process_cgivars(void){
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
 
-                /* we found the pause option */
-                else if(!strcmp(variables[x],"paused"))
-                        refresh=FALSE;
+		/* we found the pause option */
+		else if(!strcmp(variables[x],"paused"))
+			refresh=FALSE;
 
 		/* we found the nodaemoncheck option */
-                else if(!strcmp(variables[x],"nodaemoncheck"))
-                        daemon_check=FALSE;
+		else if(!strcmp(variables[x],"nodaemoncheck"))
+			daemon_check=FALSE;
 
-	        }
+		}
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);
 
 	return error;
         }
-
-
-
 
 /* shows all hosts that are causing network outages */
 void display_network_outages(void){
@@ -278,7 +285,7 @@ void display_network_outages(void){
 		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
 
 		return;
-	        }
+		}
 
 	/* find all hosts that are causing network outages */
 	find_hosts_causing_outages();
@@ -294,16 +301,30 @@ void display_network_outages(void){
 		number_of_problem_hosts++;
 		if(temp_hostoutage->affected_child_hosts>1)
 			number_of_blocking_problem_hosts++;
-	        }
+		}
 
-	/* display the problem hosts... */
-	printf("<P><DIV ALIGN=CENTER>\n");
-	printf("<DIV CLASS='dataTitle'>Blocking Outages</DIV>\n");
+	if(content_type==CSV_CONTENT) {
+		printf("%sSEVERITY%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSTATE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sNOTES%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSTATE_DURATION%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sHOSTS_AFFECTED%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sSERVICES_AFFECTED%s\n",csv_data_enclosure,csv_data_enclosure);
+	} else {
+		/* display the problem hosts... */
+		printf("<P><DIV ALIGN=CENTER>\n");
+		printf("<DIV CLASS='dataTitle'>Blocking Outages</DIV>\n");
 
-	printf("<TABLE BORDER=0 CLASS='data'>\n");
-	printf("<TR>\n");
-	printf("<TH CLASS='data'>Severity</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>State</TH><TH CLASS='data'>Notes</TH><TH CLASS='data'>State Duration</TH><TH CLASS='data'># Hosts Affected</TH><TH CLASS='data'># Services Affected</TH><TH CLASS='data'>Actions</TH>\n");
-	printf("</TR>\n");
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
+
+		// will this cause a probelm with buffer overlow
+		printf("<TR><TD colspan='8'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",OUTAGES_CGI,strdup(getenv("QUERY_STRING")));
+
+		printf("<TR>\n");
+		printf("<TH CLASS='data'>Severity</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>State</TH><TH CLASS='data'>Notes</TH><TH CLASS='data'>State Duration</TH><TH CLASS='data'># Hosts Affected</TH><TH CLASS='data'># Services Affected</TH><TH CLASS='data'>Actions</TH>\n");
+		printf("</TR>\n");
+	}
 
 	for(temp_hostoutagesort=hostoutagesort_list;temp_hostoutagesort!=NULL;temp_hostoutagesort=temp_hostoutagesort->next){
 
@@ -328,32 +349,39 @@ void display_network_outages(void){
 		if(odd==0){
 			odd=1;
 			bg_class="dataOdd";
-		        }
-		else{
+		} else {
 			odd=0;
 			bg_class="dataEven";
-		        }
+		}
 
 		if(temp_hoststatus->status==HOST_UNREACHABLE)
 			status="UNREACHABLE";
 		else if(temp_hoststatus->status==HOST_DOWN)
 			status="DOWN";
 
-		printf("<TR CLASS='%s'>\n",bg_class);
+		if(content_type==CSV_CONTENT) {
+			printf("%s%d%s%s",csv_data_enclosure,temp_hostoutage->severity,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
+		} else {
+			printf("<TR CLASS='%s'>\n",bg_class);
 
-		printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->severity);
-		printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>\n",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hostoutage->hst->name),(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name);
-		printf("<TD CLASS='host%s'>%s</TD>\n",status,status);
+			printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->severity);
+			printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>\n",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hostoutage->hst->name),(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name);
+			printf("<TD CLASS='host%s'>%s</TD>\n",status,status);
+		}
 
 		total_comments=number_of_host_comments(temp_hostoutage->hst->name);
-		if(total_comments>0){
-			snprintf(temp_buffer,sizeof(temp_buffer)-1,"This host has %d comment%s associated with it",total_comments,(total_comments==1)?"":"s");
-			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-			printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 ALT='%s' TITLE='%s'></A></TD>\n",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hostoutage->hst->name),url_images_path,COMMENT_ICON,temp_buffer,temp_buffer);
-		        }
-		else
-			printf("<TD CLASS='%s'>N/A</TD>\n",bg_class);
-
+		if(content_type==CSV_CONTENT) {
+			printf("%s%d%s%s",csv_data_enclosure,total_comments,csv_data_enclosure,csv_delimiter);
+		} else {
+			if(total_comments>0){
+				snprintf(temp_buffer,sizeof(temp_buffer)-1,"This host has %d comment%s associated with it",total_comments,(total_comments==1)?"":"s");
+				temp_buffer[sizeof(temp_buffer)-1]='\x0';
+				printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 ALT='%s' TITLE='%s'></A></TD>\n",bg_class,EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hostoutage->hst->name),url_images_path,COMMENT_ICON,temp_buffer,temp_buffer);
+			} else
+				printf("<TD CLASS='%s'>N/A</TD>\n",bg_class);
+		}
 
 
 		current_time=time(NULL);
@@ -364,46 +392,50 @@ void display_network_outages(void){
 		get_time_breakdown((unsigned long)t,&days,&hours,&minutes,&seconds);
 		snprintf(state_duration,sizeof(state_duration)-1,"%2dd %2dh %2dm %2ds%s",days,hours,minutes,seconds,(temp_hoststatus->last_state_change==(time_t)0)?"+":"");
 		state_duration[sizeof(state_duration)-1]='\x0';
-		printf("<TD CLASS='%s'>%s</TD>\n",bg_class,state_duration);
 
-		printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->affected_child_hosts);
-		printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->affected_child_services);
-
-		printf("<TD CLASS='%s'>",bg_class);
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status detail for this host' TITLE='View status detail for this host'></A>\n",STATUS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUS_DETAIL_ICON);
+		if(content_type==CSV_CONTENT) {
+			printf("%s%s%s%s",csv_data_enclosure,state_duration,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s%s",csv_data_enclosure,temp_hostoutage->affected_child_hosts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s\n",csv_data_enclosure,temp_hostoutage->affected_child_services,csv_data_enclosure);
+		} else {
+			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,state_duration);
+			printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->affected_child_hosts);
+			printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->affected_child_services);
+		
+			printf("<TD CLASS='%s'>",bg_class);
+			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status detail for this host' TITLE='View status detail for this host'></A>\n",STATUS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUS_DETAIL_ICON);
 #ifdef USE_STATUSMAP
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n",STATUSMAP_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSMAP_ICON);
+			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n",STATUSMAP_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSMAP_ICON);
 #endif
 #ifdef USE_STATUSWRL
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View 3-D status map for this host and its children' TITLE='View 3-D status map for this host and its children'></A>\n",STATUSWRL_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSWORLD_ICON);
+			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View 3-D status map for this host and its children' TITLE='View 3-D status map for this host and its children'></A>\n",STATUSWRL_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSWORLD_ICON);
 #endif
 #ifdef USE_TRENDS
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View trends for this host' TITLE='View trends for this host'></A>\n",TRENDS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,TRENDS_ICON);
+			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View trends for this host' TITLE='View trends for this host'></A>\n",TRENDS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,TRENDS_ICON);
 #endif
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View alert history for this host' TITLE='View alert history for this host'></A>\n",HISTORY_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,HISTORY_ICON);
-		printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View notifications for this host' TITLE='View notifications for this host'></A>\n",NOTIFICATIONS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,NOTIFICATION_ICON);
-		printf("</TD>\n");
+			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View alert history for this host' TITLE='View alert history for this host'></A>\n",HISTORY_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,HISTORY_ICON);
+			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View notifications for this host' TITLE='View notifications for this host'></A>\n",NOTIFICATIONS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,NOTIFICATION_ICON);
+			printf("</TD>\n");
 
-		printf("</TR>\n");
-	        }
+			printf("</TR>\n");
+		}
+	}
 
-	printf("</TABLE>\n");
+	if(content_type!=CSV_CONTENT) {
+		printf("</TABLE>\n");
 
-	printf("</DIV></P>\n");
+		printf("</DIV></P>\n");
 
-	if(total_entries==0)
-		printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n",total_entries);
+		if(total_entries==0)
+			printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n",total_entries);
+	}
 
 	/* free memory allocated to the host outage list */
 	free_hostoutage_list();
 	free_hostoutagesort_list();
 
 	return;
-        }
-
-
-
-
+}
 
 /* determine what hosts are causing network outages */
 void find_hosts_causing_outages(void){
@@ -431,10 +463,6 @@ void find_hosts_causing_outages(void){
 	return;
         }
 
-
-
-
-
 /* adds a host outage entry */
 void add_hostoutage(host *hst){
 	hostoutage *new_hostoutage;
@@ -457,8 +485,6 @@ void add_hostoutage(host *hst){
 	return;
         }
 
-
-
 /* frees all memory allocated to the host outage list */
 void free_hostoutage_list(void){
 	hostoutage *this_hostoutage;
@@ -475,8 +501,6 @@ void free_hostoutage_list(void){
 
 	return;
         }
-
-
 
 /* frees all memory allocated to the host outage sort list */
 void free_hostoutagesort_list(void){
@@ -495,8 +519,6 @@ void free_hostoutagesort_list(void){
 	return;
         }
 
-
-
 /* calculates network outage effect of all hosts that are causing blockages */
 void calculate_outage_effects(void){
 	hostoutage *temp_hostoutage;
@@ -512,9 +534,6 @@ void calculate_outage_effects(void){
 
 	return;
         }
-
-
-
 
 /* calculates network outage effect of a particular host being down or unreachable */
 void calculate_outage_effect_of_host(host *hst, int *affected_hosts, int *affected_services){
@@ -546,8 +565,6 @@ void calculate_outage_effect_of_host(host *hst, int *affected_hosts, int *affect
 	return;
         }
 
-
-
 /* tests whether or not a host is "blocked" by upstream parents (host is already assumed to be down or unreachable) */
 int is_route_to_host_blocked(host *hst){
 	hostsmember *temp_hostsmember;
@@ -572,9 +589,7 @@ int is_route_to_host_blocked(host *hst){
 	        }
 
 	return TRUE;
-        }
-
-
+}
 
 /* calculates the number of services associated a particular host */
 int number_of_host_services(host *hst){
@@ -590,8 +605,6 @@ int number_of_host_services(host *hst){
 
 	return total_services;
         }
-
-
 
 /* sort the host outages by severity */
 void sort_hostoutages(void){

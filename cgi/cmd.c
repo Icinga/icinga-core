@@ -125,9 +125,13 @@ struct hostlist {
 	char *description;
 };
 
+struct multi_ids {
+	unsigned long id;
+};
 
 /* Initialize the struct */
 struct hostlist commands[NUMBER_OF_STRUCTS];
+struct multi_ids multi_ids[NUMBER_OF_STRUCTS];
 
 int CGI_ID=CMD_CGI_ID;
 
@@ -251,6 +255,7 @@ int process_cgivars(void){
 	int error=FALSE;
 	int x;
 	int y;
+	int z = 0;
 
 	variables=getcgivars();
 
@@ -285,26 +290,16 @@ int process_cgivars(void){
 			command_mode=atoi(variables[x]);
 		        }
 
-		/* we found the comment id */
-		else if(!strcmp(variables[x],"com_id")){
+		/* we found a comment id or a downtime id*/
+		else if(!strcmp(variables[x],"com_id") || !strcmp(variables[x],"down_id")){
 			x++;
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
 			        }
 
-			comment_id=strtoul(variables[x],NULL,10);
-		        }
-
-		/* we found the downtime id */
-		else if(!strcmp(variables[x],"down_id")){
-			x++;
-			if(variables[x]==NULL){
-				error=TRUE;
-				break;
-			        }
-
-			downtime_id=strtoul(variables[x],NULL,10);
+			multi_ids[z].id=strtoul(variables[x],NULL,10);
+			z++;
 		        }
 
 		/* we found the notification delay */
@@ -611,8 +606,6 @@ int process_cgivars(void){
 
 	return error;
         }
-
-
 
 void request_command_data(int cmd){
 	time_t t;
@@ -989,11 +982,17 @@ void request_command_data(int cmd){
 		printf("</b></td></tr>\n");
 		break;
 
+	case CMD_DEL_HOST_DOWNTIME:
+	case CMD_DEL_SVC_DOWNTIME:
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Comment ID:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_id' VALUE='%lu'>",comment_id);
-		printf("</b></td></tr>\n");
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (multi_ids[x].id == FALSE)
+                                break;
+			printf("<tr><td CLASS='optBoxRequiredItem'>%s ID:</td><td><b>",(cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT)?"Comment":"Scheduled Downtime");
+			printf("<INPUT TYPE='TEXT' NAME='%s' VALUE='%lu'>",(cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT)?"com_id":"down_id",multi_ids[x].id);
+			printf("</b></td></tr>\n");
+		}
 		break;
 
 	case CMD_DELAY_HOST_NOTIFICATION:
@@ -1002,7 +1001,7 @@ void request_command_data(int cmd){
                 printf("</tr>");
                 for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
                         if (commands[x].host_name == NULL)
-                                continue;
+                                break;
                         printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
                         printf("</tr>");
                 }
@@ -1333,14 +1332,6 @@ void request_command_data(int cmd){
 		        }
 		break;
 
-	case CMD_DEL_HOST_DOWNTIME:
-	case CMD_DEL_SVC_DOWNTIME:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Scheduled Downtime ID:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='down_id' VALUE='%lu'>",downtime_id);
-		printf("</b></td></tr>\n");
-		break;
-
-
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
 	case CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME:
 	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
@@ -1464,7 +1455,6 @@ void request_command_data(int cmd){
 	return;
         }
 
-
 void commit_command_data(int cmd){
 	char *error_string=NULL;
 	int result=OK;
@@ -1476,7 +1466,7 @@ void commit_command_data(int cmd){
 	scheduled_downtime *temp_downtime;
 	servicegroup *temp_servicegroup=NULL;
 	contact *temp_contact=NULL;
-
+	int x=0;
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -1540,29 +1530,42 @@ void commit_command_data(int cmd){
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
 
-		/* check the sanity of the comment id */
-		if(comment_id==0){
-			if(!error_string)
-				error_string=strdup("Comment id cannot be 0");
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (multi_ids[x].id == FALSE)
+                                break;
+
+			/* check the sanity of the comment id */
+			if(multi_ids[x].id==0){
+				if(!error_string)
+					error_string=strdup("Comment id cannot be 0");
 			}
 
-		/* find the comment */
-		if(cmd==CMD_DEL_HOST_COMMENT)
-			temp_comment=find_host_comment(comment_id);
-		else
-			temp_comment=find_service_comment(comment_id);
+			/* find the comment */
+			if(cmd==CMD_DEL_HOST_COMMENT)
+				temp_comment=find_host_comment(multi_ids[x].id);
+			else
+				temp_comment=find_service_comment(multi_ids[x].id);
 
-		/* see if the user is authorized to issue a command... */
-		if(cmd==CMD_DEL_HOST_COMMENT && temp_comment!=NULL){
-			temp_host=find_host(temp_comment->host_name);
-			if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-				authorized=TRUE;
-		        }
-		if(cmd==CMD_DEL_SVC_COMMENT && temp_comment!=NULL){
-			temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
-			if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-				authorized=TRUE;
-		        }
+			/* see if the user is authorized to issue a command... */
+			if(cmd==CMD_DEL_HOST_COMMENT && temp_comment!=NULL){
+				temp_host=find_host(temp_comment->host_name);
+				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
+					authorized=TRUE;
+				else {
+					authorized=TRUE;
+					break;
+				}
+			}
+			if(cmd==CMD_DEL_SVC_COMMENT && temp_comment!=NULL){
+				temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
+				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
+					authorized=TRUE;
+				else {
+					authorized=TRUE;
+					break;
+				}
+			}
+		}
 
 		/* free comment data */
 		free_comment_data();
@@ -1572,29 +1575,42 @@ void commit_command_data(int cmd){
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
 
-		/* check the sanity of the downtime id */
-		if(downtime_id==0){
-			if(!error_string)
-				error_string=strdup("Downtime id cannot be 0");
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (multi_ids[x].id == FALSE)
+                                break;
+
+			/* check the sanity of the downtime id */
+			if(multi_ids[x].id==0){
+				if(!error_string)
+					error_string=strdup("Downtime id cannot be 0");
 			}
 
-		/* find the downtime entry */
-		if(cmd==CMD_DEL_HOST_DOWNTIME)
-			temp_downtime=find_host_downtime(downtime_id);
-		else
-			temp_downtime=find_service_downtime(downtime_id);
+			/* find the downtime entry */
+			if(cmd==CMD_DEL_HOST_DOWNTIME)
+				temp_downtime=find_host_downtime(multi_ids[x].id);
+			else
+				temp_downtime=find_service_downtime(multi_ids[x].id);
 
-		/* see if the user is authorized to issue a command... */
-		if(cmd==CMD_DEL_HOST_DOWNTIME && temp_downtime!=NULL){
-			temp_host=find_host(temp_downtime->host_name);
-			if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-				authorized=TRUE;
-		        }
-		if(cmd==CMD_DEL_SVC_DOWNTIME && temp_downtime!=NULL){
-			temp_service=find_service(temp_downtime->host_name,temp_downtime->service_description);
-			if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-				authorized=TRUE;
-		        }
+			/* see if the user is authorized to issue a command... */
+			if(cmd==CMD_DEL_HOST_DOWNTIME && temp_downtime!=NULL){
+				temp_host=find_host(temp_downtime->host_name);
+				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
+					authorized=TRUE;
+				else {
+					authorized=TRUE;
+					break;
+				}
+			}
+			if(cmd==CMD_DEL_SVC_DOWNTIME && temp_downtime!=NULL){
+				temp_service=find_service(temp_downtime->host_name,temp_downtime->service_description);
+				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
+					authorized=TRUE;
+				else {
+					authorized=TRUE;
+					break;
+				}
+			}
+		}
 
 		/* free downtime data */
 		free_downtime_data();
@@ -1960,7 +1976,6 @@ void commit_command_data(int cmd){
 	return;
         }
 
-
 __attribute__((format(printf, 2, 3)))
 static int cmd_submitf(int id, const char *fmt, ...){
 	char cmd[MAX_EXTERNAL_COMMAND_LENGTH];
@@ -1997,8 +2012,6 @@ static int cmd_submitf(int id, const char *fmt, ...){
 
 	return write_command_to_file(cmd);
 }
-
-
 
 /* commits a command for processing */
 int commit_command(int cmd){
@@ -2131,7 +2144,16 @@ int commit_command(int cmd){
 
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
-		result = cmd_submitf(cmd,"%lu",comment_id);
+	case CMD_DEL_HOST_DOWNTIME:
+	case CMD_DEL_SVC_DOWNTIME:
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (multi_ids[x].id == FALSE)
+                                break;
+
+			result = cmd_submitf(cmd,"%lu",multi_ids[x].id);
+			if (result != 0)
+				break;
+		}
 		break;
 
 	case CMD_DELAY_HOST_NOTIFICATION:
@@ -2309,11 +2331,6 @@ int commit_command(int cmd){
                         if (result == 0)
                                 continue;
                 }
-		break;
-
-	case CMD_DEL_HOST_DOWNTIME:
-	case CMD_DEL_SVC_DOWNTIME:
-		result = cmd_submitf(cmd,"%lu",downtime_id);
 		break;
 
 	case CMD_SCHEDULE_HOST_CHECK:

@@ -373,6 +373,7 @@ void init_timing_loop(void){
 			/* make sure the service can actually be scheduled when we want */
 			is_valid_time=check_time_against_period(temp_service->next_check,temp_service->check_period_ptr);
 			if(is_valid_time==ERROR){
+				log_debug_info(DEBUGL_EVENTS,2,"Preferred Time is Invalid In Timeperiod '%s': %lu --> %s",temp_service->check_period_ptr->name,(unsigned long)temp_service->next_check,ctime(&temp_service->next_check));
 				get_next_valid_time(temp_service->next_check,&next_valid_time,temp_service->check_period_ptr);
 				temp_service->next_check=next_valid_time;
 			        }
@@ -1164,6 +1165,24 @@ int event_execution_loop(void){
 				my_free(temp_event);
 		        }
 
+		/* 21-09-2010 NOTE MF:
+			The logic on low priority events just as host and service checks work liks this:
+			Set run_event=TRUE on looping start, check if next event is a serviecheck. If matched,
+			check for several things, most important for disabled checks. If those are disabled,
+			set run_event=FALSE (this flag will be checked at the end). The servicecheck event
+			will be removed from the eventlist.
+			Same goes for the hostcheck events, and afterwards, run_event is checked and no matter
+			if service or host check event, it gets executed as a timed event, if run_event==TRUE.
+
+			Previous code (21-09-2010) had a logical AND operation, servicecheck and hostcheck events
+			could have been tested within one looping. If servicecheck was disabled, run_event=FALSE,
+			and removed from event queue resulted in next event = hostcheck, which was matched by the
+			2nd IF - also having run_event set to FALSE, causing the hostcheck being skipped too.
+			By changing this to a logical OR operation, IF ... ELSE IF ..., only one check can be
+			matched throughout a single looping and run_event is responsible for only one event at a
+			time - service OR host check event.
+		*/
+
 		/* handle low priority events */
 		else if(event_list_low!=NULL && (current_time>=event_list_low->run_time)){
 
@@ -1175,6 +1194,8 @@ int event_execution_loop(void){
 			if(event_list_low->event_type==EVENT_SERVICE_CHECK){
 
 				temp_service=(service *)event_list_low->event_data;
+
+				log_debug_info(DEBUGL_EVENTS|DEBUGL_CHECKS,1,"Run a few checks before executing a service check for '%s'.\n", temp_service->description);
 
 				/* don't run a service check if we're already maxed out on the number of parallel service checks...  */
 				if(max_parallel_service_checks!=0 && (currently_running_service_checks >= max_parallel_service_checks)){
@@ -1204,6 +1225,7 @@ int event_execution_loop(void){
 
 					/* remove the service check from the event queue and reschedule it for a later time */
 					/* 12/20/05 since event was not executed, it needs to be remove()'ed to maintain sync with event broker modules */
+					log_debug_info(DEBUGL_EVENTS|DEBUGL_CHECKS,1,"Skip event, removing service '%s' from list.\n", temp_service->description);
 					temp_event=event_list_low;
 					remove_event(temp_event,&event_list_low,&event_list_low_tail);
 					/*
@@ -1231,9 +1253,11 @@ int event_execution_loop(void){
 			        }
 
 			/* run a few checks before executing a host check... */
-			if(event_list_low->event_type==EVENT_HOST_CHECK){
+			else if(event_list_low->event_type==EVENT_HOST_CHECK){
 
 				temp_host=(host *)event_list_low->event_data;
+
+				log_debug_info(DEBUGL_EVENTS|DEBUGL_CHECKS,1,"Run a few checks before executing a host check for '%s'.\n", temp_host->name);
 
 				/* don't run a host check if active checks are disabled */
 				if(execute_host_checks==FALSE){
@@ -1252,6 +1276,7 @@ int event_execution_loop(void){
 
 					/* remove the host check from the event queue and reschedule it for a later time */
 					/* 12/20/05 since event was not executed, it needs to be remove()'ed to maintain sync with event broker modules */
+					log_debug_info(DEBUGL_EVENTS|DEBUGL_CHECKS,1,"Skip event, removing host '%s' from list.\n", temp_host->name);
 					temp_event=event_list_low;
 					remove_event(temp_event,&event_list_low,&event_list_low_tail);
 					/*

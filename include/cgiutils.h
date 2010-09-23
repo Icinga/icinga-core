@@ -30,7 +30,7 @@
 #include "cgiauth.h"
 
 #ifdef __cplusplus
-extern "C" { 
+extern "C" {
 #endif
 
 
@@ -116,12 +116,9 @@ extern "C" {
 
 /**************************** JAVASCRIPT NAMES ******************************/
 
-#define MARK_CHECKBOXES_JS	"mark-checkboxes.js"
-#define READ_CHECKBOXES_JS	"read-checkboxes.js"
+#define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
 #define JQUERY_MAIN_JS		"jquery-1.4.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
-#define SHOWVALUE_JS		"showValue.js"
-#define CHECKBOXESNBUTTONS_JS	"checkboxesNbutton.js"
 #define SKINNYTIP_JS		"skinnytip.js"
 
 
@@ -252,15 +249,16 @@ extern "C" {
 #define CMDMODE_COMMIT		2
 
 
-/************************ CGI OUTPUT TYPE ***********************************/
-#define HTML_OUTPUT		0
-#define CSV_OUTPUT		1
-
-
 /************************ CGI CONTENT TYPE *********************************/
 #define HTML_CONTENT		0
 #define WML_CONTENT		1
 #define IMAGE_CONTENT		2
+#define CSV_CONTENT		3
+
+
+/************************ CSV OUTPUT CHARACTERS ****************************/
+#define CSV_DELIMITER		";"
+#define CSV_DATA_ENCLOSURE	"'"
 
 
 /******************** HOST AND SERVICE NOTIFICATION TYPES ******************/
@@ -489,6 +487,7 @@ int read_all_object_configuration_data(char *,int);
 int read_all_status_data(char *,int);
 
 char *unescape_newlines(char *);
+char *escape_newlines(char *);
 void sanitize_plugin_output(char *);				/* strips HTML and bad characters from plugin output */
 void strip_html_brackets(char *);				/* strips > and < from string */
 int process_macros(char *,char **,int);				/* processes macros in a string */
