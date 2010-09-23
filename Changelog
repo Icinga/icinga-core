@@ -41,6 +41,7 @@ FIXES
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
 * install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
+* install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802
 
 
 1.0.3 - 18/08/2010
