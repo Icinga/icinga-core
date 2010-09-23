@@ -39,6 +39,7 @@ FIXES
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
 * install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
+* install: better ssl detection in solaris when /usr/local/ssl used for --with-ssl
 
 
 1.0.3 - 18/08/2010
