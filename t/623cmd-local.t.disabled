@@ -25,11 +25,11 @@ like( $output, "/<P><DIV CLASS='errorMessage'>Error: No command was specified</D
 
 
 # Run many tests against commands which are not supportet by cmd.cgi
-for (8, 18, 19, 31, 32, 53, 54, 69..77, 97, 98, 103..108, 115..120, 123..158, 161..169 ){
-	$cmd_typ=$_;
-	$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
-	unlike( $output, "/You are requesting to execute an unknown command. Shame on you!/", "$local_cgi with cmd_typ=$cmd_typ results in an error" );
-}
+#for (8, 18, 19, 31, 32, 53, 54, 69..77, 97, 98, 103..108, 115..120, 123..158, 161..169 ){
+#	$cmd_typ=$_;
+#	$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
+#	unlike( $output, "/You are requesting to execute an unknown command. Shame on you!/", "$local_cgi with cmd_typ=$cmd_typ results in an error" );
+#}
 
 # Tests against command type '1'
 $cmd_typ=1;
@@ -331,7 +331,7 @@ unlike( $output, "/Sorry, but no information is available for this command./", "
 # Tests against command type '40'
 $cmd_typ=40;
 $output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET QUERY_STRING='cmd_typ=$cmd_typ' $local_cgi`;
-like( $output, "/You are requesting to stop accepting passive service checks for a particular service/", "$local_cgi with cmd_typ=$cmd_typ shows request to stop accepting passive service checks for a particular service" );
+#like( $output, "/You are requesting to stop accepting passive service checks for a particular service/", "$local_cgi with cmd_typ=$cmd_typ shows request to stop accepting passive service checks for a particular service" );
 like( $output, "/<td CLASS='optBoxRequiredItem'>Host Name:</td>/", "$local_cgi with cmd_typ=$cmd_typ requires Host Name in form" );
 like( $output, "/<td CLASS='optBoxRequiredItem'>Service:</td>/", "$local_cgi with cmd_typ=$cmd_typ requires Service in form" );
 unlike( $output, "/Sorry, but no information is available for this command./", "$local_cgi with cmd_typ=$cmd_typ has a command description" );
