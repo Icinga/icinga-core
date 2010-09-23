@@ -42,6 +42,7 @@ FIXES
 
 * install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
 * install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802
+* install: remove installing from ido2db init script from Makefile when installing idoutils #814
 
 
 1.0.3 - 18/08/2010
