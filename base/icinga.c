@@ -46,7 +46,11 @@
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 #include "../include/profiler.h"
+#endif
 
 /*#define DEBUG_MEMORY 1*/
 #ifdef DEBUG_MEMORY
@@ -244,7 +248,10 @@ int             command_file_fd;
 FILE            *command_file_fp;
 int             command_file_created=FALSE;
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 int             event_profiling_enabled=FALSE;
+#endif
 
 extern contact	       *contact_list;
 extern contactgroup    *contactgroup_list;
@@ -387,7 +394,6 @@ int main(int argc, char **argv, char **env){
 #ifdef DEBUG_MEMORY
 	mtrace();
 #endif
-	profiler_init();
 
 	if(daemon_mode==FALSE){
 		printf("\n%s %s\n", PROGRAM_NAME ,PROGRAM_VERSION);
@@ -643,6 +649,13 @@ int main(int argc, char **argv, char **env){
 
 	/* else start to monitor things... */
 	else{
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+	/* This is Sparta! */
+	if(event_profiling_enabled==TRUE)
+	        profiler_init();
+#endif
 
 		/* keep monitoring things until we get a shutdown command */
 		do{

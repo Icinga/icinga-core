@@ -25,6 +25,10 @@
 #include "../include/common.h"
 #include "../include/icinga.h"
 #include "../include/locations.h"
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+
 #include "../include/statsprofiler.h"
 
 extern profile_object* profiled_data;
@@ -149,3 +153,5 @@ void profile_data_output_mrtg(char * name, char * delim)
 	if(strstr(name,"EVENTPS"))
 		printf("%.4f%s",safe_divide(t->elapsed,p->count,1),delim);
 }
+
+#endif
