@@ -6723,11 +6723,13 @@ _ACEOF
 
 						echo ""
 			echo "*** Generating DH Parameters for SSL/TLS ***"
-			if test -f "$ssldir/sbin/openssl"; then
-				sslbin=$ssldir/sbin/openssl
-			else
-				sslbin=$ssldir/bin/openssl
-			fi
+			# Not really useful sometimes better to use the bin that in the PATH
+			#if test -f "$ssldir/sbin/openssl"; then
+			#	sslbin=$ssldir/sbin/openssl
+			#else
+			#	sslbin=$ssldir/bin/openssl
+			#fi
+			sslbin=`which openssl`
 			# awk to strip off meta data at bottom of dhparam output
 			$sslbin dhparam -C 512 | awk '/^-----/ {exit} {print}' > include/dh.h
 		fi
