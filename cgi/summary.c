@@ -1683,8 +1683,12 @@ void display_report(void){
 
 		printf("</DIV>\n");
 
-		/* will this cause a probelm with buffer overlow */
-		printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+                /* add export to csv link */
+                if(getenv("QUERY_STRING")!=NULL) {
+			printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+		} else {
+			printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",SUMMARY_CGI);
+		}
 	}
 
 	if(display_type==REPORT_ALERT_TOTALS) {
@@ -1764,8 +1768,13 @@ void display_recent_alerts(void){
 
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		// will this cause a probelm with buffer overlow
-		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+
+                /* add export to csv link */
+                if(getenv("QUERY_STRING")!=NULL) {
+			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+		} else {
+			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI);
+		}
 
 		printf("<TR><TH CLASS='data'>Time</TH><TH CLASS='data'>Alert Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>State</TH><TH CLASS='data'>State Type</TH><TH CLASS='data'>Information</TH></TR>\n");
 	}
@@ -2031,8 +2040,13 @@ void display_top_alerts(void){
 
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		// will this cause a probelm with buffer overlow
-		printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+
+                /* add export to csv link */
+                if(getenv("QUERY_STRING")!=NULL) {
+			printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
+		} else {
+			printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI);
+		}
 		printf("<TR><TH CLASS='data'>Rank</TH><TH CLASS='data'>Producer Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
 	}
 
