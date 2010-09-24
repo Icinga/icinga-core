@@ -67,6 +67,11 @@ CGIEXTRAS=@CGIEXTRAS@
 SNPRINTF_O=@SNPRINTF_O@
 
 ###############################
+# Tools
+###############################
+MKDIR=/bin/mkdir
+
+###############################
 # Global
 ###############################
 ICINGA_VERSION=1.0.3
@@ -424,7 +429,8 @@ install-config:
 	@echo ""
 
 install-webconf:
-	$(INSTALL) -D -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf
+	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
+	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf
 
 	@echo ""
 	@echo "*** Icinga/Apache conf file installed ***"
@@ -432,7 +438,6 @@ install-webconf:
 
 install-idoutils:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
-		$(INSTALL) -m 755 $(INIT_OPTS) rc.ido2db $(DESTDIR)$(INIT_DIR)/ido2db ;\
 		cd $(SRC_IDOUTILS) && $(MAKE) $@ ;\
 	fi
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \

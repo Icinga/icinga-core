@@ -5,10 +5,12 @@ Icinga 1.2.x Change Log
 1.2.0 - 06/10/2010
 
 ENHANCEMENTS
-i* core: add eventhandler override (Sven Nierlein) #731
+* core: add eventhandler override (Sven Nierlein) #731
 * core: add config option to disable logging into the daemon log file #311
 * core: fix delay sorting of comments/downtimes (Ton Voon) #753
 * core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch) #752
+* core: add the possibility to use * as a wildcard for all hosts in servicegroup definition #813
+* core: fix scheduled downtime notifications resent on restart/reload #584
 
 * classic ui: add commands expander to config display (Jochen Bern) #746
 	- $ARGn$ substitution will be shown between command_line and
@@ -39,6 +41,8 @@ FIXES
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
 * install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
+* install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802
+* install: remove installing from ido2db init script from Makefile when installing idoutils #814
 
 
 1.0.3 - 18/08/2010
