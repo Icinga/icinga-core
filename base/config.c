@@ -219,8 +219,10 @@ extern char             *debug_file;
 extern int              debug_level;
 extern int              debug_verbosity;
 extern unsigned long    max_debug_file_size;
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 extern int              event_profiling_enabled;
-
+#endif
 
 
 /******************************************************************/
@@ -1405,9 +1407,12 @@ int read_main_config_file(char *main_config_file){
 			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: bare_update_check variable ignored. Icinga Core does not support program update checking");
 			}
 
-               else if(!strcmp(variable,"event_profiling_enabled"))
-                       event_profiling_enabled=(atoi(value)>0)?TRUE:FALSE;
-
+               else if(!strcmp(variable,"event_profiling_enabled")){
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+			event_profiling_enabled=(atoi(value)>0)?TRUE:FALSE;
+#endif
+			}
 
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/

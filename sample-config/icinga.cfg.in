@@ -1402,8 +1402,8 @@ debug_file=@localstatedir@/icinga.debug
 max_debug_file_size=1000000
 
 # EVENT PROFILING
-# This option enables or disables event profiling for stats of event counts 
-# and time taken for events.
+# This option enables or disables event profiling for stats of event counts
+# and time taken for events.  Option can't be used on Solaris with gcc3.
 # Values: 0 - disabled
 #         1 - enabled
 

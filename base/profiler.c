@@ -27,7 +27,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  *****************************************************************************/
+
 #include "../include/icinga.h"
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+
 #include "../include/profiler.h"
 
 int profiler_item_count = -1;
@@ -202,3 +207,4 @@ void profiler_output(FILE* fp)
 
 }
 
+#endif

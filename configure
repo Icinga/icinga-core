@@ -768,7 +768,8 @@ CFLAGS
 LDFLAGS
 LIBS
 CPPFLAGS
-CPP'
+CPP
+CPPFLAGS'
 ac_subdirs_all='tap
 module/icinga-api'
 
@@ -6695,6 +6696,11 @@ $as_echo_n "checking for SSL libraries... " >&6; }
 				found_ssl=yes
 			        break
 			fi
+			if test -f "$dir/lib/libssl.so"; then
+				found_ssl=yes
+				ssllibdir="$dir/lib"
+			        break
+			fi
 		done
 
 		if test x_$found_ssl != x_yes; then
@@ -6710,6 +6716,10 @@ $as_echo_n "checking for SSL libraries... " >&6; }
 _ACEOF
 
 
+
+						if test "ssl_dir" != ""; then
+				ssldir="$ssl_dir"
+			fi
 
 						echo ""
 			echo "*** Generating DH Parameters for SSL/TLS ***"

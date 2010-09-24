@@ -29,7 +29,11 @@
 #include "../include/comments.h"
 #include "../include/downtime.h"
 #include "../include/statusdata.h"
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 #include "../include/statsprofiler.h"
+#endif
 
 #include "../include/cgiutils.h"
 #include "../include/getcgi.h"
@@ -55,8 +59,10 @@ extern int              obsess_over_hosts;
 extern int              enable_flap_detection;
 extern int              enable_failure_prediction;
 extern int              process_performance_data;
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 extern int		event_profiling_enabled;
-
+#endif
 extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
@@ -80,8 +86,11 @@ extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
-extern profile_object* profiled_data;
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+extern profile_object* profiled_data;
+#endif
 
 #define MAX_MESSAGE_BUFFER		4096
 
@@ -605,8 +614,12 @@ int main(void){
 				printf("<DIV CLASS='commentNav'>[&nbsp;<A HREF='#HOSTCOMMENTS' CLASS='commentNav'>Host Comments</A>&nbsp;|&nbsp;<A HREF='#SERVICECOMMENTS' CLASS='commentNav'>Service Comments</A>&nbsp;]</DIV>\n");
 				printf("<BR />\n");
 
-				// will this cause a probelm with buffer overlow
-				printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+		                /* add export to csv link */
+		                if(getenv("QUERY_STRING")!=NULL) {
+					printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+				} else {
+					printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI);
+				}
 
 				show_comments(HOST_COMMENT);
 				printf("<BR />\n");
@@ -878,9 +891,13 @@ void show_process_info(void){
 		printf("\n");
 	} else {
 		printf("<BR />\n");
-		
-		/* csv export link */
-		printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+
+                /* add export to csv link */
+                if(getenv("QUERY_STRING")!=NULL) {
+			printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+		} else {
+			printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI);
+		}
 
 		printf("<DIV ALIGN=CENTER>\n");
 
@@ -1955,11 +1972,13 @@ void show_performance_data(void){
 	int passive_host_checks_start=0;
 	int passive_host_checks_ever=0;
 	time_t current_time;
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 	profile_object *t, *p = profiled_data;
 	int count=0;
 	double elapsed=0.0, total_time=0.0;
-	char *name;
-
+	char *name=NULL;
+#endif
 
 	time(&current_time);
 
@@ -1968,7 +1987,7 @@ void show_performance_data(void){
 
 		/* find the service */
 		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
-		
+
 		/* make sure the user has rights to view service information */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
@@ -2055,7 +2074,7 @@ void show_performance_data(void){
 
 		/* find the host */
 		temp_host=find_host(temp_hoststatus->host_name);
-		
+
 		/* make sure the user has rights to view host information */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
@@ -2199,7 +2218,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=middle><div class='perfTypeTitle'>Services Passively Checked:</div></td>\n");
 	printf("<td valign=top>\n");
-	
+
 
 	/* fake this so we don't divide by zero for just showing the table */
 	if(total_passive_service_checks==0)
@@ -2290,7 +2309,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=middle><div class='perfTypeTitle'>Hosts Passively Checked:</div></td>\n");
 	printf("<td valign=top>\n");
-	
+
 
 	/* fake this so we don't divide by zero for just showing the table */
 	if(total_passive_host_checks==0)
@@ -2334,7 +2353,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=center><div class='perfTypeTitle'>Check Statistics:</div></td>\n");
 	printf("<td valign=top colspan='2'>\n");
-	
+
 
 	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
 	printf("<TR><TD class='stateInfoTable1'>\n");
@@ -2369,7 +2388,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=center><div class='perfTypeTitle'>Buffer Usage:</div></td>\n");
 	printf("<td valign=top colspan='2'>\n");
-	
+
 
 	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
 	printf("<TR><TD class='stateInfoTable1'>\n");
@@ -2382,6 +2401,8 @@ void show_performance_data(void){
 	printf("</TD></TR>\n");
 	printf("</TABLE>\n");
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 	if (event_profiling_enabled){
 		printf("<tr>\n");
 		printf("<td valign=center><div class='perfTypeTitle'>Event profiling:</div></td>\n");
@@ -2409,6 +2430,7 @@ void show_performance_data(void){
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");
 	}
+#endif
 
 
 	printf("</td>\n");
@@ -2493,8 +2515,12 @@ void show_comments(int type){
 		printf("<TABLE BORDER=0 CLASS='comment'>\n");
 
 		if(display_type!=DISPLAY_COMMENTS) {
-			// will this cause a probelm with buffer overlow
-			printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI,strdup(getenv("QUERY_STRING")));			
+	                /* add export to csv link */
+	                if(getenv("QUERY_STRING")!=NULL) {
+				printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+			} else {
+				printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI);
+			}
 		}
 
 		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Comments' onClick=cmd_submit(\'tableform%s\') disabled=\"disabled\"></TD></TR>\n",colspan,(type==HOST_COMMENT)?"host":"service");
@@ -2633,7 +2659,7 @@ void show_downtime(void){
 	int seconds;
 	int downtime_type[2];
 	int type=0, i=0;
-	
+
 	if(content_type==CSV_CONTENT){
 		/* csv header */
 		printf("%sHOST_NAME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -2646,13 +2672,17 @@ void show_downtime(void){
 		printf("%sTYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sDURATION%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sDOWNTIME_ID%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sTRIGGER_ID%s\n",csv_data_enclosure,csv_data_enclosure);	
+		printf("%sTRIGGER_ID%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<BR />\n");
 		printf("<DIV CLASS='downtimeNav'>[&nbsp;<A HREF='#HOSTDOWNTIME' CLASS='downtimeNav'>Host Downtime</A>&nbsp;|&nbsp;<A HREF='#SERVICEDOWNTIME' CLASS='downtimeNav'>Service Downtime</A>&nbsp;]</DIV>\n");
 
-		// will this cause a probelm with buffer overlow
-		printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+                /* add export to csv link */
+                if(getenv("QUERY_STRING")!=NULL) {
+			printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+		} else {
+			printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI);
+		}
 	}
 
 	downtime_type[0]=HOST_DOWNTIME;
@@ -2679,10 +2709,10 @@ void show_downtime(void){
 			printf("<form name='tableform%s' id='tableform%s'>",(type==HOST_DOWNTIME)?"host":"service",(type==HOST_DOWNTIME)?"host":"service");
 			printf("<input type=hidden name=buttonCheckboxChecked>");
 			printf("<input type=hidden name='hiddencmdfield' value=%d>",(type==HOST_DOWNTIME)?CMD_DEL_HOST_DOWNTIME:CMD_DEL_SVC_DOWNTIME);
-			
+
 			printf("<TABLE BORDER=0 CLASS='downtime'>\n");
 			printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Downtimes' onClick=cmd_submit(\'tableform%s\') disabled=\"disabled\"></TD></TR>\n",(type==HOST_DOWNTIME)?11:12,(type==HOST_DOWNTIME)?"host":"service");
-			
+
 			printf("<TR CLASS='downtime'><TH CLASS='downtime'>Host Name</TH>");
 			if(type==SERVICE_DOWNTIME)
 				printf("<TH CLASS='downtime'>Service</TH>");
@@ -2861,8 +2891,12 @@ void show_scheduling_queue(void){
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='queue'>\n");
 
-		// will this cause a probelm with buffer overlow
-		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+                /* add export to csv link */
+                if(getenv("QUERY_STRING")!=NULL) {
+			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
+		} else {
+			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",EXTINFO_CGI);
+		}
 
 		printf("<TR CLASS='queue'>");
 

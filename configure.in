@@ -1037,6 +1037,11 @@ if test x$check_for_ssl = xyes; then
 				found_ssl=yes
 			        break
 			fi
+			if test -f "$dir/lib/libssl.so"; then
+				found_ssl=yes
+				ssllibdir="$dir/lib"
+			        break
+			fi
 		done
 
 		if test x_$found_ssl != x_yes; then
@@ -1049,6 +1054,11 @@ if test x$check_for_ssl = xyes; then
 
 			AC_DEFINE_UNQUOTED(HAVE_SSL)
 			AC_SUBST(HAVE_SSL)
+
+			dnl if ssl dir provided, thake this instead
+			if test "ssl_dir" != ""; then
+				ssldir="$ssl_dir"
+			fi
 
 			dnl Generate DH parameters
 			echo ""

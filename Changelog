@@ -11,6 +11,7 @@ ENHANCEMENTS
 * core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch) #752
 * core: add the possibility to use * as a wildcard for all hosts in servicegroup definition #813
 * core: fix scheduled downtime notifications resent on restart/reload #584
+* core: disable eventprofiler on Solaris gcc3, preventing core dumps #702 #572
 
 * classic ui: add commands expander to config display (Jochen Bern) #746
 	- $ARGn$ substitution will be shown between command_line and
@@ -31,18 +32,21 @@ FIXES
 * core: fix format errors for logging eventhandlers (Guillaume Rousse) #779
 * core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore #790
 * core: don't skip hostchecks when servicechecks are disabled (Stephen Gran) #778
+* core: move eventprofiler init after config parsing, checking if enabled, making it optional all over #572 #702
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp #807
 * classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id #808
 * classic ui: removed double header in tac.c #808
 * classic ui: changed size of checkbox column to 16 #809
 * classic ui: remove useless utils.inc.php since check-program-updates is dropped from core #800
+* classic ui: fix status.cgi segfault without hostgroup parameter on solaris 10 #594
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
 * install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
 * install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802
 * install: remove installing from ido2db init script from Makefile when installing idoutils #814
+* install: better ssl detection in solaris when /usr/local/ssl used for --with-ssl #821
 
 
 1.0.3 - 18/08/2010
