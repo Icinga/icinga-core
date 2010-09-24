@@ -36,6 +36,7 @@ FIXES
 * classic ui: removed double header in tac.c #808
 * classic ui: changed size of checkbox column to 16 #809
 * classic ui: remove useless utils.inc.php since check-program-updates is dropped from core #800
+* classic ui: fix status.cgi segfault without hostgroup parameter on solaris 10 #594
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
