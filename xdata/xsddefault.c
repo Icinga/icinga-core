@@ -1001,11 +1001,12 @@ int xsddefault_read_status_data(char *config_file,int options){
 					enable_failure_prediction=(atoi(val)>0)?TRUE:FALSE;
 				else if(!strcmp(var,"process_performance_data"))
 					process_performance_data=(atoi(val)>0)?TRUE:FALSE;
-				else if(!strcmp(var,"event_profiling_enabled"))
+				else if(!strcmp(var,"event_profiling_enabled")){
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 					event_profiling_enabled=atoi(val);
 #endif
+					}
 
 				else if(strstr(var,"PROFILE_")){
 /* make sure gcc3 won't hit here */
