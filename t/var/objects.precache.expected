@@ -13,7 +13,7 @@ define timeperiod {
 
 define command {
 	command_name	check_me
-	command_line	/usr/local/nagios/libexec/check_me
+	command_line	/usr/local/icinga/libexec/check_me
 	}
 
 define command {
@@ -23,12 +23,12 @@ define command {
 
 define command {
 	command_name	notify-none
-	command_line	/usr/local/nagios/notifications/notify-none
+	command_line	/usr/local/icinga/notifications/notify-none
 	}
 
 define command {
 	command_name	set_to_stale
-	command_line	/usr/local/nagios/libexec/set_to_stale
+	command_line	/usr/local/icinga/libexec/set_to_stale
 	}
 
 define command {
