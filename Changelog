@@ -30,6 +30,7 @@ FIXES
 * core: fix format errors for logging eventhandlers (Guillaume Rousse) #779
 * core: remove program update checks as scheduled timed events, not written to status/retention.dat anymore #790
 * core: don't skip hostchecks when servicechecks are disabled (Stephen Gran) #778
+* core: move eventprofiler init after config parsing, checking if enabled, making it optional all over #572 #702
 
 * classic ui: update jquery for multiple cmds dropdown, resolve conflicts with pnp #807
 * classic ui: moved individual document_header and document_footer to cgiutils.c, distinction by cgi_id #808

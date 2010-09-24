@@ -395,11 +395,6 @@ int main(int argc, char **argv, char **env){
 	mtrace();
 #endif
 
-/* make sure gcc3 won't hit here */
-#ifndef GCCTOOOLD
-	profiler_init();
-#endif
-
 	if(daemon_mode==FALSE){
 		printf("\n%s %s\n", PROGRAM_NAME ,PROGRAM_VERSION);
 		printf("Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
@@ -654,6 +649,13 @@ int main(int argc, char **argv, char **env){
 
 	/* else start to monitor things... */
 	else{
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+	/* This is Sparta! */
+	if(event_profiling_enabled==TRUE)
+	        profiler_init();
+#endif
 
 		/* keep monitoring things until we get a shutdown command */
 		do{

@@ -410,29 +410,28 @@ int main(int argc, char **argv){
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 		/* event profiler */
+	        if(event_profiling_enabled==TRUE){
 
-		/* read main config file */
-        	result=read_config_file();
-        	if(result==ERROR && mrtg_mode==FALSE)
-        	{
-            		printf("Error processing config file '%s'\n",main_config_file);
-            		return ERROR;
-        	}
+			/* read main config file */
+	        	result=read_config_file();
+	        	if(result==ERROR && mrtg_mode==FALSE){
+	            		printf("Error processing config file '%s'\n",main_config_file);
+        	    		return ERROR;
+        		}
 
-        	/* read the status file */
-        	result=read_status_file();
-        	if(result==ERROR && mrtg_mode==FALSE)
-        	{
-            		printf("Error reading status file '%s'\n",status_file);
-            		return ERROR;
-        	}
+	        	/* read the status file */
+	        	result=read_status_file();
+	        	if(result==ERROR && mrtg_mode==FALSE){
+	            		printf("Error reading status file '%s'\n",status_file);
+	            		return ERROR;
+	        	}
 
-        	p = profiled_data;
-        	while(p)
-        	{
-            		printf("PROFILE_(COUNTER/ELAPSED/EVENTPS)_%s\t\tdynamically generated profile data.\n",p->name);
-            		p = p->next;
-        	}
+	        	p = profiled_data;
+	        	while(p){
+	            		printf("PROFILE_(COUNTER/ELAPSED/EVENTPS)_%s\t\tdynamically generated profile data.\n",p->name);
+	            		p = p->next;
+	        	}
+		}
 #endif
 		printf("\n");
 		printf(" Note: Replace x's in MRTG variable names with 'MIN', 'MAX', 'AVG', or the\n");
