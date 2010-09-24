@@ -1,6 +1,9 @@
 #ifndef __STATS_PROFILER_INCLUDED__
 #define __STATS_PROFILER_INCLUDED__
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+
 typedef struct profile_object{
 
     char* name;
@@ -18,4 +21,7 @@ void profile_object_update_count(char * name, int val);
 void profile_object_update_elapsed(char * name, double val);
 void profile_data_print();
 void profile_data_output_mrtg(char * name,char * delim);
+
+#endif
+
 #endif

@@ -31,6 +31,9 @@
 #ifndef __PROFILER__HEADER__INCLUDED__
 #define __PROFILER__HEADER__INCLUDED__
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+
 
 #define EVENT_LOOP_EMPTY_LIST                   100
 #define EVENT_LOOP_EVENT_LIST_HIGH_EXECUTED     101
@@ -63,4 +66,7 @@ void profiler_setstate(int event,int state);
 void profiler_rename(int p, char * name);
 void profiler_update(int event, struct timeval start);
 void profiler_output(FILE* fp);
+
+#endif
+
 #endif

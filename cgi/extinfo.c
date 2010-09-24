@@ -29,7 +29,11 @@
 #include "../include/comments.h"
 #include "../include/downtime.h"
 #include "../include/statusdata.h"
+
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 #include "../include/statsprofiler.h"
+#endif
 
 #include "../include/cgiutils.h"
 #include "../include/getcgi.h"
@@ -55,8 +59,10 @@ extern int              obsess_over_hosts;
 extern int              enable_flap_detection;
 extern int              enable_failure_prediction;
 extern int              process_performance_data;
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 extern int		event_profiling_enabled;
-
+#endif
 extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
@@ -80,8 +86,11 @@ extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
-extern profile_object* profiled_data;
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
+extern profile_object* profiled_data;
+#endif
 
 #define MAX_MESSAGE_BUFFER		4096
 
@@ -1955,11 +1964,13 @@ void show_performance_data(void){
 	int passive_host_checks_start=0;
 	int passive_host_checks_ever=0;
 	time_t current_time;
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 	profile_object *t, *p = profiled_data;
 	int count=0;
 	double elapsed=0.0, total_time=0.0;
-	char *name;
-
+	char *name=NULL;
+#endif
 
 	time(&current_time);
 
@@ -1968,7 +1979,7 @@ void show_performance_data(void){
 
 		/* find the service */
 		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
-		
+
 		/* make sure the user has rights to view service information */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
@@ -2055,7 +2066,7 @@ void show_performance_data(void){
 
 		/* find the host */
 		temp_host=find_host(temp_hoststatus->host_name);
-		
+
 		/* make sure the user has rights to view host information */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
@@ -2199,7 +2210,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=middle><div class='perfTypeTitle'>Services Passively Checked:</div></td>\n");
 	printf("<td valign=top>\n");
-	
+
 
 	/* fake this so we don't divide by zero for just showing the table */
 	if(total_passive_service_checks==0)
@@ -2290,7 +2301,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=middle><div class='perfTypeTitle'>Hosts Passively Checked:</div></td>\n");
 	printf("<td valign=top>\n");
-	
+
 
 	/* fake this so we don't divide by zero for just showing the table */
 	if(total_passive_host_checks==0)
@@ -2334,7 +2345,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=center><div class='perfTypeTitle'>Check Statistics:</div></td>\n");
 	printf("<td valign=top colspan='2'>\n");
-	
+
 
 	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
 	printf("<TR><TD class='stateInfoTable1'>\n");
@@ -2369,7 +2380,7 @@ void show_performance_data(void){
 	printf("<tr>\n");
 	printf("<td valign=center><div class='perfTypeTitle'>Buffer Usage:</div></td>\n");
 	printf("<td valign=top colspan='2'>\n");
-	
+
 
 	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
 	printf("<TR><TD class='stateInfoTable1'>\n");
@@ -2382,6 +2393,8 @@ void show_performance_data(void){
 	printf("</TD></TR>\n");
 	printf("</TABLE>\n");
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 	if (event_profiling_enabled){
 		printf("<tr>\n");
 		printf("<td valign=center><div class='perfTypeTitle'>Event profiling:</div></td>\n");
@@ -2409,6 +2422,7 @@ void show_performance_data(void){
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");
 	}
+#endif
 
 
 	printf("</td>\n");

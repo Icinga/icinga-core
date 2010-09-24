@@ -35,8 +35,11 @@
 #include "../include/macros.h"
 #include "../include/skiplist.h"
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 #include "../include/statsprofiler.h"
 #include "../include/profiler.h"
+#endif
 
 #ifdef NSCORE
 #include "../include/icinga.h"
@@ -73,8 +76,11 @@ int process_performance_data;
 int nagios_pid;
 int buffer_stats[1][3];
 int program_stats[MAX_CHECK_STATS_TYPES][3];
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 int event_profiling_enabled;
 profile_object* profiled_data = NULL;
+#endif
 #endif
 
 #ifdef NSCORE
@@ -124,7 +130,10 @@ extern char           *global_host_event_handler;
 extern char           *global_service_event_handler;
 
 extern check_stats    check_statistics[MAX_CHECK_STATS_TYPES];
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 extern int event_profiling_enabled;
+#endif
 #endif
 
 
@@ -452,10 +461,13 @@ int xsddefault_save_status_data(void){
 	fprintf(fp,"\tparallel_host_check_stats=%d,%d,%d\n",check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[0],check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[1],check_statistics[PARALLEL_HOST_CHECK_STATS].minute_stats[2]);
 	fprintf(fp,"\tserial_host_check_stats=%d,%d,%d\n",check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[0],check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[1],check_statistics[SERIAL_HOST_CHECK_STATS].minute_stats[2]);
 
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 	fprintf(fp,"\tevent_profiling_enabled=%d\n",event_profiling_enabled);
 
 	if(event_profiling_enabled)
     		profiler_output(fp);
+#endif
 
 	fprintf(fp,"\t}\n\n");
 
@@ -990,14 +1002,20 @@ int xsddefault_read_status_data(char *config_file,int options){
 				else if(!strcmp(var,"process_performance_data"))
 					process_performance_data=(atoi(val)>0)?TRUE:FALSE;
 				else if(!strcmp(var,"event_profiling_enabled"))
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
 					event_profiling_enabled=atoi(val);
+#endif
 
 				else if(strstr(var,"PROFILE_")){
+/* make sure gcc3 won't hit here */
+#ifndef GCCTOOOLD
                                         if(strstr(var,"COUNTER"))
                                                 profile_object_update_count(var+strlen("PROFILE_COUNTER_"),strtod(val,NULL));
 
                                         if(strstr(var,"ELAPSED"))
                                                 profile_object_update_elapsed(var+strlen("PROFILE_ELAPSED_"),atoi(val));
+#endif
                                 }
 
 				else if (!strcmp(var,"total_external_command_buffer_slots"))

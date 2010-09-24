@@ -9,6 +9,7 @@ i* core: add eventhandler override (Sven Nierlein) #731
 * core: add config option to disable logging into the daemon log file #311
 * core: fix delay sorting of comments/downtimes (Ton Voon) #753
 * core: fix custom macros being cleaned/stripped (as they are user-defined and should be trusted) (Peter Morch) #752
+* core: disable eventprofiler on Solaris gcc3, preventing core dumps #702 #572
 
 * classic ui: add commands expander to config display (Jochen Bern) #746
 	- $ARGn$ substitution will be shown between command_line and
