@@ -627,17 +627,6 @@ int read_all_status_data(char *config_file,int options){
 	if(options & READ_SERVICE_STATUS)
 		service_status_has_been_read=TRUE;
 
-	/*
-	  2010-07-28 Michael Friedrich: removed for now,
-	  it only brought problems, benefit was zero
-	*/
-        /* return error if daemon is not running */
-	/*
-        if(check_daemon_running()==ERROR) {
-                return ERROR;
-        }
-	*/
-
 	return result;
         }
 
@@ -2300,79 +2289,4 @@ void strip_splunk_query_terms(char *buffer){
 
 	return;
 	}
-
-
-/**********************************************************
-*************** CHECK CORE FUNCTIONS **********************
-**********************************************************/
-
-/* code partly taken from contrib/daemonchk.c */
-
-/* checks if core daemon is running for showing live data or an error */
-int check_daemon_running(void) {
-
-#define CHARLEN 256
-
-	char *lock_file=NULL;
-	char *proc_file=NULL;
-	char *input = NULL;
-	char *val = NULL;
-	int pid, testpid;
-	char input_buffer[CHARLEN];
-	mmapfile *fk;
-	FILE *fp;
-
-	/* find lock file. get pid if it exists */
-	if(asprintf(&lock_file,"%s",DEFAULT_LOCK_FILE)==-1) {
-                return ERROR;
-        }
-
-	/* since 'ps -C process' is no working on macosx, we'll drop that again
-	   the init script of the core is now safe - if the core segfaulted after
-	   after starting up, the lockfile is removed. so if there is no lockfile
-	   no daemon is assumed running  */
-	if((fk=mmap_fopen(lock_file))==NULL)
-		return ERROR;
-
-	if((input=mmap_fgets(fk))==NULL) {
-		mmap_fclose(fk);
-		free(lock_file);
-		return ERROR;
-	}
-
-	strip(input);
-        val=strtok(input,"\n");
-	pid=atoi(val);
-
-        free(input);
-        mmap_fclose(fk);
-	free(lock_file);
-
-	/* find pid in running processes to check if core died without removing lock file */
-	free(proc_file);
-	if(asprintf(&proc_file,"/bin/ps -o pid -p %d",pid)==-1) {
-		free(lock_file);
-		return ERROR;
-	}
-
-        if((fp=popen(proc_file, "r"))==NULL) {
-		free(proc_file);
-                return ERROR;
-        }
-
-	fgets(input_buffer,CHARLEN-1,fp);
-	fgets(input_buffer,CHARLEN-1,fp);
-
-	/* check if correct pid found */
-	if (sscanf(input_buffer,"%d",&testpid)==1) {
-		if (testpid!=pid) {
-	                free(proc_file);
-			return ERROR;
-		}
-	}
-
-	free(proc_file);
-
-	return OK;
-}
 
