@@ -40,6 +40,7 @@ FIXES
 * classic ui: changed size of checkbox column to 16 #809
 * classic ui: remove useless utils.inc.php since check-program-updates is dropped from core #800
 * classic ui: fix status.cgi segfault without hostgroup parameter on solaris 10 #594
+* classic ui: drop dead code on cgis (check_daemon_running)
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 
@@ -47,6 +48,9 @@ FIXES
 * install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802
 * install: remove installing from ido2db init script from Makefile when installing idoutils #814
 * install: better ssl detection in solaris when /usr/local/ssl used for --with-ssl #821
+
+* config: fix typo preserve_state_information in description of retention file
+
 
 
 1.0.3 - 18/08/2010
