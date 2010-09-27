@@ -43,6 +43,7 @@ FIXES
 * classic ui: drop dead code on cgis (check_daemon_running)
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
+* idoutils: fix database port in ido2db.cfg not honoured using libdbi #825
 
 * install: remove php dependency and files for updatechecks/extended search in icinga.spec #800
 * install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802

@@ -419,9 +419,9 @@ int ido2db_db_connect(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 
-	/* Check if the dbi connection was created successful */
-
 #ifdef USE_LIBDBI /* everything else will be libdbi */
+
+	/* Check if the dbi connection was created successful */
 	if (idi->dbinfo.dbi_conn == NULL) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
 		syslog(LOG_USER | LOG_INFO, "Error: Could  not dbi_conn_new(): %s", dbi_error);
@@ -431,6 +431,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 	}
 
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+	dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "username", ido2db_db_settings.username);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "password", ido2db_db_settings.password);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "dbname", ido2db_db_settings.dbname);
@@ -468,8 +469,9 @@ int ido2db_db_connect(ido2db_idi *idi) {
 						ido2db_db_settings.dbname,
 						ido2db_db_settings.username,
 						ido2db_db_settings.password);
+	free(temp_port);
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql segfault?\n"); 
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql segfault?\n");
 
 	if(PQstatus(idi->dbinfo.pg_conn) != CONNECTION_OK) {
                 syslog(LOG_USER | LOG_INFO, "Error: Could not connect to pgsql database: %s", PQerrorMessage(idi->dbinfo.pg_conn));
