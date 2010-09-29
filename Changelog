@@ -18,6 +18,7 @@ ENHANCEMENTS
 	  check_command associated for hosts, services, etc and help
 	  getting to know/use commands the core will execute.
 * classic ui: change menu, add unhandled host/service problems #745
+* classic ui: reduce line-height of menu items (Martin F. Krafft) #833
 * classic ui: allow searching for host without service attached to it #601
 * classic ui: added tooltip for comments in status.cgi #805
 * classic ui: remove php dependency by dropping extended live search #800
