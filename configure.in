@@ -1066,7 +1066,11 @@ if test x$check_for_ssl = xyes; then
 			if test -f "$ssldir/sbin/openssl"; then
 				sslbin=$ssldir/sbin/openssl
 			else
-				sslbin=$ssldir/bin/openssl
+				if test -f "$ssldir/bin/openssl"; then
+                                        sslbin=$ssldir/bin/openssl
+                                else
+                                        sslbin=openssl
+                                fi
 			fi
 			# awk to strip off meta data at bottom of dhparam output
 			$sslbin dhparam -C 512 | awk '/^-----/ {exit} {print}' > include/dh.h
