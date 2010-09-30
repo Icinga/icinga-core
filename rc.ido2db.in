@@ -145,7 +145,7 @@ case "$1" in
 				rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
 			fi
 		fi
-		echo -n "Starting $servicename:"
+		printf "Starting $servicename:"
 		touch $Ido2dbRunFile
 		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
 		$Ido2dbBin -c $Ido2dbCfgFile
@@ -155,7 +155,7 @@ case "$1" in
 		;;
 
 	stop)
-		echo -n "Stopping $servicename: "
+		printf "Stopping $servicename: "
 
 		pid_ido2db 
 		killproc_ido2db ido2db
@@ -167,7 +167,7 @@ case "$1" in
  		# to (sooner or later) run - John Sellens
  		for i in 1 2 3 4 5 6 7 8 9 10 ; do
  		    if status_ido2db > /dev/null; then
- 			echo -n '.'
+ 			printf '.'
  			sleep 1
  		    else
  			break

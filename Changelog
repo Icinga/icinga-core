@@ -50,6 +50,7 @@ FIXES
 * install: add mkdir -p for HTTPDCONF directory creation instead of install -D (misses on Unix) #802
 * install: remove installing from ido2db init script from Makefile when installing idoutils #814
 * install: better ssl detection in solaris when /usr/local/ssl used for --with-ssl #821
+* install: replace echo -n by printf in init scripts (Lars Engels) #834
 
 * config: fix typo preserve_state_information in description of retention file
 
