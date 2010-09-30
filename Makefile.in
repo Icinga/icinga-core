@@ -461,7 +461,7 @@ install-api:
 		echo "" ;\
 		echo "Sorry, Icinga API not available!" ;\
 		echo "Check md5 and source in $(SRC_ICINGAAPI)" ;\
-		echo "If using GIT, try # git submodule init && git submodule update" ;\
+		echo "If using GIT, try # git submodule init ; git submodule update" ;\
 		echo "" ;\
         fi
 
