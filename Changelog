@@ -42,6 +42,7 @@ FIXES
 * classic ui: remove useless utils.inc.php since check-program-updates is dropped from core #800
 * classic ui: fix status.cgi segfault without hostgroup parameter on solaris 10 #594
 * classic ui: drop dead code on cgis (check_daemon_running)
+* classic ui: avoid the horizontal scroll bar at the bottom of the menu (Yannick Charton) #835
 
 * idoutils: fix ido2db forking if database connection failed, now immediately disconnecting the client #773
 * idoutils: fix database port in ido2db.cfg not honoured using libdbi #825

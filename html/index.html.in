@@ -9,8 +9,8 @@
 </head>
 	<frameset frameborder="0" framespacing="0" rows="55,*">
 		<frame src="top.html" name="top" scrolling="no" />
-		<frameset frameborder="0" framespacing="0" cols="210,*">
-			<frame src="menu.html" name="menu" target="main" />
+		<frameset frameborder="0" framespacing="0" cols="215,*">
+			<frame src="menu.html" name="menu" target="main" scrolling="auto"/>
 			<frameset frameborder="0" framespacing="0" rows="26,*">
 				<frame src="sidebar.html" name="navigation" />
 				<frame src="@cgiurl@/tac.cgi" name="main" />
