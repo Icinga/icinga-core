@@ -160,7 +160,7 @@
 
   <p>Use yast to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" or "postgresql",
   "postgresql-devel", "postgresql-server". In OpenSuSE 11 (SLES 11) the name of the package was changed from "mysql-devel" to
-  "libmysqlclient-devel".</p>
+  "libmysqlclient-devel". The devel packages might be placed on the SDK DVDs.</p>
 
   <p>It is most likely that there aren't any libdbi packages so you have to download and compile the sources. Replace &lt;rdbm&gt; with
   your desired RDBM like mysql or pgsql. Remember that the Oracle driver is not yet working and read the appropriate section with ocilib
@@ -238,12 +238,14 @@
     -a.</p>
   </td></tr>
 </table></div>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
 </tr>
-<tr><td align="left" valign="top"><p>Solaris only supports groupnames with max. 8 characters, please use icingcmd instead of icinga-cmd.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Solaris only supports groupnames with max. 8 characters, please use icingcmd instead of icinga-cmd.</p>
+  </td></tr>
 </table></div>
   <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
 
@@ -275,10 +277,10 @@
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils </pre>
 
-  <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
-<th align="left">Caution</th>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
     <p>Compiling on Solaris might fail upon unresolved library dependencies on gethostbyname. In that case run this before running
@@ -314,11 +316,9 @@
 </table></div>
 <pre class="programlisting"> #&gt; make distclean
  #&gt; ./configure --enable-idoutils</pre>
-<p> 
-  </p>
-<p><span class="bold"><strong>Compile / Install</strong></span></p>
-<p>
-  Compile the Icinga source code. There is also an extra option for
+<p> </p>
+  <p><span class="bold"><strong>Compile and Install</strong></span></p>
+ <p> Compile the Icinga source code. There is also an extra option for
   IDOUtils (<span class="emphasis"><em>make idoutils</em></span>) if you need to recompile only this module. To see available options, only use
   "make".</p>
 
@@ -634,7 +634,7 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id3428622"></a>
+  <a class="indexterm" name="id5135519"></a>
 </div>
 <div class="navfooter">
 <hr>

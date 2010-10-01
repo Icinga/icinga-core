@@ -138,7 +138,7 @@
 
   <pre class="screen"># vi /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <p>Remove the leading pound (#) sign from the following line in the main configuration file:</p>
+  <p>Remove the leading hash (#) sign from the following line in the main configuration file:</p>
 
   <pre class="screen"> #cfg_file=/usr/local/icinga/etc/objects/windows.cfg</pre>
 
@@ -166,16 +166,12 @@
 
   <pre class="screen"> nsclient++ /install</pre>
 
-  <p>5. Install the NSClient++ systray with the following command ('SysTray' is case-sensitive):</p>
-
-  <pre class="screen"> nsclient++ SysTray</pre>
-
-  <p>6. Open the services manager and make sure the NSClientpp service is allowed to interact with the desktop (see the 'Log
+  <p>5. Open the services manager and make sure the NSClientpp service is allowed to interact with the desktop (see the 'Log
   On' tab of the services manager). If it isn't already allowed to interact with the desktop, check the box to allow it to.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/nscpp.png"></span></p>
 
-  <p>7. Edit the NSC.INI file (located in the C:\NSClient++ directory) and make the following changes:</p>
+  <p>6. Edit the NSC.INI file (located in the C:\NSClient++ directory) and make the following changes:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -186,21 +182,18 @@
     </li>
 <li class="listitem">
       <p>Uncomment the 'allowed_hosts' option in the [Settings] section. Add the IP address of the Icinga server to this
-      line, or leave it blank to allow all hosts to connect.</p>
+      line, ip.add.ress/bits for a range or leave it blank to allow all hosts to connect.</p>
     </li>
 <li class="listitem">
       <p>Make sure the 'port' option in the [NSClient] section is uncommented and set to '12489' (the default port).</p>
     </li>
 </ul></div>
 
-  <p>8. Start the NSClient++ service with the following command:</p>
+  <p>7. Start the NSClient++ service with the following command:</p>
 
   <pre class="screen"> nsclient++ /start</pre>
 
-  <p>9. If installed properly, a new icon should appear in your system tray. It will be a yellow circle with a black 'M'
-  inside.</p>
-
-  <p>10. Success! The Windows server can now be added to the Icinga monitoring configuration...</p>
+  <p>8. Success! The Windows server can now be added to the Icinga monitoring configuration...</p>
 
   <p><span class="bold"><strong>Configuring Icinga</strong></span></p>
 
@@ -357,8 +350,8 @@
 
   <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
   you don't (re)start Icinga until the verification process completes without any errors!</p>
-  <a class="indexterm" name="id3430495"></a>
-  <a class="indexterm" name="id3430509"></a>
+  <a class="indexterm" name="id5137346"></a>
+  <a class="indexterm" name="id5137361"></a>
 </div>
 <div class="navfooter">
 <hr>

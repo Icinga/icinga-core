@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Objektdefinitionen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="configobject.html" title="Überblick Objektkonfiguration">
@@ -105,7 +105,7 @@
 
   <p><a name="objectdefinitions-host"></a><span class="bold"><strong>Host-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1906285"></a>
+  <a class="indexterm" name="id2767217"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -127,38 +127,38 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define host{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
 <td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>alias</p></td>
-<td><p> <span class="emphasis"><em>alias</em></span> </p></td>
+<td><span class="emphasis"><em>alias</em></span></td>
+<td>alias</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>display_name</p></td>
-<td><p> <span class="emphasis"><em>display_name</em></span> </p></td>
+<td>display_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>address</p></td>
-<td><p> <span class="emphasis"><em>address</em></span> </p></td>
+<td><span class="emphasis"><em>address</em></span></td>
+<td>address</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>parents</p></td>
-<td><p> <span class="emphasis"><em>host_names</em></span> </p></td>
+<td>host_names</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroups</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_names</em></span> </p></td>
+<td>hostgroup_names</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>check_command</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
+<td>command_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -167,7 +167,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>max_check_attempts</p></td>
+<td><span class="emphasis"><em>max_check_attempts</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -192,8 +192,8 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>check_period</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
+<td><span class="emphasis"><em>check_period</em></span></td>
+<td>timeperiod_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -213,7 +213,7 @@
 <tr>
 <td><p></p></td>
 <td><p>event_handler</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
+<td>command_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -257,17 +257,17 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contacts</p></td>
-<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><span class="emphasis"><em>contacts</em></span></td>
+<td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contact_groups</p></td>
-<td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
+<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td>contact_groups</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>notification_interval</p></td>
+<td><span class="emphasis"><em>notification_interval</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -277,8 +277,8 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>notification_period</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
+<td><span class="emphasis"><em>notification_period</em></span></td>
+<td>timeperiod_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -298,47 +298,47 @@
 <tr>
 <td><p></p></td>
 <td><p>notes</p></td>
-<td><p> <span class="emphasis"><em>note_string</em></span> </p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>action_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image_alt</p></td>
-<td><p> <span class="emphasis"><em>alt_string</em></span> </p></td>
+<td>alt_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>vrml_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>statusmap_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>2d_coords</p></td>
-<td><p> <span class="emphasis"><em>x_coord,y_coord</em></span> </p></td>
+<td>x_coord,y_coord</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>3d_coords</p></td>
-<td><p> <span class="emphasis"><em>x_coord,y_coord,z_coord</em></span> </p></td>
+<td>x_coord,y_coord,z_coord</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -684,11 +684,11 @@
 
   <p><a name="objectdefinitions-hostgroup"></a><span class="bold"><strong>Hostgruppen-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1907260"></a>
+  <a class="indexterm" name="id2768092"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
-  <p>Eine Hostgruppen-Definition wird benutzt, um einen oder mehrere Hosts zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="Informationen über die CGIs">CGIs</a>.</p>
+  <p>Eine Hostgruppen-Definition wird benutzt, um einen oder mehrere Hosts zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">CGIs</a>.</p>
 
   <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -705,38 +705,38 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostgroup{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><p>hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td><span class="emphasis"><em>hostgroup_name</em></span></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>alias</p></td>
-<td><p> <span class="emphasis"><em>alias</em></span> </p></td>
+<td><span class="emphasis"><em>alias</em></span></td>
+<td>alias</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>members</p></td>
-<td><p> <span class="emphasis"><em>hosts</em></span> </p></td>
+<td>hosts</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroup_members</p></td>
-<td><p> <span class="emphasis"><em>hostgroups</em></span> </p></td>
+<td>hostgroups</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes</p></td>
-<td><p> <span class="emphasis"><em>note_string</em></span> </p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>action_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -813,7 +813,7 @@
 
   <p><a name="objectdefinitions-service"></a><span class="bold"><strong>Service-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1909314"></a>
+  <a class="indexterm" name="id2770113"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -837,23 +837,23 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define service{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
+<td>host_name</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_description</p></td>
-<td><p> <span class="emphasis"><em>service_description</em></span> </p></td>
+<td><span class="emphasis"><em>service_description</em></span></td>
+<td>service_description</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>display_name</p></td>
-<td><p> <span class="emphasis"><em>display_name</em></span> </p></td>
+<td>display_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -867,8 +867,8 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>check_command</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
+<td><span class="emphasis"><em>check_command</em></span></td>
+<td>command_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -877,17 +877,17 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>max_check_attempts</p></td>
+<td><span class="emphasis"><em>max_check_attempts</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>check_interval</p></td>
+<td><span class="emphasis"><em>check_interval</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>retry_interval</p></td>
+<td><span class="emphasis"><em>retry_interval</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -902,8 +902,8 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>check_period</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
+<td><span class="emphasis"><em>check_period</em></span></td>
+<td>timeperiod_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -923,7 +923,7 @@
 <tr>
 <td><p></p></td>
 <td><p>event_handler</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
+<td>command_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -967,7 +967,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>notification_interval</p></td>
+<td><span class="emphasis"><em>notification_interval</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -977,8 +977,8 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>notification_period</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
+<td><span class="emphasis"><em>notification_period</em></span></td>
+<td>timeperiod_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -992,13 +992,13 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contacts</p></td>
-<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><span class="emphasis"><em>contacts</em></span></td>
+<td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contact_groups</p></td>
-<td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
+<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td>contact_groups</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1008,27 +1008,27 @@
 <tr>
 <td><p></p></td>
 <td><p>notes</p></td>
-<td><p> <span class="emphasis"><em>note_string</em></span> </p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>action_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image_alt</p></td>
-<td><p> <span class="emphasis"><em>alt_string</em></span> </p></td>
+<td>alt_string</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -1342,11 +1342,11 @@
 
   <p><a name="objectdefinitions-servicegroup"></a><span class="bold"><strong>Servicegruppen-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1911632"></a>
+  <a class="indexterm" name="id2772358"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
-  <p>Eine Servicegruppen-Definition wird benutzt, um einen oder mehrere Services zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="Informationen über die CGIs">CGIs</a>.</p>
+  <p>Eine Servicegruppen-Definition wird benutzt, um einen oder mehrere Services zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">CGIs</a>.</p>
 
   <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -1363,38 +1363,38 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define servicegroup{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>servicegroup_name</em></span></td>
 <td><p>servicegroup_name</p></td>
-<td><p> <span class="emphasis"><em>servicegroup_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>alias</p></td>
-<td><p> <span class="emphasis"><em>alias</em></span> </p></td>
+<td><span class="emphasis"><em>alias</em></span></td>
+<td>alias</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>members</p></td>
-<td><p> <span class="emphasis"><em>services</em></span> </p></td>
+<td>services</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>servicegroup_members</p></td>
-<td><p> <span class="emphasis"><em>servicegroups</em></span> </p></td>
+<td>servicegroups</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes</p></td>
-<td><p> <span class="emphasis"><em>note_string</em></span> </p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>action_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -1433,13 +1433,15 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>members</strong></span>:</p></td>
 <td>
-<p> Dies ist eine Liste von <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-service">Services</a>
+<p>Dies ist eine Liste von <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-service">Services</a>
           (und der Namen der entsprechenden Hosts), die in dieser Gruppe enthalten sein sollen. Host- und Service-Namen sollten jeweils
           durch Komma von einander getrennt werden. Diese Direktive kann als Alternative (oder als Zusatz) zu der
           <span class="emphasis"><em>servicegroups</em></span>-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definitionen</a>
           verwendet werden. Das Format der member-Direktive ist wie folgt (beachten Sie, dass ein Host-Name einem Service-Namen/einer
           Service-Beschreibung vorangestellt werden muss):</p> <p>
           members=&lt;host1&gt;,&lt;service1&gt;,&lt;host2&gt;,&lt;service2&gt;,...,&lt;host<span class="emphasis"><em>n</em></span>&gt;,&lt;service<span class="emphasis"><em>n</em></span>&gt;</p>
+          <p>Seit Icinga 1.2 ist es möglich, "*" als Wildcard für alle Hosts zu benutzen. Bitte beachten Sie, dass es NICHT
+          möglich ist, Hosts oder Service über ein vorangestelltes "!" auszuschließen.</p>
 </td>
 </tr>
 <tr>
@@ -1477,7 +1479,7 @@
 
   <p><a name="objectdefinitions-contact"></a><span class="bold"><strong>Kontakt-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1912180"></a>
+  <a class="indexterm" name="id2772879"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -1499,73 +1501,73 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define contact{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>contact_name</em></span></td>
 <td><p>contact_name</p></td>
-<td><p> <span class="emphasis"><em>contact_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>alias</p></td>
-<td><p> <span class="emphasis"><em>alias</em></span> </p></td>
+<td>alias</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>contactgroups</p></td>
-<td><p> <span class="emphasis"><em>contactgroup_names</em></span> </p></td>
+<td>contactgroup_names</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>host_notifications_enabled</p></td>
+<td><span class="emphasis"><em>host_notifications_enabled</em></span></td>
 <td><p>[0/1]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_notifications_enabled</p></td>
+<td><span class="emphasis"><em>service_notifications_enabled</em></span></td>
 <td><p>[0/1]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>host_notification_period</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
+<td><span class="emphasis"><em>host_notification_period</em></span></td>
+<td>timeperiod_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_notification_period</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
+<td><span class="emphasis"><em>service_notification_period</em></span></td>
+<td>timeperiod_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>host_notification_options</p></td>
+<td><span class="emphasis"><em>host_notification_options</em></span></td>
 <td><p>[d,u,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_notification_options</p></td>
+<td><span class="emphasis"><em>service_notification_options</em></span></td>
 <td><p>[w,u,c,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>host_notification_commands</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
+<td><span class="emphasis"><em>host_notification_commands</em></span></td>
+<td>command_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_notification_commands</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
+<td><span class="emphasis"><em>service_notification_commands</em></span></td>
+<td>command_name</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>email</p></td>
-<td><p> <span class="emphasis"><em>email_address</em></span> </p></td>
+<td>email_address</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>pager</p></td>
-<td><p> <span class="emphasis"><em>pager_number or pager_email_gateway</em></span> </p></td>
+<td>pager_number or pager_email_gateway</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>address<span class="emphasis"><em>x</em></span></p></td>
-<td><p> <span class="emphasis"><em>additional_contact_address</em></span> </p></td>
+<td>additional_contact_address</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -1739,7 +1741,7 @@
 
   <p><a name="objectdefinitions-contactgroup"></a><span class="bold"><strong>Kontaktgruppen-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1913371"></a>
+  <a class="indexterm" name="id2774024"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -1761,23 +1763,23 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define contactgroup{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>contactgroup_name</em></span></td>
 <td><p>contactgroup_name</p></td>
-<td><p> <span class="emphasis"><em>contactgroup_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>alias</p></td>
-<td><p> <span class="emphasis"><em>alias</em></span> </p></td>
+<td><span class="emphasis"><em>alias</em></span></td>
+<td>alias</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>members</p></td>
-<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>contactgroup_members</p></td>
-<td><p> <span class="emphasis"><em>contactgroups</em></span> </p></td>
+<td><p>contactgroups</p></td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -1831,7 +1833,7 @@
 
   <p><a name="objectdefinitions-timeperiod"></a><span class="bold"><strong>Zeitfenster-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1913749"></a>
+  <a class="indexterm" name="id2774385"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -1855,28 +1857,28 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define timeperiod{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>timeperiod_name</em></span></td>
 <td><p>timeperiod_name</p></td>
-<td><p> <span class="emphasis"><em>timeperiod_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>alias</p></td>
-<td><p> <span class="emphasis"><em>alias</em></span> </p></td>
+<td><span class="emphasis"><em>alias</em></span></td>
+<td>alias</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>[weekday]</p></td>
-<td><p> <span class="emphasis"><em>timeranges</em></span> </p></td>
+<td>timeranges</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>[exception]</p></td>
-<td><p> <span class="emphasis"><em>timeranges</em></span> </p></td>
+<td>timeranges</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>exclude</p></td>
-<td><p> [<span class="emphasis"><em>timeperiod1,timeperiod2,...,timeperiodn</em></span>]</p></td>
+<td>[timeperiod1,timeperiod2,...,timeperiodn]</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -1977,7 +1979,7 @@
 
   <p><a name="objectdefinitions-command"></a><span class="bold"><strong>Befehls-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1914192"></a>
+  <a class="indexterm" name="id2774805"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -2002,13 +2004,13 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define command{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>command_name</em></span></td>
 <td><p>command_name</p></td>
-<td><p> <span class="emphasis"><em>command_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>command_line</em></span></td>
 <td><p>command_line</p></td>
-<td><p> <span class="emphasis"><em>command_line</em></span> </p></td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -2070,7 +2072,7 @@
 
   <p><a name="objectdefinitions-servicedependency"></a><span class="bold"><strong>Service-Abhängigkeits-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1914569"></a>
+  <a class="indexterm" name="id2775177"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -2095,33 +2097,33 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define servicedependency{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><p>dependent_host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
+<td><span class="emphasis"><em>dependent_host_name</em></span></td>
+<td><p>host_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>dependent_hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>dependent_service_description</p></td>
-<td><p> <span class="emphasis"><em>service_description</em></span> </p></td>
+<td><span class="emphasis"><em>dependent_service_description</em></span></td>
+<td>service_description</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
+<td>host_name</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_description</p></td>
-<td><p> <span class="emphasis"><em>service_description</em></span> </p></td>
+<td><span class="emphasis"><em>service_description</em></span></td>
+<td>service_description</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -2267,47 +2269,47 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define serviceescalation{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
+<td>host_name</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>servicegroup_name</p></td>
-<td><p> <span class="emphasis"><em>servicegroup_name</em></span> </p></td>
+<td>servicegroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_description</p></td>
-<td><p> <span class="emphasis"><em>service_description</em></span> </p></td>
+<td><span class="emphasis"><em>service_description</em></span></td>
+<td>service_description</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contacts</p></td>
-<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><span class="emphasis"><em>contacts</em></span></td>
+<td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contact_groups</p></td>
-<td><p> <span class="emphasis"><em>contactgroup_name</em></span> </p></td>
+<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td>contactgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>first_notification</p></td>
+<td><span class="emphasis"><em>first_notification</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>last_notification</p></td>
+<td><span class="emphasis"><em>last_notification</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>notification_interval</p></td>
+<td><span class="emphasis"><em>notification_interval</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -2395,8 +2397,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>servicegroup_name</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um den/die <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegruppen</a> anzugeben, für den die <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-Eskalation gilt oder mit der/denen er verbunden ist. Mehrere Servicegruppen werden
-          durch Kommata von einander getrennt. Der servicegroup_name kann statt oder zusätzlich zur service_name-Direktive benutzt
+<td><p>Diese Direktive wird benutzt, um den/die <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegruppen</a> anzugeben, für den die <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-Eskalation gilt oder mit der/denen er verbunden ist. Mehrere Servicegruppen
+          werden durch Kommata von einander getrennt. Der servicegroup_name kann statt oder zusätzlich zur service_name-Direktive benutzt
           werden.</p></td>
 </tr>
 <tr>
@@ -2510,7 +2512,7 @@
 
   <p><a name="objectdefinitions-hostdependency"></a><span class="bold"><strong>Host-Abhängigkeits-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1916430"></a>
+  <a class="indexterm" name="id2777070"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -2534,23 +2536,23 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostdependency{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><p>dependent_host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
+<td><span class="emphasis"><em>dependent_host_name</em></span></td>
+<td><p>host_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>dependent_hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
+<td>host_name</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -2659,7 +2661,7 @@
 
   <p><a name="objectdefinitions-hostescalation"></a><span class="bold"><strong>Host-Eskalations-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1917210"></a>
+  <a class="indexterm" name="id2777743"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -2681,37 +2683,37 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostescalation{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
 <td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>hostgroup_name</p></td>
-<td><p> <span class="emphasis"><em>hostgroup_name</em></span> </p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contacts</p></td>
-<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><span class="emphasis"><em>contacts</em></span></td>
+<td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>contact_groups</p></td>
-<td><p> <span class="emphasis"><em>contactgroup_name</em></span> </p></td>
+<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td>contactgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>first_notification</p></td>
+<td><span class="emphasis"><em>first_notification</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>last_notification</p></td>
+<td><span class="emphasis"><em>last_notification</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>notification_interval</p></td>
+<td><span class="emphasis"><em>notification_interval</em></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -2876,7 +2878,7 @@
 
   <p><a name="objectdefinitions-hostextinfo"></a><span class="bold"><strong>erweiterte Hostinformations-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1918103"></a>
+  <a class="indexterm" name="id2778616"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -2903,53 +2905,53 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostextinfo{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
 <td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes</p></td>
-<td><p> <span class="emphasis"><em>note_string</em></span> </p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>action_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image_alt</p></td>
-<td><p> <span class="emphasis"><em>alt_string</em></span> </p></td>
+<td>alt_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>vrml_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>statusmap_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>2d_coords</p></td>
-<td><p> <span class="emphasis"><em>x_coord,y_coord</em></span> </p></td>
+<td>x_coord,y_coord</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>3d_coords</p></td>
-<td><p> <span class="emphasis"><em>x_coord,y_coord,z_coord</em></span> </p></td>
+<td>x_coord,y_coord,z_coord</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -2967,7 +2969,6 @@
         notes_url       http://webserver.localhost.localdomain/hostinfo.pl?host=netware1
         icon_image      novell40.png 
         icon_image_alt  IntranetWare 4.11
-        vrml_image      novell40.png
         statusmap_image novell40.gd2
         2d_coords       100,250
         3d_coords       100.0,50.0,75.0
@@ -3070,7 +3071,7 @@
   <p><a name="objectdefinitions-serviceextinfo"></a><span class="bold"><strong>erweiterte
   Serviceinformations-Definition</strong></span></p>
 
-  <a class="indexterm" name="id1918902"></a>
+  <a class="indexterm" name="id2779368"></a>
 
   <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -3097,38 +3098,38 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define serviceextinfo{</p></td></tr>
 <tr>
 <td><p></p></td>
+<td><span class="emphasis"><em>host_name</em></span></td>
 <td><p>host_name</p></td>
-<td><p> <span class="emphasis"><em>host_name</em></span> </p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>service_description</p></td>
-<td><p> <span class="emphasis"><em>service_description</em></span> </p></td>
+<td><span class="emphasis"><em>service_description</em></span></td>
+<td>service_description</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes</p></td>
-<td><p> <span class="emphasis"><em>note_string</em></span> </p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>notes_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>action_url</p></td>
-<td><p> <span class="emphasis"><em>url</em></span> </p></td>
+<td>url</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image</p></td>
-<td><p> <span class="emphasis"><em>image_file</em></span> </p></td>
+<td>image_file</td>
 </tr>
 <tr>
 <td><p></p></td>
 <td><p>icon_image_alt</p></td>
-<td><p> <span class="emphasis"><em>alt_string</em></span> </p></td>
+<td>alt_string</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -3226,65 +3227,65 @@
 </table>
   </div>
 
-  <a class="indexterm" name="id1919529"></a>
+  <a class="indexterm" name="id2779952"></a>
 
-  <a class="indexterm" name="id1919539"></a>
+  <a class="indexterm" name="id2779970"></a>
 
-  <a class="indexterm" name="id1919554"></a>
+  <a class="indexterm" name="id2779951"></a>
 
-  <a class="indexterm" name="id1919563"></a>
+  <a class="indexterm" name="id2779992"></a>
 
-  <a class="indexterm" name="id1919573"></a>
+  <a class="indexterm" name="id2780003"></a>
 
-  <a class="indexterm" name="id1919583"></a>
+  <a class="indexterm" name="id2780013"></a>
 
-  <a class="indexterm" name="id1919593"></a>
+  <a class="indexterm" name="id2780022"></a>
 
-  <a class="indexterm" name="id1919601"></a>
+  <a class="indexterm" name="id2780031"></a>
 
-  <a class="indexterm" name="id1919612"></a>
+  <a class="indexterm" name="id2780041"></a>
 
-  <a class="indexterm" name="id1919621"></a>
+  <a class="indexterm" name="id2780050"></a>
 
-  <a class="indexterm" name="id1919630"></a>
+  <a class="indexterm" name="id2780060"></a>
 
-  <a class="indexterm" name="id1919638"></a>
+  <a class="indexterm" name="id2780068"></a>
 
-  <a class="indexterm" name="id1919648"></a>
+  <a class="indexterm" name="id2780078"></a>
 
-  <a class="indexterm" name="id1919657"></a>
+  <a class="indexterm" name="id2780085"></a>
 
-  <a class="indexterm" name="id1919665"></a>
+  <a class="indexterm" name="id2780086"></a>
 
-  <a class="indexterm" name="id1919674"></a>
+  <a class="indexterm" name="id2780105"></a>
 
-  <a class="indexterm" name="id1919683"></a>
+  <a class="indexterm" name="id2780111"></a>
 
-  <a class="indexterm" name="id1919698"></a>
+  <a class="indexterm" name="id2780128"></a>
 
-  <a class="indexterm" name="id1919711"></a>
+  <a class="indexterm" name="id2780142"></a>
 
-  <a class="indexterm" name="id1919724"></a>
+  <a class="indexterm" name="id2780157"></a>
 
-  <a class="indexterm" name="id1919739"></a>
+  <a class="indexterm" name="id2780143"></a>
 
-  <a class="indexterm" name="id1919751"></a>
+  <a class="indexterm" name="id2780185"></a>
 
-  <a class="indexterm" name="id1919764"></a>
+  <a class="indexterm" name="id2780170"></a>
 
-  <a class="indexterm" name="id1919779"></a>
+  <a class="indexterm" name="id2780210"></a>
 
-  <a class="indexterm" name="id1919793"></a>
+  <a class="indexterm" name="id2780224"></a>
 
-  <a class="indexterm" name="id1919806"></a>
+  <a class="indexterm" name="id2780226"></a>
 
-  <a class="indexterm" name="id1919820"></a>
+  <a class="indexterm" name="id2780252"></a>
 
-  <a class="indexterm" name="id1919833"></a>
+  <a class="indexterm" name="id2780238"></a>
 
-  <a class="indexterm" name="id1919847"></a>
+  <a class="indexterm" name="id2780281"></a>
 
-  <a class="indexterm" name="id1919861"></a>
+  <a class="indexterm" name="id2780267"></a>
 </div>
 <div class="navfooter">
 <hr>

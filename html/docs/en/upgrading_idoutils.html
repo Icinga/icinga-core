@@ -106,11 +106,11 @@
 
     <p>There was a significant long lasting bug in IDOUtils which is now resolved in Icinga 1.0.2: Everytime the core was restarted, the
     overall amount of objects was freshly inserted instead of using the old ones for actual config, status and historical relations. E.g. having 4k
-    objects (hosts, services, contacts, etc), that meant restarting the core 2 times resulted in 4k + 4k + 4k = 12k objects. </p>
+    objects (hosts, services, contacts, etc), that meant restarting the core twice resulted in 4k + 4k + 4k = 12k objects. </p>
 
     <p>For config and live status data, this is by means not really important as their relations normally get cleaned when the core gets restarted.
-    But for historical data, e.g. hostchecks before the restart were in another relation than newer hostchecks after the restart. That has lead into
-    data inconsistency which has been worked on to resolve that in an easy way - next to the IDOUtils bugfix itsself. </p>
+    But for historical data, e.g. hostchecks before the restart were in another relation than newer hostchecks after the restart. That has led into
+    data inconsistency which has been worked on to resolve that in an easy way - next to the IDOUtils bugfix itself. </p>
 
     <p>Therefore, next to the normal SQL upgrade scripts for 1.0.2 (e.g. mysql-upgrade-1.0.2.sql) an extended SQL script has been created. </p>
 
@@ -120,7 +120,7 @@
     <p>Overall this has been tested and is now available for everyone to upgrade and fix those issues. </p>
 
     <p>Please apply the script as you like to - directly or step by step as commented in the script. Those scripts are provided as is without any
-    warranty so please use on your own risk - if you only depend on live data, dropping and recreating the database will take less effort. </p>
+    warranty so please use at your own risk - if you only depend on live data, dropping and recreating the database will take less effort. </p>
 
         <p>* &lt;rdbms&gt;-upgrade-1.0.2-fix-object-relations.sql</p>
 <p> The "normal" upgrade script only is available for MySQL - the binary casts for case sensitive
@@ -173,7 +173,7 @@
     maximum. For that reason there is a basic procedure available which does the following: By given a sequence name and a table name, it extracts the
     maximum id value +1 from imported data and alters the sequence to start with this value instead.</p>
 
-    <p>Please be advised to use that procedure yourself for all tables or on seperated tables - it highly depends on your needs. The procedure is
+    <p>Please be advised to use that procedure yourself for all tables or on separated tables - it highly depends on your needs. The procedure is
     commented out, and provided as is without any warranty regarding data loss. Ask your DBA in case of upgrading with existing data.</p>
 
     <a name="upgrading_idoutils_1.0"></a>
@@ -250,7 +250,7 @@
     <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the script
     will fail.</p>
 
-    <a class="indexterm" name="id3429789"></a>
+    <a class="indexterm" name="id5136653"></a>
 </div>
 <div class="navfooter">
 <hr>

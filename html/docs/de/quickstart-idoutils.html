@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Icinga-Schnellstart mit IDOUtils</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">
@@ -174,7 +174,7 @@
 
   <p>Benutzen Sie yast zur Installation der Pakete für das RDBMS, das Sie verwenden möchten, also "mysql", "mysql-devel" und
   "mysql-client" bzw. "postgresql", "postgresql-devel" und "postgresql-server". Bei OpenSuSE 11 (SLES 11) lautet der Name des Packages statt
-  "mysql-devel" nun "libmysqlclient-devel".</p>
+  "mysql-devel" nun "libmysqlclient-devel". Die devel-Pakete sind ggf. auf den SDK-DVDs zu finden.</p>
 
   <p>Es ist ziemlich wahrscheinlich, dass es keine libdbi-Packages gibt, so dass Sie die Sourcen herunterladen und kompilieren müssen.
   Ersetzen Sie dabei &lt;rdbm&gt; durch Ihr RDBM wie mysql oder pgsql. Bitte beachten Sie, dass der Oracle-Treiber noch nicht funktioniert.
@@ -252,12 +252,14 @@
     <p>Bei einigen usermod-Versionen (z.B. OpenSuSE 11 bzw. SLES 11) fehlt die Option -a. In diesen Fällen kann sie entfallen.</p>
   </td></tr>
 </table></div>
-<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
 </tr>
-<tr><td align="left" valign="top"><p>Solaris unterstützt nur Gruppennamen bis max. 8 Zeichen, verwenden Sie icingcmd anstelle von icinga-cmd.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Solaris unterstützt nur Gruppennamen bis max. 8 Zeichen, verwenden Sie icingcmd anstelle von icinga-cmd.</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
@@ -292,10 +294,10 @@
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
 
-  <div class="caution" title="Achtung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Achtung]" src="../images/caution.png"></td>
-<th align="left">Achtung</th>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
     <p>Das Kompilieren auf Solaris kann wegen unerfüllten Bibliotheksabhängigkeiten von gethostbyname fehlschlagen. Wenn dies der Fall
@@ -334,11 +336,8 @@
 <p> </p>
 <pre class="programlisting"> #&gt; make distclean
  #&gt; ./configure --enable-idoutils</pre>
-<p> 
-  </p>
-<p><span class="bold"><strong>Kompilieren / Installieren</strong></span></p>
-<p>
-  Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für
+<p><span class="bold"><strong>Kompilieren und Installieren</strong></span></p>
+<p>Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für
   IDOUtils (<span class="emphasis"><em>make idoutils</em></span>), wenn Sie nur dieses Module erneut kompilieren möchten. Um mögliche Optionen zu
   sehen, rufen Sie lediglich "make" auf.</p>
 <pre class="programlisting"> #&gt; make all</pre>
@@ -719,7 +718,7 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1882929"></a>
+  <a class="indexterm" name="id2743849"></a>
 </div>
 <div class="navfooter">
 <hr>

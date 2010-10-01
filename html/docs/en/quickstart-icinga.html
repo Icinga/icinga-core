@@ -43,8 +43,8 @@
 
   <p>Other distributions may inherit from these examples.</p>
 
-  <p><span class="bold"><strong>If you are planning to use a database with IDOUtils, or wish to use the new web interface
-   then please read <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Icinga with IDOUtils</a> instead!</strong></span></p>
+  <p><span class="bold"><strong>If you are planning to use a database with IDOUtils, or wish to use the new web interface then please
+  read <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Icinga with IDOUtils</a> instead!</strong></span></p>
 
   <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
 
@@ -115,9 +115,21 @@
   </td></tr>
 </table></div>
 
-  <p><span class="emphasis"><em>openSuSE</em></span></p>
+  <p><span class="emphasis"><em>openSuSE/SLES</em></span></p>
 
-  <p>Please use yast to install the packages</p>
+  <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
+  net-snmp, net-snmp-devel and perl-net-snmp.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Depending on the software selection during the installation of the OS you may need to install additional packages (i.e. apache2,
+    gcc). The devel packages might be placed on the SDK DVDs.</p>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Create Account Information</strong></span></p>
 
@@ -139,7 +151,7 @@
 
   <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
- #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data (or www, wwwrun, apache depending on the distribution)</pre>
+ #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data (or www, wwwrun, apache, depending on the distribution)</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -151,13 +163,17 @@
     -a.</p>
   </td></tr>
 </table></div>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Solaris only supports groupnames with max. 8 characters, please use icingcmd instead of icinga-cmd.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Solaris only supports groupnames with max. 8 characters, please use icingcmd instead of icinga-cmd.</p>
+  </td></tr>
 </table></div>
+
   <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
 
   <p>Change to your local source directory i.e. /usr/src</p>
@@ -286,6 +302,11 @@
 
   <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
+  <p>Instead of specifying the paths to binary and config file you can issue </p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
+<p>which
+  results in an OK message if everything is fine or several lines which show the location of the error(s).</p>
+
   <p>If there are no errors, start Icinga.</p>
 
   <p><span class="emphasis"><em>Fedora/RHEL/CentOS/Ubuntu</em></span></p>
@@ -295,6 +316,31 @@
   <p><span class="emphasis"><em>Debian/openSuSE</em></span></p>
 
   <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+
+  <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
+
+  <p>Fedora is shipped with activated SELinux (Security Enhanced Linux) running in "enforcing" mode. This may lead
+  to "Internal Server Error" messages when you try to invoke the Icinga-CGIs.</p>
+
+  <p>Check if SELinux runs in enforcing mode</p>
+
+  <pre class="screen"> #&gt; getenforce</pre>
+
+  <p>Set SELinux in "permissive" mode</p>
+
+  <pre class="screen"> #&gt; setenforce 0</pre>
+
+  <p>To make this change permanent you have to adjust this setting in <span class="emphasis"><em>/etc/selinux/config</em></span> and restart the
+  system.</p>
+
+  <p>Instead of deactivating SELinux or setting it into permissive mode you can use the following commands to run the CGIs in
+  enforcing/targeted mode:</p>
+
+  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
+ #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
+
+  <p>Visit the NagiosCommunity.org-Wiki at <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a> to
+  get information how to run the Icinga-CGIs in enforcing mode with a targeted policy.</p>
 
   <p><span class="bold"><strong>Login to the Classic Web Interface</strong></span></p>
 
@@ -329,7 +375,7 @@
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
   Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id3426732"></a>
+  <a class="indexterm" name="id5133591"></a>
 </div>
 <div class="navfooter">
 <hr>

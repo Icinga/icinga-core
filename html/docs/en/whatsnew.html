@@ -27,123 +27,148 @@
 <div class="section" title="What's New in Icinga Core 1.0.3 and Icinga Web 1.0.3">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>What's New in Icinga Core 1.0.3 and Icinga Web 1.0.3</h2></div></div></div>
-    
+  
 
-    <p><span class="bold"><strong>Icinga Core:</strong></span></p>
+  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-    <p>* Config options: </p>
+  <p>* Config options: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                <p>set initial state of persistence for acknowledgements</p>
-            </li>
+        <p>set initial state of persistence for acknowledgements</p>
+      </li>
 <li class="listitem">
-                <p>log_external_commands_user, user will be logged by core if sent through cmd pipe</p>
-            </li>
+        <p>log_external_commands_user, user will be logged by core if sent through cmd pipe</p>
+      </li>
 <li class="listitem">
-                <p>disable logging of current state after rotation</p>
-            </li>
+        <p>disable logging of current state after rotation</p>
+      </li>
 <li class="listitem">
-                <p>log long plugin output</p>
-            </li>
+        <p>log long plugin output</p>
+      </li>
 <li class="listitem">
-                <p>enable event handlers for stalked hosts/services</p>
-            </li>
+        <p>enable event handlers for stalked hosts/services</p>
+      </li>
 </ul></div>
 
-    <p>* Scheduled downtime can now start on SOFT error states</p>
+  <p>* Scheduled downtime can now start on SOFT error states</p>
 
-    <p>* Rewrite execv check execution into execvp, allowing plugins in PATH and accepting 4k cmd args, with adapted error handling</p>
+  <p>* Rewrite execv check execution into execvp, allowing plugins in PATH and accepting 4k cmd args, with adapted error handling</p>
 
-    <p>* Fix all comments disappear after restart if one comment is non-persistent</p>
+  <p>* Fix all comments disappear after restart if one comment is non-persistent</p>
 
-    <p>* Fix wrong is_volatile conditions causing wrong service alerts in the logs</p>
+  <p>* Fix wrong is_volatile conditions causing wrong service alerts in the logs</p>
 
-    <p>* Fixes for mini_epn's; temp_path overwritten by check_result_path; service event handlers when service problem becomes hard during host
-    down</p>
+  <p>* Fixes for mini_epn's; temp_path overwritten by check_result_path; service event handlers when service problem becomes hard during
+  host down</p>
 
-    <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
+  <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
 
-    <p>* Add syslog output for start/stop, client connecting</p>
+  <p>* Add syslog output for start/stop, client connecting</p>
 
-    <p>* Add database trimming thread startup delay option</p>
+  <p>* Add database trimming thread startup delay option</p>
 
-    <p>* Full rewrite of binding NULL values for oracle with ocilib; fix select name1/name2</p>
+  <p>* Full rewrite of binding NULL values for oracle with ocilib; fix select name1/name2</p>
 
-    <p>* Modifiy and extend columns length for mysql/pgsql/oracle</p>
+  <p>* Modifiy and extend columns length for mysql/pgsql/oracle</p>
 
-    <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
+  <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
 
-    <p>* Multiple commands sending to cmd.cgi</p>
+  <p>* Tooltips for comments in status.cgi</p>
 
-    <p>* Multiple host/service checkbox selection in status pages and sending commands from dropdown</p>
+  <p> – you don’t have to open the host/service anymore to see the comments, just move your mouse over.</p>
 
-    <p>* Pause and continue page reload, useful for multiple commands sending</p>
+  <p>* Multiple delete of comments and downtimes</p>
 
-    <p>* Add config options to: show long_output in status.cgi; show only HARD states in tac.cgi</p>
+  <p> – now you can tick the items you want to delete and click the delete button</p>
 
-    <p>* Fix multiurl wrong names and macro processing</p>
+  <p> – just like multiple commands support in status.cgi.</p>
 
-    <p>To have a deeper look, please visit the Changelog</p>
+  <p>* CVS export on pretty much every page</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-            <p>See: <a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">“Changelog of the Icinga Core”</a></p>
-        </li></ul></div>
+  <p> – you can now export various lists and status data directly. There is a small “Export to CSV” link bringing up a page with the
+  current content in csv format. Adding two new config options where you can decide which characters are used for output format completes
+  this nifty enhancement</p>
 
-    <p><span class="bold"><strong>Icinga Web:</strong></span></p>
+  <p>* Commands expander for config display. This will help at $ARGn$ substitution and showing the exact command line the core will
+  attempt to execute. Long awaited feature, big thanks to Jochen Bern!</p>
 
-    <p>* Adding new TacticalOverview template implementation</p>
+  <p>* Combined fixes including a slightly modified menu, adding unhandled host/service problems, javascript library updates, fixed
+  segfaults on Solaris in status.cgi without query_string and also complete drop of php as dependency for the classic ui</p>
 
-    <p>* Several IE compatibility fixes</p>
+  <p>To have a deeper look, please visit the Changelog</p>
 
-    <p>* Better commands, sending commands to its instances </p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>See: <a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">“Changelog of the Icinga Core”</a></p>
+    </li></ul></div>
 
-    <p>* Check for valid session and warn if expired</p>
+  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
 
-    <p>* Adding default welcome cronk setting</p>
+  <p>* Pending states: shows a special status for checks that have not yet been executed</p>
 
-    <p>* Reorganized icon structure</p>
+  <p>* Better logging, stricter errors: More about what icinga-web is doing, catch strict errors</p>
 
-    <p>* Rewritten config namespace</p>
+  <p>* Site configuration: Place your custom configuration into site xml files which are not overwritten</p>
 
-    <p>Insidertips and more Documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
+  <p>* Comments for hosts and services seamlessly integrated</p>
 
-    <p>To have a deeper look, please visit the changelog-web</p>
+  <p>* PNP4Nagios: integrated on the fly if you want</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-            <p>See: <a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">“Changelog of the Icinga Web”</a></p>
-        </li></ul></div>
+  <p>* Search for objects performs excellently!</p>
 
-    <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
+  <p>* Device icons from the icinga configuration</p>
 
-    <p>* Updates and fixes for quickstart guides</p>
+  <p>Insidertips and more documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
 
-    <p>* Updates and fixes for upgrading Icinga and IDOUtils, visit the docs for more Information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
+  <p>To have a deeper look, please visit the changelog-web</p>
 
-    <p>* Updates and fixes for Api-section</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>See: <a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">“Changelog of the Icinga Web”</a></p>
+    </li></ul></div>
 
-    <p>* Updates and fixes for Web-Install-Section</p>
+  <p><span class="bold"><strong>Icinga Reporting:</strong></span></p>
 
-    <p>* Updates for objectdefinitions and Classic UI configuration options.</p>
+  <p>* Finished Icinga Reporting package in the git, download from <a class="link" href="git://git.icinga.org/icinga-reports.git/" target="_top">:git://git.icinga.org/icinga-reports.git/</a></p>
 
-    <p>* Updates for extended docs for the IDOUtils, Chapter 11.</p>
+  <p>* Installation guide in the wiki, please visit: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#25-Icinga-Reporting" target="_top">Icinga-Wiki</a></p>
 
-    <p>* New testing guides for Icinga: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Icinga-Development</a></p>
+  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
 
-    <p>Insidertips and more Documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-web/wiki/" target="_top">Icinga-Wiki</a></p>
+  <p>* New Document for integrating PNP4Nagios to Icinga-Web</p>
 
-    <p>Should you find any issues, please report them to the following links:</p>
+  <p>* New Document for the Icinga-Web API</p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a></p>
+  <p>* New Documents for the external Commands</p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a></p>
+  <p>* New Images</p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga API</a></p>
+  <p>* Updates and fixes for upgrading Icinga and IDOUtils, visit the docs for more Information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
+  <p>* Updates and fixes for API-section</p>
 
-    <a class="indexterm" name="id3423508"></a>
+  <p>* Updates and fixes for Web-Install-Section</p>
 
-    <div class="section" title="Changelog of the Icinga Core">
+  <p>* Updates for objectdefinitions and Classic UI configuration options.</p>
+
+  <p>* Updates for extended docs for the IDOUtils, Chapter 11.</p>
+
+  <p>* New testing guides for Icinga: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#2-Development" target="_top">Icinga-Development</a></p>
+
+  <p>Insidertips and more documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
+
+  <p>Should you find any issues, please report them to one of the following links:</p>
+
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a></p>
+
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a></p>
+
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga API</a></p>
+<p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga Reporting</a></p>
+
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
+
+  <a class="indexterm" name="id5130268"></a>
+
+  <div class="section" title="Changelog of the Icinga Core">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-core"></a>Changelog of the Icinga Core</h3></div></div></div>
     
@@ -865,10 +890,10 @@
 
     <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
 
-    <a class="indexterm" name="id3425269"></a>
+    <a class="indexterm" name="id5132036"></a>
 </div>
 
-    <div class="section" title="Changelog of the Icinga Web">
+  <div class="section" title="Changelog of the Icinga Web">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="changelog-web"></a>Changelog of the Icinga Web</h3></div></div></div>
     
@@ -1151,7 +1176,7 @@
 
     <p>* This is the initial release, prototyping, testing, think about features</p>
 
-    <a class="indexterm" name="id3425843"></a>
+    <a class="indexterm" name="id5132609"></a>
 </div>
 </div>
 <div class="navfooter">
