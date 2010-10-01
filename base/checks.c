@@ -3029,7 +3029,6 @@ int run_scheduled_host_check_3x(host *hst, int check_options, double latency){
 int run_async_host_check_3x(host *hst, int check_options, double latency, int scheduled_check, int reschedule_check, int *time_is_valid, time_t *preferred_time){
 	char *raw_command=NULL;
 	char *processed_command=NULL;
-	char *temp_buffer=NULL;
 	struct timeval start_time,end_time;
 	pid_t pid=0;
 	int fork_error=FALSE;

@@ -2018,9 +2018,8 @@ int commit_command(int cmd){
 	time_t current_time;
 	time_t scheduled_time;
 	time_t notification_time;
-	int result;
-
-	int x;
+	int result=0;
+	int x=0;
 
 	/* get the current time */
 	time(&current_time);
