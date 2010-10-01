@@ -1,67 +1,125 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Kapitel 7. Sicherheit und Leistungsoptimierung</title>
+<title>Kapitel 7. Fortgeschrittene Themen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
-<link rel="prev" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">
-<link rel="next" href="security.html" title="Sicherheitsüberlegungen">
+<link rel="prev" href="icinga-web-pnp.html" title="Integration von PNP4Nagios in das Icinga Web Frontend">
+<link rel="next" href="extcommands.html" title="Externe Befehle">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Kapitel 7. Sicherheit und Leistungsoptimierung</th></tr>
+<tr><th colspan="3" align="center">Kapitel 7. Fortgeschrittene Themen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="objecttricks.html">Zurück</a> </td>
+<a accesskey="p" href="icinga-web-pnp.html">Zurück</a> </td>
 <th width="60%" align="center"> </th>
-<td width="20%" align="right"> <a accesskey="n" href="security.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="extcommands.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="chapter" title="Kapitel 7. Sicherheit und Leistungsoptimierung">
+<div class="chapter" title="Kapitel 7. Fortgeschrittene Themen">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="ch07"></a>Kapitel 7. Sicherheit und Leistungsoptimierung</h2></div></div></div>
+<a name="ch07"></a>Kapitel 7. Fortgeschrittene Themen</h2></div></div></div>
 <div class="toc">
 <p><b>Inhaltsverzeichnis</b></p>
 <dl>
-<dt><span class="section"><a href="security.html">Sicherheitsüberlegungen</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html">Verbesserte CGI-Sicherheit und Authentifizierung</a></span></dt>
-<dt><span class="section"><a href="tuning.html">Icinga für maximale Leistung optimieren</a></span></dt>
-<dt><span class="section"><a href="faststartup.html">Schnellstart-Optionen</a></span></dt>
-<dt><span class="section"><a href="largeinstalltweaks.html">Large Installation Tweaks</a></span></dt>
-<dt><span class="section"><a href="icingastats.html">Nutzung des Icingastats-Utilitys</a></span></dt>
-<dt><span class="section"><a href="mrtggraphs.html">grafische Darstellung von Performance-Informationen mit MRTG</a></span></dt>
+<dt><span class="section"><a href="extcommands.html">Externe Befehle</a></span></dt>
+<dt><span class="section"><a href="eventhandlers.html">Eventhandler</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html">sprunghafte Services</a></span></dt>
+<dt><span class="section"><a href="freshness.html">Service- und Host-Frische-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="distributed.html">Verteilte Überwachung</a></span></dt>
+<dt><span class="section"><a href="redundancy.html">Redundante und Failover-Netzwerk-Überwachung</a></span></dt>
+<dt><span class="section"><a href="flapping.html">Erkennung und Behandlung von Status-Flattern</a></span></dt>
+<dt><span class="section"><a href="escalations.html">Benachrichtigungseskalationen</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html">Eskalations-Bedingung</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html">Bereitschafts-Rotation</a></span></dt>
+<dt><span class="section"><a href="clusters.html">Service- und Host-Gruppen überwachen</a></span></dt>
+<dt><span class="section"><a href="dependencies.html">Host- und Service-Abhängigkeiten</a></span></dt>
+<dt><span class="section"><a href="stalking.html">Status Stalking</a></span></dt>
+<dt><span class="section"><a href="perfdata.html">Performance-Daten</a></span></dt>
+<dt><span class="section"><a href="downtime.html">Geplante Ausfallzeiten</a></span></dt>
+<dt><span class="section"><a href="embeddedperl.html">Benutzen des Embedded Perl Interpreters</a></span></dt>
+<dt><span class="section"><a href="adaptive.html">Adaptive Überwachung</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html">Vorausschauende Abhängigkeitsprüfungen</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html">Zwischengespeicherte Prüfungen</a></span></dt>
+<dt><span class="section"><a href="passivestatetranslation.html">Passive Host-Zustandsübersetzung</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html">Service- und Host-Prüfungsplanung</a></span></dt>
+<dt><span class="section"><a href="cgiincludes.html">Angepasste CGI-Kopf- und Fußzeilen</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html">Objektvererbung</a></span></dt>
+<dt><span class="section"><a href="objecttricks.html">Zeitsparende Tricks für Objektdefinitionen</a></span></dt>
 </dl>
 </div>
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="objecttricks.html">Zurück</a> </td>
+<a accesskey="p" href="icinga-web-pnp.html">Zurück</a> </td>
 <td width="20%" align="center"> </td>
-<td width="40%" align="right"> <a accesskey="n" href="security.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="extcommands.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Zeitsparende Tricks für Objektdefinitionen </td>
+<td width="40%" align="left" valign="top">Integration von PNP4Nagios in das Icinga Web Frontend </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Sicherheitsüberlegungen</td>
+<td width="40%" align="right" valign="top"> Externe Befehle</td>
 </tr>
 </table>
 </div>

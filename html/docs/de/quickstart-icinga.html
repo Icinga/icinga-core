@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Icinga-Schnellstart auf Linux</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart.html" title="Schnellstart-Installationsanleitungen">
@@ -40,8 +40,9 @@
   <p>Diese Anleitung enthält momentan Anweisungen für drei verschiedene Linux-Distributionen: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> and <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Ähnliche Distributionen werden wahrscheinlich auch funktionieren, darunter
   <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>, <a class="link" href="http://www.debian.org/" target="_top">Debian</a> und <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
 
-  <p><span class="bold"><strong>Wenn Sie planen, eine Datenbank zusammen mit IDOUtils zu nutzen oder wenn Sie das neue 
-  Web-Interface einsetzen möchten, dann lesen Sie statt dessen <a class="xref" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">„Icinga-Schnellstart mit IDOUtils“</a>!</strong></span></p>
+  <p><span class="bold"><strong>Wenn Sie planen, eine Datenbank zusammen mit IDOUtils zu nutzen oder wenn Sie das neue Web-Interface
+  einsetzen möchten, dann lesen Sie statt dessen die <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils"> Schnellstartanleitung mit
+  IDOUtils</a>!</strong></span></p>
 
   <p><span class="bold"><strong>Was dabei herauskommt</strong></span></p>
 
@@ -56,7 +57,7 @@
       Plattenbelegung, usw.)</p>
     </li>
 <li class="listitem">
-      <p>das klassische Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/nagios/</code> oder
+      <p>das klassische Icinga-Web-Interface ist erreichbar unter <code class="uri">http://localhost/icinga/</code> oder
       <code class="uri">http://yourdomain.com/icinga/</code></p>
     </li>
 </ul></div>
@@ -78,7 +79,7 @@
       <p>C/C++ development libraries</p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> -Development-Libraries</p>
+      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a>-Development-Libraries</p>
     </li>
 </ul></div>
 
@@ -113,9 +114,21 @@
   </td></tr>
 </table></div>
 
-  <p><span class="emphasis"><em>openSuSE</em></span></p>
+  <p><span class="emphasis"><em>openSuSE / SLES</em></span></p>
 
-  <p>Bitte nutzen Sie yast für die Installation der Pakete</p>
+  <p>Bitte nutzen Sie YaST für die Installation der Pakete gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel und -optional-
+  net-snmp, net-snmp-devel und perl-net-snmp.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Abhängig von der Softwareauswahl bei der Installation des Betriebssystems benötigen Sie evtl. weitere Pakete (z.B. apache2, gcc).
+    Die devel-Pakete sind ggf. auf den SDK-DVDs zu finden.</p>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Benutzerinformationen erstellen</strong></span></p>
 
@@ -148,13 +161,17 @@
     <p>Bei einigen usermod-Versionen (z.B. bei OpenSuSE 11 bzw. SLES 11) fehlt die Option -a. In diesen Fällen kann sie entfallen.</p>
   </td></tr>
 </table></div>
-<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Solaris unterstützt nur Gruppennamen bis max. 8 Zeichen, verwenden Sie icingcmd anstelle von icinga-cmd.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Solaris unterstützt nur Gruppennamen bis max. 8 Zeichen, verwenden Sie icingcmd anstelle von icinga-cmd.</p>
+  </td></tr>
 </table></div>
+
   <p><span class="bold"><strong>Icinga und die Plugins herunterladen</strong></span></p>
 
   <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
@@ -193,12 +210,13 @@
 <p> oder kürzer </p>
 <pre class="programlisting"> #&gt; make fullinstall</pre>
 
-<p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-Api (nach)installieren möchten, nutzen Sie: </p>
+  <p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-Api (nach)installieren möchten, nutzen Sie:
+  </p>
 <pre class="programlisting"> # make install-api</pre>
-<p>
-    Die Icinga-API ist Voraussetzung für das Icinga-Web-Interface (nicht für die klassische Ansicht!).</p>
+<p> Die Icinga-API ist Voraussetzung für das Icinga-Web-Interface (nicht für die
+  klassische Ansicht!).</p>
 
-	<p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
+  <p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
 
   <p><span class="bold"><strong>Anpassen der Konfiguration</strong></span></p>
 
@@ -240,7 +258,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Abhängig von der Apache-Version müssen Sie ggf. <span class="emphasis"><em>htpasswd2 verwenden.</em></span></p>
+    <p>Abhängig von der Apache-Version müssen Sie ggf. <span class="emphasis"><em>htpasswd2</em></span> verwenden.</p>
   </td></tr>
 </table></div>
 
@@ -301,20 +319,11 @@
 
   <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <p>Wenn keine Fehler auftreten, starten Sie Icinga.</p>
-
-  <pre class="screen"> #&gt; service icinga start</pre>
-
-  <p><span class="bold"><strong> 8) Anpassen der SELinux-Einstellungen</strong></span></p>
-
-  <p><span class="bold"><strong>Start Icinga</strong></span></p>
-
-  <p>Fügen Sie Icinga zur Liste der System-Services hinzu, damit es automatisch beim Start des Systems gestartet wird (stellen Sie
-  sicher, dass Sie das Init-Script vorher installiert haben).</p>
-
-  <p>Überprüfen Sie die Icinga-Beispielkonfigurationsdateien.</p>
-
-  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+  <p>Anstatt die Pfade für das Binary und die Konfigurationsdatei anzugeben können Sie auch den folgenden Befehl eingeben:
+  </p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
+<p>Die Ausführung ergibt einen OK-Meldung, wenn alles in Ordnung ist,
+  oder eine Reihe von Zeilen, die zeigen, wo der/die Fehler zu finden sind.</p>
 
   <p>Wenn es dabei keine Fehler gibt, starten Sie Icinga.</p>
 
@@ -325,6 +334,8 @@
   <p><span class="emphasis"><em>Debian / Ubuntu</em></span></p>
 
   <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+
+  <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
 
   <p>Fedora wird mit installiertem SELinux (Security Enhanced Linux) ausgeliefert und läuft im "Enforcing"-Modus.
   Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die Icinga-CGIs aufzurufen.</p>
@@ -343,7 +354,7 @@
   <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
   CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
 
-  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/sbin/
+  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
 
   <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
@@ -383,9 +394,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1880836"></a>
+  <a class="indexterm" name="id2741749"></a>
 
-  <a class="indexterm" name="id1880854"></a>
+  <a class="indexterm" name="id2741763"></a>
 </div>
 <div class="navfooter">
 <hr>

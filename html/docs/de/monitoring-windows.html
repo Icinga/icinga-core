@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Windows-Maschinen überwachen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">
@@ -162,18 +162,13 @@
 
   <pre class="screen"> nsclient++ /install</pre>
 
-  <p>5. Installieren Sie ein NSClient++-Icon im Infobereich (Systray) mit dem folgenden Befehl (Groß- und Kleinschreibung
-  ist wichtig!)</p>
-
-  <pre class="screen"> nsclient++ SysTray</pre>
-
-  <p>6. Öffnen Sie die Dienste-Applikation und stellen Sie sicher, dass der NSClient++-Dienst mit dem Desktop
+  <p>5. Öffnen Sie die Dienste-Applikation und stellen Sie sicher, dass der NSClient++-Dienst mit dem Desktop
   kommunizieren darf (Reiter "Anmelden", Häkchen bei "Datenaustausch zwischen Dienst und Desktop zulassen" gesetzt). Setzen Sie
   ggf. das Häkchen.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/nscpp.png"></span></p>
 
-  <p>7. Editieren Sie die NSC.INI-Datei (im C:\NSClient++-Verzeichnis) und machen Sie folgende Änderungen:</p>
+  <p>6. Editieren Sie die NSC.INI-Datei (im C:\NSClient++-Verzeichnis) und machen Sie folgende Änderungen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -186,7 +181,8 @@
     </li>
 <li class="listitem">
       <p>entfernen Sie das Kommentarzeichen (;) vor der 'allowed_hosts'-Option im [Settings]-Abschnitt. Fügen Sie die
-      IP-Adresse des Icinga-Servers ein oder lassen Sie diese Angabe leer, so dass sich alle Hosts verbinden können.</p>
+      IP-Adresse des Icinga-Servers ein, mit ip.add.ress/Bits einen Bereich oder lassen Sie diese Angabe leer, so
+      dass sich alle Hosts verbinden können.</p>
     </li>
 <li class="listitem">
       <p>entfernen Sie ggf. das Kommentarzeichen vor der 'port'-Option im [NSClient]-Abschnitt und setzen Sie den Wert auf
@@ -194,14 +190,11 @@
     </li>
 </ul></div>
 
-  <p>8. Starten Sie den NSClient++-Dienst mit dem folgenden Befehl:</p>
+  <p>7. Starten Sie den NSClient++-Dienst mit dem folgenden Befehl:</p>
 
   <pre class="screen"> nsclient++ /start</pre>
 
-  <p>9. Wenn es sauber installiert ist, sollte ein neues Icon in Ihrem Infobereich auftauchen, ein gelber Kreis mit einem
-  schwarzen 'M'.</p>
-
-  <p>10. Geschafft! Der Windows-Rechner kann nun der Icinga-Überwachungskonfiguration hinzugefügt werden...</p>
+  <p>8. Geschafft! Der Windows-Rechner kann nun der Icinga-Überwachungskonfiguration hinzugefügt werden...</p>
 
   <p><span class="bold"><strong>Icinga konfigurieren</strong></span></p>
 
@@ -228,9 +221,16 @@
   mitzuteilen, welche Dinge auf dem Windows-Server zu überwachen sind. Wenn dies der *erste* Windows-Rechner ist, den Sie
   überwachen, dann können Sie einfach die Beispiel-Definitionen in der <span class="emphasis"><em>windows.cfg</em></span>-Datei anpassen.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Ersetzen Sie "<span class="emphasis"><em>winserver</em></span>" in den folgenden Beispiel-Definitionen durch den
-  Namen, den Sie in der <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definitionen angegeben haben, die Sie gerade hinzugefügt
-  haben.</p>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Ersetzen Sie "<span class="emphasis"><em>winserver</em></span>" in den folgenden Beispiel-Definitionen durch den Namen, den Sie in der
+    <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definitionen angegeben haben, die Sie gerade hinzugefügt haben.</p>
+  </td></tr>
+</table></div>
 
   <p>Fügen Sie die folgende Service-Definition hinzu, um die Version des NSClient++-Addons zu überwachen, das auf dem
   Windows-Rechner läuft. Dies ist nützlich, wenn Sie Ihre Windows-Server mit einer neueren Version des Addons aktualisieren
@@ -306,6 +306,14 @@
         check_command           check_nt!PROCSTATE!-d SHOWALL -l Explorer.exe
         }</pre>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Nun ja. Eigentlich ist es ziemlich unsinnig, zu überwachen, ob der Explorer läuft. Allerdings läßt sich auf
+  diese Weise sehr einfach prüfen, ob alles wie gewünscht funktioniert ;-)</p></td></tr>
+</table></div>
   <p>Das war es vorerst. Sie haben einige grundlegende Dienste hinzugefügt, die auf dem Windows-Rechner überwacht werden
   sollen. Speichern Sie die Konfigurationsdatei.</p>
 
@@ -334,9 +342,9 @@
 
   <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher,
   dass Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
-  <a class="indexterm" name="id1885012"></a>
-  <a class="indexterm" name="id1885020"></a>
-  <a class="indexterm" name="id1885030"></a>
+  <a class="indexterm" name="id2745918"></a>
+  <a class="indexterm" name="id2745923"></a>
+  <a class="indexterm" name="id2745936"></a>
 </div>
 <div class="navfooter">
 <hr>
