@@ -1019,7 +1019,6 @@ void show_host_status_totals(void){
 	hoststatus *temp_hoststatus;
 	host *temp_host;
 	servicestatus *temp_servicestatus;
-	service *temp_service;
 	int count_host;
 
 

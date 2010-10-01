@@ -357,7 +357,9 @@ int ido2db_db_deinit(ido2db_idi *idi) {
 /************************************/
 int ido2db_db_connect(ido2db_idi *idi) {
 	int result = IDO_OK;
+#ifdef USE_PGSQL /* pgsql */
 	char *temp_port = NULL;
+#endif
 #ifdef USE_LIBDBI
 	const char *dbi_error;
 #endif

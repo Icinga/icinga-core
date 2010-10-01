@@ -8493,10 +8493,6 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
         char * query2 = NULL;
 #endif
 
-#ifdef USE_ORACLE
-	OCI_Bind *oci_bind = NULL;
-#endif
-
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add() start\n");
 
         if (idi == NULL)

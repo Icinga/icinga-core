@@ -2450,7 +2450,6 @@ void show_comments(int type){
 	host *temp_host=NULL;
 	service *temp_service=NULL;
 	int total_comments=0;
-	int display_comment=FALSE;
 	char *bg_class="";
 	int odd=1;
 	char date_time[MAX_DATETIME_LENGTH];
@@ -2652,7 +2651,7 @@ void show_downtime(void){
 	char date_time[MAX_DATETIME_LENGTH];
 	scheduled_downtime *temp_downtime;
 	host *temp_host;
-	service *temp_service;
+	service *temp_service=NULL;
 	int days;
 	int hours;
 	int minutes;

@@ -360,14 +360,14 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	char *buf = NULL;
 	char *buf1 = NULL;
 	char *buf2 = NULL;
+#ifdef USE_LIBDBI
 	char *tmp = NULL;
+#endif
 	char *name1 = NULL;
 	char *name2 = NULL;
 	char *es[2];
 #ifdef USE_ORACLE
 	void *data[4];
-	OCI_Bind *oci_bind = NULL;
-	char *oci_tmp;
 #endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() start\n");
 
