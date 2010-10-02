@@ -256,7 +256,7 @@ int main(void){
 
 	/* if a navbar search was performed, find the host by name, address or partial name */
 	if(navbar_search==TRUE){
-		if(host_name!=NULL && NULL!=strstr(host_name, "*")){
+		if(host_name!=NULL){
 			/* allocate for 3 extra chars, ^, $ and \0 */
 			host_filter = malloc(sizeof(char) * (strlen(host_name) * 2 + 3));
 			len=strlen(host_name);
@@ -267,62 +267,60 @@ int main(void){
 					}
 				else
 					host_filter[regex_i]=host_name[i];
-				}
+			}
 			host_filter[0]='^';
+			if(NULL==strstr(host_name, "*")) {
+				host_filter[regex_i++]='.';
+				host_filter[regex_i++]='*';
+			}
 			host_filter[regex_i++]='$';
 			host_filter[regex_i]='\0';
-			}
-		else{
-			if((temp_host=find_host(host_name))==NULL){
-				for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
-					if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
-						continue;
-					if(!strcmp(host_name,temp_host->address)){
-						free(host_name);
-						host_name=strdup(temp_host->name);
-						break;
-						}
-					}
-				if(temp_host==NULL){
-					for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
-						if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
-							continue;
-						if((strstr(temp_host->name,host_name)==temp_host->name) || !strncasecmp(temp_host->name,host_name,strlen(host_name))){
-							free(host_name);
-							host_name=strdup(temp_host->name);
-							break;
-							}
-						}
-					}
+		}
+
+		temp_host=find_host(host_name);
+
+		if(temp_host==NULL){
+			/* see if user entered the address instead of host name */
+			for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
+				if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
+					continue;
+				if(!strcmp(host_name,temp_host->address)){
+					free(host_filter);
+					free(host_name);
+					host_name=strdup(temp_host->name);
+					break;
 				}
+			}
+
+			/* search hostgroups then servicegroups */
+			if((temp_hostgroup=find_hostgroup(host_name))!=NULL){
+				display_type=DISPLAY_HOSTGROUPS;
+				show_all_hostgroups=FALSE;
+				free(host_filter);
+				free(host_name);
+				hostgroup_name=strdup(temp_hostgroup->group_name);
+			}
+			else if((temp_servicegroup=find_servicegroup(host_name))!=NULL){
+				display_type=DISPLAY_SERVICEGROUPS;
+				show_all_servicegroups=FALSE;
+				free(host_filter);
+				free(host_name);
+				servicegroup_name=strdup(temp_servicegroup->group_name);
+			}
+
+		} else {
+			free(host_filter);
 			/* if host has no services attached, show host status detail */
-			if(temp_host!=NULL){
-				for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
-				    if(!strcmp(temp_servicestatus->host_name,temp_host->name)) {
+			for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
+				if(!strcmp(temp_servicestatus->host_name,temp_host->name)) {
 					host_has_no_service=FALSE;
 					break;
-				    }
-				}
-				if(host_has_no_service)
-				    group_style_type=STYLE_HOST_DETAIL;
-			}
-			/* last effort, search hostgroups then servicegroups */
-			if(temp_host==NULL){
-				if((temp_hostgroup=find_hostgroup(host_name))!=NULL){
-					display_type=DISPLAY_HOSTGROUPS;
-					show_all_hostgroups=FALSE;
-					free(host_name);
-					hostgroup_name=strdup(temp_hostgroup->group_name);
-					}
-				else if((temp_servicegroup=find_servicegroup(host_name))!=NULL){
-					display_type=DISPLAY_SERVICEGROUPS;
-					show_all_servicegroups=FALSE;
-					free(host_name);
-					servicegroup_name=strdup(temp_servicegroup->group_name);
-					}
 				}
 			}
-	        }
+			if(host_has_no_service)
+				group_style_type=STYLE_HOST_DETAIL;
+		}
+	}
 
 	if(display_header==TRUE){
 
