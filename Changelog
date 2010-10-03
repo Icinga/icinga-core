@@ -24,6 +24,7 @@ ENHANCEMENTS
 * classic ui: remove php dependency by dropping extended live search #800
 * classic ui: added csv export to most cgi pages #806
 * classic ui: added possibility to delete multiple downtimes and comments (taken loads of ideas from Rune Darrud) #523
+* classic ui: Beautifying the design of submit form in cmd.cgi and everything else in cmd.cgi #804
 
 
 FIXES
