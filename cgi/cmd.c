@@ -2253,7 +2253,6 @@ int commit_command(int cmd){
 	time_t current_time;
 	time_t scheduled_time;
 	time_t notification_time;
-
 	int x = 0;
 
 	/* get the current time */
@@ -2423,7 +2422,6 @@ int commit_command(int cmd){
 				if (is_authorized[x])
 					submit_result[x] |= cmd_submitf(cmd,"%s",commands[x].host_name);
 			}
-			//submit_result[x] |= cmd_submitf(cmd,"%s",host_name);
 		}
 		break;
 

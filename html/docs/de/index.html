@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Icinga Version 1.0.3 Dokumentation</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="next" href="ch01.html" title="Kapitel 1. Über">
 </head>
@@ -28,54 +28,71 @@
 <a name="Icinga"></a><a name="Icinga.xml"></a>Icinga Version 1.0.3 Dokumentation</h1></div>
 <div><p class="copyright">Copyright © 2009-2010 Icinga Development Team</p></div>
 <div><div class="legalnotice" title="Rechtlicher Hinweis">
-<a name="id1876663"></a>
-    <p>
-      Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the 'LICENSE' file in the Icinga distribution or read the online version of the license for more details.
-    </p>
-    <p>
-      Icinga is provided <span class="quote">„<span class="quote">AS IS</span>“</span> with <span class="quote">„<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>“</span>
-    </p>
-  </div></div>
+<a name="id2737523"></a>
+      <p>Portions copyright © by Nagios/Icinga community members - see the THANKS file in the Icinga core sources for more
+      information.</p>
+
+      <p>Credits to Yoann LAMY for creating the Vautour Style we use for the Icinga Classic UI</p>
+    </div></div>
 <div><div class="legalnotice" title="Rechtlicher Hinweis">
-<a name="id1876590"></a>
-    <p>
-      Nagios and the Nagios logo are registered trademarks of Ethan Galstad. All other trademarks, servicemarks, registered trademarks, and registered servicemarks mentioned herein may be the property of their respective owner(s). The information contained herein is provided <span class="quote">„<span class="quote">AS IS</span>“</span> with <span class="quote">„<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>“</span>
-    </p>
-  </div></div>
+<a name="id2737585"></a>
+      <p>Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
+      Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the
+      'LICENSE' file in the Icinga distribution or read the online version of the license for more details.</p>
+
+      <p>Icinga is provided <span class="quote">„<span class="quote">AS IS</span>“</span> with <span class="quote">„<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,
+      MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>“</span></p>
+    </div></div>
+<div><div class="legalnotice" title="Rechtlicher Hinweis">
+<a name="id2737611"></a>
+      <p>Nagios is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
+      Foundation. This gives you legal permission to copy, distribute and/or modify Nagios under certain conditions. Read the
+      'LICENSE' file in the Nagios distribution or read the online version of the license for more details.</p>
+
+      <p>Nagios and the Nagios logo are registered trademarks of Ethan Galstad. All other trademarks, servicemarks,
+      registered trademarks, and registered servicemarks mentioned herein may be the property of their respective owner(s). The information
+      contained herein is provided <span class="quote">„<span class="quote">AS IS</span>“</span> with <span class="quote">„<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,
+      MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>“</span></p>
+    </div></div>
 <div><p class="pubdate">2010.08.18</p></div>
 <div><div class="revhistory"><table border="1" width="100%" summary="Revision history">
 <tr><th align="left" valign="top" colspan="2"><b>Versionsgeschichte</b></th></tr>
-<tr>
+      <tr>
 <td align="left">Version 1.0.3 Stable</td>
 <td align="left">2010-08-18</td>
 </tr>
 <tr><td align="left" colspan="2">1.0.3 Icinga Documentation</td></tr>
-    <tr>
+
+      <tr>
 <td align="left">Version 1.0.2 Stable</td>
 <td align="left">2010-06-30</td>
 </tr>
 <tr><td align="left" colspan="2">1.0.2 Icinga Documentation</td></tr>
-    <tr>
+
+      <tr>
 <td align="left">Version 1.0.1 Stable</td>
 <td align="left">2010-03-03</td>
 </tr>
 <tr><td align="left" colspan="2">1.0.1 Icinga Documentation</td></tr>
-    <tr>
+
+      <tr>
 <td align="left">Version 1.0 Stable</td>
 <td align="left">2009-12-16</td>
 </tr>
 <tr><td align="left" colspan="2">1.0 Stable Icinga Documentation</td></tr>
-    <tr>
+
+      <tr>
 <td align="left">Version 1.0 RC1</td>
 <td align="left">2009-10-28</td>
 </tr>
 <tr><td align="left" colspan="2">1.0 RC1 Icinga Documentation</td></tr>
-    <tr>
+
+      <tr>
 <td align="left">Version 0.1</td>
 <td align="left">2009-09-27</td>
 </tr>
 <tr><td align="left" colspan="2">First Release</td></tr>
-</table></div></div>
+    </table></div></div>
 </div>
 <hr>
 </div>
@@ -136,9 +153,14 @@
 <dt><span class="section"><a href="timeperiods.html">Zeitfenster</a></span></dt>
 <dt><span class="section"><a href="networkreachability.html">Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</a></span></dt>
 <dt><span class="section"><a href="notifications.html">Benachrichtigungen</a></span></dt>
-<dt><span class="section"><a href="cgis.html">Informationen über die CGIs</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch06.html">6. Fortgeschrittene Themen</a></span></dt>
+<dt><span class="chapter"><a href="ch06.html">6. Die Benutzeroberflächen</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="cgis.html">Icinga Classic UI: Informationen über die CGIs</a></span></dt>
+<dt><span class="section"><a href="icinga-web-scratch.html">Installation des neuen Icinga Web Frontend</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html">Integration von PNP4Nagios in das Icinga Web Frontend</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="ch07.html">7. Fortgeschrittene Themen</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="extcommands.html">Externe Befehle</a></span></dt>
 <dt><span class="section"><a href="eventhandlers.html">Eventhandler</a></span></dt>
@@ -165,7 +187,7 @@
 <dt><span class="section"><a href="objectinheritance.html">Objektvererbung</a></span></dt>
 <dt><span class="section"><a href="objecttricks.html">Zeitsparende Tricks für Objektdefinitionen</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch07.html">7. Sicherheit und Leistungsoptimierung</a></span></dt>
+<dt><span class="chapter"><a href="ch08.html">8. Sicherheit und Leistungsoptimierung</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="security.html">Sicherheitsüberlegungen</a></span></dt>
 <dt><span class="section"><a href="cgisecurity.html">Verbesserte CGI-Sicherheit und Authentifizierung</a></span></dt>
@@ -175,52 +197,53 @@
 <dt><span class="section"><a href="icingastats.html">Nutzung des Icingastats-Utilitys</a></span></dt>
 <dt><span class="section"><a href="mrtggraphs.html">grafische Darstellung von Performance-Informationen mit MRTG</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch08.html">8. Integration mit anderer Software</a></span></dt>
+<dt><span class="chapter"><a href="ch09.html">9. Integration mit anderer Software</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="integration.html">Integrationsüberblick</a></span></dt>
 <dt><span class="section"><a href="int-snmptrap.html">SNMP-Trap-Integration</a></span></dt>
 <dt><span class="section"><a href="int-tcpwrappers.html">TCP-Wrapper-Integration</a></span></dt>
 <dt><span class="section"><a href="int-mklivestatus.html">MKLiveStatus-Integration</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch09.html">9. Icinga Addons</a></span></dt>
+<dt><span class="chapter"><a href="ch10.html">10. Icinga Addons</a></span></dt>
 <dd><dl><dt><span class="section"><a href="addons.html">Icinga Addons</a></span></dt></dl></dd>
-<dt><span class="chapter"><a href="ch10.html">10. Entwicklung</a></span></dt>
+<dt><span class="chapter"><a href="ch11.html">11. Entwicklung</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="pluginapi.html">Nagios Plugin API</a></span></dt>
 <dt><span class="section"><a href="epnplugins.html">Entwickeln von Plugins für die Nutzung mit Embedded Perl</a></span></dt>
-<dt><span class="section"><a href="icinga-web-scratch.html">Installation des neuen Icinga Web Frontend</a></span></dt>
+<dt><span class="section"><a href="extcommands2.html">Liste der externen Befehle</a></span></dt>
 <dt><span class="section"><a href="icinga-api.html">Installation und Benutzung der Icinga API</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html">The Icinga Web REST API</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch11.html">11. IDOUtils</a></span></dt>
+<dt><span class="chapter"><a href="ch12.html">12. IDOUtils</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="db_intro.html">Einleitung</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_intro.html#id1972715">Zweck</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1972732">Design-Überblick</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1972819">Instanzen</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1972888">Installation</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id2839256">Zweck</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id2839981">Design-Überblick</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id2840069">Instanzen</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id2840146">Installation</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="components.html">Komponenten</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="components.html#id1972917">Überblick</a></span></dt>
-<dt><span class="section"><a href="components.html#id1972966">IDOMOD</a></span></dt>
-<dt><span class="section"><a href="components.html#id1973059">LOG2IDO</a></span></dt>
-<dt><span class="section"><a href="components.html#id1973094">FILE2SOCK</a></span></dt>
+<dt><span class="section"><a href="components.html#id2840173">Überblick</a></span></dt>
+<dt><span class="section"><a href="components.html#id2840221">IDOMOD</a></span></dt>
+<dt><span class="section"><a href="components.html#id2840310">LOG2IDO</a></span></dt>
+<dt><span class="section"><a href="components.html#id2840347">FILE2SOCK</a></span></dt>
 <dt><span class="section"><a href="components.html#IDO2DB-description">IDO2DB. IDO2DB</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="example-configs.html">Beispielkonfigurationen</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="example-configs.html#id1973221">Einzelner Server, einzelne Instanz</a></span></dt>
-<dt><span class="section"><a href="example-configs.html#id1973334">Einzelner Server, mehrere Instanzen</a></span></dt>
-<dt><span class="section"><a href="example-configs.html#id1973418">Einzelner Server, einzelne Instanz, Log-Datei-Import</a></span></dt>
+<dt><span class="section"><a href="example-configs.html#id2840474">Einzelner Server, einzelne Instanz</a></span></dt>
+<dt><span class="section"><a href="example-configs.html#id2840579">Einzelner Server, mehrere Instanzen</a></span></dt>
+<dt><span class="section"><a href="example-configs.html#id2840677">Einzelner Server, einzelne Instanz, Log-Datei-Import</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="db_model.html">IDOUtils Database Model</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_model.html#id1973690">Central Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1973692"> Debugging Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1974140">Historical Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1981307"> Current Status Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1985659"> Configuration Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id2840946">Central Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id2840952"> Debugging Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id2841400">Historical Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id2841896"> Current Status Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id2841898"> Configuration Tables</a></span></dt>
 </dl></dd>
 </dl></dd>
 <dt><span class="index"><a href="ix01.html">Stichwortverzeichnis</a></span></dt>
@@ -229,60 +252,75 @@
 <div class="list-of-figures">
 <p><b>Abbildungsverzeichnis</b></p>
 <dl>
-<dt>11.1. <a href="db_intro.html#id1972771">Mögliche Anordnungen</a>
+<dt>6.1. <a href="icinga-web-pnp.html#id2813491">PNP4Nagios integriert in Icinga Web</a>
 </dt>
-<dt>11.2. <a href="db_intro.html#id1972798">zukünfte Entwicklung: Eine Instanz, mehrere Datenbanken</a>
+<dt>12.1. <a href="db_intro.html#id2840025">Mögliche Anordnungen</a>
 </dt>
-<dt>11.3. <a href="db_intro.html#id1972836">Instanznamen basierend auf dem geografischen Standorts</a>
+<dt>12.2. <a href="db_intro.html#id2839818">zukünfte Entwicklung: Eine Instanz, mehrere Datenbanken</a>
 </dt>
-<dt>11.4. <a href="db_intro.html#id1972851">Instanznamen basierend auf dem Zweck</a>
+<dt>12.3. <a href="db_intro.html#id2840067">Instanznamen basierend auf dem geografischen Standorts</a>
 </dt>
-<dt>11.5. <a href="components.html#id1972984">Geladenes IDOMOD-Event-Broker-Modul</a>
+<dt>12.4. <a href="db_intro.html#id2840116">Instanznamen basierend auf dem Zweck</a>
 </dt>
-<dt>11.6. <a href="components.html#id1973000">IDOMOD-Möglichkeiten</a>
+<dt>12.5. <a href="components.html#id2840238">Geladenes IDOMOD-Event-Broker-Modul</a>
 </dt>
-<dt>11.7. <a href="components.html#id1972898">LOG2IDO-Utility</a>
+<dt>12.6. <a href="components.html#id2840272">IDOMOD-Möglichkeiten</a>
 </dt>
-<dt>11.8. <a href="components.html#id1973110">FILE2SOCK-Utility</a>
+<dt>12.7. <a href="components.html#id2840332">LOG2IDO-Utility</a>
 </dt>
-<dt>11.9. <a href="components.html#id1973162">IDO2DB-Daemon</a>
+<dt>12.8. <a href="components.html#id2840365">FILE2SOCK-Utility</a>
 </dt>
-<dt>11.10. <a href="components.html#id1973186">IDO2DB mit mehreren Clients</a>
+<dt>12.9. <a href="components.html#id2840416">IDO2DB-Daemon</a>
 </dt>
-<dt>11.11. <a href="example-configs.html#id1973240">Einzelserver, Einzelinstanz</a>
+<dt>12.10. <a href="components.html#id2840444">IDO2DB mit mehreren Clients</a>
 </dt>
-<dt>11.12. <a href="example-configs.html#id1973351">Einzelner Server, mehrere Instanzen</a>
+<dt>12.11. <a href="example-configs.html#id2840490">Einzelserver, Einzelinstanz</a>
 </dt>
-<dt>11.13. <a href="example-configs.html#id1973463">Einzelner Server, einzelne Instanz, Log-Datei-Import</a>
+<dt>12.12. <a href="example-configs.html#id2840603">Einzelner Server, mehrere Instanzen</a>
 </dt>
-<dt>11.14. <a href="db_model.html#id1973756">Relationship of Central Tables</a>
+<dt>12.13. <a href="example-configs.html#id2840715">Einzelner Server, einzelne Instanz, Log-Datei-Import</a>
 </dt>
-<dt>11.15. <a href="db_model.html#id1974181">Relationship of Debugging Tables</a>
+<dt>12.14. <a href="db_model.html#id2841018">Relationship of Central Tables</a>
 </dt>
-<dt>11.16. <a href="db_model.html#id1974880">Relationship of Historical Tables</a>
+<dt>12.15. <a href="db_model.html#id2841451">Relationship of Debugging Tables</a>
 </dt>
-<dt>11.17. <a href="db_model.html#id1981351">Relationship of Current Status Tables</a>
+<dt>12.16. <a href="db_model.html#id2842140">Relationship of Historical Tables</a>
 </dt>
-<dt>11.18. <a href="db_model.html#id1986276">Relationship of Configuration Tables</a>
+<dt>12.17. <a href="db_model.html#id2848702">Relationship of Current Status Tables</a>
+</dt>
+<dt>12.18. <a href="db_model.html#id2853535">Relationship of Configuration Tables</a>
 </dt>
 </dl>
 </div>
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
-
-
+  
 </div>
 <div class="navfooter">
 <hr>

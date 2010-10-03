@@ -741,7 +741,7 @@ char *pop_lifo(void){
  
 void document_header(int cgi_id, int use_stylesheet){
 	char date_time[MAX_DATETIME_LENGTH];
-	char *cgi_name, *cgi_css, *cgi_title, *cgi_body_class;
+	char *cgi_name, *cgi_css, *cgi_title, *cgi_body_class=NULL;
 	time_t expire_time;
 	time_t current_time;
 
@@ -970,7 +970,7 @@ void document_header(int cgi_id, int use_stylesheet){
 
 
 void document_footer(int cgi_id){
-	char *cgi_name;
+	char *cgi_name=NULL;
 
 	switch(cgi_id) {
                 case STATUS_CGI_ID:
@@ -1780,7 +1780,7 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 		printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n",refresh_rate);
 	} else {
 		/* if no refresh, remove the paused query from url and set location.href */
-		printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n",refresh_rate);
+		printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n");
 	}
 
 	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);

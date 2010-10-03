@@ -5,7 +5,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
-<link rel="up" href="ch11.html" title="Chapter 11. IDOUtils">
+<link rel="up" href="ch12.html" title="Chapter 12. IDOUtils">
 <link rel="prev" href="db_example-configs.html" title="Example Configurations">
 <link rel="next" href="ix01.html" title="Index">
 </head>
@@ -17,7 +17,7 @@
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="db_example-configs.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 11. IDOUtils</th>
+<th width="60%" align="center">Chapter 12. IDOUtils</th>
 <td width="20%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
 </td>
 </tr>
@@ -38,8 +38,8 @@
 
   <p><span class="bold"><strong>Table Names</strong></span></p>
 
-  <p>The IDOUtils addon allows users to specify a custom prefix to each table name in the database. By default, this prefix is set
-  to "icinga_" in ido2db.cfg. The tables documented here are listed without any prefix.</p>
+  <p>The IDOUtils addon allows users to specify a custom prefix to each table name in the database. By default, this prefix is set to
+  "icinga_" in ido2db.cfg. The tables documented here are listed without any prefix.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -47,17 +47,16 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Due to limitations in Oracle the length of table names cannot exceed 30 characters so 
-    </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">The name of one table has been shortened: serviceescalation_contactgroups -&gt; serviceescalationcontactgroups
+    <p>Due to limitations in Oracle the length of table names cannot exceed 30 characters so</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>The name of one table has been shortened: serviceescalation_contactgroups -&gt; serviceescalationcontactgroups</p>
       </li>
 <li class="listitem">
-        The table prefix is ignored
+        <p>The table prefix is ignored</p>
       </li>
 </ul></div>
-<p>
-    </p>
   </td></tr>
 </table></div>
 
@@ -88,10 +87,10 @@
 
   <div class="section" title="Central Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3521976"></a><a name="dbm_ct"></a>Central Tables</h3></div></div></div>
+<a name="id5235253"></a><a name="dbm_ct"></a>Central Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id3521985"></a>
+    <a class="indexterm" name="id5235383"></a>
 
     <p>There are two "core" or "central" tables, described below, that are referenced by nearly every table in the database. Read below
     for more information.</p>
@@ -110,7 +109,7 @@
     <p><span class="emphasis"><em>Relationship Diagram</em></span></p>
 
     <div class="figure">
-<a name="id3522040"></a><p class="title"><b>Figure 11.14. Relationship of Central Tables</b></p>
+<a name="id5235438"></a><p class="title"><b>Figure 12.14. Relationship of Central Tables</b></p>
 <div class="figure-contents">
       
 
@@ -121,7 +120,7 @@
 
     <a name="dbm_instances"></a>
 
-    <a class="indexterm" name="id3522067"></a>
+    <a class="indexterm" name="id5235462"></a>
 
     <p><span class="emphasis"><em>Instance Table</em></span></p>
 
@@ -170,7 +169,7 @@
 
     <a name="dbm_objects"></a>
 
-    <a class="indexterm" name="id3522183"></a>
+    <a class="indexterm" name="id5235579"></a>
 
     <p><span class="emphasis"><em>Objects Table</em></span></p>
 
@@ -272,10 +271,10 @@
 
   <div class="section" title="Debugging Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3522216"></a><a name="dbm_dt"></a> Debugging Tables</h3></div></div></div>
+<a name="id5235373"></a><a name="dbm_dt"></a> Debugging Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id3522434"></a>
+    <a class="indexterm" name="id5235831"></a>
 
     <p>There is currently only one table in the database that is used to hold information that might be useful for debugging purposes.
     Read below for more information.</p>
@@ -289,7 +288,7 @@
     <p>Relationship Diagram</p>
 
     <div class="figure">
-<a name="id3522466"></a><p class="title"><b>Figure 11.15. Relationship of Debugging Tables</b></p>
+<a name="id5235861"></a><p class="title"><b>Figure 12.15. Relationship of Debugging Tables</b></p>
 <div class="figure-contents">
       
 
@@ -300,7 +299,7 @@
 
     <a name="dbm_conninfo"></a>
 
-    <a class="indexterm" name="id3522500"></a>
+    <a class="indexterm" name="id5235898"></a>
 
     <p><span class="emphasis"><em>Conninfo Table</em></span></p>
 
@@ -372,7 +371,7 @@
 <tr>
 <td>connect_type</td>
 <td>VARCHAR(16)</td>
-<td>Text string indentifying whether this connect was a new connection, or if it was a reconnect due to an earlier
+<td>Text string identifying whether this connect was a new connection, or if it was a reconnect due to an earlier
               communications failure between the user agent and the IDO2DB daemon</td>
 <td>"INITIAL" or "RECONNECT"</td>
 <td> </td>
@@ -461,10 +460,10 @@
 
   <div class="section" title="Historical Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3522427"></a><a name="dbm_ht"></a>Historical Tables</h3></div></div></div>
+<a name="id5236284"></a><a name="dbm_ht"></a>Historical Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id3522948"></a>
+    <a class="indexterm" name="id5236343"></a>
 
     <p><span class="bold"><strong>Historical Data Tables</strong></span></p>
 
@@ -530,7 +529,7 @@
     please excuse the mess. :-)</p>
 
     <div class="figure">
-<a name="id3523166"></a><p class="title"><b>Figure 11.16. Relationship of Historical Tables</b></p>
+<a name="id5236561"></a><p class="title"><b>Figure 12.16. Relationship of Historical Tables</b></p>
 <div class="figure-contents">
       
 
@@ -541,7 +540,7 @@
 
     <a name="dbm_acknowledgements"></a>
 
-    <a class="indexterm" name="id3523191"></a>
+    <a class="indexterm" name="id5236585"></a>
 
     <p><span class="emphasis"><em>Acknowledgements Table</em></span></p>
 
@@ -679,7 +678,7 @@
 
     <a name="dbm_commenthistory"></a>
 
-    <a class="indexterm" name="id3523558"></a>
+    <a class="indexterm" name="id5236952"></a>
 
     <p><span class="emphasis"><em>Commenthistory Table</em></span></p>
 
@@ -853,7 +852,7 @@
 
     <a name="dbm_contactnotifications"></a>
 
-    <a class="indexterm" name="id3524035"></a>
+    <a class="indexterm" name="id5237428"></a>
 
     <p><span class="emphasis"><em>Contactnotifications Table</em></span></p>
 
@@ -968,7 +967,7 @@
 
     <a name="dbm_contactnotificationsmethods"></a>
 
-    <a class="indexterm" name="id3524330"></a>
+    <a class="indexterm" name="id5237723"></a>
 
     <p><span class="emphasis"><em>Contactnotificationmethods Table</em></span></p>
 
@@ -1090,7 +1089,7 @@
 
     <a name="dbm_downtimehistory"></a>
 
-    <a class="indexterm" name="id3524650"></a>
+    <a class="indexterm" name="id5238043"></a>
 
     <p><span class="emphasis"><em>Downtimehistory Table</em></span></p>
 
@@ -1287,7 +1286,7 @@
 
     <a name="dbm_eventhandlers"></a>
 
-    <a class="indexterm" name="id3525184"></a>
+    <a class="indexterm" name="id5238576"></a>
 
     <p><span class="emphasis"><em>Eventhandlers Table</em></span></p>
 
@@ -1474,7 +1473,7 @@
 
     <a name="dbm_externalcommands"></a>
 
-    <a class="indexterm" name="id3525691"></a>
+    <a class="indexterm" name="id5239084"></a>
 
     <p><span class="emphasis"><em>Externalcommands Table</em></span></p>
 
@@ -1567,7 +1566,7 @@
 
     <a name="dbm_flappinghistory"></a>
 
-    <a class="indexterm" name="id3525922"></a>
+    <a class="indexterm" name="id5239315"></a>
 
     <p><span class="emphasis"><em>Flappinghistory Table</em></span></p>
 
@@ -1713,7 +1712,7 @@
 
     <a name="dbm_hostchecks"></a>
 
-    <a class="indexterm" name="id3526310"></a>
+    <a class="indexterm" name="id5239703"></a>
 
     <p><span class="emphasis"><em>Hostchecks Table</em></span></p>
 
@@ -1941,7 +1940,7 @@
 
     <a name="dbm_logentries"></a>
 
-    <a class="indexterm" name="id3526929"></a>
+    <a class="indexterm" name="id5240322"></a>
 
     <p><span class="emphasis"><em>Logentries Table</em></span></p>
 
@@ -2055,7 +2054,7 @@
 
     <a name="dbm_notifications"></a>
 
-    <a class="indexterm" name="id3527221"></a>
+    <a class="indexterm" name="id5240615"></a>
 
     <p><span class="emphasis"><em>Notifications Table</em></span></p>
 
@@ -2204,7 +2203,7 @@
 
     <a name="dbm_processevents"></a>
 
-    <a class="indexterm" name="id3527620"></a>
+    <a class="indexterm" name="id5241013"></a>
 
     <p><span class="emphasis"><em>Processevents Table</em></span></p>
 
@@ -2319,7 +2318,7 @@
 
     <a name="dbm_servicechecks"></a>
 
-    <a class="indexterm" name="id3527911"></a>
+    <a class="indexterm" name="id5241304"></a>
 
     <p><span class="emphasis"><em>Servicechecks Table</em></span></p>
 
@@ -2535,7 +2534,7 @@
 
     <a name="dbm_statehistory"></a>
 
-    <a class="indexterm" name="id3528504"></a>
+    <a class="indexterm" name="id5241897"></a>
 
     <p><span class="emphasis"><em>Statehistory Table</em></span></p>
 
@@ -2682,7 +2681,7 @@
 
     <a name="dbm_systemcommands"></a>
 
-    <a class="indexterm" name="id3528896"></a>
+    <a class="indexterm" name="id5242289"></a>
 
     <p><span class="emphasis"><em>Systemcommands Table</em></span></p>
 
@@ -2818,7 +2817,7 @@
 
     <a name="dbm_timedevents"></a>
 
-    <a class="indexterm" name="id3529253"></a>
+    <a class="indexterm" name="id5242646"></a>
 
     <p><span class="emphasis"><em>Timedevents Table</em></span></p>
 
@@ -2954,10 +2953,10 @@
 
   <div class="section" title="Current Status Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3529592"></a><a name="dbm_cu"></a> Current Status Tables</h3></div></div></div>
+<a name="id5242986"></a><a name="dbm_cu"></a> Current Status Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id3529605"></a>
+    <a class="indexterm" name="id5236337"></a>
 
     <p>There are several tables in the database which are used to hold current status information on the Icinga process and all
     hosts and services that it is monitoring. Entries in these tables are cleared whenever the Icinga daemon (belonging to the same
@@ -2996,7 +2995,7 @@
     related) is not shown.</p>
 
     <div class="figure">
-<a name="id3529636"></a><p class="title"><b>Figure 11.17. Relationship of Current Status Tables</b></p>
+<a name="id5243122"></a><p class="title"><b>Figure 12.17. Relationship of Current Status Tables</b></p>
 <div class="figure-contents">
       
 
@@ -3007,7 +3006,7 @@
 
     <a name="dbm_comments"></a>
 
-    <a class="indexterm" name="id3529753"></a>
+    <a class="indexterm" name="id5243143"></a>
 
     <p><span class="emphasis"><em>Comments Table</em></span></p>
 
@@ -3167,7 +3166,7 @@
 
     <a name="dbm_customvariablestatus"></a>
 
-    <a class="indexterm" name="id3530182"></a>
+    <a class="indexterm" name="id5243577"></a>
 
     <p><span class="emphasis"><em>Customvariablestatus Table</em></span></p>
 
@@ -3272,7 +3271,7 @@
 
     <a name="dbm_hoststatus"></a>
 
-    <a class="indexterm" name="id3530451"></a>
+    <a class="indexterm" name="id5243842"></a>
 
     <p><span class="emphasis"><em>Hoststatus Table</em></span></p>
 
@@ -3287,7 +3286,6 @@
 <col>
 <col>
 <col>
-<col>
 </colgroup>
 <tbody>
 <tr>
@@ -3296,7 +3294,6 @@
 <td>Notes</td>
 <td>Values</td>
 <td>Key</td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>hoststatus_id</td>
@@ -3304,7 +3301,6 @@
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>instance_id</td>
@@ -3312,7 +3308,6 @@
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>host_object_id</td>
@@ -3320,7 +3315,6 @@
 <td>The object id of the host this status entry is associated with</td>
 <td> </td>
 <td>U1</td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>status_update_time</td>
@@ -3328,7 +3322,6 @@
 <td>Date and time the status data was updated</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>output</td>
@@ -3336,7 +3329,6 @@
 <td>Plugin output from the latest host check</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>perfdata</td>
@@ -3344,7 +3336,6 @@
 <td>Performance data from the latest host check</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>current_state</td>
@@ -3352,7 +3343,6 @@
 <td>Number indicating the current state of the host</td>
 <td>0 = UP; 1 = DOWN; 2 = UNREACHABLE</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>has_been_checked</td>
@@ -3360,7 +3350,6 @@
 <td>Number indicating whether or not the host has been checked yet</td>
 <td>0 = Not checked; 1 = Checked</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>should_be_scheduled</td>
@@ -3368,7 +3357,6 @@
 <td>Number indicating whether or not checks should be regularly scheduled for this host</td>
 <td>0 = Not scheduled; 1 = Scheduled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>current_check_attempt</td>
@@ -3376,7 +3364,6 @@
 <td>Number indicating the current check attempt of the host. This is only interesting during soft host states</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>max_check_attempts</td>
@@ -3384,7 +3371,6 @@
 <td>Number indicating how many maximum check attempts will be made to determine the hard state of the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_check</td>
@@ -3392,7 +3378,6 @@
 <td>Time the host was last checked</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>next_check</td>
@@ -3401,7 +3386,6 @@
               check</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>check_type</td>
@@ -3409,7 +3393,6 @@
 <td>Number indicating if the last host check was an active or passive check</td>
 <td>0 = Active; 1 = Passive</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_state_change</td>
@@ -3417,7 +3400,6 @@
 <td>Time the host last had a hard or soft state change. Will be set to the epoch if the host has not changed state</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_hard_state_change</td>
@@ -3425,7 +3407,6 @@
 <td>The host last had a hard state change. Will be setup to the epoch if the host has not changed state</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_time_up</td>
@@ -3433,7 +3414,6 @@
 <td>Time the host was last in an UP state (if ever)</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_time_down</td>
@@ -3441,7 +3421,6 @@
 <td>Time the host was last in a DOWN state (if ever)</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_time_unreachable</td>
@@ -3449,7 +3428,6 @@
 <td>Time the host was last in an UNREACHABLE state (if ever)</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>state_type</td>
@@ -3457,7 +3435,6 @@
 <td>Number indicating the type of state the host is in</td>
 <td>0 = SOFT state; 1 = HARD state</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_notification</td>
@@ -3465,7 +3442,6 @@
 <td>Time a notification was last sent out for the host (if ever)</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>next_notification</td>
@@ -3473,7 +3449,6 @@
 <td>Next possible time that a notification can be sent out for the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>no_more_notifications</td>
@@ -3481,7 +3456,6 @@
 <td>Number indicating whether or not more notifications can be sent out about the current host problem</td>
 <td>0 = Send notifications; 1 = Do not send notifications</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>notifications_enabled</td>
@@ -3489,7 +3463,6 @@
 <td>Number indicating whether or not notifications are enabled for this host</td>
 <td>0 = Notifications disabled; 1 = Notifications enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>problem_has_been_acknowledged</td>
@@ -3497,7 +3470,6 @@
 <td>Number indicating whether or not the current host problem has been acknowledged</td>
 <td>0 = Not acknowledged; 1 = Acknowledged</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>acknowledgement_type</td>
@@ -3505,7 +3477,6 @@
 <td>Number indicating the type of acknowledgement associated with the host</td>
 <td>0 = None; 1 = Normal; 2 = Sticky</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>current_notification_number</td>
@@ -3514,7 +3485,6 @@
               host recovers</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>passive_checks_enabled</td>
@@ -3522,7 +3492,6 @@
 <td>Number indicating whether or not passive checks are enabled for this host</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>active_checks_enabled</td>
@@ -3530,7 +3499,6 @@
 <td>Number indicating whether or not active checks are enabled for this host</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>event_handler_enabled</td>
@@ -3538,7 +3506,6 @@
 <td>Number indicating whether or not the host's event handler is enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>flap_detection_enabled</td>
@@ -3546,14 +3513,12 @@
 <td>Number indicating whether or not flap detection is enabled for this host</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>is_flapping</td>
 <td>SMALLINT</td>
 <td>Number indicating whether or not the host is currently flapping</td>
 <td>0 = Not flapping; 1 = Flapping</td>
-<td> </td>
 <td> </td>
 </tr>
 <tr>
@@ -3562,7 +3527,6 @@
 <td>Number indicating the current percent state change (a measure of stability/volatility) for the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>latency</td>
@@ -3571,7 +3535,6 @@
               the time it was actually checked</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>execution_time</td>
@@ -3579,7 +3542,6 @@
 <td>Number of seconds it took to perform the last check of the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>scheduled_downtime_depth</td>
@@ -3587,7 +3549,6 @@
 <td>Number indicating how many periods of scheduled</td>
 <td>0 = Not in scheduled dowtime downtime are currently active for this host; &gt;0 = In scheduled downtime</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>failure_prediction_enabled</td>
@@ -3595,7 +3556,6 @@
 <td>Number indicating whether or not failure prediction (not yet implemented) is enabled for this host</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>process_performance_data</td>
@@ -3603,7 +3563,6 @@
 <td>Number indicating whether or not performance data should be processed for this host</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>obsess_over_host</td>
@@ -3611,7 +3570,6 @@
 <td>Number indicating whether or not this host should be obsessed over</td>
 <td>0 = Do not obsess; 1 = Obsess</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>modified_host_attributes</td>
@@ -3620,7 +3578,6 @@
               routines</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>event_handler</td>
@@ -3628,7 +3585,6 @@
 <td>The current event handler command associated with the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>check_command</td>
@@ -3636,7 +3592,6 @@
 <td>The current check command associated with the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>normal_check_interval</td>
@@ -3644,7 +3599,6 @@
 <td>Number of seconds between normal checks of the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>retry_check_interval</td>
@@ -3652,7 +3606,6 @@
 <td>Number of seconds between retry checks of the host</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>check_timeperiod_object_id</td>
@@ -3660,7 +3613,6 @@
 <td>Unique number of the timeperiod object currently used for determining times the host can be checked</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 </tbody>
 </table>
@@ -3696,7 +3648,7 @@
 
     <a name="dbm_programstatus"></a>
 
-    <a class="indexterm" name="id3531529"></a>
+    <a class="indexterm" name="id5244919"></a>
 
     <p><span class="emphasis"><em>Programstatus Table</em></span></p>
 
@@ -3711,7 +3663,6 @@
 <col>
 <col>
 <col>
-<col>
 </colgroup>
 <tbody>
 <tr>
@@ -3720,7 +3671,6 @@
 <td>Notes</td>
 <td>Values</td>
 <td>Key</td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>programstatus_id</td>
@@ -3728,7 +3678,6 @@
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>instance_id</td>
@@ -3736,7 +3685,6 @@
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>U1</td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>status_update_time</td>
@@ -3744,7 +3692,6 @@
 <td>Date and time the status of the process was last updated</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>program_start_time</td>
@@ -3752,7 +3699,6 @@
 <td>Date and time the Icinga process was started</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>program_end_time</td>
@@ -3760,14 +3706,12 @@
 <td>Date and time the Icinga process as stopped (if currently not running)</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>is_currently_running</td>
 <td>SMALLINT</td>
 <td>Indicates whether or not the Icinga process is currently running</td>
 <td>0 = Process is not running; 1 = Process is running</td>
-<td> </td>
 <td> </td>
 </tr>
 <tr>
@@ -3776,14 +3720,12 @@
 <td>The processed ID (PID) of the Icinga process</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>daemon_mode</td>
 <td>SMALLINT</td>
 <td>Indicates whether Icinga is running as a foreground process or a daemon</td>
 <td>0 = Foreground process; 1 = Daemon</td>
-<td> </td>
 <td> </td>
 </tr>
 <tr>
@@ -3792,7 +3734,6 @@
 <td>Date and time the Icinga process last checked external commands</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>last_log_rotation</td>
@@ -3800,14 +3741,12 @@
 <td>Date and time the log file was last rotated (if at all)</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>notifications_enabled</td>
 <td>SMALLINT</td>
 <td>Indicates whether or not notifications are enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
-<td> </td>
 <td> </td>
 </tr>
 <tr>
@@ -3816,7 +3755,6 @@
 <td>Indicates whether or not active service checks are enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>passive_service_checks_enabled</td>
@@ -3824,7 +3762,6 @@
 <td>Indicates whether or not passive service checks are enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>active_host_checks_enabled</td>
@@ -3832,7 +3769,6 @@
 <td>Indicates whether or not active host checks are enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>passive_host_checks_enabled</td>
@@ -3840,7 +3776,6 @@
 <td>Indicates whether or not passive host checks are enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>event_handlers_enabled</td>
@@ -3848,7 +3783,6 @@
 <td>Indicates whether or not event handlers are enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>flap_detection_enabled</td>
@@ -3856,7 +3790,6 @@
 <td>Indicates whether or not flap detection is enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>failure_prediction_enabled</td>
@@ -3864,7 +3797,6 @@
 <td>Indicates whether or not failure prediction is enabled</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>process_performance_data</td>
@@ -3872,7 +3804,6 @@
 <td>Indicates whether or not performance data is enabled/being processed</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>obsess_over_hosts</td>
@@ -3880,7 +3811,6 @@
 <td>Indicates whether or not hosts are being obsessed over</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>obsess_over_services</td>
@@ -3888,7 +3818,6 @@
 <td>Indicates whether or not services are being obsessed over</td>
 <td>0 = Disabled; 1 = Enabled</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>modified_host_attributes</td>
@@ -3896,7 +3825,6 @@
 <td>Indicates what (if any) host-related program status variables have been modified during runtime</td>
 <td>See Icinga source code for values</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>modified_service_attributes</td>
@@ -3904,7 +3832,6 @@
 <td>Indicates what (if any) service-related program status variables have been modified during runtime</td>
 <td>See Icinga source code for values</td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>global_host_event_handler</td>
@@ -3912,7 +3839,6 @@
 <td>Text field indicating the current global host event handler command that is being used.</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 <tr>
 <td>global_service_event_handlers</td>
@@ -3920,7 +3846,6 @@
 <td>Text field indicating the current global service event handler command that is being used</td>
 <td> </td>
 <td> </td>
-<td class="auto-generated"> </td>
 </tr>
 </tbody>
 </table>
@@ -3948,7 +3873,7 @@
 
     <a name="dbm_runtimevariables"></a>
 
-    <a class="indexterm" name="id3532176"></a>
+    <a class="indexterm" name="id5245557"></a>
 
     <p><span class="emphasis"><em>Runtimevariables Table</em></span></p>
 
@@ -4028,7 +3953,7 @@
 
     <a name="dbm_scheduleddowntime"></a>
 
-    <a class="indexterm" name="id3532367"></a>
+    <a class="indexterm" name="id5245748"></a>
 
     <p><span class="emphasis"><em>Scheduleddowntime Table</em></span></p>
 
@@ -4204,7 +4129,7 @@
 
     <a name="dbm_servicestatus"></a>
 
-    <a class="indexterm" name="id3532832"></a>
+    <a class="indexterm" name="id5246212"></a>
 
     <p><span class="emphasis"><em>Servicestatus Table</em></span></p>
 
@@ -4584,7 +4509,7 @@
 
     <a name="dbm_timedeventqueue"></a>
 
-    <a class="indexterm" name="id3533912"></a>
+    <a class="indexterm" name="id5247297"></a>
 
     <p><span class="emphasis"><em>Timedeventqueue Table</em></span></p>
 
@@ -4697,10 +4622,10 @@
 
   <div class="section" title="Configuration Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id3533944"></a><a name="dbm_cf"></a> Configuration Tables</h3></div></div></div>
+<a name="id5247573"></a><a name="dbm_cf"></a> Configuration Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id3522931"></a>
+    <a class="indexterm" name="id5236328"></a>
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -4784,7 +4709,7 @@
         <p><a class="link" href="db_model.html#dbm_serviceescalation_contactgroups">serviceescalation_contactgroups</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="db_model.html#dbm_serviceescalations">serviceescalation</a></p>
+        <p><a class="link" href="db_model.html#dbm_serviceescalations">serviceescalations</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_servicegroup_members">servicegroup_members</a></p>
@@ -4804,7 +4729,7 @@
 </ul></div>
 
     <div class="figure">
-<a name="id3534561"></a><p class="title"><b>Figure 11.18. Relationship of Configuration Tables</b></p>
+<a name="id5247945"></a><p class="title"><b>Figure 12.18. Relationship of Configuration Tables</b></p>
 <div class="figure-contents">
       
 
@@ -4815,7 +4740,7 @@
 
     <a name="dbm_commands"></a>
 
-    <a class="indexterm" name="id3534581"></a>
+    <a class="indexterm" name="id5247965"></a>
 
     <p><span class="emphasis"><em>Commands Table</em></span></p>
 
@@ -4880,7 +4805,7 @@
 
     <a name="dbm_configfiles"></a>
 
-    <a class="indexterm" name="id3534747"></a>
+    <a class="indexterm" name="id5248130"></a>
 
     <p><span class="emphasis"><em>Configfiles Table</em></span></p>
 
@@ -4938,7 +4863,7 @@
 
     <a name="dbm_configfilevariables"></a>
 
-    <a class="indexterm" name="id3534896"></a>
+    <a class="indexterm" name="id5248279"></a>
 
     <p><span class="emphasis"><em>Configfilevariables Table</em></span></p>
 
@@ -5003,7 +4928,7 @@
 
     <a name="dbm_contact_addresses"></a>
 
-    <a class="indexterm" name="id3535060"></a>
+    <a class="indexterm" name="id5248443"></a>
 
     <p><span class="emphasis"><em>Contact_addresses Table</em></span></p>
 
@@ -5068,7 +4993,7 @@
 
     <a name="dbm_contact_notificationcommands"></a>
 
-    <a class="indexterm" name="id3535226"></a>
+    <a class="indexterm" name="id5248609"></a>
 
     <p><span class="emphasis"><em>Contact_notificationcommands Table</em></span></p>
 
@@ -5140,7 +5065,7 @@
 
     <a name="dbm_contactgroup_members"></a>
 
-    <a class="indexterm" name="id3535414"></a>
+    <a class="indexterm" name="id5248797"></a>
 
     <p><span class="emphasis"><em>Contactgroup_members Table</em></span></p>
 
@@ -5198,7 +5123,7 @@
 
     <a name="dbm_contactgroups"></a>
 
-    <a class="indexterm" name="id3535562"></a>
+    <a class="indexterm" name="id5248945"></a>
 
     <p><span class="emphasis"><em>Contactgroups Table</em></span></p>
 
@@ -5263,7 +5188,7 @@
 
     <a name="dbm_contactnotificationmethods"></a>
 
-    <a class="indexterm" name="id3535729"></a>
+    <a class="indexterm" name="id5249113"></a>
 
     <p><span class="emphasis"><em>Contactnotificationmethods Table</em></span></p>
 
@@ -5356,7 +5281,7 @@
 
     <a name="dbm_contacts"></a>
 
-    <a class="indexterm" name="id3535973"></a>
+    <a class="indexterm" name="id5249357"></a>
 
     <p><span class="emphasis"><em>Contacts Table</em></span></p>
 
@@ -5547,7 +5472,7 @@
 
     <a name="dbm_customvariables"></a>
 
-    <a class="indexterm" name="id3536527"></a>
+    <a class="indexterm" name="id5249911"></a>
 
     <p><span class="emphasis"><em>customvariables Table</em></span></p>
 
@@ -5626,7 +5551,7 @@
 
     <a name="dbm_host_contactgroups"></a>
 
-    <a class="indexterm" name="id3536735"></a>
+    <a class="indexterm" name="id5250119"></a>
 
     <p><span class="emphasis"><em>Host_contactgroups Table</em></span></p>
 
@@ -5684,7 +5609,7 @@
 
     <a name="dbm_hostescalation_contactgroups"></a>
 
-    <a class="indexterm" name="id3536882"></a>
+    <a class="indexterm" name="id5250268"></a>
 
     <p><span class="emphasis"><em>Hostescalation_contactgroups Table</em></span></p>
 
@@ -5742,7 +5667,7 @@
 
     <a name="dbm_host_parenthosts"></a>
 
-    <a class="indexterm" name="id3537031"></a>
+    <a class="indexterm" name="id5250415"></a>
 
     <p><span class="emphasis"><em>Host_parenthosts Table</em></span></p>
 
@@ -5800,7 +5725,7 @@
 
     <a name="dbm_hostdependencies"></a>
 
-    <a class="indexterm" name="id3537179"></a>
+    <a class="indexterm" name="id5250564"></a>
 
     <p><span class="emphasis"><em>Hostdependencies Table</em></span></p>
 
@@ -5907,7 +5832,7 @@
 
     <a name="dbm_hostescalations"></a>
 
-    <a class="indexterm" name="id3537482"></a>
+    <a class="indexterm" name="id5250867"></a>
 
     <p><span class="emphasis"><em>Hostescalations Table</em></span></p>
 
@@ -6014,7 +5939,7 @@
 
     <a name="dbm_hostgroup_members"></a>
 
-    <a class="indexterm" name="id3537767"></a>
+    <a class="indexterm" name="id5251151"></a>
 
     <p><span class="emphasis"><em>Hostgroup_members Table</em></span></p>
 
@@ -6072,7 +5997,7 @@
 
     <a name="dbm_hostgroups"></a>
 
-    <a class="indexterm" name="id3537913"></a>
+    <a class="indexterm" name="id5251298"></a>
 
     <p><span class="emphasis"><em>Hostgroups Table</em></span></p>
 
@@ -6137,7 +6062,7 @@
 
     <a name="dbm_hosts"></a>
 
-    <a class="indexterm" name="id3538079"></a>
+    <a class="indexterm" name="id5251465"></a>
 
     <p><span class="emphasis"><em>Hosts Table</em></span></p>
 
@@ -6573,7 +6498,7 @@
 
     <a name="dbm_service_contactgroups"></a>
 
-    <a class="indexterm" name="id3538128"></a>
+    <a class="indexterm" name="id5251514"></a>
 
     <p><span class="emphasis"><em>Service_contactgroups Table</em></span></p>
 
@@ -6631,7 +6556,7 @@
 
     <a name="dbm_servicedependencies"></a>
 
-    <a class="indexterm" name="id3539386"></a>
+    <a class="indexterm" name="id5252770"></a>
 
     <p><span class="emphasis"><em>Servicedependencies Table</em></span></p>
 
@@ -6745,7 +6670,7 @@
 
     <a name="dbm_serviceescalation_contactgroups"></a>
 
-    <a class="indexterm" name="id3539694"></a>
+    <a class="indexterm" name="id5253077"></a>
 
     <p><span class="emphasis"><em>Serviceescalation_contactgroups Table</em></span></p>
 
@@ -6803,7 +6728,7 @@
 
     <a name="dbm_serviceescalations"></a>
 
-    <a class="indexterm" name="id3539841"></a>
+    <a class="indexterm" name="id5253224"></a>
 
     <p><span class="emphasis"><em>Serviceescalations Table</em></span></p>
 
@@ -6917,7 +6842,7 @@
 
     <a name="dbm_servicegroup_members"></a>
 
-    <a class="indexterm" name="id3540143"></a>
+    <a class="indexterm" name="id5253527"></a>
 
     <p><span class="emphasis"><em>Servicegroup_members Table</em></span></p>
 
@@ -6975,7 +6900,7 @@
 
     <a name="dbm_servicegroups"></a>
 
-    <a class="indexterm" name="id3540290"></a>
+    <a class="indexterm" name="id5253674"></a>
 
     <p><span class="emphasis"><em>Servicegroups Table</em></span></p>
 
@@ -7040,7 +6965,7 @@
 
     <a name="dbm_services"></a>
 
-    <a class="indexterm" name="id3540458"></a>
+    <a class="indexterm" name="id5253842"></a>
 
     <p><span class="emphasis"><em>Services Table</em></span></p>
 
@@ -7427,7 +7352,7 @@
 
     <a name="dbm_timeperiod_timeranges"></a>
 
-    <a class="indexterm" name="id3540509"></a>
+    <a class="indexterm" name="id5253893"></a>
 
     <p><span class="emphasis"><em>Timeperiod_timeranges Table</em></span></p>
 
@@ -7499,7 +7424,7 @@
 
     <a name="dbm_timeperiods"></a>
 
-    <a class="indexterm" name="id3541670"></a>
+    <a class="indexterm" name="id5255054"></a>
 
     <p><span class="emphasis"><em>Timeperiods Table</em></span></p>
 
@@ -7569,7 +7494,7 @@
 <tr>
 <td width="40%" align="left">
 <a accesskey="p" href="db_example-configs.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
+<td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td>
 <td width="40%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
 </td>
 </tr>

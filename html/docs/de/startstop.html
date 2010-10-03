@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Icinga starten und stoppen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Icinga, Linux">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
 <link rel="up" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prüfen">
 <link rel="prev" href="verifyconfig.html" title="Überprüfen Ihrer Icinga-Konfiguration">
@@ -107,15 +107,31 @@
     </li>
 </ol></div>
 
+  <p><span class="bold"><strong>Protokoll-Einstellungen in /usr/local/icinga/etc/icinga.cfg</strong></span></p>
+
+  <p>Einstellungen für den Daemon:</p>
+
+  <p>Definiert ob Nachrichten in die Daemon Logdatei geschrieben werden sollen (gewöhnlich nach icinga.log). Der Standardwert ist 1 (ja),
+  setzen des Wertes auf 0 (nein) verhindert den Log der Nachrichten. </p>
+<pre class="programlisting">use_daemon_log=0/1</pre>
+
+  <p>Einstellungen für den Syslog-Dienst:</p>
+
+  <p>Wenn Sie möchten, dass Icinga Meldungen an den Syslog-Dienst übergibt, setzen Sie diese Einstellung auf 1. </p>
+<pre class="programlisting">use_syslog=0/1</pre>
+<p>Diese
+  Option kann zusätzlich zur use_daemon_log-Option verwendet werden.</p>
+
   <p><span class="bold"><strong>Verschiedene Optionen</strong></span></p>
 
   <p>Falls Sie große Verzögerungen zwischen dem Start von Icinga und den ersten Prüfungen feststellen, dann gibt es verschiedene
   Optionen, die <a class="link" href="faststartup.html" title="Schnellstart-Optionen">hier</a> näher beschrieben sind. Dort finden Sie auch die Option -S, die nähere Informationen
   zur Scheduling Queue ausgibt.</p>
 
-  <a class="indexterm" name="id1925517"></a>
+  <a class="indexterm" name="id2785990"></a>
 
-  <a class="indexterm" name="id1925527"></a>
+  <a class="indexterm" name="id2786000"></a>
+<a class="indexterm" name="id2786013"></a>
 </div>
 <div class="navfooter">
 <hr>

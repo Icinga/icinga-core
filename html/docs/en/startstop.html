@@ -106,6 +106,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>Web-Interface:</strong></span> You can stop Icinga using the Web-Interface Click on the "Process Info"
       navigation link and select "Shutdown the Icinga Process"</p>
+
       <p><span class="inlinemediaobject"><img src="../images/stoprestart.png"></span></p>
     </li>
 <li class="listitem">
@@ -114,13 +115,29 @@
     </li>
 </ol></div>
 
+  <p><span class="bold"><strong>Loggin Options in /usr/local/icinga/etc/icinga.cfg</strong></span></p>
+
+  <p>Logging options for daemon:</p>
+
+  <p>If you want messages to be logged to the daemon log file (usually icinga.log). Default option is 1 (yes), the other valid option is
+  0 (no) </p>
+<pre class="programlisting">use_daemon_log=0/1</pre>
+
+  <p>Logging options for syslog:</p>
+
+  <p>If you want messages to be logged to the syslog facility, as well as the Icinga log file set this option to 1. If not, set it
+  to 0.</p>
+<pre class="programlisting">use_syslog=0/1</pre>
+
   <p><span class="bold"><strong>Miscellaneous options</strong></span></p>
 
   <p>If you experience long delays between starting Icinga and the first checks you can use several other options which are shown
   <a class="link" href="faststartup.html" title="Fast Startup Options">here</a>. How to have a look at the scheduling queue (-S) is described there as well.</p>
 
-  <a class="indexterm" name="id3473804"></a>
-  <a class="indexterm" name="id3473812"></a>
+  <a class="indexterm" name="id5180478"></a>
+
+  <a class="indexterm" name="id5180489"></a>
+<a class="indexterm" name="id5180502"></a>
 </div>
 <div class="navfooter">
 <hr>
