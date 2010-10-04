@@ -177,6 +177,7 @@ extern "C" {
 #define FLAPPING_ICON			"flapping.gif"
 #define SCHEDULED_DOWNTIME_ICON		"downtime.gif"
 #define EMPTY_ICON			"empty.gif"
+#define CMD_STOP_ICON			"cmd_stop.png"
 
 #define ACTIVE_ICON			"active.gif"
 #define ACTIVE_ICON_ALT			"Active Mode"

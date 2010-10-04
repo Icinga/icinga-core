@@ -958,6 +958,9 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("</script>\n");
 */
 		/* Javascript lib to show tooltips */
+	}
+
+	if(cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID) {
 		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n",url_js_path,SKINNYTIP_JS);
 		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
 	}

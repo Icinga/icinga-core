@@ -15,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -41,29 +41,44 @@ extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char command_file[MAX_FILENAME_LENGTH];
 extern char comment_file[MAX_FILENAME_LENGTH];
 
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
-
-extern int  nagios_process_state;
-
 extern int  check_external_commands;
-
 extern int  use_authentication;
-
 extern int  lock_author_names;
-
 extern int  persistent_ack_comments;
-
 extern int  log_external_commands_user;
+
+extern int  content_type;
+extern int  display_header;
+extern int  daemon_check;
+
+extern int date_format;
 
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
 
-extern int date_format;
+#define MAX_AUTHOR_LENGTH		64
+#define MAX_COMMENT_LENGTH		1024
 
-#define MAX_AUTHOR_LENGTH	64
-#define MAX_COMMENT_LENGTH	1024
-
+#define PRINT_COMMON_HEADER		1
+#define PRINT_AUTHOR			2
+#define PRINT_STICKY_ACK		3
+#define PRINT_PERSISTENT		4
+#define PRINT_SEND_NOTFICATION		5
+#define PRINT_COMMENT_BOX		6
+#define PRINT_NOTIFICATION_DELAY	7
+#define PRINT_START_TIME		8
+#define PRINT_END_TIME			9
+#define PRINT_CHECK_TIME		10
+#define PRINT_FORCE_CHECK		11
+#define PRINT_CHECK_OUTPUT_BOX		12
+#define PRINT_PERFORMANCE_DATA_BOX	13
+#define PRINT_FIXED_FLEXIBLE_TYPE	14
+#define PRINT_BROADCAST_NOTIFICATION	15
+#define PRINT_FORCE_NOTIFICATION	16
+#define PRINT_HOST_LIST			17
+#define PRINT_SERVICE_LIST		18
+#define PRINT_COMMENT_LIST		19
+#define PRINT_DOWNTIME_LIST		20
 
 char *host_name="";
 char *hostgroup_name="";
@@ -74,8 +89,8 @@ char *comment_data="";
 char *start_time_string="";
 char *end_time_string="";
 
-unsigned long comment_id=0;
-unsigned long downtime_id=0;
+char help_text[MAX_INPUT_BUFFER]="";
+
 int notification_delay=0;
 int schedule_delay=0;
 int persistent_comment=FALSE;
@@ -99,18 +114,20 @@ int broadcast_notification=0;
 int command_type=CMD_NONE;
 int command_mode=CMDMODE_REQUEST;
 
-extern int content_type;
-extern int display_header;
-extern int daemon_check;
-
 authdata current_authdata;
 
-void show_command_help(int);
 void request_command_data(int);
 void commit_command_data(int);
 int commit_command(int);
 int write_command_to_file(char *);
 void clean_comment_data(char *);
+
+void print_form_element(int,int);
+void print_object_list(int);
+void print_help_box(char *);
+
+void check_comment_sanity(int*);
+void check_time_sanity(int*);
 
 int process_cgivars(void);
 
@@ -125,13 +142,25 @@ struct hostlist {
 	char *description;
 };
 
-struct multi_ids {
-	unsigned long id;
+/* store the errors we find during processing */
+struct errorlist {
+	char *message;
 };
 
 /* Initialize the struct */
 struct hostlist commands[NUMBER_OF_STRUCTS];
-struct multi_ids multi_ids[NUMBER_OF_STRUCTS];
+
+/* initialze the error list */
+struct errorlist error[NUMBER_OF_STRUCTS];
+
+/* Hold IDs of comments and downtimes */
+unsigned long multi_ids[NUMBER_OF_STRUCTS];
+
+/* store the authentication status when data gets checked to submited */
+short is_authorized[NUMBER_OF_STRUCTS];
+
+/* store the result of each object which get submited */
+short submit_result[NUMBER_OF_STRUCTS];
 
 int CGI_ID=CMD_CGI_ID;
 
@@ -155,7 +184,7 @@ int main(void){
 			cgi_config_file_error(get_cgi_config_location());
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
@@ -167,7 +196,7 @@ int main(void){
 			main_config_file_error(main_config_file);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* This requires the date_format parameter in the main config file */
 	if (strcmp(start_time_string,""))
@@ -187,7 +216,7 @@ int main(void){
 			object_data_error();
 		document_footer(CGI_ID);
 		return ERROR;
-                }
+	}
 
 	document_header(CGI_ID,TRUE);
 
@@ -195,6 +224,9 @@ int main(void){
 	get_authentication_information(&current_authdata);
 
 	if(display_header==TRUE){
+
+		/* Giving credits to stop.png image source */
+		printf("\n<!-- Image \"stop.png\" has been taken from \"http://fedoraproject.org/wiki/Template:Admon/caution\" -->\n\n");
 
 		/* begin top table */
 		printf("<table border=0 width=100%%>\n");
@@ -223,15 +255,20 @@ int main(void){
 		/* end of top table */
 		printf("</tr>\n");
 		printf("</table>\n");
-	        }
+	}
 
 	/* if no command was specified... */
 	if(command_type==CMD_NONE){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: No command specified!</p>\n");
-		else
-			printf("<P><DIV CLASS='errorMessage'>Error: No command was specified</DIV></P>\n");
-                }
+		else {
+			printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td class='errorMessage'>Error: No command was specified</td></tr></table></DIV>\n");
+			printf("</DIV>\n");
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		}
+	}
 
 	/* if this is the first request for a command, present option */
 	else if(command_mode==CMDMODE_REQUEST)
@@ -248,13 +285,12 @@ int main(void){
 	free_object_data();
 
 	return OK;
-        }
+}
 
 int process_cgivars(void){
 	char **variables;
 	int error=FALSE;
 	int x;
-	int y;
 	int z = 0;
 
 	variables=getcgivars();
@@ -266,7 +302,7 @@ int process_cgivars(void){
 		if(strlen(variables[x])>=MAX_INPUT_BUFFER-1){
 			x++;
 			continue;
-		        }
+		}
 
 		/* we found the command type */
 		else if(!strcmp(variables[x],"cmd_typ")){
@@ -274,10 +310,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			command_type=atoi(variables[x]);
-		        }
+		}
 
 		/* we found the command mode */
 		else if(!strcmp(variables[x],"cmd_mod")){
@@ -285,10 +321,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			command_mode=atoi(variables[x]);
-		        }
+		}
 
 		/* we found a comment id or a downtime id*/
 		else if(!strcmp(variables[x],"com_id") || !strcmp(variables[x],"down_id")){
@@ -296,11 +332,11 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
-			multi_ids[z].id=strtoul(variables[x],NULL,10);
+			multi_ids[z]=strtoul(variables[x],NULL,10);
 			z++;
-		        }
+		}
 
 		/* we found the notification delay */
 		else if(!strcmp(variables[x],"not_dly")){
@@ -308,10 +344,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			notification_delay=atoi(variables[x]);
-		        }
+		}
 
 		/* we found the schedule delay */
 		else if(!strcmp(variables[x],"sched_dly")){
@@ -319,10 +355,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			schedule_delay=atoi(variables[x]);
-		        }
+		}
 
 		/* we found the comment author */
 		else if(!strcmp(variables[x],"com_author")){
@@ -330,12 +366,12 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((comment_author=(char *)strdup(variables[x]))==NULL)
 				comment_author="";
 			strip_html_brackets(comment_author);
-			}
+		}
 
 		/* we found the comment data */
 		else if(!strcmp(variables[x],"com_data")){
@@ -343,12 +379,12 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((comment_data=(char *)strdup(variables[x]))==NULL)
 				comment_data="";
 			strip_html_brackets(comment_data);
-			}
+		}
 
 		/* we found the host name */
 		else if(!strcmp(variables[x],"host")){
@@ -356,16 +392,17 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((host_name=(char *)strdup(variables[x]))==NULL)
 				host_name="";
-			strip_html_brackets(host_name);
+			else {
+				strip_html_brackets(host_name);
 
-			/* Store hostname in struct */
-			y = x;
-			commands[y].host_name = host_name;
+				/* Store hostname in struct */
+				commands[x].host_name = host_name;
 			}
+		}
 
 		/* we found the hostgroup name */
 		else if(!strcmp(variables[x],"hostgroup")){
@@ -373,12 +410,12 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+				}
 
 			if((hostgroup_name=(char *)strdup(variables[x]))==NULL)
 				hostgroup_name="";
 			strip_html_brackets(hostgroup_name);
-			}
+		}
 
 		/* we found the service name */
 		else if(!strcmp(variables[x],"service")){
@@ -386,16 +423,17 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((service_desc=(char *)strdup(variables[x]))==NULL)
 				service_desc="";
-			strip_html_brackets(service_desc);
+			else {
+				strip_html_brackets(service_desc);
 
-                        /* Store service description in struct */
-                        y = x - 2;
-                        commands[y].description = service_desc;
+				/* Store service description in struct */
+				commands[(x-2)].description = service_desc;
 			}
+		}
 
 		/* we found the servicegroup name */
 		else if(!strcmp(variables[x],"servicegroup")){
@@ -403,12 +441,12 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((servicegroup_name=(char *)strdup(variables[x]))==NULL)
 				servicegroup_name="";
 			strip_html_brackets(servicegroup_name);
-			}
+		}
 
 		/* we got the persistence option for a comment */
 		else if(!strcmp(variables[x],"persistent"))
@@ -440,10 +478,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			fixed=(atoi(variables[x])>0)?TRUE:FALSE;
-		        }
+		}
 
 		/* we got the triggered by downtime option */
 		else if(!strcmp(variables[x],"trigger")){
@@ -451,10 +489,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			triggered_by=strtoul(variables[x],NULL,10);
-		        }
+		}
 
 		/* we got the child options */
 		else if(!strcmp(variables[x],"childoptions")){
@@ -462,10 +500,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			child_options=atoi(variables[x]);
-		        }
+		}
 
 		/* we found the plugin output */
 		else if(!strcmp(variables[x],"plugin_output")){
@@ -473,16 +511,15 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			/* protect against buffer overflows */
 			if(strlen(variables[x])>=MAX_INPUT_BUFFER-1){
 				error=TRUE;
 				break;
-			        }
-			else
+			} else
 				strcpy(plugin_output,variables[x]);
-			}
+		}
 
 		/* we found the performance data */
 		else if(!strcmp(variables[x],"performance_data")){
@@ -490,16 +527,15 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			/* protect against buffer overflows */
 			if(strlen(variables[x])>=MAX_INPUT_BUFFER-1){
 				error=TRUE;
 				break;
-			        }
-			else
+			} else
 				strcpy(performance_data,variables[x]);
-			}
+		}
 
 		/* we found the plugin state */
 		else if(!strcmp(variables[x],"plugin_state")){
@@ -507,10 +543,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			plugin_state=atoi(variables[x]);
-		        }
+		}
 
 		/* we found the hour duration */
 		else if(!strcmp(variables[x],"hours")){
@@ -518,14 +554,14 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if(atoi(variables[x])<0){
 				error=TRUE;
 				break;
-			        }
+			}
 			duration+=(unsigned long)(atoi(variables[x])*3600);
-		        }
+		}
 
 		/* we found the minute duration */
 		else if(!strcmp(variables[x],"minutes")){
@@ -533,14 +569,14 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if(atoi(variables[x])<0){
 				error=TRUE;
 				break;
-			        }
+			}
 			duration+=(unsigned long)(atoi(variables[x])*60);
-		        }
+		}
 
 		/* we found the start time */
 		else if(!strcmp(variables[x],"start_time")){
@@ -548,14 +584,14 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			start_time_string=(char *)malloc(strlen(variables[x])+1);
 			if(start_time_string==NULL)
 				start_time_string="";
 			else
 				strcpy(start_time_string,variables[x]);
-		        }
+		}
 
 		/* we found the end time */
 		else if(!strcmp(variables[x],"end_time")){
@@ -563,14 +599,14 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			end_time_string=(char *)malloc(strlen(variables[x])+1);
 			if(end_time_string==NULL)
 				end_time_string="";
 			else
 				strcpy(end_time_string,variables[x]);
-		        }
+		}
 
 		/* we found the content type argument */
 		else if(!strcmp(variables[x],"content")){
@@ -578,14 +614,13 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 			if(!strcmp(variables[x],"wml")){
 				content_type=WML_CONTENT;
 				display_header=FALSE;
-			        }
-			else
+			} else
 				content_type=HTML_CONTENT;
-		        }
+		}
 
 		/* we found the forced notification option */
 		else if(!strcmp(variables[x],"force_notification"))
@@ -599,26 +634,285 @@ int process_cgivars(void){
 		else if(!strcmp(variables[x],"nodaemoncheck"))
 			daemon_check = FALSE;
 
-                }
+		}
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);
 
 	return error;
-        }
+}
 
-void request_command_data(int cmd){
+/* print the list of affected objects */
+void print_object_list(int list_type) {
+	int x = 0;
+	int row_color = 0;
+
+	printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+	printf("<tr CLASS=\"sectionHeader\"><td COLSPAN=\"2\" >Affected Objects</td></tr>\n");
+
+	if(list_type==PRINT_SERVICE_LIST)
+		printf("<tr class=\"objectDescription\"><td width=\"50%%\">Host</td><td width=\"50%%\">Service</td></tr>\n");
+	else
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+
+	for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+
+		if (list_type==PRINT_HOST_LIST || list_type==PRINT_SERVICE_LIST ){
+			if (commands[x].host_name == NULL)
+				continue;
+		} else {
+			if (multi_ids[x] == FALSE)
+				continue;
+		}
+
+		row_color = (row_color==0)?1:0;
+
+		printf("<tr class=\"status%s\"><td width=\"50%%\"",(row_color==0)?"Even":"Odd ");
+		if (list_type==PRINT_SERVICE_LIST){
+			/* if hostname is empty print inputbox instead */
+			if(!strcmp(commands[x].host_name,""))
+				printf("><INPUT TYPE='TEXT' NAME='host' SIZE=30></td>");
+			else
+				printf("><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td>",escape_string(commands[x].host_name),escape_string(commands[x].host_name));
+			/* if service description is empty print inputbox instead */
+			if(!strcmp(commands[x].description,""))
+				printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td></tr>\n");
+			else
+				printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td></tr>\n",escape_string(commands[x].description),escape_string(commands[x].description));
+		} else if (list_type==PRINT_HOST_LIST){
+			/* if hostname is empty print inputbox instead */
+			if(!strcmp(commands[x].host_name,""))
+				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='TEXT' NAME='host' SIZE=30></td></tr>\n");
+			else
+				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td></tr>\n",escape_string(commands[x].host_name),escape_string(commands[x].host_name));
+		} else if (list_type==PRINT_COMMENT_LIST){
+			printf(" style=\"font-weight:bold;\">Comment ID:</td><td><INPUT TYPE='HIDDEN' NAME='com_id' VALUE='%lu'>%lu</td></tr>\n",multi_ids[x],multi_ids[x]);
+		} else if (list_type==PRINT_DOWNTIME_LIST){
+			printf(" style=\"font-weight:bold;\">Scheduled Downtime ID:</td><td><INPUT TYPE='HIDDEN' NAME='down_id' VALUE='%lu'>%lu</td></tr>\n",multi_ids[x],multi_ids[x]);
+		}
+	}
+
+	return;
+}
+
+/* print the mouseover box with help */
+void print_help_box(char *content) {
+
+	printf("<img src='%s%s' onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%%>",url_images_path,CONTEXT_HELP_ICON1);
+	printf("<tr><td>%s</td></tr>",content);
+	printf("</table>', '&nbsp;&nbsp;&nbsp;Help', 'border:1, width:500, xoffset:-250, yoffset:25, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
+	printf(" BORDER=0>");
+	return;
+}
+
+/* templates for the different form elements */
+void print_form_element(int element,int cmd) {
 	time_t t;
 	char start_time[MAX_DATETIME_LENGTH];
 	char buffer[MAX_INPUT_BUFFER];
+
+	switch(element) {
+
+	case PRINT_COMMON_HEADER:
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr><td COLSPAN=\"2\" CLASS='sectionHeader'>Common Data</td></tr>\n");
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		break;
+
+	case PRINT_AUTHOR:
+		printf("<tr><td class=\"objectDescription descriptionleft\">Author (Your Name):</td><td align=\"left\">");
+		if (lock_author_names==TRUE)
+			printf("<INPUT TYPE='HIDDEN' NAME='com_author' VALUE='%s'>%s</td></tr>\n",escape_string(comment_author),escape_string(comment_author));
+		else
+			printf("<INPUT TYPE='INPUT' NAME='com_author' VALUE='%s'></td></tr>\n",escape_string(comment_author));
+		break;
+
+	case PRINT_COMMENT_BOX:
+
+		strcpy(help_text,"If you work with other administrators, you may find it useful to share information about a host/service "
+				 "that is having problems if more than one of you may be working on it. "
+				 "Make sure to enter a brief description of what you are doing.");
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Comment:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<TEXTAREA ID=\"com_data\" NAME='com_data' COLS=25 ROWS=2 onkeyup=\"check_input();\">%s</TEXTAREA>",escape_string(comment_data));
+		printf("<BR><DIV ID='com_data_error' class=\"inputError\" style=\"display:none;\">Comment data can't be send empty</DIV>");
+		printf("</td></tr>\n");
+		break;
+
+	case PRINT_CHECK_OUTPUT_BOX:
+
+		snprintf(help_text,sizeof(help_text),"Fill in the exact output string which sould be sent to %s",PROGRAM_NAME);
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Check Output:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<TEXTAREA ID=\"plugin_output\" NAME='plugin_output' COLS=25 ROWS=2  onkeyup=\"check_input();\"></TEXTAREA>");
+		printf("<BR><DIV ID='plugin_output_error' class=\"inputError\" style=\"display:none;\">Output string can't be send empty</DIV>");
+		printf("</td></tr>\n");
+		break;
+
+	case PRINT_PERFORMANCE_DATA_BOX:
+
+		snprintf(help_text,sizeof(help_text),"Fill in the exact performance data string which sould be sent to %s",PROGRAM_NAME);
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Performance Data:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<TEXTAREA NAME='performance_data' COLS=25 ROWS=2></TEXTAREA></td></tr>\n");
+		break;
+
+	case PRINT_STICKY_ACK:
+
+		strcpy(help_text,"If you want acknowledgement to disable notifications until the host/service recovers, check this option.");
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED></td></tr>\n");
+		break;
+
+	case PRINT_SEND_NOTFICATION:
+
+		strcpy(help_text,"If you do not want an acknowledgement notification sent out to the appropriate contacts, uncheck this option.");
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' CHECKED></td></tr>\n");
+		break;
+
+	case PRINT_PERSISTENT:
+
+		if (cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM)
+			strcpy(help_text,"If you would like the comment to remain once the acknowledgement is removed, check this checkbox.");
+		else {
+			snprintf(help_text,sizeof(help_text),"If you uncheck this option, the comment will automatically be deleted the next time %s is restarted.",PROGRAM_NAME);
+			help_text[sizeof(help_text)-1]='\x0';
+		}
+		printf("<tr><td class=\"objectDescription descriptionleft\">Persistent%s:",(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM)?" Comment":"");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='checkbox' NAME='persistent' %s></td></tr>\n",( persistent_ack_comments==TRUE || cmd==CMD_ADD_HOST_COMMENT || cmd==CMD_ADD_SVC_COMMENT )?"CHECKED":"");
+		break;
+
+	case PRINT_NOTIFICATION_DELAY:
+
+		strcpy(help_text,"The notification delay will be disregarded if the host/service changes state before the next notification is scheduled to be sent out.");
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Notification Delay (minutes from now):");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='TEXT' ID='not_dly' NAME='not_dly' VALUE='%d' SIZE=\"4\">",notification_delay);
+		printf("<BR><DIV ID='not_dly_error' class=\"inputError\" style=\"display:none;\">Notification delay can't be zero</DIV>");
+		printf("</td></tr>\n");
+		break;
+
+	case PRINT_START_TIME:
+	case PRINT_END_TIME:
+	case PRINT_CHECK_TIME:
+		time(&t);
+		if (element == PRINT_END_TIME )
+			t+=(unsigned long)7200;
+		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
+		printf("<tr><td class=\"objectDescription descriptionleft\">");
+		if (element == PRINT_START_TIME ){
+			strcpy(help_text,"Set the start date/time for the downtime.");
+			printf("Start Time:");
+		}else if (element == PRINT_END_TIME ){
+			strcpy(help_text,"Set the end date/time for the downtime.");
+			printf("End Time:");
+		}else{
+			strcpy(help_text,"Set the date/time when this check should be schedule to.");
+			printf("Check Time:");
+		}
+		print_help_box(help_text);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n",(element == PRINT_END_TIME )?"end":"start",buffer);
+		break;
+
+	case PRINT_FIXED_FLEXIBLE_TYPE:
+
+		snprintf(help_text,sizeof(help_text),"If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify. If you do not select the <i>fixed</i> "
+				 "option, %s will treat this as <i>flexible</i> downtime. Flexible downtime starts when the host goes down or becomes unreachable / service becomes critical (sometime between the "
+				 "start and end times you specified) and lasts as long as the duration of time you enter. The duration fields do not apply for fixed downtime.",PROGRAM_NAME);
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Type:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">\n");
+
+		printf("\t<SELECT ID=\"flexible_selection\" NAME='fixed' onChange=\"if (document.getElementById('flexible_selection').selectedIndex == 0) document.getElementById('fd_row').style.display = 'none'; else document.getElementById('fd_row').style.display = '';\">\n");
+		printf("\t\t<OPTION VALUE=1\">Fixed</OPTION>\n");
+		printf("\t\t<OPTION VALUE=0\">Flexible</OPTION>\n");
+		printf("\t</SELECT>\n");
+
+		snprintf(help_text,sizeof(help_text),"Enter here the duration of the downtime. %s will automatically delete the downtime after this time expired.",PROGRAM_NAME);
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr id=\"fd_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Flexible Duration:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">\n");
+		printf("\t<table border=0  cellspacing=0 cellpadding=0>\n");
+		printf("\t\t<tr>\n");
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='2' SIZE=2 MAXLENGTH=2></td>\n");
+		printf("\t\t\t<td width=\"50\">&nbsp;Hours</td>\n");
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='minutes' VALUE='0' SIZE=2 MAXLENGTH=2></td>\n");
+		printf("\t\t\t<td width=\"50\">&nbsp;Minutes</td>\n");
+		printf("\t\t</tr>\n");
+		printf("\t</table>\n");
+		printf("</td></tr>\n");
+		break;
+
+	case PRINT_FORCE_CHECK:
+
+		snprintf(help_text,sizeof(help_text),"If you select this option, %s will force a check of the host/service regardless of both what time the scheduled check occurs and whether or not checks are enabled for the host/service.", PROGRAM_NAME);
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Force Check:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='checkbox' NAME='force_check' %s></td></tr>\n",(force_check==TRUE)?"CHECKED":"");
+		break;
+
+	case PRINT_BROADCAST_NOTIFICATION:
+
+		strcpy(help_text,"Selecting this option causes the notification to be sent out to all normal (non-escalated) and escalated contacts. These options allow you to override the normal notification logic if you need to get an important message out.");
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Broadcast:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='checkbox' NAME='broadcast_notification'></td></tr>\n");
+		break;
+
+	case PRINT_FORCE_NOTIFICATION:
+
+		snprintf(help_text,sizeof(help_text),"Custom notifications normally follow the regular notification logic in %s.  Selecting this option will force the notification to be sent out, regardless of the time restrictions, whether or not notifications are enabled, etc.", PROGRAM_NAME);
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Forced:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">");
+		printf("<INPUT TYPE='checkbox' NAME='force_notification'></td></tr>\n");
+		break;
+
+	default:
+		break;
+	}
+
+	return;
+}
+
+/* Print form to commit a command */
+void request_command_data(int cmd){
+	char start_time[MAX_DATETIME_LENGTH];
 	contact *temp_contact;
 	scheduled_downtime *temp_downtime;
 	host *temp_host=NULL;
-
-	/* Define X for loop */
-	int x;
-	/* Default COLSPAN in tables */
-	int colspan=2;
+	char action[MAX_INPUT_BUFFER];
+	int found_trigger_objects=FALSE;
 
 	/* get default name to use for comment author */
 	temp_contact=find_contact(current_authdata.username);
@@ -627,436 +921,418 @@ void request_command_data(int cmd){
 	else
 		comment_author=current_authdata.username;
 
-
-	printf("<P><DIV ALIGN=CENTER CLASS='cmdType'>You are requesting to ");
+	printf("<BR>");
 
 	switch(cmd){
 
 	case CMD_ADD_HOST_COMMENT:
 	case CMD_ADD_SVC_COMMENT:
-		printf("add a %s comment",(cmd==CMD_ADD_HOST_COMMENT)?"host":"service");
+		snprintf(action,sizeof(action),"Add %s comments",(cmd==CMD_ADD_HOST_COMMENT)?"host":"service");
 		break;
 
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
-		printf("delete a %s comment",(cmd==CMD_DEL_HOST_COMMENT)?"host":"service");
+		snprintf(action,sizeof(action),"Delete %s comments",(cmd==CMD_DEL_HOST_COMMENT)?"host":"service");
 		break;
 
 	case CMD_DELAY_HOST_NOTIFICATION:
 	case CMD_DELAY_SVC_NOTIFICATION:
-		printf("delay a %s notification",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"This command is used to delay the next problem notification that is sent out for specified %s. The notification delay will be disregarded if "
+			"the %s changes state before the next notification is scheduled to be sent out.	 This command has no effect if the %s are currently %s.",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"hosts":"services",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"hosts":"services",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"hosts":"services",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"UP":"in an OK state");
+		snprintf(action,sizeof(action),"Delay a %s notification",(cmd==CMD_DELAY_HOST_NOTIFICATION)?"host":"service");
 		break;
 
+	case CMD_SCHEDULE_HOST_CHECK:
 	case CMD_SCHEDULE_SVC_CHECK:
-		printf("schedule a service check");
+		snprintf(help_text,sizeof(help_text),"This command is used to schedule the next check of these %s. %s will re-queue the %s to be checked at the time you specify.",(cmd==CMD_SCHEDULE_HOST_CHECK)?"hosts":"services",PROGRAM_NAME,(cmd==CMD_SCHEDULE_HOST_CHECK)?"host":"service");
+		snprintf(action,sizeof(action),"Schedule %s checks",(cmd==CMD_SCHEDULE_HOST_CHECK)?"host":"service");
 		break;
 
 	case CMD_ENABLE_SVC_CHECK:
 	case CMD_DISABLE_SVC_CHECK:
-		printf("%s active checks of a particular service",(cmd==CMD_ENABLE_SVC_CHECK)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s active service checks on a program-wide basis",(cmd==CMD_ENABLE_SVC_CHECK)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_NOTIFICATIONS:
 	case CMD_DISABLE_NOTIFICATIONS:
-		printf("%s notifications",(cmd==CMD_ENABLE_NOTIFICATIONS)?"enable":"disable");
+		snprintf(help_text,sizeof(help_text),"This command is used to %s host and service notifications on a program-wide basis",(cmd==CMD_ENABLE_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications on a program-wide basis",(cmd==CMD_ENABLE_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
-		printf("%s the %s process",(cmd==CMD_SHUTDOWN_PROCESS)?"shutdown":"restart", PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s the %s process",(cmd==CMD_SHUTDOWN_PROCESS)?"Shutdown":"Restart", PROGRAM_NAME);
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 	case CMD_DISABLE_HOST_SVC_CHECKS:
-		printf("%s active checks of all services on a host",(cmd==CMD_ENABLE_HOST_SVC_CHECKS)?"enable":"disable");
+		if (cmd==CMD_ENABLE_HOST_SVC_CHECKS)
+			snprintf(help_text,sizeof(help_text),"This command is used to enable active checks of all services associated with the specified host");
+		else {
+			snprintf(help_text,sizeof(help_text),"This command is used to disable active checks of all services associated with the specified host. "
+				"When a service is disabled %s will not monitor the service. Doing this will prevent any notifications being sent out for "
+				"the specified service while it is disabled. In order to have %s check the service in the future you will have to re-enable the service. "
+				"Note that disabling service checks may not necessarily prevent notifications from being sent out about the host which those services are associated with.",PROGRAM_NAME,PROGRAM_NAME);
+		}
+		snprintf(action,sizeof(action),"%s active checks of all services on these hosts",(cmd==CMD_ENABLE_HOST_SVC_CHECKS)?"Enable":"Disable");
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
-		printf("schedule a check of all services for a host");
+		snprintf(action,sizeof(action),"Schedule a check of all services for these hosts");
 		break;
 
 	case CMD_DEL_ALL_HOST_COMMENTS:
 	case CMD_DEL_ALL_SVC_COMMENTS:
-		printf("delete all comments for a %s",(cmd==CMD_DEL_ALL_HOST_COMMENTS)?"host":"service");
+		snprintf(action,sizeof(action),"Delete all comments for these %s",(cmd==CMD_DEL_ALL_HOST_COMMENTS)?"hosts":"services");
 		break;
 
 	case CMD_ENABLE_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_SVC_NOTIFICATIONS:
-		printf("%s notifications for a service",(cmd==CMD_ENABLE_SVC_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for these services",(cmd==CMD_ENABLE_SVC_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOST_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_NOTIFICATIONS:
-		printf("%s notifications for a host",(cmd==CMD_ENABLE_HOST_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for these hosts",(cmd==CMD_ENABLE_HOST_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
 	case CMD_DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
-		printf("%s notifications for all hosts and services beyond a host",(cmd==CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST)?"enable":"disable");
+		snprintf(help_text,sizeof(help_text),"This command is used to %s notifications for all hosts and services that lie <i>beyond</i> the specified host (from the view of %s).",(cmd==CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST)?"enable":"disable",PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s notifications for all hosts and services beyond these hosts",(cmd==CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_SVC_NOTIFICATIONS:
-		printf("%s notifications for all services on a host",(cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for all services on these hosts",(cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-		printf("acknowledge a %s problem",(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM)?"host":"service");
+		snprintf(action,sizeof(action),"Acknowledge %s problems",(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM)?"host":"service");
+		break;
+
+	case CMD_START_EXECUTING_HOST_CHECKS:
+	case CMD_STOP_EXECUTING_HOST_CHECKS:
+		snprintf(action,sizeof(action),"%s executing host checks on a program-wide basis",(cmd==CMD_START_EXECUTING_HOST_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_START_EXECUTING_SVC_CHECKS:
 	case CMD_STOP_EXECUTING_SVC_CHECKS:
-		printf("%s executing active service checks",(cmd==CMD_START_EXECUTING_SVC_CHECKS)?"start":"stop");
+		if (cmd==CMD_START_EXECUTING_SVC_CHECKS)
+			snprintf(help_text,sizeof(help_text),"This command is used to resume execution of active service checks on a program-wide basis. Individual services which are disabled will still not be checked.");
+		else
+			snprintf(help_text,sizeof(help_text),"This command is used to temporarily stop %s from actively executing any service checks.  This will have the side effect of preventing any notifications from being sent out (for any and all services and hosts). "
+				"Service checks will not be executed again until you issue a command to resume service check execution.", PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s executing active service checks",(cmd==CMD_START_EXECUTING_SVC_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS:
 	case CMD_STOP_ACCEPTING_PASSIVE_SVC_CHECKS:
-		printf("%s accepting passive service checks",(cmd==CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS)?"start":"stop");
+		snprintf(help_text,sizeof(help_text),"This command is used to make %s %s accepting passive service check results that it finds in the external command file.", PROGRAM_NAME,(cmd==CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS)?"start":"stop");
+		snprintf(action,sizeof(action),"%s accepting passive service checks on a program-wide basis",(cmd==CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_ENABLE_PASSIVE_SVC_CHECKS:
 	case CMD_DISABLE_PASSIVE_SVC_CHECKS:
-		printf("%s accepting passive service checks for a particular service",(cmd==CMD_ENABLE_PASSIVE_SVC_CHECKS)?"start":"stop");
+		if (cmd==CMD_ENABLE_PASSIVE_SVC_CHECKS)
+			snprintf(help_text,sizeof(help_text),"This command is used to allow %s to accept passive service check results that it finds in the external command file for this particular service.", PROGRAM_NAME);
+		else
+			snprintf(help_text,sizeof(help_text),"This command is used to stop %s accepting passive service check results that it finds in the external command file for this particular service. All passive check results that are found for this service will be ignored.", PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s accepting passive service checks for these services",(cmd==CMD_ENABLE_PASSIVE_SVC_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_ENABLE_EVENT_HANDLERS:
 	case CMD_DISABLE_EVENT_HANDLERS:
-		printf("%s event handlers",(cmd==CMD_ENABLE_EVENT_HANDLERS)?"enable":"disable");
+		if (cmd==CMD_ENABLE_EVENT_HANDLERS)
+			snprintf(help_text,sizeof(help_text),"This command is used to allow %s to run host and service event handlers.", PROGRAM_NAME);
+		else
+			snprintf(help_text,sizeof(help_text),"This command is used to temporarily prevent %s from running any host or service event handlers.", PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s event handlers on a program-wide basis",(cmd==CMD_ENABLE_EVENT_HANDLERS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOST_EVENT_HANDLER:
 	case CMD_DISABLE_HOST_EVENT_HANDLER:
-		printf("%s the event handler for a particular host",(cmd==CMD_ENABLE_HOST_EVENT_HANDLER)?"enable":"disable");
+		snprintf(help_text,sizeof(help_text),"This command is used to %s the event handler for the selected hosts",(cmd==CMD_ENABLE_HOST_EVENT_HANDLER)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s the event handler for these hosts",(cmd==CMD_ENABLE_HOST_EVENT_HANDLER)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_SVC_EVENT_HANDLER:
 	case CMD_DISABLE_SVC_EVENT_HANDLER:
-		printf("%s the event handler for a particular service",(cmd==CMD_ENABLE_SVC_EVENT_HANDLER)?"enable":"disable");
+		snprintf(help_text,sizeof(help_text),"This command is used to %s the event handler for the selected services",(cmd==CMD_ENABLE_SVC_EVENT_HANDLER)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s the event handler for these services",(cmd==CMD_ENABLE_SVC_EVENT_HANDLER)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOST_CHECK:
 	case CMD_DISABLE_HOST_CHECK:
-		printf("%s active checks of a particular host",(cmd==CMD_ENABLE_HOST_CHECK)?"enable":"disable");
+		if (cmd==CMD_DISABLE_HOST_CHECK)
+			snprintf(help_text,sizeof(help_text),"This command is used to temporarily prevent %s from actively checking the status of a particular host. If %s needs to check the status of this host, it will assume that it is in the same state that it was in before checks were disabled.", PROGRAM_NAME, PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s active host checks",(cmd==CMD_ENABLE_HOST_CHECK)?"Enable":"Disable");
 		break;
 
 	case CMD_STOP_OBSESSING_OVER_SVC_CHECKS:
 	case CMD_START_OBSESSING_OVER_SVC_CHECKS:
-		printf("%s obsessing over service checks",(cmd==CMD_STOP_OBSESSING_OVER_SVC_CHECKS)?"stop":"start");
+		if (cmd==CMD_START_OBSESSING_OVER_SVC_CHECKS)
+			snprintf(help_text,sizeof(help_text),"This command is used to have %s start obsessing over service checks. Read the documentation on distributed monitoring for more information on this.", PROGRAM_NAME);
+		snprintf(action,sizeof(action),"%s obsessing over service checks on a program-wide basis",(cmd==CMD_STOP_OBSESSING_OVER_SVC_CHECKS)?"Stop":"Start");
 		break;
 
 	case CMD_REMOVE_HOST_ACKNOWLEDGEMENT:
 	case CMD_REMOVE_SVC_ACKNOWLEDGEMENT:
-		printf("remove a %s acknowledgement",(cmd==CMD_REMOVE_HOST_ACKNOWLEDGEMENT)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"This command is used to remove an acknowledgement for %s problems. Once the acknowledgement is removed, notifications may start being "
+				"sent out about the %s problem.",(cmd==CMD_REMOVE_HOST_ACKNOWLEDGEMENT)?"host":"service",(cmd==CMD_REMOVE_HOST_ACKNOWLEDGEMENT)?"host":"service");
+		snprintf(action,sizeof(action),"Remove %s acknowledgements",(cmd==CMD_REMOVE_HOST_ACKNOWLEDGEMENT)?"host":"service");
 		break;
 
 	case CMD_SCHEDULE_HOST_DOWNTIME:
 	case CMD_SCHEDULE_SVC_DOWNTIME:
-		printf("schedule downtime for a particular %s",(cmd==CMD_SCHEDULE_HOST_DOWNTIME)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"This command is used to schedule downtime for these %s. During the specified downtime, %s will not send notifications out about the %s. "
+			"When the scheduled downtime expires, %s will send out notifications for this %s as it normally would.	Scheduled downtimes are preserved "
+			"across program shutdowns and restarts.",(cmd==CMD_SCHEDULE_HOST_DOWNTIME)?"hosts":"services",PROGRAM_NAME,(cmd==CMD_SCHEDULE_HOST_DOWNTIME)?"hosts":"services",PROGRAM_NAME,(cmd==CMD_SCHEDULE_HOST_DOWNTIME)?"hosts":"services");
+		snprintf(action,sizeof(action),"Schedule downtime for these %s",(cmd==CMD_SCHEDULE_HOST_DOWNTIME)?"hosts":"services");
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-		printf("schedule downtime for all services for a particular host and the host itsself");
+		snprintf(help_text,sizeof(help_text),"This command is used to schedule downtime for a particular host and all of its services.	During the specified downtime, %s will not send notifications out about the host. "
+			"Normally, a host in downtime will not send alerts about any services in a failed state. This option will explicitly set downtime for all services for this host. "
+			"When the scheduled downtime expires, %s will send out notifications for this host as it normally would. Scheduled downtimes are preserved "
+			"across program shutdowns and restarts.",PROGRAM_NAME,PROGRAM_NAME);
+		snprintf(action,sizeof(action),"Schedule downtime for all services for these hosts and the hosts themself");
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
-		printf("submit a passive check result for a particular %s",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"This command is used to submit a passive check result for these %s. "
+		"It is particularly useful for resetting security-related %s to %s states once they have been dealt with.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"hosts":"services",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"hosts":"services",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"UP":"OK");
+
+		snprintf(action,sizeof(action),"Submit a passive check result for these %s",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"hosts":"services");
 		break;
 
 	case CMD_ENABLE_HOST_FLAP_DETECTION:
 	case CMD_DISABLE_HOST_FLAP_DETECTION:
-		printf("%s flap detection for a particular host",(cmd==CMD_ENABLE_HOST_FLAP_DETECTION)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s flap detection for these hosts",(cmd==CMD_ENABLE_HOST_FLAP_DETECTION)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_SVC_FLAP_DETECTION:
 	case CMD_DISABLE_SVC_FLAP_DETECTION:
-		printf("%s flap detection for a particular service",(cmd==CMD_ENABLE_SVC_FLAP_DETECTION)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s flap detection for these services",(cmd==CMD_ENABLE_SVC_FLAP_DETECTION)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_FLAP_DETECTION:
 	case CMD_DISABLE_FLAP_DETECTION:
-		printf("%s flap detection for hosts and services",(cmd==CMD_ENABLE_FLAP_DETECTION)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s flap detection for hosts and services on a program-wide basis",(cmd==CMD_ENABLE_FLAP_DETECTION)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS:
-		printf("%s notifications for all services in a particular hostgroup",(cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for all services in a particular hostgroup",(cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS:
 	case CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS:
-		printf("%s notifications for all hosts in a particular hostgroup",(cmd==CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for all hosts in a particular hostgroup",(cmd==CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_HOSTGROUP_SVC_CHECKS:
 	case CMD_DISABLE_HOSTGROUP_SVC_CHECKS:
-		printf("%s active checks of all services in a particular hostgroup",(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s active checks of all services in a particular hostgroup",(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS)?"Enable":"Disable");
 		break;
 
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
-		printf("cancel scheduled downtime for a particular %s",(cmd==CMD_DEL_HOST_DOWNTIME)?"host":"service");
+		snprintf(action,sizeof(action),"Cancel scheduled downtime for these %s",(cmd==CMD_DEL_HOST_DOWNTIME)?"hosts":"services");
 		break;
 
 	case CMD_ENABLE_FAILURE_PREDICTION:
 	case CMD_DISABLE_FAILURE_PREDICTION:
-		printf("%s failure prediction for hosts and service",(cmd==CMD_ENABLE_FAILURE_PREDICTION)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s failure prediction for hosts and service on a program-wide basis",(cmd==CMD_ENABLE_FAILURE_PREDICTION)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_PERFORMANCE_DATA:
 	case CMD_DISABLE_PERFORMANCE_DATA:
-		printf("%s performance data processing for hosts and services",(cmd==CMD_ENABLE_PERFORMANCE_DATA)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s performance data processing for hosts and services on a program-wide basis",(cmd==CMD_ENABLE_PERFORMANCE_DATA)?"Enable":"Disable");
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
-		printf("schedule downtime for all hosts in a particular hostgroup");
-		break;
-
 	case CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME:
-		printf("schedule downtime for all services in a particular hostgroup");
-		break;
-
-	case CMD_START_EXECUTING_HOST_CHECKS:
-	case CMD_STOP_EXECUTING_HOST_CHECKS:
-		printf("%s executing host checks",(cmd==CMD_START_EXECUTING_HOST_CHECKS)?"start":"stop");
+		snprintf(action,sizeof(action),"Schedule downtime for all %s in a particular hostgroup",(cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME)?"hosts":"services");
 		break;
 
 	case CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
-		printf("%s accepting passive host checks",(cmd==CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS)?"start":"stop");
+		snprintf(action,sizeof(action),"%s accepting passive host checks on a program-wide basis",(cmd==CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_ENABLE_PASSIVE_HOST_CHECKS:
 	case CMD_DISABLE_PASSIVE_HOST_CHECKS:
-		printf("%s accepting passive checks for a particular host",(cmd==CMD_ENABLE_PASSIVE_HOST_CHECKS)?"start":"stop");
+		snprintf(action,sizeof(action),"%s accepting passive checks for these hosts",(cmd==CMD_ENABLE_PASSIVE_HOST_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		printf("%s obsessing over host checks",(cmd==CMD_START_OBSESSING_OVER_HOST_CHECKS)?"start":"stop");
-		break;
-
-	case CMD_SCHEDULE_HOST_CHECK:
-		printf("schedule a host check");
+		snprintf(action,sizeof(action),"%s obsessing over host checks on a program-wide basis",(cmd==CMD_START_OBSESSING_OVER_HOST_CHECKS)?"Start":"Stop");
 		break;
 
 	case CMD_START_OBSESSING_OVER_SVC:
 	case CMD_STOP_OBSESSING_OVER_SVC:
-		printf("%s obsessing over a particular service",(cmd==CMD_START_OBSESSING_OVER_SVC)?"start":"stop");
+		snprintf(action,sizeof(action),"%s obsessing over these services",(cmd==CMD_START_OBSESSING_OVER_SVC)?"Start":"Stop");
 		break;
 
 	case CMD_START_OBSESSING_OVER_HOST:
 	case CMD_STOP_OBSESSING_OVER_HOST:
-		printf("%s obsessing over a particular host",(cmd==CMD_START_OBSESSING_OVER_HOST)?"start":"stop");
+		snprintf(action,sizeof(action),"%s obsessing over these hosts",(cmd==CMD_START_OBSESSING_OVER_HOST)?"Start":"Stop");
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
-		printf("%s notifications for all services in a particular servicegroup",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for all services in a particular servicegroup",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
 	case CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
-		printf("%s notifications for all hosts in a particular servicegroup",(cmd==CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s notifications for all hosts in a particular servicegroup",(cmd==CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS)?"Enable":"Disable");
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_SVC_CHECKS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_CHECKS:
-		printf("%s active checks of all services in a particular servicegroup",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS)?"enable":"disable");
+		snprintf(action,sizeof(action),"%s active checks of all services in a particular servicegroup",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS)?"Enable":"Disable");
 		break;
 
 	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
-		printf("schedule downtime for all hosts in a particular servicegroup");
+		snprintf(action,sizeof(action),"Schedule downtime for all hosts in a particular servicegroup");
 		break;
 
 	case CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME:
-		printf("schedule downtime for all services in a particular servicegroup");
+		snprintf(action,sizeof(action),"Schedule downtime for all services in a particular servicegroup");
 		break;
 
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-		printf("send a custom %s notification",(cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"This command is used to send a custom notification about the specified %s.  Useful in emergencies when you need to notify admins of an issue regarding a monitored system or service.",(cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION)?"host":"service");
+		snprintf(action,sizeof(action),"Send a custom %s notification",(cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION)?"host":"service");
 		break;
 
 	default:
-		printf("execute an unknown command.  Shame on you!</DIV>");
+		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
+		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+		printf("<td CLASS='errorMessage'>Sorry Dave, I can't let you do that...</td></tr></table></DIV>\n");
+		printf("<DIV CLASS='errorDescription'>Executing an unknown command? Shame on you!</DIV><br>");
+		printf("</DIV>\n");
+		printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
 		return;
-	        }
+	}
 
-	printf("</DIV></p>\n");
+	help_text[sizeof(help_text)-1]='\x0';
+	action[sizeof(action)-1]='\x0';
 
-	printf("<p>\n");
+	/* Javascript to check input */
+	printf("<script language=\"JavaScript\">\n");
+	printf("function check_input(){\n"
+		"	if (document.getElementById('com_data')) {\n"
+		"		if (document.getElementById('com_data').value == '') {\n"
+		"			document.getElementById('com_data_error').style.display = '';\n"
+		"			return false;\n"
+		"		} else {\n"
+		"			document.getElementById('com_data_error').style.display = 'none';\n"
+		"		}\n"
+		"	}\n"
+		"	if (document.getElementById('plugin_output')) {\n"
+		"		if (document.getElementById('plugin_output').value == '') {\n"
+		"			document.getElementById('plugin_output_error').style.display = '';\n"
+		"			return false;\n"
+		"		} else {\n"
+		"			document.getElementById('plugin_output_error').style.display = 'none';\n"
+		"		}\n"
+		"	}\n"
+		"	if (document.getElementById('not_dly')) {\n"
+		"		if (parseInt(document.getElementById('not_dly').value) == 0 ) {\n"
+		"			document.getElementById('not_dly_error').style.display = '';\n"
+		"			return false;\n"
+		"		}\n"
+		"	}\n"
+		"	return true;\n"
+		"}\n"
+		"</script>\n");
+
 	printf("<div align='center'>\n");
 
-	printf("<table border=0 width=90%%>\n");
-	printf("<tr>\n");
-	printf("<td align=center valign=top>\n");
+	printf("<form method='post' action='%s' onSubmit=\"return check_input();\">\n", CMD_CGI);
 
-	printf("<DIV ALIGN=CENTER CLASS='optBoxTitle'>Command Options</DIV>\n");
+	printf("<INPUT TYPE='HIDDEN' NAME='cmd_typ' VALUE='%d'><INPUT TYPE='HIDDEN' NAME='cmd_mod' VALUE='%d'>\n",cmd,CMDMODE_COMMIT);
 
-	printf("<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=1 CLASS='optBox'>\n");
-	printf("<TR><TD CLASS='optBoxItem'>\n");
-	printf("<form method='post' action='%s'>\n", CMD_CGI);
-	printf("<TABLE CELLSPACING=0 CELLPADDING=0 COLS=2 CLASS='optBox'>\n");
+	/* creating an extra table to make it compatible to IE6 & IE7 to have a nice frame around the form, damn it */
+	printf("<TABLE CELLSPACING='0' CELLPADDING='0'><TR><TD CLASS='boxFrame BoxWidth'>\n");
 
-	printf("<TBODY>");
+	printf("<TABLE CELLSPACING='2' CELLPADDING='0' class='contentTable'>\n");
 
-	printf("<tr><td><INPUT TYPE='HIDDEN' NAME='cmd_typ' VALUE='%d'><INPUT TYPE='HIDDEN' NAME='cmd_mod' VALUE='%d'></td></tr>\n",cmd,CMDMODE_COMMIT);
+	printf("<tr CLASS='sectionHeader'><td COLSPAN='2'>Action</td></tr>\n");
+	printf("<tr><td COLSPAN='2'>%s ",action);
+	if (strlen(help_text) > 2)
+		print_help_box(help_text);
+	printf("</td></tr>\n");
 
 	switch(cmd){
 
-	case CMD_ADD_HOST_COMMENT:
-	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
-                printf("<tr><td CLASS='optBoxRequiredItem'>Targets</td></tr>");
-                printf("<tr><th colspan=%d>Host</th></tr>",colspan);
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                	printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td></tr>",colspan,escape_string(commands[x].host_name));
-                }
-		if(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM){
-			printf("<tr><td CLASS='optBoxItem'>Sticky Acknowledgement:</td><td><b>");
-			printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED>");
-			printf("</b></td></tr>\n");
-			printf("<tr><td CLASS='optBoxItem'>Send Notification:</td><td><b>");
-			printf("<INPUT TYPE='checkbox' NAME='send_notification' CHECKED>");
-			printf("</b></td></tr>\n");
-		        }
-		printf("<tr><td CLASS='optBoxItem'>Persistent%s:</td><td><b>",(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM)?" Comment":"");
-		if ( (persistent_ack_comments==TRUE) || (cmd==CMD_ADD_HOST_COMMENT) ) {
-			printf("<INPUT TYPE='checkbox' NAME='persistent' %s>","CHECKED");
-		} else {
-			printf("<INPUT TYPE='checkbox' NAME='persistent' %s>","");
-		}
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Comment:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_data' VALUE='%s' SIZE=40>",escape_string(comment_data));
-		printf("</b></td></tr>\n");
-		break;
-
 	case CMD_ADD_SVC_COMMENT:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-                printf("<tr><td CLASS='optBoxRequiredItem'>Targets</td></tr>");
-                /* Added to allow more then one */
-		if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM||CMD_ADD_SVC_COMMENT){
-			colspan=1;
+	case CMD_ADD_HOST_COMMENT:
+	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
+
+		if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd==CMD_ADD_SVC_COMMENT)
+			print_object_list(PRINT_SERVICE_LIST);
+		else
+			print_object_list(PRINT_HOST_LIST);
+
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+		print_form_element(PRINT_AUTHOR,cmd);
+		print_form_element(PRINT_COMMENT_BOX,cmd);
+		print_form_element(PRINT_PERSISTENT,cmd);
+
+		if(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM){
+			print_form_element(PRINT_STICKY_ACK,cmd);
+			print_form_element(PRINT_SEND_NOTFICATION,cmd);
 		}
-                printf("<tr><b><th colspan=%d>Host</th>",colspan);
-                if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM||CMD_ADD_SVC_COMMENT){
-                        printf("<th colspan=%d>Service</th>",colspan);
-                }
-                printf("</b></tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM||CMD_ADD_SVC_COMMENT){
-                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-                        }
-                        printf("</tr>");
-                }
-		if(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM){
-			printf("<tr><td CLASS='optBoxItem'>Sticky Acknowledgement:</td><td><b>");
-			printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED>");
-			printf("</b></td></tr>\n");
-			printf("<tr><td CLASS='optBoxItem'>Send Notification:</td><td><b>");
-			printf("<INPUT TYPE='checkbox' NAME='send_notification' CHECKED>");
-			printf("</b></td></tr>\n");
-		        }
-		printf("<tr><td CLASS='optBoxItem'>Persistent%s:</td><td><b>",(cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM)?" Comment":"");
-		if ( (persistent_ack_comments==TRUE) || (cmd==CMD_ADD_SVC_COMMENT) ){
-			printf("<INPUT TYPE='checkbox' NAME='persistent' %s","CHECKED");
-		} else {
-			printf("<INPUT TYPE='checkbox' NAME='persistent' %s","");
-		}
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Comment:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_data' VALUE='%s' SIZE=40>",escape_string(comment_data));
-		printf("</b></td></tr>\n");
+
 		break;
 
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
-		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-			if (multi_ids[x].id == FALSE)
-                                break;
-			printf("<tr><td CLASS='optBoxRequiredItem'>%s ID:</td><td><b>",(cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT)?"Comment":"Scheduled Downtime");
-			printf("<INPUT TYPE='TEXT' NAME='%s' VALUE='%lu'>",(cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT)?"com_id":"down_id",multi_ids[x].id);
-			printf("</b></td></tr>\n");
-		}
-		break;
 
-	case CMD_DELAY_HOST_NOTIFICATION:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                break;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        printf("</tr>");
-                }
-		printf("<tr><td CLASS='optBoxRequiredItem'>Notification Delay (minutes from now):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='not_dly' VALUE='%d'>",notification_delay);
-		printf("</b></td></tr>\n");
+		if (cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT)
+			print_object_list(PRINT_COMMENT_LIST);
+		else
+			print_object_list(PRINT_DOWNTIME_LIST);
+
 		break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                colspan=1;
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                printf("<td colspan=%d>Service</td>",colspan);
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-                        printf("</tr>");
-                }
-		printf("<tr><td CLASS='optBoxRequiredItem'>Notification Delay (minutes from now):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='not_dly' VALUE='%d'>",notification_delay);
-		printf("</b></td></tr>\n");
+	case CMD_DELAY_HOST_NOTIFICATION:
+
+		if(cmd==CMD_DELAY_SVC_NOTIFICATION)
+			print_object_list(PRINT_SERVICE_LIST);
+		else
+			print_object_list(PRINT_HOST_LIST);
+
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+		print_form_element(PRINT_NOTIFICATION_DELAY,cmd);
+
 		break;
 
 	case CMD_SCHEDULE_SVC_CHECK:
 	case CMD_SCHEDULE_HOST_CHECK:
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
-		printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                if(cmd==CMD_SCHEDULE_SVC_CHECK){
-                        colspan=1;
-                }
-		printf("<tr><td colspan=%d>Host</td>",colspan);
-		if(cmd==CMD_SCHEDULE_SVC_CHECK){
-			printf("<td colspan=%d>Service</td>",colspan);
-		}
-		printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-			if(cmd==CMD_SCHEDULE_SVC_CHECK){
-				printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-			}
-			printf("</tr>");
-		}
-		time(&t);
-		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
-		printf("<tr><td CLASS='optBoxRequiredItem'>Check Time:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='start_time' VALUE='%s'>",buffer);
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxItem'>Force Check:</td><td><b>");
-		printf("<INPUT TYPE='checkbox' NAME='force_check' %s>",(force_check==TRUE)?"CHECKED":"");
-		printf("</b></td></tr>\n");
+
+		if(cmd==CMD_SCHEDULE_SVC_CHECK)
+			print_object_list(PRINT_SERVICE_LIST);
+		else
+			print_object_list(PRINT_HOST_LIST);
+
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+		print_form_element(PRINT_CHECK_TIME,cmd);
+		print_form_element(PRINT_FORCE_CHECK,cmd);
+
 		break;
 
 	case CMD_ENABLE_SVC_CHECK:
@@ -1073,29 +1349,20 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_SVC_FLAP_DETECTION:
 	case CMD_START_OBSESSING_OVER_SVC:
 	case CMD_STOP_OBSESSING_OVER_SVC:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                colspan=1;
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                printf("<td colspan=%d>Service</td>",colspan);
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-                        printf("</tr>");
-                }
+
+		print_object_list(PRINT_SERVICE_LIST);
+
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 	case CMD_DISABLE_HOST_SVC_CHECKS:
-	case CMD_DEL_ALL_HOST_COMMENTS:
-	case CMD_ENABLE_HOST_NOTIFICATIONS:
-	case CMD_DISABLE_HOST_NOTIFICATIONS:
-	case CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
-	case CMD_DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_SVC_NOTIFICATIONS:
+	case CMD_ENABLE_HOST_NOTIFICATIONS:
+	case CMD_DISABLE_HOST_NOTIFICATIONS:
+	case CMD_DEL_ALL_HOST_COMMENTS:
+	case CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
+	case CMD_DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
 	case CMD_ENABLE_HOST_EVENT_HANDLER:
 	case CMD_DISABLE_HOST_EVENT_HANDLER:
 	case CMD_ENABLE_HOST_CHECK:
@@ -1107,25 +1374,32 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST:
 	case CMD_STOP_OBSESSING_OVER_HOST:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        printf("</tr>");
-                }
+
+		print_object_list(PRINT_HOST_LIST);
+
+		if(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_ENABLE_HOST_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_NOTIFICATIONS){
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+		}
+
 		if(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_SVC_NOTIFICATIONS){
-			printf("<tr><td CLASS='optBoxItem'>%s For Host Too:</td><td><b>",(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)?"Enable":"Disable");
-			printf("<INPUT TYPE='checkbox' NAME='ahas'>");
-			printf("</b></td></tr>\n");
-		        }
+
+			snprintf(help_text,sizeof(help_text),"This %s %s of the host too.",(cmd==CMD_ENABLE_HOST_SVC_CHECKS ||cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)?"enables":"disables",(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS)?"checks":"notifications");
+			help_text[sizeof(help_text)-1]='\x0';
+
+			printf("<tr><td class=\"objectDescription descriptionleft\">%s For Host Too:",(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS)?"Enable":"Disable");
+			print_help_box(help_text);
+			printf("</td><td align=\"left\"><INPUT TYPE='checkbox' NAME='ahas'></td></tr>\n");
+		}
+
 		if(cmd==CMD_ENABLE_HOST_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_NOTIFICATIONS){
-			printf("<tr><td CLASS='optBoxItem'>%s Notifications For Child Hosts Too:</td><td><b>",(cmd==CMD_ENABLE_HOST_NOTIFICATIONS)?"Enable":"Disable");
-			printf("<INPUT TYPE='checkbox' NAME='ptc'>");
-			printf("</b></td></tr>\n");
-		        }
+
+			snprintf(help_text,sizeof(help_text),"%s notifications te be sent out to child hosts.",(cmd==CMD_ENABLE_HOST_NOTIFICATIONS)?"Enable":"Disable");
+			help_text[sizeof(help_text)-1]='\x0';
+
+			printf("<tr><td class=\"objectDescription descriptionleft\">%s Notifications For Child Hosts Too:",(cmd==CMD_ENABLE_HOST_NOTIFICATIONS)?"Enable":"Disable");
+			print_help_box(help_text);
+			printf("</td><td align=\"left\"><INPUT TYPE='checkbox' NAME='ptc'></td></tr>\n");
+		}
 		break;
 
 	case CMD_ENABLE_NOTIFICATIONS:
@@ -1152,151 +1426,118 @@ void request_command_data(int cmd){
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		printf("<tr><td CLASS='optBoxItem' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>");
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
-                        colspan=1;
-                }
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
-                        printf("<td colspan=%d>Service</td>",colspan);
-                }
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
-                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-                        }
-                        printf("</tr>");
-                }
-		printf("<tr><td CLASS='optBoxRequiredItem'>Check Result:</td><td><b>");
-		printf("<SELECT NAME='plugin_state'>");
+
+		if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT)
+			print_object_list(PRINT_SERVICE_LIST);
+		else
+			print_object_list(PRINT_HOST_LIST);
+
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+
+		snprintf(help_text,sizeof(help_text),"Set the state which should be send to %s for this %s.",PROGRAM_NAME,(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"hosts":"services");
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr><td class=\"objectDescription descriptionleft\">Check Result:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">\n");
+		printf("\t<SELECT NAME='plugin_state'>\n");
 		if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT){
-			printf("<OPTION VALUE=%d SELECTED>OK\n",STATE_OK);
-			printf("<OPTION VALUE=%d>WARNING\n",STATE_WARNING);
-			printf("<OPTION VALUE=%d>UNKNOWN\n",STATE_UNKNOWN);
-			printf("<OPTION VALUE=%d>CRITICAL\n",STATE_CRITICAL);
-		        }
-		else{
-			printf("<OPTION VALUE=0 SELECTED>UP\n");
-			printf("<OPTION VALUE=1>DOWN\n");
-			printf("<OPTION VALUE=2>UNREACHABLE\n");
-		        }
-		printf("</SELECT>\n");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Check Output:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='plugin_output' VALUE=''>");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxItem'>Performance Data:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='performance_data' VALUE=''>");
-		printf("</b></td></tr>\n");
+			printf("\t\t<OPTION VALUE=%d SELECTED>OK</OPTION>\n",STATE_OK);
+			printf("\t\t<OPTION VALUE=%d>WARNING</OPTION>\n",STATE_WARNING);
+			printf("\t\t<OPTION VALUE=%d>UNKNOWN</OPTION>\n",STATE_UNKNOWN);
+			printf("\t\t<OPTION VALUE=%d>CRITICAL</OPTION>\n",STATE_CRITICAL);
+		}else{
+			printf("\t\t<OPTION VALUE=0 SELECTED>UP</OPTION>\n");
+			printf("\t\t<OPTION VALUE=1>DOWN</OPTION>\n");
+			printf("\t\t<OPTION VALUE=2>UNREACHABLE</OPTION>\n");
+		}
+		printf("\t</SELECT>\n");
+		printf("</td></tr>\n");
+
+		print_form_element(PRINT_CHECK_OUTPUT_BOX,cmd);
+		print_form_element(PRINT_PERFORMANCE_DATA_BOX,cmd);
+
 		break;
 
 	case CMD_SCHEDULE_HOST_DOWNTIME:
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 	case CMD_SCHEDULE_SVC_DOWNTIME:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
-                        colspan=1;
-                }
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
-                        printf("<td colspan=%d>Service</td>",colspan);
-                }
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-			printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
-                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-                        }
-                        printf("</tr>");
-                }
-		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Comment:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_data' VALUE='%s' SIZE=40>",escape_string(comment_data));
-		printf("</b></td></tr>\n");
 
-		printf("<tr><td CLASS='optBoxItem'><br></td></tr>\n");
+		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME)
+			print_object_list(PRINT_SERVICE_LIST);
+		else
+			print_object_list(PRINT_HOST_LIST);
 
-		printf("<tr><td CLASS='optBoxItem'>Triggered By:</td><td>\n");
-		printf("<select name='trigger'>\n");
-		printf("<option value='0'>N/A\n");
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+		print_form_element(PRINT_AUTHOR,cmd);
+		print_form_element(PRINT_COMMENT_BOX,cmd);
+
+		snprintf(help_text,sizeof(help_text),"Define here if this downtime should get triggerd by another downtime of a particular host or service.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+		help_text[sizeof(help_text)-1]='\x0';
+
+		printf("<tr id=\"trigger_select\"><td class=\"objectDescription descriptionleft\">Triggered By:");
+		print_help_box(help_text);
+		printf("</td><td align=\"left\">\n");
+		printf("\t<SELECT name='trigger'>\n");
+		printf("\t\t<OPTION VALUE='0'>N/A</OPTION>\n");
 
 		for(temp_downtime=scheduled_downtime_list;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
 			if(temp_downtime->type!=HOST_DOWNTIME)
 				continue;
+
 			/* find the host... */
 			 temp_host=find_host(temp_downtime->host_name);
+
 			 /* make sure user has rights to view this host */
 			if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
-			 continue;
+				continue;
 
-			printf("<option value='%lu'>",temp_downtime->downtime_id);
+			printf("\t\t<OPTION VALUE='%lu'>",temp_downtime->downtime_id);
 			get_time_string(&temp_downtime->start_time,start_time,sizeof(start_time),SHORT_DATE_TIME);
-			printf("ID: %lu, Host '%s' starting @ %s\n",temp_downtime->downtime_id,temp_downtime->host_name,start_time);
-		        }
+			printf("ID: %lu, Host '%s' starting @ %s</OPTION>\n",temp_downtime->downtime_id,temp_downtime->host_name,start_time);
+			found_trigger_objects=TRUE;
+		}
 		for(temp_downtime=scheduled_downtime_list;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
 			if(temp_downtime->type!=SERVICE_DOWNTIME)
 				continue;
-			printf("<option value='%lu'>",temp_downtime->downtime_id);
+
+			printf("\t\t<OPTION VALUE='%lu'>",temp_downtime->downtime_id);
 			get_time_string(&temp_downtime->start_time,start_time,sizeof(start_time),SHORT_DATE_TIME);
-			printf("ID: %lu, Service '%s' on host '%s' starting @ %s \n",temp_downtime->downtime_id,temp_downtime->service_description,temp_downtime->host_name,start_time);
-		        }
+			printf("ID: %lu, Service '%s' on host '%s' starting @ %s</OPTION>\n",temp_downtime->downtime_id,temp_downtime->service_description,temp_downtime->host_name,start_time);
+			found_trigger_objects=TRUE;
+		}
 
-		printf("</select>\n");
+		printf("\t</SELECT>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td CLASS='optBoxItem'><br></td></tr>\n");
+		/* hide "Triggerd by" selction if nothing is found to get triggerd from */
+		if(!found_trigger_objects)
+			printf("<tr style=\"display:none;\"><td colspan=2><script language=\"JavaScript\">document.getElementById('trigger_select').style.display = 'none';</script></td></tr>\n");
 
-		time(&t);
-		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
-		printf("<tr><td CLASS='optBoxRequiredItem'>Start Time:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='start_time' VALUE='%s'>",buffer);
-		printf("</b></td></tr>\n");
-		t+=(unsigned long)7200;
-		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
-		printf("<tr><td CLASS='optBoxRequiredItem'>End Time:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='end_time' VALUE='%s'>",buffer);
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxItem'>Type:</td><td><b>");
-		printf("<SELECT NAME='fixed'>");
-		printf("<OPTION VALUE=1>Fixed\n");
-		printf("<OPTION VALUE=0>Flexible\n");
-		printf("</SELECT>\n");
-		printf("</b></td></tr>\n");
-
-		printf("<tr><td CLASS='optBoxItem'>If Flexible, Duration:</td><td>");
-		printf("<table border=0><tr>\n");
-		printf("<td align=right><INPUT TYPE='TEXT' NAME='hours' VALUE='2' SIZE=2 MAXLENGTH=2></td>\n");
-		printf("<td align=left>Hours</td>\n");
-		printf("<td align=right><INPUT TYPE='TEXT' NAME='minutes' VALUE='0' SIZE=2 MAXLENGTH=2></td>\n");
-		printf("<td align=left>Minutes</td>\n");
-		printf("</tr></table>\n");
-		printf("</td></tr>\n");
-
-		printf("<tr><td CLASS='optBoxItem'><br></td></tr>\n");
+		print_form_element(PRINT_START_TIME,cmd);
+		print_form_element(PRINT_END_TIME,cmd);
+		print_form_element(PRINT_FIXED_FLEXIBLE_TYPE,cmd);
 
 		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME){
-			printf("<tr><td CLASS='optBoxItem'>Child Hosts:</td><td><b>");
-			printf("<SELECT name='childoptions'>");
-			printf("<option value='0'>Do nothing with child hosts\n");
-			printf("<option value='1'>Schedule triggered downtime for all child hosts\n");
-			printf("<option value='2'>Schedule non-triggered downtime for all child hosts\n");
-			printf("</SELECT>\n");
-			printf("</b></td></tr>\n");
-		        }
+			snprintf(help_text,sizeof(help_text),"Define here what should be done with the child hosts of these hosts.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+			help_text[sizeof(help_text)-1]='\x0';
 
-		printf("<tr><td CLASS='optBoxItem'><br></td></tr>\n");
+			printf("<tr><td class=\"objectDescription descriptionleft\">Child Hosts:");
+			print_help_box(help_text);
+			printf("</td><td align=\"left\">\n");
+			printf("\t<SELECT name='childoptions'>\n");
+			printf("\t\t<OPTION VALUE='0'>Do nothing with child hosts</OPTION>\n");
+			printf("\t\t<OPTION VALUE='1'>Schedule triggered downtime for all child hosts</OPTION>\n");
+			printf("\t\t<OPTION VALUE='2'>Schedule non-triggered downtime for all child hosts</OPTION>\n");
+			printf("\t</SELECT>\n");
+			printf("</td></tr>\n");
+		}
 
 		break;
 
@@ -1306,14 +1547,18 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS:
 	case CMD_ENABLE_HOSTGROUP_SVC_CHECKS:
 	case CMD_DISABLE_HOSTGROUP_SVC_CHECKS:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Hostgroup Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='hostgroup' VALUE='%s'>",escape_string(hostgroup_name));
-		printf("</b></td></tr>\n");
+
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr class=\"statusEven\" ><td width=\"50%%\" style=\"font-weight:bold;\">Hostgroup Name:</td>");
+		printf("<td><INPUT TYPE='HIDDEN' NAME='hostgroup' VALUE='%s'>%s</td></tr>\n",escape_string(hostgroup_name),escape_string(hostgroup_name));
+
 		if(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_DISABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS){
-			printf("<tr><td CLASS='optBoxItem'>%s For Hosts Too:</td><td><b>",(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
-			printf("<INPUT TYPE='checkbox' NAME='ahas'>");
-			printf("</b></td></tr>\n");
-		        }
+
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+
+			printf("<tr><td class=\"objectDescription descriptionleft\">%s For Hosts Too:</td><td align=\"left\">\n",(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
+			printf("<INPUT TYPE='checkbox' NAME='ahas'></td></tr>\n");
+		}
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
@@ -1322,14 +1567,18 @@ void request_command_data(int cmd){
 	case CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
 	case CMD_ENABLE_SERVICEGROUP_SVC_CHECKS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_CHECKS:
-		printf("<tr><td CLASS='optBoxRequiredItem'>Servicegroup Name:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='servicegroup' VALUE='%s'>",escape_string(servicegroup_name));
-		printf("</b></td></tr>\n");
+
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Servicegroup Name:</td>");
+		printf("<td><INPUT TYPE='HIDDEN' NAME='servicegroup' VALUE='%s'>%s</td></tr>\n",escape_string(servicegroup_name),escape_string(servicegroup_name));
+
 		if(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_DISABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS){
-			printf("<tr><td CLASS='optBoxItem'>%s For Hosts Too:</td><td><b>",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
-			printf("<INPUT TYPE='checkbox' NAME='ahas'>");
-			printf("</b></td></tr>\n");
-		        }
+
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+
+			printf("<tr><td class=\"objectDescription descriptionleft\">%s For Hosts Too:</td><td align=\"left\">\n",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
+			printf("<INPUT TYPE='checkbox' NAME='ahas'></td></tr>\n");
+		}
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
@@ -1337,128 +1586,61 @@ void request_command_data(int cmd){
 	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
 	case CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME:
 
-		if(cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME){
-			printf("<tr><td CLASS='optBoxRequiredItem'>Hostgroup Name:</td><td><b>");
-			printf("<INPUT TYPE='TEXT' NAME='hostgroup' VALUE='%s'>",escape_string(hostgroup_name));
-			printf("</b></td></tr>\n");
-		        }
-		else{
-			printf("<tr><td CLASS='optBoxRequiredItem'>Servicegroup Name:</td><td><b>");
-			printf("<INPUT TYPE='TEXT' NAME='servicegroup' VALUE='%s'>",escape_string(servicegroup_name));
-			printf("</b></td></tr>\n");
-		        }
-		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Comment:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_data' VALUE='%s' SIZE=40>",escape_string(comment_data));
-		printf("</b></td></tr>\n");
-		time(&t);
-		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
-		printf("<tr><td CLASS='optBoxRequiredItem'>Start Time:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='start_time' VALUE='%s'>",buffer);
-		printf("</b></td></tr>\n");
-		t+=(unsigned long)7200;
-		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
-		printf("<tr><td CLASS='optBoxRequiredItem'>End Time:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='end_time' VALUE='%s'>",buffer);
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxItem'>Type:</td><td><b>");
-		printf("<SELECT NAME='fixed'>");
-		printf("<OPTION VALUE=1>Fixed\n");
-		printf("<OPTION VALUE=0>Flexible\n");
-		printf("</SELECT>\n");
-		printf("</b></td></tr>\n");
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">");
+		if(cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME)
+			printf("Hostgroup Name:</td><td><INPUT TYPE='HIDDEN' NAME='hostgroup' VALUE='%s'>%s</td></tr>\n",escape_string(hostgroup_name),escape_string(hostgroup_name));
+		else
+			printf("Servicegroup Name:</td><td><INPUT TYPE='HIDDEN' NAME='servicegroup' VALUE='%s'>%s</td></tr>\n",escape_string(servicegroup_name),escape_string(servicegroup_name));
 
-		printf("<tr><td CLASS='optBoxItem'>If Flexible, Duration:</td><td>");
-		printf("<table border=0><tr>\n");
-		printf("<td align=right><INPUT TYPE='TEXT' NAME='hours' VALUE='2' SIZE=2 MAXLENGTH=2></td>\n");
-		printf("<td align=left>Hours</td>\n");
-		printf("<td align=right><INPUT TYPE='TEXT' NAME='minutes' VALUE='0' SIZE=2 MAXLENGTH=2></td>\n");
-		printf("<td align=left>Minutes</td>\n");
-		printf("</tr></table>\n");
-		printf("</td></tr>\n");
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+		print_form_element(PRINT_AUTHOR,cmd);
+		print_form_element(PRINT_COMMENT_BOX,cmd);
+		print_form_element(PRINT_START_TIME,cmd);
+		print_form_element(PRINT_END_TIME,cmd);
+		print_form_element(PRINT_FIXED_FLEXIBLE_TYPE,cmd);
+
 		if(cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME || cmd==CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME){
-			printf("<tr><td CLASS='optBoxItem'>Schedule Downtime For Hosts Too:</td><td><b>");
-			printf("<INPUT TYPE='checkbox' NAME='ahas'>");
-			printf("</b></td></tr>\n");
-		        }
+			printf("<tr><td class=\"objectDescription descriptionleft\">Schedule Downtime For Hosts Too:</td><td align=\"left\">\n");
+			printf("<INPUT TYPE='checkbox' NAME='ahas'></td></tr>\n");
+		}
 		break;
 
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-                printf("<tr><th colspan=%d CLASS='optBoxRequiredItem' align=\"center\">Targets</th></tr>",colspan);
-                if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
-                        colspan=1;
-                }
-                printf("<tr><td colspan=%d>Host</td>",colspan);
-                if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
-                        printf("<td colspan=%d>Service</td>",colspan);
-                }
-                printf("</tr>");
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        printf("<tr><td colspan=%d><INPUT TYPE='TEXT' NAME='host' VALUE='%s'></td>",colspan,escape_string(commands[x].host_name));
-                        if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION){
-                                printf("<td colspan=%d><INPUT TYPE='TEXT' NAME='service' VALUE='%s'></td>\n",colspan,escape_string(commands[x].description));
-                        }
-                        printf("</tr>");
-                }
-		printf("<tr><td CLASS='optBoxItem'>Forced:</td><td><b>");
-		printf("<INPUT TYPE='checkbox' NAME='force_notification' ");
-		printf("</b></td></tr>\n");
 
-		printf("<tr><td CLASS='optBoxItem'>Broadcast:</td><td><b>");
-		printf("<INPUT TYPE='checkbox' NAME='broadcast_notification' ");
-		printf("</b></td></tr>\n");
+		if(cmd==CMD_SEND_CUSTOM_SVC_NOTIFICATION)
+			print_object_list(PRINT_SERVICE_LIST);
+		else
+			print_object_list(PRINT_HOST_LIST);
 
-		printf("<tr><td CLASS='optBoxRequiredItem'>Author (Your Name):</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_author' VALUE='%s' %s>",escape_string(comment_author),(lock_author_names==TRUE)?"READONLY DISABLED":"");
-		printf("</b></td></tr>\n");
-		printf("<tr><td CLASS='optBoxRequiredItem'>Comment:</td><td><b>");
-		printf("<INPUT TYPE='TEXT' NAME='com_data' VALUE='%s' SIZE=40>",escape_string(comment_data));
-		printf("</b></td></tr>\n");
+		print_form_element(PRINT_COMMON_HEADER,cmd);
+		print_form_element(PRINT_AUTHOR,cmd);
+		print_form_element(PRINT_COMMENT_BOX,cmd);
+		print_form_element(PRINT_FORCE_NOTIFICATION,cmd);
+		print_form_element(PRINT_BROADCAST_NOTIFICATION,cmd);
+
 		break;
 
 	default:
-		printf("<tr><td CLASS='optBoxItem'>This should not be happening... :-(</td><td></td></tr>\n");
-	        }
+		printf("<tr><td CLASS='objectDescription' COLSPAN=\"2\">This should not be happening... :-(</td></tr>\n");
+	}
 
 
-	printf("<tr><td CLASS='optBoxItem' COLSPAN=2></td></tr>\n");
-	printf("<tr><td CLASS='optBoxItem'></td><td CLASS='optBoxItem'><INPUT TYPE='submit' NAME='btnSubmit' VALUE='Commit'> <INPUT TYPE='reset' VALUE='Reset'></td></tr>\n");
-
-	printf("</TBODY>");
+	printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+	printf("<tr CLASS='sectionHeader'><td COLSPAN=\"2\" class=\"commitButton\"><INPUT TYPE=\"submit\" NAME=\"btnSubmit\" VALUE=\"Commit\" class=\"submitButton\">&nbsp;&nbsp;|&nbsp;&nbsp;<a HREF=\"javascript:window.history.go(-1)\">Cancel</a></td></tr>\n");
 
 	printf("</table>\n");
+	printf("</td></tr></table>\n"); /* Outer frame */
 	printf("</form>\n");
-	printf("</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
-
-	printf("</td>\n");
-	printf("<td align=center valign=top width=50%%>\n");
-
-	/* show information about the command... */
-	show_command_help(cmd);
-
-	printf("</td>\n");
-	printf("</tr>\n");
-	printf("</table>\n");
 
 	printf("</div>\n");
-	printf("</p>\n");
-
-	printf("<P><DIV CLASS='infoMessage'>Please enter all required information before committing the command.<br>Required fields are marked in red.<br>Failure to supply all required values will result in an error.</DIV></P>");
 
 	return;
-        }
+}
 
 void commit_command_data(int cmd){
-	char *error_string=NULL;
-	int result=OK;
-	int authorized=FALSE;
+	char error_string[MAX_INPUT_BUFFER];
 	service *temp_service;
 	host *temp_host;
 	hostgroup *temp_hostgroup;
@@ -1467,9 +1649,17 @@ void commit_command_data(int cmd){
 	servicegroup *temp_servicegroup=NULL;
 	contact *temp_contact=NULL;
 	int x=0;
+	int e=0;
+	short error_found=FALSE;
+	short cmd_has_objects = FALSE;
+	short row_color = 0;
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
+
+	/* allways set the first element to FALSE*/
+	/* If there is a single COMMAND witch is not coverd correctly throught the following cases it won't get executed */
+	is_authorized[x]=FALSE;
 
 	/* get name to use for author */
 	if(lock_author_names==TRUE){
@@ -1478,92 +1668,79 @@ void commit_command_data(int cmd){
 			comment_author=temp_contact->alias;
 		else
 			comment_author=current_authdata.username;
-		}
+	}
 
 	switch(cmd){
+
+
 	case CMD_ADD_HOST_COMMENT:
-	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
-
-		/* make sure we have author name, and comment data... */
-		if(!strcmp(comment_author,"")){
-			if(!error_string)
-				error_string=strdup("Author was not entered");
-			}
-		if(!strcmp(comment_data,"")){
-			if(!error_string)
-				error_string=strdup("Comment was not entered");
-			}
-
-		/* clean up the comment data */
-		clean_comment_data(comment_author);
-		clean_comment_data(comment_data);
-
-		/* see if the user is authorized to issue a command... */
-		temp_host=find_host(host_name);
-		if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-			authorized=TRUE;
-		break;
-
 	case CMD_ADD_SVC_COMMENT:
+	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
+	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
+	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
+
 
 		/* make sure we have author name, and comment data... */
-		if(!strcmp(comment_author,"")){
-			if(!error_string)
-				error_string=strdup("Author was not entered");
-			}
-		if(!strcmp(comment_data,"")){
-			if(!error_string)
-				error_string=strdup("Comment was not entered");
-			}
+		check_comment_sanity(&e);
 
 		/* clean up the comment data */
 		clean_comment_data(comment_author);
 		clean_comment_data(comment_data);
 
-		/* see if the user is authorized to issue a command... */
-		temp_service=find_service(host_name,service_desc);
-		if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-			authorized=TRUE;
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+
+			cmd_has_objects = TRUE;
+
+			if (commands[x].host_name == NULL)
+				continue;
+
+			/* see if the user is authorized to issue a command... */
+			is_authorized[x]=FALSE;
+			if (cmd==CMD_ADD_HOST_COMMENT || cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION) {
+				temp_host=find_host(commands[x].host_name);
+				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
+					is_authorized[x]=TRUE;
+			} else {
+				temp_service=find_service(commands[x].host_name,commands[x].description);
+				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
+					is_authorized[x]=TRUE;
+			}
+		}
 		break;
 
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
 
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-			if (multi_ids[x].id == FALSE)
-                                break;
+
+			cmd_has_objects = TRUE;
+
+			if (multi_ids[x] == FALSE)
+				continue;
 
 			/* check the sanity of the comment id */
-			if(multi_ids[x].id==0){
-				if(!error_string)
-					error_string=strdup("Comment id cannot be 0");
+			if(multi_ids[x]==0) {
+				error[e++].message=strdup("Comment id cannot be 0");
+				continue;
 			}
 
 			/* find the comment */
 			if(cmd==CMD_DEL_HOST_COMMENT)
-				temp_comment=find_host_comment(multi_ids[x].id);
+				temp_comment=find_host_comment(multi_ids[x]);
 			else
-				temp_comment=find_service_comment(multi_ids[x].id);
+				temp_comment=find_service_comment(multi_ids[x]);
 
 			/* see if the user is authorized to issue a command... */
-			if(cmd==CMD_DEL_HOST_COMMENT && temp_comment!=NULL){
+			is_authorized[x]=FALSE;
+			if (cmd==CMD_ADD_HOST_COMMENT || cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM) {
 				temp_host=find_host(temp_comment->host_name);
 				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-					authorized=TRUE;
-				else {
-					authorized=TRUE;
-					break;
-				}
-			}
-			if(cmd==CMD_DEL_SVC_COMMENT && temp_comment!=NULL){
+					is_authorized[x]=TRUE;
+			} else {
 				temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
 				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-					authorized=TRUE;
-				else {
-					authorized=TRUE;
-					break;
-				}
+					is_authorized[x]=TRUE;
 			}
 		}
 
@@ -1576,39 +1753,35 @@ void commit_command_data(int cmd){
 	case CMD_DEL_SVC_DOWNTIME:
 
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-			if (multi_ids[x].id == FALSE)
-                                break;
+
+			cmd_has_objects = TRUE;
+
+			if (multi_ids[x] == FALSE)
+				continue;
 
 			/* check the sanity of the downtime id */
-			if(multi_ids[x].id==0){
-				if(!error_string)
-					error_string=strdup("Downtime id cannot be 0");
+			if(multi_ids[x]==0){
+				error[e++].message=strdup("Downtime id cannot be 0");
+				continue;
 			}
 
 			/* find the downtime entry */
 			if(cmd==CMD_DEL_HOST_DOWNTIME)
-				temp_downtime=find_host_downtime(multi_ids[x].id);
+				temp_downtime=find_host_downtime(multi_ids[x]);
 			else
-				temp_downtime=find_service_downtime(multi_ids[x].id);
+				temp_downtime=find_service_downtime(multi_ids[x]);
 
 			/* see if the user is authorized to issue a command... */
+			is_authorized[x]=FALSE;
 			if(cmd==CMD_DEL_HOST_DOWNTIME && temp_downtime!=NULL){
 				temp_host=find_host(temp_downtime->host_name);
 				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-					authorized=TRUE;
-				else {
-					authorized=TRUE;
-					break;
-				}
+					is_authorized[x]=TRUE;
 			}
 			if(cmd==CMD_DEL_SVC_DOWNTIME && temp_downtime!=NULL){
 				temp_service=find_service(temp_downtime->host_name,temp_downtime->service_description);
 				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-					authorized=TRUE;
-				else {
-					authorized=TRUE;
-					break;
-				}
+					is_authorized[x]=TRUE;
 			}
 		}
 
@@ -1636,52 +1809,42 @@ void commit_command_data(int cmd){
 	case CMD_START_OBSESSING_OVER_SVC:
 	case CMD_STOP_OBSESSING_OVER_SVC:
 
-		/* make sure we have author name and comment data... */
-		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
-			if(!strcmp(comment_data,"")){
-				if(!error_string)
-					error_string=strdup("Comment was not entered");
-				}
-			else if(!strcmp(comment_author,"")){
-				if(!error_string)
-					error_string=strdup("Author was not entered");
-				}
-			}
+		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME) {
+			/* make sure we have author and comment data */
+			check_comment_sanity(&e);
 
-		/* see if the user is authorized to issue a command... */
-		temp_service=find_service(host_name,service_desc);
-		if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-			authorized=TRUE;
+			/* make sure we have start/end times for downtime */
+			check_time_sanity(&e);
 
-		/* make sure we have passive check info (if necessary) */
-		if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT && !strcmp(plugin_output,"")){
-			if(!error_string)
-				error_string=strdup("Plugin output cannot be blank");
-			}
-
-		/* make sure we have a notification delay (if necessary) */
-		if(cmd==CMD_DELAY_SVC_NOTIFICATION && notification_delay<=0){
-			if(!error_string)
-				error_string=strdup("Notification delay must be greater than 0");
-			}
-
-		/* clean up the comment data if scheduling downtime */
-		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME){
+			/* clean up the comment data if scheduling downtime */
 			clean_comment_data(comment_author);
 			clean_comment_data(comment_data);
-		        }
+		}
+
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+
+			cmd_has_objects = TRUE;
+
+			if (commands[x].host_name == NULL)
+				continue;
+
+			is_authorized[x]=FALSE;
+			temp_service=find_service(commands[x].host_name,commands[x].description);
+			if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
+				is_authorized[x]=TRUE;
+		}
+
+		/* make sure we have passive check info (if necessary) */
+		if(cmd==CMD_PROCESS_SERVICE_CHECK_RESULT && !strcmp(plugin_output,""))
+			error[e++].message=strdup("Check output cannot be blank");
+
+		/* make sure we have a notification delay (if necessary) */
+		if(cmd==CMD_DELAY_SVC_NOTIFICATION && notification_delay<=0)
+			error[e++].message=strdup("Notification delay must be greater than 0");
 
 		/* make sure we have check time (if necessary) */
-		if(cmd==CMD_SCHEDULE_SVC_CHECK && start_time==(time_t)0){
-			if(!error_string)
-				error_string=strdup("Start time must be non-zero or bad format has been submitted.");
-			}
-
-		/* make sure we have start/end times for downtime (if necessary) */
-		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME && (start_time==(time_t)0 || end_time==(time_t)0 || end_time<start_time)){
-			if(!error_string)
-				error_string=strdup("Start or end time not valid");
-			}
+		if(cmd==CMD_SCHEDULE_SVC_CHECK && start_time==(time_t)0)
+			error[e++].message=strdup("Start time must be non-zero or bad format has been submitted");
 
 		break;
 
@@ -1711,8 +1874,9 @@ void commit_command_data(int cmd){
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 
 		/* see if the user is authorized to issue a command... */
+		is_authorized[x]=FALSE;
 		if(is_authorized_for_system_commands(&current_authdata)==TRUE)
-			authorized=TRUE;
+			is_authorized[x]=TRUE;
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
@@ -1742,52 +1906,43 @@ void commit_command_data(int cmd){
 	case CMD_START_OBSESSING_OVER_HOST:
 	case CMD_STOP_OBSESSING_OVER_HOST:
 
-		/* make sure we have author name and comment data... */
-		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME||cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME){
-			if(!strcmp(comment_data,"")){
-				if(!error_string)
-					error_string=strdup("Comment was not entered");
-				}
-			else if(!strcmp(comment_author,"")){
-				if(!error_string)
-					error_string=strdup("Author was not entered");
-				}
-			}
+		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME||cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME) {
+			/* make sure we have author and comment data */
+			check_comment_sanity(&e);
 
-		/* see if the user is authorized to issue a command... */
-		temp_host=find_host(host_name);
-		if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-			authorized=TRUE;
+			/* make sure we have start/end times for downtime */
+			check_time_sanity(&e);
 
-		/* clean up the comment data if scheduling downtime */
-		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME||cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME){
+			/* clean up the comment data if scheduling downtime */
 			clean_comment_data(comment_author);
 			clean_comment_data(comment_data);
-		        }
+		}
+
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+
+			cmd_has_objects = TRUE;
+
+			if (commands[x].host_name == NULL)
+				continue;
+
+			/* see if the user is authorized to issue a command... */
+			is_authorized[x]=FALSE;
+			temp_host=find_host(commands[x].host_name);
+			if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
+				is_authorized[x]=TRUE;
+		}
 
 		/* make sure we have a notification delay (if necessary) */
-		if(cmd==CMD_DELAY_HOST_NOTIFICATION && notification_delay<=0){
-			if(!error_string)
-				error_string=strdup("Notification delay must be greater than 0");
-			}
-
-		/* make sure we have start/end times for downtime (if necessary) */
-		if((cmd==CMD_SCHEDULE_HOST_DOWNTIME||cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME) && (start_time==(time_t)0 || end_time==(time_t)0 || start_time>end_time)){
-			if(!error_string)
-				error_string=strdup("Start or end time not valid");
-			}
+		if(cmd==CMD_DELAY_HOST_NOTIFICATION && notification_delay<=0)
+			error[e++].message=strdup("Notification delay must be greater than 0");
 
 		/* make sure we have check time (if necessary) */
-		if((cmd==CMD_SCHEDULE_HOST_CHECK || cmd==CMD_SCHEDULE_HOST_SVC_CHECKS)&& start_time==(time_t)0){
-			if(!error_string)
-				error_string=strdup("Start time must be non-zero or bad format has been submitted.");
-			}
+		if((cmd==CMD_SCHEDULE_HOST_CHECK || cmd==CMD_SCHEDULE_HOST_SVC_CHECKS) && start_time==(time_t)0)
+			error[e++].message=strdup("Start time must be non-zero or bad format has been submitted");
 
 		/* make sure we have passive check info (if necessary) */
-		if(cmd==CMD_PROCESS_HOST_CHECK_RESULT && !strcmp(plugin_output,"")){
-			if(!error_string)
-				error_string=strdup("Plugin output cannot be blank");
-			}
+		if(cmd==CMD_PROCESS_HOST_CHECK_RESULT && !strcmp(plugin_output,""))
+			error[e++].message=strdup("Check output cannot be blank");
 
 		break;
 
@@ -1799,38 +1954,6 @@ void commit_command_data(int cmd){
 	case CMD_DISABLE_HOSTGROUP_SVC_CHECKS:
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
 	case CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME:
-
-		/* make sure we have author and comment data */
-		if(cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME) {
-			if(!strcmp(comment_data,"")){
-				if(!error_string)
-					error_string=strdup("Comment was not entered");
-				}
-			else if(!strcmp(comment_author,"")){
-				if(!error_string)
-					error_string=strdup("Author was not entered");
-				}
-			}
-
-		/* make sure we have start/end times for downtime */
-		if((cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME) && (start_time==(time_t)0 || end_time==(time_t)0 || start_time>end_time)){
-			if(!error_string)
-				error_string=strdup("Start or end time not valid");
-			}
-
-		/* see if the user is authorized to issue a command... */
-		temp_hostgroup=find_hostgroup(hostgroup_name);
-		if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE)
-			authorized=TRUE;
-
-		/* clean up the comment data if scheduling downtime */
-		if(cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME){
-			clean_comment_data(comment_author);
-			clean_comment_data(comment_data);
-		        }
-
-		break;
-
 	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
 	case CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
@@ -1840,141 +1963,253 @@ void commit_command_data(int cmd){
 	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
 	case CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME:
 
-		/* make sure we have author and comment data */
-		if(cmd==CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME) {
-			if(!strcmp(comment_data,"")){
-				if(!error_string)
-					error_string=strdup("Comment was not entered");
-				}
-			else if(!strcmp(comment_author,"")){
-				if(!error_string)
-					error_string=strdup("Author was not entered");
-				}
-			}
 
-		/* make sure we have start/end times for downtime */
-		if((cmd==CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME) && (start_time==(time_t)0 || end_time==(time_t)0 || start_time>end_time)){
-			if(!error_string)
-				error_string=strdup("Start or end time not valid");
-			}
+		if(cmd==CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME \
+		|| cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME){
+			/* make sure we have author and comment data */
+			check_comment_sanity(&e);
+
+			/* make sure we have start/end times for downtime */
+			check_time_sanity(&e);
+
+			/* clean up the comment data if scheduling downtime */
+			clean_comment_data(comment_author);
+			clean_comment_data(comment_data);
+		}
 
 		/* see if the user is authorized to issue a command... */
+		is_authorized[x]=FALSE;
+		if(cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS	|| cmd==CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS || \
+		   cmd==CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS || cmd==CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS || \
+		   cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS		|| cmd==CMD_DISABLE_HOSTGROUP_SVC_CHECKS || \
+		   cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME	|| cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME ){
+			temp_hostgroup=find_hostgroup(hostgroup_name);
+			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE)
+				is_authorized[x]=TRUE;
+		} else {
+		//	if(cmd==CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME || cmd==CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME) {
+			temp_servicegroup=find_servicegroup(servicegroup_name);
+			if(is_authorized_for_servicegroup(temp_servicegroup,&current_authdata)==TRUE)
+				is_authorized[x]=TRUE;
+		}
 
-		temp_servicegroup=find_servicegroup(servicegroup_name);
-		if(is_authorized_for_servicegroup(temp_servicegroup,&current_authdata)==TRUE)
-			authorized=TRUE;
-
-		break;
-
-	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
-	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-
-		/* make sure we have author and comment data */
-		if(!strcmp(comment_data,"")){
-			if(!error_string)
-				error_string=strdup("Comment was not entered");
-			}
-		else if(!strcmp(comment_author,"")){
-			if(!error_string)
-				error_string=strdup("Author was not entered");
-			}
-
-		/* see if the user is authorized to issue a command... */
-		if(cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION){
-			temp_host=find_host(host_name);
-			if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
-				authorized=TRUE;
-		        }
-		else{
-			temp_service=find_service(host_name,service_desc);
-			if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
-				authorized=TRUE;
-		        }
 		break;
 
 	default:
-		if(!error_string) error_string = strdup("An error occurred while processing your command!");
-	        }
+		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
+		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+		printf("<td CLASS='errorMessage'>Sorry Dave, I can't let you do that...</td></tr></table></DIV>\n");
+		printf("<DIV CLASS='errorDescription'>Executing an unknown command? Shame on you!</DIV><br>");
+		printf("</DIV>\n");
+		printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		return;
+	}
 
+
+	/*
+	 * these are supposed to be implanted inside the
+	 * completed commands shipped off to Icinga and
+	 * must therefore never contain ';'
+	 */
+	for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+		if (commands[x].host_name == NULL)
+			continue;
+
+		if (strchr(commands[x].host_name, ';')) {
+			snprintf(error_string,sizeof(error_string),"The hostname \"%s\" contains a semicolon",commands[x].host_name);
+			error_string[sizeof(error_string)-1]='\x0';
+			error[e++].message=(char *)strdup(error_string);
+		}
+		if (commands[x].description != NULL && strchr(commands[x].description, ';')) {
+			snprintf(error_string,sizeof(error_string),"The service description \"%s\" on host \"%s\" contains a semicolon",commands[x].description,commands[x].host_name);
+			error_string[sizeof(error_string)-1]='\x0';
+			error[e++].message=strdup(error_string);
+		}
+	}
+	if (hostgroup_name && strchr(hostgroup_name, ';'))
+		error[e++].message=strdup("The hostgroup name contains a semicolon");
+	if (servicegroup_name && strchr(servicegroup_name, ';'))
+		error[e++].message=strdup("The servicegroup name  contains a semicolon");
+
+	printf("<BR><DIV align='center'>\n");
+
+	/* if Icinga isn't checking external commands, don't do anything... */
+	if(check_external_commands==FALSE){
+		if(content_type==WML_CONTENT)
+			printf("<p>Error: %s is not checking external commands!</p>\n", PROGRAM_NAME);
+		else{
+			printf("<DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td CLASS='errorMessage'>Sorry, but %s is currently not checking for external commands, so your command will not be committed!</td></tr></table></DIV>\n", PROGRAM_NAME);
+			printf("<DIV CLASS='errorDescription'>Read the documentation for information on how to enable external commands...</DIV>\n");
+			printf("</DIV>\n");
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		}
+		return;
+	}
 
 	/* to be safe, we are going to REQUIRE that the authentication functionality is enabled... */
 	if(use_authentication==FALSE){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Authentication is not enabled!</p>\n");
 		else{
-			printf("<P>\n");
-			printf("<DIV CLASS='errorMessage'>Sorry Dave, I can't let you do that...</DIV><br>");
+			printf("<DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td CLASS='errorMessage'>Sorry Dave, I can't let you do that...</td></tr></table></DIV>\n");
 			printf("<DIV CLASS='errorDescription'>");
-			printf("It seems that you have chosen to not use the authentication functionality of the CGIs.<br><br>");
-			printf("I don't want to be personally responsible for what may happen as a result of allowing unauthorized users to issue commands to %s,", PROGRAM_NAME);
-			printf("so you'll have to disable this safeguard if you are really stubborn and want to invite trouble.<br><br>");
-			printf("<strong>Read the section on CGI authentication in the HTML documentation to learn how you can enable authentication and why you should want to.</strong>\n");
+			printf("It seems that you have chosen to not use the authentication functionality of the CGIs. ");
+			printf("I don't want to be personally responsible for what may happen as a result of allowing unauthorized users to issue commands to %s, ", PROGRAM_NAME);
+			printf("so you'll have to disable this safeguard if you are really stubborn and want to invite trouble. ");
+			printf("Read the section on CGI authentication in the HTML documentation to learn how you can enable authentication and why you should want to.</DIV>\n");
 			printf("</DIV>\n");
-			printf("</P>\n");
-		        }
-	        }
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		}
+		return;
+	}
 
-	/* the user is not authorized to issue the given command */
-	else if(authorized==FALSE){
+	/* Check if we found errors which preventing us from submiting the command */
+	if(e>0) {
+		printf("<DIV CLASS='errorBox'>\n");
+		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+		printf("<td CLASS='errorMessage'>Following errors occured.</td></tr></table></DIV>\n");
+		printf("<table cellspacing=0 cellpadding=0 border=0 class='errorTable'>\n");
+		for (e=0; e<NUMBER_OF_STRUCTS; e++) {
+			if (error[e].message==NULL)
+				continue;
+			if(content_type==WML_CONTENT)
+				printf("<p>Error: %s</p><BR>\n",error[e].message);
+			else {
+				printf("<tr><td class='errorString'>ERROR:</td><td class='errorContent'>%s</td></tr>\n",error[e].message);
+			}
+		}
+		printf("</table>\n</DIV>\n");
+		printf("<BR>\n");
+		printf("<table cellspacing=0 cellpadding=0 border=0 class='BoxWidth'><tr>\n");
+		printf("<td align='left' width='50%%'><input type='submit' value='< Go back and fix it' onClick='window.history.go(-1);' class='submitButton'></td>\n");
+		printf("<td align='right' width='50%%'><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></td>\n");
+		printf("</tr></table></DIV>");
+		return;
+	}
+
+	/* Let's see if we have a command witch dosn't have any host, services or downtime/comment id's and check the authorisation */
+	if (cmd_has_objects == FALSE && is_authorized[0]==FALSE ) {
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: You're not authorized to commit that command!</p>\n");
 		else{
-			printf("<P><DIV CLASS='errorMessage'>Sorry, but you are not authorized to commit the specified command.</DIV></P>\n");
-			printf("<P><DIV CLASS='errorDescription'>Read the section of the documentation that deals with authentication and authorization in the CGIs for more information.<BR><BR>\n");
-			printf("<A HREF='javascript:window.history.go(-2)'>Return from whence you came</A></DIV></P>\n");
-		        }
-	        }
-
-	/* some error occurred (data was probably missing) */
-	else if(error_string){
-		if(content_type==WML_CONTENT)
-			printf("<p>%s</p>\n", error_string);
-		else{
-			printf("<P><DIV CLASS='errorMessage'>%s</DIV></P>\n", error_string);
-			free(error_string);
-			printf("<P><DIV CLASS='errorDescription'>Go <A HREF='javascript:window.history.go(-1)'>back</A> and verify that you entered all required information correctly.<BR>\n");
-			printf("<A HREF='javascript:window.history.go(-2)'>Return from whence you came</A></DIV></P>\n");
-		        }
-	        }
-
-	/* if Icinga isn't checking external commands, don't do anything... */
-	else if(check_external_commands==FALSE){
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: %s is not checking external commands!</p>\n", PROGRAM_NAME);
-		else{
-			printf("<P><DIV CLASS='errorMessage'>Sorry, but %s is currently not checking for external commands, so your command will not be committed!</DIV></P>\n", PROGRAM_NAME);
-			printf("<P><DIV CLASS='errorDescription'>Read the documentation for information on how to enable external commands...<BR><BR>\n");
-			printf("<A HREF='javascript:window.history.go(-2)'>Return from whence you came</A></DIV></P>\n");
-		        }
-	        }
+			printf("<DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td CLASS='errorMessage'>Sorry, but you are not authorized to commit the specified command.</td></tr></table></DIV>\n");
+			printf("<DIV CLASS='errorDescription'>Read the section of the documentation that deals with authentication and authorization in the CGIs for more information.</DIV>\n");
+			printf("</DIV>\n");
+			printf("<BR><DIV align='center'><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		}
+		return;
+	}
 
 	/* everything looks okay, so let's go ahead and commit the command... */
-	else{
+	/* commit the command */
+	commit_command(cmd);
 
-		/* commit the command */
-		result=commit_command(cmd);
-
-		if(result==OK){
+	/* for commands without objects get the first result*/
+	if(cmd_has_objects == FALSE) {
+		if (submit_result[0]==OK){
 			if(content_type==WML_CONTENT)
 				printf("<p>Your command was submitted sucessfully...</p>\n");
 			else{
-				printf("<P><DIV CLASS='infoMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n", PROGRAM_NAME);
-				printf("Note: It may take a while before the command is actually processed.<BR><BR>\n");
-				printf("<A HREF='javascript:window.history.go(-2)'>Done</A></DIV></P>");
-			        }
-		        }
-		else{
+				printf("<DIV CLASS='successBox'>\n");
+				printf("<DIV CLASS='successMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n",PROGRAM_NAME);
+				printf("Note: It may take a while before the command is actually processed.</DIV>\n");
+				printf("</DIV>\n");
+				printf("<BR><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+			}
+		}else{
 			if(content_type==WML_CONTENT)
 				printf("<p>An error occurred while committing your command!</p>\n");
 			else{
-				printf("<P><DIV CLASS='errorMessage'>An error occurred while attempting to commit your command for processing.<BR><BR>\n");
-				printf("<A HREF='javascript:window.history.go(-2)'>Return from whence you came</A></DIV></P>\n");
-			        }
-		        }
-	        }
+				printf("<DIV CLASS='errorBox'>\n");
+				printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+				printf("<td CLASS='errorMessage'>An error occurred while attempting to commit your command for processing.</td></tr></table></DIV>\n");
+				printf("<DIV CLASS='errorDescription'>Unfortunately I can't determine the root cause of this problem.</DIV>\n");
+				printf("</DIV>\n");
+				printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+			}
+		}
+	} else {
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT || cmd==CMD_DEL_HOST_DOWNTIME || cmd==CMD_DEL_SVC_DOWNTIME ) {
+				if (multi_ids[x] == FALSE)
+					continue;
+			} else {
+				if (commands[x].host_name == NULL)
+					continue;
+			}
 
+			if (is_authorized[x] == FALSE || submit_result[x] == ERROR) {
+				error_found=TRUE;
+				break;
+			}
+		}
+
+		if (error_found) {
+			printf("<DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td CLASS='errorMessage'>An error occurred while attempting to commit your command for processing.</td></tr></table></DIV>\n");
+			printf("<DIV CLASS='errorDescription'>Not all commands could be send off successfully...</DIV>\n");
+			printf("</DIV>\n");
+		} else {
+			printf("<DIV CLASS='successBox'>\n");
+			printf("<DIV CLASS='successMessage'>Your command requests were successfully submitted to %s for processing.<BR><BR>\n",PROGRAM_NAME);
+			printf("Note: It may take a while before the commands are actually processed.</DIV>\n");
+			printf("</DIV>\n");
+		}
+
+		printf("<BR>\n");
+		printf("<TABLE CELLSPACING='0' CELLPADDING=0 BORDER=0 CLASS='BoxWidth'>\n");
+		printf("<tr class='BoxWidth'><td width='33%%'></td><td width='33%%' align='center'><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></td><td width='33%%' align='right'>\n");
+		if (!error_found)
+			printf("<input type='submit' value='Let me see what has been done' onClick=\"document.getElementById('sumCommit').style.display = '';\" class='submitButton'>\n");
+		printf("</td></TR></TABLE>\n");
+		printf("<BR><BR>\n");
+
+		printf("<TABLE CELLSPACING='0' CELLPADDING='0' ID='sumCommit' %s><TR><TD CLASS='boxFrame BoxWidth'>\n",(error_found)?"":"style='display:none;'");
+		printf("<table cellspacing=2 cellpadding=0 border=0 class='contentTable'>\n");
+		if (cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT)
+			printf("<tr class='sumHeader'><td width='80%%'>Comment ID</td><td width='20%%'>Status</td></tr>\n");
+		else if (cmd==CMD_DEL_HOST_DOWNTIME || cmd==CMD_DEL_SVC_DOWNTIME)
+			printf("<tr class='sumHeader'><td width='80%%'>Downtime ID</td><td width='20%%'>Status</td></tr>\n");
+		else
+			printf("<tr class='sumHeader'><td width='40%%'>Host</td><td width='40%%'>Service</td><td width='20%%'>Status</td></tr>\n");
+
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+
+			if (cmd==CMD_DEL_HOST_COMMENT || cmd==CMD_DEL_SVC_COMMENT || cmd==CMD_DEL_HOST_DOWNTIME || cmd==CMD_DEL_SVC_DOWNTIME) {
+				if (multi_ids[x] == FALSE)
+					continue;
+				row_color = (row_color==0)?1:0;
+				printf("<tr class='status%s'><td>%lu</td><td>",(row_color==0)?"Even":"Odd ",multi_ids[x]);
+			} else {
+				if (commands[x].host_name == NULL)
+					continue;
+				row_color = (row_color==0)?1:0;
+
+				printf("<tr class='status%s'><td>%s</td><td>%s</td><td>",(row_color==0)?"Even":"Odd ",commands[x].host_name,(commands[x].description != NULL)?commands[x].description:"N/A");
+			}
+			if (is_authorized[x] == FALSE)
+				printf("<DIV class='commitFailed'>Not Authorized</DIV>");
+			else if (submit_result[x] == ERROR)
+				printf("<DIV class='commitFailed'>FAILED</DIV>");
+			else if (submit_result[x] == OK)
+				printf("<DIV class='commitSuccess'>Successful</DIV>");
+			else
+				printf("<DIV class='commitUnknown'>Unknown</DIV>");
+
+			printf("</TD><TR>\n");
+		}
+		printf("</TABLE>\n");
+		printf("</TD></TR></TABLE></DIV>\n");
+	}
 	return;
-        }
+}
 
 __attribute__((format(printf, 2, 3)))
 static int cmd_submitf(int id, const char *fmt, ...){
@@ -1992,8 +2227,8 @@ static int cmd_submitf(int id, const char *fmt, ...){
 	if (!command || (strlen(command) > 6 && !memcmp("CHANGE", command, 6)))
 		return ERROR;
 
-        if(log_external_commands_user==TRUE){
-                get_authentication_information(&current_authdata);
+	if(log_external_commands_user==TRUE){
+		get_authentication_information(&current_authdata);
 		len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;%s;", time(NULL), command, current_authdata.username);
 	} else {
 		len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;", time(NULL), command);
@@ -2018,8 +2253,7 @@ int commit_command(int cmd){
 	time_t current_time;
 	time_t scheduled_time;
 	time_t notification_time;
-	int result=0;
-	int x=0;
+	int x = 0;
 
 	/* get the current time */
 	time(&current_time);
@@ -2029,22 +2263,6 @@ int commit_command(int cmd){
 
 	/* get the notification time */
 	notification_time=current_time+(notification_delay*60);
-
-	/*
-	 * these are supposed to be implanted inside the
-	 * completed commands shipped off to Icinga and
-	 * must therefore never contain ';'
-	 */
-	if (host_name && strchr(host_name, ';'))
-		return ERROR;
-	if (service_desc && strchr(service_desc, ';'))
-		return ERROR;
-	if (comment_author && strchr(comment_author, ';'))
-		return ERROR;
-	if (hostgroup_name && strchr(hostgroup_name, ';'))
-		return ERROR;
-	if (servicegroup_name && strchr(servicegroup_name, ';'))
-		return ERROR;
 
 	/* decide how to form the command line... */
 	switch(cmd){
@@ -2070,7 +2288,8 @@ int commit_command(int cmd){
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		result = cmd_submitf(cmd,NULL);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,NULL);
 		break;
 
 		/** simple host commands **/
@@ -2088,13 +2307,12 @@ int commit_command(int cmd){
 	case CMD_ENABLE_HOST_CHECK:
 	case CMD_DISABLE_HOST_CHECK:
 	case CMD_REMOVE_HOST_ACKNOWLEDGEMENT:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-			result = cmd_submitf(cmd,"%s",commands[x].host_name);
-			if (result == 0)
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
 				continue;
-                }
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s",commands[x].host_name);
+		}
 		break;
 
 		/** simple service commands **/
@@ -2112,33 +2330,30 @@ int commit_command(int cmd){
 	case CMD_ENABLE_SVC_CHECK:
 	case CMD_DISABLE_SVC_CHECK:
 	case CMD_REMOVE_SVC_ACKNOWLEDGEMENT:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%s",commands[x].host_name,commands[x].description);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s",commands[x].host_name,commands[x].description);
+		}
 		break;
 
 	case CMD_ADD_HOST_COMMENT:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%d;%s;%s",commands[x].host_name,persistent_comment,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%d;%s;%s",commands[x].host_name,persistent_comment,comment_author,comment_data);
+		}
 		break;
 
 	case CMD_ADD_SVC_COMMENT:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%s;%d;%s;%s",commands[x].host_name,commands[x].description,persistent_comment,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%d;%s;%s",commands[x].host_name,commands[x].description,persistent_comment,comment_author,comment_data);
+		}
 		break;
 
 	case CMD_DEL_HOST_COMMENT:
@@ -2146,156 +2361,142 @@ int commit_command(int cmd){
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-			if (multi_ids[x].id == FALSE)
-                                break;
-
-			result = cmd_submitf(cmd,"%lu",multi_ids[x].id);
-			if (result != 0)
-				break;
+			if (multi_ids[x] == FALSE)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%lu",multi_ids[x]);
 		}
 		break;
 
 	case CMD_DELAY_HOST_NOTIFICATION:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,notification_time);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,notification_time);
+		}
 		break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%s;%lu",commands[x].host_name,commands[x].description,notification_time);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%lu",commands[x].host_name,commands[x].description,notification_time);
+		}
 		break;
 
 	case CMD_SCHEDULE_SVC_CHECK:
 	case CMD_SCHEDULE_FORCED_SVC_CHECK:
 		if(force_check==TRUE)
 			cmd=CMD_SCHEDULE_FORCED_SVC_CHECK;
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue; /* Continue the loop if its null */
-                        result = cmd_submitf(cmd,"%s;%s;%lu",commands[x].host_name,commands[x].description,start_time);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%lu",commands[x].host_name,commands[x].description,start_time);
+		}
 		break;
 
 	case CMD_DISABLE_NOTIFICATIONS:
 	case CMD_ENABLE_NOTIFICATIONS:
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
-		result = cmd_submitf(cmd,"%lu",scheduled_time);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%lu",scheduled_time);
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:
 	case CMD_DISABLE_HOST_SVC_CHECKS:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s",commands[x].host_name);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s",commands[x].host_name);
+		}
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_HOST_SVC_CHECKS) ? CMD_ENABLE_HOST_CHECK : CMD_DISABLE_HOST_CHECK;
-	                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-	                        if (commands[x].host_name == NULL)
-	                                continue;
-	                        result |= cmd_submitf(cmd,"%s",commands[x].host_name);
-	                        if (result == 0)
-	                                continue;
-	                }
-			result |= cmd_submitf(cmd,"%s",host_name);
+			for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+				if (commands[x].host_name == NULL)
+					continue;
+				if (is_authorized[x])
+					submit_result[x] |= cmd_submitf(cmd,"%s",commands[x].host_name);
+			}
 		}
 		break;
 
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
 		if (force_check == TRUE)
 			cmd = CMD_SCHEDULE_FORCED_HOST_SVC_CHECKS;
-		result = cmd_submitf(cmd,"%s;%lu",host_name,scheduled_time);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s;%lu",host_name,scheduled_time);
 		break;
 
 	case CMD_ENABLE_HOST_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_NOTIFICATIONS:
 		if(propagate_to_children==TRUE)
 			cmd = (cmd == CMD_ENABLE_HOST_NOTIFICATIONS) ? CMD_ENABLE_HOST_AND_CHILD_NOTIFICATIONS : CMD_DISABLE_HOST_AND_CHILD_NOTIFICATIONS;
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s",commands[x].host_name);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s",commands[x].host_name);
+		}
 		break;
 
 	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOST_SVC_NOTIFICATIONS:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s",commands[x].host_name);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s",commands[x].host_name);
+		}
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_HOST_SVC_NOTIFICATIONS) ? CMD_ENABLE_HOST_NOTIFICATIONS : CMD_DISABLE_HOST_NOTIFICATIONS;
-	                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-	                        if (commands[x].host_name == NULL)
-	                                continue;
-	                        result |= cmd_submitf(cmd,"%s",commands[x].host_name);
-	                        if (result == 0)
-	       	                        continue;
-
-	       	        }
+			for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+				if (commands[x].host_name == NULL)
+					continue;
+				if (is_authorized[x])
+					submit_result[x] |= cmd_submitf(cmd,"%s",commands[x].host_name);
+			}
 		}
 		break;
 
 	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%d;%d;%d;%s;%s",commands[x].host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%d;%d;%d;%s;%s",commands[x].host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
+		}
 		break;
 
 	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-	                result = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%s;%s",commands[x].host_name,commands[x].description,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%s;%s",commands[x].host_name,commands[x].description,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
+		}
 		break;
 
 	case CMD_PROCESS_SERVICE_CHECK_RESULT:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-	                result = cmd_submitf(cmd,"%s;%s;%d;%s|%s",commands[x].host_name,commands[x].description,plugin_state,plugin_output,performance_data);
-                        if (result == 0)
-                                continue;
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%d;%s|%s",commands[x].host_name,commands[x].description,plugin_state,plugin_output,performance_data);
 		}
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%d;%s|%s",commands[x].host_name,plugin_state,plugin_output,performance_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%d;%s|%s",commands[x].host_name,plugin_state,plugin_output,performance_data);
+		}
 		break;
 
 	case CMD_SCHEDULE_HOST_DOWNTIME:
@@ -2303,65 +2504,59 @@ int commit_command(int cmd){
 			cmd = CMD_SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;
 		else if (child_options == 2)
 			cmd = CMD_SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
 		}
 		break;
 
-        case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-			result = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
-                break;
+	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+		}
+		break;
 
 	case CMD_SCHEDULE_SVC_DOWNTIME:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,commands[x].description,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%lu;%lu;%d;%lu;%lu;%s;%s",commands[x].host_name,commands[x].description,start_time,end_time,fixed,triggered_by,duration,comment_author,comment_data);
+		}
 		break;
 
 	case CMD_SCHEDULE_HOST_CHECK:
 		if (force_check == TRUE)
 			cmd = CMD_SCHEDULE_FORCED_HOST_CHECK;
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-			result = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,start_time);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,start_time);
+		}
 		break;
 
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-			result = cmd_submitf(cmd,"%s;%d;%s;%s",commands[x].host_name,(force_notification | broadcast_notification),comment_author,comment_data);
-                        if (result == 0)
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
 				continue;
-                }
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%d;%s;%s",commands[x].host_name,(force_notification | broadcast_notification),comment_author,comment_data);
+		}
 		break;
 
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-                for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
-                        if (commands[x].host_name == NULL)
-                                continue;
-                        result = cmd_submitf(cmd,"%s;%s;%d;%s;%s",commands[x].host_name,commands[x].description,(force_notification | broadcast_notification),comment_author,comment_data);
-                        if (result == 0)
-                                continue;
-                }
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%d;%s;%s",commands[x].host_name,commands[x].description,(force_notification | broadcast_notification),comment_author,comment_data);
+		}
 		break;
 
 
@@ -2369,35 +2564,44 @@ int commit_command(int cmd){
 
 	case CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS:
-		result = cmd_submitf(cmd,"%s",hostgroup_name);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s",hostgroup_name);
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS) ? CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS : CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS;
-			result |= cmd_submitf(cmd,"%s",hostgroup_name);
-			}
+			if (is_authorized[x])
+				submit_result[x] |= cmd_submitf(cmd,"%s",hostgroup_name);
+		}
 		break;
 
 	case CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS:
 	case CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS:
-		result = cmd_submitf(cmd,"%s",hostgroup_name);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s",hostgroup_name);
 		break;
 
 	case CMD_ENABLE_HOSTGROUP_SVC_CHECKS:
 	case CMD_DISABLE_HOSTGROUP_SVC_CHECKS:
-		result = cmd_submitf(cmd,"%s",hostgroup_name);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s",hostgroup_name);
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_HOSTGROUP_SVC_CHECKS) ? CMD_ENABLE_HOSTGROUP_HOST_CHECKS : CMD_DISABLE_HOSTGROUP_HOST_CHECKS;
-			result |= cmd_submitf(cmd,"%s",hostgroup_name);
-			}
+			if (is_authorized[x])
+				submit_result[x] |= cmd_submitf(cmd,"%s",hostgroup_name);
+		}
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
-		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",hostgroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",hostgroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
 		break;
 
 	case CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME:
-		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",hostgroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
-		if(affect_host_and_services==TRUE)
-			result |= cmd_submitf(CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME,"%s;%lu;%lu;%d;0;%lu;%s;%s",hostgroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",hostgroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		if(affect_host_and_services==TRUE) {
+			if (is_authorized[x])
+				submit_result[x] |= cmd_submitf(CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME,"%s;%lu;%lu;%d;0;%lu;%s;%s",hostgroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		}
 		break;
 
 
@@ -2405,46 +2609,53 @@ int commit_command(int cmd){
 
 	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
-		result = cmd_submitf(cmd,"%s",servicegroup_name);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s",servicegroup_name);
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS) ? CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS : CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS;
-			result |= cmd_submitf(cmd,"%s",servicegroup_name);
-			}
+			if (is_authorized[x])
+				submit_result[x] |= cmd_submitf(cmd,"%s",servicegroup_name);
+		}
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
 	case CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
-		result = cmd_submitf(cmd,"%s",servicegroup_name);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s",servicegroup_name);
 		break;
 
 	case CMD_ENABLE_SERVICEGROUP_SVC_CHECKS:
 	case CMD_DISABLE_SERVICEGROUP_SVC_CHECKS:
-		result = cmd_submitf(cmd,"%s",servicegroup_name);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s",servicegroup_name);
 		if(affect_host_and_services==TRUE){
 			cmd = (cmd == CMD_ENABLE_SERVICEGROUP_SVC_CHECKS) ? CMD_ENABLE_SERVICEGROUP_HOST_CHECKS : CMD_DISABLE_SERVICEGROUP_HOST_CHECKS;
-			result |= cmd_submitf(cmd,"%s",servicegroup_name);
-			}
+			if (is_authorized[x])
+				submit_result[x] |= cmd_submitf(cmd,"%s",servicegroup_name);
+		}
 		break;
 
 	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
-		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",servicegroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",servicegroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
 		break;
 
 	case CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME:
-		result = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",servicegroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
-		if(affect_host_and_services==TRUE)
-			result |= cmd_submitf(CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME, "%s;%lu;%lu;%d;0;%lu;%s;%s",servicegroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		if (is_authorized[x])
+			submit_result[x] = cmd_submitf(cmd,"%s;%lu;%lu;%d;0;%lu;%s;%s",servicegroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		if(affect_host_and_services==TRUE) {
+			if (is_authorized[x])
+				submit_result[x] |= cmd_submitf(CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME, "%s;%lu;%lu;%d;0;%lu;%s;%s",servicegroup_name,start_time,end_time,fixed,duration,comment_author,comment_data);
+		}
 		break;
 
 	default:
-		return ERROR;
+		submit_result[x] = ERROR;
 		break;
-	        }
+	}
 
-	return result;
-        }
-
-
+	return;
+}
 
 /* write a command entry to the command file */
 int write_command_to_file(char *cmd){
@@ -2465,30 +2676,34 @@ int write_command_to_file(char *cmd){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not stat() external command file!</p>\n");
 		else{
-			printf("<P><DIV CLASS='errorMessage'>Error: Could not stat() command file '%s'!</DIV></P>\n",command_file);
-			printf("<P><DIV CLASS='errorDescription'>");
-			printf("The external command file may be missing, %s may not be running, and/or %s may not be checking external commands.\n", PROGRAM_NAME, PROGRAM_NAME);
-			printf("</DIV></P>\n");
-			}
+			printf("<DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td CLASS='errorMessage'>Error: Could not stat() command file '%s'!</td></tr></table></DIV>\n",command_file);
+			printf("<DIV CLASS='errorDescription'>The external command file may be missing, %s may not be running, and/or %s may not be checking external commands.</DIV>\n", PROGRAM_NAME, PROGRAM_NAME);
+			printf("</DIV>\n");
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		}
 
 		return ERROR;
-	        }
+	}
 
- 	/* open the command for writing (since this is a pipe, it will really be appended) */
+	/* open the command for writing (since this is a pipe, it will really be appended) */
 	fp=fopen(command_file,"w");
 	if(fp==NULL){
 
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not open command file for update!</p>\n");
 		else{
-			printf("<P><DIV CLASS='errorMessage'>Error: Could not open command file '%s' for update!</DIV></P>\n",command_file);
-			printf("<P><DIV CLASS='errorDescription'>");
-			printf("The permissions on the external command file and/or directory may be incorrect.  Read the FAQs on how to setup proper permissions.\n");
-			printf("</DIV></P>\n");
-			}
+			printf("<DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+			printf("<td CLASS='errorMessage'>Error: Could not open command file '%s' for update!</td></tr></table></DIV>\n",command_file);
+			printf("<DIV CLASS='errorDescription'>The permissions on the external command file and/or directory may be incorrect. Read the FAQs on how to setup proper permissions.</DIV>\n");
+			printf("</DIV>\n");
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		}
 
 		return ERROR;
-	        }
+	}
 
 	/* write the command to file */
 	fprintf(fp, "%s\n", cmd);
@@ -2499,8 +2714,7 @@ int write_command_to_file(char *cmd){
 	fclose(fp);
 
 	return OK;
-        }
-
+}
 
 /* strips out semicolons from comment data */
 void clean_comment_data(char *buffer){
@@ -2510,486 +2724,12 @@ void clean_comment_data(char *buffer){
 	y=(int)strlen(buffer);
 
 	for(x=0;x<y;x++){
-		if(buffer[x]==';')
+		if(buffer[x]==';' || buffer[x]=='\n')
 			buffer[x]=' ';
-	        }
+	}
 
 	return;
-        }
-
-
-/* display information about a command */
-void show_command_help(cmd){
-
-	printf("<DIV ALIGN=CENTER CLASS='descriptionTitle'>Command Description</DIV>\n");
-	printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='commandDescription'>\n");
-	printf("<TR><TD CLASS='commandDescription'>\n");
-
-	/* decide what information to print out... */
-	switch(cmd){
-
-	case CMD_ADD_HOST_COMMENT:
-		printf("This command is used to add a comment for the specified host.  If you work with other administrators, you may find it useful to share information about a host\n");
-		printf("that is having problems if more than one of you may be working on it.  If you do not check the 'persistent' option, the comment will be automatically be deleted\n");
-		printf("the next time %s is restarted.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ADD_SVC_COMMENT:
-		printf("This command is used to add a comment for the specified service.  If you work with other administrators, you may find it useful to share information about a host\n");
-		printf("or service that is having problems if more than one of you may be working on it.  If you do not check the 'persistent' option, the comment will automatically be\n");
-		printf("deleted the next time %s is restarted.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DEL_HOST_COMMENT:
-		printf("This command is used to delete a specific host comment.\n");
-		break;
-
-	case CMD_DEL_SVC_COMMENT:
-		printf("This command is used to delete a specific service comment.\n");
-		break;
-
-	case CMD_DELAY_HOST_NOTIFICATION:
-		printf("This command is used to delay the next problem notification that is sent out for the specified host.  The notification delay will be disregarded if\n");
-		printf("the host changes state before the next notification is scheduled to be sent out.  This command has no effect if the host is currently UP.\n");
-		break;
-
-	case CMD_DELAY_SVC_NOTIFICATION:
-		printf("This command is used to delay the next problem notification that is sent out for the specified service.  The notification delay will be disregarded if\n");
-		printf("the service changes state before the next notification is scheduled to be sent out.  This command has no effect if the service is currently in an OK state.\n");
-		break;
-
-	case CMD_SCHEDULE_SVC_CHECK:
-		printf("This command is used to schedule the next check of a particular service.  %s will re-queue the service to be checked at the time you specify.\n", PROGRAM_NAME);
-		printf("If you select the <i>force check</i> option, %s will force a check of the service regardless of both what time the scheduled check occurs and whether or not checks are enabled for the service.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_SVC_CHECK:
-		printf("This command is used to enable active checks of a service.\n");
-		break;
-
-	case CMD_DISABLE_SVC_CHECK:
-		printf("This command is used to disable active checks of a service.\n");
-		break;
-
-	case CMD_DISABLE_NOTIFICATIONS:
-		printf("This command is used to disable host and service notifications on a program-wide basis.\n");
-		break;
-
-	case CMD_ENABLE_NOTIFICATIONS:
-		printf("This command is used to enable host and service notifications on a program-wide basis.\n");
-		break;
-
-	case CMD_SHUTDOWN_PROCESS:
-		printf("This command is used to shutdown the %s process. Note: Once the %s has been shutdown, it cannot be restarted via the web interface!\n", PROGRAM_NAME, PROGRAM_NAME);
-		break;
-
-	case CMD_RESTART_PROCESS:
-		printf("This command is used to restart the %s process.   Executing a restart command is equivalent to sending the process a HUP signal.\n", PROGRAM_NAME);
-		printf("All information will be flushed from memory, the configuration files will be re-read, and %s will start monitoring with the new configuration information.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_HOST_SVC_CHECKS:
-		printf("This command is used to enable active checks of all services associated with the specified host.  This <i>does not</i> enable checks of the host unless you check the 'Enable for host too' option.\n");
-		break;
-
-	case CMD_DISABLE_HOST_SVC_CHECKS:
-		printf("This command is used to disable active checks of all services associated with the specified host.  When a service is disabled %s will not monitor the service.  Doing this will prevent any notifications being sent out for\n", PROGRAM_NAME);
-		printf("the specified service while it is disabled.  In order to have %s check the service in the future you will have to re-enable the service.\n", PROGRAM_NAME);
-		printf("Note that disabling service checks may not necessarily prevent notifications from being sent out about the host which those services are associated with.  This <i>does not</i> disable checks of the host unless you check the 'Disable for host too' option.\n");
-		break;
-
-	case CMD_SCHEDULE_HOST_SVC_CHECKS:
-		printf("This command is used to scheduled the next check of all services on the specified host.  If you select the <i>force check</i> option, %s will force a check of all services on the host regardless of both what time the scheduled checks occur and whether or not checks are enabled for those services.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DEL_ALL_HOST_COMMENTS:
-		printf("This command is used to delete all comments associated with the specified host.\n");
-		break;
-
-	case CMD_DEL_ALL_SVC_COMMENTS:
-		printf("This command is used to delete all comments associated with the specified service.\n");
-		break;
-
-	case CMD_ENABLE_SVC_NOTIFICATIONS:
-		printf("This command is used to enable notifications for the specified service.  Notifications will only be sent out for the\n");
-		printf("service state types you defined in your service definition.\n");
-		break;
-
-	case CMD_DISABLE_SVC_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for the specified service.  You will have to re-enable notifications\n");
-		printf("for this service before any alerts can be sent out in the future.\n");
-		break;
-
-	case CMD_ENABLE_HOST_NOTIFICATIONS:
-		printf("This command is used to enable notifications for the specified host.  Notifications will only be sent out for the\n");
-		printf("host state types you defined in your host definition.  Note that this command <i>does not</i> enable notifications\n");
-		printf("for services associated with this host.\n");
-		break;
-
-	case CMD_DISABLE_HOST_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for the specified host.  You will have to re-enable notifications for this host\n");
-		printf("before any alerts can be sent out in the future.  Note that this command <i>does not</i> disable notifications for services associated with this host.\n");
-		break;
-
-	case CMD_ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
-		printf("This command is used to enable notifications for all hosts and services that lie \"beyond\" the specified host\n");
-		printf("(from the view of %s).\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST:
-		printf("This command is used to temporarily prevent notifications from being sent out for all hosts and services that lie\n");
-		printf("\"beyone\" the specified host (from the view of %s).\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_HOST_SVC_NOTIFICATIONS:
-		printf("This command is used to enable notifications for all services on the specified host.  Notifications will only be sent out for the\n");
-		printf("service state types you defined in your service definition.  This <i>does not</i> enable notifications for the host unless you check the 'Enable for host too' option.\n");
-		break;
-
-	case CMD_DISABLE_HOST_SVC_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for all services on the specified host.  You will have to re-enable notifications for\n");
-		printf("all services associated with this host before any alerts can be sent out in the future.  This <i>does not</i> prevent notifications from being sent out about the host unless you check the 'Disable for host too' option.\n");
-		break;
-
-	case CMD_ACKNOWLEDGE_HOST_PROBLEM:
-		printf("This command is used to acknowledge a host problem.  When a host problem is acknowledged, future notifications about problems are temporarily disabled until the host changes from its current state.\n");
-		printf("If you want acknowledgement to disable notifications until the host recovers, check the 'Sticky Acknowledgement' checkbox.\n");
-		printf("Contacts for this host will receive a notification about the acknowledgement, so they are aware that someone is working on the problem.  Additionally, a comment will also be added to the host.\n");
-		printf("Make sure to enter your name and fill in a brief description of what you are doing in the comment field.  If you would like the host comment to remain once the acknowledgement is removed, check\n");
-		printf("the 'Persistent Comment' checkbox.  If you do not want an acknowledgement notification sent out to the appropriate contacts, uncheck the 'Send Notification' checkbox.\n");
-		break;
-
-	case CMD_ACKNOWLEDGE_SVC_PROBLEM:
-		printf("This command is used to acknowledge a service problem.  When a service problem is acknowledged, future notifications about problems are temporarily disabled until the service changes from its current state.\n");
-		printf("If you want acknowledgement to disable notifications until the service recovers, check the 'Sticky Acknowledgement' checkbox.\n");
-		printf("Contacts for this service will receive a notification about the acknowledgement, so they are aware that someone is working on the problem.  Additionally, a comment will also be added to the service.\n");
-		printf("Make sure to enter your name and fill in a brief description of what you are doing in the comment field.  If you would like the service comment to remain once the acknowledgement is removed, check\n");
-		printf("the 'Persistent Comment' checkbox.  If you do not want an acknowledgement notification sent out to the appropriate contacts, uncheck the 'Send Notification' checkbox.\n");
-		break;
-
-	case CMD_START_EXECUTING_SVC_CHECKS:
-		printf("This command is used to resume execution of active service checks on a program-wide basis.  Individual services which are disabled will still not be checked.\n");
-		break;
-
-	case CMD_STOP_EXECUTING_SVC_CHECKS:
-		printf("This command is used to temporarily stop %s from actively executing any service checks.  This will have the side effect of preventing any notifications from being sent out (for any and all services and hosts).\n", PROGRAM_NAME);
-		printf("Service checks will not be executed again until you issue a command to resume service check execution.\n");
-		break;
-
-	case CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS:
-		printf("This command is used to make %s start accepting passive service check results that it finds in the external command file\n", PROGRAM_NAME);
-		break;
-
-	case CMD_STOP_ACCEPTING_PASSIVE_SVC_CHECKS:
-		printf("This command is use to make %s stop accepting passive service check results that it finds in the external command file.  All passive check results that are found will be ignored.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_PASSIVE_SVC_CHECKS:
-		printf("This command is used to allow %s to accept passive service check results that it finds in the external command file for this particular service.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DISABLE_PASSIVE_SVC_CHECKS:
-		printf("This command is used to stop %s accepting passive service check results that it finds in the external command file for this particular service.  All passive check results that are found for this service will be ignored.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_EVENT_HANDLERS:
-		printf("This command is used to allow %s to run host and service event handlers.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DISABLE_EVENT_HANDLERS:
-		printf("This command is used to temporarily prevent %s from running any host or service event handlers.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_SVC_EVENT_HANDLER:
-		printf("This command is used to allow %s to run the service event handler for a particular service when necessary (if one is defined).\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DISABLE_SVC_EVENT_HANDLER:
-		printf("This command is used to temporarily prevent %s from running the service event handler for a particular service.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_HOST_EVENT_HANDLER:
-		printf("This command is used to allow %s to run the host event handler for a particular service when necessary (if one is defined).\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DISABLE_HOST_EVENT_HANDLER:
-		printf("This command is used to temporarily prevent %s from running the host event handler for a particular host.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_HOST_CHECK:
-		printf("This command is used to enable active checks of this host.\n");
-		break;
-
-	case CMD_DISABLE_HOST_CHECK:
-		printf("This command is used to temporarily prevent %s from actively checking the status of a particular host.  If %s needs to check the status of this host, it will assume that it is in the same state that it was in before checks were disabled.\n", PROGRAM_NAME, PROGRAM_NAME);
-		break;
-
-	case CMD_START_OBSESSING_OVER_SVC_CHECKS:
-		printf("This command is used to have %s start obsessing over service checks.  Read the documentation on distributed monitoring for more information on this.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_STOP_OBSESSING_OVER_SVC_CHECKS:
-		printf("This command is used stop %s from obsessing over service checks.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_REMOVE_HOST_ACKNOWLEDGEMENT:
-		printf("This command is used to remove an acknowledgement for a particular host problem.  Once the acknowledgement is removed, notifications may start being\n");
-		printf("sent out about the host problem. \n");
-		break;
-
-	case CMD_REMOVE_SVC_ACKNOWLEDGEMENT:
-		printf("This command is used to remove an acknowledgement for a particular service problem.  Once the acknowledgement is removed, notifications may start being\n");
-		printf("sent out about the service problem.\n");
-		break;
-
-	case CMD_PROCESS_SERVICE_CHECK_RESULT:
-		printf("This command is used to submit a passive check result for a particular service.  It is particularly useful for resetting security-related services to OK states once they have been dealt with.\n");
-		break;
-
-	case CMD_PROCESS_HOST_CHECK_RESULT:
-		printf("This command is used to submit a passive check result for a particular host.\n");
-		break;
-
-	case CMD_SCHEDULE_HOST_DOWNTIME:
-		printf("This command is used to schedule downtime for a particular host.  During the specified downtime, %s will not send notifications out about the host.\n", PROGRAM_NAME);
-		printf("When the scheduled downtime expires, %s will send out notifications for this host as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when the host goes down or becomes unreachable (sometime between the\n", PROGRAM_NAME);
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
-		break;
-
-	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for a particular host and all of its services.  During the specified downtime, Icinga will not send notifications out about the host.\n");
-		printf("Normally, a host in downtime will not send alerts about any services in a failed state. This option will explicitly set downtime for all services for this host.\n");
-		printf("When the scheduled downtime expires, Icinga will send out notifications for this host as it normally would.  Scheduled downtimes are preserved\n");
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, Icinga will treat this as \"flexible\" downtime.  Flexible downtime starts when the host goes down or becomes unreachable (sometime between the\n");
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
-		break;
-
-	case CMD_SCHEDULE_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for a particular service.  During the specified downtime, %s will not send notifications out about the service.\n", PROGRAM_NAME);
-		printf("When the scheduled downtime expires, %s will send out notifications for this service as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when the service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed downtime.\n");
-		break;
-
-	case CMD_ENABLE_HOST_FLAP_DETECTION:
-		printf("This command is used to enable flap detection for a specific host.  If flap detection is disabled on a program-wide basis, this will have no effect,\n");
-		break;
-
-	case CMD_DISABLE_HOST_FLAP_DETECTION:
-		printf("This command is used to disable flap detection for a specific host.\n");
-		break;
-
-	case CMD_ENABLE_SVC_FLAP_DETECTION:
-		printf("This command is used to enable flap detection for a specific service.  If flap detection is disabled on a program-wide basis, this will have no effect,\n");
-		break;
-
-	case CMD_DISABLE_SVC_FLAP_DETECTION:
-		printf("This command is used to disable flap detection for a specific service.\n");
-		break;
-
-	case CMD_ENABLE_FLAP_DETECTION:
-		printf("This command is used to enable flap detection for hosts and services on a program-wide basis.  Individual hosts and services may have flap detection disabled.\n");
-		break;
-
-	case CMD_DISABLE_FLAP_DETECTION:
-		printf("This command is used to disable flap detection for hosts and services on a program-wide basis.\n");
-		break;
-
-	case CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS:
-		printf("This command is used to enable notifications for all services in the specified hostgroup.  Notifications will only be sent out for the\n");
-		printf("service state types you defined in your service definitions.  This <i>does not</i> enable notifications for the hosts in this hostgroup unless you check the 'Enable for hosts too' option.\n");
-		break;
-
-	case CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for all services in the specified hostgroup.  You will have to re-enable notifications for\n");
-		printf("all services in this hostgroup before any alerts can be sent out in the future.  This <i>does not</i> prevent notifications from being sent out about the hosts in this hostgroup unless you check the 'Disable for hosts too' option.\n");
-		break;
-
-	case CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS:
-		printf("This command is used to enable notifications for all hosts in the specified hostgroup.  Notifications will only be sent out for the\n");
-		printf("host state types you defined in your host definitions.\n");
-		break;
-
-	case CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for all hosts in the specified hostgroup.  You will have to re-enable notifications for\n");
-		printf("all hosts in this hostgroup before any alerts can be sent out in the future.\n");
-		break;
-
-	case CMD_ENABLE_HOSTGROUP_SVC_CHECKS:
-		printf("This command is used to enable active checks of all services in the specified hostgroup.  This <i>does not</i> enable active checks of the hosts in the hostgroup unless you check the 'Enable for hosts too' option.\n");
-		break;
-
-	case CMD_DISABLE_HOSTGROUP_SVC_CHECKS:
-		printf("This command is used to disable active checks of all services in the specified hostgroup.  This <i>does not</i> disable checks of the hosts in the hostgroup unless you check the 'Disable for hosts too' option.\n");
-		break;
-
-	case CMD_DEL_HOST_DOWNTIME:
-		printf("This command is used to cancel active or pending scheduled downtime for the specified host.\n");
-		break;
-
-	case CMD_DEL_SVC_DOWNTIME:
-		printf("This command is used to cancel active or pending scheduled downtime for the specified service.\n");
-		break;
-
-	case CMD_ENABLE_FAILURE_PREDICTION:
-		printf("This command is used to enable failure prediction for hosts and services on a program-wide basis.  Individual hosts and services may have failure prediction disabled.\n");
-		break;
-
-	case CMD_DISABLE_FAILURE_PREDICTION:
-		printf("This command is used to disable failure prediction for hosts and services on a program-wide basis.\n");
-		break;
-
-	case CMD_ENABLE_PERFORMANCE_DATA:
-		printf("This command is used to enable the processing of performance data for hosts and services on a program-wide basis.  Individual hosts and services may have performance data processing disabled.\n");
-		break;
-
-	case CMD_DISABLE_PERFORMANCE_DATA:
-		printf("This command is used to disable the processing of performance data for hosts and services on a program-wide basis.\n");
-		break;
-
-	case CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME:
-		printf("This command is used to schedule downtime for all hosts in a particular hostgroup.  During the specified downtime, %s will not send notifications out about the hosts.\n", PROGRAM_NAME);
-		printf("When the scheduled downtime expires, %s will send out notifications for the hosts as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a host goes down or becomes unreachable (sometime between the\n", PROGRAM_NAME);
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
-		break;
-
-	case CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for all services in a particular hostgroup.  During the specified downtime, %s will not send notifications out about the services.\n", PROGRAM_NAME);
-		printf("When the scheduled downtime expires, %s will send out notifications for the services as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
-		printf("Note that scheduling downtime for services does not automatically schedule downtime for the hosts those services are associated with.  If you want to also schedule downtime for all hosts in the hostgroup, check the 'Schedule downtime for hosts too' option.\n");
-		break;
-
-	case CMD_START_EXECUTING_HOST_CHECKS:
-		printf("This command is used to enable active host checks on a program-wide basis.\n");
-		break;
-
-	case CMD_STOP_EXECUTING_HOST_CHECKS:
-		printf("This command is used to disable active host checks on a program-wide basis.\n");
-		break;
-
-	case CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS:
-		printf("This command is used to have %s start obsessing over host checks.  Read the documentation on distributed monitoring for more information on this.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
-		printf("This command is used to stop %s from obsessing over host checks.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_PASSIVE_HOST_CHECKS:
-		printf("This command is used to allow %s to accept passive host check results that it finds in the external command file for a particular host.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_DISABLE_PASSIVE_HOST_CHECKS:
-		printf("This command is used to stop %s from accepting passive host check results that it finds in the external command file for a particular host.  All passive check results that are found for this host will be ignored.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
-		printf("This command is used to have %s start obsessing over host checks.  Read the documentation on distributed monitoring for more information on this.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		printf("This command is used to stop %s from obsessing over host checks.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_SCHEDULE_HOST_CHECK:
-		printf("This command is used to schedule the next check of a particular host. %s will re-queue the host to be checked at the time you specify.\n", PROGRAM_NAME);
-		printf("If you select the <i>force check</i> option, %s will force a check of the host regardless of both what time the scheduled check occurs and whether or not checks are enabled for the host.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_START_OBSESSING_OVER_SVC:
-		printf("This command is used to have %s start obsessing over a particular service.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_STOP_OBSESSING_OVER_SVC:
-		printf("This command is used to stop %s from obsessing over a particular service.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_START_OBSESSING_OVER_HOST:
-		printf("This command is used to have %s start obsessing over a particular host.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_STOP_OBSESSING_OVER_HOST:
-		printf("This command is used to stop %s from obsessing over a particular host.\n", PROGRAM_NAME);
-		break;
-
-	case CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
-		printf("This command is used to enable notifications for all services in the specified servicegroup.  Notifications will only be sent out for the\n");
-		printf("service state types you defined in your service definitions.  This <i>does not</i> enable notifications for the hosts in this servicegroup unless you check the 'Enable for hosts too' option.\n");
-		break;
-
-	case CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for all services in the specified servicegroup.  You will have to re-enable notifications for\n");
-		printf("all services in this servicegroup before any alerts can be sent out in the future.  This <i>does not</i> prevent notifications from being sent out about the hosts in this servicegroup unless you check the 'Disable for hosts too' option.\n");
-		break;
-
-	case CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
-		printf("This command is used to enable notifications for all hosts in the specified servicegroup.  Notifications will only be sent out for the\n");
-		printf("host state types you defined in your host definitions.\n");
-		break;
-
-	case CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS:
-		printf("This command is used to prevent notifications from being sent out for all hosts in the specified servicegroup.  You will have to re-enable notifications for\n");
-		printf("all hosts in this servicegroup before any alerts can be sent out in the future.\n");
-		break;
-
-	case CMD_ENABLE_SERVICEGROUP_SVC_CHECKS:
-		printf("This command is used to enable active checks of all services in the specified servicegroup.  This <i>does not</i> enable active checks of the hosts in the servicegroup unless you check the 'Enable for hosts too' option.\n");
-		break;
-
-	case CMD_DISABLE_SERVICEGROUP_SVC_CHECKS:
-		printf("This command is used to disable active checks of all services in the specified servicegroup.  This <i>does not</i> disable checks of the hosts in the servicegroup unless you check the 'Disable for hosts too' option.\n");
-		break;
-
-	case CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME:
-		printf("This command is used to schedule downtime for all hosts in a particular servicegroup.  During the specified downtime, %s will not send notifications out about the hosts.\n", PROGRAM_NAME);
-		printf("When the scheduled downtime expires, %s will send out notifications for the hosts as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a host goes down or becomes unreachable (sometime between the\n", PROGRAM_NAME);
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
-		break;
-
-	case CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME:
-		printf("This command is used to schedule downtime for all services in a particular servicegroup.  During the specified downtime, %s will not send notifications out about the services.\n", PROGRAM_NAME);
-		printf("When the scheduled downtime expires, %s will send out notifications for the services as it normally would.  Scheduled downtimes are preserved\n", PROGRAM_NAME);
-		printf("across program shutdowns and restarts.  Both the start and end times should be specified in the following format:  <b>mm/dd/yyyy hh:mm:ss</b>.\n");
-		printf("If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify.  If you do not select the <i>fixed</i>\n");
-		printf("option, %s will treat this as \"flexible\" downtime.  Flexible downtime starts when a service enters a non-OK state (sometime between the\n", PROGRAM_NAME);
-		printf("start and end times you specified) and lasts as long as the duration of time you enter.  The duration fields do not apply for fixed dowtime.\n");
-		printf("Note that scheduling downtime for services does not automatically schedule downtime for the hosts those services are associated with.  If you want to also schedule downtime for all hosts in the servicegroup, check the 'Schedule downtime for hosts too' option.\n");
-		break;
-
-	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
-	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
-		printf("This command is used to send a custom notification about the specified %s.  Useful in emergencies when you need to notify admins of an issue regarding a monitored system or service.\n",(cmd==CMD_SEND_CUSTOM_HOST_NOTIFICATION)?"host":"service");
-		printf("Custom notifications normally follow the regular notification logic in %s.  Selecting the <i>Forced</i> option will force the notification to be sent out, regardless of the time restrictions, whether or not notifications are enabled, etc.  Selecting the <i>Broadcast</i> option causes the notification to be sent out to all normal (non-escalated) and escalated contacts.  These options allow you to override the normal notification logic if you need to get an important message out.\n", PROGRAM_NAME);
-		break;
-
-	default:
-		printf("Sorry, but no information is available for this command.");
-	        }
-
-	printf("</TD></TR>\n");
-	printf("</TABLE>\n");
-
-	return;
-        }
-
-
+}
 
 /* converts a time string to a UNIX timestamp, respecting the date_format option */
 int string_to_time(char *buffer, time_t *t){
@@ -3001,7 +2741,7 @@ int string_to_time(char *buffer, time_t *t){
 	   by the sscanf() call.  A better solution is to also check the
 	   CGI input for validity, but this should suffice to prevent
 	   strange problems if the input is not valid.
-	   Jan 15 2003  Steve Bonds */
+	   Jan 15 2003	Steve Bonds */
 	lt.tm_mon=0;
 	lt.tm_mday=1;
 	lt.tm_year=1900;
@@ -3031,4 +2771,26 @@ int string_to_time(char *buffer, time_t *t){
 	*t=mktime(&lt);
 
 	return OK;
-        }
+}
+
+/* check if comment data is complete */
+void check_comment_sanity(int *e){
+	if(!strcmp(comment_author,""))
+		error[(*e)++].message=strdup("Author name was not entered");
+	if(!strcmp(comment_data,""))
+		error[(*e)++].message=strdup("Comment data was not entered");
+
+	return;
+}
+
+/* check if given sane values for times */
+void check_time_sanity(int *e) {
+	if (start_time==(time_t)0)
+		error[(*e)++].message=strdup("Start time can't be zero or date format couldn't be recognized correctly");
+	if (end_time==(time_t)0)
+		error[(*e)++].message=strdup("End time can't be zero or date format couldn't be recognized correctly");
+	if (end_time<start_time)
+		error[(*e)++].message=strdup("End date before start date");
+
+	return;
+}

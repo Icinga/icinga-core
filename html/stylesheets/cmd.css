@@ -1,27 +1,139 @@
-
-.cmd { font-family: arial,serif; background-color: #fff; color: #000; font-size: 8pt; }
+/*
+ * CSS file for cmd.cgi
+ */
 
 a { color: #6e7475; text-decoration: none; }
 a:hover { color: #000; }
-th { text-align: left; font-size: 8pt; text-align: left; padding: 0 5px; border: 0; }
-td { font-size: 8pt; border: 0; }
-
-.errorMessage { text-align: center; color: #ff3300; font-weight: bold; font-size: 10pt; }
-.errorDescription { text-align: center; font-weight: bold; font-size: 10pt; }
-.warningMessage { text-align: center; color: #ff3300; font-weight: bold; font-size: 10pt; }
-.infoMessage { text-align: center; color: #ff3300; font-weight: bold; }
+a.homepageURL:Hover { color: #ff3300; }
 
 .infoBox { color: #000; padding: 2; border: 0; }
 .infoBoxTitle { font-size: 10pt; font-weight: bold; color: #000; }
 .infoBoxBadProcStatus { color: #ff3300; }
-a.homepageURL:Hover { color: #ff3300; }
 
-.cmdType { font-weight: bold; text-align: center; }
+.cmd { font-family:  Helvetica, serif; background-color: #fff; color: #000; font-size: 8pt; }
 
-.commandDescription { text-align: center; padding: 5; border:0; color: #707677; }
-.descriptionTitle { text-align: center;  color: #707677; }
+td {
+	font-size: 9pt;
+	border: 0;
+	padding-top: 3px;
+	padding-bottom:3px;
+}
 
-.optBox { border: 0; }
-form .optBox { text-align: center; padding: 10px; background-color: #ededed; border: 1px solid #ccc; }
-.optBoxTitle { margin-bottom: 10px; text-align: center; font-weight: bold; }
-.optBoxRequiredItem { background-color: #ededed; }
+.objectDescription {
+	font-size: 8pt;
+	font-weight: bold;
+	height:25px;
+}
+
+.descriptionleft {
+	text-align: left;
+	padding-left:10px;
+}
+
+.boxFrame {
+	border: 1px dotted #ccc;
+}
+
+.contentTable {
+	border:10px white solid;
+	text-align:center;
+	width:100%;
+}
+
+.sectionHeader {
+	text-align: center;
+	font-size: 9pt;
+	border: 0;
+	line-height: 20px;
+	background-image: url(../images/cmd_shadow.gif);
+	background-repeat:repeat-x;
+	font-weight: bold;
+}
+
+.commitButton {
+	height:40px;
+	padding-right:20px;
+	text-align:right;
+}
+
+.inputError {
+	border:1px red solid;
+	color:black;
+	margin-top:0.5em;
+	padding:0.5em;
+	float:left;
+	background-color: #FFCECE;
+}
+
+.submitButton {
+	/*
+	 * Design your own buttons
+	 */
+}
+
+input[type=text], textarea {
+	border:1px #D0D0D0 solid;
+}
+
+.errorBox,
+.successBox,
+.BoxWidth {
+	width:600px;
+}
+
+.errorBox {
+	border:1px red solid;
+	background-color: #FFE5E5;
+}
+
+.successBox {
+	border:1px green solid;
+	background-color: #C0FFC0;
+}
+
+.errorMessage {
+	text-align:left;
+	font-weight: bold;
+	margin:1em;
+	font-size: 10pt;
+}
+
+.errorDescription,
+.successMessage {
+	text-align:left;
+	margin:1em;
+	font-size: 10pt;
+}
+
+.errorContent {
+	font-weight: bold;
+	font-size: 10pt;
+	padding:0.5em;
+}
+
+.errorTable {
+	margin:0.5em 1.2em 0.5em 1.2em;
+}
+
+.errorString {
+	margin:1em;
+	width:15%;
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+.sumHeader {
+	text-align: center;
+	background-color: #ffffff;
+	font-weight: bold;
+	font-size: 9pt;
+}
+
+/* Commit status colors */
+.commitSuccess { color:green; font-size: 10pt; }
+.commitUnknown { color:#bf44b2; font-size: 10pt; }
+.commitFailed { color:red; font-size: 10pt; }
+
+/* Row Colors */
+.statusOdd { background-color: #cfcfcf; }
+.statusEven { background-color: #e7e7e7; }
