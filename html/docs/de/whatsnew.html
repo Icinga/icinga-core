@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Was gibt es Neues in Icinga Core 1.0.3 und Icinga Web 1.0.3</title>
+<title>Was gibt es Neues in Icinga 1.2</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
 <link rel="up" href="ch01.html" title="Kapitel 1. Über">
 <link rel="prev" href="about.html" title="Über Icinga">
 <link rel="next" href="ch02.html" title="Kapitel 2. Los geht's">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Was gibt es Neues in Icinga Core 1.0.3 und Icinga Web 1.0.3</th></tr>
+<tr><th colspan="3" align="center">Was gibt es Neues in Icinga 1.2</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="about.html">Zurück</a> </td>
@@ -24,1131 +24,141 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Was gibt es Neues in Icinga Core 1.0.3 und Icinga Web 1.0.3">
+<div class="section" title="Was gibt es Neues in Icinga 1.2">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>Was gibt es Neues in Icinga Core 1.0.3 und Icinga Web 1.0.3</h2></div></div></div>
-    
+<a name="whatsnew"></a>Was gibt es Neues in Icinga 1.2</h2></div></div></div>
+  
+<p>Erste einheitliche Version von Icinga Core und Icinga Web.</p>
+  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-    <p><span class="bold"><strong>Icinga Core:</strong></span></p>
-
-    <p>* Konfigurationsoptionen: </p>
+  <p>* Konfigurationsoptionen: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                <p>Setzen des initialen Zustandes für die Beständigkeit von Acknowledgements</p>
-            </li>
+        <p>Setzen des initialen Zustandes für die Beständigkeit von Acknowledgements</p>
+      </li>
 <li class="listitem">
-                <p>log_external_commands_user, Core Protokollierung von Benutzern, die an die Kommando-Pipe senden.</p>
-            </li>
+        <p>log_external_commands_user, Core Protokollierung von Benutzern, die an die Kommando-Pipe senden.</p>
+      </li>
 <li class="listitem">
-                <p>Deaktivieren der Protokollierung des aktuellen Standes nach Rotation</p>
-            </li>
+        <p>Deaktivieren der Protokollierung des aktuellen Standes nach Rotation</p>
+      </li>
 <li class="listitem">
-                <p>Protokollierung der gesamten Plugin- Ausgabe</p>
-            </li>
+        <p>Protokollierung der gesamten Plugin- Ausgabe</p>
+      </li>
 <li class="listitem">
-                <p>Aktivieren von Eventhandlern für Hosts/Services mit Statusverfolgung</p>
-            </li>
+        <p>Aktivieren von Eventhandlern für Hosts/Services mit Statusverfolgung</p>
+      </li>
 </ul></div>
 
-    <p>* Geplante Ausfallzeiten können bereits bei Erreichen des SOFT- Fehlerstatus beginnen</p>
+  <p>* Geplante Ausfallzeiten können bereits bei Erreichen des SOFT- Fehlerstatus beginnen</p>
 
-    <p>* Rewrite von execv check- Ausführung zu execvp, dies erlaubt Plugins in $PATH und die Annahme von 4k Befehlsargumenten, mit angepasster
-    Fehlerbehandlung</p>
+  <p>* Rewrite von execv check- Ausführung zu execvp, dies erlaubt Plugins in $PATH und die Annahme von 4k Befehlsargumenten, mit
+  angepasster Fehlerbehandlung</p>
 
-    <p>* Fix: alle Kommentare verschwinden nach einem Neustart wenn ein Kommentar nicht-persistent ist.</p>
+  <p>* Fix: alle Kommentare verschwinden nach einem Neustart wenn ein Kommentar nicht-persistent ist.</p>
 
-    <p>* Fix: is_volatile- Bedingungen verursachen falsche Service-Alarme in den Log-Dateien</p>
+  <p>* Fix: is_volatile- Bedingungen verursachen falsche Service-Alarme in den Log-Dateien</p>
 
-    <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
+  <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
 
-    <p>* Syslog Ausgabe für start/stop, client- Verbindung</p>
+  <p>* Syslog Ausgabe für start/stop, client- Verbindung</p>
 
-    <p>* Hinzugefügte Datenbank trimming-thread-startup-delay Option</p>
+  <p>* Hinzugefügte Datenbank trimming-thread-startup-delay Option</p>
 
-    <p>* Komplettes Rewrite von binding NULL Werten für Oracle mit ocilib; Fix: select name1/name2</p>
+  <p>* Komplettes Rewrite von binding NULL Werten für Oracle mit ocilib; Fix: select name1/name2</p>
 
-    <p>* Modifizieren und erweitern der Spaltenlänge für mysql/pgsql/oracle</p>
+  <p>* Modifizieren und erweitern der Spaltenlänge für mysql/pgsql/oracle</p>
 
-    <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
+  <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
 
-    <p>* Vielfache Befehlsübergabe an die cmd.cgi</p>
+  <p>* Tooltips für Kommentare in der status.cgi</p>
 
-    <p>* Senden von Befehlen über Checkbox-Auswahl für mehrere Host/Services</p>
+  <p>– Sie müssen nicht mehr den Host/Service öffnen um die Kommentare zu sehen.</p>
 
-    <p>* Pause/Weiter für die Seitenaktualisierung</p>
+  <p>* Gleichzeitiges Löschen von mehreren Downtimes und Kommentaren</p>
 
-    <p>* Hinzugefügte Konfigurationsoptionen: Anzeige von long_output in status.cgi; Anzeige von NUR HARD states in tac.cgi</p>
+  <p>* CVS Export, auf fast jeder Seite möglich</p>
 
-    <p>* Fix: Anzeige falscher Name bei mehreren (multi) URL's und Makro Verarbeitung</p>
+  <p>– Direkter Export von verschiedenen Listen und Zustandsdaten. Es gibt einen kleinen "Export to CSV"-Link, dieser erzeugt eine Seite
+  mit dem aktuellen Inhalt im cvs-Format. Zwei neue Konfigurationseinstellungen erlauben die Auswahl, welche Zeichen für das Ausgabeformat
+  verwendet werden sollen und vervollständigen diese raffinierte Erweiterung.</p>
 
-    <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog.</p>
+  <p>* Commands expander für die Konfigurationsanzeige. Dies hilft $ARGn$- Substitutionen und zeigt die exakte Befehlsfolge, die der Core
+  auszuführen versucht. Lange erwartetes Feature, vielen Dank an Jochen Bern!</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-            <p><a class="xref" href="whatsnew.html#changelog-core" title="Changelog of the Icinga Core">„Changelog of the Icinga Core“</a></p>
-        </li></ul></div>
+  <p>* Diverse Fixes, leicht modifiziertes Menü, erweitert um unbehandelte Host/Service- Probleme. JavaScript-Bibliothek
+  Aktualisierungen, Fixed Segfaults auf Solaris in der status.cgi, Entfernen von PHP als Abhängigkeit für das Classic UI.</p>
 
-    <p><span class="bold"><strong>Icinga Web:</strong></span></p>
+  <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog.</p>
 
-    <p>* Neue Technical Overview Template Implementierung</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>doc/Changelog</p>
+    </li></ul></div>
 
-    <p>* Diverse Internet Explorer Fixes</p>
+  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
 
-    <p>* Verbesserung des Senden von Befehlen an mehrere Instanzen</p>
+  <p>* Pending Status: zeigt einen speziellen Status, für Checks die noch nicht ausgeführt wurden.</p>
 
-    <p>* Überprüfen der Gültigkeit von Sessions und entsprechende Warnung</p>
+  <p>* Bessere Protokollierung: Mehr über das, was Icinga-Web macht.</p>
 
-    <p>* Neuer standard Welcome Cronk</p>
+  <p>* Webseiten-Konfiguration: Legen Sie Ihre eigene Konfiguration in XML-Dateien ab, keine Überschreibung bei Aktualisierungen.</p>
 
-    <p>* Reorganisierte Icon Struktur</p>
+  <p>* Integrierte Kommentare für Host und Services</p>
 
-    <p>Insidertips und mehr Dokumentation rund ums Webinterface finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
+  <p>* PNP4Nagios integriert "on the Fly", wenn Sie möchten.</p>
 
-    <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog:</p>
+  <p>* Die Suche nach Objekten skaliert hervorragend!</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-            <p><a class="xref" href="whatsnew.html#changelog-web" title="Changelog of the Icinga Web">„Changelog of the Icinga Web“</a></p>
-        </li></ul></div>
+  <p>* Device Icons aus der Icinga- Konfiguration.</p>
 
-    <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
+  <p>Insidertips und mehr Dokumentation rund ums Webinterface finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
 
-    <p>* Aktualisierung der Schnellstart-Anleitungen</p>
+  <p>Für detaillierte Information der einzelnen Releases schauen Sie bitte in den Changelog:</p>
 
-    <p>* Aktualisierung der Upgrade-Anleitung von Icinga und IDOUtils</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>doc/CHANGELOG</p>
+    </li></ul></div>
 
-    <p>* Aktualisierung der Anleitung für die Installation des Webinterfaces</p>
+  <p><span class="bold"><strong>Icinga Reporting:</strong></span></p>
 
-    <p>* Aktualisierung der erweiterten Dokumentation zu den IDOUtils (Kapitel 11)</p>
+  <p>* Komplettes Icinga Reporting- Paket im Git, download von <a class="link" href="git://git.icinga.org/icinga-reports.git/" target="_top">:git://git.icinga.org/icinga-reports.git/</a></p>
 
-    <p>* Aktualisierung der Anleitung zur Icinga Api</p>
+  <p>* Installationsanleitung im Wiki: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#25-Icinga-Reporting" target="_top">Icinga-Wiki</a></p>
 
-    <p>* Aktualisierung der Konfigurationsoptionen, Classical UI</p>
+  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
 
-    <p>* Neues Dokument zu weiteren HowTos</p>
+  <p>* Neues Dokument für die Integration von PNP4Nagios in Icinga Web</p>
+<p>* Neues Dokument über die Icinga-Web API</p>
+<p>* Neues Dokument für externen Kommandos</p>
+<p>* Neue Bilder</p>
+  <p>* Neues Dokument zum Icinga Reporting</p>
 
-    <p>Neue Testanleitungen für Icinga finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#2-Development" target="_top">Icinga-Development</a></p>
+  <p>* Aktualisierung der Anleitung für die Installation des Webinterfaces</p>
 
-    <p>Insidertips und mehr Dokumentation rund ums Webinterface finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
+  
+  <p>* Aktualisierung der Anleitung zur Icinga Api</p>
 
-    <p>Bitte berichten Sie Probleme hier:</p>
+  <p>* Aktualisierung der Konfigurationsoptionen, Classical UI</p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Problembericht Icinga Core</a></p>
+  <p>* Neues Dokument zu weiteren HowTos</p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Problembericht Icinga Web</a></p>
+  <p>Neue Testanleitungen für Icinga finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#2-Development" target="_top">Icinga-Development</a></p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Problembericht Icinga API</a></p>
+  <p>Insidertips und mehr Dokumentation rund ums Webinterface finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
 
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga Docs</a></p>
+  <p>Bitte berichten Sie Probleme hier:</p>
 
-    <a class="indexterm" name="id2738411"></a>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Problembericht Icinga Core</a></p>
 
-    <div class="section" title="Changelog of the Icinga Core">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="changelog-core"></a>Changelog of the Icinga Core</h3></div></div></div>
-    
-<p><span class="bold"><strong>Icinga Core 1.0.3 - 18/08/2010 </strong></span></p>
-<p>* core: new config option to set initial state of persistence for acknowledgements</p>
-<p>* core: add opt-in log_external_commands_user in icinga.cfg, user will be logged by the core if enabled and sent through icinga.cmd</p>
-<p>* core: add config option to disable the logging of current state in log after rotation (Ricardo Bartels)</p>
-<p>* core: add config option to log long plugin output (Ricardo Bartels)</p>
-<p>* core: add config option to enable event handlers for stalked hosts/services (Petya Kohts)</p>
-<p>* core: scheduled downtime can now start on SOFT error states</p>
-<p>* idoutils: add syslog output for start/stop, client connecting</p>
-<p>* idoutils: add db trimming thread startup delay config option</p>
-<p>* classic ui: cgi config option to show long_plugin_output in status.cgi (Ricardo Bartels)</p>
-<p>* classic ui: add config option to only show HARD states in tac.cgi</p>
-<p>* classic ui: add multiple selection/command sending to host/service status page
-</p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p>added extra column in host and service status with checkboxes using jquery</p></li>
-<li class="listitem"><p>It is now possible to check off the hosts you want to send commands to Icinga.</p></li>
-<li class="listitem"><p>Ex: schedule downtime for a custom selection of hosts or X number of services.</p></li>
-</ul></div>
-<p>* classic ui: add a pause/continue update button (main parts by Steve Koenig). Affects status.cgi and allows to select and run commands w/o page reload</p>
-<p><span class="bold"><strong>FIXES:</strong></span></p>
-<p>* core: fix temp_path overwritten by check_result_path in base/config.c</p>
-<p>* core: modify execv to execvp, accepting 4096 cmd args, for both host and service checks with adapted error handling</p>
-<p>* core: execvp searches in PATH too like popen, and returns if error, outputting the errno string</p>
-<p>* core: fix possible overflows and increase command length limit in mini_epn's (Thomas Guyot-Sionnest)</p>
-<p>* core: fix new_mini_epn to allow any command line length without breaking on extra trailing or leading whitespace (Ray Bengen)</p>
-<p>* core: fix wrong is_volatile conditions causing wrong service alerts in the logs</p>
-<p>* core: fix notify-service-by-email command from the stock template cuts off service check output</p>
-<p>* core: fix service checks should recognize that exit code 126 means plugin is not executable</p>
-<p>* core: fix service event handlers when service problem becomes hard during host down</p>
-<p>* core: fix service in soft state after hard state without recovery</p>
-<p>* core: fix all comments disappear after restart if one user comment is non-persistent (Ricardo Bartels)</p>
-<p>* core: fix macro processing (Jochen Bern)</p>
-<p>* core: fix non-scheduled hosts/services not being updated in IDO*</p>
-<p>* core: move the malloc block in insert_skiplist below dupcheck to avoid memory leaks (Thomas Guyot-Sionnest, Holger Weiss)</p>
-<p>* classic ui: fix image urls in stylesheets</p>
-<p>* classic ui: remove check_daemon_running, remains useless</p>
-<p>* classic ui: fix multiurl action/status icon wrong name</p>
-<p>* classic ui: cmd.cgi "his" instead of "its" in command description</p>
-<p>* classic ui: fix customers can see machines from other customers when entering a downtime</p>
-<p>* classic ui: fix invalid pointer in extinfo.cgi type=7</p>
-<p>* classic ui: for new Splunk integration query parameters</p>
-<p>* classic ui: fix for incorrect host state counts in status CGI when viewing servicegroups</p>
-<p>* classic ui: fix for extra colum in CSV export</p>
-<p>* install: fix api not installed using make install-unstripped</p>
-<p>* install: enable debuginfo in spec file</p>
-<p>* install: remove daemonchk.cgi from init-script</p>
-<p>* install: improve output of rhel init-script</p>
-<p>* install: add config checks for start, reload and restart on rhel init script</p>
-<p>* install: fix duplicated configcheck on restart in init-script</p>
-<p>* install: fix specfile for idoutils description</p>
-<p>* install: fix Makefile output if Icinga API not available</p>
-<p>* install: fix t/ and daemon-ini-redhat in distclean</p>
-<p>* install: add note about api installed successfully</p>
-<p>* idoutils: adapt oracle-drop.sql for current schema</p>
-<p>* idoutils: fix binding null values to name1/name2 in oracle</p>
-<p>* idoutils: fix typo in servicedepencies query for oracle</p>
-<p>* idoutils: fix oracle prep statement contactnotifmethoddata</p>
-<p>* idoutils: full rewrite of binding NULL values for oracle with ocilib</p>
-<p>* idoutils: change display_name to varchar(255) for mysql/oracle</p>
-<p>* idoutils: update pgsql schema, replace varchar(n) by text</p>
-<p>* idoutils: change configfilevariables varvalue to 1024 length for mysql/oracle</p>
-    <p><span class="bold"><strong>Icinga Core 1.0.2 - 30/06/2010 </strong></span></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Problembericht Icinga Web</a></p>
 
-    <p>* core: init script shows config errors option; don't remove pidfile if icinga did not stop in a timely manner</p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Problembericht Icinga API</a></p>
 
-    <p>* core: check if icinga running before starting; if died remove lockfile first</p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga Reporting</a></p>
 
-    <p>* core: add in sync retention facility (Ton Voon, Opsera Ltd)</p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga Docs</a></p>
 
-    <p>* core: add new is_volatile setting of 2 for services, which respects the re-notification interval for notifications (Ton Voon)</p>
-
-    <p>* core: add Icinga option -S functions much like -s but will dump the entire scheduling queue is it would run, in addition to providing the
-    summary data (Steven (Steven D. Morrey)</p>
-
-    <p>* core: icinga can send log messages to syslogd using a local facility instead of the default one</p>
-
-    <p>* core: enhanced diagnostic output when a regular expression fails to compile (Max Schubert)</p>
-
-    <p>* core: add state-based escalation ranges (Mark Gius) The directives first_notification and last_notification apply to the total count of
-    notifications on a particular service or host. It is sometimes desirable to escalate after the Nth critical notification, rather than after a
-    total number of N notifications have been sent.</p>
-
-    <p>* core: add event profiling option for stats of event counts and time taken for events</p>
-
-    <p>* core: retention file loading speedup (Matthieu Kermagoret)</p>
-
-    <p>* cgi: add opt-in display_name from hosts/services definitions; if set, they will be shown in the classical ui</p>
-
-    <p>* cgi: re-add quick search to navmenu in order to provide quick host/service lookups without idoutils/api</p>
-
-    <p>* cgi: add event profiling stats of event counts and time taken for events in 'Performance Info'</p>
-
-    <p>* cgi: add config option show_all_services_host_is_authorized_for to cgi.cfg It's possible to disable that the user can see all services
-    only being an authorized contact for the host</p>
-
-    <p>* cgi: add multiple urls for notes|action_url on host|service object definition (Jochen Bernd).</p>
-
-    <p>* idoutils: add config options to allow users decision on clearing realtime and config tables on Icinga core startup. Actual config objects
-    are marked as (in)active, because disabling the clearing results in historical config</p>
-
-    <p>* idoutils: remove mysql binary selects, use case-sensitive collation instead (William Preston)</p>
-
-    <p>* idoutils: Spread the list of linked lists thinner (extend objects hash slots) (Opsera Ltd)</p>
-
-    <p>* idoutils: change select * into select [*_]id if unused results</p>
-
-    <p>* idoutils: add syslog output, if ido2db is unable to do initial db query</p>
-
-    <p>* idoutils: rewrite initscript not only depending on lockfile</p>
-
-    <p>* idoutils: check if ido2db running before starting; if died remove lockfile first</p>
-
-    <p>* idoutils: add upgrade scripts to fix object relations to historical data</p>
-
-    <p>* config: add trailing slash in apache config for html dir</p>
-
-    <p><span class="bold"><strong>FIXES:</strong></span></p>
-
-    <p>* core: fix scheduling downtime for all services AND the host (cgi url, external commands)</p>
-
-    <p>* core: fix custom notifications being sent during downtimes (Sven Nierlein)</p>
-
-    <p>* core: fix spurious dollar signs added to command_lines (Alexander Wirt)</p>
-
-    <p>* core: fix for choosing next valid time on day of DST change when clocks go one hour backwards (Ton Voon)</p>
-
-    <p>* core: fix for nagios now erroring when "Error: Could not find any contactgroup matching..." displayed (Ton Voon)</p>
-
-    <p>* core: minor cleanups to icingastats.c (Eric Sesterhenn)</p>
-
-    <p>* core: remove dead code (Andreas Ericsson)</p>
-
-    <p>* core: introduce common/shared.c and include/shared.h (Andreas Ericsson)</p>
-
-    <p>* core: move cgiutils.h compile time option macros to config.h (Andreas Ericsson)</p>
-
-    <p>* core: icinga.c: remove conditional main() configuration (Andreas Ericsson)</p>
-
-    <p>* core: icinga.c: replace asprintf() + write_to_logs_and_console() with logit() (Andreas Ericsson)</p>
-
-    <p>* core: revamp logging somewhat (Andreas Ericsson)</p>
-
-    <p>* core: create logging.h, with stubs for the common function in cgiutils.c (Andreas Ericsson)</p>
-
-    <p>* core: Janitor patch: Remove unused variables (Andreas Ericsson)</p>
-
-    <p>* core: base/utils.c: typo-fix s/escape_newlines==/escape_newlines_please==/ (Andreas Ericsson)</p>
-
-    <p>* core: cgi/cmd.c: Squelch warning about empty gnu_printf format string (Andreas Ericsson)</p>
-
-    <p>* core: more linker tricks and less #ifdef's - log_debug_info() stubbed (Andreas Ericsson)</p>
-
-    <p>* core: common/objects.c: Use calloc() instead of malloc() + manual NULL'ing (Andreas Ericsson)</p>
-
-    <p>* core: macros: Protect against typos in macro names (Andreas Ericsson)</p>
-
-    <p>* core: macros: Add NOTIFICATIONISESCALATED to the list of macro names (Marc Powell)</p>
-
-    <p>* core: comments: Remove one comment at a time from hashlist (Hiren Patel)</p>
-
-    <p>* core: fix checking of the open(2) system call (David Glick)</p>
-
-    <p>* core: xodtemplate: Use macro magic to get rid of 900 LoC (Andreas Ericsson)</p>
-
-    <p>* core: more s/malloc(size) + init/calloc(1, size)/ replacements (Andreas Ericsson)</p>
-
-    <p>* core: header files: Remove dead prototypes (Andreas Ericsson)</p>
-
-    <p>* core: remove grab_contactgroup_macros() and its prototype (Andreas Ericsson)</p>
-
-    <p>* core: base/commands.c: Fix error path of opening checkresult files (Andreas Ericsson)</p>
-
-    <p>* core: base/nebmods.c: Replace local file-copy hack with my_fcopy() (Andreas Ericsson)</p>
-
-    <p>* core: enable compiler flag -Wall by default (base/cgi/common/idoutils)</p>
-
-    <p>* core: fix open() error checking in move_check_result_to_queue() (Andreas Ericsson)</p>
-
-    <p>* core: base/utils.c: Refactor my_fcopy() (Andreas Ericsson)</p>
-
-    <p>* core: xdata/xpddefault.c: Close perfdata files if fd's are &gt;= 0 (Andreas Ericsson)</p>
-
-    <p>* core: fix xpddefault_{host,service}_perfdata_file_pipe not set properly on configuration re-read</p>
-
-    <p>* core: fix SIGSEGV in checks.c on Solaris (Torsten Huebler)</p>
-
-    <p>* core: added icinga object version variable in neb api for usage with idomod</p>
-
-    <p>* core: fix notification_period inheritance for services (Gordon Messmer)</p>
-
-    <p>* core: only catch SIGSEGV if we're not dumping core and running as a daemon (Andreas Ericsson)</p>
-
-    <p>* core: fix for notifications not being sent out when scheduled downtime is cancelled (Daniel Pouzzner)</p>
-
-    <p>* core: fix for first notification delay being calculated incorrectly, and notifications potentially going out early (reported by Pawel
-    Malachowski)(Ethan Galstad)</p>
-
-    <p>* core: error out on services without description in service object definition</p>
-
-    <p>* core: fix servicechecks with timeperiods containing 'exclude' directives are incorrectly re-scheduled</p>
-
-    <p>* cgi: minor cleanups to cgiutils.c (Eric Sesterhenn)</p>
-
-    <p>* cgi: fix cmd.cgi incomplete output for command description</p>
-
-    <p>* cgi: fix typo: "stye" instead of "style" in cgi/tac.c</p>
-
-    <p>* cgi: check_daemon_running() not working on MacOS (Hendrik Baecker)</p>
-
-    <p>* cgi: fix CGIs don't show correct error on missing archived icinga-DATE.log file</p>
-
-    <p>* cgi: fix missing js files</p>
-
-    <p>* idoutils: Host DB inserts use string 'NULL\n' instead of NULL (William Preston)</p>
-
-    <p>* idoutils: ndo2db_get_object_id fails to return existing IDs (William Preston)</p>
-
-    <p>* idoutils: fix postgres wrong type in service_object_id</p>
-
-    <p>* idoutils: modify string escaping again (mysql, pgsql), needs a full rewrite though</p>
-
-    <p>* idoutils: fix for oracle when binding a NULL value on contactnotificationmethods</p>
-
-    <p>* idoutils: completely renamed idoutils (s/ndo/ido/g etc), removing old sources</p>
-
-    <p>* idoutils: fix compilation error of SUN_LEN on Solaris</p>
-
-    <p><span class="bold"><strong>Icinga Core 1.0.1 - 03/03/2010 </strong></span></p>
-
-    <p>* core: updated docs</p>
-
-    <p>* core: fix config parsing for icinga_user and icinga_group</p>
-
-    <p>* core: fix status.dat ok, no daemon running, show error instead of old data</p>
-
-    <p>* core: permanently remove sleep on run_event == FALSE in main loop (Max Schubert)</p>
-
-    <p>* core: add service_check_timeout_state configuration variable. This setting determines the state Icinga will report when a service check
-    times out - it does not respond within service_check_timeout seconds.</p>
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-            <p>c - Critical (default)</p>
-        </li>
-<li class="listitem">
-            <p>u - Unknown</p>
-        </li>
-<li class="listitem">
-            <p>w - Warning</p>
-        </li>
-<li class="listitem">
-            <p>o - OK</p>
-        </li>
-</ul></div>
-
-    <p>* core: add escalation_condition definition (Vitali Voroth DECOIT GmbH) The escalation_condition option is completely optional and can be
-    defined for host escalations as well as for service escalations.</p>
-
-    <p>escalation_condition &lt;condition&gt; ( [ &amp;/ | ] &lt;condition&gt; )* where &lt;condition&gt; is either host hostname = [u,d,o] or
-    service hostname.service_description] = [w,u,c,o].</p>
-
-    <p>The escalation_condition accepts a list of one or more conditions separated by &amp; (logical AND) or | (logical OR).</p>
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-            <p>w = WARNING</p>
-        </li>
-<li class="listitem">
-            <p>u = UNKNOWN</p>
-        </li>
-<li class="listitem">
-            <p>c = CRITICAL</p>
-        </li>
-<li class="listitem">
-            <p>o = OK for services or UP for hosts</p>
-        </li>
-<li class="listitem">
-            <p>d = DOWN for hosts</p>
-        </li>
-</ul></div>
-
-    <p>* idoutils: add ido2db threaded housekeeper</p>
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-            <p>periodic cleanup will now be performed in own thread</p>
-        </li>
-<li class="listitem">
-            <p>startup blocking behaviour removed</p>
-        </li>
-<li class="listitem">
-            <p>housekeeper will wait for idomod instance, idle wait using und db_hello</p>
-        </li>
-<li class="listitem">
-            <p>creates own db connection and does its job</p>
-        </li>
-</ul></div>
-
-    <p>* idoutils: add indexes for delete/select statements</p>
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-            <p>delete/select will perform faster</p>
-        </li>
-<li class="listitem">
-            <p>getting cached objects with select runs faster</p>
-        </li>
-<li class="listitem">
-            <p>getting logentries within icinga-web is faster</p>
-        </li>
-</ul></div>
-
-    <p>* idoutils: reorganize db setup files for MySQL/Postgresql/Oracle</p>
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-            <p>module/idoutils/db/&lt;rdbms&gt;/ holds needed files</p>
-        </li>
-<li class="listitem">
-            <p>module/idoutils/scripts/ with installdb/upgradedb for MySQL</p>
-        </li>
-<li class="listitem">
-            <p>updated Makefile, README</p>
-        </li>
-</ul></div>
-
-    <p>* idoutils: complete oracle rewrite to improve performance</p>
-
-    <div class="itemizedlist">
-<p>query rewrite:</p>
-<ul class="itemizedlist" type="disc">
-<li class="listitem">
-            <p>1x SELECT latest data time as is (called only at startup)</p>
-        </li>
-<li class="listitem">
-            <p>dynamic binded procedure for DELETE on table by instance_id called at startup for cleaning config/status</p>
-        </li>
-<li class="listitem">
-            <p>dynamic binded procedure for DELETE on tably by instance_id, field&lt;time called during periodic cleanup in threaded
-            housekeeper</p>
-        </li>
-<li class="listitem">
-            <p>all other queries are prepared with their own statement handler</p>
-
-            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-                    <p>4x DELETE</p>
-                </li>
-<li class="listitem">
-                    <p>52x MERGE</p>
-                </li>
-<li class="listitem">
-                    <p>9x INSERT</p>
-                </li>
-<li class="listitem">
-                    <p>9x UPDATE</p>
-                </li>
-<li class="listitem">
-                    <p>5x SELECT</p>
-                </li>
-</ul></div>
-        </li>
-<li class="listitem">
-            <p>rewritten getting cached object_id using select</p>
-        </li>
-<li class="listitem">
-            <p>all queries use binded unixtimestamp instead of prepared query string</p>
-        </li>
-<li class="listitem">
-            <p>removed autoincrement sequence and insert triggers to update primary key</p>
-        </li>
-<li class="listitem">
-            <p>added sequence for each table</p>
-        </li>
-<li class="listitem">
-            <p>INSERT INTO ... (id, ...) VALUES (seq_name.nextval, ...) will do the trick</p>
-        </li>
-<li class="listitem">
-            <p>added RETURNING id INTO :id for INSERT statements to save one round trip</p>
-        </li>
-<li class="listitem">
-            <p>MERGE does not support returning INTO, added SELECT seq_name.currval query instead for fetching last inserted id</p>
-        </li>
-<li class="listitem">
-            <p>add explicit upgrade information and provided procedure to alter sequence start when importing data (check oracle-upgrade-1.0.1.sql
-            for more info)</p>
-        </li>
-</ul>
-</div>
-
-    <p>* idoutils: add upgrade path for mysql/pgsql/oracle for 1.0.1</p>
-
-    <p>* idoutils: add initial debug output for idomod (to be set in idomod.cfg)</p>
-
-    <p>* idoutils: add database name in connection msg to syslog</p>
-
-    <p>* idoutils: change mysql db engine to innodb (no table locking, better transcations)</p>
-
-    <p><span class="bold"><strong>FIXES</strong></span></p>
-
-    <p>* core: fix segfault in cmd.cgi</p>
-
-    <p>* core: fix event broker callback function self de-registering for callbacks (Sean Millichamp)</p>
-
-    <p>* core: add missing sound.js provided by scriptaculous</p>
-
-    <p>* core: string replaces for icinga</p>
-
-    <p>* core: typo fix in mrtg.cfg (Dennis van Zuijlekom)</p>
-
-    <p>* core: add init info as required by LSB</p>
-
-    <p>* core: fix perl tests</p>
-
-    <p>* core: fix missing clean &amp; distclean against tap/ directory</p>
-
-    <p>* core: fix several libtap c TAP tests and cleanups</p>
-
-    <p>* core: refactor perl test to use icingaadmin</p>
-
-    <p>* core: add cgi argument 'nodaemoncheck' and tests</p>
-
-    <p>* core: add config.cgi test</p>
-
-    <p>* core: add subtests to extinfo tests</p>
-
-    <p>* core: add tests against histogram.cgi</p>
-
-    <p>* core: add $srcdir to paths</p>
-
-    <p>* core: fix idomod doesn't de-initialize after config error</p>
-
-    <p>* core: fix make fullinstall/idoutils without enabled idoutils during configure</p>
-
-    <p>* idoutils: modify string escaping for mysql and pgsql</p>
-
-    <p>* idoutils: fix pgsql table systemcommands (missing column 'output')</p>
-
-    <p>* idoutils: fix arraysize of es in save_custom_variables</p>
-
-    <p>* idoutils: rename ndomod.h to idomod.h</p>
-
-    <p>* idoutils: fix several naming issues</p>
-
-    <p>* idoutils: fix acknowledgments query, wrong buffer freed/set as query to db (Bruce Pennypacker)</p>
-
-    <p>* idoutils: fix contactnotification data array, command args were not provided (Bruce Pennypacker)</p>
-
-    <p>* idoutils: fix custom_variables object_id type int =&gt; unsigned long</p>
-
-    <p><span class="bold"><strong>Icinga Core 1.0 Stable - 16/12/2009 </strong></span></p>
-
-    <p>* core: create webserver conf.d dir if not existing</p>
-
-    <p>* core: output the correct config parameter name on error message</p>
-
-    <p>* core: run dos2unix on spec file</p>
-
-    <p>* core: check /proc/$pid instead of lock file while waiting for shutdown</p>
-
-    <p>* core: fix cgi/config.c typo</p>
-
-    <p>* core: fix typo in cgi/cmd.c</p>
-
-    <p>* core: applied nagios patches after 3.2.0</p>
-
-    <p>* idoutils: change default data_processing_options in idomod.cfg</p>
-
-    <p>* idoutils: fix missing query arguments in servicecheck query</p>
-
-    <p>* idoutils: fix thisversion and perl path generation in db install scripts</p>
-
-    <p>* idoutils: change db README to docs.icinga.org</p>
-
-    <p>* idoutils: fix wrong debug output in db_hello()</p>
-
-    <p>* idoutils: fix save custom variables segfault caused by wrong char*</p>
-
-    <p>* idoutils: fix duplicate rows in table servicecheck</p>
-
-    <p>* idoutils: fix duplicate rows in table systemcommands, timedevents, timedeventqueue (missing unique keys)</p>
-
-    <p>* idoutils: add upgrade path/sql queries for unique key failure - check the docs for upgrading information</p>
-
-    <p>* idoutils: Oracle improvents:</p>
-
-    <p>* add prepared statements for most called queries</p>
-
-    <p>- hoststatus</p>
-
-    <p>- servicestatus</p>
-
-    <p>- hostchecks</p>
-
-    <p>- servicechecks</p>
-
-    <p>- timedevents</p>
-
-    <p>- contact_notificationcommands</p>
-
-    <p>- programstatus</p>
-
-    <p>* modify data[] to get unixtimestamps only</p>
-
-    <p>* rewrite prepared statement queries to use SELECT unixts2date(unixtimestamp) FROM DUAL</p>
-
-    <p>* allow rebinding of params in prepared statement for multi execution</p>
-
-    <p>* prepared statement at db init</p>
-
-    <p>* bind params the correct way</p>
-
-    <p>* execute binded statement query instead of plain MERGE statement</p>
-
-    <p>* code is now the same as NDOUtils Oracle, but with</p>
-
-    <p>- better code base (current NDOUtils code)</p>
-
-    <p>- long_output</p>
-
-    <p>- SSL support</p>
-
-    <p>- better library: ocilib instead of own driver</p>
-
-    <p>- more prepared statements/bind param queries</p>
-
-    <p>* split code into ocilib OR libdbi</p>
-
-    <p>* --enable-oracle during configure decides which rdbm lib will be used</p>
-
-    <p><span class="bold"><strong>Icinga Core 1.0 RC - 28.10.2009 </strong></span></p>
-
-    <p>* idoutils: add Oracle support with oclilib</p>
-
-    <p>* idoutils: add ssl support</p>
-
-    <p>* idoutils: add configure --enable-oracle</p>
-
-    <p>* idoutils: add configure --enable-ssl</p>
-
-    <p>* idoutils: add configure -with-ocilib-lib/inc for ocilib detection</p>
-
-    <p>* idoutils: add oracle support to ido2db.cfg</p>
-
-    <p>* idoutils: add ocilib runtime version check</p>
-
-    <p>* idoutils: add ocilib linked at runtime (prevents setting of $ORACLE_HOME during configure)</p>
-
-    <p>* idoutils: add ocilib hack to temp #undef CONFIG_H during compiling</p>
-
-    <p>* idoutils: add #define USE_ORACLE set by --enable-oracle</p>
-
-    <p>* idoutils: add #ifndef USE_ORACLE #else #endif to get code compatible with libdbi</p>
-
-    <p>* idoutils: add ocilib connection, statement, resultset</p>
-
-    <p>* idoutils: add ocilib execute statement, commit (no autocommit since we want to use the pros of Oracle!)</p>
-
-    <p>* idoutils: add ocilib insert id for sequence handling</p>
-
-    <p>* idoutils: add ocilib free statement to match with sequences</p>
-
-    <p>* idoutils: add oracle sysdate instead of NOW()</p>
-
-    <p>* idoutils: add long_output to oracle.sql - introduce clob (Character Large Object)</p>
-
-    <p>* idoutils: add even more debugoutput for Oracle</p>
-
-    <p>* idoutils: modify configure to use OCI_CHARSET_ANSI</p>
-
-    <p>* idoutils: modify configure to set LD_LIBRARY_PATH for ido2db init script</p>
-
-    <p>* idoutils: modify formatting to get more readable</p>
-
-    <p>* idoutils: fix typecast bug - unsigned long is bigger then int</p>
-
-    <p>* idoutils: fix Oracle notif_timeperiod_object_id (30 chars max)</p>
-
-    <p>* idoutils: fix Oracle table serviceescalationcontactgroups (30 chars max)</p>
-
-    <p>* idoutils: fix hoststatus/servicestatus/servicecheck unique constraint updating mismatch</p>
-
-    <p>* idoutils: fix insert_or_update queries where update violates unique constraint</p>
-
-    <p>* idoutils: remove and ignore oracle table_prefix (30 chars max)</p>
-
-    <p>* idoutils: workaround to handle more than 4k data which may exceed service outputs incl. long perf_data</p>
-
-    <p>* core init: delete 'su' usage since all previously su touched files were created by the icinga user</p>
-
-    <p>* idoutils: fix unescape bug during tabstops</p>
-
-    <p>* idoutils: fix idomod/icinga segfault while try to use ssl on unix sockets</p>
-
-    <p>* core configure: set INIT_OPTS depending on detected host OS (no more root:root on FreeBSD?)</p>
-
-    <p>* core spec: added new spec file</p>
-
-    <p>* idoutils: fix case insensitive comparison in MySQL using BINARY</p>
-
-    <p>* idoutils: change ido2db.cfg: ndo2db_[user|group] to ido2db_[user|group]</p>
-
-    <p>* core web: fix missing gif icon copy</p>
-
-    <p><span class="bold"><strong>Icinga Core 0.8.4 - 16/09/2009 </strong></span></p>
-
-    <p>* idoutils: fix failure_prediction_options in tables hosts, services for postgres</p>
-
-    <p>* idoutils: add configure support for manual libdbi detection</p>
-
-    <p>* idoutils: fix typo laste_state (wrong column)</p>
-
-    <p>* idoutils: fix buffer freeing with NAGIOS_SIZEOF_ARRAY</p>
-
-    <p>* idoutils: delete old mysql files coming from ndoutils</p>
-
-    <p>* idoutils: add new versionhandling, idomod/ido2db now shows version of Icinga core</p>
-
-    <p>* idoutils: rename existing mysql/pgsql files, added upgrade/fix files</p>
-
-    <p>* idoutils: fix wrong typecast in servicestatusdata_add, no more segfault while query preparing</p>
-
-    <p>* idoutils: add experimental db trimming interval option in ido2db.cfg</p>
-
-    <p>* core: fix wrong copyright url for Ethan</p>
-
-    <p><span class="bold"><strong>Icinga Core 0.8.3 - 09/02/2009 </strong></span></p>
-
-    <p>* idoutils: add PostgreSQL support</p>
-
-    <p>* new Icinga documentation in docbook and html format</p>
-
-    <p>* fetch current Nagios patches</p>
-
-    <p>* fix support links after make</p>
-
-    <p>* idoutils: add note if install desired but not enabled</p>
-
-    <p>* idoutils: fix installing of rc.ido2db in make install-idoutils</p>
-
-    <p>* idoutils: add db/pgsql.sql, adapted table scheme for postgresql</p>
-
-    <p>* idoutils: add time conversion functions for postgresql</p>
-
-    <p>* idoutils: add try update, if affected rows=0, then insert queries for postgresql</p>
-
-    <p>* idoutils: modify insert queries, normalized to sql-standard</p>
-
-    <p>* idoutils: add insert-or-update functions in dbqueries.c, prepared for more rdbms</p>
-
-    <p>* idoutils: modify insert-or-update queries, build data array for functions</p>
-
-    <p>* idoutils: fix string escaping for postgresql</p>
-
-    <p>* idoutils: fix last insert id for postgresql - needs defined sequence id for table</p>
-
-    <p>* idoutils: modify command_line in commands table to varchar(1024)</p>
-
-    <p>* idoutils: add more debug output</p>
-
-    <p>* idoutils: Support 8192 chars of perfdata</p>
-
-    <p><span class="bold"><strong>Icinga Core 0.8.2 - 08/12/2009</strong></span></p>
-
-    <p>* create a new basic ido2db init script</p>
-
-    <p>* idoutils: fix child signal handling in ido2db</p>
-
-    <p>* idoutils: fix escaping of customvars before insert</p>
-
-    <p>* idoutils: fix in buggy rotate command execution</p>
-
-    <p>* idoutils: fix fmt specifier in ndo2db_daemonize() error</p>
-
-    <p>* idoutils: added long_output support to IDOUtils</p>
-
-    <p>* idoutils: Fix for not retrying read on 'EAGAIN' and 'EINTR' soft errors (Opsera Ltd)</p>
-
-    <p>* idoutils: Allow externalcommands table to be trimmed with a specific time limit (Opsera Ltd)</p>
-
-    <p>* icinga-api added: The search function now uses the icinga-api submodule</p>
-
-    <p>* various minor changes</p>
-
-    <p><span class="bold"><strong>Icinga Core 0.8.1 - 06/17/2009</strong></span></p>
-
-    <p>* Archived Logfiles renamed from Icinga-date-syntax.log =&gt; icinga-date-syntax.log (capital 'i')</p>
-
-    <p>* cherry picked latest Nagios Patches (see Nagios Changelog below)</p>
-
-    <p>* new ido2db command switch: '-f' don't daemonize the ido2db</p>
-
-    <p>* ido2db will now prints out available database drivers</p>
-
-    <p>* fix ido2db segfault when try to access non existing tables</p>
-
-    <p>* DocBook v5 conversion</p>
-
-    <p>* Fix menu frameset cols width</p>
-
-    <p><span class="bold"><strong>Icinga Core 0.8 - 05/19/2009</strong></span></p>
-
-    <p>* Almost biggest deal to rename the components</p>
-
-    <p>* including IDOUtils (former NDOUtils) into the core code, updating configure &amp; make to get in touch with it</p>
-
-    <p>* changed database handling in IDOUtils from native database support to libdbi (libdbi.sourceforge.net) as an abstraction layer, enable
-    compile try with "configure --enable-idoutils"</p>
-
-    <p>* Included a new stylesheet/icon theme based on Vautour Style. Vautour Style have been created by Yoann LAMY.</p>
-
-    <p>The menu of Vautour Style use the javascript framework MooTools (http://mootools.net/). The icons of Vautour Style use "Silk icon set"
-    (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.</p>
-
-    <p>"Silk icon set" is licensed under Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/).</p>
-
-    <a class="indexterm" name="id2740180"></a>
-</div>
-
-    <div class="section" title="Changelog of the Icinga Web">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="changelog-web"></a>Changelog of the Icinga Web</h3></div></div></div>
-    
-
-    <p><span class="bold"><strong>Icinga Web 1.0.3 18/08/2010</strong></span></p>
-
-    <p>* Unify configure switches</p>
-
-    <p>* Added external version for configure</p>
-
-    <p>* Change login text to some more 'generic' (fixes #714)</p>
-
-    <p>* Changed icinga-api path to unify icinga style (fixes #445)</p>
-
-    <p>* Simplified js redirect</p>
-
-    <p>* Adding apache configuration for including</p>
-
-    <p>* Adding api connection switches (fixes #630)</p>
-
-    <p>* Fixed release string in HelloCronk</p>
-
-    <p>* Configure handling (ref #630)</p>
-
-    <p>* Substitude web:module.xml for api connection</p>
-
-    <p>* Doc for icinga-api connections</p>
-
-    <p>* Cleaned up namespaces</p>
-
-    <p>* Cleaned up icinga.xml</p>
-
-    <p>* Prepared version in configure</p>
-
-    <p>* Added normalizing in module configuration</p>
-
-    <p>* Files for Makefile</p>
-
-    <p>* Fix for 'groupsonly' cronk filter (Thanks to Birger)</p>
-
-    <p>* Modularized css and js files</p>
-
-    <p>* Global module namespace for module config</p>
-
-    <p>* Rewritten config namespace</p>
-
-    <p>* Reorganized the icon structure</p>
-
-    <p>* Fix for preferences settings for not logged in users</p>
-
-    <p>* Readded stateful log cronk</p>
-
-    <p>* Purge userprefs from the userpref screen</p>
-
-    <p>* Adding default welcome cronk setting</p>
-
-    <p>* Added hideable bars on cronk portal</p>
-
-    <p>* Fixed portlet resize issue (fixes #383)</p>
-
-    <p>* Better commands, sending commands to its instances (fixes #561)</p>
-
-    <p>* Adding per user grid attributes (fixes #567)</p>
-
-    <p>* Check valid session and warn if expired (fixes #606)</p>
-
-    <p>* Changed process of grid count queries</p>
-
-    <p>* Activated clean traget (clean-&gt;distclean) (fixes #634)</p>
-
-    <p>* Bugfix for AM/PM times (fixes #360)</p>
-
-    <p>* Adding xtype to Cronk.factory to avoid empty cronks after reload</p>
-
-    <p>* Adding new icinga-throbber (Thanks Karo)</p>
-
-    <p>* Added position field for categories</p>
-
-    <p>* Adding charts template based on Ext pie charts</p>
-
-    <p>* Makefile files regeneration</p>
-
-    <p>* Splitted the xml templates into directories</p>
-
-    <p>* Finished host- / servicegroup to templates, Splitting templates into parts</p>
-
-    <p>* Icinga stateinfo class text wrapper</p>
-
-    <p>* Fixed Makefile files.mk (#fixes 619)</p>
-
-    <p>* Several IE compatibility fixes</p>
-
-    <p>* Adding new TacticalOverview template implementation</p>
-
-    <p>* Fixed Portlet view. Maybe persistence problems can occur</p>
-
-    <p>* Added disappeared validator in User/Edit.xml for altering connection</p>
-
-    <p>* Removed premilinary (and forgotten) email RegExp with a real one</p>
-
-    <p>* Recreated configure.ac for new version</p>
-
-    <p>* Add make-tarball for make create-tarball(-nightly)it is now possible to create git archived tarballs including submodules</p>
-
-    <p>* make create-tarball, creates normal tgz+md5</p>
-
-    <p>* make create-tarball-nightly, creates tgz+md5 with $date-$shortcommithash</p>
-
-    <p>* Disabled cache for squish loader, works better at the moment</p>
-
-    <p></p>
-
-    <p><span class="bold"><strong>Icinga Web 1.0.1 30/06/2010</strong></span></p>
-
-    <p>* Core code reduced and made more robust</p>
-
-    <p>* Core code detatached to its owning modules</p>
-
-    <p>* Module framework defined, extractor and installer</p>
-
-    <p>* Principals now works in one step (one function code)</p>
-
-    <p>* Instances included</p>
-
-    <p>* Ajax driven filters, made some new filters</p>
-
-    <p>* REST/Json api interface (web/api, <a class="link" href="https://dev.icinga.org/issues/305" target="_top">https://dev.icinga.org/issues/305</a>)</p>
-
-    <p>* New summary cronk (faster, faster, faster)</p>
-
-    <p>* New cronk list (also categories, faster, faster, faster)</p>
-
-    <p>* Single click in the web interface</p>
-
-    <p>* Translation (not complete)</p>
-
-    <p><span class="bold"><strong>Icinga Web 0.9.1-beta- 03/03/2010</strong></span></p>
-
-    <p>* Added some Icinga specific principal target classes</p>
-
-    <p>* Finished editing of principal targets for users and groups</p>
-
-    <p>* Added editing models for principals</p>
-
-    <p>* Finished principal target filtering in xml templates</p>
-
-    <p>* Added default Icinga filter targets</p>
-
-    <p>* Moved icinga lib to a new place</p>
-
-    <p>* Added principal target toolkit for api search queries</p>
-
-    <p>* Finished principal target framework</p>
-
-    <p>* Added full command specification</p>
-
-    <p>* Fixed filter window bug (#232)</p>
-
-    <p>* Added host- / service status filter</p>
-
-    <p>* Host- / serviceinfo info icons</p>
-
-    <p>* ExtJs update to version 3.1</p>
-
-    <p>* DB field for class length 80 (principal target)</p>
-
-    <p>* CVs different for host and service (schema changes)</p>
-
-    <p>* Make fix for files (make)</p>
-
-    <p>* Removed temp files</p>
-
-    <p>* Changes status icon files (from icinga theme, smaller)</p>
-
-    <p>* Added some more state (flapping, downtime)</p>
-
-    <p>* Makefile bin permission (#245)</p>
-
-    <p>* Drop decision for phing</p>
-
-    <p>* Adapted the phing db targets to gnu make</p>
-
-    <p>* Some makefile fixes, help text, targets</p>
-
-    <p>* Updated phing to stable version 2.3.3</p>
-
-    <p>* Added AC options for db installing</p>
-
-    <p>* AC rewrites build.properties for phing</p>
-
-    <p>* Database.xml is now substituted by AC</p>
-
-    <p>* Write some doc for the new install process</p>
-
-    <p>* Stateful framework is running</p>
-
-    <p>* Changed cookie encoding method to json</p>
-
-    <p>* Tabpanel is persistent</p>
-
-    <p>* Cookie write filter merges the data</p>
-
-    <p>* Static content (tactical overview)</p>
-
-    <p>* ExtJS persistent fixes</p>
-
-    <p>* Portal is persistent (column models)</p>
-
-    <p>* Portal columns determined when dragging over</p>
-
-    <p>* Tactical overview</p>
-
-    <p>* Portalcronks height persistent</p>
-
-    <p>* Async cronk creation (Render hidden, render, show)</p>
-
-    <p>* Tactical overview template engine (ready)</p>
-
-    <p>* Wrapped static content into a div</p>
-
-    <p>* Auto refresh grid panels (settings)</p>
-
-    <p>* Grid filters are persistent</p>
-
-    <p>* Default font style</p>
-
-    <p>* Head elements (still missing ???)</p>
-
-    <p>* Auth framework changed (Multiple, simultaneous)</p>
-
-    <p>* Checked persistent, user specific data</p>
-
-    <p>* Reducing mass persistent data of filter settings</p>
-
-    <p>* Implemented categories for the cronks</p>
-
-    <p>* Cronks for usergroups only (#262)</p>
-
-    <p><span class="bold"><strong>Icinga Web 0.9.1-alpha-16/12/2009</strong></span></p>
-
-    <p>* Updated install-fromscratch.txt: Apache settings ...</p>
-
-    <p>* Removed the yui top menu and implemented top nav with ExtJ</p>
-
-    <p>* Removed yui</p>
-
-    <p>* Removed unused libraries (gc-prettify, jquery, firebug-lite)</p>
-
-    <p>* Cherry-picked Hendriks makefile changes</p>
-
-    <p>* Changed installer toolkit to make basic installs</p>
-
-    <p>* Installer fixes: paths and permissions</p>
-
-    <p>* Added explicit bin owner for webfiles</p>
-
-    <p>* Added rabbit dropping script to clear temp and bak files</p>
-
-    <p>* Added deflate to htaccess</p>
-
-    <p>* Fixed guest users for the menuextender (adding items before admin submenu)</p>
-
-    <p>* Commands should work (Templates, Ajax proc, command factory, auth, ...)</p>
-
-    <p>* Changing API result keys to uppercase</p>
-
-    <p>* Opera array type fixes (notification baloon)</p>
-
-    <p>* Added AC macro to detect the web user</p>
-
-    <p>* Global xml replacements within the templates (view proc)</p>
-
-    <p>* Updating ExtJS to 3.0.3</p>
-
-    <p>* Removed php notice warnings (isset, undef vars)</p>
-
-    <p>* Fixed make error (#206)</p>
-
-    <p><span class="bold"><strong>Icinga Web 0.9.0-alpha -28/10/2009</strong></span></p>
-
-    <p>* This is the initial release, prototyping, testing, think about features</p>
-
-    <a class="indexterm" name="id2740754"></a>
-</div>
+  <a class="indexterm" name="id2287706"></a>
 </div>
 <div class="navfooter">
 <hr>
