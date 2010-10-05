@@ -139,13 +139,9 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Falls Sie keine Optionen angeben, erwartet der Installer die Icinga API in /usr/local/icinga-api. Allerdings können Sie die
-        Option "--with-icinga-api" verwenden um einen anderen Ort anzugeben. Sofern Sie Icinga mit Hilfe des Quickstart Guides
-        installiert haben, sollten sie den folgenden Befehl verwenden:</p>
+        <p>Falls Sie keine Optionen angeben, erwartet der Installer die Icinga API in /usr/local/share/icinga-api.</p>
       </td></tr>
 </table></div>
-
-      <pre class="programlisting"> #&gt; ./configure --with-icinga-api=/usr/local/icinga/share/icinga-api</pre>
 
       <p>Ohne weitere Optionen wird das Icinga Webinterface mit:</p>
 
@@ -648,14 +644,15 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Die Ergebnisse in den Status Cronks passen nicht zu Ihrer Konfiguration? =&gt; Überprüfen Sie in Ihrem Backend, d.h. IDOUtils
       DB, welche Werte für die Status-Tabellen selektiert werden.</p>
+<p>* Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/</p>
 
       <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id5489452"></a>
+  <a class="indexterm" name="id5730197"></a>
 
-  <a class="indexterm" name="id5489635"></a>
+  <a class="indexterm" name="id5730198"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -48,7 +48,7 @@
       <p>Make sure you have a repository/packages for PHP 5.2.x - RHEL/CentOS (CentOS &lt;= 5.4) only support 5.1.6 out of the
       box.</p>
 
-      <pre class="programlisting"> #&gt; apt-get install php5 php5-cli php5-pear php5-xmlrpc php5-xsl php5-pdo php5-gd php5-ldap php5-mysql</pre>
+      <pre class="programlisting"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-gd php5-ldap php5-mysql</pre>
 
       <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
 
@@ -144,13 +144,9 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Using no options the installer expects the icinga-API to be found at /usr/local/icinga-api but you can use the option
-        "--with-icinga-api" to specify another location. If you installed Icinga using the quickstart guide you should use the following
-        syntax:</p>
+        <p>Using no options the installer expects the icinga-API to be found at /usr/local/share/icinga-api.</p>
       </td></tr>
 </table></div>
-
-      <pre class="programlisting"> #&gt; ./configure --with-icinga-api=/usr/local/icinga/share/icinga-api</pre>
 
       <p>Per default the Icinga Webinterface will be installed to /usr/local/icinga-web using:</p>
 
@@ -161,10 +157,9 @@
 
       <pre class="programlisting"> #&gt; make install-apache-config</pre>
 
-      <p>If you don't want this you can restore its old behavior by typing: </p>
+      <p>If you don't need an alias, you can alternatively use the old behavior setting a symlink instead:
+</p>
 <pre class="programlisting"> #&gt; make install-javascript</pre>
-<p>
-      This will install the old symlinks.</p>
 
       <p>Make reports after install:</p>
 
@@ -633,14 +628,15 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Counts in the Status Cronk do not match your configuration? =&gt; Check with the Backend, e.g. IDOUtils DB, selecting the
       counts for the status tables.</p>
+<p>* No Data shwon in Cronks? =&gt; Make sure that all permissions are set correctly, escecially the log/</p>
 
       <p>If you have any updates on that please do not hesitate to report back! :-)</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id3430326"></a>
+  <a class="indexterm" name="id4818171"></a>
 
-  <a class="indexterm" name="id3430330"></a>
+  <a class="indexterm" name="id4818342"></a>
 </div>
 <div class="navfooter">
 <hr>

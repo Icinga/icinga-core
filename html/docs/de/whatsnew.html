@@ -31,43 +31,27 @@
 <p>Erste einheitliche Version von Icinga Core und Icinga Web.</p>
   <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-  <p>* Konfigurationsoptionen: </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-        <p>Setzen des initialen Zustandes für die Beständigkeit von Acknowledgements</p>
-      </li>
-<li class="listitem">
-        <p>log_external_commands_user, Core Protokollierung von Benutzern, die an die Kommando-Pipe senden.</p>
-      </li>
-<li class="listitem">
-        <p>Deaktivieren der Protokollierung des aktuellen Standes nach Rotation</p>
-      </li>
-<li class="listitem">
-        <p>Protokollierung der gesamten Plugin- Ausgabe</p>
-      </li>
-<li class="listitem">
-        <p>Aktivieren von Eventhandlern für Hosts/Services mit Statusverfolgung</p>
-      </li>
-</ul></div>
+  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-  <p>* Geplante Ausfallzeiten können bereits bei Erreichen des SOFT- Fehlerstatus beginnen</p>
+  <p>* Eventprofiler unter Solaris mit gcc3 disabled, verhindert Core Dumps</p>
 
-  <p>* Rewrite von execv check- Ausführung zu execvp, dies erlaubt Plugins in $PATH und die Annahme von 4k Befehlsargumenten, mit
-  angepasster Fehlerbehandlung</p>
+  <p>* Scheduled Downtimes Notification werden beim Restart nicht mehr gesendet</p>
 
-  <p>* Fix: alle Kommentare verschwinden nach einem Neustart wenn ein Kommentar nicht-persistent ist.</p>
+  <p>* Ein * als Wildcard für die Zuweisung von Hosts in Servicegroup Definitionen hinzugefügt</p>
 
-  <p>* Fix: is_volatile- Bedingungen verursachen falsche Service-Alarme in den Log-Dateien</p>
+  <p>* Konfigurationsoption um das Logging des Core Daemon zu deaktivieren</p>
+
+  <p>* Eventhandler override hinzugefügt</p>
+
+  <p>* Entfernen des automatischen Programmupdatecheckers</p>
+
+  <p>* Hostchecks werden nicht mehr ausgelassen, wenn Servicechecks disabled sind</p>
 
   <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
 
-  <p>* Syslog Ausgabe für start/stop, client- Verbindung</p>
+  <p>* ido2db forkt nun nicht mehr unendlich, wenn keine Datenbankverbindung zur Verfügung steht, sondern disconnected den Client sofort</p>
 
-  <p>* Hinzugefügte Datenbank trimming-thread-startup-delay Option</p>
-
-  <p>* Komplettes Rewrite von binding NULL Werten für Oracle mit ocilib; Fix: select name1/name2</p>
-
-  <p>* Modifizieren und erweitern der Spaltenlänge für mysql/pgsql/oracle</p>
+  <p>* Datenbankport in ido2db.cfg wird nun richtig verwendet mit der libdbi</p>
 
   <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
 
@@ -131,7 +115,6 @@
 <p>* Neues Dokument über die Icinga-Web API</p>
 <p>* Neues Dokument für externen Kommandos</p>
 <p>* Neue Bilder</p>
-  <p>* Neues Dokument zum Icinga Reporting</p>
 
   <p>* Aktualisierung der Anleitung für die Installation des Webinterfaces</p>
 
@@ -140,7 +123,7 @@
 
   <p>* Aktualisierung der Konfigurationsoptionen, Classical UI</p>
 
-  <p>* Neues Dokument zu weiteren HowTos</p>
+  <p>* Aktualisierung der HowTo- Links</p>
 
   <p>Neue Testanleitungen für Icinga finden Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#2-Development" target="_top">Icinga-Development</a></p>
 
@@ -158,7 +141,7 @@
 
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga Docs</a></p>
 
-  <a class="indexterm" name="id5416607"></a>
+  <a class="indexterm" name="id5657347"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -32,45 +32,26 @@
 
   <p><span class="bold"><strong>Icinga Core:</strong></span></p>
 
-  <p>* Config options: </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-        <p>set initial state of persistence for acknowledgements</p>
-      </li>
-<li class="listitem">
-        <p>log_external_commands_user, user will be logged by core if sent through cmd pipe</p>
-      </li>
-<li class="listitem">
-        <p>disable logging of current state after rotation</p>
-      </li>
-<li class="listitem">
-        <p>log long plugin output</p>
-      </li>
-<li class="listitem">
-        <p>enable event handlers for stalked hosts/services</p>
-      </li>
-</ul></div>
+  <p>* disable eventprofiler on Solaris gcc3, preventing core dumps</p>
 
-  <p>* Scheduled downtime can now start on SOFT error states</p>
+  <p>* fix scheduled downtime notifications resent on restart/reload</p>
 
-  <p>* Rewrite execv check execution into execvp, allowing plugins in PATH and accepting 4k cmd args, with adapted error handling</p>
+  <p>* add the possibility to use * as a wildcard for all hosts in servicegroup definition</p>
 
-  <p>* Fix all comments disappear after restart if one comment is non-persistent</p>
+  <p>* add config option to disable logging into the daemon log file</p>
 
-  <p>* Fix wrong is_volatile conditions causing wrong service alerts in the logs</p>
+  <p>* add eventhandler override</p>
 
-  <p>* Fixes for mini_epn's; temp_path overwritten by check_result_path; service event handlers when service problem becomes hard during
-  host down</p>
+  <p>* remove program update checks</p>
+
+  <p>* don't skip hostchecks when servicechecks are disabled</p>
 
   <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
 
-  <p>* Add syslog output for start/stop, client connecting</p>
+  <p>* fix ido2db forking if database connection failed, now immediately disconnecting the client</p>
 
-  <p>* Add database trimming thread startup delay option</p>
+  <p>* fix database port in ido2db.cfg not honoured using libdbi</p>
 
-  <p>* Full rewrite of binding NULL values for oracle with ocilib; fix select name1/name2</p>
-
-  <p>* Modifiy and extend columns length for mysql/pgsql/oracle</p>
 
   <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
 
@@ -140,7 +121,7 @@
 
   <p>* New Documents for the external Commands</p>
 
-  <p>* New Images, new document for the Icinga Reporting</p>
+  <p>* New Images</p>
 
   <p>* Updates and fixes for upgrading Icinga and IDOUtils, visit the docs for more Information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
 
@@ -167,7 +148,7 @@
 
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
 
-  <a class="indexterm" name="id3354450"></a>
+  <a class="indexterm" name="id4742442"></a>
 
   
 </div>
