@@ -4,7 +4,7 @@
 <title>Installation and use of the Icinga API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.3 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
 <link rel="up" href="ch11.html" title="Chapter 11. Development">
 <link rel="prev" href="extcommands2.html" title="List of External Commands">
 <link rel="next" href="icinga-web-api.html" title="The Icinga Web REST API">
@@ -121,7 +121,17 @@
    --with-command-user=icinga-cmd \
    --with-command-group=icinga-cmd \
    --with-icinga-user=icinga \
-   --with-icinga-group=icinga</pre>
+   --with-icinga-group=icinga \
+   --with-web-user=www-data \
+   --with-web-group=www-data</pre>
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>The --with-web... directives have to be set. Otherwise the web logs will not be written correctly. This may also lead to
+            an empty main cronk. Please note that the values of user and group differ across distributions.</p></td></tr>
+</table></div>
 
             <pre class="programlisting"> # make install</pre>
         </li>
@@ -259,9 +269,9 @@
         </li>
 </ol></div>
 
-    <a class="indexterm" name="id5233671"></a>
+    <a class="indexterm" name="id3456884"></a>
 
-    <a class="indexterm" name="id5233685"></a>
+    <a class="indexterm" name="id3456950"></a>
 </div>
 <div class="navfooter">
 <hr>

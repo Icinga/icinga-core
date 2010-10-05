@@ -4,10 +4,10 @@
 <title>Installation des neuen Icinga Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">
-<link rel="next" href="icinga-web-pnp.html" title="Integration von PNP4Nagios in das Icinga Web Frontend">
+<link rel="next" href="icinga-web-intro.html" title="Einführung in Icinga Web">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -18,7 +18,7 @@
 <td width="20%" align="left">
 <a accesskey="p" href="cgis.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-pnp.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-intro.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -34,7 +34,7 @@
   <p>Das neue Icinga Web wird aktuell sehr stark weiterentwickelt, sodass sich diese Dokumentation unter Umständen noch ändern kann/wird.
   Falls Sie eine detaillierte Installationsanleitung benötigen, konsultieren Sie bitte doc/INSTALL aus dem Source-Paket. Mehr Informationen
   über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a> Falls Sie mehr über das Icinga Web development und die
-  Modularchitektur wissen wollen, verfolgen Sie bitte stetig aktualisierte Einträge im Development-Wiki von Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web</a></p>
+  Modularchitektur wissen wollen, verfolgen Sie bitte stetig aktualisierte Einträge im Development-Wiki von Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga Wiki</a></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -91,7 +91,7 @@
 
       <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.0.3.tar.gz</pre>
+      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.2.tar.gz</pre>
 
       <p>Wechseln Sie in das Verzeichnis:</p>
 
@@ -326,8 +326,20 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
       API weitergibt. Öffnen Sie app/modules/Web/config/icinga-io.xml um die IcingaApi factories zu sehen: IcingaData und IcingaCommand.
       </p>
 <pre class="programlisting"> #&gt; vi app/modules/Web/config/icinga-io.xml</pre>
-<p> In IcingaData werden die Parameter für die Icinga API
-      festgelegt, um beispielsweise die Icinga IDOUtils Datenbank als Datenquelle einzustellen. </p>
+<p>
+</p>
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Optional: Ihre spezifischen Icinga
+      Verbindungseinstellungen, wie die API-Anmeldeinformationen, können Sie vornehmen in app / modules / Web / config / icinga-io.site.xml. Diese Informationen bleiben während eines Update- Prozesses erhalten. </p></td></tr>
+</table></div>
+<p> </p>
+
+      <p>In IcingaData werden die Parameter für die Icinga API festgelegt, um beispielsweise die Icinga IDOUtils Datenbank
+      als Datenquelle einzustellen. </p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
@@ -641,9 +653,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id2813445"></a>
+  <a class="indexterm" name="id5489452"></a>
 
-  <a class="indexterm" name="id2813450"></a>
+  <a class="indexterm" name="id5489635"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -652,13 +664,13 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <td width="40%" align="left">
 <a accesskey="p" href="cgis.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-pnp.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-intro.html">Weiter</a>
 </td>
 </tr>
 <tr>
 <td width="40%" align="left" valign="top">Icinga Classic UI: Informationen über die CGIs </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Integration von PNP4Nagios in das Icinga Web Frontend</td>
+<td width="40%" align="right" valign="top"> Einführung in Icinga Web</td>
 </tr>
 </table>
 </div>

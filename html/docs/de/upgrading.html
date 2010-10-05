@@ -4,9 +4,9 @@
 <title>Icinga aktualisieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.0.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="howtos.html" title="Links zu weiteren Installations Howto's">
+<link rel="prev" href="howtos.html" title="Links zu weiteren Howto's">
 <link rel="next" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -98,18 +98,37 @@
   haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre alte Nagios-Version
   wiederherstellen.</p>
 
+  <p>Bitte installieren Sie Icinga anhand der <a class="link" href="quickstart" target="_top">Schnellstart-Anleitung</a>. Bitte beachten Sie,
+  dass</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>der Default-Präfix nun "/usr/local/icinga" heißt</p>
+    </li>
+<li class="listitem">
+      <p>die Umgebungs-Makros nun mit ICINGA_ beginnen</p>
+
+      <p>PNP4Nagios berücksichtigt das seit 0.6rc1 (2009.09.20). check_multi bietet Unterstützung seit 0.21 (2010.06.03), aber Sie müssen
+      dazu die Installation mit beginnend mit dem Schritt 'configure --with-nagios_name=icinga' erneut durchführen, damit die
+      check_multi-Prozedur mit geänderten Werten erstellt wird.</p>
+    </li>
+<li class="listitem">
+      <p>die Konfigurationsdateien der (verbesserten) IDOUtils heißen nun idomod.cfg/ido2db.cfg anstatt ndomod.cfg/ndo2db.cfg</p>
+    </li>
+</ul></div>
+
   <p>Werden Sie der nagios-Benutzer. Debian/Ubuntu-Benutzer sollten <span class="emphasis"><em>sudo -s nagios</em></span> benutzen.</p>
 
   <pre class="screen"> $ su -l nagios</pre>
 
   <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.0.3</em></span>.tar.gz</pre>
+  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.2</em></span>.tar.gz</pre>
 
   <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.0.3</em></span>.tar.gz
- #&gt; cd icinga-<span class="emphasis"><em>1.0.3</em></span> </pre>
+  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.2</em></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><em>1.2</em></span> </pre>
 
   <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim ./configure von Nagios benutzt haben. Den
   Aufruf finden Sie in der Datei config.log. Beispiel:</p>
@@ -123,16 +142,28 @@
   <p>Installieren Sie aktualisierte Programme, Dokumentation, Web-Interface und das Init-Script. Ihre vorhandenen Konfigurationsdaten
   werden in diesem Schritt nicht überschrieben.</p>
 
-  <pre class="screen"> #&gt; make install
+  <pre class="screen"> #&gt; make cgis
+ #&gt; make install
+ #&gt; make install-cgis
  #&gt; make install-init</pre>
 
-  <p>Kopieren Sie Ihre Konfigurationsdateien nach /usr/local/icinga/etc bzw. /usr/local/icinga/etc/object. Benennen Sie die
-  Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.cfg</em></span> in <span class="emphasis"><em>icinga.cfg</em></span> um und ändern Sie in /usr/local/icinga/etc/icinga.cfg die
-  Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group". Das betrifft ggf. auch die Pfade in der Datei.</p>
-  <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
+  <p>Kopieren Sie Ihre Konfigurationsdateien nach /usr/local/icinga/etc bzw. /usr/local/icinga/etc/object. Vor dem Start von
+  Icinga müssen Sie noch ein paar Dinge anpassen:</p>
 
-  <p>Ändern Sie in der CGI-Konfigurationsdatei <span class="emphasis"><em>cgi.cfg</em></span> die Pfad-Angaben.</p>
-	  <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./cgi.cfg/</pre>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Benennen Sie die Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.cfg</em></span> in <span class="emphasis"><em>icinga.cfg</em></span> um und ändern Sie
+      in /usr/local/icinga/etc/icinga.cfg die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group". Das betrifft ggf.
+      auch die Pfade in der Datei.</p>
+
+      <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
+    </li>
+<li class="listitem">
+      <p>Ändern Sie in der CGI-Konfigurationsdatei <span class="emphasis"><em>cgi.cfg</em></span> die Pfad-Angaben.</p>
+
+      <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./cgi.cfg/</pre>
+    </li>
+</ul></div>
 
   <p>Überprüfen Sie Ihre Konfigurationsdateien und starten Sie Icinga.</p>
 
@@ -141,11 +172,22 @@
 
   <p>Das war's - Sie sind fertig!</p>
 
+  <p>Bitte beachten Sie, dass</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>der Aufruf im Browser nun http://localhost/icinga/ lautet (für das klassische UI)</p>
+    </li>
+<li class="listitem">
+      <p>der Name des Admin-Benutzers nun icingaadmin lautet</p>
+    </li>
+</ul></div>
+
   <p><a name="upgrading-nagios2x"></a> <span class="bold"><strong>Upgrade von Nagios 2.x</strong></span></p>
 
-  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.0.3 zu aktualisieren. Die Aktualisierung ist
+  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.2 zu aktualisieren. Die Aktualisierung ist
   im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre Konfigurationsdateien ein
-  wenig ändern, damit sie mit Icinga 1.0.3 funktionieren:</p>
+  wenig ändern, damit sie mit Icinga 1.2 funktionieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -184,7 +226,7 @@
     </li>
 </ul></div>
 
-  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="Was gibt es Neues in Icinga Core 1.0.3 und Icinga Web 1.0.3">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
+  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="Was gibt es Neues in Icinga 1.2">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
   Er beschreibt all die Änderungen am Icinga-Code.</p>
 
   <p><a name="upgrading-rpm"></a> <span class="bold"><strong>Aktualisierung einer RPM-Installation</strong></span></p>
@@ -251,13 +293,13 @@
   Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder APT-Paket
   entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-  <a class="indexterm" name="id2744597"></a>
+  <a class="indexterm" name="id5420604"></a>
 
-  <a class="indexterm" name="id2744627"></a>
+  <a class="indexterm" name="id5420625"></a>
 
-  <a class="indexterm" name="id2744641"></a>
+  <a class="indexterm" name="id5420647"></a>
 
-  <a class="indexterm" name="id2744653"></a>
+  <a class="indexterm" name="id5420661"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -270,7 +312,7 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Links zu weiteren Installations Howto's </td>
+<td width="40%" align="left" valign="top">Links zu weiteren Howto's </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
 <td width="40%" align="right" valign="top"> IDOUtils-Datenbank aktualisieren</td>
 </tr>
