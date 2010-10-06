@@ -32,9 +32,10 @@
   <p><span class="bold"><strong>Introducion</strong></span></p>
 
   <p>The new Icinga Web is under heavy development so please keep in mind that some information in this howto might change without any
-  further notice. If you require more detailed information about installing, please check doc/INSTALL. More information about the overall
-  architecture can be found on our website: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a>. If you
-  want know more about Icinga web development and the module architecture, please check out the development wiki of Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga Wiki</a></p>
+  further notice. If you require more detailed information about installing, please check doc/INSTALL. </p>
+
+  <p>More information about the overall architecture can be found on our website: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a>. If you want know more about Icinga web development and
+  the module architecture, please check out the development wiki of Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga Wiki</a></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -49,6 +50,17 @@
       box.</p>
 
       <pre class="programlisting"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-gd php5-ldap php5-mysql</pre>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>For Ubuntu you install the required PDO extensions with php5 and php5-mysql! There is no php5-pdo package
+        available.</p>
+      </td></tr>
+</table></div>
 
       <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
 
@@ -157,8 +169,7 @@
 
       <pre class="programlisting"> #&gt; make install-apache-config</pre>
 
-      <p>If you don't need an alias, you can alternatively use the old behavior setting a symlink instead:
-</p>
+      <p>If you don't need an alias, you can alternatively use the old behavior setting a symlink instead: </p>
 <pre class="programlisting"> #&gt; make install-javascript</pre>
 
       <p>Make reports after install:</p>
@@ -234,13 +245,11 @@
 
       <p><span class="bold"><strong>Create Database</strong></span></p>
 
-      <p>Icinga Web ships with Doctrine so you can initialise, upgrade or drop the database directly using 'make'.</p>
+      <p>Icinga Web ships with Doctrine so you can initialise or drop the database directly using 'make'.</p>
 
       <pre class="programlisting"> #&gt; make db-initialize      - creates a spick-and-span database</pre>
 
       <pre class="programlisting"> #&gt; make db-drop            - drops your database with a security query to avoid casualties</pre>
-
-      <pre class="programlisting"> #&gt; make db-upgrade         - upgrades old tables to a newer version (Just the same as db-initialize with a better name ;-))</pre>
 
       <pre class="programlisting"> #&gt; make db-doc2sql         - if you require plain SQL scripts, use this option to generate SQL from Doctrine. This can be useful for packaging or manual db install</pre>
 
@@ -314,15 +323,16 @@
 
       <pre class="programlisting"> # vi app/modules/Web/config/icinga-io.xml</pre>
 
-     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"> <p>Optional: Your specific Icinga connection settings like api credentials config can be set in
-      app/modules/Web/config/icinga-io.site.xml and will be used in the first place. This won't get overwritten during upgrade process.
-      </p>
-</td></tr>
+<tr><td align="left" valign="top">
+        <p>Optional: Your specific Icinga connection settings like api credentials config can be set in
+        app/modules/Web/config/icinga-io.site.xml and will be used in the first place. This won't get overwritten during upgrade
+        process.</p>
+      </td></tr>
 </table></div>
 
       <p>In IcingaData you can set the credentials for the Icinga API e.g. using the Icinga IDOUtils database.</p>
@@ -628,15 +638,16 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Counts in the Status Cronk do not match your configuration? =&gt; Check with the Backend, e.g. IDOUtils DB, selecting the
       counts for the status tables.</p>
-<p>* No Data shwon in Cronks? =&gt; Make sure that all permissions are set correctly, escecially the log/</p>
+
+      <p>* No Data shown in Cronks? =&gt; Make sure that all permissions are set correctly, escecially the log/</p>
 
       <p>If you have any updates on that please do not hesitate to report back! :-)</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id4818171"></a>
+  <a class="indexterm" name="id4987888"></a>
 
-  <a class="indexterm" name="id4818342"></a>
+  <a class="indexterm" name="id4988059"></a>
 </div>
 <div class="navfooter">
 <hr>

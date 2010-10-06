@@ -1,0 +1,242 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Installation of the Icinga Reporting with JasperServer</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
+<link rel="prev" href="int-mklivestatus.html" title="MKLiveStatus Integration">
+<link rel="next" href="ch010.html" title="Chapter 10. Icinga Addons">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Installation of the Icinga Reporting with JasperServer</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 9. Integration With Other Software</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch010.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Installation of the Icinga Reporting with JasperServer">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="reporting"></a>Installation of the Icinga Reporting with JasperServer</h2></div></div></div>
+  
+
+  <p>The Icinga Reporting is based on the IDOUtils backend and just like the Icinga Core, it will support all major database
+  platforms.</p>
+
+  <p>Here we'll give you a little instruction how to install the Icinga Reporting with JasperServer.</p>
+
+  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+
+  <p>You need Icinga Core and IDOUtils installed and running. Icinga Reporting also requires a system to run the <a class="link" href="http://jasperforge.org/projects/jasperserver" target="_top">JasperServer</a> based on <a class="link" href="http://tomcat.apache.org" target="_top">Tomcat</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>If you don't have Icinga yet please follow the instructions given in the "<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">quickstart-idoutils</a>" documentation.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Install the JasperServer</strong></span></p>
+
+  <p>You can use the JasperServer installation binary or the specific WAR-Archive to deploy the software in an exisiting engine.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Install from binary</p>
+
+      <p>You can use the JasperServer-ce-linux-installer provided on <a class="link" href="http://sourceforge.net/projects/jasperserver/files/" target="_top">Sourceforge</a> with included the MySQL-Database and the
+      Tomcat Server. Just execute the installer-binary which leads you through the install process.</p>
+    </li>
+<li class="listitem">
+      <p>Install WAR-Archive</p>
+
+      <p>You can deploy the JasperServer-CE WAR into an existing Tomcat6 Server and use the existing Icinga Database for
+      the repository. Here we describe the WAR-installation into a Tomcat6 Server. Also checkout the official
+      JasperServer-Installation Guide <a class="link" href="http://sourceforge.net/projects/jasperserver/files/" target="_top">here.</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Install Tomcat using your OS repositories</strong></span></p>
+
+  <p><span class="emphasis"><em>Fedora/RHEL/CentOS/openSuSE/SLES</em></span></p>
+
+  <pre class="programlisting"> #&gt; yum install tomcat6</pre>
+
+  <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
+
+  <pre class="programlisting">#&gt; apt-get install tomcat6</pre>
+
+  <p><span class="bold"><strong>Install JasperServer CE into your Tomcat Server</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Download jasperserver-ce-x.x.x-bin.zip from <a class="link" href="http://sourceforge.net/projects/jasperserver/files/" target="_top">Sourceforge/Jasper</a></p>
+    </li>
+<li class="listitem">
+      <p>Follow the installation documentation published on<a class="link" href="http://sourceforge.net/projects/jasperserver/files/" target="_top">
+      Sourceforge/Jasper</a> (JasperServer-CE-Install-Guide.pdf)</p>
+    </li>
+</ul></div>
+
+  <p>After sucessfull JasperServer installation the interface is reachable on http://&lt;yourhost&gt;:8080/jasperserver and you are able
+  to login with jasperadmin/jasperadmin go the next step. Please change the default password as soon as possible.</p>
+
+  <p>In case of any error consult the JasperServer Troubleshooting Guide</p>
+
+  <p><span class="bold"><strong>Download the Templates</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Download the Icinga Reporting package from <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">Sourceforge/Icinga</a></p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Or</strong></span> using GIT: you can also download all templates and the actual servlet implementation in our
+      <a class="link" href="git://git.icinga.org/icinga-reports.git/" target="_top">:git://git.icinga.org/icinga-reports.git/</a>.</p>
+
+      <p>Take your clone from the icinga-reports.git to get a fresh branch</p>
+
+      <pre class="programlisting">#&gt; git clone git://git.icinga.org/icinga-reports.git</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Or</strong></span> download the software using <a class="link" href="https://git.icinga.org/index?p=icinga-reports.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-reports.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Install the Icinga Reporting- Package</strong></span></p>
+
+  <p>Unpack the downloaded file and copy it to your JasperServer-Directory.</p>
+
+  <pre class="programlisting">#&gt; tar xzvf icinga-reports-xxx.tar.gz
+#&gt; cp icinga-reports/ReportPackage/icinga_report_package.zip /opt/jasperserver/scripts/
+#&gt; cd /opt/jasperserver/scripts/</pre>
+
+  <p>Importing the whole reporting package requires just one command: </p>
+<pre class="programlisting">#&gt; ./js-import.sh --input-zip icinga_report_package.zip</pre>
+
+  <p>If you want to update an existing repository please use the following command: </p>
+<pre class="programlisting">#&gt; ./js-import.sh --input-zip icinga_report_package.zip --update</pre>
+
+  <p>You can export the whole Icinga part of the repository with the following command: </p>
+<pre class="programlisting">#&gt; ./js-export.sh --uris /Icinga --output-zip icinga_report_package.zip</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>If the import scripts fails, please check your jasperserver.xml for the current user and password. You can change the default user
+    and password in &lt;jasperserver-ce-dir&gt;/scripts/config/js.jdbc.properties</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Configure quartz the scheduler</strong></span></p>
+
+  <p>The reporting distribution is done via quartz scheduler. To configure the sender mail and your local gateways please edit the
+  following file &lt;tomcat_home&gt;/webapps/jasperserver/WEB-INF/js.quartz.properties. Please restart the tomcat server to activate the new
+  settings. </p>
+<pre class="programlisting">service tomcat6 restart or /etc/init.d/tomcat restart</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>The export-/import-process is explained in detail at chapter 5.12 of the JasperServer CE-Install-Guide</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Configure your database connection</strong></span></p>
+
+  <p>Login to http://localhost:8080/jasperserver with jasperadmin/jasperadmin.</p>
+
+  <p>After a successfull package installation you will find the datasource here:</p>
+
+  <p>/root/Icinga/datasource (be sure that <span class="bold"><strong>Refine </strong></span>contains "changed by anyone").</p>
+
+  <p>- Edit the existing datasource and configure your values.</p>
+
+  <p>- Test the configuration and save the connection.</p>
+
+  <p>- All reports in our package point to this datasource and should be able to run.</p>
+
+  <p><span class="bold"><strong>Known Bugs:</strong></span> If you don't see any graph labels in a pdf export please switch from OpenJDK to
+  SUNJava.</p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td>
+<div class="figure">
+<a name="id5007275"></a><p class="title"><b>Figure 9.1. Icinga Reporting in Icinga Web</b></p>
+<div class="figure-contents">
+              
+
+              <div class="mediaobject"><img src="../images/rep_avail.png" alt="Icinga Reporting in Icinga Web"></div>
+            </div>
+</div>
+<p><br class="figure-break"></p>
+</td>
+<td>
+<div class="figure">
+<a name="id5007291"></a><p class="title"><b>Figure 9.2. Icinga Reporting TOP10 in Icinga Web</b></p>
+<div class="figure-contents">
+              
+
+              <div class="mediaobject"><img src="../images/reptop10.png" alt="Icinga Reporting TOP10 in Icinga Web"></div>
+            </div>
+</div>
+<p><br class="figure-break"></p>
+</td>
+</tr></tbody>
+</table>
+  </div>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Integration to Icinga Web not implemented yet!</p></td></tr>
+</table></div>
+<p>Feel free to edit our sample reports with iReport and change these to your needs :)</p>
+<p>That's all, you're done!</p>
+
+  <a class="indexterm" name="id5007344"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch010.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">MKLiveStatus Integration </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 10. Icinga Addons</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
