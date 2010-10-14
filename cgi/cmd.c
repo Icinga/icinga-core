@@ -2428,8 +2428,12 @@ int commit_command(int cmd){
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
 		if (force_check == TRUE)
 			cmd = CMD_SCHEDULE_FORCED_HOST_SVC_CHECKS;
-		if (is_authorized[x])
-			submit_result[x] = cmd_submitf(cmd,"%s;%lu",host_name,scheduled_time);
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,scheduled_time);
+		}
 		break;
 
 	case CMD_ENABLE_HOST_NOTIFICATIONS:
