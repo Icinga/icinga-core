@@ -392,19 +392,14 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime){
 				schedule_new_event(EVENT_EXPIRE_DOWNTIME,TRUE,(temp_downtime->end_time+1),FALSE,0,NULL,FALSE,NULL,NULL,0);
 
 				return OK;
-			        }
-		        }
-	        }
+			}
+		}
+	}
 
-	/* if downtime handler gets triggerd in between then there seems to be a restart of Icinga */
-	/* Don't do anything just return */
 	time(&current_time);
-	if(temp_downtime->start_time<current_time && current_time<temp_downtime->end_time && temp_downtime->is_in_effect==TRUE)
-		return OK;
-
 
 	/* have we come to the end of the scheduled downtime? */
-	if(temp_downtime->is_in_effect==TRUE){
+	if(temp_downtime->is_in_effect==TRUE && current_time >= temp_downtime->end_time){
 
 #ifdef USE_EVENT_BROKER
 		/* send data to event broker */
@@ -479,7 +474,7 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime){
 			delete_host_downtime(temp_downtime->downtime_id);
 		else
 			delete_service_downtime(temp_downtime->downtime_id);
-	        }
+	}
 
 	/* else we are just starting the scheduled downtime */
 	else{
@@ -488,28 +483,30 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime){
 		/* send data to event broker */
 		broker_downtime_data(NEBTYPE_DOWNTIME_START,NEBFLAG_NONE,NEBATTR_NONE,temp_downtime->type,temp_downtime->host_name,temp_downtime->service_description,temp_downtime->entry_time,temp_downtime->author,temp_downtime->comment,temp_downtime->start_time,temp_downtime->end_time,temp_downtime->fixed,temp_downtime->triggered_by,temp_downtime->duration,temp_downtime->downtime_id,NULL);
 #endif
+		/* this happens after restart of icinga */
+		if (temp_downtime->is_in_effect!=TRUE) {
+			if(temp_downtime->type==HOST_DOWNTIME && hst->scheduled_downtime_depth==0){
 
-		if(temp_downtime->type==HOST_DOWNTIME && hst->scheduled_downtime_depth==0){
+				log_debug_info(DEBUGL_DOWNTIME,0,"Host '%s' has entered a period of scheduled downtime (id=%lu).\n",hst->name,temp_downtime->downtime_id);
 
-			log_debug_info(DEBUGL_DOWNTIME,0,"Host '%s' has entered a period of scheduled downtime (id=%lu).\n",hst->name,temp_downtime->downtime_id);
+				/* log a notice - this one is parsed by the history CGI */
+				logit(NSLOG_INFO_MESSAGE,FALSE,"HOST DOWNTIME ALERT: %s;STARTED; Host has entered a period of scheduled downtime",hst->name);
 
-			/* log a notice - this one is parsed by the history CGI */
-			logit(NSLOG_INFO_MESSAGE,FALSE,"HOST DOWNTIME ALERT: %s;STARTED; Host has entered a period of scheduled downtime",hst->name);
+				/* send a notification */
+				host_notification(hst,NOTIFICATION_DOWNTIMESTART,temp_downtime->author,temp_downtime->comment,NOTIFICATION_OPTION_NONE);
+			}
 
-			/* send a notification */
-			host_notification(hst,NOTIFICATION_DOWNTIMESTART,temp_downtime->author,temp_downtime->comment,NOTIFICATION_OPTION_NONE);
-		        }
+			else if(temp_downtime->type==SERVICE_DOWNTIME && svc->scheduled_downtime_depth==0){
 
-		else if(temp_downtime->type==SERVICE_DOWNTIME && svc->scheduled_downtime_depth==0){
+				log_debug_info(DEBUGL_DOWNTIME,0,"Service '%s' on host '%s' has entered a period of scheduled downtime (id=%lu).\n",svc->description,svc->host_name,temp_downtime->downtime_id);
 
-			log_debug_info(DEBUGL_DOWNTIME,0,"Service '%s' on host '%s' has entered a period of scheduled downtime (id=%lu).\n",svc->description,svc->host_name,temp_downtime->downtime_id);
+				/* log a notice - this one is parsed by the history CGI */
+				logit(NSLOG_INFO_MESSAGE,FALSE,"SERVICE DOWNTIME ALERT: %s;%s;STARTED; Service has entered a period of scheduled downtime",svc->host_name,svc->description);
 
-			/* log a notice - this one is parsed by the history CGI */
-			logit(NSLOG_INFO_MESSAGE,FALSE,"SERVICE DOWNTIME ALERT: %s;%s;STARTED; Service has entered a period of scheduled downtime",svc->host_name,svc->description);
-
-			/* send a notification */
-			service_notification(svc,NOTIFICATION_DOWNTIMESTART,temp_downtime->author,temp_downtime->comment,NOTIFICATION_OPTION_NONE);
-		        }
+				/* send a notification */
+				service_notification(svc,NOTIFICATION_DOWNTIMESTART,temp_downtime->author,temp_downtime->comment,NOTIFICATION_OPTION_NONE);
+			}
+		}
 
 		/* increment the downtime depth variable */
 		if(temp_downtime->type==HOST_DOWNTIME)
@@ -531,20 +528,21 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime){
 			event_time=(time_t)((unsigned long)time(NULL)+temp_downtime->duration);
 		else
 			event_time=temp_downtime->end_time;
+
 		if((new_downtime_id=(unsigned long *)malloc(sizeof(unsigned long *)))){
 			*new_downtime_id=temp_downtime->downtime_id;
 			schedule_new_event(EVENT_SCHEDULED_DOWNTIME,TRUE,event_time,FALSE,0,NULL,FALSE,(void *)new_downtime_id,NULL,0);
-			}
+		}
 
 		/* handle (start) downtime that is triggered by this one */
 		for(this_downtime=scheduled_downtime_list;this_downtime!=NULL;this_downtime=this_downtime->next){
 			if(this_downtime->triggered_by==temp_downtime->downtime_id)
 				handle_scheduled_downtime(this_downtime);
-		        }
-	        }
+		}
+	}
 	
 	return OK;
-        }
+}
 
 
 

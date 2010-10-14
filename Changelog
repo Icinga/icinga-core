@@ -5,6 +5,8 @@ Icinga 1.2.x Change Log
 1.2.1 - ??/??/2010
 
 FIXES:
+* core: corrected wrong implementation of fix #584 - re notification for downtime after icinga restart
+
 * classic ui: fix for "Schedule a check of all services on this host" not working properly #895
 
 1.2.0 - 06/10/2010
