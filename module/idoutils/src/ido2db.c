@@ -2557,6 +2557,7 @@ void * ido2db_thread_cleanup(void *data) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread idi\n");
+
 	/* initialize input data information */
 	ido2db_idi_init(&thread_idi);
 
@@ -2564,8 +2565,19 @@ void * ido2db_thread_cleanup(void *data) {
 	/* initialize database connection */
 	ido2db_db_init(&thread_idi);
 
-	//ido2db_thread_db_connect(&thread_idi);
-	ido2db_db_connect(&thread_idi);
+	if(ido2db_db_connect(&thread_idi)==IDO_ERROR){
+
+		/* tell main process to disconnect */
+		idi->disconnect_client==IDO_TRUE;
+
+		/* cleanup the thread */
+        	ido2db_db_deinit(&thread_idi);
+
+	        /* free memory */
+	        ido2db_free_input_memory(&thread_idi);
+	        ido2db_free_connection_memory(&thread_idi);
+		return;
+	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push()\n");
 	pthread_cleanup_push((void *) &ido2db_thread_cleanup_exit_handler, NULL);
@@ -2623,7 +2635,13 @@ void * ido2db_thread_cleanup(void *data) {
 	/* gracefully back out of current operation... */
 	ido2db_db_goodbye(&thread_idi);
 
-	//ido2db_thread_db_disconnect(&thread_idi);
+        /* disconnect from database */
+        ido2db_db_disconnect(&thread_idi);
+        ido2db_db_deinit(&thread_idi);
+
+        /* free memory */
+        ido2db_free_input_memory(&thread_idi);
+        ido2db_free_connection_memory(&thread_idi);
 
 	pthread_cleanup_pop(1);
 
