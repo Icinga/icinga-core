@@ -9,6 +9,9 @@ FIXES:
 
 * classic ui: fix for "Schedule a check of all services on this host" not working properly #895
 
+* idoutils: fix disconnecting on errors misbheaving, not closing db and daemon #886
+
+
 1.2.0 - 06/10/2010
 
 ENHANCEMENTS

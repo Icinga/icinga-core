@@ -66,6 +66,8 @@ int ido2db_show_help=IDO_FALSE;
 int ido2db_run_foreground=IDO_FALSE;
 
 ido2db_dbconfig ido2db_db_settings;
+ido2db_idi thread_idi;
+pthread_t thread_pool[1];
 
 time_t ido2db_db_last_checkin_time=0L;
 
@@ -972,6 +974,8 @@ void ido2db_child_sighandler(int sig){
 		ido2db_free_program_memory();
 	}
 
+	ido2db_kill_threads();
+
 	_exit(0);
 
 	return;
@@ -1153,7 +1157,6 @@ int ido2db_handle_client_connection(int sd){
 	int error=IDO_FALSE;
 
 	int pthread_ret=0;
-	pthread_t thread_pool[1];
 #ifdef HAVE_SSL
 	SSL *ssl=NULL;
 #endif
@@ -2540,7 +2543,6 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...){
 void * ido2db_thread_cleanup(void *data) {
 
 	ido2db_idi *idi = (ido2db_idi*) data;
-	ido2db_idi thread_idi;
 
 	int old_thread_state;
 
@@ -2661,3 +2663,16 @@ static void *ido2db_thread_cleanup_exit_handler(void * arg) {
 	return 0;
 
 }
+
+int ido2db_kill_threads(void){
+
+        ido2db_db_disconnect(&thread_idi);
+        ido2db_db_deinit(&thread_idi);
+
+	/* kill sub threads */
+	pthread_kill(thread_pool[0], SIGINT);
+	pthread_cancel(thread_pool[0]);
+
+	return IDO_OK;
+}
+

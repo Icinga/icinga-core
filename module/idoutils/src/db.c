@@ -1181,6 +1181,17 @@ int ido2db_db_hello(ido2db_idi *idi) {
 		syslog(LOG_USER | LOG_INFO, "Exiting ...");
 
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+
+		ido2db_kill_threads();
+
+		/* disconnect from database */
+		ido2db_db_disconnect(idi);
+		ido2db_db_deinit(idi);
+
+		/* free memory */
+		ido2db_free_input_memory(idi);
+		ido2db_free_connection_memory(idi);
+
                 /* cleanup the socket */
                 ido2db_cleanup_socket();
 
@@ -1218,6 +1229,16 @@ int ido2db_db_hello(ido2db_idi *idi) {
 		syslog(LOG_USER | LOG_INFO, "Exiting ...");
 
 	        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+
+		ido2db_kill_threads();
+
+                /* disconnect from database */
+                ido2db_db_disconnect(idi);
+                ido2db_db_deinit(idi);
+
+                /* free memory */
+                ido2db_free_input_memory(idi);
+                ido2db_free_connection_memory(idi);
 
 		/* cleanup the socket */
 		ido2db_cleanup_socket();
@@ -1574,6 +1595,17 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         }
         else {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+
+		ido2db_kill_threads();
+
+                /* disconnect from database */
+                ido2db_db_disconnect(idi);
+                ido2db_db_deinit(idi);
+
+                /* free memory */
+                ido2db_free_input_memory(idi);
+                ido2db_free_connection_memory(idi);
+
                 /* cleanup the socket */
                 ido2db_cleanup_socket();
 
@@ -1604,6 +1636,16 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         /* execute statement */
         if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
+
+		ido2db_kill_threads();
+
+                /* disconnect from database */
+                ido2db_db_disconnect(idi);
+                ido2db_db_deinit(idi);
+
+                /* free memory */
+                ido2db_free_input_memory(idi);
+                ido2db_free_connection_memory(idi);
 
                 /* cleanup the socket */
                 ido2db_cleanup_socket();
