@@ -38,9 +38,9 @@ printstatus_icinga()
 
 killproc_icinga ()
 {
-
-	kill $2 $IcingaPID
-
+	if kill -0  $IcingaPID  >/dev/null 2>&1; then
+		kill $2 $IcingaPID
+	fi
 }
 
 

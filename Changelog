@@ -5,6 +5,8 @@ Icinga 1.2.x Change Log
 1.2.1 - ??/??/2010
 
 ENHANCEMENTS:
+* core: fix initscript, no error when stopping stale lock (OMD patch) #897
+
 * classic ui: extinfo comment table cell names (Oliver Graf) #861
 
 
