@@ -2619,7 +2619,7 @@ void show_comments(int type){
 					printf("&service=%s'>%s</A></td>",url_encode(temp_comment->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 				}
 			}
-			printf("<td>%s</td><td>%s</td><td>%s</td><td>%lu</td><td>%s</td><td>%s</td><td>%s</td>",date_time,temp_comment->author,temp_comment->comment_data,temp_comment->comment_id,(temp_comment->persistent)?"Yes":"No",comment_type,(temp_comment->expires==TRUE)?expire_time:"N/A");
+			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>",date_time,temp_comment->author,temp_comment->comment_data,temp_comment->comment_id,(temp_comment->persistent)?"Yes":"No",comment_type,(temp_comment->expires==TRUE)?expire_time:"N/A");
 			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>",CMD_CGI,(type==HOST_COMMENT)?CMD_DEL_HOST_COMMENT:CMD_DEL_SVC_COMMENT,temp_comment->comment_id,url_images_path,DELETE_ICON);
 			printf("<input onclick=\"isValidForSubmit(\'tableform%s\');\" type='checkbox' name='checkbox' value='&com_id=%lu'></td>",(type==HOST_COMMENT)?"host":"service",temp_comment->comment_id);			
 			printf("</td></tr>\n");
