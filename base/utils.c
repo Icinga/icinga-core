@@ -3603,8 +3603,8 @@ int file_uses_embedded_perl(char *fname){
 
 					if(fgets(linen,80,fp)){
 
-						/* line contains Icinga directives */
-						if(strstr(linen,"# nagios:")){
+						/* line contains Icinga directives - keep Nagios compatibility */
+						if(strstr(linen,"# nagios:") || strstr(linen,"# icinga:")){
 
 							ptr=strtok(linen,":");
 
