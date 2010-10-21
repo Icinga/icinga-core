@@ -19,6 +19,8 @@ FIXES:
 
 * classic ui: fix for "Schedule a check of all services on this host" not working properly #895
 * classic ui: comment tooltip now show's quotes and back slashes #907
+* classic ui: fix change statusmap logo name to icinga #922
+* classic ui: add support for ICINGA_ env vars for cgis #921
 
 * idoutils: fix disconnecting on errors misbheaving, not closing db and daemon #886
 

@@ -267,13 +267,18 @@ char * get_cgi_config_location(void){
         static char *cgiloc=NULL;
 
         if(!cgiloc){
-                cgiloc=getenv("NAGIOS_CGI_CONFIG");
-                if(!cgiloc)
-                        cgiloc=DEFAULT_CGI_CONFIG_FILE;
-                }
+                cgiloc=getenv("ICINGA_CGI_CONFIG");
+        	if(!cgiloc){
+			/* stay compatible */
+                	cgiloc=getenv("NAGIOS_CGI_CONFIG");
+                	if(!cgiloc){
+                        	cgiloc=DEFAULT_CGI_CONFIG_FILE;
+			}
+		}
+	}
 
         return cgiloc;
-        }
+}
 
 
 /* read the command file location from an environment variable */
@@ -281,13 +286,17 @@ char * get_cmd_file_location(void){
         static char *cmdloc=NULL;
 
         if(!cmdloc){
-                cmdloc=getenv("NAGIOS_COMMAND_FILE");
-                if(!cmdloc)
-                        cmdloc=DEFAULT_COMMAND_FILE;
+                cmdloc=getenv("ICINGA_COMMAND_FILE");
+        	if(!cmdloc){
+			/* stay compatible */
+                	cmdloc=getenv("NAGIOS_COMMAND_FILE");
+	                if(!cmdloc){
+        	                cmdloc=DEFAULT_COMMAND_FILE;
+			}
                 }
+	}
         return cmdloc;
-        }
-
+}
 
 /*read the CGI configuration file */
 int read_cgi_config_file(char *filename){
