@@ -753,36 +753,6 @@ int xodtemplate_process_config_file(char *filename, int options){
 			in_definition=TRUE;
 		        }
 
-		/* this is the close of an object definition */
-		else if(!strcmp(input,"}") && in_definition==TRUE){
-
-			/* 2010-06-17 MF we should only warn if a service_description is not found on service definition
-			   regarding the fact that we resolve the object with templates afterwards, we cannot throw a
-			   warning here. commented out for future rework */
-			/*
-			switch(xodtemplate_current_object_type){
-				case XODTEMPLATE_SERVICE:{
-					temp_service=(xodtemplate_service *)xodtemplate_current_object;
-					if (temp_service->register_object && (!temp_service->service_description)){
-						logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Ending service definition without description in '%s' on line %d.\n",filename,current_line);
-						break;
-					}
-					break;
-				}
-				default:
-					break;
-			}
-			*/
-			in_definition=FALSE;
-
-			/* close out current definition */
-			if(xodtemplate_end_object_definition(options)==ERROR){
-				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not complete object definition in file '%s' on line %d.\n",filename,current_line);
-				result=ERROR;
-				break;
-			        }
-		        }
-
 		/* we're currently inside an object definition */
 		else if(in_definition==TRUE){
 

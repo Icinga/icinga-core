@@ -14,6 +14,7 @@ FIXES:
 * core: corrected wrong implementation of fix #584 - re notification for downtime after icinga restart
 * core: fix epn tag for disabling ePN (Yannick Charton) #914
 * core: fix snprintf in make for Solaris #858
+* core: fix config file parsing end of definition check #913
 
 * classic ui: fix for "Schedule a check of all services on this host" not working properly #895
 * classic ui: comment tooltip now show's quotes and back slashes #907
