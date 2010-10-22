@@ -184,6 +184,7 @@ extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int content_type;
+extern int escape_html_tags;
 
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
@@ -5482,6 +5483,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	int len,output_len;
 	int x,y;
 	char *escaped_output_string=NULL;
+	int saved_escape_html_tags_var=FALSE;
 
 	if(svc_description==NULL){
 		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name));
@@ -5513,7 +5515,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 				}
 				snprintf(comment_data,sizeof(comment_data)-1,"%s",temp_comment->comment_data);
 				comment_data[sizeof(comment_data)-1]='\x0';
-				
+
 				/* we need up to twice the space to do the conversion of single, double quotes and back slash's */
 				len=(int)strlen(comment_data);
 				output_len=len*2;
@@ -5553,7 +5555,14 @@ void print_comment_icon(char *host_name, char *svc_description) {
 					strcpy(escaped_output_string,comment_data);
 				}
 
+				/* in the tooltips we have to escape all characters */
+				saved_escape_html_tags_var=escape_html_tags;
+				escape_html_tags=TRUE;
+
 				printf("<tr><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,html_encode(escaped_output_string,TRUE));
+
+				escape_html_tags=saved_escape_html_tags_var;
+
 				free(escaped_output_string);
 			}
 		}
