@@ -28,8 +28,8 @@
 #endif
 
 #define IDO2DB_NAME "IDO2DB"
-#define IDO2DB_DATE "10-06-2010"
-#define IDO2DB_VERSION "1.2.0"
+#define IDO2DB_DATE "10-25-2010"
+#define IDO2DB_VERSION "1.2.1"
 
 extern int use_ssl;
 

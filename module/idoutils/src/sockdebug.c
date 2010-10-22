@@ -9,9 +9,9 @@
 #include "../../../include/config.h"
 #include "../include/io.h"
 
-#define SOCKDEBUG_VERSION "1.2.0"
+#define SOCKDEBUG_VERSION "1.2.1"
 #define SOCKDEBUG_NAME "SOCKDEBUG"
-#define SOCKDEBUG_DATE "10-06-2010"
+#define SOCKDEBUG_DATE "10-25-2010"
 
 
 int cleanup_socket(int,char *);

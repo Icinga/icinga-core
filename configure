@@ -2368,9 +2368,9 @@ ac_config_headers="$ac_config_headers include/config.h include/snprintf.h"
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.2.0"
+PKG_VERSION="1.2.1"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="10-06-2010"
+PKG_REL_DATE="10-25-2010"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
