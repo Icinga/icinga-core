@@ -501,6 +501,7 @@ typedef struct nebstruct_acknowledgement_struct{
 	int             is_sticky;
 	int             persistent_comment;
 	int             notify_contacts;
+	time_t		end_time;
 
 	void            *object_ptr;
         }nebstruct_acknowledgement_data;

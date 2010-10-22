@@ -2317,6 +2317,7 @@ int cmd_acknowledge_problem(int cmd,char *args){
 	char *ack_author=NULL;
 	char *ack_data=NULL;
 	char *temp_ptr=NULL;
+	time_t end_time=0L;
 	int type=ACKNOWLEDGEMENT_NORMAL;
 	int notify=TRUE;
 	int persistent=TRUE;
@@ -2356,25 +2357,30 @@ int cmd_acknowledge_problem(int cmd,char *args){
 		return ERROR;
 	persistent=(atoi(temp_ptr)>0)?TRUE:FALSE;
 
+	/* get end_time option */
+	if((temp_ptr=my_strtok(NULL,";"))==NULL)
+		return ERROR;
+	end_time=(time_t)strtoul(temp_ptr,NULL,10);
+
 	/* get the acknowledgement author */
 	if((temp_ptr=my_strtok(NULL,";"))==NULL)
 		return ERROR;
 	ack_author=(char *)strdup(temp_ptr);
-	
+
 	/* get the acknowledgement data */
 	if((temp_ptr=my_strtok(NULL,"\n"))==NULL){
 		my_free(ack_author);
 		return ERROR;
 	        }
 	ack_data=(char *)strdup(temp_ptr);
-	
+
 	/* acknowledge the host problem */
 	if(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM)
-		acknowledge_host_problem(temp_host,ack_author,ack_data,type,notify,persistent);
+		acknowledge_host_problem(temp_host,ack_author,ack_data,type,notify,persistent,end_time);
 
 	/* acknowledge the service problem */
 	else
-		acknowledge_service_problem(temp_service,ack_author,ack_data,type,notify,persistent);
+		acknowledge_service_problem(temp_service,ack_author,ack_data,type,notify,persistent,end_time);
 
 	/* free memory */
 	my_free(ack_author);
@@ -3877,7 +3883,7 @@ void schedule_and_propagate_downtime(host *temp_host, time_t entry_time, char *a
 
 
 /* acknowledges a host problem */
-void acknowledge_host_problem(host *hst, char *ack_author, char *ack_data, int type, int notify, int persistent){
+void acknowledge_host_problem(host *hst, char *ack_author, char *ack_data, int type, int notify, int persistent, time_t end_time){
 	time_t current_time=0L;
 
 	/* cannot acknowledge a non-existent problem */
@@ -3886,7 +3892,7 @@ void acknowledge_host_problem(host *hst, char *ack_author, char *ack_data, int t
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_acknowledgement_data(NEBTYPE_ACKNOWLEDGEMENT_ADD,NEBFLAG_NONE,NEBATTR_NONE,HOST_ACKNOWLEDGEMENT,(void *)hst,ack_author,ack_data,type,notify,persistent,NULL);
+	broker_acknowledgement_data(NEBTYPE_ACKNOWLEDGEMENT_ADD,NEBFLAG_NONE,NEBATTR_NONE,HOST_ACKNOWLEDGEMENT,(void *)hst,ack_author,ack_data,type,notify,persistent,end_time,NULL);
 #endif
 
 	/* send out an acknowledgement notification */
@@ -3898,6 +3904,13 @@ void acknowledge_host_problem(host *hst, char *ack_author, char *ack_data, int t
 
 	/* set the acknowledgement type */
 	hst->acknowledgement_type=(type==ACKNOWLEDGEMENT_STICKY)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL;
+
+	/* set the acknowledgement expire time type */
+	if (!end_time>current_time)
+		end_time=(time_t)0;
+	else
+		schedule_new_event(EVENT_EXPIRE_ACKNOWLEDGEMENT,TRUE,(end_time+1),FALSE,0,NULL,FALSE,hst,NULL,HOST_ACKNOWLEDGEMENT);
+	hst->acknowledgement_end_time=end_time;
 
 	/* update the status log with the host info */
 	update_host_status(hst,FALSE);
@@ -3911,7 +3924,7 @@ void acknowledge_host_problem(host *hst, char *ack_author, char *ack_data, int t
 
 
 /* acknowledges a service problem */
-void acknowledge_service_problem(service *svc, char *ack_author, char *ack_data, int type, int notify, int persistent){
+void acknowledge_service_problem(service *svc, char *ack_author, char *ack_data, int type, int notify, int persistent, time_t end_time){
 	time_t current_time=0L;
 
 	/* cannot acknowledge a non-existent problem */
@@ -3920,7 +3933,7 @@ void acknowledge_service_problem(service *svc, char *ack_author, char *ack_data,
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_acknowledgement_data(NEBTYPE_ACKNOWLEDGEMENT_ADD,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_ACKNOWLEDGEMENT,(void *)svc,ack_author,ack_data,type,notify,persistent,NULL);
+	broker_acknowledgement_data(NEBTYPE_ACKNOWLEDGEMENT_ADD,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_ACKNOWLEDGEMENT,(void *)svc,ack_author,ack_data,type,notify,persistent,end_time,NULL);
 #endif
 
 	/* send out an acknowledgement notification */
@@ -3932,6 +3945,13 @@ void acknowledge_service_problem(service *svc, char *ack_author, char *ack_data,
 
 	/* set the acknowledgement type */
 	svc->acknowledgement_type=(type==ACKNOWLEDGEMENT_STICKY)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL;
+
+	/* set the acknowledgement expire time type */
+	if (!end_time>current_time)
+		end_time=(time_t)0;
+	else
+		schedule_new_event(EVENT_EXPIRE_ACKNOWLEDGEMENT,TRUE,(end_time+1),FALSE,0,NULL,FALSE,svc,NULL,SERVICE_ACKNOWLEDGEMENT);
+	svc->acknowledgement_end_time=end_time;
 
 	/* update the status log with the service info */
 	update_service_status(svc,FALSE);
@@ -3949,6 +3969,7 @@ void remove_host_acknowledgement(host *hst){
 
 	/* set the acknowledgement flag */
 	hst->problem_has_been_acknowledged=FALSE;
+	hst->acknowledgement_end_time=(time_t)0;
 
 	/* update the status log with the host info */
 	update_host_status(hst,FALSE);
@@ -3965,6 +3986,7 @@ void remove_service_acknowledgement(service *svc){
 
 	/* set the acknowledgement flag */
 	svc->problem_has_been_acknowledged=FALSE;
+	svc->acknowledgement_end_time=(time_t)0;
 
 	/* update the status log with the service info */
 	update_service_status(svc,FALSE);

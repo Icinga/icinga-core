@@ -244,6 +244,7 @@ extern "C" {
 #define EVENT_HFRESHNESS_CHECK          13      /* checks host result "freshness" */
 #define EVENT_RESCHEDULE_CHECKS		14      /* adjust scheduling of host and service checks */
 #define EVENT_EXPIRE_COMMENT            15      /* removes expired comments */
+#define EVENT_EXPIRE_ACKNOWLEDGEMENT    16      /* removes expired acknowledgements */
 #define EVENT_SLEEP                     98      /* asynchronous sleep event that occurs when event queues are empty */
 #define EVENT_USER_FUNCTION             99      /* USER-defined function (modules) */
 
@@ -642,8 +643,8 @@ void disable_host_notifications(host *);		/* disables host notifications */
 void enable_and_propagate_notifications(host *,int,int,int,int);	/* enables notifications for all hosts and services beyond a given host */
 void disable_and_propagate_notifications(host *,int,int,int,int);	/* disables notifications for all hosts and services beyond a given host */
 void schedule_and_propagate_downtime(host *,time_t,char *,char *,time_t,time_t,int,unsigned long,unsigned long); /* schedules downtime for all hosts beyond a given host */
-void acknowledge_host_problem(host *,char *,char *,int,int,int);	/* acknowledges a host problem */
-void acknowledge_service_problem(service *,char *,char *,int,int,int);	/* acknowledges a service problem */
+void acknowledge_host_problem(host *,char *,char *,int,int,int,time_t);	/* acknowledges a host problem */
+void acknowledge_service_problem(service *,char *,char *,int,int,int,time_t);	/* acknowledges a service problem */
 void remove_host_acknowledgement(host *);		/* removes a host acknowledgement */
 void remove_service_acknowledgement(service *);		/* removes a service acknowledgement */
 void start_executing_service_checks(void);		/* starts executing service checks */

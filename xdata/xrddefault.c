@@ -396,6 +396,7 @@ int xrddefault_save_state_information(void){
 		fprintf(fp,"notifications_enabled=%d\n",temp_host->notifications_enabled);
 		fprintf(fp,"problem_has_been_acknowledged=%d\n",temp_host->problem_has_been_acknowledged);
 		fprintf(fp,"acknowledgement_type=%d\n",temp_host->acknowledgement_type);
+		fprintf(fp,"acknowledgement_end_time=%lu\n",temp_host->acknowledgement_end_time);
 		fprintf(fp,"active_checks_enabled=%d\n",temp_host->checks_enabled);
 		fprintf(fp,"passive_checks_enabled=%d\n",temp_host->accept_passive_host_checks);
 		fprintf(fp,"event_handler_enabled=%d\n",temp_host->event_handler_enabled);
@@ -478,6 +479,7 @@ int xrddefault_save_state_information(void){
 		fprintf(fp,"event_handler_enabled=%d\n",temp_service->event_handler_enabled);
 		fprintf(fp,"problem_has_been_acknowledged=%d\n",temp_service->problem_has_been_acknowledged);
 		fprintf(fp,"acknowledgement_type=%d\n",temp_service->acknowledgement_type);
+		fprintf(fp,"acknowledgement_end_time=%lu\n",temp_service->acknowledgement_end_time);
 		fprintf(fp,"flap_detection_enabled=%d\n",temp_service->flap_detection_enabled);
 		fprintf(fp,"failure_prediction_enabled=%d\n",temp_service->failure_prediction_enabled);
 		fprintf(fp,"process_performance_data=%d\n",temp_service->process_performance_data);
@@ -810,10 +812,22 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 						if(was_flapping==TRUE && temp_host->is_flapping==FALSE)
 							temp_host->check_flapping_recovery_notification=FALSE;
 						}
-					
+
 					/* handle new vars added in 2.x */
 					if(temp_host->last_hard_state_change==(time_t)0)
 						temp_host->last_hard_state_change=temp_host->last_state_change;
+
+					/* handle expiring acknowledegments */
+					if(temp_host->problem_has_been_acknowledged==TRUE && temp_host->acknowledgement_end_time!=(time_t)0) {
+						time(&current_time);
+						if(temp_host->acknowledgement_end_time>current_time) {
+							schedule_new_event(EVENT_EXPIRE_ACKNOWLEDGEMENT,TRUE,(temp_host->acknowledgement_end_time+1),FALSE,0,NULL,FALSE,temp_host,NULL,HOST_ACKNOWLEDGEMENT);
+						} else {
+							temp_host->problem_has_been_acknowledged=FALSE;
+							temp_host->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
+							temp_host->acknowledgement_end_time=(time_t)0;
+						}
+					}
 
 					/* update host status */
 					update_host_status(temp_host,FALSE);
@@ -886,6 +900,18 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 					/* handle new vars added in 2.x */
 					if(temp_service->last_hard_state_change==(time_t)0)
 						temp_service->last_hard_state_change=temp_service->last_state_change;
+
+					/* handle expiring acknowledegments */
+					if(temp_service->problem_has_been_acknowledged==TRUE && temp_service->acknowledgement_end_time!=(time_t)0) {
+						time(&current_time);
+						if(temp_service->acknowledgement_end_time>current_time) {
+							schedule_new_event(EVENT_EXPIRE_ACKNOWLEDGEMENT,TRUE,(temp_service->acknowledgement_end_time+1),FALSE,0,NULL,FALSE,temp_service,NULL,SERVICE_ACKNOWLEDGEMENT);
+						} else {
+							temp_service->problem_has_been_acknowledged=FALSE;
+							temp_service->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
+							temp_service->acknowledgement_end_time=(time_t)0;
+						}
+					}
 
 					/* update service status */
 					update_service_status(temp_service,FALSE);
@@ -1332,6 +1358,8 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 							temp_host->problem_has_been_acknowledged=(atoi(val)>0)?TRUE:FALSE;
 						else if(!strcmp(var,"acknowledgement_type"))
 							temp_host->acknowledgement_type=atoi(val);
+						else if(!strcmp(var,"acknowledgement_end_time"))
+							temp_host->acknowledgement_end_time=strtoul(val,NULL,10);
 						else if(!strcmp(var,"notifications_enabled")){
 							if(temp_host->modified_attributes & MODATTR_NOTIFICATIONS_ENABLED)
 								temp_host->notifications_enabled=(atoi(val)>0)?TRUE:FALSE;
@@ -1625,6 +1653,8 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 							temp_service->problem_has_been_acknowledged=(atoi(val)>0)?TRUE:FALSE;
 						else if(!strcmp(var,"acknowledgement_type"))
 							temp_service->acknowledgement_type=atoi(val);
+						else if(!strcmp(var,"acknowledgement_end_time"))
+							temp_service->acknowledgement_end_time=strtoul(val,NULL,10);
 						else if(!strcmp(var,"notifications_enabled")){
 							if(temp_service->modified_attributes & MODATTR_NOTIFICATIONS_ENABLED)
 								temp_service->notifications_enabled=(atoi(val)>0)?TRUE:FALSE;
