@@ -366,6 +366,28 @@ tac_show_only_hard_state=0
 
 
 
+# SHOW INITIAL STATE IN SHOWLOG OPTION
+# This options allows you to specify if initial states
+# of hosts and services should be shown in showlog.cgi
+# Note: This Option only works if the option
+# "log_initial_states" in icinga.cfg is set to 1.
+# By default it's enabled. Default is 1.
+
+#showlog_initial_state=1
+
+
+
+# SHOW CURRENT STATE IN SHOWLOG OPTION
+# This options allows you to specify if current states
+# of hosts and services should be shown in showlog.cgi
+# Note: This Option only works if the option
+# "log_current_states" in icinga.cfg is set to 1.
+# By default it's enabled. Default is 1.
+
+#showlog_current_state=1
+
+
+
 # CSV DELIMITER
 # This option determines the character which should act as
 # delimiter. Default is ";".

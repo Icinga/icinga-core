@@ -128,6 +128,8 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
+int		showlog_initial_state=TRUE;
+int		showlog_current_state=TRUE;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -463,6 +465,12 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"showlog_initial_state"))
+			showlog_initial_state=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"showlog_current_state"))
+			showlog_current_state=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"csv_delimiter"))
 			csv_delimiter=strdup(val);
