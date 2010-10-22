@@ -8,6 +8,7 @@ ENHANCEMENTS:
 * core: fix initscript, no error when stopping stale lock (OMD patch) #897
 
 * classic ui: extinfo comment table cell names (Oliver Graf) #861
+* classic ui: add csv export to avail.cgi (single|all hosts|services|servicegroups|hostgroups) #925
 
 
 FIXES:
