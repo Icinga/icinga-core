@@ -409,5 +409,6 @@ int ido2db_log_debug_info(int , int , const char *, ...);
 
 /* threads */
 void *ido2db_thread_cleanup(void *);
+int ido2db_kill_threads(void);
 
 #endif

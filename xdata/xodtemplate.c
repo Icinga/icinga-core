@@ -124,7 +124,6 @@ char *xodtemplate_precache_file=NULL;
 
 int presorted_objects=FALSE;
 
-
 int xodtemplate_create_escalation_condition(char*, xodtemplate_escalation_condition*);
 
 /*
@@ -653,7 +652,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 	register int x=0;
 	register int y=0;
 	char *ptr=NULL;
-	//xodtemplate_service *temp_service=NULL;
+	int empty_def=TRUE;
 
 
 #ifdef NSCORE
@@ -751,36 +750,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 			        }
 
 			in_definition=TRUE;
-		        }
-
-		/* this is the close of an object definition */
-		else if(!strcmp(input,"}") && in_definition==TRUE){
-
-			/* 2010-06-17 MF we should only warn if a service_description is not found on service definition
-			   regarding the fact that we resolve the object with templates afterwards, we cannot throw a
-			   warning here. commented out for future rework */
-			/*
-			switch(xodtemplate_current_object_type){
-				case XODTEMPLATE_SERVICE:{
-					temp_service=(xodtemplate_service *)xodtemplate_current_object;
-					if (temp_service->register_object && (!temp_service->service_description)){
-						logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Ending service definition without description in '%s' on line %d.\n",filename,current_line);
-						break;
-					}
-					break;
-				}
-				default:
-					break;
-			}
-			*/
-			in_definition=FALSE;
-
-			/* close out current definition */
-			if(xodtemplate_end_object_definition(options)==ERROR){
-				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not complete object definition in file '%s' on line %d.\n",filename,current_line);
-				result=ERROR;
-				break;
-			        }
+			empty_def=TRUE; /* set the default at the beginning */
 		        }
 
 		/* we're currently inside an object definition */
@@ -788,6 +758,13 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 			/* this is the close of an object definition */
 			if(!strcmp(input,"}")){
+
+				/* check if definition is empty */
+				if(empty_def==TRUE){
+					/* this is a hack in order to not register this empty object! */
+					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Empty definition found in file '%s' on line %d.\n",filename,current_line);
+					xodtemplate_add_object_property("register 0",options);
+				}
 
 				in_definition=FALSE;
 
@@ -808,6 +785,9 @@ int xodtemplate_process_config_file(char *filename, int options){
 					result=ERROR;
 					break;
 				        }
+
+				empty_def=FALSE; /* indicate that we just registered an attribute */
+
 			        }
 		        }
 
@@ -4287,6 +4267,10 @@ int xodtemplate_duplicate_services(void){
                 if(temp_service->register_object==FALSE)
                         continue;
 
+		if(xodtemplate_is_service_is_from_hostgroup(temp_service)){
+			continue;
+		}
+
                 /* skip service definitions without enough data */
                 if(temp_service->host_name==NULL){
 			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
@@ -4298,12 +4282,8 @@ int xodtemplate_duplicate_services(void){
 			return ERROR;
 		}
 
-		if(xodtemplate_is_service_is_from_hostgroup(temp_service)){
-			continue;
-		}
-
-
                 result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
+
                 switch(result){
                 case SKIPLIST_ERROR_DUPLICATE:
                         logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' on host '%s' (config file '%s', starting on line %d)\n",temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
@@ -4327,6 +4307,12 @@ int xodtemplate_duplicate_services(void){
 		if(temp_service->register_object==FALSE)
 			continue;
 
+	        if(!xodtemplate_is_service_is_from_hostgroup(temp_service)){
+                        continue;
+                }
+		/*The flag X_SERVICE_IS_FROM_HOSTGROUP is set, unset it*/
+		xodtemplate_unset_service_is_from_hostgroup(temp_service);
+
 		/* skip service definitions without enough data */
                 if(temp_service->host_name==NULL){
                         logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
@@ -4338,13 +4324,8 @@ int xodtemplate_duplicate_services(void){
                         return ERROR;
                 }
 
-	        if(!xodtemplate_is_service_is_from_hostgroup(temp_service)){
-                        continue;
-                }
-		/*The flag X_SERVICE_IS_FROM_HOSTGROUP is set, unset it*/
-		xodtemplate_unset_service_is_from_hostgroup(temp_service);
-
 		result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
+
 		switch(result){
 		case SKIPLIST_ERROR_DUPLICATE:
 			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' on host '%s' (config file '%s', starting on line %d)\n",temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);

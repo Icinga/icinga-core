@@ -5,14 +5,27 @@ Icinga 1.2.x Change Log
 1.2.1 - ??/??/2010
 
 ENHANCEMENTS:
+* core: fix initscript, no error when stopping stale lock (OMD patch) #897
+
 * classic ui: Added config options to hide initial state and current state log entries in showlog.cgi #899
+* classic ui: extinfo comment table cell names (Oliver Graf) #861
+* classic ui: add csv export to avail.cgi (single|all hosts|services|servicegroups|hostgroups) #925
 
 
 FIXES:
 * core: corrected wrong implementation of fix #584 - re notification for downtime after icinga restart
+* core: fix epn tag for disabling ePN (Yannick Charton) #914
+* core: fix snprintf in make for Solaris #858
+* core: fix config file parsing end of definition check #913
+* core: fix ignoring empty definitions, only warn #860
 
 * classic ui: fix for "Schedule a check of all services on this host" not working properly #895
 * classic ui: comment tooltip now show's quotes and back slashes #907
+* classic ui: fix change statusmap logo name to icinga #922
+* classic ui: add support for ICINGA_ env vars for cgis #921
+
+* idoutils: fix disconnecting on errors misbheaving, not closing db and daemon #886
+
 
 1.2.0 - 06/10/2010
 

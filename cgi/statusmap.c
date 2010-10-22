@@ -43,7 +43,7 @@
 
 #define UNKNOWN_GD2_ICON      "unknown.gd2"
 #define UNKNOWN_ICON_IMAGE    "unknown.gif"
-#define NAGIOS_GD2_ICON       "nagios.gd2"
+#define ICINGA_GD2_ICON       "icinga.gd2"
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
@@ -1520,7 +1520,7 @@ void draw_hosts(void){
 		y2=y1+DEFAULT_NODE_HEIGHT;
 
 		/* get the name of the image file to open for the logo */
-		snprintf(image_input_file,sizeof(image_input_file)-1,"%s%s",physical_logo_images_path,NAGIOS_GD2_ICON);
+		snprintf(image_input_file,sizeof(image_input_file)-1,"%s%s",physical_logo_images_path,ICINGA_GD2_ICON);
 		image_input_file[sizeof(image_input_file)-1]='\x0';
 
 		/* read in the image from file... */
