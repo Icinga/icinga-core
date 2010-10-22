@@ -30,10 +30,10 @@
   
 
   <p>Here we'll give you a little instruction how to integrate PNP4Nagios to the Icinga Web Frontend. If you want to integrate PNP4Nagios
-  to the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/en/pnp-0.6/start" target="_top">documentation</a></p>
+  to the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a></p>
 
   <div class="figure">
-<a name="id4989092"></a><p class="title"><b>Figure 6.25. PNP4Nagios integrated in Icinga Web</b></p>
+<a name="id4319030"></a><p class="title"><b>Figure 6.25. PNP4Nagios integrated in Icinga Web</b></p>
 <div class="figure-contents">
       
 
@@ -46,7 +46,7 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Install PNP4Nagios as described in the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/en/pnp-0.6/start" target="_top">documentation</a></p>
+      <p>Install PNP4Nagios as described in the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a></p>
     </li>
 <li class="listitem">
       <p>Change the PNP4Nagios configuration to match your Icinga configuration. You probably may want to change these:
@@ -74,7 +74,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
       <p>Make a copy of the default icinga-host-template.xml in app/modules/Cronks/data/xml/grid under your Icinga Web installation path,
       example: </p>
-<pre class="programlisting">cp /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
+<pre class="programlisting">#&gt; cp /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
 <p>
       In the new file we just created add a new field definition: </p>
 <pre class="programlisting">&lt;field name="pnp4nagios_host_link"&gt;
@@ -136,7 +136,94 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
       <p>Add the new grid view to the "Data" cronk-container</p>
 
       <p>Edit cronks.xml in directory app/modules/Cronks/config/ under your icinga-web add a section: </p>
-<pre class="programlisting">&lt;ae:parameter name="gridMyServiceView"&gt;
+<pre class="programlisting">&lt;ae:parameter name="gridMyHostView"&gt;
+    &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="description"&gt;Viewing Host status in a grid including perfdata link&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="name"&gt;MyHostStatus&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="categories"&gt;data&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="ae:parameter"&gt;
+        &lt;ae:parameter name="template"&gt;icinga-my-host-template&lt;/ae:parameter&gt;
+    &lt;/ae:parameter&gt;
+&lt;/ae:parameter&gt;</pre>
+    </li>
+</ol></div>
+
+  <p><span class="bold"><strong>Create a configuration to include pnp4nagios service pages in icinga-web</strong></span></p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Create a new grid view</p>
+
+      <p>Make a copy of the default icinga-service-template.xml in app/modules/Cronks/data/xml/grid under your icinga-web installation
+      path.</p>
+
+      <pre class="programlisting">cp /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
+
+      <p>In the new file we just created add a new field definition:</p>
+
+      <pre class="programlisting">&lt;field name="pnp4nagios_service_link"&gt;
+            &lt;!-- datasource maps a data field from api call --&gt;
+            &lt;datasource&gt;
+                &lt;parameter name="field"&gt;SERVICE_NAME&lt;/parameter&gt;
+            &lt;/datasource&gt;
+
+            &lt;display&gt;
+                &lt;parameter name="visible"&gt;true&lt;/parameter&gt;
+                &lt;parameter name="label"&gt;Perfdata&lt;/parameter&gt;
+                &lt;parameter name="width"&gt;55&lt;/parameter&gt;
+
+                &lt;parameter name="Ext.grid.Column"&gt;
+                        &lt;parameter name="menuDisabled"&gt;true&lt;/parameter&gt;
+                        &lt;parameter name="fixed"&gt;true&lt;/parameter&gt;
+                &lt;/parameter&gt;
+
+                &lt;parameter name="jsFunc"&gt;
+                        &lt;!-- fnuction to display column with icon in host status grid view --&gt;
+                        &lt;parameter&gt;
+                                &lt;parameter name="namespace"&gt;Cronk.grid.ColumnRenderer&lt;/parameter&gt;
+                                &lt;parameter name="function"&gt;columnImage&lt;/parameter&gt;
+                                &lt;parameter name="type"&gt;renderer&lt;/parameter&gt;
+
+                                &lt;parameter name="arguments"&gt;
+                                                        &lt;parameter name="image"&gt;images/icons/application_view_gallery.png&lt;/parameter&gt;
+                                                        &lt;parameter name="css"&gt;x-icinga-grid-link&lt;/parameter&gt;
+                                                        &lt;parameter name="attr"&gt;
+                                                                &lt;parameter name="qtip"&gt;Show host perfdata for this service&lt;/parameter&gt;
+                                                        &lt;/parameter&gt;
+                                &lt;/parameter&gt;
+                        &lt;/parameter&gt;
+
+                        &lt;!-- create cell click event for the previously defined column --&gt;
+                        &lt;parameter&gt;
+                                &lt;parameter name="namespace"&gt;Cronk.grid.IcingaColumnRenderer&lt;/parameter&gt;
+                                &lt;parameter name="function"&gt;iFrameCronk&lt;/parameter&gt;
+                                &lt;parameter name="type"&gt;cellclick&lt;/parameter&gt;
+                                &lt;parameter name="arguments"&gt;
+                                        &lt;parameter name="title"&gt;Service perfdata for {service_name} on {host_name}&lt;/parameter&gt;
+                                        &lt;parameter name="url"&gt;&lt;![CDATA[/pnp4nagios/index.php/graph?host={host_name}&amp;srv={service_name}]]&gt;&lt;/parameter&gt;
+                                        &lt;parameter name="activateOnClick"&gt;true&lt;/parameter&gt;
+                                &lt;/parameter&gt;
+                        &lt;/parameter&gt;
+                &lt;/parameter&gt;
+            &lt;/display&gt;
+
+            &lt;filter&gt;
+                &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
+            &lt;/filter&gt;
+
+            &lt;order&gt;
+                &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
+            &lt;/order&gt;
+        &lt;/field&gt;</pre>
+    </li>
+<li class="listitem">
+      <p>Add the new grid view to the "Data" Cronk-Container</p>
+
+      <p>Edit cronks.xml in directory app/modules/Cronks/config/ under your icinga-web add a section:</p>
+
+      <pre class="programlisting">&lt;ae:parameter name="gridMyServiceView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -147,6 +234,17 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
         &lt;ae:parameter name="template"&gt;icinga-my-service-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
 &lt;/ae:parameter&gt;</pre>
+    </li>
+<li class="listitem">
+      <p>Using your new created grid view as Default (if you want)</p>
+
+      <p>Please backup your original view first: </p>
+<pre class="programlisting">&gt;# cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
+<p>
+      then </p>
+<pre class="programlisting">cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
+<p> Clear
+      the cache, like described below. Performance graphs are now in your default "serviceStatus" Cronk!</p>
     </li>
 </ol></div>
 
@@ -168,7 +266,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p>That's all, you're done!</p>
 
-  <a class="indexterm" name="id4989258"></a>
+  <a class="indexterm" name="id4319298"></a>
 </div>
 <div class="navfooter">
 <hr>
