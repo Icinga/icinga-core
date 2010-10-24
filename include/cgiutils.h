@@ -158,6 +158,8 @@ extern "C" {
 #define HISTORY_ICON			"history.gif"
 #define CONTACTGROUP_ICON		"contactgroup.gif"
 #define TRENDS_ICON			"trends.gif"
+#define COLLAPSE_ICON			"icon_collapse.gif"
+#define EXPAND_ICON			"icon_expand.gif"
 
 #define DISABLED_ICON			"disabled.gif"
 #define ENABLED_ICON			"enabled.gif"
