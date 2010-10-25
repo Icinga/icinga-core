@@ -25,13 +25,13 @@ TODO: {
 	local $TODO = "Output is different for these CGIs";
 	foreach my $cgi (@todos) {
 		delete $cgis{$cgi};
-		my $output = `NAGIOS_CGI_CONFIG=etc/cgi.nonexistant REQUEST_METHOD=GET $cgi_dir/$cgi`;
+		my $output = `ICINGA_CGI_CONFIG=etc/cgi.nonexistant REQUEST_METHOD=GET $cgi_dir/$cgi`;
 		like( $output, "/Error: Could not open CGI config file 'etc/cgi.nonexistant' for reading/", "Found error for $cgi" );
 	}
 }
 		
 foreach my $cgi (sort keys %cgis) {
-	my $output = `NAGIOS_CGI_CONFIG=etc/cgi.nonexistant REQUEST_METHOD=GET $cgi_dir/$cgi`;
+	my $output = `ICINGA_CGI_CONFIG=etc/cgi.nonexistant REQUEST_METHOD=GET $cgi_dir/$cgi`;
 	like( $output, "/Error: Could not open CGI config file 'etc/cgi.nonexistant' for reading/", "Found error for $cgi" );
 }
 

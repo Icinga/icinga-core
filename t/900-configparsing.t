@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # 
-# Taking a known nagios configuration directory, will check that the objects.cache is as expected
+# Taking a known icinga configuration directory, will check that the objects.cache is as expected
 
 use warnings;
 use strict;

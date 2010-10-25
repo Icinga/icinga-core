@@ -4,13 +4,12 @@ pkginfo
 Prototype
 icinga.SPARC.pkg.tar.gz
 autom4te.cache
-
 config.log
 config.status
 daemon-init
 daemon-init-redhat
 rc.ido2db
-/Makefile
+Makefile
 Debug
 .cproject
 .project
@@ -21,3 +20,7 @@ tags
 .Apple*
 ._*
 .DS_Store
+.deps/
+.libs/
+*.la
+*.lo
