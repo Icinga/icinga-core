@@ -7,3 +7,4 @@ test_events
 test_checks
 test_xsddefault
 *.dSYM
+*.o
