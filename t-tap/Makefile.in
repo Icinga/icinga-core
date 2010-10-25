@@ -1,4 +1,4 @@
-# Makefile for Nagios tests using libtap
+# Makefile for Icinga tests using libtap
 
 
 # Source code directories
@@ -12,7 +12,7 @@ CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@ -DNSCORE -I../include -I../tap/src
 TAPOBJ=../tap/src/tap.o
 
-TESTS = test_logging test_events test_timeperiods test_icinga_config test_xsddefault
+TESTS = test_logging test_events test_timeperiods test_icinga_config test_xsddefault test_checks
 
 test_xsddefault_OBJS = ${SRC_CGI}/xstatusdata-cgi.o ${SRC_CGI}/cgiutils.o ${SRC_CGI}/comments-cgi.o ${SRC_CGI}/objects-cgi.o ${SRC_CGI}/skiplist.o ${SRC_CGI}/statusdata-cgi.o ${SRC_CGI}/downtime-cgi.o ${SRC_CGI}/xobjects-cgi.o
 
@@ -41,7 +41,7 @@ SOCKETLIBS=@SOCKETLIBS@
 THREADLIBS=@THREADLIBS@
 BROKERLIBS=@BROKERLIBS@
 
-BROKER_LDFLAGS=@BROKER_LDFLAGS@ 
+BROKER_LDFLAGS=@BROKER_LDFLAGS@
 
 CP=@CP@
 
@@ -77,13 +77,16 @@ test_logging: test_logging.c $(SRC_BASE)/logging.o
 test_events: test_events.c $(SRC_BASE)/events.o
 	$(CC) $(CFLAGS) -o $@ test_events.c $(SRC_BASE)/events.o $(TAPOBJ) $(LDFLAGS) $(MATHLIBS)
 
+test_checks: test_checks.c $(SRC_BASE)/checks.c
+	$(CC) $(CFLAGS) -o $@ test_checks.c $(TAPOBJ) $(LDFLAGS) $(MATHLIBS) $(LIBS)
+
 test_freshness: test_freshness.o $(SRC_BASE)/freshness.o
 	$(CC) $(CFLAGS) -o $@ test_freshness.c $(SRC_BASE)/freshness.o
 
 test_icinga_config: test_icinga_config.c $(SRC_BASE)/utils.o ${SRC_BASE}/config.o ${SRC_BASE}/macros-base.o ${SRC_BASE}/objects-base.o ${SRC_BASE}/skiplist.o ${SRC_BASE}/xobjects-base.o
 	$(CC) $(CFLAGS) -o $@ test_icinga_config.c $(SRC_BASE)/utils.o ${SRC_BASE}/config.o ${SRC_BASE}/macros-base.o ${SRC_BASE}/objects-base.o ${SRC_BASE}/skiplist.o ${SRC_BASE}/xobjects-base.o $(TAPOBJ) $(BROKER_LDFLAGS) $(LDFLAGS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
 
-test_timeperiods: test_timeperiods.c $(SRC_BASE)/utils.o ${SRC_BASE}/config.o ${SRC_BASE}/macros-base.o ${SRC_BASE}/objects-base.o ${SRC_BASE}/skiplist.o ${SRC_BASE}/xobjects-base.o 
+test_timeperiods: test_timeperiods.c $(SRC_BASE)/utils.o ${SRC_BASE}/config.o ${SRC_BASE}/macros-base.o ${SRC_BASE}/objects-base.o ${SRC_BASE}/skiplist.o ${SRC_BASE}/xobjects-base.o
 	$(CC) $(CFLAGS) -o $@ test_timeperiods.c $(SRC_BASE)/utils.o ${SRC_BASE}/config.o ${SRC_BASE}/macros-base.o ${SRC_BASE}/objects-base.o ${SRC_BASE}/skiplist.o ${SRC_BASE}/xobjects-base.o $(TAPOBJ) $(BROKER_LDFLAGS) $(LDFLAGS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
 
 test_xsddefault: test_xsddefault.c ${test_xsddefault_OBJS}
