@@ -2,13 +2,10 @@
  *
  * test_icinga_config.c - Test configuration loading
  *
- * Program: Nagios Core Testing
+ * Program: Icinga Core Testing
  * License: GPL
  * Copyright (c) 2009 Nagios Core Development Team and Community Contributors
  * Copyright (c) 1999-2009 Ethan Galstad
- *
- * First Written:   10-08-2009, based on nagios.c
- * Last Modified:   10-08-2009
  *
  * Description:
  *
@@ -337,10 +334,10 @@ int main(int argc, char **argv){
 
 	printf("Reading configuration data...\n");
 
-	config_file=strdup("smallconfig/nagios.cfg");
+	config_file=strdup("smallconfig/icinga.cfg");
 	/* read in the configuration files (main config file, resource and object config files) */
 	result=read_main_config_file(config_file);
-	ok(result==OK, "Read main configuration file okay - if fails, use nagios -v to check");
+	ok(result==OK, "Read main configuration file okay - if fails, use icinga -v to check");
 
 	result=read_all_object_data(config_file);
 	ok(result==OK, "Read all object config files");
