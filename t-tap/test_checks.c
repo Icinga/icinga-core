@@ -93,6 +93,10 @@ int      time_change_threshold;
 host     *host_list;
 service  *service_list;
 
+/* Icinga special */
+int      stalking_event_handlers_for_hosts;
+int      stalking_event_handlers_for_services;
+
 int check_for_expired_comment(unsigned long temp_long) {}
 void broker_timed_event(int int1, int int2, int int3, timed_event *timed_event1, struct timeval *timeval1) {}
 int check_for_expired_downtime(void) {}
@@ -219,6 +223,10 @@ int translate_passive_host_checks=DEFAULT_TRANSLATE_PASSIVE_HOST_CHECKS;
 int enable_predictive_host_dependency_checks=DEFAULT_ENABLE_PREDICTIVE_HOST_DEPENDENCY_CHECKS;
 int log_host_event(host *hst){}
 int handle_host_state(host *hst){}
+
+/* Icinga special */
+int has_shell_metachars(const char *s){}
+int handle_host_event(host *hst){}
 
 
 void
