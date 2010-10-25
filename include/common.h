@@ -26,7 +26,7 @@
 #define PROGRAM_NAME "Icinga"
 #define PROGRAM_NAME_UC "ICINGA"
 #define PROGRAM_NAME_LC "icinga"
-#define PROGRAM_VERSION "1.2.1"
+#define PROGRAM_VERSION "1.3.0"
 #define PROGRAM_MODIFICATION_DATE "10-25-2010"
 
 /*#define DEBUG_CHECK_IPC 1 */
