@@ -4,6 +4,12 @@ Icinga 1.3.x Change Log
 
 1.3.0 - 16/02/2011
 
+ENHANCEMENTS
+
+
+FIXES
+* core: base/utils: Refactor my_fcopy() (Andreas Ericsson) #427
+
 
 1.2.1 - 25/10/2010
 
