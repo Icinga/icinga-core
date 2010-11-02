@@ -13,6 +13,7 @@ FIXES
 * core: force my_free() macro users to end the statement with a semi-colon (Andreas Ericsson) #927
 
 * classic ui: change servicestatus letter color to default black, not grey #946
+* classic ui: fix waste of cpu in status summary (TomTom) #933
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script #936
 
