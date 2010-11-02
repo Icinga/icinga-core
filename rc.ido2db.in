@@ -113,8 +113,8 @@ Ido2dbUser=@icinga_user@
 Ido2dbGroup=@icinga_grp@
 
 #add ocilib lib path to link at runtime if enabled
-LD_LIBRARY_PATH=@ido2db_runtime@
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@ido2db_runtime@
+export LD_LIBRARY_PATH
 
 # Check that ido2db exists.
 if [ ! -f $Ido2dbBin ]; then

@@ -12,6 +12,7 @@ FIXES
 * core: base/nebmods: Replace local file-copy hack with my_fdcopy() (Andreas Ericsson) #424
 * core: force my_free() macro users to end the statement with a semi-colon (Andreas Ericsson) #927
 
+* install: fix LD_LIBRARY_PATH export on non bash in idoutils init script #936
 
 1.2.1 - 25/10/2010
 
