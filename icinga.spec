@@ -243,6 +243,7 @@ fi
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
 %{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
+%{_bindir}/log2ido
 %{_bindir}/idomod.o
 
 %files api
@@ -252,6 +253,9 @@ fi
 
 
 %changelog
+* Wed Nov 03 2010 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.3.0-1
+- prepared 1.3.0, added log2ido for idoutils install
+
 * Mon Oct 25 2010 Christoph Maser <cmaser@gmx.de> - 1.2.1-1
 - update for release 1.2.1
 - add build dep for httpd

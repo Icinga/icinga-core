@@ -16,6 +16,7 @@ FIXES
 * classic ui: fix waste of cpu in status summary (TomTom) #933
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script #936
+* install: add log2ido for adding archived logs onto socket/rdbms #926
 
 1.2.1 - 25/10/2010
 
