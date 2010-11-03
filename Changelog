@@ -15,6 +15,7 @@ FIXES
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
 * classic ui: fix config.cgi start page wrong "command cxpansion" url(Alexey Dvoryanchikov) #951
+* classic ui: do not allow url_encode returning empty string on Solaris (Ethan Galstad, Ton Voon) #924 
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926

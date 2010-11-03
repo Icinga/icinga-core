@@ -1387,8 +1387,11 @@ char * url_encode(char *input){
 	static int i = 0;
 	char* str = encoded_url_string[i];
 
+	/* initialize return string */
+	strcpy(str,"");
+
 	if(input==NULL)
-		return '\x0';
+		return str;
 
 	len=(int)strlen(input);
 	output_len=(int)sizeof(encoded_url_string[0]);
