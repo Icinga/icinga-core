@@ -1412,6 +1412,12 @@ char * url_encode(char *input){
 			y++;
 		        }
 
+		/* high bit characters don't get encoded */
+		else if((unsigned char)input[x]>=0x7f){
+			str[y]=input[x];
+			y++;
+		}
+
 		/* spaces are pluses */
 		else if((char)input[x]<=(char)' '){
 			str[y]='+';
@@ -1574,6 +1580,10 @@ char * escape_string(char *input){
 
 		/* spaces, hyphens, periods, underscores and colons don't get encoded */
 		else if(((char)input[x]==(char)' ') || ((char)input[x]==(char)'-') || ((char)input[x]==(char)'.') || ((char)input[x]==(char)'_') || ((char)input[x]==(char)':'))
+			encoded_html_string[y++]=input[x];
+
+		/* high bit characters don't get encoded */
+		else if((unsigned char)input[x]>=0x7f)
 			encoded_html_string[y++]=input[x];
 
 		/* for simplicity, all other chars represented by their numeric value */
