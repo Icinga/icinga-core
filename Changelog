@@ -14,6 +14,7 @@ FIXES
 * core: base/utils: Refactor my_fcopy() (Andreas Ericsson) #427
 * core: base/nebmods: Replace local file-copy hack with my_fdcopy() (Andreas Ericsson) #424
 * core: force my_free() macro users to end the statement with a semi-colon (Andreas Ericsson) #927
+* core: fix problem with extra whitespace in command definition and ePN (Jason Young) #918
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
