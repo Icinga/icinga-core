@@ -8,6 +8,8 @@ ENHANCEMENTS
 * classic ui: add instance hostname to html title #954
 * classic ui: use the signal-colour red more economically in tac.css stylesheet (Joachim Raber) #868
 
+* idoutils: add index to table icinga_statehistory for usage in reporting module #957
+
 FIXES
 * core: base/utils: Refactor my_fcopy() (Andreas Ericsson) #427
 * core: base/nebmods: Replace local file-copy hack with my_fdcopy() (Andreas Ericsson) #424
