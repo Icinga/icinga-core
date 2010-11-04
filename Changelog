@@ -21,6 +21,7 @@ FIXES
 * classic ui: fix config.cgi start page wrong "command cxpansion" url (Alexey Dvoryanchikov) #951
 * classic ui: do not allow url_encode returning empty string on Solaris (Ethan Galstad, Ton Voon) #924
 * classic ui: fix object values in utf8 are displayed incorrectly in the web interface (Alexey Dvoryanchikov) #952
+* classic ui: make html header w3c conform #952
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926
