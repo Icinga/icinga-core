@@ -209,6 +209,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("DOWNTIMEEND");
 		else if(type==NOTIFICATION_DOWNTIMECANCELLED)
 			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("DOWNTIMECANCELLED");
+		else if(type==NOTIFICATION_CUSTOM)
+			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("CUSTOM");
 		else if(svc->current_state==STATE_OK)
 			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("RECOVERY");
 		else
@@ -1314,6 +1316,8 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("DOWNTIMEEND");
 		else if(type==NOTIFICATION_DOWNTIMECANCELLED)
 			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("DOWNTIMECANCELLED");
+		else if(type==NOTIFICATION_CUSTOM)
+			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("CUSTOM");
 		else if(hst->current_state==HOST_UP)
 			macro_x[MACRO_NOTIFICATIONTYPE]=(char *)strdup("RECOVERY");
 		else
