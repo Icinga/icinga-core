@@ -16,6 +16,8 @@ CONTENTS:
 
 cgi.cfg           - This is a sample CGI config file
 
+cgiauth.cfg       - This is a sample CGI attribute based authorization config file
+
 icinga.cfg        - This is a sample main config file
 
 resource.cfg      - This is a sample resource config file, used for definining
@@ -28,5 +30,3 @@ httpd.conf        - This file contains sample snippets that you'll need to
 template-object/  - This directory contains sample object config files.  You'll
 		    need to define object config files like these before you can
 		    actually start to monitor anything.
-
-                   

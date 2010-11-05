@@ -7,6 +7,7 @@ Icinga 1.3.x Change Log
 ENHANCEMENTS
 * classic ui: add instance hostname to html title #954
 * classic ui: use the signal-colour red more economically in tac.css stylesheet (Joachim Raber) #868
+* classic ui: add attribute based authorization (Tibor Vago, NIIF) #909
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 

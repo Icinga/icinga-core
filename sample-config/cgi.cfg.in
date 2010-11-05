@@ -13,6 +13,12 @@
 main_config_file=@sysconfdir@/icinga.cfg
 
 
+# ATTRIBUTE BASED AUTHORIZATION FILE
+# This option will include a file defining authroization based on
+# attributes.
+
+#authorization_config_file=@sysconfdir@/cgiauth.cfg
+
 
 # PHYSICAL HTML PATH
 # This is the path where the HTML files for Icinga reside.  This
