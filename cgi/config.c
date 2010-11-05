@@ -2365,10 +2365,7 @@ void display_command_expansion(void){
 						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#0000FF'>dangling whitespace:</FONT></TD>\n",bg_class,bg_class);
 						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='#0000FF'>",bg_class,i);
 						for (c=command_args[i],j=0;c&&isspace(*c);c++,j++)
-							/* TODO: As long as the hyperlinks change all whitespace into actual spaces,
-							   we'll output "[WS]" (whitespace) instead of "[SP]"(ace). */
-							/* if ((*c)==' ')		printf("[SP]"); */
-							if ((*c)==' ')		printf("[WS]");
+							if ((*c)==' ')		printf("[SP]");
 							else if ((*c)=='\f')	printf("[FF]");
 							else if ((*c)=='\n')	printf("[LF]");
 							else if ((*c)=='\r')	printf("[CR]");
@@ -2379,9 +2376,7 @@ void display_command_expansion(void){
 						for (;c&&((*c)!='\0')&&(j<strlen(command_args[i])-trail_space[i]);c++,j++) putchar(*c);
 						printf("</FONT><FONT COLOR='#0000FF'>");
 						for (;c&&((*c)!='\0');c++)
-							/* TODO: As long as the hyperlinks change all whitespace into actual spaces,
-							   we'll output "[WS]" (whitespace) instead of "[SP]"(ace). */
-							/* if ((*c)==' ')		printf("[SP]"); */
+							if ((*c)==' ')		printf("[SP]");
 							if ((*c)==' ')		printf("[WS]");
 							else if ((*c)=='\f')	printf("[FF]");
 							else if ((*c)=='\n')	printf("[LF]");
