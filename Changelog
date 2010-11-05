@@ -8,6 +8,7 @@ ENHANCEMENTS
 * classic ui: add instance hostname to html title #954
 * classic ui: use the signal-colour red more economically in tac.css stylesheet (Joachim Raber) #868
 * classic ui: add attribute based authorization (Tibor Vago, NIIF) #909
+* classic ui: add config expander urls to extinfo.cgi for active checks and eventhandlers (Jochen Bern) #965
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 
