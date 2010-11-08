@@ -909,7 +909,7 @@ void broker_retention_data(int type, int flags, int attr, struct timeval *timest
 
 
 /* send acknowledgement data to broker */
-void broker_acknowledgement_data(int type, int flags, int attr, int acknowledgement_type, void *data, char *ack_author, char *ack_data, int subtype, int notify_contacts, int persistent_comment,time_t end_time, struct timeval *timestamp){
+void broker_acknowledgement_data(int type, int flags, int attr, int acknowledgement_type, void *data, char *ack_author, char *ack_data, int subtype, int notify_contacts, int persistent_comment, struct timeval *timestamp){
 	nebstruct_acknowledgement_data ds;
 	host *temp_host=NULL;
 	service *temp_service=NULL;
@@ -942,7 +942,6 @@ void broker_acknowledgement_data(int type, int flags, int attr, int acknowledgem
 	ds.is_sticky=(subtype==ACKNOWLEDGEMENT_STICKY)?TRUE:FALSE;
 	ds.notify_contacts=notify_contacts;
 	ds.persistent_comment=persistent_comment;
-	ds.end_time=end_time;
 
 	/* make callbacks */
 	neb_make_callbacks(NEBCALLBACK_ACKNOWLEDGEMENT_DATA,(void *)&ds);

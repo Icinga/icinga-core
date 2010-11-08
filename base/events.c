@@ -703,10 +703,6 @@ void display_event_data(timed_event* event, int priority){
             	printf("\t\t(expire downtime)\n");
         break;
 
-	case EVENT_EXPIRE_ACKNOWLEDGEMENT:
-		printf("\t\t(expire acknowledgement)\n");
-	break;
-
         case EVENT_RESCHEDULE_CHECKS:
             	printf("\t\t(reschedule checks)\n");
         break;
@@ -1557,23 +1553,6 @@ int handle_timed_event(timed_event *event){
 
 		/* check for expired scheduled downtime entries */
 		check_for_expired_downtime();
-		break;
-
-	case EVENT_EXPIRE_ACKNOWLEDGEMENT:
-
-		log_debug_info(DEBUGL_EVENTS,0,"** Expire Acknowledgement Event\n");
-
-		/* Delete expired acknowledegments */
-		if(event->event_options==SERVICE_ACKNOWLEDGEMENT) {
-			temp_service=(service *)event->event_data;
-			remove_service_acknowledgement(temp_service);
-		} else if(event->event_options==HOST_ACKNOWLEDGEMENT) {
-			temp_host=(host *)event->event_data;
-			remove_host_acknowledgement(temp_host);
-		} else {
-			log_debug_info(DEBUGL_EVENTS,0,"** Unknown Expire Acknowledgement event: %d\n",event->event_options);
-		}
-
 		break;
 
 	case EVENT_RESCHEDULE_CHECKS:

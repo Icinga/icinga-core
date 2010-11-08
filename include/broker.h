@@ -210,7 +210,7 @@ void broker_adaptive_contact_data(int,int,int,contact *,int,unsigned long,unsign
 void broker_external_command(int,int,int,int,time_t,char *,char *,struct timeval *);
 void broker_aggregated_status_data(int,int,int,struct timeval *);
 void broker_retention_data(int,int,int,struct timeval *);
-void broker_acknowledgement_data(int,int,int,int,void *,char *,char *,int,int,int,time_t,struct timeval *);
+void broker_acknowledgement_data(int,int,int,int,void *,char *,char *,int,int,int,struct timeval *);
 void broker_statechange_data(int,int,int,int,void *,int,int,int,int,struct timeval *);
 #endif
 

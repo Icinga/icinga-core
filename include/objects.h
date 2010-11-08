@@ -338,7 +338,6 @@ struct host_struct{
 #ifdef NSCORE
 	int     problem_has_been_acknowledged;
 	int     acknowledgement_type;
-	time_t	acknowledgement_end_time;
 	int     check_type;
 	int     current_state;
 	int     last_state;
@@ -474,7 +473,6 @@ struct service_struct{
 #ifdef NSCORE
 	int     problem_has_been_acknowledged;
 	int     acknowledgement_type;
-	time_t	acknowledgement_end_time;
 	int     host_problem_at_last_check;
 	int     check_type;
 	int	current_state;

@@ -79,7 +79,6 @@ extern comment *comment_list;
 #define PRINT_SERVICE_LIST		18
 #define PRINT_COMMENT_LIST		19
 #define PRINT_DOWNTIME_LIST		20
-#define PRINT_EXPIRE_ACKNOWLEDGEMENT	21
 
 char *host_name="";
 char *hostgroup_name="";
@@ -97,7 +96,6 @@ int schedule_delay=0;
 int persistent_comment=FALSE;
 int sticky_ack=FALSE;
 int send_notification=FALSE;
-int use_ack_end_time=FALSE;
 int force_check=FALSE;
 int plugin_state=STATE_OK;
 char plugin_output[MAX_INPUT_BUFFER]="";
@@ -461,10 +459,6 @@ int process_cgivars(void){
 		/* we got the acknowledgement type */
 		else if(!strcmp(variables[x],"sticky_ack"))
 			sticky_ack=TRUE;
-
-		/* we use the end_time as expire time */
-		else if(!strcmp(variables[x],"use_ack_end_time"))
-			use_ack_end_time=TRUE;
 
 		/* we got the service check force option */
 		else if(!strcmp(variables[x],"force_check"))
@@ -870,27 +864,6 @@ void print_form_element(int element,int cmd) {
 		printf("\t\t</tr>\n");
 		printf("\t</table>\n");
 		printf("</td></tr>\n");
-		break;
-
-	case PRINT_EXPIRE_ACKNOWLEDGEMENT:
-
-		strcpy(help_text,"To let the acknowledgement expire, check this option.");
-
-		printf("<tr><td class=\"objectDescription descriptionleft\">Use Expire Time:");
-		print_help_box(help_text);
-		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' ID='expire_checkbox' NAME='use_ack_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\"></td></tr>\n");
-
-		snprintf(help_text,sizeof(help_text),"Enter the expiry date/time for this acknowledgement. %s will automatically delete the acknowledgement after this expired time.",PROGRAM_NAME);
-		help_text[sizeof(help_text)-1]='\x0';
-
-		time(&t);
-		t+=(unsigned long)86400;
-		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
-
-		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
-		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n",buffer);
 		break;
 
 	case PRINT_FORCE_CHECK:
@@ -1316,7 +1289,6 @@ void request_command_data(int cmd){
 		print_form_element(PRINT_PERSISTENT,cmd);
 
 		if(cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM){
-			print_form_element(PRINT_EXPIRE_ACKNOWLEDGEMENT,cmd);
 			print_form_element(PRINT_STICKY_ACK,cmd);
 			print_form_element(PRINT_SEND_NOTFICATION,cmd);
 		}
@@ -1715,16 +1687,6 @@ void commit_command_data(int cmd){
 		/* clean up the comment data */
 		clean_comment_data(comment_author);
 		clean_comment_data(comment_data);
-		
-		if (use_ack_end_time==TRUE && ( cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM || cmd==CMD_ACKNOWLEDGE_SVC_PROBLEM )) {
-
-			time(&start_time);
-
-			/* make sure we have end time if required */
-			check_time_sanity(&e);
-		} else {
-			end_time=(time_t)0L;
-		}
 
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
 
@@ -2291,7 +2253,6 @@ int commit_command(int cmd){
 	time_t current_time;
 	time_t scheduled_time;
 	time_t notification_time;
-	char *temp_buffer=NULL;
 	int x = 0;
 
 	/* get the current time */
@@ -2510,10 +2471,8 @@ int commit_command(int cmd){
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
 			if (commands[x].host_name == NULL)
 				continue;
-			if (is_authorized[x]) {
-				asprintf(&temp_buffer,"%s - The acknowledgement expires at: %s.",comment_data,end_time_string);
-				submit_result[x] = cmd_submitf(cmd,"%s;%d;%d;%d;%lu;%s;%s",commands[x].host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,end_time,comment_author,(use_ack_end_time==TRUE)?temp_buffer:comment_data);
-			}
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%d;%d;%d;%s;%s",commands[x].host_name,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
 		}
 		break;
 
@@ -2521,10 +2480,8 @@ int commit_command(int cmd){
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
 			if (commands[x].host_name == NULL)
 				continue;
-			if (is_authorized[x]) {
-				asprintf(&temp_buffer,"%s - The acknowledgement expires at: %s.",comment_data,end_time_string);
-				submit_result[x] = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%lu;%s;%s",commands[x].host_name,commands[x].description,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,end_time,comment_author,(use_ack_end_time==TRUE)?temp_buffer:comment_data);
-			}
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%s;%d;%d;%d;%s;%s",commands[x].host_name,commands[x].description,(sticky_ack==TRUE)?ACKNOWLEDGEMENT_STICKY:ACKNOWLEDGEMENT_NORMAL,send_notification,persistent_comment,comment_author,comment_data);
 		}
 		break;
 
