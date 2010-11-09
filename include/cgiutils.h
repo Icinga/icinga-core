@@ -467,6 +467,52 @@ extern "C" {
 #define LIFO_ERROR_DATA		3
 
 
+/************************** BUFFER  ***************************************/
+
+#define MAX_MESSAGE_BUFFER              4096
+
+
+/************************** DISPLAY STYLE  ********************************/
+
+#define DISPLAY_NONE                    -1
+#define DISPLAY_HOSTS                   0
+#define DISPLAY_HOSTGROUPS              1
+#define DISPLAY_SERVICEGROUPS           2
+#define DISPLAY_CONTACTS                3
+#define DISPLAY_CONTACTGROUPS           4
+#define DISPLAY_SERVICES                5
+#define DISPLAY_TIMEPERIODS             6
+#define DISPLAY_COMMANDS                7
+#define DISPLAY_HOSTGROUPESCALATIONS    8    /* no longer implemented */
+#define DISPLAY_SERVICEDEPENDENCIES     9
+#define DISPLAY_SERVICEESCALATIONS      10
+#define DISPLAY_HOSTDEPENDENCIES        11
+#define DISPLAY_HOSTESCALATIONS         12
+#define DISPLAY_COMMAND_EXPANSION       16211
+
+#define STYLE_OVERVIEW                  0
+#define STYLE_DETAIL                    1
+#define STYLE_SUMMARY                   2
+#define STYLE_GRID                      3
+#define STYLE_HOST_DETAIL               4
+
+/************************** HISTORY  ************************************/
+
+#define SERVICE_HISTORY                 0
+#define HOST_HISTORY                    1
+#define SERVICE_FLAPPING_HISTORY        2
+#define HOST_FLAPPING_HISTORY           3
+#define SERVICE_DOWNTIME_HISTORY        4
+#define HOST_DOWNTIME_HISTORY           5
+
+/************************** STATE  **************************************/
+
+#define STATE_ALL                       0
+#define STATE_SOFT                      1
+#define STATE_HARD                      2
+
+
+
 /*************************** DATA STRUCTURES  *****************************/
 
 /* LIFO data structure */

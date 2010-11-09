@@ -313,7 +313,7 @@ int is_authorized_for_host(host *hst, authdata *authinfo){
 	int i;
 	int j;
 	char permission[2];
-	int ok=FALSE;;
+	int ok=FALSE;
 	int is_ok=FALSE;
 
 	if(hst==NULL)

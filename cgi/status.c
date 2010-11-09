@@ -147,7 +147,9 @@ char *host_name=NULL;
 char *host_filter=NULL;
 char *hostgroup_name=NULL;
 char *servicegroup_name=NULL;
+char *service_desc=NULL;
 char *service_filter=NULL;
+
 int host_alert=FALSE;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;

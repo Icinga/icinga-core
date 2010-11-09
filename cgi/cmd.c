@@ -110,6 +110,10 @@ unsigned long triggered_by=0L;
 int child_options=0;
 int force_notification=0;
 int broadcast_notification=0;
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
 
 int command_type=CMD_NONE;
 int command_mode=CMDMODE_REQUEST;

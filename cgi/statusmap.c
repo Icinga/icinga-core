@@ -166,9 +166,6 @@ extern int color_transparency_index_r;
 extern int color_transparency_index_g;
 extern int color_transparency_index_b;
 
-int show_all_hosts=TRUE;
-char *host_name="all";
-
 extern int embedded;
 extern int refresh;
 extern int display_header;
@@ -220,6 +217,18 @@ extern time_t program_start;
 layer *layer_list=NULL;
 int exclude_layers=TRUE;
 int all_layers=FALSE;
+
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name="all";
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 
 int CGI_ID=STATUSMAP_CGI_ID;
 

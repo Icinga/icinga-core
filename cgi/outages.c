@@ -46,6 +46,17 @@ extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char log_file[MAX_FILENAME_LENGTH];
 
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 
 /* HOSTOUTAGE structure */
 typedef struct hostoutage_struct{

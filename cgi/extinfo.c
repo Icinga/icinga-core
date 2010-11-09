@@ -131,6 +131,9 @@ char *servicegroup_name="";
 char *service_desc="";
 
 int display_type=DISPLAY_PROCESS_INFO;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
 
 int sort_type=SORT_ASCENDING;
 int sort_option=SORT_NEXTCHECKTIME;

@@ -185,6 +185,18 @@ int services_critical_disabled=0;
 int services_critical_unacknowledged=0;
 int services_critical=0;
 
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
+
 int CGI_ID=TAC_CGI_ID;
 
 /*efine DEBUG 1*/

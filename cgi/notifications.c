@@ -71,6 +71,18 @@ char *query_svc_description="";
 int notification_options=NOTIFICATION_ALL;
 int use_lifo=TRUE;
 
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
+
 extern int embedded;
 extern int display_header;
 extern int daemon_check;

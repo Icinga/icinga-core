@@ -30,20 +30,6 @@
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
 
-#define DISPLAY_HOSTS			0
-#define DISPLAY_SERVICES		1
-
-#define SERVICE_HISTORY			0
-#define HOST_HISTORY			1
-#define SERVICE_FLAPPING_HISTORY	2
-#define HOST_FLAPPING_HISTORY		3
-#define SERVICE_DOWNTIME_HISTORY	4
-#define HOST_DOWNTIME_HISTORY		5
-
-#define STATE_ALL			0
-#define STATE_SOFT			1
-#define STATE_HARD			2
-
 void get_history(void);
 
 int process_cgivars(void);
@@ -63,14 +49,21 @@ authdata current_authdata;
 char log_file_to_use[MAX_FILENAME_LENGTH];
 int log_archive=0;
 
-int show_all_hosts=TRUE;
-char *host_name="all";
-char *svc_description="";
 int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
 int use_lifo=TRUE;
 
 int history_options=HISTORY_ALL;
 int state_options=STATE_ALL;
+
+char *host_name="all";
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc="";
+char *service_filter=NULL;
 
 extern int embedded;
 extern int display_header;
@@ -159,10 +152,10 @@ int main(void){
 	                }
 		else{
 			printf("<A HREF='%s?host=%s&",NOTIFICATIONS_CGI,url_encode(host_name));
-			printf("service=%s'>View Notifications For This Service</A><BR />\n",url_encode(svc_description));
+			printf("service=%s'>View Notifications For This Service</A><BR />\n",url_encode(service_desc));
 #ifdef USE_TRENDS
 			printf("<A HREF='%s?host=%s&",TRENDS_CGI,url_encode(host_name));
-			printf("service=%s'>View Trends For This Service</A><BR />\n",url_encode(svc_description));
+			printf("service=%s'>View Trends For This Service</A><BR />\n",url_encode(service_desc));
 #endif
 			printf("<A HREF='%s?host=%s'>View History For This Host</A>\n",HISTORY_CGI,url_encode(host_name));
 	                }
@@ -177,7 +170,7 @@ int main(void){
 
 		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 		if(display_type==DISPLAY_SERVICES)
-			printf("Service '%s' On Host '%s'",svc_description,host_name);
+			printf("Service '%s' On Host '%s'",service_desc,host_name);
 		else if(show_all_hosts==TRUE)
 			printf("All Hosts and Services");
 		else
@@ -188,7 +181,7 @@ int main(void){
 		snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%shost=%s&type=%d&statetype=%d&",HISTORY_CGI,(use_lifo==FALSE)?"oldestfirst&":"",url_encode(host_name),history_options,state_options);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		if(display_type==DISPLAY_SERVICES){
-			snprintf(temp_buffer2,sizeof(temp_buffer2)-1,"service=%s&",url_encode(svc_description));
+			snprintf(temp_buffer2,sizeof(temp_buffer2)-1,"service=%s&",url_encode(service_desc));
 			temp_buffer2[sizeof(temp_buffer2)-1]='\x0';
 			strncat(temp_buffer,temp_buffer2,sizeof(temp_buffer)-strlen(temp_buffer)-1);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
@@ -205,7 +198,7 @@ int main(void){
 		printf("<table border=0 CLASS='optBox'>\n");
 		printf("<input type='hidden' name='host' value='%s'>\n",(show_all_hosts==TRUE)?"all":escape_string(host_name));
 		if(display_type==DISPLAY_SERVICES)
-			printf("<input type='hidden' name='service' value='%s'>\n",escape_string(svc_description));
+			printf("<input type='hidden' name='service' value='%s'>\n",escape_string(service_desc));
 		printf("<input type='hidden' name='archive' value='%d'>\n",log_archive);
 
 		printf("<tr>\n");
@@ -337,9 +330,9 @@ int process_cgivars(void){
 				break;
 			        }
 
-			if((svc_description=(char *)strdup(variables[x]))==NULL)
-				svc_description="";
-			strip_html_brackets(svc_description);
+			if((service_desc=(char *)strdup(variables[x]))==NULL)
+				service_desc="";
+			strip_html_brackets(service_desc);
 
 			display_type=DISPLAY_SERVICES;
 		        }
@@ -796,11 +789,11 @@ void get_history(void){
 			else if(display_type==DISPLAY_SERVICES){
 
 				if(history_type==SERVICE_HISTORY)
-					sprintf(match1," SERVICE ALERT: %s;%s;",host_name,svc_description);
+					sprintf(match1," SERVICE ALERT: %s;%s;",host_name,service_desc);
 				else if(history_type==SERVICE_FLAPPING_HISTORY)
-					sprintf(match1," SERVICE FLAPPING ALERT: %s;%s;",host_name,svc_description);
+					sprintf(match1," SERVICE FLAPPING ALERT: %s;%s;",host_name,service_desc);
 				else if(history_type==SERVICE_DOWNTIME_HISTORY)
-					sprintf(match1," SERVICE DOWNTIME ALERT: %s;%s;",host_name,svc_description);
+					sprintf(match1," SERVICE DOWNTIME ALERT: %s;%s;",host_name,service_desc);
 
 				if(strstr(temp_buffer,match1) && (history_type==SERVICE_HISTORY || history_type==SERVICE_FLAPPING_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY))
 					display_line=TRUE;

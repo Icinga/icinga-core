@@ -51,23 +51,6 @@ extern serviceescalation *serviceescalation_list;
 extern hostdependency *hostdependency_list;
 extern hostescalation *hostescalation_list;
 
-
-#define DISPLAY_NONE                     0
-#define DISPLAY_HOSTS                    1
-#define DISPLAY_HOSTGROUPS               2
-#define DISPLAY_CONTACTS                 3
-#define DISPLAY_CONTACTGROUPS            4
-#define DISPLAY_SERVICES                 5
-#define DISPLAY_TIMEPERIODS              6
-#define DISPLAY_COMMANDS                 7
-#define DISPLAY_HOSTGROUPESCALATIONS     8    /* no longer implemented */
-#define DISPLAY_SERVICEDEPENDENCIES      9
-#define DISPLAY_SERVICEESCALATIONS       10
-#define DISPLAY_HOSTDEPENDENCIES         11
-#define DISPLAY_HOSTESCALATIONS          12
-#define DISPLAY_SERVICEGROUPS            15
-#define DISPLAY_COMMAND_EXPANSION        16211
-
 int process_cgivars(void);
 
 void display_options(void);
@@ -91,6 +74,16 @@ void unauthorized_message(void);
 authdata current_authdata;
 
 int display_type=DISPLAY_NONE;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 char to_expand[MAX_COMMAND_BUFFER];
 char hashed_color[8];
 
