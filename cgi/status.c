@@ -5151,7 +5151,7 @@ void show_filters(void){
 
 		printf("<table border=1 class='filter' cellspacing=0 cellpadding=0>\n");
 		printf("<tr><td valign=top align=left CLASS='filterTitle'>Display Filters:&nbsp;");
-		printf("<img id='expand_image' src='/icinga/images/icon_expand.gif' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">",url_images_path,COLLAPSE_ICON,url_images_path,EXPAND_ICON);
+		printf("<img id='expand_image' src='%s%s' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">",url_images_path,EXPAND_ICON,url_images_path,COLLAPSE_ICON,url_images_path,EXPAND_ICON);
 		printf("</td></tr>");
 		printf("<tr><td><table id='filters' border=0 cellspacing=2 cellpadding=0 style='display:none;'>\n");
 		printf("<tr><td valign=top align=left CLASS='filterName'>Host Status Types:</td>");
