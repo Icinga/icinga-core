@@ -10,11 +10,11 @@ use FindBin qw($Bin);
 chdir $Bin or die "Cannot chdir";
 
 my $topdir = "$Bin/..";
-my $nagios = "$topdir/base/icinga";
+my $icinga = "$topdir/base/icinga";
 my $etc = "$Bin/etc";
 my $precache = "$Bin/var/objects.precache";
 
 
-my $output = `$nagios -v "$etc/icinga-no-contactgroup.cfg"`;
+my $output = `$icinga -v "$etc/icinga-no-contactgroup.cfg"`;
 like( $output, "/Error: Could not find any contactgroup matching 'nonexistantone'/", "Correct error for no contactgroup" );
 isnt($?, 0, "And get return code error" );

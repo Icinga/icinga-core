@@ -297,9 +297,34 @@
 
   <p>Kompilieren und installieren Sie die Plugins.</p>
 
-  <pre class="programlisting"> #&gt; ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga
+  <pre class="programlisting"> #&gt; ./configure --prefix=/usr/local/icinga --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make
  #&gt; make install</pre>
+
+  <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
+
+  <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security Enhanced 
+  Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die  Icinga-CGIs aufzurufen.</p>
+
+  <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
+
+  <pre class="screen"> #&gt; getenforce</pre>
+
+  <p>Setzen Sie SELinux in den "Permissive"-Modus.</p>
+
+  <pre class="screen"> #&gt; setenforce 0</pre>
+
+  <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
+  System neustarten.</p>
+
+  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
+  CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
+
+  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
+ #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
+
+  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
+  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
 
   <p><span class="bold"><strong> Icinga starten</strong></span></p>
 
@@ -335,31 +360,6 @@
 
   <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
 
-  <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
-
-  <p>Fedora wird mit installiertem SELinux (Security Enhanced Linux) ausgeliefert und läuft im "Enforcing"-Modus.
-  Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die Icinga-CGIs aufzurufen.</p>
-
-  <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
-
-  <pre class="screen"> #&gt; getenforce</pre>
-
-  <p>Setzen Sie SELinux in den "Permissive"-Modus.</p>
-
-  <pre class="screen"> #&gt; setenforce 0</pre>
-
-  <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
-  System neustarten.</p>
-
-  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
-  CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
-
-  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
- #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
-
-  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
-  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
-
   <p><span class="bold"><strong>Anmelden am klassischen Web-Interface</strong></span></p>
 
   <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
@@ -394,9 +394,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id5638985"></a>
+  <a class="indexterm" name="id2507931"></a>
 
-  <a class="indexterm" name="id5638972"></a>
+  <a class="indexterm" name="id2507945"></a>
 </div>
 <div class="navfooter">
 <hr>

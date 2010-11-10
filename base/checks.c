@@ -508,6 +508,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	char fname[512]="";
 	char *args[5]={"",DO_CLEAN, "", "", NULL };
 	char *perl_plugin_output=NULL;
+	char *args3=NULL;
 	SV *plugin_hndlr_cr=NULL; /* perl.h holds typedef struct */
 	STRLEN n_a ;
 	int count ;
@@ -704,10 +705,14 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		args[0]=fname;
 		args[2]="";
 
-		if(strchr(processed_command,' ')==NULL)
+		if(strchr(processed_command,' ')==NULL){
 			args[3]="";
-		else
-			args[3]=processed_command+strlen(fname)+1;
+		} else {
+			/* make sure to strip leading whitespaces from args */
+			args3=processed_command+strlen(fname)+1;
+			for (;isspace(*args3);args3++);
+			args[3]=args3;
+		}
 
 		ENTER;
 		SAVETMPS;

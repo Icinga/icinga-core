@@ -130,6 +130,7 @@ int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
 int		showlog_initial_state=TRUE;
 int		showlog_current_state=TRUE;
+int		tab_friendly_titles=FALSE;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -159,6 +160,23 @@ int embedded=FALSE;
 int display_header=TRUE;
 int refresh=TRUE;
 int daemon_check=TRUE;
+
+extern char alert_message;
+extern char *host_name;
+extern char *host_filter;
+extern char *hostgroup_name;
+extern char *service_desc;
+extern char *servicegroup_name;
+extern char *service_filter;
+extern int host_alert;
+extern int show_all_hosts;
+extern int show_all_hostgroups;
+extern int show_all_servicegroups;
+extern int display_type;
+extern int overview_columns;
+extern int max_grid_width;
+extern int group_style_type;
+extern int navbar_search;
 
 
 /*
@@ -480,6 +498,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"showlog_current_state"))
 			showlog_current_state=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"tab_friendly_titles"))
+			tab_friendly_titles=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"csv_delimiter"))
 			csv_delimiter=strdup(val);
@@ -917,7 +938,39 @@ void document_header(int cgi_id, int use_stylesheet){
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
 	printf("<title>\n");
-	printf("%s\n",cgi_title);
+
+	if(cgi_id == STATUS_CGI_ID){
+		if (tab_friendly_titles){
+			if ((display_type==DISPLAY_HOSTS)&&(!show_all_hosts)&&host_name&&(*host_name!='\0'))
+				printf ("[%s]\n",html_encode(host_name,FALSE));
+			else if ((display_type==DISPLAY_HOSTGROUPS)&&(!show_all_hostgroups)&&hostgroup_name &&(*hostgroup_name!='\0'))
+				printf ("{%s}\n",html_encode(hostgroup_name,FALSE));
+			else if ((display_type==DISPLAY_SERVICEGROUPS)&&(!show_all_servicegroups)&&servicegroup_name &&(*servicegroup_name!='\0'))
+				printf ("(%s)\n",html_encode(servicegroup_name,FALSE));
+			else
+				printf("%s\n",cgi_title);
+		}
+		else printf("%s\n",cgi_title);
+	} else if(cgi_id == EXTINFO_CGI_ID){
+		if (tab_friendly_titles){
+			if ((display_type==DISPLAY_HOST_INFO)&&host_name&&(*host_name!='\0'))
+				printf ("[%s]\n",html_encode(host_name,FALSE));
+			else if ((display_type==DISPLAY_SERVICE_INFO)&&service_desc&&(*service_desc!='\0')){
+				printf ("%s\n",service_desc);
+				if (host_name&&(*host_name!='\0'))
+					printf ("@ %s\n",html_encode(host_name,FALSE));
+			}
+			else if ((display_type==DISPLAY_HOSTGROUP_INFO)&&hostgroup_name&&(*hostgroup_name!='\0'))
+				printf ("{%s}\n",html_encode(hostgroup_name,FALSE));
+			else if ((display_type==DISPLAY_SERVICEGROUP_INFO)&&servicegroup_name &&(*servicegroup_name!='\0'))
+				printf ("(%s)\n",html_encode(servicegroup_name,FALSE));
+			else
+				printf("%s\n",cgi_title);
+		}
+		else printf("%s\n",cgi_title);
+	} else {
+		printf("%s\n",cgi_title);
+	}
 	printf("</title>\n");
 
 	if(use_stylesheet){
@@ -1387,8 +1440,11 @@ char * url_encode(char *input){
 	static int i = 0;
 	char* str = encoded_url_string[i];
 
+	/* initialize return string */
+	strcpy(str,"");
+
 	if(input==NULL)
-		return '\x0';
+		return str;
 
 	len=(int)strlen(input);
 	output_len=(int)sizeof(encoded_url_string[0]);
@@ -1409,8 +1465,14 @@ char * url_encode(char *input){
 			y++;
 		        }
 
+		/* high bit characters don't get encoded */
+		else if((unsigned char)input[x]>=0x7f){
+			str[y]=input[x];
+			y++;
+		}
+
 		/* spaces are pluses */
-		else if((char)input[x]<=(char)' '){
+		else if((char)input[x]==(char)' '){
 			str[y]='+';
 			y++;
 		        }
@@ -1571,6 +1633,10 @@ char * escape_string(char *input){
 
 		/* spaces, hyphens, periods, underscores and colons don't get encoded */
 		else if(((char)input[x]==(char)' ') || ((char)input[x]==(char)'-') || ((char)input[x]==(char)'.') || ((char)input[x]==(char)'_') || ((char)input[x]==(char)':'))
+			encoded_html_string[y++]=input[x];
+
+		/* high bit characters don't get encoded */
+		else if((unsigned char)input[x]>=0x7f)
 			encoded_html_string[y++]=input[x];
 
 		/* for simplicity, all other chars represented by their numeric value */

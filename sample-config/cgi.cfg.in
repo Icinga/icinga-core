@@ -13,6 +13,12 @@
 main_config_file=@sysconfdir@/icinga.cfg
 
 
+# ATTRIBUTE BASED AUTHORIZATION FILE
+# This option will include a file defining authroization based on
+# attributes.
+
+#authorization_config_file=@sysconfdir@/cgiauth.cfg
+
 
 # PHYSICAL HTML PATH
 # This is the path where the HTML files for Icinga reside.  This
@@ -401,6 +407,22 @@ tac_show_only_hard_state=0
 # data enclosure to wrap in the data. Default is "'".
 
 #csv_data_enclosure='
+
+
+
+# TAB-FRIENDLY <TITLE>S
+# Activating this option changes the <title> of status.cgi
+# and extinfo.cgi when they refer to a single host, service,
+# or group. They will then read:
+#	[Host]
+#	{HostGroup}
+#	ServiceDesc @ Host
+#	(ServiceGroup)
+# These are easier to read and find if you use (many) tabs
+# in your browser.
+# Default is enabled. 0=disabled, 1=enabled
+
+tab_friendly_titles=1
 
 
 

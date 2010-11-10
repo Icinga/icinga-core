@@ -147,7 +147,9 @@ char *host_name=NULL;
 char *host_filter=NULL;
 char *hostgroup_name=NULL;
 char *servicegroup_name=NULL;
+char *service_desc=NULL;
 char *service_filter=NULL;
+
 int host_alert=FALSE;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;
@@ -1042,13 +1044,8 @@ void show_host_status_totals(void){
 
 			if(show_all_servicegroups==TRUE) {
 				count_host=1;
-			} else {
-				for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
-					if(is_host_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_host)==TRUE){
-                                                count_host=1;
-                                                break;
-                                        }
-				}
+			} else if(is_host_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_host)==TRUE){
+				count_host=1;
 			}
 	        }
 		else if(display_type==DISPLAY_HOSTGROUPS && (show_all_hostgroups==TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name),temp_host)==TRUE)))
@@ -5156,7 +5153,7 @@ void show_filters(void){
 
 		printf("<table border=1 class='filter' cellspacing=0 cellpadding=0>\n");
 		printf("<tr><td valign=top align=left CLASS='filterTitle'>Display Filters:&nbsp;");
-		printf("<img id='expand_image' src='/icinga/images/icon_expand.gif' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">",url_images_path,COLLAPSE_ICON,url_images_path,EXPAND_ICON);
+		printf("<img id='expand_image' src='%s%s' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">",url_images_path,EXPAND_ICON,url_images_path,COLLAPSE_ICON,url_images_path,EXPAND_ICON);
 		printf("</td></tr>");
 		printf("<tr><td><table id='filters' border=0 cellspacing=2 cellpadding=0 style='display:none;'>\n");
 		printf("<tr><td valign=top align=left CLASS='filterName'>Host Status Types:</td>");

@@ -164,10 +164,6 @@ int alert_types=AE_HOST_ALERT+AE_SERVICE_ALERT;
 int host_states=AE_HOST_UP+AE_HOST_DOWN+AE_HOST_UNREACHABLE;
 int service_states=AE_SERVICE_OK+AE_SERVICE_WARNING+AE_SERVICE_UNKNOWN+AE_SERVICE_CRITICAL;
 
-int show_all_hostgroups=TRUE;
-int show_all_servicegroups=TRUE;
-int show_all_hosts=TRUE;
-
 char *target_hostgroup_name="";
 char *target_servicegroup_name="";
 char *target_host_name="";
@@ -189,6 +185,17 @@ extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
 int display_type=REPORT_RECENT_ALERTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
+
 int standard_report=SREPORT_NONE;
 int generate_report=FALSE;
 

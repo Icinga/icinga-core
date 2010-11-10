@@ -768,8 +768,7 @@ CFLAGS
 LDFLAGS
 LIBS
 CPPFLAGS
-CPP
-CPPFLAGS'
+CPP'
 ac_subdirs_all='tap
 module/icinga-api'
 
@@ -2368,9 +2367,9 @@ ac_config_headers="$ac_config_headers include/config.h include/snprintf.h"
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.2.0"
+PKG_VERSION="1.3.0"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="10-06-2010"
+PKG_REL_DATE="10-25-2010"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -6727,11 +6726,10 @@ _ACEOF
 				sslbin=$ssldir/sbin/openssl
 			else
 				if test -f "$ssldir/bin/openssl"; then
-					sslbin=$ssldir/bin/openssl
-				else
-					sslbin=openssl
-				fi
-
+                                        sslbin=$ssldir/bin/openssl
+                                else
+                                        sslbin=openssl
+                                fi
 			fi
 			# awk to strip off meta data at bottom of dhparam output
 			$sslbin dhparam -C 512 | awk '/^-----/ {exit} {print}' > include/dh.h
@@ -8142,6 +8140,7 @@ echo "Creating sample config files in sample-config/ ..."
 
 perl subst $srcdir/sample-config/icinga.cfg
 perl subst $srcdir/sample-config/cgi.cfg
+perl subst $srcdir/sample-config/cgiauth.cfg
 perl subst $srcdir/sample-config/resource.cfg
 perl subst $srcdir/sample-config/httpd.conf
 perl subst $srcdir/sample-config/mrtg.cfg

@@ -51,23 +51,6 @@ extern serviceescalation *serviceescalation_list;
 extern hostdependency *hostdependency_list;
 extern hostescalation *hostescalation_list;
 
-
-#define DISPLAY_NONE                     0
-#define DISPLAY_HOSTS                    1
-#define DISPLAY_HOSTGROUPS               2
-#define DISPLAY_CONTACTS                 3
-#define DISPLAY_CONTACTGROUPS            4
-#define DISPLAY_SERVICES                 5
-#define DISPLAY_TIMEPERIODS              6
-#define DISPLAY_COMMANDS                 7
-#define DISPLAY_HOSTGROUPESCALATIONS     8    /* no longer implemented */
-#define DISPLAY_SERVICEDEPENDENCIES      9
-#define DISPLAY_SERVICEESCALATIONS       10
-#define DISPLAY_HOSTDEPENDENCIES         11
-#define DISPLAY_HOSTESCALATIONS          12
-#define DISPLAY_SERVICEGROUPS            15
-#define DISPLAY_COMMAND_EXPANSION        16211
-
 int process_cgivars(void);
 
 void display_options(void);
@@ -91,6 +74,16 @@ void unauthorized_message(void);
 authdata current_authdata;
 
 int display_type=DISPLAY_NONE;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 char to_expand[MAX_COMMAND_BUFFER];
 char hashed_color[8];
 
@@ -2365,10 +2358,7 @@ void display_command_expansion(void){
 						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#0000FF'>dangling whitespace:</FONT></TD>\n",bg_class,bg_class);
 						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='#0000FF'>",bg_class,i);
 						for (c=command_args[i],j=0;c&&isspace(*c);c++,j++)
-							/* TODO: As long as the hyperlinks change all whitespace into actual spaces,
-							   we'll output "[WS]" (whitespace) instead of "[SP]"(ace). */
-							/* if ((*c)==' ')		printf("[SP]"); */
-							if ((*c)==' ')		printf("[WS]");
+							if ((*c)==' ')		printf("[SP]");
 							else if ((*c)=='\f')	printf("[FF]");
 							else if ((*c)=='\n')	printf("[LF]");
 							else if ((*c)=='\r')	printf("[CR]");
@@ -2379,9 +2369,7 @@ void display_command_expansion(void){
 						for (;c&&((*c)!='\0')&&(j<strlen(command_args[i])-trail_space[i]);c++,j++) putchar(*c);
 						printf("</FONT><FONT COLOR='#0000FF'>");
 						for (;c&&((*c)!='\0');c++)
-							/* TODO: As long as the hyperlinks change all whitespace into actual spaces,
-							   we'll output "[WS]" (whitespace) instead of "[SP]"(ace). */
-							/* if ((*c)==' ')		printf("[SP]"); */
+							if ((*c)==' ')		printf("[SP]");
 							if ((*c)==' ')		printf("[WS]");
 							else if ((*c)=='\f')	printf("[FF]");
 							else if ((*c)=='\n')	printf("[LF]");
@@ -2444,7 +2432,7 @@ void display_options(void){
 	printf("<option value='contactgroups' %s>Contact Groups\n",(display_type==DISPLAY_CONTACTGROUPS)?"SELECTED":"");
 	printf("<option value='timeperiods' %s>Timeperiods\n",(display_type==DISPLAY_TIMEPERIODS)?"SELECTED":"");
 	printf("<option value='commands' %s>Commands\n",(display_type==DISPLAY_COMMANDS)?"SELECTED":"");
-	printf("<option value='commands' %s>Command Expansion\n",(display_type==DISPLAY_COMMAND_EXPANSION)?"SELECTED":"");
+	printf("<option value='command' %s>Command Expansion\n",(display_type==DISPLAY_COMMAND_EXPANSION)?"SELECTED":"");
 	printf("</select>\n");
 	printf("</td></tr>\n");
 

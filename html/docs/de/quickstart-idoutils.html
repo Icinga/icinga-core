@@ -252,6 +252,7 @@
     <p>Bei einigen usermod-Versionen (z.B. OpenSuSE 11 bzw. SLES 11) fehlt die Option -a. In diesen Fällen kann sie entfallen.</p>
   </td></tr>
 </table></div>
+
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
@@ -272,8 +273,7 @@
 <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-core.git
  #&gt; git submodule init
  #&gt; git submodule update</pre>
-<p>
-  oder von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga-Website</a>.</p>
+<p> oder von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga-Website</a>.</p>
 
   <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
 
@@ -284,12 +284,15 @@
   <pre class="programlisting"> #&gt; cd /usr/src/ 
  #&gt; tar xvzf icinga-1.2.tar.gz 
  #&gt; cd icinga-1.2</pre>
+
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Dieser absolute Pfad ist gemeint, wenn im Nachfolgenden von '/path/to/icinga-src/' die Rede ist.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Dieser absolute Pfad ist gemeint, wenn im Nachfolgenden von '/path/to/icinga-src/' die Rede ist.</p>
+  </td></tr>
 </table></div>
 
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
@@ -338,13 +341,15 @@
 <p> </p>
 <pre class="programlisting"> #&gt; make distclean
  #&gt; ./configure --enable-idoutils</pre>
-<p><span class="bold"><strong>Kompilieren und Installieren</strong></span></p>
-<p>Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für
-  IDOUtils (<span class="emphasis"><em>make idoutils</em></span>), wenn Sie nur dieses Module erneut kompilieren möchten. Um mögliche Optionen zu
-  sehen, rufen Sie lediglich "make" auf.</p>
+
+  <p><span class="bold"><strong>Kompilieren und Installieren</strong></span></p>
+
+  <p>Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für IDOUtils (<span class="emphasis"><em>make
+  idoutils</em></span>), wenn Sie nur dieses Module erneut kompilieren möchten. Um mögliche Optionen zu sehen, rufen Sie lediglich "make"
+  auf.</p>
 <pre class="programlisting"> #&gt; make all</pre>
-<p> Installieren Sie die Binaries, das Init-Script,
-  Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das External-Command-Verzeichnis. </p>
+<p> Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und
+  setzen Sie die Berechtigungen für das External-Command-Verzeichnis. </p>
 <pre class="programlisting"> #&gt; make install 
  #&gt; make install-init 
  #&gt; make install-config 
@@ -420,12 +425,16 @@
   <p><span class="bold"><strong>MySQL:</strong></span></p>
 
   <p><span class="emphasis"><em>Anlegen von Datenbank, Benutzer und Berechtigungen</em></span></p>
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Falls Sie gerade ein neues Datenbanksystem installiert haben, dann müssen Sie den Datenbank-Server-Prozess starten, bevor Sie eine Datenbank anlegen können. Im Falle von MySQL benutzen Sie <code class="code">/etc/init.d/mysqld start</code>.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Falls Sie gerade ein neues Datenbanksystem installiert haben, dann müssen Sie den Datenbank-Server-Prozess starten, bevor Sie eine
+    Datenbank anlegen können. Im Falle von MySQL benutzen Sie <code class="code">/etc/init.d/mysqld start</code>.</p>
+  </td></tr>
 </table></div>
 
   <pre class="programlisting"> #&gt; mysql -u root -p
@@ -478,9 +487,9 @@
  # "local" is for Unix domain socket connections only
  local    all        all                       trust
  # IPv4 local connections
- local    all        all        127.0.0.1/32   trust
+ host     all        all        127.0.0.1/32   trust
  # IPV6 local connections
- local    all        all        ::1/128        trust</pre>
+ host     all        all        ::1/128        trust</pre>
 
   <p>Neuladen und konfigurieren des Datenbankschemas</p>
 
@@ -588,9 +597,35 @@
 
   <p>Kompilieren und installieren Sie die Plugins.</p>
 
-  <pre class="screen"> #&gt; ./configure --prefix=/usr/local/icinga --with-nagios-user=icinga
+  <pre class="screen"> #&gt; ./configure --prefix=/usr/local/icinga --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make
  #&gt; make install</pre>
+
+  <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
+
+  <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security Enhanced
+  Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die
+  Icinga-CGIs aufzurufen.</p>
+
+  <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
+
+  <pre class="screen"> #&gt; getenforce</pre>
+
+  <p>Setzen Sie SELinux in den "Permissive"-Modus.</p>
+
+  <pre class="screen"> #&gt; setenforce 0</pre>
+
+  <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
+  System neustarten.</p>
+
+  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
+  CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
+
+  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
+ #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
+
+  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
+  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
 
   <p><span class="bold"><strong>IDOUtils und Icinga starten</strong></span></p>
 
@@ -720,7 +755,7 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id5641082"></a>
+  <a class="indexterm" name="id2510091"></a>
 </div>
 <div class="navfooter">
 <hr>

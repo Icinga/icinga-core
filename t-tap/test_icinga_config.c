@@ -2,13 +2,10 @@
  *
  * test_icinga_config.c - Test configuration loading
  *
- * Program: Nagios Core Testing
+ * Program: Icinga Core Testing
  * License: GPL
  * Copyright (c) 2009 Nagios Core Development Team and Community Contributors
  * Copyright (c) 1999-2009 Ethan Galstad
- *
- * First Written:   10-08-2009, based on nagios.c
- * Last Modified:   10-08-2009
  *
  * Description:
  *
@@ -120,13 +117,6 @@ int             auto_reschedule_checks=DEFAULT_AUTO_RESCHEDULE_CHECKS;
 int             auto_rescheduling_window=DEFAULT_AUTO_RESCHEDULING_WINDOW;
 
 int             additional_freshness_latency=DEFAULT_ADDITIONAL_FRESHNESS_LATENCY;
-
-int             check_for_updates=DEFAULT_CHECK_FOR_UPDATES;
-int             bare_update_check=DEFAULT_BARE_UPDATE_CHECK;
-time_t          last_update_check=0L;
-int             update_available=FALSE;
-char            *last_program_version=NULL;
-char            *new_program_version=NULL;
 
 time_t          last_command_check=0L;
 time_t          last_command_status_update=0L;
@@ -261,18 +251,40 @@ int             debug_level=DEFAULT_DEBUG_LEVEL;
 int             debug_verbosity=DEFAULT_DEBUG_VERBOSITY;
 unsigned long   max_debug_file_size=DEFAULT_MAX_DEBUG_FILE_SIZE;
 
+/* Icinga special */
+int             use_daemon_log=DEFAULT_USE_DAEMON_LOG;
+
+int             use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;
+int             syslog_local_facility=DEFAULT_SYSLOG_LOCAL_FACILITY;
+
+int             log_current_states=DEFAULT_LOG_CURRENT_STATES;
+
+int             log_external_commands_user=DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
+
+int             log_long_plugin_output=DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
+
+int             service_check_timeout_state=STATE_CRITICAL;
+
+int             stalking_event_handlers_for_hosts=DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
+int             stalking_event_handlers_for_services=DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
+
 
 /* Dummy variables */
 sched_info scheduling_info;
 timed_event event_list_low;
 timed_event event_list_high;
+timed_event *event_list_high_tail=NULL;
 
 /* Dummy functions */
 void logit(int data_type, int display, const char *fmt, ...) {}
 int my_sendall(int s, char *buf, int *len, int timeout) {}
-void free_comment_data(void) {}
 int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp) {}
-int log_debug_info(int level,int verbosity,const char *fmt, ...) {}
+int log_debug_info(int level,int verbosity,const char *fmt, ...) {
+        va_list ap;
+        va_start(ap, fmt);
+        /* vprintf( fmt, ap ); */
+        va_end(ap);
+}
 
 int neb_free_callback_list(void) {}
 void broker_program_status(int type, int flags, int attr, struct timeval *timestamp){}
@@ -287,6 +299,19 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 int my_tcp_connect(char *host_name, int port, int *sd, int timeout){}
 int my_recvall(int s, char *buf, int *len, int timeout){}
 int neb_free_module_list(void){}
+void remove_event(timed_event *event, timed_event **event_list, timed_event **event_list_tail){}
+void check_for_service_flapping(service *svc, int update, int allow_flapstart_notification){}
+int update_host_status(host *hst,int aggregated_dump){}
+int update_contact_status(contact *cntct,int aggregated_dump){}
+time_t get_next_service_notification_time(service *temp_service, time_t time_t1) {}
+void broker_retention_data(int type, int flags, int attr, struct timeval *timestamp){}
+int host_notification(host *hst, int type, char *not_author, char *not_data, int options){}
+void broker_downtime_data(int type, int flags, int attr, int downtime_type, char *host_name, char *svc_description, time_t entry_time, char *author_name, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long downtime_id, struct timeval *timestamp){}
+int update_service_status(service *svc,int aggregated_dump){}
+time_t get_next_host_notification_time(host *temp_host,time_t time_t1) {}
+void check_for_host_flapping(host *hst, int update, int actual_check, int allow_flapstart_notification){}
+int service_notification(service *svc, int type, char *not_author, char *not_data, int options){}
+
 
 int main(int argc, char **argv){
 	int result;
@@ -309,10 +334,10 @@ int main(int argc, char **argv){
 
 	printf("Reading configuration data...\n");
 
-	config_file=strdup("smallconfig/nagios.cfg");
+	config_file=strdup("smallconfig/icinga.cfg");
 	/* read in the configuration files (main config file, resource and object config files) */
 	result=read_main_config_file(config_file);
-	ok(result==OK, "Read main configuration file okay - if fails, use nagios -v to check");
+	ok(result==OK, "Read main configuration file okay - if fails, use icinga -v to check");
 
 	result=read_all_object_data(config_file);
 	ok(result==OK, "Read all object config files");

@@ -31,39 +31,40 @@
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Icinga enthält nicht, wie viele andere Überwachungs-Tools, interne Mechanismen zur Prüfung des Zustands von Hosts
-  und Services in Ihrem Netzwerk. Icinga verlässt sich statt dessen auf externe Programme (Plugins genannt), die all die
-  schmutzige Arbeit tun.</p>
+  <p>Icinga enthält nicht, wie viele andere Überwachungs-Tools, interne Mechanismen zur Prüfung des Zustands von Hosts und
+  Services in Ihrem Netzwerk. Icinga verlässt sich statt dessen auf externe Programme (Plugins genannt), die all die schmutzige
+  Arbeit tun.</p>
 
   <p><span class="bold"><strong>Was sind Plugins?</strong></span></p>
 
-  <p>Plugins sind kompilierte Programme oder Scripts (Perl-Scripts, Shell-Scripts, usw.), die von einer Kommandozeile aus
-  laufen können, um den Status eines Hosts oder Service zu prüfen. Icinga benutzt die Ergebnisse von Plugins, um den
-  aktuellen Status von Hosts oder Services in Ihrem Netzwerk zu ermitteln.</p>
+  <p>Plugins sind kompilierte Programme oder Scripts (Perl-Scripts, Shell-Scripts, usw.), die von einer Kommandozeile aus laufen können,
+  um den Status eines Hosts oder Service zu prüfen. Icinga benutzt die Ergebnisse von Plugins, um den aktuellen Status von Hosts oder
+  Services in Ihrem Netzwerk zu ermitteln.</p>
 
-  <p>Icinga wird ein Plugin immer dann ausführen, wenn die Notwendigkeit besteht, den Status eines Hosts oder Service zu
-  prüfen. Das Plugin tut <span class="emphasis"><em>etwas</em></span> (beachten Sie den sehr allgemeinen Ausdruck), um die Prüfung auszuführen und
-  dann einfach die Ergebnisse an Icinga zurückzuliefern. Icinga wird die Ergebnisse verarbeiten, die es vom Plugin
-  erhält, und dann notwendige Aktionen ausführen (starten von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a>, senden von <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a>, etc).</p>
+  <p>Icinga wird ein Plugin immer dann ausführen, wenn die Notwendigkeit besteht, den Status eines Hosts oder Service zu prüfen.
+  Das Plugin tut <span class="emphasis"><em>etwas</em></span> (beachten Sie den sehr allgemeinen Ausdruck), um die Prüfung auszuführen und dann einfach die
+  Ergebnisse an Icinga zurückzuliefern. Icinga wird die Ergebnisse verarbeiten, die es vom Plugin erhält, und dann notwendige
+  Aktionen ausführen (starten von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a>, senden von <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a>, etc).</p>
 
   <p><span class="bold"><strong>Plugins als eine Abstraktionsschicht</strong></span></p>
 
   <div class="mediaobject"><img src="../images/plugins.png"></div>
 
-  <p>Plugins arbeiten wie eine Abstraktionsschicht zwischen der Überwachungslogik im Icinga-Dämon und den eigentlichen
-  Services und Hosts, die überwacht werden.</p>
+  <p>Plugins arbeiten wie eine Abstraktionsschicht zwischen der Überwachungslogik im Icinga-Dämon und den eigentlichen Services
+  und Hosts, die überwacht werden.</p>
 
-  <p>Der Vorteil dieses Typs von Plugin-Architektur ist, dass Sie fast alles überwachen können, was Ihnen einfällt. Wenn Sie
-  den Prozess der Überwachung automatisieren können, können Sie es mit Icinga überwachen. Es gibt bereits eine Menge von
-  Plugins, die erzeugt wurden, um grundlegende Ressourcen wie z.B. Prozessorauslastung, Plattenbelegung, Ping-Raten usw. zu
-  überwachen. Wenn Sie etwas anderes überwachen möchten, werfen Sie einen Blick in die Dokumentation zu <a class="link" href="pluginapi.html" title="Nagios Plugin API">Plugins schreiben</a> und erstellen Sie ein eigenes. Es ist einfach!</p>
+  <p>Der Vorteil dieses Typs von Plugin-Architektur ist, dass Sie fast alles überwachen können, was Ihnen einfällt. Wenn Sie den Prozess
+  der Überwachung automatisieren können, können Sie es mit Icinga überwachen. Es gibt bereits eine Menge von Plugins, die erzeugt
+  wurden, um grundlegende Ressourcen wie z.B. Prozessorauslastung, Plattenbelegung, Ping-Raten usw. zu überwachen. Wenn Sie etwas anderes
+  überwachen möchten, werfen Sie einen Blick in die Dokumentation zu <a class="link" href="pluginapi.html" title="Nagios Plugin API">Plugins schreiben</a> und erstellen Sie
+  ein eigenes. Es ist einfach!</p>
 
-  <p>Der Nachteil dieses Typs von Plugin-Architektur ist die Tatsache, dass Icinga absolut keine Ahnung davon hat, was
-  Sie überwachen. Sie könnten Netzwerkverkehr-Statistiken, Datenfehler-Raten, Raumtemperatur, CPU-Spannung, Lüftergeschwindigkeit,
-  Prozessorauslastung, Plattenbelegung überwachen oder die Fähigkeit Ihres superphantastischen Toasters, am Morgen Ihr Brot
-  ordnungsgemäß zu bräunen... Icinga versteht nicht die Besonderheiten dessen, was überwacht wird - es verfolgt lediglich
-  Veränderungen des <span class="emphasis"><em>Zustands</em></span> dieser Ressourcen. Nur die Plugins selbst wissen genau, was sie überwachen und
-  wie die eigentlichen Prüfungen auszuführen sind.</p>
+  <p>Der Nachteil dieses Typs von Plugin-Architektur ist die Tatsache, dass Icinga absolut keine Ahnung davon hat, was Sie
+  überwachen. Sie könnten Netzwerkverkehr-Statistiken, Datenfehler-Raten, Raumtemperatur, CPU-Spannung, Lüftergeschwindigkeit,
+  Prozessorauslastung, Plattenbelegung überwachen oder die Fähigkeit Ihres superphantastischen Toasters, am Morgen Ihr Brot ordnungsgemäß zu
+  bräunen... Icinga versteht nicht die Besonderheiten dessen, was überwacht wird - es verfolgt lediglich Veränderungen des
+  <span class="emphasis"><em>Zustands</em></span> dieser Ressourcen. Nur die Plugins selbst wissen genau, was sie überwachen und wie die eigentlichen
+  Prüfungen auszuführen sind.</p>
 
   <p><span class="bold"><strong>Welche Plugins sind verfügbar?</strong></span></p>
 
@@ -89,8 +90,8 @@
 
   <p><span class="bold"><strong>Plugins beschaffen</strong></span></p>
 
-  <p>Plugins werden nicht mit Icinga verteilt, aber Sie finden die offiziellen Nagios-Plugins zum Download und
-  viele weitere Plugins, die von Nagios-Benutzern erstellt und gewartet werden, an folgenden Stellen:</p>
+  <p>Plugins werden nicht mit Icinga verteilt, aber Sie finden die offiziellen Nagios-Plugins zum Download und viele
+  weitere Plugins, die von Nagios-Benutzern erstellt und gewartet werden, an folgenden Stellen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -106,18 +107,111 @@
 
   <p><a name="plugins-howto"></a><span class="bold"><strong>Wie benutze ich Plugin X?</strong></span></p>
 
-  <p>Fast alle Plugins zeigen grundlegende Bedienungshinweise an, wenn sie von der Kommandozeile mit der Option '-h' oder
-  '--help' aufgerufen werden. Wenn Sie z.B. wissen möchten, wie das Plugins check_http arbeitet bzw. welche Optionen es
-  akzeptiert, sollten Sie folgenden Befehl ausprobieren:</p>
+  <p>Fast alle Plugins zeigen grundlegende Bedienungshinweise an, wenn sie von der Kommandozeile mit der Option '-h' oder '--help'
+  aufgerufen werden. Wenn Sie z.B. wissen möchten, wie das Plugins check_http arbeitet bzw. welche Optionen es akzeptiert, sollten Sie
+  folgenden Befehl ausprobieren:</p>
 
   <pre class="screen"> ./check_http --help</pre>
+
+  <a name="plugins-hints"></a>
+
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Führen Sie Plugins immer mit dem Icinga-Benutzer aus, denn einige Plugins erstellen temporäre Dateien. Wenn Sie Plugins mit
+    einem anderen Benutzer ausführen, dann kann der Icinga-Benutzer diese Dateien ggf. nicht überschreiben.</p>
+
+    <p>Rufen Sie das Plugin nicht mit einem relativen Pfad auf (z.B. <span class="emphasis"><em>./check_test_plugin</em></span>). Benutzen Sie immer
+    absolute Pfade, denn so macht es auch Icinga (z.B. <span class="emphasis"><em>/usr/local/icinga/libexec/check_test_plugin</em></span>).</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Integration eines neuen Plugins</strong></span></p>
+
+  <p>Wenn Sie ein neues Plugin integrieren möchten, dann lesen Sie die Dokumentation (falls vorhanden). Sie könnte wichtige Informationen
+  über die Voraussetzungen wie z.B. zusätzliche Pakete oder (Perl-) Module enthalten, wie das Plugin zu installieren ist bzw.
+  distributionsabhängige Hinweise. </p>
+
+  <p>Manchmal müssen Sie das Plugin kompilieren, wobei Sie den Vorgang durch den Aufruf von "./configure" mit oder ohne Optionen
+  vorbereiten. Bitte prüfen Sie die Datei config.log auf mögliche Fehler zu fehlenden (devel-)Paketen vor dem Aufuf des eigentlichen
+  Compile-Vorgangs (meistens "make" oder "make all"). In den meisten Fällen wird das Plugin durch den Aufruf von "make install" in das
+  Plugins-Verzeichnis (z.B. <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>) kopiert.</p>
+
+  <p>Manchmal müssen Sie das Plugin auf Ihre Umgebung anpassen (z.B. den Pfad zu "utils.pm"). Normalerweise ist das Plugin manuell in das
+  Plugins-Verzeichnis (z.B. <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>) zu kopieren.</p>
+
+  <p>Nach der Installation des Plugins rufen Sie es mit den nötigen Optionen von der Kommandozeile aus auf. Wenn dies funktioniert,
+  können Sie es in Icinga integrieren.</p>
+
+  <p>Stellen Sie sich vor, dass Sie den folgenden Aufruf benutzt haben:</p>
+
+  <pre class="programlisting"> /usr/local/icinga/libexec/sample-plugin.pl -H 192.168.1.2 -a argument1 -p parameter -n 5</pre>
+
+  <p>Die command-Definition enthält zwei Direktiven</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>command_name: dies ist ein Kurzname, der den Befehl identifiziert. Lassen Sie uns <span class="emphasis"><em>check_sample</em></span>
+      benutzen</p>
+    </li>
+<li class="listitem">
+      <p>command_line: hier definieren Sie den auszuführenden Befehl. Sie könnten den Befehl angeben, den Sie auf der Kommandozeile
+      benutzen, aber das wäre zu unflexibel. Normalerweise ändert sich das Plugin-Verzeichnis (/usr/local/icinga/libexec) nicht, so dass wir eine
+      <a class="link" href="macrolist.html#macrolist-user">$USERn$</a>-Variable benutzen können, die in der resource.cfg definiert werden. Die IP-Adresse
+      ändert sich von Host zu Host. Es gibt das Makro <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a>, das wir dafür nutzen
+      können. Die Werte der Optionen können sich ändern, so dass auch sie flexibel sein sollten. Das könnte zu folgender Definition
+      führen:</p>
+    </li>
+</ul></div>
+
+  <pre class="programlisting"> define command{ 
+    command_name check_sample
+    command_line $USER1$/sample-plugin.pl -H $HOSTADDRESS$ -a $ARG1$ -p $ARG2$ -n $ARG3$
+    }</pre>
+
+  <p>Dann müssen wir die check_command-Direktive definieren, die Teil der Host-/Service-Definition ist. Es beginnt mit dem Kurznamen
+  gefolgt von den Argumenten, die jeweils durch Ausrufezeichen voneinander getrennt sind:</p>
+
+  <pre class="programlisting"> check_command check_sample!argument1!parameter!5</pre>
+
+  <p>Wie Sie sehen, wird die IP-Adresse nicht angegeben, denn sie wird aus der Host-Definition genommen.</p>
+
+  <p>Prüfen Sie die Konfiguration mit "/etc/init.d/icinga show-errors" und bereinigen Sie eventuelle Fehler, bevor Sie Icinga mit
+  "/etc/init.d/icinga restart" neu starten. Warten Sie, bis das Objekt geprüft wurde und betrachten Sie die Status-Details. Vielleicht gibt
+  es Fehler.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>"...resulted in a return code of 127"</p>
+
+      <p>Das bedeutet, dass das Plugin nicht an der angegebenen Position gefunden wurde oder innerhalb des Plugins eine Datei aufgerufen
+      wurde, die nicht gefunden wurde. Wenn Sie $USERn$-Makros beim Aufruf des Plugins benutzen, dann stellen Sie sicher, dass das Makros
+      wirklich auf die Position verweist, wo das Plugin zu finden ist (ist das Makro in resource.cfg definiert?). Benachrichtigungsbefehle
+      rufen oft ein Mail-Programm auf. Stellen Sie sicher, dass der Pfad zum Mail-Programm korrekt ist.</p>
+    </li>
+<li class="listitem">
+      <p>"...resulted in a return code of 13"</p>
+
+      <p>Meistens handelt es sich um ein Berechtigungsproblem. Der Benutzer kann ggf. das Plugin nicht ausführen bzw. darauf und/oder auf
+      zugehörige Dateien zugreifen. Das kann passieren, wenn Sie als root ein Plugin ausgeführt haben, das temporäre Dateien anlegt. Der
+      Icinga-Benutzer ist nicht berechtigt, diese Dateien zu überschreiben.</p>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Plugin API</strong></span></p>
 
   <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="Nagios Plugin API">hier</a>.</p>
-  <a class="indexterm" name="id5683659"></a>
-  <a class="indexterm" name="id5683675"></a>
-  <a class="indexterm" name="id5683680"></a>
+
+  <a class="indexterm" name="id2552805"></a>
+
+  <a class="indexterm" name="id2552836"></a>
+
+  <a class="indexterm" name="id2552867"></a>
+
+  <a class="indexterm" name="id2552890"></a>
 </div>
 <div class="navfooter">
 <hr>

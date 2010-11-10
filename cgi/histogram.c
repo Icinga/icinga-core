@@ -180,7 +180,6 @@ int end_day=1;
 int end_month=1;
 int end_year=2000;
 
-int display_type=DISPLAY_NO_HISTOGRAM;
 extern int content_type;
 int input_type=GET_INPUT_NONE;
 int timeperiod_type=TIMEPERIOD_LAST24HOURS;
@@ -200,9 +199,6 @@ int graph_statetypes=GRAPH_HARD_STATETYPES;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
-
-char *host_name="";
-char *svc_description="";
 
 gdImagePtr histogram_image=0;
 int color_white=0;
@@ -224,6 +220,18 @@ int image_width=900;
 int image_height=320;
 
 int total_buckets=96;
+
+int display_type=DISPLAY_NO_HISTOGRAM;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name="";
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc="";
+char *service_filter=NULL;
 
 int CGI_ID=HISTOGRAM_CGI_ID;
 
@@ -351,13 +359,13 @@ int main(int argc, char **argv){
 #ifdef USE_TRENDS
 				printf("<a href='%s?host=%s",TRENDS_CGI,url_encode(host_name));
 #endif
-				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View Trends For This Service</a><BR>\n",url_encode(svc_description),t1,t2,(assume_state_retention==TRUE)?"yes":"no");
+				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View Trends For This Service</a><BR>\n",url_encode(service_desc),t1,t2,(assume_state_retention==TRUE)?"yes":"no");
 				printf("<a href='%s?host=%s",AVAIL_CGI,url_encode(host_name));
-				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s&show_log_entries'>View Availability Report For This Service</a><BR>\n",url_encode(svc_description),t1,t2,(assume_state_retention==TRUE)?"yes":"no");
+				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s&show_log_entries'>View Availability Report For This Service</a><BR>\n",url_encode(service_desc),t1,t2,(assume_state_retention==TRUE)?"yes":"no");
 				printf("<A HREF='%s?host=%s&",HISTORY_CGI,url_encode(host_name));
-				printf("service=%s'>View History For This Service</A><BR>\n",url_encode(svc_description));
+				printf("service=%s'>View History For This Service</A><BR>\n",url_encode(service_desc));
 				printf("<A HREF='%s?host=%s&",NOTIFICATIONS_CGI,url_encode(host_name));
-				printf("service=%s'>View Notifications For This Service</A><BR>\n",url_encode(svc_description));
+				printf("service=%s'>View Notifications For This Service</A><BR>\n",url_encode(service_desc));
 		                }
 
 			printf("</TD></TR>\n");
@@ -375,7 +383,7 @@ int main(int argc, char **argv){
 		        temp_host=find_host(host_name);
 
 		        /* find the service */
-		        temp_service=find_service(host_name,svc_description);
+		        temp_service=find_service(host_name,service_desc);
 
 			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 			if(display_type==DISPLAY_HOST_HISTOGRAM)
@@ -412,7 +420,7 @@ int main(int argc, char **argv){
 			printf("<input type='hidden' name='t2' value='%lu'>\n",(unsigned long)t2);
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(host_name));
 			if(display_type==DISPLAY_SERVICE_HISTOGRAM)
-				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(svc_description));
+				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(service_desc));
 
 
 			printf("<tr><td CLASS='optBoxItem' valign=top align=left>Report period:</td><td CLASS='optBoxItem' valign=top align=left>Assume state retention:</td></tr>\n");
@@ -531,7 +539,7 @@ int main(int argc, char **argv){
 			is_authorized=FALSE;
 	        }
 	else if(display_type==DISPLAY_SERVICE_HISTOGRAM){
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,service_desc);
 		if(temp_service==NULL || is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			is_authorized=FALSE;
 	        }
@@ -555,7 +563,7 @@ int main(int argc, char **argv){
 			printf("<IMG SRC='%s?createimage&t1=%lu&t2=%lu",HISTOGRAM_CGI,(unsigned long)t1,(unsigned long)t2);
 			printf("&host=%s",url_encode(host_name));
 			if(display_type==DISPLAY_SERVICE_HISTOGRAM)
-				printf("&service=%s",url_encode(svc_description));
+				printf("&service=%s",url_encode(service_desc));
 			printf("&breakdown=");
 			if(breakdown_type==BREAKDOWN_MONTHLY)
 				printf("monthly");
@@ -795,7 +803,7 @@ int main(int argc, char **argv){
 			printf("<form method=\"GET\" action=\"%s\">\n",HISTOGRAM_CGI);
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(host_name));
 			if(display_type==DISPLAY_SERVICE_HISTOGRAM)
-				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(svc_description));
+				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(service_desc));
 
 			printf("<tr><td class='reportSelectSubTitle' align=right>Report Period:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
@@ -1018,9 +1026,9 @@ int process_cgivars(void){
 				break;
 			        }
 
-			if((svc_description=(char *)strdup(variables[x]))==NULL)
-				svc_description="";
-			strip_html_brackets(svc_description);
+			if((service_desc=(char *)strdup(variables[x]))==NULL)
+				service_desc="";
+			strip_html_brackets(service_desc);
 
 			display_type=DISPLAY_SERVICE_HISTOGRAM;
 		        }
@@ -1479,7 +1487,7 @@ void graph_all_histogram_data(void){
         temp_host=find_host(host_name);
 
         /* find the service */
-        temp_service=find_service(host_name,svc_description);
+        temp_service=find_service(host_name,service_desc);
 
 
 #ifdef DEBUG
@@ -2125,7 +2133,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 	char *input=NULL;
 	char *input2=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
-	char entry_svc_description[MAX_INPUT_BUFFER];
+	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *temp_buffer;
 	time_t time_stamp;
 	mmapfile *thefile;
@@ -2221,10 +2229,10 @@ void scan_log_file_for_archived_state_data(char *filename){
 				
 				/* get service description */
 				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_svc_description,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_svc_description));
-				entry_svc_description[sizeof(entry_svc_description)-1]='\x0';
+				strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
+				entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
 
-				if(strcmp(svc_description,entry_svc_description))
+				if(strcmp(service_desc,entry_service_desc))
 					continue;
 
 				/* skip soft states if necessary */

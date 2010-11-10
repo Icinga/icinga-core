@@ -10,11 +10,11 @@ use FindBin qw($Bin);
 chdir $Bin or die "Cannot chdir";
 
 my $topdir = "$Bin/..";
-my $nagios = "$topdir/base/icinga";
+my $icinga = "$topdir/base/icinga";
 my $etc = "$Bin/etc";
 my $precache = "$Bin/var/objects.precache";
 
 plan tests => 1;
 
-my $output = `$nagios -v "$etc/icinga-no-service.cfg"`;
+my $output = `$icinga -v "$etc/icinga-no-service.cfg"`;
 like( $output, "/Error: There are no services defined!/", "Correct error for no services" );

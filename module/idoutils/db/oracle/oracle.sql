@@ -1639,6 +1639,8 @@ CREATE INDEX loge_time_idx on logentries(logentry_time);
 -- CREATE INDEX sched_d_t_start_time_idx on scheduleddowntime(scheduled_start_time);
 -- CREATE INDEX sched_d_t_end_time_idx on scheduleddowntime(scheduled_end_time);
 
+-- statehistory
+CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on statehistory(instance_id, object_id, state_type, state_time);
 
 -- -----------------------------------------
 -- triggers/sequences

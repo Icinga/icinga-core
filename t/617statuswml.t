@@ -22,18 +22,18 @@ my $expected;
 
 plan tests => 5;
 
-$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING="nodaemoncheck&ping=127.0.0.1%3Becho+this+should+not+get+here" $statuswml`;
+$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING="nodaemoncheck&ping=127.0.0.1%3Becho+this+should+not+get+here" $statuswml`;
 unlike( $output, "/this should not get here/", "Check that security error does not exist" );
 like( $output, qr%<p>Invalid host name/ip</p>% );
 
-$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING="nodaemoncheck&traceroute=127.0.0.1%3Becho+this+should+not+get+here" $statuswml`;
+$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING="nodaemoncheck&traceroute=127.0.0.1%3Becho+this+should+not+get+here" $statuswml`;
 unlike( $output, "/this should not get here/", "Check that security error does not exist" );
 like( $output, qr%<p>Invalid host name/ip</p>% );
 
-$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING="nodaemoncheck&ping=127.0.0.1" $statuswml`;
+$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING="nodaemoncheck&ping=127.0.0.1" $statuswml`;
 like( $output, qr%<b>Results For Ping Of 127.0.0.1:</b><br/>%, "Works correctly for valid address for ping" );
 
 # Don't run this test below, because it actually invokes traceroute
-#$output = `NAGIOS_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING=nodaemoncheck&"traceroute=127.0.0.1" $statuswml`;
+#$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REQUEST_METHOD=GET QUERY_STRING=nodaemoncheck&"traceroute=127.0.0.1" $statuswml`;
 #like( $output, qr%<b>Results For Traceroute To 127.0.0.1:</b><br/>%, "... and traceroute" );
 

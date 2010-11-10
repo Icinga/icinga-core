@@ -17,7 +17,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.2.0
+Version: 1.3.0
 Release: 1%{?dist}
 License: GPL
 Group: Applications/System
@@ -28,6 +28,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires: gcc
 BuildRequires: gd-devel > 1.8
+BuildRequires: httpd
 BuildRequires: zlib-devel
 BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
@@ -130,6 +131,7 @@ Documentation for %{name}
     install-api \
     DESTDIR="%{buildroot}" \
     INSTALL_OPTS="" \
+    INSTALL_OPTS_WEB="" \
     COMMAND_OPTS="" \
     INIT_OPTS=""
 
@@ -241,6 +243,7 @@ fi
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
 %{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
+%{_bindir}/log2ido
 %{_bindir}/idomod.o
 
 %files api
@@ -250,6 +253,14 @@ fi
 
 
 %changelog
+* Wed Nov 03 2010 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.3.0-1
+- prepared 1.3.0, added log2ido for idoutils install
+
+* Mon Oct 25 2010 Christoph Maser <cmaser@gmx.de> - 1.2.1-1
+- update for release 1.2.1
+- add build dep for httpd
+- set INSTALL_OPTS_WEB=""
+
 * Thu Sep 30 2010 Christoph Maser <cmaser@gmx.de> - 1.2.0-1
 - update for release 1.2.0
 

@@ -118,9 +118,6 @@ float horizontal_spacing=DEFAULT_HORIZONTAL_SPACING;
 float node_width=DEFAULT_NODE_WIDTH;
 float node_height=DEFAULT_NODE_WIDTH;	/* should be the same as the node width */
 
-char *host_name="all";
-int show_all_hosts=TRUE;
-
 int use_textures=TRUE;
 int use_text=TRUE;
 int use_links=TRUE;
@@ -130,6 +127,18 @@ int layout_method=LAYOUT_USER_SUPPLIED;
 int coordinates_were_specified=FALSE;   /* were drawing coordinates specified with extended host info entries? */
 
 extern int daemon_check;
+
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name="all";
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 
 int CGI_ID=STATUSWRL_CGI_ID;
 

@@ -41,6 +41,18 @@ extern int    enable_splunk_integration;
 extern int    showlog_initial_state;
 extern int    showlog_current_state;
 
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
+
 int process_cgivars(void);
 
 authdata current_authdata;

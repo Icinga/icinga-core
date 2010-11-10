@@ -1,8 +1,40 @@
 #######################
-Icinga 1.2.x Change Log
+Icinga 1.3.x Change Log
 #######################
 
-1.2.1 - ??/??/2010
+1.3.0 - 16/02/2011
+
+ENHANCEMENTS
+* classic ui: add instance hostname to html title #954
+* classic ui: use the signal-colour red more economically in tac.css stylesheet (Joachim Raber) #868
+* classic ui: add attribute based authorization based on Shibboleth (Tibor Vago, NIIF) #909
+* classic ui: add config expander urls to extinfo.cgi for active checks and eventhandlers (Jochen Bern) #965
+* classic ui: add collapse the display filter part on status.cgi #923
+* classic ui: add tabfriendly titles, enabled by default (Jochen Bern) #975
+
+* idoutils: add index to table icinga_statehistory for usage in reporting module #957
+
+FIXES
+* core: base/utils: Refactor my_fcopy() (Andreas Ericsson) #427
+* core: base/nebmods: Replace local file-copy hack with my_fdcopy() (Andreas Ericsson) #424
+* core: force my_free() macro users to end the statement with a semi-colon (Andreas Ericsson) #927
+* core: fix problem with extra whitespace in command definition and ePN (Jason Young) #918
+* core: fix NOTIFICATIONTYPE MACRO never became CUSTOM (Alexey Dvoryanchikov) #950
+
+* classic ui: change servicestatus letter color to default black, not grey #946
+* classic ui: fix waste of cpu in status summary (TomTom) #933
+* classic ui: fix config.cgi start page wrong "command cxpansion" url (Alexey Dvoryanchikov) #951
+* classic ui: do not allow url_encode returning empty string on Solaris (Ethan Galstad, Ton Voon) #924
+* classic ui: fix object values in utf8 are displayed incorrectly in the web interface (Alexey Dvoryanchikov) #952
+* classic ui: make html header w3c conform #952
+* classic ui: fix typo for css attribute in extinfo.cgi (Ton Voon) #963
+* classic ui: fix whitespace escaping in html urls (Jochen Bern) #965
+* classic ui: fix config expander printing [SP] instead of [WS] (Jochen Bern) #965
+
+* install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
+* install: add log2ido for adding archived logs onto socket/rdbms #926
+
+1.2.1 - 25/10/2010
 
 ENHANCEMENTS:
 * core: fix initscript, no error when stopping stale lock (OMD patch) #897
