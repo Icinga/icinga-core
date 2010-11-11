@@ -76,7 +76,7 @@ extern servicestatus *servicestatus_list;
 #define DISPLAY_SERVICEGROUPS           2
 
 #define STYLE_OVERVIEW			0
-#define STYLE_DETAIL			1
+#define STYLE_SERVICE_DETAIL		1
 #define STYLE_SUMMARY			2
 #define STYLE_GRID			3
 #define STYLE_HOST_DETAIL		4
@@ -408,14 +408,14 @@ int main(void){
 
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=%s&style=detail'>View Service Status Detail For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=%s&style=overview'>View Status Overview For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
 					printf("<a href='%s?servicegroup=%s&style=summary'>View Status Summary For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=%s&style=grid'>View Service Status Grid For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
 
-				if(group_style_type==STYLE_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL)
 					printf("<a href='%s?servicegroup=all&style=detail'>View Service Status Detail For All Service Groups</a><br>\n",STATUS_CGI);
 				if(group_style_type==STYLE_OVERVIEW)
 					printf("<a href='%s?servicegroup=all&style=overview'>View Status Overview For All Service Groups</a><br>\n",STATUS_CGI);
@@ -428,11 +428,11 @@ int main(void){
 			else{
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=all&style=detail'>View Service Status Detail For All Service Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=all&style=overview'>View Status Overview For All Service Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
 					printf("<a href='%s?servicegroup=all&style=summary'>View Status Summary For All Service Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=all&style=grid'>View Service Status Grid For All Service Groups</a><br>\n",STATUS_CGI);
 			        }
 
@@ -440,7 +440,7 @@ int main(void){
 		else{
 			if(show_all_hostgroups==FALSE){
 
-				if(group_style_type==STYLE_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=detail'>View Service Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
 				if(group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=hostdetail'>View Host Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
@@ -453,25 +453,25 @@ int main(void){
 
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=detail'>View Service Status Detail For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
 					printf("<a href='%s?hostgroup=%s&style=hostdetail'>View Host Status Detail For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=overview'>View Status Overview For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=summary'>View Status Summary For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=grid'>View Status Grid For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
 		                }
 			else{
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=detail'>View Service Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
 					printf("<a href='%s?hostgroup=all&style=hostdetail'>View Host Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=overview'>View Status Overview For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=summary'>View Status Summary For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=grid'>View Status Grid For All Host Groups</a><br>\n",STATUS_CGI);
 		                }
 	                }
@@ -732,7 +732,7 @@ int process_cgivars(void){
 			if(!strcmp(variables[x],"overview"))
 				group_style_type=STYLE_OVERVIEW;
 			else if(!strcmp(variables[x],"detail"))
-				group_style_type=STYLE_DETAIL;
+				group_style_type=STYLE_SERVICE_DETAIL;
 			else if(!strcmp(variables[x],"summary"))
 				group_style_type=STYLE_SUMMARY;
 			else if(!strcmp(variables[x],"grid"))
@@ -740,7 +740,7 @@ int process_cgivars(void){
 			else if(!strcmp(variables[x],"hostdetail"))
 				group_style_type=STYLE_HOST_DETAIL;
 			else
-				group_style_type=STYLE_DETAIL;
+				group_style_type=STYLE_SERVICE_DETAIL;
 		        }
 
 		/* we found the sort type argument */
@@ -819,6 +819,7 @@ void show_service_status_totals(void){
 	servicestatus *temp_servicestatus;
 	service *temp_service;
 	host *temp_host;
+	hoststatus *temp_hoststatus;
 	int count_service;
 
 
@@ -827,20 +828,26 @@ void show_service_status_totals(void){
 
 		/* find the host and service... */
 		temp_host=find_host(temp_servicestatus->host_name);
+
+		/* only get count services from hosts witch fit into filter specified */
+		temp_hoststatus=find_hoststatus(temp_host->name);
+		if (!(host_status_types & temp_hoststatus->status ))
+			continue;
+
 		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
 
 		/* make sure user has rights to see this service... */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
 
-		count_service=0;
+		count_service=FALSE;
 
 		if(display_type==DISPLAY_HOSTS && (show_all_hosts==TRUE || !strcmp(host_name,temp_servicestatus->host_name)))
-			count_service=1;
+			count_service=TRUE;
 		else if(display_type==DISPLAY_SERVICEGROUPS && (show_all_servicegroups==TRUE || (is_service_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_service)==TRUE)))
-			count_service=1;
+			count_service=TRUE;
 		else if(display_type==DISPLAY_HOSTGROUPS && (show_all_hostgroups==TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name),temp_host)==TRUE)))
-			count_service=1;
+			count_service=TRUE;
 
 		if(count_service){
 
@@ -865,8 +872,8 @@ void show_service_status_totals(void){
 				total_pending++;
 			else
 				total_ok++;
-		        }
-	        }
+		}
+	}
 
 	total_services=total_ok+total_unknown+total_warning+total_critical+total_pending;
 	total_problems=total_unknown+total_warning+total_critical;
@@ -1023,6 +1030,7 @@ void show_host_status_totals(void){
 	host *temp_host;
 	servicestatus *temp_servicestatus;
 	int count_host;
+	int host_has_service;
 
 
 	/* check the status of all hosts... */
@@ -1030,6 +1038,19 @@ void show_host_status_totals(void){
 
 		/* find the host... */
 		temp_host=find_host(temp_hoststatus->host_name);
+
+		/* Skip hosts with no serivces attached in service detail view */
+		if (group_style_type==STYLE_SERVICE_DETAIL) {
+			host_has_service=FALSE;
+			for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
+				if (!strcmp(temp_host->name,temp_servicestatus->host_name)) {
+					host_has_service=TRUE;
+					break;
+				}
+			}
+			if (host_has_service==FALSE)
+				continue;
+		}
 
 		/* make sure user has rights to view this host */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
@@ -1095,7 +1116,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1113,7 +1134,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1131,7 +1152,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1149,7 +1170,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1192,7 +1213,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1210,7 +1231,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
