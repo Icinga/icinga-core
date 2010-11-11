@@ -30,6 +30,7 @@ FIXES
 * classic ui: fix typo for css attribute in extinfo.cgi (Ton Voon) #963
 * classic ui: fix whitespace escaping in html urls (Jochen Bern) #965
 * classic ui: fix config expander printing [SP] instead of [WS] (Jochen Bern) #965
+* classic ui: fix deleting host comments won't work #994
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926

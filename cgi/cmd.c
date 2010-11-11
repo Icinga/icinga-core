@@ -1737,11 +1737,12 @@ void commit_command_data(int cmd){
 
 			/* see if the user is authorized to issue a command... */
 			is_authorized[x]=FALSE;
-			if (cmd==CMD_ADD_HOST_COMMENT || cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM) {
+			if (cmd==CMD_DEL_HOST_COMMENT && temp_comment!=NULL) {
 				temp_host=find_host(temp_comment->host_name);
 				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
 					is_authorized[x]=TRUE;
-			} else {
+			}
+			if (cmd==CMD_DEL_SVC_COMMENT && temp_comment!=NULL) {
 				temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
 				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
 					is_authorized[x]=TRUE;
@@ -1829,7 +1830,7 @@ void commit_command_data(int cmd){
 
 			cmd_has_objects = TRUE;
 
-			if (commands[x].host_name == NULL)
+			if (commands[x].host_name == NULL || commands[x].description == NULL)
 				continue;
 
 			is_authorized[x]=FALSE;
