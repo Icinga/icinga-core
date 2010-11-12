@@ -38,8 +38,8 @@ extern char   url_js_path[MAX_FILENAME_LENGTH];
 
 extern int    log_rotation_method;
 extern int    enable_splunk_integration;
-extern int    showlog_initial_state;
-extern int    showlog_current_state;
+extern int    showlog_initial_states;
+extern int    showlog_current_states;
 
 int display_type=DISPLAY_HOSTS;
 int show_all_hosts=TRUE;
@@ -315,11 +315,11 @@ int display_log(void){
 
 			strip(input);
 
-			if ( showlog_initial_state==FALSE && (strstr(input,"INITIAL SERVICE STATE:") || strstr(input,"INITIAL HOST STATE:"))){
+			if ( showlog_initial_states==FALSE && (strstr(input,"INITIAL SERVICE STATE:") || strstr(input,"INITIAL HOST STATE:"))){
 				continue;
 			}
 
-			if ( showlog_current_state==FALSE && (strstr(input,"CURRENT SERVICE STATE:") || strstr(input,"CURRENT HOST STATE:"))){
+			if ( showlog_current_states==FALSE && (strstr(input,"CURRENT SERVICE STATE:") || strstr(input,"CURRENT HOST STATE:"))){
 				continue;
 			}
 

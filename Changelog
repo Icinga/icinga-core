@@ -32,6 +32,7 @@ FIXES
 * classic ui: fix config expander printing [SP] instead of [WS] (Jochen Bern) #965
 * classic ui: fix status totals - incoherence between displayed list and values #993
 * classic ui: fix deleting host comments won't work #994
+* classic ui: changed naming of cgi config options for showlog_current_state(s) and showlog_current_state(s) #899
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926
