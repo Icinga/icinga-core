@@ -131,6 +131,8 @@ int		tac_show_only_hard_state=FALSE;
 int		showlog_initial_state=TRUE;
 int		showlog_current_state=TRUE;
 int		tab_friendly_titles=FALSE;
+int		add_notif_num_hard=0;
+int		add_notif_num_soft=0;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -501,6 +503,12 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"tab_friendly_titles"))
 			tab_friendly_titles=(atoi(val)>0)?TRUE:FALSE;
+
+ 		else if(!strcmp(var,"add_notif_num_hard"))
+			add_notif_num_hard=atoi(val);
+
+		else if(!strcmp(var,"add_notif_num_soft"))
+			add_notif_num_soft=atoi(val);
 
 		else if(!strcmp(var,"csv_delimiter"))
 			csv_delimiter=strdup(val);

@@ -425,6 +425,32 @@ tac_show_only_hard_state=0
 tab_friendly_titles=1
 
 
+# SERVICE STATES TO ANNOTATE WITH CURRENT NOTIFICATION NO.
+# Set this to an OR of the service state identifiers for
+# which status.cgi should not only report "Attempts" (e.g.,
+# "3/3" for a HARD non-OK state with max_check_attempts=3)
+# but also the current notification number ("(#0)" if no
+# problem notification has been sent yet, etc.). This is
+# helpful to identify services which switched between
+# different non-OK states a lot, or services which have a
+# first_notification_delay set and are "not yet officially"
+# considered in trouble.
+# Relevant values from include/statusdata.h (look them up
+# *there* if you want to be *really* sure):
+#	#define	SERVICE_PENDING		1
+#	#define	SERVICE_OK		2
+#	#define	SERVICE_WARNING		4
+#	#define	SERVICE_UNKNOWN		8
+#	#define	SERVICE_CRITICAL	16
+# You'll likely want to use add_notif_num_hard=0 (default)
+# or add_notif_num_hard=28 (warn+crit+unknown). There's an
+# add_notif_num_soft affecting services in a SOFT state
+# for sake of completeness, too.
+
+#add_notif_num_hard=28
+#add_notif_num_soft=0
+
+
 
 # SPLUNK INTEGRATION OPTIONS
 # These options allow you to enable integration with Splunk

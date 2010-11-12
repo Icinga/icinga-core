@@ -188,6 +188,9 @@ extern int daemon_check;
 extern int content_type;
 extern int escape_html_tags;
 
+extern int add_notif_num_hard;
+extern int add_notif_num_soft;
+
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
@@ -1863,7 +1866,7 @@ void show_service_detail(void){
 				printf("<TD CLASS='status%s'>%s</TD>\n",status_class,status);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,date_time);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,state_duration);
-				printf("<TD CLASS='status%s'>%d/%d</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts);
+				printf("<TD CLASS='status%s'>%d/%d %s#%d%s</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts,(temp_status->status&(temp_status->state_type==HARD_STATE?add_notif_num_hard:add_notif_num_soft)?"(":"<!-- "),temp_status->current_notification_number,(temp_status->status&(temp_status->state_type==HARD_STATE?add_notif_num_hard:add_notif_num_soft)?")":" -->"));
 				printf("<TD CLASS='status%s' valign='center'>",status_bg_class);
 				if (status_show_long_plugin_output!=FALSE && temp_status->long_plugin_output!=NULL) {
 					printf("%s<BR>%s",html_encode(temp_status->plugin_output,TRUE), html_encode(temp_status->long_plugin_output,TRUE));
