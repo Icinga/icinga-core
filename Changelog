@@ -11,6 +11,7 @@ ENHANCEMENTS
 * classic ui: add config expander urls to extinfo.cgi for active checks and eventhandlers (Jochen Bern) #965
 * classic ui: add collapse the display filter part on status.cgi #923
 * classic ui: add tabfriendly titles, enabled by default (Jochen Bern) #975
+* classic ui: change displayed name for hostgroups and servicegroups in extinfo.cgi
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 

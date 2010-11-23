@@ -365,7 +365,7 @@ int main(void){
 						if(found==TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),temp_hostgroup->group_name);
+						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),html_encode((temp_hostgroup->alias!=NULL)?temp_hostgroup->alias:temp_hostgroup->group_name,TRUE));
 						found=TRUE;
 						}
 					}
@@ -388,7 +388,7 @@ int main(void){
 						if(found==TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),temp_servicegroup->group_name);
+						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),html_encode((temp_servicegroup->alias!=NULL)?temp_servicegroup->alias:temp_servicegroup->group_name,TRUE));
 						found=TRUE;
 					        }
                                         }
