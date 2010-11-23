@@ -12,6 +12,7 @@ ENHANCEMENTS
 * classic ui: add collapse the display filter part on status.cgi #923
 * classic ui: add tabfriendly titles, enabled by default (Jochen Bern) #975
 * classic ui: change displayed name for hostgroups and servicegroups in extinfo.cgi
+* classic ui: adding "Attempt" column to host status detail list
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 
