@@ -26,6 +26,7 @@ FIXES
 * core: force my_free() macro users to end the statement with a semi-colon (Andreas Ericsson) #927
 * core: fix problem with extra whitespace in command definition and ePN (Jason Young) #918
 * core: fix NOTIFICATIONTYPE MACRO never became CUSTOM (Alexey Dvoryanchikov) #950
+* core: only catch SIGSEGV if we're not dumping core and running as a daemon #457
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
