@@ -14,6 +14,7 @@ ENHANCEMENTS
 * classic ui: add service states to annotate with current notification number opt-in (Jochen Bern) #976
 * classic ui: change displayed name for hostgroups and servicegroups in extinfo.cgi
 * classic ui: adding "Attempt" column to host status detail list
+* classic ui: change default url target frame to main #1014 
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 

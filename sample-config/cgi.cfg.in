@@ -334,10 +334,12 @@ persistent_ack_comments=0
 
 # URL TARGET FRAMES
 # These options determine the target frames in which notes and
-# action URLs will open.
+# action URLs will open. Default is main frame.
 
-action_url_target=_blank
-notes_url_target=_blank
+action_url_target=main
+notes_url_target=main
+#action_url_target=_blank
+#notes_url_target=_blank
 
 
 
