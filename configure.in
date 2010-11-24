@@ -699,7 +699,7 @@ if test x$USE_IDOUTILS = xyes; then
 	USE_LIBPQ=no
 
 	AC_ARG_ENABLE(oracle,AC_HELP_STRING([--enable-oracle],[enables idoutils with ocilib and oracle]),USE_OCILIB=$enableval,USE_OCILIB=no)
-	AC_ARG_ENABLE(pgsql,AC_HELP_STRING([--enable-pgsql],[enables idoutils with libpq and pgsql]),USE_LIBPQ=$enableval,USE_LIBPQ=no)
+	AC_ARG_ENABLE(pgsql,AC_HELP_STRING([--enable-pgsql],[!not yet implemented! enables idoutils with libpq and pgsql]),USE_LIBPQ=$enableval,USE_LIBPQ=no)
 
 	if test x$USE_OCILIB = xyes; then
 
@@ -753,10 +753,10 @@ if test x$USE_IDOUTILS = xyes; then
 		LIBPQ_LIB=""
 
                 dnl Optional libpq library and include paths
-                AC_ARG_WITH(pgsql-lib,AC_HELP_STRING([--with-pgsql-lib=DIR],[sets location of the pgsql library]),[
+                AC_ARG_WITH(pgsql-lib,AC_HELP_STRING([--with-pgsql-lib=DIR],[!not yet implemented! sets location of the pgsql library]),[
                         LIBPQ_LIB="-L${withval}"
                         ])
-                AC_ARG_WITH(psql-inc,AC_HELP_STRING([--with-pgsql-inc=DIR],[sets location of the pgsql include files,]),[
+                AC_ARG_WITH(psql-inc,AC_HELP_STRING([--with-pgsql-inc=DIR],[!not yet implemented! sets location of the pgsql include files,]),[
                         LIBPQ_INC="-I${withval}"
                         ])
 

@@ -1392,7 +1392,8 @@ Optional Features:
                           interferes with mk_livestatus neb module
   --enable-idoutils       enables database connectivity using idoutils
   --enable-oracle         enables idoutils with ocilib and oracle
-  --enable-pgsql          enables idoutils with libpq and pgsql
+  --enable-pgsql          !not yet implemented! enables idoutils with libpq
+                          and pgsql
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         Enable built-in libtap for unit-testing (default:
@@ -1429,8 +1430,10 @@ Optional Packages:
   --with-ocilib-lib=DIR   sets location of the ocilib library
   --with-ocilib-inc=DIR   sets location of the ocilib include files,
   --with-oracle-lib=DIR   sets location of the oracle library
-  --with-pgsql-lib=DIR    sets location of the pgsql library
-  --with-pgsql-inc=DIR    sets location of the pgsql include files,
+  --with-pgsql-lib=DIR    !not yet implemented! sets location of the pgsql
+                          library
+  --with-pgsql-inc=DIR    !not yet implemented! sets location of the pgsql
+                          include files,
   --with-dbi-lib=DIR      sets location of the libdbi library
   --with-dbi-inc=DIR      sets location of the libdbi include files,
   --with-perlcache        turns on cacheing of internally compiled Perl

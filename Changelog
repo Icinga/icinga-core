@@ -44,6 +44,8 @@ FIXES
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926
+* install: add hint to configure that libpq is not yet fully working #622
+
 
 1.2.1 - 25/10/2010
 
