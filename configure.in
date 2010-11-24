@@ -1111,6 +1111,28 @@ else
 	echo ""
 fi
 
+dnl set -Wall based on os/compiler
+AC_MSG_CHECKING(for -Wall based on os/compiler)
+        case $host_os in
+                solaris2*|sysv4*)
+                ;;
+                aix4*|aix5*)
+			CFLAGS="-Wall $CFLAGS"
+                ;;
+                freebsd2*)
+                ;;
+                darwin*)
+                ;;
+                linux* | k*bsd*-gnu*)
+			CFLAGS="-Wall $CFLAGS"
+		;;
+                freebsd*)
+			CFLAGS="-Wall $CFLAGS"
+                ;;
+                *)
+                ;;
+        esac
+
 
 AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql)
 
