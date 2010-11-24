@@ -12,6 +12,8 @@ ENHANCEMENTS
 * classic ui: add collapse the display filter part on status.cgi #923
 * classic ui: add tabfriendly titles, enabled by default (Jochen Bern) #975
 * classic ui: add service states to annotate with current notification number opt-in (Jochen Bern) #976
+* classic ui: change displayed name for hostgroups and servicegroups in extinfo.cgi
+* classic ui: adding "Attempt" column to host status detail list
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 
@@ -33,6 +35,7 @@ FIXES
 * classic ui: fix config expander printing [SP] instead of [WS] (Jochen Bern) #965
 * classic ui: fix status totals - incoherence between displayed list and values #993
 * classic ui: fix deleting host comments won't work #994
+* classic ui: changed naming of cgi config options for showlog_current_state(s) and showlog_current_state(s) #899
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926

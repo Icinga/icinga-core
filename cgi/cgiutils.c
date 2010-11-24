@@ -128,8 +128,8 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
-int		showlog_initial_state=TRUE;
-int		showlog_current_state=TRUE;
+int		showlog_initial_states=TRUE;
+int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
 int		add_notif_num_hard=0;
 int		add_notif_num_soft=0;
@@ -495,11 +495,11 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
 
-		else if(!strcmp(var,"showlog_initial_state"))
-			showlog_initial_state=(atoi(val)>0)?TRUE:FALSE;
+		else if(!strcmp(var,"showlog_initial_state") || !strcmp(var,"showlog_initial_states"))
+			showlog_initial_states=(atoi(val)>0)?TRUE:FALSE;
 
-		else if(!strcmp(var,"showlog_current_state"))
-			showlog_current_state=(atoi(val)>0)?TRUE:FALSE;
+		else if(!strcmp(var,"showlog_current_state") || !strcmp(var,"showlog_current_states"))
+			showlog_current_states=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"tab_friendly_titles"))
 			tab_friendly_titles=(atoi(val)>0)?TRUE:FALSE;

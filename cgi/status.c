@@ -2080,6 +2080,7 @@ void show_host_detail(void){
 		printf("%sStatus%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sLast_Check%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sDuration%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sAttempt%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sStatus_Information%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		/* the main list of hosts */
@@ -2095,6 +2096,8 @@ void show_host_detail(void){
 
 		printf("<TH CLASS='status'>Duration&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by state duration (ascending)' TITLE='Sort by state duration (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by state duration time (descending)' TITLE='Sort by state duration time (descending)'></A></TH>",temp_url,SORT_ASCENDING,SORT_STATEDURATION,url_images_path,UP_ARROW_ICON,temp_url,SORT_DESCENDING,SORT_STATEDURATION,url_images_path,DOWN_ARROW_ICON);
 
+		printf("<TH CLASS='status'>Attempt&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by current attempt (ascending)' TITLE='Sort by current attempt (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by current attempt (descending)' TITLE='Sort by current attempt (descending)'></A></TH>",temp_url,SORT_ASCENDING,SORT_CURRENTATTEMPT,url_images_path,UP_ARROW_ICON,temp_url,SORT_DESCENDING,SORT_CURRENTATTEMPT,url_images_path,DOWN_ARROW_ICON);
+		
 		printf("<TH CLASS='status'>Status Information</TH>\n");
 
 		/* Add a checkbox so every host can be checked */
@@ -2106,7 +2109,7 @@ void show_host_detail(void){
 	/* check all hosts... */
 	while(1){
 
-		/* get the next service to display */
+		/* get the next host to display */
 		if(use_sort==TRUE){
 			if(first_entry==TRUE)
 				temp_hostsort=hostsort_list;
@@ -2337,6 +2340,7 @@ void show_host_detail(void){
 				printf("<TD CLASS='status%s'>%s</TD>\n",status_class,status);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,date_time);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,state_duration);
+				printf("<TD CLASS='status%s'>%d/%d</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts);
 				printf("<TD CLASS='status%s' valign='center'>",status_bg_class);
 				if (status_show_long_plugin_output!=FALSE && temp_status->long_plugin_output!=NULL) {
 					printf("%s<BR>%s",html_encode(temp_status->plugin_output,TRUE), html_encode(temp_status->long_plugin_output,TRUE));
@@ -2366,6 +2370,7 @@ void show_host_detail(void){
 				printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,state_duration,csv_data_enclosure,csv_delimiter);
+				printf("%s%d/%d%s%s",csv_data_enclosure,temp_status->current_attempt,temp_status->max_attempts,csv_data_enclosure,csv_delimiter);
 
 				if (status_show_long_plugin_output && temp_status->long_plugin_output!=NULL) {
 					printf("%s%s %s%s",csv_data_enclosure,temp_status->plugin_output,escape_newlines(temp_status->long_plugin_output),csv_data_enclosure);
