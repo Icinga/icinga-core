@@ -12,6 +12,51 @@
 # Description: Icinga is a service monitoring system
 ### END INIT INFO
 
+## definitions ##
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+IcingaBin=@bindir@/icinga
+IcingaCfgFile=@sysconfdir@/icinga.cfg
+IcingaStatusFile=@localstatedir@/status.dat
+IcingaRetentionFile=@localstatedir@/retention.dat
+IcingaCommandFile=@localstatedir@/rw/icinga.cmd
+IcingaVarDir=@localstatedir@
+IcingaRunFile=@lockfile@
+IcingaLockDir=/var/lock/subsys
+IcingaLockFile=icinga
+IcingaUser=@icinga_user@
+IcingaGroup=@icinga_grp@
+IcingaChkFile=@localstatedir@/icinga.chk
+
+# load extra environment variables
+if [ -f /etc/sysconfig/icinga ]; then
+        . /etc/sysconfig/icinga
+fi
+
+
+# Source function library
+# Solaris doesn't have an rc.d directory, so do a test first
+if [ -f /etc/rc.d/init.d/functions ]; then
+        . /etc/rc.d/init.d/functions
+elif [ -f /etc/init.d/functions ]; then
+        . /etc/init.d/functions
+fi
+
+# Check that icinga exists.
+if [ ! -f $IcingaBin ]; then
+    echo "Executable file $IcingaBin not found.  Exiting."
+    exit 1
+fi
+
+# Check that icinga.cfg exists.
+if [ ! -f $IcingaCfgFile ]; then
+    echo "Configuration file $IcingaCfgFile not found.  Exiting."
+    exit 1
+fi
+
+
+## helper functions ##
+
 status_icinga ()
 {
 
@@ -74,42 +119,6 @@ chk_config ()
 	#exit 0
 }
 
-# Source function library
-# Solaris doesn't have an rc.d directory, so do a test first
-if [ -f /etc/rc.d/init.d/functions ]; then
-	. /etc/rc.d/init.d/functions
-elif [ -f /etc/init.d/functions ]; then
-	. /etc/init.d/functions
-fi
-
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-IcingaBin=@bindir@/icinga
-IcingaCfgFile=@sysconfdir@/icinga.cfg
-IcingaStatusFile=@localstatedir@/status.dat
-IcingaRetentionFile=@localstatedir@/retention.dat
-IcingaCommandFile=@localstatedir@/rw/icinga.cmd
-IcingaVarDir=@localstatedir@
-IcingaRunFile=@lockfile@
-IcingaLockDir=/var/lock/subsys
-IcingaLockFile=icinga
-IcingaUser=@icinga_user@
-IcingaGroup=@icinga_grp@
-IcingaChkFile=@localstatedir@/icinga.chk
-
-
-# Check that icinga exists.
-if [ ! -f $IcingaBin ]; then
-    echo "Executable file $IcingaBin not found.  Exiting."
-    exit 1
-fi
-
-# Check that icinga.cfg exists.
-if [ ! -f $IcingaCfgFile ]; then
-    echo "Configuration file $IcingaCfgFile not found.  Exiting."
-    exit 1
-fi
-
 start(){
 	# Check if icinga is already running
 	$0 status > /dev/null
@@ -136,6 +145,8 @@ start(){
 
 }
 
+
+## MAIN ##
 # See how we were called.
 case "$1" in
 

@@ -16,6 +16,8 @@ ENHANCEMENTS
 * classic ui: adding "Attempt" column to host status detail list
 * classic ui: change default url target frame to main #1014 
 
+* install: add sysconfig source to init script #1015
+
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
 
 FIXES
