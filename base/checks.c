@@ -483,6 +483,7 @@ int run_scheduled_service_check(service *svc, int check_options, double latency)
 
 /* forks a child process to run a service check, but does not wait for the service check result */
 int run_async_service_check(service *svc, int check_options, double latency, int scheduled_check, int reschedule_check, int *time_is_valid, time_t *preferred_time){
+	icinga_macros mac;
 	char *raw_command=NULL;
 	char *processed_command=NULL;
 	char *temp_buffer=NULL;
@@ -572,12 +573,12 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	svc->latency=latency;
 
 	/* grab the host and service macro variables */
-	clear_volatile_macros();
-	grab_host_macros(temp_host);
-	grab_service_macros(svc);
+	memset(&mac, 0, sizeof(mac));
+	grab_host_macros(&mac, temp_host);
+	grab_service_macros(&mac, svc);
 
 	/* get the raw command line */
-	get_raw_command_line(svc->check_command_ptr,svc->service_check_command,&raw_command,0);
+	get_raw_command_line_r(&mac, svc->check_command_ptr,svc->service_check_command,&raw_command,0);
 	if(raw_command==NULL){
 		log_debug_info(DEBUGL_CHECKS,0,"Raw check command for service '%s' on host '%s' was NULL - aborting.\n",svc->description,svc->host_name);
 		if(preferred_time)
@@ -587,7 +588,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	}
 
 	/* process any macros contained in the argument */
-	process_macros(raw_command,&processed_command,0);
+	process_macros_r(&mac, raw_command,&processed_command,0);
 	if(processed_command==NULL){
 		log_debug_info(DEBUGL_CHECKS,0,"Processed check command for service '%s' on host '%s' was NULL - aborting.\n",svc->description,svc->host_name);
 		if(preferred_time)
@@ -816,7 +817,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	else if(pid==0){
 
 		/* set environment variables */
-		set_all_macro_environment_vars(TRUE);
+		set_all_macro_environment_vars(&mac, TRUE);
 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
@@ -987,12 +988,12 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		/* NOTE: this code is never reached if large install tweaks are enabled... */
 
 		/* unset environment variables */
-		set_all_macro_environment_vars(FALSE);
+		set_all_macro_environment_vars(&mac, FALSE);
 
 		/* free allocated memory */
 		/* this needs to be done last, so we don't free memory for variables before they're used above */
 		if(free_child_process_memory==TRUE)
-			free_memory();
+			free_memory(&mac);
 
 		/* parent exits immediately - grandchild process is inherited by the INIT process, so we have no zombie problem... */
 		_exit(STATE_OK);
@@ -2803,6 +2804,7 @@ int run_sync_host_check_3x(host *hst, int *check_result_code, int check_options,
 /* run an "alive" check on a host */
 /* on-demand host checks will use this... */
 int execute_sync_host_check_3x(host *hst){
+	icinga_macros mac;
 	int result=STATE_OK;
 	int return_result=HOST_UP;
 	char *processed_command=NULL;
@@ -2846,8 +2848,8 @@ int execute_sync_host_check_3x(host *hst){
 #endif
 
 	/* grab the host macros */
-	clear_volatile_macros();
-	grab_host_macros(hst);
+	memset(&mac, 0, sizeof(mac));
+	grab_host_macros(&mac, hst);
 
 	/* high resolution start time for event broker */
 	gettimeofday(&start_time,NULL);
@@ -2856,14 +2858,18 @@ int execute_sync_host_check_3x(host *hst){
 	time(&hst->last_check);
 
 	/* get the raw command line */
-	get_raw_command_line(hst->check_command_ptr,hst->host_check_command,&raw_command,0);
-	if(raw_command==NULL)
+	get_raw_command_line_r(&mac, hst->check_command_ptr,hst->host_check_command,&raw_command,0);
+	if(raw_command==NULL) {
+		clear_volatile_macros(&mac);
 		return ERROR;
+	}
 
 	/* process any macros contained in the argument */
-	process_macros(raw_command,&processed_command,0);
-	if(processed_command==NULL)
+	process_macros_r(&mac, raw_command,&processed_command,0);
+	if(processed_command==NULL) {
+		clear_volatile_macros(&mac);
 		return ERROR;
+	}
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
@@ -2881,7 +2887,8 @@ int execute_sync_host_check_3x(host *hst){
 	my_free(hst->perf_data);
 
 	/* run the host check command */
-	result=my_system(processed_command,host_check_timeout,&early_timeout,&exectime,&temp_plugin_output,MAX_PLUGIN_OUTPUT_LENGTH);
+	result=my_system(&mac, processed_command,host_check_timeout,&early_timeout,&exectime,&temp_plugin_output,MAX_PLUGIN_OUTPUT_LENGTH);
+	clear_volatile_macros(&mac);
 
 	/* if the check timed out, report an error */
 	if(early_timeout==TRUE){
@@ -3032,6 +3039,7 @@ int run_scheduled_host_check_3x(host *hst, int check_options, double latency){
 /* perform an asynchronous check of a host */
 /* scheduled host checks will use this, as will some checks that result from on-demand checks... */
 int run_async_host_check_3x(host *hst, int check_options, double latency, int scheduled_check, int reschedule_check, int *time_is_valid, time_t *preferred_time){
+	icinga_macros mac;
 	char *raw_command=NULL;
 	char *processed_command=NULL;
 	struct timeval start_time,end_time;
@@ -3104,19 +3112,21 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	hst->latency=latency;
 
 	/* grab the host macro variables */
-	clear_volatile_macros();
-	grab_host_macros(hst);
+	memset(&mac, 0, sizeof(mac));
+	grab_host_macros(&mac, hst);
 
 	/* get the raw command line */
-	get_raw_command_line(hst->check_command_ptr,hst->host_check_command,&raw_command,0);
+	get_raw_command_line_r(&mac, hst->check_command_ptr,hst->host_check_command,&raw_command,0);
 	if(raw_command==NULL){
+		clear_volatile_macros(&mac);
 		log_debug_info(DEBUGL_CHECKS,0,"Raw check command for host '%s' was NULL - aborting.\n",hst->name);
 		return ERROR;
 	}
 
 	/* process any macros contained in the argument */
-	process_macros(raw_command,&processed_command,0);
+	process_macros_r(&mac, raw_command,&processed_command,0);
 	if(processed_command==NULL){
+		clear_volatile_macros(&mac);
 		log_debug_info(DEBUGL_CHECKS,0,"Processed check command for host '%s' was NULL - aborting.\n",hst->name);
 		return ERROR;
 	}
@@ -3224,7 +3234,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	else if(pid==0){
 
 		/* set environment variables */
-		set_all_macro_environment_vars(TRUE);
+		set_all_macro_environment_vars(&mac, TRUE);
 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
@@ -3317,12 +3327,12 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		/* NOTE: this code is never reached if large install tweaks are enabled... */
 
 		/* unset environment variables */
-		set_all_macro_environment_vars(FALSE);
+		set_all_macro_environment_vars(&mac, FALSE);
 
 		/* free allocated memory */
 		/* this needs to be done last, so we don't free memory for variables before they're used above */
 		if(free_child_process_memory==TRUE)
-			free_memory();
+			free_memory(&mac);
 
 		/* parent exits immediately - grandchild process is inherited by the INIT process, so we have no zombie problem... */
 		_exit(STATE_OK);
@@ -3330,6 +3340,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 
 	/* else the parent should wait for the first child to return... */
 	else if(pid>0){
+		clear_volatile_macros(&mac);
 
 		log_debug_info(DEBUGL_CHECKS,2,"Host check is executing in child process (pid=%lu)\n",(unsigned long)pid);
 

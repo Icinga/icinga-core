@@ -34,8 +34,6 @@ extern char	*log_file;
 extern char     *temp_file;
 extern char	*log_archive_path;
 
-extern char     *macro_x[MACRO_X_COUNT];
-
 extern host     *host_list;
 extern service  *service_list;
 
@@ -258,6 +256,7 @@ int log_service_event(service *svc){
 	char *processed_buffer=NULL;
 	unsigned long log_options=0L;
 	host *temp_host=NULL;
+	icinga_macros mac;
 
 	/* don't log soft errors if the user doesn't want to */
 	if(svc->state_type==SOFT_STATE && !log_service_retries)
@@ -278,10 +277,11 @@ int log_service_event(service *svc){
 		return ERROR;
 
 	/* grab service macros */
-	clear_volatile_macros();
-	grab_host_macros(temp_host);
-	grab_service_macros(svc);
+	memset(&mac, 0, sizeof(mac));
+	grab_host_macros(&mac, temp_host);
+	grab_service_macros(&mac, svc);
 
+	/* XXX: replace the macro madness with some simple helpers instead */
 	/* either log only the output, or if enabled, add long_output */
 	if(log_long_plugin_output==TRUE && svc->long_plugin_output!=NULL) {
 		asprintf(&temp_buffer,"SERVICE ALERT: %s;%s;$SERVICESTATE$;$SERVICESTATETYPE$;$SERVICEATTEMPT$;%s\\n%s\n",svc->host_name,svc->description,(svc->plugin_output==NULL)?"":svc->plugin_output,svc->long_plugin_output);
@@ -289,7 +289,9 @@ int log_service_event(service *svc){
 		asprintf(&temp_buffer,"SERVICE ALERT: %s;%s;$SERVICESTATE$;$SERVICESTATETYPE$;$SERVICEATTEMPT$;%s\n",svc->host_name,svc->description,(svc->plugin_output==NULL)?"":svc->plugin_output);
 	}
 
-	process_macros(temp_buffer,&processed_buffer,0);
+	process_macros_r(&mac, temp_buffer,&processed_buffer,0);
+	clear_host_macros(&mac);
+	clear_service_macros(&mac);
 
 	write_to_all_logs(processed_buffer,log_options);
 
@@ -297,7 +299,7 @@ int log_service_event(service *svc){
 	my_free(processed_buffer);
 
 	return OK;
-	}
+}
 
 
 /* write a host problem/recovery to the log file */
@@ -305,10 +307,11 @@ int log_host_event(host *hst){
 	char *temp_buffer=NULL;
 	char *processed_buffer=NULL;
 	unsigned long log_options=0L;
+	icinga_macros mac;
 
 	/* grab the host macros */
-	clear_volatile_macros();
-	grab_host_macros(hst);
+	memset(&mac, 0, sizeof(mac));
+	grab_host_macros(&mac, hst);
 
 	/* get the log options */
 	if(hst->current_state==HOST_DOWN)
@@ -318,7 +321,7 @@ int log_host_event(host *hst){
 	else
 		log_options=NSLOG_HOST_UP;
 
-
+	/* XXX: replace the macro madness with some simple helpers instead */
 	/* either log only the output, or if enabled, add long_output */
 	if(log_long_plugin_output==TRUE && hst->long_plugin_output!=NULL) {
 		asprintf(&temp_buffer,"HOST ALERT: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\\n%s\n",hst->name,(hst->plugin_output==NULL)?"":hst->plugin_output,hst->long_plugin_output);
@@ -326,44 +329,49 @@ int log_host_event(host *hst){
 		asprintf(&temp_buffer,"HOST ALERT: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\n",hst->name,(hst->plugin_output==NULL)?"":hst->plugin_output);
 	}
 
-	process_macros(temp_buffer,&processed_buffer,0);
+	process_macros_r(&mac, temp_buffer,&processed_buffer,0);
 
 	write_to_all_logs(processed_buffer,log_options);
 
+	clear_host_macros(&mac);
 	my_free(temp_buffer);
 	my_free(processed_buffer);
 
 	return OK;
-        }
+}
 
 
 /* logs host states */
 int log_host_states(int type, time_t *timestamp){
 	char *temp_buffer=NULL;
 	char *processed_buffer=NULL;
-	host *temp_host=NULL;;
+	host *temp_host=NULL;
+	icinga_macros mac;
 
 	/* bail if we shouldn't be logging initial states */
 	if(type==INITIAL_STATES && log_initial_states==FALSE)
 		return OK;
 
+	memset(&mac, 0, sizeof(mac));
+
 	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 
 		/* grab the host macros */
-		clear_volatile_macros();
-		grab_host_macros(temp_host);
+		grab_host_macros(&mac, temp_host);
 
 		asprintf(&temp_buffer,"%s HOST STATE: %s;$HOSTSTATE$;$HOSTSTATETYPE$;$HOSTATTEMPT$;%s\n",(type==INITIAL_STATES)?"INITIAL":"CURRENT",temp_host->name,(temp_host->plugin_output==NULL)?"":temp_host->plugin_output);
-		process_macros(temp_buffer,&processed_buffer,0);
+		process_macros_r(&mac, temp_buffer,&processed_buffer,0);
 
 		write_to_all_logs_with_timestamp(processed_buffer,NSLOG_INFO_MESSAGE,timestamp);
+
+		clear_host_macros(&mac);
 
 		my_free(temp_buffer);
 		my_free(processed_buffer);
 	        }
 
 	return OK;
-        }
+}
 
 
 /* logs service states */
@@ -371,11 +379,14 @@ int log_service_states(int type, time_t *timestamp){
 	char *temp_buffer=NULL;
 	char *processed_buffer=NULL;
 	service *temp_service=NULL;
-	host *temp_host=NULL;;
+	host *temp_host=NULL;
+	icinga_macros mac;
 
 	/* bail if we shouldn't be logging initial states */
 	if(type==INITIAL_STATES && log_initial_states==FALSE)
 		return OK;
+
+	memset(&mac, 0, sizeof(mac));
 
 	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
@@ -384,14 +395,17 @@ int log_service_states(int type, time_t *timestamp){
 			continue;
 
 		/* grab service macros */
-		clear_volatile_macros();
-		grab_host_macros(temp_host);
-		grab_service_macros(temp_service);
+		grab_host_macros(&mac, temp_host);
+		grab_service_macros(&mac, temp_service);
 
+		/* XXX: macro madness */
 		asprintf(&temp_buffer,"%s SERVICE STATE: %s;%s;$SERVICESTATE$;$SERVICESTATETYPE$;$SERVICEATTEMPT$;%s\n",(type==INITIAL_STATES)?"INITIAL":"CURRENT",temp_service->host_name,temp_service->description,temp_service->plugin_output);
-		process_macros(temp_buffer,&processed_buffer,0);
+		process_macros_r(&mac, temp_buffer,&processed_buffer,0);
 
 		write_to_all_logs_with_timestamp(processed_buffer,NSLOG_INFO_MESSAGE,timestamp);
+
+		clear_host_macros(&mac);
+		clear_service_macros(&mac);
 
 		my_free(temp_buffer);
 		my_free(processed_buffer);

@@ -45,7 +45,6 @@ extern char	*p1_file;
 extern char     *nagios_user;
 extern char     *nagios_group;
 
-extern char     *macro_x[MACRO_X_COUNT];
 extern char     *macro_user[MAX_USER_MACROS];
 
 extern char     *global_host_event_handler;
@@ -269,7 +268,9 @@ int read_main_config_file(char *main_config_file){
 	char *modptr=NULL;
 	char *argptr=NULL;
 	DIR *tmpdir=NULL;
+	icinga_macros *mac;
 
+	mac = get_global_macros();
 
 	/* open the config file for reading */
 	if((thefile=mmap_fopen(main_config_file))==NULL){
@@ -278,9 +279,9 @@ int read_main_config_file(char *main_config_file){
 		}
 
 	/* save the main config file macro */
-	my_free(macro_x[MACRO_MAINCONFIGFILE]);
-	if((macro_x[MACRO_MAINCONFIGFILE]=(char *)strdup(main_config_file)))
-		strip(macro_x[MACRO_MAINCONFIGFILE]);
+	my_free(mac->x[MACRO_MAINCONFIGFILE]);
+	if((mac->x[MACRO_MAINCONFIGFILE]=(char *)strdup(main_config_file)))
+		strip(mac->x[MACRO_MAINCONFIGFILE]);
 
 	/* process all lines in the config file */
 	while(1){
@@ -333,8 +334,8 @@ int read_main_config_file(char *main_config_file){
 		if(!strcmp(variable,"resource_file")){
 
 			/* save the macro */
-			my_free(macro_x[MACRO_RESOURCEFILE]);
-			macro_x[MACRO_RESOURCEFILE]=(char *)strdup(value);
+			my_free(mac->x[MACRO_RESOURCEFILE]);
+			mac->x[MACRO_RESOURCEFILE]=(char *)strdup(value);
 
 			/* process the resource file */
 			read_resource_file(value);
@@ -352,8 +353,8 @@ int read_main_config_file(char *main_config_file){
 			log_file=(char *)strdup(value);
 
 			/* save the macro */
-			my_free(macro_x[MACRO_LOGFILE]);
-			macro_x[MACRO_LOGFILE]=(char *)strdup(log_file);
+			my_free(mac->x[MACRO_LOGFILE]);
+			mac->x[MACRO_LOGFILE]=(char *)strdup(log_file);
 			}
 
 		else if(!strcmp(variable,"debug_level"))
@@ -389,8 +390,8 @@ int read_main_config_file(char *main_config_file){
 			command_file=(char *)strdup(value);
 
 			/* save the macro */
-			my_free(macro_x[MACRO_COMMANDFILE]);
-			macro_x[MACRO_COMMANDFILE]=(char *)strdup(value);
+			my_free(mac->x[MACRO_COMMANDFILE]);
+			mac->x[MACRO_COMMANDFILE]=(char *)strdup(value);
 			}
 
 		else if(!strcmp(variable,"temp_file")){
@@ -405,8 +406,8 @@ int read_main_config_file(char *main_config_file){
 			temp_file=(char *)strdup(value);
 
 			/* save the macro */
-			my_free(macro_x[MACRO_TEMPFILE]);
-			macro_x[MACRO_TEMPFILE]=(char *)strdup(temp_file);
+			my_free(mac->x[MACRO_TEMPFILE]);
+			mac->x[MACRO_TEMPFILE]=(char *)strdup(temp_file);
 			}
 
 		else if(!strcmp(variable,"temp_path")){
@@ -433,8 +434,8 @@ int read_main_config_file(char *main_config_file){
 			        }
 
 			/* save the macro */
-			my_free(macro_x[MACRO_TEMPPATH]);
-			macro_x[MACRO_TEMPPATH]=(char *)strdup(temp_path);
+			my_free(mac->x[MACRO_TEMPPATH]);
+			mac->x[MACRO_TEMPPATH]=(char *)strdup(temp_path);
 			}
 
 		else if(!strcmp(variable,"check_result_path")){
@@ -509,15 +510,15 @@ int read_main_config_file(char *main_config_file){
 		else if(!strcmp(variable,"admin_email")){
 
 			/* save the macro */
-			my_free(macro_x[MACRO_ADMINEMAIL]);
-			macro_x[MACRO_ADMINEMAIL]=(char *)strdup(value);
+			my_free(mac->x[MACRO_ADMINEMAIL]);
+			mac->x[MACRO_ADMINEMAIL]=(char *)strdup(value);
 		        }
 
 		else if(!strcmp(variable,"admin_pager")){
 
 			/* save the macro */
-			my_free(macro_x[MACRO_ADMINPAGER]);
-			macro_x[MACRO_ADMINPAGER]=(char *)strdup(value);
+			my_free(mac->x[MACRO_ADMINPAGER]);
+			mac->x[MACRO_ADMINPAGER]=(char *)strdup(value);
 		        }
 
         else if(!strcmp(variable,"use_daemon_log")){

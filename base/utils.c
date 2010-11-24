@@ -56,12 +56,8 @@ extern char	*p1_file;
 extern char     *nagios_user;
 extern char     *nagios_group;
 
-extern char     *macro_x[MACRO_X_COUNT];
 extern char     *macro_x_names[MACRO_X_COUNT];
-extern char     *macro_argv[MAX_COMMAND_ARGUMENTS];
 extern char     *macro_user[MAX_USER_MACROS];
-extern char     *macro_contactaddress[MAX_CONTACT_ADDRESSES];
-extern char     *macro_ondemand;
 extern customvariablesmember *macro_custom_host_vars;
 extern customvariablesmember *macro_custom_service_vars;
 extern customvariablesmember *macro_custom_contact_vars;
@@ -292,7 +288,7 @@ extern int errno;
 
 
 /* executes a system command - used for notifications, event handlers, etc. */
-int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **output,int max_output_length){
+int my_system(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,double *exectime,char **output,int max_output_length){
         pid_t pid=0;
 	int status=0;
 	int result=0;
@@ -436,7 +432,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 		setpgid(0,0);
 
 		/* set environment variables */
-		set_all_macro_environment_vars(TRUE);
+		set_all_macro_environment_vars(mac, TRUE);
 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
@@ -547,13 +543,13 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 		alarm(0);
 
 		/* clear environment variables */
-		set_all_macro_environment_vars(FALSE);
+		set_all_macro_environment_vars(mac, FALSE);
 
 #ifndef DONT_USE_MEMORY_PERFORMANCE_TWEAKS
 		/* free allocated memory */
 		/* this needs to be done last, so we don't free memory for variables before they're used above */
 		if(free_child_process_memory==TRUE)
-			free_memory();
+			free_memory(mac);
 #endif
 
 		_exit(result);
@@ -674,7 +670,7 @@ int my_system(char *cmd,int timeout,int *early_timeout,double *exectime,char **o
 
 
 /* given a "raw" command, return the "expanded" or "whole" command line */
-int get_raw_command_line(command *cmd_ptr, char *cmd, char **full_command, int macro_options){
+int get_raw_command_line_r(icinga_macros *mac, command *cmd_ptr, char *cmd, char **full_command, int macro_options){
 	char temp_arg[MAX_COMMAND_BUFFER]="";
 	char *arg_buffer=NULL;
 	register int x=0;
@@ -682,10 +678,10 @@ int get_raw_command_line(command *cmd_ptr, char *cmd, char **full_command, int m
 	register int arg_index=0;
 	register int escaped=FALSE;
 
-	log_debug_info(DEBUGL_FUNCTIONS,0,"get_raw_command_line()\n");
+	log_debug_info(DEBUGL_FUNCTIONS,0,"get_raw_command_line_r()\n");
 
 	/* clear the argv macros */
-	clear_argv_macros();
+	clear_argv_macros(mac);
 
 	/* make sure we've got all the requirements */
 	if(cmd_ptr==NULL || full_command==NULL)
@@ -696,6 +692,7 @@ int get_raw_command_line(command *cmd_ptr, char *cmd, char **full_command, int m
 	/* get the full command line */
 	*full_command=(char *)strdup((cmd_ptr->command_line==NULL)?"":cmd_ptr->command_line);
 
+	/* XXX: Crazy indent */
 	/* get the command arguments */
 	if(cmd!=NULL){
 
@@ -737,18 +734,27 @@ int get_raw_command_line(command *cmd_ptr, char *cmd, char **full_command, int m
 
 			/* ADDED 01/29/04 EG */
 			/* process any macros we find in the argument */
-			process_macros(temp_arg,&arg_buffer,macro_options);
+			process_macros_r(mac, temp_arg,&arg_buffer,macro_options);
 
-			macro_argv[x]=arg_buffer;
+			mac->argv[x]=arg_buffer;
 			}
 		}
 
 	log_debug_info(DEBUGL_COMMANDS|DEBUGL_CHECKS|DEBUGL_MACROS,2,"Expanded Command Output: %s\n",*full_command);
 
 	return OK;
-        }
+}
 
+/*
+ * This function modifies the global macro struct and is thus not
+ * threadsafe
+ */
+int get_raw_command_line(command *cmd_ptr, char *cmd, char **full_command, int macro_options){
+	icinga_macros *mac;
 
+	mac = get_global_macros();
+	return get_raw_command_line_r(mac, cmd_ptr, cmd, full_command, macro_options);
+}
 
 
 
@@ -4299,14 +4305,14 @@ void cleanup(void){
 #endif
 
 	/* free all allocated memory - including macros */
-	free_memory();
+	free_memory(get_global_macros());
 
 	return;
 	}
 
 
 /* free the memory allocated to the linked lists */
-void free_memory(void){
+void free_memory(icinga_macros *mac){
 	timed_event *this_event=NULL;
 	timed_event *next_event=NULL;
 	register int x=0;
@@ -4355,13 +4361,13 @@ void free_memory(void){
 
 	/* free memory associated with macros */
 	for(x=0;x<MAX_COMMAND_ARGUMENTS;x++)
-		my_free(macro_argv[x]);
+		my_free(mac->argv[x]);
 
 	for(x=0;x<MAX_USER_MACROS;x++)
 		my_free(macro_user[x]);
 
 	for(x=0;x<MACRO_X_COUNT;x++)
-		my_free(macro_x[x]);
+		my_free(mac->x[x]);
 
 	free_macrox_names();
 
@@ -4386,7 +4392,7 @@ void free_memory(void){
 	my_free(log_archive_path);
 
 	return;
-	}
+}
 
 
 /* free a notification list that was created */

@@ -30,6 +30,8 @@
 #include "../include/cgiauth.h"
 #include "../include/getcgi.h"
 
+static icinga_macros *mac;
+
 extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
 extern char   url_docs_path[MAX_FILENAME_LENGTH];
@@ -108,6 +110,7 @@ void print_expand_input(int type){
 
 int main(void){
 	int result=OK;
+	mac = get_global_macros();
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -454,7 +457,7 @@ void display_hosts(void){
 	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next) if (((*to_expand)=='\0')||!strcmp(to_expand,temp_host->name)){
 
 		/* grab macros */
-		grab_host_macros(temp_host);
+		grab_host_macros(mac, temp_host);
 
 		if(odd){
 			odd=0;
@@ -690,7 +693,7 @@ void display_hosts(void){
 		if(temp_host->icon_image==NULL)
 			printf("<TD CLASS='%s'>&nbsp;</TD>",bg_class);
 		else{
-			process_macros(temp_host->icon_image,&processed_string,0);
+			process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 			printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>",bg_class,url_logo_images_path,processed_string,html_encode(temp_host->icon_image,FALSE));
 			free(processed_string);
 			}
@@ -1199,7 +1202,7 @@ void display_services(void){
 		if (((*to_expand)=='\0')||(!strcmp(to_expand,temp_service->host_name))||(!strcmp(to_expand,temp_service->description))){
 
 		/* grab macros */
-		grab_service_macros(temp_service);
+		grab_service_macros(mac, temp_service);
 
 		if(odd){
 			odd=0;
@@ -1415,7 +1418,7 @@ void display_services(void){
 		if(temp_service->icon_image==NULL)
 			printf("<TD CLASS='%s'>&nbsp;</TD>",bg_class);
 		else{
-			process_macros(temp_service->icon_image,&processed_string,0);
+			process_macros_r(mac, temp_service->icon_image,&processed_string,0);
 			printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>",bg_class,url_logo_images_path,processed_string,html_encode(temp_service->icon_image,FALSE));
 			free(processed_string);
 			}

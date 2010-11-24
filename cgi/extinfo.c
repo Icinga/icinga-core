@@ -30,6 +30,8 @@
 #include "../include/downtime.h"
 #include "../include/statusdata.h"
 
+static icinga_macros *mac;
+
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 #include "../include/statsprofiler.h"
@@ -160,6 +162,7 @@ int main(void){
 	service *temp_service=NULL;
 	servicegroup *temp_servicegroup=NULL;
 
+	mac = get_global_macros();
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -249,11 +252,11 @@ int main(void){
 		if(display_type==DISPLAY_HOST_INFO || display_type==DISPLAY_SERVICE_INFO){
 
 			temp_host=find_host(host_name);
-			grab_host_macros(temp_host);
+			grab_host_macros(mac, temp_host);
 
 			if(display_type==DISPLAY_SERVICE_INFO){
 				temp_service=find_service(host_name,service_desc);
-				grab_service_macros(temp_service);
+				grab_service_macros(mac, temp_service);
 			}
 
 			/* write some Javascript helper functions */
@@ -277,13 +280,13 @@ int main(void){
 		/* find the hostgroup */
 		else if(display_type==DISPLAY_HOSTGROUP_INFO){
 			temp_hostgroup=find_hostgroup(hostgroup_name);
-			grab_hostgroup_macros(temp_hostgroup);
+			grab_hostgroup_macros(mac, temp_hostgroup);
 		}
 
 		/* find the servicegroup */
 		else if(display_type==DISPLAY_SERVICEGROUP_INFO){
 			temp_servicegroup=find_servicegroup(servicegroup_name);
-			grab_servicegroup_macros(temp_servicegroup);
+			grab_servicegroup_macros(mac, temp_servicegroup);
 		}
 
 		if((display_type==DISPLAY_HOST_INFO && temp_host!=NULL) || (display_type==DISPLAY_SERVICE_INFO && temp_host!=NULL && temp_service!=NULL) || (display_type==DISPLAY_HOSTGROUP_INFO && temp_hostgroup!=NULL) || (display_type==DISPLAY_SERVICEGROUP_INFO && temp_servicegroup!=NULL)){
@@ -406,7 +409,7 @@ int main(void){
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV>\n",temp_hostgroup->group_name);
 
 				if(temp_hostgroup->notes!=NULL){
-					process_macros(temp_hostgroup->notes,&processed_string,0);
+					process_macros_r(mac, temp_hostgroup->notes,&processed_string,0);
 					printf("<p>%s</p>",processed_string);
 					free(processed_string);
 				}
@@ -418,7 +421,7 @@ int main(void){
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV>\n",temp_servicegroup->group_name);
 
 				if(temp_servicegroup->notes!=NULL){
-					process_macros(temp_servicegroup->notes,&processed_string,0);
+					process_macros_r(mac, temp_servicegroup->notes,&processed_string,0);
 					printf("<p>%s</p>",processed_string);
 					free(processed_string);
 				}
@@ -427,7 +430,7 @@ int main(void){
 			if(display_type==DISPLAY_SERVICE_INFO){
 				if(temp_service->icon_image!=NULL){
 					printf("<img src='%s",url_logo_images_path);
-					process_macros(temp_service->icon_image,&processed_string,0);
+					process_macros_r(mac, temp_service->icon_image,&processed_string,0);
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' border=0 alt='%s' title='%s'><BR CLEAR=ALL>",(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt,(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt);
@@ -435,7 +438,7 @@ int main(void){
 				if(temp_service->icon_image_alt!=NULL)
 					printf("<font size=-1><i>( %s )</i></font>\n",temp_service->icon_image_alt);
 				if(temp_service->notes!=NULL){
-					process_macros(temp_service->notes,&processed_string,0);
+					process_macros_r(mac, temp_service->notes,&processed_string,0);
 					printf("<p>%s</p>\n",processed_string);
 					free(processed_string);
 				}
@@ -444,7 +447,7 @@ int main(void){
 			if(display_type==DISPLAY_HOST_INFO){
 				if(temp_host->icon_image!=NULL){
 					printf("<img src='%s",url_logo_images_path);
-					process_macros(temp_host->icon_image,&processed_string,0);
+					process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' border=0 alt='%s' title='%s'><BR CLEAR=ALL>",(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -452,7 +455,7 @@ int main(void){
 				if(temp_host->icon_image_alt!=NULL)
 					printf("<font size=-1><i>( %s )</i><font>\n",temp_host->icon_image_alt);
 				if(temp_host->notes!=NULL){
-					process_macros(temp_host->notes,&processed_string,0);
+					process_macros_r(mac, temp_host->notes,&processed_string,0);
 					printf("<p>%s</p>\n",processed_string);
 					free(processed_string);
 				}
@@ -468,7 +471,7 @@ int main(void){
 
 			printf("<TABLE BORDER='0'>\n");
 			if(temp_host->action_url!=NULL && strcmp(temp_host->action_url,"")){
-				process_macros(temp_host->action_url,&processed_string,0);
+				process_macros_r(mac, temp_host->action_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
@@ -480,7 +483,7 @@ int main(void){
 				free(processed_string);
 		        }
 			if(temp_host->notes_url!=NULL && strcmp(temp_host->notes_url,"")){
-				process_macros(temp_host->notes_url,&processed_string,0);
+				process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
@@ -500,7 +503,7 @@ int main(void){
 			printf("<TABLE BORDER='0'><TR><TD ALIGN='right'>\n");
 
 			if(temp_service->action_url!=NULL && strcmp(temp_service->action_url,"")){
-				process_macros(temp_service->action_url,&processed_string,0);
+				process_macros_r(mac, temp_service->action_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<A HREF='");
 				printf("%s",processed_string);
@@ -510,7 +513,7 @@ int main(void){
 				free(processed_string);
 		        }
 			if(temp_service->notes_url!=NULL && strcmp(temp_service->notes_url,"")){
-				process_macros(temp_service->notes_url,&processed_string,0);
+				process_macros_r(mac, temp_service->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<A HREF='");
 				printf("%s",processed_string);
