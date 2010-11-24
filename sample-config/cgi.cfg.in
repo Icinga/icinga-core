@@ -47,7 +47,7 @@ url_html_path=@htmurl@
 # adding custom stylesheets in another location.
 # If not set, the default location will be used.
 
-url_stylesheets_path=@htmlurl@/stylesheets
+url_stylesheets_path=@htmurl@/stylesheets
 
 
 
