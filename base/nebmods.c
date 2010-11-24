@@ -575,12 +575,13 @@ int neb_make_callbacks(int callback_type, void *data){
 	log_debug_info(DEBUGL_EVENTBROKER,1,"Making callbacks (type %d)...\n",callback_type);
 
 	/* make the callbacks... */
-	for(temp_callback=neb_callback_list[callback_type];temp_callback!=NULL;temp_callback=next_callback){
+	for(temp_callback=neb_callback_list[callback_type];temp_callback;temp_callback=next_callback){
 		/* Save temp_callback->next because if the callback function de-registers itself temp_callback's */
 		/* pointer isn't guaranteed to be usable anymore (neb_deregister_callback will free() it) */
 		next_callback=temp_callback->next;
 		callbackfunc=temp_callback->callback_func;
 		cbresult=callbackfunc(callback_type,data);
+		temp_callback = next_callback;
 
 		total_callbacks++;
 		log_debug_info(DEBUGL_EVENTBROKER,2,"Callback #%d (type %d) return code = %d\n",total_callbacks,callback_type,cbresult);
