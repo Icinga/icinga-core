@@ -410,8 +410,10 @@ int read_cgi_config_file(char *filename){
 			snprintf(url_logo_images_path,sizeof(url_logo_images_path),"%slogos/",url_images_path);
 			url_logo_images_path[sizeof(url_logo_images_path)-1]='\x0';
 
+			/*
 			snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
 			url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+			*/
 
 			snprintf(url_js_path,sizeof(url_js_path),"%sjs/",url_html_path);
 			url_js_path[sizeof(url_js_path)-1]='\x0';
@@ -420,6 +422,16 @@ int read_cgi_config_file(char *filename){
 			url_media_path[sizeof(url_media_path)-1]='\x0';
 		        }
 
+		else if(!strcmp(var,"url_stylesheets_path")){
+
+                        strncpy(url_stylesheets_path,val,sizeof(url_stylesheets_path));
+                        url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+
+                        strip(url_stylesheets_path);
+                        if(url_stylesheets_path[strlen(url_stylesheets_path)-1]!='/' && (strlen(url_stylesheets_path) < sizeof(url_stylesheets_path)-1))
+                                strcat(url_stylesheets_path,"/");
+
+			}
 		else if(!strcmp(var,"service_critical_sound"))
 			service_critical_sound=strdup(val);
 
@@ -522,11 +534,18 @@ int read_cgi_config_file(char *filename){
 	free(input);
 	mmap_fclose(thefile);
 
+	/* check if stylesheet path was set */
+	if(!strcmp(url_stylesheets_path,"")){
+		snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
+		url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+	}
+
 	if(!strcmp(main_config_file,""))
 		return ERROR;
 	else
 		return OK;
-        }
+}
+
 
 
 

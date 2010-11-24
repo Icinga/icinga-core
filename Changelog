@@ -14,7 +14,8 @@ ENHANCEMENTS
 * classic ui: add service states to annotate with current notification number opt-in (Jochen Bern) #976
 * classic ui: change displayed name for hostgroups and servicegroups in extinfo.cgi
 * classic ui: adding "Attempt" column to host status detail list
-* classic ui: change default url target frame to main #1014 
+* classic ui: change default url target frame to main #1014
+* classic ui: add url_stylesheet_path to cgi.cfg to allow custom css path #898
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959

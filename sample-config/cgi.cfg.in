@@ -41,6 +41,16 @@ url_html_path=@htmurl@
 
 
 
+# URL STYLESHEETS PATH
+# This option allows to define an url stylesheet path other than the
+# default ($url_html_path/stylesheets). This will be useful when
+# adding custom stylesheets in another location.
+# If not set, the default location will be used.
+
+url_stylesheets_path=@htmlurl@/stylesheets
+
+
+
 # CONTEXT-SENSITIVE HELP
 # This option determines whether or not a context-sensitive
 # help icon will be displayed for most of the CGIs.
