@@ -82,8 +82,8 @@ int check_time_against_period(time_t time_t1, timeperiod *timeperiod) {}
 time_t get_next_log_rotation_time(void) {}
 int handle_scheduled_downtime_by_id(unsigned long long1) {}
 #ifndef TEST_LOGGING
-+int log_host_event(host *hst) {}
-+int log_service_event(service *svc) {}
+int log_host_event(host *hst) {}
+int log_service_event(service *svc) {}
 int rotate_log_file(time_t time_t1) {}
 void logit(int int1,int int2,const char *fmt, ...) {}
 #endif
@@ -110,6 +110,13 @@ char *debug_file="";
 int debug_level;
 int debug_verbosity;
 unsigned long max_debug_file_size;
+
+/* Icinga special */
+int use_daemon_log;
+int use_syslog_local_facility;
+int syslog_local_facility;
+int log_current_states;
+int log_long_plugin_output;
 
 int grab_host_macros(icinga_macros *mac, host *hst) {}
 
