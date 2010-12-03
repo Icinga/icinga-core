@@ -486,7 +486,6 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	icinga_macros mac;
 	char *raw_command=NULL;
 	char *processed_command=NULL;
-	char *temp_buffer=NULL;
 	struct timeval start_time,end_time;
 	pid_t pid=0;
 	int fork_error=FALSE;
@@ -499,9 +498,6 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	double old_latency=0.0;
 	dbuf checkresult_dbuf;
 	int dbuf_chunk=1024;
-	int pipefds[2], chldstatus, i;
-	char *s , *p;
-
 #ifdef USE_EVENT_BROKER
 	int neb_result=OK;
 #endif
@@ -509,10 +505,10 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	char fname[512]="";
 	char *args[5]={"",DO_CLEAN, "", "", NULL };
 	char *perl_plugin_output=NULL;
+	char *temp_buffer=NULL;
 	char *args3=NULL;
 	SV *plugin_hndlr_cr=NULL; /* perl.h holds typedef struct */
-	STRLEN n_a ;
-	int count ;
+	int count;
 	int use_epn=FALSE;
 #ifdef aTHX
 	dTHX;
@@ -786,7 +782,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 			/* free check result memory */
 			free_check_result(&check_result_info);
 
-			return ERROR;
+			return OK;
 		}
 		else{
 
@@ -1024,13 +1020,6 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		/* don't do this if large install tweaks are enabled - we'll clean up children in event loop */
 		if(child_processes_fork_twice==TRUE)
 			wait_result=waitpid(pid,NULL,0);
-
-		/* removed 06/28/2000 - caused problems under AIX */
-		/*
-		result=WEXITSTATUS(wait_result);
-		if(result==STATE_UNKNOWN)
-			fork_error=TRUE;
-		 */
 	}
 
 	/* see if we were able to run the check... */

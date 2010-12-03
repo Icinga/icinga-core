@@ -712,7 +712,6 @@ void print_help_box(char *content) {
 /* templates for the different form elements */
 void print_form_element(int element,int cmd) {
 	time_t t;
-	char start_time[MAX_DATETIME_LENGTH];
 	char buffer[MAX_INPUT_BUFFER];
 
 	switch(element) {
@@ -1482,7 +1481,7 @@ void request_command_data(int cmd){
 		print_form_element(PRINT_AUTHOR,cmd);
 		print_form_element(PRINT_COMMENT_BOX,cmd);
 
-		snprintf(help_text,sizeof(help_text),"Define here if this downtime should get triggerd by another downtime of a particular host or service.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"Define here if this downtime should get triggerd by another downtime of a particular %s.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
 		help_text[sizeof(help_text)-1]='\x0';
 
 		printf("<tr id=\"trigger_select\"><td class=\"objectDescription descriptionleft\">Triggered By:");
@@ -1529,7 +1528,7 @@ void request_command_data(int cmd){
 		print_form_element(PRINT_FIXED_FLEXIBLE_TYPE,cmd);
 
 		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME){
-			snprintf(help_text,sizeof(help_text),"Define here what should be done with the child hosts of these hosts.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+			snprintf(help_text,sizeof(help_text),"Define here what should be done with the child hosts of these hosts.");
 			help_text[sizeof(help_text)-1]='\x0';
 
 			printf("<tr><td class=\"objectDescription descriptionleft\">Child Hosts:");
@@ -2663,7 +2662,7 @@ int commit_command(int cmd){
 		break;
 	}
 
-	return;
+	return OK;
 }
 
 /* write a command entry to the command file */

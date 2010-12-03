@@ -272,6 +272,8 @@ int parse_authorization_config_file(char* filename, authdata* authinfo){
 	}
 
 	free(roles_tmp);
+
+	return OK;
 }
 
 /* set default authz permissions */
@@ -299,8 +301,6 @@ int set_authz_permissions(char* permission, authdata* authinfo){
 /* check if user is authorized to view information about a particular host */
 int is_authorized_for_host(host *hst, authdata *authinfo){
 	contact *temp_contact;
-	char *temp_role1=NULL;
-	char *temp_role2=NULL;
 	char *host_list=NULL;
 	char *host_list2=NULL;
 	char *list_tmp=NULL;

@@ -803,10 +803,13 @@ char *pop_lifo(void){
 /**********************************************************
  *************** COMMON HEADER AND FOOTER *****************
  **********************************************************/
- 
+
 void document_header(int cgi_id, int use_stylesheet){
 	char date_time[MAX_DATETIME_LENGTH];
-	char *cgi_name, *cgi_css, *cgi_title, *cgi_body_class=NULL;
+	char *cgi_name=NULL;
+	char *cgi_css=NULL;
+	char *cgi_title=NULL;
+	char *cgi_body_class=NULL;
 	time_t expire_time;
 	time_t current_time;
 

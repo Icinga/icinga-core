@@ -3386,24 +3386,8 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 	unsigned long time_indeterminate;
 	avail_subject *temp_subject;
         host *temp_host;
-        service *temp_service;
-        int days, hours, minutes, seconds;
-        char time_indeterminate_string[48];
-        char time_determinate_string[48];
-        char total_time_string[48];
         char *csv_header[34];
-        double percent_time_ok=0.0;
-        double percent_time_warning=0.0;
-        double percent_time_unknown=0.0;
-        double percent_time_critical=0.0;
         double percent_time_indeterminate=0.0;
-        double percent_time_ok_known=0.0;
-        double percent_time_warning_known=0.0;
-        double percent_time_unknown_known=0.0;
-        double percent_time_critical_known=0.0;
-        char time_up_string[48];
-        char time_down_string[48];
-        char time_unreachable_string[48];
 	double percent_time_up=0.0;
 	double percent_time_down=0.0;
 	double percent_time_unreachable=0.0;
@@ -3423,19 +3407,7 @@ void display_specific_hostgroup_availability(hostgroup *hg){
         double percent_time_down_unscheduled_known=0.0;
         double percent_time_unreachable_scheduled_known=0.0;
         double percent_time_unreachable_unscheduled_known=0.0;
-        char time_up_scheduled_string[48];
-        char time_up_unscheduled_string[48];
-        char time_down_scheduled_string[48];
-        char time_down_unscheduled_string[48];
-        char time_unreachable_scheduled_string[48];
-        char time_unreachable_unscheduled_string[48];
 
-        char time_indeterminate_scheduled_string[48];
-        char time_indeterminate_unscheduled_string[48];
-        double percent_time_indeterminate_scheduled=0.0;
-        double percent_time_indeterminate_unscheduled=0.0;
-        char time_indeterminate_notrunning_string[48];
-        char time_indeterminate_nodata_string[48];
         double percent_time_indeterminate_notrunning=0.0;
         double percent_time_indeterminate_nodata=0.0;
 
@@ -3446,15 +3418,6 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 	double average_percent_time_unreachable=0.0;
 	double average_percent_time_unreachable_known=0.0;
 	double average_percent_time_indeterminate=0.0;
-
-        double average_percent_time_ok=0.0;
-        double average_percent_time_ok_known=0.0;
-        double average_percent_time_unknown=0.0;
-        double average_percent_time_unknown_known=0.0;
-        double average_percent_time_warning=0.0;
-        double average_percent_time_warning_known=0.0;
-        double average_percent_time_critical=0.0;
-        double average_percent_time_critical_known=0.0;
 
 	int current_subject=0;
 	int i=0;
@@ -3651,51 +3614,6 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 	} else if(content_type==CSV_CONTENT){
 		/* average */
 		/* left for future rework */
-		/*
-		printf("%sAverage%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_up,csv_data_enclosure,csv_delimiter);
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_up_known,csv_data_enclosure,csv_delimiter);
-
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_down,csv_data_enclosure,csv_delimiter);
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_down_known,csv_data_enclosure,csv_delimiter);
-
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_unreachable,csv_data_enclosure,csv_delimiter);
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_unreachable_known,csv_data_enclosure,csv_delimiter);
-
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%2.3f%%%s%s",csv_data_enclosure,0.0,csv_data_enclosure,csv_delimiter);
-                                printf("%s%lu%s%s",    csv_data_enclosure,0,csv_data_enclosure,csv_delimiter);
-
-		printf("%s%2.3f%%%s%s",csv_data_enclosure,average_percent_time_indeterminate,csv_data_enclosure,csv_delimiter);
-		*/
-
 	}
 
 	return;
@@ -3731,14 +3649,6 @@ void display_specific_servicegroup_availability(servicegroup *sg){
         avail_subject *temp_subject;
         service *temp_service;
 	host *temp_host;
-        int days, hours, minutes, seconds;
-        char time_ok_string[48];
-        char time_warning_string[48];
-        char time_unknown_string[48];
-        char time_critical_string[48];
-        char time_indeterminate_string[48];
-        char time_determinate_string[48];
-        char total_time_string[48];
         double percent_time_ok=0.0;
         double percent_time_warning=0.0;
         double percent_time_unknown=0.0;
@@ -3749,34 +3659,23 @@ void display_specific_servicegroup_availability(servicegroup *sg){
         double percent_time_unknown_known=0.0;
         double percent_time_critical_known=0.0;
 
-        char time_critical_scheduled_string[48];
-        char time_critical_unscheduled_string[48];
         double percent_time_critical_scheduled=0.0;
         double percent_time_critical_unscheduled=0.0;
         double percent_time_critical_scheduled_known=0.0;
         double percent_time_critical_unscheduled_known=0.0;
-        char time_unknown_scheduled_string[48];
-        char time_unknown_unscheduled_string[48];
         double percent_time_unknown_scheduled=0.0;
         double percent_time_unknown_unscheduled=0.0;
         double percent_time_unknown_scheduled_known=0.0;
         double percent_time_unknown_unscheduled_known=0.0;
-        char time_warning_scheduled_string[48];
-        char time_warning_unscheduled_string[48];
         double percent_time_warning_scheduled=0.0;
         double percent_time_warning_unscheduled=0.0;
         double percent_time_warning_scheduled_known=0.0;
         double percent_time_warning_unscheduled_known=0.0;
-        char time_ok_scheduled_string[48];
-        char time_ok_unscheduled_string[48];
         double percent_time_ok_scheduled=0.0;
         double percent_time_ok_unscheduled=0.0;
         double percent_time_ok_scheduled_known=0.0;
         double percent_time_ok_unscheduled_known=0.0;
 
-        char time_up_string[48];
-        char time_down_string[48];
-        char time_unreachable_string[48];
         double percent_time_up=0.0;
         double percent_time_down=0.0;
         double percent_time_unreachable=0.0;
@@ -3795,12 +3694,6 @@ void display_specific_servicegroup_availability(servicegroup *sg){
         double percent_time_down_unscheduled_known=0.0;
         double percent_time_unreachable_scheduled_known=0.0;
         double percent_time_unreachable_unscheduled_known=0.0;
-        char time_up_scheduled_string[48];
-        char time_up_unscheduled_string[48];
-        char time_down_scheduled_string[48];
-        char time_down_unscheduled_string[48];
-        char time_unreachable_scheduled_string[48];
-        char time_unreachable_unscheduled_string[48];
 
         double average_percent_time_up=0.0;
         double average_percent_time_up_known=0.0;
@@ -3821,12 +3714,6 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 
         int current_subject=0;
 
-        char time_indeterminate_scheduled_string[48];
-        char time_indeterminate_unscheduled_string[48];
-        double percent_time_indeterminate_scheduled=0.0;
-        double percent_time_indeterminate_unscheduled=0.0;
-        char time_indeterminate_notrunning_string[48];
-        char time_indeterminate_nodata_string[48];
         double percent_time_indeterminate_notrunning=0.0;
         double percent_time_indeterminate_nodata=0.0;
 

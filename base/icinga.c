@@ -294,8 +294,6 @@ int main(int argc, char **argv, char **env){
 	char datestring[256];
 	icinga_macros *mac;
 
-	mac = get_global_macros();
-
 #ifdef HAVE_GETOPT_H
 	int option_index=0;
 	static struct option long_options[]=
@@ -314,6 +312,8 @@ int main(int argc, char **argv, char **env){
 		{0,0,0,0}
 	};
 #endif
+
+	mac = get_global_macros();
 
 	/* make sure we have the correct number of command line arguments */
 	if(argc<2)
