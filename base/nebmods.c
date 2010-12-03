@@ -161,18 +161,20 @@ int neb_load_all_modules(void){
 	return OK;
         }
 
-
+#ifndef PATH_MAX
+# define PATH_MAX 4096
+#endif
 /* load a particular module */
 int neb_load_module(nebmodule *mod){
 	int (*initfunc)(int,char *,void *);
 	int *module_version_ptr=NULL;
-	char *output_file=NULL;
+	char output_file[PATH_MAX];
 	int dest_fd, result=OK;
 
 
 	if(mod==NULL || mod->filename==NULL)
 		return ERROR;
-	
+
 	/* don't reopen the module */
 	if(mod->is_currently_loaded==TRUE)
 		return OK;
@@ -181,7 +183,7 @@ int neb_load_module(nebmodule *mod){
 	if(mod->should_be_loaded==FALSE)
 		return ERROR;
 
-	/********** 
+	/**********
 	   Using dlopen() is great, but a real danger as-is.  The problem with loaded modules is that if you overwrite the original file (e.g. using 'mv'),
 	   you do not alter the inode of the original file.  Since the original file/module is memory-mapped in some fashion, Icinga will segfault the next
 	   time an event broker call is directed to one of the module's callback functions.  This is extremely problematic when it comes to upgrading NEB
@@ -190,9 +192,9 @@ int neb_load_module(nebmodule *mod){
 	   the original file/inode for callbacks.  This is not an ideal solution.   A better one is to delete the module file once it is loaded by dlopen().
 	   This prevents other processed from unintentially overwriting the original file, which would cause Icinga to crash.  However, if we delete the file
 	   before anyone else can muck with it, things should be good.  'lsof' shows that a deleted file is still referenced by the kernel and callback
-	   functions continue to work once the module has been loaded.  Long story, but this took quite a while to figure out, as there isn't much 
+	   functions continue to work once the module has been loaded.  Long story, but this took quite a while to figure out, as there isn't much
 	   of anything I could find on the subject other than some sketchy info on similar problems on HP-UX.  Hopefully this will save future coders some time.
-	   So... the trick is to (1) copy the module to a temp file, (2) dlopen() the temp file, and (3) immediately delete the temp file. 
+	   So... the trick is to (1) copy the module to a temp file, (2) dlopen() the temp file, and (3) immediately delete the temp file.
 	************/
 
 	/*
@@ -200,14 +202,13 @@ int neb_load_module(nebmodule *mod){
 	 * we re-use the destination file descriptor returned by mkstemp(3),
 	 * which we have to close ourselves.
 	 */
-	asprintf(&output_file,"%s/nebmodXXXXXX",temp_path);
+	snprintf(output_file, sizeof(output_file) - 1, "%s/nebmodXXXXXX",temp_path);
 
 	dest_fd = mkstemp(output_file);
 	result = my_fdcopy(mod->filename, output_file, dest_fd);
 	close(dest_fd);
 	if (result == ERROR) {
 		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Failed to safely copy module '%s'. The module will not be loaded\n", mod->filename);
-		free(output_file);
  		return ERROR;
 	}
 
@@ -239,11 +240,8 @@ int neb_load_module(nebmodule *mod){
 		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Could not delete temporary file '%s' used for module '%s'.  The module will be unloaded: %s\n",output_file,mod->filename,strerror(errno));
 		neb_unload_module(mod,NEBMODULE_FORCE_UNLOAD,NEBMODULE_ERROR_API_VERSION);
 
-		my_free(output_file);
 		return ERROR;
 		}
-
-	my_free(output_file);
 
 	/* find module API version */
 #ifdef USE_LTDL
@@ -251,7 +249,7 @@ int neb_load_module(nebmodule *mod){
 #else
 	module_version_ptr=(int *)dlsym(mod->module_handle,"__neb_api_version");
 #endif
-	
+
 	/* check the module API version */
 	if(module_version_ptr==NULL || ((*module_version_ptr)!=CURRENT_NEB_API_VERSION)){
 
