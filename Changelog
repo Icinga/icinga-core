@@ -17,6 +17,8 @@ ENHANCEMENTS
 * classic ui: change default url target frame to main #1014
 * classic ui: add url_stylesheet_path to cgi.cfg to allow custom css path #898
 
+* core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
+
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959
 
@@ -31,6 +33,9 @@ FIXES
 * core: only catch SIGSEGV if we're not dumping core and running as a daemon #457
 * core: protect against callbacks removing themsevles in nebmods (Andreas Ericsson) #1021
 * core: fix possible validation error with empty hostgroups/servicegroups (Sven-Göran Bergh) #1040
+* core: performance-data handling and checking is now thread-safe so long as embedded perl is not used (Andreas Ericsson) #1022
+* core: children should no longer hang on mutex locks held in parent for localtime() (and similar) calls (Andreas Ericsson) #1039
+* core: debug logging is now properly serialized, using soft-locking with a timeout of 150 milliseconds to avoid multiple threads competing for the privilege to write debug info (Andreas Ericsson) #1035
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
