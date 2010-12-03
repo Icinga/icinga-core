@@ -121,7 +121,7 @@ int obsessive_compulsive_service_check_processor(service *svc){
 	log_debug_info(DEBUGL_CHECKS,2,"Processed obsessive compulsive service processor command line: %s\n",processed_command);
 
 	/* run the command */
-	my_system(&mac, processed_command,ocsp_timeout,&early_timeout,&exectime,NULL,0);
+	my_system_r(&mac, processed_command,ocsp_timeout,&early_timeout,&exectime,NULL,0);
 
 	clear_volatile_macros(&mac);
 
@@ -185,7 +185,7 @@ int obsessive_compulsive_host_check_processor(host *hst){
 	log_debug_info(DEBUGL_CHECKS,2,"Processed obsessive compulsive host processor command line: %s\n",processed_command);
 
 	/* run the command */
-	my_system(&mac, processed_command,ochp_timeout,&early_timeout,&exectime,NULL,0);
+	my_system_r(&mac, processed_command,ochp_timeout,&early_timeout,&exectime,NULL,0);
 	clear_volatile_macros(&mac);
 
 	/* check to see if the command timed out */
@@ -329,7 +329,7 @@ int run_global_service_event_handler(icinga_macros *mac, service *svc){
 #endif
 
 	/* run the command */
-	result=my_system(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
+	result=my_system_r(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
 
 	/* check to see if the event handler timed out */
 	if(early_timeout==TRUE)
@@ -428,7 +428,7 @@ int run_service_event_handler(icinga_macros *mac, service *svc){
 #endif
 
 	/* run the command */
-	result=my_system(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
+	result=my_system_r(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
 
 	/* check to see if the event handler timed out */
 	if(early_timeout==TRUE)
@@ -575,7 +575,7 @@ int run_global_host_event_handler(icinga_macros *mac, host *hst){
 #endif
 
 	/* run the command */
-	result=my_system(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
+	result=my_system_r(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
 
 	/* check for a timeout in the execution of the event handler command */
 	if(early_timeout==TRUE)
@@ -673,7 +673,7 @@ int run_host_event_handler(icinga_macros *mac, host *hst){
 #endif
 
 	/* run the command */
-	result=my_system(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
+	result=my_system_r(mac, processed_command,event_handler_timeout,&early_timeout,&exectime,&command_output,0);
 
 	/* check to see if the event handler timed out */
 	if(early_timeout==TRUE)
