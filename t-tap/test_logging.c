@@ -27,7 +27,6 @@
 char *saved_source;
 char *saved_dest;
 int my_rename(char *source, char *dest) {
-	char *temp = "renamefailure";
 	saved_source = strdup(source);
 	saved_dest = strdup(dest);
 	if (strcmp(source, "renamefailure")==0) {

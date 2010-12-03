@@ -46,6 +46,24 @@
 extern comment *comment_list;
 extern scheduled_downtime *scheduled_downtime_list;
 
+/* Icinga cgiutils.c special */
+char alert_message;
+char *host_name;
+char *host_filter;
+char *hostgroup_name;
+char *service_desc;
+char *servicegroup_name;
+char *service_filter;
+int host_alert;
+int show_all_hosts;
+int show_all_hostgroups;
+int show_all_servicegroups;
+int display_type;
+int overview_columns;
+int max_grid_width;
+int group_style_type;
+int navbar_search;
+
 int main(int argc, char **argv){
 	int result;
 	int c;

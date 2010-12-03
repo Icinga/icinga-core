@@ -158,7 +158,7 @@ define host {
 	alias	host3 test
 	address	192.168.2.3
 	check_period	none
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	notification_period	none
 	initial_state	o
 	check_interval	5.000000
@@ -254,11 +254,45 @@ define service {
 	}
 
 define service {
+	host_name	host2
+	service_description	Uses important check command
+	check_period	none
+	check_command	set_to_stale
+	contacts	icingaadmin
+	notification_period	none
+	initial_state	o
+	check_interval	15.000000
+	retry_interval	1.000000
+	max_check_attempts	5
+	is_volatile	0
+	parallelize_check	1
+	active_checks_enabled	1
+	passive_checks_enabled	1
+	obsess_over_service	1
+	event_handler_enabled	1
+	low_flap_threshold	0.000000
+	high_flap_threshold	0.000000
+	flap_detection_enabled	1
+	flap_detection_options	o,w,u,c
+	freshness_threshold	0
+	check_freshness	0
+	notification_options	u,w,c,r,f,s
+	notifications_enabled	1
+	notification_interval	65.000000
+	first_notification_delay	0.000000
+	stalking_options	n
+	process_perf_data	1
+	failure_prediction_enabled	1
+	retain_status_information	1
+	retain_nonstatus_information	1
+	}
+
+define service {
 	host_name	host3
 	service_description	dependent-service
 	check_period	none
 	check_command	check_me!dependent service
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	notification_period	none
 	initial_state	o
 	check_interval	15.000000
@@ -292,7 +326,7 @@ define service {
 	service_description	master-service
 	check_period	none
 	check_command	check_me!master service
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	notification_period	none
 	initial_state	o
 	check_interval	15.000000
@@ -331,40 +365,6 @@ define servicedependency {
 	execution_failure_options	n
 	}
 
-define service {
-	host_name	host2
-	service_description	Uses important check command
-	check_period	none
-	check_command	set_to_stale
-	contacts	icingaadmin
-	notification_period	none
-	initial_state	o
-	check_interval	15.000000
-	retry_interval	1.000000
-	max_check_attempts	5
-	is_volatile	0
-	parallelize_check	1
-	active_checks_enabled	1
-	passive_checks_enabled	1
-	obsess_over_service	1
-	event_handler_enabled	1
-	low_flap_threshold	0.000000
-	high_flap_threshold	0.000000
-	flap_detection_enabled	1
-	flap_detection_options	o,w,u,c
-	freshness_threshold	0
-	check_freshness	0
-	notification_options	u,w,c,r,f,s
-	notifications_enabled	1
-	notification_interval	65.000000
-	first_notification_delay	0.000000
-	stalking_options	n
-	process_perf_data	1
-	failure_prediction_enabled	1
-	retain_status_information	1
-	retain_nonstatus_information	1
-	}
-
 define serviceescalation {
 	host_name	host1
 	service_description	Uses important check command
@@ -395,7 +395,7 @@ define serviceescalation {
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	}
 
 define serviceescalation {
@@ -406,6 +406,6 @@ define serviceescalation {
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
-	contacts	nagiosadmin
+	contacts	icingaadmin
 	}
 

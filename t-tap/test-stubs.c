@@ -215,5 +215,23 @@ int      stalking_event_handlers_for_services;
 int has_shell_metachars(const char *s){}
 int handle_host_event(host *hst){}
 
+/* Icinga CGIs */
+char alert_message;
+char *host_name;
+char *host_filter;
+char *hostgroup_name;
+char *service_desc;
+char *servicegroup_name;
+char *service_filter;
+int host_alert;
+int show_all_hosts;
+int show_all_hostgroups;
+int show_all_servicegroups;
+int display_type;
+int overview_columns;
+int max_grid_width;
+int group_style_type;
+int navbar_search;
+
 
 #endif
