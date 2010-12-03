@@ -405,8 +405,14 @@ int xpddefault_update_service_performance_data(service *svc){
 	/* run the performance data command */
 	xpddefault_run_service_performance_data_command(&mac, svc);
 
+	/* get rid of used memory we won't need anymore */
+	clear_argv_macros(&mac);
+
 	/* update the performance data file */
 	xpddefault_update_service_performance_data_file(&mac, svc);
+
+	/* now free() it all */
+	clear_volatile_macros(&mac);
 
 	return OK;
 }
@@ -416,7 +422,6 @@ int xpddefault_update_service_performance_data(service *svc){
 int xpddefault_update_host_performance_data(host *hst){
 
 	icinga_macros mac;
-
 
 	/*
 	 * bail early if we've got nothing to do so we don't spend a lot
@@ -436,8 +441,14 @@ int xpddefault_update_host_performance_data(host *hst){
 	/* run the performance data command */
 	xpddefault_run_host_performance_data_command(&mac, hst);
 
+	/* no more commands to run, so we won't need this any more */
+	clear_argv_macros(&mac);
+
 	/* update the performance data file */
 	xpddefault_update_host_performance_data_file(&mac, hst);
+
+	/* free() all */
+	clear_volatile_macros(&mac);
 
 	return OK;
 }
