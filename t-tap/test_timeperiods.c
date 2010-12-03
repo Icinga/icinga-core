@@ -346,7 +346,7 @@ int main(int argc, char **argv){
 	ok( is_valid_time==ERROR, "No valid time because time period is empty");
 
 	get_next_valid_time( current_time, &next_valid_time, temp_timeperiod);
-	ok( current_time == next_valid_time, "There is no valid time due to timeperiod" );
+	ok( (next_valid_time-current_time) <= 2, "Next valid time should be the current_time, but with a 2 second tolerance");
 
 	temp_timeperiod = find_timeperiod("24x7");
 
