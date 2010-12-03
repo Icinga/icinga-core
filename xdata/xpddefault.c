@@ -68,7 +68,8 @@ FILE    *xpddefault_service_perfdata_fp=NULL;
 int     xpddefault_host_perfdata_fd=-1;
 int     xpddefault_service_perfdata_fd=-1;
 
-
+static pthread_mutex_t xpddefault_host_perfdata_fp_lock;
+static pthread_mutex_t xpddefault_service_perfdata_fp_lock;
 
 /******************************************************************/
 /***************** COMMON CONFIG INITIALIZATION  ******************/
@@ -697,10 +698,12 @@ int xpddefault_update_service_performance_data_file(icinga_macros *mac, service 
 
 	log_debug_info(DEBUGL_PERFDATA,2,"Processed service performance data file output: %s\n",processed_output);
 
-	/* write the processed output line containing performance data to the service perfdata file */
-	fputs(processed_output,xpddefault_service_perfdata_fp);
-	fputs("\n",xpddefault_service_perfdata_fp);
-	fflush(xpddefault_service_perfdata_fp);
+	/* lock, write to and unlock host performance data file */
+	pthread_mutex_lock(&xpddefault_service_perfdata_fp_lock);
+ 	fputs(processed_output,xpddefault_service_perfdata_fp);
+	fputc('\n',xpddefault_service_perfdata_fp);
+ 	fflush(xpddefault_service_perfdata_fp);
+	pthread_mutex_unlock(&xpddefault_service_perfdata_fp_lock);
 
 	/* free memory */
 	my_free(raw_output);
@@ -737,10 +740,12 @@ int xpddefault_update_host_performance_data_file(icinga_macros *mac, host *hst){
 
 	log_debug_info(DEBUGL_PERFDATA,2,"Processed host performance data file output: %s\n",processed_output);
 
-	/* write the processed output line containing performance data to the host perfdata file */
-	fputs(processed_output,xpddefault_host_perfdata_fp);
-	fputs("\n",xpddefault_host_perfdata_fp);
-	fflush(xpddefault_host_perfdata_fp);
+	/* lock, write to and unlock host performance data file */
+	pthread_mutex_lock(&xpddefault_host_perfdata_fp_lock);
+	fputs(processed_output, xpddefault_host_perfdata_fp);
+	fputc('\n', xpddefault_host_perfdata_fp);
+ 	fflush(xpddefault_host_perfdata_fp);
+	pthread_mutex_unlock(&xpddefault_host_perfdata_fp_lock);
 
 	/* free memory */
 	my_free(raw_output);
@@ -766,9 +771,6 @@ int xpddefault_process_host_perfdata_file(void){
 	if(xpddefault_host_perfdata_file_processing_command==NULL)
 		return OK;
 
-	/* close the performance data file */
-	xpddefault_close_host_perfdata_file();
-
 	/* init macros */
 	memset(&mac, 0, sizeof(mac));
 
@@ -790,16 +792,21 @@ int xpddefault_process_host_perfdata_file(void){
 
 	log_debug_info(DEBUGL_PERFDATA,2,"Processed host performance data file processing command line: %s\n",processed_command_line);
 
+	/* lock and close the performance data file */
+	pthread_mutex_lock(&xpddefault_host_perfdata_fp_lock);
+	xpddefault_close_host_perfdata_file();
+
 	/* run the command */
 	my_system(&mac, processed_command_line,xpddefault_perfdata_timeout,&early_timeout,&exectime,NULL,0);
 	clear_volatile_macros(&mac);
 
+	/* re-open and unlock the performance data file */
+	xpddefault_open_host_perfdata_file();
+	pthread_mutex_unlock(&xpddefault_host_perfdata_fp_lock);
+
 	/* check to see if the command timed out */
 	if(early_timeout==TRUE)
 		logit(NSLOG_RUNTIME_WARNING,TRUE,"Warning: Host performance data file processing command '%s' timed out after %d seconds\n",processed_command_line,xpddefault_perfdata_timeout);
-
-	/* re-open the performance data file */
-	xpddefault_open_host_perfdata_file();
 
 	/* free memory */
 	my_free(raw_command_line);
@@ -825,9 +832,6 @@ int xpddefault_process_service_perfdata_file(void){
 	if(xpddefault_service_perfdata_file_processing_command==NULL)
 		return OK;
 
-	/* close the performance data file */
-	xpddefault_close_service_perfdata_file();
-
 	/* init macros */
 	memset(&mac, 0, sizeof(mac));
 
@@ -849,8 +853,17 @@ int xpddefault_process_service_perfdata_file(void){
 
 	log_debug_info(DEBUGL_PERFDATA,2,"Processed service performance data file processing command line: %s\n",processed_command_line);
 
+	/* lock and close the performance data file */
+	pthread_mutex_lock(&xpddefault_service_perfdata_fp_lock);
+	xpddefault_close_service_perfdata_file();
+
 	/* run the command */
 	my_system(&mac, processed_command_line,xpddefault_perfdata_timeout,&early_timeout,&exectime,NULL,0);
+
+	/* re-open and unlock the performance data file */
+	xpddefault_open_service_perfdata_file();
+	pthread_mutex_unlock(&xpddefault_service_perfdata_fp_lock);
+
 	clear_volatile_macros(&mac);
 
 	/* check to see if the command timed out */
