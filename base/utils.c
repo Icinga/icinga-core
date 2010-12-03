@@ -815,7 +815,7 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 	time_t start_time=(time_t)0L;
 	time_t end_time=(time_t)0L;
 	int found_match=FALSE;
-	struct tm *t;
+	struct tm *t, tm_s;
 	int daterange_type=0;
 	unsigned long days=0L;
 	time_t day_range_start=(time_t)0L;
@@ -845,7 +845,7 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 	tperiod->exclusions=first_timeperiodexclusion;
 
 	/* save values for later */
-	t=localtime((time_t *)&test_time);
+	t = localtime_r(&test_time, &tm_s);
 	test_time_year=t->tm_year;
 	test_time_mon=t->tm_mon;
 	test_time_mday=t->tm_mday;
@@ -1111,7 +1111,7 @@ void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time
 	if((level%2) == 0){
 		_get_next_valid_time_per_timeperiod(pref_time,&earliest_time,current_time,tperiod);
 		if(*valid_time == 0)
-			*valid_time=earliest_time;	
+			*valid_time=earliest_time;
 		else if(earliest_time<*valid_time)
 			*valid_time=earliest_time;
 	}
@@ -1136,7 +1136,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	timerange *temp_timerange;
 	daterange *temp_daterange;
 	unsigned long midnight=0L;
-	struct tm *t;
+	struct tm *t, tm_s;
 	time_t day_start=(time_t)0L;
 	time_t day_range_start=(time_t)0L;
 	time_t day_range_end=(time_t)0L;
@@ -1174,7 +1174,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 		}
 
 	/* calculate the start of the day (midnight, 00:00 hours) of preferred time */
-	t=localtime((time_t *)&preferred_time);
+	t = localtime_r(&preferred_time, &tm_s);
 	t->tm_sec=0;
 	t->tm_min=0;
 	t->tm_hour=0;
@@ -1187,7 +1187,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	pref_time_wday=t->tm_wday;
 
 	/* save current time values for later */
-	t=localtime((time_t *)&current_time);
+	t = localtime_r(&current_time, &tm_s);
 	current_time_year=t->tm_year;
 	current_time_mon=t->tm_mon;
 	current_time_mday=t->tm_mday;
@@ -1530,7 +1530,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	timerange *temp_timerange;
 	daterange *temp_daterange;
 	unsigned long midnight=0L;
-	struct tm *t;
+	struct tm *t, tm_s;
 	time_t day_start=(time_t)0L;
 	time_t day_range_start=(time_t)0L;
 	time_t day_range_end=(time_t)0L;
@@ -1548,7 +1548,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	unsigned long advance_interval=0L;
 	int year=0; /* new */
 	int month=0; /* new */
-	
+
 	int pref_time_year=0;
 	int pref_time_mon=0;
 	int pref_time_mday=0;
@@ -1570,7 +1570,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 		}
 
 	/* calculate the start of the day (midnight, 00:00 hours) of preferred time */
-	t=localtime((time_t *)&preferred_time);
+	t = localtime_r(&preferred_time, &tm_s);
 	t->tm_sec=0;
 	t->tm_min=0;
 	t->tm_hour=0;
@@ -1582,9 +1582,9 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	pref_time_mon=t->tm_mon;
 	pref_time_mday=t->tm_mday;
 	pref_time_wday=t->tm_wday;
-	
+
 	/* save current time values for later */
-	t=localtime((time_t *)&current_time);
+	t = localtime_r(&current_time, &tm_s);
 	current_time_year=t->tm_year;
 	current_time_mon=t->tm_mon;
 	current_time_mday=t->tm_mday;
@@ -1680,7 +1680,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 			case DATERANGE_MONTH_DATE:
 				/* use same year as was calculated for start time above */
 				end_time=calculate_time_from_day_of_month(year,temp_daterange->emon,temp_daterange->emday);
-				/* advance a year if necessary: august 5 - feburary 2 */
+				/* advance a year if necessary: august 5 - february 2 */
 				if(end_time<start_time){
 					year++;
 					end_time=calculate_time_from_day_of_month(year,temp_daterange->emon,temp_daterange->emday);
@@ -1870,15 +1870,15 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 
 
 
-/* given a preferred time, get the next valid time within a time period */ 
+/* given a preferred time, get the next valid time within a time period */
 void get_next_valid_time(time_t pref_time, time_t *valid_time, timeperiod *tperiod){
         time_t current_time=(time_t)0L;
- 
+
         log_debug_info(DEBUGL_FUNCTIONS,0,"get_next_valid_time()\n");
- 
+
         /* get time right now, preferred time must be now or in the future */
         time(&current_time);
- 
+
         _get_next_valid_time(pref_time, current_time, valid_time, tperiod);
 }
 
@@ -2059,12 +2059,12 @@ time_t calculate_time_from_weekday_of_month(int year, int month, int weekday, in
 /* get the next time to schedule a log rotation */
 time_t get_next_log_rotation_time(void){
 	time_t current_time;
-	struct tm *t;
+	struct tm *t, tm_s;
 	int is_dst_now=FALSE;
 	time_t run_time;
 
 	time(&current_time);
-	t=localtime(&current_time);
+	t = localtime_r(&current_time, &tm_s);
 	t->tm_min=0;
 	t->tm_sec=0;
 	is_dst_now=(t->tm_isdst>0)?TRUE:FALSE;
@@ -4315,7 +4315,6 @@ void cleanup(void){
 void free_memory(icinga_macros *mac){
 	timed_event *this_event=NULL;
 	timed_event *next_event=NULL;
-	register int x=0;
 
 	/* free all allocated memory for the object definitions */
 	free_object_data();
