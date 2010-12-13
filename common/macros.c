@@ -2468,6 +2468,8 @@ char *get_url_encoded_string(char *input){
 /* initializes global macros */
 int init_macros(void){
 
+	init_macrox_names();
+
 	/*
 	 * non-volatile macros are free()'d when they're set.
 	 * We must do this in order to not lose the constant
