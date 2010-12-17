@@ -59,6 +59,7 @@ FIXES
 * install: add log2ido for adding archived logs onto socket/rdbms #926
 * install: add hint to configure that libpq is not yet fully working #622
 
+* idoutils: fix unescape display name (Matthieu Kermagoret) #1027
 
 1.2.1 - 25/10/2010
 
