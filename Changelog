@@ -19,6 +19,7 @@ ENHANCEMENTS
 
 * core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
 * core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057
+* core: allow empty hostgroup aissgments for services as opt-in config option (Max Schubert) #949
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959

@@ -958,6 +958,18 @@ process_performance_data=0
 
 
 
+# ALLOW EMPTY HOSTGROUP ASSIGMENT FOR SERVICES
+# This boolean option determines whether services assigned to empty
+# host groups (host groups with no host members) will cause Icinga to
+# exit with error on start up (or during a configuration check) or not.
+# The default behavior if the option is not present in the main
+# configuration file is for Icinga to exit with error if services are
+# associated with host groups that have no hosts associated with them.
+
+#allow_empty_hostgroup_assignment=0
+
+
+
 # OBSESS OVER SERVICE CHECKS OPTION
 # This determines whether or not Icinga will obsess over service
 # checks and run the ocsp_command defined below.  Unless you're

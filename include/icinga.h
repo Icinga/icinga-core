@@ -141,6 +141,8 @@ extern "C" {
 
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Icinga */
 
+#define DEFAULT_ALLOW_EMPTY_HOSTGROUP_ASSIGNMENT                0	/* Do not allow empty hostgroup assignment by default */
+
 
 /******************** HOST STATUS *********************/
 

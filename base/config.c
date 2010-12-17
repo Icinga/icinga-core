@@ -3,6 +3,7 @@
  * CONFIG.C - Configuration input and verification routines for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Nagios Core Development Team and Community Contributors
  * Copyright (c) 2009-2010 Icinga Development Team
  *
  * License:
@@ -218,6 +219,9 @@ extern char             *debug_file;
 extern int              debug_level;
 extern int              debug_verbosity;
 extern unsigned long    max_debug_file_size;
+
+extern int              allow_empty_hostgroup_assignment;
+
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 extern int              event_profiling_enabled;
@@ -1186,9 +1190,6 @@ int read_main_config_file(char *main_config_file){
 
 		else if(!strcmp(variable,"aggregate_status_updates")){
 
-			/* DEPRECATED - ALL UPDATED ARE AGGREGATED AS OF Icinga 3.X */
-			/*aggregate_status_updates=(atoi(value)>0)?TRUE:FALSE;*/
-
 			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: aggregate_status_updates directive ignored.  All status file updates are now aggregated.");
 		        }
 
@@ -1414,7 +1415,9 @@ int read_main_config_file(char *main_config_file){
 			event_profiling_enabled=(atoi(value)>0)?TRUE:FALSE;
 #endif
 			}
-
+		else if(!strcmp(variable,"allow_empty_hostgroup_assignment")){
+			allow_empty_hostgroup_assignment=(atoi(value)>0)?TRUE:FALSE;
+			}
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/
 		else if(!strcmp(variable,"auth_file")){
