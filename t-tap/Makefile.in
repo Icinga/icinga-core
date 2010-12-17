@@ -118,7 +118,6 @@ clean:
 
 distclean: clean
 	rm -f perlxsi.c
-	rm -f var/icinga-05-22-2009-01.log var/icinga.log smallconfig/objects.cache
 	rm -f Makefile
 
 devclean: distclean

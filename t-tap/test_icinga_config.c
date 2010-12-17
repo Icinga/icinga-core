@@ -221,7 +221,7 @@ char            *use_timezone=NULL;
 int             command_file_fd;
 FILE            *command_file_fp;
 int             command_file_created=FALSE;
-
+int		allow_empty_hostgroup_assignment;
 
 extern contact	       *contact_list;
 extern contactgroup    *contactgroup_list;
