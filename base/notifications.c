@@ -30,6 +30,7 @@
 #include "../include/macros.h"
 #include "../include/icinga.h"
 #include "../include/broker.h"
+#include "../include/neberrors.h"
 
 extern notification    *notification_list;
 extern contact         *contact_list;
@@ -69,6 +70,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	int contacts_notified=0;
 	int increment_notification_number=FALSE;
 	icinga_macros *mac; /* XXX: global macros */
+	int neb_result;
 
 	mac = get_global_macros();
 
@@ -134,7 +136,11 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	/* send data to event broker */
 	end_time.tv_sec=0L;
 	end_time.tv_usec=0L;
-	broker_notification_data(NEBTYPE_NOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_NOTIFICATION,type,start_time,end_time,(void *)svc,not_author,not_data,escalated,0,NULL);
+	neb_result=broker_notification_data(NEBTYPE_NOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_NOTIFICATION,type,start_time,end_time,(void *)svc,not_author,not_data,escalated,0,NULL);
+	if(NEBERROR_CALLBACKCANCEL==neb_result)
+		return ERROR;
+	else if(NEBERROR_CALLBACKOVERRIDE==neb_result)
+		return OK;
 #endif
 
 	/* XXX: crazy indent */
@@ -725,7 +731,7 @@ int notify_contact_of_service(icinga_macros *mac, contact *cntct, service *svc, 
 	struct timeval start_time,end_time;
 	struct timeval method_start_time,method_end_time;
 	int macro_options=STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS;
-
+	int neb_result;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"notify_contact_of_service()\n");
 	log_debug_info(DEBUGL_NOTIFICATIONS,2,"** Attempting to notifying contact '%s'...\n",cntct->name);
@@ -744,7 +750,11 @@ int notify_contact_of_service(icinga_macros *mac, contact *cntct, service *svc, 
 	/* send data to event broker */
 	end_time.tv_sec=0L;
 	end_time.tv_usec=0L;
-	broker_contact_notification_data(NEBTYPE_CONTACTNOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_NOTIFICATION,type,start_time,end_time,(void *)svc,cntct,not_author,not_data,escalated,NULL);
+	neb_result=broker_contact_notification_data(NEBTYPE_CONTACTNOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_NOTIFICATION,type,start_time,end_time,(void *)svc,cntct,not_author,not_data,escalated,NULL);
+	if(NEBERROR_CALLBACKCANCEL==neb_result)
+		return ERROR;
+	else if(NEBERROR_CALLBACKOVERRIDE==neb_result)
+		return OK;
 #endif
 
 	/* process all the notification commands this user has */
@@ -757,7 +767,11 @@ int notify_contact_of_service(icinga_macros *mac, contact *cntct, service *svc, 
 		/* send data to event broker */
 		method_end_time.tv_sec=0L;
 		method_end_time.tv_usec=0L;
-		broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_START,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_NOTIFICATION,type,method_start_time,method_end_time,(void *)svc,cntct,temp_commandsmember->command,not_author,not_data,escalated,NULL);
+		neb_result=broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_START,NEBFLAG_NONE,NEBATTR_NONE,SERVICE_NOTIFICATION,type,method_start_time,method_end_time,(void *)svc,cntct,temp_commandsmember->command,not_author,not_data,escalated,NULL);
+		if(NEBERROR_CALLBACKCANCEL==neb_result)
+			break ;
+		else if(NEBERROR_CALLBACKOVERRIDE==neb_result)
+			continue ;
 #endif
 
 		/* get the raw command line */
@@ -1193,6 +1207,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	int contacts_notified=0;
 	int increment_notification_number=FALSE;
 	icinga_macros *mac; /* XXX: global macros */
+	int neb_result;
 
 	/* get the current time */
 	time(&current_time);
@@ -1244,7 +1259,11 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	/* send data to event broker */
 	end_time.tv_sec=0L;
 	end_time.tv_usec=0L;
-	broker_notification_data(NEBTYPE_NOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,HOST_NOTIFICATION,type,start_time,end_time,(void *)hst,not_author,not_data,escalated,0,NULL);
+	neb_result=broker_notification_data(NEBTYPE_NOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,HOST_NOTIFICATION,type,start_time,end_time,(void *)hst,not_author,not_data,escalated,0,NULL);
+	if(NEBERROR_CALLBACKCANCEL==neb_result)
+		return ERROR;
+	else if(NEBERROR_CALLBACKOVERRIDE==neb_result)
+		return OK;
 #endif
 
 	/* XXX: crazy indent */
@@ -1780,7 +1799,7 @@ int notify_contact_of_host(icinga_macros *mac, contact *cntct, host *hst, int ty
 	struct timeval method_start_time;
 	struct timeval method_end_time;
 	int macro_options=STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS;
-
+	int neb_result;
 
 	log_debug_info(DEBUGL_FUNCTIONS,0,"notify_contact_of_host()\n");
 	log_debug_info(DEBUGL_NOTIFICATIONS,2,"** Attempting to notifying contact '%s'...\n",cntct->name);
@@ -1799,7 +1818,11 @@ int notify_contact_of_host(icinga_macros *mac, contact *cntct, host *hst, int ty
 	/* send data to event broker */
 	end_time.tv_sec=0L;
 	end_time.tv_usec=0L;
-	broker_contact_notification_data(NEBTYPE_CONTACTNOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,HOST_NOTIFICATION,type,start_time,end_time,(void *)hst,cntct,not_author,not_data,escalated,NULL);
+	neb_result=broker_contact_notification_data(NEBTYPE_CONTACTNOTIFICATION_START,NEBFLAG_NONE,NEBATTR_NONE,HOST_NOTIFICATION,type,start_time,end_time,(void *)hst,cntct,not_author,not_data,escalated,NULL);
+	if(NEBERROR_CALLBACKCANCEL==neb_result)
+		return ERROR;
+	else if(NEBERROR_CALLBACKOVERRIDE==neb_result)
+		return OK;
 #endif
 
 	/* process all the notification commands this user has */
@@ -1812,7 +1835,11 @@ int notify_contact_of_host(icinga_macros *mac, contact *cntct, host *hst, int ty
 		/* send data to event broker */
 		method_end_time.tv_sec=0L;
 		method_end_time.tv_usec=0L;
-		broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_START,NEBFLAG_NONE,NEBATTR_NONE,HOST_NOTIFICATION,type,method_start_time,method_end_time,(void *)hst,cntct,temp_commandsmember->command,not_author,not_data,escalated,NULL);
+		neb_result=broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_START,NEBFLAG_NONE,NEBATTR_NONE,HOST_NOTIFICATION,type,method_start_time,method_end_time,(void *)hst,cntct,temp_commandsmember->command,not_author,not_data,escalated,NULL);
+		if(NEBERROR_CALLBACKCANCEL==neb_result)
+			break;
+		else if(NEBERROR_CALLBACKOVERRIDE==neb_result)
+			continue;
 #endif
 
 		/* get the raw command line */

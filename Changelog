@@ -18,6 +18,7 @@ ENHANCEMENTS
 * classic ui: add url_stylesheet_path to cgi.cfg to allow custom css path #898
 
 * core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
+* core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959
