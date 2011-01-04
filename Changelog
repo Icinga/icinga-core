@@ -16,6 +16,7 @@ ENHANCEMENTS
 * classic ui: adding "Attempt" column to host status detail list
 * classic ui: change default url target frame to main #1014
 * classic ui: add url_stylesheet_path to cgi.cfg to allow custom css path #898
+* classic ui: change color of unknown/unreachable state to more warm signalling purple #1029
 
 * core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
 * core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057
