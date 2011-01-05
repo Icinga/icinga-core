@@ -46,6 +46,7 @@ FIXES
 * core: debug logging is now properly serialized, using soft-locking with a timeout of 150 milliseconds to avoid multiple threads competing for the privilege to write debug info (Andreas Ericsson) #1035
 * core: fix parsing of long plugin output for async host checks (Jochen Bern) #1046
 * core: log error reason when failing to open the status file (Andreas Ericsson) #1078
+* core: fix allocate memory once for *GROUPMEMBERS macros (Stephane Lapie) #1076
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
