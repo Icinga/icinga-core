@@ -128,6 +128,11 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
+int		showlog_initial_states=TRUE;
+int		showlog_current_states=TRUE;
+int		tab_friendly_titles=FALSE;
+int		add_notif_num_hard=0;
+int		add_notif_num_soft=0;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -157,6 +162,23 @@ int embedded=FALSE;
 int display_header=TRUE;
 int refresh=TRUE;
 int daemon_check=TRUE;
+
+extern char alert_message;
+extern char *host_name;
+extern char *host_filter;
+extern char *hostgroup_name;
+extern char *service_desc;
+extern char *servicegroup_name;
+extern char *service_filter;
+extern int host_alert;
+extern int show_all_hosts;
+extern int show_all_hostgroups;
+extern int show_all_servicegroups;
+extern int display_type;
+extern int overview_columns;
+extern int max_grid_width;
+extern int group_style_type;
+extern int navbar_search;
 
 
 /*
@@ -267,13 +289,18 @@ char * get_cgi_config_location(void){
         static char *cgiloc=NULL;
 
         if(!cgiloc){
-                cgiloc=getenv("NAGIOS_CGI_CONFIG");
-                if(!cgiloc)
-                        cgiloc=DEFAULT_CGI_CONFIG_FILE;
-                }
+                cgiloc=getenv("ICINGA_CGI_CONFIG");
+        	if(!cgiloc){
+			/* stay compatible */
+                	cgiloc=getenv("NAGIOS_CGI_CONFIG");
+                	if(!cgiloc){
+                        	cgiloc=DEFAULT_CGI_CONFIG_FILE;
+			}
+		}
+	}
 
         return cgiloc;
-        }
+}
 
 
 /* read the command file location from an environment variable */
@@ -281,13 +308,17 @@ char * get_cmd_file_location(void){
         static char *cmdloc=NULL;
 
         if(!cmdloc){
-                cmdloc=getenv("NAGIOS_COMMAND_FILE");
-                if(!cmdloc)
-                        cmdloc=DEFAULT_COMMAND_FILE;
+                cmdloc=getenv("ICINGA_COMMAND_FILE");
+        	if(!cmdloc){
+			/* stay compatible */
+                	cmdloc=getenv("NAGIOS_COMMAND_FILE");
+	                if(!cmdloc){
+        	                cmdloc=DEFAULT_COMMAND_FILE;
+			}
                 }
+	}
         return cmdloc;
-        }
-
+}
 
 /*read the CGI configuration file */
 int read_cgi_config_file(char *filename){
@@ -379,8 +410,10 @@ int read_cgi_config_file(char *filename){
 			snprintf(url_logo_images_path,sizeof(url_logo_images_path),"%slogos/",url_images_path);
 			url_logo_images_path[sizeof(url_logo_images_path)-1]='\x0';
 
+			/*
 			snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
 			url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+			*/
 
 			snprintf(url_js_path,sizeof(url_js_path),"%sjs/",url_html_path);
 			url_js_path[sizeof(url_js_path)-1]='\x0';
@@ -389,6 +422,16 @@ int read_cgi_config_file(char *filename){
 			url_media_path[sizeof(url_media_path)-1]='\x0';
 		        }
 
+		else if(!strcmp(var,"url_stylesheets_path")){
+
+                        strncpy(url_stylesheets_path,val,sizeof(url_stylesheets_path));
+                        url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+
+                        strip(url_stylesheets_path);
+                        if(url_stylesheets_path[strlen(url_stylesheets_path)-1]!='/' && (strlen(url_stylesheets_path) < sizeof(url_stylesheets_path)-1))
+                                strcat(url_stylesheets_path,"/");
+
+			}
 		else if(!strcmp(var,"service_critical_sound"))
 			service_critical_sound=strdup(val);
 
@@ -464,6 +507,21 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
 
+		else if(!strcmp(var,"showlog_initial_state") || !strcmp(var,"showlog_initial_states"))
+			showlog_initial_states=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"showlog_current_state") || !strcmp(var,"showlog_current_states"))
+			showlog_current_states=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"tab_friendly_titles"))
+			tab_friendly_titles=(atoi(val)>0)?TRUE:FALSE;
+
+ 		else if(!strcmp(var,"add_notif_num_hard"))
+			add_notif_num_hard=atoi(val);
+
+		else if(!strcmp(var,"add_notif_num_soft"))
+			add_notif_num_soft=atoi(val);
+
 		else if(!strcmp(var,"csv_delimiter"))
 			csv_delimiter=strdup(val);
 
@@ -476,11 +534,18 @@ int read_cgi_config_file(char *filename){
 	free(input);
 	mmap_fclose(thefile);
 
+	/* check if stylesheet path was set */
+	if(!strcmp(url_stylesheets_path,"")){
+		snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
+		url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
+	}
+
 	if(!strcmp(main_config_file,""))
 		return ERROR;
 	else
 		return OK;
-        }
+}
+
 
 
 
@@ -738,10 +803,13 @@ char *pop_lifo(void){
 /**********************************************************
  *************** COMMON HEADER AND FOOTER *****************
  **********************************************************/
- 
+
 void document_header(int cgi_id, int use_stylesheet){
 	char date_time[MAX_DATETIME_LENGTH];
-	char *cgi_name, *cgi_css, *cgi_title, *cgi_body_class=NULL;
+	char *cgi_name=NULL;
+	char *cgi_css=NULL;
+	char *cgi_title=NULL;
+	char *cgi_body_class=NULL;
 	time_t expire_time;
 	time_t current_time;
 
@@ -900,7 +968,39 @@ void document_header(int cgi_id, int use_stylesheet){
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
 	printf("<title>\n");
-	printf("%s\n",cgi_title);
+
+	if(cgi_id == STATUS_CGI_ID){
+		if (tab_friendly_titles){
+			if ((display_type==DISPLAY_HOSTS)&&(!show_all_hosts)&&host_name&&(*host_name!='\0'))
+				printf ("[%s]\n",html_encode(host_name,FALSE));
+			else if ((display_type==DISPLAY_HOSTGROUPS)&&(!show_all_hostgroups)&&hostgroup_name &&(*hostgroup_name!='\0'))
+				printf ("{%s}\n",html_encode(hostgroup_name,FALSE));
+			else if ((display_type==DISPLAY_SERVICEGROUPS)&&(!show_all_servicegroups)&&servicegroup_name &&(*servicegroup_name!='\0'))
+				printf ("(%s)\n",html_encode(servicegroup_name,FALSE));
+			else
+				printf("%s\n",cgi_title);
+		}
+		else printf("%s\n",cgi_title);
+	} else if(cgi_id == EXTINFO_CGI_ID){
+		if (tab_friendly_titles){
+			if ((display_type==DISPLAY_HOST_INFO)&&host_name&&(*host_name!='\0'))
+				printf ("[%s]\n",html_encode(host_name,FALSE));
+			else if ((display_type==DISPLAY_SERVICE_INFO)&&service_desc&&(*service_desc!='\0')){
+				printf ("%s\n",service_desc);
+				if (host_name&&(*host_name!='\0'))
+					printf ("@ %s\n",html_encode(host_name,FALSE));
+			}
+			else if ((display_type==DISPLAY_HOSTGROUP_INFO)&&hostgroup_name&&(*hostgroup_name!='\0'))
+				printf ("{%s}\n",html_encode(hostgroup_name,FALSE));
+			else if ((display_type==DISPLAY_SERVICEGROUP_INFO)&&servicegroup_name &&(*servicegroup_name!='\0'))
+				printf ("(%s)\n",html_encode(servicegroup_name,FALSE));
+			else
+				printf("%s\n",cgi_title);
+		}
+		else printf("%s\n",cgi_title);
+	} else {
+		printf("%s\n",cgi_title);
+	}
 	printf("</title>\n");
 
 	if(use_stylesheet){
@@ -1370,8 +1470,11 @@ char * url_encode(char *input){
 	static int i = 0;
 	char* str = encoded_url_string[i];
 
+	/* initialize return string */
+	strcpy(str,"");
+
 	if(input==NULL)
-		return '\x0';
+		return str;
 
 	len=(int)strlen(input);
 	output_len=(int)sizeof(encoded_url_string[0]);
@@ -1392,8 +1495,14 @@ char * url_encode(char *input){
 			y++;
 		        }
 
+		/* high bit characters don't get encoded */
+		else if((unsigned char)input[x]>=0x7f){
+			str[y]=input[x];
+			y++;
+		}
+
 		/* spaces are pluses */
-		else if((char)input[x]<=(char)' '){
+		else if((char)input[x]==(char)' '){
 			str[y]='+';
 			y++;
 		        }
@@ -1554,6 +1663,10 @@ char * escape_string(char *input){
 
 		/* spaces, hyphens, periods, underscores and colons don't get encoded */
 		else if(((char)input[x]==(char)' ') || ((char)input[x]==(char)'-') || ((char)input[x]==(char)'.') || ((char)input[x]==(char)'_') || ((char)input[x]==(char)':'))
+			encoded_html_string[y++]=input[x];
+
+		/* high bit characters don't get encoded */
+		else if((unsigned char)input[x]>=0x7f)
 			encoded_html_string[y++]=input[x];
 
 		/* for simplicity, all other chars represented by their numeric value */

@@ -134,7 +134,6 @@ int end_day=1;
 int end_month=1;
 int end_year=2000;
 
-int display_type=DISPLAY_NO_TRENDS;
 extern int content_type;
 int input_type=GET_INPUT_NONE;
 int timeperiod_type=TIMEPERIOD_LAST24HOURS;
@@ -151,10 +150,6 @@ int assume_initial_states=TRUE;
 int assume_state_retention=TRUE;
 int assume_states_during_notrunning=TRUE;
 int include_soft_states=FALSE;
-
-char *host_name="";
-char *svc_description="";
-
 
 
 void graph_all_trend_data(void);
@@ -237,6 +232,18 @@ unsigned long time_ok=0L;
 unsigned long time_warning=0L;
 unsigned long time_unknown=0L;
 unsigned long time_critical=0L;
+
+int display_type=DISPLAY_NO_TRENDS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name="";
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc="";
+char *service_filter=NULL;
 
 int CGI_ID=TRENDS_CGI_ID;
 
@@ -392,13 +399,13 @@ int main(int argc, char **argv){
 			else{
 				printf("<a href='%s?host=%s&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d'>View Trends For This Host</a><BR>\n",TRENDS_CGI,url_encode(host_name),t1,t2,(include_soft_states==TRUE)?"yes":"no",(assume_state_retention==TRUE)?"yes":"no",(assume_initial_states==TRUE)?"yes":"no",(assume_states_during_notrunning==TRUE)?"yes":"no",initial_assumed_service_state,backtrack_archives);
 				printf("<a href='%s?host=%s",AVAIL_CGI,url_encode(host_name));
-				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s&includesoftstates=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d&show_log_entries'>View Availability Report For This Service</a><BR>\n",url_encode(svc_description),t1,t2,(include_soft_states==TRUE)?"yes":"no",(assume_state_retention==TRUE)?"yes":"no",(assume_initial_states==TRUE)?"yes":"no",(assume_states_during_notrunning==TRUE)?"yes":"no",initial_assumed_service_state,backtrack_archives);
+				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s&includesoftstates=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d&show_log_entries'>View Availability Report For This Service</a><BR>\n",url_encode(service_desc),t1,t2,(include_soft_states==TRUE)?"yes":"no",(assume_state_retention==TRUE)?"yes":"no",(assume_initial_states==TRUE)?"yes":"no",(assume_states_during_notrunning==TRUE)?"yes":"no",initial_assumed_service_state,backtrack_archives);
 				printf("<a href='%s?host=%s",HISTOGRAM_CGI,url_encode(host_name));
-				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View Alert Histogram For This Service</a><BR>\n",url_encode(svc_description),t1,t2,(assume_state_retention==TRUE)?"yes":"no");
+				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View Alert Histogram For This Service</a><BR>\n",url_encode(service_desc),t1,t2,(assume_state_retention==TRUE)?"yes":"no");
 				printf("<A HREF='%s?host=%s&",HISTORY_CGI,url_encode(host_name));
-				printf("service=%s'>View Alert History For This Service</A><BR>\n",url_encode(svc_description));
+				printf("service=%s'>View Alert History For This Service</A><BR>\n",url_encode(service_desc));
 				printf("<A HREF='%s?host=%s&",NOTIFICATIONS_CGI,url_encode(host_name));
-				printf("service=%s'>View Notifications For This Service</A><BR>\n",url_encode(svc_description));
+				printf("service=%s'>View Notifications For This Service</A><BR>\n",url_encode(service_desc));
 		                }
 
 			printf("</TD></TR>\n");
@@ -417,7 +424,7 @@ int main(int argc, char **argv){
                 	temp_host=find_host(host_name);
 
         	        /* find the service */
-	                temp_service=find_service(host_name,svc_description);
+	                temp_service=find_service(host_name,service_desc);
 
 			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 			if(display_type==DISPLAY_HOST_TRENDS)
@@ -458,7 +465,7 @@ int main(int argc, char **argv){
 			printf("<input type='hidden' name='t2' value='%lu'>\n",(unsigned long)t2);
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(host_name));
 			if(display_type==DISPLAY_SERVICE_TRENDS)
-				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(svc_description));
+				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(service_desc));
 
 			printf("<input type='hidden' name='assumeinitialstates' value='%s'>\n",(assume_initial_states==TRUE)?"yes":"no");
 			printf("<input type='hidden' name='assumestateretention' value='%s'>\n",(assume_state_retention==TRUE)?"yes":"no");
@@ -568,7 +575,7 @@ int main(int argc, char **argv){
 			is_authorized=FALSE;
 	        }
 	else if(display_type==DISPLAY_SERVICE_TRENDS){
-		temp_service=find_service(host_name,svc_description);
+		temp_service=find_service(host_name,service_desc);
 		if(temp_service==NULL || is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			is_authorized=FALSE;
 	        }
@@ -690,7 +697,7 @@ int main(int argc, char **argv){
 		        temp_host=find_host(host_name);
 
 		        /* find the service */
-		        temp_service=find_service(host_name,svc_description);
+		        temp_service=find_service(host_name,service_desc);
 
 			/* title */
 			snprintf(start_time,sizeof(start_time)-1,"%s",ctime(&t1));
@@ -750,7 +757,7 @@ int main(int argc, char **argv){
 			printf("&includesoftstates=%s",(include_soft_states==TRUE)?"yes":"no");
 			printf("&host=%s",url_encode(host_name));
 			if(display_type==DISPLAY_SERVICE_TRENDS)
-				printf("&service=%s",url_encode(svc_description));
+				printf("&service=%s",url_encode(service_desc));
 			if(backtrack_archives>0)
 				printf("&backtrack=%d",backtrack_archives);
 			printf("&zoom=%d",zoom_factor);
@@ -912,7 +919,7 @@ int main(int argc, char **argv){
 			printf("<form method=\"GET\" action=\"%s\">\n",TRENDS_CGI);
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(host_name));
 			if(display_type==DISPLAY_SERVICE_TRENDS)
-				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(svc_description));
+				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(service_desc));
 
 			printf("<tr><td class='reportSelectSubTitle' align=right>Report period:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
@@ -1142,9 +1149,9 @@ int process_cgivars(void){
 				break;
 			        }
 
-			if((svc_description=(char *)strdup(variables[x]))==NULL)
-				svc_description="";
-			strip_html_brackets(svc_description);
+			if((service_desc=(char *)strdup(variables[x]))==NULL)
+				service_desc="";
+			strip_html_brackets(service_desc);
 
 			display_type=DISPLAY_SERVICE_TRENDS;
 		        }
@@ -1601,7 +1608,7 @@ void graph_all_trend_data(void){
 	if(display_type==DISPLAY_HOST_TRENDS)
 		hststatus=find_hoststatus(host_name);
 	else
-		svcstatus=find_servicestatus(host_name,svc_description);
+		svcstatus=find_servicestatus(host_name,service_desc);
 
 
 	/************************************/
@@ -2101,7 +2108,7 @@ void graph_trend_data(int first_state,int last_state,time_t real_start_time,time
 
 		printf("href='%s?t1=%lu&t2=%lu&host=%s",TRENDS_CGI,(unsigned long)next_start_time,(unsigned long)next_end_time,url_encode(host_name));
 		if(display_type==DISPLAY_SERVICE_TRENDS)
-			printf("&service=%s",url_encode(svc_description));
+			printf("&service=%s",url_encode(service_desc));
 		printf("&assumeinitialstates=%s",(assume_initial_states==TRUE)?"yes":"no");
 		printf("&initialassumedhoststate=%d",initial_assumed_host_state);
 		printf("&initialassumedservicestate=%d",initial_assumed_service_state);
@@ -2331,7 +2338,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 	char *input=NULL;
 	char *input2=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
-	char entry_svc_description[MAX_INPUT_BUFFER];
+	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output=NULL;
 	char *temp_buffer=NULL;
 	time_t time_stamp;
@@ -2448,10 +2455,10 @@ void scan_log_file_for_archived_state_data(char *filename){
 				
 				/* get service description */
 				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_svc_description,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_svc_description));
-				entry_svc_description[sizeof(entry_svc_description)-1]='\x0';
+				strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
+				entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
 
-				if(strcmp(svc_description,entry_svc_description))
+				if(strcmp(service_desc,entry_service_desc))
 					continue;
 
 				/* state types */

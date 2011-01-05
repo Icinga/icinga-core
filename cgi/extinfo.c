@@ -30,6 +30,8 @@
 #include "../include/downtime.h"
 #include "../include/statusdata.h"
 
+static icinga_macros *mac;
+
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 #include "../include/statsprofiler.h"
@@ -131,6 +133,9 @@ char *servicegroup_name="";
 char *service_desc="";
 
 int display_type=DISPLAY_PROCESS_INFO;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
 
 int sort_type=SORT_ASCENDING;
 int sort_option=SORT_NEXTCHECKTIME;
@@ -157,6 +162,7 @@ int main(void){
 	service *temp_service=NULL;
 	servicegroup *temp_servicegroup=NULL;
 
+	mac = get_global_macros();
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -246,11 +252,11 @@ int main(void){
 		if(display_type==DISPLAY_HOST_INFO || display_type==DISPLAY_SERVICE_INFO){
 
 			temp_host=find_host(host_name);
-			grab_host_macros(temp_host);
+			grab_host_macros(mac, temp_host);
 
 			if(display_type==DISPLAY_SERVICE_INFO){
 				temp_service=find_service(host_name,service_desc);
-				grab_service_macros(temp_service);
+				grab_service_macros(mac, temp_service);
 			}
 
 			/* write some Javascript helper functions */
@@ -274,13 +280,13 @@ int main(void){
 		/* find the hostgroup */
 		else if(display_type==DISPLAY_HOSTGROUP_INFO){
 			temp_hostgroup=find_hostgroup(hostgroup_name);
-			grab_hostgroup_macros(temp_hostgroup);
+			grab_hostgroup_macros(mac, temp_hostgroup);
 		}
 
 		/* find the servicegroup */
 		else if(display_type==DISPLAY_SERVICEGROUP_INFO){
 			temp_servicegroup=find_servicegroup(servicegroup_name);
-			grab_servicegroup_macros(temp_servicegroup);
+			grab_servicegroup_macros(mac, temp_servicegroup);
 		}
 
 		if((display_type==DISPLAY_HOST_INFO && temp_host!=NULL) || (display_type==DISPLAY_SERVICE_INFO && temp_host!=NULL && temp_service!=NULL) || (display_type==DISPLAY_HOSTGROUP_INFO && temp_hostgroup!=NULL) || (display_type==DISPLAY_SERVICEGROUP_INFO && temp_servicegroup!=NULL)){
@@ -362,7 +368,7 @@ int main(void){
 						if(found==TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),temp_hostgroup->group_name);
+						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),html_encode((temp_hostgroup->alias!=NULL)?temp_hostgroup->alias:temp_hostgroup->group_name,TRUE));
 						found=TRUE;
 						}
 					}
@@ -385,7 +391,7 @@ int main(void){
 						if(found==TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),temp_servicegroup->group_name);
+						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),html_encode((temp_servicegroup->alias!=NULL)?temp_servicegroup->alias:temp_servicegroup->group_name,TRUE));
 						found=TRUE;
 					        }
                                         }
@@ -403,7 +409,7 @@ int main(void){
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV>\n",temp_hostgroup->group_name);
 
 				if(temp_hostgroup->notes!=NULL){
-					process_macros(temp_hostgroup->notes,&processed_string,0);
+					process_macros_r(mac, temp_hostgroup->notes,&processed_string,0);
 					printf("<p>%s</p>",processed_string);
 					free(processed_string);
 				}
@@ -415,7 +421,7 @@ int main(void){
 				printf("<DIV CLASS='dataTitle'>(%s)</DIV>\n",temp_servicegroup->group_name);
 
 				if(temp_servicegroup->notes!=NULL){
-					process_macros(temp_servicegroup->notes,&processed_string,0);
+					process_macros_r(mac, temp_servicegroup->notes,&processed_string,0);
 					printf("<p>%s</p>",processed_string);
 					free(processed_string);
 				}
@@ -424,7 +430,7 @@ int main(void){
 			if(display_type==DISPLAY_SERVICE_INFO){
 				if(temp_service->icon_image!=NULL){
 					printf("<img src='%s",url_logo_images_path);
-					process_macros(temp_service->icon_image,&processed_string,0);
+					process_macros_r(mac, temp_service->icon_image,&processed_string,0);
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' border=0 alt='%s' title='%s'><BR CLEAR=ALL>",(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt,(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt);
@@ -432,7 +438,7 @@ int main(void){
 				if(temp_service->icon_image_alt!=NULL)
 					printf("<font size=-1><i>( %s )</i></font>\n",temp_service->icon_image_alt);
 				if(temp_service->notes!=NULL){
-					process_macros(temp_service->notes,&processed_string,0);
+					process_macros_r(mac, temp_service->notes,&processed_string,0);
 					printf("<p>%s</p>\n",processed_string);
 					free(processed_string);
 				}
@@ -441,7 +447,7 @@ int main(void){
 			if(display_type==DISPLAY_HOST_INFO){
 				if(temp_host->icon_image!=NULL){
 					printf("<img src='%s",url_logo_images_path);
-					process_macros(temp_host->icon_image,&processed_string,0);
+					process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' border=0 alt='%s' title='%s'><BR CLEAR=ALL>",(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -449,7 +455,7 @@ int main(void){
 				if(temp_host->icon_image_alt!=NULL)
 					printf("<font size=-1><i>( %s )</i><font>\n",temp_host->icon_image_alt);
 				if(temp_host->notes!=NULL){
-					process_macros(temp_host->notes,&processed_string,0);
+					process_macros_r(mac, temp_host->notes,&processed_string,0);
 					printf("<p>%s</p>\n",processed_string);
 					free(processed_string);
 				}
@@ -465,7 +471,7 @@ int main(void){
 
 			printf("<TABLE BORDER='0'>\n");
 			if(temp_host->action_url!=NULL && strcmp(temp_host->action_url,"")){
-				process_macros(temp_host->action_url,&processed_string,0);
+				process_macros_r(mac, temp_host->action_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
@@ -477,7 +483,7 @@ int main(void){
 				free(processed_string);
 		        }
 			if(temp_host->notes_url!=NULL && strcmp(temp_host->notes_url,"")){
-				process_macros(temp_host->notes_url,&processed_string,0);
+				process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<TR><TD ALIGN='right'>\n");
 				printf("<A HREF='");
@@ -497,7 +503,7 @@ int main(void){
 			printf("<TABLE BORDER='0'><TR><TD ALIGN='right'>\n");
 
 			if(temp_service->action_url!=NULL && strcmp(temp_service->action_url,"")){
-				process_macros(temp_service->action_url,&processed_string,0);
+				process_macros_r(mac, temp_service->action_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<A HREF='");
 				printf("%s",processed_string);
@@ -507,7 +513,7 @@ int main(void){
 				free(processed_string);
 		        }
 			if(temp_service->notes_url!=NULL && strcmp(temp_service->notes_url,"")){
-				process_macros(temp_service->notes_url,&processed_string,0);
+				process_macros_r(mac, temp_service->notes_url,&processed_string,0);
 				BEGIN_MULTIURL_LOOP
 				printf("<A HREF='");
 				printf("%s",processed_string);
@@ -926,7 +932,7 @@ void show_process_info(void){
 		printf("<TR><TD CLASS='dataVar'>Last Log File Rotation:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",(last_log_rotation==(time_t)0)?"N/A":last_log_rotation_time);
 
 		/* PID */
-		printf("<TR><TD CLASS='dataVar'>Icinga PID</TD><TD CLASS='dataval'>%d</TD></TR>\n",nagios_pid);
+		printf("<TR><TD CLASS='dataVar'>Icinga PID</TD><TD CLASS='dataVal'>%d</TD></TR>\n",nagios_pid);
 
 		/* notifications enabled */
 		printf("<TR><TD CLASS='dataVar'>Notifications Enabled?</TD><TD CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(enable_notifications==TRUE)?"ENABLED":"DISABLED",(enable_notifications==TRUE)?"YES":"NO");
@@ -1185,7 +1191,10 @@ void show_host_info(void){
 		get_time_string(&temp_hoststatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<TR><TD CLASS='dataVar'>Last Check Time:</td><td CLASS='dataVal'>%s</td></tr>\n",date_time);
 
-		printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",(temp_hoststatus->check_type==HOST_CHECK_ACTIVE)?"ACTIVE":"PASSIVE");
+		if (temp_hoststatus->check_type==HOST_CHECK_ACTIVE)
+			printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n",
+				CONFIG_CGI,url_encode(temp_host->host_check_command));
+		else printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
 
 		printf("<TR><TD CLASS='dataVar' NOWRAP>Check Latency / Duration:</TD><TD CLASS='dataVal'>");
 		if(temp_hoststatus->check_type==HOST_CHECK_ACTIVE)
@@ -1243,7 +1252,9 @@ void show_host_info(void){
 		printf("<TR><TD class='stateInfoTable2'>\n");
 		printf("<TABLE BORDER=0>\n");
 
-		printf("<TR><TD CLASS='dataVar'>Active Checks:</TD><TD CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_hoststatus->checks_enabled==TRUE)?"ENABLED":"DISABLED",(temp_hoststatus->checks_enabled==TRUE)?"ENABLED":"DISABLED");
+		if ((temp_host->host_check_command)&&(*temp_host->host_check_command!='\0'))
+			printf("<TR><TD CLASS='dataVar'><A HREF='%s?type=command&expand=%s'>Active Checks:</A></TD><TD CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",CONFIG_CGI,url_encode(temp_host->host_check_command),(temp_hoststatus->checks_enabled==TRUE)?"ENABLED":"DISABLED",(temp_hoststatus->checks_enabled==TRUE)?"ENABLED":"DISABLED");
+		else printf("<TR><TD CLASS='dataVar'>Active Checks:</TD><TD CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_hoststatus->checks_enabled==TRUE)?"ENABLED":"DISABLED",(temp_hoststatus->checks_enabled==TRUE)?"ENABLED":"DISABLED");
 
 		printf("<TR><TD CLASS='dataVar'>Passive Checks:</TD><td CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_hoststatus->accept_passive_host_checks==TRUE)?"ENABLED":"DISABLED",(temp_hoststatus->accept_passive_host_checks)?"ENABLED":"DISABLED");
 
@@ -1251,7 +1262,10 @@ void show_host_info(void){
 
 		printf("<TR><TD CLASS='dataVar'>Notifications:</td><td CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",(temp_hoststatus->notifications_enabled)?"ENABLED":"DISABLED",(temp_hoststatus->notifications_enabled)?"ENABLED":"DISABLED");
 
-		printf("<TR><TD CLASS='dataVar'>Event Handler:</td><td CLASS='dataVal'><DIV CLASS='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",(temp_hoststatus->event_handler_enabled)?"ENABLED":"DISABLED",(temp_hoststatus->event_handler_enabled)?"ENABLED":"DISABLED");
+		if ((temp_host->event_handler)&&(*temp_host->event_handler!='\0'))
+			printf("<TR><TD CLASS='dataVar'><A HREF='%s?type=command&expand=%s'>Event Handler:</A></td><td CLASS='dataVal'><DIV CLASS='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",CONFIG_CGI,url_encode(temp_host->event_handler),(temp_hoststatus->event_handler_enabled)?"ENABLED":"DISABLED",(temp_hoststatus->event_handler_enabled)?"ENABLED":"DISABLED");
+		else printf("<TR><TD CLASS='dataVar'>Event Handler:</td><td CLASS='dataVal'><DIV CLASS='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",(temp_hoststatus->event_handler_enabled)?"ENABLED":"DISABLED",(temp_hoststatus->event_handler_enabled)?"ENABLED":"DISABLED");
+
 
 		printf("<TR><TD CLASS='dataVar'>Flap Detection:</td><td CLASS='dataVal'><DIV CLASS='flapdetection%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",(temp_hoststatus->flap_detection_enabled==TRUE)?"ENABLED":"DISABLED",(temp_hoststatus->flap_detection_enabled==TRUE)?"ENABLED":"DISABLED");
 
@@ -1497,7 +1511,10 @@ void show_service_info(void){
 		get_time_string(&temp_svcstatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 		printf("<TR><TD CLASS='dataVar'>Last Check Time:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",date_time);
 
-		printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",(temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)?"ACTIVE":"PASSIVE");
+		if (temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)
+			printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n",
+				CONFIG_CGI,url_encode(temp_service->service_check_command));
+		else printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
 
 		printf("<TR><TD CLASS='dataVar' NOWRAP>Check Latency / Duration:</TD><TD CLASS='dataVal'>");
 		if(temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)
@@ -1557,7 +1574,9 @@ void show_service_info(void){
 		printf("<TR><TD class='stateInfoTable2'>\n");
 		printf("<TABLE BORDER=0>\n");
 
-		printf("<TR><TD CLASS='dataVar'>Active Checks:</TD><td CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_svcstatus->checks_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->checks_enabled)?"ENABLED":"DISABLED");
+		if ((temp_service->service_check_command)&&(*temp_service->service_check_command!='\0'))
+			printf("<TR><TD CLASS='dataVar'><A HREF='%s?type=command&expand=%s'>Active Checks:</A></TD><td CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",CONFIG_CGI,url_encode(temp_service->service_check_command),(temp_svcstatus->checks_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->checks_enabled)?"ENABLED":"DISABLED");
+		else printf("<TR><TD CLASS='dataVar'>Active Checks:</TD><td CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_svcstatus->checks_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->checks_enabled)?"ENABLED":"DISABLED");
 
 		printf("<TR><TD CLASS='dataVar'>Passive Checks:</TD><td CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_svcstatus->accept_passive_service_checks==TRUE)?"ENABLED":"DISABLED",(temp_svcstatus->accept_passive_service_checks)?"ENABLED":"DISABLED");
 
@@ -1565,7 +1584,9 @@ void show_service_info(void){
 
 		printf("<TR><td CLASS='dataVar'>Notifications:</TD><td CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_svcstatus->notifications_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->notifications_enabled)?"ENABLED":"DISABLED");
 
-		printf("<TR><TD CLASS='dataVar'>Event Handler:</TD><td CLASS='dataVal'><DIV CLASS='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_svcstatus->event_handler_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->event_handler_enabled)?"ENABLED":"DISABLED");
+		if ((temp_service->event_handler)&&(*temp_service->event_handler!='\0'))
+			printf("<TR><TD CLASS='dataVar'><A HREF='%s?type=command&expand=%s'>Event Handler:</A></td><td CLASS='dataVal'><DIV CLASS='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",CONFIG_CGI,url_encode(temp_service->event_handler),(temp_svcstatus->event_handler_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->event_handler_enabled)?"ENABLED":"DISABLED");
+		else printf("<TR><TD CLASS='dataVar'>Event Handler:</td><td CLASS='dataVal'><DIV CLASS='eventhandlers%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></td></tr>\n",(temp_svcstatus->event_handler_enabled)?"ENABLED":"DISABLED",(temp_svcstatus->event_handler_enabled)?"ENABLED":"DISABLED");
 
 		printf("<TR><TD CLASS='dataVar'>Flap Detection:</TD><td CLASS='dataVal'><DIV CLASS='flapdetection%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n",(temp_svcstatus->flap_detection_enabled==TRUE)?"ENABLED":"DISABLED",(temp_svcstatus->flap_detection_enabled==TRUE)?"ENABLED":"DISABLED");
 
@@ -2619,7 +2640,7 @@ void show_comments(int type){
 					printf("&service=%s'>%s</A></td>",url_encode(temp_comment->service_description),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 				}
 			}
-			printf("<td>%s</td><td>%s</td><td>%s</td><td>%lu</td><td>%s</td><td>%s</td><td>%s</td>",date_time,temp_comment->author,temp_comment->comment_data,temp_comment->comment_id,(temp_comment->persistent)?"Yes":"No",comment_type,(temp_comment->expires==TRUE)?expire_time:"N/A");
+			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>",date_time,temp_comment->author,temp_comment->comment_data,temp_comment->comment_id,(temp_comment->persistent)?"Yes":"No",comment_type,(temp_comment->expires==TRUE)?expire_time:"N/A");
 			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>",CMD_CGI,(type==HOST_COMMENT)?CMD_DEL_HOST_COMMENT:CMD_DEL_SVC_COMMENT,temp_comment->comment_id,url_images_path,DELETE_ICON);
 			printf("<input onclick=\"isValidForSubmit(\'tableform%s\');\" type='checkbox' name='checkbox' value='&com_id=%lu'></td>",(type==HOST_COMMENT)?"host":"service",temp_comment->comment_id);			
 			printf("</td></tr>\n");

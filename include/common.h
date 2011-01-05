@@ -26,8 +26,8 @@
 #define PROGRAM_NAME "Icinga"
 #define PROGRAM_NAME_UC "ICINGA"
 #define PROGRAM_NAME_LC "icinga"
-#define PROGRAM_VERSION "1.2.0"
-#define PROGRAM_MODIFICATION_DATE "10-06-2010"
+#define PROGRAM_VERSION "1.3.0"
+#define PROGRAM_MODIFICATION_DATE "10-25-2010"
 
 /*#define DEBUG_CHECK_IPC 1 */
 /*#define DEBUG_CHECK_IPC2 1*/
@@ -48,7 +48,7 @@
 #undef USE_MEMORY_PERFORMANCE_TWEAKS
 
 /* my_free has been freed from bondage as a function */
-#define my_free(ptr) { if(ptr) { free(ptr); ptr = NULL; } }
+#define my_free(ptr) do { if(ptr) { free(ptr); ptr = NULL; } } while(0)
 
 
 

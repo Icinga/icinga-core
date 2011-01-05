@@ -4,7 +4,7 @@
 
 use strict ;
 
-use Text::ParseWords qw(parse_line) ;
+use Text::ParseWords qw(shellwords) ;
 
 use constant	LEAVE_MSG		=> 1 ;
 use constant	CACHE_DUMP		=> 2 ;
@@ -150,7 +150,7 @@ sub eval_file {
 								# 2 return the error from a former compilation
 								#   if there was one.
 
-			$Cache{$filename}[PLUGIN_ARGS]{$plugin_args} ||= [ parse_line('\s+', 0, $plugin_args) ]
+			$Cache{$filename}[PLUGIN_ARGS]{$plugin_args} ||= [ shellwords($plugin_args) ]
 				if $plugin_args ;
 
 			if ( $Cache{$filename}[PLUGIN_ERROR] ) {
@@ -166,7 +166,7 @@ sub eval_file {
 
 	my $package	= valid_package_name($filename) ;
 
-	$Cache{$filename}[PLUGIN_ARGS]{$plugin_args} ||= [ parse_line('\s+', 0, $plugin_args) ]
+	$Cache{$filename}[PLUGIN_ARGS]{$plugin_args} ||= [ shellwords($plugin_args) ]
 		if $plugin_args ;
 
 	local *FH;

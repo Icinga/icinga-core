@@ -173,6 +173,9 @@ xretention-base.o: $(SRC_XDATA)/$(XRDC) $(SRC_XDATA)/$(XRDH)
 $(SRC_COMMON)/shared.o: $(SRC_COMMON)/shared.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+$(SRC_COMMON)/snprintf.o: $(SRC_COMMON)/snprintf.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 
 ########## ICINGA ##########
 

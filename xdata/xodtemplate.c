@@ -3,6 +3,7 @@
  * XODTEMPLATE.C - Template-based object configuration data input routines
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
+ * Copyright (c) 2009-2010 Nagios Core Development Team and Community Contributors
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
@@ -72,7 +73,6 @@
 #ifdef NSCORE
 extern int use_regexp_matches;
 extern int use_true_regexp_matching;
-extern char *macro_x[MACRO_X_COUNT];
 extern int verify_config;
 extern int test_scheduling;
 extern int use_precached_objects;
@@ -124,6 +124,7 @@ char *xodtemplate_precache_file=NULL;
 
 int presorted_objects=FALSE;
 
+extern int allow_empty_hostgroup_assignment;
 
 int xodtemplate_create_escalation_condition(char*, xodtemplate_escalation_condition*);
 
@@ -502,7 +503,10 @@ int xodtemplate_grab_config_info(char *main_config_file){
 	char *var=NULL;
 	char *val=NULL;
 	mmapfile *thefile=NULL;
-	
+#ifdef NSCORE
+	icinga_macros *mac;
+#endif
+
 	/* open the main config file for reading */
 	if((thefile=mmap_fopen(main_config_file))==NULL)
 		return ERROR;
@@ -553,10 +557,12 @@ int xodtemplate_grab_config_info(char *main_config_file){
 		return ERROR;
 
 #ifdef NSCORE
+	mac = get_global_macros();
+
 	/* save the object cache file macro */
-	my_free(macro_x[MACRO_OBJECTCACHEFILE]);
-	if((macro_x[MACRO_OBJECTCACHEFILE]=(char *)strdup(xodtemplate_cache_file)))
-		strip(macro_x[MACRO_OBJECTCACHEFILE]);
+	my_free(mac->x[MACRO_OBJECTCACHEFILE]);
+	if((mac->x[MACRO_OBJECTCACHEFILE]=(char *)strdup(xodtemplate_cache_file)))
+		strip(mac->x[MACRO_OBJECTCACHEFILE]);
 #endif
 
 	return OK;
@@ -653,7 +659,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 	register int x=0;
 	register int y=0;
 	char *ptr=NULL;
-	//xodtemplate_service *temp_service=NULL;
+	int empty_def=TRUE;
 
 
 #ifdef NSCORE
@@ -751,36 +757,7 @@ int xodtemplate_process_config_file(char *filename, int options){
 			        }
 
 			in_definition=TRUE;
-		        }
-
-		/* this is the close of an object definition */
-		else if(!strcmp(input,"}") && in_definition==TRUE){
-
-			/* 2010-06-17 MF we should only warn if a service_description is not found on service definition
-			   regarding the fact that we resolve the object with templates afterwards, we cannot throw a
-			   warning here. commented out for future rework */
-			/*
-			switch(xodtemplate_current_object_type){
-				case XODTEMPLATE_SERVICE:{
-					temp_service=(xodtemplate_service *)xodtemplate_current_object;
-					if (temp_service->register_object && (!temp_service->service_description)){
-						logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Ending service definition without description in '%s' on line %d.\n",filename,current_line);
-						break;
-					}
-					break;
-				}
-				default:
-					break;
-			}
-			*/
-			in_definition=FALSE;
-
-			/* close out current definition */
-			if(xodtemplate_end_object_definition(options)==ERROR){
-				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not complete object definition in file '%s' on line %d.\n",filename,current_line);
-				result=ERROR;
-				break;
-			        }
+			empty_def=TRUE; /* set the default at the beginning */
 		        }
 
 		/* we're currently inside an object definition */
@@ -788,6 +765,13 @@ int xodtemplate_process_config_file(char *filename, int options){
 
 			/* this is the close of an object definition */
 			if(!strcmp(input,"}")){
+
+				/* check if definition is empty */
+				if(empty_def==TRUE){
+					/* this is a hack in order to not register this empty object! */
+					logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Empty definition found in file '%s' on line %d.\n",filename,current_line);
+					xodtemplate_add_object_property("register 0",options);
+				}
 
 				in_definition=FALSE;
 
@@ -808,6 +792,9 @@ int xodtemplate_process_config_file(char *filename, int options){
 					result=ERROR;
 					break;
 				        }
+
+				empty_def=FALSE; /* indicate that we just registered an attribute */
+
 			        }
 		        }
 
@@ -4220,6 +4207,7 @@ int xodtemplate_duplicate_services(void){
 	int result=OK;
 	xodtemplate_service *temp_service=NULL;
 	xodtemplate_memberlist *temp_memberlist=NULL;
+	xodtemplate_memberlist *temp_rejectlist=NULL;
 	xodtemplate_memberlist *this_memberlist=NULL;
 	char *host_name=NULL;
 	int first_item=FALSE;
@@ -4231,6 +4219,26 @@ int xodtemplate_duplicate_services(void){
 		/* skip service definitions without enough data */
 		if(temp_service->hostgroup_name==NULL && temp_service->host_name==NULL)
 			continue;
+
+		/* If hostgroup is not null and hostgroup has no members, check to see if */
+		/* allow_empty_hostgroup_assignment is set to 1 - if it is, continue without error  */
+		if(temp_service->hostgroup_name!=NULL){
+			if(xodtemplate_expand_hostgroups(&temp_memberlist,&temp_rejectlist,temp_service->hostgroup_name,temp_service->_config_file,temp_service->_start_line)==ERROR){
+				return ERROR;
+				}
+			else{
+				xodtemplate_free_memberlist(&temp_rejectlist);
+				if (temp_memberlist!=NULL){
+					xodtemplate_free_memberlist(&temp_memberlist);
+					}
+				else{
+					/* User is ok with hostgroup -> service mappings with no hosts */
+					if(allow_empty_hostgroup_assignment==1){
+						continue;
+                                               }
+					}
+				}
+			}
 
 		/* skip services that shouldn't be registered */
 		if(temp_service->register_object==FALSE)
@@ -4287,10 +4295,15 @@ int xodtemplate_duplicate_services(void){
                 if(temp_service->register_object==FALSE)
                         continue;
 
+		if(xodtemplate_is_service_is_from_hostgroup(temp_service)){
+			continue;
+		}
+
                 /* skip service definitions without enough data */
+		/* make host_name optional for services, only warn */
                 if(temp_service->host_name==NULL){
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
-			return ERROR;
+			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
+			result=ERROR;
 		}
 
 		if(temp_service->service_description==NULL){
@@ -4298,12 +4311,8 @@ int xodtemplate_duplicate_services(void){
 			return ERROR;
 		}
 
-		if(xodtemplate_is_service_is_from_hostgroup(temp_service)){
-			continue;
-		}
-
-
                 result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
+
                 switch(result){
                 case SKIPLIST_ERROR_DUPLICATE:
                         logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' on host '%s' (config file '%s', starting on line %d)\n",temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
@@ -4327,6 +4336,12 @@ int xodtemplate_duplicate_services(void){
 		if(temp_service->register_object==FALSE)
 			continue;
 
+	        if(!xodtemplate_is_service_is_from_hostgroup(temp_service)){
+                        continue;
+                }
+		/*The flag X_SERVICE_IS_FROM_HOSTGROUP is set, unset it*/
+		xodtemplate_unset_service_is_from_hostgroup(temp_service);
+
 		/* skip service definitions without enough data */
                 if(temp_service->host_name==NULL){
                         logit(NSLOG_CONFIG_ERROR,TRUE,"Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
@@ -4338,13 +4353,8 @@ int xodtemplate_duplicate_services(void){
                         return ERROR;
                 }
 
-	        if(!xodtemplate_is_service_is_from_hostgroup(temp_service)){
-                        continue;
-                }
-		/*The flag X_SERVICE_IS_FROM_HOSTGROUP is set, unset it*/
-		xodtemplate_unset_service_is_from_hostgroup(temp_service);
-
 		result=skiplist_insert(xobject_skiplists[X_SERVICE_SKIPLIST],(void *)temp_service);
+
 		switch(result){
 		case SKIPLIST_ERROR_DUPLICATE:
 			logit(NSLOG_CONFIG_WARNING,TRUE,"Warning: Duplicate definition found for service '%s' on host '%s' (config file '%s', starting on line %d)\n",temp_service->service_description,temp_service->host_name,xodtemplate_config_file_name(temp_service->_config_file),temp_service->_start_line);
@@ -4381,6 +4391,7 @@ int xodtemplate_duplicate_objects(void){
 
 	char *service_descriptions=NULL;
 	int first_item=FALSE;
+	int same_host_servicedependency=FALSE;
 
 
 	/*************************************/
@@ -4840,6 +4851,11 @@ int xodtemplate_duplicate_objects(void){
 				my_free(temp_servicedependency->dependent_hostgroup_name);
 				}
 
+			/* Detected same host servicegroups dependencies */
+			same_host_servicedependency=FALSE;
+			if(temp_servicedependency->host_name==NULL && temp_servicedependency->hostgroup_name==NULL)
+				same_host_servicedependency=TRUE;
+
 			/* duplicate service dependency entries */
 			first_item=TRUE;
 			for(temp_dependentservice=dependent_servicelist;temp_dependentservice!=NULL;temp_dependentservice=temp_dependentservice->next){
@@ -4857,10 +4873,14 @@ int xodtemplate_duplicate_objects(void){
 					my_free(temp_servicedependency->dependent_service_description);
 					temp_servicedependency->dependent_service_description=(char *)strdup(temp_dependentservice->name2);
 
+					/* Same host servicegroups dependencies: Use dependentservice host_name for master host_name */
+					if(same_host_servicedependency==TRUE)
+						temp_servicedependency->host_name=(char*)strdup(temp_dependentservice->name1);
+
 					/* clear the dependent servicegroup */
 					temp_servicedependency->have_dependent_servicegroup_name=FALSE;
 					my_free(temp_servicedependency->dependent_servicegroup_name);
-				
+
 					if(temp_servicedependency->dependent_host_name==NULL || temp_servicedependency->dependent_service_description==NULL){
 						xodtemplate_free_memberlist(&dependent_servicelist);
 						return ERROR;
@@ -4871,7 +4891,11 @@ int xodtemplate_duplicate_objects(void){
 					}
 
 				/* duplicate service dependency definition */
-				result=xodtemplate_duplicate_servicedependency(temp_servicedependency,temp_servicedependency->host_name,temp_servicedependency->service_description,NULL,NULL,temp_dependentservice->name1,temp_dependentservice->name2,NULL,NULL);
+				/* Same host servicegroups dependencies: Use dependentservice host_name for master host_name instead of undefined (not yet) master host_name */
+				if(same_host_servicedependency==TRUE)
+					result=xodtemplate_duplicate_servicedependency(temp_servicedependency,temp_dependentservice->name1,temp_servicedependency->service_description,NULL,NULL,temp_dependentservice->name1,temp_dependentservice->name2,NULL,NULL);
+				else
+					result=xodtemplate_duplicate_servicedependency(temp_servicedependency,temp_servicedependency->host_name,temp_servicedependency->service_description,NULL,NULL,temp_dependentservice->name1,temp_dependentservice->name2,NULL,NULL);
 
 				/* exit on error */
 				if(result==ERROR){
@@ -9084,14 +9108,16 @@ int xodtemplate_register_hostgroup(xodtemplate_hostgroup *this_hostgroup){
 		return ERROR;
 	        }
 
-	for(host_name=strtok(this_hostgroup->members,",");host_name!=NULL;host_name=strtok(NULL,",")){
-		strip(host_name);
-		new_hostsmember=add_host_to_hostgroup(new_hostgroup,host_name);
-		if(new_hostsmember==NULL){
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add host '%s' to hostgroup (config file '%s', starting on line %d)\n",host_name,xodtemplate_config_file_name(this_hostgroup->_config_file),this_hostgroup->_start_line);
-			return ERROR;
+	if (this_hostgroup->members!=NULL) {
+		for(host_name=strtok(this_hostgroup->members,",");host_name!=NULL;host_name=strtok(NULL,",")){
+			strip(host_name);
+			new_hostsmember=add_host_to_hostgroup(new_hostgroup,host_name);
+			if(new_hostsmember==NULL){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add host '%s' to hostgroup (config file '%s', starting on line %d)\n",host_name,xodtemplate_config_file_name(this_hostgroup->_config_file),this_hostgroup->_start_line);
+				return ERROR;
+			        }
 		        }
-	        }
+		}
 
 	return OK;
         }
@@ -9118,21 +9144,23 @@ int xodtemplate_register_servicegroup(xodtemplate_servicegroup *this_servicegrou
 		return ERROR;
 	        }
 
-	for(host_name=strtok(this_servicegroup->members,",");host_name!=NULL;host_name=strtok(NULL,",")){
-		strip(host_name);
-		svc_description=strtok(NULL,",");
-		if(svc_description==NULL){
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Missing service name in servicegroup definition (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-			return ERROR;
-	                }
-		strip(svc_description);
+	if(this_servicegroup->members!=NULL) {
+		for(host_name=strtok(this_servicegroup->members,",");host_name!=NULL;host_name=strtok(NULL,",")){
+			strip(host_name);
+			svc_description=strtok(NULL,",");
+			if(svc_description==NULL){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Missing service name in servicegroup definition (config file '%s', starting on line %d)\n",xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
+				return ERROR;
+		                }
+			strip(svc_description);
 
-		new_servicesmember=add_service_to_servicegroup(new_servicegroup,host_name,svc_description);
-		if(new_servicesmember==NULL){
-			logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add service '%s' on host '%s' to servicegroup (config file '%s', starting on line %d)\n",svc_description,host_name,xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
-			return ERROR;
+			new_servicesmember=add_service_to_servicegroup(new_servicegroup,host_name,svc_description);
+			if(new_servicesmember==NULL){
+				logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add service '%s' on host '%s' to servicegroup (config file '%s', starting on line %d)\n",svc_description,host_name,xodtemplate_config_file_name(this_servicegroup->_config_file),this_servicegroup->_start_line);
+				return ERROR;
+			        }
 		        }
-	        }
+		}
 
 	return OK;
         }

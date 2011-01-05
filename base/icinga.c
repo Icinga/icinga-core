@@ -3,7 +3,7 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Program: Icinga
- * Version: 1.2.0
+ * Version: 1.3.0
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
@@ -70,8 +70,6 @@ char            *p1_file=NULL;    /**** EMBEDDED PERL ****/
 char            *auth_file=NULL;  /**** EMBEDDED PERL INTERPRETER AUTH FILE ****/
 char            *nagios_user=NULL;
 char            *nagios_group=NULL;
-
-extern char     *macro_x[MACRO_X_COUNT];
 
 char            *global_host_event_handler=NULL;
 char            *global_service_event_handler=NULL;
@@ -244,6 +242,8 @@ int             stalking_event_handlers_for_services=DEFAULT_STALKING_EVENT_HAND
 int             date_format=DATE_FORMAT_US;
 char            *use_timezone=NULL;
 
+int             allow_empty_hostgroup_assignment=DEFAULT_ALLOW_EMPTY_HOSTGROUP_ASSIGNMENT;
+
 int             command_file_fd;
 FILE            *command_file_fp;
 int             command_file_created=FALSE;
@@ -291,11 +291,10 @@ int main(int argc, char **argv, char **env){
 	int display_license=FALSE;
 	int display_help=FALSE;
 	int c=0;
-	struct tm *tm;
+	struct tm *tm, tm_s;
 	time_t now;
 	char datestring[256];
-
-
+	icinga_macros *mac;
 
 #ifdef HAVE_GETOPT_H
 	int option_index=0;
@@ -315,6 +314,8 @@ int main(int argc, char **argv, char **env){
 		{0,0,0,0}
 	};
 #endif
+
+	mac = get_global_macros();
 
 	/* make sure we have the correct number of command line arguments */
 	if(argc<2)
@@ -672,8 +673,8 @@ int main(int argc, char **argv, char **env){
 			/* NOTE 11/06/07 EG moved to after we read config files, as user may have overridden timezone offset */
 			/* get program (re)start time and save as macro */
 			program_start=time(NULL);
-			my_free(macro_x[MACRO_PROCESSSTARTTIME]);
-			asprintf(&macro_x[MACRO_PROCESSSTARTTIME],"%lu",(unsigned long)program_start);
+			my_free(mac->x[MACRO_PROCESSSTARTTIME]);
+			asprintf(&mac->x[MACRO_PROCESSSTARTTIME],"%lu",(unsigned long)program_start);
 
 			/* open debug log */
 			open_debug_log();
@@ -698,7 +699,7 @@ int main(int argc, char **argv, char **env){
 
 			/* log the local time - may be different than clock time due to timezone offset */
 			now=time(NULL);
-			tm=localtime(&now);
+			tm=localtime_r(&now, &tm_s);
 			strftime(datestring,sizeof(datestring),"%a %b %d %H:%M:%S %Z %Y",tm);
 			logit(NSLOG_PROCESS_INFO,TRUE,"Local time is %s",datestring);
 
@@ -861,8 +862,8 @@ int main(int argc, char **argv, char **env){
 
 			/* get event start time and save as macro */
 			event_start=time(NULL);
-			my_free(macro_x[MACRO_EVENTSTARTTIME]);
-			asprintf(&macro_x[MACRO_EVENTSTARTTIME],"%lu",(unsigned long)event_start);
+			my_free(mac->x[MACRO_EVENTSTARTTIME]);
+			asprintf(&mac->x[MACRO_EVENTSTARTTIME],"%lu",(unsigned long)event_start);
 
 		        /***** start monitoring all services *****/
 			/* (doesn't return until a restart or shutdown signal is encountered) */

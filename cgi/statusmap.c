@@ -39,11 +39,13 @@
 #include <gd.h>			/* Boutell's GD library function */
 #include <gdfonts.h>		/* GD library small font definition */
 
+static icinga_macros *mac;
+
 /*#define DEBUG*/
 
 #define UNKNOWN_GD2_ICON      "unknown.gd2"
 #define UNKNOWN_ICON_IMAGE    "unknown.gif"
-#define NAGIOS_GD2_ICON       "nagios.gd2"
+#define ICINGA_GD2_ICON       "icinga.gd2"
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
@@ -166,9 +168,6 @@ extern int color_transparency_index_r;
 extern int color_transparency_index_g;
 extern int color_transparency_index_b;
 
-int show_all_hosts=TRUE;
-char *host_name="all";
-
 extern int embedded;
 extern int refresh;
 extern int display_header;
@@ -221,10 +220,24 @@ layer *layer_list=NULL;
 int exclude_layers=TRUE;
 int all_layers=FALSE;
 
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name="all";
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
+
 int CGI_ID=STATUSMAP_CGI_ID;
 
 int main(int argc, char **argv){
 	int result;
+
+	mac = get_global_macros();
 
 	/* reset internal variables */
 	reset_cgi_vars();
@@ -1520,7 +1533,7 @@ void draw_hosts(void){
 		y2=y1+DEFAULT_NODE_HEIGHT;
 
 		/* get the name of the image file to open for the logo */
-		snprintf(image_input_file,sizeof(image_input_file)-1,"%s%s",physical_logo_images_path,NAGIOS_GD2_ICON);
+		snprintf(image_input_file,sizeof(image_input_file)-1,"%s%s",physical_logo_images_path,ICINGA_GD2_ICON);
 		image_input_file[sizeof(image_input_file)-1]='\x0';
 
 		/* read in the image from file... */
@@ -1844,7 +1857,7 @@ void write_host_popup_text(host *hst){
 	        }
 
 	/* grab macros */
-	grab_host_macros(hst);
+	grab_host_macros(mac, hst);
 
 	/* strip nasty stuff from plugin output */
 	sanitize_plugin_output(temp_status->plugin_output);
@@ -1855,7 +1868,7 @@ void write_host_popup_text(host *hst){
 	if(hst->icon_image==NULL)
 		printf("%s",UNKNOWN_ICON_IMAGE);
 	else{
-		process_macros(hst->icon_image,&processed_string,0);
+		process_macros_r(mac, hst->icon_image,&processed_string,0);
 		printf("%s",processed_string);
 		free(processed_string);
 		}

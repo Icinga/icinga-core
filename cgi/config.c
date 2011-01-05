@@ -30,6 +30,8 @@
 #include "../include/cgiauth.h"
 #include "../include/getcgi.h"
 
+static icinga_macros *mac;
+
 extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
 extern char   url_docs_path[MAX_FILENAME_LENGTH];
@@ -50,23 +52,6 @@ extern servicedependency *servicedependency_list;
 extern serviceescalation *serviceescalation_list;
 extern hostdependency *hostdependency_list;
 extern hostescalation *hostescalation_list;
-
-
-#define DISPLAY_NONE                     0
-#define DISPLAY_HOSTS                    1
-#define DISPLAY_HOSTGROUPS               2
-#define DISPLAY_CONTACTS                 3
-#define DISPLAY_CONTACTGROUPS            4
-#define DISPLAY_SERVICES                 5
-#define DISPLAY_TIMEPERIODS              6
-#define DISPLAY_COMMANDS                 7
-#define DISPLAY_HOSTGROUPESCALATIONS     8    /* no longer implemented */
-#define DISPLAY_SERVICEDEPENDENCIES      9
-#define DISPLAY_SERVICEESCALATIONS       10
-#define DISPLAY_HOSTDEPENDENCIES         11
-#define DISPLAY_HOSTESCALATIONS          12
-#define DISPLAY_SERVICEGROUPS            15
-#define DISPLAY_COMMAND_EXPANSION        16211
 
 int process_cgivars(void);
 
@@ -91,6 +76,16 @@ void unauthorized_message(void);
 authdata current_authdata;
 
 int display_type=DISPLAY_NONE;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 char to_expand[MAX_COMMAND_BUFFER];
 char hashed_color[8];
 
@@ -115,6 +110,7 @@ void print_expand_input(int type){
 
 int main(void){
 	int result=OK;
+	mac = get_global_macros();
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -461,7 +457,7 @@ void display_hosts(void){
 	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next) if (((*to_expand)=='\0')||!strcmp(to_expand,temp_host->name)){
 
 		/* grab macros */
-		grab_host_macros(temp_host);
+		grab_host_macros(mac, temp_host);
 
 		if(odd){
 			odd=0;
@@ -697,7 +693,7 @@ void display_hosts(void){
 		if(temp_host->icon_image==NULL)
 			printf("<TD CLASS='%s'>&nbsp;</TD>",bg_class);
 		else{
-			process_macros(temp_host->icon_image,&processed_string,0);
+			process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 			printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>",bg_class,url_logo_images_path,processed_string,html_encode(temp_host->icon_image,FALSE));
 			free(processed_string);
 			}
@@ -1206,7 +1202,7 @@ void display_services(void){
 		if (((*to_expand)=='\0')||(!strcmp(to_expand,temp_service->host_name))||(!strcmp(to_expand,temp_service->description))){
 
 		/* grab macros */
-		grab_service_macros(temp_service);
+		grab_service_macros(mac, temp_service);
 
 		if(odd){
 			odd=0;
@@ -1422,7 +1418,7 @@ void display_services(void){
 		if(temp_service->icon_image==NULL)
 			printf("<TD CLASS='%s'>&nbsp;</TD>",bg_class);
 		else{
-			process_macros(temp_service->icon_image,&processed_string,0);
+			process_macros_r(mac, temp_service->icon_image,&processed_string,0);
 			printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>",bg_class,url_logo_images_path,processed_string,html_encode(temp_service->icon_image,FALSE));
 			free(processed_string);
 			}
@@ -2365,10 +2361,7 @@ void display_command_expansion(void){
 						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#0000FF'>dangling whitespace:</FONT></TD>\n",bg_class,bg_class);
 						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='#0000FF'>",bg_class,i);
 						for (c=command_args[i],j=0;c&&isspace(*c);c++,j++)
-							/* TODO: As long as the hyperlinks change all whitespace into actual spaces,
-							   we'll output "[WS]" (whitespace) instead of "[SP]"(ace). */
-							/* if ((*c)==' ')		printf("[SP]"); */
-							if ((*c)==' ')		printf("[WS]");
+							if ((*c)==' ')		printf("[SP]");
 							else if ((*c)=='\f')	printf("[FF]");
 							else if ((*c)=='\n')	printf("[LF]");
 							else if ((*c)=='\r')	printf("[CR]");
@@ -2379,9 +2372,7 @@ void display_command_expansion(void){
 						for (;c&&((*c)!='\0')&&(j<strlen(command_args[i])-trail_space[i]);c++,j++) putchar(*c);
 						printf("</FONT><FONT COLOR='#0000FF'>");
 						for (;c&&((*c)!='\0');c++)
-							/* TODO: As long as the hyperlinks change all whitespace into actual spaces,
-							   we'll output "[WS]" (whitespace) instead of "[SP]"(ace). */
-							/* if ((*c)==' ')		printf("[SP]"); */
+							if ((*c)==' ')		printf("[SP]");
 							if ((*c)==' ')		printf("[WS]");
 							else if ((*c)=='\f')	printf("[FF]");
 							else if ((*c)=='\n')	printf("[LF]");
@@ -2444,7 +2435,7 @@ void display_options(void){
 	printf("<option value='contactgroups' %s>Contact Groups\n",(display_type==DISPLAY_CONTACTGROUPS)?"SELECTED":"");
 	printf("<option value='timeperiods' %s>Timeperiods\n",(display_type==DISPLAY_TIMEPERIODS)?"SELECTED":"");
 	printf("<option value='commands' %s>Commands\n",(display_type==DISPLAY_COMMANDS)?"SELECTED":"");
-	printf("<option value='commands' %s>Command Expansion\n",(display_type==DISPLAY_COMMAND_EXPANSION)?"SELECTED":"");
+	printf("<option value='command' %s>Command Expansion\n",(display_type==DISPLAY_COMMAND_EXPANSION)?"SELECTED":"");
 	printf("</select>\n");
 	printf("</td></tr>\n");
 

@@ -37,8 +37,21 @@ extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
 extern char   url_js_path[MAX_FILENAME_LENGTH];
 
 extern int    log_rotation_method;
-
 extern int    enable_splunk_integration;
+extern int    showlog_initial_states;
+extern int    showlog_current_states;
+
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 
 int process_cgivars(void);
 
@@ -302,6 +315,14 @@ int display_log(void){
 
 			strip(input);
 
+			if ( showlog_initial_states==FALSE && (strstr(input,"INITIAL SERVICE STATE:") || strstr(input,"INITIAL HOST STATE:"))){
+				continue;
+			}
+
+			if ( showlog_current_states==FALSE && (strstr(input,"CURRENT SERVICE STATE:") || strstr(input,"CURRENT HOST STATE:"))){
+				continue;
+			}
+
 			if(strstr(input," starting...")){
 				strcpy(image,START_ICON);
 				strcpy(image_alt,START_ICON_ALT);
@@ -464,7 +485,7 @@ int display_log(void){
 			strip(date_time);
 
 			temp_buffer=strtok(NULL,"\n");
-			
+
 			if(display_frills==TRUE)
 				printf("<img align='left' src='%s%s' alt='%s' title='%s'>",url_images_path,image,image_alt,image_alt);
 			printf("[%s] %s",date_time,(temp_buffer==NULL)?"":html_encode(temp_buffer,FALSE));

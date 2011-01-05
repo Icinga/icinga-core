@@ -13,6 +13,12 @@
 main_config_file=@sysconfdir@/icinga.cfg
 
 
+# ATTRIBUTE BASED AUTHORIZATION FILE
+# This option will include a file defining authroization based on
+# attributes.
+
+#authorization_config_file=@sysconfdir@/cgiauth.cfg
+
 
 # PHYSICAL HTML PATH
 # This is the path where the HTML files for Icinga reside.  This
@@ -32,6 +38,16 @@ physical_html_path=@datadir@
 # (without the quotes).
 
 url_html_path=@htmurl@
+
+
+
+# URL STYLESHEETS PATH
+# This option allows to define an url stylesheet path other than the
+# default ($url_html_path/stylesheets). This will be useful when
+# adding custom stylesheets in another location.
+# If not set, the default location will be used.
+
+url_stylesheets_path=@htmurl@/stylesheets
 
 
 
@@ -328,10 +344,12 @@ persistent_ack_comments=0
 
 # URL TARGET FRAMES
 # These options determine the target frames in which notes and
-# action URLs will open.
+# action URLs will open. Default is main frame.
 
-action_url_target=_blank
-notes_url_target=_blank
+action_url_target=main
+notes_url_target=main
+#action_url_target=_blank
+#notes_url_target=_blank
 
 
 
@@ -366,6 +384,28 @@ tac_show_only_hard_state=0
 
 
 
+# SHOW INITIAL STATES IN SHOWLOG OPTION
+# This options allows you to specify if initial states
+# of hosts and services should be shown in showlog.cgi
+# Note: This Option only works if the option
+# "log_initial_states" in icinga.cfg is set to 1.
+# By default it's enabled. Default is 1.
+
+#showlog_initial_states=1
+
+
+
+# SHOW CURRENT STATES IN SHOWLOG OPTION
+# This options allows you to specify if current states
+# of hosts and services should be shown in showlog.cgi
+# Note: This Option only works if the option
+# "log_current_states" in icinga.cfg is set to 1.
+# By default it's enabled. Default is 1.
+
+#showlog_current_states=1
+
+
+
 # CSV DELIMITER
 # This option determines the character which should act as
 # delimiter. Default is ";".
@@ -379,6 +419,48 @@ tac_show_only_hard_state=0
 # data enclosure to wrap in the data. Default is "'".
 
 #csv_data_enclosure='
+
+
+
+# TAB-FRIENDLY <TITLE>S
+# Activating this option changes the <title> of status.cgi
+# and extinfo.cgi when they refer to a single host, service,
+# or group. They will then read:
+#	[Host]
+#	{HostGroup}
+#	ServiceDesc @ Host
+#	(ServiceGroup)
+# These are easier to read and find if you use (many) tabs
+# in your browser.
+# Default is enabled. 0=disabled, 1=enabled
+
+tab_friendly_titles=1
+
+
+# SERVICE STATES TO ANNOTATE WITH CURRENT NOTIFICATION NO.
+# Set this to an OR of the service state identifiers for
+# which status.cgi should not only report "Attempts" (e.g.,
+# "3/3" for a HARD non-OK state with max_check_attempts=3)
+# but also the current notification number ("(#0)" if no
+# problem notification has been sent yet, etc.). This is
+# helpful to identify services which switched between
+# different non-OK states a lot, or services which have a
+# first_notification_delay set and are "not yet officially"
+# considered in trouble.
+# Relevant values from include/statusdata.h (look them up
+# *there* if you want to be *really* sure):
+#	#define	SERVICE_PENDING		1
+#	#define	SERVICE_OK		2
+#	#define	SERVICE_WARNING		4
+#	#define	SERVICE_UNKNOWN		8
+#	#define	SERVICE_CRITICAL	16
+# You'll likely want to use add_notif_num_hard=0 (default)
+# or add_notif_num_hard=28 (warn+crit+unknown). There's an
+# add_notif_num_soft affecting services in a SOFT state
+# for sake of completeness, too.
+
+#add_notif_num_hard=28
+#add_notif_num_soft=0
 
 
 

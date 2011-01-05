@@ -28,7 +28,7 @@ my $cgi_dir = "$topdir/cgi";
 
 my $mech = Test::WWW::Mechanize::CGI->new;
 
-$mech->env( NAGIOS_CGI_CONFIG => "etc/cgi.cfg" );
+$mech->env( ICINGA_CGI_CONFIG => "etc/cgi.cfg" );
 $mech->cgi_application("$cgi_dir/history.cgi");
 
 $mech->get_ok("http://localhost/");

@@ -69,7 +69,6 @@ int skiplist_insert(skiplist *list, void *data){
 	skiplistnode *nextnode=NULL;
 	skiplistnode *newnode=NULL;
 	int level=0;
-	int x=0;
 
 	if(list==NULL || data==NULL){
 		return SKIPLIST_ERROR_ARGS;

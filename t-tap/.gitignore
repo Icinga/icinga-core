@@ -1,6 +1,10 @@
 Makefile
 test_logging
-*.dSYM
 test_events
 test_icinga_config
 test_timeperiods
+test_events
+test_checks
+test_xsddefault
+*.dSYM
+*.o

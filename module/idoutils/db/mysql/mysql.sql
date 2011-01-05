@@ -1556,3 +1556,5 @@ CREATE INDEX loge_time_idx on icinga_logentries(logentry_time);
 -- CREATE INDEX sched_d_t_start_time_idx on icinga_scheduleddowntime(scheduled_start_time);
 -- CREATE INDEX sched_d_t_end_time_idx on icinga_scheduleddowntime(scheduled_end_time);
 
+-- statehistory
+CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);

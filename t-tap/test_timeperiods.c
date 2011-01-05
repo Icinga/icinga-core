@@ -121,13 +121,6 @@ int             auto_rescheduling_window=DEFAULT_AUTO_RESCHEDULING_WINDOW;
 
 int             additional_freshness_latency=DEFAULT_ADDITIONAL_FRESHNESS_LATENCY;
 
-int             check_for_updates=DEFAULT_CHECK_FOR_UPDATES;
-int             bare_update_check=DEFAULT_BARE_UPDATE_CHECK;
-time_t          last_update_check=0L;
-int             update_available=FALSE;
-char            *last_program_version=NULL;
-char            *new_program_version=NULL;
-
 time_t          last_command_check=0L;
 time_t          last_command_status_update=0L;
 time_t          last_log_rotation=0L;
@@ -232,6 +225,7 @@ int             command_file_fd;
 FILE            *command_file_fp;
 int             command_file_created=FALSE;
 
+int		allow_empty_hostgroup_assignment;
 
 extern contact	       *contact_list;
 extern contactgroup    *contactgroup_list;
@@ -261,6 +255,22 @@ int             debug_level=DEFAULT_DEBUG_LEVEL;
 int             debug_verbosity=DEFAULT_DEBUG_VERBOSITY;
 unsigned long   max_debug_file_size=DEFAULT_MAX_DEBUG_FILE_SIZE;
 
+/* Icinga special */
+int             use_daemon_log=DEFAULT_USE_DAEMON_LOG;
+
+int             use_syslog_local_facility=DEFAULT_USE_SYSLOG_LOCAL_FACILITY;
+int             syslog_local_facility=DEFAULT_SYSLOG_LOCAL_FACILITY;
+
+int             log_current_states=DEFAULT_LOG_CURRENT_STATES;
+
+int             log_external_commands_user=DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
+
+int             log_long_plugin_output=DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
+
+int             service_check_timeout_state=STATE_CRITICAL;
+
+int             stalking_event_handlers_for_hosts=DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
+int             stalking_event_handlers_for_services=DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
 
 /* Dummy variables */
 sched_info scheduling_info;
@@ -309,17 +319,17 @@ int main(int argc, char **argv){
 	int is_valid_time=0;
 	int iterations=1000;
 
-	plan_tests(6031);
+	plan_tests(6043);
 
 	/* reset program variables */
 	reset_variables();
 
 	printf("Reading configuration data...\n");
 
-	config_file=strdup("smallconfig/nagios.cfg");
+	config_file=strdup("smallconfig/icinga.cfg");
 	/* read in the configuration files (main config file, resource and object config files) */
 	result=read_main_config_file(config_file);
-	ok(result==OK, "Read main configuration file okay - if fails, use nagios -v to check");
+	ok(result==OK, "Read main configuration file okay - if fails, use icinga -v to check");
 
 	result=read_all_object_data(config_file);
 	ok(result==OK, "Read all object config files");
@@ -337,7 +347,7 @@ int main(int argc, char **argv){
 	ok( is_valid_time==ERROR, "No valid time because time period is empty");
 
 	get_next_valid_time( current_time, &next_valid_time, temp_timeperiod);
-	ok( current_time == next_valid_time, "There is no valid time due to timeperiod" );
+	ok( (next_valid_time-current_time) <= 2, "Next valid time should be the current_time, but with a 2 second tolerance");
 
 	temp_timeperiod = find_timeperiod("24x7");
 
@@ -399,6 +409,74 @@ int main(int argc, char **argv){
 
         /* Tests around clock change going back for TZ=Europe/London. 1256511661 = Sun Oct  
  25 23:01:01 2009 */
+	/* A little trip to Paris*/
+	putenv("TZ=Europe/Paris");
+        tzset();
+
+
+	/* Timeperiod exclude tests, from Jean Gabes */
+	temp_timeperiod = find_timeperiod("Test_exclude");
+        ok(temp_timeperiod!=NULL, "ME: Testing Exclude timeperiod");
+	test_time=1278939600;
+	/* printf("Testing at time %s", ctime(&test_time)); */
+        is_valid_time = check_time_against_period(test_time, temp_timeperiod);
+        ok( is_valid_time==ERROR, "ME: 12 Jul 2010 15:00:00 - false" );
+
+        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+	/* printf("JEAN: Got chosent time at %s", ctime(&chosen_valid_time)); */
+	todo_start("Bug in exclude");
+        ok( chosen_valid_time==1288103400, "ME: Next valid time=Tue Oct 26 16:30:00 2010");
+	todo_end();
+
+
+	temp_timeperiod = find_timeperiod("Test_exclude2");
+        ok(temp_timeperiod!=NULL, "ME: Testing Exclude timeperiod 2");
+	test_time=1278939600;
+	/* printf("Testing at time %s", ctime(&test_time)); */
+        is_valid_time = check_time_against_period(test_time, temp_timeperiod);
+        ok( is_valid_time==ERROR, "ME: 12 Jul 2010 15:00:00 - false" );
+        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+	/* printf("JEAN: Got chosent time at %s", ctime(&chosen_valid_time)); */
+	todo_start("Bug in exclude 2");
+        ok( chosen_valid_time==1279058340, "ME: Next valid time=Tue Jul 13 23:59:00 2010");
+	todo_end();
+
+
+	temp_timeperiod = find_timeperiod("Test_exclude3");
+        ok(temp_timeperiod!=NULL, "ME: Testing Exclude timeperiod 3");
+        test_time=1278939600;
+        /* printf("Testing at time %s", ctime(&test_time)); */
+        is_valid_time = check_time_against_period(test_time, temp_timeperiod);
+        ok( is_valid_time==ERROR, "ME: 12 Jul 2010 15:00:00 - false" );
+        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        /* printf("JEAN: Got chosent time at %s", ctime(&chosen_valid_time)); */
+	todo_start("Bug in exclude 3");
+        ok( chosen_valid_time==1284474600, "ME: Next valid time=Tue Sep 14 16:30:00 2010");
+	todo_end();
+
+
+	temp_timeperiod = find_timeperiod("Test_exclude4");
+        ok(temp_timeperiod!=NULL, "ME: Testing Exclude timeperiod 4");
+        test_time=1278939600;
+        /* printf("Testing at time %s", ctime(&test_time)); */
+        is_valid_time = check_time_against_period(test_time, temp_timeperiod);
+        ok( is_valid_time==ERROR, "ME: 12 Jul 2010 15:00:00 - false" );
+        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        /* printf("JEAN: Got chosent time at %s", ctime(&chosen_valid_time)); */
+	todo_start("Bug in exclude 3");
+        ok( chosen_valid_time==1283265000, "ME: Next valid time=Tue Aug 31 16:30:00 2010");
+	todo_end();
+
+
+
+
+	/* Back to New york */
+	putenv("TZ=America/New_York");
+        tzset();
+
+
+
+
         temp_timeperiod = find_timeperiod("sunday_only");
         ok(temp_timeperiod!=NULL, "Testing Sunday 00:00-01:15,03:15-22:00");
         putenv("TZ=Europe/London");

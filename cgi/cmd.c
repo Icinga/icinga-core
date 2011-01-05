@@ -110,6 +110,10 @@ unsigned long triggered_by=0L;
 int child_options=0;
 int force_notification=0;
 int broadcast_notification=0;
+int display_type=DISPLAY_HOSTS;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
 
 int command_type=CMD_NONE;
 int command_mode=CMDMODE_REQUEST;
@@ -708,7 +712,6 @@ void print_help_box(char *content) {
 /* templates for the different form elements */
 void print_form_element(int element,int cmd) {
 	time_t t;
-	char start_time[MAX_DATETIME_LENGTH];
 	char buffer[MAX_INPUT_BUFFER];
 
 	switch(element) {
@@ -1478,7 +1481,7 @@ void request_command_data(int cmd){
 		print_form_element(PRINT_AUTHOR,cmd);
 		print_form_element(PRINT_COMMENT_BOX,cmd);
 
-		snprintf(help_text,sizeof(help_text),"Define here if this downtime should get triggerd by another downtime of a particular host or service.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+		snprintf(help_text,sizeof(help_text),"Define here if this downtime should get triggerd by another downtime of a particular %s.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
 		help_text[sizeof(help_text)-1]='\x0';
 
 		printf("<tr id=\"trigger_select\"><td class=\"objectDescription descriptionleft\">Triggered By:");
@@ -1525,7 +1528,7 @@ void request_command_data(int cmd){
 		print_form_element(PRINT_FIXED_FLEXIBLE_TYPE,cmd);
 
 		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME){
-			snprintf(help_text,sizeof(help_text),"Define here what should be done with the child hosts of these hosts.",(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"host":"service");
+			snprintf(help_text,sizeof(help_text),"Define here what should be done with the child hosts of these hosts.");
 			help_text[sizeof(help_text)-1]='\x0';
 
 			printf("<tr><td class=\"objectDescription descriptionleft\">Child Hosts:");
@@ -1733,11 +1736,12 @@ void commit_command_data(int cmd){
 
 			/* see if the user is authorized to issue a command... */
 			is_authorized[x]=FALSE;
-			if (cmd==CMD_ADD_HOST_COMMENT || cmd==CMD_ACKNOWLEDGE_HOST_PROBLEM) {
+			if (cmd==CMD_DEL_HOST_COMMENT && temp_comment!=NULL) {
 				temp_host=find_host(temp_comment->host_name);
 				if(is_authorized_for_host_commands(temp_host,&current_authdata)==TRUE)
 					is_authorized[x]=TRUE;
-			} else {
+			}
+			if (cmd==CMD_DEL_SVC_COMMENT && temp_comment!=NULL) {
 				temp_service=find_service(temp_comment->host_name,temp_comment->service_description);
 				if(is_authorized_for_service_commands(temp_service,&current_authdata)==TRUE)
 					is_authorized[x]=TRUE;
@@ -1825,7 +1829,7 @@ void commit_command_data(int cmd){
 
 			cmd_has_objects = TRUE;
 
-			if (commands[x].host_name == NULL)
+			if (commands[x].host_name == NULL || commands[x].description == NULL)
 				continue;
 
 			is_authorized[x]=FALSE;
@@ -2428,8 +2432,12 @@ int commit_command(int cmd){
 	case CMD_SCHEDULE_HOST_SVC_CHECKS:
 		if (force_check == TRUE)
 			cmd = CMD_SCHEDULE_FORCED_HOST_SVC_CHECKS;
-		if (is_authorized[x])
-			submit_result[x] = cmd_submitf(cmd,"%s;%lu",host_name,scheduled_time);
+		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd,"%s;%lu",commands[x].host_name,scheduled_time);
+		}
 		break;
 
 	case CMD_ENABLE_HOST_NOTIFICATIONS:
@@ -2654,7 +2662,7 @@ int commit_command(int cmd){
 		break;
 	}
 
-	return;
+	return OK;
 }
 
 /* write a command entry to the command file */

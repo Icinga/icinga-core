@@ -1,6 +1,90 @@
 #######################
-Icinga 1.2.x Change Log
+Icinga 1.3.x Change Log
 #######################
+
+1.3.0 - 16/02/2011
+
+ENHANCEMENTS
+* classic ui: add instance hostname to html title #954
+* classic ui: use the signal-colour red more economically in tac.css stylesheet (Joachim Raber) #868
+* classic ui: add attribute based authorization based on Shibboleth (Tibor Vago, NIIF) #909
+* classic ui: add config expander urls to extinfo.cgi for active checks and eventhandlers (Jochen Bern) #965
+* classic ui: add collapse the display filter part on status.cgi #923
+* classic ui: add tabfriendly titles, enabled by default (Jochen Bern) #975
+* classic ui: add service states to annotate with current notification number opt-in (Jochen Bern) #976
+* classic ui: change displayed name for hostgroups and servicegroups in extinfo.cgi
+* classic ui: adding "Attempt" column to host status detail list
+* classic ui: change default url target frame to main #1014
+* classic ui: add url_stylesheet_path to cgi.cfg to allow custom css path #898
+
+* core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
+* core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057
+* core: allow empty hostgroup aissgments for services as opt-in config option (Max Schubert) #949
+
+* install: add sysconfig source to init script #1015
+* install: set -Wall gcc flags based on os/compiler #959
+
+* idoutils: add index to table icinga_statehistory for usage in reporting module #957
+
+* contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
+
+FIXES
+* core: base/utils: Refactor my_fcopy() (Andreas Ericsson) #427
+* core: base/nebmods: Replace local file-copy hack with my_fdcopy() (Andreas Ericsson) #424
+* core: force my_free() macro users to end the statement with a semi-colon (Andreas Ericsson) #927
+* core: fix problem with extra whitespace in command definition and ePN (Jason Young) #918
+* core: fix NOTIFICATIONTYPE MACRO never became CUSTOM (Alexey Dvoryanchikov) #950
+* core: only catch SIGSEGV if we're not dumping core and running as a daemon #457
+* core: protect against callbacks removing themsevles in nebmods (Andreas Ericsson) #1021
+* core: fix possible validation error with empty hostgroups/servicegroups (Sven-Göran Bergh) #1040
+* core: performance-data handling and checking is now thread-safe so long as embedded perl is not used (Andreas Ericsson) #1022
+* core: children should no longer hang on mutex locks held in parent for localtime() (and similar) calls (Andreas Ericsson) #1039
+* core: debug logging is now properly serialized, using soft-locking with a timeout of 150 milliseconds to avoid multiple threads competing for the privilege to write debug info (Andreas Ericsson) #1035
+* core: fix parsing of long plugin output for async host checks (Jochen Bern) #1046
+
+* classic ui: change servicestatus letter color to default black, not grey #946
+* classic ui: fix waste of cpu in status summary (TomTom) #933
+* classic ui: fix config.cgi start page wrong "command cxpansion" url (Alexey Dvoryanchikov) #951
+* classic ui: do not allow url_encode returning empty string on Solaris (Ethan Galstad, Ton Voon) #924
+* classic ui: fix object values in utf8 are displayed incorrectly in the web interface (Alexey Dvoryanchikov) #952
+* classic ui: make html header w3c conform #952
+* classic ui: fix typo for css attribute in extinfo.cgi (Ton Voon) #963
+* classic ui: fix whitespace escaping in html urls (Jochen Bern) #965
+* classic ui: fix config expander printing [SP] instead of [WS] (Jochen Bern) #965
+* classic ui: fix status totals - incoherence between displayed list and values #993
+* classic ui: fix deleting host comments won't work #994
+* classic ui: changed naming of cgi config options for showlog_current_state(s) and showlog_current_state(s) #899
+
+* install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
+* install: add log2ido for adding archived logs onto socket/rdbms #926
+* install: add hint to configure that libpq is not yet fully working #622
+
+* idoutils: fix unescape display name (Matthieu Kermagoret) #1027
+
+1.2.1 - 25/10/2010
+
+ENHANCEMENTS:
+* core: fix initscript, no error when stopping stale lock (OMD patch) #897
+
+* classic ui: Added config options to hide initial state and current state log entries in showlog.cgi #899
+* classic ui: extinfo comment table cell names (Oliver Graf) #861
+* classic ui: add csv export to avail.cgi (single|all hosts|services|servicegroups|hostgroups) #925
+
+
+FIXES:
+* core: corrected wrong implementation of fix #584 - re notification for downtime after icinga restart
+* core: fix epn tag for disabling ePN (Yannick Charton) #914
+* core: fix snprintf in make for Solaris #858
+* core: fix config file parsing end of definition check #913
+* core: fix ignoring empty definitions, only warn #860
+
+* classic ui: fix for "Schedule a check of all services on this host" not working properly #895
+* classic ui: comment tooltip now show's quotes and back slashes #907
+* classic ui: fix change statusmap logo name to icinga #922
+* classic ui: add support for ICINGA_ env vars for cgis #921
+
+* idoutils: fix disconnecting on errors misbheaving, not closing db and daemon #886
+
 
 1.2.0 - 06/10/2010
 

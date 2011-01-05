@@ -69,6 +69,16 @@ int validate_arguments(void);
 int is_valid_hostip(char *hostip);
 
 int display_type=DISPLAY_INDEX;
+int show_all_hosts=TRUE;
+int show_all_hostgroups=TRUE;
+int show_all_servicegroups=TRUE;
+
+char *host_name=NULL;
+char *host_filter=NULL;
+char *hostgroup_name=NULL;
+char *servicegroup_name=NULL;
+char *service_desc=NULL;
+char *service_filter=NULL;
 int hostgroup_style=DISPLAY_HOSTGROUP_SUMMARY;
 int host_style=DISPLAY_HOST_SUMMARY;
 
@@ -84,13 +94,9 @@ void display_quick_stats(void);
 void display_process(void);
 void display_problems(void);
 
-char *host_name="";
-char *hostgroup_name="";
-char *service_desc="";
 char *ping_address="";
 char *traceroute_address="";
 
-int show_all_hostgroups=TRUE;
 extern int daemon_check;
 
 

@@ -67,41 +67,54 @@ td { font-size: 8pt; }
 .featureEnabledActiveChecks { text-align: center; background-color: #00cc33; color: #fff; }
 .featureDisabledActiveChecks { text-align: center; background-color: #ff3300; color: #fff; }
 .featureItemEnabledActiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
-.featureItemDisabledActiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
 .featureItemEnabledActiveHostChecks { text-align: center; background-color: #00CC33; color: #fff; }
+.featureItemDisabledActiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
 .featureItemDisabledActiveHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemDisabledActiveServiceChecks a, .featureItemDisabledActiveHostCheck a { color: #fff; }
-.featureItemDisabledActiveServiceChecks a:hover, .featureItemDisabledActiveHostCheck a:hover { color: #000; }
+.featureItemDisabledActiveServiceChecks a { color: #fff; }
+.featureItemDisabledActiveHostChecks a { color: #fff; }
+.featureItemDisabledActiveServiceChecks a:hover, .featureItemDisabledActiveHostChecks a:hover { color: #000; }
 
 .featureEnabledPassiveChecks { text-align: center; background-color: #00cc33; color: #fff; }
 .featureDisabledPassiveChecks { text-align: center; background-color: #ff3300; color: #fff; }
 .featureItemEnabledPassiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
-.featureItemDisabledPassiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
 .featureItemEnabledPassiveHostChecks { text-align: center; background-color: #00CC33; color: #fff; }
+.featureItemDisabledPassiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
 .featureItemDisabledPassiveHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemDisabledPassiveServiceChecks a, .featureItemDisabledPassiveHostChecks  a { color: #fff; }
+.featureItemDisabledPassiveServiceChecks a { color: #fff; }
+.featureItemDisabledPassiveHostChecks a { color: #fff; }
 .featureItemDisabledPassiveServiceChecks a:hover, .featureItemDisabledPassiveHostChecks  a:hover { color: #000; }
+
+/* Outages */
 
 .outageTitle { font-weight: bold; font-size: 10pt; background-color: #707677; color: #fff; }
 .outageHeader { text-align: center; font-size: 10pt; background-color: #e9e9e9; color: #6e7475; }
 
 .outageImportantProblem { text-align: center; background-color: #ff3300; color: #fff; }
-.outageUnimportantProblem { text-align: center; background-color: #ff3300; color: #fff; }
-.outageUnimportantProblem a, .outageUnimportantProblem a { color: #fff; }
-.outageUnimportantProblem a:hover, .outageUnimportantProblem a:hover { color: #000; }
+.outageUnimportantProblem { text-align: center; background-color: #f5a9a9; color: #000000; }
+.outageImportantProblem a { color: #fff; }
+.outageUnimportantProblem a { color: #585858; }
+.outageImportantProblem a:hover, .outageUnimportantProblem a:hover { color: #000; }
+
+/* Hosts */
 
 .hostTitle { font-weight: bold; font-size: 10pt; background-color: #707677; color: #fff; }
 .hostHeader { text-align: center; font-size: 10pt; background-color: #e9e9e9; color: #6e7475; }
 
 .hostImportantProblem { text-align: center; background-color: #ff3300; color: #fff; }
-.hostUnimportantProblem { text-align: center; background-color: #ff3300; color: #6e7475; }
-.hostImportantProblem a, .hostUnimportantProblem a { color: #fff; }
-.hostImportantProblem a:hover, .hostUnimportantProblem a:hover { color: #000; }
+.hostUnimportantProblem { text-align: center; background-color: #f5a9a9; color: #000000; }
+.hostImportantProblem a { color: #fff; }
+.hostUnimportantProblem a { color: #000; }
+.hostImportantProblem a:hover { color: #000; }
+.hostUnimportantProblem a:hover { color: #6e7475; }
+
+/* Services */
 
 .serviceTitle {  font-weight: bold; font-size: 10pt; background-color: #707677; color: #fff; }
 .serviceHeader { text-align: center; font-size: 10pt; background-color: #e9e9e9; color: #6e7475; }
 
 .serviceImportantProblem { text-align: center; background-color: #ff3300; color: #fff; }
-.serviceUnimportantProblem { text-align: center; background-color: #ff3300; color: #6e7475; }
-.serviceImportantProblem a, .serviceUnimportantProblem a { color: #fff; }
-.serviceImportantProblem a:hover, .serviceUnimportantProblem a:hover { color: #000; }
+.serviceUnimportantProblem { text-align: center; background-color: #f5a9a9; color: #000000; }
+.serviceImportantProblem a { color: #fff; }
+.serviceUnimportantProblem a { color: #000; }
+.serviceImportantProblem a:hover { color: #000; }
+.serviceUnimportantProblem a:hover { color: #6e7475; }

@@ -174,15 +174,23 @@
   <p>Um Icinga mitzuteilen, den Perl-Interpreter für ein bestimmtes Script zu nutzen, fügen Sie dem Perl-Script diese
   Zeile hinzu:</p>
 
-  <pre class="screen"> # nagios: +epn</pre>
+  <pre class="screen"> # icinga: +epn</pre>
 
   <p>Um Icinga mitzuteilen, den Perl-Interpreter für ein bestimmtes Script NICHT zu nutzen, fügen Sie dem Perl-Script
   diese Zeile hinzu:</p>
 
-  <pre class="screen"> # nagios: -epn</pre>
+  <pre class="screen"> # icinga: -epn</pre>
 
   <p>Eine der beiden Zeilen muss innerhalb der ersten zehn Zeilen stehen, damit sie von Icinga erkannt wird.</p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>"icinga: +/- epn" wird seit Icinga 1.2.1 unterstützt. Vorher mussten Sie "nagios: +/-epn" benutzen, was aus
+  Kompatibilitätsgründen weiterhin unterstützt wird.</p></td></tr>
+</table></div>
   <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie nicht <span class="emphasis"><em>explizit</em></span> die oben genannte Methode nutzen, um Icinga
   mitzuteilen, den Perl-Interpreter für ein einzelnes Plugin zu nutzen, wird Icinga eine Entscheidung für Sie treffen.
   Dieser Entscheidungsprozess wird von der <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a>-Variable kontrolliert. Wenn der Wert auf 1
@@ -192,7 +200,7 @@
   <p><span class="bold"><strong>Plugins für die Nutzung mit Embedded Perl entwickeln</strong></span></p>
 
   <p>Informationen über die Entwicklung von Plugins zur Nutzung mit dem eingebetteten Perl-Interpreter finden Sie <a class="link" href="epnplugins.html" title="Entwickeln von Plugins für die Nutzung mit Embedded Perl">hier</a>.</p>
-  <a class="indexterm" name="id5720168"></a>
+  <a class="indexterm" name="id2589957"></a>
 </div>
 <div class="navfooter">
 <hr>

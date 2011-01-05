@@ -74,7 +74,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.2.0
+ICINGA_VERSION=1.3.0
 
 CP=@CP@
 
@@ -290,7 +290,7 @@ test:
 	$(MAKE) test-perl
 	$(MAKE) test-tap
 
-test-tap: tap/src/tap.o
+test-tap: tap/src/tap.o icinga cgis
 	@if [ x$(USE_LIBTAP) = xyes ]; then \
 		cd $(SRC_TTAP) && $(MAKE) test; \
 	else \
@@ -300,7 +300,7 @@ test-tap: tap/src/tap.o
 tap/src/tap.o:
 	cd tap && $(MAKE)
 
-test-perl:
+test-perl: cgis
 	cd t && $(MAKE) test
 
 ###############################
@@ -409,8 +409,9 @@ install-config:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/objects
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
 	$(INSTALL) -b -m 660 $(INSTALL_OPTS) sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
+	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
+	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgiauth.cfg $(DESTDIR)$(CFGDIR)/cgiauth.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/templates.cfg $(DESTDIR)$(CFGDIR)/objects/templates.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/commands.cfg $(DESTDIR)$(CFGDIR)/objects/commands.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/contacts.cfg $(DESTDIR)$(CFGDIR)/objects/contacts.cfg

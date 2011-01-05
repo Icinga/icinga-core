@@ -1,9 +1,9 @@
 #!/bin/sh
-# 
+#
 ### BEGIN INIT INFO
 # Provides:          ido2db
-# Required-Start:    
-# Required-Stop:     
+# Required-Start:
+# Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Icinga IDO2DB Initscript
@@ -15,7 +15,7 @@
 # File : ido2db
 #
 # Author : Jorge Sanchez Aymar (jsanchez@lanchile.cl)
-# 
+#
 # Changelog :
 #
 # 1999-07-09 Karl DeBisschop <kdebisschop@infoplease.com>
@@ -37,7 +37,53 @@
 #  - Rewrite ido2db init script, inspired by Sascha Runschke
 #
 #
-  
+
+servicename=@ido2db_name@
+prefix=@prefix@
+exec_prefix=${prefix}
+Ido2dbBin=@bindir@/@ido2db_name@
+Ido2dbCfgFile=@sysconfdir@/ido2db.cfg
+Ido2dbVarDir=@localstatedir@
+Ido2dbRunFile=$Ido2dbVarDir/ido2db.lock
+Ido2dbLockDir=/var/lock/subsys
+Ido2dbLockFile=@ido2db_name@
+Ido2dbUser=@icinga_user@
+Ido2dbGroup=@icinga_grp@
+
+#add ocilib lib path to link at runtime if enabled
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@ido2db_runtime@
+export LD_LIBRARY_PATH
+
+
+# load extra environment variables
+if [ -f /etc/sysconfig/ido2db ]; then
+        . /etc/sysconfig/ido2db
+fi
+
+
+# Source function library
+# Solaris doesn't have an rc.d directory, so do a test first
+if [ -f /etc/rc.d/init.d/functions ]; then
+        . /etc/rc.d/init.d/functions
+elif [ -f /etc/init.d/functions ]; then
+        . /etc/init.d/functions
+fi
+
+
+# Check that ido2db exists.
+if [ ! -f $Ido2dbBin ]; then
+    echo "Executable file $Ido2dbBin not found.  Exiting."
+    exit 1
+fi
+
+# Check that ido2db.cfg exists.
+if [ ! -f $Ido2dbCfgFile ]; then
+    echo "Configuration file $Ido2dbCfgFile not found.  Exiting."
+    exit 1
+fi
+
+## helper functions ##
+
 status_ido2db ()
 {
 
@@ -81,53 +127,7 @@ pid_ido2db ()
 	Ido2dbPID=`head -n 1 $Ido2dbRunFile`
 }
 
-#checkpid_ido2db() {
-#        local i
-#
-#        for i in $* ; do
-#                [ -d "/proc/$i" ] && return 0
-#        done
-#        return 1
-#}
-
-
-
-# Source function library
-# Solaris doesn't have an rc.d directory, so do a test first
-if [ -f /etc/rc.d/init.d/functions ]; then
-	. /etc/rc.d/init.d/functions
-elif [ -f /etc/init.d/functions ]; then
-	. /etc/init.d/functions
-fi
-
-servicename=@ido2db_name@
-prefix=@prefix@
-exec_prefix=${prefix}
-Ido2dbBin=@bindir@/@ido2db_name@
-Ido2dbCfgFile=@sysconfdir@/ido2db.cfg
-Ido2dbVarDir=@localstatedir@
-Ido2dbRunFile=$Ido2dbVarDir/ido2db.lock
-Ido2dbLockDir=/var/lock/subsys
-Ido2dbLockFile=@ido2db_name@
-Ido2dbUser=@icinga_user@
-Ido2dbGroup=@icinga_grp@
-
-#add ocilib lib path to link at runtime if enabled
-LD_LIBRARY_PATH=@ido2db_runtime@
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-
-# Check that ido2db exists.
-if [ ! -f $Ido2dbBin ]; then
-    echo "Executable file $Ido2dbBin not found.  Exiting."
-    exit 1
-fi
-
-# Check that ido2db.cfg exists.
-if [ ! -f $Ido2dbCfgFile ]; then
-    echo "Configuration file $Ido2dbCfgFile not found.  Exiting."
-    exit 1
-fi
-          
+## MAIN ##
 # See how we were called.
 case "$1" in
 
@@ -157,7 +157,7 @@ case "$1" in
 	stop)
 		printf "Stopping $servicename: "
 
-		pid_ido2db 
+		pid_ido2db
 		killproc_ido2db ido2db
 
  		# now we have to wait for ido2db to exit and remove its

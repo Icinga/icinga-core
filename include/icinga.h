@@ -25,12 +25,16 @@
 #ifndef __GNUC__
 # define __attribute__(x) /* nothing */
 #endif
+#ifndef NSCORE
+# define NSCORE
+#endif
 
 #include "config.h"
 #include "logging.h"
 #include "common.h"
 #include "locations.h"
 #include "objects.h"
+#include "macros.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -136,6 +140,8 @@ extern "C" {
 #define DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES            0       /* by default do not run event handlers for stalked services */
 
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Icinga */
+
+#define DEFAULT_ALLOW_EMPTY_HOSTGROUP_ASSIGNMENT                0	/* Do not allow empty hostgroup assignment by default */
 
 
 /******************** HOST STATUS *********************/
@@ -463,7 +469,7 @@ int is_service_result_fresh(service *,time_t,int);              /* determines if
 void check_host_result_freshness(void);                 	/* checks the "freshness" of host check results */
 int is_host_result_fresh(host *,time_t,int);                    /* determines if a host's check results are fresh */
 int my_system(char *,int,int *,double *,char **,int);         	/* executes a command via popen(), but also protects against timeouts */
-
+int my_system_r(icinga_macros *mac, char *,int,int *,double *,char **,int); /* thread-safe version of the above */
 
 /**** Flap Detection Functions ****/
 void check_for_service_flapping(service *,int,int);	        /* determines whether or not a service is "flapping" between states */
@@ -524,11 +530,11 @@ int generate_check_stats(void);
 int obsessive_compulsive_service_check_processor(service *);	/* distributed monitoring craziness... */
 int obsessive_compulsive_host_check_processor(host *);		/* distributed monitoring craziness... */
 int handle_service_event(service *);				/* top level service event logic */
-int run_service_event_handler(service *);			/* runs the event handler for a specific service */
-int run_global_service_event_handler(service *);		/* runs the global service event handler */
+int run_service_event_handler(icinga_macros *mac, service *);			/* runs the event handler for a specific service */
+int run_global_service_event_handler(icinga_macros *mac, service *);		/* runs the global service event handler */
 int handle_host_event(host *);					/* top level host event logic */
-int run_host_event_handler(host *);				/* runs the event handler for a specific host */
-int run_global_host_event_handler(host *);			/* runs the global host event handler */
+int run_host_event_handler(icinga_macros *mac, host *);				/* runs the event handler for a specific host */
+int run_global_host_event_handler(icinga_macros *mac, host *);			/* runs the global host event handler */
 
 
 /**** Notification Functions ****/
@@ -537,16 +543,16 @@ int is_valid_escalation_for_service_notification(service *,serviceescalation *,i
 int should_service_notification_be_escalated(service *);			/* checks if a service notification should be escalated */
 int service_notification(service *,int,char *,char *,int);                     	/* notify all contacts about a service (problem or recovery) */
 int check_contact_service_notification_viability(contact *,service *,int,int);	/* checks viability of notifying a contact about a service */
-int notify_contact_of_service(contact *,service *,int,char *,char *,int,int);  	/* notify a single contact about a service */
+int notify_contact_of_service(icinga_macros *mac, contact *,service *,int,char *,char *,int,int);  	/* notify a single contact about a service */
 int check_host_notification_viability(host *,int,int);				/* checks viability of notifying all contacts about a host */
 int is_valid_escalation_for_host_notification(host *,hostescalation *,int);	/* checks if an escalation entry is valid for a particular host notification */
 int should_host_notification_be_escalated(host *);				/* checks if a host notification should be escalated */
 int host_notification(host *,int,char *,char *,int);                           	/* notify all contacts about a host (problem or recovery) */
 int check_contact_host_notification_viability(contact *,host *,int,int);	/* checks viability of notifying a contact about a host */
-int notify_contact_of_host(contact *,host *,int,char *,char *,int,int);        	/* notify a single contact about a host */
-int create_notification_list_from_host(host *,int,int *);         		/* given a host, create list of contacts to be notified (remove duplicates) */
-int create_notification_list_from_service(service *,int,int *);    		/* given a service, create list of contacts to be notified (remove duplicates) */
-int add_notification(contact *);						/* adds a notification instance */
+int notify_contact_of_host(icinga_macros *mac, contact *,host *,int,char *,char *,int,int);        	/* notify a single contact about a host */
+int create_notification_list_from_host(icinga_macros *mac, host *,int,int *);         		/* given a host, create list of contacts to be notified (remove duplicates) */
+int create_notification_list_from_service(icinga_macros *mac, service *,int,int *);    		/* given a service, create list of contacts to be notified (remove duplicates) */
+int add_notification(icinga_macros *mac, contact *);						/* adds a notification instance */
 notification *find_notification(contact *);					/* finds a notification object */
 time_t get_next_host_notification_time(host *,time_t);				/* calculates nex acceptable re-notification time for a host */
 time_t get_next_service_notification_time(service *,time_t);			/* calculates nex acceptable re-notification time for a service */
@@ -554,7 +560,7 @@ time_t get_next_service_notification_time(service *,time_t);			/* calculates nex
 
 /**** Cleanup Functions ****/
 void cleanup(void);                                  	/* cleanup after ourselves (before quitting or restarting) */
-void free_memory(void);                              	/* free memory allocated to all linked lists in memory */
+void free_memory(icinga_macros *mac);                              	/* free memory allocated to all linked lists in memory */
 int reset_variables(void);                           	/* reset all global variables */
 void free_notification_list(void);		     	/* frees all memory allocated to the notification list */
 
@@ -572,7 +578,17 @@ char *escape_newlines(char *);
 int contains_illegal_object_chars(char *);		/* tests whether or not an object name (host, service, etc.) contains illegal characters */
 int my_rename(char *,char *);                           /* renames a file - works across filesystems */
 int my_fcopy(char *,char *);                            /* copies a file - works across filesystems */
-int get_raw_command_line(command *,char *,char **,int);    	/* given a raw command line, determine the actual command to run */
+int my_fdcopy(char *, char *, int);                     /* copies a named source to an already opened destination file */
+
+/* thread-safe version of get_raw_command_line_r() */
+extern int get_raw_command_line_r(icinga_macros *mac, command *,char *,char **,int);
+
+/*
+ * given a raw command line, determine the actual command to run
+ * Manipulates global_macros.argv and is thus not threadsafe
+ */
+extern int get_raw_command_line(command *,char *,char **,int);
+
 int check_time_against_period(time_t,timeperiod *);	/* check to see if a specific time is covered by a time period */
 int is_daterange_single_day(daterange *);
 time_t calculate_time_from_weekday_of_month(int,int,int,int);	/* calculates midnight time of specific (3rd, last, etc.) weekday of a particular month */

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # 
-# Taking a known nagios configuration directory, will check that the objects.cache is as expected
+# Taking a known icinga configuration directory, will check that the objects.cache is as expected
 
 use warnings;
 use strict;
@@ -32,5 +32,5 @@ if ($? == 0) {
 	pass( "Icinga precached objects file matches expected" );
 } else {
 	fail( "Icinga precached objects discrepency!!!\nTest with: $diff\nCopy with: cp $precache.generated $precache.expected" );
-}	
+}
 

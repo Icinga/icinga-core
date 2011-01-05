@@ -34,6 +34,8 @@
 #include "../include/getcgi.h"
 #include "../include/cgiauth.h"
 
+static icinga_macros *mac;
+
 extern time_t          program_start;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
@@ -76,7 +78,7 @@ extern servicestatus *servicestatus_list;
 #define DISPLAY_SERVICEGROUPS           2
 
 #define STYLE_OVERVIEW			0
-#define STYLE_DETAIL			1
+#define STYLE_SERVICE_DETAIL		1
 #define STYLE_SUMMARY			2
 #define STYLE_GRID			3
 #define STYLE_HOST_DETAIL		4
@@ -147,7 +149,9 @@ char *host_name=NULL;
 char *host_filter=NULL;
 char *hostgroup_name=NULL;
 char *servicegroup_name=NULL;
+char *service_desc=NULL;
 char *service_filter=NULL;
+
 int host_alert=FALSE;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;
@@ -184,6 +188,10 @@ extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int content_type;
+extern int escape_html_tags;
+
+extern int add_notif_num_hard;
+extern int add_notif_num_soft;
 
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
@@ -200,6 +208,8 @@ int main(void){
 	int regex_i=1,i=0;
 	int len;
 	int host_has_no_service=TRUE;
+
+	mac = get_global_macros();
 
 	time(&current_time);
 
@@ -405,14 +415,14 @@ int main(void){
 
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=%s&style=detail'>View Service Status Detail For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=%s&style=overview'>View Status Overview For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
 					printf("<a href='%s?servicegroup=%s&style=summary'>View Status Summary For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=%s&style=grid'>View Service Status Grid For This Service Group</a><br>\n",STATUS_CGI,url_encode(servicegroup_name));
 
-				if(group_style_type==STYLE_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL)
 					printf("<a href='%s?servicegroup=all&style=detail'>View Service Status Detail For All Service Groups</a><br>\n",STATUS_CGI);
 				if(group_style_type==STYLE_OVERVIEW)
 					printf("<a href='%s?servicegroup=all&style=overview'>View Status Overview For All Service Groups</a><br>\n",STATUS_CGI);
@@ -425,11 +435,11 @@ int main(void){
 			else{
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=all&style=detail'>View Service Status Detail For All Service Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=all&style=overview'>View Status Overview For All Service Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_GRID)
 					printf("<a href='%s?servicegroup=all&style=summary'>View Status Summary For All Service Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY)
 					printf("<a href='%s?servicegroup=all&style=grid'>View Service Status Grid For All Service Groups</a><br>\n",STATUS_CGI);
 			        }
 
@@ -437,7 +447,7 @@ int main(void){
 		else{
 			if(show_all_hostgroups==FALSE){
 
-				if(group_style_type==STYLE_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=detail'>View Service Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
 				if(group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=hostdetail'>View Host Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
@@ -450,25 +460,25 @@ int main(void){
 
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=detail'>View Service Status Detail For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
 					printf("<a href='%s?hostgroup=%s&style=hostdetail'>View Host Status Detail For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=overview'>View Status Overview For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=summary'>View Status Summary For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=%s&style=grid'>View Status Grid For This Host Group</a><br>\n",STATUS_CGI,url_encode(hostgroup_name));
 		                }
 			else{
 				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=detail'>View Service Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID)
 					printf("<a href='%s?hostgroup=all&style=hostdetail'>View Host Status Detail For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=overview'>View Status Overview For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_GRID || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=summary'>View Status Summary For All Host Groups</a><br>\n",STATUS_CGI);
-				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
+				if(group_style_type==STYLE_OVERVIEW || group_style_type==STYLE_SERVICE_DETAIL || group_style_type==STYLE_SUMMARY || group_style_type==STYLE_HOST_DETAIL)
 					printf("<a href='%s?hostgroup=all&style=grid'>View Status Grid For All Host Groups</a><br>\n",STATUS_CGI);
 		                }
 	                }
@@ -729,7 +739,7 @@ int process_cgivars(void){
 			if(!strcmp(variables[x],"overview"))
 				group_style_type=STYLE_OVERVIEW;
 			else if(!strcmp(variables[x],"detail"))
-				group_style_type=STYLE_DETAIL;
+				group_style_type=STYLE_SERVICE_DETAIL;
 			else if(!strcmp(variables[x],"summary"))
 				group_style_type=STYLE_SUMMARY;
 			else if(!strcmp(variables[x],"grid"))
@@ -737,7 +747,7 @@ int process_cgivars(void){
 			else if(!strcmp(variables[x],"hostdetail"))
 				group_style_type=STYLE_HOST_DETAIL;
 			else
-				group_style_type=STYLE_DETAIL;
+				group_style_type=STYLE_SERVICE_DETAIL;
 		        }
 
 		/* we found the sort type argument */
@@ -816,6 +826,7 @@ void show_service_status_totals(void){
 	servicestatus *temp_servicestatus;
 	service *temp_service;
 	host *temp_host;
+	hoststatus *temp_hoststatus;
 	int count_service;
 
 
@@ -824,20 +835,26 @@ void show_service_status_totals(void){
 
 		/* find the host and service... */
 		temp_host=find_host(temp_servicestatus->host_name);
+
+		/* only get count services from hosts witch fit into filter specified */
+		temp_hoststatus=find_hoststatus(temp_host->name);
+		if (!(host_status_types & temp_hoststatus->status ))
+			continue;
+
 		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
 
 		/* make sure user has rights to see this service... */
 		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 			continue;
 
-		count_service=0;
+		count_service=FALSE;
 
 		if(display_type==DISPLAY_HOSTS && (show_all_hosts==TRUE || !strcmp(host_name,temp_servicestatus->host_name)))
-			count_service=1;
+			count_service=TRUE;
 		else if(display_type==DISPLAY_SERVICEGROUPS && (show_all_servicegroups==TRUE || (is_service_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_service)==TRUE)))
-			count_service=1;
+			count_service=TRUE;
 		else if(display_type==DISPLAY_HOSTGROUPS && (show_all_hostgroups==TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name),temp_host)==TRUE)))
-			count_service=1;
+			count_service=TRUE;
 
 		if(count_service){
 
@@ -862,8 +879,8 @@ void show_service_status_totals(void){
 				total_pending++;
 			else
 				total_ok++;
-		        }
-	        }
+		}
+	}
 
 	total_services=total_ok+total_unknown+total_warning+total_critical+total_pending;
 	total_problems=total_unknown+total_warning+total_critical;
@@ -1020,6 +1037,7 @@ void show_host_status_totals(void){
 	host *temp_host;
 	servicestatus *temp_servicestatus;
 	int count_host;
+	int host_has_service;
 
 
 	/* check the status of all hosts... */
@@ -1027,6 +1045,19 @@ void show_host_status_totals(void){
 
 		/* find the host... */
 		temp_host=find_host(temp_hoststatus->host_name);
+
+		/* Skip hosts with no serivces attached in service detail view */
+		if (group_style_type==STYLE_SERVICE_DETAIL) {
+			host_has_service=FALSE;
+			for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
+				if (!strcmp(temp_host->name,temp_servicestatus->host_name)) {
+					host_has_service=TRUE;
+					break;
+				}
+			}
+			if (host_has_service==FALSE)
+				continue;
+		}
 
 		/* make sure user has rights to view this host */
 		if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
@@ -1041,13 +1072,8 @@ void show_host_status_totals(void){
 
 			if(show_all_servicegroups==TRUE) {
 				count_host=1;
-			} else {
-				for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
-					if(is_host_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_host)==TRUE){
-                                                count_host=1;
-                                                break;
-                                        }
-				}
+			} else if(is_host_member_of_servicegroup(find_servicegroup(servicegroup_name),temp_host)==TRUE){
+				count_host=1;
 			}
 	        }
 		else if(display_type==DISPLAY_HOSTGROUPS && (show_all_hostgroups==TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name),temp_host)==TRUE)))
@@ -1097,7 +1123,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1115,7 +1141,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1133,7 +1159,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1151,7 +1177,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1194,7 +1220,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1212,7 +1238,7 @@ void show_host_status_totals(void){
 		printf("servicegroup=%s",url_encode(servicegroup_name));
 	else{
 		printf("hostgroup=%s",url_encode(hostgroup_name));
-		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_DETAIL)
+		if((service_status_types!=all_service_status_types) || group_style_type==STYLE_SERVICE_DETAIL)
 			printf("&style=detail");
 		else if(group_style_type==STYLE_HOST_DETAIL)
 			printf("&style=hostdetail");
@@ -1612,7 +1638,7 @@ void show_service_detail(void){
 				if(new_host==TRUE){
 
 					/* grab macros */
-					grab_host_macros(temp_host);
+					grab_host_macros(mac, temp_host);
 
 					if(temp_hoststatus->status==HOST_DOWN){
 						if(temp_hoststatus->problem_has_been_acknowledged==TRUE)
@@ -1669,7 +1695,7 @@ void show_service_detail(void){
 						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is currently in a period of scheduled downtime' TITLE='This host is currently in a period of scheduled downtime'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 						}
 					if(temp_host->notes_url!=NULL){
-						process_macros(temp_host->notes_url,&processed_string,0);
+						process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 						BEGIN_MULTIURL_LOOP
 						printf("<TD align=center valign=center>");
 						printf("<A HREF='");
@@ -1682,7 +1708,7 @@ void show_service_detail(void){
 						free(processed_string);
 						}
 					if(temp_host->action_url!=NULL){
-						process_macros(temp_host->action_url,&processed_string,0);
+						process_macros_r(mac, temp_host->action_url,&processed_string,0);
 						BEGIN_MULTIURL_LOOP
 						printf("<TD align=center valign=center>");
 						printf("<A HREF='");
@@ -1698,7 +1724,7 @@ void show_service_detail(void){
 						printf("<TD align=center valign=center>");
 						printf("<A HREF='%s?type=%d&host=%s'>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name));
 						printf("<IMG SRC='%s",url_logo_images_path);
-						process_macros(temp_host->icon_image,&processed_string,0);
+						process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 						printf("%s",processed_string);
 						free(processed_string);
 						printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -1716,7 +1742,7 @@ void show_service_detail(void){
 				printf("</TD>\n");
 
 				/* grab macros */
-				grab_service_macros(temp_service);
+				grab_service_macros(mac, temp_service);
 
 				/* service name column */
 				printf("<TD CLASS='status%s'>",status_bg_class);
@@ -1766,7 +1792,7 @@ void show_service_detail(void){
 					printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This service is currently in a period of scheduled downtime' TITLE='This service is currently in a period of scheduled downtime'></A></TD>",url_encode(temp_status->description),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 					}
 				if(temp_service->notes_url!=NULL){
-					process_macros(temp_service->notes_url,&processed_string,0);
+					process_macros_r(mac, temp_service->notes_url,&processed_string,0);
 					BEGIN_MULTIURL_LOOP
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='");
@@ -1779,7 +1805,7 @@ void show_service_detail(void){
 					free(processed_string);
 					}
 				if(temp_service->action_url!=NULL){
-					process_macros(temp_service->action_url,&processed_string,0);
+					process_macros_r(mac, temp_service->action_url,&processed_string,0);
 					BEGIN_MULTIURL_LOOP
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='");
@@ -1796,7 +1822,7 @@ void show_service_detail(void){
 					printf("<A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_service->host_name));
 					printf("&service=%s'>",url_encode(temp_service->description));
 					printf("<IMG SRC='%s",url_logo_images_path);
-					process_macros(temp_service->icon_image,&processed_string,0);
+					process_macros_r(mac, temp_service->icon_image,&processed_string,0);
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt,(temp_service->icon_image_alt==NULL)?"":temp_service->icon_image_alt);
@@ -1844,7 +1870,7 @@ void show_service_detail(void){
 				printf("<TD CLASS='status%s'>%s</TD>\n",status_class,status);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,date_time);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,state_duration);
-				printf("<TD CLASS='status%s'>%d/%d</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts);
+				printf("<TD CLASS='status%s'>%d/%d %s#%d%s</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts,(temp_status->status&(temp_status->state_type==HARD_STATE?add_notif_num_hard:add_notif_num_soft)?"(":"<!-- "),temp_status->current_notification_number,(temp_status->status&(temp_status->state_type==HARD_STATE?add_notif_num_hard:add_notif_num_soft)?")":" -->"));
 				printf("<TD CLASS='status%s' valign='center'>",status_bg_class);
 				if (status_show_long_plugin_output!=FALSE && temp_status->long_plugin_output!=NULL) {
 					printf("%s<BR>%s",html_encode(temp_status->plugin_output,TRUE), html_encode(temp_status->long_plugin_output,TRUE));
@@ -2058,6 +2084,7 @@ void show_host_detail(void){
 		printf("%sStatus%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sLast_Check%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sDuration%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sAttempt%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sStatus_Information%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		/* the main list of hosts */
@@ -2073,6 +2100,8 @@ void show_host_detail(void){
 
 		printf("<TH CLASS='status'>Duration&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by state duration (ascending)' TITLE='Sort by state duration (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by state duration time (descending)' TITLE='Sort by state duration time (descending)'></A></TH>",temp_url,SORT_ASCENDING,SORT_STATEDURATION,url_images_path,UP_ARROW_ICON,temp_url,SORT_DESCENDING,SORT_STATEDURATION,url_images_path,DOWN_ARROW_ICON);
 
+		printf("<TH CLASS='status'>Attempt&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by current attempt (ascending)' TITLE='Sort by current attempt (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by current attempt (descending)' TITLE='Sort by current attempt (descending)'></A></TH>",temp_url,SORT_ASCENDING,SORT_CURRENTATTEMPT,url_images_path,UP_ARROW_ICON,temp_url,SORT_DESCENDING,SORT_CURRENTATTEMPT,url_images_path,DOWN_ARROW_ICON);
+		
 		printf("<TH CLASS='status'>Status Information</TH>\n");
 
 		/* Add a checkbox so every host can be checked */
@@ -2084,7 +2113,7 @@ void show_host_detail(void){
 	/* check all hosts... */
 	while(1){
 
-		/* get the next service to display */
+		/* get the next host to display */
 		if(use_sort==TRUE){
 			if(first_entry==TRUE)
 				temp_hostsort=hostsort_list;
@@ -2144,9 +2173,7 @@ void show_host_detail(void){
 		total_entries++;
 
 		/* grab macros */
-		grab_host_macros(temp_host);
-
-
+		grab_host_macros(mac, temp_host);
 
 		if(display_type==DISPLAY_HOSTGROUPS||display_type==DISPLAY_HOSTS){
 
@@ -2235,7 +2262,7 @@ void show_host_detail(void){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is currently in a period of scheduled downtime' TITLE='This host is currently in a period of scheduled downtime'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,SCHEDULED_DOWNTIME_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 					}
 				if(temp_host->notes_url!=NULL){
-					process_macros(temp_host->notes_url,&processed_string,0);
+					process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 					BEGIN_MULTIURL_LOOP
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='");
@@ -2248,7 +2275,7 @@ void show_host_detail(void){
 					free(processed_string);
 					}
 				if(temp_host->action_url!=NULL){
-					process_macros(temp_host->action_url,&processed_string,0);
+					process_macros_r(mac, temp_host->action_url,&processed_string,0);
 					BEGIN_MULTIURL_LOOP
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='");
@@ -2264,7 +2291,7 @@ void show_host_detail(void){
 					printf("<TD align=center valign=center>");
 					printf("<A HREF='%s?type=%d&host=%s'>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name));
 					printf("<IMG SRC='%s",url_logo_images_path);
-					process_macros(temp_host->icon_image,&processed_string,0);
+					process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 					printf("%s",processed_string);
 					free(processed_string);
 					printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -2315,6 +2342,7 @@ void show_host_detail(void){
 				printf("<TD CLASS='status%s'>%s</TD>\n",status_class,status);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,date_time);
 				printf("<TD CLASS='status%s' nowrap>%s</TD>\n",status_bg_class,state_duration);
+				printf("<TD CLASS='status%s'>%d/%d</TD>\n",status_bg_class,temp_status->current_attempt,temp_status->max_attempts);
 				printf("<TD CLASS='status%s' valign='center'>",status_bg_class);
 				if (status_show_long_plugin_output!=FALSE && temp_status->long_plugin_output!=NULL) {
 					printf("%s<BR>%s",html_encode(temp_status->plugin_output,TRUE), html_encode(temp_status->long_plugin_output,TRUE));
@@ -2344,6 +2372,7 @@ void show_host_detail(void){
 				printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,state_duration,csv_data_enclosure,csv_delimiter);
+				printf("%s%d/%d%s%s",csv_data_enclosure,temp_status->current_attempt,temp_status->max_attempts,csv_data_enclosure,csv_delimiter);
 
 				if (status_show_long_plugin_output && temp_status->long_plugin_output!=NULL) {
 					printf("%s%s %s%s",csv_data_enclosure,temp_status->plugin_output,escape_newlines(temp_status->long_plugin_output),csv_data_enclosure);
@@ -3336,7 +3365,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup){
 			printf("<TD align=center valign=center>");
 			printf("<A HREF='%s?type=%d&host=%s'>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name));
 			printf("<IMG SRC='%s",url_logo_images_path);
-			process_macros(temp_host->icon_image,&processed_string,0);
+			process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 			printf("%s",processed_string);
 			free(processed_string);
 			printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -3392,14 +3421,14 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup){
 		printf("<TD CLASS='status%s'>",host_status_class);
 
 		/* grab macros */
-		grab_host_macros(temp_host);
+		grab_host_macros(mac, temp_host);
 
 		printf("<A HREF='%s?type=%d&host=%s'>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name));
 		printf("<IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",url_images_path,DETAIL_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,"View Extended Information For This Host","View Extended Information For This Host");
 		printf("</A>");
 
 		if(temp_host->notes_url!=NULL){
-			process_macros(temp_host->notes_url,&processed_string,0);
+			process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 			BEGIN_MULTIURL_LOOP
 			printf("<A HREF='");
 			printf("%s",processed_string);
@@ -3410,7 +3439,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup){
 			free(processed_string);
 		        }
 		if(temp_host->action_url!=NULL){
-			process_macros(temp_host->action_url,&processed_string,0);
+			process_macros_r(mac, temp_host->action_url,&processed_string,0);
 			BEGIN_MULTIURL_LOOP
 			printf("<A HREF='");
 			printf("%s",processed_string);
@@ -3649,7 +3678,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 	temp_host=find_host(hststatus->host_name);
 
 	/* grab macros */
-	grab_host_macros(temp_host);
+	grab_host_macros(mac, temp_host);
 
 	if(hststatus->status==HOST_PENDING){
 		strncpy(status,"PENDING",sizeof(status));
@@ -3687,7 +3716,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 		printf("<TD CLASS='status%s' ALIGN=right>",status_bg_class);
 		printf("<a href='%s?type=%d&host=%s'>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(hststatus->host_name));
 		printf("<IMG SRC='%s",url_logo_images_path);
-		process_macros(temp_host->icon_image,&processed_string,0);
+		process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 		printf("%s",processed_string);
 		free(processed_string);
 		printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -3708,7 +3737,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 	printf("<a href='%s?type=%d&host=%s'><img src='%s%s' border=0 alt='View Extended Information For This Host' title='View Extended Information For This Host'></a>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(hststatus->host_name),url_images_path,DETAIL_ICON);
 
 	if(temp_host->notes_url!=NULL){
-		process_macros(temp_host->notes_url,&processed_string,0);
+		process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 		BEGIN_MULTIURL_LOOP
 		printf("<A HREF='");
 		printf("%s",processed_string);
@@ -3719,7 +3748,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus,int odd,v
 		free(processed_string);
 	        }
 	if(temp_host->action_url!=NULL){
-		process_macros(temp_host->action_url,&processed_string,0);
+		process_macros_r(mac, temp_host->action_url,&processed_string,0);
 		BEGIN_MULTIURL_LOOP
 		printf("<A HREF='");
 		printf("%s",processed_string);
@@ -4524,7 +4553,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 			continue;
 
 		/* grab macros */
-		grab_host_macros(temp_host);
+		grab_host_macros(mac, temp_host);
 
 		/* find the host status */
 		temp_hoststatus=find_hoststatus(temp_host->name);
@@ -4571,7 +4600,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 			printf("<TD align=center valign=center>");
 			printf("<A HREF='%s?type=%d&host=%s'>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name));
 			printf("<IMG SRC='%s",url_logo_images_path);
-			process_macros(temp_host->icon_image,&processed_string,0);
+			process_macros_r(mac, temp_host->icon_image,&processed_string,0);
 			printf("%s",processed_string);
 			free(processed_string);
 			printf("' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>",STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt,(temp_host->icon_image_alt==NULL)?"":temp_host->icon_image_alt);
@@ -4604,7 +4633,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 			        }
 
 			/* grab macros */
-			grab_service_macros(temp_service);
+			grab_service_macros(mac, temp_service);
 
 			/* get the status of the service */
 			temp_servicestatus=find_servicestatus(temp_service->host_name,temp_service->description);
@@ -4637,7 +4666,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		printf("</A>");
 
 		if(temp_host->notes_url!=NULL){
-			process_macros(temp_host->notes_url,&processed_string,0);
+			process_macros_r(mac, temp_host->notes_url,&processed_string,0);
 			BEGIN_MULTIURL_LOOP
 			printf("<A HREF='");
 			printf("%s",processed_string);
@@ -4648,7 +4677,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 			free(processed_string);
 		        }
 		if(temp_host->action_url!=NULL){
-			process_macros(temp_host->action_url,&processed_string,0);
+			process_macros_r(mac, temp_host->action_url,&processed_string,0);
 			BEGIN_MULTIURL_LOOP
 			printf("<A HREF='");
 			printf("%s",processed_string);
@@ -5154,9 +5183,10 @@ void show_filters(void){
 	if(host_properties!=0L || service_properties!=0L || host_status_types!=all_host_status_types || service_status_types!=all_service_status_types){
 
 		printf("<table border=1 class='filter' cellspacing=0 cellpadding=0>\n");
-		printf("<tr><td class='filter'>\n");
-		printf("<table border=0 cellspacing=2 cellpadding=0>\n");
-		printf("<tr><td colspan=2 valign=top align=left CLASS='filterTitle'>Display Filters:</td></tr>");
+		printf("<tr><td valign=top align=left CLASS='filterTitle'>Display Filters:&nbsp;");
+		printf("<img id='expand_image' src='%s%s' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">",url_images_path,EXPAND_ICON,url_images_path,COLLAPSE_ICON,url_images_path,EXPAND_ICON);
+		printf("</td></tr>");
+		printf("<tr><td><table id='filters' border=0 cellspacing=2 cellpadding=0 style='display:none;'>\n");
 		printf("<tr><td valign=top align=left CLASS='filterName'>Host Status Types:</td>");
 		printf("<td valign=top align=left CLASS='filterValue'>");
 		if(host_status_types==all_host_status_types)
@@ -5478,7 +5508,11 @@ void show_hostcommand_table(void){
 void print_comment_icon(char *host_name, char *svc_description) {
 	comment *temp_comment=NULL;
 	char *comment_entry_type="";
-	char comment_data[MAX_INPUT_BUFFER];
+	char comment_data[MAX_INPUT_BUFFER]="";
+	int len,output_len;
+	int x,y;
+	char *escaped_output_string=NULL;
+	int saved_escape_html_tags_var=FALSE;
 
 	if(svc_description==NULL){
 		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name));
@@ -5509,7 +5543,56 @@ void print_comment_icon(char *host_name, char *svc_description) {
 						break;
 				}
 				snprintf(comment_data,sizeof(comment_data)-1,"%s",temp_comment->comment_data);
-				printf("<tr><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,html_encode(comment_data,TRUE));
+				comment_data[sizeof(comment_data)-1]='\x0';
+
+				/* we need up to twice the space to do the conversion of single, double quotes and back slash's */
+				len=(int)strlen(comment_data);
+				output_len=len*2;
+				if((escaped_output_string=(char *)malloc(output_len+1))!=NULL) {
+
+					strcpy(escaped_output_string,"");
+
+					for(x=0,y=0;x<=len;x++){
+						/* end of string */
+						if((char)comment_data[x]==(char)'\x0'){
+							escaped_output_string[y]='\x0';
+							break;
+						} else if((char)comment_data[x]==(char)'\'') {
+							escaped_output_string[y]='\x0';
+							if((int)strlen(escaped_output_string)<(output_len-2)){
+								strcat(escaped_output_string,"\\'");
+								y+=2;
+							}
+						} else if((char)comment_data[x]==(char)'"') {
+							escaped_output_string[y]='\x0';
+							if((int)strlen(escaped_output_string)<(output_len-2)){
+								strcat(escaped_output_string,"\\\"");
+								y+=2;
+							}
+						} else if((char)comment_data[x]==(char)'\\') {
+							escaped_output_string[y]='\x0';
+							if((int)strlen(escaped_output_string)<(output_len-2)){
+								strcat(escaped_output_string,"\\\\");
+								y+=2;
+							}
+						} else {
+							escaped_output_string[y++]=comment_data[x];
+						}
+					}
+					escaped_output_string[++y]='\x0';
+				} else {
+					strcpy(escaped_output_string,comment_data);
+				}
+
+				/* in the tooltips we have to escape all characters */
+				saved_escape_html_tags_var=escape_html_tags;
+				escape_html_tags=TRUE;
+
+				printf("<tr><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,html_encode(escaped_output_string,TRUE));
+
+				escape_html_tags=saved_escape_html_tags_var;
+
+				free(escaped_output_string);
 			}
 		}
 		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
