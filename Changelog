@@ -19,6 +19,7 @@ ENHANCEMENTS
 * classic ui: change color of unknown/unreachable state to more warm signalling purple #1029
 * classic ui: move "add service/host comment" to the command box on extinfo.cgi, abandon remove all in favor of multiple comment delete #837
 * classic ui: add trend timeperiod feature to locate the next problem (Carsten Emde) #1074
+* classic ui: add configurable http charset support (default utf-8) within the cgis #1002
 
 * core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
 * core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057

@@ -57,6 +57,8 @@ char            *statuswrl_include=NULL;
 
 char            *illegal_output_chars=NULL;
 
+char            *http_charset=NULL;
+
 char            *notes_url_target=NULL;
 char            *action_url_target=NULL;
 
@@ -240,6 +242,9 @@ void reset_cgi_vars(void){
 	host_down_sound=NULL;
 	host_unreachable_sound=NULL;
 	normal_sound=NULL;
+
+	my_free(http_charset);
+	http_charset = strdup(DEFAULT_HTTP_CHARSET);
 
 	statusmap_background_image=NULL;
 	color_transparency_index_r=255;
@@ -479,6 +484,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"illegal_macro_output_chars"))
 			illegal_output_chars=strdup(val);
+
+		else if(!strcmp(var,"http_charset"))
+			http_charset=strdup(val);
 
 		else if(!strcmp(var,"notes_url_target"))
 			notes_url_target=strdup(val);
@@ -903,7 +911,7 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(content_type==WML_CONTENT){
                 /* used by cmd.cgi */
-		printf("Content-type: text/vnd.wap.wml\r\n\r\n");
+		printf("Content-type: text/vnd.wap.wml; charset=\"%s\"\r\n\r\n", http_charset);
 
 		printf("<?xml version=\"1.0\"?>\n");
 		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
@@ -934,7 +942,7 @@ void document_header(int cgi_id, int use_stylesheet){
 	}
 	if(cgi_id==STATUSWML_CGI_ID) {
 
-		printf("Content-type: text/vnd.wap.wml\r\n\r\n");
+		printf("Content-type: text/vnd.wap.wml; charset=\"%s\"\r\n\r\n", http_charset);
 
 		printf("<?xml version=\"1.0\"?>\n");
 		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
@@ -953,12 +961,12 @@ void document_header(int cgi_id, int use_stylesheet){
 	}
 
 	if(content_type==CSV_CONTENT) {
-		printf("Content-type: text/plain\r\n\r\n");
+		printf("Content-type: text/plain; charset=\"%s\"\r\n\r\n", http_charset);
 		return;
 	}
 
 	// send HTML CONTENT
-	printf("Content-type: text/html\r\n\r\n");
+	printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
 
 	if(embedded==TRUE)
 		return;
@@ -1589,6 +1597,10 @@ char * html_encode(char *input, int escape_newlines){
 					}
 				}
 		        }
+
+		/* high bit chars don't get encoded, so we won't be breaking utf8 characters */
+		else if ((unsigned char)input[x] >= 0x7f)
+			encoded_html_string[y++]=input[x];
 
 		/* for simplicity, all other chars represented by their numeric value */
 		else{
