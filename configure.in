@@ -61,10 +61,17 @@ else
     fi
 fi
 
+dnl base/Makefile.in
 AC_CHECK_FUNC(vsnprintf,,SNPRINTF_O=../common/snprintf.o)
 AC_CHECK_FUNC(snprintf,,SNPRINTF_O=../common/snprintf.o)
 AC_CHECK_FUNC(asprintf,,SNPRINTF_O=../common/snprintf.o)
 AC_CHECK_FUNC(vasprintf,,SNPRINTF_O=../common/snprintf.o)
+
+dnl module/idoutils/src/Makefile.in
+AC_CHECK_FUNC(vsnprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
+AC_CHECK_FUNC(snprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
+AC_CHECK_FUNC(asprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
+AC_CHECK_FUNC(vasprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
 
 AC_CACHE_CHECK([for C99 vsnprintf],ac_cv_HAVE_C99_VSNPRINTF,[
 AC_TRY_RUN([
@@ -98,6 +105,7 @@ fi
 
 dnl AC_CHECK_FUNC(snprintf,AC_DEFINE(HAVE_SNPRINTF),SNPRINTF_O=../common/snprintf.o)
 AC_SUBST(SNPRINTF_O)
+AC_SUBST(SNPRINTF_O_IDO)
 
 
 dnl Checks for library functions.

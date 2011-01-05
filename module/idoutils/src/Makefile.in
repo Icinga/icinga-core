@@ -39,9 +39,13 @@ MATHLIBS=-lm
 OTHERLIBS=@OTHERLIBS@
 THREADLIBS=@THREADLIBS@
 
+# asprintf for Solaris friends ;) 
+SNPRINTF_O_IDO=@SNPRINTF_O_IDO@
+
+
 COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h
 COMMON_SRC=io.c utils.c
-COMMON_OBJS=io.o utils.o
+COMMON_OBJS=io.o utils.o ${SNPRINTF_O_IDO}
 
 IDO_INC=$(SRC_INCLUDE)/ido2db.h $(SRC_INCLUDE)/db.h
 IDO_SRC=db.c

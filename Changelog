@@ -70,6 +70,8 @@ FIXES
 
 * idoutils: fix unescape display name (Matthieu Kermagoret) #1027
 * idoutils: fix ido2db needs to check for empty command arguments on Solaris (Julian Wiesner) #1047
+* idoutils: fix solaris <= lacks asprintf (Julian Wiesner) #1048
+
 
 1.2.1 - 25/10/2010
 
