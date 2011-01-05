@@ -69,6 +69,7 @@ FIXES
 * install: add hint to configure that libpq is not yet fully working #622
 
 * idoutils: fix unescape display name (Matthieu Kermagoret) #1027
+* idoutils: fix ido2db needs to check for empty command arguments on Solaris (Julian Wiesner) #1047
 
 1.2.1 - 25/10/2010
 
