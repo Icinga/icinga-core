@@ -58,6 +58,7 @@ FIXES
 * classic ui: fix status totals - incoherence between displayed list and values #993
 * classic ui: fix deleting host comments won't work #994
 * classic ui: changed naming of cgi config options for showlog_current_state(s) and showlog_current_state(s) #899
+* classic ui: fix form/table DOM confusion in cgis (Sven-Göran Bergh) #1081
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926

@@ -522,11 +522,14 @@ int main(int argc, char **argv){
 		/* right hand column of top row */
 		printf("<td align=right valign=bottom width=33%%>\n");
 
+		printf("<form method=\"GET\" action=\"%s\">\n",TRENDS_CGI);
 		printf("<table border=0 CLASS='optBox'>\n");
 
 		if(display_type!=DISPLAY_NO_TRENDS && input_type==GET_INPUT_NONE){
 
-			printf("<form method=\"GET\" action=\"%s\">\n",TRENDS_CGI);
+			printf("<tr><td CLASS='optBoxItem' valign=top align=left>First assumed %s state:</td><td CLASS='optBoxItem' valign=top align=left>Backtracked archives:</td></tr>\n",(display_type==DISPLAY_HOST_TRENDS)?"host":"service");
+			printf("<tr><td CLASS='optBoxItem' valign=top align=left>");
+
 			if(display_popups==FALSE)
 				printf("<input type='hidden' name='nopopups' value=''>\n");
 			if(use_map==FALSE)
@@ -542,8 +545,6 @@ int main(int argc, char **argv){
 			printf("<input type='hidden' name='assumestatesduringnotrunning' value='%s'>\n",(assume_states_during_notrunning==TRUE)?"yes":"no");
 			printf("<input type='hidden' name='includesoftstates' value='%s'>\n",(include_soft_states==TRUE)?"yes":"no");
 
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>First assumed %s state:</td><td CLASS='optBoxItem' valign=top align=left>Backtracked archives:</td></tr>\n",(display_type==DISPLAY_HOST_TRENDS)?"host":"service");
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>");
 			if(display_type==DISPLAY_HOST_TRENDS){
 				printf("<input type='hidden' name='initialassumedservicestate' value='%d'>",initial_assumed_service_state);
 				printf("<select name='initialassumedhoststate'>\n");
@@ -604,8 +605,6 @@ int main(int argc, char **argv){
 			printf("</td><td CLASS='optBoxItem' valign=top align=left>\n");
 			printf("<input type='submit' value='Update'>\n");
 			printf("</td></tr>\n");
-
-			printf("</form>\n");
 		        }
 
 		/* display context-sensitive help */
@@ -631,6 +630,7 @@ int main(int argc, char **argv){
 		printf("</td></tr>\n");
 
 		printf("</table>\n");
+		printf("</form>\n");
 
 		printf("</td>\n");
 
@@ -895,10 +895,10 @@ int main(int argc, char **argv){
 
 			printf("<P><DIV ALIGN=CENTER>\n");
 
-			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10>\n");
 			printf("<form method=\"GET\" action=\"%s\">\n",TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
+			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10>\n");
 			printf("<tr><td class='reportSelectSubTitle' valign=center>Host:</td>\n");
 			printf("<td class='reportSelectItem' valign=center>\n");
 			printf("<select name='host'>\n");
@@ -915,8 +915,8 @@ int main(int argc, char **argv){
 			printf("<input type='submit' value='Continue to Step 3'>\n");
 			printf("</td></tr>\n");
 
-			printf("</form>\n");
 			printf("</TABLE>\n");
+			printf("</form>\n");
 
 			printf("</DIV></P>\n");
 		        }
@@ -951,11 +951,11 @@ int main(int argc, char **argv){
 
 			printf("<P><DIV ALIGN=CENTER>\n");
 			
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
 			printf("<form method=\"GET\" action=\"%s\" name=\"serviceform\">\n",TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 			printf("<input type='hidden' name='host' value='%s'>\n",(first_service==NULL)?"unknown":(char *)escape_string(first_service));
 
+			printf("<TABLE BORDER=0 cellpadding=5>\n");
 			printf("<tr><td class='reportSelectSubTitle'>Service:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='service' onFocus='document.serviceform.host.value=gethostname(this.selectedIndex);' onChange='document.serviceform.host.value=gethostname(this.selectedIndex);'>\n");
@@ -973,8 +973,8 @@ int main(int argc, char **argv){
 			printf("<input type='submit' value='Continue to Step 3'>\n");
 			printf("</td></tr>\n");
 
-			printf("</form>\n");
 			printf("</TABLE>\n");
+			printf("</form>\n");
 
 			printf("</DIV></P>\n");
 		        }
@@ -996,12 +996,12 @@ int main(int argc, char **argv){
 
 			printf("<P><DIV ALIGN=CENTER>\n");
 
-			printf("<TABLE BORDER=0 CELLPADDING=5>\n");
 			printf("<form method=\"GET\" action=\"%s\">\n",TRENDS_CGI);
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(host_name));
 			if(display_type==DISPLAY_SERVICE_TRENDS)
 				printf("<input type='hidden' name='service' value='%s'>\n",escape_string(service_desc));
 
+			printf("<TABLE BORDER=0 CELLPADDING=5>\n");
 			printf("<tr><td class='reportSelectSubTitle' align=right>Report period:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='timeperiod'>\n");
@@ -1138,8 +1138,8 @@ int main(int argc, char **argv){
 
 			printf("<tr><td></td><td class='reportSelectItem'><input type='submit' value='Create Report'></td></tr>\n");
 
-			printf("</form>\n");
 			printf("</TABLE>\n");
+			printf("</form>\n");
 
 			printf("</DIV></P>\n");
 
@@ -1158,8 +1158,8 @@ int main(int argc, char **argv){
 
 			printf("<P><DIV ALIGN=CENTER>\n");
 
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
 			printf("<form method=\"GET\" action=\"%s\">\n",TRENDS_CGI);
+			printf("<TABLE BORDER=0 cellpadding=5>\n");
 
 			printf("<tr><td class='reportSelectSubTitle' align=right>Type:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
@@ -1173,8 +1173,8 @@ int main(int argc, char **argv){
 			printf("<input type='submit' value='Continue to Step 2'>\n");
 			printf("</td></tr>\n");
 
-			printf("</form>\n");
 			printf("</TABLE>\n");
+			printf("</form>\n");
 
 			printf("</DIV></P>\n");
 		        }
