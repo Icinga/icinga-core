@@ -1353,6 +1353,10 @@ void show_host_info(void){
 		else
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Enable Flap Detection For This Host' TITLE='Enable Flap Detection For This Host'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>Enable flap detection for this host</a></td></tr>\n",url_images_path,ENABLED_ICON,CMD_CGI,CMD_ENABLE_HOST_FLAP_DETECTION,url_encode(host_name));
 
+                printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Add a new Host comment' TITLE='Add a new Host comment'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>",url_images_path,COMMENT_ICON,CMD_CGI,CMD_ADD_HOST_COMMENT,(display_type==DISPLAY_COMMENTS)?"":url_encode(host_name));
+                printf("Add a new Host comment</a></td>");
+
+
 		printf("</TABLE>\n");
 		}
         else if (is_authorized_for_read_only(&current_authdata)==TRUE){
@@ -1700,6 +1704,11 @@ void show_service_info(void){
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Enable Flap Detection For This Service' TITLE='Enable Flap Detection For This Service'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s",url_images_path,ENABLED_ICON,CMD_CGI,CMD_ENABLE_SVC_FLAP_DETECTION,url_encode(host_name));
 			printf("&service=%s'>Enable flap detection for this service</a></td></tr>\n",url_encode(service_desc));
 		        }
+
+                printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Add a new Service comment' TITLE='Add a new Service comment'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s&",url_images_path,COMMENT_ICON,CMD_CGI,CMD_ADD_SVC_COMMENT,(display_type==DISPLAY_COMMENTS)?"":url_encode(host_name));
+                printf("service=%s'>",(display_type==DISPLAY_COMMENTS)?"":url_encode(service_desc));
+                printf("Add a new Service comment</a></td>");
+
 
 		printf("</table>\n");
 		}
@@ -2502,31 +2511,6 @@ void show_comments(int type){
 	}else{
 		printf("<A NAME=%sCOMMENTS></A>\n",(type==HOST_COMMENT)?"HOST":"SERVICE");
 		printf("<DIV CLASS='commentTitle'>%s Comments</DIV>\n",(type==HOST_COMMENT)?"Host":"Service");
-
-		printf("<TABLE BORDER=0 align=center>\n");
-		printf("<tr CLASS='comment' valign=middle><td><img src='%s%s' border=0></td>",url_images_path,COMMENT_ICON);
-
-		if(type==HOST_COMMENT){
-			printf("<td><a href='%s?cmd_typ=%d&host=%s'>",CMD_CGI,CMD_ADD_HOST_COMMENT,(display_type==DISPLAY_COMMENTS)?"":url_encode(host_name));
-		}else{
-			printf("<td><a href='%s?cmd_typ=%d&host=%s&",CMD_CGI,CMD_ADD_SVC_COMMENT,(display_type==DISPLAY_COMMENTS)?"":url_encode(host_name));
-			printf("service=%s'>",(display_type==DISPLAY_COMMENTS)?"":url_encode(service_desc));
-			}
-		printf("Add a new %s comment</a></td>",(type==HOST_COMMENT)?"Host":"Service");
-
-		/* display delete all comments for single hosts or services */
-		if(display_type!=DISPLAY_COMMENTS) {
-			printf("<td><img src='%s%s' border=0 align=center></td>",url_images_path,DELETE_ICON);
-			if(type==HOST_COMMENT)
-				printf("<td><a href='%s?cmd_typ=%d&host=%s' CLASS='comment'>",CMD_CGI,CMD_DEL_ALL_HOST_COMMENTS,url_encode(host_name));
-			else{
-				printf("<td><a href='%s?cmd_typ=%d&host=%s&",CMD_CGI,CMD_DEL_ALL_SVC_COMMENTS,url_encode(host_name));
-				printf("service=%s' CLASS='comment'>",url_encode(service_desc));
-				}
-			printf("Delete all %s comments</a></td>",(type==HOST_COMMENT)?"Host":"Service");
-		}
-		printf("</tr>\n");
-		printf("</TABLE>\n");
 
 		printf("<form name='tableform%s' id='tableform%s'>",(type==HOST_COMMENT)?"host":"service",(type==HOST_COMMENT)?"host":"service");
 		printf("<input type=hidden name=buttonCheckboxChecked>");
