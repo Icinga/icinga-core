@@ -194,6 +194,7 @@ fi
 %attr(755,root,root) %{_initrddir}/icinga
 %dir %{_sysconfdir}/icinga
 %config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
+%config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
 %config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/commands.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/contacts.cfg
