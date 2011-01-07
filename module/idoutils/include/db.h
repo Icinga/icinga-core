@@ -33,6 +33,7 @@ typedef struct ido2db_dbconfig_struct{
 	unsigned long housekeeping_thread_startup_delay;
         unsigned long clean_realtime_tables_on_core_startup;
         unsigned long clean_config_tables_on_core_startup;
+	unsigned long oci_errors_to_syslog;
         }ido2db_dbconfig;
 
 /*************** DB server types ***************/

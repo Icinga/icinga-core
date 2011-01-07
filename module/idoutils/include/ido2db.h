@@ -210,6 +210,7 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long housekeeping_thread_startup_delay;
 	unsigned long clean_realtime_tables_on_core_startup;
 	unsigned long clean_config_tables_on_core_startup;
+	unsigned long oci_errors_to_syslog;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
 	char *last_logentry_data;
@@ -360,6 +361,10 @@ typedef struct ido2db_input_data_info_struct{
 /* default housekeeping thread startup delay  **/
 
 #define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 60
+
+/************* default trim db interval ********/
+
+#define DEFAULT_OCI_ERRORS_TO_SYSLOG 		1
 
 /***************** functions *******************/
 

@@ -510,7 +510,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 	}
 
         /* initialize prepared statements */
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connet() prepare statements start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() prepare statements start\n");
 
 	/* object inserts */
         if(ido2db_oci_prepared_statement_objects_insert(idi) == IDO_ERROR) {
@@ -1000,7 +1000,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
         }
 
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connet() prepare statements end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() prepare statements end\n");
 
 #endif /* Oracle ocilib specific */
 
@@ -2717,12 +2717,17 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 		const mtext *sql = OCI_GetSql(OCI_ErrorGetStatement(err));
 
 		if (sql != NULL) {
-			syslog(LOG_USER | LOG_INFO, "ERROR: QUERY '%s'\n", sql);
+			if(ido2db_db_settings.oci_errors_to_syslog==IDO_TRUE) {
+				syslog(LOG_USER | LOG_INFO, "ERROR: QUERY '%s'\n", sql);
+			}
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ERROR: QUERY '%s'\n", sql);
 		}
 	}
 
-	syslog(LOG_USER | LOG_INFO, "ERROR: MSG '%s'\n", OCI_ErrorGetString(err));
+	if(ido2db_db_settings.oci_errors_to_syslog==IDO_TRUE) {
+		syslog(LOG_USER | LOG_INFO, "ERROR: MSG '%s'\n", OCI_ErrorGetString(err));
+	}
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ERROR: MSG '%s'\n", OCI_ErrorGetString(err));
 }
 

@@ -218,6 +218,7 @@ trim_db_interval=60
 housekeeping_thread_startup_delay=60
 
 
+
 # DEBUG LEVEL
 # This option determines how much (if any) debugging information will
 # be written to the debug file.  OR values together to log multiple
@@ -256,4 +257,14 @@ debug_file=@localstatedir@/ido2db.debug
 # get out of control when debugging.
 
 max_debug_file_size=1000000
+
+
+
+# OCI ERRORS TO SYSLOG
+# ido2db registers an error handler in ocilib which spits all msg
+# into debug and syslog by default. Setting this option to 0,
+# syslog output will be disabled, only debug log will be used (if
+# appropriate debug_level is set).
+
+oci_errors_to_syslog=1
 

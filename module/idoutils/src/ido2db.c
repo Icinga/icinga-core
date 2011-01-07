@@ -584,6 +584,10 @@ int ido2db_process_config_var(char *arg){
 		ido2db_db_settings.clean_config_tables_on_core_startup=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
 	}
 
+        else if(!strcmp(var,"oci_errors_to_syslog")){
+                ido2db_db_settings.oci_errors_to_syslog=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
+	}
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() end\n");
 
 	return IDO_OK;
@@ -614,6 +618,7 @@ int ido2db_initialize_variables(void){
 	ido2db_db_settings.housekeeping_thread_startup_delay=(unsigned long)DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.clean_realtime_tables_on_core_startup=IDO_TRUE; /* default is cleaning on startup */
 	ido2db_db_settings.clean_config_tables_on_core_startup=IDO_TRUE;
+	ido2db_db_settings.oci_errors_to_syslog=DEFAULT_OCI_ERRORS_TO_SYSLOG;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_initialize_variables() end\n");
 	return IDO_OK;
