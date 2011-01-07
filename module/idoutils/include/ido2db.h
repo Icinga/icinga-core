@@ -56,6 +56,8 @@
 
 #define IDO2DB_MAX_MBUF_ITEMS                           14
 
+#define IDO2DB_MAX_BUFLEN				16384
+
 
 /***************** structures *****************/
 

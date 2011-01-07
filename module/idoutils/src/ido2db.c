@@ -393,11 +393,14 @@ int ido2db_process_arguments(int argc, char **argv){
 int ido2db_process_config_file(char *filename){
 	ido_mmapfile *thefile=NULL;
 	char *buf=NULL;
+        char *temp_buffer[IDO2DB_MAX_BUFLEN];
 	int result=IDO_OK;
 
 	/* open the file */
-	if((thefile=ido_mmap_fopen(filename))==NULL)
+	if((thefile=ido_mmap_fopen(filename))==NULL){
+		syslog(LOG_ERR, "Error: Unable to open configuration file, please check permissions on %s\n", filename);
 		return IDO_ERROR;
+	}
 
 	/* process each line of the file */
 	while((buf=ido_mmap_fgets(thefile))){

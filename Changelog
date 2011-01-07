@@ -30,6 +30,7 @@ ENHANCEMENTS
 * install: set -Wall gcc flags based on os/compiler #959
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
+* idoutils: add check for configuration file availability for idomod and ido2db (idea from Ricardo Maraschini) #1087
 
 * contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
 
