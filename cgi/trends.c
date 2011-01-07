@@ -269,9 +269,11 @@ int main(int argc, char **argv){
 	time_t t3;
 	time_t current_time;
 	struct tm *t;
-	time_t old_t1, old_t2;
+	time_t old_t1;
+	time_t old_t2;
 	archived_state *temp_as;
-	time_t problem_t1, problem_t2=0;
+	time_t problem_t1=0;
+	time_t problem_t2=0;
 	time_t margin;
 
 	/* reset internal CGI variables */
@@ -392,6 +394,8 @@ int main(int argc, char **argv){
 		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		if (timeperiod_type==TIMEPERIOD_NEXTPROBLEM) {
+			problem_t1=0;
+			problem_t2=0;
 
 			t1=t2;
 			t2=current_time;
