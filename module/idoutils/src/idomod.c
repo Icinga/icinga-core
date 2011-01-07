@@ -334,7 +334,7 @@ int idomod_process_config_file(char *filename){
 
 	/* open the file */
 	if((thefile=ido_mmap_fopen(filename))==NULL){
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Unable to open configuration file, please check permissions on %s\n", filename);
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Unable to open configuration file %s: %s\n", filename, strerror(errno));
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 		return IDO_ERROR;

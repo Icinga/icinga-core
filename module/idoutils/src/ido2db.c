@@ -398,7 +398,7 @@ int ido2db_process_config_file(char *filename){
 
 	/* open the file */
 	if((thefile=ido_mmap_fopen(filename))==NULL){
-		syslog(LOG_ERR, "Error: Unable to open configuration file, please check permissions on %s\n", filename);
+		syslog(LOG_ERR, "Error: Unable to open configuration file %s: %s\n", filename, strerror(errno));
 		return IDO_ERROR;
 	}
 
