@@ -1,0 +1,344 @@
+
+============
+Icinga Tests
+============
+
+Found something?
+
+Then please let us know by opening an issue: dev.icinga.org
+
+
+=====================================================================================================================
+= Using GIT for providing Diffs/Patches
+=====================================================================================================================
+
+Get the first GIT clone using
+
+$ git clone git://git.icinga.org/icinga-core.git
+
+then chdir to icinga-core and init/update submodules
+
+$ git submodules init
+$ git submodules update
+
+create your local fixes branch.
+
+$ git branch fixes master
+
+do a checkout and merge latest master (in case you need to).
+
+$ git checkout master
+$ git pull origin master
+
+$ git checkout fixes
+$ git merge master
+
+now create your patch.
+
+$ vi ...
+$ git commit -a
+$ vi ..subject..commitmsg
+$ git format-patch -1
+
+Attach the gotten patch to the new issue you may create at dev.icinga.org in the appropriate section.
+Or via mail onto our mailinglists - http://www.icinga.org/community/
+
+Thanks :)
+
+PS: Checkout the more advanced GIT guide in the development wiki!
+
+
+
+=====================================================================================================================
+= CORE
+=====================================================================================================================
+
+Debug Hints
+
+If you are debugging with gdb or common tools, make sure that you are running the compiled binaries, not the installed ones. make install normally strips the debug symbols.
+A gdb cheatsheet can be found here: http://www.yolinux.com/TUTORIALS/GDB-Commands.html
+
+Building the source
+
+
+Configure
+
+./configure behavior with different flags:
+
+    * enable modules
+    * set prefix
+    * set users
+    * set libs/includes
+
+Make
+
+Compiling different things, just type 'make' to see all available options
+
+Make Install
+
+Test if different installing options do what they are expected to do e.g. fullinstall should do everything.
+
+
+Check Configuration
+
+    * Backup your current configuration and try to set several things.
+    * Change literals, strings, does it resolve in the expected behavior, or do you encounter something strange?
+    * Does e.g. setting the retry_interval to a test value really result like desired?
+    * Check back on the docs and try to set suggested values and configurations - does it really work?
+    * Try to set extrem values (absolute minimum/maximum) and watch the resulting behavior.
+
+    * Generate a test configuration with e.g. http://search.cpan.org/dist/Monitoring-Generator-TestConfig/
+    * Play around with random host behaviour
+
+
+Debugging
+
+icinga.cfg provides debug settings. Set them to those values to get everything:
+
+    * debug_level=-1 (everything)
+    * debug_verbosity=2 (very detailed)
+    * debug_file=/where/you/have/enough/storage/icinga.debug
+    * max_debug_file_size=1000000000 (1GB)
+
+
+Running the Core
+
+    * Are Macros processed correctly?
+    * How do the illegal chars in macros affect the string escaping?
+    * Host States are expected - e.g. host is down when you disable the network route temporarly?
+    * Service checks behave correctly
+    * External Commands are being processed
+    * Passive checks are working?
+    * Are the permissions on the command pipe set correctly, does it work like expected?
+
+    * Is the daemon running, but a dead daemon not processing any checks and results - what might have caused that, why does it hang?
+
+    * States are going from soft to hard, state changes are happening correctly?
+    * Notifications are being sent correctly
+    * Escalations are being handled they way they are expected, Escalation conditions defined work as they should
+
+
+Errors
+
+    * Segfault on the Core - why this?
+    * Faulty modules being loaded?
+    * Are there any noticable memory leaks
+    * gcc -Wall on Makefile.in if not already set
+    * gdb, strace, valgrind
+
+
+
+t/ and t-tap/
+
+$ sudo yum install perl-HTML-Lint
+$ sudo yum install perl-Test-WWW-Mechanize
+
+$ ./configure --enable-libtap
+$ make all
+$ make test
+
+
+Plugins
+
+    * Matches the check config for the plugins, is there anything different from the docs to the real config for check commands?
+
+
+=====================================================================================================================
+= IDOUTILS
+=====================================================================================================================
+
+Configure
+
+./configure --enable-idoutils
+
+    * --enable-ssl
+    * --enable-oracle
+    * oracle libs/includes
+
+Make
+
+    * make idoutils shows warnings/errors?
+
+Make Install
+
+    * make install-idoutils does install all files needed to run?
+    * configs are not overwritten, check on the sample ones.
+
+
+Check Configuration
+
+    * Backup your current configuration and try to set several things.
+    * Change literals, strings, does it resolve in the expected behavior, or do you encounter something strange?
+    * Does e.g. setting the max_servicechecks_age to a test value really result like desired?
+    * Check back on the docs and try to set suggested values and configurations - does it really work?
+    * Try to set extrem values (absolute minimum/maximum) and watch the resulting behavior.
+
+
+Debugging
+
+ido2db.cfg and idomod.cfg provide debug settings. Set them to those values to get everything:
+
+    * debug_level=-1 (everything)
+    * debug_verbosity=2 (very detailed)
+    * debug_file=/where/you/have/enough/storage/ido2db.debug / idomod.debug
+    * max_debug_file_size=1000000000 (1GB)
+
+idomod
+The output is rather larger as it's directly the functions being called when new data gets there through from the core. Afterwards this data is being processed on the socket.
+
+ido2db
+The debugfile only get's written, if iodmod connects correctly through the socket. So if it's not updated, this is a reminder, that there's something wrong with idomod or the socket being created/used.
+
+
+Setup
+
+IDOUtils consisting of idomod and ido2db can be setup in different combinations.
+
+Sockets
+
+Set different sockets in idomod.cfg and ido2db.cfg, but make sure they match.
+Also if they don't check on the erorr messages and look forward to "how to improve the error messages"?
+
+    * Unix socket both on local machine, database local too
+    * Unix socket both on local machine, database extern
+    * TCP socket (with and without SSL) idomod and ido2db local, db local or extern
+    * TCP socket (with and without SSL) idomod local and ido2db extern, db extern
+
+Databases
+
+Configure different databases in the background and apply different settings on ido2db.cfg (create e.g. ido2db.cfg-pgsql and just copying them over as new ido2db.cfg).
+
+    * MySQL
+    * Postgres
+    * Oracle
+
+
+Data
+
+Initial connection
+
+    * check if connection to database is established
+    * check on the table [icinga_]instances, if the same name is in idomod.cfg is there
+    * check [icinga_]conninfo if idomod and idomod trimming thread left their entries
+
+Config data
+
+    * Stop ido2db, stop Icinga
+    * Start ido2db, start Icinga
+    * check syslog if everythings fine
+    * check tables [icinga_]services/hosts/contacts //groups etc if the information matches
+    * check [icinga_]objects for matching objects from your config
+
+Actual state information
+
+    * check [icinga_]host/servicestatus for the hostinformation and compare to those from status.dat and the cgis
+    * check the debug log for updates happening (insert_or_update functions on those tables
+
+Historical Data
+
+    * Check if all rows get correctly updated
+    * Check over period if all checks get into the database
+
+Other data
+
+    * Check if output and long_output are being written
+
+Queries
+
+    * Check on the RDBMS if there are queries causing performance issues
+    * do queries fail or produce strange output (what you might get through the database or the debug log)
+    * compare MySQL, Postgres and Oracle regarding their performance
+
+
+
+=====================================================================================================================
+= CLASSIC UI / CGIS
+=====================================================================================================================
+
+    * Run the compiled cgis on the shell to get an idea, which environment variables need to be exported. examples are:
+
+export REMOTE_USER=icinga
+export QUERY_STRING=host=test1
+export REQUEST_METHOD=GET
+
+    * Run the cgis (from source) on shell and call installed ones via apache - differences?
+    * Run the cgis with an empty QUERY_STRING
+    * Run strace (or truss -f on Solaris) or gdb like this
+
+$ export REQUEST_METHOD=GET ; gdb /home/icinga/icinga-core/cgi/status.cgi
+
+
+
+=====================================================================================================================
+= GET TEST CONFIGS
+=====================================================================================================================
+
+The easiest way to create a test config is Monitoring-Generator-TestConfig - a nifty Library written by Sven Nierlein.
+
+http://search.cpan.org/dist/Monitoring-Generator-TestConfig/
+
+# perl -MCPAN -e shell
+CPAN> install Monitoring::Generator::TestConfig
+CPAN> quit
+
+or without interacting with the shell:
+
+# perl -MCPAN -e 'install Monitoring::Generator::TestConfig'
+
+Afterwards create this little Perl script:
+
+# vim gen_icinga_testconf.pl
+
+#!/usr/bin/perl
+
+use Monitoring::Generator::TestConfig;
+
+my $ngt = Monitoring::Generator::TestConfig->new(
+    'output_dir' => '/tmp/test_icinga' ,
+    layout => 'icinga',
+    binary => '/usr/local/icinga/bin/icinga',
+    overwrite_dir => 1,
+    verbose => 1,
+    hostcount => 200,
+    routercount => 1,
+    services_per_host => 10,
+    host_settings =>  {
+      check_period => '24x7',
+    },
+    host_types =>  {
+      'down'         => 2, # percentage
+      'up'           => 96,
+      'flap'         => 1,
+      'pending'      => 1,
+      'random'       => 0,
+    },
+    service_types =>  {
+      'ok'           => 96, # percentage
+      'warning'      => 2,
+      'critical'     => 1,
+      'pending'      => 1,
+      'random'       => 0,
+    },
+    service_settings =>  {
+      check_interval => 1,
+      retry_interval => 1,
+    },
+    'main_cfg' => {
+      'nagios_user'  => 'icinga',
+      'nagios_group' => 'icinga',
+    },
+
+);
+$ngt->create();
+
+# chmod +x gen_icinga_testconf.pl
+
+Adapt it for your needs as described over here: http://search.cpan.org/dist/Monitoring-Generator-TestConfig/lib/Monitoring/Generator/TestConfig.pm
+
+Running this script will create a complete configuration including test plugins in /tmp/test_icinga. You can then start the tests with
+
+# /usr/local/icinga/bin/icinga -d /tmp/test_icinga/icinga.cfg
+
+
+
+
