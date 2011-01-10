@@ -2,7 +2,7 @@
  *
  * COMMON.H - Protocol Definition
  * Copyright (c) 2005 Ethan Galstad
- * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
  *
  ************************************************************************/
 
