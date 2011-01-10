@@ -111,6 +111,9 @@ int ido2db_oci_prepared_statement_downtime_delete(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_instances_delete(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_instances_delete_time(ido2db_idi *idi);
 
+/* db version stuff */
+int ido2db_oci_prepared_statement_dbversion_select(ido2db_idi *idi);
+
 #endif
 
 extern ido2db_dbconfig ido2db_db_settings;
@@ -185,10 +188,11 @@ char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES]={
 	"service_contactgroups",
 	"hostescalation_contactgroups",
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-	"serviceescalationcontactgroups"
+	"serviceescalationcontactgroups",
 #else /* everything else will be libdbi */
-	"serviceescalation_contactgroups"
+	"serviceescalation_contactgroups",
 #endif /* Oracle ocilib specific */
+	"dbversion"
 	};
 
 char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
@@ -999,6 +1003,11 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
+        /* dbversion */
+        if(ido2db_oci_prepared_statement_dbversion_select(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() failed\n");
+                return IDO_ERROR;
+        }
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() prepare statements end\n");
 
@@ -1120,6 +1129,8 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete);
 	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete_time);
 
+	OCI_StatementFree(idi->dbinfo.oci_statement_dbversion_select);
+
 	syslog(LOG_USER | LOG_INFO, "Successfully freed prepared statements");
 
 	/* close db connection */
@@ -1139,8 +1150,80 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 /************************************/
 
 int ido2db_db_version_check(ido2db_idi *idi) {
+        char *buf=NULL;
+	char *dbversion=NULL;
+	char *name=NULL;
+	void *data[1];
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () start \n");
+
+	name=strdup("idoutils");
+        data[0] = (void *) &name;
+
+#ifdef USE_LIBDBI
+
+        if (asprintf(&buf, "SELECT version FROM %s WHERE name='%s'", ido2db_db_tablenames[IDO2DB_DBTABLE_DBVERSION], name) == -1)
+                buf = NULL;
+
+        if ((ido2db_db_query(idi, buf))==IDO_OK) {
+
+                if (idi->dbinfo.dbi_result!=NULL) {
+                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                idi->dbinfo.dbversion = dbi_result_get_string(idi->dbinfo.dbi_result, "version");
+                        }
+                }
+        }
+
+	free(buf);
+#endif
+
+#ifdef USE_ORACLE
+
+
+        if(!OCI_BindString(idi->dbinfo.oci_statement_dbversion_select, MT(":X1"), *(char **) data[0], 0)) {
+                return IDO_ERROR;
+        }
+
+        /* execute statement */
+        if(!OCI_Execute(idi->dbinfo.oci_statement_dbversion_select)) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () \n");
+        }
+
+        /* commit statement */
+        OCI_Commit(idi->dbinfo.oci_connection);
+
+        /* do not free statement yet! */
+
+        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_dbversion_select);
+
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() query ok\n");
+
+        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext ok\n");
+                idi->dbinfo.dbversion=OCI_GetString(idi->dbinfo.oci_resultset, 1);
+        } else {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext not ok\n");
+        }
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", dbversion);
+
+
+#endif
+
+#ifdef USE_PGSQL
 
 	//FIXME
+#endif
+
+	free(name);
+
+	/* check dbversion against program version */
+	if(strcmp(idi->dbinfo.dbversion, IDO2DB_VERSION)!=0){
+		syslog(LOG_ERR, "Error: DB Version %s does not match program version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_VERSION);
+		return IDO_ERROR;
+	}
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () end\n");
+
 	return IDO_OK;
 
 }
@@ -1166,9 +1249,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 		idi->instance_name = strdup("default");
 
 
-	if(ido2db_db_version_check(idi)==IDO_ERROR){
-		syslog(LOG_USER | LOG_INFO, "Error: DB Version %s does not match %s. Please read the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_VERSION);
-	}
+	ido2db_db_version_check(idi);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
@@ -2905,6 +2986,42 @@ int ido2db_oci_prepared_statement_instances_select(ido2db_idi *idi) {
         free(buf);
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return IDO_OK;
+}
+
+
+int ido2db_oci_prepared_statement_dbversion_select(ido2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() start\n");
+
+        if(asprintf(&buf, "SELECT version FROM %s WHERE name=:X1",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_DBVERSION]) == -1) {
+                        buf = NULL;
+        }
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_dbversion_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_dbversion_select, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_dbversion_select, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() end\n");
 
         return IDO_OK;
 }
