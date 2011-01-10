@@ -38,7 +38,7 @@ div.status { font-size: 10pt; text-align: center; }
 .statusPENDING { text-align: center; background-color: #acacac; color: #fff; }
 .statusOK { text-align: center;  background-color: #00CC33; color: #fff; }
 .statusRECOVERY { text-align: center; background-color: #00CC33; color: #fff; }
-.statusUNKNOWN { text-align: center; background-color: #bf44b2; color: #fff; }
+.statusUNKNOWN { text-align: center; background-color: #E066FF; color: #fff; }
 .statusWARNING { text-align: center; background-color: #ffa500; color: #fff; }
 .statusCRITICAL { text-align: center; background-color: #ff3300; color: #fff; }
 .statusPENDING a, .statusOK a, .statusRECOVERY a, .statusUNKNOWN a, .statusWARNING a, .statusCRITICAL a { color: #000; }
@@ -49,15 +49,15 @@ div.status { font-size: 10pt; text-align: center; }
 .statusHOSTDOWN { text-align: center; background-color: #ff3300; color: #fff; }
 .statusHOSTDOWNACK { text-align: center; background-color: #ff3300; color: #fff; }
 .statusHOSTDOWNSCHED { text-align: center; background-color: #ff3300; color: #fff; }
-.statusHOSTUNREACHABLE { text-align: center; background-color: #bf44b2; color: #fff; }
-.statusHOSTUNREACHABLEACK { text-align: center; background-color: #bf44b2; color: #fff; }
-.statusHOSTUNREACHABLESCHED { text-align: center; background-color: #bf44b2; color: #fff; }
+.statusHOSTUNREACHABLE { text-align: center; background-color: #E066FF; color: #fff; }
+.statusHOSTUNREACHABLEACK { text-align: center; background-color: #E066FF; color: #fff; }
+.statusHOSTUNREACHABLESCHED { text-align: center; background-color: #E066FF; color: #fff; }
 .statusHOSTPENDING a, .statusHOSTUP a, .statusHOSTDOWN a, .statusHOSTDOWNACK a, .statusHOSTDOWNSCHED a, .statusHOSTUNREACHABLE a, .statusHOSTUNREACHABLEACK a, .statusHOSTUNREACHABLESCHED a { color: #000; }
 .statusHOSTPENDING a:hover, .statusHOSTUP a:hover, .statusHOSTDOWN a:hover, .statusHOSTDOWNACK a:hover, .statusHOSTDOWNSCHED a:hover, .statusHOSTUNREACHABLE a:hover, .statusHOSTUNREACHABLEACK a:hover, .statusHOSTUNREACHABLESCHED a:hover { color: #fff; }
 
-.statusBGUNKNOWN { background-color: #e2abdc; }
-.statusBGUNKNOWNACK { background-color: #e2abdc; }
-.statusBGUNKNOWNSCHED { background-color: #e2abdc; }
+.statusBGUNKNOWN { background-color: #EEAEEE; }
+.statusBGUNKNOWNACK { background-color: #EEAEEE; }
+.statusBGUNKNOWNSCHED { background-color: #EEAEEE; }
 .statusBGWARNING { background-color: #ffda9f; }
 .statusBGWARNINGACK { background-color: #ffda9f; }
 .statusBGWARNINGSCHED { background-color: #ffda9f; }
@@ -67,9 +67,9 @@ div.status { font-size: 10pt; text-align: center; }
 .statusBGDOWN { background-color: #ffd4c9; }
 .statusBGDOWNACK { background-color: #ffd4c9; }
 .statusBGDOWNSCHED { background-color: #ffd4c9; }
-.statusBGUNREACHABLE { background-color: #e2abdc; }
-.statusBGUNREACHABLEACK { background-color: #e2abdc; }
-.statusBGUNREACHABLESCHED { background-color: #e2abdc; }
+.statusBGUNREACHABLE { background-color: #EEAEEE; }
+.statusBGUNREACHABLEACK { background-color: #EEAEEE; }
+.statusBGUNREACHABLESCHED { background-color: #EEAEEE; }
 
 div.serviceTotals { text-align: center; font-weight: bold; font-size: 10pt; }
 table.serviceTotals { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
@@ -79,7 +79,7 @@ a.serviceTotals:hover { color: #000; }
 
 .serviceTotalsOK { text-align: center; background-color: #00CC33; color: #fff; border: 0 }
 .serviceTotalsWARNING { text-align: center; background-color: #ffa500; color: #fff; border: 0 }
-.serviceTotalsUNKNOWN { text-align: center; background-color: #bf44b2; color: #fff; border: 0 }
+.serviceTotalsUNKNOWN { text-align: center; background-color: #E066FF; color: #fff; border: 0 }
 .serviceTotalsCRITICAL { text-align: center; background-color: #ff3300; color: #fff; border: 0 }
 .serviceTotalsPENDING { text-align: center; background-color: #acacac; color: #fff; border: 0 }
 .serviceTotalsPROBLEMS { text-align: center; background-color: #6ec2fd; color: #fff; border: 0 }
@@ -99,7 +99,7 @@ a.hostTotals:hover { color: #000; }
 
 .hostTotalsUP { text-align: center; background-color: #00cc33; color: #fff; border: 0 }
 .hostTotalsDOWN { text-align: center; background-color: #ff3300; color: #fff; border: 0 }
-.hostTotalsUNREACHABLE { text-align: center; background-color: #bf44b2; color: #fff; border: 0 }
+.hostTotalsUNREACHABLE { text-align: center; background-color: #E066FF; color: #fff; border: 0 }
 .hostTotalsPENDING { text-align: center; background-color: #acacac; color: #fff; border: 0 }
 .hostTotalsPROBLEMS { text-align: center; background-color: #6ec2fd; color: #fff; border: 0 }
 

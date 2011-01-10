@@ -23,6 +23,28 @@ CREATE OR REPLACE FUNCTION unix_timestamp(timestamp) RETURNS bigint AS '
 ' LANGUAGE 'SQL';
 
 
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+
+CREATE OR REPLACE FUNCTION updatedbversion(version_i TEXT) RETURNS void AS $$
+BEGIN
+        IF EXISTS( SELECT * FROM icinga_dbversion WHERE name='idoutils')
+        THEN
+                UPDATE icinga_dbversion
+                SET version=version_i WHERE name='idoutils';
+        ELSE
+                INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', version_i);
+        END IF;
+
+        RETURN;
+END;
+$$ LANGUAGE plpgsql;
+-- HINT: su - postgres; createlang plpgsql icinga;
+
+SELECT updatedbversion('1.3.0');
+
+
 --
 -- Database: icinga
 --
@@ -381,8 +403,11 @@ CREATE INDEX icinga_customvariablestatus_i ON icinga_customvariablestatus(varnam
 --
 
 CREATE TABLE  icinga_dbversion (
+  dbversion_id SERIAL,
   name TEXT NOT NULL default '',
-  version TEXT NOT NULL default ''
+  version TEXT NOT NULL default '',
+  PRIMARY KEY (dbversion_id),
+  UNIQUE (name)
 ) ;
 
 -- --------------------------------------------------------
@@ -1566,5 +1591,4 @@ CREATE INDEX loge_time_idx on icinga_logentries(logentry_time);
 
 -- statehistory
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
-
 

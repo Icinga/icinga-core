@@ -197,26 +197,17 @@ int neb_load_module(nebmodule *mod){
 	   So... the trick is to (1) copy the module to a temp file, (2) dlopen() the temp file, and (3) immediately delete the temp file.
 	************/
 
-	/*
-	 * open a temp file for copying the module. We use my_fdcopy() so
-	 * we re-use the destination file descriptor returned by mkstemp(3),
-	 * which we have to close ourselves.
-	 */
-	snprintf(output_file, sizeof(output_file) - 1, "%s/nebmodXXXXXX",temp_path);
-
-	dest_fd = mkstemp(output_file);
-	result = my_fdcopy(mod->filename, output_file, dest_fd);
-	close(dest_fd);
-	if (result == ERROR) {
-		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Failed to safely copy module '%s'. The module will not be loaded\n", mod->filename);
- 		return ERROR;
-	}
+        /* 2010-01-05 MF: Patch taken from OMD into Icinga Core
+	   OMD: Do not make a copy of the module, but directly load it. This prevents problems with a tmpfs which
+           is mounted as user. OMD users surely have no problems with modules overwritten by 'cp in runtime. Anyway,
+           the usual way to install files is 'install', which removes and recreates the file (just as tar, rpm and
+           many other installation-tools do). */
 
 	/* load the module (use the temp copy we just made) */
 #ifdef USE_LTDL
-	mod->module_handle=lt_dlopen(output_file);
+	mod->module_handle=lt_dlopen(mod->filename);
 #else
-	mod->module_handle=(void *)dlopen(output_file,RTLD_NOW|RTLD_GLOBAL);
+	mod->module_handle=(void *)dlopen(mod->filename,RTLD_NOW|RTLD_GLOBAL);
 #endif
 	if(mod->module_handle==NULL){
 
@@ -229,26 +220,15 @@ int neb_load_module(nebmodule *mod){
 		return ERROR;
 	        }
 
-	/* mark the module as being loaded */
-	mod->is_currently_loaded=TRUE;
-
-	/* delete the temp copy of the module we just created and loaded */
-	/* this will prevent other processes from overwriting the file (using the same inode), which would cause Icinga to crash */
-	/* the kernel will keep the deleted file in memory until we unload it */
-	/* NOTE: This *should* be portable to most Unices, but I've only tested it on Linux */
-	if(unlink(output_file)==-1){
-		logit(NSLOG_RUNTIME_ERROR,FALSE,"Error: Could not delete temporary file '%s' used for module '%s'.  The module will be unloaded: %s\n",output_file,mod->filename,strerror(errno));
-		neb_unload_module(mod,NEBMODULE_FORCE_UNLOAD,NEBMODULE_ERROR_API_VERSION);
-
-		return ERROR;
-		}
-
 	/* find module API version */
 #ifdef USE_LTDL
 	module_version_ptr=(int *)lt_dlsym(mod->module_handle,"__neb_api_version");
 #else
 	module_version_ptr=(int *)dlsym(mod->module_handle,"__neb_api_version");
 #endif
+
+	/* mark the module as being loaded */
+	mod->is_currently_loaded=TRUE;
 
 	/* check the module API version */
 	if(module_version_ptr==NULL || ((*module_version_ptr)!=CURRENT_NEB_API_VERSION)){

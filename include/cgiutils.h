@@ -467,6 +467,11 @@ extern "C" {
 #define LIFO_ERROR_DATA		3
 
 
+/************************** HTTP CHARSET ****************************/
+
+#define DEFAULT_HTTP_CHARSET "utf-8"
+
+
 /************************** BUFFER  ***************************************/
 
 #define MAX_MESSAGE_BUFFER              4096

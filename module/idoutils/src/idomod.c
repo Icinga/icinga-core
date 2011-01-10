@@ -32,10 +32,6 @@
 NEB_API_VERSION(CURRENT_NEB_API_VERSION)
 
 
-#define IDOMOD_VERSION "1.3.0"
-#define IDOMOD_NAME "IDOMOD"
-#define IDOMOD_DATE "10-25-2010"
-
 
 void *idomod_module_handle=NULL;
 char *idomod_instance_name=NULL;
@@ -329,11 +325,16 @@ int idomod_process_module_args(char *args){
 int idomod_process_config_file(char *filename){
 	ido_mmapfile *thefile=NULL;
 	char *buf=NULL;
+	char temp_buffer[IDOMOD_MAX_BUFLEN];
 	int result=IDO_OK;
 
 	/* open the file */
-	if((thefile=ido_mmap_fopen(filename))==NULL)
+	if((thefile=ido_mmap_fopen(filename))==NULL){
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"idomod: Unable to open configuration file %s: %s\n", filename, strerror(errno));
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 		return IDO_ERROR;
+	}
 
 	/* process each line of the file */
 	while((buf=ido_mmap_fgets(thefile))){

@@ -27,10 +27,6 @@
 #include "../../../include/dh.h"
 #endif
 
-#define IDO2DB_NAME "IDO2DB"
-#define IDO2DB_DATE "10-25-2010"
-#define IDO2DB_VERSION "1.3.0"
-
 extern int use_ssl;
 
 extern int errno;
@@ -393,11 +389,14 @@ int ido2db_process_arguments(int argc, char **argv){
 int ido2db_process_config_file(char *filename){
 	ido_mmapfile *thefile=NULL;
 	char *buf=NULL;
+        char *temp_buffer[IDO2DB_MAX_BUFLEN];
 	int result=IDO_OK;
 
 	/* open the file */
-	if((thefile=ido_mmap_fopen(filename))==NULL)
+	if((thefile=ido_mmap_fopen(filename))==NULL){
+		syslog(LOG_ERR, "Error: Unable to open configuration file %s: %s\n", filename, strerror(errno));
 		return IDO_ERROR;
+	}
 
 	/* process each line of the file */
 	while((buf=ido_mmap_fgets(thefile))){
@@ -581,6 +580,10 @@ int ido2db_process_config_var(char *arg){
 		ido2db_db_settings.clean_config_tables_on_core_startup=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
 	}
 
+        else if(!strcmp(var,"oci_errors_to_syslog")){
+                ido2db_db_settings.oci_errors_to_syslog=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
+	}
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() end\n");
 
 	return IDO_OK;
@@ -611,6 +614,7 @@ int ido2db_initialize_variables(void){
 	ido2db_db_settings.housekeeping_thread_startup_delay=(unsigned long)DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.clean_realtime_tables_on_core_startup=IDO_TRUE; /* default is cleaning on startup */
 	ido2db_db_settings.clean_config_tables_on_core_startup=IDO_TRUE;
+	ido2db_db_settings.oci_errors_to_syslog=DEFAULT_OCI_ERRORS_TO_SYSLOG;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_initialize_variables() end\n");
 	return IDO_OK;

@@ -12,6 +12,10 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
+#define IDO2DB_NAME "IDO2DB"
+#define IDO2DB_DATE "02-16-2011"
+#define IDO2DB_VERSION "1.3.0"
+
 /*************** RDBMS headers *************/
 
 /* oracle */
@@ -55,6 +59,8 @@
 #define IDO2DB_MBUF_CONTACT                             13
 
 #define IDO2DB_MAX_MBUF_ITEMS                           14
+
+#define IDO2DB_MAX_BUFLEN				16384
 
 
 /***************** structures *****************/
@@ -183,6 +189,9 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_instances_delete;
 	OCI_Statement* oci_statement_instances_delete_time;
 
+	/* dbversion */
+	OCI_Statement* oci_statement_dbversion_select;
+
 #endif /* Oracle ocilib specific */
 	unsigned long instance_id;
 	unsigned long conninfo_id;
@@ -208,9 +217,11 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long housekeeping_thread_startup_delay;
 	unsigned long clean_realtime_tables_on_core_startup;
 	unsigned long clean_config_tables_on_core_startup;
+	unsigned long oci_errors_to_syslog;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
 	char *last_logentry_data;
+	char *dbversion;
 	ido2db_dbobject **object_hashlist;
         }ido2db_dbconninfo;
 
@@ -358,6 +369,10 @@ typedef struct ido2db_input_data_info_struct{
 /* default housekeeping thread startup delay  **/
 
 #define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 60
+
+/************* default trim db interval ********/
+
+#define DEFAULT_OCI_ERRORS_TO_SYSLOG 		1
 
 /***************** functions *******************/
 

@@ -1,14 +1,38 @@
 -- -----------------------------------------
--- upgrade path for Icinga IDOUtils 1.0.3
+-- upgrade path for Icinga IDOUtils 1.3.0
 --
 -- add index for statehistory
 -- -----------------------------------------
--- Copyright (c) 2010 Icinga Development Team (http://www.icinga.org)
---
--- Initial Revision: 2010-11-04 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- Copyright (c) 2010-2011 Icinga Development Team (http://www.icinga.org)
 --
 -- Please check http://docs.icinga.org for upgrading information!
 -- -----------------------------------------
+
+-- -----------------------------------------
+-- update dbversion
+-- -----------------------------------------
+
+ALTER TABLE icinga_dbversion ADD dbversion_id SERIAL;
+ALTER TABLE icinga_dbversion ADD PRIMARY KEY (dbversion_id);
+
+CREATE UNIQUE INDEX dbversion ON icinga_dbversion (name);
+
+CREATE OR REPLACE FUNCTION updatedbversion(version_i TEXT) RETURNS void AS $$
+BEGIN
+	IF EXISTS( SELECT * FROM icinga_dbversion WHERE name='idoutils')
+	THEN
+		UPDATE icinga_dbversion
+		SET version=version_i WHERE name='idoutils';
+	ELSE
+		INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', version_i);
+	END IF;
+
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
+-- HINT: su - postgres; createlang plpgsql icinga;
+
+SELECT updatedbversion('1.3.0');
 
 -- -----------------------------------------
 -- add index for statehistory

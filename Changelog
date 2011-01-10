@@ -16,15 +16,24 @@ ENHANCEMENTS
 * classic ui: adding "Attempt" column to host status detail list
 * classic ui: change default url target frame to main #1014
 * classic ui: add url_stylesheet_path to cgi.cfg to allow custom css path #898
+* classic ui: change color of unknown/unreachable state to more warm signalling purple #1029
+* classic ui: move "add service/host comment" to the command box on extinfo.cgi, abandon remove all in favor of multiple comment delete #837
+* classic ui: add trend timeperiod feature to locate the next problem (Carsten Emde) #1074
+* classic ui: add configurable http charset support (default utf-8) within the cgis #1002
 
 * core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
 * core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057
 * core: allow empty hostgroup aissgments for services as opt-in config option (Max Schubert) #949
+* core: do not copy broker modules (OMD patch) #896
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959
 
 * idoutils: add index to table icinga_statehistory for usage in reporting module #957
+* idoutils: add check for configuration file availability for idomod and ido2db (idea from Ricardo Maraschini) #1087
+* idoutils: add cfg option to enable/disable oci errors to syslog through error handler #1060
+* idoutils: add dbversion upgrade scripts for 1.3 #633
+* idoutils: add dbversion check in ido2db and print error to syslog in case of non-matching #633
 
 * contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
 
@@ -41,6 +50,9 @@ FIXES
 * core: children should no longer hang on mutex locks held in parent for localtime() (and similar) calls (Andreas Ericsson) #1039
 * core: debug logging is now properly serialized, using soft-locking with a timeout of 150 milliseconds to avoid multiple threads competing for the privilege to write debug info (Andreas Ericsson) #1035
 * core: fix parsing of long plugin output for async host checks (Jochen Bern) #1046
+* core: log error reason when failing to open the status file (Andreas Ericsson) #1078
+* core: fix allocate memory once for *GROUPMEMBERS macros (Stephane Lapie) #1076
+* core: protect against poorly behaving thread-libraries (Andreas Ericsson) #1080
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
@@ -54,12 +66,16 @@ FIXES
 * classic ui: fix status totals - incoherence between displayed list and values #993
 * classic ui: fix deleting host comments won't work #994
 * classic ui: changed naming of cgi config options for showlog_current_state(s) and showlog_current_state(s) #899
+* classic ui: fix form/table DOM confusion in cgis (Sven-Göran Bergh) #1081
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926
 * install: add hint to configure that libpq is not yet fully working #622
 
 * idoutils: fix unescape display name (Matthieu Kermagoret) #1027
+* idoutils: fix ido2db needs to check for empty command arguments on Solaris (Julian Wiesner) #1047
+* idoutils: fix solaris <= lacks asprintf (Julian Wiesner) #1048
+
 
 1.2.1 - 25/10/2010
 
