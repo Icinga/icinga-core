@@ -1,9 +1,8 @@
 -- --------------------------------------------------------
 -- mysql.sql
 -- DB definition for MySQL
--- 
--- 
--- Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+--
+-- Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
 --
 -- -- --------------------------------------------------------
 
@@ -14,6 +13,12 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
+
 
 --
 -- Database: `icinga`
@@ -370,8 +375,11 @@ CREATE TABLE IF NOT EXISTS `icinga_customvariablestatus` (
 --
 
 CREATE TABLE IF NOT EXISTS `icinga_dbversion` (
+  `dbversion_id` int(11) NOT NULL auto_increment,
   `name` varchar(10) character set latin1 NOT NULL default '',
-  `version` varchar(10) character set latin1 NOT NULL default ''
+  `version` varchar(10) character set latin1 NOT NULL default '',
+  PRIMARY KEY (`dbversion_id`),
+  UNIQUE KEY `dbversion` (`name`)
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------

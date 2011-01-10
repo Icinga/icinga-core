@@ -13,7 +13,7 @@
 
 #define LOG2IDO_VERSION "1.3.0"
 #define LOG2IDO_NAME "LOG2IDO"
-#define LOG2IDO_DATE "10-25-2010"
+#define LOG2IDO_DATE "02-16-2011"
 
 
 

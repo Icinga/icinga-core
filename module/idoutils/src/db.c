@@ -1137,6 +1137,14 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 /************************************/
 /* post-connect routines            */
 /************************************/
+
+int ido2db_db_version_check(ido2db_idi *idi) {
+
+	//FIXME
+	return IDO_OK;
+
+}
+
 int ido2db_db_hello(ido2db_idi *idi) {
 #ifdef USE_LIBDBI
 	char *buf = NULL;
@@ -1156,6 +1164,11 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	/* make sure we have an instance name */
 	if (idi->instance_name == NULL)
 		idi->instance_name = strdup("default");
+
+
+	if(ido2db_db_version_check(idi)==IDO_ERROR){
+		syslog(LOG_USER | LOG_INFO, "Error: DB Version %s does not match %s. Please read the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_VERSION);
+	}
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 

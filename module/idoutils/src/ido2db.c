@@ -27,10 +27,6 @@
 #include "../../../include/dh.h"
 #endif
 
-#define IDO2DB_NAME "IDO2DB"
-#define IDO2DB_DATE "10-25-2010"
-#define IDO2DB_VERSION "1.3.0"
-
 extern int use_ssl;
 
 extern int errno;

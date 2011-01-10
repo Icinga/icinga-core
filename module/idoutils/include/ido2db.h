@@ -12,6 +12,10 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
+#define IDO2DB_NAME "IDO2DB"
+#define IDO2DB_DATE "02-16-2011"
+#define IDO2DB_VERSION "1.3.0"
+
 /*************** RDBMS headers *************/
 
 /* oracle */
@@ -214,6 +218,7 @@ typedef struct ido2db_dbconninfo_struct{
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
 	char *last_logentry_data;
+	char *dbversion;
 	ido2db_dbobject **object_hashlist;
         }ido2db_dbconninfo;
 

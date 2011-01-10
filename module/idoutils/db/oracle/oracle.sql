@@ -100,12 +100,16 @@ BEGIN
 END;
 /
 
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+INSERT INTO dbversion (name, version) VALUES ('idoutils', '1.3.0');
+
 
 
 -- --------------------------------------------------------
 -- database table creation: icinga
 -- --------------------------------------------------------
-
 
 --
 -- Table structure for table acknowledgements
@@ -456,8 +460,11 @@ CREATE INDEX customvariablestatus_i ON customvariablestatus(varname);
 -- 
 
 CREATE TABLE dbversion (
+  id number(11) NOT NULL,
   name varchar2(10),
-  version varchar2(10)
+  version varchar2(10),
+  PRIMARY KEY (id),
+  CONSTRAINT dbversion UNIQUE (name)
 );
 
 -- --------------------------------------------------------
@@ -1935,5 +1942,4 @@ CREATE SEQUENCE seq_timeperiods
    start with 1
    increment by 1
    nomaxvalue;
-
 
