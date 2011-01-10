@@ -77,6 +77,7 @@ FIXES
 * idoutils: fix ido2db needs to check for empty command arguments on Solaris (Julian Wiesner) #1047
 * idoutils: fix solaris <= lacks asprintf (Julian Wiesner) #1048
 * idoutils: fix unfreed oci handles in prepared statements #1093
+* idoutils: increase debugoutput for conversion functions #1094
 
 
 1.2.1 - 25/10/2010

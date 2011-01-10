@@ -2319,14 +2319,14 @@ int ido2db_convert_standard_data_elements(ido2db_idi *idi, int *type, int *flags
 
 int ido2db_convert_string_to_int(char *buf, int *i){
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int(%s) start\n", buf);
 
 	if(buf==NULL)
 		return IDO_ERROR;
 
 	*i=atoi(buf);
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int(%d) end\n", i);
 	return IDO_OK;
         }
 
@@ -2334,7 +2334,7 @@ int ido2db_convert_string_to_int(char *buf, int *i){
 int ido2db_convert_string_to_float(char *buf, float *f){
 	char *endptr=NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float(%s) start\n", buf);
 
 	if(buf==NULL)
 		return IDO_ERROR;
@@ -2351,7 +2351,7 @@ int ido2db_convert_string_to_float(char *buf, float *f){
 	if(errno==ERANGE)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float(%f) end\n", f);
 	return IDO_OK;
         }
 
@@ -2359,7 +2359,7 @@ int ido2db_convert_string_to_float(char *buf, float *f){
 int ido2db_convert_string_to_double(char *buf, double *d){
 	char *endptr=NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double(%s) start\n", buf);
 	if(buf==NULL)
 		return IDO_ERROR;
 
@@ -2370,7 +2370,7 @@ int ido2db_convert_string_to_double(char *buf, double *d){
 	if(errno==ERANGE)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double(%lf) end\n", d);
 	return IDO_OK;
         }
 
@@ -2378,7 +2378,7 @@ int ido2db_convert_string_to_double(char *buf, double *d){
 int ido2db_convert_string_to_long(char *buf, long *l){
 	char *endptr=NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long(%s) start\n", buf);
 
 	if(buf==NULL)
 		return IDO_ERROR;
@@ -2390,7 +2390,7 @@ int ido2db_convert_string_to_long(char *buf, long *l){
 	if(*l==0L && endptr==buf)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long(%l) end\n", l);
 	return IDO_OK;
         }
 
@@ -2398,7 +2398,7 @@ int ido2db_convert_string_to_long(char *buf, long *l){
 int ido2db_convert_string_to_unsignedlong(char *buf, unsigned long *ul){
 	char *endptr=NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong(%s) start\n", buf);
 
 	if(buf==NULL)
 		return IDO_ERROR;
@@ -2409,7 +2409,7 @@ int ido2db_convert_string_to_unsignedlong(char *buf, unsigned long *ul){
 	if(*ul==0L && endptr==buf)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong(%lu) end\n", ul);
 	return IDO_OK;
 }
 
@@ -2419,7 +2419,7 @@ int ido2db_convert_string_to_timeval(char *buf, struct timeval *tv){
 	char *ptr=NULL;
 	int result=IDO_OK;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_timeval() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_timeval(%s) start\n", buf);
 
 	if(buf==NULL)
 		return IDO_ERROR;

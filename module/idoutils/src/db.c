@@ -2277,7 +2277,7 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 	char *buf = NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql(%lu) start\n", (unsigned long)t);
 
 	switch (idi->dbinfo.server_type) {
 		case IDO2DB_DBSERVER_MYSQL:
@@ -2316,7 +2316,7 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
                         break;
 	}
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql(%s) end\n", buf);
 
 	return buf;
 }
@@ -2327,7 +2327,7 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 	char *buf = NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet(%s) start\n", field);
 
 	switch (idi->dbinfo.server_type) {
 		case IDO2DB_DBSERVER_MYSQL:
@@ -2365,7 +2365,7 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
                         break;
         }
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet(%s) end\n", buf);
 
 	return buf;
 }
