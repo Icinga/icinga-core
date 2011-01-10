@@ -1147,7 +1147,7 @@ void display_tac_overview(void){
 	printf("<table border=0 width=100%%>\n");
 
 	if(hosts_unreachable_unacknowledged>0)
-		printf("<tr><td width=100%% class='hostImportantProblem'><a href='%s?host=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'>%d Unhandled Problems</a></td></tr>\n",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_CHECKS_ENABLED,hosts_unreachable_unacknowledged);
+		printf("<tr><td width=100%% class='hostImportantProblem'><a href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'>%d Unhandled Problems</a></td></tr>\n",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_CHECKS_ENABLED,hosts_unreachable_unacknowledged);
 
 	if(hosts_unreachable_scheduled>0)
 		printf("<tr><td width=100%% class='hostUnimportantProblem'><a href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'>%d Scheduled</a></td></tr>\n",STATUS_CGI,HOST_UNREACHABLE,HOST_SCHEDULED_DOWNTIME,hosts_unreachable_scheduled);
@@ -1447,12 +1447,12 @@ void display_tac_overview(void){
 			printf("<tr><td width=100%% class='featureItemServicesNotFlapping'>No Services Flapping</td></tr>\n");
 
 		if(flap_disabled_hosts>0)
-			printf("<tr><td width=100%% class='featureItemDisabledHostFlapDetection'><a href='%s?host=all&type=detail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_FLAP_DETECTION_DISABLED,flap_disabled_hosts,(flap_disabled_hosts==1)?"":"s");
+			printf("<tr><td width=100%% class='featureItemDisabledHostFlapDetection'><a href='%s?hostgroup=all&style=hostdetail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_FLAP_DETECTION_DISABLED,flap_disabled_hosts,(flap_disabled_hosts==1)?"":"s");
 		else
 			printf("<tr><td width=100%% class='featureItemEnabledHostFlapDetection'>All Hosts Enabled</td></tr>\n");
 
 		if(flapping_hosts>0)
-			printf("<tr><td width=100%% class='featureItemHostsFlapping'><a href='%s?host=all&type=detail&hostprops=%d'>%d Host%s Flapping</a></td></tr>\n",STATUS_CGI,HOST_IS_FLAPPING,flapping_hosts,(flapping_hosts==1)?"":"s");
+			printf("<tr><td width=100%% class='featureItemHostsFlapping'><a href='%s?hostgroup=all&style=hostdetail&hostprops=%d'>%d Host%s Flapping</a></td></tr>\n",STATUS_CGI,HOST_IS_FLAPPING,flapping_hosts,(flapping_hosts==1)?"":"s");
 		else
 			printf("<tr><td width=100%% class='featureItemHostsNotFlapping'>No Hosts Flapping</td></tr>\n");
 
@@ -1483,7 +1483,7 @@ void display_tac_overview(void){
 			printf("<tr><td width=100%% class='featureItemEnabledServiceNotifications'>All Services Enabled</td></tr>\n");
 
 		if(notification_disabled_hosts>0)
-			printf("<tr><td width=100%% class='featureItemDisabledHostNotifications'><a href='%s?host=all&type=detail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_NOTIFICATIONS_DISABLED,notification_disabled_hosts,(notification_disabled_hosts==1)?"":"s");
+			printf("<tr><td width=100%% class='featureItemDisabledHostNotifications'><a href='%s?hostgroup=all&style=hostdetail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_NOTIFICATIONS_DISABLED,notification_disabled_hosts,(notification_disabled_hosts==1)?"":"s");
 		else
 			printf("<tr><td width=100%% class='featureItemEnabledHostNotifications'>All Hosts Enabled</td></tr>\n");
 
@@ -1515,7 +1515,7 @@ void display_tac_overview(void){
 			printf("<tr><td width=100%% class='featureItemEnabledServiceHandlers'>All Services Enabled</td></tr>\n");
 
 		if(event_handler_disabled_hosts>0)
-			printf("<tr><td width=100%% class='featureItemDisabledHostHandlers'><a href='%s?host=all&type=detail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_EVENT_HANDLER_DISABLED,event_handler_disabled_hosts,(event_handler_disabled_hosts==1)?"":"s");
+			printf("<tr><td width=100%% class='featureItemDisabledHostHandlers'><a href='%s?hostgroup=all&style=hostdetail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_EVENT_HANDLER_DISABLED,event_handler_disabled_hosts,(event_handler_disabled_hosts==1)?"":"s");
 		else
 			printf("<tr><td width=100%% class='featureItemEnabledHostHandlers'>All Hosts Enabled</td></tr>\n");
 
@@ -1547,7 +1547,7 @@ void display_tac_overview(void){
 			printf("<tr><td width=100%% class='featureItemEnabledActiveServiceChecks'>All Services Enabled</td></tr>\n");
 
 		if(active_checks_disabled_hosts>0)
-			printf("<tr><td width=100%% class='featureItemDisabledActiveHostChecks'><a href='%s?host=all&type=detail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_CHECKS_DISABLED,active_checks_disabled_hosts,(active_checks_disabled_hosts==1)?"":"s");
+			printf("<tr><td width=100%% class='featureItemDisabledActiveHostChecks'><a href='%s?hostgroup=all&style=hostdetail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_CHECKS_DISABLED,active_checks_disabled_hosts,(active_checks_disabled_hosts==1)?"":"s");
 		else
 			printf("<tr><td width=100%% class='featureItemEnabledActiveHostChecks'>All Hosts Enabled</td></tr>\n");
 
@@ -1580,7 +1580,7 @@ void display_tac_overview(void){
 			printf("<tr><td width=100%% class='featureItemEnabledPassiveServiceChecks'>All Services Enabled</td></tr>\n");
 
 		if(passive_checks_disabled_hosts>0)
-			printf("<tr><td width=100%% class='featureItemDisabledPassiveHostChecks'><a href='%s?host=all&type=detail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_PASSIVE_CHECKS_DISABLED,passive_checks_disabled_hosts,(passive_checks_disabled_hosts==1)?"":"s");
+			printf("<tr><td width=100%% class='featureItemDisabledPassiveHostChecks'><a href='%s?hostgroup=all&style=hostdetail&hostprops=%d'>%d Host%s Disabled</a></td></tr>\n",STATUS_CGI,HOST_PASSIVE_CHECKS_DISABLED,passive_checks_disabled_hosts,(passive_checks_disabled_hosts==1)?"":"s");
 		else
 			printf("<tr><td width=100%% class='featureItemEnabledPassiveHostChecks'>All Hosts Enabled</td></tr>\n");
 
