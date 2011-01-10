@@ -2,7 +2,7 @@
  * FILE2SOCK.c - File to Socket Dump Utility
  *
  * Copyright (c) 20052-2007 Ethan Galstad
- * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
  *  
  * License: GPL v2
  *
@@ -44,7 +44,7 @@ int main(int argc, char **argv){
 
 		printf("\n");
 		printf("%s %s\n",FILE2SOCK_NAME,FILE2SOCK_VERSION);
-		printf("Copyright(c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
+		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Copyright(c) 2005-2007 Ethan Galstad (nagios@nagios.org)\n");
 		printf("Last Modified: %s\n",FILE2SOCK_DATE);
 		printf("License: GPL v2\n");

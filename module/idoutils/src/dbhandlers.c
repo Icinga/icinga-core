@@ -2,7 +2,7 @@
  * DBHANDLERS.C - Data handler routines for IDO2DB daemon
  *
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
  *
  **************************************************************/
 

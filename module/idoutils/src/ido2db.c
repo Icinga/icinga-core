@@ -2,7 +2,7 @@
  * IDO2DB.C - IDO To Database Daemon
  *
  * Copyright (c) 2005-2008 Ethan Galstad
- * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
  *
  **************************************************************/
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv){
 		printf("\n");
 		printf("%s %s\n",IDO2DB_NAME,IDO2DB_VERSION);
 		printf("Copyright(c) 2005-2008 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Copyright(c) 2009-2010 Icinga Development Team (http://www.icinga.org)\n");
+		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
 		printf("Last Modified: %s\n",IDO2DB_DATE);
 		printf("License: GPL v2\n");
 #ifdef HAVE_SSL
@@ -141,7 +141,7 @@ int main(int argc, char **argv){
         }
 
 	/* print starting info to syslog */
-	syslog(LOG_USER | LOG_INFO, "%s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org))", IDO2DB_NAME, IDO2DB_VERSION, IDO2DB_DATE);
+	syslog(LOG_USER | LOG_INFO, "%s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org))", IDO2DB_NAME, IDO2DB_VERSION, IDO2DB_DATE);
 	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO2DB_VERSION, (int)getpid() );
 
 	if (ido2db_socket_type==IDO_SINK_UNIXSOCKET && use_ssl == IDO_TRUE){

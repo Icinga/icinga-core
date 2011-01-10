@@ -3,7 +3,7 @@
  * IDOMOD.C - Icinga Data Output Event Broker Module
  *
  * Copyright (c) 2005-2007 Ethan Galstad
- * Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
  *
  *****************************************************************************/
 
@@ -102,7 +102,7 @@ int nebmodule_init(int flags, char *args, void *handle){
 	idomod_module_handle=handle;
 
 	/* log module info to the Icinga log file */
-	snprintf(temp_buffer, sizeof(temp_buffer)-1, "idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2010 Icinga Development Team (http://www.icinga.org))", IDOMOD_NAME, IDOMOD_VERSION, IDOMOD_DATE);
+	snprintf(temp_buffer, sizeof(temp_buffer)-1, "idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org))", IDOMOD_NAME, IDOMOD_VERSION, IDOMOD_DATE);
 	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	idomod_write_to_logs(temp_buffer,NSLOG_INFO_MESSAGE);
 
