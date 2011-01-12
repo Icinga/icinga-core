@@ -100,11 +100,6 @@ BEGIN
 END;
 /
 
--- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '1.3.0');
-
 
 
 -- --------------------------------------------------------
@@ -1462,6 +1457,11 @@ CREATE TABLE timeperiods (
   PRIMARY KEY  (id),
   CONSTRAINT timeperiods UNIQUE (instance_id,config_type,timeperiod_object_id)
 );
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '1.3.0');
 
 
 -- -----------------------------------------

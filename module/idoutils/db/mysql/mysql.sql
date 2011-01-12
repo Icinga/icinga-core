@@ -14,11 +14,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
--- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
-
 
 --
 -- Database: `icinga`
@@ -1382,6 +1377,11 @@ CREATE TABLE IF NOT EXISTS `icinga_timeperiod_timeranges` (
   UNIQUE KEY `instance_id` (`timeperiod_id`,`day`,`start_sec`,`end_sec`)
 ) ENGINE=InnoDB  COMMENT='Timeperiod definitions';
 
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
 
 -- -----------------------------------------
 -- add index (delete)

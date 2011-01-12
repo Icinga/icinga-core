@@ -42,7 +42,6 @@ END;
 $$ LANGUAGE plpgsql;
 -- HINT: su - postgres; createlang plpgsql icinga;
 
-SELECT updatedbversion('1.3.0');
 
 
 --
@@ -1407,6 +1406,13 @@ CREATE TABLE  icinga_timeperiod_timeranges (
   PRIMARY KEY  (timeperiod_timerange_id),
   UNIQUE (timeperiod_id,day,start_sec,end_sec)
 ) ;
+
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+
+SELECT updatedbversion('1.3.0');
 
 -- -----------------------------------------
 -- add index (delete)
