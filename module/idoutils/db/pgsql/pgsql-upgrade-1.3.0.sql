@@ -24,7 +24,7 @@ BEGIN
 		UPDATE icinga_dbversion
 		SET version=version_i WHERE name='idoutils';
 	ELSE
-		INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', version_i);
+		INSERT INTO icinga_dbversion (dbversion_id, name, version) VALUES ('1', 'idoutils', version_i);
 	END IF;
 
 	RETURN;

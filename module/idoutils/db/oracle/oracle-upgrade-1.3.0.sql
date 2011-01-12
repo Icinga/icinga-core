@@ -22,7 +22,7 @@ USING DUAL ON (name='idoutils')
 WHEN MATCHED THEN
 UPDATE SET version='1.3.0'
 WHEN NOT MATCHED THEN
-INSERT (name, version) VALUES ('idoutils', '1.3.0');
+INSERT (id, name, version) VALUES ('1', 'idoutils', '1.3.0');
 
 -- -----------------------------------------
 -- add index for statehistory
