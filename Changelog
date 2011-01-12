@@ -79,6 +79,7 @@ FIXES
 * idoutils: fix solaris <= lacks asprintf (Julian Wiesner) #1048
 * idoutils: fix unfreed oci handles in prepared statements #1093
 * idoutils: increase debugoutput for conversion functions #1094
+* idoutils: fix libdbi 0.8.3 deprecated functions dbi_result_get_(u)long #559
 
 
 1.2.1 - 25/10/2010

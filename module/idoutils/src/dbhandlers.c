@@ -148,7 +148,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				*object_id = dbi_result_get_ulong(idi->dbinfo.dbi_result, "object_id");
+				*object_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "object_id");
 			} else {
 				result = IDO_ERROR;
 			}
