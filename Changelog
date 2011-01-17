@@ -80,6 +80,7 @@ FIXES
 * idoutils: fix unfreed oci handles in prepared statements #1093
 * idoutils: increase debugoutput for conversion functions #1094
 * idoutils: fix libdbi 0.8.3 deprecated functions dbi_result_get_(u)long #559
+* idoutils: fix after core restart/reload on oracle db ORA-01403: no data found #1059
 
 
 1.2.1 - 25/10/2010
