@@ -1228,11 +1228,11 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],     
-                                        (data[7]==NULL)?"":*(char **) data[7],     	/* insert end */
+                                        (*(char **) data[7]==NULL)?"":*(char **) data[7],     	/* insert end */
                                         *(char **) data[4],     	/* update start */
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],
-                                        (data[7]==NULL)?"":*(char **) data[7]      	/* update end */
+                                        (*(char **) data[7]==NULL)?"":*(char **) data[7]      	/* update end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -1244,7 +1244,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         *(char **) data[4],             /* update start */
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],
-                                        (data[7]==NULL)?"":*(char **) data[7],             /* update end */
+                                        (*(char **) data[7]==NULL)?"":*(char **) data[7],             /* update end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(unsigned long *) data[1],
                                         *(char **) data[2],
@@ -1266,7 +1266,7 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
                                         *(unsigned long *) data[6],     
-                                        (data[7]==NULL)?"":*(char **) data[7]             /* insert end */
+                                        (*(char **) data[7]==NULL)?"":*(char **) data[7]             /* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -4233,9 +4233,9 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                                         *(char **) data[4],
                                         *(char **) data[5],
                                         *(unsigned long *) data[6],
-                                        *(char **) data[7],
+					(*(char **) data[7]==NULL)?"":*(char **) data[7],
                                         *(unsigned long *) data[8],
-                                        *(char **) data[9],
+					(*(char **) data[9]==NULL)?"":*(char **) data[9],
                                         *(unsigned long *) data[10],
                                         *(unsigned long *) data[11],
                                         *(char **) data[12],
@@ -4287,9 +4287,9 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                                         *(char **) data[4],
                                         *(char **) data[5],
                                         *(unsigned long *) data[6],
-                                        *(char **) data[7],
+					(*(char **) data[7]==NULL)?"":*(char **) data[7],
                                         *(unsigned long *) data[8],
-                                        *(char **) data[9],
+					(*(char **) data[9]==NULL)?"":*(char **) data[9],
                                         *(unsigned long *) data[10],
                                         *(unsigned long *) data[11],
                                         *(char **) data[12],
@@ -4349,9 +4349,9 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                                         *(char **) data[4],
                                         *(char **) data[5],
                                         *(unsigned long *) data[6],
-                                        *(char **) data[7],
+					(*(char **) data[7]==NULL)?"":*(char **) data[7],
                                         *(unsigned long *) data[8],
-                                        *(char **) data[9],
+					(*(char **) data[9]==NULL)?"":*(char **) data[9],
                                         *(unsigned long *) data[10],
                                         *(unsigned long *) data[11],
                                         *(char **) data[12],
@@ -4419,9 +4419,9 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                                         *(char **) data[4],
                                         *(char **) data[5],
                                         *(unsigned long *) data[6],
-                                        *(char **) data[7],
+					(*(char **) data[7]==NULL)?"":*(char **) data[7],
                                         *(unsigned long *) data[8],
-                                        *(char **) data[9],
+					(*(char **) data[9]==NULL)?"":*(char **) data[9],
                                         *(unsigned long *) data[10],
                                         *(unsigned long *) data[11],
                                         *(char **) data[12],
@@ -5355,9 +5355,9 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                                         *(unsigned long *) data[3],
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
-                                        *(char **) data[6],
+					(*(char **) data[6]==NULL)?"":*(char **) data[6],
                                         *(unsigned long *) data[7],
-                                        *(char **) data[8],
+					(*(char **) data[8]==NULL)?"":*(char **) data[8],
                                         *(unsigned long *) data[9],
                                         *(unsigned long *) data[10],
                                         *(char **) data[11],
@@ -5403,9 +5403,9 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                                         *(unsigned long *) data[2],	/* update start */
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
-                                        *(char **) data[6],
+					(*(char **) data[6]==NULL)?"":*(char **) data[6],
                                         *(unsigned long *) data[7],
-                                        *(char **) data[8],
+					(*(char **) data[8]==NULL)?"":*(char **) data[8],
                                         *(unsigned long *) data[9],
                                         *(unsigned long *) data[10],
                                         *(char **) data[11],
@@ -5460,9 +5460,9 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                                         *(unsigned long *) data[2], 	/* update start */
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
-                                        *(char **) data[6],
+					(*(char **) data[6]==NULL)?"":*(char **) data[6],
                                         *(unsigned long *) data[7],
-                                        *(char **) data[8],
+					(*(char **) data[8]==NULL)?"":*(char **) data[8],
                                         *(unsigned long *) data[9],
                                         *(unsigned long *) data[10],
                                         *(char **) data[11],
@@ -5524,9 +5524,9 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                                         *(unsigned long *) data[3],
                                         *(char **) data[4],
                                         *(unsigned long *) data[5],
-                                        *(char **) data[6],
+					(*(char **) data[6]==NULL)?"":*(char **) data[6],
                                         *(unsigned long *) data[7],
-                                        *(char **) data[8],
+					(*(char **) data[8]==NULL)?"":*(char **) data[8],
                                         *(unsigned long *) data[9],
                                         *(unsigned long *) data[10],
                                         *(char **) data[11],
@@ -8119,8 +8119,8 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
                                         *(unsigned long *) data[1],
                                         *(int *) data[2],
                                         *(unsigned long *) data[3],
-                                        *(char **) data[4],		/* insert end */
-                                        *(char **) data[4]		/* update start/end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4],		/* insert end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4]		/* update start/end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -8129,7 +8129,7 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
                 case IDO2DB_DBSERVER_PGSQL:
                         asprintf(&query1, "UPDATE %s SET command_args='%s' WHERE instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu",
                                         ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
-                                        *(char **) data[4],		/* update start/end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4],		/* update start/end */
                                         *(unsigned long *) data[0],     /* unique constraint start */
                                         *(unsigned long *) data[1],
                                         *(int *) data[2],
@@ -8148,7 +8148,7 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
                                         *(unsigned long *) data[1],     
                                         *(int *) data[2],
                                         *(unsigned long *) data[3],
-                                        *(char **) data[4]		/* insert end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4]		/* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -8367,8 +8367,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         *(unsigned long *) data[1],
                                         *(int *) data[2],
                                         *(int *) data[3],
-                                        (data[4]==NULL)?"":*(char **) data[4],
-                                        (data[5]==NULL)?"":*(char **) data[5],		/* insert end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4],
+                                        (*(char **) data[5]==NULL)?"":*(char **) data[5],		/* insert end */
                                         *(unsigned long *) data[0],     /* update start */
                                         *(int *) data[2],
                                         *(int *) data[3],
@@ -8385,9 +8385,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         *(unsigned long *) data[0],     /* update start */
                                         *(int *) data[2],
                                         *(int *) data[3],
-                                        (data[5]==NULL)?"":*(char **) data[5],		/* update end */
+                                        (*(char **) data[5]==NULL)?"":*(char **) data[5],		/* update end */
                                         *(unsigned long *) data[1],	/* unique constraint start */
-                                        (data[4]==NULL)?"":*(char **) data[4]		/* unique constraint end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4]		/* unique constraint end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -8402,8 +8402,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         *(unsigned long *) data[1],
                                         *(int *) data[2],
                                         *(int *) data[3],
-                                        (data[4]==NULL)?"":*(char **) data[4],
-                                        (data[5]==NULL)?"":*(char **) data[5]		/* insert end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4],
+                                        (*(char **) data[5]==NULL)?"":*(char **) data[5]		/* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
@@ -8510,8 +8510,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         *(unsigned long *) data[1],
                                         *(char **) data[2],
                                         *(int *) data[3],
-                                        (data[4]==NULL)?"":*(char **) data[4],
-                                        (data[5]==NULL)?"":*(char **) data[5],             /* insert end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4],
+                                        (*(char **) data[5]==NULL)?"":*(char **) data[5],             /* insert end */
                                         *(unsigned long *) data[0],     /* update start */
                                         *(char **) data[2],
                                         *(int *) data[3],
@@ -8527,9 +8527,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         *(unsigned long *) data[0],     /* update start */
                                         *(char **) data[2],
                                         *(int *) data[3],
-                                        (data[5]==NULL)?"":*(char **) data[5],             /* update end */
+                                        (*(char **) data[5]==NULL)?"":*(char **) data[5],             /* update end */
                                         *(unsigned long *) data[1],     /* unique constraint start */
-                                        (data[4]==NULL)?"":*(char **) data[4]      /* unique constraint end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4]      /* unique constraint end */
                         );
                         /* send query to db */
                         result = ido2db_db_query(idi, query1);
@@ -8544,8 +8544,8 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         *(unsigned long *) data[1],
                                         *(char **) data[2],
                                         *(int *) data[3],
-                                        (data[4]==NULL)?"":*(char **) data[4],
-                                        (data[5]==NULL)?"":*(char **) data[5]             /* insert end */
+                                        (*(char **) data[4]==NULL)?"":*(char **) data[4],
+                                        (*(char **) data[5]==NULL)?"":*(char **) data[5]             /* insert end */
                                 );
                                 /* send query to db */
                                 result = ido2db_db_query(idi, query2);
