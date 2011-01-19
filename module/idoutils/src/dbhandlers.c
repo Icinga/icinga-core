@@ -5302,19 +5302,13 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	cmdptr = strtok(idi->buffered_input[IDO_DATA_HOSTCHECKCOMMAND], "!");
 	argptr = strtok(NULL, "\x0");
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &check_command_id);
-	if(argptr != NULL)
-		es[2] = ido2db_db_escape_string(idi, argptr);
-	else
-		es[2] = "\0";
+	es[2] = ido2db_db_escape_string(idi, argptr);
 
 	/* get the event handler command */
 	cmdptr = strtok(idi->buffered_input[IDO_DATA_HOSTEVENTHANDLER], "!");
 	argptr = strtok(NULL, "\x0");
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &eventhandler_command_id);
-	if(argptr != NULL)
-		es[3] = ido2db_db_escape_string(idi, argptr);
-	else
-		es[3] = "\0";
+	es[3] = ido2db_db_escape_string(idi, argptr);
 
 	es[4] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTES]);
 	es[5] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTESURL]);
@@ -5846,10 +5840,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &check_command_id);
 
-	if(argptr != NULL)
-		es[1] = ido2db_db_escape_string(idi, argptr);
-	else
-		es[1] = "\0";
+	es[1] = ido2db_db_escape_string(idi, argptr);
 
 	/* get the event handler command */
 	cmdptr = strtok(idi->buffered_input[IDO_DATA_SERVICEEVENTHANDLER], "!");
@@ -5857,11 +5848,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &eventhandler_command_id);
 
-	if(argptr != NULL)
-		es[2] = ido2db_db_escape_string(idi, argptr);
-	else
-		es[2] = "\0";
-
+	es[2] = ido2db_db_escape_string(idi, argptr);
 	es[3] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTES]);
 	es[4] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_NOTESURL]);
 	es[5] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_ACTIONURL]);
@@ -7262,10 +7249,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		/* find the command */
 		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
-		if(argptr != NULL)
-			es[0] = ido2db_db_escape_string(idi, argptr);
-		else
-			es[0] = "\0";
+		es[0] = ido2db_db_escape_string(idi, argptr);
 
 		/* save entry to db */
 	        data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7310,10 +7294,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		/* find the command */
 		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
-		if(argptr != NULL)
-			es[0] = ido2db_db_escape_string(idi, argptr);
-		else
-			es[0] = "\0";
+		es[0] = ido2db_db_escape_string(idi, argptr);
 
 		/* save entry to db */
 
