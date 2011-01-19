@@ -324,6 +324,9 @@ create-tarball-nightly:
 	${MAKE} create-docs
 	./make-tarball --prefix icinga-${ICINGA_VERSION}_`date +%Y%m%d`_`git rev-parse --short HEAD`/
 
+create-doxygen:
+	doxygen
+
 ###############################
 # GIT
 ###############################

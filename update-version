@@ -44,6 +44,9 @@ fi
 # Update version number icinga.spec
 perl -i -p -e "s/Version: .*/Version: $newversion/;" icinga.spec
 
+# Update version number Doxyfile
+perl -i -p -e "s/PROJECT_NUMBER         = .*/PROJECT_NUMBER         = $newversion/;" Doxyfile
+
 # Update version number in Makefile.in
 perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" Makefile.in
 # needs to be done in current Makefile too (not dependant on configure!)
