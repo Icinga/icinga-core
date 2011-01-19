@@ -80,3 +80,10 @@ ul {
 	border-bottom: 1px solid #fff;
 	color: #6e7475;
 }
+
+#menu ul li.menuli_style3 {
+	background-color: #e9e9e9;
+	color: #6e7475;
+	text-decoration: none;
+	padding-left: 20px;
+}

@@ -21,6 +21,7 @@
 				</div>
 			</li>
 			<!-- classic search -->
+			<li class="menuli_style3">Show Host:</li>
 			<li class="menuli_style2">
 			<div class="navbarsearch">
 			<form method="get" action="@cgiurl@/status.cgi" target="main">
