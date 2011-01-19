@@ -54,6 +54,7 @@ FIXES
 * core: fix allocate memory once for *GROUPMEMBERS macros (Stephane Lapie) #1076
 * core: protect against poorly behaving thread-libraries (Andreas Ericsson) #1080
 * core: fix extraneous alerts for services when host is down (Ton Voon) #1097
+* core: reduce duplication of code for is_contact_member_of_contactgroup (Stephen Gran) #1126
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933

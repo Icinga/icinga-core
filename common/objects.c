@@ -2921,72 +2921,27 @@ int is_service_member_of_servicegroup(servicegroup *group, service *svc){
 /* 06/14/10 MF all 3 functions mandatory for mk_livestatus */
 /*  tests whether a contact is a member of a particular contactgroup - used only by the CGIs */
 int is_contact_member_of_contactgroup(contactgroup *group, contact *cntct){
-        contactsmember *temp_contactsmember=NULL;
+	contactsmember *member;
+	contact *temp_contact=NULL;
 
-        if(group==NULL || cntct==NULL)
-                return FALSE;
- 
-        /* search all contacts in this contact group */
-        for(temp_contactsmember=group->members;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
- 
-#ifdef NSCORE
-                if(temp_contactsmember->contact_ptr==cntct)
-                        return TRUE;
-#else
-                if(!strcmp(temp_contactsmember->contact_name,cntct->name))
-                        return TRUE;
-#endif
-                 }
- 
-        return FALSE;
-        }
+	if (!group || !cntct)
+		return FALSE;
 
+	/* search all contacts in this contact group */
+	for (member = group->members; member; member = member->next) {
+#ifdef NSCORE
+		temp_contact=member->contact_ptr;
+#else
+		temp_contact=find_contact(member->contact_name);
+#endif
+		if(temp_contact==NULL)
+			continue;
+		if (temp_contact == cntct)
+			return TRUE;
+	}
 
-/*  tests whether a contact is a member of a particular hostgroup - used only by the CGIs */
-int is_contact_for_hostgroup(hostgroup *group, contact *cntct){
-        hostsmember *temp_hostsmember=NULL;
-        host *temp_host=NULL;
- 
-        if(group==NULL || cntct==NULL)
-                return FALSE;
- 
-        for(temp_hostsmember=group->members;temp_hostsmember!=NULL;temp_hostsmember=temp_hostsmember->next){
-#ifdef NSCORE
-                temp_host=temp_hostsmember->host_ptr;
-#else
-                temp_host=find_host(temp_hostsmember->host_name);
-#endif
-                if(temp_host==NULL)
-                        continue;
-                if(is_contact_for_host(temp_host,cntct)==TRUE)
-                        return TRUE;
-                }
- 
-        return FALSE;
-        }
- 
- /*  tests whether a contact is a member of a particular servicegroup - used only by the CGIs */
- int is_contact_for_servicegroup(servicegroup *group, contact *cntct){
-        servicesmember *temp_servicesmember=NULL;
-        service *temp_service=NULL;
- 
-        if(group==NULL || cntct==NULL)
-                return FALSE;
- 
-        for(temp_servicesmember=group->members;temp_servicesmember!=NULL;temp_servicesmember=temp_servicesmember->next){
-#ifdef NSCORE
-                temp_service=temp_servicesmember->service_ptr;
-#else
-                temp_service=find_service(temp_servicesmember->host_name,temp_servicesmember->service_description);
-#endif
-                if(temp_service==NULL)
-                        continue;
-                if(is_contact_for_service(temp_service,cntct)==TRUE)
-                        return TRUE;
-                }
- 
-        return FALSE;
-        }
+	return FALSE;
+}
 
 
 /*  tests whether a contact is a contact for a particular host */
@@ -2995,7 +2950,7 @@ int is_contact_for_host(host *hst, contact *cntct){
 	contact *temp_contact=NULL;
 	contactgroupsmember *temp_contactgroupsmember=NULL;
 	contactgroup *temp_contactgroup=NULL;
-	
+
 	if(hst==NULL || cntct==NULL){
 		return FALSE;
 	        }
@@ -3023,17 +2978,8 @@ int is_contact_for_host(host *hst, contact *cntct){
 		if(temp_contactgroup==NULL)
 			continue;
 
-		for(temp_contactsmember=temp_contactgroup->members;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
-#ifdef NSCORE
-			temp_contact=temp_contactsmember->contact_ptr;
-#else
-			temp_contact=find_contact(temp_contactsmember->contact_name);
-#endif
-			if(temp_contact==NULL)
-				continue;
-			if(temp_contact==cntct)
-				return TRUE;
-			}
+		if(is_contact_member_of_contactgroup(temp_contactgroup,cntct))
+			return TRUE;
 		}
 
 	return FALSE;
@@ -3077,17 +3023,9 @@ int is_escalated_contact_for_host(host *hst, contact *cntct){
 			if(temp_contactgroup==NULL)
 				continue;
 
-			for(temp_contactsmember=temp_contactgroup->members;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
-#ifdef NSCORE
-				temp_contact=temp_contactsmember->contact_ptr;
-#else
-				temp_contact=find_contact(temp_contactsmember->contact_name);
-#endif
-				if(temp_contact==NULL)
-					continue;
-				if(temp_contact==cntct)
-					return TRUE;
-				}
+			if(is_contact_member_of_contactgroup(temp_contactgroup,cntct))
+				return TRUE;
+
 			}
 		}
 
@@ -3127,17 +3065,9 @@ int is_contact_for_service(service *svc, contact *cntct){
 		if(temp_contactgroup==NULL)
 			continue;
 
-		for(temp_contactsmember=temp_contactgroup->members;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
-#ifdef NSCORE
-			temp_contact=temp_contactsmember->contact_ptr;
-#else
-			temp_contact=find_contact(temp_contactsmember->contact_name);
-#endif
-			if(temp_contact==NULL)
-				continue;
-			if(temp_contact==cntct)
-				return TRUE;
-			}
+		if(is_contact_member_of_contactgroup(temp_contactgroup,cntct))
+			return TRUE;
+
 		}
 
 	return FALSE;
@@ -3180,17 +3110,9 @@ int is_escalated_contact_for_service(service *svc, contact *cntct){
 			if(temp_contactgroup==NULL)
 				continue;
 
-			for(temp_contactsmember=temp_contactgroup->members;temp_contactsmember!=NULL;temp_contactsmember=temp_contactsmember->next){
-#ifdef NSCORE
-				temp_contact=temp_contactsmember->contact_ptr;
-#else
-				temp_contact=find_contact(temp_contactsmember->contact_name);
-#endif
-				if(temp_contact==NULL)
-					continue;
-				if(temp_contact==cntct)
-					return TRUE;
-				}
+			if(is_contact_member_of_contactgroup(temp_contactgroup,cntct))
+				return TRUE;
+
 			}
 	        }
 
