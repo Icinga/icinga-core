@@ -34,6 +34,7 @@ ENHANCEMENTS
 * idoutils: add cfg option to enable/disable oci errors to syslog through error handler #1060
 * idoutils: add dbversion upgrade scripts for 1.3 #633
 * idoutils: add dbversion check in ido2db and print error to syslog in case of non-matching #633
+* idoutils: do not clear host|service status tables on core restart/reload (inspired by Opsview) #1106
 
 * contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
 
