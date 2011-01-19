@@ -2197,12 +2197,8 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
                 }
                 else if(idi->dbinfo.server_type==IDO2DB_DBSERVER_PGSQL){
 
-			if (buf[x] == '\'' || buf[x] == '[' || buf[x] == ']' || buf[x] == '(' || buf[x] == ')')
+			if (buf[x] == '\'' || buf[x] == '\\' || buf[x] == '\0')
 				newbuf[y++] = '\\';
-
-                	/* should be fixed with binding values */
-			/* if(buf[x]=='\'' )
-                               newbuf[y++]='\''; */
 		}
 		else {
 
