@@ -33,10 +33,10 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *idi, void **data);
 
 /* SERVICECHECKS */
-int ido2db_query_insert_or_update_servicecheckdata_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data);
 
 /* HOSTCHECKS */
-int ido2db_query_insert_or_update_hostcheckdata_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data);
 
 /* COMMENTS */
 int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data);

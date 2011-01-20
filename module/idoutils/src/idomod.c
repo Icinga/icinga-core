@@ -1772,6 +1772,10 @@ int idomod_broker_data(int event_type, void *data){
 
 		scdata=(nebstruct_service_check_data *)data;
 
+		/* only pass NEBTYPE_SERVICECHECK_PROCESSED to ido2db */
+		if(scdata->type!=NEBTYPE_SERVICECHECK_PROCESSED)
+			break;
+
 		es[0]=ido_escape_buffer(scdata->host_name);
 		es[1]=ido_escape_buffer(scdata->service_description);
 		es[2]=ido_escape_buffer(scdata->command_name);
@@ -1846,6 +1850,10 @@ int idomod_broker_data(int event_type, void *data){
 	case NEBCALLBACK_HOST_CHECK_DATA:
 
 		hcdata=(nebstruct_host_check_data *)data;
+
+                /* only pass NEBTYPE_HOSTCHECK_PROCESSED to ido2db */
+                if(hcdata->type!=NEBTYPE_HOSTCHECK_PROCESSED)
+                        break;
 
 		es[0]=ido_escape_buffer(hcdata->host_name);
 		es[1]=ido_escape_buffer(hcdata->command_name);

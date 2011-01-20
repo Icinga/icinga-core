@@ -539,8 +539,7 @@ CREATE TABLE  icinga_hostchecks (
   output TEXT NOT NULL default '',
   long_output TEXT NOT NULL default '',
   perfdata TEXT NOT NULL default '',
-  PRIMARY KEY  (hostcheck_id),
-  UNIQUE (instance_id,host_object_id,start_time,start_time_usec)
+  PRIMARY KEY  (hostcheck_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1022,8 +1021,7 @@ CREATE TABLE  icinga_servicechecks (
   output TEXT NOT NULL default '',
   long_output TEXT NOT NULL default '',
   perfdata TEXT NOT NULL default '',
-  PRIMARY KEY  (servicecheck_id),
-  UNIQUE (instance_id,service_object_id,start_time,start_time_usec)
+  PRIMARY KEY  (servicecheck_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1557,14 +1555,6 @@ CREATE INDEX objects_objtype_id_idx ON icinga_objects(objecttype_id);
 CREATE INDEX objects_name1_idx ON icinga_objects(name1);
 CREATE INDEX objects_name2_idx ON icinga_objects(name2);
 CREATE INDEX objects_inst_id_idx ON icinga_objects(instance_id);
-
-
--- hostchecks
--- CREATE INDEX hostchks_h_obj_id_idx on icinga_hostchecks(host_object_id);
-
--- servicechecks
--- CREATE INDEX servicechks_s_obj_id_idx on icinga_servicechecks(service_object_id);
-
 
 -- instances
 -- CREATE INDEX instances_name_idx on icinga_instances(instance_name);

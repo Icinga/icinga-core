@@ -40,3 +40,11 @@ SELECT updatedbversion('1.3.0');
 
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
 
+-- -----------------------------------------
+-- drop unique keys for check history
+-- -----------------------------------------
+
+ALTER TABLE icinga_servicechecks DROP CONSTRAINT icinga_servicechecks_instance_id_key;
+
+ALTER TABLE icinga_hostchecks DROP CONSTRAINT icinga_hostchecks_instance_id_key;
+

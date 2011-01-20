@@ -638,8 +638,7 @@ CREATE TABLE hostchecks (
   output varchar2(1024),
   long_output clob,
   perfdata varchar2(1024),
-  PRIMARY KEY  (id),
-  CONSTRAINT hostchecks UNIQUE (instance_id,host_object_id,start_time,start_time_usec)
+  PRIMARY KEY  (id)
 );
 
 -- --------------------------------------------------------
@@ -1106,7 +1105,6 @@ CREATE TABLE servicechecks (
   long_output clob,
   perfdata varchar2(1024),
   PRIMARY KEY  (id),
-  CONSTRAINT servicechecks UNIQUE (instance_id,service_object_id,start_time,start_time_usec)
 );
 
 -- --------------------------------------------------------
@@ -1610,14 +1608,6 @@ CREATE INDEX objects_objtype_id_idx ON objects(objecttype_id);
 CREATE INDEX objects_name1_idx ON objects(name1);
 CREATE INDEX objects_name2_idx ON objects(name2);
 CREATE INDEX objects_inst_id_idx ON objects(instance_id);
-
-
--- hostchecks
--- CREATE INDEX hostchks_h_obj_id_idx on hostchecks(host_object_id);
-
--- servicechecks
--- CREATE INDEX servicechks_s_obj_id_idx on servicechecks(service_object_id);
-
 
 -- instances
 -- CREATE INDEX instances_name_idx on instances(instance_name);

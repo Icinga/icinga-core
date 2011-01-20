@@ -68,3 +68,14 @@ END;
 /
 
 
+
+-- -----------------------------------------
+-- drop unique keys for check history
+-- -----------------------------------------
+
+ALTER TABLE servicechecks DROP CONSTRAINT servicechecks;
+
+ALTER TABLE hostchecks DROP CONSTRAINT hostchecks;
+
+
+

@@ -38,6 +38,15 @@ ENHANCEMENTS
 * idoutils: do not clear host|service status tables on core restart/reload (inspired by Opsview) #1106
 * idoutils: change config_output_options to 1  (original config dump) #1127
 	- this will dump original configs to ido2db on core (re)start/load and take a while - needed for Icinga Web
+* idoutils: only insert service and host checks when they are finally processed, increase performance by replacing insert/update with single insert (idea by Opsview/Opsera Ltd with mysql and servicechecks) #1100
+	- servicechecks table is heavily used next to hostchecks
+	- if the core does a host|service check, there are 3 situations the event broker will get data: INITIATE, ASYNC_PRECHECK, PROCESSED
+	- idomod/ido2db process INITIATE (insert) and PROCESSED (update) til now
+	- now, ido2db takes only PROCESSED with a full insert, mysql and postgres use sql standard insert, oracle a prepared statement with insert
+	- reduced number of check events sent to IDOUtils by 66%
+	- reduced number of fired SQL statements by 50%
+	- changed 1 SQL statement for each rdbms, making it smaller and saving index lookup (and virtual table by merge in oracle)
+	- index savings, and dropped unique keys - check upgrade sql scripts for mysql/postgresql/oracle
 
 * contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
 

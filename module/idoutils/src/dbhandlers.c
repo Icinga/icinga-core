@@ -2572,9 +2572,12 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 			&tstamp);
 
+        /* only process finished service checks... */
+         if(type!=NEBTYPE_SERVICECHECK_PROCESSED)
+                return IDO_OK;
+
 	/* only process some types of service checks... */
-	if (type != NEBTYPE_SERVICECHECK_INITIATE && type
-			!= NEBTYPE_SERVICECHECK_PROCESSED)
+	if (type != NEBTYPE_SERVICECHECK_INITIATE && type != NEBTYPE_SERVICECHECK_PROCESSED)
 		return IDO_OK;
 
 	/* skip precheck events - they aren't useful to us */
@@ -2642,7 +2645,7 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 	data[22] = (void *) &start_time.tv_sec;
         data[23] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_or_update_servicecheckdata_add(idi, data);
+	result = ido2db_query_insert_servicecheckdata_add(idi, data);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -2703,10 +2706,8 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 			&tstamp);
 
 	/* only process finished host checks... */
-	/*
 	 if(type!=NEBTYPE_HOSTCHECK_PROCESSED)
-	 return IDO_OK;
-	 */
+		return IDO_OK;
 
 	/* skip precheck events - they aren't useful to us */
 	if (type == NEBTYPE_HOSTCHECK_ASYNC_PRECHECK || type == NEBTYPE_HOSTCHECK_SYNC_PRECHECK)
@@ -2778,7 +2779,7 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
         data[23] = (void *) &start_time.tv_sec;
         data[24] = (void *) &end_time.tv_sec;
 
-        result = ido2db_query_insert_or_update_hostcheckdata_add(idi, data);
+        result = ido2db_query_insert_hostcheckdata_add(idi, data);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);

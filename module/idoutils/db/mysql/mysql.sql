@@ -507,8 +507,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hostchecks` (
   `output` varchar(255) character set latin1 NOT NULL default '',
   `long_output` TEXT NOT NULL default '',
   `perfdata` TEXT character set latin1 NOT NULL default '',
-  PRIMARY KEY  (`hostcheck_id`),
-  UNIQUE KEY `instance_id` (`instance_id`,`host_object_id`,`start_time`,`start_time_usec`)
+  PRIMARY KEY  (`hostcheck_id`)
 ) ENGINE=InnoDB  COMMENT='Historical host checks';
 
 -- --------------------------------------------------------
@@ -990,8 +989,7 @@ CREATE TABLE IF NOT EXISTS `icinga_servicechecks` (
   `output` varchar(255) character set latin1 NOT NULL default '',
   `long_output` TEXT NOT NULL default '',
   `perfdata` TEXT character set latin1 NOT NULL default '',
-  PRIMARY KEY  (`servicecheck_id`),
-  UNIQUE KEY `instance_id` (`instance_id`,`service_object_id`,`start_time`,`start_time_usec`)
+  PRIMARY KEY  (`servicecheck_id`)
 ) ENGINE=InnoDB  COMMENT='Historical service checks';
 
 -- --------------------------------------------------------
@@ -1526,14 +1524,6 @@ CREATE INDEX objects_objtype_id_idx ON icinga_objects(objecttype_id);
 CREATE INDEX objects_name1_idx ON icinga_objects(name1);
 CREATE INDEX objects_name2_idx ON icinga_objects(name2);
 CREATE INDEX objects_inst_id_idx ON icinga_objects(instance_id);
-
-
--- hostchecks
--- CREATE INDEX hostchks_h_obj_id_idx on icinga_hostchecks(host_object_id);
-
--- servicechecks
--- CREATE INDEX servicechks_s_obj_id_idx on icinga_servicechecks(service_object_id);
-
 
 -- instances
 -- CREATE INDEX instances_name_idx on icinga_instances(instance_name);

@@ -1184,8 +1184,10 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 int ido2db_db_version_check(ido2db_idi *idi) {
         char *buf=NULL;
-	char *dbversion=NULL;
 	char *name=NULL;
+#ifdef USE_ORACLE
+	char *dbversion=NULL;
+#endif
 	void *data[1];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () start \n");
@@ -3940,7 +3942,7 @@ int ido2db_oci_prepared_statement_hostchecks(ido2db_idi *idi) {
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostchecks() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X4 AND host_object_id=:X5 AND start_time=(SELECT unixts2date(:X12) FROM DUAL) AND start_time_usec=:X13) WHEN MATCHED THEN UPDATE SET check_type=:X6, is_raw_check=:X7, current_check_attempt=:X8, max_check_attempts=:X9, state=:X10, state_type=:X11, end_time=(SELECT unixts2date(:X14) FROM DUAL), end_time_usec=:X15, timeout=:X16, early_timeout=:X17, execution_time=:X18, latency=:X19, return_code=:X20, output=:X21, long_output=:X22, perfdata=:X23 WHEN NOT MATCHED THEN INSERT (id, command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (seq_hostchecks.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), :X13, (SELECT unixts2date(:X14) FROM DUAL), :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23)",
+        if(asprintf(&buf, "INSERT INTO %s (id, command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (seq_hostchecks.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, (SELECT unixts2date(:X12) FROM DUAL), :X13, (SELECT unixts2date(:X14) FROM DUAL), :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCHECKS]) == -1) {
                         buf = NULL;
         }
@@ -4015,7 +4017,7 @@ int ido2db_oci_prepared_statement_servicechecks(ido2db_idi *idi) {
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicechecks() start\n");
 
-        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND service_object_id=:X2 AND start_time=(SELECT unixts2date(:X8) FROM DUAL) AND start_time_usec=:X9) WHEN MATCHED THEN UPDATE SET check_type=:X3, current_check_attempt=:X4, max_check_attempts=:X5, state=:X6, state_type=:X7, end_time=(SELECT unixts2date(:X10) FROM DUAL), end_time_usec=:X11, timeout=:X12, early_timeout=:X13, execution_time=:X14, latency=:X15, return_code=:X16, output=:X17, long_output=:X18, perfdata=:X19 WHEN NOT MATCHED THEN INSERT (id, instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (seq_servicechecks.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, (SELECT unixts2date(:X8) FROM DUAL), :X9, (SELECT unixts2date(:X10) FROM DUAL), :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
+        if(asprintf(&buf, "INSERT INTO %s (id, instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (seq_servicechecks.nextval, :X1, :X2, :X3, :X4, :X5, :X6, :X7, (SELECT unixts2date(:X8) FROM DUAL), :X9, (SELECT unixts2date(:X10) FROM DUAL), :X11, :X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECHECKS]) == -1) {
                         buf = NULL;
         }
