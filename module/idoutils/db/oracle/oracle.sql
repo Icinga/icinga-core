@@ -1104,7 +1104,7 @@ CREATE TABLE servicechecks (
   output varchar2(1024),
   long_output clob,
   perfdata varchar2(1024),
-  PRIMARY KEY  (id),
+  PRIMARY KEY  (id)
 );
 
 -- --------------------------------------------------------
