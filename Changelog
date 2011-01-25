@@ -72,6 +72,7 @@ FIXES
 * core: reduce duplication of code for is_contact_member_of_contactgroup (Stephen Gran) #1126
 * core: fix bug with passive host checks being incorrectly sent to event brokers as active checks (Ethan Galstad) #1133
 * core: fix bug where passive host check status updates were not being propagated to event brokers (Ethan Galstad) #1134
+* core: fix first_notification_delay logic (GalaxyMaster) #1145
 
 * classic ui: change servicestatus letter color to default black, not grey #946
 * classic ui: fix waste of cpu in status summary (TomTom) #933
