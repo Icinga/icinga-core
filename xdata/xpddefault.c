@@ -882,9 +882,6 @@ int xpddefault_process_service_perfdata_file(void){
 	if(early_timeout==TRUE)
 		logit(NSLOG_RUNTIME_WARNING,TRUE,"Warning: Service performance data file processing command '%s' timed out after %d seconds\n",processed_command_line,xpddefault_perfdata_timeout);
 
-	/* re-open the performance data file */
-	xpddefault_open_service_perfdata_file();
-
 	/* free memory */
 	my_free(raw_command_line);
 	my_free(processed_command_line);
