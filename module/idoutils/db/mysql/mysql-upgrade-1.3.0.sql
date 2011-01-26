@@ -26,6 +26,12 @@ INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUP
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
 
 -- -----------------------------------------
+-- add index for logentries
+-- -----------------------------------------
+
+CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id ASC, logentry_time DESC);
+
+-- -----------------------------------------
 -- drop unique keys for check history
 -- -----------------------------------------
 

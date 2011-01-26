@@ -48,6 +48,7 @@ ENHANCEMENTS
 	- reduced number of fired SQL statements by 50%
 	- changed 1 SQL statement for each rdbms, making it smaller and saving index lookup (and virtual table by merge in oracle)
 	- index savings, and dropped unique keys - check upgrade sql scripts for mysql/postgresql/oracle
+* idoutils: add indexes for logentries, preventing heavy load #1055
 
 * contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
 

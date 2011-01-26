@@ -30,6 +30,12 @@ INSERT (id, name, version) VALUES ('1', 'idoutils', '1.3.0');
 
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on statehistory(instance_id, object_id, state_type, state_time);
 
+-- -----------------------------------------
+-- add index for logentries
+-- -----------------------------------------
+
+CREATE INDEX loge_inst_id_time_idx on logentries (instance_id ASC, logentry_time DESC);
+
 
 -- -----------------------------------------
 -- fix NO_DATA_FOUND exception

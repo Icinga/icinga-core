@@ -1533,6 +1533,7 @@ CREATE INDEX objects_inst_id_idx ON icinga_objects(instance_id);
 -- #236
 CREATE INDEX loge_time_idx on icinga_logentries(logentry_time);
 -- CREATE INDEX loge_data_idx on icinga_logentries(logentry_data);
+CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id ASC, logentry_time DESC);
 
 -- commenthistory
 -- CREATE INDEX c_hist_instance_id_idx on icinga_logentries(instance_id);
