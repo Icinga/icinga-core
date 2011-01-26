@@ -2528,6 +2528,16 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args){
 	if((comment_data=my_strtok(NULL,";"))==NULL)
 		return ERROR;
 
+	/* MF 26-01-2011: check if flexible downtime demanded
+	   and duration set to non-zero.
+	   according to the documentation, a flexible downtime is
+	   started between start and end time and will last for
+	   "duration" seconds. strtoul converts a NULL value to 0
+	   so if set to 0, bail out as a duration>0 is needed. 	   */
+
+	if(fixed==0 && duration==0)
+		return ERROR;
+
 	/* duration should be auto-calculated, not user-specified */
 	if(fixed>0)
 		duration=(unsigned long)(end_time-start_time);
