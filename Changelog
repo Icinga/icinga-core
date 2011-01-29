@@ -92,6 +92,7 @@ FIXES
 * classic ui: fix form/table DOM confusion in cgis (Sven-Göran Bergh) #1081
 * classic ui: fix tac.cgi with incorrect links to filtered host details (Yannick Charton) #1065
 * classic ui: fix missing html label/text for searchbox () #John Giacalone #1114
+* classic ui: fix authorized_for_read_only can execute command over the status.cgi #1154
 
 * install: fix LD_LIBRARY_PATH export on non bash in idoutils init script (Alexander Skwar) #936
 * install: add log2ido for adding archived logs onto socket/rdbms #926

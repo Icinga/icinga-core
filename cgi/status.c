@@ -1456,8 +1456,10 @@ void show_service_detail(void){
 
 		printf("<TH CLASS='status'>Status Information</TH>\n");
 
-		/* Add checkbox so every service can be checked */
-		printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
+		if (is_authorized_for_read_only(&current_authdata)==FALSE){
+			/* Add checkbox so every service can be checked */
+			printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
+		}
 
 		printf("</TR>\n");
 	}
@@ -1882,9 +1884,11 @@ void show_service_detail(void){
 
 				printf("</TD>\n");
 
-				/* Checkbox for service(s) */
-				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
-				printf("&service=%s'></TD>\n",url_encode(temp_status->description));
+				if (is_authorized_for_read_only(&current_authdata)==FALSE){
+					/* Checkbox for service(s) */
+					printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
+					printf("&service=%s'></TD>\n",url_encode(temp_status->description));
+				}
 
 				/*
 				if(enable_splunk_integration==TRUE)
@@ -2104,8 +2108,10 @@ void show_host_detail(void){
 		
 		printf("<TH CLASS='status'>Status Information</TH>\n");
 
-		/* Add a checkbox so every host can be checked */
-		printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
+		if (is_authorized_for_read_only(&current_authdata)==FALSE){
+			/* Add a checkbox so every host can be checked */
+			printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
+		}
 
 		printf("</TR>\n");
 	}
@@ -2354,8 +2360,10 @@ void show_host_detail(void){
 
 				printf("</TD>\n");
 
-				/* Checkbox for host(s) */
-				printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
+				if (is_authorized_for_read_only(&current_authdata)==FALSE){
+					/* Checkbox for host(s) */
+					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_status->host_name));
+				}
 
 				/*
 				if(enable_splunk_integration==TRUE)
@@ -5435,70 +5443,74 @@ void show_filters(void){
 
 /* Display a table with the commands for checked checkboxes, for services */
 void show_servicecommand_table(void){
-	/* A new div for the command table */
-	printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
-	/* DropDown menu */
-	printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)'CLASS='serviceTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-		printf("<option value='nothing'>Select command</option>");
-		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Active Checks Of Checked Service(s)</option>",CMD_ENABLE_SVC_CHECK,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Re-schedule Next Service Check</option>",CMD_SCHEDULE_SVC_CHECK,url_images_path,DELAY_ICON);
-		printf("<option value='%d' title='%s%s'>Submit Passive Check Result For Checked Service(s)</option>",CMD_PROCESS_SERVICE_CHECK_RESULT,url_images_path,PASSIVE_ICON);
-		printf("<option value='%d' title='%s%s'>Stop Accepting Passive Checks For Checked Service(s)</option>",CMD_DISABLE_PASSIVE_SVC_CHECKS,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Start Accepting Passive Checks For Checked Service(s)</option>",CMD_ENABLE_PASSIVE_SVC_CHECKS,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Stop Obsessing Over Checked Service(s)</option>",CMD_STOP_OBSESSING_OVER_SVC,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Start Obsessing Over Checked Service(s)</option>",CMD_START_OBSESSING_OVER_SVC,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Acknowledge Checked Service(s) Problem</option>",CMD_ACKNOWLEDGE_SVC_PROBLEM,url_images_path,ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s'>Remove Problem Acknowledgement for Checked Service(s)</option>",CMD_REMOVE_SVC_ACKNOWLEDGEMENT,url_images_path,REMOVE_ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Notifications For Checked Service(s)</option>",CMD_DISABLE_SVC_NOTIFICATIONS,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Notifications For Checked Service(s)</option>",CMD_ENABLE_SVC_NOTIFICATIONS,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Send Custom Notification For Checked Service(s)</option>",CMD_SEND_CUSTOM_SVC_NOTIFICATION,url_images_path,NOTIFICATION_ICON);
-		printf("<option value='%d' title='%s%s'>Delay Next Notification For Checked Service(s)</option>",CMD_DELAY_SVC_NOTIFICATION,url_images_path,DELAY_ICON);
-		printf("<option value='%d' title='%s%s'>Schedule Downtime For Checked Service(s)</option>",CMD_SCHEDULE_SVC_DOWNTIME,url_images_path,DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Event Handler For Checked Service(s)</option>",CMD_DISABLE_SVC_EVENT_HANDLER,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Event Handler For Checked Service(s)</option>",CMD_ENABLE_SVC_EVENT_HANDLER,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>",CMD_DISABLE_SVC_FLAP_DETECTION,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
-	printf("</select>");
-	printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='serviceTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+	if (is_authorized_for_read_only(&current_authdata)==FALSE){
+		/* A new div for the command table */
+		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
+		/* DropDown menu */
+		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)'CLASS='serviceTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+			printf("<option value='nothing'>Select command</option>");
+			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
+			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Enable Active Checks Of Checked Service(s)</option>",CMD_ENABLE_SVC_CHECK,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Re-schedule Next Service Check</option>",CMD_SCHEDULE_SVC_CHECK,url_images_path,DELAY_ICON);
+			printf("<option value='%d' title='%s%s'>Submit Passive Check Result For Checked Service(s)</option>",CMD_PROCESS_SERVICE_CHECK_RESULT,url_images_path,PASSIVE_ICON);
+			printf("<option value='%d' title='%s%s'>Stop Accepting Passive Checks For Checked Service(s)</option>",CMD_DISABLE_PASSIVE_SVC_CHECKS,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Start Accepting Passive Checks For Checked Service(s)</option>",CMD_ENABLE_PASSIVE_SVC_CHECKS,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Stop Obsessing Over Checked Service(s)</option>",CMD_STOP_OBSESSING_OVER_SVC,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Start Obsessing Over Checked Service(s)</option>",CMD_START_OBSESSING_OVER_SVC,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Acknowledge Checked Service(s) Problem</option>",CMD_ACKNOWLEDGE_SVC_PROBLEM,url_images_path,ACKNOWLEDGEMENT_ICON);
+			printf("<option value='%d' title='%s%s'>Remove Problem Acknowledgement for Checked Service(s)</option>",CMD_REMOVE_SVC_ACKNOWLEDGEMENT,url_images_path,REMOVE_ACKNOWLEDGEMENT_ICON);
+			printf("<option value='%d' title='%s%s'>Disable Notifications For Checked Service(s)</option>",CMD_DISABLE_SVC_NOTIFICATIONS,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Enable Notifications For Checked Service(s)</option>",CMD_ENABLE_SVC_NOTIFICATIONS,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Send Custom Notification For Checked Service(s)</option>",CMD_SEND_CUSTOM_SVC_NOTIFICATION,url_images_path,NOTIFICATION_ICON);
+			printf("<option value='%d' title='%s%s'>Delay Next Notification For Checked Service(s)</option>",CMD_DELAY_SVC_NOTIFICATION,url_images_path,DELAY_ICON);
+			printf("<option value='%d' title='%s%s'>Schedule Downtime For Checked Service(s)</option>",CMD_SCHEDULE_SVC_DOWNTIME,url_images_path,DOWNTIME_ICON);
+			printf("<option value='%d' title='%s%s'>Disable Event Handler For Checked Service(s)</option>",CMD_DISABLE_SVC_EVENT_HANDLER,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Enable Event Handler For Checked Service(s)</option>",CMD_ENABLE_SVC_EVENT_HANDLER,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>",CMD_DISABLE_SVC_FLAP_DETECTION,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
+		printf("</select>");
+		printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='serviceTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+	}
 }
 
 /* Display a table with the commands for checked checkboxes, for hosts */
 void show_hostcommand_table(void){
-	/* A new div for the command table */
-	printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
-	/* DropDown menu */
-	printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)' CLASS='hostTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-		printf("<option value='nothing'>Select command</option>");
-		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)'</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>",CMD_SCHEDULE_HOST_CHECK,url_images_path,DELAY_ICON);
-		printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>",CMD_PROCESS_HOST_CHECK_RESULT,url_images_path,PASSIVE_ICON);
-		printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>",CMD_DISABLE_PASSIVE_HOST_CHECKS,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Start Accepting Passive Checks For Checked Host(s)</option>",CMD_ENABLE_PASSIVE_HOST_CHECKS,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Stop Obsessing Over Checked Host(s)</option>",CMD_STOP_OBSESSING_OVER_HOST,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Start Obsessing Over Checked Host(s)</option>",CMD_START_OBSESSING_OVER_HOST,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem</option>",CMD_ACKNOWLEDGE_HOST_PROBLEM,url_images_path,ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Remove Problem Acknowledgement</option>",CMD_REMOVE_HOST_ACKNOWLEDGEMENT,url_images_path,REMOVE_ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Notifications For Checked Host(s)</option>",CMD_DISABLE_HOST_NOTIFICATIONS,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Notifications For Checked Host(s)</option>",CMD_ENABLE_HOST_NOTIFICATIONS,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Send Custom Notification</option>",CMD_SEND_CUSTOM_HOST_NOTIFICATION,url_images_path,NOTIFICATION_ICON);
-		printf("<option value='%d' title='%s%s' >Delay Next Host Notification</option>",CMD_DELAY_HOST_NOTIFICATION,url_images_path,DELAY_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s)</option>",CMD_SCHEDULE_HOST_DOWNTIME,url_images_path,DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) and All Services</option>",CMD_SCHEDULE_HOST_SVC_DOWNTIME,url_images_path,DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Notifications For All Services On Checked Host(s)</option>",CMD_DISABLE_HOST_SVC_NOTIFICATIONS,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Notifications For All Services On Checked Host(s)</option>",CMD_ENABLE_HOST_SVC_NOTIFICATIONS,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule A Check Of All Services On Checked Host(s)</option>",CMD_SCHEDULE_HOST_SVC_CHECKS,url_images_path,DELAY_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Checks Of All Services On Checked Host(s)</option>",CMD_DISABLE_HOST_SVC_CHECKS,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Checks Of All Services On Checked Host(s)</option>",CMD_ENABLE_HOST_SVC_CHECKS,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Event Handler For Checked Host(s)</option>",CMD_DISABLE_HOST_EVENT_HANDLER,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Event Handler For Checked Host(s)</option>",CMD_ENABLE_HOST_EVENT_HANDLER,url_images_path,ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>",CMD_DISABLE_HOST_FLAP_DETECTION,url_images_path,DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
-	printf("</select>");
-	printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='hostsTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+	if (is_authorized_for_read_only(&current_authdata)==FALSE){
+		/* A new div for the command table */
+		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
+		/* DropDown menu */
+		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)' CLASS='hostTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+			printf("<option value='nothing'>Select command</option>");
+			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
+			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)'</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>",CMD_SCHEDULE_HOST_CHECK,url_images_path,DELAY_ICON);
+			printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>",CMD_PROCESS_HOST_CHECK_RESULT,url_images_path,PASSIVE_ICON);
+			printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>",CMD_DISABLE_PASSIVE_HOST_CHECKS,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Start Accepting Passive Checks For Checked Host(s)</option>",CMD_ENABLE_PASSIVE_HOST_CHECKS,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Stop Obsessing Over Checked Host(s)</option>",CMD_STOP_OBSESSING_OVER_HOST,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Start Obsessing Over Checked Host(s)</option>",CMD_START_OBSESSING_OVER_HOST,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem</option>",CMD_ACKNOWLEDGE_HOST_PROBLEM,url_images_path,ACKNOWLEDGEMENT_ICON);
+			printf("<option value='%d' title='%s%s' >Remove Problem Acknowledgement</option>",CMD_REMOVE_HOST_ACKNOWLEDGEMENT,url_images_path,REMOVE_ACKNOWLEDGEMENT_ICON);
+			printf("<option value='%d' title='%s%s' >Disable Notifications For Checked Host(s)</option>",CMD_DISABLE_HOST_NOTIFICATIONS,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Notifications For Checked Host(s)</option>",CMD_ENABLE_HOST_NOTIFICATIONS,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Send Custom Notification</option>",CMD_SEND_CUSTOM_HOST_NOTIFICATION,url_images_path,NOTIFICATION_ICON);
+			printf("<option value='%d' title='%s%s' >Delay Next Host Notification</option>",CMD_DELAY_HOST_NOTIFICATION,url_images_path,DELAY_ICON);
+			printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s)</option>",CMD_SCHEDULE_HOST_DOWNTIME,url_images_path,DOWNTIME_ICON);
+			printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) and All Services</option>",CMD_SCHEDULE_HOST_SVC_DOWNTIME,url_images_path,DOWNTIME_ICON);
+			printf("<option value='%d' title='%s%s' >Disable Notifications For All Services On Checked Host(s)</option>",CMD_DISABLE_HOST_SVC_NOTIFICATIONS,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Notifications For All Services On Checked Host(s)</option>",CMD_ENABLE_HOST_SVC_NOTIFICATIONS,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Schedule A Check Of All Services On Checked Host(s)</option>",CMD_SCHEDULE_HOST_SVC_CHECKS,url_images_path,DELAY_ICON);
+			printf("<option value='%d' title='%s%s' >Disable Checks Of All Services On Checked Host(s)</option>",CMD_DISABLE_HOST_SVC_CHECKS,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Checks Of All Services On Checked Host(s)</option>",CMD_ENABLE_HOST_SVC_CHECKS,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Disable Event Handler For Checked Host(s)</option>",CMD_DISABLE_HOST_EVENT_HANDLER,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Event Handler For Checked Host(s)</option>",CMD_ENABLE_HOST_EVENT_HANDLER,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>",CMD_DISABLE_HOST_FLAP_DETECTION,url_images_path,DISABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
+		printf("</select>");
+		printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='hostsTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+	}
 }
 /* The cake is a lie! */
 

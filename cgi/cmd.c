@@ -274,6 +274,14 @@ int main(void){
 		}
 	}
 
+	if (is_authorized_for_read_only(&current_authdata)==TRUE){
+		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
+		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+		printf("<td class='errorMessage'>Error: It appears as though you do not have permission to perform any commands!</td></tr></table></DIV>\n");
+		printf("</DIV>\n");
+		printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-1);' class='submitButton'></DIV>\n");
+	}
+
 	/* if this is the first request for a command, present option */
 	else if(command_mode==CMDMODE_REQUEST)
 		request_command_data(command_type);
