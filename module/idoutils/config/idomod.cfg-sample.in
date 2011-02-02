@@ -193,15 +193,13 @@ data_processing_options=67108861
 # CONFIG OUTPUT OPTION
 # This option determines what types of configuration data the IDO
 # NEB module will dump from Icinga.  Values can be OR'ed together.
-# Default will be the original config, which will slow down (re)start.
 # Values:
 # 	  0 = Don't dump any configuration information
 #         1 = Dump only original config (from config files)
 #         2 = Dump config only after retained information has been restored
 #         3 = Dump both original and retained configuration
 
-config_output_options=1
-#config_output_options=2
+config_output_options=2
 
 
 
