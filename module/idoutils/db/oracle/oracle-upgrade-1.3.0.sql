@@ -84,4 +84,10 @@ ALTER TABLE servicechecks DROP CONSTRAINT servicechecks;
 ALTER TABLE hostchecks DROP CONSTRAINT hostchecks;
 
 
+-- -----------------------------------------
+-- drop unique keys for * contacts
+-- -----------------------------------------
+
+ALTER TABLE service_contacts DROP CONSTRAINT service_contacts;
+ALTER TABLE host_contacts DROP CONSTRAINT host_contacts;
 

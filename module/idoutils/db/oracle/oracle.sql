@@ -589,7 +589,6 @@ CREATE TABLE host_contacts (
   host_id number(11) default 0 NOT NULL,
   contact_object_id number(11) default 0 NOT NULL,
   PRIMARY KEY  (id),
-  CONSTRAINT host_contacts UNIQUE (instance_id,host_id,contact_object_id)
 );
 
 -- --------------------------------------------------------
@@ -1071,7 +1070,6 @@ CREATE TABLE service_contacts (
   service_id number(11) default 0 NOT NULL,
   contact_object_id number(11) default 0 NOT NULL,
   PRIMARY KEY  (id),
-  CONSTRAINT service_contacts UNIQUE (instance_id,service_id,contact_object_id)
 );
 
 -- --------------------------------------------------------

@@ -39,4 +39,10 @@ ALTER TABLE `icinga_servicechecks` DROP INDEX `instance_id`;
 
 ALTER TABLE `icinga_hostchecks` DROP INDEX `instance_id`;
 
+-- -----------------------------------------
+-- drop unique keys for * contacts
+-- -----------------------------------------
+
+ALTER TABLE `icinga_service_contacts` DROP INDEX `instance_id`;
+ALTER TABLE `icinga_host_contacts` DROP INDEX `instance_id`;
 

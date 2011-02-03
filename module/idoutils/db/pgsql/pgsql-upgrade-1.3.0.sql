@@ -55,3 +55,10 @@ ALTER TABLE icinga_servicechecks DROP CONSTRAINT icinga_servicechecks_instance_i
 
 ALTER TABLE icinga_hostchecks DROP CONSTRAINT icinga_hostchecks_instance_id_key;
 
+-- -----------------------------------------
+-- drop unique keys for * contacts
+-- -----------------------------------------
+
+ALTER TABLE icinga_service_contacts DROP CONSTRAINT icinga_service_contacts_instance_id_key;
+ALTER TABLE icinga_host_contacts DROP CONSTRAINT icinga_host_contacts_instance_id_key;
+
