@@ -68,7 +68,6 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_hostdefinition_contacts_add(ido2db_idi *idi, void **data);
 
 /* HOSTGROUPDEFINITION */
 int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi *idi, void **data);
@@ -77,7 +76,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 /* SERVICEDEFINITION */
 int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi *idi, void **data);
-int ido2db_query_insert_or_update_servicedefinition_contacts_add(ido2db_idi *idi, void **data);
 
 /* SERVICEGROUPDEFINITION */
 int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data);

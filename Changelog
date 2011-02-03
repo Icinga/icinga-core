@@ -50,6 +50,7 @@ ENHANCEMENTS
 	- index savings, and dropped unique keys - check upgrade sql scripts for mysql/postgresql/oracle
 * idoutils: add indexes for logentries, preventing heavy load #1055
 * idoutils: enable max_logentries_age & max_acknowledgements_age with 31 days for cleaning by default in ido2db.cfg #1155
+* idoutils: add multi valued inserts for host|service_contacts instead of single insert/update loops (thx Opsview) #1108
 
 * contrib: bring daemonchk.cgi building into shape (Elan Ruusamäe) #1051
 

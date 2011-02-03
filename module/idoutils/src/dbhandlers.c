@@ -5235,9 +5235,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	int result = IDO_OK;
 	char *es[13];
 	int x = 0;
-#ifdef USE_LIBDBI
 	char *buf = NULL;
-#endif
+	char *buf1 = NULL;
+
 	ido2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
@@ -5245,6 +5245,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
         char *seq_name = NULL;
 #endif
         void *data[57];
+	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() start\n");
 
@@ -5535,6 +5536,16 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	}
 
 	/* save contacts to db */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() host_contacts start\n");
+
+	/* build a multiple insert value array */
+	if(asprintf(&buf1, "INSERT INTO %s (instance_id,host_id,contact_object_id) VALUES ",
+			ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTS]
+			)==-1)
+		buf1=NULL;
+
+	first=1;
+
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACT];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
@@ -5542,18 +5553,27 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* get the object id of the member */
-		result = ido2db_get_object_id_with_insert(idi,
-				IDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-                /* save entry to db */
-                data[0] = (void *) &idi->dbinfo.instance_id;
-                data[1] = (void *) &host_id;
-                data[2] = (void *) &member_id;
+		buf=buf1; /* save this pointer for later free'ing */
+		if(asprintf(&buf1, "%s%s(%lu,%lu,%lu)",
+				buf1,
+				(first==1?"":","),
+				idi->dbinfo.instance_id,
+				host_id,
+				member_id
+				)==-1)
+			buf1=NULL;
 
-		result = ido2db_query_insert_or_update_hostdefinition_contacts_add(idi, data);
+		free(buf);
+		first=0;
+	}
+
+	if(first==0){
+		result=ido2db_db_query(idi, buf1);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
+        	dbi_result_free(idi->dbinfo.dbi_result);
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -5562,10 +5582,13 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-
 #endif /* Oracle ocilib specific */
 
 	}
+
+	free(buf1);
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() host_contacts end\n");
 
 	/* save custom variables to db */
 	result=ido2db_save_custom_variables(idi,IDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL, -1);
@@ -5775,9 +5798,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	int result = IDO_OK;
 	char *es[9];
 	int x = 0;
-#ifdef USE_LIBDBI
 	char *buf = NULL;
-#endif
+	char *buf1 = NULL;
+
 	ido2db_mbuf mbuf;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
@@ -5785,6 +5808,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
         char *seq_name = NULL;
 #endif
         void *data[51];
+	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() start\n");
 
@@ -6032,6 +6056,16 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	}
 
 	/* save contacts to db */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() service_contacts start\n");
+
+	/* build a multiple insert value array */
+	if(asprintf(&buf1, "INSERT INTO %s (instance_id,service_id,contact_object_id) VALUES ",
+			ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTS]
+			)==-1)
+		buf1=NULL;
+
+	first=1;
+
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACT];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
@@ -6039,15 +6073,24 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 			continue;
 
 		/* get the object id of the member */
-		result = ido2db_get_object_id_with_insert(idi,
-				IDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
+		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
-		/* save entry to db */
-	        data[0] = (void *) &idi->dbinfo.instance_id;
-	        data[1] = (void *) &service_id;
-	        data[2] = (void *) &member_id;
+		buf=buf1; /* save this pointer for later free'ing */
+		if(asprintf(&buf1, "%s%s(%lu,%lu,%lu)",
+				buf1,
+				(first==1?"":","),
+				idi->dbinfo.instance_id,
+				service_id,
+				member_id
+				)==-1)
+			buf1=NULL;
 
-		result = ido2db_query_insert_or_update_servicedefinition_contacts_add(idi, data);
+		free(buf);
+		first=0;
+	}
+
+	if(first==0){
+		result=ido2db_db_query(idi, buf1);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
@@ -6063,6 +6106,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 	}
+
+	free(buf1);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() service_contacts end\n");
 
 	/* save custom variables to db */
 	result=ido2db_save_custom_variables(idi,IDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL, -1);
