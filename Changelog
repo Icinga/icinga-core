@@ -36,7 +36,7 @@ ENHANCEMENTS
 * idoutils: add cfg option to enable/disable oci errors to syslog through error handler #1060
 * idoutils: add dbversion upgrade scripts for 1.3 #633
 * idoutils: add dbversion check in ido2db and print error to syslog in case of non-matching #633
-* idoutils: do not clear host|service status tables on core restart/reload (inspired by Opsview) #1106
+* idoutils: do not clear host|service|scheduleddowntime status tables on core restart/reload (inspired by Opsview) #1106 #1176
 * idoutils: change config_output_options to 1  (original config dump) #1127
 	- this will dump original configs to ido2db on core (re)start/load and take a while - needed for Icinga Web
 * idoutils: only insert service and host checks when they are finally processed, increase performance by replacing insert/update with single insert (idea by Opsview/Opsera Ltd with mysql and servicechecks) #1100

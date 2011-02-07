@@ -1325,13 +1325,13 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			/* clear realtime data */
 			/* don't clear necessary status tables on restart/reload of the core, as Icinga Web
 			   won't show any data then */
-			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]);
 			/* ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS]); */
 			/* ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS]); */
+			/* ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]); */
+			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]);
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTSTATUS]);
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]);
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS]);
-			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]);
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES]);
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS]);
 		}
