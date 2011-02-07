@@ -769,7 +769,7 @@ CREATE TABLE IF NOT EXISTS `icinga_host_contacts` (
   `instance_id` smallint(6) NOT NULL default '0',
   `host_id` int(11) NOT NULL default '0',
   `contact_object_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`host_contact_id`),
+  PRIMARY KEY  (`host_contact_id`)
 ) ENGINE=InnoDB  COMMENT='Host contacts';
 
 -- --------------------------------------------------------
@@ -1247,7 +1247,7 @@ CREATE TABLE IF NOT EXISTS `icinga_service_contacts` (
   `instance_id` smallint(6) NOT NULL default '0',
   `service_id` int(11) NOT NULL default '0',
   `contact_object_id` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`service_contact_id`),
+  PRIMARY KEY  (`service_contact_id`)
 ) ENGINE=InnoDB  COMMENT='Service contacts';
 
 -- --------------------------------------------------------

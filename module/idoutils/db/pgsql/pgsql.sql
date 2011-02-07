@@ -800,7 +800,7 @@ CREATE TABLE  icinga_host_contacts (
   instance_id INTEGER NOT NULL default 0,
   host_id INTEGER NOT NULL default 0,
   contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (host_contact_id),
+  PRIMARY KEY  (host_contact_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -1278,7 +1278,7 @@ CREATE TABLE  icinga_service_contacts (
   instance_id INTEGER NOT NULL default 0,
   service_id INTEGER NOT NULL default 0,
   contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (service_contact_id),
+  PRIMARY KEY  (service_contact_id)
 ) ;
 
 -- --------------------------------------------------------

@@ -588,7 +588,7 @@ CREATE TABLE host_contacts (
   instance_id number(11) default 0 NOT NULL,
   host_id number(11) default 0 NOT NULL,
   contact_object_id number(11) default 0 NOT NULL,
-  PRIMARY KEY  (id),
+  PRIMARY KEY  (id)
 );
 
 -- --------------------------------------------------------
@@ -1069,7 +1069,7 @@ CREATE TABLE service_contacts (
   instance_id number(11) default 0 NOT NULL,
   service_id number(11) default 0 NOT NULL,
   contact_object_id number(11) default 0 NOT NULL,
-  PRIMARY KEY  (id),
+  PRIMARY KEY  (id)
 );
 
 -- --------------------------------------------------------
