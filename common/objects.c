@@ -3397,6 +3397,7 @@ int free_object_data(void){
 		my_free(this_host->plugin_output);
 		my_free(this_host->long_plugin_output);
 		my_free(this_host->perf_data);
+		my_free(this_host->processed_command);
 
 		free_objectlist(&this_host->hostgroups_ptr);
 #endif
@@ -3597,6 +3598,7 @@ int free_object_data(void){
 		my_free(this_service->plugin_output);
 		my_free(this_service->long_plugin_output);
 		my_free(this_service->perf_data);
+		my_free(this_service->processed_command);
 
 		my_free(this_service->event_handler_args);
 		my_free(this_service->check_command_args);

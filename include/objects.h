@@ -401,6 +401,9 @@ struct host_struct{
 #endif
 	struct  host_struct *next;
 	struct  host_struct *nexthash;
+	/* 2011-02-07 MF: added for keeping the command for NEB callback
+	   PROCESSED state on host|service checks  */
+	char	*processed_command;
         };
 
 
@@ -537,6 +540,9 @@ struct service_struct{
 #endif
 	struct service_struct *next;
 	struct service_struct *nexthash;
+	/* 2011-02-07 MF: added for keeping the command for NEB callback
+	   PROCESSED state on host|service checks  */
+	char	*processed_command;
 	};
 
 /* ESCALATION CONDITION STRUCTURE 

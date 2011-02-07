@@ -623,6 +623,9 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	/* send data to event broker */
 	neb_result=broker_service_check(NEBTYPE_SERVICECHECK_INITIATE,NEBFLAG_NONE,NEBATTR_NONE,svc,SERVICE_CHECK_ACTIVE,start_time,end_time,svc->service_check_command,svc->latency,0.0,service_check_timeout,FALSE,0,processed_command,NULL);
 
+	my_free(svc->processed_command);
+	svc->processed_command=strdup(processed_command);
+
 	/* neb module wants to override the service check - perhaps it will check the service itself */
 	if(neb_result==NEBERROR_CALLBACKOVERRIDE){
 		clear_volatile_macros(&mac);
@@ -1782,7 +1785,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_service_check(NEBTYPE_SERVICECHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_NONE,temp_service,temp_service->check_type,queued_check_result->start_time,queued_check_result->finish_time,NULL,temp_service->latency,temp_service->execution_time,service_check_timeout,queued_check_result->early_timeout,queued_check_result->return_code,NULL,NULL);
+	broker_service_check(NEBTYPE_SERVICECHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_NONE,temp_service,temp_service->check_type,queued_check_result->start_time,queued_check_result->finish_time,temp_service->service_check_command,temp_service->latency,temp_service->execution_time,service_check_timeout,queued_check_result->early_timeout,queued_check_result->return_code,temp_service->processed_command,NULL);
 #endif
 
 	/* set the checked flag */
@@ -2792,7 +2795,7 @@ int run_sync_host_check_3x(host *hst, int *check_result_code, int check_options,
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_host_check(NEBTYPE_HOSTCHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_NONE,hst,HOST_CHECK_ACTIVE,hst->current_state,hst->state_type,start_time,end_time,hst->host_check_command,hst->latency,hst->execution_time,host_check_timeout,FALSE,hst->current_state,NULL,hst->plugin_output,hst->long_plugin_output,hst->perf_data,NULL);
+	broker_host_check(NEBTYPE_HOSTCHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_NONE,hst,HOST_CHECK_ACTIVE,hst->current_state,hst->state_type,start_time,end_time,hst->host_check_command,hst->latency,hst->execution_time,host_check_timeout,FALSE,hst->current_state,hst->processed_command,hst->plugin_output,hst->long_plugin_output,hst->perf_data,NULL);
 #endif
 
 	return result;
@@ -2869,6 +2872,9 @@ int execute_sync_host_check_3x(host *hst){
 		clear_volatile_macros(&mac);
 		return ERROR;
 	}
+
+	my_free(hst->processed_command);
+	hst->processed_command=strdup(processed_command);
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
@@ -3129,6 +3135,9 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		log_debug_info(DEBUGL_CHECKS,0,"Processed check command for host '%s' was NULL - aborting.\n",hst->name);
 		return ERROR;
 	}
+
+	my_free(hst->processed_command);
+	hst->processed_command=strdup(processed_command);
 
 	/* get the command start time */
 	gettimeofday(&start_time,NULL);
@@ -3573,7 +3582,7 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
-	broker_host_check(NEBTYPE_HOSTCHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_NONE,temp_host,temp_host->check_type,temp_host->current_state,temp_host->state_type,start_time_hires,end_time_hires,temp_host->host_check_command,temp_host->latency,temp_host->execution_time,host_check_timeout,queued_check_result->early_timeout,queued_check_result->return_code,NULL,temp_host->plugin_output,temp_host->long_plugin_output,temp_host->perf_data,NULL);
+	broker_host_check(NEBTYPE_HOSTCHECK_PROCESSED,NEBFLAG_NONE,NEBATTR_NONE,temp_host,temp_host->check_type,temp_host->current_state,temp_host->state_type,start_time_hires,end_time_hires,temp_host->host_check_command,temp_host->latency,temp_host->execution_time,host_check_timeout,queued_check_result->early_timeout,queued_check_result->return_code,temp_host->processed_command,temp_host->plugin_output,temp_host->long_plugin_output,temp_host->perf_data,NULL);
 #endif
 
 	return OK;
