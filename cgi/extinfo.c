@@ -381,7 +381,7 @@ int main(void){
 
 				printf("</DIV><BR>\n");
 
-				if(temp_host->address6==NULL){
+				if(!strcmp(temp_host->address6,temp_host->name)){
 					printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
 				} else {
 					printf("<DIV CLASS='data'>%s, %s</DIV>\n",temp_host->address,temp_host->address6);
@@ -408,7 +408,7 @@ int main(void){
 					printf("No servicegroups.");
                                 printf("</DIV><BR>\n");
 
-                                if(temp_host->address6==NULL){
+				if(!strcmp(temp_host->address6,temp_host->name)){
                                         printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
                                 } else {
                                         printf("<DIV CLASS='data'>%s, %s</DIV>\n",temp_host->address,temp_host->address6);
