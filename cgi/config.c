@@ -422,6 +422,7 @@ void display_hosts(void){
 		printf("%sHost Name%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sAlias/Description%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sAddress%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+		printf("%sAddress6%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sParent Hosts%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sMax. Check Attempts%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sCheck Interval%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -472,6 +473,7 @@ void display_hosts(void){
 		printf("<TH CLASS='data'>Host Name</TH>");
 		printf("<TH CLASS='data'>Alias/Description</TH>");
 		printf("<TH CLASS='data'>Address</TH>");
+		printf("<TH CLASS='data'>Address6</TH>");
 		printf("<TH CLASS='data'>Parent Hosts</TH>");
 		printf("<TH CLASS='data'>Max. Check Attempts</TH>");
 		printf("<TH CLASS='data'>Check Interval</TH>\n");
@@ -529,6 +531,7 @@ void display_hosts(void){
 			printf("%s%s%s%s",csv_data_enclosure,temp_host->name,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_host->alias,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_host->address,csv_data_enclosure,csv_delimiter);
+			printf("%s%s%s%s",csv_data_enclosure,temp_host->address6,csv_data_enclosure,csv_delimiter);
 			printf("%s",csv_data_enclosure);
 		} else {
 			printf("<TR CLASS='%s'>\n",bg_class);
@@ -539,6 +542,7 @@ void display_hosts(void){
 				url_encode(temp_host->name),CONFIG_CGI,url_encode(temp_host->name),html_encode(temp_host->name,FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,html_encode(temp_host->alias,FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,html_encode(temp_host->address,FALSE));
+			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,html_encode(temp_host->address6,FALSE));
 
 			printf("<TD CLASS='%s'>",bg_class);
 		}

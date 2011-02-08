@@ -661,6 +661,7 @@ CREATE TABLE  icinga_hosts (
   alias TEXT NOT NULL default '',
   display_name TEXT NOT NULL default '',
   address TEXT NOT NULL default '',
+  address6 TEXT NOT NULL default '',
   check_command_object_id INTEGER NOT NULL default 0,
   check_command_args TEXT NOT NULL default '',
   eventhandler_command_object_id INTEGER NOT NULL default 0,

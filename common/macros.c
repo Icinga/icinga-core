@@ -665,6 +665,7 @@ int grab_macrox_value(icinga_macros *mac, int macro_type, char *arg1, char *arg2
 	case MACRO_HOSTNAME:
 	case MACRO_HOSTALIAS:
 	case MACRO_HOSTADDRESS:
+	case MACRO_HOSTADDRESS6:
 	case MACRO_LASTHOSTCHECK:
 	case MACRO_LASTHOSTSTATECHANGE:
 	case MACRO_HOSTOUTPUT:
@@ -1591,6 +1592,9 @@ int grab_standard_host_macro(icinga_macros *mac, int macro_type, host *temp_host
 		break;
 	case MACRO_HOSTADDRESS:
 		*output=(char *)strdup(temp_host->address);
+		break;
+	case MACRO_HOSTADDRESS6:
+		*output=(char *)strdup(temp_host->address6);
 		break;
 #ifdef NSCORE
 	case MACRO_HOSTSTATE:
@@ -2541,6 +2545,7 @@ int init_macrox_names(void){
 	add_macrox_name(HOSTNAME);
 	add_macrox_name(HOSTALIAS);
 	add_macrox_name(HOSTADDRESS);
+	add_macrox_name(HOSTADDRESS6);
 	add_macrox_name(SERVICEDESC);
 	add_macrox_name(SERVICESTATE);
 	add_macrox_name(SERVICESTATEID);
@@ -2912,6 +2917,7 @@ int clear_host_macros(icinga_macros *mac){
 		case MACRO_HOSTDISPLAYNAME:
 		case MACRO_HOSTALIAS:
 		case MACRO_HOSTADDRESS:
+		case MACRO_HOSTADDRESS6:
 		case MACRO_HOSTSTATE:
 		case MACRO_HOSTSTATEID:
 		case MACRO_HOSTCHECKTYPE:

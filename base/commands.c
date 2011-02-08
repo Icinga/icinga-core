@@ -2101,6 +2101,10 @@ int process_passive_service_check(time_t check_time, char *host_name, char *svc_
 				real_host_name=temp_host->name;
 				break;
 			        }
+		        else if(!strcmp(host_name,temp_host->address6)){
+				real_host_name=temp_host->name;
+				break;
+			        }
 		        }
 	        }
 
@@ -2239,6 +2243,10 @@ int process_passive_host_check(time_t check_time, char *host_name, int return_co
 	else{
 		for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 			if(!strcmp(host_name,temp_host->address)){
+				real_host_name=temp_host->name;
+				break;
+			        }
+		        else if(!strcmp(host_name,temp_host->address6)){
 				real_host_name=temp_host->name;
 				break;
 			        }

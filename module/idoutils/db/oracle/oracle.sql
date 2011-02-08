@@ -759,6 +759,7 @@ CREATE TABLE hosts (
   alias varchar2(255),
   display_name varchar2(255),
   address varchar2(128),
+  address6 varchar2(128),
   check_command_object_id number(11) default 0 NOT NULL,
   check_command_args varchar2(255),
   eventhandler_command_object_id number(11) default 0 NOT NULL,

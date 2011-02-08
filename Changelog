@@ -27,6 +27,13 @@ ENHANCEMENTS
 * core: allow empty hostgroup aissgments for services as opt-in config option (Max Schubert) #949
 * core: do not copy broker modules (OMD patch) #896
 * core: fix host alias saved in resention data survived reconfiguration #935
+* core: add basic dualstacked IPv6 support (core/cgi patch by Julius Kriukas, slight changes on Icinga, own IDOUtils backend code) #674
+	- address6 as host definition attribute (to be used dual stacked, address stays default!)
+	- host macro $HOSTADDRESS6$ for e.g. check-host-alive
+	- if not set, host name is set as default (same behaviour as address)
+	- shown in classic ui only if set (not matching host name)
+	- idoutils mysql/postgresql/oracle hosts config table gets new column 'address6' populated
+	- note: as of this release, idoutils depends hard on include/objects.h of icinga core. internal idomod api changed, new datatype added.
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959

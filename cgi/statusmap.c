@@ -1878,6 +1878,7 @@ void write_host_popup_text(host *hst){
 	printf("<tr><td class=\\\"popupText\\\">Name:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>",escape_string(hst->name));
 	printf("<tr><td class=\\\"popupText\\\">Alias:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>",escape_string(hst->alias));
 	printf("<tr><td class=\\\"popupText\\\">Address:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>",html_encode(hst->address,TRUE));
+	printf("<tr><td class=\\\"popupText\\\">Address6:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>",html_encode(hst->address6,TRUE));
 	printf("<tr><td class=\\\"popupText\\\">State:</td><td class=\\\"popupText\\\"><b>");
 
 	/* get the status of the host (pending, up, down, or unreachable) */

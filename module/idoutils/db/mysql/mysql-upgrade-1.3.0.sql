@@ -46,3 +46,9 @@ ALTER TABLE `icinga_hostchecks` DROP INDEX `instance_id`;
 ALTER TABLE `icinga_service_contacts` DROP INDEX `instance_id`;
 ALTER TABLE `icinga_host_contacts` DROP INDEX `instance_id`;
 
+
+-- -----------------------------------------
+-- add address6 column to hosts
+-- -----------------------------------------
+
+ALTER TABLE icinga_hosts ADD address6 varchar(128) character set latin1 NOT NULL default '';

@@ -62,3 +62,10 @@ ALTER TABLE icinga_hostchecks DROP CONSTRAINT icinga_hostchecks_instance_id_key;
 ALTER TABLE icinga_service_contacts DROP CONSTRAINT icinga_service_contacts_instance_id_key;
 ALTER TABLE icinga_host_contacts DROP CONSTRAINT icinga_host_contacts_instance_id_key;
 
+
+-- -----------------------------------------
+-- add address6 column to hosts
+-- -----------------------------------------
+
+ALTER TABLE icinga_hosts ADD address6 TEXT NOT NULL default '';
+

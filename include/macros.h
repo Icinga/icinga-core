@@ -42,7 +42,7 @@
 
 #define MAX_USER_MACROS				256	/* maximum number of $USERx$ macros */
 
-#define MACRO_X_COUNT				153	/* size of macro_x[] array */
+#define MACRO_X_COUNT				154	/* size of macro_x[] array */
 
 struct icinga_macros {
 	char *x[MACRO_X_COUNT];
@@ -215,7 +215,7 @@ typedef struct icinga_macros icinga_macros;
 #define MACRO_LASTHOSTSTATEID                   150
 #define MACRO_LASTSERVICESTATE                  151
 #define MACRO_LASTSERVICESTATEID                152
-
+#define MACRO_HOSTADDRESS6			153
 
 
 /************* MACRO CLEANING OPTIONS *****************/

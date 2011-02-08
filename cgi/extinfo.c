@@ -268,6 +268,9 @@ int main(void){
 				printf("function nagios_get_host_address()\n{\n");
 				printf("return \"%s\";\n",temp_host->address);
 				printf("}\n");
+				printf("function nagios_get_host_address6()\n{\n");
+				printf("return \"%s\";\n",temp_host->address6);
+				printf("}\n");
 				if(temp_service!=NULL){
 					printf("function nagios_get_service_description()\n{\n");
 					printf("return \"%s\";\n",temp_service->description);
@@ -377,7 +380,12 @@ int main(void){
 					printf("No hostgroups");
 
 				printf("</DIV><BR>\n");
-				printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
+
+				if(temp_host->address6==NULL){
+					printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
+				} else {
+					printf("<DIV CLASS='data'>%s, %s</DIV>\n",temp_host->address,temp_host->address6);
+				}
 		        }
 			if(display_type==DISPLAY_SERVICE_INFO){
 
@@ -400,7 +408,11 @@ int main(void){
 					printf("No servicegroups.");
                                 printf("</DIV><BR>\n");
 
-				printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
+                                if(temp_host->address6==NULL){
+                                        printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
+                                } else {
+                                        printf("<DIV CLASS='data'>%s, %s</DIV>\n",temp_host->address,temp_host->address6);
+                                }
 			}
 			if(display_type==DISPLAY_HOSTGROUP_INFO){
 

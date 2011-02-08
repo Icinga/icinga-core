@@ -597,7 +597,7 @@ timerange *add_timerange_to_daterange(daterange *drange, unsigned long start_tim
 
 
 /* add a new host definition */
-host *add_host(char *name, char *display_name, char *alias, char *address, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host){
+host *add_host(char *name, char *display_name, char *alias, char *address, char *address6, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host){
 	host *new_host=NULL;
 	int result=OK;
 #ifdef NSCORE
@@ -644,6 +644,8 @@ host *add_host(char *name, char *display_name, char *alias, char *address, char 
 	if((new_host->alias=(char *)strdup((alias==NULL)?name:alias))==NULL)
 		result=ERROR;
 	if((new_host->address=(char *)strdup(address))==NULL)
+		result=ERROR;
+	if((new_host->address6=(char *)strdup(address6))==NULL)
 		result=ERROR;
 	if(check_period){
 		if((new_host->check_period=(char *)strdup(check_period))==NULL)
@@ -827,6 +829,7 @@ host *add_host(char *name, char *display_name, char *alias, char *address, char 
 		my_free(new_host->notification_period);
 		my_free(new_host->check_period);
 		my_free(new_host->address);
+		my_free(new_host->address6);
 		my_free(new_host->alias);
 		my_free(new_host->display_name);
 		my_free(new_host->name);
@@ -3393,6 +3396,7 @@ int free_object_data(void){
 		my_free(this_host->display_name);
 		my_free(this_host->alias);
 		my_free(this_host->address);
+		my_free(this_host->address6);
 #ifdef NSCORE
 		my_free(this_host->plugin_output);
 		my_free(this_host->long_plugin_output);

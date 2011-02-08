@@ -629,6 +629,7 @@ CREATE TABLE IF NOT EXISTS `icinga_hosts` (
   `alias` varchar(64) character set latin1 NOT NULL default '',
   `display_name` varchar(255) character set latin1 collate latin1_general_cs NOT NULL default '',
   `address` varchar(128) character set latin1 NOT NULL default '',
+  `address6` varchar(128) character set latin1 NOT NULL default '',
   `check_command_object_id` int(11) NOT NULL default '0',
   `check_command_args` varchar(255) character set latin1 NOT NULL default '',
   `eventhandler_command_object_id` int(11) NOT NULL default '0',

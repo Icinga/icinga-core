@@ -5233,7 +5233,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	unsigned long host_id = 0L;
 	unsigned long member_id = 0L;
 	int result = IDO_OK;
-	char *es[13];
+	char *es[14];
 	int x = 0;
 	char *buf = NULL;
 	char *buf1 = NULL;
@@ -5244,7 +5244,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE
         char *seq_name = NULL;
 #endif
-        void *data[57];
+        void *data[58];
 	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() start\n");
@@ -5323,6 +5323,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	es[10] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_STATUSMAPIMAGE]);
 	es[11] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_DISPLAYNAME]);
 	es[12] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_HOSTALIAS]);
+	es[13] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_HOSTADDRESS6]);
 
 	/* get the object id */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
@@ -5394,6 +5395,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
         data[54] = (void *) &x_3d;
         data[55] = (void *) &y_3d;
         data[56] = (void *) &z_3d;
+        data[57] = (void *) &es[13]; /* HOSTADDRESS6 */
 
         result = ido2db_query_insert_or_update_hostdefinition_definition_add(idi, data);
 

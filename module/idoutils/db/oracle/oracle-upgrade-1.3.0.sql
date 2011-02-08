@@ -91,3 +91,10 @@ ALTER TABLE hostchecks DROP CONSTRAINT hostchecks;
 ALTER TABLE service_contacts DROP CONSTRAINT service_contacts;
 ALTER TABLE host_contacts DROP CONSTRAINT host_contacts;
 
+
+-- -----------------------------------------
+-- add address6 column to hosts
+-- -----------------------------------------
+
+ALTER TABLE hosts ADD address6 varchar2(128);
+

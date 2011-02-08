@@ -230,6 +230,7 @@ setup_events_with_host(time_t time) {
 		host1=(host *)malloc(sizeof(host));
 	host1->name=strdup("Host1");
 	host1->address=strdup("127.0.0.1");
+	host1->address=strdup("::1");
 	host1->retry_interval=1;
 	host1->check_interval=5;
 	host1->check_options=0;

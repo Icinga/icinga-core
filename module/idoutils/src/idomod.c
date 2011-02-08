@@ -3182,7 +3182,7 @@ int idomod_write_config(int config_type){
         }
 
 
-#define OBJECTCONFIG_ES_ITEMS 15
+#define OBJECTCONFIG_ES_ITEMS 16
 
 /* dumps object configuration data to sink */
 int idomod_write_object_config(int config_type){
@@ -3591,9 +3591,10 @@ int idomod_write_object_config(int config_type){
 		flap_detection_on_down=temp_host->flap_detection_on_down;
 		flap_detection_on_unreachable=temp_host->flap_detection_on_unreachable;
 		es[14]=ido_escape_buffer(temp_host->display_name);
+		es[15]=ido_escape_buffer(temp_host->address6);
 
 		snprintf(temp_buffer,sizeof(temp_buffer)-1
-			 ,"\n%d:\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%lf\n"
+			 ,"\n%d:\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lf\n%d=%lf\n%d=%lf\n"
 			 ,IDO_API_HOSTDEFINITION
 			 ,IDO_DATA_TIMESTAMP
 			 ,now.tv_sec
@@ -3606,6 +3607,8 @@ int idomod_write_object_config(int config_type){
 			 ,(es[1]==NULL)?"":es[1]
 			 ,IDO_DATA_HOSTADDRESS
 			 ,(es[2]==NULL)?"":es[2]
+                         ,IDO_DATA_HOSTADDRESS6
+                         ,(es[15]==NULL)?"":es[15]
 			 ,IDO_DATA_HOSTCHECKCOMMAND
 			 ,(es[3]==NULL)?"":es[3]
 			 ,IDO_DATA_HOSTEVENTHANDLER

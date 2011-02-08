@@ -1750,12 +1750,14 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf, pthread_t *thread_poo
 
 				/* the data type is out of range - throw it out */
 				if(data_type>IDO_MAX_DATA_TYPES){
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input() line: %lu, type: %d, VAL: %s\n",idi->lines_processed,data_type,val);
 #ifdef DEBUG_IDO2DB2
 					printf("## DISCARD! LINE: %lu, TYPE: %d, VAL: %s\n",idi->lines_processed,data_type,val);
 #endif
 					break;
 			                }
 
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input() line: %lu, type: %d, VAL: %s\n",idi->lines_processed,data_type,val);
 #ifdef DEBUG_IDO2DB2
 				printf("LINE: %lu, TYPE: %d, VAL:%s\n",idi->lines_processed,data_type,val);
 #endif
@@ -1845,6 +1847,7 @@ int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf){
 	case IDO_DATA_DISPLAYNAME:
 	case IDO_DATA_EMAILADDRESS:
 	case IDO_DATA_HOSTADDRESS:
+	case IDO_DATA_HOSTADDRESS6:
 	case IDO_DATA_HOSTALIAS:
 	case IDO_DATA_HOSTCHECKCOMMAND:
 	case IDO_DATA_HOSTCHECKPERIOD:
@@ -1898,8 +1901,11 @@ int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf){
 		break;
 	        }
 
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_add_input_data_item(%s)\n", newbuf);
+
 	/* check for errors */
 	if(newbuf==NULL){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_add_input_data_item() allocation error\n");
 #ifdef DEBUG_IDO2DB
 		printf("ALLOCATION ERROR\n");
 #endif

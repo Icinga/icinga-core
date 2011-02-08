@@ -331,6 +331,9 @@ typedef struct xodtemplate_host_struct{
 	int       has_been_resolved;
 	int       register_object;
 	struct xodtemplate_host_struct *next;
+	/* 2011-02-07 MF: added for dualstack IPv6 support as
+	   $HOSTADDRESS6$ macro  */
+	char    *address6;
         }xodtemplate_host;
 
 
