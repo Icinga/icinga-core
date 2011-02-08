@@ -217,7 +217,7 @@ int main(void){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not read object config data!</p>\n");
 		else
-			object_data_error();
+			print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
 	}

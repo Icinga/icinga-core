@@ -585,6 +585,7 @@ void cgi_config_file_error(char *);
 void main_config_file_error(char *);
 void object_data_error(void);
 void status_data_error(void);
+void print_error(char*, int);
 
 void display_context_help(char *);				/* displays context-sensitive help window */
 

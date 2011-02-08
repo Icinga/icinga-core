@@ -336,7 +336,7 @@ int main(int argc, char **argv){
 	if(result==ERROR){
 		if(content_type==HTML_CONTENT){
 			document_header(CGI_ID,FALSE);
-			object_data_error();
+			print_error(NULL, ERROR_CGI_OBJECT_DATA);
 			document_footer(CGI_ID);
 		        }
 		return ERROR;
@@ -347,7 +347,7 @@ int main(int argc, char **argv){
 	if(result==ERROR && daemon_check==TRUE){
 		if(content_type==HTML_CONTENT){
 			document_header(CGI_ID,FALSE);
-			status_data_error();
+			print_error(NULL, ERROR_CGI_STATUS_DATA);
 			document_footer(CGI_ID);
 		        }
 		return ERROR;
