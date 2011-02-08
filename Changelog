@@ -26,6 +26,7 @@ ENHANCEMENTS
 * core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057
 * core: allow empty hostgroup aissgments for services as opt-in config option (Max Schubert) #949
 * core: do not copy broker modules (OMD patch) #896
+* core: fix host alias saved in resention data survived reconfiguration #935
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959

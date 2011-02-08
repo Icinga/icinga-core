@@ -351,7 +351,6 @@ int xrddefault_save_state_information(void){
 
 		fprintf(fp,"host {\n");
 		fprintf(fp,"host_name=%s\n",temp_host->name);
-		fprintf(fp,"alias=%s\n",temp_host->alias);
 		fprintf(fp,"display_name=%s\n",temp_host->display_name);
 		fprintf(fp,"modified_attributes=%lu\n",(temp_host->modified_attributes & ~host_attribute_mask));
 		fprintf(fp,"check_command=%s\n",(temp_host->host_check_command==NULL)?"":temp_host->host_check_command);
@@ -1233,10 +1232,6 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 							temp_host->last_state=atoi(val);
 						else if(!strcmp(var,"last_hard_state"))
 							temp_host->last_hard_state=atoi(val);
-						else if(!strcmp(var,"alias")){
-							my_free(temp_host->alias);
-							temp_host->alias=(char *)strdup(val);
-							}
 						else if(!strcmp(var,"display_name")){
 							my_free(temp_host->display_name);
 							temp_host->display_name=(char *)strdup(val);
