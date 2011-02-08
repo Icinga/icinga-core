@@ -2229,7 +2229,7 @@ void cgi_config_file_error(char *config_file){
 	printf("<P>\n");
 	printf("<OL>\n");
 
-	printf("<LI>Make sure you've installed a CGI config file in its proper location.  See the error message about for details on where the CGI is expecting to find the configuration file.  A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+	printf("<LI>Make sure you've installed a CGI config file in its proper location.  A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
 	printf("<LI>Make sure the user your web server is running as has permission to read the CGI config file.\n");
 
 	printf("</OL>\n");
@@ -2258,7 +2258,7 @@ void main_config_file_error(char *config_file){
 	printf("<P>\n");
 	printf("<OL>\n");
 
-	printf("<LI>Make sure you've installed a main config file in its proper location.  See the error message about for details on where the CGI is expecting to find the configuration file.  A sample main configuration file (named <b>icinga.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+	printf("<LI>Make sure you've installed a main config file in its proper location. A sample main configuration file (named <b>icinga.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
 	printf("<LI>Make sure the user your web server is running as has permission to read the main config file.\n");
 
 	printf("</OL>\n");
@@ -2336,13 +2336,20 @@ void status_data_error(void){
 
 void print_error(char *config_file, int error_type){
 
-        document_header(ERROR_CGI_ID,TRUE);
+	/* if cgi.cfg is missing, we don't know which fancy style to use, take our own */
+	if(error_type!=ERROR_CGI_CFG_FILE){
+	        document_header(ERROR_CGI_ID,TRUE);
+	}
 
          /* Giving credits to stop.png image source */
         printf("\n<!-- Image \"stop.png\" has been taken from \"http://fedoraproject.org/wiki/Template:Admon/caution\" -->\n\n");
 
         printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-        printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+	if(error_type==ERROR_CGI_CFG_FILE){
+	        printf("<DIV style='font-family:  Helvetica, serif; background-color: #fff; color: #000; font-size: 8pt; text-align:left; font-weight: bold; margin:1em; border:1px red solid; background-color: #FFE5E5;' CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55></td>");
+	} else {
+	        printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+	}
         printf("<td class='errorMessage'>");
 
 	switch(error_type){

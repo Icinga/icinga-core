@@ -21,6 +21,7 @@ ENHANCEMENTS
 * classic ui: add trend timeperiod feature to locate the next problem (Carsten Emde) #1074
 * classic ui: add configurable http charset support (default utf-8) within the cgis #1002
 * classic ui: add csv export to config.cgi #1052
+* classic ui: beautify and modularize error msg #1198
 
 * core: add support for same host service dependencies with servicegroups (Mathieu Gagné) #928
 * core: allow eventbroker modules to override sending notifications (Matthieu Kermagoret) #1057

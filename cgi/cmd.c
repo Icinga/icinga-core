@@ -185,7 +185,7 @@ int main(void){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not open CGI config file!</p>\n");
 		else
-			cgi_config_file_error(get_cgi_config_location());
+			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -197,7 +197,7 @@ int main(void){
 		if(content_type==WML_CONTENT)
 			printf("<p>Error: Could not open main config file!</p>\n");
 		else
-			main_config_file_error(main_config_file);
+			print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
