@@ -116,6 +116,16 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#ebddf515feb889e45d11858dcb02bf8d">MINISTATUS_CGI_ID</a>&nbsp;&nbsp;&nbsp;19</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#73453061aba91bc3daeda56c3d753fe8">ERROR_CGI_ID</a>&nbsp;&nbsp;&nbsp;20</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#c64b8dc3f2dd0eaeef91c0d7867b384f">ERROR_CGI_STATUS_DATA</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#b4c9d7e3646b3ec0a8892e71bd98930a">ERROR_CGI_OBJECT_DATA</a>&nbsp;&nbsp;&nbsp;2</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#860258ef3173488808e18de92b28187e">ERROR_CGI_CFG_FILE</a>&nbsp;&nbsp;&nbsp;3</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#419ef2b78f4e4f5fc21d4b460946d45f">ERROR_CGI_MAIN_CFG</a>&nbsp;&nbsp;&nbsp;4</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#2fc2817399ece9daaf172f0a20b1ea1b">COMMON_CSS</a>&nbsp;&nbsp;&nbsp;&quot;common.css&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#f64407183c18715f72d0663cc0cbf380">JQUERY_DD_CSS</a>&nbsp;&nbsp;&nbsp;&quot;dd.css&quot;</td></tr>
@@ -825,6 +835,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#c8c2b9e19a2ac9d92a84638f70292d08">object_data_error</a> (void)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#a2296bfc385136dc737238dfb116f00d">status_data_error</a> (void)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#cc24ff0f9c40e901e06f641f0d53dcb6">print_error</a> (char *, int)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cgiutils_8h.html#adea6cd8ed079ac7b34b51d356d75073">display_context_help</a> (char *)</td></tr>
 
@@ -2987,6 +2999,81 @@
         <span class="comment">/* MAIN LOOP */</span>         }                                                                       \
         <span class="comment">/* Hide evidence */</span>     processed_string=<a class="code" href="cgiutils_8h.html#910e10da3dff7baaebb17c530f7ffc7a">MU_origstr</a>;
 </pre></div>
+</div>
+</div><p>
+<a class="anchor" name="860258ef3173488808e18de92b28187e"></a><!-- doxytag: member="cgiutils.h::ERROR_CGI_CFG_FILE" ref="860258ef3173488808e18de92b28187e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERROR_CGI_CFG_FILE&nbsp;&nbsp;&nbsp;3          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="73453061aba91bc3daeda56c3d753fe8"></a><!-- doxytag: member="cgiutils.h::ERROR_CGI_ID" ref="73453061aba91bc3daeda56c3d753fe8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERROR_CGI_ID&nbsp;&nbsp;&nbsp;20          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="419ef2b78f4e4f5fc21d4b460946d45f"></a><!-- doxytag: member="cgiutils.h::ERROR_CGI_MAIN_CFG" ref="419ef2b78f4e4f5fc21d4b460946d45f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERROR_CGI_MAIN_CFG&nbsp;&nbsp;&nbsp;4          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b4c9d7e3646b3ec0a8892e71bd98930a"></a><!-- doxytag: member="cgiutils.h::ERROR_CGI_OBJECT_DATA" ref="b4c9d7e3646b3ec0a8892e71bd98930a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERROR_CGI_OBJECT_DATA&nbsp;&nbsp;&nbsp;2          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c64b8dc3f2dd0eaeef91c0d7867b384f"></a><!-- doxytag: member="cgiutils.h::ERROR_CGI_STATUS_DATA" ref="c64b8dc3f2dd0eaeef91c0d7867b384f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERROR_CGI_STATUS_DATA&nbsp;&nbsp;&nbsp;1          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
 </div>
 </div><p>
 <a class="anchor" name="ee56c2898f01e2273e7db42d4af88db6"></a><!-- doxytag: member="cgiutils.h::EXPAND_ICON" ref="ee56c2898f01e2273e7db42d4af88db6" args="" -->
@@ -6918,6 +7005,35 @@
 
 </div>
 </div><p>
+<a class="anchor" name="cc24ff0f9c40e901e06f641f0d53dcb6"></a><!-- doxytag: member="cgiutils.h::print_error" ref="cc24ff0f9c40e901e06f641f0d53dcb6" args="(char *, int)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_error           </td>
+          <td>(</td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="3e6852d39e33cf8231e3a25d01582d5a"></a><!-- doxytag: member="cgiutils.h::print_extra_hostgroup_url" ref="3e6852d39e33cf8231e3a25d01582d5a" args="(char *, char *)" -->
 <div class="memitem">
 <div class="memproto">
@@ -7350,7 +7466,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="align: right;"><small>Generated on Wed Jan 19 16:19:48 2011 for icinga-core by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Wed Feb 9 16:56:22 2011 for icinga-core by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>

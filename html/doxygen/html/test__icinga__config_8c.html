@@ -3171,7 +3171,8 @@
 <div class="memdoc">
 
 <p>
-
+These point to their corresponding pointer arrays in global_macros AFTER macros have been initialized.<p>
+They really only exist so that eventbroker modules that reference them won't need to be re-compiled, although modules that rely on their values after having run a certain command will require an update 
 </div>
 </div><p>
 <a class="anchor" name="b656e45df3a3ee00dd9df729e87e8fe6"></a><!-- doxytag: member="test_icinga_config.c::max_check_reaper_time" ref="b656e45df3a3ee00dd9df729e87e8fe6" args="" -->
@@ -4389,7 +4390,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="align: right;"><small>Generated on Wed Jan 19 16:19:48 2011 for icinga-core by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Wed Feb 9 16:56:22 2011 for icinga-core by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>

@@ -80,7 +80,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structtimerange__struct.html">timerange</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a5467be46f56d3b26663c187938f146b">add_timerange_to_daterange</a> (<a class="el" href="structdaterange__struct.html">daterange</a> *drange, unsigned long <a class="el" href="cmd_8c.html#0dbe94ad6adc33aeafa33258184c3f14">start_time</a>, unsigned long <a class="el" href="cmd_8c.html#e00bb7c163fdba6ff06aec18903b8cda">end_time</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structhost__struct.html">host</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#fc66659570d053729a5af12a6eccdbdb">add_host</a> (char *name, char *display_name, char *alias, char *address, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structhost__struct.html">host</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#b76c12296ef80446cfb04208c075efc9">add_host</a> (char *name, char *display_name, char *alias, char *address, char *address6, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structhostsmember__struct.html">hostsmember</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#1f51a07755729c8a05575d2c7a06d94a">add_parent_host_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, char *<a class="el" href="test__xsddefault_8c.html#7112871842ca64f3604e56a03d40d1a7">host_name</a>)</td></tr>
 
@@ -1061,7 +1061,7 @@
 
 </div>
 </div><p>
-<a class="anchor" name="fc66659570d053729a5af12a6eccdbdb"></a><!-- doxytag: member="objects.c::add_host" ref="fc66659570d053729a5af12a6eccdbdb" args="(char *name, char *display_name, char *alias, char *address, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host)" -->
+<a class="anchor" name="b76c12296ef80446cfb04208c075efc9"></a><!-- doxytag: member="objects.c::add_host" ref="b76c12296ef80446cfb04208c075efc9" args="(char *name, char *display_name, char *alias, char *address, char *address6, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1088,6 +1088,12 @@
           <td></td>
           <td class="paramtype">char *&nbsp;</td>
           <td class="paramname"> <em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>address6</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -4356,7 +4362,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="align: right;"><small>Generated on Wed Jan 19 16:19:48 2011 for icinga-core by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Wed Feb 9 16:56:22 2011 for icinga-core by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>
