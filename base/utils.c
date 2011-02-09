@@ -433,7 +433,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 		setpgid(0,0);
 
 		/* set environment variables */
-		set_all_macro_environment_vars(mac, TRUE);
+		set_all_macro_environment_vars_r(mac, TRUE);
 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
@@ -544,7 +544,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 		alarm(0);
 
 		/* clear environment variables */
-		set_all_macro_environment_vars(mac, FALSE);
+		set_all_macro_environment_vars_r(mac, FALSE);
 
 #ifndef DONT_USE_MEMORY_PERFORMANCE_TWEAKS
 		/* free allocated memory */

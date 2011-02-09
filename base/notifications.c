@@ -148,8 +148,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	if(notification_list!=NULL){
 
 		/* grab the macro variables */
-		grab_host_macros(mac, temp_host);
-		grab_service_macros(mac, svc);
+		grab_host_macros_r(mac, temp_host);
+		grab_service_macros_r(mac, svc);
 
 		/* if this notification has an author, attempt to lookup the associated contact */
 		if(not_author!=NULL){
@@ -236,7 +236,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 		for(temp_notification=notification_list;temp_notification!=NULL;temp_notification=temp_notification->next){
 
 			/* grab the macro variables for this contact */
-			grab_contact_macros(mac, temp_notification->contact);
+			grab_contact_macros_r(mac, temp_notification->contact);
 
 			/* clear summary macros (they are customized for each contact) */
 			clear_summary_macros_r(mac);
@@ -1271,7 +1271,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	if(notification_list!=NULL){
 
 		/* grab the macro variables */
-		grab_host_macros(mac, hst);
+		grab_host_macros_r(mac, hst);
 
 		/* if this notification has an author, attempt to lookup the associated contact */
 		if(not_author!=NULL){
@@ -1359,7 +1359,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 		for(temp_notification=notification_list;temp_notification!=NULL;temp_notification=temp_notification->next){
 
 			/* grab the macro variables for this contact */
-			grab_contact_macros(mac, temp_notification->contact);
+			grab_contact_macros_r(mac, temp_notification->contact);
 
 			/* clear summary macros (they are customized for each contact) */
 			clear_summary_macros_r(mac);

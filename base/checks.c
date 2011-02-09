@@ -571,8 +571,8 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 
 	/* grab the host and service macro variables */
 	memset(&mac, 0, sizeof(mac));
-	grab_host_macros(&mac, temp_host);
-	grab_service_macros(&mac, svc);
+	grab_host_macros_r(&mac, temp_host);
+	grab_service_macros_r(&mac, svc);
 
 	/* get the raw command line */
 	get_raw_command_line_r(&mac, svc->check_command_ptr,svc->service_check_command,&raw_command,0);
@@ -820,7 +820,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	else if(pid==0){
 
 		/* set environment variables */
-		set_all_macro_environment_vars(&mac, TRUE);
+		set_all_macro_environment_vars_r(&mac, TRUE);
 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
@@ -991,7 +991,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		/* NOTE: this code is never reached if large install tweaks are enabled... */
 
 		/* unset environment variables */
-		set_all_macro_environment_vars(&mac, FALSE);
+		set_all_macro_environment_vars_r(&mac, FALSE);
 
 		/* free allocated memory */
 		/* this needs to be done last, so we don't free memory for variables before they're used above */
@@ -2851,7 +2851,7 @@ int execute_sync_host_check_3x(host *hst){
 
 	/* grab the host macros */
 	memset(&mac, 0, sizeof(mac));
-	grab_host_macros(&mac, hst);
+	grab_host_macros_r(&mac, hst);
 
 	/* high resolution start time for event broker */
 	gettimeofday(&start_time,NULL);
@@ -3118,7 +3118,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 
 	/* grab the host macro variables */
 	memset(&mac, 0, sizeof(mac));
-	grab_host_macros(&mac, hst);
+	grab_host_macros_r(&mac, hst);
 
 	/* get the raw command line */
 	get_raw_command_line_r(&mac, hst->check_command_ptr,hst->host_check_command,&raw_command,0);
@@ -3242,7 +3242,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	else if(pid==0){
 
 		/* set environment variables */
-		set_all_macro_environment_vars(&mac, TRUE);
+		set_all_macro_environment_vars_r(&mac, TRUE);
 
 		/* ADDED 11/12/07 EG */
 		/* close external command file and shut down worker thread */
@@ -3335,7 +3335,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		/* NOTE: this code is never reached if large install tweaks are enabled... */
 
 		/* unset environment variables */
-		set_all_macro_environment_vars(&mac, FALSE);
+		set_all_macro_environment_vars_r(&mac, FALSE);
 
 		/* free allocated memory */
 		/* this needs to be done last, so we don't free memory for variables before they're used above */

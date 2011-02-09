@@ -400,8 +400,8 @@ int xpddefault_update_service_performance_data(service *svc){
 	 */
 	memset(&mac, 0, sizeof(mac));
 	hst = find_host(svc->host_name);
-	grab_host_macros(&mac, hst);
-	grab_service_macros(&mac, svc);
+	grab_host_macros_r(&mac, hst);
+	grab_service_macros_r(&mac, svc);
 
 	/* run the performance data command */
 	xpddefault_run_service_performance_data_command(&mac, svc);
@@ -437,7 +437,7 @@ int xpddefault_update_host_performance_data(host *hst){
 
 	/* set up macros and get to work */
 	memset(&mac, 0, sizeof(mac));
-	grab_host_macros(&mac, hst);
+	grab_host_macros_r(&mac, hst);
 
 	/* run the performance data command */
 	xpddefault_run_host_performance_data_command(&mac, hst);
