@@ -54,7 +54,7 @@ extern timeperiod       *timeperiod_list;
 char *macro_x_names[MACRO_X_COUNT]; /* the macro names */
 char *macro_user[MAX_USER_MACROS]; /* $USERx$ macros */
 
-/*
+/**
  * These point to their corresponding pointer arrays in global_macros
  * AFTER macros have been initialized.
  *
@@ -65,7 +65,7 @@ char *macro_user[MAX_USER_MACROS]; /* $USERx$ macros */
  */
 char **macro_x = NULL;
 
-/*
+/**
  * scoped to this file to prevent (unintentional) mischief,
  * but see base/notifications.c for how to use it
  */
@@ -81,7 +81,7 @@ icinga_macros *get_global_macros(void){
 /************************ MACRO FUNCTIONS *************************/
 /******************************************************************/
 
-/*
+/**
  * replace macros in notification commands with their values,
  * the thread-safe version
  */
@@ -268,12 +268,14 @@ int process_macros(char *input_buffer, char **output_buffer, int options){
 /********************** MACRO GRAB FUNCTIONS **********************/
 /******************************************************************/
 
-/* grab macros that are specific to a particular host */
+/**
+ * grab macros that are specific to a particular host
+ */
 int grab_host_macros(icinga_macros *mac, host *hst){
 
 	/* clear host-related macros */
-	clear_host_macros(mac);
-	clear_hostgroup_macros(mac);
+	clear_host_macros_r(mac);
+	clear_hostgroup_macros_r(mac);
 
 	/* save pointer to host */
 	mac->host_ptr=hst;
@@ -292,11 +294,13 @@ int grab_host_macros(icinga_macros *mac, host *hst){
 }
 
 
-/* grab hostgroup macros */
+/**
+ * grab hostgroup macros
+ */
 int grab_hostgroup_macros(icinga_macros *mac, hostgroup *hg){
 
 	/* clear hostgroup macros */
-	clear_hostgroup_macros(mac);
+	clear_hostgroup_macros_r(mac);
 
 	/* save the hostgroup pointer for later */
 	mac->hostgroup_ptr=hg;
@@ -308,12 +312,14 @@ int grab_hostgroup_macros(icinga_macros *mac, hostgroup *hg){
 }
 
 
-/* grab macros that are specific to a particular service */
+/**
+ * grab macros that are specific to a particular service
+ */
 int grab_service_macros(icinga_macros *mac, service *svc){
 
 	/* clear service-related macros */
-	clear_service_macros(mac);
-	clear_servicegroup_macros(mac);
+	clear_service_macros_r(mac);
+	clear_servicegroup_macros_r(mac);
 
 	/* save pointer for later */
 	mac->service_ptr=svc;
@@ -333,11 +339,13 @@ int grab_service_macros(icinga_macros *mac, service *svc){
 
 
 
-/* grab macros that are specific to a particular servicegroup */
+/**
+ * grab macros that are specific to a particular servicegroup
+ */
 int grab_servicegroup_macros(icinga_macros *mac, servicegroup *sg){
 
 	/* clear servicegroup macros */
-	clear_servicegroup_macros(mac);
+	clear_servicegroup_macros_r(mac);
 
 	/* save the pointer for later */
 	mac->servicegroup_ptr=sg;
@@ -350,12 +358,14 @@ int grab_servicegroup_macros(icinga_macros *mac, servicegroup *sg){
 
 
 
-/* grab macros that are specific to a particular contact */
+/**
+ * grab macros that are specific to a particular contact
+ */
 int grab_contact_macros(icinga_macros *mac, contact *cntct){
 
 	/* clear contact-related macros */
-	clear_contact_macros(mac);
-	clear_contactgroup_macros(mac);
+	clear_contact_macros_r(mac);
+	clear_contactgroup_macros_r(mac);
 
 	/* save pointer to contact for later */
 	mac->contact_ptr=cntct;
@@ -374,11 +384,13 @@ int grab_contact_macros(icinga_macros *mac, contact *cntct){
 }
 
 
-/* grab contactgroup macros */
+/**
+ * grab contactgroup macros
+ */
 int grab_contactgroup_macros(icinga_macros *mac, contactgroup *cg){
 
         /* clear contactgroup macros */
-        clear_contactgroup_macros(mac);
+        clear_contactgroup_macros_r(mac);
 
         /* save pointer to contactgroup for later */
         mac->contactgroup_ptr=cg;
@@ -394,7 +406,9 @@ int grab_contactgroup_macros(icinga_macros *mac, contactgroup *cg){
 /******************* MACRO GENERATION FUNCTIONS *******************/
 /******************************************************************/
 
-/* this is the big one */
+/**
+ * this is the big one
+ */
 int grab_macro_value(icinga_macros *mac, char *macro_buffer, char **output, int *clean_options, int *free_macro){
 	char *buf=NULL;
 	char *ptr=NULL;
@@ -612,7 +626,9 @@ int grab_macro_value(icinga_macros *mac, char *macro_buffer, char **output, int 
 }
 
 
-
+/**
+ * grab macrox value
+ */
 int grab_macrox_value(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output, int *free_macro){
 	host *temp_host=NULL;
 	hostgroup *temp_hostgroup=NULL;
@@ -1246,7 +1262,9 @@ int grab_macrox_value(icinga_macros *mac, int macro_type, char *arg1, char *arg2
 
 
 
-/* calculates the value of a custom macro */
+/**
+ * calculates the value of a custom macro
+ */
 int grab_custom_macro_value(icinga_macros *mac, char *macro_name, char *arg1, char *arg2, char **output){
 	host *temp_host=NULL;
 	hostgroup *temp_hostgroup=NULL;
@@ -1454,7 +1472,9 @@ int grab_custom_macro_value(icinga_macros *mac, char *macro_name, char *arg1, ch
 
 
 
-/* calculates a date/time macro */
+/**
+ * calculates a date/time macro
+ */
 int grab_datetime_macro(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output){
 	time_t current_time=0L;
 	timeperiod *temp_timeperiod=NULL;
@@ -1548,7 +1568,9 @@ int grab_datetime_macro(icinga_macros *mac, int macro_type, char *arg1, char *ar
 
 
 
-/* calculates a host macro */
+/**
+ * calculates a host macro
+ */
 int grab_standard_host_macro(icinga_macros *mac, int macro_type, host *temp_host, char **output, int *free_macro){
 	char *temp_buffer=NULL;
 #ifdef NSCORE
@@ -1837,7 +1859,9 @@ int grab_standard_host_macro(icinga_macros *mac, int macro_type, host *temp_host
 
 
 
-/* computes a hostgroup macro */
+/**
+ * computes a hostgroup macro
+ */
 int grab_standard_hostgroup_macro(icinga_macros *mac, int macro_type, hostgroup *temp_hostgroup, char **output){
 	hostsmember *temp_hostsmember=NULL;
 	char *temp_buffer=NULL;
@@ -1927,7 +1951,9 @@ int grab_standard_hostgroup_macro(icinga_macros *mac, int macro_type, hostgroup 
 
 
 
-/* computes a service macro */
+/**
+ * computes a service macro
+ */
 int grab_standard_service_macro(icinga_macros *mac, int macro_type, service *temp_service, char **output, int *free_macro){
 	char *temp_buffer=NULL;
 #ifdef NSCORE
@@ -2162,7 +2188,9 @@ int grab_standard_service_macro(icinga_macros *mac, int macro_type, service *tem
 
 
 
-/* computes a servicegroup macro */
+/**
+ * computes a servicegroup macro
+ */
 int grab_standard_servicegroup_macro(icinga_macros *mac, int macro_type, servicegroup *temp_servicegroup, char **output){
 	servicesmember *temp_servicesmember=NULL;
 	char *temp_buffer=NULL;
@@ -2253,7 +2281,9 @@ int grab_standard_servicegroup_macro(icinga_macros *mac, int macro_type, service
 
 
 
-/* computes a contact macro */
+/**
+ * computes a contact macro
+ */
 int grab_standard_contact_macro(icinga_macros *mac, int macro_type, contact *temp_contact, char **output){
 #ifdef NSCORE
 	contactgroup *temp_contactgroup=NULL;
@@ -2310,7 +2340,9 @@ int grab_standard_contact_macro(icinga_macros *mac, int macro_type, contact *tem
 
 
 
-/* computes a contact address macro */
+/**
+ * computes a contact address macro
+ */
 int grab_contact_address_macro(icinga_macros *mac, int macro_num, contact *temp_contact, char **output){
 
 	if(macro_num<0 || macro_num>=MAX_CONTACT_ADDRESSES)
@@ -2328,7 +2360,9 @@ int grab_contact_address_macro(icinga_macros *mac, int macro_num, contact *temp_
 
 
 
-/* computes a contactgroup macro */
+/**
+ * computes a contactgroup macro
+ */
 int grab_standard_contactgroup_macro(icinga_macros *mac, int macro_type, contactgroup *temp_contactgroup, char **output){
 	contactsmember *temp_contactsmember=NULL;
 
@@ -2367,7 +2401,9 @@ int grab_standard_contactgroup_macro(icinga_macros *mac, int macro_type, contact
 
 
 
-/* computes a custom object macro */
+/**
+ * computes a custom object macro
+ */
 int grab_custom_object_macro(icinga_macros *mac, char *macro_name, customvariablesmember *vars, char **output){
 	customvariablesmember *temp_customvariablesmember=NULL;
 	int result=ERROR;
@@ -2398,7 +2434,9 @@ int grab_custom_object_macro(icinga_macros *mac, char *macro_name, customvariabl
 /********************* MACRO STRING FUNCTIONS *********************/
 /******************************************************************/
 
-/* cleans illegal characters in macros before output */
+/**
+ * cleans illegal characters in macros before output
+ */
 char *clean_macro_chars(char *macro,int options){
 	register int x=0;
 	register int y=0;
@@ -2454,7 +2492,9 @@ char *clean_macro_chars(char *macro,int options){
 
 
 
-/* encodes a string in proper URL format */
+/**
+ * encodes a string in proper URL format
+ */
 char *get_url_encoded_string(char *input){
 	register int x=0;
 	register int y=0;
@@ -2506,7 +2546,9 @@ char *get_url_encoded_string(char *input){
 /***************** MACRO INITIALIZATION FUNCTIONS *****************/
 /******************************************************************/
 
-/* initializes global macros */
+/**
+ * initializes global macros
+ */
 int init_macros(void){
 
 	init_macrox_names();
@@ -2518,7 +2560,7 @@ int init_macros(void){
 	 * from the command fifo. Otherwise a memset() would
 	 * have been better.
 	 */
-	clear_volatile_macros(&global_macros);
+	clear_volatile_macros_r(&global_macros);
 
 	/* backwards compatibility hack */
 	macro_x = global_macros.x;
@@ -2528,7 +2570,7 @@ int init_macros(void){
 
 
 
-/*
+/**
  * initializes the names of macros, using this nifty little macro
  * which ensures we never add any typos to the list
  * ##name appends as astring, #name makes sure that param is trated as string
@@ -2705,7 +2747,9 @@ int init_macrox_names(void){
 /********************* MACRO CLEANUP FUNCTIONS ********************/
 /******************************************************************/
 
-/* free memory associated with the macrox names */
+/**
+ * free memory associated with the macrox names
+ */
 int free_macrox_names(void){
 	register int x=0;
 
@@ -2718,8 +2762,10 @@ int free_macrox_names(void){
 
 
 
-/* clear argv macros - used in commands */
-int clear_argv_macros(icinga_macros *mac){
+/**
+ * clear argv macros - used in commands
+ */
+int clear_argv_macros_r(icinga_macros *mac){
 	register int x=0;
 
 	/* command argument macros */
@@ -2729,8 +2775,12 @@ int clear_argv_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_argv_macros(void){
+        return clear_argv_macros_r(&global_macros);
+}
 
-/*
+
+/**
  * copies non-volatile macros from global macro_x to **dest, which
  * must be large enough to hold at least MACRO_X_COUNT entries.
  * We use a shortlived macro to save up on typing
@@ -2755,9 +2805,11 @@ void copy_constant_macros(char **dest){
 }
 #undef cp_macro
 
-
-/* clear all macros that are not "constant" (i.e. they change throughout the course of monitoring) */
-int clear_volatile_macros(icinga_macros *mac){
+/**
+ * clear all macros that are not "constant" (i.e. they change throughout the course of monitoring)
+ * the thread-safe version
+ */
+int clear_volatile_macros_r(icinga_macros *mac){
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
 	register int x=0;
@@ -2804,7 +2856,7 @@ int clear_volatile_macros(icinga_macros *mac){
 	my_free(mac->ondemand);
 
 	/* clear ARGx macros */
-	clear_argv_macros(mac);
+	clear_argv_macros_r(mac);
 
 	/* clear custom host variables */
 	for(this_customvariablesmember=mac->custom_host_vars;this_customvariablesmember!=NULL;this_customvariablesmember=next_customvariablesmember){
@@ -2836,10 +2888,16 @@ int clear_volatile_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_volatile_macros(void){
+	return clear_volatile_macros_r(&global_macros);
+}
 
 
-/* clear service macros */
-int clear_service_macros(icinga_macros *mac){
+/**
+ * clear service macros
+ * the thread-safe version
+ */
+int clear_service_macros_r(icinga_macros *mac){
 	register int x;
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
@@ -2904,9 +2962,16 @@ int clear_service_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_service_macros(void){
+        return clear_service_macros_r(&global_macros);
+}
 
-/* clear host macros */
-int clear_host_macros(icinga_macros *mac){
+
+/**
+ * clear host macros
+ * the thread-safe version
+ */
+int clear_host_macros_r(icinga_macros *mac){
 	register int x;
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
@@ -2977,9 +3042,16 @@ int clear_host_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_host_macros(void){
+        return clear_host_macros_r(&global_macros);
+}
 
-/* clear hostgroup macros */
-int clear_hostgroup_macros(icinga_macros *mac){
+
+/**
+ * clear hostgroup macros
+ * the thread-safe version
+ */
+int clear_hostgroup_macros_r(icinga_macros *mac){
 	register int x;
 
 	for(x=0;x<MACRO_X_COUNT;x++){
@@ -3001,11 +3073,18 @@ int clear_hostgroup_macros(icinga_macros *mac){
 	mac->hostgroup_ptr=NULL;
 
 	return OK;
-	}
+}
+
+int clear_hostgroup_macros(void){
+        return clear_hostgroup_macros_r(&global_macros);
+}
 
 
-/* clear servicegroup macros */
-int clear_servicegroup_macros(icinga_macros *mac){
+/**
+ * clear servicegroup macros
+ * the thread-safe version
+ */
+int clear_servicegroup_macros_r(icinga_macros *mac){
 	register int x;
 
 	for(x=0;x<MACRO_X_COUNT;x++){
@@ -3029,9 +3108,16 @@ int clear_servicegroup_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_servicegroup_macros(void){
+        return clear_servicegroup_macros_r(&global_macros);
+}
 
-/* clear contact macros */
-int clear_contact_macros(icinga_macros *mac){
+
+/**
+ * clear contact macros
+ * the thread-safe version
+ */
+int clear_contact_macros_r(icinga_macros *mac){
 	register int x;
 	customvariablesmember *this_customvariablesmember=NULL;
 	customvariablesmember *next_customvariablesmember=NULL;
@@ -3069,10 +3155,16 @@ int clear_contact_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_contact_macros(void){
+        return clear_contact_macros_r(&global_macros);
+}
 
 
-/* clear contactgroup macros */
-int clear_contactgroup_macros(icinga_macros *mac){
+/**
+ * clear contactgroup macros
+ * the thread-safe version
+ */
+int clear_contactgroup_macros_r(icinga_macros *mac){
 	register int x;
 
 	for(x=0;x<MACRO_X_COUNT;x++){
@@ -3093,10 +3185,17 @@ int clear_contactgroup_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_contactgroup_macros(void){
+        return clear_contactgroup_macros_r(&global_macros);
+}
 
 
-/* clear summary macros */
-int clear_summary_macros(icinga_macros *mac){
+
+/**
+ * clear summary macros
+ * the thread-safe version
+ */
+int clear_summary_macros_r(icinga_macros *mac){
 	register int x;
 
 	for(x=MACRO_TOTALHOSTSUP;x<=MACRO_TOTALSERVICEPROBLEMSUNHANDLED;x++)
@@ -3105,6 +3204,9 @@ int clear_summary_macros(icinga_macros *mac){
 	return OK;
 }
 
+int clear_summary_macros(void){
+        return clear_summary_macros_r(&global_macros);
+}
 
 
 /******************************************************************/
@@ -3113,7 +3215,9 @@ int clear_summary_macros(icinga_macros *mac){
 
 #ifdef NSCORE
 
-/* sets or unsets all macro environment variables */
+/**
+ * sets or unsets all macro environment variables
+ */
 int set_all_macro_environment_vars(icinga_macros *mac, int set){
 
 
@@ -3130,7 +3234,9 @@ int set_all_macro_environment_vars(icinga_macros *mac, int set){
 
 
 
-/* sets or unsets macrox environment variables */
+/**
+ * sets or unsets macrox environment variables
+ */
 int set_macrox_environment_vars(icinga_macros *mac, int set){
 	register int x=0;
 	int free_macro=FALSE;
@@ -3164,7 +3270,9 @@ int set_macrox_environment_vars(icinga_macros *mac, int set){
 
 
 
-/* sets or unsets argv macro environment variables */
+/**
+ * sets or unsets argv macro environment variables
+ */
 int set_argv_macro_environment_vars(icinga_macros *mac, int set){
 	char *macro_name=NULL;
 	register int x=0;
@@ -3181,7 +3289,9 @@ int set_argv_macro_environment_vars(icinga_macros *mac, int set){
 
 
 
-/* sets or unsets custom host/service/contact macro environment variables */
+/**
+ * sets or unsets custom host/service/contact macro environment variables
+ */
 int set_custom_macro_environment_vars(icinga_macros *mac, int set){
 	customvariablesmember *temp_customvariablesmember=NULL;
 	host *temp_host=NULL;
@@ -3234,7 +3344,9 @@ int set_custom_macro_environment_vars(icinga_macros *mac, int set){
 
 
 
-/* sets or unsets contact address environment variables */
+/**
+ * sets or unsets contact address environment variables
+ */
 int set_contact_address_environment_vars(icinga_macros *mac, int set){
 	char *varname=NULL;
 	register int x;
@@ -3254,7 +3366,9 @@ int set_contact_address_environment_vars(icinga_macros *mac, int set){
 
 
 
-/* sets or unsets a macro environment variable */
+/**
+ * sets or unsets a macro environment variable
+ */
 int set_macro_environment_var(char *name, char *value, int set){
 	char *env_macro_name=NULL;
 

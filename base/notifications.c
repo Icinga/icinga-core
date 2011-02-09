@@ -239,7 +239,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 			grab_contact_macros(mac, temp_notification->contact);
 
 			/* clear summary macros (they are customized for each contact) */
-			clear_summary_macros(mac);
+			clear_summary_macros_r(mac);
 
 			/* notify this contact */
 			result=notify_contact_of_service(mac, temp_notification->contact,svc,type,not_author,not_data,options,escalated);
@@ -253,7 +253,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 		free_notification_list();
 
 		/* clear summary macros so they will be regenerated without contact filters when needed next */
-		clear_summary_macros(mac);
+		clear_summary_macros_r(mac);
 
 		if(type==NOTIFICATION_NORMAL){
 
@@ -1224,7 +1224,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 
 	/* clear volatile macros */
 	mac = get_global_macros();
-	clear_volatile_macros(mac);
+	clear_volatile_macros_r(mac);
 
 	log_debug_info(DEBUGL_NOTIFICATIONS,0,"Notification viability test passed.\n");
 
@@ -1362,7 +1362,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 			grab_contact_macros(mac, temp_notification->contact);
 
 			/* clear summary macros (they are customized for each contact) */
-			clear_summary_macros(mac);
+			clear_summary_macros_r(mac);
 
 			/* notify this contact */
 			result=notify_contact_of_host(mac, temp_notification->contact,hst,type,not_author,not_data,options,escalated);
@@ -1376,7 +1376,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 		free_notification_list();
 
 		/* clear summary macros so they will be regenerated without contact filters when needednext */
-		clear_summary_macros(mac);
+		clear_summary_macros_r(mac);
 
 		if(type==NOTIFICATION_NORMAL){
 

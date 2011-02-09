@@ -690,7 +690,7 @@ int get_raw_command_line_r(icinga_macros *mac, command *cmd_ptr, char *cmd, char
 	log_debug_info(DEBUGL_FUNCTIONS,0,"get_raw_command_line_r()\n");
 
 	/* clear the argv macros */
-	clear_argv_macros(mac);
+	clear_argv_macros_r(mac);
 
 	/* make sure we've got all the requirements */
 	if(cmd_ptr==NULL || full_command==NULL)
@@ -4383,7 +4383,7 @@ void free_memory(icinga_macros *mac){
 	 * macros when we get a reload or restart request through the
 	 * command pipe, or when we receive a SIGHUP.
 	 */
-	clear_volatile_macros(mac);
+	clear_volatile_macros_r(mac);
 
 	free_macrox_names();
 

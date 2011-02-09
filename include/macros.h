@@ -61,6 +61,23 @@ struct icinga_macros {
 };
 typedef struct icinga_macros icinga_macros;
 
+/* stay compatible */
+struct nagios_macros {
+        char *x[MACRO_X_COUNT];
+        char *argv[MAX_COMMAND_ARGUMENTS];
+        char *contactaddress[MAX_CONTACT_ADDRESSES];
+        char *ondemand;
+        host *host_ptr;
+        hostgroup *hostgroup_ptr;
+        service *service_ptr;
+        servicegroup *servicegroup_ptr;
+        contact *contact_ptr;
+        contactgroup *contactgroup_ptr;
+        customvariablesmember *custom_host_vars;
+        customvariablesmember *custom_service_vars;
+        customvariablesmember *custom_contact_vars;
+};
+typedef struct nagios_macros nagios_macros;
 
 #define MACRO_HOSTNAME				0
 #define MACRO_HOSTALIAS				1
@@ -263,15 +280,27 @@ int free_macrox_names(void);
 
 extern void copy_constant_macros(char **dest);
 
-int clear_argv_macros(icinga_macros *mac);
-int clear_volatile_macros(icinga_macros *mac);
-int clear_host_macros(icinga_macros *mac);
-int clear_service_macros(icinga_macros *mac);
-int clear_hostgroup_macros(icinga_macros *mac);
-int clear_servicegroup_macros(icinga_macros *mac);
-int clear_contact_macros(icinga_macros *mac);
-int clear_contactgroup_macros(icinga_macros *mac);
-int clear_summary_macros(icinga_macros *mac);
+/* clear macros */
+int clear_argv_macros(void);
+int clear_volatile_macros(void);
+int clear_host_macros(void);
+int clear_service_macros(void);
+int clear_hostgroup_macros(void);
+int clear_servicegroup_macros(void);
+int clear_contact_macros(void);
+int clear_contactgroup_macros(void);
+int clear_summary_macros(void);
+
+/* clear macros thread safe */
+int clear_argv_macros_r(icinga_macros *mac);
+int clear_volatile_macros_r(icinga_macros *mac);
+int clear_host_macros_r(icinga_macros *mac);
+int clear_service_macros_r(icinga_macros *mac);
+int clear_hostgroup_macros_r(icinga_macros *mac);
+int clear_servicegroup_macros_r(icinga_macros *mac);
+int clear_contact_macros_r(icinga_macros *mac);
+int clear_contactgroup_macros_r(icinga_macros *mac);
+int clear_summary_macros_r(icinga_macros *mac);
 
 int grab_macro_value(icinga_macros *mac, char *,char **,int *,int *);
 int grab_macrox_value(icinga_macros *mac, int,char *,char *,char **,int *);

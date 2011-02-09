@@ -319,8 +319,8 @@ int log_service_event(service *svc){
 	}
 
 	process_macros_r(&mac, temp_buffer,&processed_buffer,0);
-	clear_host_macros(&mac);
-	clear_service_macros(&mac);
+	clear_host_macros_r(&mac);
+	clear_service_macros_r(&mac);
 
 	write_to_all_logs(processed_buffer,log_options);
 
@@ -362,7 +362,7 @@ int log_host_event(host *hst){
 
 	write_to_all_logs(processed_buffer,log_options);
 
-	clear_host_macros(&mac);
+	clear_host_macros_r(&mac);
 	my_free(temp_buffer);
 	my_free(processed_buffer);
 
@@ -393,7 +393,7 @@ int log_host_states(int type, time_t *timestamp){
 
 		write_to_all_logs_with_timestamp(processed_buffer,NSLOG_INFO_MESSAGE,timestamp);
 
-		clear_host_macros(&mac);
+		clear_host_macros_r(&mac);
 
 		my_free(temp_buffer);
 		my_free(processed_buffer);
@@ -433,8 +433,8 @@ int log_service_states(int type, time_t *timestamp){
 
 		write_to_all_logs_with_timestamp(processed_buffer,NSLOG_INFO_MESSAGE,timestamp);
 
-		clear_host_macros(&mac);
-		clear_service_macros(&mac);
+		clear_host_macros_r(&mac);
+		clear_service_macros_r(&mac);
 
 		my_free(temp_buffer);
 		my_free(processed_buffer);
