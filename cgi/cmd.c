@@ -263,23 +263,12 @@ int main(void){
 
 	/* if no command was specified... */
 	if(command_type==CMD_NONE){
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: No command specified!</p>\n");
-		else {
-			printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td class='errorMessage'>Error: No command was specified</td></tr></table></DIV>\n");
-			printf("</DIV>\n");
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-		}
+		print_generic_error_message("Error: No command was specified!",NULL,2);
 	}
 
-	if (is_authorized_for_read_only(&current_authdata)==TRUE){
-		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-		printf("<td class='errorMessage'>Error: It appears as though you do not have permission to perform any commands!</td></tr></table></DIV>\n");
-		printf("</DIV>\n");
-		printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-1);' class='submitButton'></DIV>\n");
+	/* if not authorized to perform commands*/
+	else if (is_authorized_for_read_only(&current_authdata)==TRUE){
+		print_generic_error_message("Error: It appears as though you do not have permission to perform any commands!",NULL,1);
 	}
 
 	/* if this is the first request for a command, present option */
@@ -1224,12 +1213,8 @@ void request_command_data(int cmd){
 		break;
 
 	default:
-		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-		printf("<td CLASS='errorMessage'>Sorry Dave, I can't let you do that...</td></tr></table></DIV>\n");
-		printf("<DIV CLASS='errorDescription'>Executing an unknown command? Shame on you!</DIV><br>");
-		printf("</DIV>\n");
-		printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		print_generic_error_message("Sorry Dave, I can't let you do that...","Executing an unknown command? Shame on you!",2);
+
 		return;
 	}
 
@@ -2008,12 +1993,8 @@ void commit_command_data(int cmd){
 		break;
 
 	default:
-		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-		printf("<td CLASS='errorMessage'>Sorry Dave, I can't let you do that...</td></tr></table></DIV>\n");
-		printf("<DIV CLASS='errorDescription'>Executing an unknown command? Shame on you!</DIV><br>");
-		printf("</DIV>\n");
-		printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
+		print_generic_error_message("Sorry Dave, I can't let you do that...","Executing an unknown command? Shame on you!",2);
+
 		return;
 	}
 
@@ -2047,35 +2028,15 @@ void commit_command_data(int cmd){
 
 	/* if Icinga isn't checking external commands, don't do anything... */
 	if(check_external_commands==FALSE){
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: %s is not checking external commands!</p>\n", PROGRAM_NAME);
-		else{
-			printf("<DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td CLASS='errorMessage'>Sorry, but %s is currently not checking for external commands, so your command will not be committed!</td></tr></table></DIV>\n", PROGRAM_NAME);
-			printf("<DIV CLASS='errorDescription'>Read the documentation for information on how to enable external commands...</DIV>\n");
-			printf("</DIV>\n");
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-		}
+		print_generic_error_message("Sorry, but Icinga is currently not checking for external commands, so your command will not be committed!","Read the documentation for information on how to enable external commands...",2);
+
 		return;
 	}
 
 	/* to be safe, we are going to REQUIRE that the authentication functionality is enabled... */
 	if(use_authentication==FALSE){
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: Authentication is not enabled!</p>\n");
-		else{
-			printf("<DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td CLASS='errorMessage'>Sorry Dave, I can't let you do that...</td></tr></table></DIV>\n");
-			printf("<DIV CLASS='errorDescription'>");
-			printf("It seems that you have chosen to not use the authentication functionality of the CGIs. ");
-			printf("I don't want to be personally responsible for what may happen as a result of allowing unauthorized users to issue commands to %s, ", PROGRAM_NAME);
-			printf("so you'll have to disable this safeguard if you are really stubborn and want to invite trouble. ");
-			printf("Read the section on CGI authentication in the HTML documentation to learn how you can enable authentication and why you should want to.</DIV>\n");
-			printf("</DIV>\n");
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-		}
+		print_generic_error_message("Sorry Dave, I can't let you do that...","It seems that you have chosen to not use the authentication functionality of the CGIs. I don't want to be personally responsible for what may happen as a result of allowing unauthorized users to issue commands to Icinga, so you'll have to disable this safeguard if you are really stubborn and want to invite trouble. Read the section on CGI authentication in the HTML documentation to learn how you can enable authentication and why you should want to.",2);
+
 		return;
 	}
 
@@ -2105,16 +2066,8 @@ void commit_command_data(int cmd){
 
 	/* Let's see if we have a command witch dosn't have any host, services or downtime/comment id's and check the authorisation */
 	if (cmd_has_objects == FALSE && is_authorized[0]==FALSE ) {
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: You're not authorized to commit that command!</p>\n");
-		else{
-			printf("<DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td CLASS='errorMessage'>Sorry, but you are not authorized to commit the specified command.</td></tr></table></DIV>\n");
-			printf("<DIV CLASS='errorDescription'>Read the section of the documentation that deals with authentication and authorization in the CGIs for more information.</DIV>\n");
-			printf("</DIV>\n");
-			printf("<BR><DIV align='center'><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-		}
+		print_generic_error_message("Sorry, but you are not authorized to commit the specified command.","Read the section of the documentation that deals with authentication and authorization in the CGIs for more information.",2);
+
 		return;
 	}
 
@@ -2135,16 +2088,7 @@ void commit_command_data(int cmd){
 				printf("<BR><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
 			}
 		}else{
-			if(content_type==WML_CONTENT)
-				printf("<p>An error occurred while committing your command!</p>\n");
-			else{
-				printf("<DIV CLASS='errorBox'>\n");
-				printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-				printf("<td CLASS='errorMessage'>An error occurred while attempting to commit your command for processing.</td></tr></table></DIV>\n");
-				printf("<DIV CLASS='errorDescription'>Unfortunately I can't determine the root cause of this problem.</DIV>\n");
-				printf("</DIV>\n");
-				printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-			}
+			print_generic_error_message("An error occurred while attempting to commit your command for processing.","Unfortunately I can't determine the root cause of this problem.",2);
 		}
 	} else {
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
@@ -2163,11 +2107,7 @@ void commit_command_data(int cmd){
 		}
 
 		if (error_found) {
-			printf("<DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td CLASS='errorMessage'>An error occurred while attempting to commit your command for processing.</td></tr></table></DIV>\n");
-			printf("<DIV CLASS='errorDescription'>Not all commands could be send off successfully...</DIV>\n");
-			printf("</DIV>\n");
+			print_generic_error_message("An error occurred while attempting to commit your command for processing.","Not all commands could be send off successfully...",0);
 		} else {
 			printf("<DIV CLASS='successBox'>\n");
 			printf("<DIV CLASS='successMessage'>Your command requests were successfully submitted to %s for processing.<BR><BR>\n",PROGRAM_NAME);
@@ -2677,6 +2617,7 @@ int commit_command(int cmd){
 int write_command_to_file(char *cmd){
 	FILE *fp;
 	struct stat statbuf;
+	char error_string[MAX_INPUT_BUFFER];
 
 	/*
 	 * Commands are not allowed to have newlines in them, as
@@ -2688,17 +2629,10 @@ int write_command_to_file(char *cmd){
 
 	/* bail out if the external command file doesn't exist */
 	if(stat(command_file,&statbuf)){
+		snprintf(error_string,sizeof(error_string),"Error: Could not stat() command file '%s'!",command_file);
+		error_string[sizeof(error_string)-1]='\x0';
 
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: Could not stat() external command file!</p>\n");
-		else{
-			printf("<DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td CLASS='errorMessage'>Error: Could not stat() command file '%s'!</td></tr></table></DIV>\n",command_file);
-			printf("<DIV CLASS='errorDescription'>The external command file may be missing, %s may not be running, and/or %s may not be checking external commands.</DIV>\n", PROGRAM_NAME, PROGRAM_NAME);
-			printf("</DIV>\n");
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-		}
+		print_generic_error_message(error_string,"The external command file may be missing, Icinga may not be running, and/or Icinga may not be checking external commands.",2);
 
 		return ERROR;
 	}
@@ -2706,17 +2640,10 @@ int write_command_to_file(char *cmd){
 	/* open the command for writing (since this is a pipe, it will really be appended) */
 	fp=fopen(command_file,"w");
 	if(fp==NULL){
+		snprintf(error_string,sizeof(error_string),"Error: Could not open command file '%s' for update!",command_file);
+		error_string[sizeof(error_string)-1]='\x0';
 
-		if(content_type==WML_CONTENT)
-			printf("<p>Error: Could not open command file for update!</p>\n");
-		else{
-			printf("<DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
-			printf("<td CLASS='errorMessage'>Error: Could not open command file '%s' for update!</td></tr></table></DIV>\n",command_file);
-			printf("<DIV CLASS='errorDescription'>The permissions on the external command file and/or directory may be incorrect. Read the FAQs on how to setup proper permissions.</DIV>\n");
-			printf("</DIV>\n");
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-		}
+		print_generic_error_message(error_string,"The permissions on the external command file and/or directory may be incorrect. Read the FAQs on how to setup proper permissions.",2);
 
 		return ERROR;
 	}

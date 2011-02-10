@@ -2236,7 +2236,7 @@ void cgi_config_file_error(char *config_file){
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
+	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2265,7 +2265,7 @@ void main_config_file_error(char *config_file){
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
+	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2293,7 +2293,7 @@ void object_data_error(void){
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
+	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2327,7 +2327,7 @@ void status_data_error(void){
 	printf("</P>\n");
 
 	printf("<P>\n");
-	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If all else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
+	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
 	printf("</P>\n");
 
 	return;
@@ -2346,11 +2346,11 @@ void print_error(char *config_file, int error_type){
 
         printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
 	if(error_type==ERROR_CGI_CFG_FILE){
-	        printf("<DIV style='font-family:  Helvetica, serif; background-color: #fff; color: #000; font-size: 8pt; text-align:left; font-weight: bold; margin:1em; border:1px red solid; background-color: #FFE5E5;' CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55></td>");
+	        printf("<DIV style='font-family:  Helvetica, serif; background-color: #fff; color: #000; font-size: 8pt; text-align:left; font-weight: bold; margin:1em; border:1px red solid; background-color: #FFE5E5;' CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55 valign=top></td>");
 	} else {
-	        printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+	        printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55 valign=top><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
 	}
-        printf("<td class='errorMessage'>");
+        printf("<td class='errorDescription'>");
 
 	switch(error_type){
 		case ERROR_CGI_STATUS_DATA:
@@ -2467,3 +2467,32 @@ void strip_splunk_query_terms(char *buffer){
 	return;
 	}
 
+void print_generic_error_message(char *title, char *text, int returnlevels) {
+
+	if(content_type==WML_CONTENT) {
+		printf("<p>");
+
+		if(title!=NULL && title[0]!='\x0')
+			printf("%s",title);
+		if(text!=NULL && text[0]!='\x0')
+			printf("<br>%s",text);
+
+		printf("</p>\n");
+	} else {
+		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
+		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
+
+		if(title!=NULL && title[0]!='\x0')
+			printf("<td CLASS='errorMessage'>%s</td></tr></table></DIV>\n",title);
+
+		if(text!=NULL && text[0]!='\x0')
+			printf("<DIV CLASS='errorDescription'>%s</DIV><br>",text);
+
+		printf("</DIV>\n");
+
+		if(returnlevels!=0)
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'></DIV>\n",returnlevels);
+	}
+
+	return;
+}

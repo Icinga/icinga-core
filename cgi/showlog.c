@@ -259,17 +259,15 @@ int display_log(void){
 	mmapfile *thefile=NULL;
 	char last_message_date[MAX_INPUT_BUFFER]="";
 	char current_message_date[MAX_INPUT_BUFFER]="";
+	char error_text[MAX_INPUT_BUFFER]="";
 	struct tm *time_ptr=NULL;
 
 
 	/* check to see if the user is authorized to view the log file */
 	if(is_authorized_for_system_information(&current_authdata)==FALSE){
-		printf("<HR>\n");
-		printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view the log file...</DIV><br><br>\n");
-		printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>and check the authorization options in your CGI configuration file.</DIV>\n");
-		printf("<HR>\n");
+		print_generic_error_message("It appears as though you do not have permission to view the log file...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		return ERROR;
-	        }
+	}
 
 	error=FALSE;
 
@@ -291,12 +289,12 @@ int display_log(void){
 	if(use_lifo==FALSE){
 
 		if((thefile=mmap_fopen(log_file_to_use))==NULL){
-			printf("<HR>\n");
-			printf("<P><DIV CLASS='errorMessage'>Error: Could not open log file '%s' for reading!</DIV></P>",log_file_to_use);
-			printf("<HR>\n");
+			snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
+			error_text[sizeof(error_text)-1]='\x0';
+			print_generic_error_message(error_text,NULL,0);
 			error=TRUE;
-	                }
-	        }
+		}
+	}
 
 	if(error==FALSE){
 

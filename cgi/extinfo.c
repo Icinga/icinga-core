@@ -835,9 +835,7 @@ void show_process_info(void){
 	/* make sure the user has rights to view system information */
 	if(is_authorized_for_system_information(&current_authdata)==FALSE){
 
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view process information...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
+		print_generic_error_message("It appears as though you do not have permission to view process information...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 
 		return;
 	}
@@ -1105,11 +1103,7 @@ void show_host_info(void){
 
 	/* make sure the user has rights to view host information */
 	if(is_authorized_for_host(temp_host,&current_authdata)==FALSE){
-
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for this host...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
-
+		print_generic_error_message("It appears as though you do not have permission to view information for this host...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		return;
 	}
 
@@ -1118,11 +1112,11 @@ void show_host_info(void){
 
 	/* make sure host information exists */
 	if(temp_host==NULL){
-		printf("<P><DIV CLASS='errorMessage'>Error: Host Not Found!</DIV></P>>");
+		print_generic_error_message("Error: Host Not Found!",NULL,0);
 		return;
 		}
 	if(temp_hoststatus==NULL){
-		printf("<P><DIV CLASS='errorMessage'>Error: Host Status Information Not Found!</DIV></P");
+		print_generic_error_message("Error: Host Status Information Not Found!",NULL,0);
 		return;
 		}
 
@@ -1425,9 +1419,7 @@ void show_service_info(void){
 	/* make sure the user has rights to view service information */
 	if(is_authorized_for_service(temp_service,&current_authdata)==FALSE){
 
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for this service...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
+		print_generic_error_message("It appears as though you do not have permission to view information for this service...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 
 		return;
 	        }
@@ -1437,11 +1429,11 @@ void show_service_info(void){
 
 	/* make sure service information exists */
 	if(temp_service==NULL){
-		printf("<P><DIV CLASS='errorMessage'>Error: Service Not Found!</DIV></P>");
+		print_generic_error_message("Error: Service Not Found!",NULL,0);
 		return;
 		}
 	if(temp_svcstatus==NULL){
-		printf("<P><DIV CLASS='errorMessage'>Error: Service Status Not Found!</DIV></P>");
+		print_generic_error_message("Error: Service Status Not Found!",NULL,0);
 		return;
 		}
 
@@ -1768,16 +1760,14 @@ void show_hostgroup_info(void){
 	/* make sure the user has rights to view hostgroup information */
 	if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE){
 
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for this hostgroup...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
+		print_generic_error_message("It appears as though you do not have permission to view information for this hostgroup...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 
 		return;
 	        }
 
 	/* make sure hostgroup information exists */
 	if(temp_hostgroup==NULL){
-		printf("<P><DIV CLASS='errorMessage'>Error: Hostgroup Not Found!</DIV></P>");
+		print_generic_error_message("Error: Hostgroup Not Found!",NULL,0);
 		return;
 		}
 
@@ -1860,19 +1850,15 @@ void show_servicegroup_info(){
 
 	/* make sure the user has rights to view servicegroup information */
 	if(is_authorized_for_servicegroup(temp_servicegroup,&current_authdata)==FALSE){
-
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for this servicegroup...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
-
+		print_generic_error_message("It appears as though you do not have permission to view information for this servicegroup...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		return;
-	        }
+	}
 
 	/* make sure servicegroup information exists */
 	if(temp_servicegroup==NULL){
-		printf("<P><DIV CLASS='errorMessage'>Error: Servicegroup Not Found!</DIV></P>");
+		print_generic_error_message("Error: Servicegroup Not Found!",NULL,0);
 		return;
-		}
+	}
 
 
 	printf("<DIV ALIGN=CENTER>\n");
@@ -2870,11 +2856,7 @@ void show_scheduling_queue(void){
 
 	/* make sure the user has rights to view system information */
 	if(is_authorized_for_system_information(&current_authdata)==FALSE){
-
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view process information...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
-
+		print_generic_error_message("It appears as though you do not have permission to view cheduling queue...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		return;
 	}
 

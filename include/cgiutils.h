@@ -600,6 +600,7 @@ void document_footer(int);					/* print document footer */
 void write_popup_code(int);					/* PopUp's for graphics */
 int check_daemon_running(void);
 
+void print_generic_error_message(char *, char *, int);
 
 /******************************** MULTIURL PATCH *******************************/
 

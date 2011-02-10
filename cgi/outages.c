@@ -291,12 +291,10 @@ void display_network_outages(void){
 	/* user must be authorized for all hosts.. */
 	if(is_authorized_for_all_hosts(&current_authdata)==FALSE){
 
-		printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information you requested...</DIV></P>\n");
-		printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-		printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
+		print_generic_error_message("It appears as though you do not have permission to view information you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 
 		return;
-		}
+	}
 
 	/* find all hosts that are causing network outages */
 	find_hosts_causing_outages();

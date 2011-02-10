@@ -976,10 +976,13 @@ int main(int argc, char **argv){
 				is_authorized=is_authorized_for_service(find_service(host_name,service_desc),&current_authdata);
 		        }
 
-		if(is_authorized==FALSE)
-			printf("<P><DIV ALIGN=CENTER CLASS='errorMessage'>It appears as though you are not authorized to view information for the specified %s...</DIV></P>\n",(display_type==DISPLAY_HOST_AVAIL)?"host":"service");
+		if(is_authorized==FALSE) {
+			if (display_type==DISPLAY_HOST_AVAIL)
+				print_generic_error_message("It appears as though you are not authorized to view information for the specified host...",NULL,0);
+			else
+				print_generic_error_message("It appears as though you are not authorized to view information for the specified service...",NULL,0);
 
-		else{
+		}else{
 
 			time(&report_start_time);
 

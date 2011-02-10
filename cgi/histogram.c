@@ -545,13 +545,17 @@ int main(int argc, char **argv){
 	        }
 	if(is_authorized==FALSE){
 
-		if(content_type==HTML_CONTENT)
-			printf("<P><DIV ALIGN=CENTER CLASS='errorMessage'>It appears as though you are not authorized to view information for the specified %s...</DIV></P>\n",(display_type==DISPLAY_HOST_HISTOGRAM)?"host":"service");
+		if(content_type==HTML_CONTENT) {
+			if (display_type==DISPLAY_HOST_HISTOGRAM)
+				print_generic_error_message("It appears as though you are not authorized to view information for the specified host...",NULL,0);
+			else
+				print_generic_error_message("It appears as though you are not authorized to view information for the specified service...",NULL,0);
+		}
 
 		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
-	        }
+	}
 
 	if(display_type!=DISPLAY_NO_HISTOGRAM && input_type==GET_INPUT_NONE){
 

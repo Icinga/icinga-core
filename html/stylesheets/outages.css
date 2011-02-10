@@ -7,8 +7,6 @@ table { width: 100% }
 th { text-align: left; padding: 0 5px;  border: 0; }
 td { font-size: 8pt; border: 0; }
 
-.errorMessage { text-align: center; color: #ff3300; font-weight: bold; font-size: 10pt; }
-.errorDescription { text-align: center; font-weight: bold; font-size: 10pt; }
 .warningMessage { text-align: center; color: #ff3300; font-weight: bold; font-size: 10pt; }
 .infoMessage { text-align: center; color: #ff3300; font-weight: bold; }
 

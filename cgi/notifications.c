@@ -449,6 +449,7 @@ void display_notifications(void){
 	char service_name[MAX_INPUT_BUFFER];
 	char host_name[MAX_INPUT_BUFFER];
 	char method_name[MAX_INPUT_BUFFER];
+	char error_text[MAX_INPUT_BUFFER];
 	int show_entry;
 	int total_notifications;
 	int notification_type=SERVICE_NOTIFICATION;
@@ -463,10 +464,12 @@ void display_notifications(void){
 		result=read_file_into_lifo(log_file_to_use);
 		if(result!=LIFO_OK){
 			if(result==LIFO_ERROR_MEMORY){
-				printf("<P><DIV CLASS='warningMessage'>Not enough memory to reverse log file - displaying notifications in natural order...</DIV></P>");
+				print_generic_error_message("Not enough memory to reverse log file - displaying notifications in natural order...",NULL,0);
 			}
 			else if(result==LIFO_ERROR_FILE){
-				printf("<P><DIV CLASS='errorMessage'>Error: Cannot open log file '%s' for reading!</DIV></P>",log_file_to_use);
+				snprintf(error_text,sizeof(error_text),"Error: Cannot open log file '%s' for reading!",log_file_to_use);
+				error_text[sizeof(error_text)-1]='\x0';
+				print_generic_error_message(error_text,NULL,0);
 				return;
 			}
 			use_lifo=FALSE;
@@ -476,7 +479,9 @@ void display_notifications(void){
 	if(use_lifo==FALSE){
 
 		if((thefile=mmap_fopen(log_file_to_use))==NULL){
-			printf("<P><DIV CLASS='errorMessage'>Error: Cannot open log file '%s' for reading!</DIV></P>",log_file_to_use);
+			snprintf(error_text,sizeof(error_text),"Error: Cannot open log file '%s' for reading!",log_file_to_use);
+			error_text[sizeof(error_text)-1]='\x0';
+			print_generic_error_message(error_text,NULL,0);
 			return;
 		}
 	}
@@ -742,7 +747,7 @@ void display_notifications(void){
 		printf("</p>\n");
 
 		if(total_notifications==0){
-			printf("<P><DIV CLASS='errorMessage'>No notifications have been recorded");
+			printf("<P><DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");
 			if(find_all==FALSE){
 				if(query_type==FIND_SERVICE)
 					printf(" for this service");

@@ -174,3 +174,23 @@ a img {
 .csv_export_link{
 	text-align: right;
 }
+
+.errorBox {
+	border:1px red solid;
+	background-color: #FFE5E5;
+	width:600px;
+}
+
+.errorMessage {
+	text-align:left;
+	font-weight: bold;
+	margin:1em;
+	font-size: 10pt;
+}
+
+.errorDescription,
+.successMessage {
+	text-align:left;
+	margin:1em;
+	font-size: 10pt;
+}

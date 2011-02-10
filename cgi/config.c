@@ -2970,9 +2970,7 @@ void display_hostescalations(void){
 
 void unauthorized_message(void){
 
-	printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view the configuration information you requested...</DIV></P>\n");
-	printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-	printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
+	print_generic_error_message("It appears as though you do not have permission to view the configuration information you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 
 	return;
 }

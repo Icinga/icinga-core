@@ -1941,17 +1941,12 @@ void show_service_detail(void){
 		if(user_has_seen_something==FALSE){
 
 			if(servicestatus_list!=NULL){
-				printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the services you requested...</DIV></P>\n");
-				printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-				printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
-				}
-			else{
+				print_generic_error_message("It appears as though you do not have permission to view information for any of the services you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
+			}else{
 				printf("<P><DIV CLASS='infoMessage'>There doesn't appear to be any service status information in the status log...<br><br>\n");
 				printf("Make sure that %s is running and that you have specified the location of you status log correctly in the configuration files.</DIV></P>\n", PROGRAM_NAME);
-				}
 			}
-
-		else
+		}else
 			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Service Entries Displayed</DIV>\n",total_entries);
 	}
 
@@ -2417,17 +2412,12 @@ void show_host_detail(void){
 		if(user_has_seen_something==FALSE){
 
 			if(hoststatus_list!=NULL){
-				printf("<P><DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV></P>\n");
-				printf("<P><DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-				printf("and check the authorization options in your CGI configuration file.</DIV></P>\n");
-				}
-			else{
+				print_generic_error_message("It appears as though you do not have permission to view information for any of the hosts you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
+			}else{
 				printf("<P><DIV CLASS='infoMessage'>There doesn't appear to be any host status information in the status log...<br><br>\n");
 				printf("Make sure that %s is running and that you have specified the location of you status log correctly in the configuration files.</DIV></P>\n", PROGRAM_NAME);
-				}
 			}
-
-		else
+		}else
 			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Host Entries Displayed</DIV>\n",total_entries);
 	}
 	return;
@@ -2442,6 +2432,7 @@ void show_servicegroup_overviews(void){
 	int current_column;
 	int user_has_seen_something=FALSE;
 	int servicegroup_error=FALSE;
+	char error_text[MAX_INPUT_BUFFER]="";
 
 
 	printf("<P>\n");
@@ -2543,7 +2534,9 @@ void show_servicegroup_overviews(void){
 			printf("</P>\n");
 		        }
 		else{
-			printf("<DIV CLASS='errorMessage'>Sorry, but service group '%s' doesn't seem to exist...</DIV>",servicegroup_name);
+			snprintf(error_text,sizeof(error_text),"Sorry, but service group '%s' doesn't seem to exist...",servicegroup_name);
+			error_text[sizeof(error_text)-1]='\x0';
+			print_generic_error_message(error_text,NULL,0);
 			servicegroup_error=TRUE;
 		        }
 	        }
@@ -2551,24 +2544,15 @@ void show_servicegroup_overviews(void){
 	/* if user couldn't see anything, print out some helpful info... */
 	if(user_has_seen_something==FALSE && servicegroup_error==FALSE){
 
-		printf("<p>\n");
-		printf("<div align='center'>\n");
+		if(servicegroup_list!=NULL)
+			print_generic_error_message("It appears as though you do not have permission to view information for the service group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
+		else
+			print_generic_error_message("There are no service groups defined.",NULL,0);
 
-		if(servicegroup_list!=NULL){
-			printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV>\n");
-			printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-			printf("and check the authorization options in your CGI configuration file.</DIV>\n");
-		        }
-		else{
-			printf("<DIV CLASS='errorMessage'>There are no service groups defined.</DIV>\n");
-			}
-
-		printf("</div>\n");
-		printf("</p>\n");
-	        }
+	}
 
 	return;
-        }
+}
 
 
 
@@ -2643,6 +2627,7 @@ void show_servicegroup_summaries(void){
 	int user_has_seen_something=FALSE;
 	int servicegroup_error=FALSE;
 	int odd=0;
+	char error_text[MAX_INPUT_BUFFER]="";
 
 
 	printf("<P>\n");
@@ -2724,29 +2709,22 @@ void show_servicegroup_summaries(void){
 	/* if user couldn't see anything, print out some helpful info... */
 	if(user_has_seen_something==FALSE && servicegroup_error==FALSE){
 
-		printf("<P><DIV ALIGN=CENTER>\n");
+		if(servicegroup_list!=NULL)
+			print_generic_error_message("It appears as though you do not have permission to view information for the service group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
+		else
+			print_generic_error_message("There are no service groups defined.",NULL,0);
 
-		if(servicegroup_list!=NULL){
-			printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV>\n");
-			printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-			printf("and check the authorization options in your CGI configuration file.</DIV>\n");
-		        }
-		else{
-			printf("<DIV CLASS='errorMessage'>There are no service groups defined.</DIV>\n");
-			}
-
-		printf("</DIV></P>\n");
-	        }
+	}
 
 	/* we couldn't find the servicegroup */
 	else if(servicegroup_error==TRUE){
-		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<DIV CLASS='errorMessage'>Sorry, but servicegroup '%s' doesn't seem to exist...</DIV>\n",servicegroup_name);
-		printf("</DIV></P>\n");
-	        }
+		snprintf(error_text,sizeof(error_text),"Sorry, but servicegroup '%s' doesn't seem to exist...",servicegroup_name);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+	}
 
 	return;
-        }
+}
 
 
 
@@ -3208,6 +3186,7 @@ void show_servicegroup_grids(void){
 	int user_has_seen_something=FALSE;
 	int servicegroup_error=FALSE;
 	int odd=0;
+	char error_text[MAX_INPUT_BUFFER]="";
 
 
 	printf("<P>\n");
@@ -3279,29 +3258,21 @@ void show_servicegroup_grids(void){
 	/* if user couldn't see anything, print out some helpful info... */
 	if(user_has_seen_something==FALSE && servicegroup_error==FALSE){
 
-		printf("<P><DIV ALIGN=CENTER>\n");
-
-		if(servicegroup_list!=NULL){
-			printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV>\n");
-			printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-			printf("and check the authorization options in your CGI configuration file.</DIV>\n");
-		        }
-		else{
-			printf("<DIV CLASS='errorMessage'>There are no service groups defined.</DIV>\n");
-			}
-
-		printf("</DIV></P>\n");
-	        }
+		if(servicegroup_list!=NULL)
+			print_generic_error_message("It appears as though you do not have permission to view information for the service group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
+		else
+			print_generic_error_message("There are no service groups defined.",NULL,0);
+	}
 
 	/* we couldn't find the servicegroup */
 	else if(servicegroup_error==TRUE){
-		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<DIV CLASS='errorMessage'>Sorry, but servicegroup '%s' doesn't seem to exist...</DIV>\n",servicegroup_name);
-		printf("</DIV></P>\n");
-	        }
+		snprintf(error_text,sizeof(error_text),"Sorry, but servicegroup '%s' doesn't seem to exist...",servicegroup_name);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+	}
 
 	return;
-        }
+}
 
 
 /* displays status grid for a specific servicegroup */
@@ -3497,6 +3468,7 @@ void show_hostgroup_overviews(void){
 	int current_column;
 	int user_has_seen_something=FALSE;
 	int hostgroup_error=FALSE;
+	char error_text[MAX_INPUT_BUFFER]="";
 
 
 	printf("<P>\n");
@@ -3596,35 +3568,32 @@ void show_hostgroup_overviews(void){
 			printf("</TD></TR></TABLE>\n");
 			printf("</DIV>\n");
 			printf("</P>\n");
-		        }
-		else{
-			printf("<DIV CLASS='errorMessage'>Sorry, but host group '%s' doesn't seem to exist...</DIV>",hostgroup_name);
+		}else{
+			snprintf(error_text,sizeof(error_text),"Sorry, but host group '%s' doesn't seem to exist...",hostgroup_name);
+			error_text[sizeof(error_text)-1]='\x0';
+			print_generic_error_message(error_text,NULL,0);
 			hostgroup_error=TRUE;
-		        }
-	        }
+		}
+	}
 
 	/* if user couldn't see anything, print out some helpful info... */
 	if(user_has_seen_something==FALSE && hostgroup_error==FALSE){
 
-		printf("<p>\n");
-		printf("<div align='center'>\n");
+		printf("<p>\n<div align='center'>\n");
 
-		if(hoststatus_list!=NULL){
-			printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV>\n");
-			printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-			printf("and check the authorization options in your CGI configuration file.</DIV>\n");
-		        }
+		if(hoststatus_list!=NULL)
+			print_generic_error_message("It appears as though you do not have permission to view information for the host group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		else{
 			printf("<DIV CLASS='infoMessage'>There doesn't appear to be any host status information in the status log...<br><br>\n");
 			printf("Make sure that %s is running and that you have specified the location of you status log correctly in the configuration files.</DIV>\n", PROGRAM_NAME);
-		        }
+		}
 
-		printf("</div>\n");
-		printf("</p>\n");
-	        }
+		printf("</div>\n</p>\n");
+
+	}
 
 	return;
-        }
+}
 
 
 
@@ -3887,7 +3856,7 @@ void show_hostgroup_summaries(void){
 	int user_has_seen_something=FALSE;
 	int hostgroup_error=FALSE;
 	int odd=0;
-
+	char error_text[MAX_INPUT_BUFFER]="";
 
 	printf("<P>\n");
 
@@ -3970,28 +3939,25 @@ void show_hostgroup_summaries(void){
 
 		printf("<P><DIV ALIGN=CENTER>\n");
 
-		if(hoststatus_list!=NULL){
-			printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV>\n");
-			printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-			printf("and check the authorization options in your CGI configuration file.</DIV>\n");
-		        }
+		if(hoststatus_list!=NULL)
+			print_generic_error_message("It appears as though you do not have permission to view information for the host group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		else{
 			printf("<DIV CLASS='infoMessage'>There doesn't appear to be any host status information in the status log...<br><br>\n");
 			printf("Make sure that %s is running and that you have specified the location of you status log correctly in the configuration files.</DIV>\n", PROGRAM_NAME);
-		        }
+		}
 
 		printf("</DIV></P>\n");
-	        }
+	}
 
 	/* we couldn't find the hostgroup */
 	else if(hostgroup_error==TRUE){
-		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<DIV CLASS='errorMessage'>Sorry, but hostgroup '%s' doesn't seem to exist...</DIV>\n",hostgroup_name);
-		printf("</DIV></P>\n");
-	        }
+		snprintf(error_text,sizeof(error_text),"Sorry, but host group '%s' doesn't seem to exist...",hostgroup_name);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+	}
 
 	return;
-        }
+}
 
 
 
@@ -4448,6 +4414,7 @@ void show_hostgroup_grids(void){
 	int user_has_seen_something=FALSE;
 	int hostgroup_error=FALSE;
 	int odd=0;
+	char error_text[MAX_INPUT_BUFFER]="";
 
 
 	printf("<P>\n");
@@ -4521,11 +4488,8 @@ void show_hostgroup_grids(void){
 
 		printf("<P><DIV ALIGN=CENTER>\n");
 
-		if(hoststatus_list!=NULL){
-			printf("<DIV CLASS='errorMessage'>It appears as though you do not have permission to view information for any of the hosts you requested...</DIV>\n");
-			printf("<DIV CLASS='errorDescription'>If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI<br>");
-			printf("and check the authorization options in your CGI configuration file.</DIV>\n");
-		        }
+		if(hoststatus_list!=NULL)
+			print_generic_error_message("It appears as though you do not have permission to view information for the host group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		else{
 			printf("<DIV CLASS='infoMessage'>There doesn't appear to be any host status information in the status log...<br><br>\n");
 			printf("Make sure that %s is running and that you have specified the location of you status log correctly in the configuration files.</DIV>\n", PROGRAM_NAME);
@@ -4536,13 +4500,13 @@ void show_hostgroup_grids(void){
 
 	/* we couldn't find the hostgroup */
 	else if(hostgroup_error==TRUE){
-		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<DIV CLASS='errorMessage'>Sorry, but hostgroup '%s' doesn't seem to exist...</DIV>\n",hostgroup_name);
-		printf("</DIV></P>\n");
-	        }
+		snprintf(error_text,sizeof(error_text),"Sorry, but host group '%s' doesn't seem to exist...",hostgroup_name);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+	}
 
 	return;
-        }
+}
 
 
 /* displays status grid for a specific hostgroup */
