@@ -70,11 +70,11 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#011b0541fa91c4ec3d9888f9bec595df">broker_log_data</a> (int a, int b, int <a class="el" href="test__events_8c.html#c72ee265bc910bcca3ed2285c05fbf3e">c</a>, char *d, unsigned long e, time_t f, struct timeval *g)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#da2df8f58db54409e7b8a0432c2fcc9a">clear_volatile_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#43597feefd0f3c97dc02bf4423527716">clear_volatile_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#514fb96e8a3c0914b562ae864d34ff16">clear_service_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#0ade6fe1b6af9993ca1049dab30eea87">clear_service_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#3c1e3c6b5ec2b8e47ae94795efe1ccff">clear_host_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#33dd025c7c029a783e012a8e69d6a21c">clear_host_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="test-stubs_8c.html#a502815462517cf2a236f10bd14cc1fb">process_macros</a> (char *a, char **b, int <a class="el" href="test__events_8c.html#c72ee265bc910bcca3ed2285c05fbf3e">c</a>)</td></tr>
 
@@ -969,12 +969,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="3c1e3c6b5ec2b8e47ae94795efe1ccff"></a><!-- doxytag: member="test-stubs.c::clear_host_macros" ref="3c1e3c6b5ec2b8e47ae94795efe1ccff" args="(icinga_macros *mac)" -->
+<a class="anchor" name="33dd025c7c029a783e012a8e69d6a21c"></a><!-- doxytag: member="test-stubs.c::clear_host_macros_r" ref="33dd025c7c029a783e012a8e69d6a21c" args="(icinga_macros *mac)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int clear_host_macros           </td>
+          <td class="memname">int clear_host_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>          </td>
@@ -986,15 +986,15 @@
 <div class="memdoc">
 
 <p>
-
+clear host macros the thread-safe version 
 </div>
 </div><p>
-<a class="anchor" name="514fb96e8a3c0914b562ae864d34ff16"></a><!-- doxytag: member="test-stubs.c::clear_service_macros" ref="514fb96e8a3c0914b562ae864d34ff16" args="(icinga_macros *mac)" -->
+<a class="anchor" name="0ade6fe1b6af9993ca1049dab30eea87"></a><!-- doxytag: member="test-stubs.c::clear_service_macros_r" ref="0ade6fe1b6af9993ca1049dab30eea87" args="(icinga_macros *mac)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int clear_service_macros           </td>
+          <td class="memname">int clear_service_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>          </td>
@@ -1006,15 +1006,15 @@
 <div class="memdoc">
 
 <p>
-
+clear service macros the thread-safe version 
 </div>
 </div><p>
-<a class="anchor" name="da2df8f58db54409e7b8a0432c2fcc9a"></a><!-- doxytag: member="test-stubs.c::clear_volatile_macros" ref="da2df8f58db54409e7b8a0432c2fcc9a" args="(icinga_macros *mac)" -->
+<a class="anchor" name="43597feefd0f3c97dc02bf4423527716"></a><!-- doxytag: member="test-stubs.c::clear_volatile_macros_r" ref="43597feefd0f3c97dc02bf4423527716" args="(icinga_macros *mac)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int clear_volatile_macros           </td>
+          <td class="memname">int clear_volatile_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>          </td>
@@ -1026,7 +1026,7 @@
 <div class="memdoc">
 
 <p>
-
+clear all macros that are not "constant" (i.e. they change throughout the course of monitoring) the thread-safe version 
 </div>
 </div><p>
 <a class="anchor" name="3f1da5df99ec68374ffde3b1938c6d6a"></a><!-- doxytag: member="test-stubs.c::close_command_file" ref="3f1da5df99ec68374ffde3b1938c6d6a" args="(void)" -->
@@ -2252,7 +2252,7 @@
 <div class="memdoc">
 
 <p>
-
+replace macros in notification commands with their values, the thread-safe version 
 </div>
 </div><p>
 <a class="anchor" name="f96ca6b92d97ad22a218b4d2ac9d2f42"></a><!-- doxytag: member="test-stubs.c::process_passive_checks" ref="f96ca6b92d97ad22a218b4d2ac9d2f42" args="(void)" -->
@@ -4386,7 +4386,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="align: right;"><small>Generated on Wed Jan 19 16:19:48 2011 for icinga-core by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Wed Feb 9 16:56:22 2011 for icinga-core by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>

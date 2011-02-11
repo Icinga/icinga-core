@@ -630,8 +630,12 @@ int idomod_rotate_sink_file(void *args){
 	char *processed_command_line_3x=NULL;
 	int early_timeout=FALSE;
 	double exectime;
+	icinga_macros *mac;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_rotate_sink_file() start\n");
+
+	/* get global macros */
+	mac=get_global_macros();
 
 	/* close sink */
 	idomod_goodbye_sink();
@@ -644,11 +648,11 @@ int idomod_rotate_sink_file(void *args){
 	/****** ROTATE THE FILE *****/
 
 	/* get the raw command line */
-	get_raw_command_line(find_command(idomod_sink_rotation_command),idomod_sink_rotation_command,&raw_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
+	get_raw_command_line_r(mac, find_command(idomod_sink_rotation_command),idomod_sink_rotation_command,&raw_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
 	strip(raw_command_line_3x);
 
 	/* process any macros in the raw command line */
-	process_macros(raw_command_line_3x,&processed_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
+	process_macros_r(mac, raw_command_line_3x,&processed_command_line_3x,STRIP_ILLEGAL_MACRO_CHARS|ESCAPE_MACRO_CHARS);
 
 	/* run the command */
 	my_system(processed_command_line_3x,idomod_sink_rotation_timeout,&early_timeout,&exectime,NULL,0);

@@ -29,12 +29,12 @@ ENHANCEMENTS
 * core: do not copy broker modules (OMD patch) #896
 * core: fix host alias saved in resention data survived reconfiguration #935
 * core: add basic dualstacked IPv6 support (core/cgi patch by Julius Kriukas, slight changes on Icinga, own IDOUtils backend code) #674
-	- address6 as host definition attribute (to be used dual stacked, address stays default!)
-	- host macro $HOSTADDRESS6$ for e.g. check-host-alive
-	- if not set, host name is set as default (same behaviour as address)
-	- shown in classic ui only if set (not matching host name)
-	- idoutils mysql/postgresql/oracle hosts config table gets new column 'address6' populated
-	- note: as of this release, idoutils depends hard on include/objects.h of icinga core. internal idomod api changed, new datatype added.
+	** address6 as host definition attribute (to be used dual stacked, address stays default!)
+	** host macro $HOSTADDRESS6$ for e.g. check-host-alive
+	** if not set, host name is set as default (same behaviour as address)
+	** shown in classic ui only if set (not matching host name)
+	** idoutils mysql/postgresql/oracle hosts config table gets new column 'address6' populated
+	** note: as of this release, idoutils depends hard on include/objects.h of icinga core. internal idomod api changed, new datatype added.
 
 * install: add sysconfig source to init script #1015
 * install: set -Wall gcc flags based on os/compiler #959
@@ -46,17 +46,15 @@ ENHANCEMENTS
 * idoutils: add dbversion upgrade scripts for 1.3 #633
 * idoutils: add dbversion check in ido2db and print error to syslog in case of non-matching #633
 * idoutils: do not clear host|service|scheduleddowntime status tables on core restart/reload (inspired by Opsview) #1106 #1176
-* idoutils: change config_output_options to 1  (original config dump) #1127
-	- this will dump original configs to ido2db on core (re)start/load and take a while - needed for Icinga Web
 * idoutils: only insert service and host checks when they are finally processed, increase performance by replacing insert/update with single insert (idea by Opsview/Opsera Ltd with mysql and servicechecks) #1100
-	- servicechecks table is heavily used next to hostchecks
-	- if the core does a host|service check, there are 3 situations the event broker will get data: INITIATE, ASYNC_PRECHECK, PROCESSED
-	- idomod/ido2db process INITIATE (insert) and PROCESSED (update) til now
-	- now, ido2db takes only PROCESSED with a full insert, mysql and postgres use sql standard insert, oracle a prepared statement with insert
-	- reduced number of check events sent to IDOUtils by 66%
-	- reduced number of fired SQL statements by 50%
-	- changed 1 SQL statement for each rdbms, making it smaller and saving index lookup (and virtual table by merge in oracle)
-	- index savings, and dropped unique keys - check upgrade sql scripts for mysql/postgresql/oracle
+	** servicechecks table is heavily used next to hostchecks
+	**- if the core does a host|service check, there are 3 situations the event broker will get data: INITIATE, ASYNC_PRECHECK, PROCESSED
+	** idomod/ido2db process INITIATE (insert) and PROCESSED (update) til now
+	** now, ido2db takes only PROCESSED with a full insert, mysql and postgres use sql standard insert, oracle a prepared statement with insert
+	** reduced number of check events sent to IDOUtils by 66%
+	** reduced number of fired SQL statements by 50%
+	** changed 1 SQL statement for each rdbms, making it smaller and saving index lookup (and virtual table by merge in oracle)
+	** index savings, and dropped unique keys - check upgrade sql scripts for mysql/postgresql/oracle
 * idoutils: add indexes for logentries, preventing heavy load #1055
 * idoutils: enable max_logentries_age & max_acknowledgements_age with 31 days for cleaning by default in ido2db.cfg #1155
 * idoutils: add multi valued inserts for host|service_contacts instead of single insert/update loops (thx Opsview) #1108

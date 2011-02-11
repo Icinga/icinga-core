@@ -127,9 +127,9 @@ int grab_service_macros(icinga_macros *mac, service *svc) {}
 
 void broker_log_data(int a, int b, int c, char *d, unsigned long e, time_t f, struct timeval *g) {}
 
-int clear_volatile_macros(icinga_macros *mac) {}
-int clear_service_macros(icinga_macros *mac) {}
-int clear_host_macros(icinga_macros *mac) {}
+int clear_volatile_macros_r(icinga_macros *mac) {}
+int clear_service_macros_r(icinga_macros *mac) {}
+int clear_host_macros_r(icinga_macros *mac) {}
 
 int process_macros(char *a, char **b, int c) {}
 int process_macros_r(icinga_macros *mac, char *a, char **b, int c) {}

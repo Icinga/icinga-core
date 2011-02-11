@@ -47,41 +47,77 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#721e63dfe41c8ee9c01b67d9ae3b04db">process_macros</a> (char *input_buffer, char **output_buffer, int options)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#453a11d0e5ac6746246ab692a693cf54">grab_host_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structhost__struct.html">host</a> *hst)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c7ab68f80dc3a7089df84dbb5a8023bf">grab_host_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structhost__struct.html">host</a> *hst)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#0c87ec536ee88fe274a6b991bf8ad1d8">grab_hostgroup_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structhostgroup__struct.html">hostgroup</a> *hg)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#b76e83cfd494f76874c0f0a7c93c7067">grab_host_macros</a> (<a class="el" href="structhost__struct.html">host</a> *hst)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#fa07a1362949e20ab62d5f7a73d6e80d">grab_service_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structservice__struct.html">service</a> *svc)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#847c1617f47cc2e7b386480150c4122a">grab_hostgroup_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structhostgroup__struct.html">hostgroup</a> *hg)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#9d3670e2a5f5b9636769c8bcfbed04f5">grab_servicegroup_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structservicegroup__struct.html">servicegroup</a> *sg)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#008193a870de5c5c2bb7836317dfe1af">grab_hostgroup_macros</a> (<a class="el" href="structhostgroup__struct.html">hostgroup</a> *hg)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#eb4e0cf035401c64f39b52558975770d">grab_contact_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structcontact__struct.html">contact</a> *cntct)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#a4f01b37c0c7cd1732b7558db47adf4f">grab_service_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structservice__struct.html">service</a> *svc)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#8f1d5dcc9bb9a26176ee3a3f7a063463">grab_contactgroup_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structcontactgroup__struct.html">contactgroup</a> *cg)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#157d7350a2a050881f94d4992ccc1677">grab_service_macros</a> (<a class="el" href="structservice__struct.html">service</a> *svc)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#6558722c277f0715a1192a4f62896e3c">grab_macro_value</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, char *macro_buffer, char **output, int *clean_options, int *free_macro)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#0b7ec5ae604718317e6d0b012c8cc64f">grab_servicegroup_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structservicegroup__struct.html">servicegroup</a> *sg)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#9fd9eb95193e4c12b18eb19e6df3ca2b">grab_macrox_value</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, char *arg1, char *arg2, char **output, int *free_macro)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#790e7cf183a695c86147c3f87557e575">grab_servicegroup_macros</a> (<a class="el" href="structservicegroup__struct.html">servicegroup</a> *sg)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#9e1120a2197891c8399409598897f962">grab_custom_macro_value</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, char *macro_name, char *arg1, char *arg2, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#a116e0d95868a0a35a2b64e685006c7e">grab_contact_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structcontact__struct.html">contact</a> *cntct)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#13d9ea4ccbb1f167902bec92cf81b6d4">grab_datetime_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, char *arg1, char *arg2, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#1aeb0e58f9ca3f22cbe865ab33fa9fa7">grab_contact_macros</a> (<a class="el" href="structcontact__struct.html">contact</a> *cntct)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#1cc8f10976d3ff0db9eec257f374c733">grab_standard_host_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structhost__struct.html">host</a> *temp_host, char **output, int *free_macro)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#9e3b10f83be425d2532bd3e2bc9b51df">grab_contactgroup_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, <a class="el" href="structcontactgroup__struct.html">contactgroup</a> *cg)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#4262029ff073756fa2afc144b84dee52">grab_standard_hostgroup_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structhostgroup__struct.html">hostgroup</a> *temp_hostgroup, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#0542b48ab08a6eb0b09acb360f9d45a0">grab_contactgroup_macros</a> (<a class="el" href="structcontactgroup__struct.html">contactgroup</a> *cg)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#9c373c079e8204412f7c7dab1832c4dd">grab_standard_service_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structservice__struct.html">service</a> *temp_service, char **output, int *free_macro)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#d723f275a4107ba85dd7cf7461bcdeed">grab_macro_value_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, char *macro_buffer, char **output, int *clean_options, int *free_macro)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#662323cba6603cc9777f66b8260a1886">grab_standard_servicegroup_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structservicegroup__struct.html">servicegroup</a> *temp_servicegroup, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c5251075907db5b9f63439edf906ea25">grab_macro_value</a> (char *macro_buffer, char **output, int *clean_options, int *free_macro)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#dd09846137c12d8475d67b75ca73b988">grab_standard_contact_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structcontact__struct.html">contact</a> *temp_contact, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c362b5bc27a48be3e6f0a2bf52d611ea">grab_macrox_value_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, char *arg1, char *arg2, char **output, int *free_macro)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#f887262a481acd5eef440679f80809bb">grab_contact_address_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_num, <a class="el" href="structcontact__struct.html">contact</a> *temp_contact, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#016a7f547ec96c5b70f4951be8ce541c">grab_macrox_value</a> (int macro_type, char *arg1, char *arg2, char **output, int *free_macro)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#ccff09c840ca273de2444562e77c329c">grab_standard_contactgroup_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structcontactgroup__struct.html">contactgroup</a> *temp_contactgroup, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#8a6b330505e5e335443e91aa76dd9f83">grab_custom_macro_value_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, char *macro_name, char *arg1, char *arg2, char **output)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#46e0874cf89edbc07b664f303e005a8b">grab_custom_object_macro</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, char *macro_name, <a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *vars, char **output)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#1b1d15124697257fffe49c3306008389">grab_custom_macro_value</a> (char *macro_name, char *arg1, char *arg2, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#e453c6c8a667a375205d7b5c2d5f1ba8">grab_datetime_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, char *arg1, char *arg2, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#bbf14821e20d6efc959b1223ccdba4a7">grab_datetime_macro</a> (int macro_type, char *arg1, char *arg2, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#64baf449d006ab6189cb5c35933fcc52">grab_standard_host_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structhost__struct.html">host</a> *temp_host, char **output, int *free_macro)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#f418cedf296a33b017860b0fa8cc0527">grab_standard_host_macro</a> (int macro_type, <a class="el" href="structhost__struct.html">host</a> *temp_host, char **output, int *free_macro)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c8503abace234e33b24c7e9ca9b0bbf7">grab_standard_hostgroup_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structhostgroup__struct.html">hostgroup</a> *temp_hostgroup, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#0ae63337e37bca5f1fe87b942971c85f">grab_standard_hostgroup_macro</a> (int macro_type, <a class="el" href="structhostgroup__struct.html">hostgroup</a> *temp_hostgroup, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#be3727a6bfc44a8437f769a0be8a0f9b">grab_standard_service_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structservice__struct.html">service</a> *temp_service, char **output, int *free_macro)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#f9e2e62a1bf6aa908be641c4924790cc">grab_standard_service_macro</a> (int macro_type, <a class="el" href="structservice__struct.html">service</a> *temp_service, char **output, int *free_macro)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#f1d9d474d174006e97f097d14b854f49">grab_standard_servicegroup_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structservicegroup__struct.html">servicegroup</a> *temp_servicegroup, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#154af16dab4559cfa2519dbd117811f6">grab_standard_servicegroup_macro</a> (int macro_type, <a class="el" href="structservicegroup__struct.html">servicegroup</a> *temp_servicegroup, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#73cd06b36a1bf317ea6c05bac0fec878">grab_standard_contact_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structcontact__struct.html">contact</a> *temp_contact, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#a9308cf848522e30b5ecc8fa079aa41e">grab_standard_contact_macro</a> (int macro_type, <a class="el" href="structcontact__struct.html">contact</a> *temp_contact, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c1eb61f4aedb02e3722da3566ec9c00e">grab_contact_address_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_num, <a class="el" href="structcontact__struct.html">contact</a> *temp_contact, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#10e1526179b86c8f88e1360d4fc6b3c6">grab_contact_address_macro</a> (int macro_num, <a class="el" href="structcontact__struct.html">contact</a> *temp_contact, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#65af571d3dfdeb1cab67561fa75c60ff">grab_standard_contactgroup_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, int macro_type, <a class="el" href="structcontactgroup__struct.html">contactgroup</a> *temp_contactgroup, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#058b761b3514f752625ed5e85509c0c2">grab_standard_contactgroup_macro</a> (int macro_type, <a class="el" href="structcontactgroup__struct.html">contactgroup</a> *temp_contactgroup, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#50eb3be678b7a9ca4fa6abdd70c09a6e">grab_custom_object_macro_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>, char *macro_name, <a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *vars, char **output)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#ad075e00dce3efa09df5b2d2cf2abdbc">grab_custom_object_macro</a> (char *macro_name, <a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *vars, char **output)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#2319c8e65a1c681ce4d6eaedef3ca5ec">clean_macro_chars</a> (char *macro, int options)</td></tr>
 
@@ -93,25 +129,43 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#e9e3f6261d82eb894f6bde337c11e3bb">free_macrox_names</a> (void)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#667f29dd77a6f0563e21cb3d76c4cb5a">clear_argv_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#7e006d46b0a5e700981113ed8aa3bd96">clear_argv_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#39735de49501a8cc130d35fad3a1ca01">clear_argv_macros</a> (void)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#0a7d8c7470a0cb9f991ad73466295290">copy_constant_macros</a> (char **dest)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#da2df8f58db54409e7b8a0432c2fcc9a">clear_volatile_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#43597feefd0f3c97dc02bf4423527716">clear_volatile_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#514fb96e8a3c0914b562ae864d34ff16">clear_service_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#8be5acbb84477d9e5c59824f5213fa4e">clear_volatile_macros</a> (void)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#3c1e3c6b5ec2b8e47ae94795efe1ccff">clear_host_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#0ade6fe1b6af9993ca1049dab30eea87">clear_service_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#47eb6fcc2095d4142f78efc06327fa81">clear_hostgroup_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c1e0b7bce17d72eeaa5d2bc6e3872062">clear_service_macros</a> (void)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#e60fa1fd1cfbc6f6a8aa633876a2847a">clear_servicegroup_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#33dd025c7c029a783e012a8e69d6a21c">clear_host_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#ea2dcc90ad225d76c74e4fb9b4cc9cb6">clear_contact_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#758caa6570ccd4cb6c14c5f492b57e6e">clear_host_macros</a> (void)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#6063362e4b96795c7b83880604a559cd">clear_contactgroup_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#9d35b9566518e3aba461e1ddbf6f63bf">clear_hostgroup_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#55c359162b0a0a74cafbec218d30957f">clear_summary_macros</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#cb14d4040f3c4f0f909a3d498b38b515">clear_hostgroup_macros</a> (void)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#6d603ff4bb9676851200b651cbcebb4c">clear_servicegroup_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#d15e2fefe8d238f2f9f710999b8bab74">clear_servicegroup_macros</a> (void)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#267464d754b1132c53d4a7148e77365e">clear_contact_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#c9425f24b8743e9c1118514d3bd5010d">clear_contact_macros</a> (void)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#a76a80752f6f23800641a89b1831ecbd">clear_contactgroup_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#438a9ed34809ae03edc42c56f84ff252">clear_contactgroup_macros</a> (void)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#509fa2ad969995161301075fbdfccede">clear_summary_macros_r</a> (<a class="el" href="structicinga__macros.html">icinga_macros</a> *<a class="el" href="statusmap_8c.html#c479677906ddd0e7918748925aa45391">mac</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#d3cbc94e8ac7c579a33ebd37cce5b5f7">clear_summary_macros</a> (void)</td></tr>
 
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="macros_8c.html#98368817d1191f7dd9bfa32e03541ddc">illegal_output_chars</a></td></tr>
@@ -159,7 +213,7 @@
 <div class="memdoc">
 
 <p>
-
+initializes the names of macros, using this nifty little macro which ensures we never add any typos to the list #name appends as astring, name makes sure that param is trated as string 
 </div>
 </div><p>
 <a class="anchor" name="24ccbf034f8b28ec559ea195d6773918"></a><!-- doxytag: member="macros.c::cp_macro" ref="24ccbf034f8b28ec559ea195d6773918" args="(name)" -->
@@ -179,7 +233,7 @@
 <div class="memdoc">
 
 <p>
-
+copies non-volatile macros from global macro_x to **dest, which must be large enough to hold at least MACRO_X_COUNT entries. We use a shortlived macro to save up on typing 
 </div>
 </div><p>
 <hr><h2>Function Documentation</h2>
@@ -209,18 +263,18 @@
 <div class="memdoc">
 
 <p>
-
+cleans illegal characters in macros before output 
 </div>
 </div><p>
-<a class="anchor" name="667f29dd77a6f0563e21cb3d76c4cb5a"></a><!-- doxytag: member="macros.c::clear_argv_macros" ref="667f29dd77a6f0563e21cb3d76c4cb5a" args="(icinga_macros *mac)" -->
+<a class="anchor" name="39735de49501a8cc130d35fad3a1ca01"></a><!-- doxytag: member="macros.c::clear_argv_macros" ref="39735de49501a8cc130d35fad3a1ca01" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_argv_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -232,15 +286,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="ea2dcc90ad225d76c74e4fb9b4cc9cb6"></a><!-- doxytag: member="macros.c::clear_contact_macros" ref="ea2dcc90ad225d76c74e4fb9b4cc9cb6" args="(icinga_macros *mac)" -->
+<a class="anchor" name="7e006d46b0a5e700981113ed8aa3bd96"></a><!-- doxytag: member="macros.c::clear_argv_macros_r" ref="7e006d46b0a5e700981113ed8aa3bd96" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_argv_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear argv macros - used in commands 
+</div>
+</div><p>
+<a class="anchor" name="c9425f24b8743e9c1118514d3bd5010d"></a><!-- doxytag: member="macros.c::clear_contact_macros" ref="c9425f24b8743e9c1118514d3bd5010d" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_contact_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -252,15 +326,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="6063362e4b96795c7b83880604a559cd"></a><!-- doxytag: member="macros.c::clear_contactgroup_macros" ref="6063362e4b96795c7b83880604a559cd" args="(icinga_macros *mac)" -->
+<a class="anchor" name="267464d754b1132c53d4a7148e77365e"></a><!-- doxytag: member="macros.c::clear_contact_macros_r" ref="267464d754b1132c53d4a7148e77365e" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_contact_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear contact macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="438a9ed34809ae03edc42c56f84ff252"></a><!-- doxytag: member="macros.c::clear_contactgroup_macros" ref="438a9ed34809ae03edc42c56f84ff252" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_contactgroup_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -272,15 +366,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="3c1e3c6b5ec2b8e47ae94795efe1ccff"></a><!-- doxytag: member="macros.c::clear_host_macros" ref="3c1e3c6b5ec2b8e47ae94795efe1ccff" args="(icinga_macros *mac)" -->
+<a class="anchor" name="a76a80752f6f23800641a89b1831ecbd"></a><!-- doxytag: member="macros.c::clear_contactgroup_macros_r" ref="a76a80752f6f23800641a89b1831ecbd" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_contactgroup_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear contactgroup macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="758caa6570ccd4cb6c14c5f492b57e6e"></a><!-- doxytag: member="macros.c::clear_host_macros" ref="758caa6570ccd4cb6c14c5f492b57e6e" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_host_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -292,15 +406,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="47eb6fcc2095d4142f78efc06327fa81"></a><!-- doxytag: member="macros.c::clear_hostgroup_macros" ref="47eb6fcc2095d4142f78efc06327fa81" args="(icinga_macros *mac)" -->
+<a class="anchor" name="33dd025c7c029a783e012a8e69d6a21c"></a><!-- doxytag: member="macros.c::clear_host_macros_r" ref="33dd025c7c029a783e012a8e69d6a21c" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_host_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear host macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="cb14d4040f3c4f0f909a3d498b38b515"></a><!-- doxytag: member="macros.c::clear_hostgroup_macros" ref="cb14d4040f3c4f0f909a3d498b38b515" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_hostgroup_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -312,15 +446,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="514fb96e8a3c0914b562ae864d34ff16"></a><!-- doxytag: member="macros.c::clear_service_macros" ref="514fb96e8a3c0914b562ae864d34ff16" args="(icinga_macros *mac)" -->
+<a class="anchor" name="9d35b9566518e3aba461e1ddbf6f63bf"></a><!-- doxytag: member="macros.c::clear_hostgroup_macros_r" ref="9d35b9566518e3aba461e1ddbf6f63bf" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_hostgroup_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear hostgroup macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="c1e0b7bce17d72eeaa5d2bc6e3872062"></a><!-- doxytag: member="macros.c::clear_service_macros" ref="c1e0b7bce17d72eeaa5d2bc6e3872062" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_service_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -332,15 +486,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="e60fa1fd1cfbc6f6a8aa633876a2847a"></a><!-- doxytag: member="macros.c::clear_servicegroup_macros" ref="e60fa1fd1cfbc6f6a8aa633876a2847a" args="(icinga_macros *mac)" -->
+<a class="anchor" name="0ade6fe1b6af9993ca1049dab30eea87"></a><!-- doxytag: member="macros.c::clear_service_macros_r" ref="0ade6fe1b6af9993ca1049dab30eea87" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_service_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear service macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="d15e2fefe8d238f2f9f710999b8bab74"></a><!-- doxytag: member="macros.c::clear_servicegroup_macros" ref="d15e2fefe8d238f2f9f710999b8bab74" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_servicegroup_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -352,15 +526,35 @@
 
 </div>
 </div><p>
-<a class="anchor" name="55c359162b0a0a74cafbec218d30957f"></a><!-- doxytag: member="macros.c::clear_summary_macros" ref="55c359162b0a0a74cafbec218d30957f" args="(icinga_macros *mac)" -->
+<a class="anchor" name="6d603ff4bb9676851200b651cbcebb4c"></a><!-- doxytag: member="macros.c::clear_servicegroup_macros_r" ref="6d603ff4bb9676851200b651cbcebb4c" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_servicegroup_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear servicegroup macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="d3cbc94e8ac7c579a33ebd37cce5b5f7"></a><!-- doxytag: member="macros.c::clear_summary_macros" ref="d3cbc94e8ac7c579a33ebd37cce5b5f7" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int clear_summary_macros           </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
-          <td class="paramname"> <em>mac</em>          </td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
           <td>&nbsp;)&nbsp;</td>
           <td width="100%"></td>
         </tr>
@@ -372,12 +566,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="da2df8f58db54409e7b8a0432c2fcc9a"></a><!-- doxytag: member="macros.c::clear_volatile_macros" ref="da2df8f58db54409e7b8a0432c2fcc9a" args="(icinga_macros *mac)" -->
+<a class="anchor" name="509fa2ad969995161301075fbdfccede"></a><!-- doxytag: member="macros.c::clear_summary_macros_r" ref="509fa2ad969995161301075fbdfccede" args="(icinga_macros *mac)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int clear_volatile_macros           </td>
+          <td class="memname">int clear_summary_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>          </td>
@@ -389,7 +583,47 @@
 <div class="memdoc">
 
 <p>
+clear summary macros the thread-safe version 
+</div>
+</div><p>
+<a class="anchor" name="8be5acbb84477d9e5c59824f5213fa4e"></a><!-- doxytag: member="macros.c::clear_volatile_macros" ref="8be5acbb84477d9e5c59824f5213fa4e" args="(void)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_volatile_macros           </td>
+          <td>(</td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="43597feefd0f3c97dc02bf4423527716"></a><!-- doxytag: member="macros.c::clear_volatile_macros_r" ref="43597feefd0f3c97dc02bf4423527716" args="(icinga_macros *mac)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int clear_volatile_macros_r           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
+          <td class="paramname"> <em>mac</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+clear all macros that are not "constant" (i.e. they change throughout the course of monitoring) the thread-safe version 
 </div>
 </div><p>
 <a class="anchor" name="0a7d8c7470a0cb9f991ad73466295290"></a><!-- doxytag: member="macros.c::copy_constant_macros" ref="0a7d8c7470a0cb9f991ad73466295290" args="(char **dest)" -->
@@ -429,7 +663,7 @@
 <div class="memdoc">
 
 <p>
-
+free memory associated with the macrox names 
 </div>
 </div><p>
 <a class="anchor" name="62b785c1aa77ca19812cc5c48fe54c46"></a><!-- doxytag: member="macros.c::get_global_macros" ref="62b785c1aa77ca19812cc5c48fe54c46" args="(void)" -->
@@ -469,15 +703,50 @@
 <div class="memdoc">
 
 <p>
-
+encodes a string in proper URL format 
 </div>
 </div><p>
-<a class="anchor" name="f887262a481acd5eef440679f80809bb"></a><!-- doxytag: member="macros.c::grab_contact_address_macro" ref="f887262a481acd5eef440679f80809bb" args="(icinga_macros *mac, int macro_num, contact *temp_contact, char **output)" -->
+<a class="anchor" name="10e1526179b86c8f88e1360d4fc6b3c6"></a><!-- doxytag: member="macros.c::grab_contact_address_macro" ref="10e1526179b86c8f88e1360d4fc6b3c6" args="(int macro_num, contact *temp_contact, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_contact_address_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structcontact__struct.html">contact</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_contact</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c1eb61f4aedb02e3722da3566ec9c00e"></a><!-- doxytag: member="macros.c::grab_contact_address_macro_r" ref="c1eb61f4aedb02e3722da3566ec9c00e" args="(icinga_macros *mac, int macro_num, contact *temp_contact, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_contact_address_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -510,15 +779,35 @@
 <div class="memdoc">
 
 <p>
-
+computes a contact address macro 
 </div>
 </div><p>
-<a class="anchor" name="eb4e0cf035401c64f39b52558975770d"></a><!-- doxytag: member="macros.c::grab_contact_macros" ref="eb4e0cf035401c64f39b52558975770d" args="(icinga_macros *mac, contact *cntct)" -->
+<a class="anchor" name="1aeb0e58f9ca3f22cbe865ab33fa9fa7"></a><!-- doxytag: member="macros.c::grab_contact_macros" ref="1aeb0e58f9ca3f22cbe865ab33fa9fa7" args="(contact *cntct)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_contact_macros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structcontact__struct.html">contact</a> *&nbsp;</td>
+          <td class="paramname"> <em>cntct</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a116e0d95868a0a35a2b64e685006c7e"></a><!-- doxytag: member="macros.c::grab_contact_macros_r" ref="a116e0d95868a0a35a2b64e685006c7e" args="(icinga_macros *mac, contact *cntct)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_contact_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -539,15 +828,35 @@
 <div class="memdoc">
 
 <p>
-
+grab macros that are specific to a particular contact 
 </div>
 </div><p>
-<a class="anchor" name="8f1d5dcc9bb9a26176ee3a3f7a063463"></a><!-- doxytag: member="macros.c::grab_contactgroup_macros" ref="8f1d5dcc9bb9a26176ee3a3f7a063463" args="(icinga_macros *mac, contactgroup *cg)" -->
+<a class="anchor" name="0542b48ab08a6eb0b09acb360f9d45a0"></a><!-- doxytag: member="macros.c::grab_contactgroup_macros" ref="0542b48ab08a6eb0b09acb360f9d45a0" args="(contactgroup *cg)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_contactgroup_macros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structcontactgroup__struct.html">contactgroup</a> *&nbsp;</td>
+          <td class="paramname"> <em>cg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9e3b10f83be425d2532bd3e2bc9b51df"></a><!-- doxytag: member="macros.c::grab_contactgroup_macros_r" ref="9e3b10f83be425d2532bd3e2bc9b51df" args="(icinga_macros *mac, contactgroup *cg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_contactgroup_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -568,15 +877,56 @@
 <div class="memdoc">
 
 <p>
-
+grab contactgroup macros 
 </div>
 </div><p>
-<a class="anchor" name="9e1120a2197891c8399409598897f962"></a><!-- doxytag: member="macros.c::grab_custom_macro_value" ref="9e1120a2197891c8399409598897f962" args="(icinga_macros *mac, char *macro_name, char *arg1, char *arg2, char **output)" -->
+<a class="anchor" name="1b1d15124697257fffe49c3306008389"></a><!-- doxytag: member="macros.c::grab_custom_macro_value" ref="1b1d15124697257fffe49c3306008389" args="(char *macro_name, char *arg1, char *arg2, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_custom_macro_value           </td>
+          <td>(</td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>macro_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>arg2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="8a6b330505e5e335443e91aa76dd9f83"></a><!-- doxytag: member="macros.c::grab_custom_macro_value_r" ref="8a6b330505e5e335443e91aa76dd9f83" args="(icinga_macros *mac, char *macro_name, char *arg1, char *arg2, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_custom_macro_value_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -615,15 +965,50 @@
 <div class="memdoc">
 
 <p>
-
+calculates the value of a custom macro 
 </div>
 </div><p>
-<a class="anchor" name="46e0874cf89edbc07b664f303e005a8b"></a><!-- doxytag: member="macros.c::grab_custom_object_macro" ref="46e0874cf89edbc07b664f303e005a8b" args="(icinga_macros *mac, char *macro_name, customvariablesmember *vars, char **output)" -->
+<a class="anchor" name="ad075e00dce3efa09df5b2d2cf2abdbc"></a><!-- doxytag: member="macros.c::grab_custom_object_macro" ref="ad075e00dce3efa09df5b2d2cf2abdbc" args="(char *macro_name, customvariablesmember *vars, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_custom_object_macro           </td>
+          <td>(</td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>macro_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *&nbsp;</td>
+          <td class="paramname"> <em>vars</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="50eb3be678b7a9ca4fa6abdd70c09a6e"></a><!-- doxytag: member="macros.c::grab_custom_object_macro_r" ref="50eb3be678b7a9ca4fa6abdd70c09a6e" args="(icinga_macros *mac, char *macro_name, customvariablesmember *vars, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_custom_object_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -656,15 +1041,56 @@
 <div class="memdoc">
 
 <p>
-
+computes a custom object macro 
 </div>
 </div><p>
-<a class="anchor" name="13d9ea4ccbb1f167902bec92cf81b6d4"></a><!-- doxytag: member="macros.c::grab_datetime_macro" ref="13d9ea4ccbb1f167902bec92cf81b6d4" args="(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output)" -->
+<a class="anchor" name="bbf14821e20d6efc959b1223ccdba4a7"></a><!-- doxytag: member="macros.c::grab_datetime_macro" ref="bbf14821e20d6efc959b1223ccdba4a7" args="(int macro_type, char *arg1, char *arg2, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_datetime_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>arg2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e453c6c8a667a375205d7b5c2d5f1ba8"></a><!-- doxytag: member="macros.c::grab_datetime_macro_r" ref="e453c6c8a667a375205d7b5c2d5f1ba8" args="(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_datetime_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -703,15 +1129,35 @@
 <div class="memdoc">
 
 <p>
-
+calculates a date/time macro 
 </div>
 </div><p>
-<a class="anchor" name="453a11d0e5ac6746246ab692a693cf54"></a><!-- doxytag: member="macros.c::grab_host_macros" ref="453a11d0e5ac6746246ab692a693cf54" args="(icinga_macros *mac, host *hst)" -->
+<a class="anchor" name="b76e83cfd494f76874c0f0a7c93c7067"></a><!-- doxytag: member="macros.c::grab_host_macros" ref="b76e83cfd494f76874c0f0a7c93c7067" args="(host *hst)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_host_macros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structhost__struct.html">host</a> *&nbsp;</td>
+          <td class="paramname"> <em>hst</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c7ab68f80dc3a7089df84dbb5a8023bf"></a><!-- doxytag: member="macros.c::grab_host_macros_r" ref="c7ab68f80dc3a7089df84dbb5a8023bf" args="(icinga_macros *mac, host *hst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_host_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -732,15 +1178,35 @@
 <div class="memdoc">
 
 <p>
-
+grab macros that are specific to a particular host 
 </div>
 </div><p>
-<a class="anchor" name="0c87ec536ee88fe274a6b991bf8ad1d8"></a><!-- doxytag: member="macros.c::grab_hostgroup_macros" ref="0c87ec536ee88fe274a6b991bf8ad1d8" args="(icinga_macros *mac, hostgroup *hg)" -->
+<a class="anchor" name="008193a870de5c5c2bb7836317dfe1af"></a><!-- doxytag: member="macros.c::grab_hostgroup_macros" ref="008193a870de5c5c2bb7836317dfe1af" args="(hostgroup *hg)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_hostgroup_macros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structhostgroup__struct.html">hostgroup</a> *&nbsp;</td>
+          <td class="paramname"> <em>hg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="847c1617f47cc2e7b386480150c4122a"></a><!-- doxytag: member="macros.c::grab_hostgroup_macros_r" ref="847c1617f47cc2e7b386480150c4122a" args="(icinga_macros *mac, hostgroup *hg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_hostgroup_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -761,15 +1227,56 @@
 <div class="memdoc">
 
 <p>
-
+grab hostgroup macros 
 </div>
 </div><p>
-<a class="anchor" name="6558722c277f0715a1192a4f62896e3c"></a><!-- doxytag: member="macros.c::grab_macro_value" ref="6558722c277f0715a1192a4f62896e3c" args="(icinga_macros *mac, char *macro_buffer, char **output, int *clean_options, int *free_macro)" -->
+<a class="anchor" name="c5251075907db5b9f63439edf906ea25"></a><!-- doxytag: member="macros.c::grab_macro_value" ref="c5251075907db5b9f63439edf906ea25" args="(char *macro_buffer, char **output, int *clean_options, int *free_macro)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_macro_value           </td>
+          <td>(</td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>macro_buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&nbsp;</td>
+          <td class="paramname"> <em>clean_options</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&nbsp;</td>
+          <td class="paramname"> <em>free_macro</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="d723f275a4107ba85dd7cf7461bcdeed"></a><!-- doxytag: member="macros.c::grab_macro_value_r" ref="d723f275a4107ba85dd7cf7461bcdeed" args="(icinga_macros *mac, char *macro_buffer, char **output, int *clean_options, int *free_macro)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_macro_value_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -808,15 +1315,62 @@
 <div class="memdoc">
 
 <p>
-
+this is the big one 
 </div>
 </div><p>
-<a class="anchor" name="9fd9eb95193e4c12b18eb19e6df3ca2b"></a><!-- doxytag: member="macros.c::grab_macrox_value" ref="9fd9eb95193e4c12b18eb19e6df3ca2b" args="(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output, int *free_macro)" -->
+<a class="anchor" name="016a7f547ec96c5b70f4951be8ce541c"></a><!-- doxytag: member="macros.c::grab_macrox_value" ref="016a7f547ec96c5b70f4951be8ce541c" args="(int macro_type, char *arg1, char *arg2, char **output, int *free_macro)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_macrox_value           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>arg2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&nbsp;</td>
+          <td class="paramname"> <em>free_macro</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c362b5bc27a48be3e6f0a2bf52d611ea"></a><!-- doxytag: member="macros.c::grab_macrox_value_r" ref="c362b5bc27a48be3e6f0a2bf52d611ea" args="(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output, int *free_macro)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_macrox_value_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -861,15 +1415,35 @@
 <div class="memdoc">
 
 <p>
-
+grab macrox value 
 </div>
 </div><p>
-<a class="anchor" name="fa07a1362949e20ab62d5f7a73d6e80d"></a><!-- doxytag: member="macros.c::grab_service_macros" ref="fa07a1362949e20ab62d5f7a73d6e80d" args="(icinga_macros *mac, service *svc)" -->
+<a class="anchor" name="157d7350a2a050881f94d4992ccc1677"></a><!-- doxytag: member="macros.c::grab_service_macros" ref="157d7350a2a050881f94d4992ccc1677" args="(service *svc)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_service_macros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structservice__struct.html">service</a> *&nbsp;</td>
+          <td class="paramname"> <em>svc</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a4f01b37c0c7cd1732b7558db47adf4f"></a><!-- doxytag: member="macros.c::grab_service_macros_r" ref="a4f01b37c0c7cd1732b7558db47adf4f" args="(icinga_macros *mac, service *svc)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_service_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -890,15 +1464,35 @@
 <div class="memdoc">
 
 <p>
-
+grab macros that are specific to a particular service 
 </div>
 </div><p>
-<a class="anchor" name="9d3670e2a5f5b9636769c8bcfbed04f5"></a><!-- doxytag: member="macros.c::grab_servicegroup_macros" ref="9d3670e2a5f5b9636769c8bcfbed04f5" args="(icinga_macros *mac, servicegroup *sg)" -->
+<a class="anchor" name="790e7cf183a695c86147c3f87557e575"></a><!-- doxytag: member="macros.c::grab_servicegroup_macros" ref="790e7cf183a695c86147c3f87557e575" args="(servicegroup *sg)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_servicegroup_macros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structservicegroup__struct.html">servicegroup</a> *&nbsp;</td>
+          <td class="paramname"> <em>sg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0b7ec5ae604718317e6d0b012c8cc64f"></a><!-- doxytag: member="macros.c::grab_servicegroup_macros_r" ref="0b7ec5ae604718317e6d0b012c8cc64f" args="(icinga_macros *mac, servicegroup *sg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_servicegroup_macros_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -919,15 +1513,50 @@
 <div class="memdoc">
 
 <p>
-
+grab macros that are specific to a particular servicegroup 
 </div>
 </div><p>
-<a class="anchor" name="dd09846137c12d8475d67b75ca73b988"></a><!-- doxytag: member="macros.c::grab_standard_contact_macro" ref="dd09846137c12d8475d67b75ca73b988" args="(icinga_macros *mac, int macro_type, contact *temp_contact, char **output)" -->
+<a class="anchor" name="a9308cf848522e30b5ecc8fa079aa41e"></a><!-- doxytag: member="macros.c::grab_standard_contact_macro" ref="a9308cf848522e30b5ecc8fa079aa41e" args="(int macro_type, contact *temp_contact, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_standard_contact_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structcontact__struct.html">contact</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_contact</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="73cd06b36a1bf317ea6c05bac0fec878"></a><!-- doxytag: member="macros.c::grab_standard_contact_macro_r" ref="73cd06b36a1bf317ea6c05bac0fec878" args="(icinga_macros *mac, int macro_type, contact *temp_contact, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_standard_contact_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -960,15 +1589,50 @@
 <div class="memdoc">
 
 <p>
-
+computes a contact macro 
 </div>
 </div><p>
-<a class="anchor" name="ccff09c840ca273de2444562e77c329c"></a><!-- doxytag: member="macros.c::grab_standard_contactgroup_macro" ref="ccff09c840ca273de2444562e77c329c" args="(icinga_macros *mac, int macro_type, contactgroup *temp_contactgroup, char **output)" -->
+<a class="anchor" name="058b761b3514f752625ed5e85509c0c2"></a><!-- doxytag: member="macros.c::grab_standard_contactgroup_macro" ref="058b761b3514f752625ed5e85509c0c2" args="(int macro_type, contactgroup *temp_contactgroup, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_standard_contactgroup_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structcontactgroup__struct.html">contactgroup</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_contactgroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="65af571d3dfdeb1cab67561fa75c60ff"></a><!-- doxytag: member="macros.c::grab_standard_contactgroup_macro_r" ref="65af571d3dfdeb1cab67561fa75c60ff" args="(icinga_macros *mac, int macro_type, contactgroup *temp_contactgroup, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_standard_contactgroup_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -1001,15 +1665,56 @@
 <div class="memdoc">
 
 <p>
-
+computes a contactgroup macro 
 </div>
 </div><p>
-<a class="anchor" name="1cc8f10976d3ff0db9eec257f374c733"></a><!-- doxytag: member="macros.c::grab_standard_host_macro" ref="1cc8f10976d3ff0db9eec257f374c733" args="(icinga_macros *mac, int macro_type, host *temp_host, char **output, int *free_macro)" -->
+<a class="anchor" name="f418cedf296a33b017860b0fa8cc0527"></a><!-- doxytag: member="macros.c::grab_standard_host_macro" ref="f418cedf296a33b017860b0fa8cc0527" args="(int macro_type, host *temp_host, char **output, int *free_macro)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_standard_host_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structhost__struct.html">host</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_host</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&nbsp;</td>
+          <td class="paramname"> <em>free_macro</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="64baf449d006ab6189cb5c35933fcc52"></a><!-- doxytag: member="macros.c::grab_standard_host_macro_r" ref="64baf449d006ab6189cb5c35933fcc52" args="(icinga_macros *mac, int macro_type, host *temp_host, char **output, int *free_macro)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_standard_host_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -1048,15 +1753,50 @@
 <div class="memdoc">
 
 <p>
-
+calculates a host macro 
 </div>
 </div><p>
-<a class="anchor" name="4262029ff073756fa2afc144b84dee52"></a><!-- doxytag: member="macros.c::grab_standard_hostgroup_macro" ref="4262029ff073756fa2afc144b84dee52" args="(icinga_macros *mac, int macro_type, hostgroup *temp_hostgroup, char **output)" -->
+<a class="anchor" name="0ae63337e37bca5f1fe87b942971c85f"></a><!-- doxytag: member="macros.c::grab_standard_hostgroup_macro" ref="0ae63337e37bca5f1fe87b942971c85f" args="(int macro_type, hostgroup *temp_hostgroup, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_standard_hostgroup_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structhostgroup__struct.html">hostgroup</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_hostgroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c8503abace234e33b24c7e9ca9b0bbf7"></a><!-- doxytag: member="macros.c::grab_standard_hostgroup_macro_r" ref="c8503abace234e33b24c7e9ca9b0bbf7" args="(icinga_macros *mac, int macro_type, hostgroup *temp_hostgroup, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_standard_hostgroup_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -1089,15 +1829,56 @@
 <div class="memdoc">
 
 <p>
-
+computes a hostgroup macro 
 </div>
 </div><p>
-<a class="anchor" name="9c373c079e8204412f7c7dab1832c4dd"></a><!-- doxytag: member="macros.c::grab_standard_service_macro" ref="9c373c079e8204412f7c7dab1832c4dd" args="(icinga_macros *mac, int macro_type, service *temp_service, char **output, int *free_macro)" -->
+<a class="anchor" name="f9e2e62a1bf6aa908be641c4924790cc"></a><!-- doxytag: member="macros.c::grab_standard_service_macro" ref="f9e2e62a1bf6aa908be641c4924790cc" args="(int macro_type, service *temp_service, char **output, int *free_macro)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_standard_service_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structservice__struct.html">service</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_service</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&nbsp;</td>
+          <td class="paramname"> <em>free_macro</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="be3727a6bfc44a8437f769a0be8a0f9b"></a><!-- doxytag: member="macros.c::grab_standard_service_macro_r" ref="be3727a6bfc44a8437f769a0be8a0f9b" args="(icinga_macros *mac, int macro_type, service *temp_service, char **output, int *free_macro)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_standard_service_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -1136,15 +1917,50 @@
 <div class="memdoc">
 
 <p>
-
+computes a service macro 
 </div>
 </div><p>
-<a class="anchor" name="662323cba6603cc9777f66b8260a1886"></a><!-- doxytag: member="macros.c::grab_standard_servicegroup_macro" ref="662323cba6603cc9777f66b8260a1886" args="(icinga_macros *mac, int macro_type, servicegroup *temp_servicegroup, char **output)" -->
+<a class="anchor" name="154af16dab4559cfa2519dbd117811f6"></a><!-- doxytag: member="macros.c::grab_standard_servicegroup_macro" ref="154af16dab4559cfa2519dbd117811f6" args="(int macro_type, servicegroup *temp_servicegroup, char **output)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int grab_standard_servicegroup_macro           </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>macro_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structservicegroup__struct.html">servicegroup</a> *&nbsp;</td>
+          <td class="paramname"> <em>temp_servicegroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td width="100%"></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f1d9d474d174006e97f097d14b854f49"></a><!-- doxytag: member="macros.c::grab_standard_servicegroup_macro_r" ref="f1d9d474d174006e97f097d14b854f49" args="(icinga_macros *mac, int macro_type, servicegroup *temp_servicegroup, char **output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grab_standard_servicegroup_macro_r           </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structicinga__macros.html">icinga_macros</a> *&nbsp;</td>
           <td class="paramname"> <em>mac</em>, </td>
@@ -1177,7 +1993,7 @@
 <div class="memdoc">
 
 <p>
-
+computes a servicegroup macro 
 </div>
 </div><p>
 <a class="anchor" name="ba2d355b3e027bf1ce8c922b9a5c9ae3"></a><!-- doxytag: member="macros.c::init_macros" ref="ba2d355b3e027bf1ce8c922b9a5c9ae3" args="(void)" -->
@@ -1197,7 +2013,7 @@
 <div class="memdoc">
 
 <p>
-
+initializes global macros 
 </div>
 </div><p>
 <a class="anchor" name="1e846c78ff5260da3798964d72b433d1"></a><!-- doxytag: member="macros.c::init_macrox_names" ref="1e846c78ff5260da3798964d72b433d1" args="(void)" -->
@@ -1293,7 +2109,7 @@
 <div class="memdoc">
 
 <p>
-
+replace macros in notification commands with their values, the thread-safe version 
 </div>
 </div><p>
 <hr><h2>Variable Documentation</h2>
@@ -1354,7 +2170,7 @@
 <div class="memdoc">
 
 <p>
-
+scoped to this file to prevent (unintentional) mischief, but see <a class="el" href="test__events_8c.html#c72ee265bc910bcca3ed2285c05fbf3e">base/notifications.c</a> for how to use it 
 </div>
 </div><p>
 <a class="anchor" name="db22d774dd3c6a729dbb2d392c51bcc0"></a><!-- doxytag: member="macros.c::host_list" ref="db22d774dd3c6a729dbb2d392c51bcc0" args="" -->
@@ -1429,7 +2245,8 @@
 <div class="memdoc">
 
 <p>
-
+These point to their corresponding pointer arrays in global_macros AFTER macros have been initialized.<p>
+They really only exist so that eventbroker modules that reference them won't need to be re-compiled, although modules that rely on their values after having run a certain command will require an update 
 </div>
 </div><p>
 <a class="anchor" name="350dd2df3833d4751c42a94b6b90727a"></a><!-- doxytag: member="macros.c::macro_x_names" ref="350dd2df3833d4751c42a94b6b90727a" args="[MACRO_X_COUNT]" -->
@@ -1492,7 +2309,7 @@
 
 </div>
 </div><p>
-<hr size="1"><address style="align: right;"><small>Generated on Wed Jan 19 16:19:47 2011 for icinga-core by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Wed Feb 9 16:56:21 2011 for icinga-core by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>

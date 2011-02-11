@@ -892,8 +892,8 @@ process_performance_data=0
 # HOST AND SERVICE PERFORMANCE DATA PROCESSING COMMANDS
 # These commands are run after every host and service check is
 # performed.  These commands are executed only if the
-# enable_performance_data option (above) is set to 1.  The command
-# argument is the short name of a command definition that you 
+# process_performance_data option (above) is set to 1.  The command
+# argument is the short name of a command definition that you
 # define in your host configuration file.  Read the HTML docs for
 # more information on performance data.
 
@@ -905,7 +905,7 @@ process_performance_data=0
 # HOST AND SERVICE PERFORMANCE DATA FILES
 # These files are used to store host and service performance data.
 # Performance data is only written to these files if the
-# enable_performance_data option (above) is set to 1.
+# process_performance_data option (above) is set to 1.
 
 #host_perfdata_file=/tmp/host-perfdata
 #service_perfdata_file=/tmp/service-perfdata
