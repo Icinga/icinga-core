@@ -628,59 +628,60 @@
 <a name="l00600"></a>00600 <span class="keywordtype">void</span> <a class="code" href="cgiutils_8c.html#b47f3fe4fa7b7029b684a3e2a9292983">write_popup_code</a>(<span class="keywordtype">int</span>);                                     <span class="comment">/* PopUp's for graphics */</span>
 <a name="l00601"></a>00601 <span class="keywordtype">int</span> <a class="code" href="cgiutils_8h.html#8946f50613f7eb60ad90ef0928f7ad43">check_daemon_running</a>(<span class="keywordtype">void</span>);
 <a name="l00602"></a>00602 
-<a name="l00603"></a>00603 
-<a name="l00604"></a>00604 <span class="comment">/******************************** MULTIURL PATCH *******************************/</span>
-<a name="l00605"></a>00605 
-<a name="l00606"></a>00606 <span class="preprocessor">#ifndef DISABLE_MULTIURL</span>
-<a name="l00607"></a>00607 <span class="preprocessor"></span>
-<a name="l00608"></a><a class="code" href="cgiutils_8h.html#bd50a19eae09be0290c6d0367776a9be">00608</a> <span class="preprocessor">#define MU_PATCH_ID     "+MU"</span>
-<a name="l00609"></a>00609 <span class="preprocessor"></span>
-<a name="l00610"></a><a class="code" href="cgiutils_8h.html#93813e89a3994d7a8d195735cba9a731">00610</a> <span class="keywordtype">int</span> <a class="code" href="cgiutils_8h.html#589ebed90b7fff5250b0f125bc4c6975">MU_lasturl</a>, <a class="code" href="cgiutils_8h.html#93813e89a3994d7a8d195735cba9a731">MU_thisurl</a>;
-<a name="l00611"></a><a class="code" href="cgiutils_8h.html#35ee083fa6c36843b3ca72025417ebbd">00611</a> <span class="keywordtype">char</span> <a class="code" href="cgiutils_8h.html#0299cd0b34e0ed608af5f5aa267de1d3">MU_iconstr</a>[16], *<a class="code" href="cgiutils_8h.html#910e10da3dff7baaebb17c530f7ffc7a">MU_origstr</a>, *<a class="code" href="cgiutils_8h.html#35ee083fa6c36843b3ca72025417ebbd">MU_ptr</a>;
-<a name="l00612"></a>00612 
-<a name="l00613"></a>00613 <span class="comment">/* Have process_macros() generate processed_string *BEFORE* starting the loop */</span>
-<a name="l00614"></a>00614 
-<a name="l00615"></a><a class="code" href="cgiutils_8h.html#7926b09219b2ea5e96e85f2155b557f9">00615</a> <span class="preprocessor">#define BEGIN_MULTIURL_LOOP                                                                             \</span>
-<a name="l00616"></a>00616 <span class="preprocessor">        </span><span class="comment">/* Init counters */</span>     MU_lasturl=0; MU_iconstr[0]='\0';                                       \
-<a name="l00617"></a>00617         <span class="comment">/* MAIN LOOP */</span>         for (MU_origstr=MU_ptr=processed_string; (*MU_ptr)!='\0'; ) {           \
-<a name="l00618"></a>00618                 <span class="comment">/* Internal init */</span>     MU_thisurl=MU_lasturl;                                          \
-<a name="l00619"></a>00619                 <span class="comment">/* Skip whitespace */</span>   for (;isspace(*MU_ptr);MU_ptr++) ;                              \
-<a name="l00620"></a>00620                 <span class="comment">/* Detect+skip ap. */</span>   for (;(*MU_ptr)=='\'';MU_ptr++) MU_thisurl=MU_lasturl+1;        \
-<a name="l00621"></a>00621                 <span class="comment">/* Ap. found? */</span>        if (MU_thisurl&gt;MU_lasturl) {                                    \
-<a name="l00622"></a>00622                         <span class="comment">/* yes-&gt;split str */</span>    sprintf(MU_iconstr,"%u-",MU_thisurl);                   \
-<a name="l00623"></a>00623                                                 processed_string=MU_ptr;                                \
-<a name="l00624"></a>00624                                                 for (;((*MU_ptr)!='\0')&amp;&amp;((*MU_ptr)!='\'');MU_ptr++) ;  \
-<a name="l00625"></a>00625                                                 if ((*MU_ptr)=='\'') { (*MU_ptr)='\0'; MU_ptr++;        \
-<a name="l00626"></a>00626                                                         for (;isspace(*MU_ptr);MU_ptr++) ; }            \
-<a name="l00627"></a>00627                                         } else {                                                        \
-<a name="l00628"></a>00628                         <span class="comment">/* no-&gt;end loop */</span>      MU_iconstr[0]='\0'; MU_ptr="";                          \
-<a name="l00629"></a>00629                                         }
-<a name="l00630"></a>00630 
-<a name="l00631"></a>00631 <span class="comment">/* Do the original printf()s, additionally inserting MU_iconstr between icon path and icon (file)name */</span>
-<a name="l00632"></a>00632 
-<a name="l00633"></a><a class="code" href="cgiutils_8h.html#a2ddf3116848052fffad780a9c0bd9a2">00633</a> <span class="preprocessor">#define END_MULTIURL_LOOP                                                                               \</span>
-<a name="l00634"></a>00634 <span class="preprocessor">                </span><span class="comment">/* Int -&gt; ext ctr */</span>    MU_lasturl=MU_thisurl; processed_string=MU_ptr;                 \
-<a name="l00635"></a>00635         <span class="comment">/* MAIN LOOP */</span>         }                                                                       \
-<a name="l00636"></a>00636         <span class="comment">/* Hide evidence */</span>     processed_string=MU_origstr;
-<a name="l00637"></a>00637 
-<a name="l00638"></a>00638 <span class="comment">/* Do the free(processed_string) *AFTER* ending the loop */</span>
-<a name="l00639"></a>00639 
-<a name="l00640"></a>00640 <span class="preprocessor">#else </span><span class="comment">/* ndef DISABLE_MULTIURL */</span>
-<a name="l00641"></a>00641 
-<a name="l00642"></a>00642 <span class="preprocessor">#define MU_PATCH_ID     ""</span>
-<a name="l00643"></a>00643 <span class="preprocessor"></span><span class="keywordtype">char</span> *MU_iconstr=<span class="stringliteral">""</span>;
-<a name="l00644"></a>00644 
-<a name="l00645"></a>00645 <span class="preprocessor">#endif </span><span class="comment">/* ndef DISABLE_MULTIURL */</span>
-<a name="l00646"></a>00646 
+<a name="l00603"></a>00603 <span class="keywordtype">void</span> <a class="code" href="cgiutils_8c.html#605ea75bdd858061183fd47ea08abca2">print_generic_error_message</a>(<span class="keywordtype">char</span> *, <span class="keywordtype">char</span> *, <span class="keywordtype">int</span>);
+<a name="l00604"></a>00604 
+<a name="l00605"></a>00605 <span class="comment">/******************************** MULTIURL PATCH *******************************/</span>
+<a name="l00606"></a>00606 
+<a name="l00607"></a>00607 <span class="preprocessor">#ifndef DISABLE_MULTIURL</span>
+<a name="l00608"></a>00608 <span class="preprocessor"></span>
+<a name="l00609"></a><a class="code" href="cgiutils_8h.html#bd50a19eae09be0290c6d0367776a9be">00609</a> <span class="preprocessor">#define MU_PATCH_ID     "+MU"</span>
+<a name="l00610"></a>00610 <span class="preprocessor"></span>
+<a name="l00611"></a><a class="code" href="cgiutils_8h.html#93813e89a3994d7a8d195735cba9a731">00611</a> <span class="keywordtype">int</span> <a class="code" href="cgiutils_8h.html#589ebed90b7fff5250b0f125bc4c6975">MU_lasturl</a>, <a class="code" href="cgiutils_8h.html#93813e89a3994d7a8d195735cba9a731">MU_thisurl</a>;
+<a name="l00612"></a><a class="code" href="cgiutils_8h.html#35ee083fa6c36843b3ca72025417ebbd">00612</a> <span class="keywordtype">char</span> <a class="code" href="cgiutils_8h.html#0299cd0b34e0ed608af5f5aa267de1d3">MU_iconstr</a>[16], *<a class="code" href="cgiutils_8h.html#910e10da3dff7baaebb17c530f7ffc7a">MU_origstr</a>, *<a class="code" href="cgiutils_8h.html#35ee083fa6c36843b3ca72025417ebbd">MU_ptr</a>;
+<a name="l00613"></a>00613 
+<a name="l00614"></a>00614 <span class="comment">/* Have process_macros() generate processed_string *BEFORE* starting the loop */</span>
+<a name="l00615"></a>00615 
+<a name="l00616"></a><a class="code" href="cgiutils_8h.html#7926b09219b2ea5e96e85f2155b557f9">00616</a> <span class="preprocessor">#define BEGIN_MULTIURL_LOOP                                                                             \</span>
+<a name="l00617"></a>00617 <span class="preprocessor">        </span><span class="comment">/* Init counters */</span>     MU_lasturl=0; MU_iconstr[0]='\0';                                       \
+<a name="l00618"></a>00618         <span class="comment">/* MAIN LOOP */</span>         for (MU_origstr=MU_ptr=processed_string; (*MU_ptr)!='\0'; ) {           \
+<a name="l00619"></a>00619                 <span class="comment">/* Internal init */</span>     MU_thisurl=MU_lasturl;                                          \
+<a name="l00620"></a>00620                 <span class="comment">/* Skip whitespace */</span>   for (;isspace(*MU_ptr);MU_ptr++) ;                              \
+<a name="l00621"></a>00621                 <span class="comment">/* Detect+skip ap. */</span>   for (;(*MU_ptr)=='\'';MU_ptr++) MU_thisurl=MU_lasturl+1;        \
+<a name="l00622"></a>00622                 <span class="comment">/* Ap. found? */</span>        if (MU_thisurl&gt;MU_lasturl) {                                    \
+<a name="l00623"></a>00623                         <span class="comment">/* yes-&gt;split str */</span>    sprintf(MU_iconstr,"%u-",MU_thisurl);                   \
+<a name="l00624"></a>00624                                                 processed_string=MU_ptr;                                \
+<a name="l00625"></a>00625                                                 for (;((*MU_ptr)!='\0')&amp;&amp;((*MU_ptr)!='\'');MU_ptr++) ;  \
+<a name="l00626"></a>00626                                                 if ((*MU_ptr)=='\'') { (*MU_ptr)='\0'; MU_ptr++;        \
+<a name="l00627"></a>00627                                                         for (;isspace(*MU_ptr);MU_ptr++) ; }            \
+<a name="l00628"></a>00628                                         } else {                                                        \
+<a name="l00629"></a>00629                         <span class="comment">/* no-&gt;end loop */</span>      MU_iconstr[0]='\0'; MU_ptr="";                          \
+<a name="l00630"></a>00630                                         }
+<a name="l00631"></a>00631 
+<a name="l00632"></a>00632 <span class="comment">/* Do the original printf()s, additionally inserting MU_iconstr between icon path and icon (file)name */</span>
+<a name="l00633"></a>00633 
+<a name="l00634"></a><a class="code" href="cgiutils_8h.html#a2ddf3116848052fffad780a9c0bd9a2">00634</a> <span class="preprocessor">#define END_MULTIURL_LOOP                                                                               \</span>
+<a name="l00635"></a>00635 <span class="preprocessor">                </span><span class="comment">/* Int -&gt; ext ctr */</span>    MU_lasturl=MU_thisurl; processed_string=MU_ptr;                 \
+<a name="l00636"></a>00636         <span class="comment">/* MAIN LOOP */</span>         }                                                                       \
+<a name="l00637"></a>00637         <span class="comment">/* Hide evidence */</span>     processed_string=MU_origstr;
+<a name="l00638"></a>00638 
+<a name="l00639"></a>00639 <span class="comment">/* Do the free(processed_string) *AFTER* ending the loop */</span>
+<a name="l00640"></a>00640 
+<a name="l00641"></a>00641 <span class="preprocessor">#else </span><span class="comment">/* ndef DISABLE_MULTIURL */</span>
+<a name="l00642"></a>00642 
+<a name="l00643"></a>00643 <span class="preprocessor">#define MU_PATCH_ID     ""</span>
+<a name="l00644"></a>00644 <span class="preprocessor"></span><span class="keywordtype">char</span> *MU_iconstr=<span class="stringliteral">""</span>;
+<a name="l00645"></a>00645 
+<a name="l00646"></a>00646 <span class="preprocessor">#endif </span><span class="comment">/* ndef DISABLE_MULTIURL */</span>
 <a name="l00647"></a>00647 
 <a name="l00648"></a>00648 
-<a name="l00649"></a>00649 <span class="preprocessor">#ifdef __cplusplus</span>
-<a name="l00650"></a>00650 <span class="preprocessor"></span>}
-<a name="l00651"></a>00651 <span class="preprocessor">#endif</span>
-<a name="l00652"></a>00652 <span class="preprocessor"></span>
-<a name="l00653"></a>00653 <span class="preprocessor">#endif</span>
-<a name="l00654"></a>00654 <span class="preprocessor"></span>
-</pre></div><hr size="1"><address style="align: right;"><small>Generated on Wed Feb 9 16:56:21 2011 for icinga-core by&nbsp;
+<a name="l00649"></a>00649 
+<a name="l00650"></a>00650 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00651"></a>00651 <span class="preprocessor"></span>}
+<a name="l00652"></a>00652 <span class="preprocessor">#endif</span>
+<a name="l00653"></a>00653 <span class="preprocessor"></span>
+<a name="l00654"></a>00654 <span class="preprocessor">#endif</span>
+<a name="l00655"></a>00655 <span class="preprocessor"></span>
+</pre></div><hr size="1"><address style="align: right;"><small>Generated on Sat Feb 12 16:26:53 2011 for icinga-core by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>
