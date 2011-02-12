@@ -81,7 +81,7 @@
       <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
       <p>Benutzen Sie yast, um die Pakete "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
-      "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "php5-mysql" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
+      "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "apache2-mod_php5" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
 
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -274,7 +274,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
       <p><span class="bold"><strong>Icinga-Web Konfiguration</strong></span></p>
 
       <p>Im Normalfall können Sie die Datenbankeinstellungen während configure vornehmen. Sollten Sie diese allerdings anpassen wollen
-      oder nachsehen wollen im Fehlerfall, öffnen sie folgende Datei mit einem Editor Ihrer Wahl.</p>
+      oder nachsehen wollen im Fehlerfall, öffnen Sie folgende Datei mit einem Editor Ihrer Wahl.</p>
 
       <pre class="programlisting"> #&gt; vi app/config/databases.xml</pre>
 
@@ -285,7 +285,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 </tr>
 <tr><td align="left" valign="top">
         <p>Optional: Ihre spezifischen Icinga Datenbankeinstellungen können Sie vornehmen in app / config /database.site.xml.
-        Diese Informationen bleiben während eines Update- Prozesses erhalten.</p>
+        Diese Informationen bleiben während eines Update-Prozesses erhalten.</p>
       </td></tr>
 </table></div>
 
@@ -337,7 +337,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <p><span class="bold"><strong>Konfiguration von Icinga API Parametern</strong></span></p>
 
-      <p>Diese Einstellungen werden direkt in Icinga Web vorgenommen das diese Informationen dann entsprechend aufbereitet an die Icinga
+      <p>Diese Einstellungen werden direkt in Icinga Web vorgenommen, das diese Informationen dann entsprechend aufbereitet an die Icinga
       API weitergibt. Öffnen Sie app/modules/Web/config/icinga-io.xml um die IcingaApi factories zu sehen: IcingaData und IcingaCommand.
       </p>
 <pre class="programlisting"> #&gt; vi app/modules/Web/config/icinga-io.xml</pre>
@@ -349,7 +349,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 </tr>
 <tr><td align="left" valign="top">
           <p>Optional: Ihre spezifischen Icinga Verbindungseinstellungen, wie die API-Anmeldeinformationen, können Sie vornehmen
-          in app / modules / Web / config / icinga-io.site.xml. Diese Informationen bleiben während eines Update- Prozesses erhalten.</p>
+          in app / modules / Web / config / icinga-io.site.xml. Diese Informationen bleiben während eines Update-Prozesses erhalten.</p>
         </td></tr>
 </table></div>
 
@@ -387,7 +387,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
                                 &lt;/setting/&gt;</pre>
 
-      <p>In IcingaCommand können Sie einstellen, wie Befehle an die Icinga Core command pipe gesendet werden - lokal or remote via SSH.
+      <p>In IcingaCommand können Sie einstellen, wie Befehle an die Icinga Core command pipe gesendet werden - lokal oder remote via SSH.
       Abhängig davon, ob die jeweilige Option 'enabled' ist, wird diese verwendet/nicht verwendet. Standardmäßig wird die lokale Pipe
       verwendet.</p>
 
@@ -711,9 +711,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1405560"></a>
+  <a class="indexterm" name="id1784995"></a>
 
-  <a class="indexterm" name="id1405337"></a>
+  <a class="indexterm" name="id1784988"></a>
 </div>
 <div class="navfooter">
 <hr>
