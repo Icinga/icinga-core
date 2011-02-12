@@ -111,12 +111,10 @@ app/modules/AppKit/
   <p>Beispiel: Ändern der Zeitzone für Icinga Web</p>
 
   <p>Wenn die Zeitzone von Icinga Web von Ihrer lokalen Zeitzone abweicht, überprüfen Sie bitte den Parameter date.timezone in
-  app/modules/AppKit/config/module.xml (z.B. 'Europe/Berlin' aber nicht 'GMT'!)</p>
+  app/modules/AppKit/config/module.xml (z.B. 'Europe/Berlin')</p>
 
-  <pre class="programlisting">#&gt; vi app/config/translation.xml
-&lt;available_locales default_locale="en" default_timezone="GMT"&gt;</pre>
-
-  <p>Ihre Zeitzone ändern Sie bitte in app/config/translation.site.xml.</p>
+  <pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
+&lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
 
   <p><a name="configweb-module"></a> <span class="bold"><strong>Modul Konfiguration:</strong></span></p>
 
@@ -302,13 +300,13 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <p>Benötigen Sie weitere Informationen? Schauen Sie bitte in unserem<a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top"> Development Wiki.</a></p>
 
-  <a class="indexterm" name="id2874732"></a>
+  <a class="indexterm" name="id1406186"></a>
 
-  <a class="indexterm" name="id2874737"></a>
+  <a class="indexterm" name="id1406196"></a>
 
-  <a class="indexterm" name="id2874748"></a>
+  <a class="indexterm" name="id1406179"></a>
 
-  <a class="indexterm" name="id2874767"></a>
+  <a class="indexterm" name="id1406206"></a>
 </div>
 <div class="navfooter">
 <hr>
