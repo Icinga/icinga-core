@@ -109,8 +109,8 @@ app/modules/AppKit/
 
   <p>Example: Change the default timezone for Icinga Web</p>
 
-  <p>If the time(zone) in Icinga Web differs to your system time(zone), please check (and if responsible change) the default_timezone set
-  in app/config/translation.xml</p>
+  <p>If the time(zone) in Icinga Web differs to your system time(zone), please check (and if responsible change) the date.timezone entry in
+  app/modules/AppKit/config/module.xml (e.g. 'Europe/Berlin' but not 'GMT'!)</p>
 
   <pre class="programlisting">#&gt; vi app/config/translation.xml
 &lt;available_locales default_locale="en" default_timezone="GMT"&gt;</pre>
@@ -298,13 +298,13 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <p>You need more informations? Please have a look at our <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Development Wiki.</a></p>
 
-  <a class="indexterm" name="id5639182"></a>
+  <a class="indexterm" name="id4503425"></a>
 
-  <a class="indexterm" name="id5639180"></a>
+  <a class="indexterm" name="id4503423"></a>
 
-  <a class="indexterm" name="id5639197"></a>
+  <a class="indexterm" name="id4503440"></a>
 
-  <a class="indexterm" name="id5639216"></a>
+  <a class="indexterm" name="id4503459"></a>
 </div>
 <div class="navfooter">
 <hr>
