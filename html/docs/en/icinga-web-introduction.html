@@ -1,0 +1,1004 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Introduction to Icinga Web</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
+<link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
+<link rel="prev" href="icinga-web-config.html" title="Configuration Overview of Icinga Web">
+<link rel="next" href="icinga-web-pnp.html" title="Integration of PNP4Nagios into Icinga Web">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Introduction to Icinga Web</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="icinga-web-config.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. User Interfaces</th>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-pnp.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Introduction to Icinga Web">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="icinga-web-introduction"></a>Introduction to Icinga Web</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong><a name="icinga-web_introduction"></a>Overview</strong></span></p>
+
+  <p>This introduction takes you on a short tour showing some aspects of Icinga Web. It is not complete so there will be things which
+  aren't covered. We're working on this.</p>
+
+  <p>Due to constant development some things change over time resulting in different appearance and additional options. So far we
+  offer two small introductions, one for Icinga Web up to version 1.2.x, and one starting with <a class="link" href="icinga-web-introduction.html#icinga-web-intro_1.3" title="Introduction to Icinga Web (&gt;= 1.3.x)">version 1.3</a>.</p>
+
+  <div class="section" title="Introduction to Icinga Web (up to 1.2.x)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="icinga-web-intro"></a>Introduction to Icinga Web (up to 1.2.x)</h3></div></div></div>
+  
+
+  <p>If you followed the quickstart guides (<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">IDOUtils</a> and <a class="link" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">Icinga Web</a>) then please open your browser and enter http://&lt;icinga server&gt;/icinga-web. You will
+  get the login screen</p>
+
+  <div class="figure">
+<a name="id5067499"></a><p class="title"><b>Figure 6.1. Icinga Web login screen</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-login.png" alt="Icinga Web login screen"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>You should be able to login using "root" and "password". This will take you to an overview page showing the state of the hosts and
+  services being monitored</p>
+
+  <div class="figure">
+<a name="id5067529"></a><p class="title"><b>Figure 6.2. Icinga Web overview</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-overview.png" alt="Icinga Web overview"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Main Screen</em></span></p>
+
+  <p>This is where everything comes together: You can drag and drop new windows over here resulting in a new opened tab. The views are
+  customizable for the current user (they remain persistent) by dragging the column heading to the new place. Rightclicking on the heading
+  allows to change the sort order or to hide columns. Selected search results will be opened here too, next to opening available
+  cronks.</p>
+
+  <div class="figure">
+<a name="id5067563"></a><p class="title"><b>Figure 6.3. Icinga Web main screen</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-mainscreen1.png" alt="Icinga Web main screen"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Status Cronk</em></span></p>
+
+  <p>The status cronk shows host and service counters for their respective states. If count is zero, the colour remains grey. Clicking on
+  states opens a new tab in the main view showing the current clicked state only. Next to that, general process information is provided,
+  just as</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Hosts|Services (active/passive)</p>
+    </li>
+<li class="listitem">
+      <p>Host|Service execution time (min/avg/max)</p>
+    </li>
+<li class="listitem">
+      <p>Host|Services latency (min/avg/max)</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5067622"></a><p class="title"><b>Figure 6.4. Icinga Web status cronk</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-statuscronk.png" alt="Icinga Web status cronk"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Top menu</em></span></p>
+
+  <p>The top menu consists of general information about Icinga and the administration items for users, groups and logs. On the top right,
+  you can see the user currently logged in and edit its preferences or log out of Icinga Web.</p>
+
+  <div class="figure">
+<a name="id5067658"></a><p class="title"><b>Figure 6.5. Icinga Web top menu</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-topmenu1.png" alt="Icinga Web top menu"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Left menu</em></span></p>
+
+  <p>In the left (also hideable) menu you can select among different widgets (we call them "cronks"). You can either doubleclick on each
+  cronk or drag it with the cursor into the main view. The categories are separated into</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>"Data" for getting status, historical and configuration data</p>
+
+      <div class="figure">
+<a name="id5067700"></a><p class="title"><b>Figure 6.6. Icinga Web data cronks</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-cronks1.png" alt="Icinga Web data cronks"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+<li class="listitem">
+      <p>"Tactical Overview" keeps general charts and customized ones (custom variables)</p>
+
+      <div class="figure">
+<a name="id5067738"></a><p class="title"><b>Figure 6.7. Icinga Web tactical overview cronks</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-cronks2.png" alt="Icinga Web tactical overview cronks"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+<li class="listitem">
+      <p>"Misc" contains several useful cronks, just as iframe for external websites or the 1,2,3 columns for main view</p>
+
+      <div class="figure">
+<a name="id5067768"></a><p class="title"><b>Figure 6.8. Icinga Web misc cronks</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-cronks3.png" alt="Icinga Web misc cronks"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+</ul></div>
+
+  <p><span class="emphasis"><em>Search</em></span></p>
+
+  <p>The search form shows results while typing. The results will be shown in a separate inlay window. By clicking/selecting the results,
+  a new tab in the main view opens with more information. Please note that the search is currently case sensitive ("ping" vs.
+  "PING").</p>
+
+  <div class="figure">
+<a name="id5067805"></a><p class="title"><b>Figure 6.9. Icinga Web live search</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-search1.png" alt="Icinga Web live search"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Log</em></span></p>
+
+  <p>At the bottom, the current Icinga log is being shown. The log is refreshed automatically and can be hidden in order to allocate more
+  space for the main view.</p>
+
+  <div class="figure">
+<a name="id5067836"></a><p class="title"><b>Figure 6.10. Icinga Web log</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-log.png" alt="Icinga Web log"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="bold"><strong> </strong></span></p>
+
+  <p><span class="bold"><strong>Cronks and Views</strong></span></p>
+
+  <p>Icinga Web allows to open different cronks in order to view data, set filters for different views, send commands. The following list
+  summarizes the possibilities in general (several Cronks can provide more, like sending commands).</p>
+
+  <div class="figure">
+<a name="id5067881"></a><p class="title"><b>Figure 6.11. Icinga Web cronk bar</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-main_bar.png" alt="Icinga Web cronk bar"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Manual Refresh</p>
+    </li>
+<li class="listitem">
+      <p>Settings</p>
+
+      <p>Enable/Disable Auto-Refresh</p>
+
+      <p>Get this &lt;item&gt; by url</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5067930"></a><p class="title"><b>Figure 6.12. Icinga Web cronk bar</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-settings.png" alt="Icinga Web cronk bar"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>Filter</p>
+
+      <p>Modify/Remove</p>
+    </li></ul></div>
+
+  <p><span class="emphasis"><em>Commands</em></span></p>
+
+  <p>There are different commands available (check the chapter <a class="link" href="extcommands.html" title="External Commands">External Commands</a> for more information 
+  on commands). Select the items which should be affected and then select the command to be executed.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Host Commands</p>
+
+      <div class="figure">
+<a name="id5067994"></a><p class="title"><b>Figure 6.13. Icinga Web host commands</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-commands_hst.png" alt="Icinga Web host commands"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+<li class="listitem">
+      <p>Service Commands</p>
+
+      <div class="figure">
+<a name="id5068028"></a><p class="title"><b>Figure 6.14. Icinga Web service commands</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-commands_svc.png" alt="Icinga Web service commands"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+</ul></div>
+
+  <p><span class="emphasis"><em>Filters</em></span></p>
+
+  <p>Icinga Web allows to set filters and create customized views which can be saved as own persistent cronk too. First, select "Filter"
+  and "Modify". Add a restriction selected from the dropdown menu (this differs for various cronks). You can set more restrictions by
+  repeating this procedure.</p>
+
+  <div class="figure">
+<a name="id5068063"></a><p class="title"><b>Figure 6.15. Icinga Web filter restriction</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-filter1.png" alt="Icinga Web filter restriction"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Afterwards, specify on which condition the filter should match on the selected restriction (contain, does not contain, is, is not)
+  and add a value into the form. Proposals are shown while you are typing.</p>
+
+  <div class="figure">
+<a name="id5068080"></a><p class="title"><b>Figure 6.16. Icinga Web filter condition</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-filter2.png" alt="Icinga Web filter condition"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Apply the filter to the current cronk. If needed, you can modify the filter afterwards and add/remove restrictions and conditions.
+  An active filter is marked red.</p>
+
+  <div class="figure">
+<a name="id5068111"></a><p class="title"><b>Figure 6.17. Icinga Web filter active</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-filter3.png" alt="Icinga Web filter active"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="bold"><strong> </strong></span></p>
+
+  <p><span class="bold"><strong>Administration</strong></span></p>
+
+  <p>Enter the administration panel by selecting "Admin" from the top menu, and select "Users", "Groups" or "Logs".</p>
+
+  <div class="figure">
+<a name="id5068164"></a><p class="title"><b>Figure 6.18. Icinga Web top menu admin</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-topmenu2.png" alt="Icinga Web top menu admin"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Users</em></span></p>
+
+  <p>You can add, remove and edit users.</p>
+
+  <div class="figure">
+<a name="id5068198"></a><p class="title"><b>Figure 6.19. Icinga Web user admin</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_users1.png" alt="Icinga Web user admin"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Doubleclick a user to open a new inlay window which lets you edit very detailed options. The same options apply when adding a new
+  user. You can modify the size by dragging the cursor in the corners.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>General information</p>
+    </li>
+<li class="listitem">
+      <p>Change password (and optional AuthKey for API)</p>
+    </li>
+<li class="listitem">
+      <p>Permissions e.g. which group membership</p>
+    </li>
+<li class="listitem">
+      <p>Principals for special roles</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5068257"></a><p class="title"><b>Figure 6.20. Icinga Web edit user</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_users2.png" alt="Icinga Web edit user"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Groups</em></span></p>
+
+  <p>You can add, remove and edit groups. You can also modify group inheritance within the group tree on the right side.</p>
+
+  <div class="figure">
+<a name="id5068291"></a><p class="title"><b>Figure 6.21. Icinga Web group admin</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_groups1.png" alt="Icinga Web group admin"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Doubleclick a group to open a new inlay window which lets you edit very detailed options. The same options apply when adding a new
+  group. You can modify the size by dragging the cursor in the corners.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>General information + Permissions (which users are part of this group)</p>
+    </li>
+<li class="listitem">
+      <p>Principals for special roles</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5068339"></a><p class="title"><b>Figure 6.22. Icinga Web groups</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_groups2.png" alt="Icinga Web groups"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Principals</em></span></p>
+
+  <p>Within the user and group administration panel, you can add/remove/edit principals. You can see default available principals in the
+  picture:</p>
+
+  <div class="figure">
+<a name="id5068374"></a><p class="title"><b>Figure 6.23. Icinga Web principals</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_principals.png" alt="Icinga Web principals"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Logs</em></span></p>
+
+  <p>You can view several logs here, in order to catch up on possible errors.</p>
+
+  <div class="figure">
+<a name="id5068408"></a><p class="title"><b>Figure 6.24. Icinga Web logs</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_logs1.png" alt="Icinga Web logs"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <a class="indexterm" name="id5068428"></a>
+</div>
+  <div class="section" title="Introduction to Icinga Web (&gt;= 1.3.x)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="icinga-web-intro_1.3"></a>Introduction to Icinga Web (&gt;= 1.3.x)</h3></div></div></div>
+  
+
+  <p>If you followed the quickstart guides (<a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">IDOUtils</a> and <a class="link" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">Icinga Web</a>) then please open your browser and enter http://&lt;icinga server&gt;/icinga-web. You will
+  get the login screen</p>
+
+  <div class="figure">
+<a name="id5068464"></a><p class="title"><b>Figure 6.25. Icinga Web login screen</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-login.png" alt="Icinga Web login screen"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>You should be able to login using "root" and "password". This will take you to an overview page showing the state of the hosts and
+  services being monitored</p>
+
+  <div class="figure">
+<a name="id5068490"></a><p class="title"><b>Figure 6.26. Icinga Web overview</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-overview_1.3.png" alt="Icinga Web overview"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Main Screen</em></span></p>
+
+  <p>This is where everything comes together: You can drag and drop new windows over here resulting in a new opened tab. The views are
+  customizable for the current user (they remain persistent) by dragging the column heading to the new place. Rightclicking on the heading
+  allows to change the sort order or to hide columns. Selected search results will be opened here too, next to opening available
+  cronks.</p>
+
+  <div class="figure">
+<a name="id5068488"></a><p class="title"><b>Figure 6.27. Icinga Web main screen</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-mainscreen1_1.3.png" alt="Icinga Web main screen"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Status Cronk</em></span></p>
+
+  <p>The status cronk shows host and service counters for their respective states. If count is zero, the colour remains grey. Clicking on
+  states opens a new tab in the main view showing the current clicked state only. Next to that, general process information is provided,
+  just as</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Hosts|Services (active/passive)</p>
+    </li>
+<li class="listitem">
+      <p>Host|Service execution time (min/avg/max)</p>
+    </li>
+<li class="listitem">
+      <p>Host|Services latency (min/avg/max)</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5068597"></a><p class="title"><b>Figure 6.28. Icinga Web status cronk</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-statuscronk.png" alt="Icinga Web status cronk"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Top menu</em></span></p>
+
+  <p>The top menu consists of general information about Icinga and the administration items for users, groups and logs. On the top right,
+  you can see the user currently logged in and edit its preferences or log out of Icinga Web.</p>
+
+  <div class="figure">
+<a name="id5068635"></a><p class="title"><b>Figure 6.29. Icinga Web top menu</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-topmenu1.png" alt="Icinga Web top menu"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Left menu</em></span></p>
+
+  <p>In the left (also hideable) menu you can select among different widgets (we call them "cronks"). You can either doubleclick on each
+  cronk or drag it with the cursor into the main view. The categories are separated into</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>"Data" for getting status, historical and configuration data</p>
+
+      <div class="figure">
+<a name="id5068677"></a><p class="title"><b>Figure 6.30. Icinga Web data cronks</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-cronks1_1.3.png" alt="Icinga Web data cronks"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+<li class="listitem">
+      <p>"Tactical Overview" keeps general charts and customized ones (custom variables)</p>
+
+      <div class="figure">
+<a name="id5068713"></a><p class="title"><b>Figure 6.31. Icinga Web tactical overview cronks</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-cronks2_1.3.png" alt="Icinga Web tactical overview cronks"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+<li class="listitem">
+      <p>"Misc" contains several useful cronks, just as iframe for external websites or the 1,2,3 columns for main view</p>
+
+      <div class="figure">
+<a name="id5068745"></a><p class="title"><b>Figure 6.32. Icinga Web misc cronks</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-cronks3_1.3.png" alt="Icinga Web misc cronks"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+</ul></div>
+
+  <p><span class="emphasis"><em>Search</em></span></p>
+
+  <p>The search form shows results while typing. The results will be shown in a separate inlay window. By clicking/selecting the results,
+  a new tab in the main view opens with more information. Please note that the search is currently case sensitive ("ping" vs.
+  "PING").</p>
+
+  <div class="figure">
+<a name="id5068781"></a><p class="title"><b>Figure 6.33. Icinga Web live search</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-search1_1.3.png" alt="Icinga Web live search"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Log</em></span></p>
+
+  <p>The log view has moved to an own cronk so it's not shown at the bottom anymore.</p>
+
+  <div class="figure">
+<a name="id5068814"></a><p class="title"><b>Figure 6.34. Icinga Web log</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-log_1.3.png" alt="Icinga Web log"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="bold"><strong> </strong></span></p>
+
+  <p><span class="bold"><strong>Cronks and Views</strong></span></p>
+
+  <p>Icinga Web allows to open different cronks in order to view data, set filters for different views, send commands. The following list
+  summarizes the possibilities in general (several Cronks can provide more, like sending commands).</p>
+
+  <div class="figure">
+<a name="id5068858"></a><p class="title"><b>Figure 6.35. Icinga Web cronk bar</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-main_bar.png" alt="Icinga Web cronk bar"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Manual Refresh</p>
+    </li>
+<li class="listitem">
+      <p>Settings</p>
+
+      <p>Enable/Disable Auto-Refresh</p>
+
+      <p>Get this &lt;item&gt; by url</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5068905"></a><p class="title"><b>Figure 6.36. Icinga Web cronk bar</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-settings.png" alt="Icinga Web cronk bar"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>Filter</p>
+
+      <p>Modify/Remove</p>
+    </li></ul></div>
+
+  <p><span class="emphasis"><em>Commands</em></span></p>
+
+  <p>There are different commands available (check the chapter <a class="link" href="extcommands.html" title="External Commands">External Commands</a> for more information
+  on commands). Select the items which should be affected and then select the command to be executed.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Host Commands</p>
+
+      <div class="figure">
+<a name="id5068970"></a><p class="title"><b>Figure 6.37. Icinga Web host commands</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-commands_hst_1.3.png" alt="Icinga Web host commands"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+<li class="listitem">
+      <p>Service Commands</p>
+
+      <div class="figure">
+<a name="id5069006"></a><p class="title"><b>Figure 6.38. Icinga Web service commands</b></p>
+<div class="figure-contents">
+        
+
+        <div class="screenshot">
+          <div class="mediaobject"><img src="../images/icinga-web-commands_svc_1.3.png" alt="Icinga Web service commands"></div>
+        </div>
+      </div>
+</div>
+<br class="figure-break">
+    </li>
+</ul></div>
+
+  <p><span class="emphasis"><em>Filters</em></span></p>
+
+  <p>Icinga Web allows to set filters and create customized views which can be saved as own persistent cronk too. First, select "Filter"
+  and "Modify". Add a restriction selected from the dropdown menu (this differs for various cronks). You can set more restrictions by
+  repeating this procedure.</p>
+
+  <div class="figure">
+<a name="id5069044"></a><p class="title"><b>Figure 6.39. Icinga Web filter restriction</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-filter1_1.3.png" alt="Icinga Web filter restriction"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Afterwards, specify on which condition the filter should match on the selected restriction (contain, does not contain, is, is not)
+  and add a value into the form. Proposals are shown while you are typing.</p>
+
+  <div class="figure">
+<a name="id5069072"></a><p class="title"><b>Figure 6.40. Icinga Web filter condition</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-filter2_1.3.png" alt="Icinga Web filter condition"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Apply the filter to the current cronk. If needed, you can modify the filter afterwards and add/remove restrictions and conditions.
+  An active filter is marked red.</p>
+
+  <div class="figure">
+<a name="id5069059"></a><p class="title"><b>Figure 6.41. Icinga Web filter active</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-filter3.png" alt="Icinga Web filter active"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="bold"><strong> </strong></span></p>
+
+  <p><span class="bold"><strong>Administration</strong></span></p>
+
+  <p>Enter the administration panel by selecting "Admin" from the top menu, and select "Users", "Groups" or "Logs".</p>
+
+  <div class="figure">
+<a name="id5069140"></a><p class="title"><b>Figure 6.42. Icinga Web top menu admin</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-topmenu2_1.3.png" alt="Icinga Web top menu admin"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Users</em></span></p>
+
+  <p>You can add, remove and edit users.</p>
+
+  <div class="figure">
+<a name="id5069173"></a><p class="title"><b>Figure 6.43. Icinga Web user admin</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_users1.png" alt="Icinga Web user admin"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Doubleclick a user to open a new inlay window which lets you edit very detailed options. The same options apply when adding a new
+  user. You can modify the size by dragging the cursor in the corners.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>General information</p>
+    </li>
+<li class="listitem">
+      <p>Change password (and optional AuthKey for API)</p>
+    </li>
+<li class="listitem">
+      <p>Permissions e.g. which group membership</p>
+    </li>
+<li class="listitem">
+      <p>Principals for special roles</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5069235"></a><p class="title"><b>Figure 6.44. Icinga Web edit user</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_users2.png" alt="Icinga Web edit user"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Groups</em></span></p>
+
+  <p>You can add, remove and edit groups. You can also modify group inheritance within the group tree on the right side.</p>
+
+  <div class="figure">
+<a name="id5069268"></a><p class="title"><b>Figure 6.45. Icinga Web group admin</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_groups1.png" alt="Icinga Web group admin"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Doubleclick a group to open a new inlay window which lets you edit very detailed options. The same options apply when adding a new
+  group. You can modify the size by dragging the cursor in the corners.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>General information + Permissions (which users are part of this group)</p>
+    </li>
+<li class="listitem">
+      <p>Principals for special roles</p>
+    </li>
+</ul></div>
+
+  <div class="figure">
+<a name="id5069316"></a><p class="title"><b>Figure 6.46. Icinga Web groups</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_groups2.png" alt="Icinga Web groups"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Principals</em></span></p>
+
+  <p>Within the user and group administration panel, you can add/remove/edit principals. You can see default available principals in the
+  picture:</p>
+
+  <div class="figure">
+<a name="id5069353"></a><p class="title"><b>Figure 6.47. Icinga Web principals</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_principals.png" alt="Icinga Web principals"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Logs</em></span></p>
+
+  <p>You can view several logs here, in order to catch up on possible errors.</p>
+
+  <div class="figure">
+<a name="id5069386"></a><p class="title"><b>Figure 6.48. Icinga Web logs</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_logs1.png" alt="Icinga Web logs"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="emphasis"><em>Task</em></span></p>
+
+  <p>Several changes require clearing the cache. Instead of using the command line you can issue the command via the "Tasks" menu.</p>
+
+  <div class="figure">
+<a name="id5069418"></a><p class="title"><b>Figure 6.49. Icinga Web Tasks</b></p>
+<div class="figure-contents">
+    
+
+    <div class="screenshot">
+      <div class="mediaobject"><img src="../images/icinga-web-admin_tasks.png" alt="Icinga Web Tasks"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <a class="indexterm" name="id5069430"></a>
+</div>
+
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="icinga-web-config.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-pnp.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Configuration Overview of Icinga Web </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Integration of PNP4Nagios into Icinga Web</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
