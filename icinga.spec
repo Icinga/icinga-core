@@ -13,7 +13,7 @@ Summary: Open Source host, service and network monitoring program
 Name: icinga
 Version: 1.3.0
 Release: 1%{?dist}
-License: GPL
+License: GPLv2+
 Group: Applications/System
 URL: http://www.icinga.org/
 
@@ -28,7 +28,7 @@ BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
-Provides: nagios
+Provides: nagios = %{version}
 
 %description
 Icinga is an application, system and network monitoring application.
@@ -38,7 +38,7 @@ also useful for incident or SLA reporting.
 Icinga is written in C and is designed as a background process,
 intermittently running checks on various services that you specify.
 
-The actual service checks are performed by separate "plugin" programs
+The actual service checks are performed by separate plug-in programs
 which return the status of the checks to Icinga.
 
 Icinga is a fork of the nagios project.
@@ -79,7 +79,7 @@ Documentation for %{name}
 
 
 %prep
-%setup -n %{name}-%{version}
+%setup -q -n %{name}-%{version}
 
 # /usr/local/nagios is hardcoded in many places
 %{__perl} -pi.orig -e 's|/usr/local/nagios/var/rw|%{_localstatedir}/nagios/rw|g;' contrib/eventhandlers/submit_check_result
@@ -290,7 +290,7 @@ fi
 
 * Mon Oct 26 2009 Christoph Maser <cmr@financial.com> - 1.0-0.RC1.1
 - Update to 1.0-RC1
-- Correct checkconfig --del in idoutils %preun
+- Correct checkconfig --del in idoutils #preun
 
 * Mon Oct 26 2009 Christoph Maser <cmr@financial.com> - 0.8.4-3
 - Use icingacmd group and add apache user to that group instead
@@ -298,9 +298,9 @@ fi
 
 * Wed Oct 07 2009 Christoph Maser <cmr@financial.com> - 0.8.4-2
 - make packages openSUSE compatible
-- add %apachecondir, %apacheuser, %apachegroup depending on vendor
-- configure add --with-httpd-conf=%{apacheconfdir} 
-- configure add --with-init-dir=%{_initrddir}
+- add #apachecondir, #apacheuser, #apachegroup depending on vendor
+- configure add --with-httpd-conf=#{apacheconfdir} 
+- configure add --with-init-dir=#{_initrddir}
 
 * Wed Sep 16 2009 Christoph Maser <cmr@financial.com> - 0.8.4-1
 - Update to version 0.8.4.
