@@ -53,6 +53,10 @@ read_files_pattern(icinga_t, icinga_etc_t, icinga_etc_t)
 read_lnk_files_pattern(icinga_t, icinga_etc_t, icinga_etc_t)
 allow icinga_t icinga_etc_t:dir list_dir_perms;
 
+# Allow ido socket
+allow icinga_t icinga_log_t:sock_file write;
+allow icinga_t initrc_t:unix_stream_socket connectto;
+
 manage_files_pattern(icinga_t, icinga_log_t, icinga_log_t)
 manage_fifo_files_pattern(icinga_t, icinga_log_t, icinga_log_t)
 logging_log_filetrans(icinga_t, icinga_log_t, { file dir })
