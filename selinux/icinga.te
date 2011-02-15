@@ -119,6 +119,18 @@ mta_send_mail(icinga_t)
 mta_signal_system_mail(icinga_t)
 mta_kill_system_mail(icinga_t)
 
+########################################
+#
+# access for webapps to command-pipe
+#
+gen_require(`
+                type httpd_t;
+        ')
+
+allow httpd_t icinga_log_t:fifo_file write;
+allow httpd_t icinga_log_t:fifo_file { getattr open };
+
+
 optional_policy(`
 	netutils_kill_ping(icinga_t)
 ')
@@ -372,3 +384,4 @@ optional_policy(`
 optional_policy(`
 	unconfined_domain(icinga_unconfined_plugin_t)
 ')
+

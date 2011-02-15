@@ -13,7 +13,7 @@
 #
 template(`icinga_plugin_template',`
 	gen_require(`
-		type icinga_t, nrpe_t, icinga_log_t, nagios_$1_plugin_t, nagios_$1_plugin_exec_t;
+		type icinga_t, nrpe_t, icinga_log_t, nagios_$1_plugin_t, nagios_$1_plugin_exec_t, ping_t;
 	')
 
 	type icinga_$1_plugin_t;
@@ -39,6 +39,9 @@ template(`icinga_plugin_template',`
 	allow icinga_t nagios_$1_plugin_t:process signal_perms;
 
         allow nagios_$1_plugin_t icinga_tmp_t:file { read write };
+	allow ping_t icinga_t:fifo_file read;
+	allow ping_t icinga_tmp_t:file { read write };
+	allow ping_t icinga_t:unix_stream_socket { read write };
 
 	# cjp: leaked file descriptor
 	dontaudit icinga_$1_plugin_t nrpe_t:tcp_socket { read write };
