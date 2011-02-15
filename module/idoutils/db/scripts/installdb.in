@@ -62,8 +62,9 @@ if ($@) {
 	    die "No installation script found!";
 	}
 
-	print "** Updating table icinga_dbversion",$/;
-	$dbh->do("INSERT icinga_dbversion SET name='idoutils', version='$thisversion';");
+	# from 1.3.0 on we do that manually in the upgrade sqls for each rdbms itsself
+	#print "** Updating table icinga_dbversion",$/;
+	#$dbh->do("INSERT icinga_dbversion SET name='idoutils', version='$thisversion';");
 
 	print "Done!",$/;
 }
