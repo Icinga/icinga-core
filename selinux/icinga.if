@@ -38,6 +38,8 @@ template(`icinga_plugin_template',`
 	allow icinga_t icinga_$1_plugin_t:process signal_perms;
 	allow icinga_t nagios_$1_plugin_t:process signal_perms;
 
+        allow nagios_$1_plugin_t icinga_tmp_t:file { read write };
+
 	# cjp: leaked file descriptor
 	dontaudit icinga_$1_plugin_t nrpe_t:tcp_socket { read write };
 	dontaudit nagios_$1_plugin_t nrpe_t:tcp_socket { read write };
