@@ -261,7 +261,8 @@ if test x$HTTPD_CONF = xno; then
 fi
 AC_SUBST(HTTPD_CONF)
 
-dnl Location of check result path
+dnl Location of check spool path
+AC_ARG_WITH(checkresult-dir,AC_HELP_STRING([--with-checkresult-dir=<path>],[obsolte option, use --with-spool-dir instead]),[AC_MSG_WARN([obsolete option, use --with-spool-dir instead])])
 SPOOLDIR=no
 AC_ARG_WITH(spool-dir,AC_HELP_STRING([--with-spool-dir=<path>],[sets path to spool base directory]),SPOOLDIR=$withval,SPOOLDIR=no)
 if test x$SPOOLDIR = xno; then
