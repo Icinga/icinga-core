@@ -1,0 +1,166 @@
+
+policy_module(icinga,1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+type icinga_t;
+type icinga_exec_t;
+init_daemon_domain(icinga_t,icinga_exec_t)
+
+type icinga_etc_t;
+files_config_file(icinga_etc_t)
+
+type icinga_log_t;
+logging_log_file(icinga_log_t)
+
+type icinga_tmp_t;
+files_tmp_file(icinga_tmp_t)
+
+type icinga_var_run_t;
+files_pid_file(icinga_var_run_t)
+
+type icinga_spool_t;
+files_type(icinga_spool_t)
+
+########################################
+#
+# Nagios local policy
+#
+
+allow icinga_t self:capability { dac_override setgid setuid };
+dontaudit icinga_t self:capability sys_tty_config;
+allow icinga_t self:process { setpgid signal_perms };
+allow icinga_t self:fifo_file rw_file_perms;
+allow icinga_t self:tcp_socket create_stream_socket_perms;
+allow icinga_t self:udp_socket create_socket_perms;
+
+allow icinga_t icinga_etc_t:file r_file_perms;
+allow icinga_t icinga_etc_t:dir r_dir_perms;
+allow icinga_t icinga_etc_t:lnk_file { getattr read };
+
+allow icinga_t icinga_log_t:file manage_file_perms;
+allow icinga_t icinga_log_t:fifo_file manage_file_perms;
+allow icinga_t icinga_log_t:dir rw_dir_perms;
+logging_log_filetrans(icinga_t,icinga_log_t,{ file dir })
+
+allow icinga_t icinga_tmp_t:dir create_dir_perms;
+allow icinga_t icinga_tmp_t:file create_file_perms;
+files_tmp_filetrans(icinga_t, icinga_tmp_t, { file dir })
+
+allow icinga_t icinga_var_run_t:file create_file_perms;
+allow icinga_t icinga_var_run_t:dir rw_dir_perms;
+files_pid_filetrans(icinga_t,icinga_var_run_t,file)
+
+allow icinga_t icinga_spool_t:dir search_dir_perms;
+allow icinga_t icinga_spool_t:fifo_file rw_file_perms;
+
+kernel_read_system_state(icinga_t)
+kernel_read_kernel_sysctls(icinga_t)
+
+corecmd_exec_bin(icinga_t)
+corecmd_exec_shell(icinga_t)
+
+corenet_non_ipsec_sendrecv(icinga_t)
+corenet_tcp_sendrecv_generic_if(icinga_t)
+corenet_udp_sendrecv_generic_if(icinga_t)
+corenet_tcp_sendrecv_all_nodes(icinga_t)
+corenet_udp_sendrecv_all_nodes(icinga_t)
+corenet_tcp_sendrecv_all_ports(icinga_t)
+corenet_udp_sendrecv_all_ports(icinga_t)
+corenet_tcp_connect_all_ports(icinga_t)
+
+dev_read_sysfs(icinga_t)
+dev_read_urand(icinga_t)
+
+domain_use_interactive_fds(icinga_t)
+# for ps
+domain_read_all_domains_state(icinga_t)
+
+files_read_etc_files(icinga_t)
+files_read_etc_runtime_files(icinga_t)
+files_read_kernel_symbol_table(icinga_t)
+
+fs_getattr_all_fs(icinga_t)
+fs_search_auto_mountpoints(icinga_t)
+
+term_dontaudit_use_console(icinga_t)
+
+init_use_fds(icinga_t)
+init_use_script_ptys(icinga_t)
+# for who
+init_read_utmp(icinga_t)
+
+auth_use_nsswitch(icinga_t)
+
+libs_use_ld_so(icinga_t)
+libs_use_shared_libs(icinga_t)
+
+logging_send_syslog_msg(icinga_t)
+
+miscfiles_read_localization(icinga_t)
+
+userdom_dontaudit_use_unpriv_user_fds(icinga_t)
+userdom_dontaudit_search_sysadm_home_dirs(icinga_t)
+
+mta_send_mail(icinga_t)
+
+ifdef(`targeted_policy',`
+	term_dontaudit_use_unallocated_ttys(icinga_t)
+	term_dontaudit_use_generic_ptys(icinga_t)
+	files_dontaudit_read_root_files(icinga_t)
+')
+
+optional_policy(`
+	netutils_domtrans_ping(icinga_t)
+	netutils_signal_ping(icinga_t)
+	netutils_kill_ping(icinga_t)
+')
+
+optional_policy(`
+	seutil_sigchld_newrole(icinga_t)
+')
+
+optional_policy(`
+	udev_read_db(icinga_t)
+')
+
+# cjp: leaked file descriptors:
+# for open file handles
+#dontaudit system_mail_t icinga_etc_t:file read;
+#dontaudit system_mail_t icinga_log_t:fifo_file read;
+
+########################################
+#
+# Nagios CGI local policy
+#
+apache_content_template(icinga)
+typealias httpd_icinga_script_t alias icinga_cgi_t;
+typealias httpd_icinga_script_exec_t alias icinga_cgi_exec_t;
+
+allow httpd_icinga_script_t self:process signal_perms;
+
+read_files_pattern(httpd_icinga_script_t,icinga_t,icinga_t)
+read_lnk_files_pattern(httpd_icinga_script_t,icinga_t,icinga_t)
+
+files_search_spool(httpd_icinga_script_t)
+rw_fifo_files_pattern(httpd_icinga_script_t, icinga_spool_t, icinga_spool_t)
+
+allow httpd_icinga_script_t icinga_etc_t:dir list_dir_perms;
+read_files_pattern(httpd_icinga_script_t,icinga_etc_t,icinga_etc_t)
+read_lnk_files_pattern(httpd_icinga_script_t,icinga_etc_t,icinga_etc_t)
+
+allow httpd_icinga_script_t icinga_log_t:dir list_dir_perms;
+read_files_pattern(httpd_icinga_script_t,icinga_etc_t,icinga_log_t)
+read_lnk_files_pattern(httpd_icinga_script_t,icinga_etc_t,icinga_log_t)
+
+kernel_read_system_state(httpd_icinga_script_t)
+
+domain_dontaudit_read_all_domains_state(httpd_icinga_script_t)
+
+files_read_etc_runtime_files(httpd_icinga_script_t)
+files_read_kernel_symbol_table(httpd_icinga_script_t)
+
+logging_send_syslog_msg(httpd_icinga_script_t)

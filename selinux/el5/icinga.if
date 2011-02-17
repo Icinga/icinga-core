@@ -1,0 +1,104 @@
+## <summary>Net Saint / NAGIOS - network monitoring server</summary>
+
+########################################
+## <summary>
+##	Allow the specified domain to read
+##	icinga configuration files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`icinga_read_config',`
+	gen_require(`
+		type icinga_etc_t;
+	')
+
+	allow $1 icinga_etc_t:dir list_dir_perms;
+	allow $1 icinga_etc_t:file r_file_perms;
+	files_search_etc($1)
+')
+
+########################################
+## <summary>
+##	Allow the specified domain to read
+##	icinga temporary files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`icinga_read_tmp_files',`
+	gen_require(`
+		type icinga_tmp_t;
+	')
+
+	allow $1 icinga_tmp_t:file r_file_perms;
+	files_search_tmp($1)
+')
+
+########################################
+## <summary>
+##	Execute the icinga NRPE with
+##	a domain transition.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`icinga_domtrans_nrpe',`
+	gen_require(`
+		type nrpe_t, nrpe_exec_t;
+	')
+
+	domain_auto_trans($1,nrpe_exec_t,nrpe_t)
+	allow nrpe_t $1:fd use;
+	allow nrpe_t $1:fifo_file rw_file_perms;
+	allow nrpe_t $1:process sigchld;
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to read and write
+##	NAGIOS unnamed pipes.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`icinga_dontaudit_rw_pipes',`
+
+	gen_require(`
+		type icinga_t;
+	')
+
+	dontaudit $1 icinga_t:fifo_file rw_fifo_file_perms; 
+')
+
+########################################
+## <summary>
+##	Search icinga spool directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`icinga_search_spool',`
+	gen_require(`
+		type icinga_spool_t;
+	')
+
+	allow $1 icinga_spool_t:dir search_dir_perms;
+	files_search_spool($1)
+')
