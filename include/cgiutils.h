@@ -28,6 +28,7 @@
 #include "logging.h"
 #include "objects.h"
 #include "cgiauth.h"
+#include "readlogs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -470,14 +471,6 @@ extern "C" {
 #define CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS	"N8"
 
 
-/************************** LIFO RETURN CODES  ****************************/
-
-#define LIFO_OK			0
-#define LIFO_ERROR_MEMORY	1
-#define LIFO_ERROR_FILE		2
-#define LIFO_ERROR_DATA		3
-
-
 /************************** HTTP CHARSET ****************************/
 
 #define DEFAULT_HTTP_CHARSET "utf-8"
@@ -528,16 +521,6 @@ extern "C" {
 #define STATE_HARD                      2
 
 
-
-/*************************** DATA STRUCTURES  *****************************/
-
-/* LIFO data structure */
-typedef struct lifo_struct{
-	char *data;
-	struct lifo_struct *next;
-        }lifo;
-
-
 /******************************** FUNCTIONS *******************************/
 
 void reset_cgi_vars(void);
@@ -563,10 +546,6 @@ char * url_encode(char *);					/* encodes a string in proper URL format */
 char * html_encode(char *,int);					/* encodes a string in HTML format (for what the user sees) */
 char * escape_string(char *);					/* escape string for html form usage */
 
-void get_log_archive_to_use(int,char *,int);			/* determines the name of the log archive to use */
-void determine_log_rotation_times(int);
-int determine_archive_to_use_from_time(time_t);
-
 void print_extra_hostgroup_url(char *,char *);
 void print_extra_servicegroup_url(char *,char *);
 
@@ -588,11 +567,6 @@ void status_data_error(void);
 void print_error(char*, int);
 
 void display_context_help(char *);				/* displays context-sensitive help window */
-
-int read_file_into_lifo(char *);				/* LIFO functions */
-void free_lifo_memory(void);
-int push_lifo(char *);
-char *pop_lifo(void);
 
 void document_header(int,int);					/* print document header */
 void document_footer(int);					/* print document footer */

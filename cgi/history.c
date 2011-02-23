@@ -29,8 +29,9 @@
 #include "../include/getcgi.h"
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
+#include "../include/readlogs.h"
 
-void get_history(void);
+void show_history(void);
 
 int process_cgivars(void);
 
@@ -53,7 +54,7 @@ int display_type=DISPLAY_HOSTS;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;
 int show_all_servicegroups=TRUE;
-int use_lifo=TRUE;
+int reverse=FALSE;
 
 int history_options=HISTORY_ALL;
 int state_options=STATE_ALL;
@@ -94,7 +95,7 @@ int main(void){
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
@@ -103,7 +104,7 @@ int main(void){
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
@@ -112,7 +113,7 @@ int main(void){
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
-                }
+	}
 
 	document_header(CGI_ID,TRUE);
 
@@ -164,7 +165,6 @@ int main(void){
 
 		printf("</td>\n");
 
-
 		/* middle column of top row */
 		printf("<td align=center valign=top width=33%%>\n");
 
@@ -178,7 +178,7 @@ int main(void){
 		printf("</DIV>\n");
 		printf("<BR />\n");
 
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%shost=%s&type=%d&statetype=%d&",HISTORY_CGI,(use_lifo==FALSE)?"oldestfirst&":"",url_encode(host_name),history_options,state_options);
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%shost=%s&type=%d&statetype=%d&",HISTORY_CGI,(reverse==TRUE)?"oldestfirst&":"",url_encode(host_name),history_options,state_options);
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		if(display_type==DISPLAY_SERVICES){
 			snprintf(temp_buffer2,sizeof(temp_buffer2)-1,"service=%s&",url_encode(service_desc));
@@ -189,7 +189,6 @@ int main(void){
 		display_nav_table(temp_buffer,log_archive);
 
 		printf("</td>\n");
-
 
 		/* right hand column of top row */
 		printf("<td align=right valign=top width=33%%>\n");
@@ -220,8 +219,7 @@ int main(void){
 		else
 			printf("service");
 		printf(":</td>\n");
-		printf("</tr>\n")
-;
+		printf("</tr>\n");
 		printf("<tr>\n");
 		printf("<td align=left CLASS='optBoxItem'><select name='type'>\n");
 		if(display_type==DISPLAY_HOSTS)
@@ -252,7 +250,7 @@ int main(void){
 		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='nosystem' %s> Hide Process Messages</td>",(display_system_messages==FALSE)?"checked":"");
 		printf("</tr>\n");
 		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s> Older Entries First</td>",(use_lifo==FALSE)?"checked":"");
+		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s> Older Entries First</td>",(reverse==TRUE)?"checked":"");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
@@ -275,11 +273,10 @@ int main(void){
 		printf("</tr>\n");
 		printf("</table>\n");
 
-	        }
-
+	}
 
 	/* display history */
-	get_history();
+	show_history();
 
 	document_footer(CGI_ID);
 
@@ -287,7 +284,7 @@ int main(void){
 	free_memory();
 	
 	return OK;
-        }
+}
 
 int process_cgivars(void){
 	char **variables;
@@ -376,7 +373,7 @@ int process_cgivars(void){
 
 		/* we found the order argument */
 		else if(!strcmp(variables[x],"oldestfirst")){
-			use_lifo=FALSE;
+			reverse=TRUE;
 		        }
 
 		/* we found the embed option */
@@ -416,486 +413,462 @@ int process_cgivars(void){
 	free_cgivars(variables);
 
 	return error;
-        }
+}
 
-
-
-void get_history(void){
-	mmapfile *thefile=NULL;
+void show_history(void){
 	char image[MAX_INPUT_BUFFER];
 	char image_alt[MAX_INPUT_BUFFER];
-	char *input=NULL;
-	char *input2=NULL;
 	char match1[MAX_INPUT_BUFFER];
 	char match2[MAX_INPUT_BUFFER];
+	char date_time[MAX_DATETIME_LENGTH];
+	char *temp_buffer=NULL;
+	char *entry_host_name=NULL;
+	char *entry_service_desc=NULL;
+	char error_text[MAX_INPUT_BUFFER]="";
+	char last_message_date[MAX_INPUT_BUFFER]="";
+	char current_message_date[MAX_INPUT_BUFFER]="";
 	int found_line=FALSE;
 	int system_message=FALSE;
 	int display_line=FALSE;
-	time_t t;
-	char date_time[MAX_DATETIME_LENGTH];
-	char *temp_buffer=NULL;
 	int history_type=SERVICE_HISTORY;
 	int history_detail_type=HISTORY_SERVICE_CRITICAL;
-	char *entry_host_name=NULL;
-	char *entry_service_desc=NULL;
+	int status=0;
 	host *temp_host=NULL;
 	service *temp_service=NULL;
-	int result=0;
-
-	char last_message_date[MAX_INPUT_BUFFER]="";
-	char current_message_date[MAX_INPUT_BUFFER]="";
+	logentry *temp_entry=NULL;
 	struct tm *time_ptr=NULL;
 
+	/* read log entries */
+	status=get_log_entries(log_file_to_use,NULL,reverse);
 
-	if(use_lifo==TRUE){
-		result=read_file_into_lifo(log_file_to_use);
-		if(result!=LIFO_OK){
-			if(result==LIFO_ERROR_MEMORY){
-				printf("<P><DIV CLASS='warningMessage'>Not enough memory to reverse log file - displaying history in natural order...</DIV></P>\n");
-			        }
-			else if(result==LIFO_ERROR_FILE){
-				printf("<HR><P><DIV CLASS='errorMessage'>Error: Cannot open log file '%s' for reading!</DIV></P><HR>",log_file_to_use);
-				return;
-			        }
-			use_lifo=FALSE;
-		        }
-	        }
+	if (status==READLOG_ERROR_MEMORY) {
+		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
+	}
+	
+	if (status==READLOG_ERROR_NOFILE) {
+		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+		return;
 
-	if(use_lifo==FALSE){
+	} else if (status==READLOG_OK) {
 
-		if((thefile=mmap_fopen(log_file_to_use))==NULL){
-			printf("<HR><P><DIV CLASS='errorMessage'>Error: Cannot open log file '%s' for reading!</DIV></P><HR>",log_file_to_use);
-			return;
-		        }
-	        }
+		printf("<P><DIV CLASS='logEntries'>\n");
 
-	printf("<P><DIV CLASS='logEntries'>\n");
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 
-	while(1){
+			strcpy(image,"");
+			strcpy(image_alt,"");
+			system_message=FALSE;
 
-		my_free(input);
-		my_free(input2);
+			switch(temp_entry->type){
 
-		if(use_lifo==TRUE){
-			if((input=pop_lifo())==NULL)
-				break;
-		        }
-		else{
-			if((input=mmap_fgets(thefile))==NULL)
-				break;
-		        }
+				/* service state alerts */
+				case LOGENTRY_SERVICE_CRITICAL:
+				case LOGENTRY_SERVICE_WARNING:
+				case LOGENTRY_SERVICE_UNKNOWN:
+				case LOGENTRY_SERVICE_RECOVERY:
+				case LOGENTRY_SERVICE_OK:
 
-		strip(input);
+					history_type=SERVICE_HISTORY;
 
-		strcpy(image,"");
-		strcpy(image_alt,"");
-		system_message=FALSE;
-
-		if((input2=(char *)strdup(input))==NULL)
-			continue;
-
-		/* service state alerts */
-		if(strstr(input,"SERVICE ALERT:")){
-			
-			history_type=SERVICE_HISTORY;
-
-			/* get host and service names */
-			temp_buffer=my_strtok(input2,"]");
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_host_name=strdup(temp_buffer+1);
-			else
-				entry_host_name=NULL;
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_service_desc=strdup(temp_buffer);
-			else
-				entry_service_desc=NULL;
-
-			if(strstr(input,";CRITICAL;")){
-				strncpy(image,CRITICAL_ICON,sizeof(image));
-				strncpy(image_alt,CRITICAL_ICON_ALT,sizeof(image_alt));
-				history_detail_type=HISTORY_SERVICE_CRITICAL;
-                                }
-			else if(strstr(input,";WARNING;")){
-				strncpy(image,WARNING_ICON,sizeof(image));
-				strncpy(image_alt,WARNING_ICON_ALT,sizeof(image_alt));
-				history_detail_type=HISTORY_SERVICE_WARNING;
-                                }
-			else if(strstr(input,";UNKNOWN;")){
-				strncpy(image,UNKNOWN_ICON,sizeof(image));
-				strncpy(image_alt,UNKNOWN_ICON_ALT,sizeof(image_alt));
- 				history_detail_type=HISTORY_SERVICE_UNKNOWN;
-                                }
-			else if(strstr(input,";RECOVERY;") || strstr(input,";OK;")){
-				strncpy(image,OK_ICON,sizeof(image));
-				strncpy(image_alt,OK_ICON_ALT,sizeof(image_alt));
-				history_detail_type=HISTORY_SERVICE_RECOVERY;
-                                }
-		        }
-
-		/* service flapping alerts */
-		else if(strstr(input,"SERVICE FLAPPING ALERT:")){
-
-			if(display_flapping_alerts==FALSE)
-				continue;
-			
-			history_type=SERVICE_FLAPPING_HISTORY;
-
-			/* get host and service names */
-			temp_buffer=my_strtok(input2,"]");
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_host_name=strdup(temp_buffer+1);
-			else
-				entry_host_name=NULL;
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_service_desc=strdup(temp_buffer);
-			else
-				entry_service_desc=NULL;
-
-			strncpy(image,FLAPPING_ICON,sizeof(image));
-
-			if(strstr(input,";STARTED;"))
-			        strncpy(image_alt,"Service started flapping",sizeof(image_alt));
-			else if(strstr(input,";STOPPED;"))
-			        strncpy(image_alt,"Service stopped flapping",sizeof(image_alt));
-			else if(strstr(input,";DISABLED;"))
-			        strncpy(image_alt,"Service flap detection disabled",sizeof(image_alt));
-		        }
-
-		/* service downtime alerts */
-		else if(strstr(input,"SERVICE DOWNTIME ALERT:")){
-			
-			if(display_downtime_alerts==FALSE)
-				continue;
-			
-			history_type=SERVICE_DOWNTIME_HISTORY;
-
-			/* get host and service names */
-			temp_buffer=my_strtok(input2,"]");
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_host_name=strdup(temp_buffer+1);
-			else
-				entry_host_name=NULL;
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_service_desc=strdup(temp_buffer);
-			else
-				entry_service_desc=NULL;
-
-			strncpy(image,SCHEDULED_DOWNTIME_ICON,sizeof(image));
-
-			if(strstr(input,";STARTED;"))
-			        strncpy(image_alt,"Service entered a period of scheduled downtime",sizeof(image_alt));
-			else if(strstr(input,";STOPPED;"))
-			        strncpy(image_alt,"Service exited from a period of scheduled downtime",sizeof(image_alt));
-			else if(strstr(input,";CANCELLED;"))
-			        strncpy(image_alt,"Service scheduled downtime has been cancelled",sizeof(image_alt));
-		        }
-
-		/* host state alerts */
-		else if(strstr(input,"HOST ALERT:")){
-
-			history_type=HOST_HISTORY;
-
-			/* get host name */
-			temp_buffer=my_strtok(input2,"]");
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_host_name=strdup(temp_buffer+1);
-			else
-				entry_host_name=NULL;
-
-			if(strstr(input,";DOWN;")){
-				strncpy(image,HOST_DOWN_ICON,sizeof(image));
-				strncpy(image_alt,HOST_DOWN_ICON_ALT,sizeof(image_alt));
-				history_detail_type=HISTORY_HOST_DOWN;
-		                }
-			else if(strstr(input,";UNREACHABLE;")){
-				strncpy(image,HOST_UNREACHABLE_ICON,sizeof(image));
-				strncpy(image_alt,HOST_UNREACHABLE_ICON_ALT,sizeof(image_alt));
-				history_detail_type=HISTORY_HOST_UNREACHABLE;
-		                }
-			else if(strstr(input,";RECOVERY") || strstr(input,";UP;")){
-				strncpy(image,HOST_UP_ICON,sizeof(image));
-				strncpy(image_alt,HOST_UP_ICON_ALT,sizeof(image_alt));
-				history_detail_type=HISTORY_HOST_RECOVERY;
-		                }
-		        }
-
-		/* host flapping alerts */
-		else if(strstr(input,"HOST FLAPPING ALERT:")){
-			
-			if(display_flapping_alerts==FALSE)
-				continue;
-			
-			history_type=HOST_FLAPPING_HISTORY;
-
-			/* get host name */
-			temp_buffer=my_strtok(input2,"]");
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_host_name=strdup(temp_buffer+1);
-			else
-				entry_host_name=NULL;
-
-			strncpy(image,FLAPPING_ICON,sizeof(image));
-
-			if(strstr(input,";STARTED;"))
-			        strncpy(image_alt,"Host started flapping",sizeof(image_alt));
-			else if(strstr(input,";STOPPED;"))
-			        strncpy(image_alt,"Host stopped flapping",sizeof(image_alt));
-			else if(strstr(input,";DISABLED;"))
-			        strncpy(image_alt,"Host flap detection disabled",sizeof(image_alt));
-		        }
-
-		/* host downtime alerts */
-		else if(strstr(input,"HOST DOWNTIME ALERT:")){
-			
-			if(display_downtime_alerts==FALSE)
-				continue;
-			
-			history_type=HOST_DOWNTIME_HISTORY;
-
-			/* get host name */
-			temp_buffer=my_strtok(input2,"]");
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			if(temp_buffer)
-				entry_host_name=strdup(temp_buffer+1);
-			else
-				entry_host_name=NULL;
-
-			strncpy(image,SCHEDULED_DOWNTIME_ICON,sizeof(image));
-
-			if(strstr(input,";STARTED;"))
-			        strncpy(image_alt,"Host entered a period of scheduled downtime",sizeof(image_alt));
-			else if(strstr(input,";STOPPED;"))
-			        strncpy(image_alt,"Host exited from a period of scheduled downtime",sizeof(image_alt));
-			else if(strstr(input,";CANCELLED;"))
-			        strncpy(image_alt,"Host scheduled downtime has been cancelled",sizeof(image_alt));
-		        }
-
-		else if(display_system_messages==FALSE)
-			continue;
-
-		/* program start */
-		else if(strstr(input," starting...")){
-			strncpy(image,START_ICON,sizeof(image));
-			strncpy(image_alt,START_ICON_ALT,sizeof(image_alt));
-			system_message=TRUE;
-		        }
-
-		/* normal program termination */
-		else if(strstr(input," shutting down...")){
-			strncpy(image,STOP_ICON,sizeof(image));
-			strncpy(image_alt,STOP_ICON_ALT,sizeof(image_alt));
-			system_message=TRUE;
-		        }
-
-		/* abnormal program termination */
-		else if(strstr(input,"Bailing out")){
-			strncpy(image,STOP_ICON,sizeof(image));
-			strncpy(image_alt,STOP_ICON_ALT,sizeof(image_alt));
-			system_message=TRUE;
-		        }
-
-		/* program restart */
-		else if(strstr(input," restarting...")){
-			strncpy(image,RESTART_ICON,sizeof(image));
-			strncpy(image_alt,RESTART_ICON_ALT,sizeof(image_alt));
-			system_message=TRUE;
-		        }
-
-		image[sizeof(image)-1]='\x0';
-		image_alt[sizeof(image_alt)-1]='\x0';
-
-		/* get the timestamp */
-		temp_buffer=strtok(input,"]");
-		t=(temp_buffer==NULL)?0L:strtoul(temp_buffer+1,NULL,10);
-
-		time_ptr=localtime(&t);
-		strftime(current_message_date,sizeof(current_message_date),"%B %d, %Y %H:00\n",time_ptr);
-		current_message_date[sizeof(current_message_date)-1]='\x0';
-
-		get_time_string(&t,date_time,sizeof(date_time),SHORT_DATE_TIME);
-		strip(date_time);
-
-		temp_buffer=strtok(NULL,"\n");
-
-		if(strcmp(image,"")){
-
-			display_line=FALSE;
-
-			if(system_message==TRUE)
-				display_line=TRUE;
-
-			else if(display_type==DISPLAY_HOSTS){
-
-				if(history_type==HOST_HISTORY || history_type==SERVICE_HISTORY){
-					sprintf(match1," HOST ALERT: %s;",host_name);
-					sprintf(match2," SERVICE ALERT: %s;",host_name);
-				        }
-				else if(history_type==HOST_FLAPPING_HISTORY || history_type==SERVICE_FLAPPING_HISTORY){
-					sprintf(match1," HOST FLAPPING ALERT: %s;",host_name);
-					sprintf(match2," SERVICE FLAPPING ALERT: %s;",host_name);
-				        }
-				else if(history_type==HOST_DOWNTIME_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY){
-					sprintf(match1," HOST DOWNTIME ALERT: %s;",host_name);
-					sprintf(match2," SERVICE DOWNTIME ALERT: %s;",host_name);
-				        }
-
-				if(show_all_hosts==TRUE)
-					display_line=TRUE;
-				else if(strstr(temp_buffer,match1))
-					display_line=TRUE;
-				else if(strstr(temp_buffer,match2))
-					display_line=TRUE;
-
-				if(display_line==TRUE){
-					if(history_options==HISTORY_ALL)
-						display_line=TRUE;
-					else if(history_options==HISTORY_HOST_ALL && (history_type==HOST_HISTORY || history_type==HOST_FLAPPING_HISTORY || history_type==HOST_DOWNTIME_HISTORY))
-						display_line=TRUE;
-					else if(history_options==HISTORY_SERVICE_ALL && (history_type==SERVICE_HISTORY || history_type==SERVICE_FLAPPING_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY))
-						display_line=TRUE;
-					else if((history_type==HOST_HISTORY || history_type==SERVICE_HISTORY) && (history_detail_type & history_options))
-						display_line=TRUE;
+					/* get host and service names */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_host_name=strdup(temp_buffer+1);
 					else
-						display_line=FALSE;
-			                }
+						entry_host_name=NULL;
 
-				/* check alert state types */
-				if(display_line==TRUE && (history_type==HOST_HISTORY || history_type==SERVICE_HISTORY)){
-					if(state_options==STATE_ALL)
-						display_line=TRUE;
-					else if((state_options & STATE_SOFT) && strstr(temp_buffer,";SOFT;"))
-						display_line=TRUE;
-					else if((state_options & STATE_HARD) && strstr(temp_buffer,";HARD;"))
-						display_line=TRUE;
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_service_desc=strdup(temp_buffer);
 					else
-						display_line=FALSE;
-				        }
-			        }
+						entry_service_desc=NULL;
 
-			else if(display_type==DISPLAY_SERVICES){
-
-				if(history_type==SERVICE_HISTORY)
-					sprintf(match1," SERVICE ALERT: %s;%s;",host_name,service_desc);
-				else if(history_type==SERVICE_FLAPPING_HISTORY)
-					sprintf(match1," SERVICE FLAPPING ALERT: %s;%s;",host_name,service_desc);
-				else if(history_type==SERVICE_DOWNTIME_HISTORY)
-					sprintf(match1," SERVICE DOWNTIME ALERT: %s;%s;",host_name,service_desc);
-
-				if(strstr(temp_buffer,match1) && (history_type==SERVICE_HISTORY || history_type==SERVICE_FLAPPING_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY))
-					display_line=TRUE;
-
-				if(display_line==TRUE){
-					if(history_options==HISTORY_ALL || history_options==HISTORY_SERVICE_ALL)
-						display_line=TRUE;
-					else if(history_options & history_detail_type)
-						display_line=TRUE;
-					else
-						display_line=FALSE;
-			                }
-
-				/* check alert state type */
-				if(display_line==TRUE && history_type==SERVICE_HISTORY){
-
-					if(state_options==STATE_ALL)
-						display_line=TRUE;
-					else if((state_options & STATE_SOFT) && strstr(temp_buffer,";SOFT;"))
-						display_line=TRUE;
-					else if((state_options & STATE_HARD) && strstr(temp_buffer,";HARD;"))
-						display_line=TRUE;
-					else
-						display_line=FALSE;
-				        }
-			        }
-
-
-			/* make sure user is authorized to view this host or service information */
-			if(system_message==FALSE){
-
-				if(history_type==HOST_HISTORY || history_type==HOST_FLAPPING_HISTORY || history_type==HOST_DOWNTIME_HISTORY){
-					temp_host=find_host(entry_host_name);
-					if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
-						display_line=FALSE;
-					
-				        }
-				else{
-					temp_service=find_service(entry_host_name,entry_service_desc);
-					if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
-						display_line=FALSE;
-				        }
-			        }
-			
-			/* display the entry if we should... */
-			if(display_line==TRUE){
-
-				if(strcmp(last_message_date,current_message_date)!=0 && display_timebreaks==TRUE){
-					printf("</DIV><BR CLEAR='all' />\n");
-					printf("<DIV CLASS='dateTimeBreak'>\n");
-					printf("<table border=0 width=95%%><tr>");
-					printf("<td width=40%%><hr width=100%%></td>");
-					printf("<td align=center CLASS='dateTimeBreak'>%s</td>",current_message_date);
-					printf("<td width=40%%><hr width=100%%></td>");
-					printf("</tr></table>\n");
-					printf("</DIV>\n");
-					printf("<BR CLEAR='all' /><DIV CLASS='logEntries'>\n");
-					strncpy(last_message_date,current_message_date,sizeof(last_message_date));
-					last_message_date[sizeof(last_message_date)-1]='\x0';
-				        }
-
-				if(display_frills==TRUE)
-					printf("<img align='left' src='%s%s' alt='%s' title='%s' />",url_images_path,image,image_alt,image_alt);
-				printf("[%s] %s",date_time,html_encode(temp_buffer,FALSE));
-				if(enable_splunk_integration==TRUE){
-					printf("&nbsp;&nbsp;&nbsp;");
-					display_splunk_generic_url(temp_buffer,2);
+					if(temp_entry->type==LOGENTRY_SERVICE_CRITICAL){
+						strcpy(image,CRITICAL_ICON);
+						strcpy(image_alt,CRITICAL_ICON_ALT);
+						history_detail_type=HISTORY_SERVICE_CRITICAL;
 					}
-				printf("<br clear='all' />\n");
+					else if(temp_entry->type==LOGENTRY_SERVICE_WARNING){
+						strcpy(image,WARNING_ICON);
+						strcpy(image_alt,WARNING_ICON_ALT);
+						history_detail_type=HISTORY_SERVICE_WARNING;
+					}
+					else if(temp_entry->type==LOGENTRY_SERVICE_UNKNOWN){
+						strcpy(image,UNKNOWN_ICON);
+						strcpy(image_alt,UNKNOWN_ICON_ALT);
+		 				history_detail_type=HISTORY_SERVICE_UNKNOWN;
+					}
+					else if(temp_entry->type==LOGENTRY_SERVICE_RECOVERY || temp_entry->type==LOGENTRY_SERVICE_OK){
+						strcpy(image,OK_ICON);
+						strcpy(image_alt,OK_ICON_ALT);
+						history_detail_type=HISTORY_SERVICE_RECOVERY;
+					}
+					break;
 
-				found_line=TRUE;
-			        }
-		        }
+				/* service flapping alerts */
+				case LOGENTRY_SERVICE_FLAPPING_STARTED:
+				case LOGENTRY_SERVICE_FLAPPING_STOPPED:
+				case LOGENTRY_SERVICE_FLAPPING_DISABLED:
+					
+					if(display_flapping_alerts==FALSE)
+						continue;
+			
+					history_type=SERVICE_FLAPPING_HISTORY;
 
-		/* free memory */
-		free(entry_host_name);
-		entry_host_name=NULL;
-		free(entry_service_desc);
-		entry_service_desc=NULL;
-                }
+					/* get host and service names */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_host_name=strdup(temp_buffer+1);
+					else
+						entry_host_name=NULL;
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_service_desc=strdup(temp_buffer);
+					else
+						entry_service_desc=NULL;
+
+					strcpy(image,FLAPPING_ICON);
+
+					if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_STARTED)
+					        strcpy(image_alt,"Service started flapping");
+					else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_STOPPED)
+					        strcpy(image_alt,"Service stopped flapping");
+					else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_DISABLED)
+					        strcpy(image_alt,"Service flap detection disabled");
+
+					break;
+
+				/* service downtime alerts */
+				case LOGENTRY_SERVICE_DOWNTIME_STARTED:
+				case LOGENTRY_SERVICE_DOWNTIME_STOPPED:
+				case LOGENTRY_SERVICE_DOWNTIME_CANCELLED:
+							
+					if(display_downtime_alerts==FALSE)
+						continue;
+			
+					history_type=SERVICE_DOWNTIME_HISTORY;
+
+					/* get host and service names */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_host_name=strdup(temp_buffer+1);
+					else
+						entry_host_name=NULL;
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_service_desc=strdup(temp_buffer);
+					else
+						entry_service_desc=NULL;
+
+					strcpy(image,SCHEDULED_DOWNTIME_ICON);
+
+					if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STARTED)
+					        strcpy(image_alt,"Service entered a period of scheduled downtime");
+					else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STOPPED)
+					        strcpy(image_alt,"Service exited from a period of scheduled downtime");
+					else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_CANCELLED)
+					        strcpy(image_alt,"Service scheduled downtime has been cancelled");
+
+					break;
+
+				/* host state alerts */
+				case LOGENTRY_HOST_DOWN:
+				case LOGENTRY_HOST_UNREACHABLE:
+				case LOGENTRY_HOST_RECOVERY:
+				case LOGENTRY_HOST_UP:
+
+					history_type=HOST_HISTORY;
+
+					/* get host name */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_host_name=strdup(temp_buffer+1);
+					else
+						entry_host_name=NULL;
+
+					if(temp_entry->type==LOGENTRY_HOST_DOWN){
+						strcpy(image,HOST_DOWN_ICON);
+						strcpy(image_alt,HOST_DOWN_ICON_ALT);
+						history_detail_type=HISTORY_HOST_DOWN;
+					}
+					else if(temp_entry->type==LOGENTRY_HOST_UNREACHABLE){
+						strcpy(image,HOST_UNREACHABLE_ICON);
+						strcpy(image_alt,HOST_UNREACHABLE_ICON_ALT);
+						history_detail_type=HISTORY_HOST_UNREACHABLE;
+					}
+					else if(temp_entry->type==LOGENTRY_HOST_RECOVERY || temp_entry->type==LOGENTRY_HOST_UP){
+						strcpy(image,HOST_UP_ICON);
+						strcpy(image_alt,HOST_UP_ICON_ALT);
+						history_detail_type=HISTORY_HOST_RECOVERY;
+					}
+
+					break;
+
+				/* host flapping alerts */
+				case LOGENTRY_HOST_FLAPPING_STARTED:
+				case LOGENTRY_HOST_FLAPPING_STOPPED:
+				case LOGENTRY_HOST_FLAPPING_DISABLED:
+			
+					if(display_flapping_alerts==FALSE)
+						continue;
+			
+					history_type=HOST_FLAPPING_HISTORY;
+
+					/* get host name */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_host_name=strdup(temp_buffer+1);
+					else
+						entry_host_name=NULL;
+
+					strcpy(image,FLAPPING_ICON);
+
+					if(temp_entry->type==LOGENTRY_HOST_FLAPPING_STARTED)
+					        strcpy(image_alt,"Host started flapping");
+					else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_STOPPED)
+					        strcpy(image_alt,"Host stopped flapping");
+					else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_DISABLED)
+					        strcpy(image_alt,"Host flap detection disabled");
+
+					break;
+
+				/* host downtime alerts */
+				case LOGENTRY_HOST_DOWNTIME_STARTED:
+				case LOGENTRY_HOST_DOWNTIME_STOPPED:
+				case LOGENTRY_HOST_DOWNTIME_CANCELLED:
+			
+					if(display_downtime_alerts==FALSE)
+						continue;
+			
+					history_type=HOST_DOWNTIME_HISTORY;
+
+					/* get host name */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					if(temp_buffer)
+						entry_host_name=strdup(temp_buffer+1);
+					else
+						entry_host_name=NULL;
+
+					strcpy(image,SCHEDULED_DOWNTIME_ICON);
+
+					if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STARTED)
+					        strcpy(image_alt,"Host entered a period of scheduled downtime");
+					else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STOPPED)
+					        strcpy(image_alt,"Host exited from a period of scheduled downtime");
+					else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_CANCELLED)
+					        strcpy(image_alt,"Host scheduled downtime has been cancelled");
+
+					break;
+
+				
+				/* program start */
+				case LOGENTRY_STARTUP:
+					if(display_system_messages==FALSE)
+						continue;
+					strcpy(image,START_ICON);
+					strcpy(image_alt,START_ICON_ALT);
+					system_message=TRUE;
+					break;
+
+				/* program termination */
+				case LOGENTRY_SHUTDOWN:
+				case LOGENTRY_BAILOUT:
+					if(display_system_messages==FALSE)
+						continue;
+					strcpy(image,STOP_ICON);
+					strcpy(image_alt,STOP_ICON_ALT);
+					system_message=TRUE;
+					break;
+
+				/* program restart */
+				case LOGENTRY_RESTART:
+					if(display_system_messages==FALSE)
+						continue;
+					strcpy(image,RESTART_ICON);
+					strcpy(image_alt,RESTART_ICON_ALT);
+					system_message=TRUE;
+					break;
+			}
+
+			image[sizeof(image)-1]='\x0';
+			image_alt[sizeof(image_alt)-1]='\x0';
+
+			/* get the timestamp */
+			time_ptr=localtime(&temp_entry->timestamp);
+			strftime(current_message_date,sizeof(current_message_date),"%B %d, %Y %H:00\n",time_ptr);
+			current_message_date[sizeof(current_message_date)-1]='\x0';
+
+			get_time_string(&temp_entry->timestamp,date_time,sizeof(date_time),SHORT_DATE_TIME);
+			strip(date_time);
+
+			if(strcmp(image,"")){
+
+				display_line=FALSE;
+
+				if(system_message==TRUE)
+					display_line=TRUE;
+
+				else if(display_type==DISPLAY_HOSTS){
+
+					if(history_type==HOST_HISTORY || history_type==SERVICE_HISTORY){
+						sprintf(match1," HOST ALERT: %s;",host_name);
+						sprintf(match2," SERVICE ALERT: %s;",host_name);
+					}
+					else if(history_type==HOST_FLAPPING_HISTORY || history_type==SERVICE_FLAPPING_HISTORY){
+						sprintf(match1," HOST FLAPPING ALERT: %s;",host_name);
+						sprintf(match2," SERVICE FLAPPING ALERT: %s;",host_name);
+					}
+					else if(history_type==HOST_DOWNTIME_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY){
+						sprintf(match1," HOST DOWNTIME ALERT: %s;",host_name);
+						sprintf(match2," SERVICE DOWNTIME ALERT: %s;",host_name);
+					}
+
+					if(show_all_hosts==TRUE)
+						display_line=TRUE;
+					else if(strstr(temp_entry->entry_text,match1))
+						display_line=TRUE;
+					else if(strstr(temp_entry->entry_text,match2))
+						display_line=TRUE;
+
+					if(display_line==TRUE){
+						if(history_options==HISTORY_ALL)
+							display_line=TRUE;
+						else if(history_options==HISTORY_HOST_ALL && (history_type==HOST_HISTORY || history_type==HOST_FLAPPING_HISTORY || history_type==HOST_DOWNTIME_HISTORY))
+							display_line=TRUE;
+						else if(history_options==HISTORY_SERVICE_ALL && (history_type==SERVICE_HISTORY || history_type==SERVICE_FLAPPING_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY))
+							display_line=TRUE;
+						else if((history_type==HOST_HISTORY || history_type==SERVICE_HISTORY) && (history_detail_type & history_options))
+							display_line=TRUE;
+						else
+							display_line=FALSE;
+					}
+
+					/* check alert state types */
+					if(display_line==TRUE && (history_type==HOST_HISTORY || history_type==SERVICE_HISTORY)){
+						if(state_options==STATE_ALL)
+							display_line=TRUE;
+						else if((state_options & STATE_SOFT) && strstr(temp_buffer,";SOFT;"))
+							display_line=TRUE;
+						else if((state_options & STATE_HARD) && strstr(temp_buffer,";HARD;"))
+							display_line=TRUE;
+						else
+							display_line=FALSE;
+					}
+				}
+
+				else if(display_type==DISPLAY_SERVICES){
+
+					if(history_type==SERVICE_HISTORY)
+						sprintf(match1," SERVICE ALERT: %s;%s;",host_name,service_desc);
+					else if(history_type==SERVICE_FLAPPING_HISTORY)
+						sprintf(match1," SERVICE FLAPPING ALERT: %s;%s;",host_name,service_desc);
+					else if(history_type==SERVICE_DOWNTIME_HISTORY)
+						sprintf(match1," SERVICE DOWNTIME ALERT: %s;%s;",host_name,service_desc);
+
+					if(strstr(temp_entry->entry_text,match1) && (history_type==SERVICE_HISTORY || history_type==SERVICE_FLAPPING_HISTORY || history_type==SERVICE_DOWNTIME_HISTORY))
+						display_line=TRUE;
+
+					if(display_line==TRUE){
+						if(history_options==HISTORY_ALL || history_options==HISTORY_SERVICE_ALL)
+							display_line=TRUE;
+						else if(history_options & history_detail_type)
+							display_line=TRUE;
+						else
+							display_line=FALSE;
+					}
+
+					/* check alert state type */
+					if(display_line==TRUE && history_type==SERVICE_HISTORY){
+
+						if(state_options==STATE_ALL)
+							display_line=TRUE;
+						else if((state_options & STATE_SOFT) && strstr(temp_buffer,";SOFT;"))
+							display_line=TRUE;
+						else if((state_options & STATE_HARD) && strstr(temp_buffer,";HARD;"))
+							display_line=TRUE;
+						else
+							display_line=FALSE;
+					}
+				}
+
+				/* make sure user is authorized to view this host or service information */
+				if(system_message==FALSE){
+
+					if(history_type==HOST_HISTORY || history_type==HOST_FLAPPING_HISTORY || history_type==HOST_DOWNTIME_HISTORY){
+						temp_host=find_host(entry_host_name);
+						if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
+							display_line=FALSE;
+					}else{
+						temp_service=find_service(entry_host_name,entry_service_desc);
+						if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
+							display_line=FALSE;
+					}
+				}
+
+				/* display the entry if we should... */
+				if(display_line==TRUE){
+
+					if(strcmp(last_message_date,current_message_date)!=0 && display_timebreaks==TRUE){
+						printf("</DIV><BR CLEAR='all' />\n");
+						printf("<DIV CLASS='dateTimeBreak'>\n");
+						printf("<table border=0 width=95%%><tr>");
+						printf("<td width=40%%><hr width=100%%></td>");
+						printf("<td align=center CLASS='dateTimeBreak'>%s</td>",current_message_date);
+						printf("<td width=40%%><hr width=100%%></td>");
+						printf("</tr></table>\n");
+						printf("</DIV>\n");
+						printf("<BR CLEAR='all' /><DIV CLASS='logEntries'>\n");
+						strncpy(last_message_date,current_message_date,sizeof(last_message_date));
+						last_message_date[sizeof(last_message_date)-1]='\x0';
+					}
+
+					if(display_frills==TRUE)
+						printf("<img align='left' src='%s%s' alt='%s' title='%s' />",url_images_path,image,image_alt,image_alt);
+					printf("[%s] %s",date_time,html_encode(temp_entry->entry_text,FALSE));
+					if(enable_splunk_integration==TRUE){
+						printf("&nbsp;&nbsp;&nbsp;");
+						display_splunk_generic_url(temp_entry->entry_text,2);
+					}
+					printf("<br clear='all' />\n");
+
+					found_line=TRUE;
+				}
+			} 
+
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);
+
+			/* free memory */
+			free(entry_host_name);
+			entry_host_name=NULL;
+			free(entry_service_desc);
+			entry_service_desc=NULL;
+		}
+
+		free_log_entries();
+	}
 
 	printf("</DIV></P>\n");
-	
+
 	if(found_line==FALSE){
 		printf("<HR>\n");
-		printf("<P><DIV CLASS='warningMessage'>No history information was found ");
+		printf("<P><DIV CLASS='errorMessage' style='text-align:center'>No history information was found ");
 		if(display_type==DISPLAY_HOSTS)
 			printf("%s",(show_all_hosts==TRUE)?"":"for this host ");
 		else
 			printf("for this service ");
 		printf("in %s log file</DIV></P>",(log_archive==0)?"the current":"this archived");
-	        }
+	}
 
 	printf("<HR>\n");
 
-	my_free(input);
-	my_free(input2);
-
-	if(use_lifo==TRUE)
-		free_lifo_memory();
-	else
-		mmap_fclose(thefile);
-
 	return;
-        }
+}

@@ -30,8 +30,6 @@
 #include "../include/cgiutils.h"
 
 char            main_config_file[MAX_FILENAME_LENGTH];
-char            log_file[MAX_FILENAME_LENGTH];
-char            log_archive_path[MAX_FILENAME_LENGTH];
 char            command_file[MAX_FILENAME_LENGTH];
 
 char            physical_html_path[MAX_FILENAME_LENGTH];
@@ -88,17 +86,20 @@ extern int      process_performance_data;
 extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 
+/** readlogs.c **/
+extern int	log_rotation_method;
+extern time_t	this_scheduled_log_rotation;
+extern time_t	last_scheduled_log_rotation;
+extern time_t	next_scheduled_log_rotation;
+extern char	log_file[MAX_INPUT_BUFFER];
+extern char	log_archive_path[MAX_INPUT_BUFFER];
+
+
 int             check_external_commands=0;
 
 int             log_external_commands_user=FALSE;
 
 int             date_format=DATE_FORMAT_US;
-
-int             log_rotation_method=LOG_ROTATION_NONE;
-
-time_t          this_scheduled_log_rotation=0L;
-time_t          last_scheduled_log_rotation=0L;
-time_t          next_scheduled_log_rotation=0L;
 
 int             use_authentication=TRUE;
 
@@ -146,7 +147,6 @@ extern serviceescalation *serviceescalation_list;
 extern hoststatus      *hoststatus_list;
 extern servicestatus   *servicestatus_list;
 
-lifo            *lifo_list=NULL;
 
 char encoded_url_string[2][MAX_INPUT_BUFFER]; // 2 to be able use url_encode twice
 char *encoded_html_string=NULL;
@@ -255,9 +255,7 @@ void reset_cgi_vars(void){
 	ping_syntax=NULL;
 
 	return;
-        }
-
-
+}
 
 /* free all memory for object definitions */
 void free_memory(void){
@@ -280,9 +278,7 @@ void free_memory(void){
 	free(ping_syntax);
 
 	return;
-        }
-
-
+}
 
 
 /**********************************************************
@@ -306,7 +302,6 @@ char * get_cgi_config_location(void){
 
         return cgiloc;
 }
-
 
 /* read the command file location from an environment variable */
 char * get_cmd_file_location(void){
@@ -554,9 +549,6 @@ int read_cgi_config_file(char *filename){
 		return OK;
 }
 
-
-
-
 /* read the main configuration file */
 int read_main_config_file(char *filename){
 	char *input=NULL;
@@ -650,17 +642,15 @@ int read_main_config_file(char *filename){
 				date_format=DATE_FORMAT_STRICT_ISO8601;
 			else
 				date_format=DATE_FORMAT_US;
-		        }
-               }
+		}
+	}
 
 	/* free memory and close the file */
 	free(input);
 	mmap_fclose(thefile);
 
 	return OK;
-        }
-
-
+}
 
 /* read all object definitions */
 int read_all_object_configuration_data(char *config_file,int options){
@@ -670,8 +660,7 @@ int read_all_object_configuration_data(char *config_file,int options){
 	result=read_object_config_data(config_file,options,FALSE,FALSE);
 
 	return result;
-        }
-
+}
 
 /* read all status data */
 int read_all_status_data(char *config_file,int options){
@@ -701,112 +690,8 @@ int read_all_status_data(char *config_file,int options){
 		service_status_has_been_read=TRUE;
 
 	return result;
-        }
+}
 
-
-/**********************************************************
- ******************* LIFO FUNCTIONS ***********************
- **********************************************************/
-
-/* reads contents of file into the lifo struct */
-int read_file_into_lifo(char *filename){
-	char *input=NULL;
-	mmapfile *thefile;
-	int lifo_result;
-
-	if((thefile=mmap_fopen(filename))==NULL)
-		return LIFO_ERROR_FILE;
-
-	while(1){
-
-		free(input);
-
-		if((input=mmap_fgets(thefile))==NULL)
-			break;
-
-		lifo_result=push_lifo(input);
-
-		if(lifo_result!=LIFO_OK){
-			free_lifo_memory();
-			free(input);
-			mmap_fclose(thefile);
-			return lifo_result;
-		        }
-	        }
-
-	mmap_fclose(thefile);
-
-	return LIFO_OK;
-        }
-
-
-/* frees all memory allocated to lifo */
-void free_lifo_memory(void){
-	lifo *temp_lifo;
-	lifo *next_lifo;
-
-	if(lifo_list==NULL)
-		return;
-
-	temp_lifo=lifo_list;
-	while(temp_lifo!=NULL){
-		next_lifo=temp_lifo->next;
-		if(temp_lifo->data!=NULL)
-			free((void *)temp_lifo->data);
-		free((void *)temp_lifo);
-		temp_lifo=next_lifo;
-	        }
-
-	return;
-        }
-
-
-/* adds an item to lifo */
-int push_lifo(char *buffer){
-	lifo *temp_lifo;
-
-	temp_lifo=(lifo *)malloc(sizeof(lifo));
-	if(temp_lifo==NULL)
-		return LIFO_ERROR_MEMORY;
-
-	if(buffer==NULL)
-		temp_lifo->data=(char *)strdup("");
-	else
-		temp_lifo->data=(char *)strdup(buffer);
-	if(temp_lifo->data==NULL){
-		free(temp_lifo);
-		return LIFO_ERROR_MEMORY;
-	        }
-
-	/* add item to front of lifo... */
-	temp_lifo->next=lifo_list;
-	lifo_list=temp_lifo;
-
-	return LIFO_OK;
-        }
-
-
-
-/* returns/clears an item from lifo */
-char *pop_lifo(void){
-	lifo *temp_lifo;
-	char *buf;
-
-	if(lifo_list==NULL || lifo_list->data==NULL)
-		return NULL;
-
-	buf=strdup(lifo_list->data);
-
-	temp_lifo=lifo_list->next;
-
-	if(lifo_list->data!=NULL)
-		free((void *)lifo_list->data);
-	free((void *)lifo_list);
-
-	lifo_list=temp_lifo;
-
-	return buf;
-        }
 
 /**********************************************************
  *************** COMMON HEADER AND FOOTER *****************
@@ -1256,7 +1141,6 @@ void write_popup_code(int cgi_id){
  *************** MISC UTILITY FUNCTIONS *******************
  **********************************************************/
 
-
 /* unescapes newlines in a string */
 char *unescape_newlines(char *rawbuf){
 	register int x,y;
@@ -1284,7 +1168,7 @@ char *unescape_newlines(char *rawbuf){
 	rawbuf[y]='\x0';
 
 	return rawbuf;
-	}
+}
 
 /* escapes newlines in a string */
 char *escape_newlines(char *rawbuf) {
@@ -1319,7 +1203,6 @@ char *escape_newlines(char *rawbuf) {
 
 	return newbuf;
 }
-
 
 /* strips HTML and bad stuff from plugin output */
 void sanitize_plugin_output(char *buffer){
@@ -1381,9 +1264,7 @@ void sanitize_plugin_output(char *buffer){
 	free(new_buffer);
 
 	return;
-        }
-
-
+}
 
 /* get date/time string */
 void get_time_string(time_t *raw_time,char *buffer,int buffer_length,int type){
@@ -1457,8 +1338,7 @@ void get_time_string(time_t *raw_time,char *buffer,int buffer_length,int type){
 	buffer[buffer_length-1]='\x0';
 
 	return;
-        }
-
+}
 
 /* get time string for an interval of time */
 void get_interval_time_string(double time_units,char *buffer,int buffer_length){
@@ -1477,8 +1357,7 @@ void get_interval_time_string(double time_units,char *buffer,int buffer_length){
 	buffer[buffer_length-1]='\x0';
 
 	return;
-        }
-
+}
 
 /* encodes a string in proper URL format */
 char * url_encode(char *input){
@@ -1539,9 +1418,7 @@ char * url_encode(char *input){
 	str[sizeof(encoded_url_string[0])-1]='\x0';
 
 	return str;
-        }
-
-
+}
 
 /* escapes a string used in HTML */
 char * html_encode(char *input, int escape_newlines){
@@ -1630,9 +1507,7 @@ char * html_encode(char *input, int escape_newlines){
 	encoded_html_string[y++]='\x0';
 
 	return encoded_html_string;
-        }
-
-
+}
 
 /* strip > and < from string */
 void strip_html_brackets(char *buffer){
@@ -1653,9 +1528,7 @@ void strip_html_brackets(char *buffer){
 	buffer[y++]='\x0';
 
 	return;
-	}
-
-
+}
 
 /* escape string for html form usage */
 char * escape_string(char *input){
@@ -1705,187 +1578,7 @@ char * escape_string(char *input){
 	encoded_html_string[y++]='\x0';
 
 	return encoded_html_string;
-        }
-
-
-
-/* determines the log file we should use (from current time) */
-void get_log_archive_to_use(int archive,char *buffer,int buffer_length){
-	struct tm *t;
-	FILE *fd;
-
-	/* determine the time at which the log was rotated for this archive # */
-	determine_log_rotation_times(archive);
-
-	/* if we're not rotating the logs or if we want the current log, use the main one... */
-	if(log_rotation_method==LOG_ROTATION_NONE || archive<=0){
-		strncpy(buffer,log_file,buffer_length);
-		buffer[buffer_length-1]='\x0';
-		return;
-	        }
-
-	t=localtime(&this_scheduled_log_rotation);
-
-	/* use the time that the log rotation occurred to figure out the name of the log file */
-	snprintf(buffer,buffer_length,"%sicinga-%02d-%02d-%d-%02d.log",log_archive_path, t->tm_mon+1, t->tm_mday, t->tm_year+1900, t->tm_hour);
-	buffer[buffer_length-1]='\x0';
-
-	/* check if a icinga named archive logfile already exist. Otherwise change back to nagios syntax */
-	if((fd = fopen(buffer, "r")) == NULL){
-		snprintf(buffer,buffer_length,"%snagios-%02d-%02d-%d-%02d.log",log_archive_path,t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
-		buffer[buffer_length-1]='\x0';
-
-		/* 06-02-2010 Michael Friedrich
-		   Yeah, and if no log has been written, nagios- will fail with the wrong error message
-		   leading the user to the assumption that the logfile is not even created - if the logfile
-		   was not rotated by the core after this date */
-		if((fd = fopen(buffer, "r")) == NULL){
-			snprintf(buffer,buffer_length,"%sicinga-%02d-%02d-%d-%02d.log",log_archive_path, t->tm_mon+1, t->tm_mday, t->tm_year+1900, t->tm_hour);
-			buffer[buffer_length-1]='\x0';
-		}
-		else {
-			fclose(fd);
-		}
-	}
-	else {
-		fclose(fd);
-	}
-
-	return;
-        }
-
-
-
-/* determines log archive to use, given a specific time */
-int determine_archive_to_use_from_time(time_t target_time){
-	time_t current_time;
-	int current_archive=0;
-
-	/* if log rotation is disabled, we don't have archives */
-	if(log_rotation_method==LOG_ROTATION_NONE)
-		return 0;
-
-	/* make sure target time is rational */
-	current_time=time(NULL);
-	if(target_time>=current_time)
-		return 0;
-
-	/* backtrack through archives to find the one we need for this time */
-	/* start with archive of 1, subtract one when we find the right time period to compensate for current (non-rotated) log */
-	for(current_archive=1;;current_archive++){
-
-		/* determine time at which the log rotation occurred for this archive number */
-		determine_log_rotation_times(current_archive);
-
-		/* if the target time falls within the times encompassed by this archive, we have the right archive! */
-		if(target_time>=this_scheduled_log_rotation)
-			return current_archive-1;
-	        }
-
-	return 0;
-        }
-
-
-
-/* determines the log rotation times - past, present, future */
-void determine_log_rotation_times(int archive){
-	struct tm *t;
-	int current_month;
-	int is_dst_now=FALSE;
-	time_t current_time;
-
-	/* negative archive numbers don't make sense */
-	/* if archive=0 (current log), this_scheduled_log_rotation time is set to next rotation time */
-	if(archive<0)
-		return;
-
-	time(&current_time);
-	t=localtime(&current_time);
-	is_dst_now=(t->tm_isdst>0)?TRUE:FALSE;
-	t->tm_min=0;
-	t->tm_sec=0;
-
-
-	switch(log_rotation_method){
-
-	case LOG_ROTATION_HOURLY:
-		this_scheduled_log_rotation=mktime(t);
-		this_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-((archive-1)*3600));
-		last_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-3600);
-		break;
-
-	case LOG_ROTATION_DAILY:
-		t->tm_hour=0;
-		this_scheduled_log_rotation=mktime(t);
-		this_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-((archive-1)*86400));
-		last_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-86400);
-		break;
-
-	case LOG_ROTATION_WEEKLY:
-		t->tm_hour=0;
-		this_scheduled_log_rotation=mktime(t);
-		this_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-(86400*t->tm_wday));
-		this_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-((archive-1)*604800));
-		last_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-604800);
-		break;
-
-	case LOG_ROTATION_MONTHLY:
-
-		t=localtime(&current_time);
-		t->tm_mon++;
-		t->tm_mday=1;
-		t->tm_hour=0;
-		t->tm_min=0;
-		t->tm_sec=0;
-		for(current_month=0;current_month<=archive;current_month++){
-			if(t->tm_mon==0){
-				t->tm_mon=11;
-				t->tm_year--;
-			        }
-			else
-				t->tm_mon--;
-		        }
-		last_scheduled_log_rotation=mktime(t);
-
-		t=localtime(&current_time);
-		t->tm_mon++;
-		t->tm_mday=1;
-		t->tm_hour=0;
-		t->tm_min=0;
-		t->tm_sec=0;
-		for(current_month=0;current_month<archive;current_month++){
-			if(t->tm_mon==0){
-				t->tm_mon=11;
-				t->tm_year--;
-			        }
-			else
-				t->tm_mon--;
-		        }
-		this_scheduled_log_rotation=mktime(t);
-
-		break;
-	default:
-		break;
-	        }
-
-	/* adjust this rotation time for daylight savings time */
-	t=localtime(&this_scheduled_log_rotation);
-	if(t->tm_isdst>0 && is_dst_now==FALSE)
-		this_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation-3600);
-	else if(t->tm_isdst==0 && is_dst_now==TRUE)
-		this_scheduled_log_rotation=(time_t)(this_scheduled_log_rotation+3600);
-
-	/* adjust last rotation time for daylight savings time */
-	t=localtime(&last_scheduled_log_rotation);
-	if(t->tm_isdst>0 && is_dst_now==FALSE)
-		last_scheduled_log_rotation=(time_t)(last_scheduled_log_rotation-3600);
-	else if(t->tm_isdst==0 && is_dst_now==TRUE)
-		last_scheduled_log_rotation=(time_t)(last_scheduled_log_rotation+3600);
-
-	return;
-        }
-
-
+}
 
 
 /**********************************************************
@@ -1944,9 +1637,7 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 	printf("</TABLE>\n");
 
 	return;
-        }
-
-
+}
 
 void display_nav_table(char *url,int archive){
 	char date_time[MAX_DATETIME_LENGTH];
@@ -2016,9 +1707,7 @@ void display_nav_table(char *url,int archive){
 	printf("<BR><DIV CLASS='navBoxFile'>File: %s</DIV>\n",archive_basename);
 
 	return;
-        }
-
-
+}
 
 /* prints the additional notes or action url for a hostgroup (with macros substituted) */
 void print_extra_hostgroup_url(char *group_name, char *url){
@@ -2064,9 +1753,7 @@ void print_extra_hostgroup_url(char *group_name, char *url){
 	printf("%s",output_buffer);
 
 	return;
-        }
-
-
+}
 
 /* prints the additional notes or action url for a servicegroup (with macros substituted) */
 void print_extra_servicegroup_url(char *group_name, char *url){
@@ -2112,9 +1799,7 @@ void print_extra_servicegroup_url(char *group_name, char *url){
 	printf("%s",output_buffer);
 
 	return;
-        }
-
-
+}
 
 /* include user-defined SSI footers or headers */
 void include_ssi_files(char *cgi_name, int type){
@@ -2149,9 +1834,7 @@ void include_ssi_files(char *cgi_name, int type){
 	        }
 
 	return;
-        }
-
-
+}
 
 /* include user-defined SSI footer or header */
 void include_ssi_file(char *filename){
@@ -2212,8 +1895,7 @@ void include_ssi_file(char *filename){
 	fclose(fp);
 
 	return;
-        }
-
+}
 
 /* displays an error if CGI config file could not be read */
 void cgi_config_file_error(char *config_file){
@@ -2240,9 +1922,7 @@ void cgi_config_file_error(char *config_file){
 	printf("</P>\n");
 
 	return;
-        }
-
-
+}
 
 /* displays an error if main config file could not be read */
 void main_config_file_error(char *config_file){
@@ -2269,8 +1949,7 @@ void main_config_file_error(char *config_file){
 	printf("</P>\n");
 
 	return;
-        }
-
+}
 
 /* displays an error if object data could not be read */
 void object_data_error(void){
@@ -2297,8 +1976,7 @@ void object_data_error(void){
 	printf("</P>\n");
 
 	return;
-        }
-
+}
 
 /* displays an error if status data could not be read */
 void status_data_error(void){
@@ -2331,9 +2009,9 @@ void status_data_error(void){
 	printf("</P>\n");
 
 	return;
-        }
+}
 
-
+/** print an error depending on error_type */
 void print_error(char *config_file, int error_type){
 
 	/* if cgi.cfg is missing, we don't know which fancy style to use, take our own */
@@ -2387,9 +2065,7 @@ void display_context_help(char *chid){
 	printf("<a href='%s%s.html' target='cshw' onClick='javascript:window.open(\"%s%s.html\",\"cshw\",\"width=550,height=600,toolbar=0,location=0,status=0,resizable=1,scrollbars=1\");return true'><img src='%s%s' border=0 alt='Display context-sensitive help for this screen' title='Display context-sensitive help for this screen'></a>\n",url_context_help_path,chid,url_context_help_path,chid,url_images_path,icon);
 
 	return;
-        }
-
-
+}
 
 void display_splunk_host_url(host *hst){
 
@@ -2401,9 +2077,7 @@ void display_splunk_host_url(host *hst){
 	printf("<a href='%s?q=search %s' target='_blank'><img src='%s%s' alt='Splunk It' title='Splunk It' border='0'></a>\n",splunk_url,url_encode(hst->name),url_images_path,SPLUNK_SMALL_WHITE_ICON);
 
 	return;
-	}
-
-
+}
 
 void display_splunk_service_url(service *svc){
 
@@ -2416,9 +2090,7 @@ void display_splunk_service_url(service *svc){
 	printf("%s' target='_blank'><img src='%s%s' alt='Splunk It' title='Splunk It' border='0'></a>\n",url_encode(svc->description),url_images_path,SPLUNK_SMALL_WHITE_ICON);
 
 	return;
-	}
-
-
+}
 
 void display_splunk_generic_url(char *buf, int icon){
 	char *newbuf=NULL;
@@ -2442,8 +2114,7 @@ void display_splunk_generic_url(char *buf, int icon){
 	free(newbuf);
 
 	return;
-	}
-
+}
 
 /* strip quotes and from string */
 void strip_splunk_query_terms(char *buffer){
@@ -2465,7 +2136,7 @@ void strip_splunk_query_terms(char *buffer){
 	buffer[y++]='\x0';
 
 	return;
-	}
+}
 
 void print_generic_error_message(char *title, char *text, int returnlevels) {
 
@@ -2491,8 +2162,11 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 		printf("</DIV>\n");
 
 		if(returnlevels!=0)
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'></DIV>\n",returnlevels);
+			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'>\n",returnlevels);
+
+		printf("</DIV>\n");
 	}
 
 	return;
 }
+

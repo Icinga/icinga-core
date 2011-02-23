@@ -27,6 +27,7 @@
 #include "../include/objects.h"
 #include "../include/comments.h"
 #include "../include/statusdata.h"
+#include "../include/readlogs.h"
 
 #include "../include/cgiutils.h"
 #include "../include/getcgi.h"
@@ -167,6 +168,7 @@ void add_archived_state(int,int,time_t,char *);
 void free_archived_state_list(void);
 void read_archived_state_data(void);
 void scan_log_file_for_archived_state_data(char *);
+void scan_log_file_for_archived_state_data_old(char *);
 void convert_timeperiod_to_times(int);
 void compute_report_times(void);
 void get_time_breakdown_string(unsigned long,unsigned long,char *,char *buffer,int);
@@ -2356,7 +2358,7 @@ void add_archived_state(int entry_type, int state_type, time_t time_stamp, char 
 	        }
 
 	return;
-        }
+}
 
 
 /* frees memory allocated to the archived state list */
@@ -2420,176 +2422,177 @@ void read_archived_state_data(void){
 	        }
 
 	return;
-        }
-
+}
 
 
 /* grabs archives state data from a log file */
 void scan_log_file_for_archived_state_data(char *filename){
 	char *input=NULL;
-	char *input2=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output=NULL;
 	char *temp_buffer=NULL;
-	time_t time_stamp;
-	mmapfile *thefile=NULL;
-	int state_type=0;
+	logentry *temp_entry=NULL;
+	int state_type=0,status;
 
 	/* print something so browser doesn't time out */
 	if(content_type==HTML_CONTENT){
 		printf(" ");
 		fflush(NULL);
-	        }
+	}
 
-	if((thefile=mmap_fopen(filename))==NULL){
+	status = get_log_entries(filename,NULL,FALSE);
+
+	if (status!=READLOG_OK) {
 #ifdef DEBUG
 		printf("Could not open file '%s' for reading.\n",filename);
 #endif
+		free_log_entries();
 		return;
-	        }
+	}else{
 
 #ifdef DEBUG
-	printf("Scanning log file '%s' for archived state data...\n",filename);
+		printf("Scanning log file '%s' for archived state data...\n",filename);
 #endif
 
-	while(1){
 
-		/* free memory */
-		free(input);
-		free(input2);
-		input=NULL;
-		input2=NULL;
-
-		/* read the next line */
-		if((input=mmap_fgets(thefile))==NULL)
-			break;
-
-		strip(input);
-
-		if((input2=strdup(input))==NULL)
-			continue;
-
-		temp_buffer=my_strtok(input2,"]");
-		time_stamp=(temp_buffer==NULL)?(time_t)0:(time_t)strtoul(temp_buffer+1,NULL,10);
-
-		/* program starts/restarts */
-		if(strstr(input," starting..."))
-			add_archived_state(AS_PROGRAM_START,AS_NO_DATA,time_stamp,"Program start");
-		if(strstr(input," restarting..."))
-			add_archived_state(AS_PROGRAM_START,AS_NO_DATA,time_stamp,"Program restart");
-
-		/* program stops */
-		if(strstr(input," shutting down..."))
-			add_archived_state(AS_PROGRAM_END,AS_NO_DATA,time_stamp,"Normal program termination");
-		if(strstr(input,"Bailing out"))
-			add_archived_state(AS_PROGRAM_END,AS_NO_DATA,time_stamp,"Abnormal program termination");
-
-		if(display_type==DISPLAY_HOST_TRENDS){
-			if(strstr(input,"HOST ALERT:") || strstr(input,"INITIAL HOST STATE:") || strstr(input,"CURRENT HOST STATE:")){
-
-				free(input2);
-				if((input2=strdup(input))==NULL)
-					continue;
-
-				/* get host name */
-				temp_buffer=my_strtok(input2,"]");
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				if(strcmp(host_name,entry_host_name))
-					continue;
-
-				/* state types */
-				if(strstr(input,";SOFT;")){
-					if(include_soft_states==FALSE)
-						continue;
-					state_type=AS_SOFT_STATE;
-				        }
-				if(strstr(input,";HARD;"))
-					state_type=AS_HARD_STATE;
-				
-				/* get the plugin output */
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				plugin_output=my_strtok(NULL,"\n");
-
-				if(strstr(input,";DOWN;"))
-					add_archived_state(AS_HOST_DOWN,state_type,time_stamp,plugin_output);
-				else if(strstr(input,";UNREACHABLE;"))
-					add_archived_state(AS_HOST_UNREACHABLE,state_type,time_stamp,plugin_output);
-				else if(strstr(input,";RECOVERY") || strstr(input,";UP;"))
-					add_archived_state(AS_HOST_UP,state_type,time_stamp,plugin_output);
-				else
-					add_archived_state(AS_NO_DATA,AS_NO_DATA,time_stamp,plugin_output);
-			        }
-		        }
-		if(display_type==DISPLAY_SERVICE_TRENDS){
-			if(strstr(input,"SERVICE ALERT:") || strstr(input,"INITIAL SERVICE STATE:") || strstr(input,"CURRENT SERVICE STATE:")){
-
-				free(input2);
-				if((input2=strdup(input))==NULL)
-					continue;
-
-				/* get host name */
-				temp_buffer=my_strtok(input2,"]");
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				if(strcmp(host_name,entry_host_name))
-					continue;
-				
-				/* get service description */
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
-				entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
-
-				if(strcmp(service_desc,entry_service_desc))
-					continue;
-
-				/* state types */
-				if(strstr(input,";SOFT;")){
-					if(include_soft_states==FALSE)
-						continue;
-					state_type=AS_SOFT_STATE;
-				        }
-				if(strstr(input,";HARD;"))
-					state_type=AS_HARD_STATE;
-				
-				/* get the plugin output */
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				plugin_output=my_strtok(NULL,"\n");
-
-				if(strstr(input,";CRITICAL;"))
-					add_archived_state(AS_SVC_CRITICAL,state_type,time_stamp,plugin_output);
-				else if(strstr(input,";WARNING;"))
-					add_archived_state(AS_SVC_WARNING,state_type,time_stamp,plugin_output);
-				else if(strstr(input,";UNKNOWN;"))
-					add_archived_state(AS_SVC_UNKNOWN,state_type,time_stamp,plugin_output);
-				else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
-					add_archived_state(AS_SVC_OK,state_type,time_stamp,plugin_output);
-				else
-					add_archived_state(AS_NO_DATA,AS_NO_DATA,time_stamp,plugin_output);
-
-			        }
-		        }
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 		
-	        }
+			free(input);
+			input=NULL;
+			if((input=strdup(temp_entry->entry_text))==NULL)
+				continue;
+			
+			/* program starts/restarts */
+			if(temp_entry->type==LOGENTRY_STARTUP)
+				add_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program start");
+			if(temp_entry->type==LOGENTRY_RESTART)
+				add_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program restart");
 
-	/* free memory and close the file */
-	free(input);
-	free(input2);
-	mmap_fclose(thefile);
-	
+			/* program stops */
+			if(temp_entry->type==LOGENTRY_SHUTDOWN)
+				add_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Normal program termination");
+			if(temp_entry->type==LOGENTRY_BAILOUT)
+				add_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Abnormal program termination");
+
+			if(display_type==DISPLAY_HOST_TRENDS){
+
+				switch(temp_entry->type){
+
+					/* normal host alerts and initial/current states */
+					case LOGENTRY_HOST_DOWN:
+					case LOGENTRY_HOST_UNREACHABLE:
+					case LOGENTRY_HOST_RECOVERY:
+					case LOGENTRY_HOST_UP:
+					case LOGENTRY_HOST_INITIAL_STATE:
+					case LOGENTRY_HOST_CURRENT_STATE:
+
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						if(strcmp(host_name,entry_host_name))
+							break;
+
+						/* state types */
+						if(strstr(input,";SOFT;")){
+							if(include_soft_states==FALSE)
+								break;
+							state_type=AS_SOFT_STATE;
+						        }
+						if(strstr(input,";HARD;"))
+							state_type=AS_HARD_STATE;
+
+						/* get the plugin output */
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						plugin_output=my_strtok(NULL,"\n");
+
+						if(strstr(input,";DOWN;"))
+							add_archived_state(AS_HOST_DOWN,state_type,temp_entry->timestamp,plugin_output);
+						else if(strstr(input,";UNREACHABLE;"))
+							add_archived_state(AS_HOST_UNREACHABLE,state_type,temp_entry->timestamp,plugin_output);
+						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+							add_archived_state(AS_HOST_UP,state_type,temp_entry->timestamp,plugin_output);
+						else
+							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output);
+
+						break;
+				}
+			}
+
+			if(display_type==DISPLAY_SERVICE_TRENDS){
+
+				switch(temp_entry->type){
+
+					/* normal service alerts and initial/current states */
+					case LOGENTRY_SERVICE_CRITICAL:
+					case LOGENTRY_SERVICE_WARNING:
+					case LOGENTRY_SERVICE_UNKNOWN:
+					case LOGENTRY_SERVICE_RECOVERY:
+					case LOGENTRY_SERVICE_OK:
+					case LOGENTRY_SERVICE_INITIAL_STATE:
+					case LOGENTRY_SERVICE_CURRENT_STATE:
+					
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						if(strcmp(host_name,entry_host_name))
+							break;
+
+						/* get service description */
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
+						entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
+
+						if(strcmp(service_desc,entry_service_desc))
+							break;
+
+						/* state types */
+						if(strstr(input,";SOFT;")){
+							if(include_soft_states==FALSE)
+								break;
+							state_type=AS_SOFT_STATE;
+						}
+						if(strstr(input,";HARD;"))
+							state_type=AS_HARD_STATE;
+						
+						/* get the plugin output */
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						plugin_output=my_strtok(NULL,"\n");
+						
+						if(strstr(input,";CRITICAL;"))
+							add_archived_state(AS_SVC_CRITICAL,state_type,temp_entry->timestamp,plugin_output);
+						else if(strstr(input,";WARNING;"))
+							add_archived_state(AS_SVC_WARNING,state_type,temp_entry->timestamp,plugin_output);
+						else if(strstr(input,";UNKNOWN;"))
+							add_archived_state(AS_SVC_UNKNOWN,state_type,temp_entry->timestamp,plugin_output);
+						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+							add_archived_state(AS_SVC_OK,state_type,temp_entry->timestamp,plugin_output);
+						else
+							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output);
+
+						break;
+				}
+			}
+		
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);
+		}
+		free_log_entries();
+		free(input);
+	}
 	return;
-        }
+}
+
 
 /* write timestamps */
 void draw_timestamps(void){

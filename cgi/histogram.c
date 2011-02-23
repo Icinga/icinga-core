@@ -26,6 +26,7 @@
 #include "../include/common.h"
 #include "../include/objects.h"
 #include "../include/statusdata.h"
+#include "../include/readlogs.h"
 
 #include "../include/cgiutils.h"
 #include "../include/getcgi.h"
@@ -990,7 +991,7 @@ int main(int argc, char **argv){
 	free_memory();
 
 	return OK;
-        }
+}
 
 int process_cgivars(void){
 	char **variables;
@@ -1437,7 +1438,7 @@ int process_cgivars(void){
 	free_cgivars(variables);
 
 	return error;
-        }
+}
 
 
 
@@ -1968,7 +1969,7 @@ void graph_all_histogram_data(void){
 	        }
 
 	return;
-        }
+}
 
 
 /* adds an archived state entry */
@@ -2082,7 +2083,7 @@ void add_archived_state(int state_type, time_t time_stamp){
 	last_state=state_type;
 
 	return;
-        }
+}
 
 
 
@@ -2128,145 +2129,151 @@ void read_archived_state_data(void){
 	        }
 
 	return;
-        }
+}
 
 
 
 /* grabs archives state data from a log file */
 void scan_log_file_for_archived_state_data(char *filename){
 	char *input=NULL;
-	char *input2=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *temp_buffer;
-	time_t time_stamp;
-	mmapfile *thefile;
+	logentry *temp_entry=NULL;
+	int status;
 
 	/* print something so browser doesn't time out */
 	if(content_type==HTML_CONTENT){
 		printf(" ");
 		fflush(NULL);
-	        }
+	}
 
-	if((thefile=mmap_fopen(filename))==NULL){
+	status = get_log_entries(filename,NULL,FALSE);
+	
+	if (status!=READLOG_OK) {
 #ifdef DEBUG2
 		printf("Could not open file '%s' for reading.\n",filename);
 #endif
 		return;
-	        }
+	}else{
 
 #ifdef DEBUG2
-	printf("Scanning log file '%s' for archived state data...\n",filename);
+		printf("Scanning log file '%s' for archived state data...\n",filename);
 #endif
 
-	while(1){
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 
-		/* free memory */
-		free(input);
-		free(input2);
-		input=NULL;
-		input2=NULL;
+			/* free memory */
+			free(input);
+			input=NULL;
+			if((input=strdup(temp_entry->entry_text))==NULL)
+				continue;
 
-		/* read the next line */
-		if((input=mmap_fgets(thefile))==NULL)
-			break;
+			/* program starts/restarts */
+			if(temp_entry->type==LOGENTRY_STARTUP)
+				add_archived_state(AS_PROGRAM_START,temp_entry->timestamp);
+			if(temp_entry->type==LOGENTRY_RESTART)
+				add_archived_state(AS_PROGRAM_START,temp_entry->timestamp);
 
-		strip(input);
+			/* program stops */
+			if(temp_entry->type==LOGENTRY_SHUTDOWN)
+				add_archived_state(AS_PROGRAM_END,temp_entry->timestamp);
+			if(temp_entry->type==LOGENTRY_BAILOUT)
+				add_archived_state(AS_PROGRAM_END,temp_entry->timestamp);
 
-		if((input2=strdup(input))==NULL)
-			continue;
+			if(display_type==DISPLAY_HOST_HISTOGRAM){
+				switch(temp_entry->type){
 
-		temp_buffer=my_strtok(input2,"]");
-		time_stamp=(temp_buffer==NULL)?(time_t)0:(time_t)strtoul(temp_buffer+1,NULL,10);
+					/* normal host alerts and initial/current states */
+					case LOGENTRY_HOST_DOWN:
+					case LOGENTRY_HOST_UNREACHABLE:
+					case LOGENTRY_HOST_RECOVERY:
+					case LOGENTRY_HOST_UP:
 
-		/* program starts/restarts */
-		if(strstr(input," starting..."))
-			add_archived_state(AS_PROGRAM_START,time_stamp);
-		if(strstr(input," restarting..."))
-			add_archived_state(AS_PROGRAM_START,time_stamp);
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
 
-		/* program stops */
-		if(strstr(input," shutting down..."))
-			add_archived_state(AS_PROGRAM_END,time_stamp);
-		if(strstr(input,"Bailing out"))
-			add_archived_state(AS_PROGRAM_END,time_stamp);
+						if(strcmp(host_name,entry_host_name))
+							continue;
 
-		if(display_type==DISPLAY_HOST_HISTOGRAM){
-			if(strstr(input,"HOST ALERT:")){
+						/* skip soft states if necessary */
+						if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(input,";SOFT;"))
+							continue;
 
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
+						/* skip hard states if necessary */
+						if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(input,";HARD;"))
+							continue;
 
-				if(strcmp(host_name,entry_host_name))
-					continue;
+						if(temp_entry->type==LOGENTRY_HOST_DOWN)
+							add_archived_state(AS_HOST_DOWN,temp_entry->timestamp);
+						else if(temp_entry->type==LOGENTRY_HOST_UNREACHABLE)
+							add_archived_state(AS_HOST_UNREACHABLE,temp_entry->timestamp);
+						else if(temp_entry->type==LOGENTRY_HOST_RECOVERY || temp_entry->type==LOGENTRY_HOST_UP)
+							add_archived_state(AS_HOST_UP,temp_entry->timestamp);
 
-				/* skip soft states if necessary */
-				if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(input,";SOFT;"))
-					continue;
-
-				/* skip hard states if necessary */
-				if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(input,";HARD;"))
-					continue;
-
-				if(strstr(input,";DOWN;"))
-					add_archived_state(AS_HOST_DOWN,time_stamp);
-				else if(strstr(input,";UNREACHABLE;"))
-					add_archived_state(AS_HOST_UNREACHABLE,time_stamp);
-				else if(strstr(input,";RECOVERY") || strstr(input,";UP;"))
-					add_archived_state(AS_HOST_UP,time_stamp);
-			        }
+						break;
+				}
 		        }
-		if(display_type==DISPLAY_SERVICE_HISTOGRAM){
-			if(strstr(input,"SERVICE ALERT:")){
 
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
+			else if(display_type==DISPLAY_SERVICE_HISTOGRAM){
+				switch(temp_entry->type){
 
-				if(strcmp(host_name,entry_host_name))
-					continue;
+					/* normal service alerts and initial/current states */
+					case LOGENTRY_SERVICE_CRITICAL:
+					case LOGENTRY_SERVICE_WARNING:
+					case LOGENTRY_SERVICE_UNKNOWN:
+					case LOGENTRY_SERVICE_RECOVERY:
+					case LOGENTRY_SERVICE_OK:
+
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						if(strcmp(host_name,entry_host_name))
+							continue;
 				
-				/* get service description */
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
-				entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
+						/* get service description */
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
+						entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
 
-				if(strcmp(service_desc,entry_service_desc))
-					continue;
+						if(strcmp(service_desc,entry_service_desc))
+							continue;
 
-				/* skip soft states if necessary */
-				if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(input,";SOFT;"))
-					continue;
+						/* skip soft states if necessary */
+						if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(input,";SOFT;"))
+							continue;
 
-				/* skip hard states if necessary */
-				if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(input,";HARD;"))
-					continue;
+						/* skip hard states if necessary */
+						if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(input,";HARD;"))
+							continue;
 
-				if(strstr(input,";CRITICAL;"))
-					add_archived_state(AS_SVC_CRITICAL,time_stamp);
-				else if(strstr(input,";WARNING;"))
-					add_archived_state(AS_SVC_WARNING,time_stamp);
-				else if(strstr(input,";UNKNOWN;"))
-					add_archived_state(AS_SVC_UNKNOWN,time_stamp);
-				else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
-					add_archived_state(AS_SVC_OK,time_stamp);
+						if(temp_entry->type==LOGENTRY_SERVICE_CRITICAL)
+							add_archived_state(AS_SVC_CRITICAL,temp_entry->timestamp);
+						else if(temp_entry->type==LOGENTRY_SERVICE_WARNING)
+							add_archived_state(AS_SVC_WARNING,temp_entry->timestamp);
+						else if(temp_entry->type==LOGENTRY_SERVICE_UNKNOWN)
+							add_archived_state(AS_SVC_UNKNOWN,temp_entry->timestamp);
+						else if(temp_entry->type==LOGENTRY_SERVICE_RECOVERY || temp_entry->type==LOGENTRY_SERVICE_OK)
+							add_archived_state(AS_SVC_OK,temp_entry->timestamp);
+					break;
 			        }
 		        }
 		
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);
 	        }
-
-	/* free memory and close the file */
-	free(input);
-	free(input2);
-	mmap_fclose(thefile);
-	
+		/* free memory */
+		free_log_entries();
+		free(input);
+	}	
 	return;
-        }
+}
 	
 
 
@@ -2352,7 +2359,7 @@ void convert_timeperiod_to_times(int type){
 	        }
 
 	return;
-        }
+}
 
 
 
@@ -2387,7 +2394,7 @@ void compute_report_times(void){
 	et->tm_isdst=-1;
 
 	t2=mktime(et);
-        }
+}
 
 
 
@@ -2404,7 +2411,7 @@ void draw_line(int x1,int y1,int x2,int y2,int color){
 	gdImageLine(histogram_image,x1,y1,x2,y2,gdStyled);
 
 	return;
-	}
+}
 
 
 /* draws a dashed line */
@@ -2425,5 +2432,5 @@ void draw_dashed_line(int x1,int y1,int x2,int y2,int color){
 	gdImageLine(histogram_image,x1,y1,x2,y2,gdStyled);
 
 	return;
-	}
+}
 

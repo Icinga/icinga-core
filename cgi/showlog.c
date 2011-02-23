@@ -29,6 +29,7 @@
 #include "../include/getcgi.h"
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
+#include "../include/readlogs.h"
 
 extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
@@ -40,6 +41,7 @@ extern int    log_rotation_method;
 extern int    enable_splunk_integration;
 extern int    showlog_initial_states;
 extern int    showlog_current_states;
+extern int    escape_html_tags;
 
 int display_type=DISPLAY_HOSTS;
 int show_all_hosts=TRUE;
@@ -47,7 +49,7 @@ int show_all_hostgroups=TRUE;
 int show_all_servicegroups=TRUE;
 
 char *host_name=NULL;
-char *host_filter=NULL;
+char *filter=NULL;
 char *hostgroup_name=NULL;
 char *servicegroup_name=NULL;
 char *service_desc=NULL;
@@ -62,7 +64,7 @@ int display_log(void);
 char log_file_to_use[MAX_FILENAME_LENGTH]="";
 int log_archive=0;
 
-int use_lifo=TRUE;
+int reverse=FALSE;
 
 extern int embedded;
 extern int display_header;
@@ -72,10 +74,15 @@ extern int daemon_check;
 
 int CGI_ID=SHOWLOG_CGI_ID;
 
+void display_logentries();
+
+
+char *search=NULL;
+
 int main(void){
 	int result=OK;
 	char temp_buffer[MAX_INPUT_BUFFER];
-
+	char temp_buffer2[MAX_INPUT_BUFFER];
 
 	/* get the CGI variables passed in the URL */
 	process_cgivars();
@@ -90,7 +97,7 @@ int main(void){
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
@@ -99,7 +106,7 @@ int main(void){
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
@@ -108,8 +115,7 @@ int main(void){
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
-                }
-
+	}
 
 	document_header(CGI_ID,TRUE);
 
@@ -132,9 +138,15 @@ int main(void){
 
 		/* middle column of top table - log file navigation options */
 		printf("<td align=center valign=top width=33%%>\n");
-		snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%s",SHOWLOG_CGI,(use_lifo==FALSE)?"oldestfirst&":"");
+		
+		if (search!=NULL) {
+			snprintf(temp_buffer2,sizeof(temp_buffer2)-1,"search=%s&",url_encode(search));
+			temp_buffer2[sizeof(temp_buffer2)-1]='\x0';
+		}
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%s%s",SHOWLOG_CGI,(reverse==TRUE)?"oldestfirst&":"",(search!=NULL)?temp_buffer2:"");
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		display_nav_table(temp_buffer,log_archive);
+		
 		printf("</td>\n");
 
 		/* right hand column of top row */
@@ -144,11 +156,15 @@ int main(void){
 		printf("<form method='GET' action='%s'>\n",SHOWLOG_CGI);
 		printf("<input type='hidden' name='archive' value='%d'>\n",log_archive);
 		printf("<tr>");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s> Older Entries First:</td>",(use_lifo==FALSE)?"checked":"");
+		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s> Older Entries First:</td>",(reverse==TRUE)?"checked":"");
 		printf("</tr>\n");
 		printf("<tr>");
 		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
 		printf("</tr>\n");
+
+		/* search box */
+		//escape_html_tags=TRUE;
+		//printf("<tr><td><br><input type='text' name='search' size='20' class='NavBarSearchItem' value='%s'>&nbsp;<input type='submit' value='find'></td></tr>",(search==NULL)?"":html_encode(search,TRUE));
 
 		/* display context-sensitive help */
 		printf("<tr>\n");
@@ -167,11 +183,16 @@ int main(void){
 		printf("</table>\n");
 		printf("</p>\n");
 
-	        }
+	}
 
+	/* check to see if the user is authorized to view the log file */
+	if(is_authorized_for_system_information(&current_authdata)==FALSE){
+		print_generic_error_message("It appears as though you do not have permission to view the log file...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
+		return ERROR;
+	}
 
 	/* display the contents of the log file */
-	display_log();
+	display_logentries();
 
 	document_footer(CGI_ID);
 
@@ -179,7 +200,7 @@ int main(void){
 	free_memory();
 	
 	return OK;
-        }
+}
 
 int process_cgivars(void){
 	char **variables;
@@ -208,10 +229,23 @@ int process_cgivars(void){
 				log_archive=0;
 		        }
 
+		else if(!strcmp(variables[x],"search")){
+			x++;
+			if(variables[x]==NULL){
+				error=TRUE;
+				break;
+			}
+
+			search=strdup(variables[x]);
+			strip_html_brackets(search);
+			
+			if(strlen(search)==0)
+				search=NULL;
+		}
+
 		/* we found the order argument */
-		else if(!strcmp(variables[x],"oldestfirst")){
-			use_lifo=FALSE;
-		        }
+		else if(!strcmp(variables[x],"oldestfirst"))
+			reverse=TRUE;
 
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -243,225 +277,189 @@ int process_cgivars(void){
 	free_cgivars(variables);
 
 	return error;
-        }
-
+}
 
 
 /* display the contents of the log file */
-int display_log(void){
-	char *input=NULL;
+void display_logentries() {
 	char image[MAX_INPUT_BUFFER];
 	char image_alt[MAX_INPUT_BUFFER];
-	time_t t;
-	char *temp_buffer=NULL;
-	char date_time[MAX_DATETIME_LENGTH];
-	int error=FALSE;
-	mmapfile *thefile=NULL;
 	char last_message_date[MAX_INPUT_BUFFER]="";
 	char current_message_date[MAX_INPUT_BUFFER]="";
+	char date_time[MAX_DATETIME_LENGTH];
 	char error_text[MAX_INPUT_BUFFER]="";
+	int status=0;
 	struct tm *time_ptr=NULL;
-
-
-	/* check to see if the user is authorized to view the log file */
-	if(is_authorized_for_system_information(&current_authdata)==FALSE){
-		print_generic_error_message("It appears as though you do not have permission to view the log file...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
-		return ERROR;
+	logentry *temp_entry=NULL;
+	
+	/*
+	if (search!=NULL) {
+		escape_html_tags=TRUE;
+		printf("<P><H2><DIV style='text-align:center'>Filter: \"%s\"</DIV></H2></P>",html_encode(search,TRUE));
+	}*/
+	
+	if (showlog_initial_states==FALSE) {
+		add_log_filter(LOGENTRY_SERVICE_INITIAL_STATE,LOGFILTER_EXCLUDE);
+		add_log_filter(LOGENTRY_HOST_INITIAL_STATE,LOGFILTER_EXCLUDE);
 	}
-
-	error=FALSE;
-
-	if(use_lifo==TRUE){
-		error=read_file_into_lifo(log_file_to_use);
-		if(error!=LIFO_OK){
-			if(error==LIFO_ERROR_MEMORY){
-				printf("<P><DIV CLASS='warningMessage'>Not enough memory to reverse log file - displaying log in natural order...</DIV></P>");
-				error=FALSE;
-			        }
-			else
-				error=TRUE;
-			use_lifo=FALSE;
-		        }
-		else
-			error=FALSE;
-	        }
-
-	if(use_lifo==FALSE){
-
-		if((thefile=mmap_fopen(log_file_to_use))==NULL){
-			snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
-			error_text[sizeof(error_text)-1]='\x0';
-			print_generic_error_message(error_text,NULL,0);
-			error=TRUE;
-		}
+	if (showlog_current_states==FALSE) {
+		add_log_filter(LOGENTRY_SERVICE_CURRENT_STATE,LOGFILTER_EXCLUDE);
+		add_log_filter(LOGENTRY_HOST_CURRENT_STATE,LOGFILTER_EXCLUDE);
 	}
+	
+	status=get_log_entries(log_file_to_use,search,reverse);
 
-	if(error==FALSE){
+	if (status==READLOG_ERROR_MEMORY) {
+		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could get!</DIV></P>");
+	}
+	if (status==READLOG_ERROR_NOFILE) {
+		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+	}
+	if (status==READLOG_ERROR_FILTER) {
+		print_generic_error_message("It seems like that reagular expressions don't like waht you searched for. Please change your search string.",NULL,0);
+	}
+	else if (status==READLOG_OK) {
 
 		printf("<P><DIV CLASS='logEntries'>\n");
-		
-		while(1){
 
-			free(input);
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 
-			if(use_lifo==TRUE){
-				if((input=pop_lifo())==NULL)
-					break;
-			        }
-			else if((input=mmap_fgets(thefile))==NULL)
-				break;
-
-			strip(input);
-
-			if ( showlog_initial_states==FALSE && (strstr(input,"INITIAL SERVICE STATE:") || strstr(input,"INITIAL HOST STATE:"))){
-				continue;
-			}
-
-			if ( showlog_current_states==FALSE && (strstr(input,"CURRENT SERVICE STATE:") || strstr(input,"CURRENT HOST STATE:"))){
-				continue;
-			}
-
-			if(strstr(input," starting...")){
+			if(temp_entry->type==LOGENTRY_STARTUP){
 				strcpy(image,START_ICON);
 				strcpy(image_alt,START_ICON_ALT);
-			        }
-			else if(strstr(input," shutting down...")){
+			}
+			else if(temp_entry->type==LOGENTRY_SHUTDOWN || temp_entry->type==LOGENTRY_BAILOUT){
 				strcpy(image,STOP_ICON);
 				strcpy(image_alt,STOP_ICON_ALT);
-			        }
-			else if(strstr(input,"Bailing out")){
-				strcpy(image,STOP_ICON);
-				strcpy(image_alt,STOP_ICON_ALT);
-			        }
-			else if(strstr(input," restarting...")){
+			}
+			else if(temp_entry->type==LOGENTRY_RESTART){
 				strcpy(image,RESTART_ICON);
 				strcpy(image_alt,RESTART_ICON_ALT);
-			        }
-			else if(strstr(input,"HOST ALERT:") && strstr(input,";DOWN;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_DOWN){
 				strcpy(image,HOST_DOWN_ICON);
 				strcpy(image_alt,HOST_DOWN_ICON_ALT);
-			        }
-			else if(strstr(input,"HOST ALERT:") && strstr(input,";UNREACHABLE;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_UNREACHABLE){
 				strcpy(image,HOST_UNREACHABLE_ICON);
 				strcpy(image_alt,HOST_UNREACHABLE_ICON_ALT);
-			        }
-			else if(strstr(input,"HOST ALERT:") && (strstr(input,";RECOVERY;") || strstr(input,";UP;"))){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_RECOVERY || temp_entry->type==LOGENTRY_HOST_UP){
 				strcpy(image,HOST_UP_ICON);
 				strcpy(image_alt,HOST_UP_ICON_ALT);
-			        }
-			else if(strstr(input,"HOST NOTIFICATION:")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_NOTIFICATION){
 				strcpy(image,HOST_NOTIFICATION_ICON);
 				strcpy(image_alt,HOST_NOTIFICATION_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE ALERT:") && strstr(input,";CRITICAL;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_CRITICAL){
 				strcpy(image,CRITICAL_ICON);
 				strcpy(image_alt,CRITICAL_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE ALERT:") && strstr(input,";WARNING;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_WARNING){
 				strcpy(image,WARNING_ICON);
 				strcpy(image_alt,WARNING_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE ALERT:") && strstr(input,";UNKNOWN;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_UNKNOWN){
 				strcpy(image,UNKNOWN_ICON);
 				strcpy(image_alt,UNKNOWN_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE ALERT:") && (strstr(input,";RECOVERY;") || strstr(input,";OK;"))){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_RECOVERY || temp_entry->type==LOGENTRY_SERVICE_OK){
 				strcpy(image,OK_ICON);
 				strcpy(image_alt,OK_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE NOTIFICATION:")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION){
 				strcpy(image,NOTIFICATION_ICON);
 				strcpy(image_alt,NOTIFICATION_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE EVENT HANDLER:")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_EVENT_HANDLER){
 				strcpy(image,SERVICE_EVENT_ICON);
 				strcpy(image_alt,SERVICE_EVENT_ICON_ALT);
-			        }
-			else if(strstr(input,"HOST EVENT HANDLER:")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_EVENT_HANDLER){
 				strcpy(image,HOST_EVENT_ICON);
 				strcpy(image_alt,HOST_EVENT_ICON_ALT);
-			        }
-			else if(strstr(input,"EXTERNAL COMMAND:")){
+			}
+			else if(temp_entry->type==LOGENTRY_EXTERNAL_COMMAND){
 				strcpy(image,EXTERNAL_COMMAND_ICON);
 				strcpy(image_alt,EXTERNAL_COMMAND_ICON_ALT);
-			        }
-			else if(strstr(input,"PASSIVE SERVICE CHECK:")){
+			}
+			else if(temp_entry->type==LOGENTRY_PASSIVE_SERVICE_CHECK){
 				strcpy(image,PASSIVE_ICON);
 				strcpy(image_alt,"Passive Service Check");
-			        }
-			else if(strstr(input,"PASSIVE HOST CHECK:")){
+			}
+			else if(temp_entry->type==LOGENTRY_PASSIVE_HOST_CHECK){
 				strcpy(image,PASSIVE_ICON);
 				strcpy(image_alt,"Passive Host Check");
-			        }
-			else if(strstr(input,"LOG ROTATION:")){
+			}
+			else if(temp_entry->type==LOGENTRY_LOG_ROTATION){
 				strcpy(image,LOG_ROTATION_ICON);
 				strcpy(image_alt,LOG_ROTATION_ICON_ALT);
-			        }
-			else if(strstr(input,"active mode...")){
+			}
+			else if(temp_entry->type==LOGENTRY_ACTIVE_MODE){
 				strcpy(image,ACTIVE_ICON);
 				strcpy(image_alt,ACTIVE_ICON_ALT);
-			        }
-			else if(strstr(input,"standby mode...")){
+			}
+			else if(temp_entry->type==LOGENTRY_STANDBY_MODE){
 				strcpy(image,STANDBY_ICON);
 				strcpy(image_alt,STANDBY_ICON_ALT);
-			        }
-			else if(strstr(input,"SERVICE FLAPPING ALERT:") && strstr(input,";STARTED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_STARTED){
 				strcpy(image,FLAPPING_ICON);
 				strcpy(image_alt,"Service started flapping");
-			        }
-			else if(strstr(input,"SERVICE FLAPPING ALERT:") && strstr(input,";STOPPED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_STOPPED){
 				strcpy(image,FLAPPING_ICON);
 				strcpy(image_alt,"Service stopped flapping");
-			        }
-			else if(strstr(input,"SERVICE FLAPPING ALERT:") && strstr(input,";DISABLED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_DISABLED){
 				strcpy(image,FLAPPING_ICON);
 				strcpy(image_alt,"Service flap detection disabled");
-			        }
-			else if(strstr(input,"HOST FLAPPING ALERT:") && strstr(input,";STARTED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_STARTED){
 				strcpy(image,FLAPPING_ICON);
 				strcpy(image_alt,"Host started flapping");
-			        }
-			else if(strstr(input,"HOST FLAPPING ALERT:") && strstr(input,";STOPPED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_STOPPED){
 				strcpy(image,FLAPPING_ICON);
 				strcpy(image_alt,"Host stopped flapping");
-			        }
-			else if(strstr(input,"HOST FLAPPING ALERT:") && strstr(input,";DISABLED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_DISABLED){
 				strcpy(image,FLAPPING_ICON);
 				strcpy(image_alt,"Host flap detection disabled");
-			        }
-			else if(strstr(input,"SERVICE DOWNTIME ALERT:") && strstr(input,";STARTED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STARTED){
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Service entered a period of scheduled downtime");
-			        }
-			else if(strstr(input,"SERVICE DOWNTIME ALERT:") && strstr(input,";STOPPED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STOPPED){
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Service exited a period of scheduled downtime");
-			        }
-			else if(strstr(input,"SERVICE DOWNTIME ALERT:") && strstr(input,";CANCELLED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_CANCELLED){
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Service scheduled downtime has been cancelled");
-			        }
-			else if(strstr(input,"HOST DOWNTIME ALERT:") && strstr(input,";STARTED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STARTED){
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Host entered a period of scheduled downtime");
-			        }
-			else if(strstr(input,"HOST DOWNTIME ALERT:") && strstr(input,";STOPPED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STOPPED){
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Host exited a period of scheduled downtime");
-			        }
-			else if(strstr(input,"HOST DOWNTIME ALERT:") && strstr(input,";CANCELLED;")){
+			}
+			else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_CANCELLED){
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Host scheduled downtime has been cancelled");
-			        }
+			}
 			else{
 				strcpy(image,INFO_ICON);
 				strcpy(image_alt,INFO_ICON_ALT);
-			        }
+			}
 
-			temp_buffer=strtok(input,"]");
-			t=(temp_buffer==NULL)?0L:strtoul(temp_buffer+1,NULL,10);
-
-			time_ptr=localtime(&t);
+			time_ptr=localtime(&temp_entry->timestamp);
 			strftime(current_message_date,sizeof(current_message_date),"%B %d, %Y %H:00\n",time_ptr);
 			current_message_date[sizeof(current_message_date)-1]='\x0';
 
@@ -477,35 +475,28 @@ int display_log(void){
 				printf("<BR CLEAR='all'><DIV CLASS='logEntries'>\n");
 				strncpy(last_message_date,current_message_date,sizeof(last_message_date));
 				last_message_date[sizeof(last_message_date)-1]='\x0';
-				}
+			}
 
-			get_time_string(&t,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
+			get_time_string(&temp_entry->timestamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			strip(date_time);
-
-			temp_buffer=strtok(NULL,"\n");
 
 			if(display_frills==TRUE)
 				printf("<img align='left' src='%s%s' alt='%s' title='%s'>",url_images_path,image,image_alt,image_alt);
-			printf("[%s] %s",date_time,(temp_buffer==NULL)?"":html_encode(temp_buffer,FALSE));
+			printf("[%s] %s",date_time,(temp_entry->entry_text==NULL)?"":html_encode(temp_entry->entry_text,FALSE));
 			if(enable_splunk_integration==TRUE){
 				printf("&nbsp;&nbsp;&nbsp;");
-				display_splunk_generic_url(temp_buffer,2);
-				}
+				display_splunk_generic_url(temp_entry->entry_text,2);
+			}
 			printf("<br clear='all'>\n");
-		        }
 
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);
+		}
+				
 		printf("</DIV></P>\n");
 		printf("<HR>\n");
 
-		free(input);
-
-		if(use_lifo==FALSE)
-			mmap_fclose(thefile);
-	        }
-
-	if(use_lifo==TRUE)
-		free_lifo_memory();
-
-	return OK;
-        }
-
+		free_log_entries();
+	}
+	return;
+}
