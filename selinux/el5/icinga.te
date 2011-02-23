@@ -54,8 +54,14 @@ allow icinga_t icinga_var_run_t:file create_file_perms;
 allow icinga_t icinga_var_run_t:dir rw_dir_perms;
 files_pid_filetrans(icinga_t,icinga_var_run_t,file)
 
+allow icinga_t icinga_spool_t:dir read;
+allow icinga_t icinga_spool_t:dir write;
+allow icinga_t icinga_spool_t:dir add_name;
+allow icinga_t icinga_spool_t:file create;
 allow icinga_t icinga_spool_t:dir search_dir_perms;
 allow icinga_t icinga_spool_t:fifo_file rw_file_perms;
+allow icinga_t var_spool_t:dir search;
+
 
 kernel_read_system_state(icinga_t)
 kernel_read_kernel_sysctls(icinga_t)
