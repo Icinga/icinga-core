@@ -1294,11 +1294,11 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 
         if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext ok\n");
-                idi->dbinfo.dbversion=OCI_GetString(idi->dbinfo.oci_resultset, 1);
+                idi->dbinfo.dbversion=strdup(OCI_GetString(idi->dbinfo.oci_resultset, 1));
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", idi->dbinfo.dbversion);
         } else {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext not ok\n");
         }
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", dbversion);
 
 
 #endif
