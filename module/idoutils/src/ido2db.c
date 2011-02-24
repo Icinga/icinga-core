@@ -37,6 +37,18 @@ extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 extern int ido2db_check_dbd_driver(void);
 #endif
 
+/* use global dynamic buffer for mutex locks */
+ido_dbuf dbuf;
+static pthread_mutex_t ido2db_dbuf_lock;
+
+static void *ido2db_thread_cleanup_exit_handler(void *);
+static void *ido2db_thread_worker_exit_handler(void *);
+
+/*
+pthread_mutex_lock(&ido2db_dbuf_lock);
+pthread_mutex_unlock(&ido2db_dbuf_lock);
+*/
+
 #ifdef HAVE_SSL
 SSL_METHOD *meth;
 SSL_CTX *ctx;
@@ -63,7 +75,7 @@ int ido2db_run_foreground=IDO_FALSE;
 
 ido2db_dbconfig ido2db_db_settings;
 ido2db_idi thread_idi;
-pthread_t thread_pool[1];
+pthread_t thread_pool[IDO2DB_NR_OF_THREADS];
 
 time_t ido2db_db_last_checkin_time=0L;
 
@@ -81,7 +93,6 @@ char *sigs[35]={"EXIT","HUP","INT","QUIT","ILL","TRAP","ABRT","BUS","FPE","KILL"
 int ido2db_open_debug_log(void);
 int ido2db_close_debug_log(void);
 
-static void *ido2db_thread_cleanup_exit_handler(void *);
 
 int dummy;	/* reduce compiler warnings */
 
@@ -987,7 +998,8 @@ void ido2db_child_sighandler(int sig){
 		ido2db_free_program_memory();
 	}
 
-	ido2db_kill_threads();
+	/* terminate threads */
+	ido2db_terminate_threads();
 
 	_exit(0);
 
@@ -1162,7 +1174,6 @@ int ido2db_wait_for_connections(void){
 
 
 int ido2db_handle_client_connection(int sd){
-	ido_dbuf dbuf;
 	int dbuf_chunk=2048;
 	ido2db_idi idi;
 	char buf[512];
@@ -1170,6 +1181,9 @@ int ido2db_handle_client_connection(int sd){
 	int error=IDO_FALSE;
 
 	int pthread_ret=0;
+	sigset_t newmask;
+	pthread_attr_t attr;
+
 #ifdef HAVE_SSL
 	SSL *ssl=NULL;
 #endif
@@ -1191,15 +1205,34 @@ int ido2db_handle_client_connection(int sd){
 	signal(SIGSEGV,ido2db_child_sighandler);
 	signal(SIGFPE,ido2db_child_sighandler);
 
+	/* new thread should block all signals */
+	sigfillset(&newmask);
+	pthread_sigmask(SIG_BLOCK,&newmask,NULL);
+
+	/* set stack size */
+	pthread_attr_init(&attr);
+	if(pthread_attr_setstacksize(&attr, IDO2DB_DEFAULT_THREAD_STACK_SIZE)!=0)
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() pthread_attr_setstacksize with %lu error\n", IDO2DB_DEFAULT_THREAD_STACK_SIZE);
+
 	/* create cleanup thread */
-	if ((pthread_ret = pthread_create(&thread_pool[0], NULL, ido2db_thread_cleanup, &idi)) != 0) {
+	if ((pthread_ret = pthread_create(&thread_pool[IDO2DB_THREAD_POOL_CLEANER], &attr, ido2db_thread_cleanup, &idi)) != 0) {
 		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
+        /* create worker thread */
+        if ((pthread_ret = pthread_create(&thread_pool[IDO2DB_THREAD_POOL_WORKER], &attr, ido2db_thread_worker, &idi)) != 0) {
+                syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
+
+	/* main thread should unblock all signals */
+	pthread_sigmask(SIG_UNBLOCK,&newmask,NULL);
+	pthread_attr_destroy(&attr);
+
 	/* initialize input data information */
 	ido2db_idi_init(&idi);
-
 
 	/* initialize dynamic buffer (2KB chunk size) */
 	ido_dbuf_init(&dbuf,dbuf_chunk);
@@ -1215,9 +1248,9 @@ int ido2db_handle_client_connection(int sd){
 			syslog(LOG_USER | LOG_INFO,"Error: database connection failed, forced client disconnect...\n");
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() idi.dbinfo.connected is '%d'\n", idi.dbinfo.connected);
 
-			/* kill sub threads */
-			pthread_kill(thread_pool[0], SIGINT);
-			pthread_cancel(thread_pool[0]);
+			/* terminate threads */
+			terminate_worker_thread();
+			terminate_cleanup_thread();
 
 		        /* free memory allocated to dynamic buffer */
 			ido_dbuf_free(&dbuf);
@@ -1307,10 +1340,16 @@ int ido2db_handle_client_connection(int sd){
 
 		/* append data we just read to dynamic buffer */
 		buf[result]='\x0';
+		/* 2011-02-23 MF: lock dynamic buffer with a mutex when writing */
+		pthread_mutex_lock(&ido2db_dbuf_lock);
 		ido_dbuf_strcat(&dbuf,buf);
+		pthread_mutex_unlock(&ido2db_dbuf_lock);
 
 		/* check for completed lines of input */
-		ido2db_check_for_client_input(&idi,&dbuf, thread_pool);
+		/* 2011-02-23 MF: only do that in a worker thread */
+		/*
+		ido2db_check_for_client_input(&idi);
+		*/
 
 		/* should we disconnect the client? */
 		if(idi.disconnect_client==IDO_TRUE){
@@ -1326,14 +1365,9 @@ int ido2db_handle_client_connection(int sd){
 	printf("BYTES: %lu, LINES: %lu\n",idi.bytes_processed,idi.lines_processed);
 #endif
 
-	/* Kill all sub threads */
-	/* Experimental and may be dangerous... */
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() idi.disconnect_client is '%d'\n", idi.disconnect_client);
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() Cancel cleanup thread to terminate\n");
-	// pthread_join(thread_pool[0], NULL);
-	pthread_kill(thread_pool[0], SIGINT);
-	pthread_cancel(thread_pool[0]);
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() cleanup thread terminated\n");
+	/* terminate threads */
+	terminate_worker_thread();
+	terminate_cleanup_thread();
 
 	/* free memory allocated to dynamic buffer */
 	ido_dbuf_free(&dbuf);
@@ -1400,67 +1434,82 @@ int ido2db_idi_init(ido2db_idi *idi){
 
 
 /* checks for single lines of input from a client connection */
-int ido2db_check_for_client_input(ido2db_idi *idi,ido_dbuf *dbuf, pthread_t *thread_pool){
+/* 2011-02-23 MF: called in worker thread */
+int ido2db_check_for_client_input(ido2db_idi *idi){
 	char *buf=NULL;
 	register int x;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() start\n");
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() start\n");
 
-	if(dbuf==NULL)
+/*	if(&dbuf==NULL)
+		return IDO_OK;*/
+	if(dbuf.buf==NULL)
 		return IDO_OK;
-	if(dbuf->buf==NULL)
-		return IDO_OK;
+	/* check if buffer full? bail out and tell main to disconnect the client! FIXME */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() dbuf.size=%lu\n", dbuf.used_size);
+
+	pthread_mutex_lock(&ido2db_dbuf_lock);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() ido2db_dbuf_lock start\n");
 
 #ifdef DEBUG_IDO2DB2
-	printf("RAWBUF: %s\n",dbuf->buf);
+	printf("RAWBUF: %s\n",dbuf.buf);
 	printf("  USED1: %lu, BYTES: %lu, LINES: %lu\n",dbuf->used_size,idi->bytes_processed,idi->lines_processed);
 #endif
 
 	/* search for complete lines of input */
-	for(x=0;dbuf->buf[x]!='\x0';x++){
+	for(x=0;dbuf.buf[x]!='\x0';x++){
 
 		/* we found the end of a line */
-		if(dbuf->buf[x]=='\n'){
+		if(dbuf.buf[x]=='\n'){
 
 #ifdef DEBUG_IDO2DB2
 			printf("BUF[%d]='\\n'\n",x);
 #endif
 
 			/* handle this line of input */
-			dbuf->buf[x]='\x0';
-			if((buf=strdup(dbuf->buf))){
-				ido2db_handle_client_input(idi,buf, thread_pool);
+			dbuf.buf[x]='\x0';
+
+			if((buf=strdup(dbuf.buf))){
+
+				ido2db_handle_client_input(idi,buf);
+
 				free(buf);
 				buf=NULL;
 				idi->lines_processed++;
 				idi->bytes_processed+=(x+1);
-			        }
+		        }
 
 			/* shift data back to front of buffer and adjust counters */
-			memmove((void *)&dbuf->buf[0],(void *)&dbuf->buf[x+1],(size_t)((int)dbuf->used_size-x-1));
-			dbuf->used_size-=(x+1);
-			dbuf->buf[dbuf->used_size]='\x0';
+			memmove((void *)&dbuf.buf[0],(void *)&dbuf.buf[x+1],(size_t)((int)dbuf.used_size-x-1));
+			dbuf.used_size-=(x+1);
+			dbuf.buf[dbuf.used_size]='\x0';
 			x=-1;
 #ifdef DEBUG_IDO2DB2
-			printf("  USED2: %lu, BYTES: %lu, LINES: %lu\n",dbuf->used_size,idi->bytes_processed,idi->lines_processed);
+			printf("  USED2: %lu, BYTES: %lu, LINES: %lu\n",dbuf.used_size,idi->bytes_processed,idi->lines_processed);
 #endif
-		        }
-	        }
+		}
+	}
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() end\n");
+	pthread_mutex_unlock(&ido2db_dbuf_lock);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() ido2db_dbuf_lock end\n");
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() end\n");
+
 	return IDO_OK;
-        }
+}
 
 
 /* handles a single line of input from a client connection */
-int ido2db_handle_client_input(ido2db_idi *idi, char *buf, pthread_t *thread_pool){
+int ido2db_handle_client_input(ido2db_idi *idi, char *buf){
 	char *var=NULL;
 	char *val=NULL;
 	unsigned long data_type_long=0L;
 	int data_type=IDO_DATA_NONE;
 	int input_type=IDO2DB_INPUT_DATA_NONE;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input(instance_name=%s) start\n", idi->instance_name);
 
 #ifdef DEBUG_IDO2DB2
 	printf("HANDLING: '%s'\n",buf);
@@ -1476,6 +1525,8 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf, pthread_t *thread_poo
 	/* skip empty lines */
 	if(buf[0]=='\x0')
 		return IDO_OK;
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input() input_section\n");
 
 	switch(idi->current_input_section){
 
@@ -2554,6 +2605,77 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...){
 	return IDO_OK;
 	}
 
+
+/********************************************************************
+ *
+ * working on dbuf - this is the function for the buffer reading thread
+ *
+ ********************************************************************/
+
+void * ido2db_thread_worker(void *data) {
+
+        ido2db_idi *idi = (ido2db_idi*) data;
+
+        int old_thread_state;
+
+        struct timespec delay;
+        delay.tv_sec = 5;
+        delay.tv_nsec = 500000;
+	nanosleep(&delay, NULL);
+        delay.tv_sec = 0;
+
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_worker() start\n");
+
+	/* specify cleanup routine */
+        pthread_cleanup_push((void *) &ido2db_thread_worker_exit_handler, NULL);
+
+	/* set cancellation info */
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+
+        while(1){
+
+                /* should we shutdown? */
+                pthread_testcancel();
+
+		/* sleep a bit */
+		nanosleep(&delay, NULL);
+
+                if(idi->disconnect_client==IDO_TRUE){
+                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_worker(): origin idi said we should disconnect the client\n");
+                        break;
+                }
+
+		/* check for client input */
+		ido2db_check_for_client_input(idi);
+
+		/* sleep a bit */
+		nanosleep(&delay, NULL);
+
+		/* should we shutdown? */
+		pthread_testcancel();
+        }
+
+        pthread_cleanup_pop(0);
+
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_worker() end\n");
+
+	pthread_exit((void *) pthread_self());
+}
+
+/* ******************************************************************
+ *
+ * exit_handler_mem is called as thread canceling
+ *
+ * ******************************************************************/
+
+static void *ido2db_thread_worker_exit_handler(void * arg) {
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_worker() cleanup_exit_handler...\n");
+        return 0;
+
+}
+
+
 /********************************************************************
  *
  * housekeeping - this is the function for the db trimming thread
@@ -2574,16 +2696,20 @@ void * ido2db_thread_cleanup(void *data) {
 	//delay.tv_sec = 60;
 	/* allowed to be set in config */
 	delay.tv_sec = ido2db_db_settings.housekeeping_thread_startup_delay;
+
+	/* the minimum is the default, otherwise overwrite */
+	if(delay.tv_sec<DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY)
+		delay.tv_sec=DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY;
+
 	nanosleep(&delay, NULL);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() start\n");
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread idi\n");
 
 	/* initialize input data information */
 	ido2db_idi_init(&thread_idi);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() initialize thread db connection\n");
+
 	/* initialize database connection */
 	ido2db_db_init(&thread_idi);
 
@@ -2602,17 +2728,18 @@ void * ido2db_thread_cleanup(void *data) {
 		return (void*)IDO_ERROR;
 	}
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push()\n");
+	/* specify cleanup routine */
 	pthread_cleanup_push((void *) &ido2db_thread_cleanup_exit_handler, NULL);
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() pthread_cleanup push() end \n");
 
         delay.tv_sec = 0;
         delay.tv_nsec = 500;
 
+	/* keep on looping for an instance name from main thread */
 	while(idi->instance_name==NULL) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() nanosleeping cause missing instance_name...\n");
 		nanosleep(&delay, NULL);
 	}
+
 
 	/* copy needed idi information */
 	thread_idi.instance_name = idi->instance_name;
@@ -2622,8 +2749,8 @@ void * ido2db_thread_cleanup(void *data) {
 	thread_idi.connect_source = idi->connect_source;
 	thread_idi.connect_type = idi->connect_type;
 
-
 	delay.tv_sec = 5;
+
 	/* save connection info to DB */
 	while(ido2db_thread_db_hello(&thread_idi) == IDO_ERROR) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() no instance found, sleeping...\n");
@@ -2631,28 +2758,22 @@ void * ido2db_thread_cleanup(void *data) {
 	}
 
 	while(1){
+
+		/* should we shutdown? */
+		pthread_testcancel();
+
 		if(idi->disconnect_client==IDO_TRUE){
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup(): origin idi said we should disconnect the client\n");
 			break;
-		}
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() working...\n");
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() idi is: '%d'\n", idi->disconnect_client);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() has instance name '%s'...\n", thread_idi.instance_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() calling ido2db_db_perform_maintenance...\n");
-
-		/* Set this thread temporary to CANCEL_DISABLE to prevent interuption */
-		if(pthread_setcancelstate( PTHREAD_CANCEL_DISABLE, &old_thread_state) != 0) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 1, "ido2db_thread_cleanup() Problem during pthread_setcancelstate() LOCK Cancel\n");
 		}
 
 		/* Perfom DB Maintenance */
 		ido2db_db_perform_maintenance(&thread_idi);
 
-		/* Reset this thread cancelstate */
-		if(pthread_setcancelstate( old_thread_state, NULL) != 0) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 1, "ido2db_thread_cleanup() Problem during pthread_setcancelstate() UNLOCK Cancel\n");
-		}
-		sleep(idi->dbinfo.trim_db_interval+1);
+		/* should we shutdown? */
+		pthread_testcancel();
+
+		sleep(thread_idi.dbinfo.trim_db_interval+1);
 	}
 
 	/* gracefully back out of current operation... */
@@ -2666,9 +2787,10 @@ void * ido2db_thread_cleanup(void *data) {
         ido2db_free_input_memory(&thread_idi);
 	ido2db_free_connection_memory(&thread_idi);
 
-	pthread_cleanup_pop(1);
+	pthread_cleanup_pop(0);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_cleanup() end\n");
+
 	pthread_exit((void *) pthread_self());
 }
 
@@ -2684,15 +2806,48 @@ static void *ido2db_thread_cleanup_exit_handler(void * arg) {
 
 }
 
-int ido2db_kill_threads(void){
+int ido2db_terminate_threads(void){
 
+	int result;
+
+	/* from cleaner thread */
         ido2db_db_disconnect(&thread_idi);
         ido2db_db_deinit(&thread_idi);
 
-	/* kill sub threads */
-	pthread_kill(thread_pool[0], SIGINT);
-	pthread_cancel(thread_pool[0]);
+	/* terminate each thread on its own */
+	result=terminate_worker_thread();
+	result=terminate_cleanup_thread();
 
 	return IDO_OK;
 }
+
+int terminate_worker_thread(void){
+
+        int result;
+
+        result=pthread_cancel(thread_pool[IDO2DB_THREAD_POOL_WORKER]);
+        /* wait for the worker thread to exit */
+        if(result==0){
+                result=pthread_join(thread_pool[IDO2DB_THREAD_POOL_WORKER],NULL);
+        } /* else only clean memory */
+
+        return IDO_OK;
+
+}
+
+int terminate_cleanup_thread(void){
+
+        int result;
+
+        result=pthread_cancel(thread_pool[IDO2DB_THREAD_POOL_CLEANER]);
+        /* wait for the cleaner thread to exit */
+        if(result==0){
+                result=pthread_join(thread_pool[IDO2DB_THREAD_POOL_CLEANER],NULL);
+        } /* else only clean memory */
+
+        return IDO_OK;
+
+}
+
+
 

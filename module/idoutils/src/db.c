@@ -1376,7 +1376,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
 		/* disconnect from database */
 		ido2db_db_disconnect(idi);
@@ -1424,7 +1424,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
                 /* disconnect from database */
                 ido2db_db_disconnect(idi);
@@ -1790,7 +1790,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         else {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
                 /* disconnect from database */
                 ido2db_db_disconnect(idi);
@@ -1831,7 +1831,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
                 /* disconnect from database */
                 ido2db_db_disconnect(idi);
@@ -2778,7 +2778,7 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_perform_maintenance() start\n");
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_perform_maintenance() max_logentries_age=%lu, max_ack_age=%lu\n", idi->dbinfo.max_logentries_age, idi->dbinfo.max_logentries_age);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_perform_maintenance() max_logentries_age=%lu, max_ack_age=%lu\n", idi->dbinfo.max_logentries_age, idi->dbinfo.max_logentries_age);
 
 	/* get the current time */
 	time(&current_time);
