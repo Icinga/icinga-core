@@ -5502,6 +5502,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	comment *temp_comment=NULL;
 	char *comment_entry_type="";
 	char comment_data[MAX_INPUT_BUFFER]="";
+	char entry_time[MAX_DATETIME_LENGTH];
 	int len,output_len;
 	int x,y;
 	char *escaped_output_string=NULL;
@@ -5516,8 +5517,8 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
 	/* but who wouldn't like to have these fancy tooltips ;-) */
 	if(TRUE){
-		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%%>");
-		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Comment</td></tr>");
+		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
+		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Comment</td></tr>");
 		for(temp_comment=get_first_comment_by_host(host_name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(host_name,temp_comment)){
 			if((svc_description==NULL && temp_comment->comment_type==HOST_COMMENT) || \
 			   (svc_description!=NULL && temp_comment->comment_type==SERVICE_COMMENT && !strcmp(temp_comment->service_description,svc_description))) {
@@ -5550,6 +5551,8 @@ void print_comment_icon(char *host_name, char *svc_description) {
 						if((char)comment_data[x]==(char)'\x0'){
 							escaped_output_string[y]='\x0';
 							break;
+						} else if((char)comment_data[x]==(char)'\n' || (char)comment_data[x]==(char)'\r') {
+							escaped_output_string[y]=' ';
 						} else if((char)comment_data[x]==(char)'\'') {
 							escaped_output_string[y]='\x0';
 							if((int)strlen(escaped_output_string)<(output_len-2)){
@@ -5577,11 +5580,14 @@ void print_comment_icon(char *host_name, char *svc_description) {
 					strcpy(escaped_output_string,comment_data);
 				}
 
+				/* get entry time */
+				get_time_string(&temp_comment->entry_time,entry_time,(int)sizeof(entry_time),SHORT_DATE_TIME);
+
 				/* in the tooltips we have to escape all characters */
 				saved_escape_html_tags_var=escape_html_tags;
 				escape_html_tags=TRUE;
 
-				printf("<tr><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,html_encode(escaped_output_string,TRUE));
+				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,entry_time,html_encode(escaped_output_string,TRUE));
 
 				escape_html_tags=saved_escape_html_tags_var;
 

@@ -7,9 +7,12 @@ Icinga 1.3.x Change Log
 ENHANCEMENTS
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
 * classic ui: Adding some more icons to showlog.cgi #1239
+* classic ui: adding entry time of comments in tooltip's in status.cgi #1244
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
+
+* classic ui: Fixing tooltip's in status.cgi, not showing messages with carriage return #1244
 
 
 1.3.0 - 16/02/2011
