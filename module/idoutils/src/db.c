@@ -1204,7 +1204,7 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 
                 if (idi->dbinfo.dbi_result!=NULL) {
                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                idi->dbinfo.dbversion = dbi_result_get_string(idi->dbinfo.dbi_result, "version");
+                                idi->dbinfo.dbversion = strdup(dbi_result_get_string(idi->dbinfo.dbi_result, "version"));
                         }
                 }
         }

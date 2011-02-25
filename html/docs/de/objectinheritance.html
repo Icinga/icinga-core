@@ -4,7 +4,7 @@
 <title>Objektvererbung</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="cgiincludes.html" title="Angepasste CGI-Kopf- und Fußzeilen">
 <link rel="next" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">
@@ -399,6 +399,57 @@
         ...
         }</pre>
 
+    <p><a name="objectinheritance-important_values"></a><span class="bold"><strong>Wichtige Werte</strong></span> (important values)</p>
+
+    <p>Service-Vorlagen können eine spezielle Regel benutzen, die ihrem check_command-Wert Vorrang gibt. Wenn das check_command mit einem
+    Ausrufungszeichen (!) beginnt, dann wird das check_command der Vorlage als wichtig markiert und wird statt des im Service definierten
+    check_command (dies ist der CSS-Syntax nachempfunden, die ! als wichtiges Attribut benutzt).</p>
+
+    <p>Warum ist das nützlich? Es ist hauptsächlich dann sinnvoll, wenn ein unterschiedliches check_command für verteilte Systeme gesetzt wird.
+    Sie wollen vielleicht einen Frische-Schwellwert und ein check_command setzen, der den Service in einen fehlerhaften Status versetzt, aber
+    das funktioniert nicht mit dem normalen Vorlagensystem. Dieses "wichtig"-Kennzeichen erlaubt es, das angepasste check_command zu schreiben,
+    aber eine allgemeine verteilte Vorlage zu benutzen, die das check_command überlagert, wenn es auf dem zentralen Icinga-Server
+    eingesetzt wird.</p>
+
+    <p>Zum Beispiel:</p>
+
+    <pre class="screen"># On master
+define service {
+        name                   service-distributed
+        register               0
+        active_checks_enabled  0
+        check_freshness        1
+        check_command          !set_to_stale
+        }
+# On slave
+define service {
+        name                   service-distributed
+        register               0
+        active_checks_enabled  1
+        }
+# Service definition, used by master and slave
+define service {
+        host_name              host1
+        service_description    serviceA
+        check_command          check_http...
+        use                    service-distributed
+        ...
+        }</pre>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Bitte beachten Sie, dass nur eine Vererbungsebene bei diesen wichtigen Werten möglich ist. Das bedeutet, dass Sie nicht das
+    check_command von einer Vorlage zu einer weiteren und von dort zum Service vererben können.
+    </p>
+<pre class="programlisting"> Template1 =&gt; Service1                &lt;== funktioniert
+ Template1 =&gt; Template2 =&gt; Service1   &lt;== funktioniert NICHT</pre>
+</td></tr>
+</table></div>
+
   <p><a name="objectinheritance-multiple_templates"></a><span class="bold"><strong>Mehrere Vererbungsquellen</strong></span></p>
 
   <p>Bisher haben alle Beispiele Objektdefinitionen gezeigt, die Variablen/Werte von einer einzelnen Quelle erben. Sie können
@@ -486,12 +537,12 @@
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id2593730"></a>
-  <a class="indexterm" name="id2593746"></a>
-  <a class="indexterm" name="id2593772"></a>
-  <a class="indexterm" name="id2593780"></a>
-  <a class="indexterm" name="id2593788"></a>
-  <a class="indexterm" name="id2593798"></a>
+  <a class="indexterm" name="id5657576"></a>
+  <a class="indexterm" name="id5657593"></a>
+  <a class="indexterm" name="id5657599"></a>
+  <a class="indexterm" name="id5657607"></a>
+  <a class="indexterm" name="id5657616"></a>
+  <a class="indexterm" name="id5657626"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -510,6 +561,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

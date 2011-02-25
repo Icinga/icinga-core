@@ -4,10 +4,10 @@
 <title>Installation of the Icinga Reporting with JasperServer</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
 <link rel="prev" href="int-mklivestatus.html" title="MKLiveStatus Integration">
-<link rel="next" href="ch010.html" title="Chapter 10. Icinga Addons">
+<link rel="next" href="ch10.html" title="Chapter 10. Additional software">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -18,7 +18,7 @@
 <td width="20%" align="left">
 <a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 9. Integration With Other Software</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch010.html">Next</a>
+<td width="20%" align="right"> <a accesskey="n" href="ch10.html">Next</a>
 </td>
 </tr>
 </table>
@@ -142,13 +142,6 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Configure quartz the scheduler</strong></span></p>
-
-  <p>The reporting distribution is done via quartz scheduler. To configure the sender mail and your local gateways please edit the
-  following file &lt;tomcat_home&gt;/webapps/jasperserver/WEB-INF/js.quartz.properties. Please restart the tomcat server to activate the new
-  settings. </p>
-<pre class="programlisting">service tomcat6 restart or /etc/init.d/tomcat restart</pre>
-
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
@@ -158,6 +151,19 @@
     <p>The export-/import-process is explained in detail at chapter 5.12 of the JasperServer CE-Install-Guide</p>
   </td></tr>
 </table></div>
+
+  <p><span class="bold"><strong>Install the JAVA classes for SLA- Reports</strong></span></p>
+
+  <p>Generating automatic reports for last week, last month or last year requires to calc the dates automatically for the specific
+  reports. To use that feature you have to install the icinga-reporting.jar archive into the Jasper lib directory. It should be in the
+  WEB-INF folder of your installation. Please don't forget to restart your jasper-server after installation.</p>
+
+  <p><span class="bold"><strong>Configure quartz the scheduler</strong></span></p>
+
+  <p>The reporting distribution is done via quartz scheduler. To configure the sender mail and your local gateways please edit the
+  following file &lt;tomcat_home&gt;/webapps/jasperserver/WEB-INF/js.quartz.properties. Please restart the tomcat server to activate the new
+  settings. </p>
+<pre class="programlisting">service tomcat6 restart or /etc/init.d/tomcat restart</pre>
 
   <p><span class="bold"><strong>Configure your database connection</strong></span></p>
 
@@ -173,6 +179,42 @@
 
   <p>- All reports in our package point to this datasource and should be able to run.</p>
 
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Remember to clear the searchfield and set the 4 dropdowns to following posistions to find the datasource:</p>
+  </td></tr>
+</table></div>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>"Changed by anyone" (already mentioned above)</p>
+    </li>
+<li class="listitem">
+      <p>"All"</p>
+    </li>
+<li class="listitem">
+      <p>"Any time"</p>
+    </li>
+<li class="listitem">
+      <p>"Any schedule"</p>
+    </li>
+</ul></div>
+
+  <p>After this is done, hit search to "apply" the filters. Now you should be able to see the data sources. Default for dropdown filter
+  #2 is Visualization type, which hides data sources.</p>
+
+  <p><span class="bold"><strong>Different table prefix</strong></span></p>
+
+  <p>If you changed your table prefix during installation you can replace the existing prefixes using the following script.</p>
+
+  <pre class="programlisting">grep -l -r " icinga_" .  | xargs sed -i.BAK -e 's/ icinga_/ /g'
+grep -l -r "icinga_" . | xargs sed -i.BAK -e 's/^icinga_//g'
+find . -iname "*BAK" -exec rm -f {} \;</pre>
+
   <p><span class="bold"><strong>Known Bugs:</strong></span> If you don't see any graph labels in a pdf export please switch from OpenJDK to
   SUNJava.</p>
 
@@ -185,7 +227,7 @@
 <tbody><tr>
 <td>
 <div class="figure">
-<a name="id4337323"></a><p class="title"><b>Figure 9.1. Icinga Reporting in Icinga Web</b></p>
+<a name="id5087972"></a><p class="title"><b>Figure 9.1. Icinga Reporting in Icinga Web</b></p>
 <div class="figure-contents">
               
 
@@ -196,7 +238,7 @@
 </td>
 <td>
 <div class="figure">
-<a name="id4337341"></a><p class="title"><b>Figure 9.2. Icinga Reporting TOP10 in Icinga Web</b></p>
+<a name="id5087974"></a><p class="title"><b>Figure 9.2. Icinga Reporting TOP10 in Icinga Web</b></p>
 <div class="figure-contents">
               
 
@@ -208,17 +250,22 @@
 </tr></tbody>
 </table>
   </div>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Integration to Icinga Web not implemented yet!</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Integration to Icinga Web not implemented yet!</p>
+  </td></tr>
 </table></div>
-<p>Feel free to edit our sample reports with iReport and change these to your needs :)</p>
-<p>That's all, you're done!</p>
 
-  <a class="indexterm" name="id4337395"></a>
+  <p>Feel free to edit our sample reports with iReport and change these to your needs :)</p>
+
+  <p>That's all, you're done!</p>
+
+  <a class="indexterm" name="id5088045"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -227,16 +274,16 @@
 <td width="40%" align="left">
 <a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch010.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="ch10.html">Next</a>
 </td>
 </tr>
 <tr>
 <td width="40%" align="left" valign="top">MKLiveStatus Integration </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Chapter 10. Icinga Addons</td>
+<td width="40%" align="right" valign="top"> Chapter 10. Additional software</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

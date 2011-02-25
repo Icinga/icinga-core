@@ -4,7 +4,7 @@
 <title>Optionen CGI-Konfigurationsdatei</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="customobjectvars.html" title="Maßgeschneiderte Objektvariablen">
 <link rel="next" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">
@@ -27,44 +27,45 @@
 <div class="section" title="Optionen CGI-Konfigurationsdatei">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="configcgi"></a>Optionen CGI-Konfigurationsdatei</h2></div></div></div>
-    
+  
 
-    <p><span class="bold"><strong>Anmerkungen</strong></span></p>
+  <p><span class="bold"><strong>Anmerkungen</strong></span></p>
 
-    <p>Wenn Sie Konfigurationsdateien erstellen oder anpassen, beachten Sie bitte folgendes:</p>
+  <p>Wenn Sie Konfigurationsdateien erstellen oder anpassen, beachten Sie bitte folgendes:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-            <p>Zeilen, die mit einem '#'-Zeichen beginnen, werden als Kommentar betrachtet und nicht verarbeitet</p>
-        </li>
+      <p>Zeilen, die mit einem '#'-Zeichen beginnen, werden als Kommentar betrachtet und nicht verarbeitet</p>
+    </li>
 <li class="listitem">
-            <p>Variablennamen müssen am Zeilenanfang beginnen - "white space" sind vor dem Namen NICHT erlaubt</p>
-        </li>
+      <p>Variablennamen müssen am Zeilenanfang beginnen - "white space" sind vor dem Namen NICHT erlaubt</p>
+    </li>
 <li class="listitem">
-            <p>Variablennamen sind abhängig von Groß- und Kleinschreibung</p>
-        </li>
+      <p>Variablennamen sind abhängig von Groß- und Kleinschreibung</p>
+    </li>
 </ol></div>
 
-    <p><span class="bold"><strong>Beispielkonfiguration</strong></span></p>
+  <p><span class="bold"><strong>Beispielkonfiguration</strong></span></p>
 
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: eine Beispiel-CGI-Konfigurationsdatei (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) wird für Sie
-    installiert, wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> folgen.</p>
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: eine Beispiel-CGI-Konfigurationsdatei (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) wird für Sie
+  installiert, wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> folgen.</p>
 
-    <p><span class="bold"><strong>Position der Konfigurationsdatei</strong></span></p>
+  <p><span class="bold"><strong>Position der Konfigurationsdatei</strong></span></p>
 
-    <p>Als Standard erwartet Icinga, dass die CGI-Konfigurationsdatei <span class="bold"><strong>cgi.cfg</strong></span> heißt und zusammen mit der
-    <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> im Verzeichnis für die Konfigurationsdateien liegt. Wenn Sie den Namen der Datei oder
-    die Position ändern müssen, dann können Sie Apache so konfigurieren, dass eine Umgebungsvariable namens NAGIOS_CGI_CONFIG übergeben wird
-    (die auf die korrekte Position der CGIs verweist). Lesen Sie in der Apache-Dokumentation nach, wie das zu tun ist.</p>
+  <p>Als Standard erwartet Icinga, dass die CGI-Konfigurationsdatei <span class="bold"><strong>cgi.cfg</strong></span> heißt und zusammen
+  mit der <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> im Verzeichnis für die Konfigurationsdateien liegt. Wenn Sie den Namen
+  der Datei oder die Position ändern müssen, dann können Sie Apache so konfigurieren, dass eine Umgebungsvariable namens
+  ICINGA_CGI_CONFIG übergeben wird (die auf die korrekte Position der CGIs verweist). Lesen Sie in der Apache-Dokumentation nach, wie
+  das zu tun ist.</p>
 
-    <p><span class="bold"><strong>Variablen der Konfigurationsdatei</strong></span></p>
+  <p><span class="bold"><strong>Variablen der Konfigurationsdatei</strong></span></p>
 
-    <p>Nachfolgend finden Sie Beschreibungen jeder Option der Hauptkonfigurationsdatei...</p>
+  <p>Nachfolgend finden Sie Beschreibungen jeder Option der Hauptkonfigurationsdatei...</p>
 
-    <p><a name="configcgi-main_cfg_file"></a><span class="bold"><strong>Position der Hauptkonfigurationsdatei</strong></span></p>
+  <p><a name="configcgi-main_cfg_file"></a><span class="bold"><strong>Position der Hauptkonfigurationsdatei</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -80,15 +81,15 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies gibt die Position Ihrer <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> an. Die CGIs müssen wissen, wo sie zu finden ist, um
-    Informationen zu Konfigurationsinformationen, aktuellen Host- und Service-Zuständen usw. zu bekommen.</p>
+  <p>Dies gibt die Position Ihrer <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> an. Die CGIs müssen wissen, wo sie zu finden
+  ist, um Informationen zu Konfigurationsinformationen, aktuellen Host- und Service-Zuständen usw. zu bekommen.</p>
 
-    <p><a name="configcgi-physical_html_path"></a><span class="bold"><strong>vollständiger (physical) HTML-Pfad</strong></span></p>
+  <p><a name="configcgi-physical_html_path"></a><span class="bold"><strong>vollständiger (physical) HTML-Pfad</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -101,20 +102,20 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist der <span class="emphasis"><em>vollständige</em></span> Pfad zu den HTML-Dateien von Icinga auf Ihrer Workstation oder Ihrem Server.
-    Icinga nimmt an, dass die Dokumentation und die Bilddateien (die von den CGIs benutzt werden) in Unterverzeichnissen namens
-    <span class="emphasis"><em>docs/</em></span> und <span class="emphasis"><em>images/</em></span> gespeichert sind.</p>
+  <p>Dies ist der <span class="emphasis"><em>vollständige</em></span> Pfad zu den HTML-Dateien von Icinga auf Ihrer Workstation oder Ihrem Server.
+  Icinga nimmt an, dass die Dokumentation und die Bilddateien (die von den CGIs benutzt werden) in Unterverzeichnissen namens
+  <span class="emphasis"><em>docs/</em></span> und <span class="emphasis"><em>images/</em></span> gespeichert sind.</p>
 
-    <p><a name="configcgi-url_html_path"></a><span class="bold"><strong>URL-HTML-Pfad</strong></span></p>
+  <p><a name="configcgi-url_html_path"></a><span class="bold"><strong>URL-HTML-Pfad</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -127,20 +128,46 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>url_html_path=/icinga</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Wenn Sie Icinga über einen Web-Browser mit einem URL wie <span class="bold"><strong>http://www.myhost.com/icinga</strong></span>, aufrufen,
-    sollte dieser Wert <span class="emphasis"><em>/icinga</em></span> sein. Grundsätzlich ist es der Pfadanteil des URL, der zum Aufruf der Icinga-HTML-Seiten
-    benutzt wird.</p>
+  <p>Wenn Sie Icinga über einen Web-Browser mit einem URL wie <span class="bold"><strong>http://www.myhost.com/icinga</strong></span>,
+  aufrufen, sollte dieser Wert <span class="emphasis"><em>/icinga</em></span> sein. Grundsätzlich ist es der Pfadanteil des URL, der zum Aufruf der
+  Icinga-HTML-Seiten benutzt wird.</p>
 
-    <p><a name="configcgi-use_authentication"></a><span class="bold"><strong>Nutzung der Authentifizierung</strong></span></p>
+  <p><a name="configcgi-url_stylesheet_path"></a> <span class="bold"><strong>URL Stylesheet Path</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>url_stylesheet_path=&lt;path&gt;/stylesheets</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
+          </span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>Diese Option erlaubt Ihnen die Angabe einer alternativen Stylesheet URL. Dies ist nützlich, wenn Sie benutzerdefinierte Stylesheets
+  aus einem anderen Verzeichnis hinzufügen möchten.Wird sie nicht gesetzt, wird der Standard-Speicherort verwendet
+  (url_stylesheets_path=url_html_path/stylesheets).</p>
+
+  <p><a name="configcgi-use_authentication"></a><span class="bold"><strong>Nutzung der Authentifizierung</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -153,32 +180,32 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>use_authentication=1</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option kontrolliert, ob die CGIs die Authentifizierungs- und Autorisierungsfunktionalität nutzen, um den Zugang von Benutzern zu
-    Informationen und Befehlen zu prüfen oder nicht. Wir möchten dringend raten, dass Sie die Authentifizierungsfunktionalität für die CGIs nutzen.
-    Wenn Sie sich entscheiden, die Authentifizierung nicht zu nutzen, dann stellen Sie sicher, dass das <a class="link" href="cgis.html#cgis-cmd_cgi">command
-    CGI</a> entfernt wird, um nicht autorisierte Benutzer an der Ausführung von Icinga-Befehlen zu hindern. Das CGI wird keine Befehle
-    ausführen, wenn Authentifizierung deaktiviert ist, aber wir würden trotzdem dazu raten, das CGI zu entfernen, damit man auf der sicheren Seite
-    ist. Mehr Informationen zur Einstellung der Authentifizierung und der Konfiguration von Autorisierung für die CGIs finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Diese Option kontrolliert, ob die CGIs die Authentifizierungs- und Autorisierungsfunktionalität nutzen, um den Zugang von Benutzern
+  zu Informationen und Befehlen zu prüfen oder nicht. Wir möchten dringend raten, dass Sie die Authentifizierungsfunktionalität für die CGIs
+  nutzen. Wenn Sie sich entscheiden, die Authentifizierung nicht zu nutzen, dann stellen Sie sicher, dass das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> entfernt wird, um nicht autorisierte Benutzer an der Ausführung von Icinga-Befehlen zu
+  hindern. Das CGI wird keine Befehle ausführen, wenn Authentifizierung deaktiviert ist, aber wir würden trotzdem dazu raten, das CGI zu
+  entfernen, damit man auf der sicheren Seite ist. Mehr Informationen zur Einstellung der Authentifizierung und der Konfiguration von
+  Autorisierung für die CGIs finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>0 = die Authentifizierungsfunktionalität nicht nutzen</p>
-        </li>
+      <p>0 = die Authentifizierungsfunktionalität nicht nutzen</p>
+    </li>
 <li class="listitem">
-            <p>1 = die Authentifizierungs- und Autorisierungsfunktionalität nutzen (Default)</p>
-        </li>
+      <p>1 = die Authentifizierungs- und Autorisierungsfunktionalität nutzen (Default)</p>
+    </li>
 </ul></div>
 
-    <p><a name="configcgi-default_user_name"></a><span class="bold"><strong>Standard-Benutzername</strong></span></p>
+  <p><a name="configcgi-default_user_name"></a><span class="bold"><strong>Standard-Benutzername</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -191,25 +218,26 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>default_user_name=guest</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Das Setzen dieser Variable definiert einen Standard-Benutzernamen, der die CGIs aufrufen kann. Dies erlaubt es Leuten in einer sicheren
-    Domäne (d.h. hinter einer Firewall) die CGIs aufzurufen, ohne dass sie sich am Web-Server authentifizieren müssen. Sie können das benutzen, um die
-    Basis-Authentifizierung zu verhindern, wenn Sie keinen sicheren Server einsetzen, weil Basis-Authentifizierung Passwörter im Klartext über das
-    Internet überträgt.</p>
+  <p>Das Setzen dieser Variable definiert einen Standard-Benutzernamen, der die CGIs aufrufen kann. Dies erlaubt es Leuten in einer
+  sicheren Domäne (d.h. hinter einer Firewall) die CGIs aufzurufen, ohne dass sie sich am Web-Server authentifizieren müssen. Sie können das
+  benutzen, um die Basis-Authentifizierung zu verhindern, wenn Sie keinen sicheren Server einsetzen, weil Basis-Authentifizierung Passwörter
+  im Klartext über das Internet überträgt.</p>
 
-    <p><span class="bold"><strong>Wichtig:</strong></span> Definieren Sie <span class="emphasis"><em>keinen</em></span> Standard-Benutzernamen, solange Sie nicht einen
-    sicheren Web-Server haben und sicher sind, dass sich jeder, der die CGIs aufruft, in irgendeiner Weise authentifiziert hat. Wenn Sie diese
-    Variable definieren, dann wird jeder, der sich am Web-Server authentifiziert, alle Rechte dieses Benutzers erben!</p>
+  <p><span class="bold"><strong>Wichtig:</strong></span> Definieren Sie <span class="emphasis"><em>keinen</em></span> Standard-Benutzernamen, solange Sie nicht einen
+  sicheren Web-Server haben und sicher sind, dass sich jeder, der die CGIs aufruft, in irgendeiner Weise authentifiziert hat. Wenn Sie diese
+  Variable definieren, dann wird jeder, der sich am Web-Server authentifiziert, alle Rechte dieses Benutzers erben!</p>
 
-    <p><a name="configcgi-authorized_for_system_information"></a><span class="bold"><strong>Zugang zu System/Prozessinformationen</strong></span></p>
+  <p><a name="configcgi-authorized_for_system_information"></a><span class="bold"><strong>Zugang zu
+  System/Prozessinformationen</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -218,7 +246,7 @@
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
 <td><p><span class="bold"><strong>authorized_for_system_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-                    </p></td>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
@@ -226,18 +254,18 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die System/Prozessinformationen im
-    <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a> ansehen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span>
-    automatisch autorisiert, System/Prozessbefehle zu erteilen. Wenn Sie möchten, dass Benutzer auch System/Prozessbefehle erteilen können, dann
-    müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a>-Variable hinzufügen. Mehr
-    Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die System/Prozessinformationen
+  im <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a> ansehen können. Benutzer in dieser Liste sind
+  <span class="emphasis"><em>nicht</em></span> automatisch autorisiert, System/Prozessbefehle zu erteilen. Wenn Sie möchten, dass Benutzer auch
+  System/Prozessbefehle erteilen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a>-Variable hinzufügen. Mehr Informationen, wie man
+  Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-authorized_for_system_commands"></a><span class="bold"><strong>Zugang zu System/Prozessbefehlen</strong></span></p>
+  <p><a name="configcgi-authorized_for_system_commands"></a><span class="bold"><strong>Zugang zu System/Prozessbefehlen</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -250,23 +278,23 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die System/Prozessbefehle über das
-    <a class="link" href="cgis.html#cgis-extinfo_cgi">command CGI</a> erteilen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch
-    autorisiert, System/Prozessinformationen anzusehen. Wenn Sie möchten, dass Benutzer auch System/Prozessinformationen ansehen können, dann müssen
-    Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a>-Variable hinzufügen. Mehr
-    Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die System/Prozessbefehle über
+  das <a class="link" href="cgis.html#cgis-extinfo_cgi">command CGI</a> erteilen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span>
+  automatisch autorisiert, System/Prozessinformationen anzusehen. Wenn Sie möchten, dass Benutzer auch System/Prozessinformationen ansehen
+  können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a>-Variable hinzufügen. Mehr Informationen,
+  wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-authorized_for_configuration_information"></a><span class="bold"><strong>Zugang zu
-    Konfigurationsinformationen</strong></span></p>
+  <p><a name="configcgi-authorized_for_configuration_information"></a><span class="bold"><strong>Zugang zu
+  Konfigurationsinformationen</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -275,7 +303,7 @@
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
 <td><p><span class="bold"><strong>authorized_for_configuration_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-                    </p></td>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
@@ -283,17 +311,17 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Konfigurationsinformationen im
-    <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a> ansehen können. Benutzer in dieser Liste können Informationen zu allen konfigurierten
-    Hosts, Hostgruppen, Kontakten, Kontaktgruppen, Zeitfenstern und Befehlen ansehen. Mehr Informationen, wie man Authentifizierung einrichtet und
-    Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Konfigurationsinformationen
+  im <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a> ansehen können. Benutzer in dieser Liste können Informationen zu allen
+  konfigurierten Hosts, Hostgruppen, Kontakten, Kontaktgruppen, Zeitfenstern und Befehlen ansehen. Mehr Informationen, wie man
+  Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-authorized_for_all_hosts"></a><span class="bold"><strong>Global Host Information Access</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_hosts"></a><span class="bold"><strong>Global Host Information Access</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -302,27 +330,29 @@
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
 <td><p><span class="bold"><strong>authorized_for_all_hosts=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-                    </p></td>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Status- und
-    Konfigurationsinformationen im für alle Hosts ansehen können. Benutzer in dieser Liste sind automatisch autorisiert, Informationen zu allen
-    Services anzusehen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt, Befehle für alle Hosts oder Services zu
-    erteilen. Wenn Sie möchten, dass Benutzer auch Befehle für alle Hosts oder Services erteilen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a>-Variable hinzufügen. Mehr Informationen, wie man
-    Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Status- und
+  Konfigurationsinformationen im für alle Hosts ansehen können. Benutzer in dieser Liste sind automatisch autorisiert, Informationen zu
+  allen Services anzusehen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt, Befehle für alle Hosts oder
+  Services zu erteilen. Wenn Sie möchten, dass Benutzer auch Befehle für alle Hosts oder Services erteilen können, dann müssen Sie diese der
+  <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a>-Variable hinzufügen. Mehr
+  Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-authorized_for_all_host_commands"></a><span class="bold"><strong>Zugang zu globalen Host-Befehlen</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_host_commands"></a><span class="bold"><strong>Zugang zu globalen
+  Host-Befehlen</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -335,23 +365,24 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Befehle für alle Hosts über das
-    <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> erteilen können. Benutzer in dieser Liste sind auch automatisch autorisiert, Befehle für alle
-    Services zu erteilen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt, Status- oder Konfigurationsinformationen
-    für alle Hosts oder Services anzusehen. Wenn Sie möchten, dass Benutzer auch Status- und Konfigurationsinformationen für alle Hosts oder Services
-    ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a>-Variable hinzufügen.
-    Mehr Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Befehle für alle Hosts über
+  das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> erteilen können. Benutzer in dieser Liste sind auch automatisch autorisiert, Befehle
+  für alle Services zu erteilen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt, Status- oder
+  Konfigurationsinformationen für alle Hosts oder Services anzusehen. Wenn Sie möchten, dass Benutzer auch Status- und
+  Konfigurationsinformationen für alle Hosts oder Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a>-Variable hinzufügen. Mehr Informationen, wie man
+  Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-authorized_for_all_services"></a><span class="bold"><strong>Zugang zu globalen Service-Informationen</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_services"></a><span class="bold"><strong>Zugang zu globalen
+  Service-Informationen</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -367,18 +398,20 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Status- und
-    Konfigurationsinformationen für alle Services ansehen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch autorisiert,
-    Informationen zu allen Hosts anzusehen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt, Befehle für alle Services
-    zu erteilen. Wenn Sie möchten, dass Benutzer auch Befehle für alle Services erteilen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a>-Variable hinzufügen. Mehr Informationen, wie
-    man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Status- und
+  Konfigurationsinformationen für alle Services ansehen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch
+  autorisiert, Informationen zu allen Hosts anzusehen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt,
+  Befehle für alle Services zu erteilen. Wenn Sie möchten, dass Benutzer auch Befehle für alle Services erteilen können, dann müssen Sie
+  diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a>-Variable hinzufügen.
+  Mehr Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-authorized_for_all_service_commands"></a><span class="bold"><strong>Zugang zu globalen Service-Befehlen</strong></span></p>
+  <p><a name="configcgi-authorized_for_all_service_commands"></a><span class="bold"><strong>Zugang zu globalen
+  Service-Befehlen</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -387,7 +420,7 @@
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
 <td><p><span class="bold"><strong>authorized_for_all_service_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-                    </p></td>
+          </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
@@ -395,20 +428,20 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Befehle für alle Services über das
-    <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> erteilen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch autorisiert,
-    Befehle für alle Hosts zu erteilen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch berechtigt, Status- oder
-    Konfigurationsinformationen für alle Hosts anzusehen. Wenn Sie möchten, dass Benutzer auch Status- und Konfigurationsinformationen für alle
-    Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>-Variable hinzufügen. Mehr Informationen, wie man
-    Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Befehle für alle Services
+  über das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> erteilen können. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span>
+  automatisch autorisiert, Befehle für alle Hosts zu erteilen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht</em></span> automatisch
+  berechtigt, Status- oder Konfigurationsinformationen für alle Hosts anzusehen. Wenn Sie möchten, dass Benutzer auch Status- und
+  Konfigurationsinformationen für alle Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>-Variable hinzufügen. Mehr Informationen, wie man
+  Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-    <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Zeige alle Services für einen berechtigten
-    Host</strong></span></p>
+  <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Zeige alle Services für einen
+  berechtigten Host</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -421,20 +454,20 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p> <span class="color"> <span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Per Default kann ein Benutzer alle Services eines Hosts sehen, wenn er als Kontakt für den Host autorisiert ist. Durch deaktivieren dieser
-    Option muss der Benutzer auch autorisierter Kontakt des Service sein, um diesen ansehen zu können. Bitte beachten Sie, dass diese Option keine
-    Auswirkung hat, wenn die Option authorized_for_all_services für den Benutzer gesetzt ist (seit Icinga 1.0.2).</p>
+  <p>Per Default kann ein Benutzer alle Services eines Hosts sehen, wenn er als Kontakt für den Host autorisiert ist. Durch deaktivieren
+  dieser Option muss der Benutzer auch autorisierter Kontakt des Service sein, um diesen ansehen zu können. Bitte beachten Sie, dass diese
+  Option keine Auswirkung hat, wenn die Option authorized_for_all_services für den Benutzer gesetzt ist (seit Icinga 1.0.2).</p>
 
-    <p><a name="configcgi-lock_author_names"></a><span class="bold"><strong>Autorennamen sperren</strong></span></p>
+  <p><a name="configcgi-lock_author_names"></a><span class="bold"><strong>Autorennamen sperren</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -447,29 +480,29 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>lock_author_names=1</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option erlaubt es Ihnen, Benutzer daran zu hindern, den Autorennamen zu ändern, wenn sie Kommentare, Bestätigungen und geplanten
-    Ausfallzeiten über das Web-Interface eingeben. Wenn diese Option aktiviert ist, können Benutzer nicht mit der Befehlsanfrage verbundene
-    Autorennamen ändern.</p>
+  <p>Diese Option erlaubt es Ihnen, Benutzer daran zu hindern, den Autorennamen zu ändern, wenn sie Kommentare, Bestätigungen und
+  geplanten Ausfallzeiten über das Web-Interface eingeben. Wenn diese Option aktiviert ist, können Benutzer nicht mit der Befehlsanfrage
+  verbundene Autorennamen ändern.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>0 = Benutzern erlauben, den Autorennamen bei der Erteilung von Befehlen zu ändern</p>
-        </li>
+      <p>0 = Benutzern erlauben, den Autorennamen bei der Erteilung von Befehlen zu ändern</p>
+    </li>
 <li class="listitem">
-            <p>1 = Benutzer daran hindern, den Autorennamen zu ändern (default)</p>
-        </li>
+      <p>1 = Benutzer daran hindern, den Autorennamen zu ändern (default)</p>
+    </li>
 </ul></div>
 
-    <p><a name="configcgi-status_show_long_plugin_output"></a> <span class="bold"><strong>Status Show Long Plugin Output</strong></span></p>
+  <p><a name="configcgi-status_show_long_plugin_output"></a> <span class="bold"><strong>Status Show Long Plugin Output</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -482,38 +515,38 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p> <span class="color"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option erlaubt es Ihnen, den Umfang der Statusinformationen von Plugins festzulegen, die in der status.cgi angezeigt werden. Wenn Sie
-    den Wert auf 1 setzen, dann wird die komplette Ausgabe angezeigt, sonst nur die erste Zeile.</p>
+  <p>Diese Option erlaubt es Ihnen, den Umfang der Statusinformationen von Plugins festzulegen, die in der status.cgi angezeigt werden.
+  Wenn Sie den Wert auf 1 setzen, dann wird die komplette Ausgabe angezeigt, sonst nur die erste Zeile.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>0 = Nur die erste Zeile der Plugin-Ausgabe anzeigen (default)</p>
-        </li>
+      <p>0 = Nur die erste Zeile der Plugin-Ausgabe anzeigen (default)</p>
+    </li>
 <li class="listitem">
-            <p>1 = Die komplette Plugin-Ausgabe anzeigen</p>
-        </li>
+      <p>1 = Die komplette Plugin-Ausgabe anzeigen</p>
+    </li>
 </ul></div>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
-    </td></tr>
+    <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
+  </td></tr>
 </table></div>
 
-    <p><a name="configcgi-statusmap_background_image"></a><span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
+  <p><a name="configcgi-statusmap_background_image"></a><span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -526,23 +559,23 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
-                    </span> </p></td>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option erlaubt es Ihnen, ein Bild anzugeben, das als Hintergrund im <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap CGI</a> benutzt
-    wird, wenn Sie die Layout-Methode mit benutzerdefinierten Koordinaten benutzen. Das Hintergrundbild ist nicht in anderen Layout-Methoden
-    verfügbar. Es wird angenommen, dass sich das Bild im HTML-Image-Pfad befindet (d.h. in /usr/local/icinga/share/images). Dieser Pfad wird
-    automatisch durch das Anhängen von "/images" an den in der <a class="link" href="configcgi.html#configcgi-physical_html_path">physical_html_path</a>-Direktive
-    ermittelt. Anmerkung: Die Bilddatei kann im GIF-, JPEG-, PNG- oder GD2-Format sein. Das GD2-Format (vorzugsweise im unkomprimierten
-    Format) wird empfohlen, weil es die CPU-Belastung reduziert, wenn das CGI das Kartenbild generiert.</p>
+  <p>Diese Option erlaubt es Ihnen, ein Bild anzugeben, das als Hintergrund im <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap CGI</a>
+  benutzt wird, wenn Sie die Layout-Methode mit benutzerdefinierten Koordinaten benutzen. Das Hintergrundbild ist nicht in anderen
+  Layout-Methoden verfügbar. Es wird angenommen, dass sich das Bild im HTML-Image-Pfad befindet (d.h. in /usr/local/icinga/share/images).
+  Dieser Pfad wird automatisch durch das Anhängen von "/images" an den in der <a class="link" href="configcgi.html#configcgi-physical_html_path">physical_html_path</a>-Direktive ermittelt. Anmerkung: Die Bilddatei kann im GIF-, JPEG-, PNG-
+  oder GD2-Format sein. Das GD2-Format (vorzugsweise im unkomprimierten Format) wird empfohlen, weil es die CPU-Belastung
+  reduziert, wenn das CGI das Kartenbild generiert.</p>
 
-    <p><a name="configcgi-default_statusmap_layout"></a><span class="bold"><strong>Standard-Statusmap-Layout-Methode</strong></span></p>
+  <p><a name="configcgi-default_statusmap_layout"></a><span class="bold"><strong>Standard-Statusmap-Layout-Methode</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -555,16 +588,16 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>default_statusmap_layout=4</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Gültige Werte sind:</p>
+  <p>Gültige Werte sind:</p>
 
-    <div class="informaltable">
-        <table border="1">
+  <div class="informaltable">
+    <table border="1">
 <colgroup>
 <col>
 <col>
@@ -604,12 +637,12 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p><a name="configcgi-refresh_rate"></a><span class="bold"><strong>CGI-Aktualisierungsrate</strong></span></p>
+  <p><a name="configcgi-refresh_rate"></a><span class="bold"><strong>CGI-Aktualisierungsrate</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -625,14 +658,14 @@
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option erlaubt es Ihnen, die Anzahl von Sekunden zwischen Seitenaktualisierungen für die <a class="link" href="cgis.html#cgis-status_cgi">status</a>-, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- und <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a>-CGIs festzulegen.</p>
+  <p>Diese Option erlaubt es Ihnen, die Anzahl von Sekunden zwischen Seitenaktualisierungen für die <a class="link" href="cgis.html#cgis-status_cgi">status</a>-, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- und <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a>-CGIs festzulegen.</p>
 
-    <p><a name="configcgi-audio_alerts"></a><span class="bold"><strong>Audio-Alarme</strong></span></p>
+  <p><a name="configcgi-audio_alerts"></a><span class="bold"><strong>Audio-Alarme</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -642,118 +675,118 @@
 <td align="left" valign="top"><p>Format:</p></td>
 <td>
 <p>
-                             
+               
 
-                            <span class="bold"><strong>host_unreachable_sound=&lt;sound_file&gt;</strong></span>
+              <span class="bold"><strong>host_unreachable_sound=&lt;sound_file&gt;</strong></span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="bold"><strong>host_down_sound=&lt;sound_file&gt;</strong></span>
+              <span class="bold"><strong>host_down_sound=&lt;sound_file&gt;</strong></span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="bold"><strong>service_critical_sound=&lt;sound_file&gt;</strong></span>
+              <span class="bold"><strong>service_critical_sound=&lt;sound_file&gt;</strong></span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="bold"><strong>service_warning_sound=&lt;sound_file&gt;</strong></span>
+              <span class="bold"><strong>service_warning_sound=&lt;sound_file&gt;</strong></span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="bold"><strong>service_unknown_sound=&lt;sound_file&gt;</strong></span>
+              <span class="bold"><strong>service_unknown_sound=&lt;sound_file&gt;</strong></span>
 
-                             
-                        </p>
+               
+            </p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiele:</p></td>
 <td>
 <p>
-                             
+               
 
-                            <span class="color">
-                                 
+              <span class="color">
+                 
 
-                                <span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span>
+                <span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span>
 
-                                 
-                            </span>
+                 
+              </span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="color">
-                                 
+              <span class="color">
+                 
 
-                                <span class="bold"><strong>host_down_sound=hostd.wav</strong></span>
+                <span class="bold"><strong>host_down_sound=hostd.wav</strong></span>
 
-                                 
-                            </span>
+                 
+              </span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="color">
-                                 
+              <span class="color">
+                 
 
-                                <span class="bold"><strong>service_critical_sound=critical.wav</strong></span>
+                <span class="bold"><strong>service_critical_sound=critical.wav</strong></span>
 
-                                 
-                            </span>
+                 
+              </span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="color">
-                                 
+              <span class="color">
+                 
 
-                                <span class="bold"><strong>service_warning_sound=warning.wav</strong></span>
+                <span class="bold"><strong>service_warning_sound=warning.wav</strong></span>
 
-                                 
-                            </span>
+                 
+              </span>
 
-                             
-                        </p> <p>
-                             
+               
+            </p> <p>
+               
 
-                            <span class="color">
-                                 
+              <span class="color">
+                 
 
-                                <span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span>
+                <span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span>
 
-                                 
-                            </span>
+                 
+              </span>
 
-                             
-                        </p>
+               
+            </p>
 </td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option erlaubt es Ihnen, eine Audio-Datei anzugeben, die in Ihrem Browser abgespielt wird, wenn es ein Problem gibt, während Sie das
-    <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a> ansehen. Wenn es mehrere Probleme gibt, wird die Datei für das kritischste Problem abgespielt.
-    Das kritischste Problem sind ein oder mehrere nicht erreichbare Host, während das am wenigsten kritische Problem Services in einem UNKNOWN-Zustand
-    sind (beachten Sie die Reihenfolge im obigen Beispiel). Audio-Dateien werden im <span class="bold"><strong>media</strong></span>-Unterverzeichnis Ihres
-    HTML-Verzeichnisses erwartet (d.h. <span class="emphasis"><em>/usr/local/icinga/share/media</em></span>).</p>
+  <p>Diese Option erlaubt es Ihnen, eine Audio-Datei anzugeben, die in Ihrem Browser abgespielt wird, wenn es ein Problem gibt, während
+  Sie das <a class="link" href="cgis.html#cgis-status_cgi">status CGI</a> ansehen. Wenn es mehrere Probleme gibt, wird die Datei für das kritischste
+  Problem abgespielt. Das kritischste Problem sind ein oder mehrere nicht erreichbare Host, während das am wenigsten kritische Problem
+  Services in einem UNKNOWN-Zustand sind (beachten Sie die Reihenfolge im obigen Beispiel). Audio-Dateien werden im <span class="bold"><strong>media</strong></span>-Unterverzeichnis Ihres HTML-Verzeichnisses erwartet (d.h.
+  <span class="emphasis"><em>/usr/local/icinga/share/media</em></span>).</p>
 
-    <p><a name="configcgi-ping_syntax"></a><span class="bold"><strong>Ping-Syntax</strong></span></p>
+  <p><a name="configcgi-ping_syntax"></a><span class="bold"><strong>Ping-Syntax</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -766,19 +799,19 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>ping_syntax=/bin/ping -n -U -c 5
-                    $HOSTADDRESS$</strong></span> </span> </p></td>
+          $HOSTADDRESS$</strong></span> </span> </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option legt fest, welche Syntax benutzt wird, wenn ein Host vom WAP-Interface aus ange"ping"t wird (mit Hilfe des <a class="link" href="cgis.html#cgis-statuswml_cgi">statuswml CGI</a>. Sie müssen den kompletten Pfad zum ping-Binary zusammen mit allen benötigten Optionen angeben.
-    Das $HOSTADDRESS$-Makro wird durch die Adresse des Hosts ersetzt, bevor der Befehl ausgeführt wird.</p>
+  <p>Diese Option legt fest, welche Syntax benutzt wird, wenn ein Host vom WAP-Interface aus ange"ping"t wird (mit Hilfe des <a class="link" href="cgis.html#cgis-statuswml_cgi">statuswml CGI</a>. Sie müssen den kompletten Pfad zum ping-Binary zusammen mit allen benötigten Optionen
+  angeben. Das $HOSTADDRESS$-Makro wird durch die Adresse des Hosts ersetzt, bevor der Befehl ausgeführt wird.</p>
 
-    <p><a name="configcgi-escape_html_tags"></a><span class="bold"><strong>Escape HTML Tags Option</strong></span></p>
+  <p><a name="configcgi-escape_html_tags"></a><span class="bold"><strong>Escape HTML Tags Option</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -791,19 +824,19 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>escape_html_tags=1</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option legt fest, ob HTML-Tags in Host- und Service-(Plugin-)Ausgaben in CGIs unberücksichtigt bleiben oder nicht. Wenn Sie diese
-    Option aktivieren, wird die Plugin-Ausgabe keine anklickbaren Hyperlinks enthalten.</p>
+  <p>Diese Option legt fest, ob HTML-Tags in Host- und Service-(Plugin-)Ausgaben in CGIs unberücksichtigt bleiben oder nicht. Wenn Sie
+  diese Option aktivieren, wird die Plugin-Ausgabe keine anklickbaren Hyperlinks enthalten.</p>
 
-    <p><a name="configcgi-notes_url_target"></a><span class="bold"><strong>Notes URL Target</strong></span></p>
+  <p><a name="configcgi-notes_url_target"></a><span class="bold"><strong>Notes URL Target</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -816,20 +849,20 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>notes_url_target=_blank</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option legt den Namen des Ziel-Frames fest, in dem Anmerkungs-URLs angezeigt werden sollen. Gültige Optionen umfassen
-    <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span> oder jeden anderen gültigen
-    Zielnamen.</p>
+  <p>Diese Option legt den Namen des Ziel-Frames fest, in dem Anmerkungs-URLs angezeigt werden sollen. Gültige Optionen umfassen
+  <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span> oder jeden anderen
+  gültigen Zielnamen.</p>
 
-    <p><a name="configcgi-action_url_target"></a><span class="bold"><strong>Action URL Target</strong></span></p>
+  <p><a name="configcgi-action_url_target"></a><span class="bold"><strong>Action URL Target</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -842,20 +875,20 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>action_url_target=_blank</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option legt den Namen des Ziel-Frames fest, in dem Aktions-URLs angezeigt werden sollen. Gültige Optionen umfassen
-    <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span> oder jeden anderen gültigen
-    Zielnamen.</p>
+  <p>Diese Option legt den Namen des Ziel-Frames fest, in dem Aktions-URLs angezeigt werden sollen. Gültige Optionen umfassen
+  <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span> oder jeden anderen
+  gültigen Zielnamen.</p>
 
-    <p><a name="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
+  <p><a name="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -868,20 +901,19 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option erlaubt ihnen in der Tactical Overview nur HARD States von Host und Services anzeigen zu lassen. Standardmäßig ist diese Option
-    deaktiviert. Setzen Sie tac_show_only_hard_state=1 werden in der Tactical Overview nur noch HARD States
-    angezeigt.</p>
+  <p>Diese Option erlaubt ihnen in der Tactical Overview nur HARD States von Host und Services anzeigen zu lassen. Standardmäßig ist
+  diese Option deaktiviert. Setzen Sie tac_show_only_hard_state=1 werden in der Tactical Overview nur noch HARD States angezeigt.</p>
 
-    <p><a name="configcgi-enable_splunk_integration"></a><span class="bold"><strong>Splunk-Integrationsoption</strong></span></p>
+  <p><a name="configcgi-enable_splunk_integration"></a><span class="bold"><strong>Splunk-Integrationsoption</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -894,20 +926,20 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>enable_splunk_integration=1</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option legt fest, ob die Integration mit Splunk im Web-Interface aktiviert ist oder nicht. Wenn sie aktiviert ist, werden an
-    verschiedenen Stellen "Splunk It"-Links in den CGIs angezeigt (Log-Datei, Alarmhistorie, Host-/Service-Details, usw.). Das ist nützlich, wenn Sie
-    nach den Ursachen suchen, warum ein bestimmtes Problem auftrat. Für mehr Informationen über Splunk besuchen Sie <a class="link" href="http://www.splunk.com/" target="_top">http://www.splunk.com/</a>.</p>
+  <p>Diese Option legt fest, ob die Integration mit Splunk im Web-Interface aktiviert ist oder nicht. Wenn sie aktiviert ist, werden an
+  verschiedenen Stellen "Splunk It"-Links in den CGIs angezeigt (Log-Datei, Alarmhistorie, Host-/Service-Details, usw.). Das ist nützlich,
+  wenn Sie nach den Ursachen suchen, warum ein bestimmtes Problem auftrat. Für mehr Informationen über Splunk besuchen Sie <a class="link" href="http://www.splunk.com/" target="_top">http://www.splunk.com/</a>.</p>
 
-    <p><a name="configcgi-splunk_url"></a><span class="bold"><strong>Splunk-URL</strong></span></p>
+  <p><a name="configcgi-splunk_url"></a><span class="bold"><strong>Splunk-URL</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -920,19 +952,20 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p><span class="color"><span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option wird benutzt, um den Basis-URL zu Ihrem Splunk-Interface zu definieren. Dieser URL wird von den CGIs benutzt, wenn Links
-    erzeugt werden, falls die <a class="link" href="configcgi.html#configcgi-enable_splunk_integration">enable_splunk_integration</a>-Option aktiviert ist.</p>
+  <p>Diese Option wird benutzt, um den Basis-URL zu Ihrem Splunk-Interface zu definieren. Dieser URL wird von den CGIs benutzt, wenn
+  Links erzeugt werden, falls die <a class="link" href="configcgi.html#configcgi-enable_splunk_integration">enable_splunk_integration</a>-Option aktiviert
+  ist.</p>
 
-    <p><a name="configcgi-persistent_ack_comments"></a> <span class="bold"><strong>Persistente Bestätigungskommentare</strong></span></p>
+  <p><a name="configcgi-persistent_ack_comments"></a> <span class="bold"><strong>Persistente Bestätigungskommentare</strong></span></p>
 
-    <div class="informaltable">
-        <table border="0">
+  <div class="informaltable">
+    <table border="0">
 <colgroup>
 <col>
 <col>
@@ -945,83 +978,347 @@
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
 <td><p> <span class="color"> <span class="bold"><strong>persistent_ack_comments=1</strong></span> </span>
-                    </p></td>
+          </p></td>
 </tr>
 </tbody>
 </table>
-    </div>
+  </div>
 
-    <p>Diese Option legt fest, ob die Check-Box "persistent comment" zur Bestätigung von Problem-Hosts oder -Services aktiviert ist. Sie kann
-    benutzt werden, um das Verhalten von Nagios 2 wiederherzustellen. Default ist "0", um kompatibel mit Nagios 3 zu sein.</p>
+  <p>Diese Option legt fest, ob die Check-Box "persistent comment" zur Bestätigung von Problem-Hosts oder -Services aktiviert ist. Sie
+  kann benutzt werden, um das Verhalten von Nagios 2 wiederherzustellen. Default ist "0", um kompatibel mit Nagios 3 zu
+  sein.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>0 = Check-Box "persistent comment" deaktiviert lassen (Default)</p>
-        </li>
+      <p>0 = Check-Box "persistent comment" deaktiviert lassen (Default)</p>
+    </li>
 <li class="listitem">
-            <p>1 = Check-Box "persistent comment" aktivieren</p>
-        </li>
+      <p>1 = Check-Box "persistent comment" aktivieren</p>
+    </li>
 </ul></div>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
-    </td></tr>
+    <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
+  </td></tr>
 </table></div>
 
-    <a class="indexterm" name="id2550605"></a>
+  <p><a name="configcgi-showlog_initial_states"></a> <span class="bold"><strong>Initialen Status anzeigen</strong></span></p>
 
-    <a class="indexterm" name="id2550616"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>showlog_initial_states=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>showlog_initial_states=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-    <a class="indexterm" name="id2550630"></a>
+  <p>Diese Option legt fest, ob die initialen Zustände von Hosts und Services in showlog.cgi angezeigt werden sollen.</p>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+       Diese Option hat nur Auswirkungen, wenn die Option "log_initial_states" in der icinga.cfg gesetzt wurde. 
+   </p></td></tr>
+</table></div>
 
-    <a class="indexterm" name="id2550532"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = initiale Zustände in showlog.cgi nicht anzeigen</p>
+    </li>
+<li class="listitem">
+      <p>1 = initiale Zustände in showlog.cgi anzeigen (Default)</p>
+    </li>
+</ul></div>
 
-    <a class="indexterm" name="id2550642"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-    <a class="indexterm" name="id2550668"></a>
+  <p><a name="configcgi-showlog_current_states"></a> <span class="bold"><strong>Aktuellen Status anzeigen</strong></span></p>
 
-    <a class="indexterm" name="id2550683"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>showlog_current_states=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>showlog_current_states=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-    <a class="indexterm" name="id2550697"></a>
+  <p>Diese Option legt fest, ob die aktuellen Zustände von Hosts und Services in showlog.cgi angezeigt werden sollen.</p>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+       Diese Option hat nur Auswirkungen, wenn die Option "log_current_states" in der icinga.cfg gesetzt wurde. 
+   </p></td></tr>
+</table></div>
 
-    <a class="indexterm" name="id2550710"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = aktuelle Zustände in showlog.cgi nicht anzeigen</p>
+    </li>
+<li class="listitem">
+      <p>1 = aktuelle Zustände in showlog.cgi anzeigen (Default)</p>
+    </li>
+</ul></div>
 
-    <a class="indexterm" name="id2550698"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-    <a class="indexterm" name="id2550738"></a>
+  <p><a name="configcgi-tab_friendly_titles"></a> <span class="bold"><strong>Objekttyp in Tab-Titel anzeigen</strong></span></p>
 
-    <a class="indexterm" name="id2550749"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>tab_friendly_titles=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>tab_friendly_titles=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-    <a class="indexterm" name="id2550766"></a>
+  <p>Durch Aktivieren dieser Option ändern sich die Titel der Reiter im Browser, um den jeweiligen Objekttyp anzuzeigen. Sie zeigen dann:</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+         <p>[Host]</p> 
+      </li>
+<li class="listitem">
+         <p>{Hostgruppe}</p> 
+      </li>
+<li class="listitem">
+         <p>Service-Beschreibung @ Host</p> 
+      </li>
+<li class="listitem">
+         <p>(Servicegruppe)</p> 
+      </li>
+</ul></div>
+<p> Diese sind einfache zu lesen (und zu finden), wenn Sie (viele) Reiter in Ihrem Browser anzeigen.</p>
 
-    <a class="indexterm" name="id2550752"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Objekttyp im Reiter nicht anzeigen</p>
+    </li>
+<li class="listitem">
+      <p>1 = Objekttyp im Reiter anzeigen (Default)</p>
+    </li>
+</ul></div>
 
-    <a class="indexterm" name="id2550795"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-    <a class="indexterm" name="id2550808"></a>
+  <p><a name="configcgi-add_notif_num"></a> <span class="bold"><strong>Service-Zustand und Benachrichtigungsnummer
+  anzeigen</strong></span></p>
 
-    <a class="indexterm" name="id2550819"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>add_notif_num_hard=n</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p></p></td>
+<td><p> <span class="bold"><strong>add_notif_num_soft=n</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>add_notif_num_hard=28</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-    <a class="indexterm" name="id2550836"></a>
+  <p>Wenn der Wert der Direktive(n) größer Null ist, werden in der status.cgi neben dem "Versuch" (z.B. "3/3" für einen
+  Hard-Nicht-OK-Zustand mit max_check_attempts=3) auch die aktuelle Benachrichtigungsnummer ("(#0)" falls noch keine Benachrichtigung
+  versandt wurde) angezeigt. Dies ist hilfreich, um Services zu identifizieren, die oft zwischen verschiedenen Nicht-OK-Zuständen wechseln,
+  oder Services, bei denen first_notification_delay gesetzt ist, die aber noch nicht "in Schwierigkeiten" sind.</p>
 
-    <a class="indexterm" name="id2550849"></a>
+  <p>Relevante Werte aus include/statusdata.h (sehen Sie *dort* nach, um *wirklich* sicher zu sein): </p>
+<pre class="programlisting"> #define    SERVICE_PENDING     1
+ #define    SERVICE_OK          2
+ #define    SERVICE_WARNING     4
+ #define    SERVICE_UNKNOWN     8
+ #define    SERVICE_CRITICAL   16</pre>
 
-    <a class="indexterm" name="id2550865"></a>
+  <p>Sie werden wahrscheinlich add_notif_num_hard=0 (Default) oder add_notif_num_hard=28 (warn+crit+unknown) setzen.</p>
 
-    <a class="indexterm" name="id2550879"></a>
+  <p>Der Vorständigkeit halber gibt es auch add_notif_num_soft für Services im SOFT-Zustand.</p>
 
-    <a class="indexterm" name="id2550893"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-    <a class="indexterm" name="id2550907"></a>
+  <p><a name="configcgi-http_charset"></a> <span class="bold"><strong>HTTP-Zeichensatz einstellen</strong></span></p>
 
-    <a class="indexterm" name="id2550920"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>http_charset=&lt;Zeichensatz&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>http_charset=utf-8</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-    <a class="indexterm" name="id2550932"></a>
+  <p>Hiermit kann der Zeichensatz eingestellt werden, der mit den HTTP-Headern gesendet wird. Default ist utf-8.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
+  </td></tr>
+</table></div>
+
+  <a class="indexterm" name="id5605153"></a>
+
+  <a class="indexterm" name="id5605166"></a>
+
+  <a class="indexterm" name="id5605177"></a>
+
+  <a class="indexterm" name="id5605190"></a>
+
+  <a class="indexterm" name="id5605202"></a>
+
+  <a class="indexterm" name="id5605215"></a>
+
+  <a class="indexterm" name="id5605231"></a>
+
+  <a class="indexterm" name="id5605244"></a>
+
+  <a class="indexterm" name="id5605258"></a>
+
+  <a class="indexterm" name="id5605272"></a>
+
+  <a class="indexterm" name="id5605285"></a>
+
+  <a class="indexterm" name="id5605299"></a>
+
+  <a class="indexterm" name="id5605312"></a>
+
+  <a class="indexterm" name="id5605327"></a>
+
+  <a class="indexterm" name="id5605339"></a>
+
+  <a class="indexterm" name="id5605313"></a>
+
+  <a class="indexterm" name="id5605341"></a>
+
+  <a class="indexterm" name="id5605355"></a>
+
+  <a class="indexterm" name="id5605369"></a>
+
+  <a class="indexterm" name="id5605383"></a>
+
+  <a class="indexterm" name="id5605426"></a>
+
+  <a class="indexterm" name="id5605411"></a>
+
+  <a class="indexterm" name="id5605452"></a>
+
+  <a class="indexterm" name="id5605465"></a>
+
+  <a class="indexterm" name="id5605478"></a>
+
+  <a class="indexterm" name="id5605494"></a>
+
+  <a class="indexterm" name="id5605479"></a>
+
+  <a class="indexterm" name="id5605522"></a>
+
+  <a class="indexterm" name="id5605534"></a>
+
+  <a class="indexterm" name="id5605547"></a>
+
+  <a class="indexterm" name="id5605560"></a>
+
+  <a class="indexterm" name="id5605575"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -1040,6 +1337,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

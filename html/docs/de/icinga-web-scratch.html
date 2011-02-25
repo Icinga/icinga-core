@@ -1,40 +1,43 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Installation des neuen Icinga Web Frontend</title>
+<title>Installation des Icinga Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">
-<link rel="next" href="icinga-web-intro.html" title="Einführung in Icinga Web">
+<link rel="prev" href="cgiparams.html" title="Informationen zu den CGI-Parametern">
+<link rel="next" href="icinga-web-config.html" title="Konfigurationsübersicht Icinga Web">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Installation des neuen Icinga Web Frontend</th></tr>
+<tr><th colspan="3" align="center">Installation des Icinga Web Frontend</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgis.html">Zurück</a> </td>
+<a accesskey="p" href="cgiparams.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-intro.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-config.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Installation des neuen Icinga Web Frontend">
+<div class="section" title="Installation des Icinga Web Frontend">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-scratch"></a>Installation des neuen Icinga Web Frontend</h2></div></div></div>
+<a name="icinga-web-scratch"></a>Installation des Icinga Web Frontend</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einleitung</strong></span></p>
 
   <p>Das neue Icinga Web wird aktuell sehr stark weiterentwickelt, sodass sich diese Dokumentation unter Umständen noch ändern kann/wird.
   Falls Sie eine detaillierte Installationsanleitung benötigen, konsultieren Sie bitte doc/INSTALL aus dem Source-Paket. Mehr Informationen
-  über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a> Falls Sie mehr über das Icinga Web development und die
+  über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a> Falls Sie mehr über das Icinga Web Development und die
   Modularchitektur wissen wollen, verfolgen Sie bitte stetig aktualisierte Einträge im Development-Wiki von Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga Wiki</a></p>
+
+  <p>Diese Installationsanleitung beschreibt die Installation von Icinga Web mit MySQL als verwendeter Datenbank, weitere
+  unterstütze Datenbanken sind Oracle und PostgreSQL..</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -78,7 +81,7 @@
       <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
       <p>Benutzen Sie yast, um die Pakete "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
-      "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "php5-mysql" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
+      "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "apache2-mod_php5" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
 
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -102,7 +105,7 @@
 
       <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.2.tar.gz</pre>
+      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.3.tar.gz</pre>
 
       <p>Wechseln Sie in das Verzeichnis:</p>
 
@@ -150,7 +153,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Falls Sie keine Optionen angeben, erwartet der Installer die Icinga API in /usr/local/share/icinga-api.</p>
+        <p>Falls Sie keine Optionen angeben, erwartet der Installer die Icinga API in /usr/local/icinga/share/icinga-api.</p>
       </td></tr>
 </table></div>
 
@@ -271,9 +274,20 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
       <p><span class="bold"><strong>Icinga-Web Konfiguration</strong></span></p>
 
       <p>Im Normalfall können Sie die Datenbankeinstellungen während configure vornehmen. Sollten Sie diese allerdings anpassen wollen
-      oder nachsehen wollen im Fehlerfall, öffnen sie folgende Datei mit einem Editor Ihrer Wahl.</p>
+      oder nachsehen wollen im Fehlerfall, öffnen Sie folgende Datei mit einem Editor Ihrer Wahl.</p>
 
       <pre class="programlisting"> #&gt; vi app/config/databases.xml</pre>
+
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Optional: Ihre spezifischen Icinga Datenbankeinstellungen können Sie vornehmen in app / config /database.site.xml.
+        Diese Informationen bleiben während eines Update-Prozesses erhalten.</p>
+      </td></tr>
+</table></div>
 
       <pre class="programlisting"> &lt;databases default="icinga_web"&gt;
 
@@ -323,7 +337,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <p><span class="bold"><strong>Konfiguration von Icinga API Parametern</strong></span></p>
 
-      <p>Diese Einstellungen werden direkt in Icinga Web vorgenommen das diese Informationen dann entsprechend aufbereitet an die Icinga
+      <p>Diese Einstellungen werden direkt in Icinga Web vorgenommen, das diese Informationen dann entsprechend aufbereitet an die Icinga
       API weitergibt. Öffnen Sie app/modules/Web/config/icinga-io.xml um die IcingaApi factories zu sehen: IcingaData und IcingaCommand.
       </p>
 <pre class="programlisting"> #&gt; vi app/modules/Web/config/icinga-io.xml</pre>
@@ -335,7 +349,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 </tr>
 <tr><td align="left" valign="top">
           <p>Optional: Ihre spezifischen Icinga Verbindungseinstellungen, wie die API-Anmeldeinformationen, können Sie vornehmen
-          in app / modules / Web / config / icinga-io.site.xml. Diese Informationen bleiben während eines Update- Prozesses erhalten.</p>
+          in app / modules / Web / config / icinga-io.site.xml. Diese Informationen bleiben während eines Update-Prozesses erhalten.</p>
         </td></tr>
 </table></div>
 
@@ -373,7 +387,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
                                 &lt;/setting/&gt;</pre>
 
-      <p>In IcingaCommand können Sie einstellen, wie Befehle an die Icinga Core command pipe gesendet werden - lokal or remote via SSH.
+      <p>In IcingaCommand können Sie einstellen, wie Befehle an die Icinga Core command pipe gesendet werden - lokal oder remote via SSH.
       Abhängig davon, ob die jeweilige Option 'enabled' ist, wird diese verwendet/nicht verwendet. Standardmäßig wird die lokale Pipe
       verwendet.</p>
 
@@ -443,6 +457,10 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 </table></div>
 
       <pre class="programlisting"> #&gt; rm -rf app/cache/config/*.php</pre>
+
+      <p>oder</p>
+
+      <pre class="programlisting">/icinga-web/bin/clearcache.sh</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Apache-Konfiguration</strong></span></p>
@@ -455,8 +473,14 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <pre class="programlisting"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
 
-      <p>Bei OpenSuSE können Sie das Modul mit "a2enmod rewrite" aktivieren. Falls das nicht funktioniert, gibt es in der Datei
+      <p>Bei OpenSuSE und SLES können Sie das Modul mit "a2enmod rewrite" aktivieren. Falls das nicht funktioniert, gibt es in der Datei
       /etc/sysconfig/apache2 die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden muss.</p>
+
+      <p>Bei Debian und Ubuntu können Sie das Modul ebenfalls mit "a2enmod rewrite" aktivieren.</p>
+
+      <p>Bei RHEL/Fedora/CentOS ist die Unterstützung bereits im httpd enthalten.</p>
+
+      <p></p>
 
       <p>Editieren Sie die .htaccess unter /usr/local/icinga-web/pub und ändern Sie die RewriteBase (ab Zeile 14): </p>
 <pre class="programlisting"> DirectoryIndex index.php
@@ -529,6 +553,10 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <pre class="programlisting"> #&gt; rm /usr/local/icinga-web/app/cache/config/*.php</pre>
 
+      <p>oder</p>
+
+      <pre class="programlisting">#&gt; /icinga-web/bin/clearcache.sh</pre>
+
       <p>und starten Sie den Webserver neu:</p>
 
       <pre class="programlisting"> #&gt; service apache2 restart</pre>
@@ -560,7 +588,7 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>Viel Spaß :-)</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Test &amp;Fehler?</strong></span></p>
+      <p><a name="icinga-web-scratch-errors"></a> <span class="bold"><strong>Test &amp; Fehler?</strong></span></p>
 
       <p>Diese Sammlung beinhaltet einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf
       hingewiesen, welche Informationen Sie im Fehlerfall angeben sollen, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
@@ -581,9 +609,18 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Löschen Sie den Konfigurationscache in app/cache/config/*.php</p>
 
+      <pre class="programlisting">/icinga-web/bin/clearcache.sh</pre>
+
       <p>Icinga Web zeigt eine leere Seite?</p>
 
-      <p>* Apache Errors Logs =&gt; mod_rewrite enabled, PHP-Abhängigkeiten ok? 'make testdeps'</p>
+      <p>* Apache Errors Logs =&gt; mod_rewrite enabled, PHP-Abhängigkeiten ok? 'make testdeps'. Bei Debian gibt es u.a. die folgende
+      Fehlermeldung: ".htaccess: Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server
+      configuration"</p>
+
+      <p>Icinga Web - Login erfolgt- aber die Seite lädt und lädt...</p>
+
+      <p>* Request failed, Ressource /icinga-web/appkit/ext/application State could not be loaded - is the url correct? =&gt; mod_rewrite
+      enabled ?</p>
 
       <p>* .htaccess/VHost-Konfiguration =&gt; Pfade nicht korrekt? Icinga-Web zeigt keine Daten?</p>
 
@@ -608,9 +645,21 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p><span class="bold"><strong>Testing the Web: </strong></span></p>
 
-      <pre class="programlisting"> #&gt; cd etc/tests/
- #&gt; php icingaWebTesting.php</pre>
+      <pre class="programlisting"> $&gt; cd etc/tests/
+ $&gt; php icingaWebTesting.php</pre>
 
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Falls Sie Ihren root- Benutzer zum Testen benutzen, dann stellen Sie vorher sicher, dass für den angegebenen Web-Benutzer eine
+        gültige Shell eingetragen ist. Anderenfalls werden verschiedene Tests fehlschlagen. Abhängig von der verwendeten Icinga-Web-Version
+        kann es sein, dass die Berechtigungen für die Dateien in /usr/local/icinga-web/app/data/log falsch gesetzt sind, so dass Icinga-Web
+        mit der Meldung "Loading" stehenbleibt.</p>
+      </td></tr>
+</table></div>
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
@@ -632,8 +681,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>* Keine Verbindung zur API. The API Connector returned the following message: getConnection failed: Database connection failed:
       SQLSTATE[28000] [1045] Access denied for user 'icinga'@'localhost' (using password: YES))</p>
 
-      <p>=&gt; Überprüfen Sie Ihre IDOUtils DB-Referenzen in der ido2db.cfg und fügen Sie diese in Ihre Icinga Web- Konfiguration als bevorzugte DB- Referenzen für Ihre IDO hinzu (siehe Konfiguration der Icinga API).
-      Ab Icinga Web1.0.3 können die Werte direkt während des configure gesetzt werden.</p>
+      <p>=&gt; Überprüfen Sie Ihre IDOUtils DB-Referenzen in der ido2db.cfg und fügen Sie diese in Ihre Icinga Web- Konfiguration als
+      bevorzugte DB- Referenzen für Ihre IDO hinzu (siehe Konfiguration der Icinga API). Ab Icinga Web1.0.3 können die Werte direkt während
+      des configure gesetzt werden.</p>
 
       <p>* touch: cannot touch `/usr/local/icinga-web/.../cache/testfile.txt': Permission denied</p>
 
@@ -654,33 +704,34 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Die Ergebnisse in den Status Cronks passen nicht zu Ihrer Konfiguration? =&gt; Überprüfen Sie in Ihrem Backend, d.h. IDOUtils
       DB, welche Werte für die Status-Tabellen selektiert werden.</p>
+
       <p>* Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/</p>
 
       <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id2580530"></a>
+  <a class="indexterm" name="id5642190"></a>
 
-  <a class="indexterm" name="id2580733"></a>
+  <a class="indexterm" name="id5642184"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgis.html">Zurück</a> </td>
+<a accesskey="p" href="cgiparams.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-intro.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-config.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Icinga Classic UI: Informationen über die CGIs </td>
+<td width="40%" align="left" valign="top">Informationen zu den CGI-Parametern </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Einführung in Icinga Web</td>
+<td width="40%" align="right" valign="top"> Konfigurationsübersicht Icinga Web</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

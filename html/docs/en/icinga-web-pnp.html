@@ -4,9 +4,9 @@
 <title>Integration of PNP4Nagios into Icinga Web</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="prev" href="icinga-web-intro.html" title="Introduction to Icinga Web">
+<link rel="prev" href="icinga-web-introduction.html" title="Introduction to Icinga Web">
 <link rel="next" href="ch07.html" title="Chapter 7. Advanced Topics">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,7 +16,7 @@
 <tr><th colspan="3" align="center">Integration of PNP4Nagios into Icinga Web</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icinga-web-intro.html">Prev</a> </td>
+<a accesskey="p" href="icinga-web-introduction.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 6. User Interfaces</th>
 <td width="20%" align="right"> <a accesskey="n" href="ch07.html">Next</a>
 </td>
@@ -33,7 +33,7 @@
   to the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a></p>
 
   <div class="figure">
-<a name="id4319030"></a><p class="title"><b>Figure 6.25. PNP4Nagios integrated in Icinga Web</b></p>
+<a name="id5069469"></a><p class="title"><b>Figure 6.50. PNP4Nagios integrated in Icinga Web</b></p>
 <div class="figure-contents">
       
 
@@ -74,7 +74,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
       <p>Make a copy of the default icinga-host-template.xml in app/modules/Cronks/data/xml/grid under your Icinga Web installation path,
       example: </p>
-<pre class="programlisting">#&gt; cp /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
+<pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
 <p>
       In the new file we just created add a new field definition: </p>
 <pre class="programlisting">&lt;field name="pnp4nagios_host_link"&gt;
@@ -159,7 +159,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
       <p>Make a copy of the default icinga-service-template.xml in app/modules/Cronks/data/xml/grid under your icinga-web installation
       path.</p>
 
-      <pre class="programlisting">cp /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml /usr/share/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
+      <pre class="programlisting">cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
 
       <p>In the new file we just created add a new field definition:</p>
 
@@ -190,7 +190,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
                                                         &lt;parameter name="image"&gt;images/icons/application_view_gallery.png&lt;/parameter&gt;
                                                         &lt;parameter name="css"&gt;x-icinga-grid-link&lt;/parameter&gt;
                                                         &lt;parameter name="attr"&gt;
-                                                                &lt;parameter name="qtip"&gt;Show host perfdata for this service&lt;/parameter&gt;
+                                                                &lt;parameter name="qtip"&gt;Show perfdata for this service&lt;/parameter&gt;
                                                         &lt;/parameter&gt;
                                 &lt;/parameter&gt;
                         &lt;/parameter&gt;
@@ -239,10 +239,10 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
       <p>Using your new created grid view as Default (if you want)</p>
 
       <p>Please backup your original view first: </p>
-<pre class="programlisting">&gt;# cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
+<pre class="programlisting">#&gt; cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
 <p>
       then </p>
-<pre class="programlisting">cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
+<pre class="programlisting">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
 <p> Clear
       the cache, like described below. Performance graphs are now in your default "serviceStatus" Cronk!</p>
     </li>
@@ -266,14 +266,14 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p>That's all, you're done!</p>
 
-  <a class="indexterm" name="id4319298"></a>
+  <a class="indexterm" name="id5069735"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icinga-web-intro.html">Prev</a> </td>
+<a accesskey="p" href="icinga-web-introduction.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
 <td width="40%" align="right"> <a accesskey="n" href="ch07.html">Next</a>
 </td>
@@ -285,6 +285,6 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

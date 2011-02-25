@@ -1,0 +1,505 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Icinga and IDOUtils Quickstart on FreeBSD</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
+<link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
+<link rel="prev" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">
+<link rel="next" href="howtos.html" title="Links to other published Howtos">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Icinga and IDOUtils Quickstart on FreeBSD</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="quickstart-idoutils.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 2. Getting Started</th>
+<td width="20%" align="right"> <a accesskey="n" href="howtos.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Icinga and IDOUtils Quickstart on FreeBSD">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="quickstart-idoutils-freebsd"></a>Icinga and IDOUtils Quickstart on FreeBSD</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong><a name="introduction_idoutils_freebsd"></a>Introduction</strong></span></p>
+
+  <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
+  monitoring your local machine within 30 minutes.</p>
+
+  <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get
+  started.</p>
+
+  <p>This guide will give you examples for installation on <a class="link" href="" target="_top">FreeBSD</a> 8.1-RELEASE. Thanks to <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=8925" target="_top">"ScotchTape"</a> for the adapted instructions.</p>
+
+  <p>Later distributions of FreeBSD may inherit from these examples.</p>
+
+  <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
+
+  <p>If you follow these instructions, here's what you'll end up with:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Icinga and the plugins will be installed underneath /usr/local/icinga</p>
+    </li>
+<li class="listitem">
+      <p>Icinga will be configured to monitor a few aspects of your local system (CPU load, disk usage, etc.)</p>
+    </li>
+<li class="listitem">
+      <p>The Icinga classic web interface will be accessible at <code class="uri">http://localhost/icinga/</code> or
+      <code class="uri">http://yourdomain.com/icinga</code></p>
+    </li>
+<li class="listitem">
+      <p>a database being filled using the IDOUtils</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+
+  <p>During portions of the installation you'll need to have <span class="bold"><strong>root</strong></span> access to your machine.</p>
+
+  <p>Make sure you've installed the following packages on your system before continuing.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="http://www.apache.org" target="_top">Apache</a></p>
+    </li>
+<li class="listitem">
+      <p>GCC compiler</p>
+    </li>
+<li class="listitem">
+      <p>C/C++ development libraries</p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
+    </li>
+<li class="listitem">
+      <p>libdbi-drivers, a database like MySQL, or PostgreSQL</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Optional</strong></span></p>
+
+  <p>At one time or another you will likely use SNMP based checks so it might be a good idea to install the required packages now.
+  Otherwise the plugins will not be compiled and are not available when you need them.</p>
+
+  <p><span class="bold"><strong>New features fot the IDOUtils:</strong></span></p>
+
+  <p><span class="bold"><strong>SSL-encryption between idomod and ido2db</strong></span></p>
+
+  <p>If you want to use <span class="bold"><strong>SSL-encryption </strong></span>: it is already installed.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>SSL has to be activated on all idomod clients, otherwise you will lose data!!!</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Oracle database support</strong></span></p>
+
+  <p>If you want to use Oracle as an RDBMS then we are sorry. Unfortunately it isn't that easy with FreeBSD.</p>
+
+  <p><span class="bold"><strong>Install the packages</strong></span></p>
+
+  <p>You can install the packages from the ports or you take older packages (have a look at the <a class="link" href="quickstart-icinga-freebsd.html" title="Icinga Quickstart FreeBSD">FreeBSD quickstart quide</a></p>
+
+  <p><span class="bold"><strong>Install ports</strong></span></p>
+
+  <p>You can install these ports by running the following commands (as root) but it is recommended to use portupgrade or portmaster
+  instead:</p>
+
+  <p>Please update your ports before doing so.</p>
+
+  <pre class="programlisting"> #&gt; cd /usr/ports/devel/libtool22/ &amp;&amp; make all install clean
+ #&gt; cd /usr/ports/graphics/jpeg &amp;&amp; make all install clean
+ #&gt; cd /usr/ports/graphics/png &amp;&amp; make all install clean
+ #&gt; cd /usr/ports/graphics/gd &amp;&amp; make all install clean</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Please make sure you have Apache installed - the process will not be discussed here, however the lead is <span class="emphasis"><em># cd
+    /usr/ports/www/apache22 &amp;&amp; make clean &amp;&amp; make</em></span>.</p>
+  </td></tr>
+</table></div>
+
+  <pre class="programlisting"> #&gt; cd /usr/ports/devel/gmake &amp;&amp; make all install clean 
+ #&gt; cd /usr/ports/devel/libltdl &amp;&amp; make all install clean &lt;-- unless installed already</pre>
+
+  <p><span class="bold"><strong>MySQL</strong></span></p>
+
+  <pre class="programlisting"> #&gt; cd /usr/ports/databases/mysql51-server &amp;&amp; make all install clean 
+ #&gt; cd /usr/ports/databases/libdbi-drivers &amp;&amp; make all install clean</pre>
+
+  <p>please choose the correct driver for the database used</p>
+
+  <p><span class="bold"><strong>PostgreSQL</strong></span></p>
+
+  <pre class="programlisting"> #&gt; cd /usr/ports/databases/postgresql84-server &amp;&amp; make all install clean 
+ #&gt; cd /usr/ports/databases/libdbi-drivers &amp;&amp; make all install clean</pre>
+
+  <p>please choose the correct driver for the database used</p>
+
+  <p><span class="bold"><strong>Create Account Information</strong></span></p>
+
+  <p>Become the root user.</p>
+
+  <pre class="programlisting"> $&gt; su -l</pre>
+
+  <p>Create a new <span class="emphasis"><em>icinga</em></span> user account without a password and without the ability to log-in (set no password when
+  asked):</p>
+
+  <pre class="programlisting"> #&gt; adduser -D -w no -s nologin</pre>
+
+  <p>For sending commands from the classic web interface to Icinga, you'll need to create a new group icinga-cmd and add the
+  webuser (www) and the Icingauser to this group:</p>
+
+  <pre class="programlisting"> #&gt; pw groupadd -n icinga-cmd -M icinga,www </pre>
+
+  <p><span class="bold"><strong>Download Icinga and the plugins</strong></span></p>
+
+  <p>Change to your local source directory i.e. ~/src</p>
+
+  <pre class="programlisting"> #&gt; mkdir ~/src
+ #&gt; cd ~/src</pre>
+
+  <p>Either fetch the current icinga-core snapshot from Icinga GIT </p>
+<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-core.git</pre>
+<p>or
+  from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
+
+  <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a> .</p>
+
+  <p><span class="bold"><strong>Compile and install Icinga and IDOUtils</strong></span></p>
+
+  <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
+
+  <pre class="programlisting"> #&gt; cd ~/src/ 
+ #&gt; tar xvzf icinga-1.3.tar.gz 
+ #&gt; cd icinga-1.3</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This absolute path is meant if we use the description '/path/to/icinga-src/'.</p>
+  </td></tr>
+</table></div>
+
+  <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
+
+  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils CPPFLAGS=-I/usr/local/include</pre>
+
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Appending <span class="emphasis"><em>CPPFLAGS=-I/usr/local/include</em></span> is important for the IDOUtils and the broker modul
+    respectively.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>With SSL-encryption:</strong></span></p>
+
+  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl CPPFLAGS=-I/usr/local/include</pre>
+
+  <p>Compile the Icinga source code. There is a separate option for IDOUtils (<span class="emphasis"><em>make idoutils</em></span>) if you
+  just want to recompile this module. To see possible option just call "make".</p>
+
+  <pre class="programlisting"> #&gt; gmake all</pre>
+
+  <p>Install binaries, init script, sample config files and set permissions on the external command directory. </p>
+<pre class="programlisting"> #&gt; gmake install 
+ #&gt; gmake install-init 
+ #&gt; gmake install-config 
+ #&gt; gmake install-commandmode
+ #&gt; gmake install-idoutils</pre>
+<p> or shorter </p>
+<pre class="programlisting"> #&gt; make fullinstall</pre>
+
+  <p>The Icinga-API will be installed during "make install" so if you are required to install it manually please try: </p>
+<pre class="programlisting"> #&gt; make install-api</pre>
+<p>This
+  will be mandatory for Icinga Web.</p>
+
+  <p>Don't start Icinga yet - there's still more that needs to be done...</p>
+
+  <p><span class="bold"><strong>Customise Configuration</strong></span></p>
+
+  <p>Sample configuration files have been installed using </p>
+<pre class="programlisting"> #&gt; gmake install-config</pre>
+<p>into
+  /usr/local/icinga/etc/. You'll need to make just one change before you proceed...</p>
+
+  <p>Edit the <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span> config file with your favourite editor and change the email
+  address associated with the <span class="emphasis"><em>icingaadmin</em></span> contact definition to the address you'd like to use for receiving
+  alerts.</p>
+
+  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+
+  <pre class="programlisting"> #&gt; cd /usr/local/icinga/etc
+ #&gt; mv idomod.cfg-sample idomod.cfg
+ #&gt; mv ido2db.cfg-sample ido2db.cfg</pre>
+
+  <p>If you compiled the IDOUtils with SSL then you have to activate SSL in idomod.cfg setting</p>
+
+  <pre class="programlisting"> use_ssl=1
+ output_type=tcpsocket
+ output=127.0.0.1</pre>
+
+  <p>(adjust the IP address if your database is not running on localhost!) and in ido2db.cfg setting</p>
+
+  <pre class="programlisting"> use_ssl=1
+ socket_type=tcp </pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Don't forget to recompile all other idomod clients and to activate SSL <span class="bold"><strong>otherwise you will lose
+    data!!!</strong></span></p>
+  </td></tr>
+</table></div>
+
+  <p>Activate the idomod event broker module. Edit /usr/local/icinga/etc/icinga.cfg, search for "broker_module" and uncomment or insert the following
+  line (adjust the name if necessary).</p>
+
+  <pre class="programlisting"> broker_module=/usr/local/icinga/bin/idomod.o config_file=/usr/local/icinga/etc/idomod.cfg</pre>
+
+  <p><span class="bold"><strong>Compile database and IDOUtils</strong></span></p>
+
+  <p><span class="bold"><strong>MySQL:</strong></span></p>
+
+  <p><span class="emphasis"><em>Create database, user, and permissions</em></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>If you just installed the RDBMS like decribed above then you have to start the database server before you can create a database.
+    Having MySQL please use <code class="code">/usr/local/etc/rc.d/mysql-server start</code> to start.</p>
+  </td></tr>
+</table></div>
+
+  <pre class="programlisting"> #&gt; mysql -u root -p
+
+ mysql&gt; CREATE DATABASE icinga;
+
+ GRANT USAGE ON *.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+
+ GRANT SELECT , INSERT , UPDATE , DELETE ON icinga.* TO 'icinga'@'localhost';
+
+ FLUSH PRIVILEGES ;
+
+ quit</pre>
+
+  <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
+ #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
+
+  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
+
+ db_servertype=mysql
+ db_port=3306
+ db_user=icinga
+ db_pass=icinga</pre>
+
+  <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+
+  <p><span class="emphasis"><em>To Do</em></span></p>
+
+  <p><span class="bold"><strong>Install and configure the Classic Web Interface</strong></span></p>
+
+  <p>Icinga ships with the Classic Web Interface ("the CGIs") which can be installed via</p>
+
+  <pre class="programlisting"> #&gt; cd /path/to/icinga-src
+ #&gt; make cgis
+ #&gt; make install-cgis
+ #&gt; make install-html</pre>
+
+  <p>If you are interested in the new Icinga Web, please refer to <a class="link" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">Install Icinga Web
+  Interface</a>.</p>
+
+  <p>Install the Icinga Classic web config file in the Apache conf.d directory.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>There is currently a bug in Icinga Makefile which directly prevents this <span class="emphasis"><em>make</em></span> command, please edit
+    Makefile file in Icinga source directory and change the line </p>
+<pre class="programlisting"> $(INSTALL) -D -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf</pre>
+<p>
+    to </p>
+<pre class="programlisting"> $(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/icinga.conf</pre>
+  </td></tr>
+</table></div>
+
+  <pre class="programlisting"> #&gt; make install-webconf</pre>
+
+  <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga classic web interface. If you want to change
+  it later, use the same command. Remember the password you assign to this account - you'll need it later.</p>
+
+  <pre class="programlisting"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+
+  <p>If you want to change it later or want to add another user, use the following command:</p>
+
+  <pre class="programlisting"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+
+  <p>Reload/Restart Apache to make the new settings take effect.</p>
+
+  <pre class="programlisting"> #&gt; /usr/local/etc/rc.d/apache22 reload</pre>
+
+  <p><span class="bold"><strong>Compile and Install the Nagios-/Perl Plugins</strong></span></p>
+
+  <p>Extract the Nagios plugins source code tarball.</p>
+
+  <pre class="programlisting"> #&gt; cd ~/src 
+ #&gt; tar xvzf nagios-plugins-1.4.15.tar.gz
+ #&gt; cd nagios-plugins-1.4.15 </pre>
+
+  <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
+
+  <pre class="programlisting"> #&gt; ./configure --prefix=/usr/local/icinga --with-cgiurl=/icinga/cgi-bin \
+    --with-htmurl=/icinga --with-nagios-user=icinga --with-nagios-group=icinga
+ #&gt; make 
+ #&gt; make install </pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>There is a port for the plugins but it will install them in a different directory. You can set certain variables to tweak its make
+    but you still have to copy some things manually later on.</p>
+  </td></tr>
+</table></div>
+
+  <p>Compile and install the Perl plugin:</p>
+
+  <pre class="programlisting"> #&gt; cd /usr/ports/net-mgmt/p5-Nagios-Plugin
+ #&gt; make all install clean</pre>
+
+  <p><span class="bold"><strong>Starting IDOUtils and Icinga</strong></span></p>
+
+  <p>IDOUtils has to be started before Icinga</p>
+
+  <p><span class="bold"><strong>Starting IDOUtils</strong></span></p>
+
+  <pre class="programlisting"> #&gt; /usr/local/etc/rc.d/ido2db start</pre>
+
+  <p><span class="bold"><strong>Stopping IDOUtils</strong></span></p>
+
+  <pre class="programlisting"> #&gt; /usr/local/etc/rc.d/ido2db stop</pre>
+
+  <p><span class="bold"><strong>Start Icinga</strong></span></p>
+
+  <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have installed
+  the init script before).</p>
+
+  <pre class="programlisting"> #&gt; echo icinga_enable=\"YES\" &gt;&gt; /etc/rc.conf</pre>
+
+  <p>Verify the sample Icinga configuration files.</p>
+
+  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+
+  <p>If there are no errors, start Icinga.</p>
+
+  <pre class="programlisting"> #&gt; /usr/local/etc/rc.d/icinga start</pre>
+
+  <p><span class="bold"><strong>Login to the Classic Web Interface</strong></span></p>
+
+  <p>You should now be able to access the Icinga classic web interface at the URL below. You'll be prompted for the username (
+  <span class="emphasis"><em>icingaadmin</em></span>) and password you specified earlier.</p>
+
+  <pre class="programlisting"> http://localhost/icinga/</pre>
+
+  <p>or</p>
+
+  <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
+
+  <p>Click on the "Service Detail" navbar link to see details of what's being monitored on your local machine. It will take a few minutes
+  for Icinga to check all the services associated with your machine.</p>
+
+  <p><span class="bold"><strong>Other Modifications</strong></span></p>
+
+  <p>Make sure your system's firewall rules are configured to allow access to the web server if you want to access the Icinga
+  classic interface remotely.</p>
+
+  <pre class="programlisting"> TCP port 80</pre>
+
+  <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't be
+  explained here.</p>
+
+  <p>Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios Wiki</a> for more resources.</p>
+
+  <p><span class="bold"><strong>You're Done</strong></span></p>
+
+  <p>Congratulations! You successfully installed Icinga. Your journey into monitoring has just begun.</p>
+
+  <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
+  Started"</a> about "Monitoring ..."</p>
+
+  <p></p>
+
+  <p>Packages for Icinga</p>
+
+  <p>Compiler options for Icinga with IDOUtils</p>
+
+  <pre class="programlisting">./configure --with-httpd-conf=/usr/local/etc/apache22/Includes/ \
+ --with-gd-lib=/usr/local/lib/ --with-gd-inc=/usr/local/include/ \
+ --with-command-group=icinga-cmd --enable-idoutils \
+ --with-dbi-inc=/usr/local/include --with-dbu-lib=/usr/local/lib \
+ CPPFLAGS=-I/usr/local/include CFLAGS=-fPIC</pre>
+
+  <p>Compiler options for Nagios plugins (ports)</p>
+
+  <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
+ PREFIX=/usr/local/icinga</pre>
+
+  <a class="indexterm" name="id4984849"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="quickstart-idoutils.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="howtos.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Icinga with IDOUtils Quickstart </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Links to other published Howtos</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

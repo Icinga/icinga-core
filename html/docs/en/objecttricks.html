@@ -4,7 +4,7 @@
 <title>Time-Saving Tricks For Object Definitions</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="objectinheritance.html" title="Object Inheritance">
 <link rel="next" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
@@ -31,10 +31,10 @@
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
-  <p>This documentation attempts to explain how you can exploit the (somewhat) hidden features of <a class="link" href="objectdefinitions.html" title="Object Definitions">template-based object definitions</a> to save your sanity. How so, you ask? Several types of
-  objects allow you to specify multiple host names and/or hostgroup names in definitions, allowing you to "copy" the object
-  defintion to multiple hosts or services. We'll cover each type of object that supports these features separately. For starters,
-  the object types which support this time-saving feature are as follows:</p>
+  <p>This documentation attempts to explain how you can exploit the (somewhat) hidden features of <a class="link" href="objectdefinitions.html" title="Object Definitions">template-based object definitions</a> to save your sanity. How so, you ask? Several types of objects allow
+  you to specify multiple host names and/or hostgroup names in definitions, allowing you to "copy" the object defintion to multiple hosts or
+  services. We'll cover each type of object that supports these features separately. For starters, the object types which support this
+  time-saving feature are as follows:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -62,12 +62,13 @@
 
   <p><span class="bold"><strong>Regular Expression Matching</strong></span></p>
 
-  <p>The examples we give below use "standard" matching of object names. If you wish, you can enable regular expression
-  matching for object names by using the <a class="link" href="configmain.html#configmain-use_regexp_matching">use_regexp_matching</a> config option.
-  By default, regular expression matching will only be used in object names that contain <span class="bold"><strong>*</strong></span>,
-  <span class="bold"><strong>?</strong></span>, <span class="bold"><strong>+</strong></span>, or <span class="bold"><strong>\.</strong></span>. If you want
-  regular expression matching to be used on all object names, enable the <a class="link" href="configmain.html#configmain-use_true_regexp_matching">use_true_regexp_matching</a> config option. Regular expressions can be used in
-  any of the fields used in the examples below (host names, hostgroup names, service names, and servicegroup names).</p>
+  <p>The examples we give below use "standard" matching of object names. If you wish, you can enable regular expression matching for
+  object names by using the <a class="link" href="configmain.html#configmain-use_regexp_matching">use_regexp_matching</a> config option. By default, regular
+  expression matching will only be used in object names that contain <span class="bold"><strong>*</strong></span>, <span class="bold"><strong>?</strong></span>,
+  <span class="bold"><strong>+</strong></span>, or <span class="bold"><strong>\.</strong></span>. If you want regular expression matching to be used on all
+  object names, enable the <a class="link" href="configmain.html#configmain-use_true_regexp_matching">use_true_regexp_matching</a> config option. Regular
+  expressions can be used in any of the fields used in the examples below (host names, hostgroup names, service names, and servicegroup
+  names).</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -75,9 +76,9 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Be careful when enabling regular expression matching - you may have to change your config file, since some directives
-    that you might not want to be interpreted as a regular expression just might be! Any problems should become evident once you
-    verify your configuration.</p>
+    <p>Be careful when enabling regular expression matching - you may have to change your config file, since some directives that you
+    might not want to be interpreted as a regular expression just might be! Any problems should become evident once you verify your
+    configuration.</p>
   </td></tr>
 </table></div>
 
@@ -85,11 +86,11 @@
 
   <p><span class="bold"><strong>Multiple Hosts:</strong></span></p>
 
-  <p>If you want to create identical <a class="link" href="objectdefinitions.html#objectdefinitions-service">services</a> that are assigned to multiple
-  hosts, you can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a
-  service called <span class="emphasis"><em>SOMESERVICE</em></span> on hosts <span class="emphasis"><em>HOST1</em></span> through <span class="emphasis"><em>HOSTN</em></span>. All the
-  instances of the <span class="emphasis"><em>SOMESERVICE</em></span> service would be identical (i.e. have the same check command, max check
-  attempts, notification period, etc.).</p>
+  <p>If you want to create identical <a class="link" href="objectdefinitions.html#objectdefinitions-service">services</a> that are assigned to multiple hosts, you
+  can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a service called
+  <span class="emphasis"><em>SOMESERVICE</em></span> on hosts <span class="emphasis"><em>HOST1</em></span> through <span class="emphasis"><em>HOSTN</em></span>. All the instances of the
+  <span class="emphasis"><em>SOMESERVICE</em></span> service would be identical (i.e. have the same check command, max check attempts, notification period,
+  etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> service</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2,HOST3,...,HOSTN</em></span>
@@ -99,12 +100,12 @@
 
   <p><span class="bold"><strong>All Hosts In Multiple Hostgroups:</strong></span></p>
 
-  <p>If you want to create identical services that are assigned to all hosts in one or more hostgroups, you can do so by
-  creating a single service definition. How? The <span class="emphasis"><em>hostgroup_name</em></span> directive allows you to specify the name of
-  one or more hostgroups that the service should be created for. The definition below would create a service called
-  <span class="emphasis"><em>SOMESERVICE</em></span> on all hosts that are members of hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> through
-  <span class="emphasis"><em>HOSTGROUPN</em></span>. All the instances of the <span class="emphasis"><em>SOMESERVICE</em></span> service would be identical (i.e. have
-  the same check command, max check attempts, notification period, etc.).</p>
+  <p>If you want to create identical services that are assigned to all hosts in one or more hostgroups, you can do so by creating a
+  single service definition. How? The <span class="emphasis"><em>hostgroup_name</em></span> directive allows you to specify the name of one or more hostgroups
+  that the service should be created for. The definition below would create a service called <span class="emphasis"><em>SOMESERVICE</em></span> on all hosts
+  that are members of hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> through <span class="emphasis"><em>HOSTGROUPN</em></span>. All the instances of the
+  <span class="emphasis"><em>SOMESERVICE</em></span> service would be identical (i.e. have the same check command, max check attempts, notification period,
+  etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> service</em></span>{
            hostgroup_name        <span class="emphasis"><em> HOSTGROUP1,HOSTGROUP2,...,HOSTGROUPN</em></span>
@@ -114,11 +115,11 @@
 
   <p><span class="bold"><strong>All Hosts:</strong></span></p>
 
-  <p>If you want to create identical services that are assigned to all hosts that are defined in your configuration files, you
-  can use a wildcard in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a service called
-  <span class="emphasis"><em>SOMESERVICE</em></span> on <span class="bold"><strong>all hosts</strong></span> that are defined in your configuration files. All
-  the instances of the <span class="emphasis"><em>SOMESERVICE</em></span> service would be identical (i.e. have the same check command, max check
-  attempts, notification period, etc.).</p>
+  <p>If you want to create identical services that are assigned to all hosts that are defined in your configuration files, you can use a
+  wildcard in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a service called
+  <span class="emphasis"><em>SOMESERVICE</em></span> on <span class="bold"><strong>all hosts</strong></span> that are defined in your configuration files. All the
+  instances of the <span class="emphasis"><em>SOMESERVICE</em></span> service would be identical (i.e. have the same check command, max check attempts,
+  notification period, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> service</em></span>{
          host_name             <span class="emphasis"><em> *</em></span>
@@ -128,8 +129,8 @@
 
   <p><span class="bold"><strong>Excluding Hosts:</strong></span></p>
 
-  <p>If you want to create identical services on numerous hosts or hostgroups, but would like to exclude some hosts from the
-  definition, this can be accomplished by preceding the host or hostgroup with a ! symbol.</p>
+  <p>If you want to create identical services on numerous hosts or hostgroups, but would like to exclude some hosts from the definition,
+  this can be accomplished by preceding the host or hostgroup with a ! symbol.</p>
 
   <pre class="screen"> define <span class="emphasis"><em> service</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2,!HOST3,!HOST4,...,HOSTN</em></span>
@@ -142,11 +143,11 @@
 
   <p><span class="bold"><strong>Multiple Hosts:</strong></span></p>
 
-  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> for services of the
-  same name/description that are assigned to multiple hosts, you can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span>
-  directive. The definition below would create a service escalation for services called <span class="emphasis"><em>SOMESERVICE</em></span> on hosts
-  <span class="emphasis"><em>HOST1</em></span> through <span class="emphasis"><em>HOSTN</em></span>. All the instances of the service escalation would be identical
-  (i.e. have the same contact groups, notification interval, etc.).</p>
+  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> for services of the same
+  name/description that are assigned to multiple hosts, you can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span> directive. The
+  definition below would create a service escalation for services called <span class="emphasis"><em>SOMESERVICE</em></span> on hosts
+  <span class="emphasis"><em>HOST1</em></span> through <span class="emphasis"><em>HOSTN</em></span>. All the instances of the service escalation would be identical (i.e. have
+  the same contact groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> serviceescalation</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2,HOST3,...,HOSTN</em></span>
@@ -156,11 +157,11 @@
 
   <p><span class="bold"><strong>All Hosts In Multiple Hostgroups:</strong></span></p>
 
-  <p>If you want to create service escalations for services of the same name/description that are assigned to all hosts in in
-  one or more hostgroups, you can do use the <span class="emphasis"><em>hostgroup_name</em></span> directive. The definition below would create a
-  service escalation for services called <span class="emphasis"><em>SOMESERVICE</em></span> on all hosts that are members of hostgroups
-  <span class="emphasis"><em>HOSTGROUP1</em></span> through <span class="emphasis"><em>HOSTGROUPN</em></span>. All the instances of the service escalation would be
-  identical (i.e. have the same contact groups, notification interval, etc.).</p>
+  <p>If you want to create service escalations for services of the same name/description that are assigned to all hosts in in one or more
+  hostgroups, you can do use the <span class="emphasis"><em>hostgroup_name</em></span> directive. The definition below would create a service escalation for
+  services called <span class="emphasis"><em>SOMESERVICE</em></span> on all hosts that are members of hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> through
+  <span class="emphasis"><em>HOSTGROUPN</em></span>. All the instances of the service escalation would be identical (i.e. have the same contact groups,
+  notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> serviceescalation</em></span>{
          hostgroup_name        <span class="emphasis"><em> HOSTGROUP1,HOSTGROUP2,...,HOSTGROUPN</em></span>
@@ -170,10 +171,11 @@
 
   <p><span class="bold"><strong>All Hosts:</strong></span></p>
 
-  <p>If you want to create identical service escalations for services of the same name/description that are assigned to all
-  hosts that are defined in your configuration files, you can use a wildcard in the <span class="emphasis"><em>host_name</em></span> directive. The
-  definition below would create a service escalation for all services called <span class="emphasis"><em>SOMESERVICE</em></span> on <span class="bold"><strong>all hosts</strong></span> that are defined in your configuration files. All the instances of the service escalation would
-  be identical (i.e. have the same contact groups, notification interval, etc.).</p>
+  <p>If you want to create identical service escalations for services of the same name/description that are assigned to all hosts that
+  are defined in your configuration files, you can use a wildcard in the <span class="emphasis"><em>host_name</em></span> directive. The definition below
+  would create a service escalation for all services called <span class="emphasis"><em>SOMESERVICE</em></span> on <span class="bold"><strong>all hosts</strong></span>
+  that are defined in your configuration files. All the instances of the service escalation would be identical (i.e. have the same contact
+  groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> serviceescalation</em></span>{
          host_name             <span class="emphasis"><em> *</em></span>
@@ -183,8 +185,8 @@
 
   <p><span class="bold"><strong>Excluding Hosts:</strong></span></p>
 
-  <p>If you want to create identical services escalations for services on numerous hosts or hostgroups, but would like to
-  exclude some hosts from the definition, this can be accomplished by preceding the host or hostgroup with a ! symbol.</p>
+  <p>If you want to create identical services escalations for services on numerous hosts or hostgroups, but would like to exclude some
+  hosts from the definition, this can be accomplished by preceding the host or hostgroup with a ! symbol.</p>
 
   <pre class="screen"> define <span class="emphasis"><em> serviceescalation</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2,!HOST3,!HOST4,...,HOSTN</em></span>
@@ -195,11 +197,10 @@
 
   <p><span class="bold"><strong>All Services On Same Host:</strong></span></p>
 
-  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> for all services
-  assigned to a particular host, you can use a wildcard in the <span class="emphasis"><em>service_description</em></span> directive. The definition
-  below would create a service escalation for <span class="bold"><strong>all</strong></span> services on host <span class="emphasis"><em>HOST1</em></span>.
-  All the instances of the service escalation would be identical (i.e. have the same contact groups, notification interval,
-  etc.).</p>
+  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> for all services assigned to a
+  particular host, you can use a wildcard in the <span class="emphasis"><em>service_description</em></span> directive. The definition below would create a
+  service escalation for <span class="bold"><strong>all</strong></span> services on host <span class="emphasis"><em>HOST1</em></span>. All the instances of the service
+  escalation would be identical (i.e. have the same contact groups, notification interval, etc.).</p>
 
   <p>If you feel like being particularly adventurous, you can specify a wildcard in both the <span class="emphasis"><em>host_name</em></span> and
   <span class="emphasis"><em>service_description</em></span> directives. Doing so would create a service escalation for <span class="bold"><strong>all
@@ -213,11 +214,11 @@
 
   <p><span class="bold"><strong>Multiple Services On Same Host:</strong></span></p>
 
-  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> for all multiple
-  services assigned to a particular host, you can use a specify more than one service description in the
-  <span class="emphasis"><em>service_description</em></span> directive. The definition below would create a service escalation for services
-  <span class="emphasis"><em>SERVICE1</em></span> through <span class="emphasis"><em>SERVICEN</em></span> on host <span class="emphasis"><em>HOST1</em></span>. All the instances of the
-  service escalation would be identical (i.e. have the same contact groups, notification interval, etc.).</p>
+  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> for all multiple services
+  assigned to a particular host, you can use a specify more than one service description in the <span class="emphasis"><em>service_description</em></span>
+  directive. The definition below would create a service escalation for services <span class="emphasis"><em>SERVICE1</em></span> through
+  <span class="emphasis"><em>SERVICEN</em></span> on host <span class="emphasis"><em>HOST1</em></span>. All the instances of the service escalation would be identical (i.e.
+  have the same contact groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> serviceescalation</em></span>{
          host_name             <span class="emphasis"><em> HOST1</em></span>
@@ -228,9 +229,9 @@
   <p><span class="bold"><strong>All Services In Multiple Servicegroups:</strong></span></p>
 
   <p>If you want to create service escalations for all services that belong in one or more servicegroups, you can do use the
-  <span class="emphasis"><em>servicegroup_name</em></span> directive. The definition below would create service escalations for all services that
-  are members of servicegroups <span class="emphasis"><em>SERVICEGROUP1</em></span> through <span class="emphasis"><em>SERVICEGROUPN</em></span>. All the instances of
-  the service escalation would be identical (i.e. have the same contact groups, notification interval, etc.).</p>
+  <span class="emphasis"><em>servicegroup_name</em></span> directive. The definition below would create service escalations for all services that are members
+  of servicegroups <span class="emphasis"><em>SERVICEGROUP1</em></span> through <span class="emphasis"><em>SERVICEGROUPN</em></span>. All the instances of the service
+  escalation would be identical (i.e. have the same contact groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> serviceescalation</em></span>{
          servicegroup_name             <span class="emphasis"><em> SERVICEGROUP1,SERVICEGROUP2,...,SERVICEGROUPN</em></span>
@@ -241,12 +242,12 @@
 
   <p><span class="bold"><strong>Multiple Hosts:</strong></span></p>
 
-  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a> for services of the
-  same name/description that are assigned to multiple hosts, you can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span>
-  and or <span class="emphasis"><em>dependent_host_name</em></span> directives. In the example below, service <span class="emphasis"><em>SERVICE2</em></span> on hosts
+  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a> for services of the same
+  name/description that are assigned to multiple hosts, you can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span> and or
+  <span class="emphasis"><em>dependent_host_name</em></span> directives. In the example below, service <span class="emphasis"><em>SERVICE2</em></span> on hosts
   <span class="emphasis"><em>HOST3</em></span> and <span class="emphasis"><em>HOST4</em></span> would be dependent on service <span class="emphasis"><em>SERVICE1</em></span> on hosts
-  <span class="emphasis"><em>HOST1</em></span> and <span class="emphasis"><em>HOST2</em></span>. All the instances of the service dependencies would be identical
-  except for the host names (i.e. have the same notification failure criteria, etc.).</p>
+  <span class="emphasis"><em>HOST1</em></span> and <span class="emphasis"><em>HOST2</em></span>. All the instances of the service dependencies would be identical except for the
+  host names (i.e. have the same notification failure criteria, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> servicedependency</em></span>{
          host_name                     <span class="emphasis"><em> HOST1,HOST2</em></span>
@@ -258,14 +259,13 @@
 
   <p><span class="bold"><strong>All Hosts In Multiple Hostgroups:</strong></span></p>
 
-  <p>If you want to create service dependencies for services of the same name/description that are assigned to all hosts in in
-  one or more hostgroups, you can do use the <span class="emphasis"><em>hostgroup_name</em></span> and/or
-  <span class="emphasis"><em>dependent_hostgroup_name</em></span> directives. In the example below, service <span class="emphasis"><em>SERVICE2</em></span> on all
-  hosts in hostgroups <span class="emphasis"><em>HOSTGROUP3</em></span> and <span class="emphasis"><em>HOSTGROUP4</em></span> would be dependent on service
-  <span class="emphasis"><em>SERVICE1</em></span> on all hosts in hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> and <span class="emphasis"><em>HOSTGROUP2</em></span>.
-  Assuming there were five hosts in each of the hostgroups, this definition would be equivalent to creating 100 single service
-  dependency definitions! All the instances of the service dependency would be identical except for the host names (i.e. have the
-  same notification failure criteria, etc.).</p>
+  <p>If you want to create service dependencies for services of the same name/description that are assigned to all hosts in in one or
+  more hostgroups, you can do use the <span class="emphasis"><em>hostgroup_name</em></span> and/or <span class="emphasis"><em>dependent_hostgroup_name</em></span> directives.
+  In the example below, service <span class="emphasis"><em>SERVICE2</em></span> on all hosts in hostgroups <span class="emphasis"><em>HOSTGROUP3</em></span> and
+  <span class="emphasis"><em>HOSTGROUP4</em></span> would be dependent on service <span class="emphasis"><em>SERVICE1</em></span> on all hosts in hostgroups
+  <span class="emphasis"><em>HOSTGROUP1</em></span> and <span class="emphasis"><em>HOSTGROUP2</em></span>. Assuming there were five hosts in each of the hostgroups, this
+  definition would be equivalent to creating 100 single service dependency definitions! All the instances of the service dependency would be
+  identical except for the host names (i.e. have the same notification failure criteria, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> servicedependency</em></span>{
          hostgroup_name                 <span class="emphasis"><em>HOSTGROUP1,HOSTGROUP2</em></span>
@@ -278,9 +278,10 @@
   <p><span class="bold"><strong>All Services On A Host:</strong></span></p>
 
   <p>If you want to create service dependencies for all services assigned to a particular host, you can use a wildcard in the
-  <span class="emphasis"><em>service_description</em></span> and/or <span class="emphasis"><em>dependent_service_description</em></span> directives. In the example
-  below, <span class="bold"><strong>all services</strong></span> on host <span class="emphasis"><em>HOST2</em></span> would be dependent on <span class="bold"><strong>all services</strong></span> on host <span class="emphasis"><em>HOST1</em></span>. All the instances of the service dependencies would be
-  identical (i.e. have the same notification failure criteria, etc.).</p>
+  <span class="emphasis"><em>service_description</em></span> and/or <span class="emphasis"><em>dependent_service_description</em></span> directives. In the example below,
+  <span class="bold"><strong>all services</strong></span> on host <span class="emphasis"><em>HOST2</em></span> would be dependent on <span class="bold"><strong>all
+  services</strong></span> on host <span class="emphasis"><em>HOST1</em></span>. All the instances of the service dependencies would be identical (i.e. have the
+  same notification failure criteria, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> servicedependency</em></span>{
          host_name                     <span class="emphasis"><em> HOST1</em></span>
@@ -292,9 +293,9 @@
 
   <p><span class="bold"><strong>Multiple Services On A Host:</strong></span></p>
 
-  <p>If you want to create service dependencies for multiple services assigned to a particular host, you can specify more than
-  one service description in the <span class="emphasis"><em>service_description</em></span> and/or
-  <span class="emphasis"><em>dependent_service_description</em></span> directives as follows:</p>
+  <p>If you want to create service dependencies for multiple services assigned to a particular host, you can specify more than one
+  service description in the <span class="emphasis"><em>service_description</em></span> and/or <span class="emphasis"><em>dependent_service_description</em></span> directives
+  as follows:</p>
 
   <pre class="screen"> define <span class="emphasis"><em> servicedependency</em></span>{
          host_name                     <span class="emphasis"><em> HOST1</em></span>
@@ -317,15 +318,14 @@
 
   <p><a name="objecttricks-same_host_dependency"></a><span class="bold"><strong>Same Host Dependencies:</strong></span></p>
 
-  <p>If you want to create service dependencies for multiple services that are dependent on services on the same host, leave
-  the <span class="emphasis"><em>dependent_host_name</em></span> and <span class="emphasis"><em>dependent_hostgroup_name</em></span> directives empty. The example
-  below assumes that hosts <span class="emphasis"><em>HOST1</em></span> and <span class="emphasis"><em>HOST2</em></span> have at least the following four services
-  associated with them: <span class="emphasis"><em>SERVICE1</em></span>, <span class="emphasis"><em>SERVICE2</em></span>, <span class="emphasis"><em>SERVICE3</em></span>, and
-  <span class="emphasis"><em>SERVICE4</em></span>. In this example, <span class="emphasis"><em>SERVICE3</em></span> and <span class="emphasis"><em>SERVICE4</em></span> on
-  <span class="emphasis"><em>HOST1</em></span> will be dependent on both <span class="emphasis"><em>SERVICE1</em></span> and <span class="emphasis"><em>SERVICE2</em></span> on
-  <span class="emphasis"><em>HOST1</em></span>. Similiarly, <span class="emphasis"><em>SERVICE3</em></span> and <span class="emphasis"><em>SERVICE4</em></span> on
-  <span class="emphasis"><em>HOST2</em></span> will be dependent on both <span class="emphasis"><em>SERVICE1</em></span> and <span class="emphasis"><em>SERVICE2</em></span> on
-  <span class="emphasis"><em>HOST2</em></span>.</p>
+  <p>If you want to create service dependencies for multiple services that are dependent on services on the same host, leave the
+  <span class="emphasis"><em>dependent_host_name</em></span> and <span class="emphasis"><em>dependent_hostgroup_name</em></span> directives empty. The example below assumes
+  that hosts <span class="emphasis"><em>HOST1</em></span> and <span class="emphasis"><em>HOST2</em></span> have at least the following four services associated with them:
+  <span class="emphasis"><em>SERVICE1</em></span>, <span class="emphasis"><em>SERVICE2</em></span>, <span class="emphasis"><em>SERVICE3</em></span>, and <span class="emphasis"><em>SERVICE4</em></span>. In this
+  example, <span class="emphasis"><em>SERVICE3</em></span> and <span class="emphasis"><em>SERVICE4</em></span> on <span class="emphasis"><em>HOST1</em></span> will be dependent on both
+  <span class="emphasis"><em>SERVICE1</em></span> and <span class="emphasis"><em>SERVICE2</em></span> on <span class="emphasis"><em>HOST1</em></span>. Similiarly, <span class="emphasis"><em>SERVICE3</em></span>
+  and <span class="emphasis"><em>SERVICE4</em></span> on <span class="emphasis"><em>HOST2</em></span> will be dependent on both <span class="emphasis"><em>SERVICE1</em></span> and
+  <span class="emphasis"><em>SERVICE2</em></span> on <span class="emphasis"><em>HOST2</em></span>.</p>
 
   <pre class="screen"> define <span class="emphasis"><em> servicedependency</em></span>{
          host_name                     <span class="emphasis"><em> HOST1,HOST2</em></span>
@@ -334,14 +334,30 @@
          <span class="emphasis"><em>other dependency directives</em></span> ...
          }</pre>
 
+  <p><a name="objecttricks-same_host_dependency_servicegroups"></a><span class="bold"><strong>Same Host Dependencies With
+  Servicegroups:</strong></span></p>
+
+  <p>If you want to create service dependencies for all services that belong to one or more servicegroups of a service on the same host
+  running the dependent service, leave the <span class="emphasis"><em>host_name</em></span> and <span class="emphasis"><em>hostgroup_name</em></span> directives empty. The
+  example below assumes that hosts running services belonging to <span class="emphasis"><em>SERVICEGROUP1</em></span> and <span class="emphasis"><em>SERVICEGROUP2</em></span>
+  have the following service associated with them: <span class="emphasis"><em>SERVICE1</em></span>. In this example, all services belonging to
+  <span class="emphasis"><em>SERVICEGROUP1</em></span> and <span class="emphasis"><em>SERVICEGROUP2</em></span> will be dependent on <span class="emphasis"><em>SERVICE1</em></span> on the same
+  host running the dependent service.</p>
+
+  <pre class="screen"> define <span class="emphasis"><em> servicedependency</em></span>{
+         service_description           <span class="emphasis"><em> SERVICE1</em></span>
+         dependent_service_description <span class="emphasis"><em> SERVICEGROUP1,SERVICEGROUP2</em></span>
+         <span class="emphasis"><em>other dependency directives</em></span> ...
+         }</pre>
+
   <p><a name="objecttricks-hostescalation"></a><span class="bold"><strong>Host Escalation Definitions</strong></span></p>
 
   <p><span class="bold"><strong>Multiple Hosts:</strong></span></p>
 
-  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">host escalations</a> for multiple hosts, you can
-  specify multiple hosts in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a host escalation for
-  hosts <span class="emphasis"><em>HOST1</em></span> through <span class="emphasis"><em>HOSTN</em></span>. All the instances of the host escalation would be identical
-  (i.e. have the same contact groups, notification interval, etc.).</p>
+  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">host escalations</a> for multiple hosts, you can specify
+  multiple hosts in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a host escalation for hosts
+  <span class="emphasis"><em>HOST1</em></span> through <span class="emphasis"><em>HOSTN</em></span>. All the instances of the host escalation would be identical (i.e. have the
+  same contact groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostescalation</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2,HOST3,...,HOSTN</em></span>
@@ -351,9 +367,9 @@
   <p><span class="bold"><strong>All Hosts In Multiple Hostgroups:</strong></span></p>
 
   <p>If you want to create host escalations for all hosts in in one or more hostgroups, you can do use the
-  <span class="emphasis"><em>hostgroup_name</em></span> directive. The definition below would create a host escalation on all hosts that are members
-  of hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> through <span class="emphasis"><em>HOSTGROUPN</em></span>. All the instances of the host escalation
-  would be identical (i.e. have the same contact groups, notification interval, etc.).</p>
+  <span class="emphasis"><em>hostgroup_name</em></span> directive. The definition below would create a host escalation on all hosts that are members of
+  hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> through <span class="emphasis"><em>HOSTGROUPN</em></span>. All the instances of the host escalation would be
+  identical (i.e. have the same contact groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostescalation</em></span>{
          hostgroup_name                <span class="emphasis"><em> HOSTGROUP1,HOSTGROUP2,...,HOSTGROUPN</em></span>
@@ -362,9 +378,10 @@
 
   <p><span class="bold"><strong>All Hosts:</strong></span></p>
 
-  <p>If you want to create identical host escalations for all hosts that are defined in your configuration files, you can use a
-  wildcard in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a hosts escalation for <span class="bold"><strong>all hosts</strong></span> that are defined in your configuration files. All the instances of the host escalation would be
-  identical (i.e. have the same contact groups, notification interval, etc.).</p>
+  <p>If you want to create identical host escalations for all hosts that are defined in your configuration files, you can use a wildcard
+  in the <span class="emphasis"><em>host_name</em></span> directive. The definition below would create a hosts escalation for <span class="bold"><strong>all
+  hosts</strong></span> that are defined in your configuration files. All the instances of the host escalation would be identical (i.e. have the
+  same contact groups, notification interval, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostescalation</em></span>{
          host_name             <span class="emphasis"><em> *</em></span>
@@ -373,8 +390,8 @@
 
   <p><span class="bold"><strong>Excluding Hosts:</strong></span></p>
 
-  <p>If you want to create identical host escalations on numerous hosts or hostgroups, but would like to exclude some hosts
-  from the definition, this can be accomplished by preceding the host or hostgroup with a ! symbol.</p>
+  <p>If you want to create identical host escalations on numerous hosts or hostgroups, but would like to exclude some hosts from the
+  definition, this can be accomplished by preceding the host or hostgroup with a ! symbol.</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostescalation</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2,!HOST3,!HOST4,...,HOSTN</em></span>
@@ -386,12 +403,12 @@
 
   <p><span class="bold"><strong>Multiple Hosts:</strong></span></p>
 
-  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host dependencies</a> for multiple hosts, you
-  can specify multiple hosts in the <span class="emphasis"><em>host_name</em></span> and/or <span class="emphasis"><em>dependent_host_name</em></span> directives. The
-  definition below would be equivalent to creating six separate host dependencies. In the example above, hosts
-  <span class="emphasis"><em>HOST3</em></span>, <span class="emphasis"><em>HOST4</em></span> and <span class="emphasis"><em>HOST5</em></span> would be dependent upon both
-  <span class="emphasis"><em>HOST1</em></span> and <span class="emphasis"><em>HOST2</em></span>. All the instances of the host dependencies would be identical except
-  for the host names (i.e. have the same notification failure criteria, etc.).</p>
+  <p>If you want to create <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host dependencies</a> for multiple hosts, you can specify
+  multiple hosts in the <span class="emphasis"><em>host_name</em></span> and/or <span class="emphasis"><em>dependent_host_name</em></span> directives. The definition below
+  would be equivalent to creating six separate host dependencies. In the example above, hosts <span class="emphasis"><em>HOST3</em></span>,
+  <span class="emphasis"><em>HOST4</em></span> and <span class="emphasis"><em>HOST5</em></span> would be dependent upon both <span class="emphasis"><em>HOST1</em></span> and
+  <span class="emphasis"><em>HOST2</em></span>. All the instances of the host dependencies would be identical except for the host names (i.e. have the same
+  notification failure criteria, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostdependency</em></span>{
          host_name             <span class="emphasis"><em> HOST1,HOST2</em></span>
@@ -402,10 +419,10 @@
   <p><span class="bold"><strong>All Hosts In Multiple Hostgroups:</strong></span></p>
 
   <p>If you want to create host escalations for all hosts in in one or more hostgroups, you can do use the
-  <span class="emphasis"><em>hostgroup_name</em></span> and /or <span class="emphasis"><em>dependent_hostgroup_name</em></span> directives. In the example below, all
-  hosts in hostgroups <span class="emphasis"><em>HOSTGROUP3</em></span> and <span class="emphasis"><em>HOSTGROUP4</em></span> would be dependent on all hosts in
-  hostgroups <span class="emphasis"><em>HOSTGROUP1</em></span> and <span class="emphasis"><em>HOSTGROUP2</em></span>. All the instances of the host dependencies would
-  be identical except for host names (i.e. have the same notification failure criteria, etc.).</p>
+  <span class="emphasis"><em>hostgroup_name</em></span> and /or <span class="emphasis"><em>dependent_hostgroup_name</em></span> directives. In the example below, all hosts in
+  hostgroups <span class="emphasis"><em>HOSTGROUP3</em></span> and <span class="emphasis"><em>HOSTGROUP4</em></span> would be dependent on all hosts in hostgroups
+  <span class="emphasis"><em>HOSTGROUP1</em></span> and <span class="emphasis"><em>HOSTGROUP2</em></span>. All the instances of the host dependencies would be identical except
+  for host names (i.e. have the same notification failure criteria, etc.).</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostdependency</em></span>{
          hostgroup_name                <span class="emphasis"><em> HOSTGROUP1,HOSTGROUP2</em></span>
@@ -417,25 +434,37 @@
 
   <p><span class="bold"><strong>All Hosts:</strong></span></p>
 
-  <p>If you want to create a hostgroup that has all hosts that are defined in your configuration files as members, you can use
-  a wildcard in the <span class="emphasis"><em>members</em></span> directive. The definition below would create a hostgroup called
-  <span class="emphasis"><em>HOSTGROUP1</em></span> that has all <span class="bold"><strong>all hosts</strong></span> that are defined in your configuration
-  files as members.</p>
+  <p>If you want to create a hostgroup that has all hosts that are defined in your configuration files as members, you can use a wildcard
+  in the <span class="emphasis"><em>members</em></span> directive. The definition below would create a hostgroup called <span class="emphasis"><em>HOSTGROUP1</em></span> that
+  has all <span class="bold"><strong>all hosts</strong></span> that are defined in your configuration files as members.</p>
 
   <pre class="screen"> define <span class="emphasis"><em> hostgroup</em></span>{
          <span class="emphasis"><em>hostgroup_name</em></span>           <span class="emphasis"><em> HOSTGROUP1</em></span>
          members                  <span class="emphasis"><em> *</em></span>
          <span class="emphasis"><em>other hostgroup directives</em></span> ...
          }</pre>
-  <a class="indexterm" name="id4332544"></a>
-  <a class="indexterm" name="id4332556"></a>
-  <a class="indexterm" name="id4332557"></a>
-  <a class="indexterm" name="id4332566"></a>
-  <a class="indexterm" name="id4332573"></a>
-  <a class="indexterm" name="id4332580"></a>
-  <a class="indexterm" name="id4332597"></a>
-  <a class="indexterm" name="id4332603"></a>
-  <a class="indexterm" name="id4332610"></a>
+
+  <a class="indexterm" name="id5083016"></a>
+
+  <a class="indexterm" name="id5083015"></a>
+
+  <a class="indexterm" name="id5083086"></a>
+
+  <a class="indexterm" name="id5083097"></a>
+
+  <a class="indexterm" name="id5083062"></a>
+
+  <a class="indexterm" name="id5083115"></a>
+
+  <a class="indexterm" name="id5083129"></a>
+
+  <a class="indexterm" name="id5083139"></a>
+
+  <a class="indexterm" name="id5083142"></a>
+
+  <a class="indexterm" name="id5083156"></a>
+
+  <a class="indexterm" name="id5083165"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -454,6 +483,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

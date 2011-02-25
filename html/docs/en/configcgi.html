@@ -4,7 +4,7 @@
 <title>CGI Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="customobjectvars.html" title="Custom Object Variables">
 <link rel="next" href="cgiauth.html" title="Authentication And Authorization In The CGIs">
@@ -53,7 +53,7 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>A sample CGI configuration file (<span class="emphasis"><em>/usr/local/icinga/etc/icinga.cfg</em></span>) is installed for you when you follow the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <p>A sample CGI configuration file (<span class="emphasis"><em>cgi.cfg;</em></span>) is installed for you when you follow the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>.</p>
   </td></tr>
 </table></div>
 
@@ -61,7 +61,7 @@
 
   <p>By default, Icinga expects the CGI configuration file to be named <span class="bold"><strong>cgi.cfg</strong></span> and located in the
   config file directory along with the <a class="link" href="configmain.html" title="Main Configuration File Options">main config file</a>. If you need to change the name of the file or its
-  location, you can configure Apache to pass an environment variable named NAGIOS_CGI_CONFIG (which points to the correct location) to the
+  location, you can configure Apache to pass an environment variable named ICINGA_CGI_CONFIG (which points to the correct location) to the
   CGIs. See the Apache documentation for information on how to do this.</p>
 
   <p><span class="bold"><strong>Configuration File Variables</strong></span></p>
@@ -79,6 +79,9 @@
     </li>
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-url_html_path">URL HTML path</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-url_stylesheet_path">URL Stylesheets path</a></p>
     </li>
 </ul></div>
 
@@ -163,9 +166,11 @@
       <p><a class="link" href="configcgi.html#configcgi-action_url_target">Action URL target</a></p>
     </li>
 </ul></div>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-show_only_hard_states">Tac Show Only Hard State</a></p>
     </li></ul></div>
+
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-enable_splunk_integration">Splunk integration option</a></p>
@@ -250,6 +255,31 @@
 
   <p>If, when accessing Icinga via a web browser, you point to an URL like <span class="bold"><strong>http://www.myhost.com/icinga</strong></span>, this value should be <span class="emphasis"><em>/icinga</em></span>. Basically, its the path portion of
   the URL that is used to access the Icinga HTML pages.</p>
+
+  <p><a name="configcgi-url_stylesheet_path"></a> <span class="bold"><strong>URL Stylesheet Path</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>url_stylesheet_path=&lt;path&gt;/stylesheets</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
+          </span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option allows to define an url stylesheet path other than the default. This will be useful when adding custom stylesheets in
+  another location.If not set, the default location will be used (url_stylesheets_path=url_html_path/stylesheets).</p>
 
   <p><a name="configcgi-use_authentication"></a> <span class="bold"><strong>Authentication Usage</strong></span></p>
 
@@ -541,7 +571,7 @@
 
   <p>By default, a user can see all services on a host, if the user is authorized as contact for the host only. By disabling this option,
   the user must be an authorized contact for the service too in order to view it. Keep in mind that setting the user in
-  authorized_for_all_services obsoletes this option (included starting with Icinga 1.0.2) </p>
+  authorized_for_all_services obsoletes this option (included starting with Icinga 1.0.2)</p>
 
   <p><a name="configcgi-lock_author_names"></a> <span class="bold"><strong>Lock Author Names</strong></span></p>
 
@@ -593,8 +623,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span> </span>
-          </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span>
+          </span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -617,7 +647,9 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This option is available starting with Icinga 1.0.3.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.0.3.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-statusmap_background_image"></a> <span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
@@ -1062,7 +1094,8 @@
   <p>This option determines the name of the frame target that action URLs should be displayed in. Valid options include
   <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span>, or any other valid
   target name.</p>
-<p><a name="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
+
+  <p><a name="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -1083,8 +1116,9 @@
 </tbody>
 </table>
   </div>
-<p>This options allows you to specify if the tactical overview should only show hard states on hosts and services. If you set this option to 1 the tactical overview shows only states on hosts and services.
-By default disabled, all states will be shown.</p>
+
+  <p>This options allows you to specify if the tactical overview should only show hard states on hosts and services. If you set this
+  option to 1 the tactical overview shows only states on hosts and services. By default disabled, all states will be shown.</p>
 
   <p><a name="configcgi-enable_splunk_integration"></a> <span class="bold"><strong>Splunk Integration Option</strong></span></p>
 
@@ -1151,15 +1185,15 @@ By default disabled, all states will be shown.</p>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>persistent_ack_comments=1</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>persistent_ack_comments=1</strong></span> </span>
+          </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option controls the initial state of the check box "persistent comment" to acknowledge problem hosts or services.
-  It can be used to reinstate the behaviour of Nagios 2. Default is "0" to be compatible with Nagios 3.</p>
+  <p>This option controls the initial state of the check box "persistent comment" to acknowledge problem hosts or services. It can be
+  used to reinstate the behaviour of Nagios 2. Default is "0" to be compatible with Nagios 3.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -1169,63 +1203,333 @@ By default disabled, all states will be shown.</p>
       <p>1 = Set check box "persistent comment"</p>
     </li>
 </ul></div>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This option is available starting with Icinga 1.0.3.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.0.3.</p>
+  </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id4287744"></a>
+  <p><a name="configcgi-showlog_initial_states"></a> <span class="bold"><strong>Show initial states</strong></span></p>
 
-  <a class="indexterm" name="id4287701"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>showlog_initial_states=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>showlog_initial_states=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id4287764"></a>
+  <p>This option allows you to specify if initial states of hosts and services should be shown in showlog.cgi.</p>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+       This option only works if the option "log_initial_states" in icinga.cfg is set to 1. 
+    </p></td></tr>
+</table></div>
 
-  <a class="indexterm" name="id4287766"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Don't show initial states in showlog.cgi</p>
+    </li>
+<li class="listitem">
+      <p>1 = Show initial states in showlog.cgi (default)</p>
+    </li>
+</ul></div>
 
-  <a class="indexterm" name="id4287780"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id4287806"></a>
+  <p><a name="configcgi-showlog_current_states"></a> <span class="bold"><strong>Show current states</strong></span></p>
 
-  <a class="indexterm" name="id4287820"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>showlog_current_states=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>showlog_current_states=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id4287834"></a>
+  <p>This option allows you to specify if current states of hosts and services should be shown in showlog.cgi.</p>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+       This option only works if the option "log_current_states" in icinga.cfg is set to 1. 
+   </p></td></tr>
+</table></div>
 
-  <a class="indexterm" name="id4287848"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Don't show current states in showlog.cgi</p>
+    </li>
+<li class="listitem">
+      <p>1 = Show current states in showlog.cgi (default)</p>
+    </li>
+</ul></div>
 
-  <a class="indexterm" name="id4287862"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id4287874"></a>
+  <p><a name="configcgi-tab_friendly_titles"></a> <span class="bold"><strong>Show object type in tab title</strong></span></p>
 
-  <a class="indexterm" name="id4287890"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>tab_friendly_titles=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>tab_friendly_titles=1</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id4287875"></a>
+  <p>Activating this option changes the &lt;title&gt; of status.cgi and extinfo.cgi when they refer to a single host, service, or
+  group.</p>
 
-  <a class="indexterm" name="id4287917"></a>
+  <p>They will then read:</p>
 
-  <a class="indexterm" name="id4287903"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+       <p>[Host]</p>
+    </li>
+<li class="listitem">
+       <p>{HostGroup}</p>
+    </li>
+<li class="listitem">
+       <p>ServiceDesc @ Host</p>
+    </li>
+<li class="listitem">
+       <p>(ServiceGroup)</p>
+    </li>
+</ul></div>
 
-  <a class="indexterm" name="id4287930"></a>
+  <p>These are easier to read and find if you use (many) tabs in your browser.</p>
 
-  <a class="indexterm" name="id4287944"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Don't show object type in tab title</p>
+    </li>
+<li class="listitem">
+      <p>1 = Show object type in tab title (default)</p>
+    </li>
+</ul></div>
 
-  <a class="indexterm" name="id4287932"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.3.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id4287958"></a>
+  <p><a name="configcgi-add_notif_num"></a> <span class="bold"><strong>Show service state and notification number</strong></span></p>
 
-  <a class="indexterm" name="id4287972"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>add_notif_num_hard=n</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p></p></td>
+<td><p> <span class="bold"><strong>add_notif_num_soft=n</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>add_notif_num_hard=28</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id4288013"></a>
+  <p>Set this to an OR of the service state identifiers for which status.cgi should not only report "attempts" (e.g., "3/3" for a HARD
+  non-OK state with max_check_attempts=3) but also the current notification number ("(#0)" if no problem notification has been sent yet,
+  etc.). This is helpful to identify services which switched between different non-OK states a lot, or services which have a
+  first_notification_delay set and are "not yet officially" considered in trouble.</p>
 
-  <a class="indexterm" name="id4288028"></a>
-<a class="indexterm" name="id4288040"></a>
-  <a class="indexterm" name="id4288053"></a>
+  <p>Relevant values from include/statusdata.h (look them up *there* if you want to be *really* sure): </p>
+<pre class="programlisting"> #define    SERVICE_PENDING     1
+ #define    SERVICE_OK          2
+ #define    SERVICE_WARNING     4
+ #define    SERVICE_UNKNOWN     8
+ #define    SERVICE_CRITICAL   16</pre>
 
-  <a class="indexterm" name="id4288067"></a>
+  <p>You'll likely want to use add_notif_num_hard=0 (default) or add_notif_num_hard=28 (warn+crit+unknown).</p>
 
-  <a class="indexterm" name="id4288080"></a>
+  <p>There's an add_notif_num_soft affecting services in a SOFT state for sake of completeness, too.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>These options are available starting with Icinga 1.3.</p>
+  </td></tr>
+</table></div>
+
+  <p><a name="configcgi-http_charset"></a> <span class="bold"><strong>Set HTTP character set</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>http_charset=&lt;char-set&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"> <span class="bold"><strong>http_charset=utf-8</strong></span> </span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This is the character set which is sent with HTTP headers. Default is utf-8.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.3.</p>
+  </td></tr>
+</table></div>
+
+  <a class="indexterm" name="id5029052"></a>
+
+  <a class="indexterm" name="id5029024"></a>
+
+  <a class="indexterm" name="id5029072"></a>
+
+  <a class="indexterm" name="id5029083"></a>
+
+  <a class="indexterm" name="id5029098"></a>
+
+  <a class="indexterm" name="id5029113"></a>
+
+  <a class="indexterm" name="id5029126"></a>
+
+  <a class="indexterm" name="id5029139"></a>
+
+  <a class="indexterm" name="id5029153"></a>
+
+  <a class="indexterm" name="id5029166"></a>
+
+  <a class="indexterm" name="id5029140"></a>
+
+  <a class="indexterm" name="id5029194"></a>
+
+  <a class="indexterm" name="id5029208"></a>
+
+  <a class="indexterm" name="id5029222"></a>
+
+  <a class="indexterm" name="id5029237"></a>
+
+  <a class="indexterm" name="id5029250"></a>
+
+  <a class="indexterm" name="id5029264"></a>
+
+  <a class="indexterm" name="id5029277"></a>
+
+  <a class="indexterm" name="id5029293"></a>
+
+  <a class="indexterm" name="id5029278"></a>
+
+  <a class="indexterm" name="id5029321"></a>
+
+  <a class="indexterm" name="id5029334"></a>
+
+  <a class="indexterm" name="id5029348"></a>
+
+  <a class="indexterm" name="id5029360"></a>
+
+  <a class="indexterm" name="id5029374"></a>
+
+  <a class="indexterm" name="id5029389"></a>
+
+  <a class="indexterm" name="id5029399"></a>
+
+  <a class="indexterm" name="id5029414"></a>
+
+  <a class="indexterm" name="id5029401"></a>
+
+  <a class="indexterm" name="id5029441"></a>
+
+  <a class="indexterm" name="id5029428"></a>
+
+  <a class="indexterm" name="id5029442"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -1245,6 +1549,6 @@ By default disabled, all states will be shown.</p>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

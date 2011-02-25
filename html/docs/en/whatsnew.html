@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>What's New in Icinga 1.2</title>
+<title>What's New in Icinga 1.3</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch01.html" title="Chapter 1. About">
 <link rel="prev" href="about.html" title="About Icinga">
 <link rel="next" href="ch02.html" title="Chapter 2. Getting Started">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">What's New in Icinga 1.2</th></tr>
+<tr><th colspan="3" align="center">What's New in Icinga 1.3</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="about.html">Prev</a> </td>
@@ -24,10 +24,75 @@
 </table>
 <hr>
 </div>
-<div class="section" title="What's New in Icinga 1.2">
+<div class="section" title="What's New in Icinga 1.3">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>What's New in Icinga 1.2</h2></div></div></div>
+<a name="whatsnew"></a>What's New in Icinga 1.3</h2></div></div></div>
   
+
+
+  <p><span class="bold"><strong>1.3.0</strong></span></p>
+
+  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
+
+<p>* add basic dualstacked IPv6 support with address6 as host definition attribute</p>
+<p>* add support for same host service dependencies with servicegroups</p>
+<p>* allow eventbroker modules to override sending notifications</p>
+<p>* allow empty hostgroup assignments for services as opt-in config option</p>
+<p>* fix host alias saved in resention data survived reconfiguration</p>
+<p>* performance-data handling and checking is now thread-safe so long as embedded perl is not used</p>
+<p>* fix extraneous alerts for services when host is down</p>
+<p>* fix race condition on flexible downtime commands when duration not set or zero</p>
+
+  <p><span class="bold"><strong>Icinga IDOUtils: </strong></span></p>
+
+<p>* add dbversion check in ido2db and print error to syslog in case of non-matching</p>
+<p>* only insert service and host checks when they are finally processed, increase performance by replacing insert/update with single insert</p>
+<p>* add multi valued inserts for host|service_contacts instead of single insert/update loops</p>
+<p>* do not clear host|service|scheduleddowntime status tables on core restart/reload</p>
+<p>* fix solaris, lacks asprintf</p>
+<p>* fix string escaping for backslashes in postgresql</p>
+
+
+  <p><span class="bold"><strong>Icinga Classic UI:</strong></span></p>
+
+<p>* add address6 next to address in several views</p>
+<p>* add service states to annotate with current notification number opt-in</p>
+<p>* adding "Attempt" column to host status detail list</p>
+<p>* add trend timeperiod feature to locate the next problem</p>
+<p>* add configurable http charset support (default utf-8) within the cgis</p>
+<p>* add csv export to config.cgi</p>
+<p>* fix authorized_for_read_only can execute command over the status.cgi</p>
+
+
+  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
+
+<p>* save, edit, delete your own custom cronks (grids, portals, ...)</p>
+<p>* persistent columns, widths and sort orders</p>
+<p>* added tabslider</p>
+<p>* added simple duration field</p>
+<p>* added downtimes cronk</p>
+<p>* added filter for downtimes/acknowledgements</p>
+<p>* add customized icons for cronks menu</p>
+<p>* cronks now open with single click</p>
+<p>* move log window to LogView cronk</p>
+<p>* added refresh, filters and principals for logview cronk</p>
+<p>* change default endtime for scheduled service/host downtime events to (current time) + 2 hours</p>
+<p>* new tabs only opened if tab with the same name does not exist</p>
+<p>* add address6 to hosts view</p>
+
+
+  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
+
+<p>* better hints for customized configuration and new section "Upgrade Icinga-web"</p>
+<p>* add hints/list about parameters of the cgis</p>
+<p>* add quickstart guide for freebsd and idoutils</p>
+<p>* add address6 directive to host object definition</p>
+<p>* fix object inheritance - only one level for important values</p>
+<p>* fix icinga-web requires mod_rewrite by default</p>
+
+
+<p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
+
 
   <p><span class="bold"><strong>1.2.1</strong></span></p>
 
@@ -220,7 +285,7 @@
 
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
 
-  <a class="indexterm" name="id4241401"></a>
+  <a class="indexterm" name="id4980892"></a>
 
   
 </div>
@@ -241,6 +306,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

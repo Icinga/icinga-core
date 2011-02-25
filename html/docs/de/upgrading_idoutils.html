@@ -4,7 +4,7 @@
 <title>IDOUtils-Datenbank aktualisieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="upgrading.html" title="Icinga aktualisieren">
 <link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
@@ -80,6 +80,14 @@
 <pre class="programlisting"> # su - oracle
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
+<a name="upgrading_idoutils_1.3"></a>
+
+  <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.3</strong></span></p>
+
+  <p>Mit IDOUtils 1.3 wird die Verwendung der Tabelle dbversion im IDOUtils Schema wieder eingeführt. Das Aktualisierungsskript stellt sicher, dass die Tabelle dbversion die aktuelle Version enthält. Ido2db vergleicht die Programversion mit der Datenbankversion und gibt einen Fehler im Syslog aus, wenn die Versionen voneinander abweichen.</p>
+
+  <p>Verwenden Sie das Aktualisierungsskript für die IDOUtils 1.3 unter
+  <code class="literal">module/idoutils/db/&lt;rdbms&gt;/&lt;rdbm&gt;-upgrade-1.3.sql</code> gegen Ihr aktuelles Datenbankschema, bitte beachten Sie die inkrementelle Vorgehensweise wie oben beschrieben.</p>
 
     <a name="upgrading_idoutils_1.0.3"></a>
 
@@ -275,7 +283,7 @@
     <p>Falls Sie vorher etwas an den Keys verändert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in IDOUtils 1.0RC
     benutzen, andernfalls wird das Script fehlschlagen.</p>
 
-    <a class="indexterm" name="id2511595"></a>
+    <a class="indexterm" name="id5565187"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -294,6 +302,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

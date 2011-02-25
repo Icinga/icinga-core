@@ -1,0 +1,2579 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Informationen zu den CGI-Parametern</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
+<link rel="prev" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">
+<link rel="next" href="icinga-web-scratch.html" title="Installation des Icinga Web Frontend">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Informationen zu den CGI-Parametern</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="cgis.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Informationen zu den CGI-Parametern">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="cgiparams"></a>Informationen zu den CGI-Parametern</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Das Menü auf der linken Seite des klassischen Web-Interface enthält Eintrage, die einen schnellen Zugriff auf die Informationen
+  bieten, die die meisten Leute benötigen. Sie können diese Parameter ändern oder auch andere Optionen wählen. Einige CGIs benötigen einen
+  Objekttyp ("host", "hostgroup", "service" oder "servicegroup"), oftmals gefolgt von einer oder mehreren Optionen. Der beste Weg ist es,
+  einen Blick auf die existierenden URLs zu werden und sie Ihren Bedürfnissen anzupassen.</p>
+
+  <p>Nachfolgend finden Sie eine Tabelle mit den Parametern und den CGIs, die sie anbieten. Die Namen der CGIs sind abgekürzt (damit die
+  Tabelle nicht so breit wird). Eine Erklärung der Abkürzungen zusammen mit einem Hinweis auf den Source-Code finden Sie <a class="link" href="cgiparams.html#cgiparams_abbrev">hier</a>.</p>
+
+  <p>Nach dieser Tabelle folgt eine Erklärung der Parameter (in Bearbeitung).</p>
+
+  <p><span class="bold"><strong>Matrix Parameter / CGIs</strong></span></p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Parameter</th>
+<th align="center">avail</th>
+<th align="center">cmd</th>
+<th align="center">config</th>
+<th align="center">ext</th>
+<th align="center">hgram</th>
+<th align="center">hist</th>
+<th align="center">notif</th>
+<th align="center">out</th>
+<th align="center">log</th>
+<th align="center">status</th>
+<th align="center">map</th>
+<th align="center">sum</th>
+<th align="center">tac</th>
+<th align="center">trends</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ahas</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>alerttypes</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>archive</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>assumeinitialstates</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>assumestateretention</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>assumestatesduringnotrunning</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>backtrack</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>breakdown</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>broadcast_notification</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>childoptions</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>cmd_mod</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>cmd_typ</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>columns</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>com_author</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>com_data</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>com_id</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>contact</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>createimage</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>csvoutput</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>displaytype</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>down_id</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>eday</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>ehour</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>embedded</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+</tr>
+<tr>
+<td>emin</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>emon</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>esec</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>eyear</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>force_check</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>force_notification</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>full_log_entries</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>get_date_parts</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>graphevents</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>graphstatetypes</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>host</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>hostgroup</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>hostprops</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>hoststates</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>hoststatustypes</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>hours</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>includesoftstates</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>initialassumedhoststate</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>initialassumedservicestate</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>initialstateslogged</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>input</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>limit</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>minutes</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>navbarsearch</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>newstatesonly</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>nodowntime</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>noflapping</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>nofrills</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>noheader</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>not_dly</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>notimebreaks</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>nosystem</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>oldestfirst</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>performance_data</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>persistent</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>plugin_output</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>plugin_state</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>ptc</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>report</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>report_type</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>rpttimeperiod</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>sched_dly</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>sday</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>send_notification</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>service</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>servicefilter</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>servicegroup</td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>serviceprops</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>servicestates</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>servicestatustypes</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>service_divisor</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>shour</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>showscheduleddowntime</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>show_log_entries</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>smin</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>smon</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>sortoption</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>sorttype</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>ssec</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>standardreport</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>start_time</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>statetype</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>statetypes</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>sticky_ack</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>style</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>syear</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>t1</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>t2</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>timeperiod</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>type</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p><a name="cgiparams_expl"></a><span class="bold"><strong>Einzelheiten zu den Parametern</strong></span></p>
+
+  <p>Mehr Informationen zu den einzelnen Parametern finden Sie nachfolgend. Für ein tiefergehendes Verständnis sollten Sie einen Blick
+  auf den Source-Code werfen.</p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Parameter</th>
+<th align="center">Beschreibung</th>
+<th align="center">Mögl. Werte</th>
+<th align="center">Beispiel</th>
+<th align="center">Anmerkungen</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ahas</td>
+<td>Der Befehl beeinflusst den Host und seine Services</td>
+<td> </td>
+<td>ahas</td>
+<td> </td>
+</tr>
+<tr>
+<td>alerttypes</td>
+<td>Host- und/oder Service-Alarme anzeigen</td>
+<td>1=Host-Alarme; 2=Service-Alarme; 3=Host- und Service-Alarme</td>
+<td>alerttypes=3</td>
+<td> </td>
+</tr>
+<tr>
+<td>archive</td>
+<td> </td>
+<td>0-n</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>assumeinitialstates</td>
+<td> </td>
+<td>yes; no</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>assumestatesduringnotrunning</td>
+<td> </td>
+<td>yes; no</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>assumestateretention</td>
+<td> </td>
+<td>yes; no</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>backtrack</td>
+<td>Wieviele Archiv-Log-Dateien sollen durchsucht werden, um den initialen Zustand zu ermitteln</td>
+<td>0-n</td>
+<td>backtrack=1</td>
+<td>Bitte beachten Sie, dass die Verarbeitung der Archivdateien eine Weile dauern kann</td>
+</tr>
+<tr>
+<td>breakdown</td>
+<td>Aufteilen der Daten nach Zeitbereich</td>
+<td>0=monatlich; 1=Tag des Monats; 2=Tag der Woche; 3=stündlich</td>
+<td>breakdown=2</td>
+<td> </td>
+</tr>
+<tr>
+<td>broadcast_notification</td>
+<td>Benachrichtigung an alle Kontakte versenden ("non-escalated" und "escalated")</td>
+<td> </td>
+<td>broadcast_notification</td>
+<td> </td>
+</tr>
+<tr>
+<td>childoptions</td>
+<td>Ausfallzeitbehandlung für abhängige Hosts</td>
+<td>0=ohne Berücksichtigung von abh. Hosts; 1="triggered downtime" für abh. Hosts planen; 2="non-triggered downtime" für abh.
+          Hosts planen</td>
+<td>childoptions=1</td>
+<td> </td>
+</tr>
+<tr>
+<td>cmd_mod</td>
+<td>Command mode</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>cmd_typ</td>
+<td>Command type</td>
+<td>0 - 169, 999</td>
+<td>cmd_typ=160</td>
+<td>Einzelheiten siehe .../cgis/common.h</td>
+</tr>
+<tr>
+<td>columns</td>
+<td>Anzahl von Übersichtsspalten</td>
+<td>&gt;= 1</td>
+<td> </td>
+<td>Default ist 3</td>
+</tr>
+<tr>
+<td>com_author</td>
+<td>Autor des Kommentars</td>
+<td>ein gültiger Benutzer</td>
+<td>com_author=icingaadmin</td>
+<td>Kann ggf. von der Einstellung von "lock_author_names" in cgi.cfg abhängen</td>
+</tr>
+<tr>
+<td>com_data</td>
+<td>Inhalt des Kommentars</td>
+<td>eine Zeichenkette (urlencoded)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>com_id</td>
+<td>Id des Kommentars</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>contact</td>
+<td>Ein gültiger Kontakt als Mail-Empfänger</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>createimage</td>
+<td> </td>
+<td> </td>
+<td>createimage</td>
+<td> </td>
+</tr>
+<tr>
+<td>csvoutput</td>
+<td>Ob die Ausgabe im CSV-Format sein soll</td>
+<td>yes;no</td>
+<td> </td>
+<td>Diese Option setzt automatisch "noheader"</td>
+</tr>
+<tr>
+<td>displaytype</td>
+<td>Typ der Alarmauswertung</td>
+<td>1=recent alerts; 2=alert totals; 3=top alerts; 4=hostgroup alert totals; 5=host alert totals; 6=service alert totals;
+          7=servicegroup alert totals</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>down_id</td>
+<td>ID der Ausfallzeit</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>eday</td>
+<td>Ende des maßgeschneiderten Zeitfensters (Tag)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig bei "maßgeschneiderten" Zeitfenstern</td>
+</tr>
+<tr>
+<td>ehour</td>
+<td>Ende des maßgeschneiderten Zeitfensters (Stunde)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig bei "maßgeschneiderten" Zeitfenstern</td>
+</tr>
+<tr>
+<td>embedded</td>
+<td>verschiedenen HTML-Code und SSI-header/footer weglassen</td>
+<td> </td>
+<td>embedded</td>
+<td> </td>
+</tr>
+<tr>
+<td>emin</td>
+<td>Ende des maßgeschneiderten Zeitfensters (Minute)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig bei "maßgeschneiderten" Zeitfenstern</td>
+</tr>
+<tr>
+<td>emon</td>
+<td>Ende des maßgeschneiderten Zeitfensters (Monat)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig bei "maßgeschneiderten" Zeitfenstern</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>Endzeit der festen Ausfallzeit</td>
+<td> </td>
+<td> </td>
+<td>Format "MM-DD-YYYY HH:MI"</td>
+</tr>
+<tr>
+<td>esec</td>
+<td>Ende des maßgeschneiderten Zeitfensters (Sekunde)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig bei "maßgeschneiderten" Zeitfenstern</td>
+</tr>
+<tr>
+<td>eyear</td>
+<td>Ende des maßgeschneiderten Zeitfensters (Jahr)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig bei "maßgeschneiderten" Zeitfenstern</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>Feste oder flexible Ausfallzeit</td>
+<td>0=flexible, &gt;0=fixed</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>force_check</td>
+<td>Die Service-Prüfung wird erzwungen</td>
+<td> </td>
+<td>forcecheck</td>
+<td> </td>
+</tr>
+<tr>
+<td>force_notification</td>
+<td>Benachrichtigung ungeachtet von Restriktionen versenden (Zeitfenster oder andere)</td>
+<td> </td>
+<td>force_notification</td>
+<td> </td>
+</tr>
+<tr>
+<td>full_log_entries</td>
+<td>Vollständige oder gekürzte Log-Eintrage anzeigen</td>
+<td> </td>
+<td>full_log_entries</td>
+<td>Default ist gekürzte Ansicht</td>
+</tr>
+<tr>
+<td>get_date_parts</td>
+<td>maßgeschneiderte Zeitbereiche ermitteln</td>
+<td> </td>
+<td>get_date_parts</td>
+<td> </td>
+</tr>
+<tr>
+<td>graphevents</td>
+<td>Welche Objekte in welchem Zustand dargestellt werden sollen</td>
+<td> </td>
+<td>graphevents=112 (alle Service-Probleme)</td>
+<td>Ein logisches ODER von: 1=Host up; 2=Host down; 4=Host unreachable; 8=Service OK; 16=Service Warning; 32=Service Unknown;
+          64=Service Critical</td>
+</tr>
+<tr>
+<td>graphstatetypes</td>
+<td>Hard- und/oder Soft-Zustande darstellen</td>
+<td>1=Soft-states; 2=Hard states; 3=Hard- und Soft-states</td>
+<td>graphstatetypes=3</td>
+<td> </td>
+</tr>
+<tr>
+<td>host</td>
+<td>Alle Hosts oder einen bestimmten Host auswählen, dessen Service angezeigt werden sollen</td>
+<td>all; &lt;host name&gt;</td>
+<td>host=monitor</td>
+<td>Spezielle Zeichen im Namen müssen kodiert werden ("urlencoded", z.B. "%20" statt einen Leerzeichens)</td>
+</tr>
+<tr>
+<td>hostgroup</td>
+<td>Alle Hostgruppen oder eine bestimmte Hostgruppe auswählen, deren Hosts und Services angezeigt werden sollen</td>
+<td>all; &lt;hostgroup name&gt;</td>
+<td>hostgroup=linux-boxes</td>
+<td>Spezielle Zeichen im Namen müssen kodiert werden ("urlencoded", z.B. "%20" statt einen Leerzeichens)</td>
+</tr>
+<tr>
+<td>hostprops</td>
+<td>Alle Hosts auswählen, die dem angegebenen Bitmuster entsprechen. Bitte beachten Sie, dass die Hosts ALLE angegebenen
+          Bedingungen entsprechen müssen</td>
+<td> </td>
+<td>hostprops=131088 (aktive Prüfungen, die deaktiviert sind)</td>
+<td>Ein logisches ODER der Bedingungen, die in include/cgiutils.c angegeben sind (HOST AND SERVICE FILTER PROPERTIES)</td>
+</tr>
+<tr>
+<td>hoststates</td>
+<td>Der Zustand, in dem der Host sein sollte</td>
+<td>1 - 7</td>
+<td>hoststates=3 (Hosts in einem Problemzustand)</td>
+<td>Ein logisches ODER der Zustände: 1=DOWN; 2=UNREACHABLE; 4=UP</td>
+</tr>
+<tr>
+<td>hoststatustypes</td>
+<td>Der Zustand, in dem der Host sein sollte</td>
+<td>1 - 15</td>
+<td>hoststatustypes=12 (Hosts in einem Problemzustand)</td>
+<td>Ein logisches ODER der Zustände: 1=Pending; 2=Up; 4=Down; 8=Unreachable</td>
+</tr>
+<tr>
+<td>hours</td>
+<td>Dauer der flexiblen Ausfallzeit in Stunden (siehe "minutes")</td>
+<td>&gt;= 0</td>
+<td> </td>
+<td>Nur gültig für flexible Ausfallzeiten</td>
+</tr>
+<tr>
+<td>includesoftstates</td>
+<td>"soft"-Zustände einschließen</td>
+<td>yes; no</td>
+<td>includesoftstate=yes</td>
+<td>Default: "soft"-Zustände nicht berücksichtigen</td>
+</tr>
+<tr>
+<td>initialassumedhoststate</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>initialassumedservicestate</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>initialstateslogged</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>input</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>limit</td>
+<td>max. Anzahl von anzuzeigenden Einträgen</td>
+<td>1-n</td>
+<td>limit=10</td>
+<td>Default ist 25</td>
+</tr>
+<tr>
+<td>minutes</td>
+<td>Dauer der flexiblen Ausfallzeit (siehe "hours")</td>
+<td>&gt;= 0</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>navbarsearch</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>newstatesonly</td>
+<td>Nur "neue" Zustände anzeigen</td>
+<td>yes; no</td>
+<td>newstatesonly=yes</td>
+<td>Default: alle Zustände anzeigen</td>
+</tr>
+<tr>
+<td>nodowntime</td>
+<td>Ausfallzeiten nicht anzeigen</td>
+<td> </td>
+<td>nodowntime</td>
+<td> </td>
+</tr>
+<tr>
+<td>noflapping</td>
+<td>"Flatter"-Alarme nicht anzeigen</td>
+<td> </td>
+<td>noflapping</td>
+<td> </td>
+</tr>
+<tr>
+<td>nofrills</td>
+<td>Don't display frills (?)</td>
+<td> </td>
+<td>nofrills</td>
+<td> </td>
+</tr>
+<tr>
+<td>noheader</td>
+<td>Globale Statusinformationen weglassen und nur Status-Details anzeigen</td>
+<td> </td>
+<td>noheader</td>
+<td> </td>
+</tr>
+<tr>
+<td>not_dly</td>
+<td>Benachrichtigung um n Minuten verzögern</td>
+<td>&gt;= 0</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>notimebreaks</td>
+<td>Don't display timebreaks (?)</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>nosystem</td>
+<td>Keine Systemmeldungen anzeigen</td>
+<td> </td>
+<td>nosystem</td>
+<td>Default: Systemmeldungen (des Icinga-Prozesses) anzeigen</td>
+</tr>
+<tr>
+<td>oldestfirst</td>
+<td>Sortierreihenfolge umdrehen</td>
+<td> </td>
+<td>oldestfirst</td>
+<td>Default: aktuelles Einträge zuerst anzeigen</td>
+</tr>
+<tr>
+<td>performance_data</td>
+<td>Die als Performance-Daten zu sendende Zeichenkette</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>persistent</td>
+<td>Der Kommentar ist persistent, wenn diese Option gesetzt ist</td>
+<td> </td>
+<td>persistent</td>
+<td> </td>
+</tr>
+<tr>
+<td>plugin_output</td>
+<td>Die als Plugin-Output zu sendende Zeichenkette</td>
+<td> </td>
+<td> </td>
+<td>Die Länge ist begrenzt durch den Wert von MAX_INPUT_LENGTH (festgelegt während des Compile-Vorgangs)</td>
+</tr>
+<tr>
+<td>plugin_state</td>
+<td>Zustand des Plugins festlegen</td>
+<td>0=OK; 1=Warning; 2=Critical; 3=Unknown</td>
+<td>plugin_state=2</td>
+<td> </td>
+</tr>
+<tr>
+<td>ptc</td>
+<td>Der Befehl wird an abhängige Hosts propagiert</td>
+<td> </td>
+<td>ptc</td>
+<td> </td>
+</tr>
+<tr>
+<td>report</td>
+<td>Report erzeugen</td>
+<td> </td>
+<td>report</td>
+<td> </td>
+</tr>
+<tr>
+<td>report_type</td>
+<td>Reporttyp auswählen</td>
+<td>hostgroups; servicegroups; hosts; services</td>
+<td>report_type=hostgroups</td>
+<td> </td>
+</tr>
+<tr>
+<td>rpttimeperiod</td>
+<td>Angeben eines Zeitfensters, die für den Availability-Bericht benutzt wird</td>
+<td>Eins der definierten Zeitfenster</td>
+<td> </td>
+<td>Benutzen Sie den Kurznamen der Zeitfenster-Definition</td>
+</tr>
+<tr>
+<td>sched_dly</td>
+<td>Befehlsausführung um n Minuten verzögern</td>
+<td>&gt;= 0</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>sday</td>
+<td>Start des maßgeschneiderten Zeitfensters (Tag)</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>send_notification</td>
+<td>Eine Benachrichtigung für die Bestätigung senden</td>
+<td> </td>
+<td>send_notification</td>
+<td> </td>
+</tr>
+<tr>
+<td>service</td>
+<td>Alle oder einen bestimmten Service auswählen, der angezeigt werden soll</td>
+<td>all; &lt;service description&gt;</td>
+<td>service=PING</td>
+<td>Spezielle Zeichen im Namen müssen kodiert werden ("urlencoded", z.B. "%20" statt einen Leerzeichens)</td>
+</tr>
+<tr>
+<td>servicefilter</td>
+<td>Nur Service selektieren, deren Beschreibung auf das angegebene Muster passt</td>
+<td> </td>
+<td>servicefilter=Current; servicefilter=[PL]</td>
+<td>Das Muster ist abhängig von Groß-/Kleinschreibung. Reguläre Ausdrucke scheinen zu funktionieren</td>
+</tr>
+<tr>
+<td>servicegroup</td>
+<td>Alle oder eine bestimmte Servicegruppe auswählen, deren Hosts und Services angezeigt werden sollen</td>
+<td>all; &lt;servicegroup name&gt;</td>
+<td>servicegroup=disk</td>
+<td>Spezielle Zeichen im Namen müssen kodiert werden ("urlencoded", z.B. "%20" statt einen Leerzeichens)</td>
+</tr>
+<tr>
+<td>serviceprops</td>
+<td>Alle Services auswählen, die dem angegebenen Bitmuster entsprechen. Bitte beachten Sie, dass die Services ALLE angegebenen
+          Bedingungen entsprechen müssen</td>
+<td> </td>
+<td>serviceprops=131088 (aktive Prüfungen, die deaktiviert sind)</td>
+<td>Ein logisches ODER der Bedingungen, die in include/cgiutils.c angegeben sind (HOST AND SERVICE FILTER PROPERTIES)</td>
+</tr>
+<tr>
+<td>servicestates</td>
+<td>Zustand, in dem die Services sein sollten</td>
+<td> </td>
+<td>servicestates=56 (Services in einem Problemzustand)</td>
+<td>Ein logisches ODER der Zustände: 8=Warning; 16=Unknown; 32=Critical; 64=OK</td>
+</tr>
+<tr>
+<td>servicestatustypes</td>
+<td>Zustand, in dem die Services sein sollten</td>
+<td>1 - 31</td>
+<td>servicestatustype=28 (services in problem state)</td>
+<td>Ein logisches ODER der Zustände: 1=Pending; 2=OK, 4=Warning; 8=Unknown; 16=Critical</td>
+</tr>
+<tr>
+<td>service_divisor</td>
+<td>Wichtigkeit der Service in Relation zu Hosts</td>
+<td>&gt;=1</td>
+<td> </td>
+<td>Services sind 1/n so wichtig wie Hosts. Default: n=4</td>
+</tr>
+<tr>
+<td>shour</td>
+<td>Start des maßgeschneiderten Zeitfensters (Stunde)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig für flexible Ausfallzeiten</td>
+</tr>
+<tr>
+<td>showscheduleddowntime</td>
+<td>Geplante Ausfallzeiten anzeigen</td>
+<td>yes; no</td>
+<td> </td>
+<td>Default: yes</td>
+</tr>
+<tr>
+<td>show_log_entries</td>
+<td>Log-Eintrage anzeigen</td>
+<td> </td>
+<td>show_log_entries</td>
+<td>Default: keine Log-Einträge anzeigen</td>
+</tr>
+<tr>
+<td>smin</td>
+<td>Start des maßgeschneiderten Zeitfensters (Minute)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig für flexible Ausfallzeiten</td>
+</tr>
+<tr>
+<td>smon</td>
+<td>Start des maßgeschneiderten Zeitfensters (Monat)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig für flexible Ausfallzeiten</td>
+</tr>
+<tr>
+<td>sortoption</td>
+<td>Angeben der Spalte, nach der sortiert werden soll</td>
+<td>1-n</td>
+<td>sortoption=3</td>
+<td>Default ist Spalte 1</td>
+</tr>
+<tr>
+<td>sorttype</td>
+<td>Sortierrichtung für die Spalte, die über "sortoption=&lt;n&gt;" angegeben wurde</td>
+<td>1=ascending; 2=decending</td>
+<td>sorttype=2</td>
+<td> </td>
+</tr>
+<tr>
+<td>ssec</td>
+<td>Start des maßgeschneiderten Zeitfensters (Sekunde)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig für flexible Ausfallzeiten</td>
+</tr>
+<tr>
+<td>standardreport</td>
+<td>Standard-Report</td>
+<td>1=recent alerts; 2=recent host alerts; 3=recent service alerts; 4=top host alert producers; 5=top service alert
+          producers</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>Start der festen Ausfallzeit</td>
+<td> </td>
+<td> </td>
+<td>Format "MM-DD-YYYY HH:MI" (kann ggf. von Ihren Ländereinstellungen abhängen, das ist aber unklar)</td>
+</tr>
+<tr>
+<td>statetype</td>
+<td>Hard- und/oder Soft-states</td>
+<td>0=Hard- und Soft-states; 1=Soft-states; 2=Hard-states</td>
+<td>statetype=2</td>
+<td> </td>
+</tr>
+<tr>
+<td>statetypes</td>
+<td>Hard- und/oder Soft-states</td>
+<td>1=Soft-states; 2=Hard-states; 3=Hard- und Soft-states</td>
+<td>statetypes=2</td>
+<td> </td>
+</tr>
+<tr>
+<td>sticky_ack</td>
+<td>Die Bestätigung ist "sticky"</td>
+<td> </td>
+<td>sticky_ack</td>
+<td> </td>
+</tr>
+<tr>
+<td>style</td>
+<td>Angabe der anzuzeigenden Informationen</td>
+<td>overview; detail; summary; grid; hostdetail</td>
+<td> </td>
+<td>Trifft nur auf die Objekttypen "hostgroups" und "servicegroups" zu; hostdetail=host status details; detail=service status
+          details; summary=status summary; grid=status grid;</td>
+</tr>
+<tr>
+<td>syear</td>
+<td>Start des maßgeschneiderten Zeitfensters (Jahr)</td>
+<td> </td>
+<td> </td>
+<td>Nur gültig für flexible Ausfallzeiten</td>
+</tr>
+<tr>
+<td>t1</td>
+<td>Startpunkt eines maßgeschneiderten Zeitfensters</td>
+<td> </td>
+<td>t1=1296109300</td>
+<td>Unix timestamp</td>
+</tr>
+<tr>
+<td>t2</td>
+<td>Endpunkt eines maßgeschneiderten Zeitfensters</td>
+<td> </td>
+<td>t2=1296189360</td>
+<td>Unix timestamp</td>
+</tr>
+<tr>
+<td>timeperiod</td>
+<td>Zeitfenster, das für den "Availability report" benutzt werden soll</td>
+<td>today; yesterday; thisweek; lastweek; thismonth; lastmonth; thisquarter; lastquarter; thisyear; lastyear; last24hours;
+          last7days; last31days; custom</td>
+<td>timeperiod=lastmonth</td>
+<td> </td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>Die Ausfallzeit wird von der Downtime-ID &lt;n&gt; ausgelöst</td>
+<td>Eine gültige Downtime-ID</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>type</td>
+<td>Objekttyp</td>
+<td>hosts; hostgroups; services; servicegroups; contacts; contactgroups; timeperiods; commands; hostescalations;
+          serviceescalations; hostdependencies; servicedependencies</td>
+<td>type=hosts</td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p><a name="cgiparams_abbrev"></a><span class="bold"><strong>Abkürzungen, CGIs, Verweise</strong></span></p>
+
+  <p>Abkürzungen, die in der ersten Tabelle benutzt werden, Beziehungen zu CGIs- und Menüeintragen sowie Verweise auf den Source-Code in
+  &lt;icinga-core&gt;/cgis.</p>
+
+  <div class="informaltable">
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Abkurzung</th>
+<th align="center">CGI</th>
+<th align="center">Menueintrag</th>
+<th align="center">Source-Code</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>avail</td>
+<td>avail.cgi</td>
+<td>Availability</td>
+<td>avail.c</td>
+</tr>
+<tr>
+<td>cmd</td>
+<td>cmd.cgi</td>
+<td>N/A</td>
+<td>cmd.c</td>
+</tr>
+<tr>
+<td>config</td>
+<td>config.cgi</td>
+<td>Configuration</td>
+<td>config.c</td>
+</tr>
+<tr>
+<td>ext</td>
+<td>extinfo.cgi</td>
+<td>Comments, Downtime, Process Info, Performance Info, Schedulung Info</td>
+<td>extinfo.c</td>
+</tr>
+<tr>
+<td>hgram</td>
+<td>histogram.cgi</td>
+<td>Alert Histogram</td>
+<td>histogram.c</td>
+</tr>
+<tr>
+<td>hist</td>
+<td>history.cgi</td>
+<td>Alert History</td>
+<td>history.c</td>
+</tr>
+<tr>
+<td>notif</td>
+<td>notifications.cgi</td>
+<td>Notifications</td>
+<td>notifications.c</td>
+</tr>
+<tr>
+<td>out</td>
+<td>outages.cgi</td>
+<td>Network Outages</td>
+<td>outages.c</td>
+</tr>
+<tr>
+<td>log</td>
+<td>showlog.cgi</td>
+<td>Event Log</td>
+<td>showlog.c</td>
+</tr>
+<tr>
+<td>status</td>
+<td>status.cgi</td>
+<td>Hostgroup Overview, Servicegroup Overview, Host Problems, Service Problems</td>
+<td>status.c</td>
+</tr>
+<tr>
+<td>map</td>
+<td>statusmap.cgi</td>
+<td>Status Map</td>
+<td>statusmap.c</td>
+</tr>
+<tr>
+<td>summary</td>
+<td>summary.cgi</td>
+<td>Alert Summary</td>
+<td>summary.c</td>
+</tr>
+<tr>
+<td>tac</td>
+<td>tac.cgi</td>
+<td>N/A</td>
+<td>tac.c</td>
+</tr>
+<tr>
+<td>trends</td>
+<td>trends.cgi</td>
+<td>Trends</td>
+<td>trends.c</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <a class="indexterm" name="id5641395"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="cgis.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Icinga Classic UI: Informationen über die CGIs </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Installation des Icinga Web Frontend</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

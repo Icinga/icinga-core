@@ -4,10 +4,10 @@
 <title>Installation of the Icinga Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
-<link rel="prev" href="cgis.html" title="Icinga Classic UI: Information On The CGIs">
-<link rel="next" href="icinga-web-intro.html" title="Introduction to Icinga Web">
+<link rel="prev" href="cgiparams.html" title="Information On CGI parameters">
+<link rel="next" href="upgrading_icingaweb.html" title="Upgrading Icinga Web and Icinga Web Database">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Installation of the Icinga Web Frontend</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgis.html">Prev</a> </td>
+<a accesskey="p" href="cgiparams.html">Prev</a> </td>
 <th width="60%" align="center">Chapter 6. User Interfaces</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-intro.html">Next</a>
+<td width="20%" align="right"> <a accesskey="n" href="upgrading_icingaweb.html">Next</a>
 </td>
 </tr>
 </table>
@@ -36,6 +36,9 @@
 
   <p>More information about the overall architecture can be found on our website: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a>. If you want know more about Icinga web development and
   the module architecture, please check out the development wiki of Icinga Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga Wiki</a></p>
+
+  <p>This installation guide describes the installation of Icinga Web with MySQL as used database. Icinga Web also supports
+  Oracle and PostgreSQL as used database backends.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -106,7 +109,7 @@
 
       <p>Unpack your tarball:</p>
 
-      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.2.tar.gz</pre>
+      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.3.tar.gz</pre>
 
       <p>Then change to the directory:</p>
 
@@ -156,7 +159,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Using no options the installer expects the icinga-API to be found at /usr/local/share/icinga-api.</p>
+        <p>Using no options the installer expects the icinga-API to be found at /usr/local/icinga/share/icinga-api.</p>
       </td></tr>
 </table></div>
 
@@ -282,6 +285,17 @@
       those to your needs.</p>
 
       <pre class="programlisting"> #&gt; vi app/config/databases.xml</pre>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Optional: Your specific Icinga database settings can be set in app/config/.site.xml and will be used in the first place. This
+        won't get overwritten during upgrade process.</p>
+      </td></tr>
+</table></div>
 
       <pre class="programlisting">    &lt;databases default="icinga_web"&gt;
                         &lt;database name="icinga_web" class="AgaviDoctrineDatabase"&gt;
@@ -429,6 +443,10 @@
 </table></div>
 
       <pre class="programlisting"> #&gt; rm -rf app/cache/config/*.php</pre>
+
+      <p>or</p>
+
+      <pre class="programlisting">/icinga-web/bin/clearcache.sh</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Apache settings</strong></span></p>
@@ -441,8 +459,12 @@
 
       <pre class="programlisting"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
 
-      <p>Using OpenSuSE you can use "a2enmod rewrite" to activate the module. If that doesn't work you have to edit the file
+      <p>Using OpenSuSE or SLES you can use "a2enmod rewrite" to activate the module. If that doesn't work you have to edit the file
       "/etc/sysconfig/apache2". The module "rewrite" has to be appended to the line "APACHE_MODULES=...".</p>
+
+      <p>Using Debian or Ubuntu "a2enmod rewrite" activates the module as well.</p>
+
+      <p>The httpd of RHEL / Fedora / CentOS already supports rewriting so you don't have to change anything in this regard.</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>Any htaccess enabled alias settings</p>
@@ -496,7 +518,7 @@
  #&lt;/IfModule&gt;</pre>
 
       <p>Go to the webservers configuration directory. Look if the created config by <span class="bold"><strong>make
-      install-apache-config</strong></span> suite to your configuration. Or create new aliases (maybe in /etc/apache2/conf.d/icinga-web.conf)
+      install-apache-config</strong></span> suit to your configuration. Or create new aliases (maybe in /etc/apache2/conf.d/icinga-web.conf)
       :</p>
 
       <pre class="programlisting">#&gt; cat /etc/apache2/icinga-web.conf
@@ -526,6 +548,10 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <pre class="programlisting">#&gt; rm /usr/local/icinga-web/app/cache/config/*.php</pre>
 
+      <p>or</p>
+
+      <pre class="programlisting">#&gt; /icinga-web/bin/clearcache.sh</pre>
+
       <p>Restart your Webserver:</p>
 
       <pre class="programlisting">#&gt; service apache2 restart</pre>
@@ -549,12 +575,12 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>Have fun! :-)</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Test &amp; Errors ?</strong></span></p>
+      <p><a name="icinga-web-scratch-errors"></a> <span class="bold"><strong>Test &amp; Errors ?</strong></span></p>
 
       <p>The following collection shows some useful information how to resolve errors - and what you should provide when reporting an
       error to the mailing lists or http://www.icinga-portal.org</p>
 
-      <p>* Always provide the version - actual tar.gz or GIT?</p>
+      <p>* Always provide the version - current tar.gz or GIT?</p>
 
       <p>* Add your browser and the version</p>
 
@@ -570,9 +596,15 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Delete the config cache in app/cache/config/*.php</p>
 
+      <p>use</p>
+
+      <pre class="programlisting">#&gt; /icinga-web/bin/clearcache.sh</pre>
+
       <p>Icinga Web shows a blank page?</p>
 
-      <p>* Apache Error Logs =&gt; mod_rewrite enabled, php dependencies ok? 'make testdeps'</p>
+      <p>* Apache Error Logs =&gt; mod_rewrite enabled, php dependencies ok? 'make testdeps'. Using Debian you may find something like
+      the following: ".htaccess: Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server
+      configuration"</p>
 
       <p>* .htaccess/vhost config =&gt; paths not correct?</p>
 
@@ -595,10 +627,10 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Sockets correctly defined? =&gt; unix-socket or tcp-socket, the last one with or without SSL</p>
 
-      <p><span class="bold"><strong>Testing the Web: </strong></span></p>
+      <p><span class="bold"><strong>Testing the Web:</strong></span></p>
 
-      <pre class="programlisting"> #&gt; cd etc/tests/
- #&gt; php icingaWebTesting.php</pre>
+      <pre class="programlisting"> $&gt; cd etc/tests/
+ $&gt; php icingaWebTesting.php</pre>
 
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -606,7 +638,19 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Remember - changing the php settings in php.ini requires an apache reload/restart!</p>
+        <p>If you are using your root account for testing then make sure in advance that the specified web user has a valid shell.
+        Otherwise some tests might fail. Depending on the version used you might experience wrong permissions on
+        /usr/local/icinga-web/app/data/log resulting in Icinga-Web showing "loading" coming to no end!</p>
+      </td></tr>
+</table></div>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Remember - changing the php settings in php.ini requires an Apache reload/restart!</p>
       </td></tr>
 </table></div>
 
@@ -621,10 +665,10 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>* Could not connect to API. The API Connector returned the following message: getConnection failed: Database connection failed:
       SQLSTATE[28000] [1045] Access denied for user 'icinga'@'localhost' (using password: YES))</p>
 
-      <p>=&gt; check your IDOUtils DB credentials in ido2db.cfg and add those to Icinga Web configuration as preferred DB credentials for IDO (see above).
-      With 1.0.3 you can set those values directly during configure</p>
+      <p>=&gt; check your IDOUtils DB credentials in ido2db.cfg and add those to Icinga Web configuration as preferred DB credentials for
+      IDO (see above). With 1.0.3 you can set those values directly during configure</p>
 
-      <p>* touch: cannot touch `/usr/local/icinga-web/.../cache/testfile.txt': Permission denied =&gt; Your configuration in the xml
+      <p>* touch: cannot touch '/usr/local/icinga-web/.../cache/testfile.txt': Permission denied =&gt; Your configuration in the xml
       files will be pre-cached by the framework. It therefore needs special permissions on the caching directories. By running
       icingaWebTesting.php in etc/tests you will be asked to automatically fix this.</p>
 
@@ -639,6 +683,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>* Empty Icinga Web? =&gt; If mod_rewrite is enabled and 'index.php' appears in the request url the portal does not work. Try to
       remove the index.php from your url and everything should work</p>
 
+      <p>* Login possible but Icinga Web keeps loading data....</p>
+
+      <p>* Request failed, Ressource /icinga-web/appkit/ext/application State could not be loaded - is the url correct? =&gt; mod_rewrite
+      enabled ?</p>
+
       <p>* Counts in the Status Cronk do not match your configuration? =&gt; Check with the Backend, e.g. IDOUtils DB, selecting the
       counts for the status tables.</p>
 
@@ -648,27 +697,29 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id4317991"></a>
+  <a class="indexterm" name="id5066218"></a>
 
-  <a class="indexterm" name="id4318000"></a>
+  <a class="indexterm" name="id5066213"></a>
+
+  <a class="indexterm" name="id5066439"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgis.html">Prev</a> </td>
+<a accesskey="p" href="cgiparams.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-intro.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="upgrading_icingaweb.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Icinga Classic UI: Information On The CGIs </td>
+<td width="40%" align="left" valign="top">Information On CGI parameters </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Introduction to Icinga Web</td>
+<td width="40%" align="right" valign="top"> Upgrading Icinga Web and Icinga Web Database</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

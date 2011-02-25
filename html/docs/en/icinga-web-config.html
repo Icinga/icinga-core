@@ -1,0 +1,326 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Configuration Overview of Icinga Web</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
+<link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
+<link rel="prev" href="upgrading_icingaweb.html" title="Upgrading Icinga Web and Icinga Web Database">
+<link rel="next" href="icinga-web-introduction.html" title="Introduction to Icinga Web">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Configuration Overview of Icinga Web</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="upgrading_icingaweb.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. User Interfaces</th>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-introduction.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Configuration Overview of Icinga Web">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="icinga-web-config"></a>Configuration Overview of Icinga Web</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Where are my config files? </strong></span></p>
+
+  <p>We're trying to reduce global configuration files. Icinga operates in modules, every module has its own configuration. This is also
+  done with the libraries. If you need information about the cronk library, take a look into app/modules/Cronks/lib (for js things
+  app/modules/Cronks/lib/js).</p>
+
+  <p>A sample module looks like this: </p>
+<pre class="programlisting">tree -d -L 1 app/modules/AppKit/
+app/modules/AppKit/
+|-- actions
+|-- config
+|-- lib
+|-- models
+|-- templates
+|-- validate
+|-- views</pre>
+
+  <p><span class="bold"><strong>Index</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-globalconfig">Global Configuration Section</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-session-lifetime">Session Cookie Lifetime</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-timezone">Change default Timezone</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-module">Module Configuration</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-auth">Authentification</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-api">Icinga API connection</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="icinga-web-config.html#configweb-customconfig">Customised Configuration</a></p>
+    </li>
+</ul></div>
+
+  <p><a name="configweb-globalconfig"></a> <span class="bold"><strong>Global Configuration Section</strong></span></p>
+
+  <p><span class="bold"><strong>app/config</strong></span></p>
+
+  <p>Here you find the global configuration files for e.g. the Web session, the Icinga web path and the database informations.</p>
+
+  <p>The main interesting files:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>database.xml - holds the connection information for your icinga-web database</p>
+    </li>
+<li class="listitem">
+      <p>factories.xml - holds the config for your web session, e.g. the session_cookie_lifetime- parameter</p>
+    </li>
+<li class="listitem">
+      <p>icinga.xml - holds the config for your Icinga Web root-dir, Web path.</p>
+    </li>
+</ul></div>
+
+  <p><a name="configweb-session-lifetime"></a> <span class="bold"><strong>Session Cookie Lifetime</strong></span></p>
+
+  <p>Example: change the session_cookie_lifetime</p>
+
+  <p>The Session Lifetime is the time in seconds until the Icinga Web session expires. It can be configured on global level in the file
+  app/config/factories.xml.</p>
+
+  <pre class="programlisting">#&gt; vi app/config/factories.xml
+
+&lt;ae:parameter name="session_cookie_lifetime"&gt;3600&lt;/ae:parameter&gt;</pre>
+
+  <p>Please make your customised settings in factories.site.xml.</p>
+
+  <p><a name="configweb-timezone"></a> <span class="bold"><strong>Change Icinga Web timezone</strong></span></p>
+
+  <p>Example: Change the default timezone for Icinga Web</p>
+
+  <p>If the time(zone) in Icinga Web differs to your system time(zone), please check the date.timezone entry in
+  app/modules/AppKit/config/module.xml (e.g. 'Europe/Berlin')</p>
+
+  <pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
+&lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
+
+  <p><a name="configweb-module"></a> <span class="bold"><strong>Module Configuration</strong></span></p>
+
+  <p><span class="bold"><strong>app/modules/AppKit</strong></span></p>
+
+  <p>Here lives the framework spun around: Authentication, Menus and so on.</p>
+
+  <p><a name="configweb-auth"></a> <span class="bold"><strong>Authentification</strong></span></p>
+
+  <p>Example: Ldap authentication</p>
+
+  <p>Look into app/modules/AppKit/config/auth.xml.</p>
+
+  <p>There is a provider like this:</p>
+
+  <pre class="programlisting"> &lt;ae:parameter name="msad-ldap1"&gt;
+            &lt;ae:parameter name="auth_module"&gt;AppKit&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="auth_provider"&gt;Auth.Provider.LDAP&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="auth_enable"&gt;true&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="auth_authoritative"&gt;true&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="auth_create"&gt;true&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="auth_update"&gt;true&lt;/ae:parameter&gt;
+
+            &lt;ae:parameter name="auth_map"&gt;
+                &lt;ae:parameter name="user_firstname"&gt;givenName&lt;/ae:parameter&gt;
+                &lt;ae:parameter name="user_lastname"&gt;sn&lt;/ae:parameter&gt;
+                &lt;ae:parameter name="user_email"&gt;mail&lt;/ae:parameter&gt; 
+            &lt;/ae:parameter&gt;
+
+            &lt;ae:parameter name="ldap_dsn"&gt;ldap://ad.icinga.org&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="ldap_basedn"&gt;DC=ad,DC=icinga,DC=org&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="ldap_binddn"&gt;ldap@AD.ICINGA.ORG&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="ldap_bindpw"&gt;&lt;![CDATA[XXXXXXXXX]]&gt;&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="ldap_userattr"&gt;uid&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="ldap_filter_user"&gt;&lt;![CDATA[(&amp;(sAmAccountName=__USERNAME__))]]&gt;&lt;/ae:parameter&gt;
+        &lt;/ae:parameter&gt;</pre>
+
+  <p>The auth.xml holds the documentation for the global config. The ldap authentication should be done with some basic ldap
+  knowledge.</p>
+
+  <p>You can also duplicate the provider to provide more authentication bases. You can split the auth into authentication and authorising
+  parts if you want. If you have new providers, please share them and let the auth database grow!</p>
+
+  <p>Please store your costum authentication configuration in auth.site.xml !</p>
+
+  <p><span class="bold"><strong>app/modules/Cronks</strong></span></p>
+
+  <p>All the cronks are implemented there: Grids, iframes. All of them are simple html sites which holds ExtJS component codes. If you
+  need to add a new cronk, this module is your friend.</p>
+
+  <p>If you want to develop a new Cronk take a look at <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/HowToDevelopCronks" target="_top">HowToDevelopCronks</a></p>
+
+  <p>To change the configuration, go to the Cronks module.</p>
+
+  <pre class="programlisting">#&gt; ls app/modules/Cronks/config
+autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>module.xml - to define new categories in which the cronks appears, module.xml holds all the information</p>
+    </li>
+<li class="listitem">
+      <p>cronks.xml - to make new cronks accessible or define new iframe cronks</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>app/modules/Web</strong></span></p>
+
+  <p>Or better:<span class="bold"><strong> Icinga</strong></span>. This module holds all Icinga related stuff, IcingaAPI2Json, status information.
+  Also the IcingaAPI connection is configured here.</p>
+
+  <p><a name="configweb-api"></a> <span class="bold"><strong>Icinga API connection settings</strong></span></p>
+
+  <p>Example: Change the IcingaApi connection settings</p>
+
+  <p>Take a look at app/modules/Web/config/icinga-io.xml, here you'll find the default settings for the IcingaApi connection.</p>
+
+  <pre class="programlisting">#&gt; vi app/modules/Web/config/icinga-io.xml
+
+          &lt;setting name="api.interfaces.data"&gt;
+                                        &lt;!-- IcingaApi connection interface --&gt;
+                                        &lt;ae:parameter name="api_type"&gt;IcingaApi::CONNECTION_IDO&lt;/ae:parameter&gt;
+
+                                        &lt;!-- Suits for all interfaes --&gt;
+                                        &lt;ae:parameter name="config_type"&gt;mysql&lt;/ae:parameter&gt;
+                                        &lt;ae:parameter name="config_host"&gt;localhost&lt;/ae:parameter&gt;
+                                        &lt;ae:parameter name="config_port"&gt;3306&lt;/ae:parameter&gt;
+
+                                        &lt;!-- ###BEGIN_CONNECTION_IDO### --&gt;
+                                        &lt;!-- Database specific (IcingaApi::CONNECTION_IDO) --&gt;
+                                        &lt;ae:parameter name="config_database"&gt;icinga&lt;/ae:parameter&gt;
+                                        &lt;ae:parameter name="config_user"&gt;icinga&lt;/ae:parameter&gt;
+                                        &lt;ae:parameter name="config_password"&gt;icinga&lt;/ae:parameter&gt;
+                                        &lt;ae:parameter name="config_table_prefix"&gt;icinga_&lt;/ae:parameter&gt;
+                                        &lt;!-- ###END_CONNECTION_IDO### --&gt;</pre>
+
+  <p>If you want to change these settings to your needs, please edit app/modules/Web/config/icinga-io.site.xml.</p>
+
+  <p><a name="configweb-customconfig"></a> <span class="bold"><strong>Customised Configuration</strong></span></p>
+
+  <p><span class="bold"><strong>Notes</strong></span></p>
+
+  <p>When creating and/or editing configuration files, keep the following in mind:</p>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Lines that start with a &lt;!-- and end with --&gt; character are taken to be comments and are not processed</p>
+    </li>
+<li class="listitem">
+      <p>Variable names are case-sensitive</p>
+    </li>
+<li class="listitem">
+      <p>Your specific Icinga Web configuration settings like api, authentication and database settings can be set in
+      app/modules/Appkit(/Cronks/Web)/config/*.site.xml- Files and will be used in the first place. They won't get overwritten during the
+      next upgrade process.</p>
+
+      <p>These files already exist and you're free to use them for your specific settings:</p>
+
+      <p>app/modules/Cronks/config/cronks.site.xml</p>
+
+      <p>app/modules/Web/config/icinga-io.site.xml</p>
+
+      <p>app/modules/AppKit/config/auth.site.xml</p>
+
+      <p>app/config/icinga.site.xml</p>
+
+      <p>app/config/databases.site.xml</p>
+
+      <p>app/config/settings.site.xml</p>
+
+      <p>app/config/translation.site.xml</p>
+
+      <p>app/config/factories.site.xml</p>
+
+      <p></p>
+
+      <p>The templates for Grids and TO's (tactical overview) are allowed to copy to *.site.xml in there location:</p>
+
+      <p><span class="bold"><strong>The Grids:</strong></span></p>
+
+      <p>app/modules/Cronks/data/xml/grid/icinga-hostgroup-summary-template.xml</p>
+
+      <p>app/modules/Cronks/data/xml/grid/icinga-host-history-template.xml</p>
+
+      <p>app/modules/Cronks/data/xml/grid/icinga-host-template.xml</p>
+
+      <p>....</p>
+
+      <p><span class="bold"><strong>and the TO's:</strong></span></p>
+
+      <p>app/modules/Cronks/data/xml/to/icinga-tactical-overview-groupstat.xml</p>
+
+      <p>app/modules/Cronks/data/xml/to/icinga-tactical-overview-presets.xml</p>
+
+      <p>app/modules/Cronks/data/xml/to/icinga-tactical-overview-template-charts.xml</p>
+
+      <p>...</p>
+
+      <p>Please edit app/modules/Cronks/config/cronks.xml and add your created *.site.xml to make the new cronks accessible.</p>
+
+      <p></p>
+    </li>
+</ol></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>After changing those configs you need to clear the config cache!</p>
+  </td></tr>
+</table></div>
+
+  <pre class="programlisting"> #&gt; rm -rf app/cache/config/*.php</pre>
+
+  <p>or</p>
+
+  <pre class="programlisting">#&gt; /icinga-web/bin/clearcache.sh</pre>
+
+  <p>You need more informations? Please have a look at our <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Development Wiki.</a></p>
+
+  <a class="indexterm" name="id5067376"></a>
+
+  <a class="indexterm" name="id5067393"></a>
+
+  <a class="indexterm" name="id5067408"></a>
+
+  <a class="indexterm" name="id5067423"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="upgrading_icingaweb.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-introduction.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Upgrading Icinga Web and Icinga Web Database </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Introduction to Icinga Web</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

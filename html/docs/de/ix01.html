@@ -4,8 +4,8 @@
 <title>Stichwortverzeichnis</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
-<link rel="up" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="up" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="prev" href="db_model.html" title="IDOUtils Database Model">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,7 +24,7 @@
 </div>
 <div class="index" title="Stichwortverzeichnis">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id2609185"></a>Stichwortverzeichnis</h2></div></div></div>
+<a name="id5674785"></a>Stichwortverzeichnis</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -34,6 +34,8 @@
 <dt>"harte" Abhängigkeiten, <a class="indexterm" href="dependencies.html#dependencies-hard_dependencies">Host- und Service-Abhängigkeiten</a>
 </dt>
 <dt>gleicher-Host-Abhängigkeiten, <a class="indexterm" href="objecttricks.html#objecttricks-same_host_dependency">Zeitsparende Tricks für Objektdefinitionen</a>
+</dt>
+<dt>gleicher-Host-Abhängigkeiten mit Servicegruppen, <a class="indexterm" href="objecttricks.html#objecttricks-same_host_dependency_servicegroups">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
 <dt>Host- und Service-Abhängigkeiten, <a class="indexterm" href="dependencies.html">Host- und Service-Abhängigkeiten</a>
 </dt>
@@ -56,15 +58,39 @@
 </dt></dl></dd>
 <dt>Addons</dt>
 <dd><dl>
+<dt>Business Process Addon, <a class="indexterm" href="addons.html#addons-logic">Icinga Addons</a>
+</dt>
+<dt>check_mk, <a class="indexterm" href="addons.html#addons-mon">Icinga Addons</a>
+</dt>
 <dt>IDOUtils, <a class="indexterm" href="addons.html#addons-idoutils">Icinga Addons</a>
 </dt>
 <dt>MKLiveStatus-Integration, <a class="indexterm" href="int-mklivestatus.html">MKLiveStatus-Integration</a>
+</dt>
+<dt>MultiSite, <a class="indexterm" href="addons.html#addons-web">Icinga Addons</a>
+</dt>
+<dt>NagiosQL, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
+</dt>
+<dt>NagVis, <a class="indexterm" href="addons.html#addons-vis">Icinga Addons</a>
+</dt>
+<dt>NConf, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
 </dt>
 <dt>NRPE, <a class="indexterm" href="addons.html#addons-nrpe">Icinga Addons</a>
 </dt>
 <dt>NSCA, <a class="indexterm" href="addons.html#addons-nsca">Icinga Addons</a>
 </dt>
+<dt>NSClient++, <a class="indexterm" href="addons.html#addons-mon">Icinga Addons</a>
+</dt>
+<dt>PNP4Nagios, <a class="indexterm" href="addons.html#addons-vis">Icinga Addons</a>
+</dt>
+<dt>Thruk, <a class="indexterm" href="addons.html#addons-web">Icinga Addons</a>
+</dt>
 </dl></dd>
+<dt>add_notif_num_hard=</dt>
+<dd><dl><dt>Service-Zustand und Benachrichtigungsnummer anzeigen (hard), <a class="indexterm" href="configcgi.html#configcgi-add_notif_num">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
+<dt>add_notif_num_soft=</dt>
+<dd><dl><dt>Service-Zustand und Benachrichtigungsnummer anzeigen (soft), <a class="indexterm" href="configcgi.html#configcgi-add_notif_num">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>admin_email=</dt>
 <dd><dl><dt>Administrator-e-Mail-Adresse, <a class="indexterm" href="configmain.html#configmain-admin_email">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
@@ -88,6 +114,13 @@
 <dt>von Nagios Version 3.x, <a class="indexterm" href="upgrading.html#upgrading-nagios3x">Icinga aktualisieren</a>
 </dt>
 </dl></dd>
+<dt>Aktualisierung der Icinga Web-Datenbank, <a class="indexterm" href="upgrading_icingaweb.html">Aktualisierung von Icinga Webund Icinga Web Datenbank</a>
+</dt>
+<dt>Aktualisierung von Icinga Web, <a class="indexterm" href="upgrading_icingaweb.html">Aktualisierung von Icinga Webund Icinga Web Datenbank</a>
+</dt>
+<dt>allow_empty_hostgroup_assignment=</dt>
+<dd><dl><dt>Leere Hostgruppenzuordnung erlauben, <a class="indexterm" href="configmain.html#configmain-allow_empty_hostgroup_assignment">Optionen der Hauptkonfigurationsdatei</a>
+</dt></dl></dd>
 <dt>Anfänger, Hinweise für, <a class="indexterm" href="beginners.html">Hinweise für Neulinge</a>
 </dt>
 <dt>Angepasste CGI-Kopf- und Fußzeilen, <a class="indexterm" href="cgiincludes.html">Angepasste CGI-Kopf- und Fußzeilen</a>
@@ -135,7 +168,7 @@
 <div class="indexdiv">
 <h3>B</h3>
 <dl>
-<dt>Befehls-Definition (command-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-command">Objektdefinitionen</a>
+<dt>Befehls-Definition (command-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-command">Befehls-Definition (command)</a>
 </dt>
 <dt>Benachrichtigungen, <a class="indexterm" href="notifications.html">Benachrichtigungen</a>
 </dt>
@@ -145,11 +178,15 @@
 <dt>Filter, <a class="indexterm" href="notifications.html">Benachrichtigungen</a>
 </dt>
 </dl></dd>
+<dt>benutzerdefinierte Konfiguration Icinga Web, <a class="indexterm" href="icinga-web-config.html">Konfigurationsübersicht Icinga Web</a>
+</dt>
 <dt>Bereitschaftszeiten-Rotation, <a class="indexterm" href="oncallrotation.html">Bereitschafts-Rotation</a>
 </dt>
 <dt>broker_module=</dt>
 <dd><dl><dt>Eventbroker-Module, <a class="indexterm" href="configmain.html#configmain-broker_module">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
+<dt>Business Process Addon, <a class="indexterm" href="addons.html#addons-logic">Icinga Addons</a>
+</dt>
 </dl>
 </div>
 <div class="indexdiv">
@@ -228,6 +265,8 @@
 </dt>
 <dt>Notfication CGI, <a class="indexterm" href="cgis.html#cgis-notifications_cgi">Icinga Classic UI: Informationen über die CGIs</a>
 </dt>
+<dt>Parameter, <a class="indexterm" href="cgiparams.html">Informationen zu den CGI-Parametern</a>
+</dt>
 <dt>Status CGI, <a class="indexterm" href="cgis.html#cgis-status_cgi">Icinga Classic UI: Informationen über die CGIs</a>
 </dt>
 <dt>Status Map CGI, <a class="indexterm" href="cgis.html#cgis-statusmap_cgi">Icinga Classic UI: Informationen über die CGIs</a>
@@ -251,6 +290,8 @@
 <dt>check_host_freshness=</dt>
 <dd><dl><dt>Host-Frischeprüfung, <a class="indexterm" href="configmain.html#configmain-check_host_freshness">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
+<dt>check_mk, <a class="indexterm" href="addons.html#addons-mon">Icinga Addons</a>
+</dt>
 <dt>check_result_path=</dt>
 <dd><dl><dt>Prüfergebnispfad, <a class="indexterm" href="configmain.html#configmain-check_result_path">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
@@ -266,18 +307,12 @@
 <dt>Cluster</dt>
 <dd><dl><dt>Service- und Host-Gruppen überwachen, <a class="indexterm" href="clusters.html">Service- und Host-Gruppen überwachen</a>
 </dt></dl></dd>
-<dt>Command-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-command">Objektdefinitionen</a>
-</dt>
 <dt>command_check_interval=</dt>
 <dd><dl><dt>Prüfintervall externe Befehle, <a class="indexterm" href="configmain.html#configmain-command_check_interval">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>command_file=</dt>
 <dd><dl><dt>Datei für (externe) Befehle, <a class="indexterm" href="configmain.html#configmain-command_file">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
-<dt>Contact-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contact">Objektdefinitionen</a>
-</dt>
-<dt>Contactgroup-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Objektdefinitionen</a>
-</dt>
 </dl>
 </div>
 <div class="indexdiv">
@@ -344,9 +379,9 @@
 <dt>Erreichbarkeit</dt>
 <dd><dl><dt>Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts, <a class="indexterm" href="networkreachability.html">Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</a>
 </dt></dl></dd>
-<dt>Erweiterte Hostinformations-Definition (extended hostinformation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">Objektdefinitionen</a>
+<dt>Erweiterte Hostinformations-Definition (extended hostinformation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">erweiterte Hostinformations-Definition (hostextinfo)</a>
 </dt>
-<dt>Erweiterte Serviceinformations-Definition (extended serviceinformation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Objektdefinitionen</a>
+<dt>Erweiterte Serviceinformations-Definition (extended serviceinformation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Serviceinformations-Definition (serviceextinfo)</a>
 </dt>
 <dt>Escalations</dt>
 <dd><dl><dt>Escalation condition, <a class="indexterm" href="escalation_condition.html">Eskalations-Bedingung</a>
@@ -719,6 +754,8 @@
 <dl>
 <dt>Gleicher-Host-Abhängigkeiten, <a class="indexterm" href="objecttricks.html#objecttricks-same_host_dependency">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
+<dt>Gleicher-Host-Abhängigkeiten mit Servicegruppen, <a class="indexterm" href="objecttricks.html#objecttricks-same_host_dependency_servicegroups">Zeitsparende Tricks für Objektdefinitionen</a>
+</dt>
 <dt>global_host_event_handler=</dt>
 <dd><dl><dt>globaler Host-Eventhandler, <a class="indexterm" href="configmain.html#configmain-global_host_event_handler">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
@@ -740,29 +777,21 @@
 <dt>high_service_flap_threshold=</dt>
 <dd><dl><dt>hoher Schwellwert Service-Flattern, <a class="indexterm" href="configmain.html#configmain-high_service_flap_threshold">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
-<dt>Host-Abhängigkeits-Definition (hostdependency-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostdependency">Objektdefinitionen</a>
+<dt>Host-Abhängigkeits-Definition (hostdependency-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostdependency">Host-Abhängigkeits-Definition (hostdependency)</a>
 </dt>
 <dt>Host-Abhängigkeits-Definitionen, <a class="indexterm" href="objecttricks.html#objecttricks-hostdependency">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
-<dt>Host-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-host">Objektdefinitionen</a>
+<dt>Host-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a>
 </dt>
-<dt>Host-Eskalations-Definition (hostescalation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostescalation">Objektdefinitionen</a>
+<dt>Host-Eskalations-Definition (hostescalation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostescalation">Host-Eskalations-Definition</a>
 </dt>
 <dt>Host-Eskalations-Definitionen, <a class="indexterm" href="objecttricks.html#objecttricks-hostescalation">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
 <dt>Host-Prüfungen, <a class="indexterm" href="hostchecks.html">Host-Prüfungen (Host checks)</a>
 </dt>
-<dt>Hostdependency-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostdependency">Objektdefinitionen</a>
-</dt>
-<dt>Hostescalation-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostescalation">Objektdefinitionen</a>
-</dt>
-<dt>Hostextinfo-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">Objektdefinitionen</a>
-</dt>
-<dt>Hostgroup-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostgroup">Objektdefinitionen</a>
-</dt>
 <dt>Hostgroups, <a class="indexterm" href="objecttricks.html#objecttricks-hostgroup">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
-<dt>Hostgruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostgroup">Objektdefinitionen</a>
+<dt>Hostgruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostgroup">Hostgruppen-Definition</a>
 </dt>
 <dt>host_check_timeout=</dt>
 <dd><dl><dt>Host-Prüfungs-Zeitüberschreitung, <a class="indexterm" href="configmain.html#configmain-host_check_timeout">Optionen der Hauptkonfigurationsdatei</a>
@@ -791,16 +820,18 @@
 <dt>host_perfdata_file_template=</dt>
 <dd><dl><dt>Vorlage Host-Performance-Daten-Datei, <a class="indexterm" href="configmain.html#configmain-host_perfdata_file_template">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
-<dt>HowTo's</dt>
-<dd><dl><dt>User HowTo's, <a class="indexterm" href="howtos.html">Links zu weiteren Howto's</a>
+<dt>Howtos</dt>
+<dd><dl><dt>User Howtos, <a class="indexterm" href="howtos.html">Links zu weiteren Howtos</a>
 </dt></dl></dd>
+<dt>http_charset=, <a class="indexterm" href="configcgi.html#configcgi-http_charset">Optionen CGI-Konfigurationsdatei</a>
+</dt>
 </dl>
 </div>
 <div class="indexdiv">
 <h3>I</h3>
 <dl>
 <dt>Icinga API</dt>
-<dd><dl><dt>API/Icinga Web, <a class="indexterm" href="icinga-web-api.html">The Icinga Web REST API</a>
+<dd><dl><dt>API/Icinga Web, <a class="indexterm" href="icinga-web-api.html">Die Icinga Web REST API</a>
 </dt></dl></dd>
 <dt>Icinga für maximale Leistung optimieren, <a class="indexterm" href="tuning.html">Icinga für maximale Leistung optimieren</a>
 </dt>
@@ -813,11 +844,30 @@
 </dl></dd>
 <dt>Icinga Log-Optionen, <a class="indexterm" href="startstop.html">Icinga starten und stoppen</a>
 </dt>
+<dt>Icinga Reporting mit JasperServer</dt>
+<dd><dl><dt>Icinga Reporting, <a class="indexterm" href="reporting.html">Installation des Icinga Reporting-Pakets mit JasperServer</a>
+</dt></dl></dd>
 <dt>Icinga starten und stoppen, <a class="indexterm" href="startstop.html">Icinga starten und stoppen</a>
 </dt>
 <dt>Icinga Web</dt>
-<dd><dl><dt>Überblick, <a class="indexterm" href="icinga-web-intro.html">Einführung in Icinga Web</a>
-</dt></dl></dd>
+<dd><dl>
+<dt>Aktualisierung von, <a class="indexterm" href="upgrading_icingaweb.html">Aktualisierung von Icinga Webund Icinga Web Datenbank</a>
+</dt>
+<dt>benutzerdefinierte Konfiguration, <a class="indexterm" href="icinga-web-config.html">Konfigurationsübersicht Icinga Web</a>
+</dt>
+<dt>Datenbank-Update, <a class="indexterm" href="upgrading_icingaweb.html">Aktualisierung von Icinga Webund Icinga Web Datenbank</a>
+</dt>
+<dt>Konfigurationsoptionen, <a class="indexterm" href="icinga-web-config.html">Konfigurationsübersicht Icinga Web</a>
+</dt>
+<dt>Session Lifetime, <a class="indexterm" href="icinga-web-config.html#configweb-session-lifetime">Konfigurationsübersicht Icinga Web</a>
+</dt>
+<dt>Überblick (&lt;=1.2.x), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro">Einführung in Icinga Web (&lt;= 1.2.x)</a>
+</dt>
+<dt>Überblick (&gt;= 1.3), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.3">Einführung in Icinga Web</a>
+</dt>
+<dt>Zeitzone, <a class="indexterm" href="icinga-web-config.html#configweb-timezone">Konfigurationsübersicht Icinga Web</a>
+</dt>
+</dl></dd>
 <dt>Icinga-API, <a class="indexterm" href="icinga-api.html">Installation und Benutzung der Icinga API</a>
 </dt>
 <dt>Icinga-Kommandozeilenoptionen</dt>
@@ -861,7 +911,7 @@
 <dt>illegal_object_name_chars=</dt>
 <dd><dl><dt>Illegale Objektnamen, <a class="indexterm" href="configmain.html#configmain-illegal_object_name_chars">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
-<dt>Installation des Webinterfaces, <a class="indexterm" href="icinga-web-scratch.html">Installation des neuen Icinga Web Frontend</a>
+<dt>Installation des Webinterfaces, <a class="indexterm" href="icinga-web-scratch.html">Installation des Icinga Web Frontend</a>
 </dt>
 <dt>Integration</dt>
 <dd><dl>
@@ -895,11 +945,13 @@
 <dt>Überprüfung Ihrer Konfiguration, <a class="indexterm" href="verifyconfig.html">Überprüfen Ihrer Icinga-Konfiguration</a>
 </dt>
 </dl></dd>
+<dt>Konfigurationsoptionen Icinga Web, <a class="indexterm" href="icinga-web-config.html">Konfigurationsübersicht Icinga Web</a>
+</dt>
 <dt>Konfigurationsüberblick, <a class="indexterm" href="config.html">Konfigurationsüberblick</a>
 </dt>
-<dt>Kontakt-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contact">Objektdefinitionen</a>
+<dt>Kontakt-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definition</a>
 </dt>
-<dt>Kontaktgruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Objektdefinitionen</a>
+<dt>Kontaktgruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen-Definition</a>
 </dt>
 </dl>
 </div>
@@ -1007,6 +1059,8 @@
 <dt>$HOSTACTIONURL$, <a class="indexterm" href="macrolist.html#macrolist-hostactionurl">Standard-Makros in Icinga</a>
 </dt>
 <dt>$HOSTADDRESS$, <a class="indexterm" href="macrolist.html#macrolist-hostaddress">Standard-Makros in Icinga</a>
+</dt>
+<dt>$HOSTADDRESS6$, <a class="indexterm" href="macrolist.html#macrolist-hostaddress6">Standard-Makros in Icinga</a>
 </dt>
 <dt>$HOSTALIAS$, <a class="indexterm" href="macrolist.html#macrolist-hostalias">Standard-Makros in Icinga</a>
 </dt>
@@ -1297,6 +1351,9 @@
 </dt></dl></dd>
 <dt>Maßgeschneiderte Objektvariablen, <a class="indexterm" href="customobjectvars.html">Maßgeschneiderte Objektvariablen</a>
 </dt>
+<dt>Migration</dt>
+<dd><dl><dt>von Nagios nach Icinga, <a class="indexterm" href="upgrading.html#upgrading-nagios3x">Icinga aktualisieren</a>
+</dt></dl></dd>
 <dt>MKLiveStatus-Integration, <a class="indexterm" href="int-mklivestatus.html">MKLiveStatus-Integration</a>
 </dt>
 <dt>Monitoring</dt>
@@ -1316,11 +1373,22 @@
 <dt>Windows-Rechner überwachen, <a class="indexterm" href="monitoring-windows.html">Windows-Maschinen überwachen</a>
 </dt>
 </dl></dd>
+<dt>MultiSite, <a class="indexterm" href="addons.html#addons-web">Icinga Addons</a>
+</dt>
 </dl>
 </div>
 <div class="indexdiv">
 <h3>N</h3>
 <dl>
+<dt>Nagios</dt>
+<dd><dl><dt>von Nagios nach Icinga migrieren, <a class="indexterm" href="upgrading.html#upgrading-nagios3x">Icinga aktualisieren</a>
+</dt></dl></dd>
+<dt>NagiosQL, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
+</dt>
+<dt>NagVis, <a class="indexterm" href="addons.html#addons-vis">Icinga Addons</a>
+</dt>
+<dt>NConf, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
+</dt>
 <dt>Netzwork-Hosts</dt>
 <dd><dl><dt>Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts, <a class="indexterm" href="networkreachability.html">Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</a>
 </dt></dl></dd>
@@ -1330,7 +1398,15 @@
 <dt>notification_timeout=</dt>
 <dd><dl><dt>Benachrichtigungs-Zeitüberschreitung, <a class="indexterm" href="configmain.html#configmain-notification_timeout">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
-<dt>NSClient++</dt>
+<dt>NSCA</dt>
+<dd><dl>
+<dt>nsca, <a class="indexterm" href="nsca.html">NSCA</a>
+</dt>
+<dt>send_nsca, <a class="indexterm" href="nsca.html">NSCA</a>
+</dt>
+</dl></dd>
+<dt>NSClient++, <a class="indexterm" href="addons.html#addons-mon">Icinga Addons</a>
+</dt>
 <dd><dl><dt>Windows-Rechner überwachen, <a class="indexterm" href="monitoring-windows.html">Windows-Maschinen überwachen</a>
 </dt></dl></dd>
 </dl>
@@ -1344,35 +1420,35 @@
 <dt>Objektdefinitionen, <a class="indexterm" href="objectdefinitions.html">Objektdefinitionen</a>
 </dt>
 <dd><dl>
-<dt>Command, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-command">Objektdefinitionen</a>
+<dt>Command, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-command">Befehls-Definition (command)</a>
 </dt>
-<dt>Contact, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contact">Objektdefinitionen</a>
+<dt>Contact, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definition</a>
 </dt>
-<dt>Contactgroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Objektdefinitionen</a>
+<dt>Contactgroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen-Definition</a>
 </dt>
-<dt>Host, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-host">Objektdefinitionen</a>
+<dt>Host, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a>
 </dt>
-<dt>Host Dependency, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostdependency">Objektdefinitionen</a>
+<dt>Host Dependency, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostdependency">Host-Abhängigkeits-Definition (hostdependency)</a>
 </dt>
-<dt>Host Escalation, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostescalation">Objektdefinitionen</a>
+<dt>Host Escalation, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostescalation">Host-Eskalations-Definition</a>
 </dt>
-<dt>Host Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">Objektdefinitionen</a>
+<dt>Host Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">erweiterte Hostinformations-Definition (hostextinfo)</a>
 </dt>
-<dt>Hostgroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostgroup">Objektdefinitionen</a>
+<dt>Hostgroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostgroup">Hostgruppen-Definition</a>
 </dt>
 <dt>Retention, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-retention_notes">Objektdefinitionen</a>
 </dt>
-<dt>Service, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-service">Objektdefinitionen</a>
+<dt>Service, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a>
 </dt>
-<dt>Service Escalation, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceescalation">Objektdefinitionen</a>
+<dt>Service Escalation, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceescalation">Serviceeskalations-Definition</a>
 </dt>
-<dt>Service Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">Objektdefinitionen</a>
+<dt>Service Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Serviceinformations-Definition (serviceextinfo)</a>
 </dt>
-<dt>ServiceDependency, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicedependency">Objektdefinitionen</a>
+<dt>ServiceDependency, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeits-Definition (servicedependency)</a>
 </dt>
-<dt>Servicegroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Objektdefinitionen</a>
+<dt>Servicegroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegruppen-Definition</a>
 </dt>
-<dt>Timeperiod, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-timeperiod">Objektdefinitionen</a>
+<dt>Timeperiod, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster-Definition (timeperiod)</a>
 </dt>
 <dt>Zeitsparende Tricks für Objektdefinitionen, <a class="indexterm" href="objecttricks.html">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
@@ -1428,6 +1504,9 @@
 </dt>
 <dd><dl><dt>grafische Darstellung von Performance-Informationen mit MRTG, <a class="indexterm" href="mrtggraphs.html">grafische Darstellung von Performance-Informationen mit MRTG</a>
 </dt></dl></dd>
+<dt>persistent_ack_comments=</dt>
+<dd><dl><dt>Persistente Bestätigungskommentare, <a class="indexterm" href="configcgi.html#configcgi-persistent_ack_comments">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>physical_html_path=</dt>
 <dd><dl><dt>vollständiger (physical) HTML-Pfad, <a class="indexterm" href="configcgi.html#configcgi-physical_html_path">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
@@ -1445,7 +1524,8 @@
 <dt>Wie benutze ich Plugin X?, <a class="indexterm" href="plugins.html#plugins-howto">Icinga Plugins</a>
 </dt>
 </dl></dd>
-<dt>PNP4Nagios</dt>
+<dt>PNP4Nagios, <a class="indexterm" href="addons.html#addons-vis">Icinga Addons</a>
+</dt>
 <dd><dl><dt>pnp und Icinga Web, <a class="indexterm" href="icinga-web-pnp.html">Integration von PNP4Nagios in das Icinga Web Frontend</a>
 </dt></dl></dd>
 <dt>precached_object_file=</dt>
@@ -1468,6 +1548,8 @@
 </dt>
 <dt>Icinga mit IDOUtils, <a class="indexterm" href="quickstart-idoutils.html">Icinga-Schnellstart mit IDOUtils</a>
 </dt>
+<dt>Icinga und IDOUtils auf FreeBSD, <a class="indexterm" href="quickstart-idoutils-freebsd.html">Icinga-Schnellstart mit IDOUtils auf FreeBSD</a>
+</dt>
 </dl></dd>
 </dl>
 </div>
@@ -1484,25 +1566,25 @@
 <dd><dl><dt>Ressource-Datei, <a class="indexterm" href="configmain.html#configmain-resource_file">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_contact_host_attribute_mask=</dt>
-<dd><dl><dt>aufbewahrte "Contact Host"-Attributmaske, <a class="indexterm" href="../../../../../"></a>
+<dd><dl><dt>aufbewahrte "Contact Host"-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_contact_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_contact_service_attribute_mask=</dt>
-<dd><dl><dt>aufbewahrte "Contact Service"-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_contact_service_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
+<dd><dl><dt>aufbewahrte "Contact Service"-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_contact_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_host_attribute_mask=</dt>
-<dd><dl><dt>aufbewahrte Host-Attributmaske, <a class="indexterm" href="../../../../../"></a>
+<dd><dl><dt>aufbewahrte Host-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_process_attribute_mask=</dt>
-<dd><dl><dt>aufbewahrte Prozess-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_process_service_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
+<dd><dl><dt>aufbewahrte Prozess-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_process_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_process_host_attribute_mask=</dt>
-<dd><dl><dt>aufbewahrte "Process Host"-Attributmaske, <a class="indexterm" href="../../../../../"></a>
+<dd><dl><dt>aufbewahrte "Process Host"-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_process_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_scheduling_info=</dt>
 <dd><dl><dt>benutzen von aufbewahrten Planungsinformationen, <a class="indexterm" href="configmain.html#configmain-use_retained_scheduling_info">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retained_service_attribute_mask=</dt>
-<dd><dl><dt>aufbewahrte Service-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_service_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
+<dd><dl><dt>aufbewahrte Service-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>retain_state_information=</dt>
 <dd><dl><dt>aufbewahren von Statusinformationen, <a class="indexterm" href="configmain.html#configmain-retain_state_information">Optionen der Hauptkonfigurationsdatei</a>
@@ -1552,11 +1634,11 @@
 </dt></dl></dd>
 <dt>Schnellstartoptionen (Fast Startup Options), <a class="indexterm" href="faststartup.html">Schnellstart-Optionen</a>
 </dt>
-<dt>Service-Abhängigkeits-Definition (servicedependency-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicedependency">Objektdefinitionen</a>
+<dt>Service-Abhängigkeits-Definition (servicedependency-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeits-Definition (servicedependency)</a>
 </dt>
 <dt>Service-Abhängigkeits-Definitionen, <a class="indexterm" href="objecttricks.html#objecttricks-servicedependency">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
-<dt>Service-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-service">Objektdefinitionen</a>
+<dt>Service-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a>
 </dt>
 <dt>Service-Definitionen, <a class="indexterm" href="objecttricks.html#objecttricks-service">Zeitsparende Tricks für Objektdefinitionen</a>
 </dt>
@@ -1564,15 +1646,9 @@
 </dt>
 <dt>Service-Prüfungen, <a class="indexterm" href="servicechecks.html">Service-Prüfungen (Service Checks)</a>
 </dt>
-<dt>Servicedependency-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicedependency">Objektdefinitionen</a>
+<dt>Serviceescalation-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceescalation">Serviceeskalations-Definition</a>
 </dt>
-<dt>Serviceescalation-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceescalation">Objektdefinitionen</a>
-</dt>
-<dt>Serviceextinfo-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Objektdefinitionen</a>
-</dt>
-<dt>Servicegroup-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Objektdefinitionen</a>
-</dt>
-<dt>Servicegruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Objektdefinitionen</a>
+<dt>Servicegruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegruppen-Definition</a>
 </dt>
 <dt>service_check_timeout=</dt>
 <dd><dl><dt>Service-Prüfungs-Zeitüberschreitung, <a class="indexterm" href="configmain.html#configmain-service_check_timeout">Optionen der Hauptkonfigurationsdatei</a>
@@ -1606,6 +1682,14 @@
 </dt></dl></dd>
 <dt>service_perfdata_file_template=</dt>
 <dd><dl><dt>Vorlage Service-Performance-Daten-Datei, <a class="indexterm" href="configmain.html#configmain-service_perfdata_file_template">Optionen der Hauptkonfigurationsdatei</a>
+</dt></dl></dd>
+<dt>Session Lifetime Icinga Web, <a class="indexterm" href="icinga-web-config.html#configweb-session-lifetime">Konfigurationsübersicht Icinga Web</a>
+</dt>
+<dt>showlog_current_states=</dt>
+<dd><dl><dt>Aktuelle Zustände anzeigen, <a class="indexterm" href="configcgi.html#configcgi-showlog_current_states">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
+<dt>showlog_initial_states=</dt>
+<dd><dl><dt>Initiale Zustände anzeigen, <a class="indexterm" href="configcgi.html#configcgi-showlog_initial_states">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>Sicherheitsüberlegungen, <a class="indexterm" href="security.html">Sicherheitsüberlegungen</a>
 </dt>
@@ -1760,6 +1844,9 @@
 <dt>timeperiod_timeranges, <a class="indexterm" href="db_model.html#dbm_timeperiod_timeranges"> Configuration Tables</a>
 </dt>
 </dl></dd>
+<dt>tab_friendly_titles=</dt>
+<dd><dl><dt>Objekttyp im Browser-Reiter anzeigen, <a class="indexterm" href="configcgi.html#configcgi-tab_friendly_titles">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>tac_show_only_hard_state=</dt>
 <dd><dl><dt>Tac Show Only Hard State, <a class="indexterm" href="configcgi.html#configcgi-show_only_hard_states">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
@@ -1769,7 +1856,9 @@
 <dt>temp_path=</dt>
 <dd><dl><dt>temporärer Pfad, <a class="indexterm" href="configmain.html#configmain-temp_path">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
-<dt>Timeperiod-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-timeperiod">Objektdefinitionen</a>
+<dt>Thruk, <a class="indexterm" href="addons.html#addons-web">Icinga Addons</a>
+</dt>
+<dt>Timezone Icinga Web, <a class="indexterm" href="icinga-web-config.html#configweb-timezone">Konfigurationsübersicht Icinga Web</a>
 </dt>
 <dt>translage_passive_host_checks=</dt>
 <dd><dl><dt>übersetzen von passiven Host-Prüfergebnissen, <a class="indexterm" href="configmain.html#configmain-translate_passive_host_checks">Optionen der Hauptkonfigurationsdatei</a>
@@ -1845,9 +1934,9 @@
 <dl>
 <dt>Was ist Icinga?, <a class="indexterm" href="about.html">Über Icinga</a>
 </dt>
-<dt>Was ist neu in Icinga, <a class="indexterm" href="whatsnew.html">Was gibt es Neues in Icinga 1.2</a>
+<dt>Was ist neu in Icinga, <a class="indexterm" href="whatsnew.html">Was gibt es Neues in Icinga 1.3</a>
 </dt>
-<dt>Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation des neuen Icinga Web Frontend</a>
+<dt>Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation des Icinga Web Frontend</a>
 </dt>
 <dt>Wie benutze ich Plugin X?, <a class="indexterm" href="plugins.html#plugins-howto">Icinga Plugins</a>
 </dt>
@@ -1858,7 +1947,9 @@
 <dl>
 <dt>Zeitfenster (time periods), <a class="indexterm" href="timeperiods.html">Zeitfenster</a>
 </dt>
-<dt>Zeitfenster-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-timeperiod">Objektdefinitionen</a>
+<dt>Zeitfenster-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster-Definition (timeperiod)</a>
+</dt>
+<dt>Zeitzone Icinga Web, <a class="indexterm" href="icinga-web-config.html#configweb-timezone">Konfigurationsübersicht Icinga Web</a>
 </dt>
 <dt>Zwischengespeicherte Prüfungen (Cached Checks), <a class="indexterm" href="cachedchecks.html">Zwischengespeicherte Prüfungen</a>
 </dt>
@@ -1882,6 +1973,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

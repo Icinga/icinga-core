@@ -8,6 +8,8 @@
 -- Please check http://docs.icinga.org for upgrading information!
 -- -----------------------------------------
 
+CREATE LANGUAGE plpgsql;
+
 -- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------

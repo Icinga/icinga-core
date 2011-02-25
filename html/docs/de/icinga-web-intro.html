@@ -4,9 +4,9 @@
 <title>Einführung in Icinga Web</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="icinga-web-scratch.html" title="Installation des neuen Icinga Web Frontend">
+<link rel="prev" href="upgrading_icingaweb.html" title="Aktualisierung von Icinga Webund Icinga Web Datenbank">
 <link rel="next" href="icinga-web-pnp.html" title="Integration von PNP4Nagios in das Icinga Web Frontend">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,7 +16,7 @@
 <tr><th colspan="3" align="center">Einführung in Icinga Web</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icinga-web-scratch.html">Zurück</a> </td>
+<a accesskey="p" href="upgrading_icingaweb.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
 <td width="20%" align="right"> <a accesskey="n" href="icinga-web-pnp.html">Weiter</a>
 </td>
@@ -34,11 +34,11 @@
   <p>Diese Einführung wird Sie auf eine kurze Tour einladen, um diverse Aspekte von Icinga Web zu skizzieren. Es besteht kein Anspruch
   auf Vollständigkeit, da dieses Dokument stetig erweitert wird.</p>
 
-  <p>Wenn Sie den Schnellstart-Anleitungen (<a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils</a> und <a class="link" href="icinga-web-scratch.html" title="Installation des neuen Icinga Web Frontend">Icinga Web</a>) gefolgt sind, sollten Sie nun http://&lt;icinga server&gt;/icinga-web aufrufen können und
+  <p>Wenn Sie den Schnellstart-Anleitungen (<a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils</a> und <a class="link" href="icinga-web-scratch.html" title="Installation des Icinga Web Frontend">Icinga Web</a>) gefolgt sind, sollten Sie nun http://&lt;icinga server&gt;/icinga-web aufrufen können und
   den Login-Bildschirm sehen</p>
 
   <div class="figure">
-<a name="id2580787"></a><p class="title"><b>Abbildung 6.1. Icinga Web Login-Bildschirm</b></p>
+<a name="id1406585"></a><p class="title"><b>Abbildung 6.1. Icinga Web Login-Bildschirm</b></p>
 <div class="figure-contents">
     
 
@@ -53,7 +53,7 @@
   überwachten Hosts und Services dargestellt wird.</p>
 
   <div class="figure">
-<a name="id2580814"></a><p class="title"><b>Abbildung 6.2. Icinga Web Überblick</b></p>
+<a name="id1406622"></a><p class="title"><b>Abbildung 6.2. Icinga Web Überblick</b></p>
 <div class="figure-contents">
     
 
@@ -72,7 +72,7 @@
   Suchresultate werden ebenfalls hier in einem neuen Tab geöffnet; das gilt auch für das Öffnen verfügbarer Cronks.</p>
 
   <div class="figure">
-<a name="id2580810"></a><p class="title"><b>Abbildung 6.3. Icinga Web Zentrale Übersicht</b></p>
+<a name="id1406655"></a><p class="title"><b>Abbildung 6.3. Icinga Web Zentrale Übersicht</b></p>
 <div class="figure-contents">
     
 
@@ -102,7 +102,7 @@
 </ul></div>
 
   <div class="figure">
-<a name="id2580920"></a><p class="title"><b>Abbildung 6.4. Icinga Web Status-Cronk</b></p>
+<a name="id1406717"></a><p class="title"><b>Abbildung 6.4. Icinga Web Status-Cronk</b></p>
 <div class="figure-contents">
     
 
@@ -119,7 +119,7 @@
   oben können Sie den gerade eingeloggten Benutzer bearbeiten oder sich aus Icinga Web ausloggen.</p>
 
   <div class="figure">
-<a name="id2580941"></a><p class="title"><b>Abbildung 6.5. Icinga Web top menu</b></p>
+<a name="id1406753"></a><p class="title"><b>Abbildung 6.5. Icinga Web top menu</b></p>
 <div class="figure-contents">
     
 
@@ -141,7 +141,7 @@
       <p>"Data", um Status-, historische und Konfigurationsdaten zu erhalten</p>
 
       <div class="figure">
-<a name="id2581001"></a><p class="title"><b>Abbildung 6.6. Icinga Web Data-Cronks</b></p>
+<a name="id1406795"></a><p class="title"><b>Abbildung 6.6. Icinga Web Data-Cronks</b></p>
 <div class="figure-contents">
         
 
@@ -156,7 +156,7 @@
       <p>"Tactical Overview" bietet generelle Charts und eigene angepasste an (Custom Variables)</p>
 
       <div class="figure">
-<a name="id2581039"></a><p class="title"><b>Abbildung 6.7. Icinga Web Tactical Overview-Cronks</b></p>
+<a name="id1406769"></a><p class="title"><b>Abbildung 6.7. Icinga Web Tactical Overview-Cronks</b></p>
 <div class="figure-contents">
         
 
@@ -171,7 +171,7 @@
       <p>"Misc" enthält verschiedene nützliche Cronks, wie iframe für externe Webseiten oder 1,2,3-Spaltenansichten</p>
 
       <div class="figure">
-<a name="id2581070"></a><p class="title"><b>Abbildung 6.8. Icinga Web "Misc"-Cronks</b></p>
+<a name="id1406864"></a><p class="title"><b>Abbildung 6.8. Icinga Web "Misc"-Cronks</b></p>
 <div class="figure-contents">
         
 
@@ -190,7 +190,7 @@
   anklicken, wird ein neuer Tab mit näheren Informationen geöffnet.</p>
 
   <div class="figure">
-<a name="id2581104"></a><p class="title"><b>Abbildung 6.9. Icinga Web Live-Suche</b></p>
+<a name="id1406900"></a><p class="title"><b>Abbildung 6.9. Icinga Web Live-Suche</b></p>
 <div class="figure-contents">
     
 
@@ -207,7 +207,7 @@
   minimiert werden, um mehr Platz für die zentrale Übersicht zu schaffen.</p>
 
   <div class="figure">
-<a name="id2581138"></a><p class="title"><b>Abbildung 6.10. Icinga Web Log</b></p>
+<a name="id1406932"></a><p class="title"><b>Abbildung 6.10. Icinga Web Log</b></p>
 <div class="figure-contents">
     
 
@@ -227,7 +227,7 @@
   zusammen (einige Cronks bieten zusätzliche Items, wie etwas das Senden von Kommandos).</p>
 
   <div class="figure">
-<a name="id2581183"></a><p class="title"><b>Abbildung 6.11. Icinga Web Cronk bar</b></p>
+<a name="id1406976"></a><p class="title"><b>Abbildung 6.11. Icinga Web Cronk bar</b></p>
 <div class="figure-contents">
     
 
@@ -254,7 +254,7 @@
 </ul></div>
 
   <div class="figure">
-<a name="id2581236"></a><p class="title"><b>Abbildung 6.12. Icinga Web Cronk bar</b></p>
+<a name="id1406985"></a><p class="title"><b>Abbildung 6.12. Icinga Web Cronk bar</b></p>
 <div class="figure-contents">
     
 
@@ -282,7 +282,7 @@
 </li></ul></div>
 
       <div class="figure">
-<a name="id2581283"></a><p class="title"><b>Abbildung 6.13. Icinga Web Host-Befehle</b></p>
+<a name="id1407094"></a><p class="title"><b>Abbildung 6.13. Icinga Web Host-Befehle</b></p>
 <div class="figure-contents">
         
 
@@ -298,7 +298,7 @@
 </li></ul></div>
 
       <div class="figure">
-<a name="id2581318"></a><p class="title"><b>Abbildung 6.14. Icinga Web Service-Befehle</b></p>
+<a name="id1407129"></a><p class="title"><b>Abbildung 6.14. Icinga Web Service-Befehle</b></p>
 <div class="figure-contents">
         
 
@@ -317,7 +317,7 @@
   unterschiedlich). Wiederholen Sie diesen Schritt, um verschiedene Restriktionen zu setzen.</p>
 
   <div class="figure">
-<a name="id2581354"></a><p class="title"><b>Abbildung 6.15. Icinga Web Filter restriction</b></p>
+<a name="id1407165"></a><p class="title"><b>Abbildung 6.15. Icinga Web Filter restriction</b></p>
 <div class="figure-contents">
     
 
@@ -332,7 +332,7 @@
   is, is not). Fügen Sie zu jeder Bedingung einen Wert hinzu; Vorschläge werden eingeblendet, sobald Sie tippen.</p>
 
   <div class="figure">
-<a name="id2581350"></a><p class="title"><b>Abbildung 6.16. Icinga Web filter condition</b></p>
+<a name="id1407196"></a><p class="title"><b>Abbildung 6.16. Icinga Web filter condition</b></p>
 <div class="figure-contents">
     
 
@@ -347,7 +347,7 @@
   Restriktionen und Bedingungen hinzufügen/entfernen. Ein aktiver Filter wird rot markiert.</p>
 
   <div class="figure">
-<a name="id2581389"></a><p class="title"><b>Abbildung 6.17. Icinga Web filter active</b></p>
+<a name="id1407225"></a><p class="title"><b>Abbildung 6.17. Icinga Web filter active</b></p>
 <div class="figure-contents">
     
 
@@ -366,7 +366,7 @@
   oder "Logs".</p>
 
   <div class="figure">
-<a name="id2581472"></a><p class="title"><b>Abbildung 6.18. Icinga Web top menu admin</b></p>
+<a name="id1407270"></a><p class="title"><b>Abbildung 6.18. Icinga Web top menu admin</b></p>
 <div class="figure-contents">
     
 
@@ -382,7 +382,7 @@
   <p>Sie können Benutzer hinzufügen, löschen oder editieren.</p>
 
   <div class="figure">
-<a name="id2581504"></a><p class="title"><b>Abbildung 6.19. Icinga Web user admin</b></p>
+<a name="id1407301"></a><p class="title"><b>Abbildung 6.19. Icinga Web user admin</b></p>
 <div class="figure-contents">
     
 
@@ -413,7 +413,7 @@
 </ul></div>
 
   <div class="figure">
-<a name="id2581568"></a><p class="title"><b>Abbildung 6.20. Icinga Web edit user</b></p>
+<a name="id1407362"></a><p class="title"><b>Abbildung 6.20. Icinga Web edit user</b></p>
 <div class="figure-contents">
     
 
@@ -430,7 +430,7 @@
   anpassen.</p>
 
   <div class="figure">
-<a name="id2581602"></a><p class="title"><b>Abbildung 6.21. Icinga Web group admin</b></p>
+<a name="id1407383"></a><p class="title"><b>Abbildung 6.21. Icinga Web group admin</b></p>
 <div class="figure-contents">
     
 
@@ -455,7 +455,7 @@
 </ul></div>
 
   <div class="figure">
-<a name="id2581649"></a><p class="title"><b>Abbildung 6.22. Icinga Web groups</b></p>
+<a name="id1407446"></a><p class="title"><b>Abbildung 6.22. Icinga Web groups</b></p>
 <div class="figure-contents">
     
 
@@ -472,7 +472,7 @@
   Nachfolgend eine Liste der verfügbaren Principals:</p>
 
   <div class="figure">
-<a name="id2581685"></a><p class="title"><b>Abbildung 6.23. Icinga Web principals</b></p>
+<a name="id1407479"></a><p class="title"><b>Abbildung 6.23. Icinga Web principals</b></p>
 <div class="figure-contents">
     
 
@@ -488,7 +488,7 @@
   <p>Hier können Sie verschiedene Logs betrachten, um diese als Hilfe bei Ihrer Fehlersuche zu verwenden.</p>
 
   <div class="figure">
-<a name="id2581719"></a><p class="title"><b>Abbildung 6.24. Icinga Web logs</b></p>
+<a name="id1407516"></a><p class="title"><b>Abbildung 6.24. Icinga Web logs</b></p>
 <div class="figure-contents">
     
 
@@ -499,25 +499,25 @@
 </div>
 <br class="figure-break">
 
-  <a class="indexterm" name="id2581739"></a>
+  <a class="indexterm" name="id1407533"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icinga-web-scratch.html">Zurück</a> </td>
+<a accesskey="p" href="upgrading_icingaweb.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
 <td width="40%" align="right"> <a accesskey="n" href="icinga-web-pnp.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Installation des neuen Icinga Web Frontend </td>
+<td width="40%" align="left" valign="top">Aktualisierung von Icinga Webund Icinga Web Datenbank </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
 <td width="40%" align="right" valign="top"> Integration von PNP4Nagios in das Icinga Web Frontend</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

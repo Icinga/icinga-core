@@ -4,10 +4,10 @@
 <title>Icinga Addons</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
-<link rel="up" href="ch010.html" title="Chapter 10. Icinga Addons">
-<link rel="prev" href="ch010.html" title="Chapter 10. Icinga Addons">
-<link rel="next" href="ch11.html" title="Chapter 11. Development">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
+<link rel="up" href="ch10.html" title="Chapter 10. Additional software">
+<link rel="prev" href="ch10.html" title="Chapter 10. Additional software">
+<link rel="next" href="nsca.html" title="NSCA">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Icinga Addons</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch010.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 10. Icinga Addons</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch11.html">Next</a>
+<a accesskey="p" href="ch10.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 10. Additional software</th>
+<td width="20%" align="right"> <a accesskey="n" href="nsca.html">Next</a>
 </td>
 </tr>
 </table>
@@ -38,37 +38,53 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Managing the config files through a web interface</p>
+      <p><a name="addons-conf"></a>Managing the config files through a web interface</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
           <p><a class="link" href="http://www.nconf.org" target="_top">NConf</a>, <a class="link" href="http://www.nagiosql.org" target="_top">NagiosQL</a>, ...</p>
         </li></ul></div>
     </li>
 <li class="listitem">
-      <p>Monitoring remote hosts (*NIX, Windows, etc.)</p>
+      <p><a name="addons-mon"></a>Monitoring remote hosts (*NIX, Windows, etc.)</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>,<a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a> ...</p>
-        </li></ul></div>
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><a class="link" href="nsca.html" title="NSCA">NSCA</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+        </li>
+<li class="listitem">
+          <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
+        </li>
+</ul></div>
     </li>
 <li class="listitem">
       <p>Submitting passive checks from remote hosts</p>
-    </li>
-<li class="listitem">
-      <p>Simplifying/extending the notification logic</p>
-    </li>
-<li class="listitem">
-      <p>Visualizing the information</p>
-
       <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a></p>
+          <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
         </li></ul></div>
     </li>
 <li class="listitem">
-      <p>alternative web interfaces</p>
+      <p><a name="addons-logic"></a>Simplifying/extending the notification logic</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+          <p><a class="link" href="http://bp-addon.monitoringexchange.org" target="_top">Business Process Addon</a> ...</p>
+        </li></ul></div>
+    </li>
+<li class="listitem">
+      <p><a name="addons-vis"></a>Visualizing the information</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">PNP4Nagios</a></p>
+        </li>
+<li class="listitem">
+          <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a></p>
+        </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p><a name="addons-web"></a>Alternative web interfaces</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.thruk.org" target="_top">Thruk</a></p>
+          <p><a class="link" href="http://www.thruk.org" target="_top">Thruk</a>, <a class="link" href="http://mathias-kettner.de/checkmk_multisite.html" target="_top">MultiSite</a></p>
         </li></ul></div>
     </li>
 <li class="listitem">
@@ -110,7 +126,8 @@
   <p>NSCA is an addon that allows you to send <a class="link" href="passivechecks.html" title="Passive Checks">passive check</a> results from remote Linux/Unix hosts to
   the Icinga daemon running on the monitoring server. This is very useful in <a class="link" href="distributed.html" title="Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">redundant/failover</a> monitoring setups.</p>
 
-  <p>The NSCA addon and documentation can be found at <a class="link" href="http://www.nagios.org/" target="_top">http://www.nagios.org/</a>.</p>
+  <p>The NSCA addon can be found at <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git" target="_top">https://git.icinga.org/?p=icinga-nsca.git</a>.
+  You will find the <a class="link" href="nsca.html" title="NSCA">documentation</a> in the next section.</p>
 
   <p><a name="addons-idoutils"></a><span class="bold"><strong>IDOUtils</strong></span></p>
 
@@ -123,30 +140,65 @@
   <p>The IDOUtils addon install instructions can be found in the <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Quickstart-Idoutils</a> and more
   documentation can be found at <a class="link" href="http://docs.icinga.org/latest/en/" target="_top">http://docs.icinga.org/</a>.</p>
 
-  <a class="indexterm" name="id4337780"></a>
+  <a class="indexterm" name="id5088531"></a>
 
-  <a class="indexterm" name="id4337793"></a>
+  <a class="indexterm" name="id5088540"></a>
 
-  <a class="indexterm" name="id4337805"></a>
+  <a class="indexterm" name="id5088557"></a>
 
+  <a class="indexterm" name="id5088570"></a>
+
+  <a class="indexterm" name="id5088571"></a>
+
+  <a class="indexterm" name="id5088542"></a>
+
+  <a class="indexterm" name="id5088594"></a>
+
+  <a class="indexterm" name="id5088619"></a>
+
+  <a class="indexterm" name="id5088626"></a>
+
+  <a class="indexterm" name="id5088579"></a>
+
+  <a class="indexterm" name="id5088650"></a>
+
+  <a class="indexterm" name="id5088666"></a>
+
+  <a class="indexterm" name="id5088673"></a>
+
+  <a class="indexterm" name="id5088689"></a>
+
+  <a class="indexterm" name="id5088696"></a>
+
+  <a class="indexterm" name="id5088712"></a>
+
+  <a class="indexterm" name="id5088719"></a>
+
+  <a class="indexterm" name="id5088734"></a>
+
+  <a class="indexterm" name="id5088735"></a>
+
+  <a class="indexterm" name="id5088758"></a>
+
+  <a class="indexterm" name="id5088767"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch010.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch010.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch11.html">Next</a>
+<a accesskey="p" href="ch10.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="nsca.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Chapter 10. Icinga Addons </td>
+<td width="40%" align="left" valign="top">Chapter 10. Additional software </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Chapter 11. Development</td>
+<td width="40%" align="right" valign="top"> NSCA</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -4,10 +4,10 @@
 <title>Icinga Classic UI: Informationen über die CGIs</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="next" href="icinga-web-scratch.html" title="Installation des neuen Icinga Web Frontend">
+<link rel="next" href="cgiparams.html" title="Informationen zu den CGI-Parametern">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -18,7 +18,7 @@
 <td width="20%" align="left">
 <a accesskey="p" href="ch06.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="cgiparams.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -35,6 +35,8 @@
   für den Zugriff und den Gebrauch jedes CGIs. Im Grundzustand erwarten die CGIs, dass Sie sich dem Web-Server gegenüber authentifiziert
   haben und autorisiert sind, jede Information zu sehen, die Sie anfordern. Mehr Informationen über die Konfiguration der Autorisierung
   finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+
+  <p>Die CGIs können über verschiedene Parameter gesteuert werden. Mehr Informationen finden Sie <a class="link" href="cgiparams.html" title="Informationen zu den CGI-Parametern">hier</a>.</p>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
@@ -629,16 +631,18 @@
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>Das Aussehen des "General"-Abschnitts auf der linke Seite hat sich erneut geändert</p>
-<p><a name="cgis-general_cgi"></a><span class="bold"><strong>General CGI</strong></span></p>
 
-  <div class="informaltable">
-    <table border="0">
+      <p><a name="cgis-general_cgi"></a><span class="bold"><strong>General CGI</strong></span></p>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td><p><span class="inlinemediaobject"><img src="../images/cgi-general.png"></span> </p></td></tr></tbody>
 </table>
-  </div>
-<div class="informaltable">
-    <table border="0">
+      </div>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup>
 <col>
 <col>
@@ -648,8 +652,9 @@
 <td><p> <span class="color"> <span class="bold"><strong>general.cgi</strong></span> </span> </p></td>
 </tr></tbody>
 </table>
-  </div>
-            <p>Beim Klick auf die entsprechende Flagge können Sie weiterhin auf die Dokumentation in der dargestellten Sprache zugreifen. </p>
+      </div>
+
+      <p>Beim Klick auf die entsprechende Flagge können Sie weiterhin auf die Dokumentation in der dargestellten Sprache zugreifen. </p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
@@ -666,16 +671,18 @@
       bestimmtes Objekt betrachten möchten. In diesem Fall können Sie die automatische Aktualisierung durch Klicken auf [pause] deaktivieren
       (direkt neben dem Text "Updated every 90 seconds" links oben im Status-Fenster). Klicken auf [continue] aktiviert die Aktualisierung
       wieder.</p>
-<p><a name="cgis-pause_cgi"></a><span class="bold"><strong>Pause CGI</strong></span></p>
 
-  <div class="informaltable">
-    <table border="0">
+      <p><a name="cgis-pause_cgi"></a><span class="bold"><strong>Pause CGI</strong></span></p>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td><p><span class="inlinemediaobject"><img src="../images/cgi-pause.png"></span> </p></td></tr></tbody>
 </table>
-</div>
-<div class="informaltable">
-    <table border="0">
+      </div>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup>
 <col>
 <col>
@@ -685,112 +692,140 @@
 <td><p> <span class="color"> <span class="bold"><strong>pause.cgi</strong></span> </span> </p></td>
 </tr></tbody>
 </table>
-  </div>
- <p><a name="cgi-continue_cgi"></a><span class="bold"><strong>Continue CGI</strong></span></p>
+      </div>
 
-  <div class="informaltable">
-    <table border="0">
+      <p><a name="cgi-continue_cgi"></a><span class="bold"><strong>Continue CGI</strong></span></p>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td><p><span class="inlinemediaobject"><img src="../images/cgi-continue.png"></span> </p></td></tr></tbody>
 </table>
-</div>
-<div class="informaltable">
-    <table border="0">
+      </div>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>continue.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>continue.cgi</strong></span> </span>
+              </p></td>
 </tr></tbody>
 </table>
-  </div>   
-</li>
+      </div>
+    </li>
 <li class="listitem">
       <p>Die Seiten "Host Detail" und "Service Detail" wurden erweitert, so dass Sie nun Befehle für mehrere Objekte gleichzeitig
       erteilen können (ab Icinga 1.2). Nun können Sie ein oder mehrere Objekte durch Check-Boxen neben den Objekten auswählen. Durch
       aktivieren der Check-Box neben "Status information" werden alle Services eines Hosts ausgewählt.</p>
-<p><a name="cgi-statusinfo_cgi"></a><span class="bold"><strong>Statusinfo CGI</strong></span></p>
 
-  <div class="informaltable">
-    <table border="0">
+      <p><a name="cgi-statusinfo_cgi"></a><span class="bold"><strong>Statusinfo CGI</strong></span></p>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td><p><span class="inlinemediaobject"><img src="../images/cgi-statusinfo.png"></span> </p></td></tr></tbody>
 </table>
-</div>
-<div class="informaltable">
-    <table border="0">
+      </div>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statusinfo.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>statusinfo.cgi</strong></span> </span>
+              </p></td>
 </tr></tbody>
 </table>
-  </div>
+      </div>
+
       <p><a name="cgi-commands_cgi"></a><span class="bold"><strong>Commands CGI</strong></span></p>
 
-  <div class="informaltable">
-    <table border="0">
+      <div class="informaltable">
+        <table border="0">
 <colgroup><col></colgroup>
 <tbody><tr><td><p><span class="inlinemediaobject"><img src="../images/cgi-commands.png"></span> </p></td></tr></tbody>
 </table>
-</div>
-<div class="informaltable">
-    <table border="0">
+      </div>
+
+      <div class="informaltable">
+        <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>commands.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"> <span class="bold"><strong>commands.cgi</strong></span> </span>
+              </p></td>
 </tr></tbody>
 </table>
-  </div>
-      
+      </div>
+
       <p>Nach dem Klick auf "Select command" zeigt eine Drop-Down-Liste die verfügbaren Befehle. Nach der Auswahl einer Aktion und dem
       anschließenden Klick auf "Submit" wird der Befehl für die ausgewählten Objekte ausgeführt.</p>
     </li>
 <li class="listitem">
       <p>"Export to CSV" wurde auf verschiedenen Seiten hinzugefügt (ab Icinga 1.2).</p>
     </li>
+<li class="listitem">
+      <p>Die Zellen der Tabelle in extinfo.cgi haben Namen bekommen. Mit Hilfe von SSI-Fragmenten können Sie JavaScript-Code einbinden,
+      um auf die Daten dieser Zellen zuzugreifen (ab Icinga 1.2.1).</p>
+
+      <p>Der Beispiel-Code benutzt Daten der Zelle "comment_data", um einen Link zu erzeugen (Dank an Oliver Graf).</p>
+
+      <p>common-header.ssi:</p>
+
+      <pre class="programlisting">&lt;script type='text/javascript'&gt;
+function urlify() {
+    var comments=document.getElementsByName('comment_data');
+    var neu="";
+    for (i=0; i&lt;=comments.length; i++) {
+        comments[i].innerHTML = comments[i].innerHTML.replace(/\bRT#(\d+)\b/g,"&lt;a href='https://YOUR-SERVER/Ticket/Display.html?id=$1'&gt;RT#$1&lt;/a&gt;");
+    }
+}
+window.onload=urlify;
+&lt;/script&gt;</pre>
+    </li>
 </ul></div>
 
-  <a class="indexterm" name="id2579602"></a>
+  <a class="indexterm" name="id5634332"></a>
 
-  <a class="indexterm" name="id2579614"></a>
+  <a class="indexterm" name="id5634278"></a>
 
-  <a class="indexterm" name="id2579625"></a>
+  <a class="indexterm" name="id5634357"></a>
 
-  <a class="indexterm" name="id2579639"></a>
+  <a class="indexterm" name="id5634371"></a>
 
-  <a class="indexterm" name="id2579652"></a>
+  <a class="indexterm" name="id5634384"></a>
 
-  <a class="indexterm" name="id2579666"></a>
+  <a class="indexterm" name="id5634398"></a>
 
-  <a class="indexterm" name="id2579679"></a>
+  <a class="indexterm" name="id5634411"></a>
 
-  <a class="indexterm" name="id2579693"></a>
+  <a class="indexterm" name="id5634425"></a>
 
-  <a class="indexterm" name="id2579707"></a>
+  <a class="indexterm" name="id5634439"></a>
 
-  <a class="indexterm" name="id2579720"></a>
+  <a class="indexterm" name="id5634451"></a>
 
-  <a class="indexterm" name="id2579734"></a>
+  <a class="indexterm" name="id5634465"></a>
 
-  <a class="indexterm" name="id2579747"></a>
+  <a class="indexterm" name="id5634479"></a>
 
-  <a class="indexterm" name="id2579761"></a>
+  <a class="indexterm" name="id5634493"></a>
 
-  <a class="indexterm" name="id2579775"></a>
+  <a class="indexterm" name="id5634506"></a>
 
-  <a class="indexterm" name="id2579787"></a>
+  <a class="indexterm" name="id5634520"></a>
 
-  <a class="indexterm" name="id2579801"></a>
+  <a class="indexterm" name="id5634533"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -799,16 +834,16 @@
 <td width="40%" align="left">
 <a accesskey="p" href="ch06.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="cgiparams.html">Weiter</a>
 </td>
 </tr>
 <tr>
 <td width="40%" align="left" valign="top">Kapitel 6. Die Benutzeroberflächen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Installation des neuen Icinga Web Frontend</td>
+<td width="40%" align="right" valign="top"> Informationen zu den CGI-Parametern</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

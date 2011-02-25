@@ -169,8 +169,7 @@ int neb_load_all_modules(void){
 int neb_load_module(nebmodule *mod){
 	int (*initfunc)(int,char *,void *);
 	int *module_version_ptr=NULL;
-	char output_file[PATH_MAX];
-	int dest_fd, result=OK;
+	int result=OK;
 
 
 	if(mod==NULL || mod->filename==NULL)

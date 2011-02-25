@@ -4,7 +4,7 @@
 <title>Distributed Monitoring</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="freshness.html" title="Service and Host Freshness Checks">
 <link rel="next" href="redundancy.html" title="Redundant and Failover Network Monitoring">
@@ -244,7 +244,7 @@ esac
       <p>If you're only using the central server to process services whose results are going to be provided by distributed
       hosts, you can simply disable all active service checks on a program-wide basis by setting the <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a> directive to 0. If you're using the central server
       to actively monitor a few services on its own (without the aid of distributed servers), the
-      <span class="emphasis"><em>enable_active_checks</em></span> option of the defintions for service being monitored by distributed servers should
+      <span class="emphasis"><em>active_checks_enabled</em></span> option of the definitions for service being monitored by distributed servers should
       be set to 0. This will prevent Icinga from actively checking those services.</p>
     </li>
 </ul></div>
@@ -358,7 +358,7 @@ esac
   is used for processing service check results (see documentation above). In order to make sure passive host check results are up
   to date, you'll want to enable <a class="link" href="freshness.html" title="Service and Host Freshness Checks">freshness checking</a> for hosts (similiar to what is described
   above for services).</p>
-  <a class="indexterm" name="id4321606"></a>
+  <a class="indexterm" name="id5072041"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -377,6 +377,6 @@ esac
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

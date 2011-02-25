@@ -4,9 +4,9 @@
 <title>Upgrading (to) Icinga</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
-<link rel="prev" href="howtos.html" title="Links to other published Howto's">
+<link rel="prev" href="howtos.html" title="Links to other published Howtos">
 <link rel="next" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,22 +44,6 @@
   <p>During development there may be cases where the handling of bugfixes might touch the userspace. We try to avoid this as far as
   possible but sometimes it is inevitable.</p>
 
-  <p><span class="bold"><strong>Icinga 0.8.0 to Icinga 1.2</strong></span></p>
-
-  <p>Archived Logfilename</p>
-
-  <p>There was a small misspelling bug in Icinga 0.8.0 resulting in archived logfile names beginning with a capital <span class="bold"><strong>"I"</strong></span> like in <span class="bold"><strong>'Icinga-$date'</strong></span>". This was fixed in version 0.8.1. and newer.</p>
-
-  <p>If you experience this problem then please use the following script to fix the file names</p>
-
-  <pre class="programlisting"> #&gt; cd /usr/local/icinga/var/archives
-
- for oldfilename in `find ./ -name "Icinga-*"`
- do
-   newfilename=`echo $oldfilename | sed -e 's/Icinga/icinga/g'`
-   mv $oldfilename $newfilename
- done</pre>
-
   <p><span class="bold"><strong>Normal Icinga update Path</strong></span></p>
 
   <p>If there's a new Icinga version available on http://www.icinga.org/ you should consider updating. Newer versions contain bugfixes,
@@ -70,7 +54,7 @@
   <p>Make sure you'll have a safe backup of your Icinga installation and configs. If anything goes wrong you can restore your old
   setup rather easy.</p>
 
-  <p>Regular updates of Icinga are possible by just by re-installing Icinga. Please keep in mind that
+  <p>Regular updates of Icinga are possible just by re-installing Icinga. Please keep in mind that
   <code class="code">configure</code> requires the same parameters as before - look it up in <code class="code">config.log</code> and save that in a safe
   location.</p>
 
@@ -92,11 +76,26 @@
 <pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig
  #&gt; /etc/init.d/icinga restart</pre>
 <p> That's it!</p>
+<p><span class="bold"><strong>Icinga 0.8.0 to Icinga 1.3</strong></span></p>
+
+  <p>Archived Logfilename</p>
+
+  <p>There was a small misspelling bug in Icinga 0.8.0 resulting in archived logfile names beginning with a capital <span class="bold"><strong>"I"</strong></span> like in <span class="bold"><strong>'Icinga-$date'</strong></span>". This was fixed in version 0.8.1. and newer.</p>
+
+  <p>If you experience this problem then please use the following script to fix the file names</p>
+
+  <pre class="programlisting"> #&gt; cd /usr/local/icinga/var/archives
+
+ for oldfilename in `find ./ -name "Icinga-*"`
+ do
+   newfilename=`echo $oldfilename | sed -e 's/Icinga/icinga/g'`
+   mv $oldfilename $newfilename
+ done</pre>
 
   <p><span class="bold"><strong><a name="upgrading-nagios3x"></a> Upgrading from Nagios 3.x Releases</strong></span></p>
 
   <p>We try to be compatible with the configuration files of the current Nagios 3.x versions so there should be very little you
-  have to do to "upgrade" from Nagios 3.x to Icinga 1.2. Assuming you've already installed Nagios from source
+  have to do to "upgrade" from Nagios 3.x to Icinga 1.3. Assuming you've already installed Nagios from source
   code as described in the Nagios quickstart guide, you can install Icinga quite easily.</p>
 
   <p>If you are upgrading from Nagios 3.0.x you might need to install PHP:</p>
@@ -123,8 +122,10 @@
 <li class="listitem">
       <p>the environment macros start with ICINGA_</p>
 
-      <p>PNP4Nagios is aware of that since 0.6rc1 (2009.09.20). check_multi includes support since v0.21 (2010.06.03), but you have to
-      rerun the installation using 'configure --with-nagios_name=icinga' so that check_multi contains the correct values.</p>
+      <p>PNP4Nagios is aware of that since 0.6rc1 (2009.09.20) but the macros are needed in "sync" mode only.</p>
+      <p>check_multi includes support since v0.21 (2010.06.03), but you have to rerun the installation using
+      'configure --with-nagios_name=icinga' so that check_multi contains the correct values. You can use the option "-s" instead to set
+      certain values.</p>
     </li>
 <li class="listitem">
       <p>the configuration file names of the (enhanced) IDOUtils are named idomod.cfg/ido2db.cfg instead of ndomod.cfg/ndo2db.cfg</p>
@@ -137,12 +138,12 @@
 
   <p>Get the latest Icinga version from <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> </p>
 
-  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.2</em></span>.tar.gz</pre>
+  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.3</em></span>.tar.gz</pre>
 
   <p>Extract the tarball and change to the directory just created</p>
 
-  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.2</em></span>.tar.gz
- #&gt; cd icinga-<span class="emphasis"><em>1.2</em></span> </pre>
+  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.3</em></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><em>1.3</em></span> </pre>
 
   <p>Start the Icinga-configure-script with the options you used the last time with Nagios. You'll find the call in the
   file config.log. Example:</p>
@@ -202,9 +203,9 @@
 
   <p><span class="bold"><strong><a name="upgrading-nagios2x"></a> Upgrading from Nagios 2.x Releases</strong></span></p>
 
-  <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 1.2. The upgrade is essentially the same
+  <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 1.3. The upgrade is essentially the same
   as what is described above for upgrading from Nagios 3.x releases. You will, however, have to change your configuration files a bit
-  so they work with Icinga 1.2:</p>
+  so they work with Icinga 1.3:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -237,7 +238,7 @@
     </li>
 </ul></div>
 
-  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's New in Icinga 1.2">What's New</a>" section of the documentation. It describes all the changes
+  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's New in Icinga 1.3">What's New</a>" section of the documentation. It describes all the changes
   that were made to the Icinga code since the latest stable release of Nagios 3.0.6. Quite a bit has changed, so make sure you
   read it over.</p>
 
@@ -298,13 +299,17 @@
   backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
   problems.</p>
 
-  <a class="indexterm" name="id4245184"></a>
+  <a class="indexterm" name="id4985689"></a>
 
-  <a class="indexterm" name="id4245214"></a>
+  <a class="indexterm" name="id4985717"></a>
 
-  <a class="indexterm" name="id4245229"></a>
+  <a class="indexterm" name="id4985731"></a>
 
-  <a class="indexterm" name="id4245239"></a>
+  <a class="indexterm" name="id4985746"></a>
+
+  <a class="indexterm" name="id4985759"></a>
+
+  <a class="indexterm" name="id4985772"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -317,12 +322,12 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Links to other published Howto's </td>
+<td width="40%" align="left" valign="top">Links to other published Howtos </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
 <td width="40%" align="right" valign="top"> Upgrading IDOUtils Database</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

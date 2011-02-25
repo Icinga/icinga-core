@@ -4,7 +4,7 @@
 <title>Upgrading IDOUtils Database</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.2 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="upgrading.html" title="Upgrading (to) Icinga">
 <link rel="next" href="monitoring-windows.html" title="Monitoring Windows Machines">
@@ -27,230 +27,250 @@
 <div class="section" title="Upgrading IDOUtils Database">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading_idoutils"></a><a name="upgrading_idoutils2"></a>Upgrading IDOUtils Database</h2></div></div></div>
-    
+  
 
-    <p>There may be a bug within the database scheme which has been fixed. If you are upgrading from an older IDOUtils version you also need
-    to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or ask the maintainer if he has added those
-    modifications to the install routine.</p>
+  <p>There may be a bug within the database scheme which has been fixed. If you are upgrading from an older IDOUtils version you
+  also need to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or ask the maintainer if he has added
+  those modifications to the install routine.</p>
 
-    <p>The upgrade files can be found next to the database install files in <code class="literal">/path/to/icinga-src/module/idoutils/db/yourrdbm/</code>.
-    The syntax is as follows:</p>
+  <p>The upgrade files can be found next to the database install files in
+  <code class="literal">/path/to/icinga-src/module/idoutils/db/yourrdbm/</code>. The syntax is as follows:</p>
 
-    <p><code class="literal">&lt;rdbm&gt;-upgrade-&lt;version&gt;.sql</code></p>
+  <p><code class="literal">&lt;rdbm&gt;-upgrade-&lt;version&gt;.sql</code></p>
 
-    <p>where &lt;rdbm&gt; could be mysql, pgsql or oracle and &lt;version&gt; points to the version you want to upgrade to.</p>
+  <p>where &lt;rdbm&gt; could be mysql, pgsql or oracle and &lt;version&gt; points to the version you want to upgrade to.</p>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>If you are upgrading from an older version and there are other versions in between be advised that you need to apply those upgrade files
-        with incremental steps!</p>
-    </td></tr>
+    <p>If you are upgrading from an older version and there are other versions in between be advised that you need to apply those upgrade
+    files with incremental steps!</p>
+  </td></tr>
 </table></div>
 
-    <p>E.g. you have 1.0RC1 installed and want to upgrade to 1.0.1 - you will have to upgrade to 1.0 Stable first and then apply the upgrade to
-    1.0.1.</p>
+  <p>E.g. you have 1.0RC1 installed and want to upgrade to 1.0.1 - you will have to upgrade to 1.0 Stable first and then apply the
+  upgrade to 1.0.1.</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-            <p>Backup your current database before upgrading!</p>
-        </li>
+      <p>Backup your current database before upgrading!</p>
+    </li>
 <li class="listitem">
-            <p>Check current IDOUtils version and the target version. Check if there are any version in between and upgrade incremental if
-            necessary.</p>
-        </li>
+      <p>Check current IDOUtils version and the target version. Check if there are any version in between and upgrade incremental
+      if necessary.</p>
+    </li>
 <li class="listitem">
-            <p>Apply the upgrade(s) using a rdbm user with appropriate rights. You may use the upgradedb script, but this is not recommended (for
-            MySQL only).</p>
-        </li>
+      <p>Apply the upgrade(s) using a rdbm user with appropriate rights. You may use the upgradedb script, but this is not recommended
+      (for MySQL only).</p>
+    </li>
 </ol></div>
 
-    <p><span class="bold"><strong>MySQL</strong></span> </p>
+  <p><span class="bold"><strong>MySQL</strong></span> </p>
 <pre class="programlisting"> $ mysql -u root -p &lt;dbname&gt; &lt; /path/to/icinga-src/module/idoutils/db/mysql/mysql-upgrade-&lt;version&gt;.sql</pre>
 <p>
-    <span class="bold"><strong>Postgresql</strong></span> </p>
+  <span class="bold"><strong>Postgresql</strong></span> </p>
 <pre class="programlisting"> # su - postgres
  $ psql -U icinga -d icinga &lt; /path/to/icinga-src/module/idoutils/db/pgsql/pgsql-upgrade-&lt;version&gt;.sql</pre>
 
-    <p><span class="bold"><strong>Oracle</strong></span> </p>
+  <p><span class="bold"><strong>Oracle</strong></span> </p>
 <pre class="programlisting"> # su - oracle
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
-<p> </p>
-<a name="upgrading_idoutils_1.0.3"></a>
 
-    <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.3</strong></span></p>
+  <a name="upgrading_idoutils_1.3"></a>
 
-    <p>There were some few minor changes:</p>
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.3</strong></span></p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <p>IDOUtils 1.3 re-introduces the usage of the dbversion table in IDOUtils schema. The upgrade scripts will make sure that
+  dbversion holds the current version while ido2db compares program version with database version and will print an error into syslog if not
+  matching.</p>
+
+  <p>Just apply the upgrading script for IDOUtils 1.3 in
+  <code class="literal">module/idoutils/db/&lt;rdbms&gt;/&lt;rdbm&gt;-upgrade-1.3.sql</code> against your current schema (using incremental steps as
+  usual, not leaving an upgrade version behind!).</p>
+
+  <a name="upgrading_idoutils_1.0.3"></a>
+
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.3</strong></span></p>
+
+  <p>There were some few minor changes:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>change display_name to varchar(255) for mysql/oracle</p>
-        </li>
+      <p>change display_name to varchar(255) for mysql/oracle</p>
+    </li>
 <li class="listitem">
-            <p>update pgsql schema, replace varchar(n) by text</p>
-        </li>
+      <p>update pgsql schema, replace varchar(n) by text</p>
+    </li>
 <li class="listitem">
-            <p>change configfile variables value to 1024 length for mysql/oracle</p>
-        </li>
+      <p>change configfile variables value to 1024 length for mysql/oracle</p>
+    </li>
 </ul></div>
 
-    <p>Apply the upgrading scripts for IDOUtils 1.0.3 as the general procedure applies for your RDBMS.
-</p>
+  <p>Apply the upgrading scripts for IDOUtils 1.0.3 as the general procedure applies for your RDBMS.</p>
 
-<a name="upgrading_idoutils_1.0.2"></a>
-    <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.2</strong></span></p>
+  <a name="upgrading_idoutils_1.0.2"></a>
 
-    <p>There was a significant long lasting bug in IDOUtils which is now resolved in Icinga 1.0.2: Everytime the core was restarted, the
-    overall amount of objects was freshly inserted instead of using the old ones for actual config, status and historical relations. E.g. having 4k
-    objects (hosts, services, contacts, etc), that meant restarting the core twice resulted in 4k + 4k + 4k = 12k objects. </p>
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.2</strong></span></p>
 
-    <p>For config and live status data, this is by means not really important as their relations normally get cleaned when the core gets restarted.
-    But for historical data, e.g. hostchecks before the restart were in another relation than newer hostchecks after the restart. That has led into
-    data inconsistency which has been worked on to resolve that in an easy way - next to the IDOUtils bugfix itself. </p>
+  <p>There was a significant long lasting bug in IDOUtils which is now resolved in Icinga 1.0.2: Everytime the core was restarted,
+  the overall amount of objects was freshly inserted instead of using the old ones for actual config, status and historical relations. E.g.
+  having 4k objects (hosts, services, contacts, etc), that meant restarting the core twice resulted in 4k + 4k + 4k = 12k objects.</p>
 
-    <p>Therefore, next to the normal SQL upgrade scripts for 1.0.2 (e.g. mysql-upgrade-1.0.2.sql) an extended SQL script has been created. </p>
+  <p>For config and live status data, this is by means not really important as their relations normally get cleaned when the core gets
+  restarted. But for historical data, e.g. hostchecks before the restart were in another relation than newer hostchecks after the restart.
+  That has led into data inconsistency which has been worked on to resolve that in an easy way - next to the IDOUtils bugfix itself.</p>
 
-    <p>It catches up on each table and object_id with a single clustered query in order to fix the relation historical table 1..1 objects table. It
-    also cleans up broken data caused by the restarts.</p>
+  <p>Therefore, next to the normal SQL upgrade scripts for 1.0.2 (e.g. mysql-upgrade-1.0.2.sql) an extended SQL script has been
+  created.</p>
 
-    <p>Overall this has been tested and is now available for everyone to upgrade and fix those issues. </p>
+  <p>It catches up on each table and object_id with a single clustered query in order to fix the relation historical table 1..1 objects
+  table. It also cleans up broken data caused by the restarts.</p>
 
-    <p>Please apply the script as you like to - directly or step by step as commented in the script. Those scripts are provided as is without any
-    warranty so please use at your own risk - if you only depend on live data, dropping and recreating the database will take less effort. </p>
+  <p>Overall this has been tested and is now available for everyone to upgrade and fix those issues.</p>
 
-        <p>* &lt;rdbms&gt;-upgrade-1.0.2-fix-object-relations.sql</p>
-<p> The "normal" upgrade script only is available for MySQL - the binary casts for case sensitive
-    comparison were removed because of massive performance issues. Instead a new collation is introduced.</p>
-<p>* mysql-upgrade-1.0.2.sql</p>
-<a name="upgrading_idoutils_1.0.1"></a>
-       <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.1</strong></span></p>
+  <p>Please apply the script as you like to - directly or step by step as commented in the script. Those scripts are provided as is
+  without any warranty so please use at your own risk - if you only depend on live data, dropping and recreating the database will take less
+  effort.</p>
 
-    <p>Please make sure that you already have upgraded to Icinga IDOUtils 1.0 before reading this section! There have been several (big) changes
-    made to all supported RDBMS to please be advised to read carefully! All database scripts are now reorganized within subfolders. Changes for all
-    RDBMS are setting more indexes and also size modifications for the command_line column in several tables which exceeded 255 characters. RDBMS
-    specific changes and howtos are listed below:</p>
+  <p>* &lt;rdbms&gt;-upgrade-1.0.2-fix-object-relations.sql</p>
 
-    <p><span class="bold"><strong>MySQL</strong></span></p>
+  <p>The "normal" upgrade script only is available for MySQL - the binary casts for case sensitive comparison were removed because of
+  massive performance issues. Instead a new collation is introduced.</p>
 
-    <p>Change of the database engine from MYISAM to InnoDB. Reason for that mainly is row locks/transactions/rollbacks instead of a bit more speed
-    at insert time.</p>
+  <p>* mysql-upgrade-1.0.2.sql</p>
 
-    <p>The upgrade script performs an ALTER TABLE statement. If you don't like that idea, you can also do the following:</p>
+  <a name="upgrading_idoutils_1.0.1"></a>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.0.1</strong></span></p>
+
+  <p>Please make sure that you already have upgraded to Icinga IDOUtils 1.0 before reading this section! There have been several (big)
+  changes made to all supported RDBMS to please be advised to read carefully! All database scripts are now reorganized within subfolders.
+  Changes for all RDBMS are setting more indexes and also size modifications for the command_line column in several tables which exceeded
+  255 characters. RDBMS specific changes and howtos are listed below:</p>
+
+  <p><span class="bold"><strong>MySQL</strong></span></p>
+
+  <p>Change of the database engine from MYISAM to InnoDB. Reason for that mainly is row locks/transactions/rollbacks instead of a bit
+  more speed at insert time.</p>
+
+  <p>The upgrade script performs an ALTER TABLE statement. If you don't like that idea, you can also do the following:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>Dump your existing database e.g.</p>
+      <p>Dump your existing database e.g.</p>
 
-            <pre class="programlisting"># mysqldump -u root -p icinga &gt; icinga.sql</pre>
-        </li>
+      <pre class="programlisting"># mysqldump -u root -p icinga &gt; icinga.sql</pre>
+    </li>
 <li class="listitem">
-            <p>Change all entries from "MYISAM" to "InnoDB"</p>
-        </li>
+      <p>Change all entries from "MYISAM" to "InnoDB"</p>
+    </li>
 <li class="listitem">
-            <p>Import the adapted dataset into a new database (if you want to use the old one make sure to drop that in the first place, and
-            recreate only the database)</p>
-        </li>
+      <p>Import the adapted dataset into a new database (if you want to use the old one make sure to drop that in the first place, and
+      recreate only the database)</p>
+    </li>
 </ul></div>
 
-    <p><span class="bold"><strong>PostgreSQL</strong></span></p>
+  <p><span class="bold"><strong>PostgreSQL</strong></span></p>
 
-    <p>The systemcommands table was missing the column named output. This will be added during upgrading.</p>
+  <p>The systemcommands table was missing the column named output. This will be added during upgrading.</p>
 
-    <p><span class="bold"><strong>Oracle</strong></span></p>
+  <p><span class="bold"><strong>Oracle</strong></span></p>
 
-    <p>First of all, make sure that you set open_cursors to more than the default 50. This will increase performance at several stages. The upgrade
-    scripts will add two new procedures needed for the delete stuff written in DML.</p>
+  <p>First of all, make sure that you set open_cursors to more than the default 50. This will increase performance at several stages. The
+  upgrade scripts will add two new procedures needed for the delete stuff written in DML.</p>
 
-    <p>Furthermore there has been a rather huge change regarding the autoincrement sequence and after insert triggers (emulating the mysql
-    autoincrement on primary key). The old routine has been completely dropped meaning all triggers and the autoincrement sequence will we removed
-    during upgrading. As a replacement, sequences for each table will be added and used in current IDOUtils Oracle.</p>
+  <p>Furthermore there has been a rather huge change regarding the autoincrement sequence and after insert triggers (emulating the mysql
+  autoincrement on primary key). The old routine has been completely dropped meaning all triggers and the autoincrement sequence will we
+  removed during upgrading. As a replacement, sequences for each table will be added and used in current IDOUtils Oracle.</p>
 
-    <p>With existing data sets this will lead into problems during importing - the sequences start at 1 while the primary key (id) will have a
-    maximum. For that reason there is a basic procedure available which does the following: By given a sequence name and a table name, it extracts the
-    maximum id value +1 from imported data and alters the sequence to start with this value instead.</p>
+  <p>With existing data sets this will lead into problems during importing - the sequences start at 1 while the primary key (id) will
+  have a maximum. For that reason there is a basic procedure available which does the following: By given a sequence name and a table name,
+  it extracts the maximum id value +1 from imported data and alters the sequence to start with this value instead.</p>
 
-    <p>Please be advised to use that procedure yourself for all tables or on separated tables - it highly depends on your needs. The procedure is
-    commented out, and provided as is without any warranty regarding data loss. Ask your DBA in case of upgrading with existing data.</p>
+  <p>Please be advised to use that procedure yourself for all tables or on separated tables - it highly depends on your needs. The
+  procedure is commented out, and provided as is without any warranty regarding data loss. Ask your DBA in case of upgrading with existing
+  data.</p>
 
-    <a name="upgrading_idoutils_1.0"></a>
+  <a name="upgrading_idoutils_1.0"></a>
 
-    <p><span class="bold"><strong>Upgrading IDOUtils to 1.0</strong></span></p>
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.0</strong></span></p>
 
-    <p>There was a unique key failure in MySQL coming through the fork causing several tables to keep duplicated and useless rows. This concerns
-    the following tables:</p>
+  <p>There was a unique key failure in MySQL coming through the fork causing several tables to keep duplicated and useless rows. This
+  concerns the following tables:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>timedevents, timedeventqueue</p>
-        </li>
+      <p>timedevents, timedeventqueue</p>
+    </li>
 <li class="listitem">
-            <p>servicechecks</p>
-        </li>
+      <p>servicechecks</p>
+    </li>
 <li class="listitem">
-            <p>systemcommands</p>
-        </li>
+      <p>systemcommands</p>
+    </li>
 </ul></div>
 
-    <p>If you look at the table creation e.g. servicechecks:</p>
+  <p>If you look at the table creation e.g. servicechecks:</p>
 
-    <pre class="programlisting"> mysql&gt; show create table icinga_servicechecks;</pre>
+  <pre class="programlisting"> mysql&gt; show create table icinga_servicechecks;</pre>
 
-    <p>you should see something like this</p>
+  <p>you should see something like this</p>
 
-    <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
+  <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
  KEY `instance_id` (`instance_id`),
  KEY `service_object_id` (`service_object_id`),
  KEY `start_time` (`start_time`)</pre>
 
-    <p>Changing this to</p>
+  <p>Changing this to</p>
 
-    <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
+  <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
  UNIQUE KEY `instance_id` (`instance_id`,`service_object_id`,`start_time`,`start_time_usec`)</pre>
 
-    <p>will need your attention on the following procedure!</p>
+  <p>will need your attention on the following procedure!</p>
 
-    <p><span class="bold"><strong>If you are upgrading from 1.0RC please be advised to use module/idoutils/db/mysql/mysql-upgrade-1.0.sql - if you are
-    using an older version, please apply the incremential steps to get to 1.0RC first!</strong></span></p>
+  <p><span class="bold"><strong>If you are upgrading from 1.0RC please be advised to use module/idoutils/db/mysql/mysql-upgrade-1.0.sql - if
+  you are using an older version, please apply the incremential steps to get to 1.0RC first!</strong></span></p>
 
-    <p>Please backup your database and stop ido2db before applying this patch!</p>
+  <p>Please backup your database and stop ido2db before applying this patch!</p>
 
-    <pre class="programlisting"># /etc/init.d/ido2db stop
+  <pre class="programlisting"># /etc/init.d/ido2db stop
    # mysql -u root -p icinga &lt; /path/to/icinga-src/module/idoutils/db/mysql/mysql-upgrade-1.0.sql</pre>
 
-    <p>The patch will do the following through MySQL statements:</p>
+  <p>The patch will do the following through MySQL statements:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>add a temporary column named 'active' to mark the updated row</p>
-        </li>
+      <p>add a temporary column named 'active' to mark the updated row</p>
+    </li>
 <li class="listitem">
-            <p>extract the needed information of two duplicate rows based on the unique constraint, update the second row and mark first=inactive,
-            second=active</p>
-        </li>
+      <p>extract the needed information of two duplicate rows based on the unique constraint, update the second row and mark
+      first=inactive, second=active</p>
+    </li>
 <li class="listitem">
-            <p>delete all inactive marked rows</p>
-        </li>
+      <p>delete all inactive marked rows</p>
+    </li>
 <li class="listitem">
-            <p>drop false keys</p>
-        </li>
+      <p>drop false keys</p>
+    </li>
 <li class="listitem">
-            <p>add unique key</p>
-        </li>
+      <p>add unique key</p>
+    </li>
 <li class="listitem">
-            <p>drop temporary column 'active'</p>
-        </li>
+      <p>drop temporary column 'active'</p>
+    </li>
 </ul></div>
 
-    <p>This procedure will be executed for each table, so it might take quite a long time depending on your table size and/or db specs.</p>
+  <p>This procedure will be executed for each table, so it might take quite a long time depending on your table size and/or db
+  specs.</p>
 
-    <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the script
-    will fail.</p>
+  <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the
+  script will fail.</p>
 
-    <a class="indexterm" name="id4245738"></a>
+  <a class="indexterm" name="id4986293"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -269,6 +289,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2010 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

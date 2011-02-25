@@ -1,0 +1,215 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Aktualisierung von Icinga Webund Icinga Web Datenbank</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
+<link rel="prev" href="icinga-web-config.html" title="Konfigurationsübersicht Icinga Web">
+<link rel="next" href="icinga-web-introduction.html" title="Einführung in Icinga Web">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Aktualisierung von Icinga Webund Icinga Web Datenbank</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="icinga-web-config.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-introduction.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Aktualisierung von Icinga Webund Icinga Web Datenbank">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="upgrading_icingaweb"></a>Aktualisierung von Icinga Webund Icinga Web Datenbank</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Aktualisieren von Icinga Web</strong></span></p>
+
+  <p>Sobald neuere Versionen von Icinga Web herauskommen, sollten Sie dringend über eine Aktualisierung nachdenken. Neuere Ausgaben
+  enthalten Behebungen von kritischen Fehlern, so dass es wichtig ist, aktuell zu sein. Wenn Sie bereits Icinga Web, wie in den
+  Schnellstartanleitungen beschrieben, aus dem Quellcode installiert haben, dann können Sie einfach neuere Versionen installieren.</p>
+
+  <p>Stellen Sie sicher, dass Sie eine vollständige Datensicherung Ihrer bestehenden Icinga Web-Installation und der
+  Konfigurationsdateien haben (wenn Sie Ihre benutzerdefinierte Konfiguration in *.site.xml- Dateien erstellt haben, so werden diese während
+  der Aktualisierung nicht überschrieben!). Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell
+  Ihre alte Icinga Web-Version wiederherstellen.</p>
+
+  <p>Bitte denken Sie daran, dass <code class="code">configure</code> mit den gleichen Optionen wie bei der vorherigen Installation aufzurufen ist!
+  Die verwendeten Optionen sehen Sie im <code class="code">config.log</code></p>
+
+  <p>Stellen Sie sicher, dass Sie die passende Icinga API Version installiert haben. Die Installation der Icinga API ist in der <a class="link" href="icinga-api.html" title="Installation und Benutzung der Icinga API">Icinga-API</a> Section beschrieben.</p>
+
+  <p><span class="bold"><strong>Die Aktualisierung von Icinga Web</strong></span></p>
+
+  <p>Bitte laden Sie das Archiv von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a> herunter oder klonen Sie
+  den aktuellsten git- Branch mit :</p>
+
+  <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
+
+  <p>Entpacken Sie das Archiv (tarball):</p>
+
+  <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.3.tar.gz</pre>
+
+  <p>Wechseln Sie in das Verzeichnis</p>
+
+  <pre class="programlisting"> #&gt; cd icinga-web</pre>
+
+  <p>Icinga Web bietet diverse Konfigurationsoptionen an:</p>
+
+  <pre class="programlisting"> #&gt; ./configure 
+                --prefix=/usr/local/icinga-web 
+                --with-web-user=www-data 
+                --with-web-group=www-data 
+                --with-web-path=/icinga-web 
+                --with-web-apache-path=/etc/apache2/conf.d 
+                --with-db-type=mysql 
+                --with-db-host=localhost 
+                --with-db-port=3306 
+                --with-db-name=icinga_web 
+                --with-db-user=icinga_web 
+                --with-db-pass=icinga_web 
+                --with-icinga-api=/usr/local/icinga/share/icinga-api 
+                --with-api-type=APICON API type (default CONNECTION_IDO)
+                --with-api-subtype=TYPE DB driver or network connection
+                --with-api-host=HOST Host to connect (DB or other) (default localhost)
+                --with-api-port=PORT Port for connection (default 3306)
+                --with-api-socket=PATH Path to socket (default none)</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Bitte beachten Sie, dass Sie hier die Icinga Web-Datenbank konfigurieren, und nicht die Icinga-IDOUtils-Datenbank! User- und
+    Gruppenname des Web-Prozesses sind abhängig von der verwendeten Distribution.</p>
+  </td></tr>
+</table></div>
+
+  <p>Alle configure- Optionen sehen Sie mit:</p>
+
+  <pre class="programlisting"> #&gt; ./configure --help</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Wenn Sie configure ohne weitere Optionen ausführen, erwartet der Installer die Icinga API unter
+    /usr/local/icinga/share/icinga-api.</p>
+  </td></tr>
+</table></div>
+
+  <p>Die Aktualisierung von Icinga Web unter /usr/local/icinga-web erfolgt mit:</p>
+
+  <pre class="programlisting"> #&gt; ./configure
+ #&gt; make upgrade</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Bitte denken Sie daran den Cache zu leeren!</p>
+  </td></tr>
+</table></div>
+
+  <pre class="programlisting"> #&gt; rm -rf app/cache/config/*.php</pre>
+
+  <p>oder</p>
+
+  <pre class="programlisting">#&gt; /icinga-web/bin/clearcache.sh.</pre>
+
+  <p>Das war's, Sie können sich nun an Ihrem aktualisierten Icinga Web anmelden.</p>
+
+  <p>Bekannte Fehler sind <a class="link" href="icinga-web-scratch.html#icinga-web-scratch-errors"> hier</a> beschrieben.</p>
+
+  <p><span class="bold"><strong>Aktualisieren der Icinga Web Datenbank</strong></span></p>
+
+  <p>Die Aktualisierung Ihrer Icinga Web Datenbank ist optional aber es mag einen Bug im Datenbankschema geben, der behoben wurde. Wenn
+  Sie eine ältere Icinga Web Datenbank-Version aktualisieren, dann müssen Sie außerdem diese Anpassungen manuell ausführen. Wenn Sie
+  rpm/deb-Pakete benutzen, lesen Sie bitte die Hinweise und/oder fragen Sie den Maintainer, der diese Anpassungen in der
+  Installationsroutine hinzugefügt hat.</p>
+
+  <p>Die Update-Dateien finden Sie zusammen mit den Datenbank-Installationsdateien in
+  <code class="code">/path/to/icinga-web/etc/schema/updates</code></p>
+
+  <p>Die Syntax ist wie folgt</p>
+
+  <p><code class="literal">&lt;rdbm&gt;_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</code></p>
+
+  <p>wobei &lt;rdbm&gt; mysql, pgsql oder oracle sein kann und &lt;neueVersion&gt; zeigt auf die Version, auf die Sie aktualisieren
+  wollen.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Wenn Sie eine ältere Version aktualisieren wollen und zwischen dieser und der aktuellen noch andere Versionen liegen, dann sollten
+    Sie beachten, dass Sie auch die dazwischen liegenden Updates inkrementell installieren müssen!</p>
+  </td></tr>
+</table></div>
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+      <p>Sichern Sie Ihre aktuelle Datenbank vor der Aktualisierung!</p>
+    </li>
+<li class="listitem">
+      <p>Prüfen Sie die laufende Icinga Web Datenbank- Version und die Zielversion. Prüfen Sie, ob zwischen diesen beiden Versionen noch
+      andere Versionen liegen und aktualisieren Sie ggf. schrittweise.</p>
+    </li>
+<li class="listitem">
+      <p>Führen Sie die Aktualisierung(en) mit einem Benutzer durch, der über die notwendigen Berechtigungen verfügt.</p>
+    </li>
+</ol></div>
+
+  <p><span class="bold"><strong>MySQL</strong></span> </p>
+<pre class="programlisting"> $ mysql -u root -p icinga_web &lt; /path/to/icinga-web/etc/schema/updates/mysql_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</pre>
+<p>
+  <span class="bold"><strong>Postgresql</strong></span> </p>
+<pre class="programlisting"> #&gt; su - postgres
+ $ psql -U icinga_web -d icinga_web &lt; /path/to/icinga-web/etc/schema/updates/pgsql_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</pre>
+
+  <p><span class="bold"><strong>Oracle</strong></span> </p>
+<pre class="programlisting"> #&gt; su - oracle
+ $ sqlplus dbuser/dbpass
+ SQL&gt; @oracle_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</pre>
+
+  <a class="indexterm" name="id5643418"></a>
+
+  <a class="indexterm" name="id5643427"></a>
+
+  <a class="indexterm" name="id5643442"></a>
+
+  <a class="indexterm" name="id5643449"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="icinga-web-config.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-introduction.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Konfigurationsübersicht Icinga Web </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Einführung in Icinga Web</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>NSCA</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="up" href="ch10.html" title="Kapitel 10. weitere Software">
+<link rel="prev" href="addons.html" title="Icinga Addons">
+<link rel="next" href="ch11.html" title="Kapitel 11. Entwicklung">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">NSCA</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="addons.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 10. weitere Software</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch11.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="NSCA">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="nsca"></a><a name="nsca_"></a>NSCA</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Nagios Service Check Acceptor (oder kurz NSCA) ist ein Addon, um Prüfergebnisse von einem System zu einem anderen zu
+  übertragen. Es besteht aus zwei Modulen: Dem Sender (send_nsca) und dem Empfänger (nsca). Die Daten werden verschlüsselt übertragen. Trotz
+  des Namens werden auch Host-Prüfergebnisse übertragen.</p>
+
+  <div class="figure">
+<a name="id5665000"></a><p class="title"><b>Abbildung 10.1. NSCA</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/nsca.png" alt="NSCA"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>NSCA läuft als Daemon auf dem Icinga-Server. Er lauscht auf Informationen, die von entfernten Maschinen mit Hilfe des
+  send_nsca-Programms (auf Unix/Linux-Maschinen) oder NSClient++ (oft auf Windows-Maschinen benutzt) gesendet werden. Die Daten werden mit
+  der in send_nsca.cfg (oder nsc.ini im Falle von NSClient++) festgelegten Methode verschlüsselt. Der Daemon wird die Daten in einer *sehr*
+  einfachen Weise validieren, indem die Informationen mit dem in nsca.cfg eingetragenen Passwort entschlüsselt werden. Wenn die Daten so
+  aussehen, als wären sie mit dem gleichen verschlüsselt wurden, dann wird der Daemon versuchen, diese Daten als externen Befehl in die
+  lokale Icinga Command Pipe auszugeben.</p>
+
+  <p>Die folgenden Anweisungen basieren hauptsächlich auf dem README aus dem NSCA-Paket.</p>
+
+  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Icinga sollte laufen</p>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands = 1</a></em></span> sollte in
+      <code class="literal">icinga.cfg</code> gesetzt sein</p>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval = &lt;n&gt;[s]</a></em></span> sollte in
+      <code class="literal">icinga.cfg</code> gesetzt sein<code class="literal"> </code></p>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks = 1</a></em></span> sollte während der Testphase in
+      <code class="literal">icinga.cfg</code> gesetzt sein, anderenfalls gibt es keine Meldungen über eintreffende passive Prüfungen</p>
+    </li>
+<li class="listitem">
+      <p>die libmcrypt- und libmcrypt-devel-Pakete sind installiert (die je nach Distribution ggf. anders heißen können), anderenfalls
+      nutzen Sie einen der folgenden Befehle, um die Pakete zu installieren:</p>
+
+      <pre class="programlisting"> #&gt; apt-get install libmcrypt libmcrypt-devel # Debian / Ubuntu
+ #&gt; yum install libmcrypt libmcrypt-devel     # RHEL / Fedora / CentOS
+ #&gt; zypper install libmcrypt libmcrypt-devel  # SLES / OpenSuSE (oder benutzen Sie Yast)</pre>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Download und Compile</strong></span></p>
+
+  <p>Laden Sie die Software vom <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git;a=tree" target="_top">Icinga-git-Repository</a>,
+  indem Sie auf "tar.gz" klicken oder benutzen Sie</p>
+
+  <pre class="programlisting"> #&gt; wget "https://git.icinga.org/?p=icinga-nsca.git;a=snapshot;h=HEAD;sf=tgz" -O nsca.tgz
+ #&gt; tar xzf nsca.tgz</pre>
+
+  <p>oder benutzen Sie die aktuelle Version auf dem git-Repository</p>
+
+  <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-nsca.git</pre>
+
+  <p>Die maximale Länge der zu übertragenen Daten ist auf 2.048 Bytes begrenzt, die maximale Länge von Plugin-Ausgaben auf 512 Bytes.
+  Falls das nicht ausreicht, dann müssen Sie den entsprechenden Wert in <code class="literal">icinga-nsca/include/common.h</code> anpassen.</p>
+
+  <pre class="programlisting"> #define MAX_INPUT_BUFFER        2048    /* max size of most buffers we use */
+ #define MAX_PLUGINOUTPUT_LENGTH 512 </pre>
+<p>Bitte denken Sie daran, dass Sie die Programme erneut kompilieren müssen, wenn Sie
+  sich zu einem späteren Zeitpunkt für eine Änderung entscheiden.</p>
+
+  <p>Bedingt durch den folgenden Wert in include/common.h (im Icinga-Core) kann der maximale Wert 8.192 Bytes nicht
+  überschreiten.</p>
+
+  <pre class="programlisting"> #define MAX_EXTERNAL_COMMAND_LENGTH             8192    /* max length of an external command */</pre>
+<p>Nach
+  Änderung des Besitzers wechseln Sie in das neu erstellte Verzeichnis und rufen Sie configure und make auf</p>
+
+  <pre class="programlisting"> #&gt; chown -R icinga icinga-nsca
+ #&gt; cd icinga-nsca
+ #&gt; ./configure 
+ #&gt; make all</pre>
+
+  <p>Anschließend gibt es zwei Programme (send and send_nsca) im <code class="literal">src</code>-Verzeichnis.</p>
+
+  <div class="caution" title="Achtung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Achtung]" src="../images/caution.png"></td>
+<th align="left">Achtung</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+     Wenn die libmcrypt-Dateien nicht gefunden werden, dann wird "./configure" sich beschweren, aber NICHT mit einem Return-Code ungleich Null enden, so dass Sie 
+
+    <span class="emphasis"><em>config.log</em></span>
+
+     mit dem folgenden Befehl prüfen sollten 
+
+    </p>
+<pre class="programlisting"> #&gt; grep mcrypt.h: config.log</pre>
+<p>
+
+     Dieser Befehl sollte keine Zeilen ausgeben.</p>
+  </td></tr>
+</table></div>
+
+  <p>Falls die libmcrypt-Module nicht gefunden werden, Benutzer oder Gruppe vom Wert "icinga" abweichen oder der zu benutzende Port nicht
+  dem Default 5667 entspricht, dann können Sie dies über verschiedene Optionen beeinflussen. Rufen Sie "<code class="literal">./configure -h</code>"
+  auf, um mehr über die verfügbaren Optionen zu erfahren.</p>
+
+  <p>Nach dem Wechsel in "nsca_tests" können Sie versuchen, "./runtests" auszuführen. Bitte beachten Sie, dass diese Tests verschiedene
+  Perl-Module benötigen, die in der Datei README beschrieben sind.</p>
+
+  <p><span class="bold"><strong>Anpassen</strong></span></p>
+
+  <p>Das <code class="literal">sample-config</code>-Verzeichnis enthält <code class="literal">nsca.cfg</code> und <code class="literal">send_nsca.cfg</code>.
+  Mindestens die Einstellungen der Direktiven "password" und "encryption_method" / "decryption_method" sollten Sie ansehen/verändern, bevor
+  die Dateien kopiert werden. Bitte denken Sie daran, das gleiche Passwort in allen Kopien dieser Konfigurationsdateien zu setzen. Wenn Sie
+  verschiedene Passworte auf verschiedenen entfernten Servern einsetzen möchten, dann müssen Sie mehrere nsca-Daemons auf dem
+  Icinga-Server starten, die auf unterschiedlichen Ports lauschen. Das funktioniert nicht, wenn Sie den Daemon über inetd/xinetd
+  starten.</p>
+
+  <p><span class="bold"><strong>Erster Test</strong></span></p>
+
+  <p>Wechseln Sie zum Icinga-Benutzer und starten Sie einen ersten Test</p>
+
+  <pre class="programlisting"> #&gt; su - icinga
+ $&gt; cd /usr/src/icinga-nsca/src
+ $&gt; ./nsca -c ../sample-config/nsca.cfg
+ $&gt; echo -e "A\tB\tC\D\n" | ./send_nsca -H localhost -c ../sample-config/send_nsca.cfg
+ $&gt; exit</pre>
+
+  <p>Dies sollte die Meldung "1 data packet(s) sent to host successfully." zurückliefern. Eigentlich heißt das nur, dass sich send_nsca
+  und nsca unter Verwendung der Konfigurationsdateien auf dem lokalen Host miteinander unterhalten können, denn dieser Test funktioniert
+  auch ohne eine lauffähige Icinga-Instanz. Allerdings ist er trotzdem wichtig: Wenn dieser Test fehlschlägt, dann ist es nicht
+  sinnvoll fortzufahren. Prüfen Sie stattdessen die Einstellungen nsca.cfg und send_nsca.cfg. Schauen Sie auch im Syslog (z.B.
+  <code class="literal">/var/log/messages</code>) nach Meldungen.</p>
+
+  <p>Wenn die Voraussetzungen erfüllt sind, dann sollten Sie einige Warnungen in <code class="literal">icinga.log</code> sehen, dass Host "A" und
+  Service "B" nicht in der Icinga-Konfiguration gefunden werden konnten. Dies bedeutet, dass nsca ausreichende Berechtigungen hat, um
+  in das Icinga-Command-File zu schreiben. Prüfen Sie, ob der nsca-Daemon und Icinga mit unterschiedlichen Benutzern laufen,
+  wenn es keine Meldugen in icinga.log gibt. Prüfen Sie außerdem die Einstellung von <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
+
+  <p><span class="bold"><strong>Installation</strong></span></p>
+
+  <p>"make install" macht (im Moment) nichts, so dass Sie selbst einige Dateien kopieren müssen. Die folgenden Befehle kopieren das
+  nsca-Modul in das Verzeichnis, in dem das Icinga-Binary zu finden ist und die Konfigurationsdatei in den
+  Icinga-Konfigurationsordner. Wir nehmen an, dass Sie Icinga nach einem der Schnellstartanleitungen installiert haben.</p>
+
+  <pre class="programlisting"> #&gt; cp -p nsca /usr/local/icinga/bin/
+ #&gt; cp ../sample-config/nsca.cfg /usr/local/icinga/etc/</pre>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><span class="bold"><strong>nsca daemon</strong></span></p>
+
+      <p>Wenn Sie sich für xinetd entscheiden, dann wird der Daemon automatisch gestartet. Anderenfalls müssen Sie den Daemon manuell
+      starten, nachdem Sie zum Icinga-Benutzer gewechselt haben (was Sie ggf. bereits in "Erster Test" gemacht haben).</p>
+
+      <pre class="programlisting"> #&gt; su - icinga
+ $&gt; /usr/local/icinga/bin/nsca -c /usr/local/icinga/etc/nsca.cfg</pre>
+    </li></ul></div>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><span class="bold"><strong>inetd/xinetd</strong></span></p>
+
+      <p>Wenn Sie möchten, dass der Daemon von (x)inetd gestartet wird, dann müssen Sie /etc/services erweitern, eine weitere Datei
+      ändern/kopieren und (x)inetd neustarten. Vergessen Sie nicht, den nsca-Daemon zu stoppen, der in "Erster Test" gestartet wurde.</p>
+
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Die Einstellung von "server_port" in nsca.cfg wird ignoriert, wenn Sie inetd/xinetd benutzen.</p>
+      </td></tr>
+</table></div>
+
+      <pre class="programlisting"> #&gt; kill &lt; /var/run/nsca.pid
+ #&gt; echo "nsca 5667/tcp # NSCA" &gt;&gt; /etc/services</pre>
+
+      <p>Abhängig vom verwendeten Superserver gibt es drei Alternativen</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>inetd MIT tcpwrappers</p>
+
+          <p>Fügen Sie Einträge zu Ihrer /etc/hosts.allow und /etc/hosts.deny hinzu, um TCP wrapper-Protection für den nsca-Service zu
+          aktivieren. Dies ist optional, allerdings sehr empfohlen. Fügen Sie "nsca stream tcp nowait &lt;user&gt; /usr/sbin/tcpd
+          &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu, z.B.</p>
+
+          <pre class="programlisting"> #&gt; echo "nsca stream tcp nowait icinga /usr/sbin/tcpd /usr/local/icinga/bin/nsca -c /usr/local/icinga/etc/nsca.cfg --inetd" &gt;&gt; /etc/inetd.conf
+ #&gt; /etc/init.d/inetd restart</pre>
+        </li>
+<li class="listitem">
+          <p>inetd OHNE tcpwrappers</p>
+
+          <p>Fügen Sie "nsca stream tcp nowait &lt;user&gt; &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu,
+          z.B.</p>
+
+          <pre class="programlisting"> #&gt; echo "nsca stream tcp nowait icinga /usr/local/icinga/bin/nsca -c /usr/local/icinga/etc/nsca.cfg --inetd" &gt;&gt; /etc/inetd.conf
+ #&gt; /etc/init.d/inetd restart</pre>
+        </li>
+<li class="listitem">
+          <p>xinetd</p>
+
+          <p>Consider editing the config file nsca.xinetd in the sample-config folder and replacing &lt;ipaddress1&gt;... by the IP
+          addresses of your client machines (where send_nsca will be running). This only works if xinetd was compiled with support for
+          tcpwrappers. If you are running DHCP then this will not work and you should delete this line.</p>
+
+          <p>Fügen Sie Einträge zu Ihrer /etc/hosts.allow und /etc/hosts.deny hinzu, um TCP wrapper-Protection für den nsca-Service zu
+          aktivieren. Dies ist optional, allerdings sehr empfohlen. Fügen Sie "nsca stream tcp nowait &lt;user&gt; /usr/sbin/tcpd
+          &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu, z.B.</p>
+
+          <pre class="programlisting"> #&gt; cp -p ../sample-config/nsca.xinetd /etc/xinetd.d/
+ #&gt; /etc/init.d/xinetd restart</pre>
+        </li>
+</ul></div>
+    </li></ul></div>
+
+  <p><span class="bold"><strong>Entfernte/s System/e</strong></span></p>
+
+  <p>Sie sind mit dem lokalen System fertig, aber natürlich muss send_nsca noch auf entfernte Systeme kopiert werden.</p>
+
+  <p>Bitte denken Sie daran, dass send_nsca für die Zielplattform kompiliert werden muss, so dass Sie ggf. die libmcrypt-Pakete und
+  configure/make auf mehreren Servern installieren bzw. ausführen müssen.</p>
+
+  <p><span class="bold"><strong>Dateien kopieren</strong></span></p>
+
+  <p>Sie können frei entscheiden, wo Sie Binary und Konfigurationsdatei ablegen möchten. Wir nehmen an, dass Sie eine Verzeichnisstruktur
+  haben, die ähnlich zum Icinga-Server ist.</p>
+
+  <pre class="programlisting"> #&gt; scp -p &lt;Icinga server&gt;:/usr/local/icinga-nsca/src/send_nsca /usr/local/icinga/bin/
+ #&gt; scp -p &lt;Icinga server&gt;:/usr/local/icinga-nsca/sample-config/send_nsca.cfg /usr/local/icinga/etc/</pre>
+
+  <p><span class="bold"><strong>Zweiter Test</strong></span></p>
+
+  <p>Nun können Sie den Test auf dem entfernten System ausführen</p>
+
+  <pre class="programlisting"> #&gt; su - icinga
+ $&gt; echo -e "A\tB\tC\D\n" | /usr/local/icinga/bin/send_nsca -H &lt;Icinga server&gt; -c /usr/local/icinga/etc/send_nsca.cfg</pre>
+
+  <p>Dies sollte ebenfalls die Meldung "1 data packet(s) sent to host successfully." liefern und es sollte Warnungen im icinga.log auf
+  dem Icinga-Server geben, die ähnlich zu den o.g. sind. Wenn es keine Meldungen gibt, dann prüfen Sie die Einstellung von <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
+
+  <p><span class="bold"><strong>Fehlersuche</strong></span></p>
+
+  <p>Wenn der Daemon nicht berechtigt ist, in die Command-Pipe zu schreiben, dann sind die Daten verloren! Der Daemon sollte mit dem
+  gleichen Benutzer laufen wie Icinga.</p>
+
+  <p>Wenn das Objekt (Host und/oder Service) nicht in der laufenden Konfiguration enthalten ist, werden die Daten verworfen.</p>
+
+  <p>Host-Name (und Service-Beschreibung, falls zutreffend) sind Case-sensitiv und müssen exakt mit den Definitionen in Icinga
+  übereinstimmen.</p>
+
+  <p>Prüfen Sie, ob Sie in nsca.cfg und send_nsca.cfg das gleiche Passwort angegeben haben. Anderenfalls wird die Übertragung
+  fehlschlagen.</p>
+
+  <p>Prüfen Sie, ob Sie gleiche Verschlüsselungs-/Entschlüsselungsmethode verwenden. Anderenfalls wird die Übertragung
+  fehlschlagen.</p>
+
+  <p>Prüfen Sie, ob Ihre Firewall-Einstellungen die Kommunikation über den angegebenen Port zulassen (Default ist 5667)</p>
+
+  <p>Wenn Sie xinetd verwenden, dann prüfen Sie, ob die hinter "only_from=" angegebenen IP-Adressen zu den entfernten Systemen passen
+  oder entfernen Sie diese Zeile (und starten Sie xinetd neu).</p>
+
+  <p>Aktivieren Sie "debug=1" in <code class="literal">nsca.cfg</code>, starten Sie den Daemon (neu) und schauen Sie nach Meldungen im Syslog / in
+  <code class="literal">nsca.log</code>.</p>
+
+  <p><span class="bold"><strong>Sicherheit</strong></span></p>
+
+  <p>Es gibt einige Sicherheitsimplikationen, wenn Sie entfernten Clients erlauben, Prüfergebnisse an Icinga zu senden. Daher gibt
+  es die Möglichkeit, die Pakete zu verschlüsseln, die der NSCA-Client an den NSCA-Daemon sendet. Lesen Sie die
+  SECURITY-Datei, um weitere Informationen über die Sicherheitsrisiken zu erhalten, die durch den Betrieb von NSCA auftreten können,
+  zusammen mit einer Erklärung, welche Art von Schutz die Verschlüsselung Ihnen bietet.</p>
+
+  <p><span class="bold"><strong>Betrieb</strong></span></p>
+
+  <p>send_nsca wird benutzt, um die Pürfergebnisse vom entfernten Rechner zum Icinga-Server zu senden. Die Syntax hängt vom
+  Objekttyp ab. Um Service-Prüfergebnisse zu versenden, benutzen Sie</p>
+
+  <p>&lt;host_name&gt;[tab]&lt;svc_description&gt;[tab]&lt;return_code&gt;[tab]&lt;plugin_output&gt;[newline]</p>
+
+  <p>wobei:</p>
+
+  <p>&lt;host_name&gt;=der Kurzname des Hosts, mit dem der Service verbunden ist (wie in der host_name-Direktive der Service-Definition
+  angegeben)</p>
+
+  <p>&lt;svc_description&gt;=Beschreibung des Service (wie in der service_description-Direktive der Service-Definition angegeben)</p>
+
+  <p>&lt;return_code&gt;=numerischer Return-Code (0,1,2,3 wie <a class="link" href="pluginapi.html" title="Nagios Plugin API">hier</a> beschrieben)</p>
+
+  <p>&lt;plugin_output&gt;=Ausgabe des Service-Check</p>
+
+  <p>Host-Prüfergebnisse werden in einer ähnlichen Form versandt - lassen Sie einfach die Service-Beschreibung weg:</p>
+
+  <p>&lt;host_name&gt;[tab]&lt;return_code&gt;[tab]&lt;plugin_output&gt;[newline]</p>
+
+  <p><span class="bold"><strong>Integration in Icinga</strong></span></p>
+
+  <p>Bisher haben Sie lediglich einige Voraussetzungen geschaffen, um passive Prüfergebnisse zu übermitteln, aber Sie haben noch keinen
+  Host oder Service definiert, der diese Funktionalität nutzt.</p>
+
+  <p>Obwohl Sie nur Prüfergebnisse empfangen müssen Sie doch die "check_command"-Direktive in Ihren Definitionen angeben. Es gibt ein
+  Plugin namens "check_dummy", das für diesen Zweck benutzt werden kann. Es kann sein, dass Sie die folgende command-Definition einfügen
+  müssen, falls sie noch nicht vorhanden ist. Das zweite Argument ist optional und kann z.B. einen erklärenden Text enhalten.</p>
+
+  <pre class="programlisting"> define command{
+    command_name check_dummy
+    command_line $USER1$/check_dummy $ARG1$ $ARG2$
+    }</pre>
+<p>Vielleicht möchten Sie ein Service-Template anlegen. Das Host-Template könnte ähnlich aussehen (ersetzen Sie einfach
+  "service" durch "host")</p>
+
+  <pre class="programlisting"> define service{
+    use                     generic-service   # template to inherit from
+    name                    passive-service   # name of this template
+    active_checks_enabled   0                 # no active checks
+    passive_checks_enabled  1                 # allow passive checks
+    check_command           check_dummy!0     # use "check_dummy", RC=0 (OK)
+    check_period            24x7              # check active all the time
+    check_freshness         0                 # don't check if check result is "stale"
+    register                0                 # this is a template, not a real service
+    }</pre>
+<p>Zusammen mit dem obigen template könnte die Service-Definition wie folgt aussehen:</p>
+
+  <pre class="programlisting"> define service{
+    use                     passive-service   # template to inherit from
+    host_name               remotehost        # host where send_nsca is located
+    service_description     Diskspace         # service to be checked
+    }</pre>
+<p>Starten Sie Icinga erneut, damit die Änderungen in der laufenden Konfiguration enthalten sind</p>
+
+  <pre class="programlisting"> #&gt; /etc/init.d/icinga restart</pre>
+<p>Wechseln Sie auf Ihrem entfernten Host zum Icinga-Benutzer
+  und führen Sie send_nsca aus. Ersetzen Sie dabei &lt;Icinga server&gt; durch die IP-Adresse des Icinga-Servers</p>
+
+  <pre class="programlisting"> #&gt; su - icinga
+ $&gt; echo -e "remotehost\tDiskspace\t0\t/var=78%\n" | /usr/local/icinga/bin/send_nsca -H &lt;Icinga server&gt; -c /usr/local/icinga/etc/send_nsca.cfg</pre>
+<p>Bitte
+  denken Sie daran, dass Host-Name und Service-Beschreibung exakt den Angaben in Ihrer Icinga-Definition entsprechen müssen (die Angaben
+  sind Case-sensitiv). Andernfalls bekommen Sie Meldungen in icinga.log, dass das Objekt nicht gefunden werden kann. Falls es keine
+  Meldungen gibt, kontrollieren Sie die Einstellung von <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in
+  <code class="literal">icinga.cfg</code>.</p>
+
+  <p>Nach einem kurzen Moment sollten Sie Meldungen in icinga.log sehen, dass die gesendeten Informationen verarbeitet wurden. Sie
+  sollten die Daten dann auch im klassischen Web-Interface sehen sowie feststellen, dass der Service-Status von "Pending" auf "OK"
+  gewechselt ist und die Ausgabe die Daten enthält, die Sie versandt haben.</p>
+
+  <a class="indexterm" name="id5665717"></a>
+
+  <a class="indexterm" name="id5665728"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="addons.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch11.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Icinga Addons </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Kapitel 11. Entwicklung</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
