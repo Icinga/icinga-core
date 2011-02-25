@@ -252,6 +252,14 @@ int get_log_entries(char *log_file, char *search_string, int reverse) {
 				type=LOGENTRY_HOST_CURRENT_STATE;
 			else if(strstr(temp_buffer,"error executing command"))
 				type=LOGENTRY_ERROR_COMMAND_EXECUTION;
+			else if(strstr(temp_buffer,"idomod:"))
+				type=LOGENTRY_IDOMOD;
+			else if(strstr(temp_buffer,"npcdmod:"))
+				type=LOGENTRY_NPCDMOD;
+			else if(strstr(temp_buffer,"Auto-save of"))
+				type=LOGENTRY_AUTOSAVE;
+			else if(strstr(temp_buffer,"Warning:"))
+				type=LOGENTRY_SYSTEM_WARNING;
 			else
 				type=LOGENTRY_UNDEFINED;
 

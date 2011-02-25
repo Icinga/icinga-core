@@ -235,6 +235,11 @@ extern "C" {
 #define SPLUNK_SMALL_WHITE_ICON		"splunk1.gif"
 #define SPLUNK_SMALL_BLACK_ICON		"splunk2.gif"
 
+#define DATABASE_ICON			"database.gif"
+#define AUTOSAVE_ICON			"save.gif"
+#define DAEMON_WARNING_ICON		"warning_triangle.gif"
+#define STATS_ICON			"stats.gif"
+
 
 /************************** PLUGIN RETURN VALUES ****************************/
 

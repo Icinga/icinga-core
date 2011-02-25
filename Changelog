@@ -6,6 +6,7 @@ Icinga 1.3.x Change Log
 
 ENHANCEMENTS
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
+* classic ui: Adding some more icons to showlog.cgi #1239
 
 
 1.3.0 - 16/02/2011

@@ -454,6 +454,22 @@ void display_logentries() {
 				strcpy(image,SCHEDULED_DOWNTIME_ICON);
 				strcpy(image_alt,"Host scheduled downtime has been cancelled");
 			}
+			else if(temp_entry->type==LOGENTRY_IDOMOD){
+				strcpy(image,DATABASE_ICON);
+				strcpy(image_alt,"IDOMOD Information");
+			}
+			else if(temp_entry->type==LOGENTRY_NPCDMOD){
+				strcpy(image,STATS_ICON);
+				strcpy(image_alt,"NPCDMOD Information");
+			}
+			else if(temp_entry->type==LOGENTRY_AUTOSAVE){
+				strcpy(image,AUTOSAVE_ICON);
+				strcpy(image_alt,"Auto-save retention data");
+			}
+			else if(temp_entry->type==LOGENTRY_SYSTEM_WARNING){
+				strcpy(image,DAEMON_WARNING_ICON);
+				strcpy(image_alt,"Icinga warning message");
+			}
 			else{
 				strcpy(image,INFO_ICON);
 				strcpy(image_alt,INFO_ICON_ALT);
