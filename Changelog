@@ -8,6 +8,7 @@ ENHANCEMENTS
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
 * classic ui: Adding some more icons to showlog.cgi #1239
 * classic ui: adding entry time of comments in tooltip's in status.cgi #1244
+* classic ui: Searching in the Icinga Logfile #516
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
