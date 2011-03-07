@@ -2149,6 +2149,11 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 			printf("<br>%s",text);
 
 		printf("</p>\n");
+	} else if(content_type==CSV_CONTENT) {
+		if(title!=NULL && title[0]!='\x0')
+			printf("ERROR: %s\n",title);
+		if(text!=NULL && text[0]!='\x0')
+			printf("ERROR: %s\n",text);
 	} else {
 		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
 		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
