@@ -321,45 +321,18 @@ int get_log_entries(char *log_file, char *search_string, int reverse) {
 }
 
 
-/**************************************************************************************************
-
-	NEED HELP HERE
-
-	Somehow I don't fully understand the concept of pointers and deallocating memory
-	
-	this function is similar to pop_lifo except that this function returns a logentry struct.
-	
-	The goal should be:
-	
-	* get the next entry from the structure
-	* move it to a new single entry
-	* remove the current entry and keep the rest.
-	
-	With this it schould step by step freeing more and more memory as the function iterates
-	through the entries.
-	
-	The Problem I have is when you activate the line (as marked) then all works fine, because
-	if the item is NULL then free dosn't do anything.
-
-	I just want to make shure the memory gets deallocated properly.
-	
-	
-	THANKS VERY MUCH
-
-**************************************************************************************************/
+/**
+ *   return next log entry
+ */
 logentry *next_log_entry(void) {
 	logentry *temp_entry;
 	logentry *next_entry;
-
-//	char temp_buffer[MAX_INPUT_BUFFER];
 	int temp_int=0;
 	time_t temp_ts;
 
 	if(entry_list==NULL || entry_list->entry_text==NULL)
 		return NULL;
 
-//	strncpy(temp_buffer,entry_list->entry_text,sizeof(temp_buffer));
-//	temp_buffer[sizeof(temp_buffer)-1]='\x0';
 	temp_int=entry_list->type;
 	temp_ts=entry_list->timestamp;
 
@@ -371,14 +344,7 @@ logentry *next_log_entry(void) {
 	temp_entry->type=temp_int;
 	temp_entry->timestamp=temp_ts;
 
-	next_entry=(logentry *)entry_list->next;
-
-	/**********************/
-	entry_list->entry_text=NULL;                 /* If this line is activated then all works fine, but I'm not shure if the Memory really gets deallocated */
-	/**********************/
-	free((void *)entry_list->entry_text);
-	free((void *)entry_list);
-
+	next_entry=entry_list->next;
 	entry_list=next_entry;
 
 	return temp_entry;
