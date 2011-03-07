@@ -168,7 +168,7 @@ command_check_interval=-1
 # directory level instead of on the file, as the file is deleted every
 # time its contents are processed.
 
-command_file=@localstatedir@/rw/icinga.cmd
+command_file=@SPOOLDIR@/rw/icinga.cmd
 
 
 
@@ -518,7 +518,7 @@ max_check_result_reaper_time=30
 # Note: Make sure that only one instance of Icinga has access
 # to this directory!  
 
-check_result_path=@CHECKRESULTDIR@
+check_result_path=@SPOOLDIR@/checkresults
 
 
 
