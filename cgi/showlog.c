@@ -680,11 +680,7 @@ void display_logentries() {
 			printf("<DIV CLASS='logEntries'>\n");
 
 			/* add export to csv link */
-			if(getenv("QUERY_STRING")!=NULL) {
-				printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s?%s&csvoutput' target='_blank'>Export to CSV</a></DIV>\n",SHOWLOG_CGI,strdup(getenv("QUERY_STRING")));
-			} else {
-				printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s?csvoutput' target='_blank'>Export to CSV</a></DIV>\n",SHOWLOG_CGI);
-			}
+			printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s' target='_blank'>Export to CSV</a></DIV>\n",get_export_csv_link(SHOWLOG_CGI));
 		} else {
 			display_timebreaks=FALSE;
 

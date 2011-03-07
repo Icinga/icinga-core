@@ -581,6 +581,8 @@ int check_daemon_running(void);
 
 void print_generic_error_message(char *, char *, int);
 
+char *get_export_csv_link(char *);				/* function to make export csv link XSS save #1275 */
+
 /******************************** MULTIURL PATCH *******************************/
 
 #ifndef DISABLE_MULTIURL

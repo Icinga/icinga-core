@@ -2170,3 +2170,23 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 	return;
 }
 
+/* function to make export csv link XSS save #1275 */
+char *get_export_csv_link(char *cgi) {
+	char temp_buffer[MAX_INPUT_BUFFER]="";
+	static char ret[MAX_INPUT_BUFFER]="";
+
+	/* just do stuff if some options are requested */
+	if(strcmp(getenv("QUERY_STRING"),"")) {
+		snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s",getenv("QUERY_STRING"));
+		temp_buffer[sizeof(temp_buffer)-1]='\x0';
+		strip_html_brackets(temp_buffer);
+		snprintf(ret,sizeof(ret)-1,"%s?%s&csvoutput",cgi,temp_buffer);
+		ret[sizeof(ret)-1]='\x0';
+	} else
+		snprintf(ret,sizeof(ret)-1,"%s?csvoutput",cgi);
+
+	ret[sizeof(ret)-1]='\x0';
+
+	return ret;
+}
+

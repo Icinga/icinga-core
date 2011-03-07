@@ -3230,10 +3230,5 @@ void display_options(void){
 void print_export_link(void){
 	printf("<TR>\n<td><div class='csv_export_link' style='text-align:left;'>");
 	/* add export to csv link */
-	if(getenv("QUERY_STRING")!=NULL){
-		printf("<a href='%s?%s&csvoutput'",CONFIG_CGI,strdup(getenv("QUERY_STRING")));
-	} else {
-		printf("<a href='%s?csvoutput'",CONFIG_CGI);
-	}
-	printf(" target='_blank'>Export to CSV</a></div></td>\n</TR>\n");
+	printf("<a href='%s' target='_blank'>Export to CSV</a></div></td>\n</TR>\n",get_export_csv_link(CONFIG_CGI));
 }

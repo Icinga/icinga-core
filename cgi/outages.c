@@ -328,11 +328,7 @@ void display_network_outages(void){
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<TR><TD colspan='8'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",OUTAGES_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<TR><TD colspan='8'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",OUTAGES_CGI);
-		}
+		printf("<TR><TD colspan='8'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(OUTAGES_CGI));
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Severity</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>State</TH><TH CLASS='data'>Notes</TH><TH CLASS='data'>State Duration</TH><TH CLASS='data'># Hosts Affected</TH><TH CLASS='data'># Services Affected</TH><TH CLASS='data'>Actions</TH>\n");

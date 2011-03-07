@@ -1694,11 +1694,7 @@ void display_report(void){
 		printf("</DIV>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",SUMMARY_CGI);
-		}
+		printf("<DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV>\n",get_export_csv_link(SUMMARY_CGI));
 	}
 
 	if(display_type==REPORT_ALERT_TOTALS) {
@@ -1780,11 +1776,7 @@ void display_recent_alerts(void){
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI);
-		}
+		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(SUMMARY_CGI));
 
 		printf("<TR><TH CLASS='data'>Time</TH><TH CLASS='data'>Alert Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>State</TH><TH CLASS='data'>State Type</TH><TH CLASS='data'>Information</TH></TR>\n");
 	}
@@ -2052,11 +2044,8 @@ void display_top_alerts(void){
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",SUMMARY_CGI);
-		}
+		printf("<TR><TD colspan='5'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(SUMMARY_CGI));
+
 		printf("<TR><TH CLASS='data'>Rank</TH><TH CLASS='data'>Producer Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
 	}
 
