@@ -441,7 +441,7 @@ void display_notifications(void){
 	add_log_filter(LOGENTRY_HOST_NOTIFICATION,LOGFILTER_INCLUDE);
 	add_log_filter(LOGENTRY_SERVICE_NOTIFICATION,LOGFILTER_INCLUDE);
 
-	status = get_log_entries(log_file_to_use,NULL,reverse);
+	status = get_log_entries(log_file_to_use,NULL,reverse,-1,-1);
 
 	if (status==READLOG_ERROR_MEMORY) {
 		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");

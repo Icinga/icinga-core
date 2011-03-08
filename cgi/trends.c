@@ -2441,7 +2441,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 		fflush(NULL);
 	}
 
-	status = get_log_entries(filename,NULL,FALSE);
+	status = get_log_entries(filename,NULL,FALSE,t1-(60*60*24*backtrack_archives),t2);
 
 	if (status!=READLOG_OK) {
 #ifdef DEBUG

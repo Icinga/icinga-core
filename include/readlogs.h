@@ -142,7 +142,7 @@ int push_lifo(char *);
 char *pop_lifo(void);
 
 
-int get_log_entries(char *, char *, int);			/* for reading and filtering logs */
+int get_log_entries(char *, char *, int, time_t, time_t);			/* for reading and filtering logs */
 int add_log_filter(int, int);
 logentry *next_log_entry(void);
 void free_log_entries(void);

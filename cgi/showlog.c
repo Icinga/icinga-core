@@ -629,7 +629,7 @@ void display_logentries() {
 		get_log_archive_to_use(current_archive,filename,sizeof(filename)-1);
 
 		/* scan the log file for archived state data */
-		status=get_log_entries(filename,query_string,reverse);
+		status=get_log_entries(filename,query_string,reverse,ts_start,ts_end);
 
 		/* Stop if we out of memory or have a wrong filter */
 		if (status==READLOG_ERROR_FILTER || status==READLOG_ERROR_MEMORY) {
@@ -690,13 +690,6 @@ void display_logentries() {
 		}
 
 		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
-
-			/* check time */
-			if (temp_entry->timestamp<ts_start || temp_entry->timestamp>ts_end) {
-				my_free(temp_entry->entry_text);
-				my_free(temp_entry);
-				continue;
-			}
 
 			if(temp_entry->type==LOGENTRY_STARTUP){
 				strcpy(image,START_ICON);

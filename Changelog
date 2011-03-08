@@ -10,6 +10,7 @@ ENHANCEMENTS
 * classic ui: adding entry time of comments in tooltip's in status.cgi #1244
 * classic ui: Searching in the Icinga Logfile #516
 * classic ui: changed print_generic_error() function to support csv output #1270
+* classic ui: Added parameter to get_log_entries() function to use beginning and end timestamp #1271
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128

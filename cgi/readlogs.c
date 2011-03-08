@@ -83,7 +83,7 @@ int add_log_filter(int requested_filter, int include_exclude) {
  * Thats the actual function for reading entries.
  */
 
-int get_log_entries(char *log_file, char *search_string, int reverse) {
+int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_start, time_t ts_end) {
 	char *input=NULL;
 	char *temp_buffer=NULL;
 	int error=READLOG_OK;
@@ -162,6 +162,10 @@ int get_log_entries(char *log_file, char *search_string, int reverse) {
 			/* get timestamp */
 			temp_buffer=strtok(input,"]");
 			timestamp=(temp_buffer==NULL)?0L:strtoul(temp_buffer+1,NULL,10);
+
+			/* skip line if out of time range */
+			if ((ts_start>=0 && timestamp<ts_start) || (ts_end>=0 && timestamp>ts_end))
+				continue;
 
 			/* get log entry text */
 			temp_buffer=strtok(NULL,"\n");
