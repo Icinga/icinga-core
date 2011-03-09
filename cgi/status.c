@@ -140,7 +140,6 @@ int process_cgivars(void);
 
 void print_comment_icon(char *,char *);
 
-
 authdata current_authdata;
 time_t current_time;
 
@@ -1384,11 +1383,7 @@ void show_service_detail(void){
 		printf("</td>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-                        printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s?%s&csvoutput' target='_blank'>Export to CSV</a></div></td>\n",STATUS_CGI,strdup(getenv("QUERY_STRING")));
-                } else {
-                        printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s?csvoutput' target='_blank'>Export to CSV</a></div></td>\n",STATUS_CGI);
-                }
+		printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s' target='_blank'>Export to CSV</a></div></td>\n",get_export_csv_link(STATUS_CGI));
 
 		printf("</tr>\n");
 		printf("</table>\n");
@@ -2042,11 +2037,7 @@ void show_host_detail(void){
 		printf("</td>\n");
 
 		/* add export to csv link */
-		if(getenv("QUERY_STRING")!=NULL) {
-			printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s?%s&csvoutput' target='_blank'>Export to CSV</a></div></td>\n",STATUS_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s?csvoutput' target='_blank'>Export to CSV</a></div></td>\n",STATUS_CGI);
-		}
+		printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s' target='_blank'>Export to CSV</a></div></td>\n",get_export_csv_link(STATUS_CGI));
 
 		printf("</tr>\n");
 		printf("</table>\n");

@@ -633,11 +633,7 @@ int main(void){
 				printf("<BR />\n");
 
 		                /* add export to csv link */
-		                if(getenv("QUERY_STRING")!=NULL) {
-					printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
-				} else {
-					printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI);
-				}
+				printf("<DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV>\n",get_export_csv_link(EXTINFO_CGI));
 
 				show_comments(HOST_COMMENT);
 				printf("<BR />\n");
@@ -909,11 +905,7 @@ void show_process_info(void){
 		printf("<BR />\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI);
-		}
+		printf("<DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV>\n",get_export_csv_link(EXTINFO_CGI));
 
 		printf("<DIV ALIGN=CENTER>\n");
 
@@ -2516,14 +2508,9 @@ void show_comments(int type){
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='comment'>\n");
 
-		if(display_type!=DISPLAY_COMMENTS) {
-	                /* add export to csv link */
-	                if(getenv("QUERY_STRING")!=NULL) {
-				printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
-			} else {
-				printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,EXTINFO_CGI);
-			}
-		}
+                /* add export to csv link */
+		if(display_type!=DISPLAY_COMMENTS)
+			printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",colspan,get_export_csv_link(EXTINFO_CGI));
 
 		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Comments' onClick=cmd_submit(\'tableform%s\') disabled=\"disabled\"></TD></TR>\n",colspan,(type==HOST_COMMENT)?"host":"service");
 
@@ -2680,11 +2667,7 @@ void show_downtime(void){
 		printf("<DIV CLASS='downtimeNav'>[&nbsp;<A HREF='#HOSTDOWNTIME' CLASS='downtimeNav'>Host Downtime</A>&nbsp;|&nbsp;<A HREF='#SERVICEDOWNTIME' CLASS='downtimeNav'>Service Downtime</A>&nbsp;]</DIV>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV>\n",EXTINFO_CGI);
-		}
+		printf("<DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV>\n",get_export_csv_link(EXTINFO_CGI));
 	}
 
 	downtime_type[0]=HOST_DOWNTIME;
@@ -2890,11 +2873,7 @@ void show_scheduling_queue(void){
 		printf("<TABLE BORDER=0 CLASS='queue'>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",EXTINFO_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",EXTINFO_CGI);
-		}
+		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(EXTINFO_CGI));
 
 		printf("<TR CLASS='queue'>");
 

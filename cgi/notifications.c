@@ -501,11 +501,7 @@ void display_notifications(void){
 		printf("<table border=0 CLASS='notifications'>\n");
 
                 /* add export to csv link */
-                if(getenv("QUERY_STRING")!=NULL) {
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?%s&csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",NOTIFICATIONS_CGI,strdup(getenv("QUERY_STRING")));
-		} else {
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s?csvoutput' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",NOTIFICATIONS_CGI);
-		}
+		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(NOTIFICATIONS_CGI));
 
 		printf("<tr>\n");
 		printf("<th CLASS='notifications'>Host</th>\n");
