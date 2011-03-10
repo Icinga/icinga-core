@@ -8,6 +8,7 @@ FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
 
 * classic ui: fixed csv export link to make it XSS save (IE) #1275
+* classic ui: statusmap.cgi: fixed XSS vulnerability #1281
 
 
 1.3.0 - 16/02/2011
