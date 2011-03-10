@@ -65,7 +65,7 @@ function isValidForSubmit(form) {
 function enableDisableButton(form) {
 	var disabled = true;
 
-	if (form=='tableformhost' || form=='tableformservice') {
+	if (form=='tableformhostcomment' || form=='tableformservicecomment' || form=='tableformhostdowntime' || form=='tableformservicedowntime') {
 		if (document.forms[form].buttonCheckboxChecked.value=='true'){
 			disabled = false;
 		}
