@@ -753,6 +753,7 @@ void document_header(int cgi_id, int use_stylesheet){
 			cgi_css         = AVAIL_CSS;
 			cgi_title       = "Availability";
 			cgi_body_class  = "avail";
+			refresh         = FALSE;
 			break;
 		case CMD_CGI_ID:
 			cgi_name        = CMD_CGI;
@@ -778,12 +779,14 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_css         = HISTOGRAM_CSS;
                         cgi_title       = "Histogram";
                         cgi_body_class  = "histogram";
+			refresh         = FALSE;
                         break;
                 case HISTORY_CGI_ID:
                         cgi_name        = HISTORY_CGI;
                         cgi_css         = HISTORY_CSS;
                         cgi_title       = "History";
                         cgi_body_class  = "history";
+			refresh         = FALSE;
                         break;
                 case NOTIFICATIONS_CGI_ID:
                         cgi_name        = NOTIFICATIONS_CGI;
@@ -1642,13 +1645,16 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 
 	printf("Last Updated: %s<BR>\n",date_time);
 
-	/* decide if refresh is paused or not */
-	if(refresh==TRUE) {
-		/* if refresh, add paused query to url and set location.href */
-		printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n",refresh_rate);
-	} else {
-		/* if no refresh, remove the paused query from url and set location.href */
-		printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n");
+	/* don't show in historical (long) listings */
+	if(CGI_ID!=SHOWLOG_CGI_ID && CGI_ID!=TRENDS_CGI_ID && CGI_ID!=HISTOGRAM_CGI_ID && CGI_ID!=HISTORY_CGI_ID && CGI_ID!=AVAIL_CGI_ID){
+		/* decide if refresh is paused or not */
+		if(refresh==TRUE) {
+			/* if refresh, add paused query to url and set location.href */
+			printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n",refresh_rate);
+		} else {
+			/* if no refresh, remove the paused query from url and set location.href */
+			printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n");
+		}
 	}
 
 	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A><BR>\n", PROGRAM_NAME, PROGRAM_VERSION);

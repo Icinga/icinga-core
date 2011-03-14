@@ -22,6 +22,7 @@ FIXES
 * classic ui: cmd.cgi: acknowledgement multiline comment -> command not being processed #1257
 * classic ui: statusmap.cgi: fixed XSS vulnerability #1281
 * classic ui: fix display_name survive reconfiguration and is use instead of host_name in classic ui #1282
+* classic ui: don't show pause/continue urls on non-refreshable pages
 
 
 1.3.0 - 16/02/2011
