@@ -27,7 +27,7 @@ Alias @htmurl@ "@datadir@/"
 <Directory "@datadir@/">
 #  SSLRequireSSL
    Options None
-   AllowOverride None
+   AllowOverride All
    Order allow,deny
    Allow from all
 #  Order deny,allow

@@ -87,7 +87,7 @@ extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 
 /** readlogs.c **/
-int		log_rotation_method;
+int		log_rotation_method=LOG_ROTATION_NONE;
 extern time_t	this_scheduled_log_rotation;
 extern time_t	last_scheduled_log_rotation;
 extern time_t	next_scheduled_log_rotation;

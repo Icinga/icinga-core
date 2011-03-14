@@ -200,7 +200,6 @@ install-basic:
 	for file in *.cgi; do \
 		$(INSTALL) -m 775 $(INSTALL_OPTS) $$file $(DESTDIR)$(CGIDIR); \
 	done
-	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(LOGDIR)/cgi_logs
 
 strip-post-install:
 	for file in *.cgi; do \

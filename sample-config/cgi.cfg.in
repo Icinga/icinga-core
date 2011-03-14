@@ -92,7 +92,7 @@ use_logging=0
 # This is the cgi log file for information about what users are doing.
 # At the moment only submitted commands from cmd.cgi will be logged.
 
-cgi_log_file=@localstatedir@/cgi_logs/icinga-cgi.log
+cgi_log_file=@datadir@/log/icinga-cgi.log
 
 
 # CGI LOG ROTATION METHOD
@@ -111,7 +111,7 @@ cgi_log_rotation_method=d
 # This is the directory where archived (rotated) cgi log files should be
 # placed (assuming you've chosen to do log rotation).
 
-cgi_log_archive_path=@localstatedir@/cgi_logs
+cgi_log_archive_path=@datadir@/log
 
 
 # AUTHENTICATION USAGE
