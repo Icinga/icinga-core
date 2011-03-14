@@ -3,7 +3,7 @@
  * ICINGASTATS.C - Displays Icinga Statistics
  *
  * Program: Icingastats
- * Version: 1.3.0
+ * Version: 1.4.0
  * License: GPL
  * Copyright (c) 2003-2008 Ethan Galstad (egalstad@nagios.org)
  * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
