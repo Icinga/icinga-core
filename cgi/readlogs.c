@@ -31,7 +31,7 @@ logfilter	*filter_list=NULL;
 logentry 	*entry_list=NULL;
 
 /** Initialazing some vars */
-extern int      log_rotation_method=LOG_ROTATION_NONE;
+extern int      log_rotation_method;
 
 time_t          this_scheduled_log_rotation=0L;
 time_t          last_scheduled_log_rotation=0L;
