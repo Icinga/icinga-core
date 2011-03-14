@@ -87,12 +87,12 @@ extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 
 /** readlogs.c **/
-extern int	log_rotation_method;
+int		log_rotation_method;
 extern time_t	this_scheduled_log_rotation;
 extern time_t	last_scheduled_log_rotation;
 extern time_t	next_scheduled_log_rotation;
-extern char	log_file[MAX_INPUT_BUFFER];
-extern char	log_archive_path[MAX_INPUT_BUFFER];
+char		log_file[MAX_INPUT_BUFFER];
+char		log_archive_path[MAX_INPUT_BUFFER];
 
 
 int             check_external_commands=0;

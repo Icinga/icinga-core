@@ -31,14 +31,14 @@ logfilter	*filter_list=NULL;
 logentry 	*entry_list=NULL;
 
 /** Initialazing some vars */
-int             log_rotation_method=LOG_ROTATION_NONE;
+extern int      log_rotation_method=LOG_ROTATION_NONE;
 
 time_t          this_scheduled_log_rotation=0L;
 time_t          last_scheduled_log_rotation=0L;
 time_t          next_scheduled_log_rotation=0L;
 
-char            log_file[MAX_FILENAME_LENGTH];
-char            log_archive_path[MAX_FILENAME_LENGTH];
+extern char     log_file[MAX_FILENAME_LENGTH];
+extern char     log_archive_path[MAX_FILENAME_LENGTH];
 
 
 /** Functions 
@@ -113,6 +113,7 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 	if(reverse==FALSE){
 
 		if((thefile=mmap_fopen(log_file))==NULL){
+			//printf("error opening file: %s",log_file);
 			error=READLOG_ERROR_NOFILE;
 		}
 	}
