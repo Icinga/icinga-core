@@ -577,6 +577,7 @@ void display_logentries() {
 		add_log_filter(LOGENTRY_RESTART,LOGFILTER_EXCLUDE);
 		add_log_filter(LOGENTRY_LOG_ROTATION,LOGFILTER_EXCLUDE);
 		add_log_filter(LOGENTRY_AUTOSAVE,LOGFILTER_EXCLUDE);
+		add_log_filter(LOGENTRY_IDOMOD,LOGFILTER_EXCLUDE);
 	}
 	if (show_event_handler==FALSE) {
 		add_log_filter(LOGENTRY_SERVICE_EVENT_HANDLER,LOGFILTER_EXCLUDE);
