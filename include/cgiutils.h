@@ -583,6 +583,13 @@ void print_generic_error_message(char *, char *, int);
 
 char *get_export_csv_link(char *);				/* function to make export csv link XSS save #1275 */
 
+int write_to_cgi_log(char *);
+int rotate_log_file(void);
+int my_rename(char *,char *);                           /* renames a file - works across filesystems */
+int my_fcopy(char *,char *);                            /* copies a file - works across filesystems */
+int my_fdcopy(char *, char *, int);                     /* copies a named source to an already opened destination file */
+
+
 /******************************** MULTIURL PATCH *******************************/
 
 #ifndef DISABLE_MULTIURL

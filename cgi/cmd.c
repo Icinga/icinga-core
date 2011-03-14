@@ -2615,6 +2615,8 @@ int commit_command(int cmd){
 
 /* write a command entry to the command file */
 int write_command_to_file(char *cmd){
+	char buffer[MAX_INPUT_BUFFER];
+	char *p;
 	FILE *fp;
 	struct stat statbuf;
 	char error_string[MAX_INPUT_BUFFER];
@@ -2647,6 +2649,16 @@ int write_command_to_file(char *cmd){
 
 		return ERROR;
 	}
+
+	/* write command to cgi log */
+	sprintf(buffer, "EXTERNAL COMMAND: %s;", current_authdata.username);
+	p = index(cmd, ']');
+	if (p!=NULL)
+		p+=2;
+	else
+		p=&cmd[0];
+	strncat(buffer, p, sizeof(buffer)-strlen(buffer)-1);
+	write_to_cgi_log(buffer);
 
 	/* write the command to file */
 	fprintf(fp, "%s\n", cmd);

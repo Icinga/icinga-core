@@ -181,7 +181,13 @@ extern int overview_columns;
 extern int max_grid_width;
 extern int group_style_type;
 extern int navbar_search;
+extern int CGI_ID;
 
+/* used for logging function */
+char		cgi_log_file[MAX_FILENAME_LENGTH]="";
+char		cgi_log_archive_dir[MAX_FILENAME_LENGTH]="";
+int		use_logging=FALSE;
+int		cgi_log_rotation_method=LOG_ROTATION_NONE;
 
 /*
  * These function stubs allow us to compile a lot of the
@@ -226,6 +232,7 @@ void reset_cgi_vars(void){
 	nagios_process_state=STATE_OK;
 
 	log_rotation_method=LOG_ROTATION_NONE;
+	cgi_log_rotation_method=LOG_ROTATION_NONE;
 
 	use_authentication=TRUE;
 
@@ -432,6 +439,34 @@ int read_cgi_config_file(char *filename){
                                 strcat(url_stylesheets_path,"/");
 
 			}
+		else if(!strcmp(var,"cgi_log_archive_dir")){
+
+			strncpy(cgi_log_archive_dir,val,sizeof(cgi_log_archive_dir));
+			cgi_log_archive_dir[sizeof(cgi_log_archive_dir)-1]='\x0';
+
+			strip(cgi_log_archive_dir);
+			if(cgi_log_archive_dir[strlen(cgi_log_archive_dir)-1]!='/' && (strlen(cgi_log_archive_dir) < sizeof(cgi_log_archive_dir)-1))
+				strcat(cgi_log_archive_dir,"/");
+
+			}
+		else if(!strcmp(var,"cgi_log_file")){
+
+			strncpy(cgi_log_file,val,sizeof(cgi_log_file));
+			cgi_log_file[sizeof(cgi_log_file)-1]='\x0';
+			}
+		else if(!strcmp(var,"cgi_log_rotation_method")){
+			if(!strcmp(val,"h"))
+				cgi_log_rotation_method=LOG_ROTATION_HOURLY;
+			else if(!strcmp(val,"d"))
+				cgi_log_rotation_method=LOG_ROTATION_DAILY;
+			else if(!strcmp(val,"w"))
+				cgi_log_rotation_method=LOG_ROTATION_WEEKLY;
+			else if(!strcmp(val,"m"))
+				cgi_log_rotation_method=LOG_ROTATION_MONTHLY;
+			}
+		else if(!strcmp(var,"use_logging"))
+			use_logging=(atoi(val)>0)?TRUE:FALSE;
+
 		else if(!strcmp(var,"service_critical_sound"))
 			service_critical_sound=strdup(val);
 
@@ -1586,9 +1621,11 @@ char * escape_string(char *input){
  **********************************************************/
 
 void display_info_table(char *title,int refresh, authdata *current_authdata, int daemon_check){
-	time_t current_time;
 	char date_time[MAX_DATETIME_LENGTH];
+	char *dir_to_check=NULL;
+	time_t current_time;
 	int result;
+	int x,last=0,dummy;
 
 	/* read program status */
 	result=read_all_status_data(get_cgi_config_location(),READ_PROGRAM_STATUS);
@@ -1619,6 +1656,38 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 	if(current_authdata!=NULL)
 		printf("Logged in as <i>%s</i><BR>\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
 
+	/* add here every cgi_id which uses logging, this should limit the testing of write access to the necessary amount */
+	if(use_logging==TRUE && CGI_ID==CMD_CGI_ID) {
+
+		dummy=asprintf(&dir_to_check,"%s",cgi_log_file);
+
+		for(x=0;x<=(int)strlen(dir_to_check);x++){
+			/* end of string */
+			if((char)dir_to_check[x]==(char)'\x0'){
+				break;
+			}
+			if ((char)dir_to_check[x]=='/')
+				last=x;
+		}
+		dir_to_check[last]='\x0';
+
+		if(!strcmp(cgi_log_file,"")) {
+			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Logging is activated but no logfile is configured</DIV>");
+		} else {
+			if (access(dir_to_check, W_OK) != 0)
+				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write logfile to %s</DIV>",dir_to_check);
+		}
+		if (cgi_log_rotation_method!=LOG_ROTATION_NONE) {
+			if(!strcmp(cgi_log_archive_dir,""))
+				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Log rotation is configured but option \"cgi_log_archive_dir\" isn't</DIV>");
+			else {
+				if (access(cgi_log_archive_dir, W_OK) != 0)
+					printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write to \"cgi_log_archive_dir\": %s</DIV>",cgi_log_archive_dir);
+			}
+		}
+		free(dir_to_check);
+	}
+
 	if(nagios_process_state!=STATE_OK)
 		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Monitoring process may not be running!<BR>Click <A HREF='%s?type=%d'>here</A> for more info.</DIV>",EXTINFO_CGI,DISPLAY_PROCESS_INFO);
 
@@ -1631,7 +1700,7 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 
 		if(execute_service_checks==FALSE)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
-	        }
+	}
 
 	printf("</TD></TR>\n");
 	printf("</TABLE>\n");
@@ -2195,3 +2264,280 @@ char *get_export_csv_link(char *cgi) {
 	return ret;
 }
 
+/**
+ * Logging and file functions
+**/
+
+int write_to_cgi_log(char *buffer) {
+	FILE *fp;
+	time_t log_time;
+
+	/* we don't do anything if logging is deactivated or no logfile configured */
+	if(use_logging==FALSE || !strcmp(cgi_log_file,""))
+		return OK;
+
+	time(&log_time);
+
+	// allways check if log file has to be rotated
+	rotate_log_file();
+
+	fp=fopen(cgi_log_file,"a+");
+	if(fp==NULL)
+		return ERROR;
+
+	/* strip any newlines from the end of the buffer */
+	strip(buffer);
+
+	/* write the buffer to the log file */
+	fprintf(fp,"[%lu] %s\n",log_time,buffer);
+
+	fclose(fp);
+
+	return OK;
+}
+
+/* rotates the cgi log file */
+int rotate_log_file(){
+	char temp_buffer[MAX_INPUT_BUFFER]="";
+	char method_string[16]="";
+	char *log_archive=NULL;
+	struct tm *ts;
+	int rename_result=0;
+	int stat_result=-1;
+	struct stat log_file_stat;
+	int dummy, sub=0, weekday;
+	time_t current_time, rotate_ts;
+
+	/* if there is no log arhive configured we don't do anything */
+	if(!strcmp(cgi_log_archive_dir,""))
+		return ERROR;
+
+	/* get the current time */
+	time(&current_time);
+
+	ts=localtime(&current_time);
+
+	ts->tm_sec=0;
+	ts->tm_min=0;
+	ts->tm_isdst=-1;
+
+	weekday=ts->tm_wday;
+	/* implement start of week (Sunday/Monday) as config option
+	weekday=ts->tm_wday;
+	weekday--;
+	if (weekday==-1)
+		weekday=6;
+	*/
+
+	if(cgi_log_rotation_method==LOG_ROTATION_NONE)
+		return OK;
+	else if(cgi_log_rotation_method==LOG_ROTATION_HOURLY)
+		strcpy(method_string,"HOURLY");
+	else if(cgi_log_rotation_method==LOG_ROTATION_DAILY) {
+		strcpy(method_string,"DAILY");
+		ts->tm_hour=0;
+	}
+	else if(cgi_log_rotation_method==LOG_ROTATION_WEEKLY) {
+		strcpy(method_string,"WEEKLY");
+		ts->tm_hour=0;
+		sub=(60*60*24*weekday);
+	}
+	else if(cgi_log_rotation_method==LOG_ROTATION_MONTHLY) {
+		strcpy(method_string,"MONTHLY");
+		ts->tm_hour=0;
+		ts->tm_mday=1;
+	}
+	else
+		return ERROR;
+
+	// determine the timestamp for next rotation
+	rotate_ts=(time_t)(mktime(ts)-sub);
+
+	/* get stats of current log file */
+	stat_result = stat(cgi_log_file, &log_file_stat);
+
+	// timestamp for rotation hasn't passed. don't rotate log file
+	if (rotate_ts<log_file_stat.st_atime)
+		return OK;
+
+	// from here on file gets rotated.
+
+	/* get the archived filename to use */
+	dummy=asprintf(&log_archive,"%s/icinga-cgi-%02d-%02d-%d-%02d.log", cgi_log_archive_dir, ts->tm_mon+1, ts->tm_mday, ts->tm_year+1900, ts->tm_hour);
+
+	/* rotate the log file */
+	rename_result=my_rename(cgi_log_file,log_archive);
+
+	if(rename_result){
+		my_free(log_archive);
+		return ERROR;
+	}
+
+	/* record the log rotation after it has been done... */
+	snprintf(temp_buffer,sizeof(temp_buffer)-1,"LOG ROTATION: %s\n",method_string);
+	temp_buffer[sizeof(temp_buffer)-1]='\x0';
+	write_to_cgi_log(temp_buffer);
+
+	/* give a warning about use */
+	write_to_cgi_log("This log is highly experimental and changes may occure without notice. Use at your own risk!!");
+
+	if(stat_result==0){
+		chmod(cgi_log_file, log_file_stat.st_mode);
+		dummy=chown(cgi_log_file, log_file_stat.st_uid, log_file_stat.st_gid);
+	}
+
+	my_free(log_archive);
+
+	return OK;
+}
+
+/* renames a file - works across filesystems (Mike Wiacek) */
+int my_rename(char *source, char *dest){
+	int rename_result=0;
+
+
+	/* make sure we have something */
+	if(source==NULL || dest==NULL)
+		return -1;
+
+	/* first see if we can rename file with standard function */
+	rename_result=rename(source,dest);
+
+	/* handle any errors... */
+	if(rename_result==-1){
+
+		/* an error occurred because the source and dest files are on different filesystems */
+		if(errno==EXDEV){
+
+			/* try copying the file */
+			if(my_fcopy(source,dest)==ERROR){
+				logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to rename file '%s' to '%s': %s\n",source,dest,strerror(errno));
+				return -1;
+			}
+
+			/* delete the original file */
+			unlink(source);
+
+			/* reset result since we successfully copied file */
+			rename_result=0;
+		}
+
+		/* some other error occurred */
+		else{
+			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to rename file '%s' to '%s': %s\n",source,dest,strerror(errno));
+			return rename_result;
+		}
+	}
+
+	return rename_result;
+}
+
+/* copies a file */
+int my_fcopy(char *source, char *dest){
+	int dest_fd, result;
+
+	/* make sure we have something */
+	if(source==NULL || dest==NULL)
+		return ERROR;
+
+	/* unlink destination file first (not doing so can cause problems on network file systems like CIFS) */
+	unlink(dest);
+
+	/* open destination file for writing */
+	if((dest_fd=open(dest,O_WRONLY|O_TRUNC|O_CREAT|O_APPEND,0644)) < 0){
+		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open file '%s' for writing: %s\n",dest,strerror(errno));
+		return ERROR;
+	}
+
+	result = my_fdcopy(source, dest, dest_fd);
+	close(dest_fd);
+	return result;
+}
+
+/*
+ * copy a file from the path at source to the already opened
+ * destination file dest.
+ * This is handy when creating tempfiles with mkstemp()
+ */
+int my_fdcopy(char *source, char *dest, int dest_fd){
+	int source_fd, rd_result = 0, wr_result = 0;
+	unsigned long tot_written = 0, tot_read = 0, buf_size = 0;
+	struct stat st;
+	char *buf;
+
+	/* open source file for reading */
+	if((source_fd=open(source,O_RDONLY,0644)) < 0){
+		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to open file '%s' for reading: %s\n",source,strerror(errno));
+		return ERROR;
+	}
+
+	/*
+	 * find out how large the source-file is so we can be sure
+	 * we've written all of it
+	 */
+	if (fstat(source_fd, &st) < 0) {
+		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to stat source file '%s' for my_fcopy(): %s\n", source, strerror(errno));
+		close(source_fd);
+		return ERROR;
+	}
+
+	/*
+	 * If the file is huge, read it and write it in chunks.
+	 * This value (128K) is the result of "pick-one-at-random"
+	 * with some minimal testing and may not be optimal for all
+	 * hardware setups, but it should work ok for most. It's
+	 * faster than 1K buffers and 1M buffers, so change at your
+	 * own peril. Note that it's useful to make it fit in the L2
+	 * cache, so larger isn't necessarily better.
+	 */
+	buf_size = st.st_size > 128 << 10 ? 128 << 10 : st.st_size;
+	buf = malloc(buf_size);
+	if (!buf) {
+		logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: Unable to malloc(%lu) bytes: %s\n", buf_size, strerror(errno));
+		close(source_fd);
+		return ERROR;
+	}
+	/* most of the times, this loop will be gone through once */
+	while (tot_written < st.st_size) {
+		int loop_wr = 0;
+
+		rd_result = read(source_fd, buf, buf_size);
+		if (rd_result < 0) {
+			if (errno == EAGAIN || errno == EINTR)
+				continue;
+			logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: my_fcopy() failed to read from '%s': %s\n", source, strerror(errno));
+			break;
+		}
+		tot_read += rd_result;
+
+		while (loop_wr < rd_result) {
+			wr_result = write(dest_fd, buf + loop_wr, rd_result - loop_wr);
+
+			if (wr_result < 0) {
+				if (errno == EAGAIN || errno == EINTR)
+					continue;
+				logit(NSLOG_RUNTIME_ERROR,TRUE,"Error: my_fcopy() failed to write to '%s': %s\n", dest, strerror(errno));
+				break;
+			}
+			loop_wr += wr_result;
+		}
+		if (wr_result < 0)
+			break;
+		tot_written += loop_wr;
+	}
+
+	/*
+	 * clean up irregardless of how things went. dest_fd comes from
+	 * our caller, so we mustn't close it.
+	 */
+	close(source_fd);
+	free(buf);
+
+	if (rd_result < 0 || wr_result < 0) {
+		/* don't leave half-written files around */
+		unlink(dest);
+		return ERROR;
+	}
+
+	return OK;
+}
