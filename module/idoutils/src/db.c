@@ -20,6 +20,8 @@ extern int errno;
 
 extern int ido2db_log_debug_info(int , int , const char *, ...);
 
+int dummy;	/* reduce compiler warnings */
+
 /* point to prepared statements after db initialize */
 #ifdef USE_ORACLE
 int ido2db_oci_prepared_statement_objects_insert(ido2db_idi *idi);
@@ -456,7 +458,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 
 #ifdef USE_PGSQL /* pgsql */
 
-	asprintf(&temp_port, "%d", ido2db_db_settings.port);
+	dummy=asprintf(&temp_port, "%d", ido2db_db_settings.port);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql start\n");
 
         /* check if config matches */
@@ -6048,7 +6050,7 @@ int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *oci_statement_n
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_bind_null_param() start\n");
 	//syslog(LOG_USER | LOG_INFO, "bind null param %s\n", param_name);
 
-        asprintf(&oci_tmp, "a"); /* just malloc sth that ocilib is happy */
+	dummy=asprintf(&oci_tmp, "a"); /* just malloc sth that ocilib is happy */
 
 	if(param_name==NULL)
 		return IDO_ERROR;

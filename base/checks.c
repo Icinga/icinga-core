@@ -125,6 +125,7 @@ extern unsigned long max_debug_file_size;
 extern int      use_embedded_perl;
 #endif
 
+int dummy;	/* reduce compiler warnings */
 
 /******************************************************************/
 /********************* MISCELLANEOUS FUNCTIONS ********************/
@@ -638,7 +639,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 
 	/* open a temp file for storing check output */
 	old_umask=umask(new_umask);
-	asprintf(&output_file,"%s/checkXXXXXX",temp_path);
+	dummy=asprintf(&output_file,"%s/checkXXXXXX",temp_path);
 	check_result_info.output_file_fd=mkstemp(output_file);
 	if(check_result_info.output_file_fd>=0)
 		check_result_info.output_file_fp=fdopen(check_result_info.output_file_fd,"w");
@@ -1153,11 +1154,11 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	else if(queued_check_result->return_code<0 || queued_check_result->return_code>3){
 
 		if ( queued_check_result->return_code==126 ) {
-			asprintf(&temp_service->plugin_output,"The command defined for service %s is not an executable\n", queued_check_result->service_description);
+			dummy=asprintf(&temp_service->plugin_output,"The command defined for service %s is not an executable\n", queued_check_result->service_description);
 		} else if  ( queued_check_result->return_code==127 ) {
-			asprintf(&temp_service->plugin_output,"The command defined for service %s does not exist\n", queued_check_result->service_description);
+			dummy=asprintf(&temp_service->plugin_output,"The command defined for service %s does not exist\n", queued_check_result->service_description);
 		} else {
-			asprintf(&temp_service->plugin_output, "Return code of %d is out of bounds", queued_check_result->return_code);
+			dummy=asprintf(&temp_service->plugin_output, "Return code of %d is out of bounds", queued_check_result->return_code);
 		}
 		logit(NSLOG_RUNTIME_WARNING,TRUE,"%s",temp_service->plugin_output);
 
@@ -2900,7 +2901,7 @@ int execute_sync_host_check_3x(host *hst){
 	if(early_timeout==TRUE){
 
 		my_free(temp_plugin_output);
-		asprintf(&temp_plugin_output,"Host check timed out after %d seconds\n",host_check_timeout);
+		dummy=asprintf(&temp_plugin_output,"Host check timed out after %d seconds\n",host_check_timeout);
 
 		/* log the timeout */
 		logit(NSLOG_RUNTIME_WARNING,TRUE,"Warning: Host check command '%s' for host '%s' timed out after %d seconds\n",processed_command,hst->name,host_check_timeout);
@@ -3156,7 +3157,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 
 	/* open a temp file for storing check output */
 	old_umask=umask(new_umask);
-	asprintf(&output_file,"%s/checkXXXXXX",temp_path);
+	dummy=asprintf(&output_file,"%s/checkXXXXXX",temp_path);
 	check_result_info.output_file_fd=mkstemp(output_file);
 	if(check_result_info.output_file_fd>=0)
 		check_result_info.output_file_fp=fdopen(check_result_info.output_file_fd,"w");
@@ -3534,7 +3535,7 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 			my_free(temp_host->long_plugin_output);
 			my_free(temp_host->perf_data);
 
-			asprintf(&temp_host->plugin_output,"(Return code of %d is out of bounds%s)",queued_check_result->return_code,(queued_check_result->return_code==126 || queued_check_result->return_code==127)?" - plugin may be missing":"");
+			dummy=asprintf(&temp_host->plugin_output,"(Return code of %d is out of bounds%s)",queued_check_result->return_code,(queued_check_result->return_code==126 || queued_check_result->return_code==127)?" - plugin may be missing":"");
 
 			result=STATE_CRITICAL;
 		}

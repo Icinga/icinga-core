@@ -166,6 +166,7 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 	struct timeval tv[14];
 	double runtime[14];
 	mmapfile *thefile=NULL;
+	int dummy; /* reduce compiler warnings */
 #endif
 	int result=OK;
 
@@ -279,7 +280,7 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 
 				temp_buffer=(char *)strdup(val);
 				if(config_base_dir!=NULL && val[0]!='/')
-					asprintf(&config_file,"%s/%s",config_base_dir,temp_buffer);
+					dummy=asprintf(&config_file,"%s/%s",config_base_dir,temp_buffer);
 				else
 					config_file=temp_buffer;
 
@@ -298,7 +299,7 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 				
 				temp_buffer=(char *)strdup(val);
 				if(config_base_dir!=NULL && val[0]!='/')
-					asprintf(&config_file,"%s/%s",config_base_dir,temp_buffer);
+					dummy=asprintf(&config_file,"%s/%s",config_base_dir,temp_buffer);
 				else
 					config_file=temp_buffer;
 

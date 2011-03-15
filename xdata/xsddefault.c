@@ -346,6 +346,7 @@ int xsddefault_save_status_data(void){
 	scheduled_downtime *temp_downtime=NULL;
 	time_t current_time;
 	int fd=0;
+	int dummy; /* reduce compiler warnings */
 	FILE *fp=NULL;
 	int used_external_command_buffer_slots=0;
 	int high_external_command_buffer_slots=0;
@@ -356,7 +357,7 @@ int xsddefault_save_status_data(void){
 	/* open a safe temp file for output */
 	if(xsddefault_temp_file==NULL)
 		return ERROR;
-	asprintf(&temp_file,"%sXXXXXX",xsddefault_temp_file);
+	dummy=asprintf(&temp_file,"%sXXXXXX",xsddefault_temp_file);
 	if(temp_file==NULL)
 		return ERROR;
 
