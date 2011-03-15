@@ -136,8 +136,6 @@ void check_time_sanity(int*);
 
 int process_cgivars(void);
 
-int string_to_time(char *,time_t *);
-
 /* Set a limit of 500 structs, which is around 125 checks total*/
 #define NUMBER_OF_STRUCTS 500
 
@@ -2774,48 +2772,6 @@ void clean_comment_data(char *buffer){
 	}
 
 	return;
-}
-
-/* converts a time string to a UNIX timestamp, respecting the date_format option */
-int string_to_time(char *buffer, time_t *t){
-	struct tm lt;
-	int ret=0;
-
-
-	/* Initialize some variables just in case they don't get parsed
-	   by the sscanf() call.  A better solution is to also check the
-	   CGI input for validity, but this should suffice to prevent
-	   strange problems if the input is not valid.
-	   Jan 15 2003	Steve Bonds */
-	lt.tm_mon=0;
-	lt.tm_mday=1;
-	lt.tm_year=1900;
-	lt.tm_hour=0;
-	lt.tm_min=0;
-	lt.tm_sec=0;
-	lt.tm_wday=0;
-	lt.tm_yday=0;
-
-
-	if(date_format==DATE_FORMAT_EURO)
-		ret=sscanf(buffer,"%02d-%02d-%04d %02d:%02d:%02d",&lt.tm_mday,&lt.tm_mon,&lt.tm_year,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
-	else if(date_format==DATE_FORMAT_ISO8601 || date_format==DATE_FORMAT_STRICT_ISO8601)
-		ret=sscanf(buffer,"%04d-%02d-%02d%*[ T]%02d:%02d:%02d",&lt.tm_year,&lt.tm_mon,&lt.tm_mday,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
-	else
-		ret=sscanf(buffer,"%02d-%02d-%04d %02d:%02d:%02d",&lt.tm_mon,&lt.tm_mday,&lt.tm_year,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
-
-	if (ret!=6)
-		return ERROR;
-
-	lt.tm_mon--;
-	lt.tm_year-=1900;
-
-	/* tell mktime() to try and compute DST automatically */
-	lt.tm_isdst=-1;
-
-	*t=mktime(&lt);
-
-	return OK;
 }
 
 /* check if comment data is complete */

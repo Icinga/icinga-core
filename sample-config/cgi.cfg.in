@@ -123,6 +123,13 @@ cgi_log_archive_path=@datadir@/log
 enforce_comments_on_actions=0
 
 
+# FIRST DAY OF WEEK
+# Here you can set if your week starts on sunday or monday.
+# Default is 0 (Sunday), set it to 1 if your week start monday.
+
+first_day_of_week=0
+
+
 # AUTHENTICATION USAGE
 # This option controls whether or not the CGIs will use any
 # authentication when displaying host and service information, as

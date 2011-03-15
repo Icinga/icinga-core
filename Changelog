@@ -14,6 +14,7 @@ ENHANCEMENTS
 * classic ui: Show downtime in host detail and service detail view #1141
 * classic ui: Store cmd.cgi submissions in log #1161
 * classic ui: enforce a need for comment for action taken in cmd.cgi #610
+* classic ui: Add config option to set start of week (sunday/monday) #1269
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128

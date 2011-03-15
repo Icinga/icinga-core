@@ -525,6 +525,24 @@ extern "C" {
 #define STATE_SOFT                      1
 #define STATE_HARD                      2
 
+/********************* standard report times ****************************/
+
+#define TIMEPERIOD_CUSTOM	0
+#define TIMEPERIOD_TODAY	1
+#define TIMEPERIOD_YESTERDAY	2
+#define TIMEPERIOD_THISWEEK	3
+#define TIMEPERIOD_LASTWEEK	4
+#define TIMEPERIOD_THISMONTH	5
+#define TIMEPERIOD_LASTMONTH	6
+#define TIMEPERIOD_THISQUARTER	7
+#define TIMEPERIOD_LASTQUARTER	8
+#define TIMEPERIOD_THISYEAR	9
+#define TIMEPERIOD_LASTYEAR	10
+#define TIMEPERIOD_LAST24HOURS	11
+#define TIMEPERIOD_LAST7DAYS	12
+#define TIMEPERIOD_LAST31DAYS	13
+#define TIMEPERIOD_SINGLE_DAY	14
+#define TIMEPERIOD_NEXTPROBLEM	15
 
 /******************************** FUNCTIONS *******************************/
 
@@ -585,10 +603,12 @@ char *get_export_csv_link(char *);				/* function to make export csv link XSS sa
 
 int write_to_cgi_log(char *);
 int rotate_log_file(void);
-int my_rename(char *,char *);                           /* renames a file - works across filesystems */
-int my_fcopy(char *,char *);                            /* copies a file - works across filesystems */
-int my_fdcopy(char *, char *, int);                     /* copies a named source to an already opened destination file */
+int my_rename(char *,char *);					/* renames a file - works across filesystems */
+int my_fcopy(char *,char *);					/* copies a file - works across filesystems */
+int my_fdcopy(char *, char *, int);				/* copies a named source to an already opened destination file */
 
+void convert_timeperiod_to_times(int, time_t *, time_t *);	/* converts time period to start and end unix timestamps */
+int string_to_time(char *, time_t *);				/* converts a defined formated string to unix timestamp */
 
 /******************************** MULTIURL PATCH *******************************/
 
