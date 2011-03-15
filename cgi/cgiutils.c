@@ -136,6 +136,7 @@ int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
 int		add_notif_num_hard=0;
 int		add_notif_num_soft=0;
+int		enforce_comments_on_actions=FALSE;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -466,6 +467,9 @@ int read_cgi_config_file(char *filename){
 			}
 		else if(!strcmp(var,"use_logging"))
 			use_logging=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"enforce_comments_on_actions"))
+			enforce_comments_on_actions=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"service_critical_sound"))
 			service_critical_sound=strdup(val);

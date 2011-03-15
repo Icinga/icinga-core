@@ -51,6 +51,7 @@ extern int  content_type;
 extern int  display_header;
 extern int  daemon_check;
 
+extern int enforce_comments_on_actions;
 extern int date_format;
 
 extern scheduled_downtime *scheduled_downtime_list;
@@ -1301,6 +1302,12 @@ void request_command_data(int cmd){
 		else
 			print_object_list(PRINT_DOWNTIME_LIST);
 
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
+
 		break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
@@ -1312,6 +1319,12 @@ void request_command_data(int cmd){
 			print_object_list(PRINT_HOST_LIST);
 
 		print_form_element(PRINT_COMMON_HEADER,cmd);
+
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
+
 		print_form_element(PRINT_NOTIFICATION_DELAY,cmd);
 
 		break;
@@ -1326,6 +1339,12 @@ void request_command_data(int cmd){
 			print_object_list(PRINT_HOST_LIST);
 
 		print_form_element(PRINT_COMMON_HEADER,cmd);
+
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
+
 		print_form_element(PRINT_CHECK_TIME,cmd);
 		print_form_element(PRINT_FORCE_CHECK,cmd);
 
@@ -1347,6 +1366,12 @@ void request_command_data(int cmd){
 	case CMD_STOP_OBSESSING_OVER_SVC:
 
 		print_object_list(PRINT_SERVICE_LIST);
+
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
 
 		break;
 
@@ -1373,8 +1398,15 @@ void request_command_data(int cmd){
 
 		print_object_list(PRINT_HOST_LIST);
 
-		if(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_ENABLE_HOST_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_NOTIFICATIONS){
+		if(enforce_comments_on_actions==TRUE) {
 			print_form_element(PRINT_COMMON_HEADER,cmd);
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
+
+		if(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_ENABLE_HOST_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_NOTIFICATIONS){
+			if(enforce_comments_on_actions!=TRUE)
+				print_form_element(PRINT_COMMON_HEADER,cmd);
 		}
 
 		if(cmd==CMD_ENABLE_HOST_SVC_CHECKS || cmd==CMD_DISABLE_HOST_SVC_CHECKS || cmd==CMD_ENABLE_HOST_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOST_SVC_NOTIFICATIONS){
@@ -1422,8 +1454,16 @@ void request_command_data(int cmd){
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
-		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
-		printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
+
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		} else	{
+			printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+			printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
+		}
+
 		break;
 
 	case CMD_PROCESS_HOST_CHECK_RESULT:
@@ -1435,6 +1475,11 @@ void request_command_data(int cmd){
 			print_object_list(PRINT_HOST_LIST);
 
 		print_form_element(PRINT_COMMON_HEADER,cmd);
+
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
 
 		snprintf(help_text,sizeof(help_text),"Set the state which should be send to %s for this %s.",PROGRAM_NAME,(cmd==CMD_PROCESS_HOST_CHECK_RESULT)?"hosts":"services");
 		help_text[sizeof(help_text)-1]='\x0';
@@ -1548,9 +1593,16 @@ void request_command_data(int cmd){
 		printf("<tr class=\"statusEven\" ><td width=\"50%%\" style=\"font-weight:bold;\">Hostgroup Name:</td>");
 		printf("<td><INPUT TYPE='HIDDEN' NAME='hostgroup' VALUE='%s'>%s</td></tr>\n",escape_string(hostgroup_name),escape_string(hostgroup_name));
 
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
+
 		if(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_DISABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS){
 
-			print_form_element(PRINT_COMMON_HEADER,cmd);
+			if(enforce_comments_on_actions!=TRUE)
+				print_form_element(PRINT_COMMON_HEADER,cmd);
 
 			printf("<tr><td class=\"objectDescription descriptionleft\">%s For Hosts Too:</td><td align=\"left\">\n",(cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS || cmd==CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
 			printf("<INPUT TYPE='checkbox' NAME='ahas'></td></tr>\n");
@@ -1568,9 +1620,16 @@ void request_command_data(int cmd){
 		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Servicegroup Name:</td>");
 		printf("<td><INPUT TYPE='HIDDEN' NAME='servicegroup' VALUE='%s'>%s</td></tr>\n",escape_string(servicegroup_name),escape_string(servicegroup_name));
 
+		if(enforce_comments_on_actions==TRUE) {
+			print_form_element(PRINT_COMMON_HEADER,cmd);
+			print_form_element(PRINT_AUTHOR,cmd);
+			print_form_element(PRINT_COMMENT_BOX,cmd);
+		}
+
 		if(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_DISABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS || cmd==CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS){
 
-			print_form_element(PRINT_COMMON_HEADER,cmd);
+			if(enforce_comments_on_actions!=TRUE)
+				print_form_element(PRINT_COMMON_HEADER,cmd);
 
 			printf("<tr><td class=\"objectDescription descriptionleft\">%s For Hosts Too:</td><td align=\"left\">\n",(cmd==CMD_ENABLE_SERVICEGROUP_SVC_CHECKS || cmd==CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS)?"Enable":"Disable");
 			printf("<INPUT TYPE='checkbox' NAME='ahas'></td></tr>\n");
@@ -1676,7 +1735,6 @@ void commit_command_data(int cmd){
 	case CMD_SEND_CUSTOM_HOST_NOTIFICATION:
 	case CMD_SEND_CUSTOM_SVC_NOTIFICATION:
 
-
 		/* make sure we have author name, and comment data... */
 		check_comment_sanity(&e);
 
@@ -1707,6 +1765,12 @@ void commit_command_data(int cmd){
 
 	case CMD_DEL_HOST_COMMENT:
 	case CMD_DEL_SVC_COMMENT:
+
+		if(enforce_comments_on_actions==TRUE) {
+			check_comment_sanity(&e);
+			clean_comment_data(comment_author);
+			clean_comment_data(comment_data);
+		}
 
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
 
@@ -1748,6 +1812,12 @@ void commit_command_data(int cmd){
 
 	case CMD_DEL_HOST_DOWNTIME:
 	case CMD_DEL_SVC_DOWNTIME:
+
+		if(enforce_comments_on_actions==TRUE) {
+			check_comment_sanity(&e);
+			clean_comment_data(comment_author);
+			clean_comment_data(comment_data);
+		}
 
 		for ( x = 0; x < NUMBER_OF_STRUCTS; x++ ) {
 
@@ -1806,12 +1876,13 @@ void commit_command_data(int cmd){
 	case CMD_START_OBSESSING_OVER_SVC:
 	case CMD_STOP_OBSESSING_OVER_SVC:
 
-		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME) {
+		if(cmd==CMD_SCHEDULE_SVC_DOWNTIME || enforce_comments_on_actions==TRUE) {
 			/* make sure we have author and comment data */
 			check_comment_sanity(&e);
 
 			/* make sure we have start/end times for downtime */
-			check_time_sanity(&e);
+			if (cmd==CMD_SCHEDULE_SVC_DOWNTIME)
+				check_time_sanity(&e);
 
 			/* clean up the comment data if scheduling downtime */
 			clean_comment_data(comment_author);
@@ -1870,6 +1941,12 @@ void commit_command_data(int cmd){
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 
+		if(enforce_comments_on_actions==TRUE) {
+			check_comment_sanity(&e);
+			clean_comment_data(comment_author);
+			clean_comment_data(comment_data);
+		}
+
 		/* see if the user is authorized to issue a command... */
 		is_authorized[x]=FALSE;
 		if(is_authorized_for_system_commands(&current_authdata)==TRUE)
@@ -1903,12 +1980,13 @@ void commit_command_data(int cmd){
 	case CMD_START_OBSESSING_OVER_HOST:
 	case CMD_STOP_OBSESSING_OVER_HOST:
 
-		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME||cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME) {
+		if(cmd==CMD_SCHEDULE_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME || enforce_comments_on_actions==TRUE) {
 			/* make sure we have author and comment data */
 			check_comment_sanity(&e);
 
 			/* make sure we have start/end times for downtime */
-			check_time_sanity(&e);
+			if(cmd==CMD_SCHEDULE_HOST_DOWNTIME || cmd==CMD_SCHEDULE_HOST_SVC_DOWNTIME)
+				check_time_sanity(&e);
 
 			/* clean up the comment data if scheduling downtime */
 			clean_comment_data(comment_author);
@@ -1970,6 +2048,10 @@ void commit_command_data(int cmd){
 			check_time_sanity(&e);
 
 			/* clean up the comment data if scheduling downtime */
+			clean_comment_data(comment_author);
+			clean_comment_data(comment_data);
+		} else if (enforce_comments_on_actions==TRUE) {
+			check_comment_sanity(&e);
 			clean_comment_data(comment_author);
 			clean_comment_data(comment_data);
 		}
@@ -2616,6 +2698,7 @@ int commit_command(int cmd){
 /* write a command entry to the command file */
 int write_command_to_file(char *cmd){
 	char buffer[MAX_INPUT_BUFFER];
+	char ip_address[16];
 	char *p;
 	FILE *fp;
 	struct stat statbuf;
@@ -2659,6 +2742,13 @@ int write_command_to_file(char *cmd){
 		p=&cmd[0];
 	strncat(buffer, p, sizeof(buffer)-strlen(buffer)-1);
 	write_to_cgi_log(buffer);
+
+	/* log comments if forced */
+	if(enforce_comments_on_actions==TRUE) {
+		sprintf(ip_address,"%s",getenv("REMOTE_ADDR"));
+		sprintf(buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
+		write_to_cgi_log(buffer);
+	}
 
 	/* write the command to file */
 	fprintf(fp, "%s\n", cmd);
