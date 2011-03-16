@@ -27,6 +27,8 @@ FIXES
 * classic ui: don't show pause/continue urls on non-refreshable pages
 * classic ui: fix segfaults if no default_user_name= given in cgi.cfg #1289
 
+* idoutils: update oracle hints in ido2db.cfg with tnsnames.ora and port cfg #1283
+
 * install: replace configure option --with-checkresults-dir by --with-spool-dir #1224
 * install: use *.so instead of *.o for solaris, patch in contrib/solaris/ #524
 
