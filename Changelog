@@ -1,8 +1,8 @@
 #######################
-Icinga 1.3.x Change Log
+Icinga 1.4.x Change Log
 #######################
 
-1.3.1 - ??/??/2011
+1.4.0 - 11/05/2011
 
 ENHANCEMENTS
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
