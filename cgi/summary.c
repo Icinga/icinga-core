@@ -64,22 +64,6 @@ extern int       log_rotation_method;
 #define SREPORT_TOP_HOST_ALERTS			4
 #define SREPORT_TOP_SERVICE_ALERTS		5
 
-/* standard report times */
-#define TIMEPERIOD_CUSTOM	0
-#define TIMEPERIOD_TODAY	1
-#define TIMEPERIOD_YESTERDAY	2
-#define TIMEPERIOD_THISWEEK	3
-#define TIMEPERIOD_LASTWEEK	4
-#define TIMEPERIOD_THISMONTH	5
-#define TIMEPERIOD_LASTMONTH	6
-#define TIMEPERIOD_THISQUARTER	7
-#define TIMEPERIOD_LASTQUARTER	8
-#define TIMEPERIOD_THISYEAR	9
-#define TIMEPERIOD_LASTYEAR	10
-#define TIMEPERIOD_LAST24HOURS	11
-#define TIMEPERIOD_LAST7DAYS	12
-#define TIMEPERIOD_LAST31DAYS	13
-
 #define AE_SOFT_STATE		1
 #define AE_HARD_STATE		2
 
@@ -119,7 +103,6 @@ typedef struct alert_producer_struct{
 
 void read_archived_event_data(void);
 void scan_log_file_for_archived_event_data(char *);
-void convert_timeperiod_to_times(int);
 void compute_report_times(void);
 void determine_standard_report_options(void);
 void add_archived_event(int,time_t,int,int,char *,char *,char *);
@@ -756,7 +739,7 @@ int process_cgivars(void){
 			else
 				continue;
 
-			convert_timeperiod_to_times(timeperiod_type);
+			convert_timeperiod_to_times(timeperiod_type,&t1,&t2);
 			compute_time_from_parts=FALSE;
 		        }
 
@@ -1283,91 +1266,6 @@ void scan_log_file_for_archived_event_data(char *filename){
 	return;
 }
 
-void convert_timeperiod_to_times(int type){
-	time_t current_time;
-	struct tm *t;
-
-	/* get the current time */
-	time(&current_time);
-
-	t=localtime(&current_time);
-
-	t->tm_sec=0;
-	t->tm_min=0;
-	t->tm_hour=0;
-        t->tm_isdst=-1;
-
-	switch(type){
-	case TIMEPERIOD_LAST24HOURS:
-		t1=current_time-(60*60*24);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_TODAY:
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_YESTERDAY:
-		t1=(time_t)(mktime(t)-(60*60*24));
-		t2=(time_t)mktime(t);
-		break;
-	case TIMEPERIOD_THISWEEK:
-		t1=(time_t)(mktime(t)-(60*60*24*t->tm_wday));
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTWEEK:
-		t1=(time_t)(mktime(t)-(60*60*24*t->tm_wday)-(60*60*24*7));
-		t2=(time_t)(mktime(t)-(60*60*24*t->tm_wday));
-		break;
-	case TIMEPERIOD_THISMONTH:
-		t->tm_mday=1;
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTMONTH:
-		t->tm_mday=1;
-		t2=mktime(t);
-		if(t->tm_mon==0){
-			t->tm_mon=11;
-			t->tm_year--;
-		        }
-		else
-			t->tm_mon--;
-		t1=mktime(t);
-		break;
-	case TIMEPERIOD_THISQUARTER:
-		/* not implemented */
-		break;
-	case TIMEPERIOD_LASTQUARTER:
-		/* not implemented */
-		break;
-	case TIMEPERIOD_THISYEAR:
-		t->tm_mon=0;
-		t->tm_mday=1;
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTYEAR:
-		t->tm_mon=0;
-		t->tm_mday=1;
-		t2=mktime(t);
-		t->tm_year--;
-		t1=mktime(t);
-		break;
-	case TIMEPERIOD_LAST7DAYS:
-		t2=current_time;
-		t1=current_time-(7*24*60*60);
-		break;
-	case TIMEPERIOD_LAST31DAYS:
-		t2=current_time;
-		t1=current_time-(31*24*60*60);
-		break;
-	default:
-		break;
-	        }
-
-	return;
-        }
-
 void compute_report_times(void){
 	time_t current_time;
 	struct tm *st;
@@ -1566,7 +1464,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 void determine_standard_report_options(void){
 
 	/* report over last 7 days */
-	convert_timeperiod_to_times(TIMEPERIOD_LAST7DAYS);
+	convert_timeperiod_to_times(TIMEPERIOD_LAST7DAYS,&t1,&t2);
 	compute_time_from_parts=FALSE;
 
 	/* common options */

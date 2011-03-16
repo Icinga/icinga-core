@@ -136,6 +136,8 @@ int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
 int		add_notif_num_hard=0;
 int		add_notif_num_soft=0;
+int		enforce_comments_on_actions=FALSE;
+int		week_starts_on_monday=FALSE;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -466,6 +468,12 @@ int read_cgi_config_file(char *filename){
 			}
 		else if(!strcmp(var,"use_logging"))
 			use_logging=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"enforce_comments_on_actions"))
+			enforce_comments_on_actions=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"first_day_of_week"))
+			week_starts_on_monday=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"service_critical_sound"))
 			service_critical_sound=strdup(val);
@@ -2547,6 +2555,157 @@ int my_fdcopy(char *source, char *dest, int dest_fd){
 		unlink(dest);
 		return ERROR;
 	}
+
+	return OK;
+}
+
+/* convert timeperiodes to timestamps */
+void convert_timeperiod_to_times(int type, time_t *ts_start, time_t *ts_end){
+	time_t current_time;
+	int weekday=0;
+	struct tm *t;
+
+	/* get the current time */
+	time(&current_time);
+
+	/* everything before start of unix time is invalid */
+	if ((unsigned long int)ts_start>(unsigned long int)current_time)
+		*ts_start=0L;
+
+	t=localtime(&current_time);
+
+	t->tm_sec=0;
+	t->tm_min=0;
+	t->tm_hour=0;
+	t->tm_isdst=-1;
+
+	/* see if weeks starts on sunday or monday */
+	weekday=t->tm_wday;
+	if (week_starts_on_monday==TRUE) {
+		weekday--;
+		if (weekday==-1)
+			weekday=6;
+	}
+
+	switch(type){
+		case TIMEPERIOD_LAST24HOURS:
+			*ts_start=current_time-(60*60*24);
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_TODAY:
+			*ts_start=mktime(t);
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_SINGLE_DAY:
+			if (*ts_start==0L && *ts_end==0L) {
+				*ts_start=mktime(t);
+				*ts_end=current_time;
+			}
+			break;
+		case TIMEPERIOD_YESTERDAY:
+			*ts_start=(time_t)(mktime(t)-(60*60*24));
+			*ts_end=(time_t)mktime(t)-1;
+			break;
+		case TIMEPERIOD_THISWEEK:
+			*ts_start=(time_t)(mktime(t)-(60*60*24*weekday));
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_LASTWEEK:
+			t->tm_wday--;
+			*ts_start=(time_t)(mktime(t)-(60*60*24*weekday)-(60*60*24*7));
+			*ts_end=(time_t)(mktime(t)-(60*60*24*weekday)-1);
+			break;
+		case TIMEPERIOD_THISMONTH:
+			t->tm_mday=1;
+			*ts_start=mktime(t);
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_LASTMONTH:
+			t->tm_mday=1;
+			*ts_end=mktime(t)-1;
+			if(t->tm_mon==0){
+				t->tm_mon=11;
+				t->tm_year--;
+				}
+			else
+				t->tm_mon--;
+			*ts_start=mktime(t);
+			break;
+		case TIMEPERIOD_THISYEAR:
+			t->tm_mon=0;
+			t->tm_mday=1;
+			*ts_start=mktime(t);
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_LASTYEAR:
+			t->tm_mon=0;
+			t->tm_mday=1;
+			*ts_end=mktime(t)-1;
+			t->tm_year--;
+			*ts_start=mktime(t);
+			break;
+		case TIMEPERIOD_LAST7DAYS:
+			*ts_start=(time_t)(mktime(t)-(60*60*24*7));
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_LAST31DAYS:
+			*ts_start=(time_t)(mktime(t)-(60*60*24*31));
+			*ts_end=current_time;
+			break;
+		case TIMEPERIOD_THISQUARTER:
+			/* not implemented */
+			break;
+		case TIMEPERIOD_LASTQUARTER:
+			/* not implemented */
+			break;
+		case TIMEPERIOD_NEXTPROBLEM:
+			/* Time period will be defined later */
+			/* oly used in trends.cgi */
+			break;
+		default:
+			break;
+	}
+
+	return;
+}
+
+/* converts a time string to a UNIX timestamp, respecting the date_format option */
+int string_to_time(char *buffer, time_t *t){
+	struct tm lt;
+	int ret=0;
+
+	/* Initialize some variables just in case they don't get parsed
+	   by the sscanf() call.  A better solution is to also check the
+	   CGI input for validity, but this should suffice to prevent
+	   strange problems if the input is not valid.
+	   Jan 15 2003	Steve Bonds */
+	lt.tm_mon=0;
+	lt.tm_mday=1;
+	lt.tm_year=1900;
+	lt.tm_hour=0;
+	lt.tm_min=0;
+	lt.tm_sec=0;
+	lt.tm_wday=0;
+	lt.tm_yday=0;
+
+
+	if(date_format==DATE_FORMAT_EURO)
+		ret=sscanf(buffer,"%02d-%02d-%04d %02d:%02d:%02d",&lt.tm_mday,&lt.tm_mon,&lt.tm_year,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
+	else if(date_format==DATE_FORMAT_ISO8601 || date_format==DATE_FORMAT_STRICT_ISO8601)
+		ret=sscanf(buffer,"%04d-%02d-%02d%*[ T]%02d:%02d:%02d",&lt.tm_year,&lt.tm_mon,&lt.tm_mday,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
+	else
+		ret=sscanf(buffer,"%02d-%02d-%04d %02d:%02d:%02d",&lt.tm_mon,&lt.tm_mday,&lt.tm_year,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
+
+	if (ret!=6)
+		return ERROR;
+
+	lt.tm_mon--;
+	lt.tm_year-=1900;
+
+	/* tell mktime() to try and compute DST automatically */
+	lt.tm_isdst=-1;
+
+	*t=mktime(&lt);
 
 	return OK;
 }

@@ -148,6 +148,8 @@ int sort_option=SORT_NEXTCHECKTIME;
 
 int csv_type=CSV_DEFAULT;
 
+int dummy;	/* reduce compiler warnings */
+
 extern int embedded;
 extern int refresh;
 extern int display_header;
@@ -1132,7 +1134,7 @@ void show_host_info(void){
 	char status_age[48];
 	char state_string[MAX_INPUT_BUFFER];
 	char *bg_class="";
-	char buf[MAX_INPUT_BUFFER];
+	char *buf=NULL;
 	int days;
 	int hours;
 	int minutes;
@@ -1225,9 +1227,10 @@ void show_host_info(void){
 		printf("<TR><TD CLASS='dataVar' VALIGN='top'>Status Information:</td><td CLASS='dataVal'>%s",(temp_hoststatus->plugin_output==NULL)?"":html_encode(temp_hoststatus->plugin_output,TRUE));
 		if(enable_splunk_integration==TRUE){
 			printf("&nbsp;&nbsp;");
-			snprintf(buf,sizeof(buf)-1,"%s %s",temp_host->name,temp_hoststatus->plugin_output);
+			dummy=asprintf(&buf,"%s %s",temp_host->name,temp_hoststatus->plugin_output);
 			buf[sizeof(buf)-1]='\x0';
 			display_splunk_generic_url(buf,1);
+			free(buf);
 			}
 		if(temp_hoststatus->long_plugin_output!=NULL)
 			printf("<BR>%s",html_encode(temp_hoststatus->long_plugin_output,TRUE));
@@ -1451,7 +1454,7 @@ void show_service_info(void){
 	servicestatus *temp_svcstatus;
 	char state_string[MAX_INPUT_BUFFER];
 	char *bg_class="";
-	char buf[MAX_INPUT_BUFFER];
+	char *buf=NULL;
 	int days;
 	int hours;
 	int minutes;
@@ -1550,9 +1553,10 @@ void show_service_info(void){
 		printf("<TR><TD CLASS='dataVar' VALIGN='top'>Status Information:</TD><TD CLASS='dataVal'>%s",(temp_svcstatus->plugin_output==NULL)?"":html_encode(temp_svcstatus->plugin_output,TRUE));
 		if(enable_splunk_integration==TRUE){
 			printf("&nbsp;&nbsp;");
-			snprintf(buf,sizeof(buf)-1,"%s %s %s",temp_service->host_name,temp_service->description,temp_svcstatus->plugin_output);
+			dummy=asprintf(&buf,"%s %s %s",temp_service->host_name,temp_service->description,temp_svcstatus->plugin_output);
 			buf[sizeof(buf)-1]='\x0';
 			display_splunk_generic_url(buf,1);
+			free(buf);
 			}
 		if(temp_svcstatus->long_plugin_output!=NULL)
 			printf("<BR>%s",html_encode(temp_svcstatus->long_plugin_output,TRUE));

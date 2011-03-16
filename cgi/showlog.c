@@ -31,21 +31,6 @@
 #include "../include/cgiauth.h"
 #include "../include/readlogs.h"
 
-/* standard report times */
-#define TIMEPERIOD_CUSTOM	0
-#define TIMEPERIOD_TODAY	1
-#define TIMEPERIOD_SINGLE_DAY	2
-#define TIMEPERIOD_THISWEEK	3
-#define TIMEPERIOD_LASTWEEK	4
-#define TIMEPERIOD_THISMONTH	5
-#define TIMEPERIOD_LASTMONTH	6
-#define TIMEPERIOD_THISYEAR	9
-#define TIMEPERIOD_LASTYEAR	10
-#define TIMEPERIOD_LAST24HOURS	11
-#define TIMEPERIOD_LAST7DAYS	12
-#define TIMEPERIOD_LAST31DAYS	13
-
-
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
@@ -106,8 +91,6 @@ int CGI_ID=SHOWLOG_CGI_ID;
 int process_cgivars(void);
 void display_logentries(void);
 void show_filter(void);
-void convert_timeperiod_to_times(int);
-int string_to_time(char *,time_t *);
 void display_own_nav_table(void);
 
 int main(void){
@@ -160,7 +143,7 @@ int main(void){
 	document_header(CGI_ID,TRUE);
 
 	/* calculate timestamps for reading logs */
-	convert_timeperiod_to_times(timeperiod_type);
+	convert_timeperiod_to_times(timeperiod_type,&ts_start,&ts_end);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -362,7 +345,7 @@ int process_cgivars(void){
 			else
 				continue;
 
-			convert_timeperiod_to_times(timeperiod_type);
+			convert_timeperiod_to_times(timeperiod_type,&ts_start,&ts_end);
 		}
 
 		/* we found the order argument */
@@ -978,143 +961,6 @@ void show_filter(void) {
 	return;
 }
 
-/* convert timeperiodes to timestamps */
-void convert_timeperiod_to_times(int type){
-	time_t current_time;
-	int weekday=0;
-	struct tm *t;
-
-	/* get the current time */
-	time(&current_time);
-
-	/* everything before start of unix time is invalid */
-	if ((unsigned long int)ts_start>(unsigned long int)current_time)
-		ts_start=0L;
-
-	t=localtime(&current_time);
-
-	t->tm_sec=0;
-	t->tm_min=0;
-	t->tm_hour=0;
-	t->tm_isdst=-1;
-
-
-	weekday=t->tm_wday;
-	/* implement start of week (Sunday/Monday) as config option
-	weekday=t->tm_wday;
-	weekday--;
-	if (weekday==-1)
-		weekday=7;
-	*/
-
-	switch(type){
-		case TIMEPERIOD_LAST24HOURS:
-			ts_start=current_time-(60*60*24);
-			ts_end=current_time;
-			break;
-		case TIMEPERIOD_TODAY:
-			ts_start=mktime(t);
-			ts_end=current_time;
-			break;
-		case TIMEPERIOD_SINGLE_DAY:
-			if (ts_start==0L && ts_end==0L) {
-				ts_start=mktime(t);
-				ts_end=current_time;
-			}
-			break;
-		case TIMEPERIOD_THISWEEK:
-			ts_start=(time_t)(mktime(t)-(60*60*24*weekday));
-			ts_end=current_time;
-			break;
-		case TIMEPERIOD_LASTWEEK:
-			t->tm_wday--;
-			ts_start=(time_t)(mktime(t)-(60*60*24*weekday)-(60*60*24*7));
-			ts_end=(time_t)(mktime(t)-(60*60*24*weekday)-1);
-			break;
-		case TIMEPERIOD_THISMONTH:
-			t->tm_mday=1;
-			ts_start=mktime(t);
-			ts_end=current_time;
-			break;
-		case TIMEPERIOD_LASTMONTH:
-			t->tm_mday=1;
-			ts_end=mktime(t)-1;
-			if(t->tm_mon==0){
-				t->tm_mon=11;
-				t->tm_year--;
-				}
-			else
-				t->tm_mon--;
-			ts_start=mktime(t);
-			break;
-		case TIMEPERIOD_THISYEAR:
-			t->tm_mon=0;
-			t->tm_mday=1;
-			ts_start=mktime(t);
-			ts_end=current_time;
-			break;
-		case TIMEPERIOD_LASTYEAR:
-			t->tm_mon=0;
-			t->tm_mday=1;
-			ts_end=mktime(t)-1;
-			t->tm_year--;
-			ts_start=mktime(t);
-			break;
-		case TIMEPERIOD_LAST7DAYS:
-			ts_start=(time_t)(mktime(t)-(60*60*24*7));
-			ts_end=current_time;
-			break;
-		case TIMEPERIOD_LAST31DAYS:
-			ts_start=(time_t)(mktime(t)-(60*60*24*31));
-			ts_end=current_time;
-			break;
-		default:
-			break;
-	}
-
-	return;
-}
-
-/* converts a time string to a UNIX timestamp, respecting the date_format option */
-int string_to_time(char *buffer, time_t *t){
-	struct tm lt;
-	int ret=0;
-
-	/* Initialize some variables just in case they don't get parsed
-	   by the sscanf() call.  A better solution is to also check the
-	   CGI input for validity, but this should suffice to prevent
-	   strange problems if the input is not valid.
-	   Jan 15 2003	Steve Bonds */
-	lt.tm_mon=0;
-	lt.tm_mday=1;
-	lt.tm_year=1900;
-	lt.tm_hour=0;
-	lt.tm_min=0;
-	lt.tm_sec=0;
-	lt.tm_wday=0;
-	lt.tm_yday=0;
-
-
-	if(date_format==DATE_FORMAT_EURO)
-		ret=sscanf(buffer,"%02d-%02d-%04d %02d:%02d:%02d",&lt.tm_mday,&lt.tm_mon,&lt.tm_year,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
-	else if(date_format==DATE_FORMAT_ISO8601 || date_format==DATE_FORMAT_STRICT_ISO8601)
-		ret=sscanf(buffer,"%04d-%02d-%02d%*[ T]%02d:%02d:%02d",&lt.tm_year,&lt.tm_mon,&lt.tm_mday,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
-	else
-		ret=sscanf(buffer,"%02d-%02d-%04d %02d:%02d:%02d",&lt.tm_mon,&lt.tm_mday,&lt.tm_year,&lt.tm_hour,&lt.tm_min,&lt.tm_sec);
-
-	if (ret!=6)
-		return ERROR;
-
-	lt.tm_mon--;
-	lt.tm_year-=1900;
-
-	/* tell mktime() to try and compute DST automatically */
-	lt.tm_isdst=-1;
-
-	*t=mktime(&lt);
-
-	return OK;
-}
 
 /* make our own timestamp based navigation table */
 void display_own_nav_table(){

@@ -281,7 +281,7 @@ extern unsigned long   max_debug_file_size;
 extern int errno;
 #endif
 
-
+int dummy;	/* reduce compiler warnings */
 
 /******************************************************************/
 /******************** SYSTEM COMMAND FUNCTIONS ********************/
@@ -373,7 +373,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 			 */
 			(void) POPs ;
 
-			asprintf(&temp_buffer,"%s", SvPVX(ERRSV));
+			dummy=asprintf(&temp_buffer,"%s", SvPVX(ERRSV));
 
 			log_debug_info(DEBUGL_COMMANDS,0,"Embedded perl failed to compile %s, compile error %s\n",fname,temp_buffer);
 
@@ -396,7 +396,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 #endif
 
 	/* create a pipe */
-	pipe(fd);
+	dummy=pipe(fd);
 
 	/* make the pipe non-blocking */
 	fcntl(fd[0],F_SETFL,O_NONBLOCK);
@@ -490,7 +490,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 			log_debug_info(DEBUGL_COMMANDS,0,"Embedded perl ran command %s with output %d, %s\n",fname,status,buffer);
 
 			/* write the output back to the parent process */
-			write(fd[1],buffer,strlen(buffer)+1);
+			dummy=write(fd[1],buffer,strlen(buffer)+1);
 
 			/* close pipe for writing */
 			close(fd[1]);
@@ -514,7 +514,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 			buffer[sizeof(buffer)-1]='\x0';
 
 			/* write the error back to the parent process */
-			write(fd[1],buffer,strlen(buffer)+1);
+			dummy=write(fd[1],buffer,strlen(buffer)+1);
 
 			result=STATE_CRITICAL;
 		        }
@@ -522,7 +522,7 @@ int my_system_r(icinga_macros *mac, char *cmd,int timeout,int *early_timeout,dou
 
 			/* write all the lines of output back to the parent process */
 			while(fgets(buffer,sizeof(buffer)-1,fp))
-				write(fd[1],buffer,strlen(buffer));
+				dummy=write(fd[1],buffer,strlen(buffer));
 
 			/* close the command and get termination status */
 			status=pclose(fp);
@@ -789,7 +789,7 @@ int set_environment_var(char *name, char *value, int set){
 #else
 		/* needed for Solaris and systems that don't have setenv() */
 		/* this will leak memory, but in a "controlled" way, since lost memory should be freed when the child process exits */
-		asprintf(&env_string,"%s=%s",name,(value==NULL)?"":value);
+		dummy=asprintf(&env_string,"%s=%s",name,(value==NULL)?"":value);
 		if(env_string)
 			putenv(env_string);
 #endif
@@ -2300,9 +2300,9 @@ int daemon_init(void){
 	/* change working directory. scuttle home if we're dumping core */
 	homedir=getenv("HOME");
 	if(daemon_dumps_core==TRUE && homedir!=NULL)
-		chdir(homedir);
+		dummy=chdir(homedir);
 	else
-		chdir("/");
+		dummy=chdir("/");
 
 	umask(S_IWGRP|S_IWOTH);
 
@@ -2379,9 +2379,9 @@ int daemon_init(void){
 
 	/* write PID to lockfile... */
 	lseek(lockfile,0,SEEK_SET);
-	ftruncate(lockfile,0);
+	dummy=ftruncate(lockfile,0);
 	sprintf(buf,"%d\n",(int)getpid());
-	write(lockfile,buf,strlen(buf));
+	dummy=write(lockfile,buf,strlen(buf));
 
 	/* make sure lock file stays open while program is executing... */
 	val=fcntl(lockfile,F_GETFD,0);
@@ -2517,7 +2517,7 @@ int move_check_result_to_queue(char *checkresult_file){
 	old_umask=umask(new_umask);
 
 	/* create a safe temp file */
-	asprintf(&output_file,"%s/cXXXXXX",check_result_path);
+	dummy=asprintf(&output_file,"%s/cXXXXXX",check_result_path);
 	output_file_fd=mkstemp(output_file);
 
 	/* file created okay */
@@ -2540,7 +2540,7 @@ int move_check_result_to_queue(char *checkresult_file){
 #endif
 
 		/* create an ok-to-go indicator file */
-		asprintf(&temp_buffer,"%s.ok",output_file);
+		dummy=asprintf(&temp_buffer,"%s.ok",output_file);
 		if((output_file_fd=open(temp_buffer,O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR))>=0)
 			close(output_file_fd);
 		my_free(temp_buffer);
@@ -2625,7 +2625,7 @@ int process_check_result_queue(char *dirname){
 			/* at this point we have a regular file... */
 
 			/* can we find the associated ok-to-go file ? */
-			asprintf(&temp_buffer,"%s.ok",file);
+			dummy=asprintf(&temp_buffer,"%s.ok",file);
 			result=stat(temp_buffer,&ok_stat_buf);
 			my_free(temp_buffer);
 			if(result==-1)
@@ -2831,7 +2831,7 @@ int delete_check_result_file(char *fname){
 	unlink(fname);
 
 	/* delete the ok-to-go file */
-	asprintf(&temp_buffer,"%s.ok",fname);
+	dummy=asprintf(&temp_buffer,"%s.ok",fname);
 	unlink(temp_buffer);
 	my_free(temp_buffer);
 
@@ -4020,7 +4020,7 @@ int submit_raw_external_command(char *cmd, time_t *ts, int *buffer_items){
 		time(&timestamp);
 
 	/* create the command string */
-	asprintf(&newcmd,"[%lu] %s",(unsigned long)timestamp,cmd);
+	dummy=asprintf(&newcmd,"[%lu] %s",(unsigned long)timestamp,cmd);
 
 	/* submit the command */
 	result=submit_external_command(newcmd,buffer_items);

@@ -83,6 +83,7 @@ int ido2db_close_debug_log(void);
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 
+int dummy;	/* reduce compiler warnings */
 
 
 int main(int argc, char **argv){
@@ -869,9 +870,9 @@ int ido2db_daemonize(void){
 	if(lock_file){
 		/* write PID to lockfile... */
 		lseek(lockfile,0,SEEK_SET);
-		ftruncate(lockfile,0);
+		dummy=ftruncate(lockfile,0);
 		sprintf(buf,"%d\n",(int)getpid());
-		write(lockfile,buf,strlen(buf));
+		dummy=write(lockfile,buf,strlen(buf));
 
 		/* make sure lock file stays open while program is executing... */
 		val=fcntl(lockfile,F_GETFD,0);

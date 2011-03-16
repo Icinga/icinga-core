@@ -28,6 +28,8 @@ extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
 extern ido2db_dbconfig ido2db_db_settings; /* for tables cleanup settings */
 
+int dummy;	/* reduce compiler warnings */
+
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
 /****************************************************************************/
@@ -393,23 +395,23 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (name1 != NULL) {
 		tmp = ido2db_db_escape_string(idi, name1);
-		asprintf(&es[0], "'%s'", tmp);
+		dummy=asprintf(&es[0], "'%s'", tmp);
 		if (tmp) {
 			free(tmp);
 			tmp = NULL;
 		}
 	} else
-		asprintf(&es[0],"NULL");
+		dummy=asprintf(&es[0],"NULL");
 
 	if (name2 != NULL) {
 		tmp = ido2db_db_escape_string(idi, name2);
-		asprintf(&es[1], "'%s'", tmp);
+		dummy=asprintf(&es[1], "'%s'", tmp);
 		if (tmp) {
 			free(tmp);
 			tmp = NULL;
 		}
 	} else
-		asprintf(&es[1], "NULL");
+		dummy=asprintf(&es[1], "NULL");
 
 	if (asprintf(&buf,
 			"INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, %s, %s)",
@@ -7672,7 +7674,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                asprintf(&seq_name, "seq_contactgroups");
+                dummy=asprintf(&seq_name, "seq_contactgroups");
                 group_id = ido2db_ocilib_insert_id(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", group_id);
                 free(seq_name);

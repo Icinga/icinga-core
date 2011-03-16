@@ -114,6 +114,22 @@ cgi_log_rotation_method=d
 cgi_log_archive_path=@datadir@/log
 
 
+# FORCE COMMENT
+# This option forces the users of to comment every action they perform.
+# The comments get logged into cgi log file. This option only has effect
+# if logging is switched on. See option "use_logging"
+# Default  is 0 (off), to activate it set it to 1 (on).
+
+enforce_comments_on_actions=0
+
+
+# FIRST DAY OF WEEK
+# Here you can set if your week starts on sunday or monday.
+# Default is 0 (Sunday), set it to 1 if your week start monday.
+
+first_day_of_week=0
+
+
 # AUTHENTICATION USAGE
 # This option controls whether or not the CGIs will use any
 # authentication when displaying host and service information, as
