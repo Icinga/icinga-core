@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "Icinga", "index.html", [
+  [ "Icinga-core", "index.html", [
     [ "Data Structures", "annotated.html", [
       [ "alert_producer_struct", "structalert__producer__struct.html", null ],
       [ "archived_event_struct", "structarchived__event__struct.html", null ],
