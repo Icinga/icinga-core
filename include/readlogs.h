@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  ************************************************************************/
 
+/** @file readlogs.h
+ *  @brief defines and structures which are used in combination with functions from readlogs.c
+**/
+
 #ifndef _READLOGS_H
 #define _READLOGS_H
 
@@ -29,8 +33,8 @@ extern "C" {
 #endif
 
 
-/************************* LOG ENTRY TYPES ******************************/
-
+/** @name LOG ENTRY TYPES
+ @{**/
 #define LOGENTRY_STARTUP			1
 #define LOGENTRY_SHUTDOWN			2
 #define LOGENTRY_RESTART			3
@@ -86,71 +90,88 @@ extern "C" {
 #define LOGENTRY_SYSTEM_WARNING			44
 
 #define LOGENTRY_UNDEFINED			999
+/** @}*/
 
-
-/************************* LOG FILTER TYPES ******************************/
-
+/** @name LOG FILTER TYPES
+ @{**/
 #define LOGFILTER_INCLUDE			333
 #define LOGFILTER_EXCLUDE			666
+/** @}*/
 
 
-/************************** LIFO RETURN CODES  ****************************/
-
+/** @name LIFO RETURN CODES
+ @{**/
 #define LIFO_OK			0
 #define LIFO_ERROR_MEMORY	1
 #define LIFO_ERROR_FILE		2
 #define LIFO_ERROR_DATA		3
+/** @}*/
 
-/************************** RED LOG ENTRIES RETURN CODES  *****************/
+
+/** @name RED LOG ENTRIES RETURN CODES
+ @{**/
 
 #define READLOG_OK		0
 #define READLOG_ERROR		1
 #define READLOG_ERROR_MEMORY	2
 #define READLOG_ERROR_NOFILE	3
 #define READLOG_ERROR_FILTER	4
+/** @}*/
 
 
-/*************************** DATA STRUCTURES  *****************************/
-
-/* LIFO data structure */
+/** @brief LIFO data structure
+ *
+ * this structure holds data from @ref read_file_into_lifo
+**/
 typedef struct lifo_struct{
-	char *data;
-	struct lifo_struct *next;
+	char *data;			/**< the actual data */
+	struct lifo_struct *next;	/**< the next lifo_struct item */
         }lifo;
 
-
-/* log entry data struct */
+/** @brief log entry data struct
+ *
+ *  structure to hold single log entries @ref get_log_entries
+**/
 typedef struct logentry_struct {
-	time_t	timestamp;
-	int	type;
-	char	*entry_text;
-	struct	logentry_struct *next;
+	time_t	timestamp;		/**< timestamp of log entry date */
+	int	type;			/**< type of log entry -> LOG ENTRY TYPES */
+	char	*entry_text;		/**< the log text */
+	struct	logentry_struct *next;	/**< next logentry_struct */
 	}logentry;
 
-/* log entry filter struct */
+/** @brief log entry filter struct
+ *
+ *  structure to hold log file filters @ref add_log_filter
+**/
 typedef struct logentry_filter {
-	int	include;
-	int	exclude;
-	struct	logentry_filter *next;
+	int	include;		/**< type of log entry which should be included -> LOG ENTRY TYPES */
+	int	exclude;		/**< type of log entry which should be excluded -> LOG ENTRY TYPES */
+	struct	logentry_filter *next;	/**< next logentry_filter */
 	}logfilter;
 
+/* for documentation on these functions see cgi/readlogs.c */
+/** @name log reading
+    @{ **/
+int add_log_filter(int, int);
+int get_log_entries(char *, char *, int, time_t, time_t);
+logentry *next_log_entry(void);
+void free_log_entries(void);
+/**@}*/
 
-/*************************** FUNCTIONS **************************************/
-int read_file_into_lifo(char *);				/* LIFO functions */
+/** @name LIFO
+    @{ **/
+int read_file_into_lifo(char *);
 void free_lifo_memory(void);
 int push_lifo(char *);
 char *pop_lifo(void);
+/**@}*/
 
-
-int get_log_entries(char *, char *, int, time_t, time_t);			/* for reading and filtering logs */
-int add_log_filter(int, int);
-logentry *next_log_entry(void);
-void free_log_entries(void);
-
-void get_log_archive_to_use(int,char *,int);			/* determines the name of the log archive to use */
-void determine_log_rotation_times(int);
+/** @name log archive determination
+    @{ **/
+void get_log_archive_to_use(int,char *,int);
 int determine_archive_to_use_from_time(time_t);
-
+void determine_log_rotation_times(int);
+/**@}*/
 
 #ifdef __cplusplus
 }

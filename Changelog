@@ -15,6 +15,7 @@ ENHANCEMENTS
 * classic ui: Store cmd.cgi submissions in log #1161
 * classic ui: enforce a need for comment for action taken in cmd.cgi #610
 * classic ui: Add config option to set start of week (sunday/monday) #1269
+* classic ui: Allow display of Network Outages for authorized hosts #1320 (thx mjbrooks)
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 

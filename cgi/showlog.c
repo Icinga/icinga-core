@@ -22,6 +22,11 @@
  *
  *****************************************************************************/
 
+/** @file showlog.c
+ *  @brief cgi to browse through Icinga log data
+**/
+
+
 #include "../include/config.h"
 #include "../include/common.h"
 #include "../include/objects.h"
@@ -31,6 +36,8 @@
 #include "../include/cgiauth.h"
 #include "../include/readlogs.h"
 
+/** @name External vars
+    @{ **/
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
@@ -52,47 +59,82 @@ extern int daemon_check;
 extern int date_format;
 extern int content_type;
 extern int refresh;
+/** @} */
 
+/** @name Vars which are imported for cgiutils
+ *  @warning these wars should be all extern, @n
+ *	then they could get deleted, because they aren't used here.
+ *	@n cgiutils.c , needs them
+    @{ **/
 int display_type=DISPLAY_HOSTS;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;
 int show_all_servicegroups=TRUE;
-int display_frills=TRUE;
-int display_timebreaks=TRUE;
-int log_archive=0;
-int reverse=FALSE;
-int timeperiod_type=TIMEPERIOD_SINGLE_DAY;
-
-int show_notifications=TRUE;
-int show_host_status=TRUE;
-int show_service_status=TRUE;
-int show_external_commands=TRUE;
-int show_system_messages=TRUE;
-int show_event_handler=TRUE;
-int show_flapping=TRUE;
-int show_downtime=TRUE;
-
 char *host_name=NULL;
 char *hostgroup_name=NULL;
 char *servicegroup_name=NULL;
 char *service_desc=NULL;
-char *query_string=NULL;
-char *start_time_string="";
-char *end_time_string="";
+/** @} */
 
-time_t ts_start=0L;
-time_t ts_end=0L;
-time_t ts_midnight=0L;
+/** @name Internal vars
+    @{ **/
+int display_frills=TRUE;			/**< determine if icons should be shown in listing */
+int display_timebreaks=TRUE;			/**< determine if time breaks should be shown */
+int reverse=FALSE;				/**< determine if log should be viewed in reverse order */
+int timeperiod_type=TIMEPERIOD_SINGLE_DAY;	/**< determines the time period to view see cgiutils.h */
 
-authdata current_authdata;
+int show_notifications=TRUE;			/**< filter option */
+int show_host_status=TRUE;			/**< filter option */
+int show_service_status=TRUE;			/**< filter option */
+int show_external_commands=TRUE;		/**< filter option */
+int show_system_messages=TRUE;			/**< filter option */
+int show_event_handler=TRUE;			/**< filter option */
+int show_flapping=TRUE;				/**< filter option */
+int show_downtime=TRUE;				/**< filter option */
 
-int CGI_ID=SHOWLOG_CGI_ID;
+char *query_string=NULL;			/**< the request query string */
+char *start_time_string="";			/**< the requested start time */
+char *end_time_string="";			/**< the requested end time */
 
+time_t ts_start=0L;				/**< start time as unix timestamp */
+time_t ts_end=0L;				/**< end time as unix timestamp */
+time_t ts_midnight=0L;				/**< current midnight unix timestamp */
+
+authdata current_authdata;			/**< struct to hold current authentication data */
+
+int CGI_ID=SHOWLOG_CGI_ID;			/**< ID to identify the cgi for functions in cgiutils.c */
+/** @} */
+
+/** @brief Parses the requested GET/POST variables 
+ *  @return wether parsing was successful or not
+ *	@retval TRUE
+ *	@retval FALSE
+ *
+ *  @n This function parses the request and set's the necessary variables
+**/
 int process_cgivars(void);
+
+/** @brief displays the requested log entries
+ *
+ * Applies the requested filters, reads in all necessary log files
+ * and afterwards showing each log entry.
+**/
 void display_logentries(void);
+
+/** @brief displays the little filter list in the top right corner
+ *
+ * Just to show the filter in an own function. Get's called in \c main
+**/
 void show_filter(void);
+
+/** @brief displays the navigation in the top center of the page
+ *
+ * This is a remake of the @ref display_nav_table function from cgiutils.c
+ * But this one works with timestamps instead of archive numbers.
+**/
 void display_own_nav_table(void);
 
+/** @brief Yes we need a main function **/
 int main(void){
 	int result=OK;
 	struct tm *t;
@@ -173,9 +215,9 @@ int main(void){
 
 		/* middle column of top table - log file navigation options */
 		printf("<td align=center valign=top width=33%%>\n");
-		
+
 		display_own_nav_table();
-		
+
 		printf("</td>\n");
 
 		/* right hand column of top row */
@@ -213,7 +255,7 @@ int main(void){
 
 	/* free allocated memory */
 	free_memory();
-	
+
 	return OK;
 }
 
@@ -230,19 +272,6 @@ int process_cgivars(void){
 		if(strlen(variables[x])>=MAX_INPUT_BUFFER-1)
 			continue;
 
-		/* we found the archive argument */
-		else if(!strcmp(variables[x],"archive")){
-			x++;
-			if(variables[x]==NULL){
-				error=TRUE;
-				break;
-			}
-
-			log_archive=atoi(variables[x]);
-			if(log_archive<0)
-				log_archive=0;
-		}
-
 		/* found query string */
 		else if(!strcmp(variables[x],"query_string")){
 			x++;
@@ -253,7 +282,7 @@ int process_cgivars(void){
 
 			query_string=strdup(variables[x]);
 			strip_html_brackets(query_string);
-			
+
 			if(strlen(query_string)==0)
 				query_string=NULL;
 		}
@@ -500,8 +529,6 @@ int process_cgivars(void){
 	return error;
 }
 
-
-/* display the contents of the log file */
 void display_logentries() {
 	char image[MAX_INPUT_BUFFER];
 	char image_alt[MAX_INPUT_BUFFER];
@@ -675,6 +702,7 @@ void display_logentries() {
 
 		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 
+			/* set the correct icon and icon alt text for current log entry */
 			if(temp_entry->type==LOGENTRY_STARTUP){
 				strcpy(image,START_ICON);
 				strcpy(image_alt,START_ICON_ALT);
@@ -845,6 +873,7 @@ void display_logentries() {
 			get_time_string(&temp_entry->timestamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			strip(date_time);
 
+			/* displays log entry depending on requested content type */
 			if (content_type==CSV_CONTENT) {
 				for (i = 0; i < strlen(temp_entry->entry_text)-1; i++)
 					*(temp_entry->entry_text+i) = *(temp_entry->entry_text+i+1);
@@ -882,7 +911,6 @@ void display_logentries() {
 	return;
 }
 
-/* Display filter Options */
 void show_filter(void) {
 	char buffer[MAX_INPUT_BUFFER];
 	int temp_htmlencode=escape_html_tags;
@@ -961,8 +989,6 @@ void show_filter(void) {
 	return;
 }
 
-
-/* make our own timestamp based navigation table */
 void display_own_nav_table(){
 	char *url;
 	char temp_buffer[MAX_INPUT_BUFFER];
@@ -1038,6 +1064,7 @@ void display_own_nav_table(){
 	printf("</td>\n");
 
 	printf("<td width=15></td>\n");
+
 	if(ts_end<=ts_midnight){
 
 		printf("<td align=center valign=center CLASS='navBoxItem'>\n");

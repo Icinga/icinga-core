@@ -2639,7 +2639,7 @@ int init_macros(void){
 /**
  * initializes the names of macros, using this nifty little macro
  * which ensures we never add any typos to the list
- * ##name appends as astring, #name makes sure that param is trated as string
+ * \#\#name appends as astring, \#name makes sure that param is trated as string
  */
 #define add_macrox_name(name) macro_x_names[MACRO_##name] = strdup(#name)
 int init_macrox_names(void){
