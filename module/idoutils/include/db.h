@@ -134,6 +134,8 @@ int ido2db_db_init(ido2db_idi *);
 int ido2db_db_deinit(ido2db_idi *);
 
 int ido2db_db_connect(ido2db_idi *);
+int ido2db_db_is_connected(ido2db_idi *);
+int ido2db_db_reconnect(ido2db_idi *);
 int ido2db_db_disconnect(ido2db_idi *);
 
 int ido2db_db_hello(ido2db_idi *);

@@ -361,6 +361,47 @@ int ido2db_db_deinit(ido2db_idi *idi) {
 /************************************/
 /* connects to the database server  */
 /************************************/
+
+int ido2db_db_is_connected(ido2db_idi *idi) {
+
+#ifdef USE_LIBDBI
+	if(!dbi_conn_ping(idi->dbinfo.dbi_conn))
+		return IDO_FALSE;
+#endif
+
+#ifdef USE_PGSQL
+	if(PQstatus(idi->dbinfo.pg_conn)!=CONNECTION_OK)
+		return IDO_FALSE;
+#endif
+
+#ifdef USE_ORACLE
+	if(!OCI_IsConnected(idi->dbinfo.oci_connection))
+		return IDO_FALSE;
+#endif
+
+	return IDO_TRUE;
+}
+
+int ido2db_db_reconnect(ido2db_idi *idi) {
+
+	/* check connection */
+	if(ido2db_db_is_connected(idi)==IDO_FALSE)
+		idi->dbinfo.connected=IDO_FALSE;
+
+        /* try to reconnect... */
+        if(idi->dbinfo.connected==IDO_FALSE) {
+                if(ido2db_db_connect(idi)==IDO_ERROR){
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_reconnect(): failed.\n");
+			syslog(LOG_USER | LOG_INFO, "Error: Could not reconnect to database!");
+                        return IDO_ERROR;
+		}
+                ido2db_db_hello(idi);
+        }
+
+	return IDO_OK;
+}
+
+
 int ido2db_db_connect(ido2db_idi *idi) {
 	int result = IDO_OK;
 #ifdef USE_PGSQL /* pgsql */
@@ -374,8 +415,8 @@ int ido2db_db_connect(ido2db_idi *idi) {
 	if (idi == NULL)
 		return IDO_ERROR;
 
-	/* we're already connected... */
-	if (idi->dbinfo.connected == IDO_TRUE){
+	/* we're already connected... (and we don't wanna double check with ido2db_db_is_connected) */
+	if(idi->dbinfo.connected==IDO_TRUE){
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "\tido2db_db_connect(): already connected. Dropping out.\n");
 		return IDO_OK;
 	}
@@ -1047,7 +1088,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* we're not connected... */
-	if (idi->dbinfo.connected == IDO_FALSE)
+	if(ido2db_db_is_connected(idi)==IDO_FALSE)
 		return IDO_OK;
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -2406,11 +2447,9 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 		return IDO_ERROR;
 
 	/* if we're not connected, try and reconnect... */
-	if (idi->dbinfo.connected == IDO_FALSE) {
-		if (ido2db_db_connect(idi) == IDO_ERROR)
-			return IDO_ERROR;
-		ido2db_db_hello(idi);
-	}
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+                return IDO_ERROR;
+
 
 #ifdef DEBUG_IDO2DB_QUERIES
 	printf("%s\n\n",buf);
@@ -2507,7 +2546,7 @@ int ido2db_handle_db_error(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* we're not currently connected... */
-	if (idi->dbinfo.connected == IDO_FALSE)
+	if(ido2db_db_is_connected(idi)==IDO_TRUE)
 		return IDO_OK;
 
 	ido2db_db_disconnect(idi);
