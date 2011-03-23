@@ -109,6 +109,16 @@ db_host=localhost
 db_port=3306
 
 
+# DATABASE SOCKET
+# Optional db_socket allows to specify a different socket location.
+# This will be passed to libdbi MySQL as mysql_unix_socket, while
+# PostgeSQL overrides the port, ocilib Oracle ignores this setting.
+#
+# Note: This setting overrules db_port, making it useless!
+
+#db_socket=/var/lib/mysql/mysql.sock
+
+
 
 # DATABASE NAME
 # This option specifies the name of the database that should be used.

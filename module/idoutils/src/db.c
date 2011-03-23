@@ -445,6 +445,23 @@ int ido2db_db_connect(ido2db_idi *idi) {
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "dbname", ido2db_db_settings.dbname);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "encoding", "auto");
 
+	if(ido2db_db_settings.dbsocket!=NULL){
+		/* a local db socket was desired, drop db_port settings in case */
+		dbi_conn_clear_option(idi->dbinfo.dbi_conn, "port");
+
+	        switch (idi->dbinfo.server_type) {
+	        case IDO2DB_DBSERVER_MYSQL:
+	                dbi_conn_set_option(idi->dbinfo.dbi_conn, "mysql_unix_socket", ido2db_db_settings.dbsocket);
+			break;
+		case IDO2DB_DBSERVER_PGSQL:
+			/* override the port as stated in libdbi-driver docs */
+	                dbi_conn_set_option(idi->dbinfo.dbi_conn, "port", ido2db_db_settings.dbsocket);
+			break;
+		default:
+			break;
+		}
+	}
+
 	if (dbi_conn_connect(idi->dbinfo.dbi_conn) != 0) {
 		dbi_conn_error(idi->dbinfo.dbi_conn, &dbi_error);
 		syslog(LOG_USER | LOG_INFO, "Error: Could not connect to %s database: %s", ido2db_db_settings.dbserver, dbi_error);

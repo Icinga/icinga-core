@@ -16,6 +16,8 @@ ENHANCEMENTS
 * classic ui: enforce a need for comment for action taken in cmd.cgi #610
 * classic ui: Add config option to set start of week (sunday/monday) #1269
 
+* idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
+
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
 
