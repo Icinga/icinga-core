@@ -22,6 +22,10 @@
  *
  *****************************************************************************/
 
+/** @file history.c
+ *  @brief cgi to browse through log history of a host/service
+**/
+
 #include "../include/config.h"
 #include "../include/common.h"
 #include "../include/objects.h"
@@ -31,10 +35,9 @@
 #include "../include/cgiauth.h"
 #include "../include/readlogs.h"
 
-void show_history(void);
 
-int process_cgivars(void);
-
+/** @name External vars
+    @{ **/
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
@@ -42,41 +45,66 @@ extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
 extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern int log_rotation_method;
-
 extern int enable_splunk_integration;
+extern int embedded;
+extern int display_header;
+extern int daemon_check;
+/** @} */
 
-authdata current_authdata;
-
-char log_file_to_use[MAX_FILENAME_LENGTH];
-int log_archive=0;
-
-int display_type=DISPLAY_HOSTS;
-int show_all_hosts=TRUE;
+/** @name Vars which are imported for cgiutils
+ *  @warning these wars should be all extern, @n
+ *	then they could get deleted, because they aren't used here.
+ *	@n cgiutils.c , needs them
+    @{ **/
 int show_all_hostgroups=TRUE;
 int show_all_servicegroups=TRUE;
-int reverse=FALSE;
-
-int history_options=HISTORY_ALL;
-int state_options=STATE_ALL;
-
-char *host_name="all";
 char *host_filter=NULL;
 char *hostgroup_name=NULL;
 char *servicegroup_name=NULL;
-char *service_desc="";
 char *service_filter=NULL;
+/** @} */
 
-extern int embedded;
-extern int display_header;
-int display_frills=TRUE;
-int display_timebreaks=TRUE;
-int display_system_messages=TRUE;
-int display_flapping_alerts=TRUE;
-int display_downtime_alerts=TRUE;
-extern int daemon_check;
+/** @name Internal vars
+    @{ **/
+int log_archive=0;				/**< holds the archive id, which should be shown */
+int display_type=DISPLAY_HOSTS;			/**< determine the view (host/service) */
+int show_all_hosts=TRUE;			/**< if historical data is requested for all hosts */
+int reverse=FALSE;				/**< determine if log should be viewed in reverse order */
+int history_options=HISTORY_ALL;		/**< determines the type of historical data */
+int state_options=STATE_ALL;			/**< the state of historical data*/
 
-int CGI_ID=HISTORY_CGI_ID;
+int display_frills=TRUE;			/**< determine if icons should be shown in listing */
+int display_timebreaks=TRUE;			/**< determine if time breaks should be shown */
+int display_system_messages=TRUE;		/**< determine if system messages should be shown */
+int display_flapping_alerts=TRUE;		/**< determine if flapping alerts should be shown */
+int display_downtime_alerts=TRUE;		/**< determine if downtime alerts should be shown */
 
+char *host_name="all";				/**< the requested host name */
+char *service_desc="";				/**< the requested service name */
+char log_file_to_use[MAX_FILENAME_LENGTH];	/**< the name of the logfile to read data from */
+
+authdata current_authdata;			/**< struct to hold current authentication data */
+
+int CGI_ID=HISTORY_CGI_ID;			/**< ID to identify the cgi for functions in cgiutils.c */
+/** @} */
+
+/** @brief displays the requested historical log entries
+ *
+ * Applies the requested filters, reads in all necessary log files
+ * and afterwards showing each log entry.
+**/
+void show_history(void);
+
+/** @brief Parses the requested GET/POST variables
+ *  @return wether parsing was successful or not
+ *	@retval TRUE
+ *	@retval FALSE
+ *
+ *  @n This function parses the request and set's the necessary variables
+**/
+int process_cgivars(void);
+
+/** @brief Yes we need a main function **/
 int main(void){
 	int result=OK;
 	char temp_buffer[MAX_INPUT_BUFFER];
@@ -150,8 +178,7 @@ int main(void){
 			if(show_all_hosts==FALSE)
 				printf("<A HREF='%s?host=%s'>View Trends For This Host</A>\n",TRENDS_CGI,url_encode(host_name));
 #endif
-	                }
-		else{
+		}else{
 			printf("<A HREF='%s?host=%s&",NOTIFICATIONS_CGI,url_encode(host_name));
 			printf("service=%s'>View Notifications For This Service</A><BR />\n",url_encode(service_desc));
 #ifdef USE_TRENDS
@@ -159,7 +186,7 @@ int main(void){
 			printf("service=%s'>View Trends For This Service</A><BR />\n",url_encode(service_desc));
 #endif
 			printf("<A HREF='%s?host=%s'>View History For This Host</A>\n",HISTORY_CGI,url_encode(host_name));
-	                }
+		}
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");
 
@@ -185,7 +212,7 @@ int main(void){
 			temp_buffer2[sizeof(temp_buffer2)-1]='\x0';
 			strncat(temp_buffer,temp_buffer2,sizeof(temp_buffer)-strlen(temp_buffer)-1);
 			temp_buffer[sizeof(temp_buffer)-1]='\x0';
-	                }
+		}
 		display_nav_table(temp_buffer,log_archive);
 
 		printf("</td>\n");
@@ -234,8 +261,8 @@ int main(void){
 		if(display_type==DISPLAY_HOSTS){
 			printf("<option value=%d %s>Host down</option>\n",HISTORY_HOST_DOWN,(history_options==HISTORY_HOST_DOWN)?"selected":"");
 			printf("<option value=%d %s>Host unreachable</option>\n",HISTORY_HOST_UNREACHABLE,(history_options==HISTORY_HOST_UNREACHABLE)?"selected":"");
-		        printf("<option value=%d %s>Host recovery</option>\n",HISTORY_HOST_RECOVERY,(history_options==HISTORY_HOST_RECOVERY)?"selected":"");
-	                }
+			printf("<option value=%d %s>Host recovery</option>\n",HISTORY_HOST_RECOVERY,(history_options==HISTORY_HOST_RECOVERY)?"selected":"");
+		}
 		printf("</select></td>\n");
 		printf("</tr>\n");
 
@@ -282,7 +309,7 @@ int main(void){
 
 	/* free allocated memory */
 	free_memory();
-	
+
 	return OK;
 }
 
@@ -305,7 +332,7 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((host_name=(char *)strdup(variables[x]))==NULL)
 				host_name="";
@@ -317,64 +344,64 @@ int process_cgivars(void){
 				show_all_hosts=TRUE;
 			else
 				show_all_hosts=FALSE;
-		        }
-	
+		}
+
 		/* we found the service argument */
 		else if(!strcmp(variables[x],"service")){
 			x++;
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((service_desc=(char *)strdup(variables[x]))==NULL)
 				service_desc="";
 			strip_html_brackets(service_desc);
 
 			display_type=DISPLAY_SERVICES;
-		        }
-	
-	
+		}
+
+
 		/* we found the history type argument */
 		else if(!strcmp(variables[x],"type")){
 			x++;
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			history_options=atoi(variables[x]);
-		        }
-	
+		}
+
 		/* we found the history state type argument */
 		else if(!strcmp(variables[x],"statetype")){
 			x++;
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			state_options=atoi(variables[x]);
-		        }
-	
-	
+		}
+
+
 		/* we found the log archive argument */
 		else if(!strcmp(variables[x],"archive")){
 			x++;
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			log_archive=atoi(variables[x]);
 			if(log_archive<0)
 				log_archive=0;
-		        }
+		}
 
 		/* we found the order argument */
 		else if(!strcmp(variables[x],"oldestfirst")){
 			reverse=TRUE;
-		        }
+		}
 
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -407,7 +434,7 @@ int process_cgivars(void){
 		/* we found the no downtime alerts option */
 		else if(!strcmp(variables[x],"nodowntime"))
 			display_downtime_alerts=FALSE;
-	        }
+	}
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);
@@ -444,7 +471,7 @@ void show_history(void){
 	if (status==READLOG_ERROR_MEMORY) {
 		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
 	}
-	
+
 	if (status==READLOG_ERROR_NOFILE) {
 		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
 		error_text[sizeof(error_text)-1]='\x0';
@@ -499,7 +526,7 @@ void show_history(void){
 					else if(temp_entry->type==LOGENTRY_SERVICE_UNKNOWN){
 						strcpy(image,UNKNOWN_ICON);
 						strcpy(image_alt,UNKNOWN_ICON_ALT);
-		 				history_detail_type=HISTORY_SERVICE_UNKNOWN;
+						history_detail_type=HISTORY_SERVICE_UNKNOWN;
 					}
 					else if(temp_entry->type==LOGENTRY_SERVICE_RECOVERY || temp_entry->type==LOGENTRY_SERVICE_OK){
 						strcpy(image,OK_ICON);
@@ -512,10 +539,10 @@ void show_history(void){
 				case LOGENTRY_SERVICE_FLAPPING_STARTED:
 				case LOGENTRY_SERVICE_FLAPPING_STOPPED:
 				case LOGENTRY_SERVICE_FLAPPING_DISABLED:
-					
+
 					if(display_flapping_alerts==FALSE)
 						continue;
-			
+
 					history_type=SERVICE_FLAPPING_HISTORY;
 
 					/* get host and service names */
@@ -534,11 +561,11 @@ void show_history(void){
 					strcpy(image,FLAPPING_ICON);
 
 					if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_STARTED)
-					        strcpy(image_alt,"Service started flapping");
+						strcpy(image_alt,"Service started flapping");
 					else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_STOPPED)
-					        strcpy(image_alt,"Service stopped flapping");
+						strcpy(image_alt,"Service stopped flapping");
 					else if(temp_entry->type==LOGENTRY_SERVICE_FLAPPING_DISABLED)
-					        strcpy(image_alt,"Service flap detection disabled");
+						strcpy(image_alt,"Service flap detection disabled");
 
 					break;
 
@@ -546,10 +573,10 @@ void show_history(void){
 				case LOGENTRY_SERVICE_DOWNTIME_STARTED:
 				case LOGENTRY_SERVICE_DOWNTIME_STOPPED:
 				case LOGENTRY_SERVICE_DOWNTIME_CANCELLED:
-							
+
 					if(display_downtime_alerts==FALSE)
 						continue;
-			
+
 					history_type=SERVICE_DOWNTIME_HISTORY;
 
 					/* get host and service names */
@@ -568,11 +595,11 @@ void show_history(void){
 					strcpy(image,SCHEDULED_DOWNTIME_ICON);
 
 					if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STARTED)
-					        strcpy(image_alt,"Service entered a period of scheduled downtime");
+						strcpy(image_alt,"Service entered a period of scheduled downtime");
 					else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STOPPED)
-					        strcpy(image_alt,"Service exited from a period of scheduled downtime");
+						strcpy(image_alt,"Service exited from a period of scheduled downtime");
 					else if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_CANCELLED)
-					        strcpy(image_alt,"Service scheduled downtime has been cancelled");
+						strcpy(image_alt,"Service scheduled downtime has been cancelled");
 
 					break;
 
@@ -614,10 +641,10 @@ void show_history(void){
 				case LOGENTRY_HOST_FLAPPING_STARTED:
 				case LOGENTRY_HOST_FLAPPING_STOPPED:
 				case LOGENTRY_HOST_FLAPPING_DISABLED:
-			
+
 					if(display_flapping_alerts==FALSE)
 						continue;
-			
+
 					history_type=HOST_FLAPPING_HISTORY;
 
 					/* get host name */
@@ -631,11 +658,11 @@ void show_history(void){
 					strcpy(image,FLAPPING_ICON);
 
 					if(temp_entry->type==LOGENTRY_HOST_FLAPPING_STARTED)
-					        strcpy(image_alt,"Host started flapping");
+						strcpy(image_alt,"Host started flapping");
 					else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_STOPPED)
-					        strcpy(image_alt,"Host stopped flapping");
+						strcpy(image_alt,"Host stopped flapping");
 					else if(temp_entry->type==LOGENTRY_HOST_FLAPPING_DISABLED)
-					        strcpy(image_alt,"Host flap detection disabled");
+						strcpy(image_alt,"Host flap detection disabled");
 
 					break;
 
@@ -643,10 +670,10 @@ void show_history(void){
 				case LOGENTRY_HOST_DOWNTIME_STARTED:
 				case LOGENTRY_HOST_DOWNTIME_STOPPED:
 				case LOGENTRY_HOST_DOWNTIME_CANCELLED:
-			
+
 					if(display_downtime_alerts==FALSE)
 						continue;
-			
+
 					history_type=HOST_DOWNTIME_HISTORY;
 
 					/* get host name */
@@ -660,15 +687,15 @@ void show_history(void){
 					strcpy(image,SCHEDULED_DOWNTIME_ICON);
 
 					if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STARTED)
-					        strcpy(image_alt,"Host entered a period of scheduled downtime");
+						strcpy(image_alt,"Host entered a period of scheduled downtime");
 					else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STOPPED)
-					        strcpy(image_alt,"Host exited from a period of scheduled downtime");
+						strcpy(image_alt,"Host exited from a period of scheduled downtime");
 					else if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_CANCELLED)
-					        strcpy(image_alt,"Host scheduled downtime has been cancelled");
+						strcpy(image_alt,"Host scheduled downtime has been cancelled");
 
 					break;
 
-				
+
 				/* program start */
 				case LOGENTRY_STARTUP:
 					if(display_system_messages==FALSE)
@@ -841,7 +868,7 @@ void show_history(void){
 
 					found_line=TRUE;
 				}
-			} 
+			}
 
 			my_free(temp_entry->entry_text);
 			my_free(temp_entry);
