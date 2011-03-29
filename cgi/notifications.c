@@ -446,7 +446,7 @@ void display_notifications(void){
 	if (status==READLOG_ERROR_MEMORY) {
 		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
 	}
-	
+
 	if (status==READLOG_ERROR_NOFILE) {
 		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
 		error_text[sizeof(error_text)-1]='\x0';
