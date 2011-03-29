@@ -26,6 +26,7 @@
 #include "../include/objects.h"
 #include "../include/comments.h"
 #include "../include/statusdata.h"
+#include "../include/readlogs.h"
 
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
@@ -85,23 +86,6 @@ extern int       log_rotation_method;
 /* subject types */
 #define HOST_SUBJECT            0
 #define SERVICE_SUBJECT         1
-
-
-/* standard report times */
-#define TIMEPERIOD_CUSTOM	0
-#define TIMEPERIOD_TODAY	1
-#define TIMEPERIOD_YESTERDAY	2
-#define TIMEPERIOD_THISWEEK	3
-#define TIMEPERIOD_LASTWEEK	4
-#define TIMEPERIOD_THISMONTH	5
-#define TIMEPERIOD_LASTMONTH	6
-#define TIMEPERIOD_THISQUARTER	7
-#define TIMEPERIOD_LASTQUARTER	8
-#define TIMEPERIOD_THISYEAR	9
-#define TIMEPERIOD_LASTYEAR	10
-#define TIMEPERIOD_LAST24HOURS	11
-#define TIMEPERIOD_LAST7DAYS	12
-#define TIMEPERIOD_LAST31DAYS	13
 
 #define MIN_TIMESTAMP_SPACING	10
 
@@ -238,7 +222,6 @@ void free_availability_data(void);
 void free_archived_state_list(archived_state *);
 void read_archived_state_data(void);
 void scan_log_file_for_archived_state_data(char *);
-void convert_timeperiod_to_times(int);
 unsigned long calculate_total_time(time_t,time_t);
 
 int process_cgivars(void);
@@ -1299,7 +1282,7 @@ int process_cgivars(void){
 			else
 				continue;
 
-			convert_timeperiod_to_times(timeperiod_type);
+			convert_timeperiod_to_times(timeperiod_type,&t1,&t2);
 			compute_time_from_parts=FALSE;
 		        }
 
@@ -2789,7 +2772,6 @@ void read_archived_state_data(void){
 
 	/* read in all the necessary archived logs (from most recent to earliest) */
 	for(current_archive=newest_archive;current_archive<=oldest_archive;current_archive++){
-
 #ifdef DEBUG
 		printf("Reading archive #%d\n",current_archive);
 #endif
@@ -2813,321 +2795,243 @@ void read_archived_state_data(void){
 /* grabs archives state data from a log file */
 void scan_log_file_for_archived_state_data(char *filename){
 	char *input=NULL;
-	char *input2=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output=NULL;
 	char *temp_buffer=NULL;
-	time_t time_stamp;
-	mmapfile *thefile=NULL;
 	avail_subject *temp_subject=NULL;
-	int state_type=0;
+	logentry *temp_entry=NULL;
+	int state_type=0,status;
 
-	if((thefile=mmap_fopen(filename))==NULL)
-		return;
+	status = get_log_entries(filename,NULL,FALSE,t1-(60*60*24*backtrack_archives),t2);
+	
+	if (status==READLOG_OK) {
 
-	while(1){
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
+		
+			free(input);
+			input=NULL;
+			if((input=strdup(temp_entry->entry_text))==NULL)
+				continue;
+			
+			/* program starts/restarts */
+			if(temp_entry->type==LOGENTRY_STARTUP)
+				add_global_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program start");
+			if(temp_entry->type==LOGENTRY_RESTART)
+				add_global_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program restart");
 
-		/* free memory */
+			/* program stops */
+			if(temp_entry->type==LOGENTRY_SHUTDOWN)
+				add_global_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Normal program termination");
+			if(temp_entry->type==LOGENTRY_BAILOUT)
+				add_global_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Abnormal program termination");
+
+			if(display_type==DISPLAY_HOST_AVAIL || display_type==DISPLAY_HOSTGROUP_AVAIL || display_type==DISPLAY_SERVICEGROUP_AVAIL){
+
+				switch(temp_entry->type){
+
+					/* normal host alerts and initial/current states */
+					case LOGENTRY_HOST_DOWN:
+					case LOGENTRY_HOST_UNREACHABLE:
+					case LOGENTRY_HOST_RECOVERY:
+					case LOGENTRY_HOST_UP:
+					case LOGENTRY_HOST_INITIAL_STATE:
+					case LOGENTRY_HOST_CURRENT_STATE:
+
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						/* see if there is a corresponding subject for this host */
+						temp_subject=find_subject(HOST_SUBJECT,entry_host_name,NULL);
+						if(temp_subject==NULL)
+							break;
+
+						/* state types */
+						if(strstr(input,";SOFT;")){
+							if(include_soft_states==FALSE)
+								break;
+							state_type=AS_SOFT_STATE;
+						        }
+						if(strstr(input,";HARD;"))
+							state_type=AS_HARD_STATE;
+
+						/* get the plugin output */
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						plugin_output=my_strtok(NULL,"\n");
+
+						if(strstr(input,";DOWN;"))
+							add_archived_state(AS_HOST_DOWN,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else if(strstr(input,";UNREACHABLE;"))
+							add_archived_state(AS_HOST_UNREACHABLE,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+							add_archived_state(AS_HOST_UP,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else
+							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output,temp_subject);
+
+						break;
+
+					/* scheduled downtime notices */
+					case LOGENTRY_HOST_DOWNTIME_STARTED:
+					case LOGENTRY_HOST_DOWNTIME_STOPPED:
+					case LOGENTRY_HOST_DOWNTIME_CANCELLED:
+
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						/* see if there is a corresponding subject for this host */
+						temp_subject=find_subject(HOST_SUBJECT,entry_host_name,NULL);
+						if(temp_subject==NULL)
+							break;
+
+						if(show_scheduled_downtime==FALSE)
+							break;
+
+						if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STARTED)
+							add_scheduled_downtime(AS_HOST_DOWNTIME_START,temp_entry->timestamp,temp_subject);
+						else
+							add_scheduled_downtime(AS_HOST_DOWNTIME_END,temp_entry->timestamp,temp_subject);
+
+						break;
+				}
+			}
+
+			if(display_type==DISPLAY_SERVICE_AVAIL || display_type==DISPLAY_HOST_AVAIL || display_type==DISPLAY_SERVICEGROUP_AVAIL){
+
+				switch(temp_entry->type){
+
+					/* normal service alerts and initial/current states */
+					case LOGENTRY_SERVICE_CRITICAL:
+					case LOGENTRY_SERVICE_WARNING:
+					case LOGENTRY_SERVICE_UNKNOWN:
+					case LOGENTRY_SERVICE_RECOVERY:
+					case LOGENTRY_SERVICE_OK:
+					case LOGENTRY_SERVICE_INITIAL_STATE:
+					case LOGENTRY_SERVICE_CURRENT_STATE:
+					
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						/* get service description */
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
+						entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
+
+						/* see if there is a corresponding subject for this service */
+						temp_subject=find_subject(SERVICE_SUBJECT,entry_host_name,entry_service_desc);
+						if(temp_subject==NULL)
+							break;
+
+						/* state types */
+						if(strstr(input,";SOFT;")){
+							if(include_soft_states==FALSE)
+								break;
+							state_type=AS_SOFT_STATE;
+						        }
+						if(strstr(input,";HARD;"))
+							state_type=AS_HARD_STATE;
+
+						/* get the plugin output */
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						temp_buffer=my_strtok(NULL,";");
+						plugin_output=my_strtok(NULL,"\n");
+
+						if(strstr(input,";CRITICAL;"))
+							add_archived_state(AS_SVC_CRITICAL,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else if(strstr(input,";WARNING;"))
+							add_archived_state(AS_SVC_WARNING,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else if(strstr(input,";UNKNOWN;"))
+							add_archived_state(AS_SVC_UNKNOWN,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+							add_archived_state(AS_SVC_OK,state_type,temp_entry->timestamp,plugin_output,temp_subject);
+						else
+							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output,temp_subject);
+
+						break;
+
+					/* scheduled service downtime notices */
+					case LOGENTRY_SERVICE_DOWNTIME_STARTED:
+					case LOGENTRY_SERVICE_DOWNTIME_STOPPED:
+					case LOGENTRY_SERVICE_DOWNTIME_CANCELLED:
+
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						/* get service description */
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
+						entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
+
+						/* see if there is a corresponding subject for this service */
+						temp_subject=find_subject(SERVICE_SUBJECT,entry_host_name,entry_service_desc);
+						if(temp_subject==NULL)
+							break;
+
+						if(show_scheduled_downtime==FALSE)
+							break;
+
+						if(temp_entry->type==LOGENTRY_SERVICE_DOWNTIME_STARTED)
+							add_scheduled_downtime(AS_SVC_DOWNTIME_START,temp_entry->timestamp,temp_subject);
+						else
+							add_scheduled_downtime(AS_SVC_DOWNTIME_END,temp_entry->timestamp,temp_subject);
+
+						break;
+					
+					/* scheduled host downtime notices */
+					case LOGENTRY_HOST_DOWNTIME_STARTED:
+					case LOGENTRY_HOST_DOWNTIME_STOPPED:
+					case LOGENTRY_HOST_DOWNTIME_CANCELLED:
+
+						/* get host name */
+						temp_buffer=my_strtok(temp_entry->entry_text,":");
+						temp_buffer=my_strtok(NULL,";");
+						strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+						entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+						/* this host downtime entry must be added to all service subjects associated with the host! */
+						for(temp_subject=subject_list;temp_subject!=NULL;temp_subject=temp_subject->next){
+
+							if(temp_subject->type!=SERVICE_SUBJECT)
+								break;
+
+							if(strcmp(temp_subject->host_name,entry_host_name))
+								break;
+
+							if(show_scheduled_downtime==FALSE)
+								break;
+
+							if(temp_entry->type==LOGENTRY_HOST_DOWNTIME_STARTED)
+								add_scheduled_downtime(AS_HOST_DOWNTIME_START,temp_entry->timestamp,temp_subject);
+							else
+								add_scheduled_downtime(AS_HOST_DOWNTIME_END,temp_entry->timestamp,temp_subject);
+						}
+
+						break;
+				}
+			}
+		
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);
+		}
+		free_log_entries();
 		free(input);
-		free(input2);
-		input=NULL;
-		input2=NULL;
-
-		/* read the next line */
-		if((input=mmap_fgets(thefile))==NULL)
-			break;
-
-		strip(input);
-
-		if((input2=strdup(input))==NULL)
-			continue;
-
-		temp_buffer=my_strtok(input2,"]");
-		time_stamp=(temp_buffer==NULL)?(time_t)0:(time_t)strtoul(temp_buffer+1,NULL,10);
-
-		/* program starts/restarts */
-		if(strstr(input," starting..."))
-			add_global_archived_state(AS_PROGRAM_START,AS_NO_DATA,time_stamp,"Program start");
-		if(strstr(input," restarting..."))
-			add_global_archived_state(AS_PROGRAM_START,AS_NO_DATA,time_stamp,"Program restart");
-
-		/* program stops */
-		if(strstr(input," shutting down..."))
-			add_global_archived_state(AS_PROGRAM_END,AS_NO_DATA,time_stamp,"Normal program termination");
-		if(strstr(input,"Bailing out"))
-			add_global_archived_state(AS_PROGRAM_END,AS_NO_DATA,time_stamp,"Abnormal program termination");
-
-		if(display_type==DISPLAY_HOST_AVAIL || display_type==DISPLAY_HOSTGROUP_AVAIL || display_type==DISPLAY_SERVICEGROUP_AVAIL){
-
-			/* normal host alerts and initial/current states */
-			if(strstr(input,"HOST ALERT:") || strstr(input,"INITIAL HOST STATE:") || strstr(input,"CURRENT HOST STATE:")){
-
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				/* see if there is a corresponding subject for this host */
-				temp_subject=find_subject(HOST_SUBJECT,entry_host_name,NULL);
-				if(temp_subject==NULL)
-					continue;
-
-				/* state types */
-				if(strstr(input,";SOFT;")){
-					if(include_soft_states==FALSE)
-						continue;
-					state_type=AS_SOFT_STATE;
-				        }
-				if(strstr(input,";HARD;"))
-					state_type=AS_HARD_STATE;
-
-				/* get the plugin output */
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				plugin_output=my_strtok(NULL,"\n");
-
-				if(strstr(input,";DOWN;"))
-					add_archived_state(AS_HOST_DOWN,state_type,time_stamp,plugin_output,temp_subject);
-				else if(strstr(input,";UNREACHABLE;"))
-					add_archived_state(AS_HOST_UNREACHABLE,state_type,time_stamp,plugin_output,temp_subject);
-				else if(strstr(input,";RECOVERY") || strstr(input,";UP;"))
-					add_archived_state(AS_HOST_UP,state_type,time_stamp,plugin_output,temp_subject);
-				else
-					add_archived_state(AS_NO_DATA,AS_NO_DATA,time_stamp,plugin_output,temp_subject);
-			        }
-
-			/* scheduled downtime notices */
-			else if(strstr(input,"HOST DOWNTIME ALERT:")){
-
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				/* see if there is a corresponding subject for this host */
-				temp_subject=find_subject(HOST_SUBJECT,entry_host_name,NULL);
-				if(temp_subject==NULL)
-					continue;
-
-				if(show_scheduled_downtime==FALSE)
-					continue;
-
-				if(strstr(input,";STARTED;"))
-					add_scheduled_downtime(AS_HOST_DOWNTIME_START,time_stamp,temp_subject);
-				else
-					add_scheduled_downtime(AS_HOST_DOWNTIME_END,time_stamp,temp_subject);
-
-			        }
-		        }
-
-		if(display_type==DISPLAY_SERVICE_AVAIL || display_type==DISPLAY_HOST_AVAIL || display_type==DISPLAY_SERVICEGROUP_AVAIL){
-
-			/* normal service alerts and initial/current states */
-			if(strstr(input,"SERVICE ALERT:") || strstr(input,"INITIAL SERVICE STATE:") || strstr(input,"CURRENT SERVICE STATE:")){
-
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				/* get service description */
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
-				entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
-
-				/* see if there is a corresponding subject for this service */
-				temp_subject=find_subject(SERVICE_SUBJECT,entry_host_name,entry_service_desc);
-				if(temp_subject==NULL)
-					continue;
-
-				/* state types */
-				if(strstr(input,";SOFT;")){
-					if(include_soft_states==FALSE)
-						continue;
-					state_type=AS_SOFT_STATE;
-				        }
-				if(strstr(input,";HARD;"))
-					state_type=AS_HARD_STATE;
-
-				/* get the plugin output */
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				temp_buffer=my_strtok(NULL,";");
-				plugin_output=my_strtok(NULL,"\n");
-
-				if(strstr(input,";CRITICAL;"))
-					add_archived_state(AS_SVC_CRITICAL,state_type,time_stamp,plugin_output,temp_subject);
-				else if(strstr(input,";WARNING;"))
-					add_archived_state(AS_SVC_WARNING,state_type,time_stamp,plugin_output,temp_subject);
-				else if(strstr(input,";UNKNOWN;"))
-					add_archived_state(AS_SVC_UNKNOWN,state_type,time_stamp,plugin_output,temp_subject);
-				else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
-					add_archived_state(AS_SVC_OK,state_type,time_stamp,plugin_output,temp_subject);
-				else
-					add_archived_state(AS_NO_DATA,AS_NO_DATA,time_stamp,plugin_output,temp_subject);
-
-			        }
-
-			/* scheduled service downtime notices */
-			else if(strstr(input,"SERVICE DOWNTIME ALERT:")){
-
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				/* get service description */
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_service_desc,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_service_desc));
-				entry_service_desc[sizeof(entry_service_desc)-1]='\x0';
-
-				/* see if there is a corresponding subject for this service */
-				temp_subject=find_subject(SERVICE_SUBJECT,entry_host_name,entry_service_desc);
-				if(temp_subject==NULL)
-					continue;
-
-				if(show_scheduled_downtime==FALSE)
-					continue;
-
-				if(strstr(input,";STARTED;"))
-					add_scheduled_downtime(AS_SVC_DOWNTIME_START,time_stamp,temp_subject);
-				else
-					add_scheduled_downtime(AS_SVC_DOWNTIME_END,time_stamp,temp_subject);
-		                }
-
-			/* scheduled host downtime notices */
-			else if(strstr(input,"HOST DOWNTIME ALERT:")){
-
-				/* get host name */
-				temp_buffer=my_strtok(NULL,":");
-				temp_buffer=my_strtok(NULL,";");
-				strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-				entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-				/* this host downtime entry must be added to all service subjects associated with the host! */
-				for(temp_subject=subject_list;temp_subject!=NULL;temp_subject=temp_subject->next){
-
-					if(temp_subject->type!=SERVICE_SUBJECT)
-						continue;
-
-					if(strcmp(temp_subject->host_name,entry_host_name))
-						continue;
-
-					if(show_scheduled_downtime==FALSE)
-						continue;
-
-					if(strstr(input,";STARTED;"))
-						add_scheduled_downtime(AS_HOST_DOWNTIME_START,time_stamp,temp_subject);
-					else
-						add_scheduled_downtime(AS_HOST_DOWNTIME_END,time_stamp,temp_subject);
-				        }
-			        }
-		        }
-
-	        }
-
-	/* free memory and close the file */
-	free(input);
-	free(input2);
-	mmap_fclose(thefile);
-
+	}
 	return;
-        }
-
-
-
-
-void convert_timeperiod_to_times(int type){
-	time_t current_time;
-	struct tm *t;
-
-	/* get the current time */
-	time(&current_time);
-
-	t=localtime(&current_time);
-
-	t->tm_sec=0;
-	t->tm_min=0;
-	t->tm_hour=0;
-        t->tm_isdst=-1;
-
-	switch(type){
-	case TIMEPERIOD_LAST24HOURS:
-		t1=current_time-(60*60*24);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_TODAY:
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_YESTERDAY:
-		t1=(time_t)(mktime(t)-(60*60*24));
-		t2=(time_t)mktime(t);
-		break;
-	case TIMEPERIOD_THISWEEK:
-		t1=(time_t)(mktime(t)-(60*60*24*t->tm_wday));
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTWEEK:
-		t1=(time_t)(mktime(t)-(60*60*24*t->tm_wday)-(60*60*24*7));
-		t2=(time_t)(mktime(t)-(60*60*24*t->tm_wday));
-		break;
-	case TIMEPERIOD_THISMONTH:
-		t->tm_mday=1;
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTMONTH:
-		t->tm_mday=1;
-		t2=mktime(t);
-		if(t->tm_mon==0){
-			t->tm_mon=11;
-			t->tm_year--;
-		        }
-		else
-			t->tm_mon--;
-		t1=mktime(t);
-		break;
-	case TIMEPERIOD_THISQUARTER:
-		/* not implemented */
-		break;
-	case TIMEPERIOD_LASTQUARTER:
-		/* not implemented */
-		break;
-	case TIMEPERIOD_THISYEAR:
-		t->tm_mon=0;
-		t->tm_mday=1;
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTYEAR:
-		t->tm_mon=0;
-		t->tm_mday=1;
-		t2=mktime(t);
-		t->tm_year--;
-		t1=mktime(t);
-		break;
-	case TIMEPERIOD_LAST7DAYS:
-		t2=current_time;
-		t1=current_time-(7*24*60*60);
-		break;
-	case TIMEPERIOD_LAST31DAYS:
-		t2=current_time;
-		t1=current_time-(31*24*60*60);
-		break;
-	default:
-		break;
-	        }
-
-	return;
-        }
-
+}
 
 
 void compute_report_times(void){
@@ -3161,7 +3065,7 @@ void compute_report_times(void){
 	et->tm_isdst=-1;
 
 	t2=mktime(et);
-        }
+}
 
 
 /* writes log entries to screen */

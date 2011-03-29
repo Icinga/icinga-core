@@ -99,6 +99,7 @@ char *traceroute_address="";
 
 extern int daemon_check;
 
+char *dummy;	/* reduce compiler warnings */
 
 authdata current_authdata;
 
@@ -1261,7 +1262,7 @@ void display_ping(void){
 			fp=popen(buffer,"r");
 			if(fp){
 				while(1){
-					fgets(buffer,sizeof(buffer)-1,fp);
+					dummy=fgets(buffer,sizeof(buffer)-1,fp);
 					if(feof(fp))
 						break;
 
@@ -1330,7 +1331,7 @@ void display_traceroute(void){
 		fp=popen(buffer,"r");
 		if(fp){
 			while(1){
-				fgets(buffer,sizeof(buffer)-1,fp);
+				dummy=fgets(buffer,sizeof(buffer)-1,fp);
 				if(feof(fp))
 					break;
 

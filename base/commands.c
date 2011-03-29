@@ -89,7 +89,7 @@ extern pthread_t       worker_threads[TOTAL_WORKER_THREADS];
 extern circular_buffer external_command_buffer;
 extern int             external_command_buffer_slots;
 
-
+int dummy;	/* reduce compiler warnings */
 
 /******************************************************************/
 /****************** EXTERNAL COMMAND PROCESSING *******************/
@@ -753,9 +753,9 @@ int process_external_command1(char *cmd){
 
 	/* log the external command */
 	if(log_external_commands_user==TRUE){
-		asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s;%s\n",command_id,username,args);
+		dummy=asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s;%s\n",command_id,username,args);
 	} else {
-		asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s\n",command_id,args);
+		dummy=asprintf(&temp_buffer,"EXTERNAL COMMAND: %s;%s\n",command_id,args);
 	}
 
 	if(command_type==CMD_PROCESS_SERVICE_CHECK_RESULT || command_type==CMD_PROCESS_HOST_CHECK_RESULT){
@@ -5022,7 +5022,7 @@ void process_passive_checks(void){
 
 	/* open a temp file for storing check result(s) */
 	old_umask=umask(new_umask);
-	asprintf(&checkresult_file,"%s/checkXXXXXX",temp_path);
+	dummy=asprintf(&checkresult_file,"%s/checkXXXXXX",temp_path);
 	checkresult_file_fd=mkstemp(checkresult_file);
 	umask(old_umask);
 

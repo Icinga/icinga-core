@@ -1457,10 +1457,6 @@ CREATE TABLE timeperiods (
   CONSTRAINT timeperiods UNIQUE (instance_id,config_type,timeperiod_object_id)
 );
 
--- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '1.3.0');
 
 
 -- -----------------------------------------
@@ -1934,4 +1930,11 @@ CREATE SEQUENCE seq_timeperiods
    start with 1
    increment by 1
    nomaxvalue;
+
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+
+INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '1.3.0');
 

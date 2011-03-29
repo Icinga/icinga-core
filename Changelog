@@ -1,14 +1,41 @@
 #######################
-Icinga 1.3.x Change Log
+Icinga 1.4.x Change Log
 #######################
 
-1.3.1 - ??/??/2011
+1.4.0 - 11/05/2011
+
+ENHANCEMENTS
+* classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
+* classic ui: Adding some more icons to showlog.cgi #1239
+* classic ui: adding entry time of comments in tooltip's in status.cgi #1244
+* classic ui: Searching in the Icinga Logfile #516
+* classic ui: changed print_generic_error() function to support csv output #1270
+* classic ui: Added parameter to get_log_entries() function to use beginning and end timestamp #1271
+* classic ui: Show downtime in host detail and service detail view #1141
+* classic ui: Store cmd.cgi submissions in log #1161
+* classic ui: enforce a need for comment for action taken in cmd.cgi #610
+* classic ui: Add config option to set start of week (sunday/monday) #1269
+* classic ui: Allow display of Network Outages for authorized hosts #1320 (thx mjbrooks)
+
+* idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
 
+* classic ui: Fixing tooltip's in status.cgi, not showing messages with carriage return #1244
 * classic ui: fixed csv export link to make it XSS save (IE) #1275
+* classic ui: cmd.cgi: acknowledgement multiline comment -> command not being processed #1257
 * classic ui: statusmap.cgi: fixed XSS vulnerability #1281
+* classic ui: fix display_name survive reconfiguration and is use instead of host_name in classic ui #1282
+* classic ui: don't show pause/continue urls on non-refreshable pages
+* classic ui: fix segfaults if no default_user_name= given in cgi.cfg #1289
+
+* idoutils: update oracle hints in ido2db.cfg with tnsnames.ora and port cfg #1283
+* idoutils: idomod: larger buffer size (by Opsview) #1286
+* idoutils: fix rdbms deconnect after connection error #1313
+
+* install: replace configure option --with-checkresults-dir by --with-spool-dir #1224
+* install: use *.so instead of *.o for solaris, patch in contrib/solaris/ #524
 
 
 1.3.0 - 16/02/2011

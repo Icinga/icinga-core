@@ -64,22 +64,6 @@ extern int       log_rotation_method;
 #define SREPORT_TOP_HOST_ALERTS			4
 #define SREPORT_TOP_SERVICE_ALERTS		5
 
-/* standard report times */
-#define TIMEPERIOD_CUSTOM	0
-#define TIMEPERIOD_TODAY	1
-#define TIMEPERIOD_YESTERDAY	2
-#define TIMEPERIOD_THISWEEK	3
-#define TIMEPERIOD_LASTWEEK	4
-#define TIMEPERIOD_THISMONTH	5
-#define TIMEPERIOD_LASTMONTH	6
-#define TIMEPERIOD_THISQUARTER	7
-#define TIMEPERIOD_LASTQUARTER	8
-#define TIMEPERIOD_THISYEAR	9
-#define TIMEPERIOD_LASTYEAR	10
-#define TIMEPERIOD_LAST24HOURS	11
-#define TIMEPERIOD_LAST7DAYS	12
-#define TIMEPERIOD_LAST31DAYS	13
-
 #define AE_SOFT_STATE		1
 #define AE_HARD_STATE		2
 
@@ -119,7 +103,6 @@ typedef struct alert_producer_struct{
 
 void read_archived_event_data(void);
 void scan_log_file_for_archived_event_data(char *);
-void convert_timeperiod_to_times(int);
 void compute_report_times(void);
 void determine_standard_report_options(void);
 void add_archived_event(int,time_t,int,int,char *,char *,char *);
@@ -756,7 +739,7 @@ int process_cgivars(void){
 			else
 				continue;
 
-			convert_timeperiod_to_times(timeperiod_type);
+			convert_timeperiod_to_times(timeperiod_type,&t1,&t2);
 			compute_time_from_parts=FALSE;
 		        }
 
@@ -1159,211 +1142,129 @@ void read_archived_event_data(void){
 /* grabs archived event data from a log file */
 void scan_log_file_for_archived_event_data(char *filename){
 	char *input=NULL;
-	char *input2=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_svc_description[MAX_INPUT_BUFFER];
-	int state;
-	int state_type;
 	char *temp_buffer;
 	char *plugin_output;
-	time_t time_stamp;
-	mmapfile *thefile;
+	int state;
+	int state_type;
+	int status;
+	logentry *temp_entry=NULL;
 
+	/* read log entries */
+	status=get_log_entries(filename,NULL,FALSE,t1,t2);
 
-	if((thefile=mmap_fopen(filename))==NULL)
-		return;
+	if (status==READLOG_OK) {
 
-	while(1){
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 
-		/* free memory */
-		free(input);
-		free(input2);
-		input=NULL;
-		input2=NULL;
+			/* free memory */
+			free(input);
+			input=NULL;
+			if((input=strdup(temp_entry->entry_text))==NULL)
+				continue;
 
-		/* read the next line */
-		if((input=mmap_fgets(thefile))==NULL)
-			break;
+			/* get the timestamp */
+			if(temp_entry->timestamp<t1 || temp_entry->timestamp>t2)
+				continue;
 
-		strip(input);
+			switch(temp_entry->type){
 
-		if((input2=strdup(input))==NULL)
-			continue;
+				/* host alerts */
+				case LOGENTRY_HOST_DOWN:
+				case LOGENTRY_HOST_UNREACHABLE:
+				case LOGENTRY_HOST_RECOVERY:
+				case LOGENTRY_HOST_UP:
 
-		/* get the timestamp */
-		temp_buffer=my_strtok(input2,"]");
-		time_stamp=(temp_buffer==NULL)?(time_t)0:(time_t)strtoul(temp_buffer+1,NULL,10);
-		if(time_stamp<t1 || time_stamp>t2)
-			continue;
-		
-		/* host alerts */
-		if(strstr(input,"HOST ALERT:")){
+					/* get host name */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+					entry_host_name[sizeof(entry_host_name)-1]='\x0';
 
-			/* get host name */
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-			entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-			/* state type */
-			if(strstr(input,";SOFT;"))
-				state_type=AE_SOFT_STATE;
-			else
-				state_type=AE_HARD_STATE;
+					/* state type */
+					if(strstr(input,";SOFT;"))
+						state_type=AE_SOFT_STATE;
+					else
+						state_type=AE_HARD_STATE;
 				
-			/* get the plugin output */
-			temp_buffer=my_strtok(NULL,";");
-			temp_buffer=my_strtok(NULL,";");
-			temp_buffer=my_strtok(NULL,";");
-			plugin_output=my_strtok(NULL,"\n");
+					/* get the plugin output */
+					temp_buffer=my_strtok(NULL,";");
+					temp_buffer=my_strtok(NULL,";");
+					temp_buffer=my_strtok(NULL,";");
+					plugin_output=my_strtok(NULL,"\n");
 
-			/* state */
-			if(strstr(input,";DOWN;"))
-				state=AE_HOST_DOWN;
-			else if(strstr(input,";UNREACHABLE;"))
-				state=AE_HOST_UNREACHABLE;
-			else if(strstr(input,";RECOVERY") || strstr(input,";UP;"))
-				state=AE_HOST_UP;
-			else
-				continue;
+					/* state */
+					if(temp_entry->type==LOGENTRY_HOST_DOWN)
+						state=AE_HOST_DOWN;
+					else if(temp_entry->type==LOGENTRY_HOST_UNREACHABLE)
+						state=AE_HOST_UNREACHABLE;
+					else if(temp_entry->type==LOGENTRY_HOST_RECOVERY || temp_entry->type==LOGENTRY_HOST_UP)
+						state=AE_HOST_UP;
+					else
+						break;
 
-			add_archived_event(AE_HOST_ALERT,time_stamp,state,state_type,entry_host_name,NULL,plugin_output);
+					add_archived_event(AE_HOST_ALERT,temp_entry->timestamp,state,state_type,entry_host_name,NULL,plugin_output);
+
+					break;
+
+
+				/* service alerts */
+				case LOGENTRY_SERVICE_CRITICAL:
+				case LOGENTRY_SERVICE_WARNING:
+				case LOGENTRY_SERVICE_UNKNOWN:
+				case LOGENTRY_SERVICE_RECOVERY:
+				case LOGENTRY_SERVICE_OK:
+
+					/* get host name */
+					temp_buffer=my_strtok(temp_entry->entry_text,":");
+					temp_buffer=my_strtok(NULL,";");
+					strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
+					entry_host_name[sizeof(entry_host_name)-1]='\x0';
+
+					/* get service description */
+					temp_buffer=my_strtok(NULL,";");
+					strncpy(entry_svc_description,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_svc_description));
+					entry_svc_description[sizeof(entry_svc_description)-1]='\x0';
+
+					/* state type */
+					if(strstr(input,";SOFT;"))
+						state_type=AE_SOFT_STATE;
+					else
+						state_type=AE_HARD_STATE;
+
+					/* get the plugin output */
+					temp_buffer=my_strtok(NULL,";");
+					temp_buffer=my_strtok(NULL,";");
+					temp_buffer=my_strtok(NULL,";");
+					plugin_output=my_strtok(NULL,"\n");
+
+					/* state */
+					if(temp_entry->type==LOGENTRY_SERVICE_CRITICAL)
+						state=AE_SERVICE_CRITICAL;
+					else if(temp_entry->type==LOGENTRY_SERVICE_WARNING)
+						state=AE_SERVICE_UNKNOWN;
+					else if(temp_entry->type==LOGENTRY_SERVICE_UNKNOWN)
+						state=AE_SERVICE_WARNING;
+					else if(temp_entry->type==LOGENTRY_SERVICE_RECOVERY || temp_entry->type==LOGENTRY_SERVICE_OK)
+						state=AE_SERVICE_OK;
+					else
+						break;
+
+					add_archived_event(AE_SERVICE_ALERT,temp_entry->timestamp,state,state_type,entry_host_name,entry_svc_description,plugin_output);
+
+					break;
 		        }
 
-		/* service alerts */
-		if(strstr(input,"SERVICE ALERT:")){
-
-			/* get host name */
-			temp_buffer=my_strtok(NULL,":");
-			temp_buffer=my_strtok(NULL,";");
-			strncpy(entry_host_name,(temp_buffer==NULL)?"":temp_buffer+1,sizeof(entry_host_name));
-			entry_host_name[sizeof(entry_host_name)-1]='\x0';
-
-			/* get service description */
-			temp_buffer=my_strtok(NULL,";");
-			strncpy(entry_svc_description,(temp_buffer==NULL)?"":temp_buffer,sizeof(entry_svc_description));
-			entry_svc_description[sizeof(entry_svc_description)-1]='\x0';
-
-			/* state type */
-			if(strstr(input,";SOFT;"))
-				state_type=AE_SOFT_STATE;
-			else
-				state_type=AE_HARD_STATE;
-
-			/* get the plugin output */
-			temp_buffer=my_strtok(NULL,";");
-			temp_buffer=my_strtok(NULL,";");
-			temp_buffer=my_strtok(NULL,";");
-			plugin_output=my_strtok(NULL,"\n");
-
-			/* state */
-			if(strstr(input,";WARNING;"))
-				state=AE_SERVICE_WARNING;
-			else if(strstr(input,";UNKNOWN;"))
-				state=AE_SERVICE_UNKNOWN;
-			else if(strstr(input,";CRITICAL;"))
-				state=AE_SERVICE_CRITICAL;
-			else if(strstr(input,";RECOVERY") || strstr(input,";OK;"))
-				state=AE_SERVICE_OK;
-			else
-				continue;
-
-			add_archived_event(AE_SERVICE_ALERT,time_stamp,state,state_type,entry_host_name,entry_svc_description,plugin_output);
-		        }
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);
 	        }
-
-	/* free memory and close the file */
-	free(input);
-	free(input2);
-	mmap_fclose(thefile);
-	
+		/* free memory */
+		free_log_entries();
+		free(input);
+	}
 	return;
-        }
-
-void convert_timeperiod_to_times(int type){
-	time_t current_time;
-	struct tm *t;
-
-	/* get the current time */
-	time(&current_time);
-
-	t=localtime(&current_time);
-
-	t->tm_sec=0;
-	t->tm_min=0;
-	t->tm_hour=0;
-        t->tm_isdst=-1;
-
-	switch(type){
-	case TIMEPERIOD_LAST24HOURS:
-		t1=current_time-(60*60*24);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_TODAY:
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_YESTERDAY:
-		t1=(time_t)(mktime(t)-(60*60*24));
-		t2=(time_t)mktime(t);
-		break;
-	case TIMEPERIOD_THISWEEK:
-		t1=(time_t)(mktime(t)-(60*60*24*t->tm_wday));
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTWEEK:
-		t1=(time_t)(mktime(t)-(60*60*24*t->tm_wday)-(60*60*24*7));
-		t2=(time_t)(mktime(t)-(60*60*24*t->tm_wday));
-		break;
-	case TIMEPERIOD_THISMONTH:
-		t->tm_mday=1;
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTMONTH:
-		t->tm_mday=1;
-		t2=mktime(t);
-		if(t->tm_mon==0){
-			t->tm_mon=11;
-			t->tm_year--;
-		        }
-		else
-			t->tm_mon--;
-		t1=mktime(t);
-		break;
-	case TIMEPERIOD_THISQUARTER:
-		/* not implemented */
-		break;
-	case TIMEPERIOD_LASTQUARTER:
-		/* not implemented */
-		break;
-	case TIMEPERIOD_THISYEAR:
-		t->tm_mon=0;
-		t->tm_mday=1;
-		t1=mktime(t);
-		t2=current_time;
-		break;
-	case TIMEPERIOD_LASTYEAR:
-		t->tm_mon=0;
-		t->tm_mday=1;
-		t2=mktime(t);
-		t->tm_year--;
-		t1=mktime(t);
-		break;
-	case TIMEPERIOD_LAST7DAYS:
-		t2=current_time;
-		t1=current_time-(7*24*60*60);
-		break;
-	case TIMEPERIOD_LAST31DAYS:
-		t2=current_time;
-		t1=current_time-(31*24*60*60);
-		break;
-	default:
-		break;
-	        }
-
-	return;
-        }
+}
 
 void compute_report_times(void){
 	time_t current_time;
@@ -1563,7 +1464,7 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 void determine_standard_report_options(void){
 
 	/* report over last 7 days */
-	convert_timeperiod_to_times(TIMEPERIOD_LAST7DAYS);
+	convert_timeperiod_to_times(TIMEPERIOD_LAST7DAYS,&t1,&t2);
 	compute_time_from_parts=FALSE;
 
 	/* common options */

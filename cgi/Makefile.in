@@ -73,7 +73,7 @@ DDATAHDRS=
 DDATADEPS=$(DDATALIBS)
 
 # Common CGI functions (includes object and status functions)
-CGILIBS=$(SRC_COMMON)/shared.o getcgi.o cgiutils.o cgiauth.o macros-cgi.o skiplist.o $(SNPRINTF_O) $(ODATALIBS) $(SDATALIBS)
+CGILIBS=$(SRC_COMMON)/shared.o getcgi.o cgiutils.o cgiauth.o readlogs.o macros-cgi.o skiplist.o $(SNPRINTF_O) $(ODATALIBS) $(SDATALIBS)
 CGIHDRS=$(SRC_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/locations.h
 CGIDEPS=$(CGILIBS) $(ODATADEPS) $(SDATADEPS)
 

@@ -1376,11 +1376,6 @@ CREATE TABLE IF NOT EXISTS `icinga_timeperiod_timeranges` (
 
 
 -- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
-
--- -----------------------------------------
 -- add index (delete)
 -- -----------------------------------------
 
@@ -1556,3 +1551,10 @@ CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id ASC, logent
 
 -- statehistory
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
+
+

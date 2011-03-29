@@ -83,6 +83,7 @@ int ido2db_close_debug_log(void);
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 
+int dummy;	/* reduce compiler warnings */
 
 
 int main(int argc, char **argv){
@@ -520,6 +521,10 @@ int ido2db_process_config_var(char *arg){
 		if((ido2db_db_settings.dbprefix=strdup(val))==NULL)
 			return IDO_ERROR;
 	        }
+	else if(!strcmp(var,"db_socket")){
+		if((ido2db_db_settings.dbsocket=strdup(val))==NULL)
+			return IDO_ERROR;
+	        }
 	else if(!strcmp(var,"max_timedevents_age"))
 		ido2db_db_settings.max_timedevents_age=strtoul(val,NULL,0)*60;
 	else if(!strcmp(var,"max_systemcommands_age"))
@@ -601,6 +606,7 @@ int ido2db_initialize_variables(void){
 	ido2db_db_settings.password=NULL;
 	ido2db_db_settings.dbname=NULL;
 	ido2db_db_settings.dbprefix=NULL;
+	ido2db_db_settings.dbsocket=NULL;
 	ido2db_db_settings.max_timedevents_age=0L;
 	ido2db_db_settings.max_systemcommands_age=0L;
 	ido2db_db_settings.max_servicechecks_age=0L;
@@ -665,6 +671,10 @@ int ido2db_free_program_memory(void){
 	if(ido2db_db_settings.dbprefix){
 		free(ido2db_db_settings.dbprefix);
 		ido2db_db_settings.dbprefix=NULL;
+		}
+	if(ido2db_db_settings.dbsocket){
+		free(ido2db_db_settings.dbsocket);
+		ido2db_db_settings.dbsocket=NULL;
 		}
 	if(ido2db_debug_file){
 		free(ido2db_debug_file);
@@ -869,9 +879,9 @@ int ido2db_daemonize(void){
 	if(lock_file){
 		/* write PID to lockfile... */
 		lseek(lockfile,0,SEEK_SET);
-		ftruncate(lockfile,0);
+		dummy=ftruncate(lockfile,0);
 		sprintf(buf,"%d\n",(int)getpid());
-		write(lockfile,buf,strlen(buf));
+		dummy=write(lockfile,buf,strlen(buf));
 
 		/* make sure lock file stays open while program is executing... */
 		val=fcntl(lockfile,F_GETFD,0);

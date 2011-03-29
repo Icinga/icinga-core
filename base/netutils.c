@@ -27,6 +27,7 @@
 #include "../include/common.h"
 #include "../include/netutils.h"
 
+int dummy;	/* reduce compiler warnings */
 
 /* connect to a TCP socket in nonblocking fashion */
 int my_tcp_connect(char *host_name, int port, int *sd, int timeout){
@@ -45,7 +46,7 @@ int my_tcp_connect(char *host_name, int port, int *sd, int timeout){
 	hints.ai_family=PF_INET;
 	hints.ai_socktype=SOCK_STREAM;
 
-	asprintf(&port_str,"%d",port);
+	dummy=asprintf(&port_str,"%d",port);
 	result=getaddrinfo(host_name,port_str,&hints,&res);
 	my_free(port_str);
 	

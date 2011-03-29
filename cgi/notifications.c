@@ -30,52 +30,45 @@
 #include "../include/getcgi.h"
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
+#include "../include/readlogs.h"
 
-extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
-extern char url_images_path[MAX_FILENAME_LENGTH];
-extern char url_docs_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
+extern char 	main_config_file[MAX_FILENAME_LENGTH];
+extern char 	url_html_path[MAX_FILENAME_LENGTH];
+extern char 	url_images_path[MAX_FILENAME_LENGTH];
+extern char 	url_docs_path[MAX_FILENAME_LENGTH];
+extern char 	url_stylesheets_path[MAX_FILENAME_LENGTH];
+extern char 	url_js_path[MAX_FILENAME_LENGTH];
 
-extern int    log_rotation_method;
+extern int	log_rotation_method;
 
+extern int 	embedded;
+extern int 	display_header;
+extern int 	daemon_check;
+extern int 	content_type;
+
+extern char 	*csv_delimiter;
+extern char 	*csv_data_enclosure;
 
 #define FIND_HOST		1
 #define FIND_CONTACT		2
 #define FIND_SERVICE		3
 
-#define MAX_QUERYNAME_LENGTH	256
-
-#define SERVICE_NOTIFICATION	0
-#define HOST_NOTIFICATION	1
-
-#define SERVICE_NOTIFICATION_STRING 	"] SERVICE NOTIFICATION:"
-#define HOST_NOTIFICATION_STRING	"] HOST NOTIFICATION:"
-
-void display_notifications(void);
-
-int process_cgivars(void);
-
 authdata current_authdata;
 
-char log_file_to_use[MAX_FILENAME_LENGTH];
 int log_archive=0;
-
 int query_type=FIND_HOST;
 int find_all=TRUE;
-char *query_contact_name="";
-char *query_host_name="";
-char *query_svc_description="";
-
 int notification_options=NOTIFICATION_ALL;
-int use_lifo=TRUE;
-
+int reverse=FALSE;
 int display_type=DISPLAY_HOSTS;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;
 int show_all_servicegroups=TRUE;
 
+char log_file_to_use[MAX_FILENAME_LENGTH];
+char *query_contact_name="";
+char *query_host_name="";
+char *query_svc_description="";
 char *host_name=NULL;
 char *host_filter=NULL;
 char *hostgroup_name=NULL;
@@ -83,22 +76,16 @@ char *servicegroup_name=NULL;
 char *service_desc=NULL;
 char *service_filter=NULL;
 
-extern int embedded;
-extern int display_header;
-extern int daemon_check;
-extern int content_type;
-
-extern char *csv_delimiter;
-extern char *csv_data_enclosure;
-
 int CGI_ID=NOTIFICATIONS_CGI_ID;
+
+void display_notifications(void);
+int process_cgivars(void);
 
 int main(void){
 	int result=OK;
 	char temp_buffer[MAX_INPUT_BUFFER];
 	char temp_buffer2[MAX_INPUT_BUFFER];
 
-	
 	/* get the arguments passed in the URL */
 	process_cgivars();
 
@@ -112,7 +99,7 @@ int main(void){
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read the main configuration file */
 	result=read_main_config_file(main_config_file);
@@ -121,7 +108,7 @@ int main(void){
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 	/* read all object configuration data */
 	result=read_all_object_configuration_data(main_config_file,READ_ALL_OBJECT_DATA);
@@ -130,8 +117,7 @@ int main(void){
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
-                }
-
+	}
 
 	document_header(CGI_ID,TRUE);
 
@@ -140,7 +126,6 @@ int main(void){
 
 	/* determine what log file we should use */
 	get_log_archive_to_use(log_archive,log_file_to_use,(int)sizeof(log_file_to_use));
-
 
 	if(display_header==TRUE){
 
@@ -158,9 +143,10 @@ int main(void){
 				snprintf(temp_buffer,sizeof(temp_buffer)-1,"Notifications");
 			else
 				snprintf(temp_buffer,sizeof(temp_buffer)-1,"Host Notifications");
-		        }
+		}
 		else
 			snprintf(temp_buffer,sizeof(temp_buffer)-1,"Contact Notifications");
+
 		display_info_table(temp_buffer,FALSE,&current_authdata, daemon_check);
 
 		if(query_type==FIND_HOST || query_type==FIND_SERVICE){
@@ -173,7 +159,7 @@ int main(void){
 				if(find_all==FALSE)
 					printf("<A HREF='%s?host=%s'>View Trends For This Host</A><BR>\n",TRENDS_CGI,url_encode(query_host_name));
 #endif
-	                        }
+			}
 			else if(query_type==FIND_SERVICE){
 				printf("<A HREF='%s?host=%s&",HISTORY_CGI,(find_all==TRUE)?"all":url_encode(query_host_name));
 				printf("service=%s'>View History For This Service</A><BR>\n",url_encode(query_svc_description));
@@ -181,47 +167,45 @@ int main(void){
 				printf("<A HREF='%s?host=%s&",TRENDS_CGI,(find_all==TRUE)?"all":url_encode(query_host_name));
 				printf("service=%s'>View Trends For This Service</A><BR>\n",url_encode(query_svc_description));
 #endif
-	                        }
+			}
 			printf("</TD></TR>\n");
 			printf("</TABLE>\n");
-	                }
+		}
 
 		printf("</td>\n");
-
 
 		/* middle column of top row */
 		printf("<td align=center valign=top width=33%%>\n");
 
 		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 		if(query_type==FIND_SERVICE)
-			printf("Service '%s' On Host '%s'",query_svc_description,query_host_name);
+			printf("Service '%s' on Host '%s'",query_svc_description,query_host_name);
 		else if(query_type==FIND_HOST){
 			if(find_all==TRUE)
 				printf("All Hosts and Services");
 			else
 				printf("Host '%s'",query_host_name);
-		        }
-		else{
+		}else{
 			if(find_all==TRUE)
 				printf("All Contacts");
 			else
 				printf("Contact '%s'",query_contact_name);
-		        }
+		}
 		printf("</DIV>\n");
 		printf("<BR>\n");
 
 		if(query_type==FIND_SERVICE){
-			snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%shost=%s&",NOTIFICATIONS_CGI,(use_lifo==FALSE)?"oldestfirst&":"",url_encode(query_host_name));
+			snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%shost=%s&",NOTIFICATIONS_CGI,(reverse==TRUE)?"oldestfirst&":"",url_encode(query_host_name));
 			snprintf(temp_buffer2,sizeof(temp_buffer2)-1,"service=%s&type=%d&",url_encode(query_svc_description),notification_options);
 			strncat(temp_buffer,temp_buffer2,sizeof(temp_buffer)-strlen(temp_buffer)-1);
-	                }
+		}
 		else
-			snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%s%s=%s&type=%d&",NOTIFICATIONS_CGI,(use_lifo==FALSE)?"oldestfirst&":"",(query_type==FIND_HOST)?"host":"contact",(query_type==FIND_HOST)?url_encode(query_host_name):url_encode(query_contact_name),notification_options);
+			snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s?%s%s=%s&type=%d&",NOTIFICATIONS_CGI,(reverse==TRUE)?"oldestfirst&":"",(query_type==FIND_HOST)?"host":"contact",(query_type==FIND_HOST)?url_encode(query_host_name):url_encode(query_contact_name),notification_options);
+
 		temp_buffer[sizeof(temp_buffer)-1]='\x0';
 		display_nav_table(temp_buffer,log_archive);
 
 		printf("</td>\n");
-
 
 		/* right hand column of top row */
 		printf("<td align=right valign=top width=33%%>\n");
@@ -231,8 +215,7 @@ int main(void){
 		if(query_type==FIND_SERVICE){
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(query_host_name));
 			printf("<input type='hidden' name='service' value='%s'>\n",escape_string(query_svc_description));
-	                }
-		else
+		}else
 			printf("<input type='hidden' name='%s' value='%s'>\n",(query_type==FIND_HOST)?"host":"contact",(query_type==FIND_HOST)?escape_string(query_host_name):escape_string(query_contact_name));
 		printf("<input type='hidden' name='archive' value='%d'>\n",log_archive);
 		printf("<tr>\n");
@@ -247,7 +230,7 @@ int main(void){
 		if(query_type!=FIND_SERVICE){
 			printf("<option value=%d %s>All service notifications\n",NOTIFICATION_SERVICE_ALL,(notification_options==NOTIFICATION_SERVICE_ALL)?"selected":"");
 			printf("<option value=%d %s>All host notifications\n",NOTIFICATION_HOST_ALL,(notification_options==NOTIFICATION_HOST_ALL)?"selected":"");
-	                }
+		}
 		printf("<option value=%d %s>Service custom\n",NOTIFICATION_SERVICE_CUSTOM,(notification_options==NOTIFICATION_SERVICE_CUSTOM)?"selected":"");
 		printf("<option value=%d %s>Service acknowledgements\n",NOTIFICATION_SERVICE_ACK,(notification_options==NOTIFICATION_SERVICE_ACK)?"selected":"");
 		printf("<option value=%d %s>Service warning\n",NOTIFICATION_SERVICE_WARNING,(notification_options==NOTIFICATION_SERVICE_WARNING)?"selected":"");
@@ -262,7 +245,7 @@ int main(void){
 			printf("<option value=%d %s>Host unreachable\n",NOTIFICATION_HOST_UNREACHABLE,(notification_options==NOTIFICATION_HOST_UNREACHABLE)?"selected":"");
 			printf("<option value=%d %s>Host recovery\n",NOTIFICATION_HOST_RECOVERY,(notification_options==NOTIFICATION_HOST_RECOVERY)?"selected":"");
 			printf("<option value=%d %s>Host flapping\n",NOTIFICATION_HOST_FLAP,(notification_options==NOTIFICATION_HOST_FLAP)?"selected":"");
-	                }
+		}
 		printf("</select></td>\n");
 		printf("</tr>\n");
 		printf("<tr>\n");
@@ -270,7 +253,7 @@ int main(void){
 		printf("<td></td>\n");
 		printf("</tr>\n");
 		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s></td>",(use_lifo==FALSE)?"checked":"");
+		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s></td>",(reverse==TRUE)?"checked":"");
 		printf("<td align=right CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
 		printf("</tr>\n");
 
@@ -287,20 +270,19 @@ int main(void){
 		/* end of top table */
 		printf("</tr>\n");
 		printf("</table>\n");
-
-	        }
-
+	}
 
 	/* display notifications */
 	display_notifications();
 
+	/* display footer */
 	document_footer(CGI_ID);
 
 	/* free allocated memory */
 	free_memory();
-	
+
 	return OK;
-        }
+}
 
 int process_cgivars(void){
 	char **variables;
@@ -315,7 +297,7 @@ int process_cgivars(void){
 		if(strlen(variables[x])>=MAX_INPUT_BUFFER-1){
 			x++;
 			continue;
-		        }
+		}
 
 		/* we found the host argument */
 		else if(!strcmp(variables[x],"host")){
@@ -324,7 +306,7 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 	
 			if((query_host_name=strdup(variables[x]))==NULL)
 				query_host_name="";
@@ -334,7 +316,7 @@ int process_cgivars(void){
 				find_all=TRUE;
 			else
 				find_all=FALSE;
-		        }
+		}
 	
 		/* we found the contact argument */
 		else if(!strcmp(variables[x],"contact")){
@@ -343,7 +325,7 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			if((query_contact_name=strdup(variables[x]))==NULL)
 				query_contact_name="";
@@ -353,7 +335,7 @@ int process_cgivars(void){
 				find_all=TRUE;
 			else
 				find_all=FALSE;
-		        }
+		}
 	
 		/* we found the service argument */
 		else if(!strcmp(variables[x],"service")){
@@ -362,11 +344,11 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 			if((query_svc_description=strdup(variables[x]))==NULL)
 				query_svc_description="";
 			strip_html_brackets(query_svc_description);
-		        }
+		}
 	
 		/* we found the notification type argument */
 		else if(!strcmp(variables[x],"type")){
@@ -374,10 +356,10 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			notification_options=atoi(variables[x]);
-		        }
+		}
 	
 		/* we found the log archive argument */
 		else if(!strcmp(variables[x],"archive")){
@@ -385,23 +367,22 @@ int process_cgivars(void){
 			if(variables[x]==NULL){
 				error=TRUE;
 				break;
-			        }
+			}
 
 			log_archive=atoi(variables[x]);
 			if(log_archive<0)
 				log_archive=0;
-		        }
+		}
 	
-		/* we found the order argument */
-		else if(!strcmp(variables[x],"oldestfirst")){
-			use_lifo=FALSE;
-		        }
-
 		/* we found the CSV output option */
 		else if(!strcmp(variables[x],"csvoutput")){
 			display_header=FALSE;
 			content_type=CSV_CONTENT;
-			}
+		}
+
+		/* we found the order argument */
+		else if(!strcmp(variables[x],"oldestfirst"))
+			reverse=TRUE;
 
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -414,7 +395,7 @@ int process_cgivars(void){
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))
 			daemon_check=FALSE;
-                }
+	}
 
 	/*
 	 * Set some default values if not already set.
@@ -426,21 +407,19 @@ int process_cgivars(void){
 	if(query_type == FIND_HOST && strlen(query_host_name) == 0) {
 		query_host_name="all";
 		find_all=TRUE;
-		}
+	}
 	if(query_type == FIND_CONTACT && strlen(query_contact_name) == 0) {
 		query_contact_name="all";
 		find_all=TRUE;
-		}
+	}
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);
 
 	return error;
-        }
+}
 
 void display_notifications(void){
-	mmapfile *thefile=NULL;
-	char *input=NULL;
 	char *temp_buffer;
 	char date_time[MAX_DATETIME_LENGTH];
 	char alert_level[MAX_INPUT_BUFFER];
@@ -450,102 +429,72 @@ void display_notifications(void){
 	char host_name[MAX_INPUT_BUFFER];
 	char method_name[MAX_INPUT_BUFFER];
 	char error_text[MAX_INPUT_BUFFER];
-	int show_entry;
-	int total_notifications;
-	int notification_type=SERVICE_NOTIFICATION;
+	int show_entry, status;
+	int total_notifications=0;
 	int notification_detail_type=NOTIFICATION_SERVICE_CRITICAL;
 	int odd=0;
-	time_t t;
 	host *temp_host=NULL;
 	service *temp_service=NULL;
-	int result;
+	logentry *temp_entry=NULL;
 
-	if(use_lifo==TRUE){
-		result=read_file_into_lifo(log_file_to_use);
-		if(result!=LIFO_OK){
-			if(result==LIFO_ERROR_MEMORY){
-				print_generic_error_message("Not enough memory to reverse log file - displaying notifications in natural order...",NULL,0);
-			}
-			else if(result==LIFO_ERROR_FILE){
-				snprintf(error_text,sizeof(error_text),"Error: Cannot open log file '%s' for reading!",log_file_to_use);
-				error_text[sizeof(error_text)-1]='\x0';
-				print_generic_error_message(error_text,NULL,0);
-				return;
-			}
-			use_lifo=FALSE;
-		}
+	
+	add_log_filter(LOGENTRY_HOST_NOTIFICATION,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_NOTIFICATION,LOGFILTER_INCLUDE);
+
+	status = get_log_entries(log_file_to_use,NULL,reverse,-1,-1);
+
+	if (status==READLOG_ERROR_MEMORY) {
+		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
 	}
 
-	if(use_lifo==FALSE){
-
-		if((thefile=mmap_fopen(log_file_to_use))==NULL){
-			snprintf(error_text,sizeof(error_text),"Error: Cannot open log file '%s' for reading!",log_file_to_use);
-			error_text[sizeof(error_text)-1]='\x0';
-			print_generic_error_message(error_text,NULL,0);
-			return;
-		}
+	if (status==READLOG_ERROR_NOFILE) {
+		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
+		error_text[sizeof(error_text)-1]='\x0';
+		print_generic_error_message(error_text,NULL,0);
+		return;
 	}
 
-	if(content_type==CSV_CONTENT) {
-		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sSERVICE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sTYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sTIME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sCONTACT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sNOTIFICATION_COMMAND%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-		printf("%sINFORMATION%s\n",csv_data_enclosure,csv_data_enclosure);
-	} else {
-		printf("<p>\n");
-		printf("<div align='center'>\n");
-
-		printf("<table border=0 CLASS='notifications'>\n");
-
-                /* add export to csv link */
-		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(NOTIFICATIONS_CGI));
-
-		printf("<tr>\n");
-		printf("<th CLASS='notifications'>Host</th>\n");
-		printf("<th CLASS='notifications'>Service</th>\n");
-		printf("<th CLASS='notifications'>Type</th>\n");
-		printf("<th CLASS='notifications'>Time</th>\n");
-		printf("<th CLASS='notifications'>Contact</th>\n");
-		printf("<th CLASS='notifications'>Notification Command</th>\n");
-		printf("<th CLASS='notifications'>Information</th>\n");
-		printf("</tr>\n");
-	}
-
-	total_notifications=0;
-
-	while(1){
-
-		free(input);
-
-		if(use_lifo==TRUE){
-			if((input=pop_lifo())==NULL)
-				break;
+	if (status==READLOG_OK) {
+		if(content_type==CSV_CONTENT) {
+			printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sSERVICE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sTYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sTIME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sCONTACT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sNOTIFICATION_COMMAND%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sINFORMATION%s\n",csv_data_enclosure,csv_data_enclosure);
 		} else {
-			if((input=mmap_fgets(thefile))==NULL)
-				break;
+			printf("<p>\n");
+			printf("<div align='center'>\n");
+
+			printf("<table border=0 CLASS='notifications'>\n");
+
+	                /* add export to csv link */
+			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(NOTIFICATIONS_CGI));
+
+			printf("<tr>\n");
+			printf("<th CLASS='notifications'>Host</th>\n");
+			printf("<th CLASS='notifications'>Service</th>\n");
+			printf("<th CLASS='notifications'>Type</th>\n");
+			printf("<th CLASS='notifications'>Time</th>\n");
+			printf("<th CLASS='notifications'>Contact</th>\n");
+			printf("<th CLASS='notifications'>Notification Command</th>\n");
+			printf("<th CLASS='notifications'>Information</th>\n");
+			printf("</tr>\n");
 		}
+	}
 
-		strip(input);
+	if (status==READLOG_OK) {
 
-		/* see if this line contains the notification event string */
-		if(strstr(input,HOST_NOTIFICATION_STRING)||strstr(input,SERVICE_NOTIFICATION_STRING)){
-
-			if(strstr(input,HOST_NOTIFICATION_STRING))
-				notification_type=HOST_NOTIFICATION;
-			else
-				notification_type=SERVICE_NOTIFICATION;
+		/* check all entries */
+		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 
 			/* get the date/time */
-			temp_buffer=(char *)strtok(input,"]");
-			t=(time_t)(temp_buffer==NULL)?0L:strtoul(temp_buffer+1,NULL,10);
-			get_time_string(&t,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
+			get_time_string(&temp_entry->timestamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			strip(date_time);
 
 			/* get the contact name */
-			temp_buffer=(char *)strtok(NULL,":");
+			temp_buffer=(char *)strtok(temp_entry->entry_text,":");
 			temp_buffer=(char *)strtok(NULL,";");
 			snprintf(contact_name,sizeof(contact_name),"%s",(temp_buffer==NULL)?"":temp_buffer+1);
 			contact_name[sizeof(contact_name)-1]='\x0';
@@ -556,7 +505,8 @@ void display_notifications(void){
 			host_name[sizeof(host_name)-1]='\x0';
 
 			/* get the service name */
-			if(notification_type==SERVICE_NOTIFICATION){
+			service_name[0]='\x0';
+			if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION){
 				temp_buffer=(char *)strtok(NULL,";");
 				snprintf(service_name,sizeof(service_name),"%s",(temp_buffer==NULL)?"":temp_buffer);
 				service_name[sizeof(service_name)-1]='\x0';
@@ -567,7 +517,7 @@ void display_notifications(void){
 			snprintf(alert_level,sizeof(alert_level),"%s",(temp_buffer==NULL)?"":temp_buffer);
 			alert_level[sizeof(alert_level)-1]='\x0';
 
-			if(notification_type==SERVICE_NOTIFICATION){
+			if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION){
 
 				if(!strcmp(alert_level,"CRITICAL")){
 					notification_detail_type=NOTIFICATION_SERVICE_CRITICAL;
@@ -604,7 +554,7 @@ void display_notifications(void){
 					notification_detail_type=NOTIFICATION_SERVICE_UNKNOWN;
 					strcpy(alert_level_class,"UNKNOWN");
 				}
-			} else{
+			}else{
 
 				if(!strcmp(alert_level,"DOWN")){
 					strncpy(alert_level,"HOST DOWN",sizeof(alert_level));
@@ -659,6 +609,7 @@ void display_notifications(void){
 					show_entry=TRUE;
 			}
 
+			/* search host */
 			else if(query_type==FIND_HOST){
 				if(find_all==TRUE)
 					show_entry=TRUE;
@@ -666,6 +617,7 @@ void display_notifications(void){
 					show_entry=TRUE;
 			}
 
+			/* searching service */
 			else if(query_type==FIND_SERVICE){
 				if(!strcmp(query_host_name,host_name) && !strcmp(query_svc_description,service_name))
 					show_entry=TRUE;
@@ -674,9 +626,9 @@ void display_notifications(void){
 			if(show_entry==TRUE){
 				if(notification_options==NOTIFICATION_ALL)
 					show_entry=TRUE;
-				else if(notification_options==NOTIFICATION_HOST_ALL && notification_type==HOST_NOTIFICATION)
+				else if(notification_options==NOTIFICATION_HOST_ALL && temp_entry->type==LOGENTRY_HOST_NOTIFICATION)
 					show_entry=TRUE;
-				else if(notification_options==NOTIFICATION_SERVICE_ALL && notification_type==SERVICE_NOTIFICATION)
+				else if(notification_options==NOTIFICATION_SERVICE_ALL && temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)
 					show_entry=TRUE;
 				else if(notification_detail_type & notification_options)
 					show_entry=TRUE;
@@ -685,7 +637,7 @@ void display_notifications(void){
 			}
 
 			/* make sure user has authorization to view this notification */
-			if(notification_type==HOST_NOTIFICATION){
+			if(temp_entry->type==LOGENTRY_HOST_NOTIFICATION){
 				temp_host=find_host(host_name);
 				if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 					show_entry=FALSE;
@@ -704,10 +656,10 @@ void display_notifications(void){
 					odd=0;
 				else
 					odd=1;
-				
+			
 				if(content_type==CSV_CONTENT) {
 					printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
-					if(notification_type==SERVICE_NOTIFICATION)
+					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)
 						printf("%s%s%s%s",csv_data_enclosure,(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,csv_data_enclosure,csv_delimiter);
 					else
 						printf("%sN/A%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -719,7 +671,7 @@ void display_notifications(void){
 				} else {
 					printf("<tr CLASS='notifications%s'>\n",(odd)?"Even":"Odd");
 					printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n",(odd)?"Even":"Odd",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
-					if(notification_type==SERVICE_NOTIFICATION){
+					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION){
 						printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s",(odd)?"Even":"Odd",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(host_name));
 						printf("&service=%s'>%s</a></td>\n",url_encode(service_name),(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 					} else
@@ -732,9 +684,13 @@ void display_notifications(void){
 					printf("</tr>\n");
 				}
 			}
-		}
-	}
 
+			my_free(temp_entry->entry_text);
+			my_free(temp_entry);			
+		}
+
+		free_log_entries();
+	}
 
 	if(content_type!=CSV_CONTENT){
 		printf("</table>\n");
@@ -753,15 +709,9 @@ void display_notifications(void){
 					printf(" for this host");
 			}
 			printf(" in %s log file</DIV></P>",(log_archive==0)?"the current":"this archived");
-		}
+		} else
+			printf("<DIV align=center>%d Notification%s</DIV>",total_notifications,(total_notifications==1)?"":"s");
 	}
 
-	free(input);
-
-	if(use_lifo==TRUE)
-		free_lifo_memory();
-	else
-		mmap_fclose(thefile);
-
 	return;
-        }
+}

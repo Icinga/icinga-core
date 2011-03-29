@@ -733,10 +733,6 @@ void find_hosts_causing_outages(void){
 	hostoutage *temp_hostoutage;
 	host *temp_host;
 
-	/* user must be authorized for all hosts in order to see outages */
-	if(is_authorized_for_all_hosts(&current_authdata)==FALSE)
-		return;
-
 	/* check all hosts */
 	for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
 
@@ -747,6 +743,9 @@ void find_hosts_causing_outages(void){
 			temp_host=find_host(temp_hoststatus->host_name);
 
 			if(temp_host==NULL)
+				continue;
+
+			if (is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 				continue;
 
 			/* if the route to this host is not blocked, it is a causing an outage */
@@ -981,10 +980,8 @@ void display_tac_overview(void){
 
 	printf("<tr>\n");
 	printf("<td class='outageHeader' width=125><a href='%s' class='outageHeader'>",OUTAGES_CGI);
-	if(is_authorized_for_all_hosts(&current_authdata)==FALSE)
-		printf("N/A");
-	else
-		printf("%d Outages",total_blocking_outages);
+
+	printf("%d Outages",total_blocking_outages);
 	printf("</a></td>\n");
 	printf("</tr>\n");
 
