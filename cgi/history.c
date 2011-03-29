@@ -71,7 +71,7 @@ int display_type=DISPLAY_HOSTS;			/**< determine the view (host/service) */
 int show_all_hosts=TRUE;			/**< if historical data is requested for all hosts */
 int reverse=FALSE;				/**< determine if log should be viewed in reverse order */
 int history_options=HISTORY_ALL;		/**< determines the type of historical data */
-int state_options=STATE_ALL;			/**< the state of historical data*/
+int state_options=STATE_ALL;			/**< the state of historical data */
 
 int display_frills=TRUE;			/**< determine if icons should be shown in listing */
 int display_timebreaks=TRUE;			/**< determine if time breaks should be shown */
