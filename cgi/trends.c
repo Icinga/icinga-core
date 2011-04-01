@@ -135,6 +135,7 @@ int assume_initial_states=TRUE;
 int assume_state_retention=TRUE;
 int assume_states_during_notrunning=TRUE;
 int include_soft_states=FALSE;
+int ignore_daemon_restart=FALSE;
 
 
 void graph_all_trend_data(void);
@@ -522,6 +523,8 @@ int main(int argc, char **argv){
 				printf("<input type='hidden' name='nopopups' value=''>\n");
 			if(use_map==FALSE)
 				printf("<input type='hidden' name='nomap' value=''>\n");
+			if(ignore_daemon_restart==TRUE)
+				printf("<input type='hidden' name='ignorerestart' value=''>\n");
 			printf("<input type='hidden' name='t1' value='%lu'>\n",(unsigned long)t1);
 			printf("<input type='hidden' name='t2' value='%lu'>\n",(unsigned long)t2);
 			printf("<input type='hidden' name='host' value='%s'>\n",escape_string(host_name));
@@ -1128,6 +1131,8 @@ int main(int argc, char **argv){
 			printf("<tr><td class='reportSelectSubTitle' align=right>Suppress image map:</td><td class='reportSelectItem'><input type='checkbox' name='nomap'></td></tr>");
 			printf("<tr><td class='reportSelectSubTitle' align=right>Suppress popups:</td><td class='reportSelectItem'><input type='checkbox' name='nopopups'></td></tr>\n");
 
+			printf("<tr><td class='reportSelectSubTitle' align=right>Ignore daemon starts/restarts:</td><td class='reportSelectItem'><input type='checkbox' name='ignorerestart'></td></tr>\n");
+
 			printf("<tr><td></td><td class='reportSelectItem'><input type='submit' value='Create Report'></td></tr>\n");
 
 			printf("</TABLE>\n");
@@ -1644,6 +1649,9 @@ int process_cgivars(void){
 		/* we found the nodaemoncheck option */
 		else if(!strcmp(variables[x],"nodaemoncheck"))
 			daemon_check=FALSE;
+
+		else if(!strcmp(variables[x],"ignorerestart"))
+			ignore_daemon_restart=TRUE;
 
 	        }
 
@@ -2409,7 +2417,6 @@ void read_archived_state_data(void){
 
 /* grabs archives state data from a log file */
 void scan_log_file_for_archived_state_data(char *filename){
-	char *input=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output=NULL;
@@ -2422,6 +2429,31 @@ void scan_log_file_for_archived_state_data(char *filename){
 		printf(" ");
 		fflush(NULL);
 	}
+
+	/* Service filter */
+	add_log_filter(LOGENTRY_SERVICE_OK,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_WARNING,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_CRITICAL,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_UNKNOWN,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_RECOVERY,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_INITIAL_STATE,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_CURRENT_STATE,LOGFILTER_INCLUDE);
+
+	/* Host filter */
+	add_log_filter(LOGENTRY_HOST_UP,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_DOWN,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_UNREACHABLE,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_RECOVERY,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_INITIAL_STATE,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_CURRENT_STATE,LOGFILTER_INCLUDE);
+
+	if (ignore_daemon_restart==FALSE) {
+		add_log_filter(LOGENTRY_STARTUP,LOGFILTER_INCLUDE);
+		add_log_filter(LOGENTRY_RESTART,LOGFILTER_INCLUDE);
+		add_log_filter(LOGENTRY_SHUTDOWN,LOGFILTER_INCLUDE);
+		add_log_filter(LOGENTRY_BAILOUT,LOGFILTER_INCLUDE);
+	}
+
 
 	status = get_log_entries(filename,NULL,FALSE,t1-(60*60*24*backtrack_archives),t2);
 
@@ -2439,23 +2471,20 @@ void scan_log_file_for_archived_state_data(char *filename){
 
 
 		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
-		
-			free(input);
-			input=NULL;
-			if((input=strdup(temp_entry->entry_text))==NULL)
-				continue;
 			
-			/* program starts/restarts */
-			if(temp_entry->type==LOGENTRY_STARTUP)
-				add_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program start");
-			if(temp_entry->type==LOGENTRY_RESTART)
-				add_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program restart");
+			if (ignore_daemon_restart==FALSE) {
+				/* program starts/restarts */
+				if(temp_entry->type==LOGENTRY_STARTUP)
+					add_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program start");
+				if(temp_entry->type==LOGENTRY_RESTART)
+					add_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program restart");
 
-			/* program stops */
-			if(temp_entry->type==LOGENTRY_SHUTDOWN)
-				add_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Normal program termination");
-			if(temp_entry->type==LOGENTRY_BAILOUT)
-				add_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Abnormal program termination");
+				/* program stops */
+				if(temp_entry->type==LOGENTRY_SHUTDOWN)
+					add_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Normal program termination");
+				if(temp_entry->type==LOGENTRY_BAILOUT)
+					add_archived_state(AS_PROGRAM_END,AS_NO_DATA,temp_entry->timestamp,"Abnormal program termination");
+			}
 
 			if(display_type==DISPLAY_HOST_TRENDS){
 
@@ -2479,12 +2508,12 @@ void scan_log_file_for_archived_state_data(char *filename){
 							break;
 
 						/* state types */
-						if(strstr(input,";SOFT;")){
+						if(strstr(temp_entry->entry_text,";SOFT;")){
 							if(include_soft_states==FALSE)
 								break;
 							state_type=AS_SOFT_STATE;
 						        }
-						if(strstr(input,";HARD;"))
+						if(strstr(temp_entry->entry_text,";HARD;"))
 							state_type=AS_HARD_STATE;
 
 						/* get the plugin output */
@@ -2493,11 +2522,11 @@ void scan_log_file_for_archived_state_data(char *filename){
 						temp_buffer=my_strtok(NULL,";");
 						plugin_output=my_strtok(NULL,"\n");
 
-						if(strstr(input,";DOWN;"))
+						if(strstr(temp_entry->entry_text,";DOWN;"))
 							add_archived_state(AS_HOST_DOWN,state_type,temp_entry->timestamp,plugin_output);
-						else if(strstr(input,";UNREACHABLE;"))
+						else if(strstr(temp_entry->entry_text,";UNREACHABLE;"))
 							add_archived_state(AS_HOST_UNREACHABLE,state_type,temp_entry->timestamp,plugin_output);
-						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+						else if(strstr(temp_entry->entry_text,";RECOVERY;") || strstr(temp_entry->entry_text,";UP;"))
 							add_archived_state(AS_HOST_UP,state_type,temp_entry->timestamp,plugin_output);
 						else
 							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output);
@@ -2537,12 +2566,12 @@ void scan_log_file_for_archived_state_data(char *filename){
 							break;
 
 						/* state types */
-						if(strstr(input,";SOFT;")){
+						if(strstr(temp_entry->entry_text,";SOFT;")){
 							if(include_soft_states==FALSE)
 								break;
 							state_type=AS_SOFT_STATE;
 						}
-						if(strstr(input,";HARD;"))
+						if(strstr(temp_entry->entry_text,";HARD;"))
 							state_type=AS_HARD_STATE;
 						
 						/* get the plugin output */
@@ -2551,13 +2580,13 @@ void scan_log_file_for_archived_state_data(char *filename){
 						temp_buffer=my_strtok(NULL,";");
 						plugin_output=my_strtok(NULL,"\n");
 						
-						if(strstr(input,";CRITICAL;"))
+						if(strstr(temp_entry->entry_text,";CRITICAL;"))
 							add_archived_state(AS_SVC_CRITICAL,state_type,temp_entry->timestamp,plugin_output);
-						else if(strstr(input,";WARNING;"))
+						else if(strstr(temp_entry->entry_text,";WARNING;"))
 							add_archived_state(AS_SVC_WARNING,state_type,temp_entry->timestamp,plugin_output);
-						else if(strstr(input,";UNKNOWN;"))
+						else if(strstr(temp_entry->entry_text,";UNKNOWN;"))
 							add_archived_state(AS_SVC_UNKNOWN,state_type,temp_entry->timestamp,plugin_output);
-						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+						else if(strstr(temp_entry->entry_text,";RECOVERY;") || strstr(temp_entry->entry_text,";OK;"))
 							add_archived_state(AS_SVC_OK,state_type,temp_entry->timestamp,plugin_output);
 						else
 							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output);
@@ -2570,7 +2599,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 			my_free(temp_entry);
 		}
 		free_log_entries();
-		free(input);
 	}
 	return;
 }
