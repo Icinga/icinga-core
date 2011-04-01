@@ -2794,7 +2794,6 @@ void read_archived_state_data(void){
 
 /* grabs archives state data from a log file */
 void scan_log_file_for_archived_state_data(char *filename){
-	char *input=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output=NULL;
@@ -2809,11 +2808,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 
 		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
 		
-			free(input);
-			input=NULL;
-			if((input=strdup(temp_entry->entry_text))==NULL)
-				continue;
-			
 			/* program starts/restarts */
 			if(temp_entry->type==LOGENTRY_STARTUP)
 				add_global_archived_state(AS_PROGRAM_START,AS_NO_DATA,temp_entry->timestamp,"Program start");
@@ -2850,12 +2844,12 @@ void scan_log_file_for_archived_state_data(char *filename){
 							break;
 
 						/* state types */
-						if(strstr(input,";SOFT;")){
+						if(strstr(temp_entry->entry_text,";SOFT;")){
 							if(include_soft_states==FALSE)
 								break;
 							state_type=AS_SOFT_STATE;
-						        }
-						if(strstr(input,";HARD;"))
+						}
+						if(strstr(temp_entry->entry_text,";HARD;"))
 							state_type=AS_HARD_STATE;
 
 						/* get the plugin output */
@@ -2864,11 +2858,11 @@ void scan_log_file_for_archived_state_data(char *filename){
 						temp_buffer=my_strtok(NULL,";");
 						plugin_output=my_strtok(NULL,"\n");
 
-						if(strstr(input,";DOWN;"))
+						if(strstr(temp_entry->entry_text,";DOWN;"))
 							add_archived_state(AS_HOST_DOWN,state_type,temp_entry->timestamp,plugin_output,temp_subject);
-						else if(strstr(input,";UNREACHABLE;"))
+						else if(strstr(temp_entry->entry_text,";UNREACHABLE;"))
 							add_archived_state(AS_HOST_UNREACHABLE,state_type,temp_entry->timestamp,plugin_output,temp_subject);
-						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+						else if(strstr(temp_entry->entry_text,";RECOVERY;") || strstr(temp_entry->entry_text,";UP;"))
 							add_archived_state(AS_HOST_UP,state_type,temp_entry->timestamp,plugin_output,temp_subject);
 						else
 							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output,temp_subject);
@@ -2933,12 +2927,12 @@ void scan_log_file_for_archived_state_data(char *filename){
 							break;
 
 						/* state types */
-						if(strstr(input,";SOFT;")){
+						if(strstr(temp_entry->entry_text,";SOFT;")){
 							if(include_soft_states==FALSE)
 								break;
 							state_type=AS_SOFT_STATE;
 						        }
-						if(strstr(input,";HARD;"))
+						if(strstr(temp_entry->entry_text,";HARD;"))
 							state_type=AS_HARD_STATE;
 
 						/* get the plugin output */
@@ -2947,13 +2941,13 @@ void scan_log_file_for_archived_state_data(char *filename){
 						temp_buffer=my_strtok(NULL,";");
 						plugin_output=my_strtok(NULL,"\n");
 
-						if(strstr(input,";CRITICAL;"))
+						if(strstr(temp_entry->entry_text,";CRITICAL;"))
 							add_archived_state(AS_SVC_CRITICAL,state_type,temp_entry->timestamp,plugin_output,temp_subject);
-						else if(strstr(input,";WARNING;"))
+						else if(strstr(temp_entry->entry_text,";WARNING;"))
 							add_archived_state(AS_SVC_WARNING,state_type,temp_entry->timestamp,plugin_output,temp_subject);
-						else if(strstr(input,";UNKNOWN;"))
+						else if(strstr(temp_entry->entry_text,";UNKNOWN;"))
 							add_archived_state(AS_SVC_UNKNOWN,state_type,temp_entry->timestamp,plugin_output,temp_subject);
-						else if(strstr(input,";RECOVERY;") || strstr(input,";OK;"))
+						else if(strstr(temp_entry->entry_text,";RECOVERY;") || strstr(temp_entry->entry_text,";OK;"))
 							add_archived_state(AS_SVC_OK,state_type,temp_entry->timestamp,plugin_output,temp_subject);
 						else
 							add_archived_state(AS_NO_DATA,AS_NO_DATA,temp_entry->timestamp,plugin_output,temp_subject);
@@ -3028,7 +3022,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 			my_free(temp_entry);
 		}
 		free_log_entries();
-		free(input);
 	}
 	return;
 }

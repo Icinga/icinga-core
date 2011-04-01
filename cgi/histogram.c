@@ -2117,7 +2117,6 @@ void read_archived_state_data(void){
 
 /* grabs archives state data from a log file */
 void scan_log_file_for_archived_state_data(char *filename){
-	char *input=NULL;
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *temp_buffer;
@@ -2129,6 +2128,25 @@ void scan_log_file_for_archived_state_data(char *filename){
 		printf(" ");
 		fflush(NULL);
 	}
+
+	/* Service filter */
+	add_log_filter(LOGENTRY_SERVICE_OK,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_WARNING,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_CRITICAL,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_UNKNOWN,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SERVICE_RECOVERY,LOGFILTER_INCLUDE);
+
+	/* Host filter */
+	add_log_filter(LOGENTRY_HOST_UP,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_DOWN,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_UNREACHABLE,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_HOST_RECOVERY,LOGFILTER_INCLUDE);
+
+	/* system message */
+	add_log_filter(LOGENTRY_STARTUP,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_RESTART,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_SHUTDOWN,LOGFILTER_INCLUDE);
+	add_log_filter(LOGENTRY_BAILOUT,LOGFILTER_INCLUDE);
 
 	status = get_log_entries(filename,NULL,FALSE,t1-(60*60*24*backtrack_archives),t2);
 	
@@ -2144,12 +2162,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 #endif
 
 		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
-
-			/* free memory */
-			free(input);
-			input=NULL;
-			if((input=strdup(temp_entry->entry_text))==NULL)
-				continue;
 
 			/* program starts/restarts */
 			if(temp_entry->type==LOGENTRY_STARTUP)
@@ -2182,11 +2194,11 @@ void scan_log_file_for_archived_state_data(char *filename){
 							continue;
 
 						/* skip soft states if necessary */
-						if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(input,";SOFT;"))
+						if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(temp_entry->entry_text,";SOFT;"))
 							continue;
 
 						/* skip hard states if necessary */
-						if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(input,";HARD;"))
+						if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(temp_entry->entry_text,";HARD;"))
 							continue;
 
 						if(temp_entry->type==LOGENTRY_HOST_DOWN)
@@ -2228,11 +2240,11 @@ void scan_log_file_for_archived_state_data(char *filename){
 							continue;
 
 						/* skip soft states if necessary */
-						if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(input,";SOFT;"))
+						if(!(graph_statetypes & GRAPH_SOFT_STATETYPES) && strstr(temp_entry->entry_text,";SOFT;"))
 							continue;
 
 						/* skip hard states if necessary */
-						if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(input,";HARD;"))
+						if(!(graph_statetypes & GRAPH_HARD_STATETYPES) && strstr(temp_entry->entry_text,";HARD;"))
 							continue;
 
 						if(temp_entry->type==LOGENTRY_SERVICE_CRITICAL)
@@ -2252,7 +2264,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 	        }
 		/* free memory */
 		free_log_entries();
-		free(input);
 	}	
 	return;
 }
