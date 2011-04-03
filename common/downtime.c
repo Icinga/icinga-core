@@ -54,7 +54,7 @@ extern timed_event *event_list_high;
 extern timed_event *event_list_high_tail;
 #endif
 
-
+int dummy;	/* reduce compiler warnings */
 
 #ifdef NSCORE
 
@@ -271,9 +271,9 @@ int register_downtime(int type, unsigned long downtime_id){
 	else
 		type_string="service";
 	if(temp_downtime->fixed==TRUE)
-		asprintf(&temp_buffer,"This %s has been scheduled for fixed downtime from %s to %s.  Notifications for the %s will not be sent out during that time period.",type_string,start_time_string,end_time_string,type_string);
+		dummy=asprintf(&temp_buffer,"This %s has been scheduled for fixed downtime from %s to %s.  Notifications for the %s will not be sent out during that time period.",type_string,start_time_string,end_time_string,type_string);
 	else
-		asprintf(&temp_buffer,"This %s has been scheduled for flexible downtime starting between %s and %s and lasting for a period of %d hours and %d minutes.  Notifications for the %s will not be sent out during that time period.",type_string,start_time_string,end_time_string,hours,minutes,type_string);
+		dummy=asprintf(&temp_buffer,"This %s has been scheduled for flexible downtime starting between %s and %s and lasting for a period of %d hours and %d minutes.  Notifications for the %s will not be sent out during that time period.",type_string,start_time_string,end_time_string,hours,minutes,type_string);
 
 
 	log_debug_info(DEBUGL_DOWNTIME,0,"Scheduled Downtime Details:\n");

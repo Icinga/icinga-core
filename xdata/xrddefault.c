@@ -254,6 +254,7 @@ int xrddefault_save_state_information(void){
 	scheduled_downtime *temp_downtime=NULL;
 	int x=0;
 	int fd=0;
+	int dummy; /* reduce compiler warnings */
 	unsigned long host_attribute_mask=0L;
 	unsigned long service_attribute_mask=0L;
 	unsigned long contact_attribute_mask=0L;
@@ -274,7 +275,7 @@ int xrddefault_save_state_information(void){
 	        }
 
 	/* open a safe temp file for output */
-	asprintf(&temp_file,"%sXXXXXX",xrddefault_temp_file);
+	dummy=asprintf(&temp_file,"%sXXXXXX",xrddefault_temp_file);
 	if(temp_file==NULL)
 		return ERROR;
 	if((fd=mkstemp(temp_file))==-1)
@@ -351,7 +352,6 @@ int xrddefault_save_state_information(void){
 
 		fprintf(fp,"host {\n");
 		fprintf(fp,"host_name=%s\n",temp_host->name);
-		fprintf(fp,"display_name=%s\n",temp_host->display_name);
 		fprintf(fp,"modified_attributes=%lu\n",(temp_host->modified_attributes & ~host_attribute_mask));
 		fprintf(fp,"check_command=%s\n",(temp_host->host_check_command==NULL)?"":temp_host->host_check_command);
 		fprintf(fp,"check_period=%s\n",(temp_host->check_period==NULL)?"":temp_host->check_period);
@@ -426,7 +426,6 @@ int xrddefault_save_state_information(void){
 
 		fprintf(fp,"service {\n");
 		fprintf(fp,"host_name=%s\n",temp_service->host_name);
-		fprintf(fp,"display_name=%s\n",temp_service->display_name);
 		fprintf(fp,"service_description=%s\n",temp_service->description);
 		fprintf(fp,"modified_attributes=%lu\n",(temp_service->modified_attributes & ~service_attribute_mask));
 		fprintf(fp,"check_command=%s\n",(temp_service->service_check_command==NULL)?"":temp_service->service_check_command);
@@ -1232,10 +1231,6 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 							temp_host->last_state=atoi(val);
 						else if(!strcmp(var,"last_hard_state"))
 							temp_host->last_hard_state=atoi(val);
-						else if(!strcmp(var,"display_name")){
-							my_free(temp_host->display_name);
-							temp_host->display_name=(char *)strdup(val);
-							}
 						else if(!strcmp(var,"plugin_output")){
 							my_free(temp_host->plugin_output);
 							temp_host->plugin_output=(char *)strdup(val);
@@ -1518,10 +1513,6 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 							temp_service->last_state=atoi(val);
 						else if(!strcmp(var,"last_hard_state"))
 							temp_service->last_hard_state=atoi(val);
-						else if(!strcmp(var,"display_name")){
-							my_free(temp_service->display_name);
-							temp_service->display_name=(char *)strdup(val);
-							}
 						else if(!strcmp(var,"current_attempt"))
 							temp_service->current_attempt=atoi(val);
 						else if(!strcmp(var,"current_event_id"))

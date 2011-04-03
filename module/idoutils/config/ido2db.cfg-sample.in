@@ -103,14 +103,31 @@ db_host=localhost
 # 	3306 = Default MySQL port
 #	5432 = Default PostgreSQL port
 #       1521 = Default Oracle port
+#
+# Note: ocilib will ignore this, you have to modify your tnsnames.ora
 
 db_port=3306
+
+
+# DATABASE SOCKET
+# Optional db_socket allows to specify a different socket location.
+# This will be passed to libdbi MySQL as mysql_unix_socket, while
+# PostgeSQL overrides the port, ocilib Oracle ignores this setting.
+#
+# Note: This setting overrules db_port, making it useless!
+
+#db_socket=/var/lib/mysql/mysql.sock
 
 
 
 # DATABASE NAME
 # This option specifies the name of the database that should be used.
-# Note: Oracle needs //DBSERVER/DBNAME
+#
+# Note: Oracle with ocilib requires tnsnames.ora filled with host, port
+# and database information. you can use the SID then with ocilib and
+# one of the following:
+# 	//DBSERVER/SID
+#	SID
 
 db_name=icinga
 
@@ -120,7 +137,9 @@ db_name=icinga
 # Determines the prefix (if any) that should be prepended to table names.
 # If you modify the table prefix, you'll need to modify the SQL script for
 # creating the database!
-# Note: Oracle will ignore this prefix since the tablename length will exceed 30 characters.
+#
+# Note: Oracle will ignore this prefix since the tablename length will exceed
+# 30 characters.
 
 db_prefix=icinga_
 

@@ -15,11 +15,14 @@
 -- # export TWO_TASK=<instance>; sqlplus "sys as sysdba" @ oracle.sql
 --
 -- initial version: 2008-02-20 David Schmidt
--- 									2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
+-- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 -- current version: 2011-03-27 Thomas Dreﬂler
 --
 -- -- --------------------------------------------------------
 */
+
+DEFINE ICINGA_VERSION=1.4.0
+
 -- -----------------------------------------
 -- set defines
 -- EDIT THIS !

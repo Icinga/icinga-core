@@ -21,6 +21,7 @@ typedef struct ido2db_dbconfig_struct{
 	char *dbname;
 	char *dbprefix;
 	char *dbserver;
+	char *dbsocket;
 	unsigned long max_timedevents_age;
 	unsigned long max_systemcommands_age;
 	unsigned long max_servicechecks_age;
@@ -133,6 +134,8 @@ int ido2db_db_init(ido2db_idi *);
 int ido2db_db_deinit(ido2db_idi *);
 
 int ido2db_db_connect(ido2db_idi *);
+int ido2db_db_is_connected(ido2db_idi *);
+int ido2db_db_reconnect(ido2db_idi *);
 int ido2db_db_disconnect(ido2db_idi *);
 
 int ido2db_db_hello(ido2db_idi *);

@@ -9,8 +9,6 @@
 --
 -- --------------------------------------------------------
 
-CREATE LANGUAGE plpgsql;
-
 --
 -- Functions
 --
@@ -1408,12 +1406,6 @@ CREATE TABLE  icinga_timeperiod_timeranges (
 
 
 -- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-
-SELECT updatedbversion('1.3.0');
-
--- -----------------------------------------
 -- add index (delete)
 -- -----------------------------------------
 
@@ -1590,4 +1582,11 @@ CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id ASC, logent
 
 -- statehistory
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
+
+
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+
+SELECT updatedbversion('1.4.0');
 

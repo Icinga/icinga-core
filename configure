@@ -643,7 +643,7 @@ XSDC
 lockfile
 init_dir
 TMPDIR
-CHECKRESULTDIR
+SPOOLDIR
 HTTPD_CONF
 MAIL_PROG
 COMMAND_OPTS
@@ -729,6 +729,7 @@ with_command_group
 with_mail
 with_httpd_conf
 with_checkresult_dir
+with_spool_dir
 with_temp_dir
 with_init_dir
 with_lockfile
@@ -1417,7 +1418,8 @@ Optional Packages:
   --with-httpd-conf=<path_to_conf>
                           sets path to Apache conf.d directory
   --with-checkresult-dir=<path>
-                          sets path to check results spool directory
+                          obsolete option, use --with-spool-dir instead
+  --with-spool-dir=<path> sets path to spool base directory
   --with-temp-dir=<path>  sets path to temp directory
   --with-init-dir=<path>  sets directory to place init script into
   --with-lockfile=<path>  sets path and file name for lock file
@@ -5204,17 +5206,24 @@ if test x$HTTPD_CONF = xno; then
 fi
 
 
-CHECKRESULTDIR=no
 
 # Check whether --with-checkresult-dir was given.
 if test "${with_checkresult_dir+set}" = set; then :
-  withval=$with_checkresult_dir; CHECKRESULTDIR=$withval
-else
-  CHECKRESULTDIR=no
+  withval=$with_checkresult_dir; { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: obsolete option, use --with-spool-dir instead" >&5
+$as_echo "$as_me: WARNING: obsolete option, use --with-spool-dir instead" >&2;}
 fi
 
-if test x$CHECKRESULTDIR = xno; then
-	CHECKRESULTDIR="$localstatedir/spool/checkresults"
+SPOOLDIR=no
+
+# Check whether --with-spool-dir was given.
+if test "${with_spool_dir+set}" = set; then :
+  withval=$with_spool_dir; SPOOLDIR=$withval
+else
+  SPOOLDIR=no
+fi
+
+if test x$SPOOLDIR = xno; then
+	SPOOLDIR="$localstatedir/spool/icinga"
 fi
 
 
@@ -8265,8 +8274,8 @@ fi
 $as_echo "        Install \${prefix}:  $prefix" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                 Lock file:  $lockfile" >&5
 $as_echo "                Lock file:  $lockfile" >&6; }
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result:    Check result directory:  $CHECKRESULTDIR" >&5
-$as_echo "   Check result directory:  $CHECKRESULTDIR" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:           Spool directory:  $SPOOLDIR" >&5
+$as_echo "          Spool directory:  $SPOOLDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Init directory:  $init_dir" >&5
 $as_echo "           Init directory:  $init_dir" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:   Apache conf.d directory:  $HTTPD_CONF" >&5

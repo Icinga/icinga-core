@@ -1,0 +1,387 @@
+policy_module(icinga, 1.9.1)
+
+########################################
+#
+# Declarations
+#
+
+type icinga_t;
+type icinga_exec_t;
+init_daemon_domain(icinga_t, icinga_exec_t)
+
+type icinga_etc_t;
+files_config_file(icinga_etc_t)
+
+type icinga_initrc_exec_t;
+init_script_file(icinga_initrc_exec_t)
+
+type icinga_log_t;
+logging_log_file(icinga_log_t)
+
+type icinga_tmp_t;
+files_tmp_file(icinga_tmp_t)
+
+type icinga_var_run_t;
+files_pid_file(icinga_var_run_t)
+
+type icinga_spool_t;
+files_type(icinga_spool_t)
+
+icinga_plugin_template(admin)
+icinga_plugin_template(checkdisk)
+icinga_plugin_template(mail)
+icinga_plugin_template(services)
+icinga_plugin_template(system)
+icinga_plugin_template(unconfined)
+
+type icinga_system_plugin_tmp_t;
+files_tmp_file(icinga_system_plugin_tmp_t)
+
+########################################
+#
+# Nagios local policy
+#
+
+allow icinga_t self:capability { dac_override setgid setuid };
+dontaudit icinga_t self:capability sys_tty_config;
+allow icinga_t self:process { setpgid signal_perms };
+allow icinga_t self:fifo_file rw_file_perms;
+allow icinga_t self:tcp_socket create_stream_socket_perms;
+allow icinga_t self:udp_socket create_socket_perms;
+
+read_files_pattern(icinga_t, icinga_etc_t, icinga_etc_t)
+read_lnk_files_pattern(icinga_t, icinga_etc_t, icinga_etc_t)
+allow icinga_t icinga_etc_t:dir list_dir_perms;
+
+# Allow ido socket
+allow icinga_t icinga_log_t:sock_file write;
+allow icinga_t initrc_t:unix_stream_socket connectto;
+
+manage_files_pattern(icinga_t, icinga_log_t, icinga_log_t)
+manage_fifo_files_pattern(icinga_t, icinga_log_t, icinga_log_t)
+logging_log_filetrans(icinga_t, icinga_log_t, { file dir })
+
+manage_dirs_pattern(icinga_t, icinga_tmp_t, icinga_tmp_t)
+manage_files_pattern(icinga_t, icinga_tmp_t, icinga_tmp_t)
+files_tmp_filetrans(icinga_t, icinga_tmp_t, { file dir })
+
+manage_files_pattern(icinga_t, icinga_var_run_t, icinga_var_run_t)
+files_pid_filetrans(icinga_t, icinga_var_run_t, file)
+
+manage_fifo_files_pattern(icinga_t, icinga_spool_t, icinga_spool_t)
+files_spool_filetrans(icinga_t, icinga_spool_t, fifo_file)
+
+kernel_read_system_state(icinga_t)
+kernel_read_kernel_sysctls(icinga_t)
+
+corecmd_exec_bin(icinga_t)
+corecmd_exec_shell(icinga_t)
+
+corenet_all_recvfrom_unlabeled(icinga_t)
+corenet_all_recvfrom_netlabel(icinga_t)
+corenet_tcp_sendrecv_generic_if(icinga_t)
+corenet_udp_sendrecv_generic_if(icinga_t)
+corenet_tcp_sendrecv_generic_node(icinga_t)
+corenet_udp_sendrecv_generic_node(icinga_t)
+corenet_tcp_sendrecv_all_ports(icinga_t)
+corenet_udp_sendrecv_all_ports(icinga_t)
+corenet_tcp_connect_all_ports(icinga_t)
+
+corenet_dontaudit_tcp_bind_all_reserved_ports(icinga_t)
+corenet_dontaudit_udp_bind_all_reserved_ports(icinga_t)
+
+dev_read_sysfs(icinga_t)
+dev_read_urand(icinga_t)
+
+domain_use_interactive_fds(icinga_t)
+# for ps
+domain_read_all_domains_state(icinga_t)
+
+files_read_etc_files(icinga_t)
+files_read_etc_runtime_files(icinga_t)
+files_read_kernel_symbol_table(icinga_t)
+files_search_spool(icinga_t)
+files_read_usr_files(icinga_t)
+
+fs_getattr_all_fs(icinga_t)
+fs_search_auto_mountpoints(icinga_t)
+
+auth_use_nsswitch(icinga_t)
+
+logging_send_syslog_msg(icinga_t)
+
+miscfiles_read_localization(icinga_t)
+
+userdom_dontaudit_use_unpriv_user_fds(icinga_t)
+userdom_dontaudit_search_user_home_dirs(icinga_t)
+
+mta_send_mail(icinga_t)
+mta_signal_system_mail(icinga_t)
+mta_kill_system_mail(icinga_t)
+
+########################################
+#
+# access for webapps to command-pipe
+#
+gen_require(`
+                type httpd_t;
+        ')
+
+allow httpd_t icinga_log_t:fifo_file write;
+allow httpd_t icinga_log_t:fifo_file { getattr open };
+
+
+optional_policy(`
+	netutils_kill_ping(icinga_t)
+')
+
+optional_policy(`
+	seutil_sigchld_newrole(icinga_t)
+')
+
+optional_policy(`
+	udev_read_db(icinga_t)
+')
+
+########################################
+#
+# Nagios CGI local policy
+#
+
+optional_policy(`
+	apache_content_template(icinga)
+	typealias httpd_icinga_script_t alias icinga_cgi_t;
+	typealias httpd_icinga_script_exec_t alias icinga_cgi_exec_t;
+	allow httpd_icinga_script_t icinga_log_t:fifo_file rw_file_perms;
+
+	allow httpd_icinga_script_t self:process signal_perms;
+
+	read_files_pattern(httpd_icinga_script_t, icinga_t, icinga_t)
+	read_lnk_files_pattern(httpd_icinga_script_t, icinga_t, icinga_t)
+
+	files_search_spool(httpd_icinga_script_t)
+	rw_fifo_files_pattern(httpd_icinga_script_t, icinga_spool_t, icinga_spool_t)
+
+	allow httpd_icinga_script_t icinga_etc_t:dir list_dir_perms;
+	read_files_pattern(httpd_icinga_script_t, icinga_etc_t, icinga_etc_t)
+	read_lnk_files_pattern(httpd_icinga_script_t, icinga_etc_t, icinga_etc_t)
+
+	allow httpd_icinga_script_t icinga_log_t:dir list_dir_perms;
+	read_files_pattern(httpd_icinga_script_t, icinga_etc_t, icinga_log_t)
+	read_lnk_files_pattern(httpd_icinga_script_t, icinga_etc_t, icinga_log_t)
+
+	kernel_read_system_state(httpd_icinga_script_t)
+
+	domain_dontaudit_read_all_domains_state(httpd_icinga_script_t)
+
+	files_read_etc_runtime_files(httpd_icinga_script_t)
+	files_read_kernel_symbol_table(httpd_icinga_script_t)
+
+	logging_send_syslog_msg(httpd_icinga_script_t)
+')
+
+########################################
+#
+# Nagios remote plugin executor local policy
+#
+
+allow nrpe_t self:capability { setuid setgid };
+dontaudit nrpe_t self:capability { sys_tty_config sys_resource };
+allow nrpe_t self:process { setpgid signal_perms setsched setrlimit };
+allow nrpe_t self:fifo_file rw_fifo_file_perms;
+allow nrpe_t self:tcp_socket create_stream_socket_perms;
+
+domtrans_pattern(nrpe_t, icinga_checkdisk_plugin_exec_t, icinga_checkdisk_plugin_t)
+
+read_files_pattern(nrpe_t, icinga_etc_t, icinga_etc_t)
+files_search_etc(nrpe_t)
+
+kernel_read_system_state(nrpe_t)
+kernel_read_kernel_sysctls(nrpe_t)
+
+corecmd_exec_bin(nrpe_t)
+corecmd_exec_shell(nrpe_t)
+
+corenet_tcp_bind_generic_node(nrpe_t)
+corenet_tcp_bind_inetd_child_port(nrpe_t)
+corenet_sendrecv_unlabeled_packets(nrpe_t)
+
+dev_read_sysfs(nrpe_t)
+dev_read_urand(nrpe_t)
+
+domain_use_interactive_fds(nrpe_t)
+domain_read_all_domains_state(nrpe_t)
+
+files_read_etc_runtime_files(nrpe_t)
+files_read_etc_files(nrpe_t)
+
+fs_getattr_all_fs(nrpe_t)
+fs_search_auto_mountpoints(nrpe_t)
+
+auth_use_nsswitch(nrpe_t)
+
+logging_send_syslog_msg(nrpe_t)
+
+miscfiles_read_localization(nrpe_t)
+
+userdom_dontaudit_use_unpriv_user_fds(nrpe_t)
+
+optional_policy(`
+	mta_send_mail(nrpe_t)
+')
+
+optional_policy(`
+	seutil_sigchld_newrole(nrpe_t)
+')
+
+optional_policy(`
+	udev_read_db(nrpe_t)
+')
+
+#####################################
+#
+# local policy for admin check plugins
+#
+
+corecmd_read_bin_files(icinga_admin_plugin_t)
+corecmd_read_bin_symlinks(icinga_admin_plugin_t)
+
+dev_read_urand(icinga_admin_plugin_t)
+dev_getattr_all_chr_files(icinga_admin_plugin_t)
+dev_getattr_all_blk_files(icinga_admin_plugin_t)
+
+files_read_etc_files(icinga_admin_plugin_t)
+# for check_file_age plugin
+files_getattr_all_dirs(icinga_admin_plugin_t)
+files_getattr_all_files(icinga_admin_plugin_t)
+files_getattr_all_symlinks(icinga_admin_plugin_t)
+files_getattr_all_pipes(icinga_admin_plugin_t)
+files_getattr_all_sockets(icinga_admin_plugin_t)
+files_getattr_all_file_type_fs(icinga_admin_plugin_t)
+
+######################################
+#
+# local policy for mail check plugins
+#
+
+allow icinga_mail_plugin_t self:capability { setuid setgid dac_override };
+allow icinga_mail_plugin_t self:netlink_route_socket r_netlink_socket_perms;
+allow icinga_mail_plugin_t self:tcp_socket create_stream_socket_perms;
+allow icinga_mail_plugin_t self:udp_socket create_socket_perms;
+
+kernel_read_system_state(icinga_mail_plugin_t)
+kernel_read_kernel_sysctls(icinga_mail_plugin_t)
+
+corecmd_read_bin_files(icinga_mail_plugin_t)
+corecmd_read_bin_symlinks(icinga_mail_plugin_t)
+
+dev_read_urand(icinga_mail_plugin_t)
+
+files_read_etc_files(icinga_mail_plugin_t)
+
+logging_send_syslog_msg(icinga_mail_plugin_t)
+
+sysnet_read_config(icinga_mail_plugin_t)
+
+optional_policy(`
+	mta_send_mail(icinga_mail_plugin_t)
+')
+
+optional_policy(`
+	nscd_dontaudit_search_pid(icinga_mail_plugin_t)
+')
+
+optional_policy(`
+	postfix_stream_connect_master(icinga_mail_plugin_t)
+	posftix_exec_postqueue(icinga_mail_plugin_t)
+')
+
+######################################
+#
+# local policy for disk check plugins
+#
+
+# needed by ioctl()
+allow icinga_checkdisk_plugin_t self:capability { sys_admin sys_rawio };
+
+files_read_etc_runtime_files(icinga_checkdisk_plugin_t)
+
+fs_getattr_all_fs(icinga_checkdisk_plugin_t)
+
+storage_raw_read_fixed_disk(icinga_checkdisk_plugin_t)
+
+#######################################
+#
+# local policy for service check plugins
+#
+
+allow icinga_services_plugin_t self:capability { net_bind_service net_raw };
+allow icinga_services_plugin_t self:process { signal sigkill };
+allow icinga_services_plugin_t self:tcp_socket create_stream_socket_perms;
+allow icinga_services_plugin_t self:udp_socket create_socket_perms;
+
+corecmd_exec_bin(icinga_services_plugin_t)
+
+corenet_tcp_connect_all_ports(icinga_services_plugin_t)
+corenet_udp_bind_dhcpc_port(icinga_services_plugin_t)
+
+auth_use_nsswitch(icinga_services_plugin_t)
+
+domain_read_all_domains_state(icinga_services_plugin_t)
+
+files_read_usr_files(icinga_services_plugin_t)
+
+optional_policy(`
+	netutils_domtrans_ping(icinga_services_plugin_t)
+	netutils_signal_ping(icinga_services_plugin_t)
+	netutils_kill_ping(icinga_services_plugin_t)
+')
+
+optional_policy(`
+	mysql_stream_connect(icinga_services_plugin_t)
+')
+
+optional_policy(`
+	snmp_read_snmp_var_lib_files(icinga_services_plugin_t)
+')
+
+######################################
+#
+# local policy for system check plugins
+#
+
+allow icinga_system_plugin_t self:capability dac_override;
+dontaudit icinga_system_plugin_t self:capability { setuid setgid };
+
+# check_log
+manage_files_pattern(icinga_system_plugin_t, icinga_system_plugin_tmp_t, icinga_system_plugin_tmp_t)
+manage_dirs_pattern(icinga_system_plugin_t, icinga_system_plugin_tmp_t, icinga_system_plugin_tmp_t)
+files_tmp_filetrans(icinga_system_plugin_t, icinga_system_plugin_tmp_t, { dir file })
+
+kernel_read_system_state(icinga_system_plugin_t)
+kernel_read_kernel_sysctls(icinga_system_plugin_t)
+
+corecmd_exec_bin(icinga_system_plugin_t)
+corecmd_exec_shell(icinga_system_plugin_t)
+
+dev_read_sysfs(icinga_system_plugin_t)
+dev_read_urand(icinga_system_plugin_t)
+
+domain_read_all_domains_state(icinga_system_plugin_t)
+
+files_read_etc_files(icinga_system_plugin_t)
+
+# needed by check_users plugin
+optional_policy(`
+	init_read_utmp(icinga_system_plugin_t)
+')
+
+########################################
+#
+# Unconfined plugin policy
+#
+
+optional_policy(`
+	unconfined_domain(icinga_unconfined_plugin_t)
+')
+

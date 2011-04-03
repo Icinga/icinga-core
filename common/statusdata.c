@@ -60,7 +60,7 @@ servicestatus   **servicestatus_hashlist=NULL;
 extern int      use_pending_states;
 #endif
 
-
+int dummy;	/* reduce compiler warnings */
 
 #ifdef NSCORE
 
@@ -351,13 +351,13 @@ int add_host_status(hoststatus *new_hoststatus){
 			my_free(new_hoststatus->plugin_output);
 			if(new_hoststatus->should_be_scheduled==TRUE){
 				get_time_string(&new_hoststatus->next_check,date_string,sizeof(date_string),LONG_DATE_TIME);
-				asprintf(&new_hoststatus->plugin_output,"Host check scheduled for %s",date_string);
+				dummy=asprintf(&new_hoststatus->plugin_output,"Host check scheduled for %s",date_string);
 			        }
 			else{
 				/* passive-only hosts that have just been scheduled for a forced check */
 				if(new_hoststatus->checks_enabled==FALSE && new_hoststatus->next_check!=(time_t)0L && (new_hoststatus->check_options & CHECK_OPTION_FORCE_EXECUTION)){
 					get_time_string(&new_hoststatus->next_check,date_string,sizeof(date_string),LONG_DATE_TIME);
-					asprintf(&new_hoststatus->plugin_output,"Forced host check scheduled for %s",date_string);
+					dummy=asprintf(&new_hoststatus->plugin_output,"Forced host check scheduled for %s",date_string);
 					}
 				/* passive-only hosts not scheduled to be checked */
 				else
@@ -423,13 +423,13 @@ int add_service_status(servicestatus *new_svcstatus){
 			my_free(new_svcstatus->plugin_output);
 			if(new_svcstatus->should_be_scheduled==TRUE){
 				get_time_string(&new_svcstatus->next_check,date_string,sizeof(date_string),LONG_DATE_TIME);
-				asprintf(&new_svcstatus->plugin_output,"Service check scheduled for %s",date_string);
+				dummy=asprintf(&new_svcstatus->plugin_output,"Service check scheduled for %s",date_string);
 			        }
 			else{
 				/* passive-only services that have just been scheduled for a forced check */
 				if(new_svcstatus->checks_enabled==FALSE && new_svcstatus->next_check!=(time_t)0L && (new_svcstatus->check_options & CHECK_OPTION_FORCE_EXECUTION)){
 					get_time_string(&new_svcstatus->next_check,date_string,sizeof(date_string),LONG_DATE_TIME);
-					asprintf(&new_svcstatus->plugin_output,"Forced service check scheduled for %s",date_string);
+					dummy=asprintf(&new_svcstatus->plugin_output,"Forced service check scheduled for %s",date_string);
 					}
 				/* passive-only services not scheduled to be checked */
 				else

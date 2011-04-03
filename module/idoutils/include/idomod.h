@@ -18,7 +18,7 @@
 /* this is needed for access to daemon's internal data */
 #define NSCORE 1
 
-#define IDOMOD_MAX_BUFLEN   16384
+#define IDOMOD_MAX_BUFLEN   49152
 
 /************** structures *******************/
 
