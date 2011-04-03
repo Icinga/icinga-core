@@ -9,7 +9,7 @@
 -- works with Oracle10+ and sqlplus
 -- for because of grants on v$ views this must run as sys 
 -- if not needed, normal dba user is valid to run
--- initial version: 2011-03-07 Thomas Dreﬂler
+-- initial version: 2011-03-07 Thomas Dressler
 -- current version: 2011-03-27 
 -- --------------------------------------------------------
 */

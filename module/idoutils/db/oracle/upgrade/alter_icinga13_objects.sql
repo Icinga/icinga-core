@@ -7,8 +7,8 @@
 -- seperates constraints, lobs and indexes
 -- works with Oracle10+ and sqlplus
 --
--- initial version: 2011-03-01 Thomas Dreﬂler
--- current version: 2011-03-27 Thomas Dreﬂler
+-- initial version: 2011-03-01 Thomas Dressler
+-- current version: 2011-04-03 Thomas Dressler
 --
 -- this will ask you for the tablespace names unless you run it from oracle-upgrade-1.4.0.sql 
 -- or defined it previous in defines (eg. define IDXTBS=<yourDATATBS> ....)
@@ -37,7 +37,9 @@ spool move_icinga13_objects.log
 -- --------------------------------------------------------
 */
 declare
-cursor c is select constraint_name,table_name from user_constraints where constraint_type in ('C','P','U');
+cursor c is 
+	select constraint_name,table_name from user_constraints i
+	where table_name not like 'BIN$%' and constraint_type in ('C','P','U');
 r c%rowtype;
 s varchar2(2000);
 begin
@@ -213,6 +215,4 @@ close c;
 end;
 /
 
-/* goodbye */
 spool off;
-

@@ -10,8 +10,8 @@
 -- --------------------------------------------------------
 -- works with Oracle10+ and sqlplus
 -- 
--- initial version: 2011-03-01 Thomas Dreﬂler
--- current version: 2011-03-27 Thomas Dreﬂler
+-- initial version: 2011-03-01 Thomas Dressler
+-- current version: 2011-03-27 Thomas Dressler
 -- --------------------------------------------------------
 */
 -- -----------------------------------------
@@ -39,7 +39,6 @@ select 'Drop index '||index_name||';' from user_indexes where INDEX_TYPE='FUNCTI
 -- Prepare Alter Table script for each number column and run it
 -- -----------------------------------------
 select 'ALTER TABLE '||table_name ||' modify ('|| column_name||' '|| decode(data_scale,0,'INTEGER','NUMBER')||');' from user_tab_columns where data_type='NUMBER';
-prompt spool off;;
 spool off;
 set heading on;
 set echo on;
