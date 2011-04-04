@@ -2639,48 +2639,56 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 			x_offset=nagios_icon_x+(DEFAULT_NODE_WIDTH/2)-canvas_x;
 			y_offset=nagios_icon_y+(DEFAULT_NODE_HEIGHT/2)-canvas_y;
 
-			/* draw "slice" dividers */
-			if(immediate_children>1 || layer>1){
+			/* if the host should be drawn */
+			/* this enforces the privacy of hosts that are not eligble to be drawn */
+			if(temp_host->should_be_drawn==TRUE){
 
-				/* draw "leftmost" divider */
-				gdImageLine(map_image,(int)x_coord[0]+x_offset,(int)y_coord[0]+y_offset,(int)x_coord[1]+x_offset,(int)y_coord[1]+y_offset,color_lightgrey);
+				/* draw "slice" dividers */
+				if(immediate_children>1 || layer>1){
 
-				/* draw "rightmost" divider */
-				gdImageLine(map_image,(int)x_coord[2]+x_offset,(int)y_coord[2]+y_offset,(int)x_coord[3]+x_offset,(int)y_coord[3]+y_offset,color_lightgrey);
-			        }
+					/* draw "leftmost" divider */
+					gdImageLine(map_image,(int)x_coord[0]+x_offset,(int)y_coord[0]+y_offset,(int)x_coord[1]+x_offset,(int)y_coord[1]+y_offset,color_lightgrey);
 
-			/* determine arc drawing angles */
-			arc_start_angle=current_drawing_angle-90.0;
-			while(arc_start_angle<0.0)
-				arc_start_angle+=360.0;
-			arc_end_angle=arc_start_angle+available_angle;
-
-			/* draw inner arc */
-			gdImageArc(map_image,x_offset,y_offset,(radius-(CIRCULAR_DRAWING_RADIUS/2))*2,(radius-(CIRCULAR_DRAWING_RADIUS/2))*2,floor(arc_start_angle),ceil(arc_end_angle),color_lightgrey);
-
-			/* draw outer arc */
-			gdImageArc(map_image,x_offset,y_offset,(radius+(CIRCULAR_DRAWING_RADIUS/2))*2,(radius+(CIRCULAR_DRAWING_RADIUS/2))*2,floor(arc_start_angle),ceil(arc_end_angle),color_lightgrey);
+					/* draw "rightmost" divider */
+					gdImageLine(map_image,(int)x_coord[2]+x_offset,(int)y_coord[2]+y_offset,(int)x_coord[3]+x_offset,(int)y_coord[3]+y_offset,color_lightgrey);
+				        }
 
 
-			/* determine center of "slice" and fill with appropriate color */
-			center_x=-(sin(-(current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
-			center_y=-(sin((90+current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
-			translated_x=center_x+x_offset;
-			translated_y=center_y+y_offset;
+				/* determine arc drawing angles */
+				arc_start_angle=current_drawing_angle-90.0;
+				while(arc_start_angle<0.0)
+					arc_start_angle+=360.0;
+				arc_end_angle=arc_start_angle+available_angle;
 
-			/* determine background color */
-			temp_hoststatus=find_hoststatus(temp_host->name);
-			if(temp_hoststatus==NULL)
-				bgcolor=color_lightgrey;
-			else if(temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE)
-				bgcolor=color_lightred;
-			else
-				bgcolor=color_lightgreen;
+				/* draw inner arc */
+				gdImageArc(map_image,x_offset,y_offset,(radius-(CIRCULAR_DRAWING_RADIUS/2))*2,(radius-(CIRCULAR_DRAWING_RADIUS/2))*2,floor(arc_start_angle),ceil(arc_end_angle),color_lightgrey);
 
-			/* fill slice with background color */
-			/* the fill function only works with coordinates that are in bounds of the actual image */
-			if(translated_x>0 && translated_y>0 && translated_x<canvas_width && translated_y<canvas_height)
-				gdImageFillToBorder(map_image,translated_x,translated_y,color_lightgrey,bgcolor);
+				/* draw outer arc */
+				gdImageArc(map_image,x_offset,y_offset,(radius+(CIRCULAR_DRAWING_RADIUS/2))*2,(radius+(CIRCULAR_DRAWING_RADIUS/2))*2,floor(arc_start_angle),ceil(arc_end_angle),color_lightgrey);
+
+
+				/* determine center of "slice" and fill with appropriate color */
+				center_x=-(sin(-(current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
+				center_y=-(sin((90+current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
+				translated_x=center_x+x_offset;
+				translated_y=center_y+y_offset;
+
+				/* determine background color */
+				temp_hoststatus=find_hoststatus(temp_host->name);
+				if(temp_hoststatus==NULL)
+					bgcolor=color_lightgrey;
+				else if(temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE)
+					bgcolor=color_lightred;
+				else
+					bgcolor=color_lightgreen;
+
+
+				/* fill slice with background color */
+				/* the fill function only works with coordinates that are in bounds of the actual image */
+				if(translated_x>0 && translated_y>0 && translated_x<canvas_width && translated_y<canvas_height)
+					gdImageFillToBorder(map_image,translated_x,translated_y,color_lightgrey,bgcolor);
+
+				}
 
 			/* recurse into child host ... */
 			draw_circular_layer_markup(temp_host,current_drawing_angle+((available_angle-clipped_available_angle)/2),clipped_available_angle,layer+1,radius+CIRCULAR_DRAWING_RADIUS);
