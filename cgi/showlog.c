@@ -620,6 +620,7 @@ void display_logentries() {
 
 	/* Add 10 backtrack archives */
 	newest_archive-=10;
+	oldest_archive+=5;
 	if (newest_archive<0)
 		newest_archive=0;
 
@@ -627,11 +628,7 @@ void display_logentries() {
 	if(oldest_archive<newest_archive)
 		oldest_archive=newest_archive;
 
-	/* get the direction of reading the logs */
-	if (reverse)
-		current_archive=newest_archive;
-	else
-		current_archive=oldest_archive;
+	current_archive=oldest_archive;
 
 	/* read in all the necessary archived logs */
 	while(1) {
@@ -656,17 +653,10 @@ void display_logentries() {
 		read_status=status;
 
 		/* count/break depending on direction (new2old / old2new) */
-		if (reverse) {
-			if (current_archive>=oldest_archive)
-				break;
+		if (current_archive<=newest_archive)
+			break;
 
-			current_archive++;
-		}else{
-			if (current_archive<=newest_archive)
-				break;
-
-			current_archive--;
-		}
+		current_archive--;
 	}
 
 	/* dealing with errors */

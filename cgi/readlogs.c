@@ -32,9 +32,9 @@
 
 /** @name initializing lists
     @{ **/
-lifo		*lifo_list=NULL;			/**< the list with log entries after reading in via lifo */
 logfilter	*filter_list=NULL;			/**< list of filters which should applyed during log reading */
 logentry	*entry_list=NULL;			/**< the list with all current logentries */
+logentry 	*last_entry=NULL;			/**< the last used log entry element */
 /** @} */
 
 
@@ -143,7 +143,6 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 	char *input=NULL;
 	char *temp_buffer=NULL;
 	char *search_regex=NULL;
-	int error=READLOG_OK;
 	int type=0;
 	int regex_i=0, i=0, len=0;
 	short keep_entry=TRUE;
@@ -153,60 +152,35 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 	regex_t preg;
 	logfilter *temp_filter;
 
-	error=FALSE;
+	if((thefile=mmap_fopen(log_file))!=NULL){
 
-	if(reverse==TRUE){
-		error=read_file_into_lifo(log_file);
-		if(error!=LIFO_OK){
-			if(error==LIFO_ERROR_MEMORY)
-				error=READLOG_ERROR_MEMORY;
-			else
-				error=READLOG_ERROR;
-			reverse=FALSE;
+		if(search_string!=NULL){
+			/* allocate for 3 extra chars, ^, $ and \0 */
+			search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
+			len=strlen(search_string);
+			for (i=0;i<len;i++,regex_i++) {
+				if(search_string[i]=='*') {
+					search_regex[regex_i++]='.';
+					search_regex[regex_i]='*';
+				}else
+					search_regex[regex_i]=search_string[i];
+			}
+			//search_regex[0]='^';
+			//search_regex[regex_i++]='$';
+
+			search_regex[regex_i]='\0';
+
+			/* check and compile regex */
+			if (regcomp(&preg,search_regex,REG_ICASE|REG_NOSUB) != 0 ) {
+				regfree(&preg);
+				mmap_fclose(thefile);
+				return READLOG_ERROR_FILTER;
+			}
 		}
-	}
-
-	if(reverse==FALSE){
-
-		if((thefile=mmap_fopen(log_file))==NULL)
-			error=READLOG_ERROR_NOFILE;
-	}
-
-	if (error!=READLOG_OK)
-		return error;
-
-	if(search_string!=NULL){
-		/* allocate for 3 extra chars, ^, $ and \0 */
-		search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
-		len=strlen(search_string);
-		for (i=0;i<len;i++,regex_i++) {
-			if(search_string[i]=='*') {
-				search_regex[regex_i++]='.';
-				search_regex[regex_i]='*';
-			}else
-				search_regex[regex_i]=search_string[i];
-		}
-		//search_regex[0]='^';
-		//search_regex[regex_i++]='$';
-
-		search_regex[regex_i]='\0';
-
-		/* check and compile regex */
-		if (regcomp(&preg,search_regex,REG_ICASE|REG_NOSUB) != 0 ) {
-			regfree(&preg);
-			return READLOG_ERROR_FILTER;
-		}
-	}
-
-	if(error==FALSE){
 
 		while(1){
 
-			if(reverse==TRUE){
-				if((input=pop_lifo())==NULL)
-					break;
-			}
-			else if((input=mmap_fgets(thefile))==NULL)
+			if((input=mmap_fgets(thefile))==NULL)
 				break;
 
 			strip(input);
@@ -347,8 +321,10 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 			/* initialzie */
 			/* allocate memory for a new log entry */
 			temp_entry=(logentry *)malloc(sizeof(logentry));
-			if(temp_entry==NULL)
+			if(temp_entry==NULL) {
+				mmap_fclose(thefile);
 				return READLOG_ERROR_MEMORY;
+			}
 
 			temp_entry->timestamp=0L;
 			temp_entry->type=0;
@@ -360,19 +336,26 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 			temp_entry->type=type;
 			temp_entry->entry_text=temp_buffer;
 			
-			temp_entry->next=entry_list;
-			entry_list=temp_entry;
-
+			if (reverse==TRUE) {
+				if (entry_list==NULL){
+					entry_list=temp_entry;
+					last_entry=entry_list;
+				} else {
+					last_entry->next=temp_entry;
+					last_entry=temp_entry;
+				}
+			} else {
+				temp_entry->next=entry_list;
+				entry_list=temp_entry;
+			}
 		}
 
-		if(reverse==FALSE)
-			mmap_fclose(thefile);
-		else
-			free_lifo_memory();
+		mmap_fclose(thefile);
 
 		if(search_string!=NULL)
 			regfree(&preg);
-	}
+	} else
+		return READLOG_ERROR_NOFILE;
 
 	return READLOG_OK;
 }
@@ -434,134 +417,6 @@ void free_log_entries(void){
 }
 
 /**@}*/
-
-/** @name LIFO
-    @{ **/
-
-/**********************************************************
- ******************* LIFO FUNCTIONS ***********************
- **********************************************************/
-
-/** @brief reads contents of file into the lifo struct
- *  @param [in] file_name the full path of the file to read
- *  @return the status of reading the file
- *	@retval LIFO_OK reading file was successful
- *	@retval LIFO_ERROR_FILE reading the file failed
- *
- *  This function reads a file, line by line, and stores every line
- *  in the the lifo struct list. Uses @ref push_lifo to do that.
-**/
-int read_file_into_lifo(char *file_name){
-	char *input=NULL;
-	mmapfile *thefile;
-	int lifo_result;
-
-	if((thefile=mmap_fopen(file_name))==NULL)
-		return LIFO_ERROR_FILE;
-
-	while(1){
-
-		free(input);
-
-		if((input=mmap_fgets(thefile))==NULL)
-			break;
-
-		lifo_result=push_lifo(input);
-
-		if(lifo_result!=LIFO_OK){
-			free_lifo_memory();
-			free(input);
-			mmap_fclose(thefile);
-			return lifo_result;
-		}
-	}
-
-	mmap_fclose(thefile);
-
-	return LIFO_OK;
-}
-
-
-/** @brief frees all memory allocated to list of lifo entries in memory */
-void free_lifo_memory(void){
-	lifo *temp_lifo;
-	lifo *next_lifo;
-
-	if(lifo_list==NULL)
-		return;
-
-	temp_lifo=lifo_list;
-	while(temp_lifo!=NULL){
-		next_lifo=temp_lifo->next;
-		if(temp_lifo->data!=NULL)
-			free((void *)temp_lifo->data);
-		free((void *)temp_lifo);
-		temp_lifo=next_lifo;
-	}
-
-	return;
-}
-
-
-/** @brief adds an item to lifo
- *  @param [in] line adds content of to lifo list in memory
- *  @return status if adding to memory was successful
- *	@retval LIFO_OK adding to memory was successful
- *	@retval LIFO_ERROR_FILE adding to memory failed
- *
- *  This function adds the content of \c line to \c lifo_list list in memory.
-**/
-int push_lifo(char *line){
-	lifo *temp_lifo;
-
-	temp_lifo=(lifo *)malloc(sizeof(lifo));
-	if(temp_lifo==NULL)
-		return LIFO_ERROR_MEMORY;
-
-	if(line==NULL)
-		temp_lifo->data=(char *)strdup("");
-	else
-		temp_lifo->data=(char *)strdup(line);
-	if(temp_lifo->data==NULL){
-		free(temp_lifo);
-		return LIFO_ERROR_MEMORY;
-	}
-
-	/* add item to front of lifo... */
-	temp_lifo->next=lifo_list;
-	lifo_list=temp_lifo;
-
-	return LIFO_OK;
-}
-
-
-/** @brief returns the next item from lifo_list
- *  @return a string which contains the next line in lifo_list
- *
- *  This function returns the next string from \c lifo_list. At the same time
- *  it removes the current item from \c lifo_list struct.
-**/
-char *pop_lifo(void){
-	lifo *next_lifo;
-	char *buf;
-
-	if(lifo_list==NULL || lifo_list->data==NULL)
-		return NULL;
-
-	buf=strdup(lifo_list->data);
-
-	next_lifo=lifo_list->next;
-
-	if(lifo_list->data!=NULL)
-		free((void *)lifo_list->data);
-	free((void *)lifo_list);
-
-	lifo_list=next_lifo;
-
-	return buf;
-}
-
-/** @} */
 
 /** @name log archive determination
     @{ **/

@@ -99,15 +99,6 @@ extern "C" {
 /** @}*/
 
 
-/** @name LIFO RETURN CODES
- @{**/
-#define LIFO_OK			0
-#define LIFO_ERROR_MEMORY	1
-#define LIFO_ERROR_FILE		2
-#define LIFO_ERROR_DATA		3
-/** @}*/
-
-
 /** @name RED LOG ENTRIES RETURN CODES
  @{**/
 
@@ -118,15 +109,6 @@ extern "C" {
 #define READLOG_ERROR_FILTER	4
 /** @}*/
 
-
-/** @brief LIFO data structure
- *
- * this structure holds data from @ref read_file_into_lifo
-**/
-typedef struct lifo_struct{
-	char *data;			/**< the actual data */
-	struct lifo_struct *next;	/**< the next lifo_struct item */
-        }lifo;
 
 /** @brief log entry data struct
  *
@@ -156,14 +138,6 @@ int add_log_filter(int, int);
 int get_log_entries(char *, char *, int, time_t, time_t);
 logentry *next_log_entry(void);
 void free_log_entries(void);
-/**@}*/
-
-/** @name LIFO
-    @{ **/
-int read_file_into_lifo(char *);
-void free_lifo_memory(void);
-int push_lifo(char *);
-char *pop_lifo(void);
 /**@}*/
 
 /** @name log archive determination
