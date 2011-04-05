@@ -4476,6 +4476,9 @@ void grab_statusdata(void) {
 	int grab_service=FALSE;
 	regex_t preg, preg_hostname;
 
+	/* get requested groups */
+	temp_hostgroup=find_hostgroup(hostgroup_name);
+	temp_servicegroup=find_servicegroup(servicegroup_name);
 
 	if (group_style_type==STYLE_HOST_DETAIL) {
 
@@ -4506,7 +4509,6 @@ void grab_statusdata(void) {
 
 			/* see if this host is a member of the hostgroup */
 			if(show_all_hostgroups==FALSE){
-				temp_hostgroup=find_hostgroup(hostgroup_name);
 				if(temp_hostgroup==NULL)
 					continue;
 				if(is_host_member_of_hostgroup(temp_hostgroup,temp_host)==FALSE)
@@ -4576,14 +4578,14 @@ void grab_statusdata(void) {
 			else if(display_type==DISPLAY_HOSTGROUPS){
 				if(show_all_hostgroups==TRUE)
 					grab_service=TRUE;
-				else if(is_host_member_of_hostgroup(temp_hostgroup,temp_host)==TRUE)
+				else if(temp_hostgroup!=NULL && is_host_member_of_hostgroup(temp_hostgroup,temp_host)==TRUE)
 					grab_service=TRUE;
 			}
 
 			else if(display_type==DISPLAY_SERVICEGROUPS){
 				if(show_all_servicegroups==TRUE)
 					grab_service=TRUE;
-				else if(is_service_member_of_servicegroup(temp_servicegroup,temp_service)==TRUE)
+				else if(temp_servicegroup!=NULL && is_service_member_of_servicegroup(temp_servicegroup,temp_service)==TRUE)
 					grab_service=TRUE;
 			}
 
@@ -4600,11 +4602,11 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	char *status_string=NULL;
 	char *host_name=NULL;
 	char *svc_description=NULL;
-	char last_check[MAX_DATETIME_LENGTH];
-	char state_duration[48];
 	char *plugin_output_short=NULL;
 	char *plugin_output_long=NULL;
-	char plugin_output[MAX_INPUT_BUFFER];
+	char *plugin_output=NULL;
+	char last_check[MAX_DATETIME_LENGTH];
+	char state_duration[48];
 	char attempts[MAX_INPUT_BUFFER];
 	time_t ts_state_duration=0L;
 	time_t ts_last_check=0L;
@@ -4615,6 +4617,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	int seconds;
 	int duration_error=FALSE;
 	int status=OK;
+	int dummy=0;
 	int current_attempt=0;
 	int is_flapping=FALSE;
 	int problem_has_been_acknowledged=FALSE;
@@ -4727,21 +4730,20 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	/* plugin ouput */
 	if (status_show_long_plugin_output!=FALSE && plugin_output_long!=NULL) {
 		if(content_type==CSV_CONTENT)
-			snprintf(plugin_output,sizeof(plugin_output)-1,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
+			dummy=asprintf(&plugin_output,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
 		else
-			snprintf(plugin_output,sizeof(plugin_output)-1,"%s<BR>%s",html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
+			dummy=asprintf(&plugin_output,"%s<BR>%s",html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
 	} else if (plugin_output_short!=NULL) {
 		if(content_type==CSV_CONTENT)
-			snprintf(plugin_output,sizeof(plugin_output)-1,"%s",plugin_output_short);
+			dummy=asprintf(&plugin_output,"%s",plugin_output_short);
 		else
-			snprintf(plugin_output,sizeof(plugin_output)-1,"%s&nbsp;",html_encode(plugin_output_short,TRUE));
+			dummy=asprintf(&plugin_output,"%s&nbsp;",html_encode(plugin_output_short,TRUE));
 	} else {
 		if(content_type==CSV_CONTENT)
-			snprintf(plugin_output,sizeof(plugin_output)-1,"-");
+			dummy=asprintf(&plugin_output,"-");
 		else
-			snprintf(plugin_output,sizeof(plugin_output)-1,"&nbsp;");
+			dummy=asprintf(&plugin_output,"&nbsp;");
 	}
-	plugin_output[sizeof(plugin_output)-1]='\x0';
 
 	/* allocating new memory */
 	new_statusdata=(statusdata *)malloc(sizeof(statusdata));
