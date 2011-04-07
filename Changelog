@@ -17,6 +17,7 @@ ENHANCEMENTS
 * classic ui: Add config option to set start of week (sunday/monday) #1269
 * classic ui: Allow display of Network Outages for authorized hosts #1320 (thx mjbrooks)
 * classic ui: remove useless memory allocation when reading logfiles reverse (lifo) #1387
+* classic ui: speed up data processing in summary.cgi #1392
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 
