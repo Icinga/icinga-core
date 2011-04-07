@@ -97,7 +97,7 @@ int add_log_filter(int requested_filter, int include_exclude) {
 	else if (include_exclude==LOGFILTER_EXCLUDE)
 		temp_filter->exclude=requested_filter;
 	else {
-		free(temp_filter);
+		my_free(temp_filter);
 		return READLOG_ERROR;
 	}
 
@@ -179,6 +179,9 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 		}
 
 		while(1){
+
+			/* free memory */
+			my_free(input);
 
 			if((input=mmap_fgets(thefile))==NULL)
 				break;
@@ -334,7 +337,7 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 
 			temp_entry->timestamp=timestamp;
 			temp_entry->type=type;
-			temp_entry->entry_text=temp_buffer;
+			temp_entry->entry_text=strdup(temp_buffer);
 			
 			if (reverse==TRUE) {
 				if (entry_list==NULL){
@@ -360,39 +363,23 @@ int get_log_entries(char *log_file, char *search_string, int reverse,time_t ts_s
 	return READLOG_OK;
 }
 
-
-/** @brief returns next log entry from log entry list
- *  @return a logentry struct with the current entry
+/** @brief frees all memory allocated to list of log filters in memory
  *  @author Ricardo Bartels
- *
- *  calling this function returns the next log entry from the stack.
 **/
-logentry *next_log_entry(void) {
-	logentry *temp_entry;
-	logentry *next_entry;
-	int temp_int=0;
-	time_t temp_ts;
+void free_log_filters(void){
+	logfilter *temp_filter=NULL;
+	logfilter *next_filter=NULL;
 
-	if(entry_list==NULL || entry_list->entry_text==NULL)
-		return NULL;
+	for(temp_filter=filter_list;temp_filter!=NULL;) {
+		next_filter=temp_filter->next;
+		my_free(temp_filter);
+		temp_filter=next_filter;
+	}
 
-	temp_int=entry_list->type;
-	temp_ts=entry_list->timestamp;
+	filter_list=NULL;
 
-	temp_entry=(logentry *)malloc(sizeof(logentry));
-	if(temp_entry==NULL)
-		return NULL;
-	
-	temp_entry->entry_text=strndup(entry_list->entry_text,MAX_INPUT_BUFFER);
-	temp_entry->type=temp_int;
-	temp_entry->timestamp=temp_ts;
-
-	next_entry=entry_list->next;
-	entry_list=next_entry;
-
-	return temp_entry;
+	return;
 }
-
 
 /** @brief frees all memory allocated to list of log entries in memory
  *  @author Ricardo Bartels
@@ -401,17 +388,15 @@ void free_log_entries(void){
 	logentry *temp_entry;
 	logentry *next_entry;
 
-	if(entry_list==NULL)
-		return;
-
-	temp_entry=entry_list;
-	while(temp_entry!=NULL){
+	for(temp_entry=entry_list;temp_entry!=NULL;) {
 		next_entry=temp_entry->next;
-		if(entry_list->entry_text!=NULL)
-			my_free(entry_list->entry_text);
-		my_free(entry_list);
+		if(temp_entry->entry_text!=NULL)
+		    my_free(temp_entry->entry_text);
+		my_free(temp_entry);
 		temp_entry=next_entry;
 	}
+
+	entry_list=NULL;
 
 	return;
 }

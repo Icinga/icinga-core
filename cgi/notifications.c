@@ -46,6 +46,8 @@ extern int 	display_header;
 extern int 	daemon_check;
 extern int 	content_type;
 
+extern logentry *entry_list;
+
 extern char 	*csv_delimiter;
 extern char 	*csv_data_enclosure;
 
@@ -443,6 +445,8 @@ void display_notifications(void){
 
 	status = get_log_entries(log_file_to_use,NULL,reverse,-1,-1);
 
+	free_log_filters();
+
 	if (status==READLOG_ERROR_MEMORY) {
 		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
 	}
@@ -451,6 +455,7 @@ void display_notifications(void){
 		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
 		error_text[sizeof(error_text)-1]='\x0';
 		print_generic_error_message(error_text,NULL,0);
+		free_log_entries();
 		return;
 	}
 
@@ -487,7 +492,7 @@ void display_notifications(void){
 	if (status==READLOG_OK) {
 
 		/* check all entries */
-		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
+		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
 
 			/* get the date/time */
 			get_time_string(&temp_entry->timestamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
@@ -684,13 +689,10 @@ void display_notifications(void){
 					printf("</tr>\n");
 				}
 			}
-
-			my_free(temp_entry->entry_text);
-			my_free(temp_entry);			
 		}
-
-		free_log_entries();
 	}
+
+	free_log_entries();
 
 	if(content_type!=CSV_CONTENT){
 		printf("</table>\n");

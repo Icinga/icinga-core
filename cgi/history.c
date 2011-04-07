@@ -49,6 +49,8 @@ extern int enable_splunk_integration;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
+
+extern logentry *entry_list;
 /** @} */
 
 /** @name Vars which are imported for cgiutils
@@ -476,13 +478,15 @@ void show_history(void){
 		snprintf(error_text,sizeof(error_text),"Error: Could not open log file '%s' for reading!",log_file_to_use);
 		error_text[sizeof(error_text)-1]='\x0';
 		print_generic_error_message(error_text,NULL,0);
+		/* free memory */
+		free_log_entries();
 		return;
 
 	} else if (status==READLOG_OK) {
 
 		printf("<P><DIV CLASS='logEntries'>\n");
 
-		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
+		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
 
 			strcpy(image,"");
 			strcpy(image_alt,"");
@@ -870,18 +874,15 @@ void show_history(void){
 				}
 			}
 
-			my_free(temp_entry->entry_text);
-			my_free(temp_entry);
-
 			/* free memory */
 			free(entry_host_name);
 			entry_host_name=NULL;
 			free(entry_service_desc);
 			entry_service_desc=NULL;
 		}
-
-		free_log_entries();
 	}
+
+	free_log_entries();
 
 	printf("</DIV></P>\n");
 

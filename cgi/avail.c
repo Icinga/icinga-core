@@ -44,6 +44,7 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern service   *service_list;
 extern timeperiod *timeperiod_list;
+extern logentry  *entry_list;
 
 extern int       log_rotation_method;
 
@@ -2806,7 +2807,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 	
 	if (status==READLOG_OK) {
 
-		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
+		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
 		
 			/* program starts/restarts */
 			if(temp_entry->type==LOGENTRY_STARTUP)
@@ -3017,12 +3018,11 @@ void scan_log_file_for_archived_state_data(char *filename){
 						break;
 				}
 			}
-		
-			my_free(temp_entry->entry_text);
-			my_free(temp_entry);
 		}
-		free_log_entries();
 	}
+
+	free_log_entries();
+
 	return;
 }
 

@@ -59,6 +59,8 @@ extern int daemon_check;
 extern int date_format;
 extern int content_type;
 extern int refresh;
+
+extern logentry *entry_list;
 /** @} */
 
 /** @name Vars which are imported for cgiutils
@@ -659,6 +661,8 @@ void display_logentries() {
 		current_archive--;
 	}
 
+	free_log_filters();
+
 	/* dealing with errors */
 	if (read_status==READLOG_ERROR_MEMORY) {
 		if (content_type==CSV_CONTENT)
@@ -690,7 +694,7 @@ void display_logentries() {
 			printf("%sLog Entry%s\n",csv_data_enclosure,csv_data_enclosure);
 		}
 
-		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
+		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
 
 			/* set the correct icon and icon alt text for current log entry */
 			if(temp_entry->type==LOGENTRY_STARTUP){
@@ -884,16 +888,13 @@ void display_logentries() {
 			}
 
 			user_has_seen_something=TRUE;
-
-			my_free(temp_entry->entry_text);
-			my_free(temp_entry);
 		}
 
 		if (content_type!=CSV_CONTENT)
 			printf("</DIV><HR>\n");
-
-		free_log_entries();
 	}
+
+	free_log_entries();
 
 	if (user_has_seen_something==FALSE && content_type!=CSV_CONTENT)
 		printf("<P><DIV CLASS='warningMessage'>No log entries found!</DIV></P>");

@@ -28,6 +28,8 @@
 #ifndef _READLOGS_H
 #define _READLOGS_H
 
+#include "config.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -99,7 +101,7 @@ extern "C" {
 /** @}*/
 
 
-/** @name RED LOG ENTRIES RETURN CODES
+/** @name READ LOG ENTRIES RETURN CODES
  @{**/
 
 #define READLOG_OK		0
@@ -136,7 +138,7 @@ typedef struct logentry_filter {
     @{ **/
 int add_log_filter(int, int);
 int get_log_entries(char *, char *, int, time_t, time_t);
-logentry *next_log_entry(void);
+void free_log_filters(void);
 void free_log_entries(void);
 /**@}*/
 

@@ -51,6 +51,7 @@ extern int     log_rotation_method;
 
 extern host *host_list;
 extern service *service_list;
+extern logentry *entry_list;
 
 #include "../include/skiplist.h"
 extern skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
@@ -2397,39 +2398,6 @@ void read_archived_state_data(void){
 	printf("Newest archive: %d\n",newest_archive);
 #endif
 
-	/* read in all the necessary archived logs */
-	for(current_archive=newest_archive;current_archive<=oldest_archive;current_archive++){
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive,filename,sizeof(filename)-1);
-
-#ifdef DEBUG	
-		printf("\tCurrent archive: %d (%s)\n",current_archive,filename);
-#endif
-
-		/* scan the log file for archived state data */
-		scan_log_file_for_archived_state_data(filename);
-	        }
-
-	return;
-}
-
-
-/* grabs archives state data from a log file */
-void scan_log_file_for_archived_state_data(char *filename){
-	char entry_host_name[MAX_INPUT_BUFFER];
-	char entry_service_desc[MAX_INPUT_BUFFER];
-	char *plugin_output=NULL;
-	char *temp_buffer=NULL;
-	logentry *temp_entry=NULL;
-	int state_type=0,status;
-
-	/* print something so browser doesn't time out */
-	if(content_type==HTML_CONTENT){
-		printf(" ");
-		fflush(NULL);
-	}
-
 	/* Service filter */
 	add_log_filter(LOGENTRY_SERVICE_OK,LOGFILTER_INCLUDE);
 	add_log_filter(LOGENTRY_SERVICE_WARNING,LOGFILTER_INCLUDE);
@@ -2454,6 +2422,40 @@ void scan_log_file_for_archived_state_data(char *filename){
 		add_log_filter(LOGENTRY_BAILOUT,LOGFILTER_INCLUDE);
 	}
 
+	/* read in all the necessary archived logs */
+	for(current_archive=newest_archive;current_archive<=oldest_archive;current_archive++){
+
+		/* get the name of the log file that contains this archive */
+		get_log_archive_to_use(current_archive,filename,sizeof(filename)-1);
+
+#ifdef DEBUG	
+		printf("\tCurrent archive: %d (%s)\n",current_archive,filename);
+#endif
+
+		/* scan the log file for archived state data */
+		scan_log_file_for_archived_state_data(filename);
+	}
+
+	free_log_filters();
+
+	return;
+}
+
+
+/* grabs archives state data from a log file */
+void scan_log_file_for_archived_state_data(char *filename){
+	char entry_host_name[MAX_INPUT_BUFFER];
+	char entry_service_desc[MAX_INPUT_BUFFER];
+	char *plugin_output=NULL;
+	char *temp_buffer=NULL;
+	logentry *temp_entry=NULL;
+	int state_type=0,status;
+
+	/* print something so browser doesn't time out */
+	if(content_type==HTML_CONTENT){
+		printf(" ");
+		fflush(NULL);
+	}
 
 	status = get_log_entries(filename,NULL,FALSE,t1-(60*60*24*backtrack_archives),t2);
 
@@ -2470,7 +2472,7 @@ void scan_log_file_for_archived_state_data(char *filename){
 #endif
 
 
-		for(temp_entry=next_log_entry();temp_entry!=NULL;temp_entry=next_log_entry()) {
+		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
 			
 			if (ignore_daemon_restart==FALSE) {
 				/* program starts/restarts */
@@ -2594,9 +2596,6 @@ void scan_log_file_for_archived_state_data(char *filename){
 						break;
 				}
 			}
-		
-			my_free(temp_entry->entry_text);
-			my_free(temp_entry);
 		}
 		free_log_entries();
 	}
