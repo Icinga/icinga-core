@@ -241,10 +241,9 @@ int ido2db_db_init(ido2db_idi *idi) {
 		        case IDO2DB_DBSERVER_ORACLE:
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 				/* don't allow user to set table prefix for oracle */
-        		        if ((ido2db_db_tablenames[x] = (char *) malloc(strlen(ido2db_db_rawtablenames[x])))==NULL)
+				if ((ido2db_db_tablenames[x]=strdup(ido2db_db_rawtablenames[x]))==NULL) 
                         		return IDO_ERROR;
 
-				sprintf(ido2db_db_tablenames[x], "%s", ido2db_db_rawtablenames[x]);
 #endif /* Oracle ocilib specific */
 		                break;
 		        case IDO2DB_DBSERVER_SQLITE:

@@ -8,7 +8,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-03-27 Thomas Dreﬂler
+-- current version: 2011-04-03 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
@@ -121,6 +121,7 @@ BEGIN
 	|| ' WHERE instance_id='
 	|| p_id;
 	EXECUTE IMMEDIATE v_stmt_str;
+	exception when NO_DATA_FOUND then null;
 END;
 /
 
@@ -141,6 +142,7 @@ BEGIN
 	|| p_time
 	|| ')';
         EXECUTE IMMEDIATE v_stmt_str;
+	exception when NO_DATA_FOUND then null;
 END;
 /
 

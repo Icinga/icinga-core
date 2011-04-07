@@ -16,7 +16,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 -- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-03-27 Thomas Dreﬂler
+-- current version: 2011-04-03 Thomas Dressler
 --
 -- -- --------------------------------------------------------
 */
@@ -39,11 +39,11 @@ DEFINE LOBFS=./
 icinga tablespaces and user must fit definitions in create_icinga_objects_oracle.sql
 */
 
-DEFINE DATATBS=ICINGA_DATA1
-DEFINE IDXTBS=ICINGA_IDX1
-DEFINE LOBTBS=ICINGA_LOB1
-DEFINE ICINGA_USER=icinga14
-DEFINE ICINGA_PASSWORD=icinga14
+DEFINE DATATBS=ICINGA_DATA
+DEFINE IDXTBS=ICINGA_IDX
+DEFINE LOBTBS=ICINGA_LOB
+DEFINE ICINGA_USER=icinga
+DEFINE ICINGA_PASSWORD=icinga
 -- -----------------------------------------
 -- set sqlplus parameter
 -- -----------------------------------------
