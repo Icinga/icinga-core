@@ -379,8 +379,6 @@ install-basic:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(SPOOLDIR)
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(SPOOLDIR)/checkresults
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(SPOOLDIR)/rw
 	if [ $(INSTALLPERLSTUFF) = yes ]; then \
 		$(INSTALL) -m 664 $(INSTALL_OPTS) p1.pl $(DESTDIR)$(BINDIR); \
 	fi;
@@ -487,8 +485,8 @@ install-daemoninit:
 
 
 install-commandmode:
-	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(SPOOLDIR)/rw
-	chmod g+s $(DESTDIR)$(SPOOLDIR)/rw
+	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(LOGDIR)/rw
+	chmod g+s $(DESTDIR)$(LOGDIR)/rw
 
 	@echo ""
 	@echo "*** External command directory configured ***"
