@@ -34,7 +34,7 @@ LDFLAGS=@LDFLAGS@ @LIBS@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 LOGDIR=@localstatedir@
-SPOOLDIR=@SPOOLDIR@
+CHECKRESULTDIR=@CHECKRESULTDIR@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 CGIDIR=@sbindir@
@@ -378,7 +378,7 @@ install-basic:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBEXECDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
-	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(SPOOLDIR)
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CHECKRESULTDIR)
 	if [ $(INSTALLPERLSTUFF) = yes ]; then \
 		$(INSTALL) -m 664 $(INSTALL_OPTS) p1.pl $(DESTDIR)$(BINDIR); \
 	fi;
