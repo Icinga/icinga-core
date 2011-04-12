@@ -610,6 +610,8 @@ int my_fdcopy(char *, char *, int);				/* copies a named source to an already op
 void convert_timeperiod_to_times(int, time_t *, time_t *);	/* converts time period to start and end unix timestamps */
 int string_to_time(char *, time_t *);				/* converts a defined formated string to unix timestamp */
 
+int is_dlst_time(time_t *);
+
 /******************************** MULTIURL PATCH *******************************/
 
 #ifndef DISABLE_MULTIURL
