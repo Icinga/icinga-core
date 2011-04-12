@@ -907,6 +907,13 @@ void document_header(int cgi_id, int use_stylesheet){
 		return;
 	}
 
+	if(content_type==JSON_CONTENT) {
+		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
+		printf("{\n");
+		return;
+	}
+
+
 	if(cgi_id!=ERROR_CGI_ID){
 		// send HTML CONTENT
 		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
@@ -1069,15 +1076,20 @@ void document_footer(int cgi_id){
                         break;
 	}
 
-	if(embedded || content_type!=HTML_CONTENT)
-		return;
-
 	if(content_type==WML_CONTENT){
 		/* used by cmd.cgi */
 		printf("</card>\n");
 		printf("</wml>\n");
 		return;
 	}
+
+	if(content_type==JSON_CONTENT){
+		printf("}\n");
+		return;
+	}
+
+	if(embedded || content_type!=HTML_CONTENT)
+		return;
 
 	if(cgi_id==STATUSWML_CGI_ID) {
 		printf("</wml>\n");

@@ -274,6 +274,7 @@ extern "C" {
 #define WML_CONTENT		1
 #define IMAGE_CONTENT		2
 #define CSV_CONTENT		3
+#define JSON_CONTENT		4
 
 
 /************************ CSV OUTPUT CHARACTERS ****************************/
