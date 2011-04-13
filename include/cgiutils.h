@@ -274,6 +274,7 @@ extern "C" {
 #define WML_CONTENT		1
 #define IMAGE_CONTENT		2
 #define CSV_CONTENT		3
+#define JSON_CONTENT		4
 
 
 /************************ CSV OUTPUT CHARACTERS ****************************/
@@ -609,6 +610,8 @@ int my_fdcopy(char *, char *, int);				/* copies a named source to an already op
 
 void convert_timeperiod_to_times(int, time_t *, time_t *);	/* converts time period to start and end unix timestamps */
 int string_to_time(char *, time_t *);				/* converts a defined formated string to unix timestamp */
+
+int is_dlst_time(time_t *);
 
 /******************************** MULTIURL PATCH *******************************/
 

@@ -382,6 +382,12 @@ int process_cgivars(void){
 			content_type=CSV_CONTENT;
 		}
 
+		/* we found the JSON output option */
+		else if(!strcmp(variables[x],"jsonoutput")){
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
+
 		/* we found the order argument */
 		else if(!strcmp(variables[x],"oldestfirst"))
 			reverse=TRUE;
@@ -435,6 +441,7 @@ void display_notifications(void){
 	int total_notifications=0;
 	int notification_detail_type=NOTIFICATION_SERVICE_CRITICAL;
 	int odd=0;
+	int json_start=TRUE;
 	host *temp_host=NULL;
 	service *temp_service=NULL;
 	logentry *temp_entry=NULL;
@@ -460,7 +467,9 @@ void display_notifications(void){
 	}
 
 	if (status==READLOG_OK) {
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT)
+			printf("\"notifications\": [\n");
+		else if(content_type==CSV_CONTENT) {
 			printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sSERVICE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sTYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -661,8 +670,21 @@ void display_notifications(void){
 					odd=0;
 				else
 					odd=1;
-			
-				if(content_type==CSV_CONTENT) {
+
+				if(content_type==JSON_CONTENT) {
+					if (json_start==FALSE)
+						printf(",\n");
+					printf("{\"host\": \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)
+						printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+					else
+						printf("\"service\": \"N/A\", ");
+					printf("\"type\": \"%s\", ",alert_level);
+					printf("\"time\": \"%s\", ",date_time);
+					printf("\"contact\": \"%s\", ",contact_name);
+					printf("\"notification_command\": \"%s\", ",method_name);
+					printf("\"information\": \"%s\"}",escape_newlines(temp_buffer));
+				} else if(content_type==CSV_CONTENT) {
 					printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
 					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)
 						printf("%s%s%s%s",csv_data_enclosure,(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,csv_data_enclosure,csv_delimiter);
@@ -688,13 +710,15 @@ void display_notifications(void){
 					printf("<td CLASS='notifications%s'>%s</td>\n",(odd)?"Even":"Odd",html_encode(temp_buffer,FALSE));
 					printf("</tr>\n");
 				}
+				if (json_start==TRUE)
+					json_start=FALSE;
 			}
 		}
 	}
 
 	free_log_entries();
 
-	if(content_type!=CSV_CONTENT){
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</table>\n");
 
 		printf("</div>\n");
@@ -713,6 +737,8 @@ void display_notifications(void){
 			printf(" in %s log file</DIV></P>",(log_archive==0)?"the current":"this archived");
 		} else
 			printf("<DIV align=center>%d Notification%s</DIV>",total_notifications,(total_notifications==1)?"":"s");
+	}else if (content_type==JSON_CONTENT){
+		printf("\n]\n");
 	}
 
 	return;

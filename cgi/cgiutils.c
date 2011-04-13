@@ -907,6 +907,13 @@ void document_header(int cgi_id, int use_stylesheet){
 		return;
 	}
 
+	if(content_type==JSON_CONTENT) {
+		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
+		printf("{\n");
+		return;
+	}
+
+
 	if(cgi_id!=ERROR_CGI_ID){
 		// send HTML CONTENT
 		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
@@ -1069,15 +1076,20 @@ void document_footer(int cgi_id){
                         break;
 	}
 
-	if(embedded || content_type!=HTML_CONTENT)
-		return;
-
 	if(content_type==WML_CONTENT){
 		/* used by cmd.cgi */
 		printf("</card>\n");
 		printf("</wml>\n");
 		return;
 	}
+
+	if(content_type==JSON_CONTENT){
+		printf("}\n");
+		return;
+	}
+
+	if(embedded || content_type!=HTML_CONTENT)
+		return;
 
 	if(cgi_id==STATUSWML_CGI_ID) {
 		printf("</wml>\n");
@@ -2562,6 +2574,12 @@ int my_fdcopy(char *source, char *dest, int dest_fd){
 	return OK;
 }
 
+/* Checks if the given time is in daylight time saving period */
+int is_dlst_time(time_t *time) {
+	struct tm *bt = localtime(time);
+	return bt->tm_isdst;
+}
+
 /* convert timeperiodes to timestamps */
 void convert_timeperiod_to_times(int type, time_t *ts_start, time_t *ts_end){
 	time_t current_time;
@@ -2629,8 +2647,7 @@ void convert_timeperiod_to_times(int type, time_t *ts_start, time_t *ts_end){
 			if(t->tm_mon==0){
 				t->tm_mon=11;
 				t->tm_year--;
-				}
-			else
+			} else
 				t->tm_mon--;
 			*ts_start=mktime(t);
 			break;
@@ -2663,10 +2680,25 @@ void convert_timeperiod_to_times(int type, time_t *ts_start, time_t *ts_end){
 			break;
 		case TIMEPERIOD_NEXTPROBLEM:
 			/* Time period will be defined later */
-			/* oly used in trends.cgi */
+			/* only used in trends.cgi */
 			break;
 		default:
 			break;
+	}
+
+	/* check if interval is across dlst change and adjust timestamps with compensation */
+	if (is_dlst_time(ts_start) != is_dlst_time(ts_end)) {
+		t=localtime(&current_time);
+		/* in DST */
+		if (t->tm_isdst==1) {
+			/* if end is also in DST */
+			if (is_dlst_time(ts_end)==1)
+				*ts_start=*ts_start+3600;
+		} else {
+			if (is_dlst_time(ts_end)==0)
+				*ts_start=*ts_start-3600;
+		}
+
 	}
 
 	return;
