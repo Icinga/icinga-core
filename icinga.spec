@@ -17,7 +17,7 @@ License: GPLv2+
 Group: Applications/System
 URL: http://www.icinga.org/
 
-Source0: http://dl.sf.net/%{name}/%{name}-%{version}.tar.gz
+Source0: http://dl.sf.net/icinga/icinga-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires: gcc
@@ -82,25 +82,25 @@ Documentation for %{name}
 %setup -q -n %{name}-%{version}
 
 # /usr/local/nagios is hardcoded in many places
-%{__perl} -pi.orig -e 's|/usr/local/nagios/var/rw|%{_localstatedir}/spool/nagios/rw|g;' contrib/eventhandlers/submit_check_result
+%{__perl} -pi.orig -e 's|/usr/local/nagios/var/rw|%{_localstatedir}/nagios/rw|g;' contrib/eventhandlers/submit_check_result
 
 %build
 %configure \
-    --datadir="%{_datadir}/%{name}" \
-    --datarootdir="%{_datadir}/%{name}" \
-    --libexecdir="%{_datadir}/%{name}" \
-    --localstatedir="%{_localstatedir}/log/%{name}" \
-    --with-checkresult-dir="%{_localstatedir}/spool/%{name}/checkresults" \
-    --sbindir="%{_libdir}/%{name}/cgi" \
-    --sysconfdir="%{_sysconfdir}/%{name}" \
-    --with-cgiurl="/%{name}/cgi-bin" \
+    --datadir="%{_datadir}/icinga" \
+    --datarootdir="%{_datadir}/icinga" \
+    --libexecdir="%{_datadir}/icinga" \
+    --localstatedir="%{_localstatedir}/icinga" \
+    --with-checkresult-dir="%{_localstatedir}/icinga/checkresults" \
+    --sbindir="%{_libdir}/icinga/cgi" \
+    --sysconfdir="%{_sysconfdir}/icinga" \
+    --with-cgiurl="/icinga/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
-    --with-htmurl="/%{name}" \
+    --with-htmurl="/icinga" \
     --with-init-dir="%{_initrddir}" \
-    --with-lockfile="%{logdir}/%{name}.pid" \
+    --with-lockfile="%{_localstatedir}/icinga/icinga.pid" \
     --with-mail="/bin/mail" \
     --with-icinga-user="icinga" \
     --with-icinga-group="icinga" \
@@ -131,26 +131,21 @@ Documentation for %{name}
 
 ### FIX log-paths
 %{__perl} -pi -e '
-        s|log_file.*|log_file=%{logdir}/%{name}.log|;
+        s|log_file.*|log_file=%{logdir}/icinga.log|;
         s|log_archive_path=.*|log_archive_path=%{logdir}/archives|;
-        s|debug_file=.*|debug_file=%{logdir}/%{name}.debug|;
-        s|command_file=.*|command_file=%{_localstatedir}/spool/%{name}/rw/%{name}.cmd|;
-   ' %{buildroot}%{_sysconfdir}/%{name}/%{name}.cfg
-
-### Move command file dir to spool dir
-mv %{buildroot}%{_localstatedir}/log/%{name}/rw %{buildroot}%{_localstatedir}/spool/%{name}
+        s|debug_file=.*|debug_file=%{logdir}/icinga.debug|;
+   ' %{buildroot}%{_sysconfdir}/icinga/icinga.cfg
 
 ### make logdirs
 %{__mkdir} -p %{buildroot}%{logdir}/
 %{__mkdir} -p %{buildroot}%{logdir}/archives/
 
 ### move idoutils sample configs to final name
-mv %{buildroot}%{_sysconfdir}/%{name}/ido2db.cfg-sample %{buildroot}%{_sysconfdir}/%{name}/ido2db.cfg
-mv %{buildroot}%{_sysconfdir}/%{name}/idomod.cfg-sample %{buildroot}%{_sysconfdir}/%{name}/idomod.cfg
+mv %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg-sample %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg
+mv %{buildroot}%{_sysconfdir}/icinga/idomod.cfg-sample %{buildroot}%{_sysconfdir}/icinga/idomod.cfg
 
 ### copy idutils db-script
-cp -r module/idoutils/db %{buildroot}%{_sysconfdir}/%{name}/idoutils
-
+cp -r module/idoutils/db %{buildroot}%{_sysconfdir}/icinga/idoutils
 
 %pre
 # Add icinga user
@@ -187,73 +182,69 @@ fi
 
 %files
 %defattr(-,icinga,icinga,-)
-%attr(755,root,root) %{_initrddir}/%{name}
-%dir %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/icinga.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/commands.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/contacts.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/localhost.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/printer.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/switch.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/templates.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/timeperiods.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/objects/windows.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/resource.cfg
+%attr(755,root,root) %{_initrddir}/icinga
+%dir %{_sysconfdir}/icinga
+%config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
+%config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
+%config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/commands.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/contacts.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/localhost.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/printer.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/switch.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/templates.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/timeperiods.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/windows.cfg
+%config(noreplace) %{_sysconfdir}/icinga/resource.cfg
 %{_bindir}/icinga
 %{_bindir}/icingastats
 %{_bindir}/p1.pl
 %{logdir}
-%dir %{_localstatedir}/spool/%{name}/checkresults
-%attr(2755,icinga,icingacmd) %{_localstatedir}/spool/%{name}/rw/
+%dir %{_localstatedir}/icinga
+%dir %{_localstatedir}/icinga/checkresults
+%attr(2755,icinga,icingacmd) %{_localstatedir}/icinga/rw/
 
 %files doc
 %defattr(-,icinga,icinga,-)
-%{_datadir}/%{name}/docs
-%{_datadir}/%{name}/doxygen
+%{_datadir}/icinga/docs
+%{_datadir}/icinga/doxygen
 
 %files gui
 %defattr(-,icinga,icinga,-)
-%config(noreplace) %attr(-,root,root) %{apacheconfdir}/%{name}.conf
-%dir %{_datadir}/%{name}
-%{_libdir}/%{name}/cgi
-%{_datadir}/%{name}/contexthelp
-%{_datadir}/%{name}/images
-%{_datadir}/%{name}/index.html
-%{_datadir}/%{name}/js
-%{_datadir}/%{name}/main.html
-%{_datadir}/%{name}/media
-%{_datadir}/%{name}/menu.html
-%{_datadir}/%{name}/robots.txt
-%{_datadir}/%{name}/sidebar.html
-%{_datadir}/%{name}/ssi
-%{_datadir}/%{name}/stylesheets
-%{_datadir}/%{name}/top.html
+%config(noreplace) %attr(-,root,root) %{apacheconfdir}/icinga.conf
+%dir %{_datadir}/icinga
+%{_libdir}/icinga/cgi
+%{_datadir}/icinga/contexthelp
+%{_datadir}/icinga/images
+%{_datadir}/icinga/index.html
+%{_datadir}/icinga/js
+%{_datadir}/icinga/main.html
+%{_datadir}/icinga/media
+%{_datadir}/icinga/menu.html
+%{_datadir}/icinga/robots.txt
+%{_datadir}/icinga/sidebar.html
+%{_datadir}/icinga/ssi
+%{_datadir}/icinga/stylesheets
+%{_datadir}/icinga/top.html
 
 %files idoutils
 %defattr(-,icinga,icinga,-)
 %attr(755,root,root) %{_initrddir}/ido2db
-%config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
-%{_sysconfdir}/%{name}/idoutils
+%config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
+%config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
+%{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
 %{_bindir}/log2ido
 %{_bindir}/idomod.o
 
 %files api
 %defattr(-,icinga,icinga,-)
-%{_datadir}/%{name}/icinga-api
-%attr(-,%{apacheuser},%{apacheuser}) %{_datadir}/%{name}/icinga-api/log
+%{_datadir}/icinga/icinga-api
+%attr(-,%{apacheuser},%{apacheuser}) %{_datadir}/icinga/icinga-api/log
 
 
 %changelog
-* Thu Feb 17 2011 Christoph Maser <cmaser@gmx.de> - 1.3.0-3
-- move command file to /var/spool/icinga
-- move checkresults file to /var/spool/icinga
-- move pidfile file to /var/log/icinga
-
-* Tue Feb 15 2011 Christoph Maser <cmaser@gmx.de> - 1.3.0-2
+* Tue Feb 15 2011 Cheistoph Maser <cmaser@gmx.de> - 1.3.0-2
 - move cgis to libdir
 - remove suse suppot (packages available at opensuse build system)
 - add doxygen docs

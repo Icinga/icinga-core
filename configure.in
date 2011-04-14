@@ -261,14 +261,13 @@ if test x$HTTPD_CONF = xno; then
 fi
 AC_SUBST(HTTPD_CONF)
 
-dnl Location of check spool path
-AC_ARG_WITH(checkresult-dir,AC_HELP_STRING([--with-checkresult-dir=<path>],[obsolete option, use --with-spool-dir instead]),[AC_MSG_WARN([obsolete option, use --with-spool-dir instead])])
-SPOOLDIR=no
-AC_ARG_WITH(spool-dir,AC_HELP_STRING([--with-spool-dir=<path>],[sets path to spool base directory]),SPOOLDIR=$withval,SPOOLDIR=no)
-if test x$SPOOLDIR = xno; then
-	SPOOLDIR="$localstatedir/spool/icinga"
+dnl Location of check result path
+CHECKRESULTDIR=no
+AC_ARG_WITH(checkresult-dir,AC_HELP_STRING([--with-checkresult-dir=<path>],[sets path to check results spool directory]),CHECKRESULTDIR=$withval,CHECKRESULTDIR=no)
+if test x$CHECKRESULTDIR = xno; then
+	CHECKRESULTDIR="$localstatedir/spool/checkresults"
 fi
-AC_SUBST(SPOOLDIR)
+AC_SUBST(CHECKRESULTDIR)
 
 dnl Location of check result path
 TMPDIR=no
@@ -1217,7 +1216,7 @@ AC_MSG_RESULT([           Build IDOUtils:  no])
 fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
-AC_MSG_RESULT([          Spool directory:  $SPOOLDIR])
+AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])
 AC_MSG_RESULT([             Mail program:  $MAIL_PROG])
