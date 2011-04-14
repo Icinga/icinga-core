@@ -495,6 +495,12 @@ int process_cgivars(void){
 			content_type=CSV_CONTENT;
 		}
 
+		/* we found the CSV output option */
+		else if(!strcmp(variables[x],"jsonoutput")) {
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
+
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
 			embedded=TRUE;
@@ -544,6 +550,7 @@ void display_logentries() {
 	int newest_archive=0;
 	int current_archive=0;
 	int user_has_seen_something=FALSE;
+	int json_start=TRUE;
 	struct tm *time_ptr=NULL;
 	logentry *temp_entry=NULL;
 
@@ -681,17 +688,21 @@ void display_logentries() {
 	/* now we start displaying the log entries */
 	else {
 
-		if (content_type!=CSV_CONTENT) {
-			printf("<DIV CLASS='logEntries'>\n");
-
-			/* add export to csv link */
-			printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s' target='_blank'>Export to CSV</a></DIV>\n",get_export_csv_link(SHOWLOG_CGI));
-		} else {
+		if(content_type==JSON_CONTENT) {
+			display_timebreaks=FALSE;
+			printf("\"log_entries\": [\n");
+		}else if(content_type==CSV_CONTENT) {
 			display_timebreaks=FALSE;
 
 			printf("%sTimestamp%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sDate Time%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sLog Entry%s\n",csv_data_enclosure,csv_data_enclosure);
+
+		} else {
+			printf("<DIV CLASS='logEntries'>\n");
+
+			/* add export to csv link */
+			printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s' target='_blank'>Export to CSV</a></DIV>\n",get_export_csv_link(SHOWLOG_CGI));
 		}
 
 		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
@@ -867,12 +878,23 @@ void display_logentries() {
 			get_time_string(&temp_entry->timestamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			strip(date_time);
 
-			/* displays log entry depending on requested content type */
-			if (content_type==CSV_CONTENT) {
+			/* preparing logentries for json and csv output */
+			if(content_type==CSV_CONTENT || content_type==JSON_CONTENT){
 				for (i = 0; i < strlen(temp_entry->entry_text)-1; i++)
 					*(temp_entry->entry_text+i) = *(temp_entry->entry_text+i+1);
 				temp_entry->entry_text[strlen(temp_entry->entry_text)-1]='\x0';
+			}
 
+			/* displays log entry depending on requested content type */
+			if(content_type==JSON_CONTENT) {
+				// always add a comma, except for the first line
+				if (json_start==FALSE)
+					printf(",\n");
+				json_start=FALSE;
+				printf("{ \"timestamp\": \"%lu\", ",temp_entry->timestamp);
+				printf(" \"date_time\": \"%s\", ",date_time);
+				printf(" \"log_entry\": \"%s\"}",temp_entry->entry_text);
+			}else if(content_type==CSV_CONTENT) {
 				printf("%s%lu%s%s",csv_data_enclosure,temp_entry->timestamp,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s\n",csv_data_enclosure,temp_entry->entry_text,csv_data_enclosure);
@@ -890,8 +912,11 @@ void display_logentries() {
 			user_has_seen_something=TRUE;
 		}
 
-		if (content_type!=CSV_CONTENT)
+		if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 			printf("</DIV><HR>\n");
+		}else if (content_type==JSON_CONTENT)
+			printf("\n]\n");
+
 	}
 
 	free_log_entries();
