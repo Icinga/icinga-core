@@ -2252,6 +2252,17 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 			printf("ERROR: %s\n",title);
 		if(text!=NULL && text[0]!='\x0')
 			printf("ERROR: %s\n",text);
+	} else if(content_type==JSON_CONTENT) {
+		printf("\"error\": {\n\"title\": ");
+		if(title!=NULL && title[0]!='\x0')
+			printf("\"%s\",\n",title);
+		else
+			printf("null,\n");
+		printf("\"text\": ");
+		if(text!=NULL && text[0]!='\x0')
+			printf("\"%s\"\n}",text);
+		else
+			printf("null\n}");
 	} else {
 		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
 		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
