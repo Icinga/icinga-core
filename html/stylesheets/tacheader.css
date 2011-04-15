@@ -1,0 +1,119 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 9pt;
+	background: #D7D8DA;
+}
+
+img { border: 0px }
+
+a {
+	color: #000000;
+	text-decoration: none;
+}
+
+strong {
+	font-weight: bolder;
+}
+
+em {
+	font-style: italic;
+}
+
+p.legal {
+	font-size: 0.8em;
+	margin: 10px auto;
+}
+
+p { margin: 15px auto; }
+
+table td, table th {
+	vertical-align: middle;
+	margin: 0 0;
+	padding: 0 0;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+div.tacheader-link {
+	cursor: pointer;
+}
+
+div.tacheader-status-container {
+	border: 1px #a0a0a0 solid;
+	width: 180px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+div.tacheader-status {
+	font-size: 9pt;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	background-color: #c0c0c0;
+	text-align: center;
+	margin-top: auto;
+	margin-bottom: auto;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+div.tacheader-monitor {
+	font-size: 8pt;
+	padding: 2px;
+	text-align: left;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+div.tacheader-overall-status-item {
+	color: #000000;
+	padding: 3px;
+}
+
+div.tacheader-status-ok {
+	background-color: #00cc00;
+}
+
+div.tacheader-status-warning {
+	background-color: #ffA500;
+}
+
+div.tacheader-status-critical {
+	background-color: #ff0000;
+	color: #fff;
+}
+
+div.tacheader-status-up {
+	background-color: #00cc00;
+}
+
+div.tacheader-status-down {
+	background-color: #cc0000;
+}
+
+div.tacheader-status-unreachable {
+	background-color: #E066FF;
+}
+
+div.tacheader-status-unknown {
+	background-color: #E066FF;
+}
+
+table.tacheader-monitor-performance-container {
+	font-size: 9pt;
+	margin: 2.5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.tacheader-monitor-performance-container a {
+	color: #666666;
+	text-decoration: none;
+}

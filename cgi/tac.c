@@ -50,7 +50,7 @@ extern char   main_config_file[MAX_FILENAME_LENGTH];
 extern char   url_html_path[MAX_FILENAME_LENGTH];
 extern char   url_images_path[MAX_FILENAME_LENGTH];
 extern char   url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
+extern char   url_js_path[MAX_FILENAME_LENGTH];
 extern char   url_media_path[MAX_FILENAME_LENGTH];
 
 extern char *service_critical_sound;
@@ -74,6 +74,7 @@ extern int enable_flap_detection;
 extern int nagios_process_state;
 
 extern int tac_show_only_hard_state;
+extern int show_tac_header;
 
 
 void analyze_status_data(void);
@@ -94,6 +95,7 @@ extern int embedded;
 extern int refresh;
 extern int display_header;
 extern int daemon_check;
+extern int tac_header;
 
 hostoutage *hostoutage_list=NULL;
 
@@ -376,6 +378,11 @@ int process_cgivars(void){
 		else if(!strcmp(variables[x],"nodaemoncheck"))
 			daemon_check=FALSE;
 
+                /* we found the tac_header option */
+                else if(!strcmp(variables[x],"tac_header")){
+			tac_header=TRUE;
+			embedded=TRUE;
+			}
 		/* we received an invalid argument */
 		else
 			error=TRUE;
@@ -874,6 +881,184 @@ int is_route_to_host_blocked(host *hst){
 void display_tac_overview(void){
 	char host_health_image[16];
 	char service_health_image[16];
+
+        if(tac_header==TRUE && show_tac_header==FALSE){ // we want the top header, but not the tac version
+
+		/* no need to refresh */
+		refresh=FALSE;
+
+		printf("	<div id='banner' align='center'><img src='%s%s' alt='%s' /></div>",url_images_path,TAC_HEADER_DEFAULT_LOGO,TAC_HEADER_DEFAULT_LOGO_ALT);
+		return; //we're done here
+	}
+	else if(tac_header==TRUE && show_tac_header==TRUE){ // we want the tac header
+
+		printf("<table width='100%%' border='0'>\n");
+		printf("<tr>\n");
+		printf("<td width='auto'><table border='0'>\n");
+		printf("<tr>\n");
+		printf("<td nowrap='nowrap'><img src='%s%s' alt='Hosts' width='16' height='16' align='right' /></td>\n",url_images_path,TAC_HEADER_HOST_ICON);
+		printf("<td><table width='92%%' border='0'>\n");
+		printf("<tr>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(hosts_up > 0) {
+			printf("<div class='tacheader-status tacheader-status-up'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d'> %d UP </a></div>\n",STATUS_CGI,HOST_UP,hosts_up);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td width=auto>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(hosts_down > 0) {
+			printf("<div class='tacheader-status tacheader-status-down'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d'> %d DOWN </a></div>\n",STATUS_CGI,HOST_DOWN,hosts_down);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(hosts_unreachable > 0) {
+			printf("<div class='tacheader-status tacheader-status-unreachable'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d'> %d UNREACHABLE </a></div>\n",STATUS_CGI,HOST_UNREACHABLE,hosts_unreachable);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+		printf("<div class='tacheader-status tacheader-status-all'>");
+		printf("<a target='main' href='%s?hostgroup=all&hostprops=%d&style=hostdetail'> %d IN TOTAL </a></div>\n",STATUS_CGI,HOST_ACTIVE_CHECK,total_active_host_checks);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("</tr>\n");
+		printf("</table></td>\n");
+		printf("</tr>\n");
+		printf("<tr>\n");
+		printf("<td><img src='%s%s' alt='Services' width='16' height='16' align='right' /></td>\n",url_images_path,TAC_HEADER_SERVICE_ICON);
+		printf("<td nowrap='nowrap'><table width=auto border='0'>\n");
+		printf("<tr>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(services_ok > 0) {
+			printf("<div class='tacheader-status tacheader-status-ok'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?host=all&style=detail&servicestatustypes=%d'> %d OK </a></div>\n",STATUS_CGI,SERVICE_OK,services_ok);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(services_warning > 0) {
+			printf("<div class='tacheader-status tacheader-status-warning'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?host=all&style=detail&servicestatustypes=%d'> %d WARNING </a></div>\n",STATUS_CGI,SERVICE_WARNING,services_warning);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(services_critical > 0) {
+			printf("<div class='tacheader-status tacheader-status-critical'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?host=all&style=detail&servicestatustypes=%d'> %d CRITICAL </a></div>\n",STATUS_CGI,SERVICE_CRITICAL,services_critical);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+
+		if(services_unknown > 0) {
+			printf("<div class='tacheader-status tacheader-status-unknown'>");
+		}
+		else {
+			printf("<div class='tacheader-status tacheader-status-all'>");
+		}
+
+		printf("<a target='main' href='%s?host=all&style=detail&servicestatustypes=%d'> %d UNKNOWN </a></div>\n",STATUS_CGI,SERVICE_UNKNOWN,services_unknown);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("<td>\n");
+		printf("<div class='tacheader-overall-status-item'>\n");
+		printf("<div class='tacheader-status tacheader-status-all'>");
+		printf("<a target='main' href='%s?host=all&serviceprops=%d'> %d IN TOTAL </a></div>\n",STATUS_CGI,SERVICE_ACTIVE_CHECK,total_active_service_checks);
+		printf("</div>\n");
+		printf("</td>\n");
+		printf("</tr>\n");
+		printf("</table></td>\n");
+		printf("</tr>\n");
+		printf("</table></td>\n");
+
+		/* Monitor Performance */
+		printf("<td width='460px' style='background-image: url(%s%s)'><table width='280px' border='0' align='right' class='tacheader-monitor-performance-container'>\n",url_images_path,TAC_HEADER_LOGO);
+		printf("<tr>\n");
+		printf("<td><img src='%s%s' width='16' height='16' alt='Hosts (active/passive)' /></td>\n",url_images_path,TAC_HEADER_HOST_ICON);
+		printf("<td>\n");
+		printf("<div class='tacheader-monitor'>");
+		printf("<a target='main' href='%s?hostgroup=all&hostprops=%d&style=hostdetail'>%d</a> / <a target='main' href='%s?hostgroup=all&hostprops=%d&style=hostdetail'>%d</a></div>\n",STATUS_CGI,HOST_ACTIVE_CHECK,total_active_host_checks,STATUS_CGI,HOST_PASSIVE_CHECK,total_passive_host_checks);
+		printf("</td>\n");
+		printf("<td><img src='%s%s' width='16' height='16' alt='Services (active/passive)' /></td>\n",url_images_path,TAC_HEADER_SERVICE_ICON);
+		printf("<td>\n");
+		printf("<div class='tacheader-monitor'>");
+		printf("<a target='main' href='%s?host=all&serviceprops=%d'>%d</a> / <a target='main' href='%s?host=all&serviceprops=%d'>%d</a></div>\n",STATUS_CGI,SERVICE_ACTIVE_CHECK,total_active_service_checks,STATUS_CGI,SERVICE_PASSIVE_CHECK,total_passive_service_checks);
+		printf("</td>\n");
+		printf("</tr>\n");
+		printf("<tr>\n");
+		printf("<td><img src='%s%s' width='16' height='16' alt='Host Execution Time (min/avg/max)' /></td>\n",url_images_path,TAC_HEADER_EXECUTION_ICON);
+		printf("<td>\n");
+		printf("<div class='tacheader-monitor'>");
+		printf("<a target='main' href='%s?type=%d'>%.2f / %.2f / %.3f sec</a></div>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_host_execution_time,max_host_execution_time,average_host_execution_time);
+		printf("</td>\n");
+		printf("<td><img src='%s%s' width='16' height='16' alt='Service Execution Time (min/avg/max)' /></td>\n",url_images_path,TAC_HEADER_EXECUTION_ICON);
+		printf("<td>\n");
+		printf("<div class='tacheader-monitor'>");
+		printf("<a target='main' href='%s?type=%d'>%.2f / %.2f / %.3f sec</a></div>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_service_execution_time,max_service_execution_time,average_service_execution_time);
+		printf("</td>\n");
+		printf("</tr>\n");
+		printf("<tr>\n");
+		printf("<td><img src='%s%s' width='16' height='16' alt='Host Latency (min/avg/max)' /></td>\n",url_images_path,TAC_HEADER_LATENCY_ICON);
+		printf("<td>\n");
+		printf("<div class='tacheader-monitor'>");
+		printf("<a target='main' href='%s?type=%d'>%.2f / %.2f / %.3f sec</a></div>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_host_latency,max_host_latency,average_host_latency);
+		printf("</td>\n");
+		printf("<td><img src='%s%s' width='16' height='16' alt='Service Latency (min/avg/max)' /></td>\n",url_images_path,TAC_HEADER_LATENCY_ICON);
+		printf("<td>\n");
+		printf("<div class='tacheader-monitor'>");
+		printf("<a target='main' href='%s?type=%d'>%.2f / %.2f / %.3f sec</a></div>\n",EXTINFO_CGI,DISPLAY_PERFORMANCE,min_service_latency,max_service_latency,average_service_latency);
+		printf("</td>\n");
+		printf("</tr>\n");
+		printf("</table></td>\n");
+		printf("</tr>\n");
+		printf("</table>\n");
+
+		return; //we're done here
+	}
+
 
         if(display_header==TRUE){
         	printf("<p align=left>\n");

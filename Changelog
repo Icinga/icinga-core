@@ -18,6 +18,7 @@ ENHANCEMENTS
 * classic ui: Allow display of Network Outages for authorized hosts #1320 (thx mjbrooks)
 * classic ui: remove useless memory allocation when reading logfiles reverse (lifo) #1387
 * classic ui: speed up data processing in summary.cgi #1392
+* classic ui: Add an optional alternative CGI driven view for the top frame (Matthew Brooks) #1406
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 

@@ -131,6 +131,7 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
+int		show_tac_header=FALSE;
 int		showlog_initial_states=TRUE;
 int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
@@ -166,6 +167,7 @@ int embedded=FALSE;
 int display_header=TRUE;
 int refresh=TRUE;
 int daemon_check=TRUE;
+int tac_header=FALSE;
 
 extern char alert_message;
 extern char *host_name;
@@ -553,6 +555,9 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
 
+		else if(!strcmp(var,"show_tac_header"))
+			show_tac_header=(atoi(val)>0)?TRUE:FALSE;
+
 		else if(!strcmp(var,"showlog_initial_state") || !strcmp(var,"showlog_initial_states"))
 			showlog_initial_states=(atoi(val)>0)?TRUE:FALSE;
 
@@ -912,6 +917,35 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
 	}
 
+	/* is this tac.cgi?tac_header */
+	if(cgi_id==TAC_CGI_ID && tac_header==TRUE) {
+
+		printf("<html>\n");
+		printf("<head>\n");
+		printf("<title>Icinga</title>\n");
+		printf("<meta name='robots' content='noindex, nofollow' />\n");
+
+		/* is show_tac_header=1 in cgi.cfg? */
+		if(show_tac_header==TRUE) {
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,TAC_HEADER_CSS);
+		}
+		else { //no? show the classic header as the default
+			/* also used by html/sidebar.html, so we'll leave it as is for now */
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n",url_stylesheets_path);
+
+			/* these seem to have no point, but were in top.html
+			printf("<script type='text/javascript' src='../js/prototype.js'></script>\n");
+			printf("<script type='text/javascript' src='../js/scriptaculous.js'></script>\n");
+			*/
+		}
+
+		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
+		printf("</head>\n");
+		printf("<body>\n");
+
+		return; //safely return
+	}
+
 	if(embedded==TRUE)
 		return;
 
@@ -1069,7 +1103,11 @@ void document_footer(int cgi_id){
                         break;
 	}
 
-	if(embedded || content_type!=HTML_CONTENT)
+	/*
+	   top is embedded, so if this is top we don't want to return
+	   otherwise if embedded or HTML_CONTENT we do want to return
+	*/
+	if((embedded || content_type!=HTML_CONTENT) && tac_header==FALSE)
 		return;
 
 	if(content_type==WML_CONTENT){
