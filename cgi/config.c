@@ -159,7 +159,7 @@ int main(void){
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	if(content_type!=CSV_CONTENT){
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		/* begin top table */
 		printf("<table border=0 width=100%%>\n");
 		printf("<tr>\n");
@@ -251,7 +251,7 @@ int main(void){
 		break;
 		}
 
-	if(content_type!=CSV_CONTENT){
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</td>\n");
 
 		/* end of top table */
@@ -388,6 +388,12 @@ int process_cgivars(void){
 			content_type=CSV_CONTENT;
 		}
 
+		/* we found the JSON output option */
+		else if(!strcmp(variables[x],"jsonoutput")){
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
+
 		/* we received an invalid argument */
 		else
 			error=TRUE;
@@ -411,6 +417,7 @@ void display_hosts(void){
 	char time_string[16];
 	char *bg_class="";
 	int contact=0;
+	int json_start=TRUE;
 
 	/* see if user is authorized to view host information... */
 	if(is_authorized_for_configuration_information(&current_authdata)==FALSE){
@@ -418,7 +425,9 @@ void display_hosts(void){
 		return;
 	}
 
-	if(content_type==CSV_CONTENT){
+	if(content_type==JSON_CONTENT) {
+		printf("\"host_config\": [\n");
+	}else if(content_type==CSV_CONTENT) {
 		printf("%sHost Name%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sAlias/Description%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sAddress%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -527,7 +536,20 @@ void display_hosts(void){
 			bg_class="dataEven";
 		}
 
-		if(content_type==CSV_CONTENT){
+		/* print list in json format */
+		if(content_type==JSON_CONTENT) {
+			// always add a comma, except for the first line
+			if (json_start==FALSE)
+				printf(",\n");
+			json_start=FALSE;
+			printf("{ \"host_name\": \"%s\", ",temp_host->name);
+			printf("\"alias\": \"%s\", ",temp_host->alias);
+			printf("\"address\": \"%s\", ",temp_host->address);
+			printf("\"address6\": \"%s\", ",temp_host->address6);
+			printf("\"parent_hosts\": [ ");
+
+		/* print list in csv format */
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,temp_host->name,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_host->alias,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_host->address,csv_data_enclosure,csv_delimiter);
@@ -552,16 +574,21 @@ void display_hosts(void){
 			if(temp_hostsmember!=temp_host->parent_hosts)
 				printf(", ");
 
-			if(content_type==CSV_CONTENT)
+			if(content_type==JSON_CONTENT)
+				printf("{ \"host_name\": \"%s\" } ",temp_hostsmember->host_name);
+			else if(content_type==CSV_CONTENT)
 				printf("%s",temp_hostsmember->host_name);
 			else
 				printf("<a href='%s?type=hosts&expand=%s'>%s</a>\n",CONFIG_CGI,url_encode(temp_hostsmember->host_name),html_encode(temp_hostsmember->host_name,FALSE));
 		}
 
 		if(temp_host->parent_hosts==NULL)
-			printf("%s",(content_type==CSV_CONTENT)?"":"&nbsp;");
+			printf("%s",(content_type==CSV_CONTENT || content_type==JSON_CONTENT)?"":"&nbsp;");
 
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			printf("], ");
+			printf("\"max_check_attempts\": %d, ",temp_host->max_attempts);
+		}else if(content_type==CSV_CONTENT){
 			printf("%s%s",csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,temp_host->max_attempts,csv_data_enclosure,csv_delimiter);
 		}else{
@@ -571,18 +598,43 @@ void display_hosts(void){
 		}
 
 		get_interval_time_string(temp_host->check_interval,time_string,sizeof(time_string));
-		if(content_type==CSV_CONTENT)
+		if(content_type==JSON_CONTENT)
+			printf("\"check_interval\": \"%s\", ",time_string);
+		else if(content_type==CSV_CONTENT)
 			printf("%s%s%s%s",csv_data_enclosure,time_string,csv_data_enclosure,csv_delimiter);
 		else
 			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,time_string);
 
 		get_interval_time_string(temp_host->retry_interval,time_string,sizeof(time_string));
-		if(content_type==CSV_CONTENT)
+		if(content_type==JSON_CONTENT)
+			printf("\"retry_interval\": \"%s\", ",time_string);
+		else if(content_type==CSV_CONTENT)
 			printf("%s%s%s%s",csv_data_enclosure,time_string,csv_data_enclosure,csv_delimiter);
 		else
 			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,time_string);
 
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			if (temp_host->host_check_command==NULL)
+				printf("\"host_check_command\":  null, ");
+			else
+				printf("\"host_check_command\": \"%s\", ",temp_host->host_check_command);
+
+			if (temp_host->check_period==NULL)
+				printf("\"check_period\":  null, ");
+			else
+				printf("\"check_period\": \"%s\", ",temp_host->check_period);
+
+			printf("\"obsess_over\":  %s, ",(temp_host->obsess_over_host==TRUE)?"true":"false");
+			printf("\"enable_active_checks\":  %s, ",(temp_host->checks_enabled==TRUE)?"true":"false");
+			printf("\"enable_passive_checks\":  %s, ",(temp_host->accept_passive_host_checks==TRUE)?"true":"false");
+			printf("\"check_freshness\":  %s, ",(temp_host->check_freshness==TRUE)?"true":"false");
+			if(temp_host->freshness_threshold==0)
+				printf("\"freshness_threshold\":  \"auto-determined value\", ");
+			else
+				printf("\"freshness_threshold\":  %d, ",temp_host->freshness_threshold);
+
+			printf("\"default_contacts_default_groups\": [ ");
+		}else if(content_type==CSV_CONTENT){
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->host_check_command==NULL)?"":temp_host->host_check_command,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->check_period==NULL)?"":temp_host->check_period,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->obsess_over_host==TRUE)?"Yes":"No",csv_data_enclosure,csv_delimiter);
@@ -591,7 +643,7 @@ void display_hosts(void){
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->check_freshness==TRUE)?"Yes":"No",csv_data_enclosure,csv_delimiter);
 			printf("%s",csv_data_enclosure);
 			if(temp_host->freshness_threshold==0)
-				printf("Auto-determined value\n");
+				printf("Auto-determined value");
 			else
 				printf("%d",temp_host->freshness_threshold);
 			printf("%s%s",csv_data_enclosure,csv_delimiter);
@@ -637,7 +689,9 @@ void display_hosts(void){
 			if(contact>1)
 				printf(", ");
 
-			if(content_type==CSV_CONTENT)
+			if(content_type==JSON_CONTENT)
+				printf("{ \"contact_name\": \"%s\" } ",temp_contactsmember->contact_name);
+			else if(content_type==CSV_CONTENT)
 				printf("%s",temp_contactsmember->contact_name);
 			else
 				printf("<A HREF='%s?type=contacts&expand=%s'>%s</A>\n",CONFIG_CGI,url_encode(temp_contactsmember->contact_name),html_encode(temp_contactsmember->contact_name,FALSE));
@@ -647,27 +701,36 @@ void display_hosts(void){
 			if(contact>1)
 				printf(", ");
 
-			if(content_type==CSV_CONTENT)
+			if(content_type==JSON_CONTENT)
+				printf("{ \"contactgroup_name\": \"%s\" } ",temp_contactgroupsmember->group_name);
+			else if(content_type==CSV_CONTENT)
 				printf("%s",temp_contactgroupsmember->group_name);
 			else
 				printf("<A HREF='%s?type=contactgroups&expand=%s'>%s</A>\n",CONFIG_CGI,url_encode(temp_contactgroupsmember->group_name),html_encode(temp_contactgroupsmember->group_name,FALSE));
 		}
 		if(contact==0)
-			printf("%s",(content_type==CSV_CONTENT)?"":"&nbsp;");
+			printf("%s",(content_type==CSV_CONTENT || content_type==JSON_CONTENT)?"":"&nbsp;");
 
-		if(content_type==CSV_CONTENT)
+		if(content_type==JSON_CONTENT)
+			printf("], ");
+		else if(content_type==CSV_CONTENT)
 			printf("%s%s",csv_data_enclosure,csv_delimiter);
 		else
 			printf("</TD>\n");
 
 		get_interval_time_string(temp_host->notification_interval,time_string,sizeof(time_string));
-		if(content_type==CSV_CONTENT)
+		if(content_type==JSON_CONTENT)
+			printf("\"notification_interval\": \"%s\", ",time_string);
+		else if(content_type==CSV_CONTENT)
 			printf("%s%s%s%s",csv_data_enclosure,time_string,csv_data_enclosure,csv_delimiter);
 		else
 			printf("<TD CLASS='%s'>%s</TD>\n",bg_class,(temp_host->notification_interval==0)?"<i>No Re-notification</I>":html_encode(time_string,FALSE));
 
 		get_interval_time_string(temp_host->first_notification_delay,time_string,sizeof(time_string));
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			printf("\"first_notification_delay\": \"%s\", ",time_string);
+			printf("\"notification_options\": [ ");
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,time_string,csv_data_enclosure,csv_delimiter);
 			printf("%s",csv_data_enclosure);
 		}else{
@@ -679,28 +742,42 @@ void display_hosts(void){
 		options=0;
 		if(temp_host->notify_on_down==TRUE){
 			options=1;
-			printf("Down");
-			}
+			printf("%sDown%s",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
+		}
 		if(temp_host->notify_on_unreachable==TRUE){
-			printf("%sUnreachable",(options)?", ":"");
+			printf("%s%sUnreachable%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
+		}
 		if(temp_host->notify_on_recovery==TRUE){
-			printf("%sRecovery",(options)?", ":"");
+			printf("%s%sRecovery%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
+		}
 		if(temp_host->notify_on_flapping==TRUE){
-			printf("%sFlapping",(options)?", ":"");
+			printf("%s%sFlapping%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
+		}
 		if(temp_host->notify_on_downtime==TRUE){
-			printf("%sDowntime",(options)?", ":"");
+			printf("%s%sDowntime%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
-		if(options==0)
+		}
+		if(options==0 && content_type!=JSON_CONTENT)
 			printf("None");
 
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			printf(" ], ");
+			if (temp_host->notification_period==NULL)
+				printf("\"notification_period\": null, ");
+			else
+				printf("\"notification_period\": \"%s\", ",temp_host->notification_period);
+
+			if (temp_host->event_handler==NULL)
+				printf("\"event_handler\": null, ");
+			else
+				printf("\"event_handler\": \"%s\", ",temp_host->event_handler);
+
+			printf("\"enable_event_handler\": %s, ",(temp_host->event_handler_enabled==TRUE)?"true":"false");
+			printf("\"stalking_options\": [ ");
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->notification_period==NULL)?"":temp_host->notification_period,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->event_handler==NULL)?"":temp_host->event_handler,csv_data_enclosure,csv_delimiter);
@@ -736,20 +813,34 @@ void display_hosts(void){
 		options=0;
 		if(temp_host->stalk_on_up==TRUE){
 			options=1;
-			printf("Up");
-			}
+			printf("%sUp%s",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
+		}
 		if(temp_host->stalk_on_down==TRUE){
-			printf("%sDown",(options)?", ":"");
+			printf("%s%sDown%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
+		}
 		if(temp_host->stalk_on_unreachable==TRUE){
-			printf("%sUnreachable",(options)?", ":"");
+			printf("%s%sUnreachable%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
-		if(options==0)
+		}
+		if(options==0 && content_type!=JSON_CONTENT)
 			printf("None");
 
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			printf(" ], ");
+			printf("\"enable_flap_detection\": %s, ",(temp_host->flap_detection_enabled==TRUE)?"true":"false");
+			if(temp_host->low_flap_threshold==0.0)
+				printf("\"low_flap_threshold\": \"Program-wide value\", ");
+			else
+				printf("\"low_flap_threshold\": \"%3.1f%%\", ",temp_host->low_flap_threshold);
+
+			if(temp_host->high_flap_threshold==0.0)
+				printf("\"high_flap_threshold\": \"Program-wide value\", ");
+			else
+				printf("\"high_flap_threshold\": \"%3.1f%%\", ",temp_host->high_flap_threshold);
+
+			printf("\"flap_detection_options\": [ ");
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->flap_detection_enabled==TRUE)?"Yes":"No",csv_data_enclosure,csv_delimiter);
 			if(temp_host->low_flap_threshold==0.0)
@@ -788,20 +879,65 @@ void display_hosts(void){
 		options=0;
 		if(temp_host->flap_detection_on_up==TRUE){
 			options=1;
-			printf("Up");
-			}
+			printf("%sUp%s",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
+		}
 		if(temp_host->flap_detection_on_down==TRUE){
-			printf("%sDown",(options)?", ":"");
+			printf("%s%sDown%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
+		}
 		if(temp_host->flap_detection_on_unreachable==TRUE){
-			printf("%sUnreachable",(options)?", ":"");
+			printf("%s%sUnreachable%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
-		if(options==0)
+		}
+		if(options==0 && content_type!=JSON_CONTENT)
 			printf("None");
 
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			printf(" ], ");
+			printf("\"process_performance_data\": %s, ",(temp_host->process_performance_data==TRUE)?"true":"false");
+			printf("\"enable_failure_prediction\": %s, ",(temp_host->failure_prediction_enabled==TRUE)?"true":"false");
+			if (temp_host->failure_prediction_options==NULL)
+				printf("\"failure_prediction_options\": null, ");
+			else
+				printf("\"failure_prediction_options\": \"%s\", ",temp_host->failure_prediction_options);
+			if (temp_host->notes==NULL)
+				printf("\"notes\": null, ");
+			else
+				printf("\"notes\": \"%s\", ",temp_host->notes);
+			if (temp_host->notes_url==NULL)
+				printf("\"notes_url\": null, ");
+			else
+				printf("\"notes_url\": \"%s\", ",temp_host->notes_url);
+			if (temp_host->action_url==NULL)
+				printf("\"action_url\": null, ");
+			else
+				printf("\"action_url\": \"%s\", ",temp_host->action_url);
+			if (temp_host->have_2d_coords==FALSE)
+				printf("\"2d_coords\": null, ");
+			else
+				printf("\"2d_coords\": \"%d,%d\", ",temp_host->x_2d,temp_host->y_2d);
+			if (temp_host->have_3d_coords==FALSE)
+				printf("\"3d_coords\": null, ");
+			else
+				printf("\"3d_coords\": \"%.2f,%.2f,%.2f\", ",temp_host->x_3d,temp_host->y_3d,temp_host->z_3d);
+			if (temp_host->statusmap_image==NULL)
+				printf("\"statusmap_image\": null, ");
+			else
+				printf("\"statusmap_image\": \"%s\", ",temp_host->statusmap_image);
+			if (temp_host->vrml_image==NULL)
+				printf("\"vrml_image\": null, ");
+			else
+				printf("\"vrml_image\": \"%s\", ",temp_host->vrml_image);
+			if (temp_host->icon_image==NULL)
+				printf("\"icon_image\": null, ");
+			else
+				printf("\"icon_image\": \"%s\", ",temp_host->icon_image);
+			if (temp_host->icon_image_alt==NULL)
+				printf("\"icon_image_alt\": null, ");
+			else
+				printf("\"icon_image_alt\": \"%s\", ",temp_host->icon_image_alt);
+			printf("\"retention_options\": [ ");
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->process_performance_data==TRUE)?"Yes":"No",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->failure_prediction_enabled==TRUE)?"Yes":"No",csv_data_enclosure,csv_delimiter);
@@ -877,16 +1013,18 @@ void display_hosts(void){
 		options=0;
 		if(temp_host->retain_status_information==TRUE){
 			options=1;
-			printf("Status Information");
-			}
+			printf("%sStatus Information%s",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
+		}
 		if(temp_host->retain_nonstatus_information==TRUE){
-			printf("%sNon-Status Information",(options==1)?", ":"");
+			printf("%s%sNon-Status Information%s",(options)?", ":"",(content_type==JSON_CONTENT)?"\"":"",(content_type==JSON_CONTENT)?"\"":"");
 			options=1;
-			}
-		if(options==0)
+		}
+		if(options==0 && content_type!=JSON_CONTENT)
 			printf("None");
 
-		if(content_type==CSV_CONTENT){
+		if(content_type==JSON_CONTENT) {
+			printf(" ] }");
+		}else if(content_type==CSV_CONTENT){
 			printf("%s\n",csv_data_enclosure);
 		}else{
 			printf("</TD>\n");
@@ -895,11 +1033,12 @@ void display_hosts(void){
 		}
 	}
 
-	if(content_type!=CSV_CONTENT){
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
 		printf("</P>\n");
-	}
+	}else if(content_type==JSON_CONTENT)
+		printf("\n]\n");
 
 	return;
 }

@@ -810,6 +810,12 @@ int process_cgivars(void){
 			content_type=CSV_CONTENT;
 		}
 
+		/* we found the JSON output option */
+		else if(!strcmp(variables[x],"jsonoutput")){
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
+
 		/* we found the pause option */
 		else if(!strcmp(variables[x],"paused"))
 			refresh=FALSE;
@@ -1313,6 +1319,7 @@ void show_service_detail(void){
 	int first_entry=TRUE;
 	int total_entries=0;
 	statusdata *temp_status=NULL;
+	int json_start=TRUE;
 
 	/* grap requested data */
 	grab_statusdata();
@@ -1435,7 +1442,9 @@ void show_service_detail(void){
 		temp_url[sizeof(temp_url)-1]='\x0';
 	}
 
-	if(content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT)
+		printf("\"service_status\": [\n");
+	else if(content_type==CSV_CONTENT) {
 		printf("%sHost%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sService%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sStatus%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -1507,7 +1516,7 @@ void show_service_detail(void){
 		else
 			new_host=FALSE;
 
-		if(new_host==TRUE && content_type!=CSV_CONTENT){
+		if(new_host==TRUE && content_type!=CSV_CONTENT && content_type!=JSON_CONTENT ){
 			if(strcmp(last_host,""))
 				printf("<TR><TD colspan=6></TD></TR>\n");
 		}
@@ -1791,8 +1800,25 @@ void show_service_detail(void){
 			printf("</TR>\n");
 		}
 
+		/* print list in json format */
+		if(content_type==JSON_CONTENT) {
+			// always add a comma, except for the first line
+			if (json_start==FALSE)
+				printf(",\n");
+			json_start=FALSE;
+			printf("{ \"host\": \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+			printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+			printf("\"status\": \"%s\", ",temp_status->status_string);
+			printf("\"last_check\": \"%s\", ",temp_status->last_check);
+			printf("\"duration\": \"%s\", ",temp_status->state_duration);
+			printf("\"attempts\": \"%s\", ",temp_status->attempts);
+			if (temp_status->plugin_output==NULL)
+				printf("\"status_information\": null }");
+			else
+				printf("\"status_information\": \"%s\"}",temp_status->plugin_output);
+
 		/* print list in csv format */
-		if(content_type==CSV_CONTENT) {
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,csv_data_enclosure,csv_delimiter);
 
@@ -1800,13 +1826,13 @@ void show_service_detail(void){
 			printf("%s%s%s%s",csv_data_enclosure,temp_status->last_check,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_status->state_duration,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_status->attempts,csv_data_enclosure,csv_delimiter);
-			printf("%s%s%s\n",csv_data_enclosure,temp_status->plugin_output,csv_data_enclosure);
+			printf("%s%s%s\n",csv_data_enclosure,(temp_status->plugin_output==NULL)?"":temp_status->plugin_output,csv_data_enclosure);
 		}
 
 		last_host=temp_status->host_name;
 	}
 
-	if(content_type!=CSV_CONTENT) {
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
 
@@ -1821,7 +1847,8 @@ void show_service_detail(void){
 			}
 		}else */
 			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Service Entries Displayed</DIV>\n",total_entries);
-	}
+	}else if (content_type==JSON_CONTENT)
+		printf("\n]\n");
 
 	return;
 }
@@ -1844,6 +1871,7 @@ void show_host_detail(void){
 	int first_entry=TRUE;
 	int total_entries=0;
 	statusdata *temp_statusdata=NULL;
+	int json_start=TRUE;
 
 
 	/* grap requested data */
@@ -1947,7 +1975,9 @@ void show_host_detail(void){
 		temp_url[sizeof(temp_url)-1]='\x0';
 	}
 
-	if(content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT)
+		printf("\"host_status\": [\n");
+	else if(content_type==CSV_CONTENT) {
 		printf("%sHost%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sStatus%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sLast_Check%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -2168,20 +2198,36 @@ void show_host_detail(void){
 				printf("</TR>\n");
 			}
 
+			/* print list in json format */
+			if(content_type==JSON_CONTENT) {
+				// always add a comma, except for the first line
+				if (json_start==FALSE)
+					printf(",\n");
+				json_start=FALSE;
+				printf("{ \"host\": \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+				printf("\"status\": \"%s\", ",temp_statusdata->status_string);
+				printf("\"last_check\": \"%s\", ",temp_statusdata->last_check);
+				printf("\"duration\": \"%s\", ",temp_statusdata->state_duration);
+				printf("\"attempts\": \"%s\", ",temp_statusdata->attempts);
+				if (temp_statusdata->plugin_output==NULL)
+					printf("\"status_information\": null }");
+				else
+					printf("\"status_information\": \"%s\"}",temp_statusdata->plugin_output);
+
 			/* print list in csv format */
-			if(content_type==CSV_CONTENT) {
+			}else if(content_type==CSV_CONTENT) {
 				printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
 
 				printf("%s%s%s%s",csv_data_enclosure,temp_statusdata->status_string,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,temp_statusdata->last_check,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,temp_statusdata->state_duration,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,temp_statusdata->attempts,csv_data_enclosure,csv_delimiter);
-				printf("%s%s%s\n",csv_data_enclosure,temp_statusdata->plugin_output,csv_data_enclosure);
+				printf("%s%s%s\n",csv_data_enclosure,(temp_statusdata->plugin_output==NULL)?"":temp_statusdata->plugin_output,csv_data_enclosure);
 			}
 		}
 	}
 
-	if(content_type!=CSV_CONTENT) {
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
 
@@ -2196,7 +2242,9 @@ void show_host_detail(void){
 			}
 		}else */
 			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Host Entries Displayed</DIV>\n",total_entries);
-	}
+	}else if (content_type==JSON_CONTENT)
+		printf("\n]\n");
+
 	return;
 }
 
@@ -4690,7 +4738,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 		plugin_output_short=service_status->plugin_output;
 		plugin_output_long=service_status->long_plugin_output;
 
-		if(content_type==CSV_CONTENT)
+		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
 			snprintf(attempts,sizeof(attempts)-1,"%d/%d",service_status->current_attempt,service_status->max_attempts);
 		else
 			snprintf(attempts,sizeof(attempts)-1,"%d/%d %s#%d%s",service_status->current_attempt,service_status->max_attempts,(service_status->status&(service_status->state_type==HARD_STATE?add_notif_num_hard:add_notif_num_soft)?"(":"<!-- "),service_status->current_notification_number,(service_status->status&(service_status->state_type==HARD_STATE?add_notif_num_hard:add_notif_num_soft)?")":" -->"));
@@ -4729,18 +4777,18 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 
 	/* plugin ouput */
 	if (status_show_long_plugin_output!=FALSE && plugin_output_long!=NULL) {
-		if(content_type==CSV_CONTENT)
+		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
 			dummy=asprintf(&plugin_output,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
 		else
 			dummy=asprintf(&plugin_output,"%s<BR>%s",html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
 	} else if (plugin_output_short!=NULL) {
-		if(content_type==CSV_CONTENT)
+		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
 			dummy=asprintf(&plugin_output,"%s",plugin_output_short);
 		else
 			dummy=asprintf(&plugin_output,"%s&nbsp;",html_encode(plugin_output_short,TRUE));
 	} else {
-		if(content_type==CSV_CONTENT)
-			dummy=asprintf(&plugin_output,"-");
+		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
+			plugin_output=NULL;
 		else
 			dummy=asprintf(&plugin_output,"&nbsp;");
 	}
@@ -4769,7 +4817,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	new_statusdata->checks_enabled=checks_enabled;
 	new_statusdata->is_flapping=is_flapping;
 
-	new_statusdata->plugin_output=strdup(plugin_output);
+	new_statusdata->plugin_output=(plugin_output==NULL)?NULL:strdup(plugin_output);
 
 	if (statusdata_list==NULL){
 		statusdata_list=new_statusdata;
