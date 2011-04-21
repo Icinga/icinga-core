@@ -909,7 +909,7 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(content_type==JSON_CONTENT) {
 		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
-		printf("{\n");
+		printf("{ \"%s\": {\n",cgi_body_class);
 		return;
 	}
 
@@ -1084,7 +1084,7 @@ void document_footer(int cgi_id){
 	}
 
 	if(content_type==JSON_CONTENT){
-		printf("}\n");
+		printf("}\n}\n");
 		return;
 	}
 

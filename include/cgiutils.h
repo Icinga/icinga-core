@@ -503,6 +503,7 @@ extern "C" {
 #define DISPLAY_SERVICEESCALATIONS      10
 #define DISPLAY_HOSTDEPENDENCIES        11
 #define DISPLAY_HOSTESCALATIONS         12
+#define DISPLAY_ALL			13
 #define DISPLAY_COMMAND_EXPANSION       16211
 
 #define STYLE_OVERVIEW                  0
