@@ -274,6 +274,11 @@ int main(void){
 	time(&t5);
 #endif
 
+	/* no need to refresh if this is not the tac_header */
+        if(tac_header==TRUE && show_tac_header==FALSE){
+		refresh=FALSE;
+	}
+
 	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */
@@ -883,9 +888,6 @@ void display_tac_overview(void){
 	char service_health_image[16];
 
         if(tac_header==TRUE && show_tac_header==FALSE){ // we want the top header, but not the tac version
-
-		/* no need to refresh */
-		refresh=FALSE;
 
 		printf("	<div id='banner' align='center'><img src='%s%s' alt='%s' /></div>",url_images_path,TAC_HEADER_DEFAULT_LOGO,TAC_HEADER_DEFAULT_LOGO_ALT);
 		return; //we're done here
