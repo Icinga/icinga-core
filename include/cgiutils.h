@@ -119,6 +119,7 @@ extern "C" {
 #define STATUSMAP_CSS		"statusmap.css"
 #define SUMMARY_CSS		"summary.css"
 #define TAC_CSS			"tac.css"
+#define TAC_HEADER_CSS		"tacheader.css"
 #define TRENDS_CSS		"trends.css"
 
 /* Are these ones still in use??? */
@@ -239,6 +240,14 @@ extern "C" {
 #define AUTOSAVE_ICON			"save.gif"
 #define DAEMON_WARNING_ICON		"warning_triangle.gif"
 #define STATS_ICON			"stats.gif"
+
+#define TAC_HEADER_DEFAULT_LOGO		"Icinga_Header_Webinterface.jpg"
+#define TAC_HEADER_DEFAULT_LOGO_ALT	"Icinga"
+#define TAC_HEADER_LOGO			"Icinga_TAC_Header_Webinterface.jpg"
+#define TAC_HEADER_HOST_ICON		"server.png"
+#define TAC_HEADER_SERVICE_ICON		"application-monitor.png"
+#define TAC_HEADER_EXECUTION_ICON	"hourglass-exclamation.png"
+#define TAC_HEADER_LATENCY_ICON		"hourglass-arrow.png"
 
 
 /************************** PLUGIN RETURN VALUES ****************************/
