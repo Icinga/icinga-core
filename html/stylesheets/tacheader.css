@@ -5,11 +5,17 @@ body {
 	font-family: Arial, Verdana, sans-serif;
 	font-size: 9pt;
 	background: #D7D8DA;
+	margin: 5px;
 }
 
 img { border: 0px }
 
-a {
+.color a {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.gray a {
 	color: #000000;
 	text-decoration: none;
 }
@@ -78,7 +84,7 @@ div.tacheader-overall-status-item {
 }
 
 div.tacheader-status-ok {
-	background-color: #00cc00;
+	background-color: #00cc33;
 }
 
 div.tacheader-status-warning {
@@ -86,20 +92,19 @@ div.tacheader-status-warning {
 }
 
 div.tacheader-status-critical {
-	background-color: #ff0000;
-	color: #fff;
+	background-color: #ff3300;
 }
 
 div.tacheader-status-up {
-	background-color: #00cc00;
+	background-color: #00cc33;
 }
 
 div.tacheader-status-down {
-	background-color: #cc0000;
+	background-color: #ff3300;
 }
 
 div.tacheader-status-unreachable {
-	background-color: #E066FF;
+	background-color: #ff3300;
 }
 
 div.tacheader-status-unknown {
@@ -108,7 +113,7 @@ div.tacheader-status-unknown {
 
 table.tacheader-monitor-performance-container {
 	font-size: 9pt;
-	margin: 2.5px;
+	margin: 6px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }

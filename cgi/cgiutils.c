@@ -926,18 +926,10 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("<meta name='robots' content='noindex, nofollow' />\n");
 
 		/* is show_tac_header=1 in cgi.cfg? */
-		if(show_tac_header==TRUE) {
+		if(show_tac_header==TRUE)
 			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,TAC_HEADER_CSS);
-		}
-		else { //no? show the classic header as the default
-			/* also used by html/sidebar.html, so we'll leave it as is for now */
+		else //no? show the classic header as the default
 			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n",url_stylesheets_path);
-
-			/* these seem to have no point, but were in top.html
-			printf("<script type='text/javascript' src='../js/prototype.js'></script>\n");
-			printf("<script type='text/javascript' src='../js/scriptaculous.js'></script>\n");
-			*/
-		}
 
 		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 		printf("</head>\n");
