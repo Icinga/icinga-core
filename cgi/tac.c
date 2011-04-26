@@ -67,7 +67,9 @@ extern servicestatus *servicestatus_list;
 
 extern int enable_notifications;
 extern int execute_service_checks;
+extern int execute_host_checks;
 extern int accept_passive_service_checks;
+extern int accept_passive_host_checks;
 extern int enable_event_handlers;
 extern int enable_flap_detection;
 
@@ -96,6 +98,7 @@ extern int refresh;
 extern int display_header;
 extern int daemon_check;
 extern int tac_header;
+extern int content_type;
 
 hostoutage *hostoutage_list=NULL;
 
@@ -228,7 +231,7 @@ int main(void){
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 #ifdef DEBUG
 	time(&t2);
@@ -241,7 +244,7 @@ int main(void){
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
-	        }
+	}
 
 #ifdef DEBUG
 	time(&t3);
@@ -254,7 +257,7 @@ int main(void){
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
-                }
+	}
 
 #ifdef DEBUG
 	time(&t4);
@@ -268,7 +271,7 @@ int main(void){
 		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
-                }
+	}
 
 #ifdef DEBUG
 	time(&t5);
@@ -314,13 +317,13 @@ int main(void){
 		sound=service_warning_sound;
 	else if(services_unknown_unacknowledged==0 && services_warning_unacknowledged==0 && services_critical_unacknowledged==0 && hosts_down_unacknowledged==0 && hosts_unreachable_unacknowledged==0 && normal_sound!=NULL)
 		sound=normal_sound;
-	if(sound!=NULL){
+	if(sound!=NULL && content_type!=JSON_CONTENT){
 	        printf("<object type=\"audio/x-wav\" data=\"%s%s\" height=\"-\" width=\"0\">",url_media_path,sound);
 		printf("<param name=\"filename\" value=\"%s%s\">",url_media_path,sound);
 		printf("<param name=\"autostart\" value=\"true\">");
 		printf("<param name=\"playcount\" value=\"1\">");
 		printf("</object>");
-		}
+	}
 
 
 	/**** display main tac screen ****/
@@ -351,7 +354,7 @@ int main(void){
 #endif
 
 	return OK;
-        }
+}
 
 int process_cgivars(void){
 	char **variables;
@@ -363,9 +366,8 @@ int process_cgivars(void){
 	for(x=0;variables[x]!=NULL;x++){
 
 		/* do some basic length checking on the variable identifier to prevent buffer overflows */
-		if(strlen(variables[x])>=MAX_INPUT_BUFFER-1){
+		if(strlen(variables[x])>=MAX_INPUT_BUFFER-1)
 			continue;
-		        }
 
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -387,18 +389,25 @@ int process_cgivars(void){
                 else if(!strcmp(variables[x],"tac_header")){
 			tac_header=TRUE;
 			embedded=TRUE;
-			}
+		}
+
+		/* we found the JSON output option */
+		else if(!strcmp(variables[x],"jsonoutput")){
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
+
 		/* we received an invalid argument */
 		else
 			error=TRUE;
 
-	        }
+	}
 
 	/* free memory allocated to the CGI variables */
 	free_cgivars(variables);
 
 	return error;
-        }
+}
 
 
 
@@ -734,7 +743,7 @@ void analyze_status_data(void){
 		average_host_execution_time=((double)total_host_execution_time/(double)total_active_host_checks);
 
 	return;
-        }
+}
 
 
 
@@ -780,7 +789,7 @@ void find_hosts_causing_outages(void){
 	        }
 
 	return;
-        }
+}
 
 
 
@@ -804,7 +813,7 @@ void add_hostoutage(host *hst){
 	hostoutage_list=new_hostoutage;
 
 	return;
-        }
+}
 
 
 
@@ -820,7 +829,7 @@ void free_hostoutage_list(void){
 	        }
 
 	return;
-        }
+}
 
 
 
@@ -848,7 +857,7 @@ void calculate_outage_effect_of_host(host *hst, int *affected_hosts){
 	*affected_hosts=total_child_hosts_affected+1;
 
 	return;
-        }
+}
 
 
 
@@ -876,11 +885,7 @@ int is_route_to_host_blocked(host *hst){
 	        }
 
 	return TRUE;
-        }
-
-
-
-
+}
 
 
 void display_tac_overview(void){
@@ -1026,6 +1031,117 @@ void display_tac_overview(void){
 		return; //we're done here
 	}
 
+
+	if(content_type==JSON_CONTENT) {
+		printf("\"tac_overview\": {\n");
+
+		/* outages */
+		printf("\"network_outages\": %d,\n",total_blocking_outages);
+
+		/* network health */
+		printf("\"percent_host_health\": %2.1f,\n",percent_host_health);
+		printf("\"percent_service_health\": %2.1f,\n",percent_service_health);
+
+		/* host data */
+		printf("\"hosts_down\": %d,\n",hosts_down);
+		printf("\"hosts_down_unacknowledged\": %d,\n",hosts_down_unacknowledged);
+		printf("\"hosts_down_scheduled\": %d,\n",hosts_down_scheduled);
+		printf("\"hosts_unreachable_acknowledged\": %d,\n",hosts_unreachable_acknowledged);
+		printf("\"hosts_down_disabled\": %d,\n",hosts_down_disabled);
+
+		printf("\"hosts_unreachable\": %d,\n",hosts_unreachable);
+		printf("\"hosts_unreachable_unacknowledged\": %d,\n",hosts_unreachable_unacknowledged);
+		printf("\"hosts_unreachable_scheduled\": %d,\n",hosts_unreachable_scheduled);
+		printf("\"hosts_unreachable_acknowledged\": %d,\n",hosts_unreachable_acknowledged);
+		printf("\"hosts_unreachable_disabled\": %d,\n",hosts_unreachable_disabled);
+
+		printf("\"hosts_up\": %d,\n",hosts_up);
+		printf("\"hosts_up_disabled\": %d,\n",hosts_up_disabled);
+
+		printf("\"hosts_pending\": %d,\n",hosts_pending);
+		printf("\"hosts_pending_disabled\": %d,\n",hosts_pending_disabled);
+
+		/* service data */
+		printf("\"services_critical\": %d,\n",services_critical);
+		printf("\"services_critical_unacknowledged\": %d,\n",services_critical_unacknowledged);
+		printf("\"services_critical_host_problem\": %d,\n",services_critical_host_problem);
+		printf("\"services_critical_scheduled\": %d,\n",services_critical_scheduled);
+		printf("\"services_critical_acknowledged\": %d,\n",services_critical_acknowledged);
+		printf("\"services_critical_disabled\": %d,\n",services_critical_disabled);
+
+		printf("\"services_warning\": %d,\n",services_warning);
+		printf("\"services_warning_unacknowledged\": %d,\n",services_warning_unacknowledged);
+		printf("\"services_warning_host_problem\": %d,\n",services_warning_host_problem);
+		printf("\"services_warning_scheduled\": %d,\n",services_warning_scheduled);
+		printf("\"services_warning_acknowledged\": %d,\n",services_warning_acknowledged);
+		printf("\"services_warning_disabled\": %d,\n",services_warning_disabled);
+
+		printf("\"services_unknown\": %d,\n",services_unknown);
+		printf("\"services_unknown_unacknowledged\": %d,\n",services_unknown_unacknowledged);
+		printf("\"services_unknown_host_problem\": %d,\n",services_unknown_host_problem);
+		printf("\"services_unknown_scheduled\": %d,\n",services_unknown_scheduled);
+		printf("\"services_unknown_acknowledged\": %d,\n",services_unknown_acknowledged);
+		printf("\"services_unknown_disabled\": %d,\n",services_unknown_disabled);
+
+		printf("\"services_ok\": %d,\n",services_ok);
+		printf("\"services_ok_disabled\": %d,\n",services_ok_disabled);
+
+		printf("\"services_pending\": %d,\n",services_pending);
+		printf("\"services_pending_disabled\": %d,\n",services_pending_disabled);
+
+		/* monitoring features */
+		printf("\"flap_detection_enabled\": %s,\n",(enable_flap_detection==TRUE)?"true":"false");
+		printf("\"flap_disabled_services\": %d,\n",flap_disabled_services);
+		printf("\"flapping_services\": %d,\n",flapping_services);
+		printf("\"flap_disabled_hosts\": %d,\n",flap_disabled_hosts);
+		printf("\"flapping_hosts\": %d,\n",flapping_hosts);
+
+		printf("\"notifications_enabled\": %s,\n",(enable_notifications==TRUE)?"true":"false");
+		printf("\"notification_disabled_services\": %d,\n",notification_disabled_services);
+		printf("\"notification_disabled_hosts\": %d,\n",notification_disabled_hosts);
+
+		printf("\"event_handlers_enabled\": %s,\n",(enable_event_handlers==TRUE)?"true":"false");
+		printf("\"event_handler_disabled_services\": %d,\n",event_handler_disabled_services);
+		printf("\"event_handler_disabled_hosts\": %d,\n",event_handler_disabled_hosts);
+
+		printf("\"execute_service_checks\": %s,\n",(execute_service_checks==TRUE)?"true":"false");
+		printf("\"execute_host_checks\": %s,\n",(execute_host_checks==TRUE)?"true":"false");
+		printf("\"active_checks_disabled_services\": %d,\n",active_checks_disabled_services);
+		printf("\"active_checks_disabled_hosts\": %d,\n",active_checks_disabled_hosts);
+
+		printf("\"accept_passive_service_checks\": %s,\n",(accept_passive_service_checks==TRUE)?"true":"false");
+		printf("\"accept_passive_host_checks\": %s,\n",(accept_passive_host_checks==TRUE)?"true":"false");
+		printf("\"passive_checks_disabled_services\": %d,\n",passive_checks_disabled_services);
+		printf("\"passive_checks_disabled_hosts\": %d,\n",passive_checks_disabled_hosts);
+
+		/* monitoring performance */
+		printf("\"min_service_check_execution_time\": %.2f,\n",min_service_execution_time);
+		printf("\"max_service_check_execution_time\": %.2f,\n",max_service_execution_time);
+		printf("\"average_service_check_execution_time\": %.3f,\n",average_service_execution_time);
+
+		printf("\"min_service_check_latency\": %.2f,\n",min_service_latency);
+		printf("\"max_service_check_latency\": %.2f,\n",max_service_latency);
+		printf("\"average_service_check_latency\": %.3f,\n",average_service_latency);
+
+		printf("\"min_host_check_execution_time\": %.2f,\n",min_host_execution_time);
+		printf("\"max_host_check_execution_time\": %.2f,\n",max_host_execution_time);
+		printf("\"average_host_check_execution_time\": %.3f,\n",average_host_execution_time);
+
+		printf("\"min_host_check_latency\": %.2f,\n",min_host_latency);
+		printf("\"max_host_check_latency\": %.2f,\n",max_host_latency);
+		printf("\"average_host_check_latency\": %.3f,\n",average_host_latency);
+
+		printf("\"total_active_host_checks\": %d,\n",total_active_host_checks);
+		printf("\"total_active_service_checks\": %d,\n",total_active_service_checks);
+
+		printf("\"total_passive_host_checks\": %d,\n",total_passive_host_checks);
+		printf("\"total_passive_service_checks\": %d\n",total_passive_service_checks);
+
+		printf(" }\n");
+
+		// we return here if JSON content. Next time we make an if condition for the html output
+		return;
+	}
 
         if(display_header==TRUE){
         	printf("<p align=left>\n");
@@ -1750,5 +1866,5 @@ void display_tac_overview(void){
 
 
 	return;
-        }
+}
 
