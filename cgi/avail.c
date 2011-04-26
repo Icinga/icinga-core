@@ -3569,7 +3569,7 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 		get_running_average(&average_percent_time_unreachable,percent_time_unreachable,current_subject);
 		get_running_average(&average_percent_time_unreachable_known,percent_time_unreachable_known,current_subject);
 		get_running_average(&average_percent_time_indeterminate,percent_time_indeterminate,current_subject);
-                }
+	}
 
 
 	/* average statistics */
@@ -3587,9 +3587,15 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 		printf("</table>\n");
 		printf("</DIV>\n");
 	}else if (content_type==JSON_CONTENT){
-		printf("\n]\n");
-		/* average */
-		/* left for future rework */
+		printf(", {\"average_percent_times\": null, ");
+		printf("\"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
+		printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
+		printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
+		printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
+		printf("\"average_percent_time_unreachable\": \"%2.3f\", ",average_percent_time_unreachable);
+		printf("\"average_percent_time_unreachable_known\": \"%2.3f\", ",average_percent_time_unreachable_known);
+		printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+		printf(" ]\n");
 	} else if(content_type==CSV_CONTENT){
 		/* average */
 		/* left for future rework */
@@ -3819,17 +3825,16 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 				percent_time_up_known=(double)(((double)temp_subject->time_up*100.0)/(double)time_determinate);
 				percent_time_down_known=(double)(((double)temp_subject->time_down*100.0)/(double)time_determinate);
 				percent_time_unreachable_known=(double)(((double)temp_subject->time_unreachable*100.0)/(double)time_determinate);
-	                        }
-		        }
+			}
+		}
 
 		if(odd){
 			odd=0;
 			bgclass="Odd";
-	                }
-		else{
+		}else{
 			odd=1;
 			bgclass="Even";
-	                }
+		}
 
 		if(content_type==HTML_CONTENT){
 
@@ -3943,7 +3948,7 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		get_running_average(&average_percent_time_unreachable,percent_time_unreachable,current_subject);
 		get_running_average(&average_percent_time_unreachable_known,percent_time_unreachable_known,current_subject);
 		get_running_average(&average_percent_time_indeterminate,percent_time_indeterminate,current_subject);
-                }
+	}
 
 	/* average statistics */
 	if(odd){
@@ -4024,6 +4029,15 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>%% Time OK</TH><TH CLASS='data'>%% Time Warning</TH><TH CLASS='data'>%% Time Unknown</TH><TH CLASS='data'>%% Time Critical</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
 
 	} else if(content_type==JSON_CONTENT){
+		printf(", {\"average_percent_times\": null, ");
+		printf("\"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
+		printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
+		printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
+		printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
+		printf("\"average_percent_time_unreachable\": \"%2.3f\", ",average_percent_time_unreachable);
+		printf("\"average_percent_time_unreachable_known\": \"%2.3f\", ",average_percent_time_unreachable_known);
+		printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+
 		printf("],\n\"servicegroup\": \"%s\",\n",sg->group_name);
 		printf("\"service_state_breakdowns\": [\n");
 		json_list_start=FALSE;
@@ -4094,8 +4108,8 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 				percent_time_warning_known=(double)(((double)temp_subject->time_warning*100.0)/(double)time_determinate);
 				percent_time_unknown_known=(double)(((double)temp_subject->time_unknown*100.0)/(double)time_determinate);
 				percent_time_critical_known=(double)(((double)temp_subject->time_critical*100.0)/(double)time_determinate);
-	                        }
-                        }
+			}
+		}
 
 		if(odd){
 			odd=0;
@@ -4250,28 +4264,34 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		get_running_average(&average_percent_time_critical,percent_time_critical,current_subject);
 		get_running_average(&average_percent_time_critical_known,percent_time_critical_known,current_subject);
 		get_running_average(&average_percent_time_indeterminate,percent_time_indeterminate,current_subject);
-	        }
+	}
 
 	/* display average stats */
 	if(odd){
 		odd=0;
 		bgclass="Odd";
-	        }
-	else{
+	}else{
 		odd=1;
 		bgclass="Even";
-	        }
+	}
 
 	if(content_type==HTML_CONTENT){
-
 		printf("<tr CLASS='data%s'><td CLASS='data%s' colspan='2'>Average</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s'>%2.3f%%</td></tr>\n",bgclass,bgclass,average_percent_time_ok,average_percent_time_ok_known,average_percent_time_warning,average_percent_time_warning_known,average_percent_time_unknown,average_percent_time_unknown_known,average_percent_time_critical,average_percent_time_critical_known,bgclass,average_percent_time_indeterminate);
 
 		printf("</table>\n");
 		printf("</DIV>\n");
 	}else if (content_type==JSON_CONTENT){
-		printf("\n]\n");
-		/* average */
-		/* left for future rework */
+		printf(", {\"average_percent_times\": null, ");
+		printf("\"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
+		printf("\"average_percent_time_ok_known\": \"%2.3f\", ",average_percent_time_ok_known);
+		printf("\"average_percent_time_warning\": \"%2.3f\", ",average_percent_time_warning);
+		printf("\"average_percent_time_warning_known\": \"%2.3f\", ",average_percent_time_warning_known);
+		printf("\"average_percent_time_unknown\": \"%2.3f\", ",average_percent_time_unknown);
+		printf("\"average_percent_time_unknown_known\": \"%2.3f\", ",average_percent_time_unknown_known);
+		printf("\"average_percent_time_critical\": \"%2.3f\", ",average_percent_time_critical);
+		printf("\"average_percent_time_critical_known\": \"%2.3f\", ",average_percent_time_critical_known);
+		printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+		printf(" ]\n");
 	} else if(content_type==CSV_CONTENT){
 		/* average */
 		/* left for future rework */
@@ -4511,8 +4531,8 @@ void display_host_availability(void){
 				percent_time_unreachable_known=(double)(((double)temp_subject->time_unreachable*100.0)/(double)time_determinate);
 				percent_time_unreachable_scheduled_known=(double)(((double)temp_subject->scheduled_time_unreachable*100.0)/(double)time_determinate);
 				percent_time_unreachable_unscheduled_known=percent_time_unreachable_known-percent_time_unreachable_scheduled_known;
-		                }
-	                }
+			}
+		}
 
 		if(content_type==HTML_CONTENT){
 
@@ -4590,11 +4610,10 @@ void display_host_availability(void){
 				if(odd){
 					odd=0;
 					bgclass="Odd";
-			                }
-				else{
+				}else{
 					odd=1;
 					bgclass="Even";
-			                }
+				}
 
 				/* reset variables */
 				percent_time_ok=0.0;
@@ -4621,8 +4640,8 @@ void display_host_availability(void){
 						percent_time_warning_known=(double)(((double)temp_subject->time_warning*100.0)/(double)time_determinate);
 						percent_time_unknown_known=(double)(((double)temp_subject->time_unknown*100.0)/(double)time_determinate);
 						percent_time_critical_known=(double)(((double)temp_subject->time_critical*100.0)/(double)time_determinate);
-				                }
-		                        }
+					}
+				}
 
 				printf("<tr CLASS='data%s'><td CLASS='data%s'>",bgclass,bgclass);
 				service_report_url(temp_subject->host_name,temp_subject->service_description,temp_subject->service_description);
@@ -4855,8 +4874,8 @@ void display_host_availability(void){
 					percent_time_unreachable_known=(double)(((double)temp_subject->time_unreachable*100.0)/(double)time_determinate);
 					percent_time_unreachable_scheduled_known=(double)(((double)temp_subject->scheduled_time_unreachable*100.0)/(double)time_determinate);
 					percent_time_unreachable_unscheduled_known=percent_time_unreachable_known-percent_time_unreachable_scheduled_known;
-					}
 				}
+			}
 
 			if(content_type==HTML_CONTENT){
 
@@ -4994,9 +5013,15 @@ void display_host_availability(void){
 			printf("</table>\n");
 			printf("</DIV>\n");
 		}else if (content_type==JSON_CONTENT){
-			printf("\n]\n}\n");
-			/* average */
-			/* left for future rework */
+			printf(", {\"average_percent_times\": null, ");
+			printf("\"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
+			printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
+			printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
+			printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
+			printf("\"average_percent_time_unreachable\": \"%2.3f\", ",average_percent_time_unreachable);
+			printf("\"average_percent_time_unreachable_known\": \"%2.3f\", ",average_percent_time_unreachable_known);
+			printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+			printf(" ] }\n");
 		} else if(content_type==CSV_CONTENT){
 			/* average */
 			/* left for future rework */
@@ -5735,9 +5760,17 @@ void display_service_availability(void){
 			printf("</table>\n");
 			printf("</DIV>\n");
 		}else if (content_type==JSON_CONTENT){
-			printf("\n]\n}\n");
-			/* average */
-			/* left for future rework */
+			printf(", {\"average_percent_times\": null, ");
+			printf("\"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
+			printf("\"average_percent_time_ok_known\": \"%2.3f\", ",average_percent_time_ok_known);
+			printf("\"average_percent_time_warning\": \"%2.3f\", ",average_percent_time_warning);
+			printf("\"average_percent_time_warning_known\": \"%2.3f\", ",average_percent_time_warning_known);
+			printf("\"average_percent_time_unknown\": \"%2.3f\", ",average_percent_time_unknown);
+			printf("\"average_percent_time_unknown_known\": \"%2.3f\", ",average_percent_time_unknown_known);
+			printf("\"average_percent_time_critical\": \"%2.3f\", ",average_percent_time_critical);
+			printf("\"average_percent_time_critical_known\": \"%2.3f\", ",average_percent_time_critical_known);
+			printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+			printf(" ] }\n");
 		} else if(content_type==CSV_CONTENT){
 			/* average */
 			/* left for future rework */
