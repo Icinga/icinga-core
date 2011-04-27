@@ -1311,6 +1311,10 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	free(name);
 
 	/* check dbversion against program version */
+	if(idi->dbinfo.dbversion==NULL){
+		syslog(LOG_ERR, "Error: DB Version cannot be retrieved. Please check the upgrade docs and verify the db schema!");
+		return IDO_ERROR;
+	}
 	if(strcmp(idi->dbinfo.dbversion, IDO2DB_VERSION)!=0){
 		syslog(LOG_ERR, "Error: DB Version %s does not match program version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_VERSION);
 		return IDO_ERROR;
