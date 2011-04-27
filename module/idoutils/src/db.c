@@ -1312,11 +1312,13 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 
 	/* check dbversion against program version */
 	if(idi->dbinfo.dbversion==NULL){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() dbversion is NULL\n");
 		syslog(LOG_ERR, "Error: DB Version cannot be retrieved. Please check the upgrade docs and verify the db schema!");
 		return IDO_ERROR;
 	}
-	if(strcmp(idi->dbinfo.dbversion, IDO2DB_VERSION)!=0){
-		syslog(LOG_ERR, "Error: DB Version %s does not match program version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_VERSION);
+	if(strcmp(idi->dbinfo.dbversion, IDO2DB_SCHEMA_VERSION)!=0){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() db version %s does not match schema version %s\n", idi->dbinfo.dbversion, IDO2DB_SCHEMA_VERSION);
+		syslog(LOG_ERR, "Error: DB Version %s does not match needed schema version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_SCHEMA_VERSION);
 		return IDO_ERROR;
 	}
 

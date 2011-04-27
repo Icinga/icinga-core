@@ -25,6 +25,7 @@ ENHANCEMENTS
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 * idoutils: reduce housekeeping cycle to every 3600s, set housekeeping thread startup delay to 300s #1157
+* idoutils: introduce schema version and check against that instead of program version #1368
 
 * config: increase default debug file size to 100M #1316
 
