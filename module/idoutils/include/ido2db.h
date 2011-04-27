@@ -364,13 +364,13 @@ typedef struct ido2db_input_data_info_struct{
 
 /************* default trim db interval ********/
 
-#define DEFAULT_TRIM_DB_INTERVAL 60
+#define DEFAULT_TRIM_DB_INTERVAL 		3600
 
 /* default housekeeping thread startup delay  **/
 
-#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 60
+#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 300
 
-/************* default trim db interval ********/
+/************* oci errors to syslog ************/
 
 #define DEFAULT_OCI_ERRORS_TO_SYSLOG 		1
 
