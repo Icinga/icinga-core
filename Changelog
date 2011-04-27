@@ -39,7 +39,6 @@ FIXES
 * idoutils: idomod: larger buffer size (by Opsview) #1286
 * idoutils: fix rdbms deconnect after connection error #1313
 
-* install: replace configure option --with-checkresults-dir by --with-spool-dir #1224
 * install: use *.so instead of *.o for solaris, patch in contrib/solaris/ #524
 
 
