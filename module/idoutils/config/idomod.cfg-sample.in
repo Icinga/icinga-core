@@ -242,5 +242,6 @@ debug_file=@localstatedir@/idomod.debug
 # automatically be deleted.  This helps ensure your disk space usage doesn't
 # get out of control when debugging.
 
-max_debug_file_size=1000000
+# 100M
+max_debug_file_size=100000000
 

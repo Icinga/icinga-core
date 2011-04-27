@@ -23,6 +23,9 @@ ENHANCEMENTS
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 
+* config: increase default debug file size to 100M #1316
+
+
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
 
