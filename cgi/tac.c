@@ -277,11 +277,6 @@ int main(void){
 	time(&t5);
 #endif
 
-	/* no need to refresh if this is not the tac_header */
-        if(tac_header==TRUE && show_tac_header==FALSE){
-		refresh=FALSE;
-	}
-
 	document_header(CGI_ID,TRUE);
 
 	/* get authentication information */

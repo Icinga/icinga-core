@@ -838,6 +838,8 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_css         = TAC_CSS;
                         cgi_title       = "Tactical Monitoring Overview";
                         cgi_body_class  = "tac";
+			if (tac_header==TRUE && show_tac_header==FALSE)
+				refresh=FALSE;
                         break;
                 case TRENDS_CGI_ID:
                         cgi_name        = TRENDS_CGI;
@@ -853,6 +855,11 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_body_class  = "error";
                         break;
         }
+
+
+	// don't refresh non html output
+	if(content_type==JSON_CONTENT || content_type==CSV_CONTENT)
+		refresh=FALSE;
 
 	if(content_type==WML_CONTENT){
                 /* used by cmd.cgi */
