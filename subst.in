@@ -27,6 +27,7 @@ while ($f = shift @ARGV) {
 		s|\@localstatedir\@|@localstatedir@|g;
 		s|\@sysconfdir\@|@sysconfdir@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
+		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;
 		s|\@CHECKRESULTDIR\@|@CHECKRESULTDIR@|g;
 		s|\@datadir\@|@datarootdir@|g;
 		s|\@sbindir\@|@sbindir@|g;

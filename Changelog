@@ -34,6 +34,8 @@ ENHANCEMENTS
 
 * config: increase default debug file size to 100M #1316
 
+* install: add --with-ext-cmd-file-dir= to configure, allowing icinga.cmd dir to be altered #1268
+
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128

@@ -168,7 +168,7 @@ command_check_interval=-1
 # directory level instead of on the file, as the file is deleted every
 # time its contents are processed.
 
-command_file=@localstatedir@/rw/icinga.cmd
+command_file=@EXTCMDFILEDIR@/icinga.cmd
 
 
 

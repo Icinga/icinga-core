@@ -29,7 +29,7 @@
 #define DEFAULT_COMMENT_FILE			"@localstatedir@/comments.dat"
 #define DEFAULT_DOWNTIME_FILE			"@localstatedir@/downtime.dat"
 #define DEFAULT_RETENTION_FILE			"@localstatedir@/retention.dat"
-#define DEFAULT_COMMAND_FILE			"@localstatedir@/rw/icinga.cmd"
+#define DEFAULT_COMMAND_FILE			"@EXTCMDFILEDIR@/icinga.cmd"
 #define DEFAULT_CONFIG_FILE			"@sysconfdir@/icinga.cfg"
 #define DEFAULT_PHYSICAL_HTML_PATH		"@datadir@"
 #define DEFAULT_URL_HTML_PATH			"@htmurl@"

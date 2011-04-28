@@ -277,6 +277,16 @@ if test x$TMPDIR = xno; then
 fi
 AC_SUBST(TMPDIR)
 
+
+dnl Location of the external command file path
+EXTCMDFILEDIR=no
+AC_ARG_WITH(ext-cmd-file-dir,AC_HELP_STRING([--with-ext-cmd-file-dir=<path>],[sets path to external command file directory]),EXTCMDFILEDIR=$withval,EXTCMDFILEDIR=no)
+if test x$EXTCMDFILEDIR = xno; then
+        EXTCMDFILEDIR="$localstatedir/rw"
+fi
+AC_SUBST(EXTCMDFILEDIR)
+
+
 dnl Check for location of init scripts
 init_dir=/etc/rc.d/init.d
 if test -d /etc/rc.d/init.d; then
@@ -1146,6 +1156,7 @@ AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile 
 
 
 perl subst $srcdir/include/locations.h
+perl subst $srcdir/contrib/eventhandlers/submit_check_result
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
 perl subst $srcdir/html/top.html
@@ -1217,6 +1228,7 @@ fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
+AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])
 AC_MSG_RESULT([             Mail program:  $MAIL_PROG])

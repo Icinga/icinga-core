@@ -2,6 +2,7 @@
 
 # SUBMIT_CHECK_RESULT
 # Written by Ethan Galstad (egalstad@nagios.org)
+# Modified by Icinga Development Team (https://dev.icinga.org)
 #
 # This script will write a command to the Icinga command
 # file to cause Icinga to process a passive service check
@@ -23,7 +24,7 @@
  
 echocmd="/bin/echo"
  
-CommandFile="/usr/local/icinga/var/rw/icinga.cmd"
+CommandFile="@EXTCMDFILEDIR@/icinga.cmd"
  
 # get the current date/time in seconds since UNIX epoch
 datetime=`date +%s`
