@@ -2352,6 +2352,7 @@ char *get_export_csv_link(char *cgi) {
 int write_to_cgi_log(char *buffer) {
 	FILE *fp;
 	time_t log_time;
+	int write_retries=10, i=0;
 
 	/* we don't do anything if logging is deactivated or no logfile configured */
 	if(use_logging==FALSE || !strcmp(cgi_log_file,""))
@@ -2362,8 +2363,13 @@ int write_to_cgi_log(char *buffer) {
 	// allways check if log file has to be rotated
 	rotate_log_file();
 
-	fp=fopen(cgi_log_file,"a+");
-	if(fp==NULL)
+	// open log file and try again if failed
+	while((fp=fopen(cgi_log_file,"a+"))==NULL && i<write_retries) {
+		usleep(10);
+		i++;
+	}
+
+	if(i>=write_retries)
 		return ERROR;
 
 	/* strip any newlines from the end of the buffer */

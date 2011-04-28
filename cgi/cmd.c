@@ -2845,8 +2845,11 @@ int write_command_to_file(char *cmd){
 		return ERROR;
 	}
 
+	// get remote address
+	sprintf(ip_address,"%s",getenv("REMOTE_ADDR"));
+
 	/* write command to cgi log */
-	sprintf(buffer, "EXTERNAL COMMAND: %s;", current_authdata.username);
+	sprintf(buffer, "EXTERNAL COMMAND: %s;%s;", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address");
 	p = index(cmd, ']');
 	if (p!=NULL)
 		p+=2;
@@ -2857,7 +2860,6 @@ int write_command_to_file(char *cmd){
 
 	/* log comments if forced */
 	if(enforce_comments_on_actions==TRUE) {
-		sprintf(ip_address,"%s",getenv("REMOTE_ADDR"));
 		sprintf(buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
 		write_to_cgi_log(buffer);
 	}
