@@ -191,8 +191,8 @@ CREATE TABLE  icinga_conninfo (
   last_checkin_time timestamp NOT NULL default '1970-01-01 00:00:00',
   data_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
   data_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  bytes_processed INTEGER NOT NULL default 0,
-  lines_processed INTEGER NOT NULL default 0,
+  bytes_processed BIGINT NOT NULL default 0,
+  lines_processed BIGINT NOT NULL default 0,
   entries_processed INTEGER NOT NULL default 0,
   PRIMARY KEY  (conninfo_id)
 ) ;

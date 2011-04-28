@@ -2616,8 +2616,6 @@ void * ido2db_thread_worker(void *data) {
 
         ido2db_idi *idi = (ido2db_idi*) data;
 
-        int old_thread_state;
-
         struct timespec delay;
         delay.tv_sec = 5;
         delay.tv_nsec = 500000;
@@ -2685,8 +2683,6 @@ static void *ido2db_thread_worker_exit_handler(void * arg) {
 void * ido2db_thread_cleanup(void *data) {
 
 	ido2db_idi *idi = (ido2db_idi*) data;
-
-	int old_thread_state;
 
 	struct timespec delay;
 	delay.tv_sec = 0;
