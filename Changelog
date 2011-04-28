@@ -5,6 +5,8 @@ Icinga 1.4.x Change Log
 1.4.0 - 11/05/2011
 
 ENHANCEMENTS
+* core: re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option #1413
+
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
 * classic ui: Adding some more icons to showlog.cgi #1239
 * classic ui: adding entry time of comments in tooltip's in status.cgi #1244
