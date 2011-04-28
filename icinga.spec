@@ -11,7 +11,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.3.1
+Version: 1.4.0
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -80,9 +80,6 @@ Documentation for %{name}
 
 %prep
 %setup -qn %{name}-%{version}
-
-# /usr/local/nagios is hardcoded in many places
-%{__perl} -pi.orig -e 's|/usr/local/nagios/var/rw|%{_localstatedir}/nagios/rw|g;' contrib/eventhandlers/submit_check_result
 
 %build
 %configure \
@@ -225,7 +222,6 @@ fi
 %{_datadir}/icinga/sidebar.html
 %{_datadir}/icinga/ssi
 %{_datadir}/icinga/stylesheets
-%{_datadir}/icinga/top.html
 
 %files idoutils
 %defattr(-,icinga,icinga,-)
@@ -244,6 +240,11 @@ fi
 
 
 %changelog
+* Thu Apr 28 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.0-1
+- update for release 1.4.0
+- remove perl subst for eventhandler submit_check_result, this is now done by configure
+- remove top.html
+
 * Tue Mar 31 2011 Christoph Maser <cmaser@gmx.de> - 1.3.1-1
 - update for release 1.3.1
 

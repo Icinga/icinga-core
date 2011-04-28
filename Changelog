@@ -6,6 +6,7 @@ Icinga 1.4.x Change Log
 
 ENHANCEMENTS
 * core: re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option #1413
+* core: add downtime delete commands made "distributable" by deleting by host group name, host name or start time/comment (Opsview team) #1344
 
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
 * classic ui: Adding some more icons to showlog.cgi #1239
@@ -39,6 +40,7 @@ ENHANCEMENTS
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
+* core: fix timeperiods daylight saving time problem (Luca Di Stefano) #1370
 
 * classic ui: Fixing tooltip's in status.cgi, not showing messages with carriage return #1244
 * classic ui: fixed csv export link to make it XSS save (IE) #1275
@@ -53,6 +55,7 @@ FIXES
 * idoutils: idomod: larger buffer size (by Opsview) #1286
 * idoutils: fix rdbms deconnect after connection error #1313
 * idoutils: fix race condition when issueing multiple reloads results in hanging IDO2DB processes #1410
+* idoutils: fix postgresql: integer not big enough for bytes_processed (Stig Sandbeck) #1401
 
 * install: use *.so instead of *.o for solaris, patch in contrib/solaris/ #524
 

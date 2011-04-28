@@ -6,5 +6,8 @@ test_timeperiods
 test_events
 test_checks
 test_xsddefault
+test_commands
+test_downtime
+test_strtoul
 *.dSYM
 *.o

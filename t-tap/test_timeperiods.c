@@ -298,6 +298,11 @@ int my_tcp_connect(char *host_name, int port, int *sd, int timeout){}
 int my_recvall(int s, char *buf, int *len, int timeout){}
 int neb_free_module_list(void){}
 
+/* Icinga special */
+int     event_profiling_enabled=FALSE;
+void    profiler_update(int event, struct timeval start){}
+
+
 int main(int argc, char **argv){
 	int result;
 	int error=FALSE;

@@ -843,6 +843,45 @@ int delete_service_downtime(unsigned long downtime_id){
 	return result;
         }
 
+/* 
+Deletes all host and service downtimes on a host by hostname, optionally filtered by service description, start time and comment. 
+All char* must be set or NULL - "" will silently fail to match
+Returns number deleted 
+*/
+int delete_downtime_by_hostname_service_description_start_time_comment(char *hostname, char *service_description, time_t start_time, char *comment){
+	scheduled_downtime *temp_downtime;
+	int deleted=0;
+
+	/* Do not allow deletion of everything - must have at least 1 filter on */
+	if(hostname==NULL && service_description==NULL && start_time==0 && comment==NULL)
+		return deleted;
+
+	for(temp_downtime=scheduled_downtime_list;temp_downtime!=NULL;temp_downtime=temp_downtime->next){
+		if(start_time!=0 && temp_downtime->start_time!=start_time) {
+			continue;
+		}
+		if(comment!=NULL && strcmp(temp_downtime->comment,comment)!=0)
+			continue;
+		if(temp_downtime->type==HOST_DOWNTIME) {
+			/* If service is specified, then do not delete the host downtime */
+			if(service_description!=NULL)
+				continue;
+			if(hostname!=NULL && strcmp(temp_downtime->host_name,hostname)!=0)
+				continue;
+			}
+		else if(temp_downtime->type==SERVICE_DOWNTIME) {
+			if(hostname!=NULL && strcmp(temp_downtime->host_name,hostname)!=0)
+				continue;
+			if(service_description!=NULL && strcmp(temp_downtime->service_description,service_description)!=0)
+				continue;
+			}
+		
+		unschedule_downtime(temp_downtime->type,temp_downtime->downtime_id);
+		deleted++;
+		}
+	return deleted;
+	}
+
 #endif
 
 
@@ -1099,5 +1138,3 @@ void free_downtime_data(void){
 
 	return;
         }
-
-
