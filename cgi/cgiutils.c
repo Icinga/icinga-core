@@ -921,7 +921,8 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(content_type==JSON_CONTENT) {
 		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
-		printf("{ \"%s\": {\n",cgi_body_class);
+		printf("{ \"cgi_json_version\": \"%s\",\n",JSON_OUTPUT_VERSION);
+		printf("\"%s\": {\n",cgi_body_class);
 		return;
 	}
 

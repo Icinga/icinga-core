@@ -490,6 +490,10 @@ extern "C" {
 
 #define DEFAULT_HTTP_CHARSET "utf-8"
 
+/************************** JSON OUTPUT VERSION ************************/
+
+#define JSON_OUTPUT_VERSION "1.4.0"
+
 
 /************************** BUFFER  ***************************************/
 
