@@ -143,6 +143,11 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...){
 }
 int update_host_status(host *hst,int aggregated_dump){}
 
+/* Icinga special */
+int     event_profiling_enabled=FALSE;
+void    profiler_update(int event, struct timeval start){}
+
+
 /* Test variables */
 service *svc1=NULL, *svc2=NULL, *svc3=NULL;
 host *host1=NULL;

@@ -6,6 +6,7 @@ Icinga 1.4.x Change Log
 
 ENHANCEMENTS
 * core: re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option #1413
+* core: add downtime delete commands made "distributable" by deleting by host group name, host name or start time/comment (Opsview team) #1344
 
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
 * classic ui: Adding some more icons to showlog.cgi #1239
