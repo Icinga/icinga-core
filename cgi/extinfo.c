@@ -88,6 +88,9 @@ extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
+extern servicedependency *servicedependency_list;
+extern hostdependency *hostdependency_list;
+
 
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
@@ -171,6 +174,8 @@ int main(void){
 	hostgroup *temp_hostgroup=NULL;
 	service *temp_service=NULL;
 	servicegroup *temp_servicegroup=NULL;
+	servicedependency *temp_sd=NULL;
+	hostdependency *temp_hd=NULL;
 
 	mac = get_global_macros();
 
@@ -374,6 +379,7 @@ int main(void){
 					printf("<BR>");
 				}
 
+				/* Hostgroups */
 				printf("<DIV CLASS='data'>Member of</DIV><DIV CLASS='dataTitle'>");
 
 				for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
@@ -391,6 +397,28 @@ int main(void){
 
 				printf("</DIV><BR>\n");
 
+				/* Host Dependencies */
+				found=FALSE;
+
+				printf("<DIV CLASS='data'>Host Dependencies</DIV><DIV CLASS='dataTitle'>");
+
+				for(temp_hd=hostdependency_list;temp_hd!=NULL;temp_hd=temp_hd->next){
+
+					if(!strcmp(temp_hd->dependent_host_name,temp_host->name)){
+						if(found==TRUE)
+							printf("<br>");
+
+						printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hd->host_name),html_encode(temp_hd->host_name,FALSE));
+						found=TRUE;
+					}
+				}
+
+				if(found==FALSE)
+					printf("None");
+
+				printf("</DIV><BR>\n");
+
+				/* Host address(6) */
 				if(!strcmp(temp_host->address6,temp_host->name)){
 					printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);
 				} else {
@@ -402,6 +430,8 @@ int main(void){
 				printf("<DIV CLASS='data'>Service</DIV><DIV CLASS='dataTitle'>%s</DIV><DIV CLASS='data'>On Host</DIV>\n",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 				printf("<DIV CLASS='dataTitle'>%s</DIV>\n",temp_host->alias);
 				printf("<DIV CLASS='dataTitle'>(<A HREF='%s?type=%d&host=%s'>%s</a>)</DIV><BR>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+
+				/* Servicegroups */
                                 printf("<DIV CLASS='data'>Member of</DIV><DIV CLASS='dataTitle'>");
 
                                 for(temp_servicegroup=servicegroup_list;temp_servicegroup!=NULL;temp_servicegroup=temp_servicegroup->next){
@@ -416,7 +446,31 @@ int main(void){
 
                                 if(found==FALSE)
 					printf("No servicegroups.");
+
                                 printf("</DIV><BR>\n");
+
+                                /* Service Dependencies */
+                                found=FALSE;
+
+                                printf("<DIV CLASS='data'>Service Dependencies</DIV><DIV CLASS='dataTitle'>");
+
+                                for(temp_sd=servicedependency_list;temp_sd!=NULL;temp_sd=temp_sd->next){
+
+                                        if(!strcmp(temp_sd->dependent_service_description,temp_service->description)&&!strcmp(temp_sd->dependent_host_name,temp_host->name)){
+                                                if(found==TRUE)
+                                                        printf("<br>");
+
+                                                printf("<A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_sd->host_name));
+                                                printf("&service=%s'>%s on %s</A>\n",url_encode(temp_sd->service_description),html_encode(temp_sd->service_description,FALSE),html_encode(temp_sd->host_name,FALSE));
+                                                found=TRUE;
+                                        }
+                                }
+
+                                if(found==FALSE)
+                                        printf("None");
+
+                                printf("</DIV><BR>\n");
+
 
 				if(!strcmp(temp_host->address6,temp_host->name)){
                                         printf("<DIV CLASS='data'>%s</DIV>\n",temp_host->address);

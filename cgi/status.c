@@ -305,22 +305,37 @@ int main(void){
 				for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 					if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 						continue;
+					/* address */
 					if(!strcmp(host_name,temp_host->address)){
 						free(host_name);
 						host_name=strdup(temp_host->name);
 						break;
 					}
+					/* address6 */
 					if(!strcmp(host_name,temp_host->address6)){
 						free(host_name);
 						host_name=strdup(temp_host->name);
 						break;
 					}
+					/* display_name */
+                                        if(!strcmp(host_name,temp_host->display_name)){
+                                                free(host_name);
+                                                host_name=strdup(temp_host->name);
+                                                break;
+                                        }
 				}
 				if(temp_host==NULL){
 					for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 						if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 							continue;
+						/* host_name */
 						if((strstr(temp_host->name,host_name)==temp_host->name) || !strncasecmp(temp_host->name,host_name,strlen(host_name))){
+							free(host_name);
+							host_name=strdup(temp_host->name);
+							break;
+						}
+						/* display_name, use host_name as found identifier */
+						else if((strstr(temp_host->display_name,host_name)==temp_host->display_name) || !strncasecmp(temp_host->display_name,host_name,strlen(host_name))){
 							free(host_name);
 							host_name=strdup(temp_host->name);
 							break;
@@ -4968,9 +4983,15 @@ void grab_statusdata(void) {
 			if(display_type==DISPLAY_HOSTS){
 				if(show_all_hosts==TRUE)
 					grab_service=TRUE;
+				/* for the host_name ... */
 				else if(host_filter!=NULL && 0==regexec(&preg_hostname,temp_servicestatus->host_name,0,NULL,0))
 					grab_service=TRUE;
 				else if(!strcmp(host_name,temp_servicestatus->host_name))
+					grab_service=TRUE;
+				/* and for the display_name */
+				else if(host_filter!=NULL && 0==regexec(&preg_hostname,temp_host->display_name,0,NULL,0))
+					grab_service=TRUE;
+				else if(!strcmp(host_name,temp_host->display_name))
 					grab_service=TRUE;
 			}
 

@@ -35,6 +35,7 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 LOGDIR=@localstatedir@
 CHECKRESULTDIR=@CHECKRESULTDIR@
+EXTCMDFILEDIR=@EXTCMDFILEDIR@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 CGIDIR=@sbindir@
@@ -485,8 +486,8 @@ install-daemoninit:
 
 
 install-commandmode:
-	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(LOGDIR)/rw
-	chmod g+s $(DESTDIR)$(LOGDIR)/rw
+	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(EXTCMDFILEDIR)
+	chmod g+s $(DESTDIR)$(EXTCMDFILEDIR)
 
 	@echo ""
 	@echo "*** External command directory configured ***"
