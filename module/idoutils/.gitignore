@@ -3,5 +3,6 @@ db/scripts/prepsql
 db/scripts/installdb
 idomod.cfg-sample
 config/icinga.cfg
+config/idoutils.cfg
 config/ido2db.cfg-sample
 

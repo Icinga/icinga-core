@@ -52,6 +52,8 @@ cfg_file=@sysconfdir@/objects/localhost.cfg
 #cfg_dir=@sysconfdir@/switches
 #cfg_dir=@sysconfdir@/routers
 
+# Definitions for broker modules like idoutils.cfg
+cfg_dir=@sysconfdir@/modules
 
 
 

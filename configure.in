@@ -1159,7 +1159,6 @@ perl subst $srcdir/include/locations.h
 perl subst $srcdir/contrib/eventhandlers/submit_check_result
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
-perl subst $srcdir/html/top.html
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."
@@ -1185,6 +1184,7 @@ echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
 perl subst $srcdir/module/idoutils/config/icinga.cfg
+perl subst $srcdir/module/idoutils/config/idoutils.cfg
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
 
