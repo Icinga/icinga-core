@@ -46,5 +46,5 @@ install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 664 $(INSTALL_OPTS) config/ido2db.cfg-sample $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 664 $(INSTALL_OPTS) config/idomod.cfg-sample $(DESTDIR)$(CFGDIR)
-#	$(INSTALL) -m 664 $(INSTALL_OPTS) config/idoutils.cfg $(DESTDIR)$(CFGDIR)/modules/
+	$(INSTALL) -m 664 $(INSTALL_OPTS) config/idoutils.cfg $(DESTDIR)$(CFGDIR)/modules/
 

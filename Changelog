@@ -33,6 +33,7 @@ ENHANCEMENTS
 * idoutils: non-blocking icinga core while config dump at startup to ido2db #866
 	** main thread dumps in dynamic buffer, worker threads reads and processes data
 	** this causes more cpu usage in the beginning, but afterall Icinga core won't block
+* idoutils: install sample (commented) config in modules/idoutils.cfg using new 'module' object config #162
 
 * config: increase default debug file size to 100M #1316
 
