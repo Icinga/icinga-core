@@ -838,7 +838,7 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod){
 	timeperiodexclusion *first_timeperiodexclusion=NULL;
 	daterange *temp_daterange=NULL;
 	timerange *temp_timerange=NULL;
-	unsigned long midnight=0L;
+	time_t midnight=0L;
 	time_t start_time=(time_t)0L;
 	time_t end_time=(time_t)0L;
 	int found_match=FALSE;
@@ -1167,7 +1167,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	time_t preferred_time=(time_t)0L;
 	timerange *temp_timerange;
 	daterange *temp_daterange;
-	unsigned long midnight=0L;
+	time_t midnight=0L;
 	struct tm *t, tm_s;
 	time_t day_start=(time_t)0L;
 	time_t day_range_start=(time_t)0L;
@@ -1565,7 +1565,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	time_t preferred_time=(time_t)0L;
 	timerange *temp_timerange;
 	daterange *temp_daterange;
-	unsigned long midnight=0L;
+	time_t midnight=0L;
 	struct tm *t, tm_s;
 	time_t day_start=(time_t)0L;
 	time_t day_range_start=(time_t)0L;

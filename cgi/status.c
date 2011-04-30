@@ -181,6 +181,7 @@ int overview_columns=3;
 int max_grid_width=8;
 int group_style_type=STYLE_OVERVIEW;
 int navbar_search=FALSE;
+int user_is_authorized_for_statusdata=FALSE;
 
 int service_status_types=SERVICE_PENDING|SERVICE_OK|SERVICE_UNKNOWN|SERVICE_WARNING|SERVICE_CRITICAL;
 int all_service_status_types=SERVICE_PENDING|SERVICE_OK|SERVICE_UNKNOWN|SERVICE_WARNING|SERVICE_CRITICAL;
@@ -1850,7 +1851,7 @@ void show_service_detail(void){
 		printf("</DIV>\n");
 
 		/* if user couldn't see anything, print out some helpful info... */
-		if(total_entries==0 && servicestatus_list!=NULL)
+		if(total_entries==0 && user_is_authorized_for_statusdata==FALSE)
 			print_generic_error_message("It appears as though you do not have permission to view information for any of the services you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		else
 			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Service Entries Displayed</DIV>\n",total_entries);
@@ -2239,7 +2240,7 @@ void show_host_detail(void){
 		printf("</DIV>\n");
 
 		/* if user couldn't see anything, print out some helpful info... */
-		if(total_entries==0 && hoststatus_list!=NULL)
+		if(total_entries==0 && user_is_authorized_for_statusdata==FALSE)
 			print_generic_error_message("It appears as though you do not have permission to view information for any of the hosts you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		else
 			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Host Entries Displayed</DIV>\n",total_entries);
@@ -3620,7 +3621,7 @@ void show_hostgroup_overviews(void){
 		if(content_type==JSON_CONTENT)
 			printf(",\n");
 
-		if(hoststatus_list!=NULL)
+		if(hostgroup_list!=NULL)
 			print_generic_error_message("It appears as though you do not have permission to view information for the host group you requested...","If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.",0);
 		else
 			print_generic_error_message("There are no host groups defined.",NULL,0);
@@ -4913,6 +4914,8 @@ void grab_statusdata(void) {
 			if(is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 				continue;
 
+			user_is_authorized_for_statusdata=TRUE;
+
 			/* see if we should display services for hosts with this type of status */
 			if(!(host_status_types & temp_hoststatus->status))
 				continue;
@@ -4953,6 +4956,8 @@ void grab_statusdata(void) {
 			/* make sure user has rights to see this... */
 			if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
 				continue;
+
+			user_is_authorized_for_statusdata=TRUE;
 
 			/* get the host status information */
 			temp_hoststatus=find_hoststatus(temp_service->host_name);

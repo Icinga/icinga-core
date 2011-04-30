@@ -838,6 +838,8 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_css         = TAC_CSS;
                         cgi_title       = "Tactical Monitoring Overview";
                         cgi_body_class  = "tac";
+			if (tac_header==TRUE && show_tac_header==FALSE)
+				refresh=FALSE;
                         break;
                 case TRENDS_CGI_ID:
                         cgi_name        = TRENDS_CGI;
@@ -853,6 +855,11 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_body_class  = "error";
                         break;
         }
+
+
+	// don't refresh non html output
+	if(content_type==JSON_CONTENT || content_type==CSV_CONTENT)
+		refresh=FALSE;
 
 	if(content_type==WML_CONTENT){
                 /* used by cmd.cgi */
@@ -914,7 +921,8 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(content_type==JSON_CONTENT) {
 		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
-		printf("{ \"%s\": {\n",cgi_body_class);
+		printf("{ \"cgi_json_version\": \"%s\",\n",JSON_OUTPUT_VERSION);
+		printf("\"%s\": {\n",cgi_body_class);
 		return;
 	}
 
@@ -2344,6 +2352,7 @@ char *get_export_csv_link(char *cgi) {
 int write_to_cgi_log(char *buffer) {
 	FILE *fp;
 	time_t log_time;
+	int write_retries=10, i=0;
 
 	/* we don't do anything if logging is deactivated or no logfile configured */
 	if(use_logging==FALSE || !strcmp(cgi_log_file,""))
@@ -2354,8 +2363,13 @@ int write_to_cgi_log(char *buffer) {
 	// allways check if log file has to be rotated
 	rotate_log_file();
 
-	fp=fopen(cgi_log_file,"a+");
-	if(fp==NULL)
+	// open log file and try again if failed
+	while((fp=fopen(cgi_log_file,"a+"))==NULL && i<write_retries) {
+		usleep(10);
+		i++;
+	}
+
+	if(i>=write_retries)
 		return ERROR;
 
 	/* strip any newlines from the end of the buffer */

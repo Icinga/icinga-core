@@ -553,6 +553,7 @@ void display_logentries() {
 	int json_start=TRUE;
 	struct tm *time_ptr=NULL;
 	logentry *temp_entry=NULL;
+	int count=0;
 
 
 	/* Add default filters */
@@ -862,7 +863,8 @@ void display_logentries() {
 			current_message_date[sizeof(current_message_date)-1]='\x0';
 
 			if(strcmp(last_message_date,current_message_date)!=0 && display_timebreaks==TRUE){
-				printf("<BR CLEAR='all'>\n");
+				printf("</DIV>\n");
+				printf("<BR>\n");
 				printf("<DIV>\n");
 				printf("<table border=0 width=99%% CLASS='dateTimeBreak' align=center><tr>");
 				printf("<td width=40%%><hr width=100%%></td>");
@@ -870,7 +872,7 @@ void display_logentries() {
 				printf("<td width=40%%><hr width=100%%></td>");
 				printf("</tr></table>\n");
 				printf("</DIV>\n");
-				printf("<BR CLEAR='all'><DIV CLASS='logEntries'>\n");
+				printf("<BR><DIV CLASS='logEntries'>\n");
 				strncpy(last_message_date,current_message_date,sizeof(last_message_date));
 				last_message_date[sizeof(last_message_date)-1]='\x0';
 			}
@@ -900,20 +902,21 @@ void display_logentries() {
 				printf("%s%s%s\n",csv_data_enclosure,temp_entry->entry_text,csv_data_enclosure);
 			}else{
 				if(display_frills==TRUE)
-					printf("<img align='left' src='%s%s' alt='%s' title='%s'>",url_images_path,image,image_alt,image_alt);
+					printf("<img align=left src='%s%s' alt='%s' title='%s'>",url_images_path,image,image_alt,image_alt);
 				printf("[%s] %s",date_time,(temp_entry->entry_text==NULL)?"":html_encode(temp_entry->entry_text,FALSE));
 				if(enable_splunk_integration==TRUE){
 					printf("&nbsp;&nbsp;&nbsp;");
 					display_splunk_generic_url(temp_entry->entry_text,2);
 				}
-				printf("<br clear='all'>\n");
+				printf("<br clear=all>\n");
 			}
 
 			user_has_seen_something=TRUE;
+			count++;
 		}
 
 		if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
-			printf("</DIV><HR>\n");
+			printf("</DIV><br><div align=center>%d entries displayed</div><HR>\n",count);
 		}else if (content_type==JSON_CONTENT)
 			printf("\n]\n");
 

@@ -3587,8 +3587,7 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 		printf("</table>\n");
 		printf("</DIV>\n");
 	}else if (content_type==JSON_CONTENT){
-		printf(", {\"average_percent_times\": null, ");
-		printf("\"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
+		printf(", { \"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
 		printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
 		printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
 		printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
@@ -4281,8 +4280,7 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		printf("</table>\n");
 		printf("</DIV>\n");
 	}else if (content_type==JSON_CONTENT){
-		printf(", {\"average_percent_times\": null, ");
-		printf("\"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
+		printf(",{ \"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
 		printf("\"average_percent_time_ok_known\": \"%2.3f\", ",average_percent_time_ok_known);
 		printf("\"average_percent_time_warning\": \"%2.3f\", ",average_percent_time_warning);
 		printf("\"average_percent_time_warning_known\": \"%2.3f\", ",average_percent_time_warning_known);
@@ -5013,8 +5011,7 @@ void display_host_availability(void){
 			printf("</table>\n");
 			printf("</DIV>\n");
 		}else if (content_type==JSON_CONTENT){
-			printf(", {\"average_percent_times\": null, ");
-			printf("\"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
+			printf(",{ \"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
 			printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
 			printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
 			printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
@@ -5760,8 +5757,7 @@ void display_service_availability(void){
 			printf("</table>\n");
 			printf("</DIV>\n");
 		}else if (content_type==JSON_CONTENT){
-			printf(", {\"average_percent_times\": null, ");
-			printf("\"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
+			printf(",{ \"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
 			printf("\"average_percent_time_ok_known\": \"%2.3f\", ",average_percent_time_ok_known);
 			printf("\"average_percent_time_warning\": \"%2.3f\", ",average_percent_time_warning);
 			printf("\"average_percent_time_warning_known\": \"%2.3f\", ",average_percent_time_warning_known);
