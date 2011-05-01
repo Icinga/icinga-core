@@ -181,6 +181,7 @@ fi
 %defattr(-,icinga,icinga,-)
 %attr(755,root,root) %{_initrddir}/icinga
 %dir %{_sysconfdir}/icinga
+%dir %{_sysconfdir}/icinga/modules
 %config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
 %config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
 %config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
@@ -228,6 +229,7 @@ fi
 %attr(755,root,root) %{_initrddir}/ido2db
 %config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
+%config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
 %{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
 %{_bindir}/log2ido
@@ -244,6 +246,7 @@ fi
 - update for release 1.4.0
 - remove perl subst for eventhandler submit_check_result, this is now done by configure
 - remove top.html
+- honour modules/ in icinga cfg and modules/idoutils.cfg for neb definitions
 
 * Tue Mar 31 2011 Christoph Maser <cmaser@gmx.de> - 1.3.1-1
 - update for release 1.3.1
