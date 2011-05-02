@@ -52,6 +52,8 @@ cfg_file=@sysconfdir@/objects/localhost.cfg
 #cfg_dir=@sysconfdir@/switches
 #cfg_dir=@sysconfdir@/routers
 
+# Definitions for broker modules like idoutils.cfg
+cfg_dir=@sysconfdir@/modules
 
 
 
@@ -168,7 +170,7 @@ command_check_interval=-1
 # directory level instead of on the file, as the file is deleted every
 # time its contents are processed.
 
-command_file=@localstatedir@/rw/icinga.cmd
+command_file=@EXTCMDFILEDIR@/icinga.cmd
 
 
 
@@ -957,6 +959,18 @@ process_performance_data=0
 #service_perfdata_file_processing_command=process-service-perfdata-file
 
 
+# HOST AND SERVICE PERFORMANCE DATA PROCESS EMPTY RESULTS
+# THese options determine wether the core will process empty perfdata
+# results or not. This is needed for distributed monitoring, and intentionally
+# turned on by default.
+# If you don't require empty perfdata - saving some cpu cycles
+# on unwanted macro calculation - you can turn that off. Be careful!
+# Values: 1 = enable, 0 = disable
+
+#host_perfdata_process_empty_results=1
+#service_perfdata_process_empty_results=1
+
+
 
 # ALLOW EMPTY HOSTGROUP ASSIGMENT FOR SERVICES
 # This boolean option determines whether services assigned to empty
@@ -1411,7 +1425,10 @@ debug_file=@localstatedir@/icinga.debug
 # automatically be deleted.  This helps ensure your disk space usage doesn't
 # get out of control when debugging Icinga.
 
-max_debug_file_size=1000000
+# 100M
+max_debug_file_size=100000000
+
+
 
 # EVENT PROFILING
 # This option enables or disables event profiling for stats of event counts

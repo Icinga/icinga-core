@@ -16,6 +16,8 @@
 #define IDO2DB_DATE "05-11-2011"
 #define IDO2DB_VERSION "1.4.0"
 
+#define IDO2DB_SCHEMA_VERSION "1.4.0"
+
 /*************** RDBMS headers *************/
 
 /* oracle */
@@ -364,15 +366,27 @@ typedef struct ido2db_input_data_info_struct{
 
 /************* default trim db interval ********/
 
-#define DEFAULT_TRIM_DB_INTERVAL 60
+#define DEFAULT_TRIM_DB_INTERVAL		3600
 
 /* default housekeeping thread startup delay  **/
 
-#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 60
+#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY 300
 
-/************* default trim db interval ********/
+/************* oci errors to syslog ************/
 
 #define DEFAULT_OCI_ERRORS_TO_SYSLOG 		1
+
+
+/************* n worker threads ****************/
+
+#define IDO2DB_CLEANER_THREADS			1
+#define IDO2DB_WORKER_THREADS			1
+#define IDO2DB_NR_OF_THREADS                   (IDO2DB_CLEANER_THREADS+IDO2DB_WORKER_THREADS)
+
+#define IDO2DB_THREAD_POOL_CLEANER		0
+#define IDO2DB_THREAD_POOL_WORKER		1
+
+#define IDO2DB_DEFAULT_THREAD_STACK_SIZE	65536
 
 /***************** functions *******************/
 
@@ -401,8 +415,8 @@ int ido2db_free_connection_memory(ido2db_idi *);
 int ido2db_wait_for_connections(void);
 int ido2db_handle_client_connection(int);
 int ido2db_idi_init(ido2db_idi *);
-int ido2db_check_for_client_input(ido2db_idi *,ido_dbuf *, pthread_t *);
-int ido2db_handle_client_input(ido2db_idi *,char *, pthread_t *);
+int ido2db_check_for_client_input(ido2db_idi *);
+int ido2db_handle_client_input(ido2db_idi *,char *);
 
 /* data handling */
 int ido2db_start_input_data(ido2db_idi *);
@@ -424,6 +438,9 @@ int ido2db_log_debug_info(int , int , const char *, ...);
 
 /* threads */
 void *ido2db_thread_cleanup(void *);
-int ido2db_kill_threads(void);
+void *ido2db_thread_worker(void *);
+int ido2db_terminate_threads(void);
+int terminate_worker_thread(void);
+int terminate_cleanup_thread(void);
 
 #endif

@@ -678,7 +678,7 @@ void display_notifications(void){
 					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)
 						printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
 					else
-						printf("\"service\": \"N/A\", ");
+						printf("\"service\": null, ");
 					printf("\"type\": \"%s\", ",alert_level);
 					printf("\"time\": \"%s\", ",date_time);
 					printf("\"contact\": \"%s\", ",contact_name);

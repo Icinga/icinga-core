@@ -28,7 +28,13 @@
 #include "../include/objects.h"
 #include "../include/skiplist.h"
 
+
 #ifdef NSCORE
+
+#ifdef USE_EVENT_BROKER
+#include "../include/nebmods.h"
+#endif
+
 #include "../include/icinga.h"
 #endif
 
@@ -55,6 +61,7 @@ serviceescalation *serviceescalation_list=NULL,*serviceescalation_list_tail=NULL
 servicedependency *servicedependency_list=NULL,*servicedependency_list_tail=NULL;
 hostdependency  *hostdependency_list=NULL,*hostdependency_list_tail=NULL;
 hostescalation  *hostescalation_list=NULL,*hostescalation_list_tail=NULL;
+module		*module_list=NULL,*module_list_tail=NULL;
 
 skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
 
@@ -118,6 +125,8 @@ int init_object_skiplists(void){
 	object_skiplists[SERVICEESCALATION_SKIPLIST]=skiplist_new(15,0.5,TRUE,FALSE,skiplist_compare_serviceescalation);
 	object_skiplists[HOSTDEPENDENCY_SKIPLIST]=skiplist_new(15,0.5,TRUE,FALSE,skiplist_compare_hostdependency);
 	object_skiplists[SERVICEDEPENDENCY_SKIPLIST]=skiplist_new(15,0.5,TRUE,FALSE,skiplist_compare_servicedependency);
+
+	object_skiplists[MODULE_SKIPLIST]=skiplist_new(10,0.5,FALSE,FALSE,skiplist_compare_module);
 
 	return OK;
 	}
@@ -377,6 +386,23 @@ int skiplist_compare_servicedependency(void *a, void *b){
 
 	return skiplist_compare_text(oa->dependent_host_name,oa->dependent_service_description,ob->dependent_host_name,ob->dependent_service_description);
 	}
+
+int skiplist_compare_module(void *a, void *b){
+        module *oa=NULL;
+        module *ob=NULL;
+
+        oa=(module *)a;
+        ob=(module *)b;
+
+        if(oa==NULL && ob==NULL)
+                return 0;
+        if(oa==NULL)
+                return 1;
+        if(ob==NULL)
+                return -1;
+
+        return skiplist_compare_text(oa->name,NULL,ob->name,NULL);
+        }
 
 
 int get_host_count(void){
@@ -2474,7 +2500,91 @@ customvariablesmember *add_custom_variable_to_object(customvariablesmember **obj
         }
 
 
+/* add a new module to the list in memory */
+module *add_module(char *name,char *type,char *path,char *args){
+        module *new_module=NULL;
+        int result=OK;
+                
+        /* make sure we have the data we need */
+        if((name==NULL || !strcmp(name,"")) || (path==NULL || !strcmp(path,""))){
+                logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Module name or path is NULL\n");
+                return NULL;
+                }
 
+        /* allocate memory for the new module */
+        if((new_module=(module *)calloc(1, sizeof(module)))==NULL)
+                return NULL;
+
+        /* duplicate vars */
+        if((new_module->name=(char *)strdup(name))==NULL)
+                result=ERROR;
+        if((new_module->type=(char *)strdup(type))==NULL)
+                result=ERROR;
+        if((new_module->path=(char *)strdup(path))==NULL)
+                result=ERROR;
+        if((new_module->args=(char *)strdup(args))==NULL)
+                result=ERROR;
+
+        /* add new command to skiplist */
+        if(result==OK){
+                result=skiplist_insert(object_skiplists[MODULE_SKIPLIST],(void *)new_module);
+                switch(result){
+                case SKIPLIST_ERROR_DUPLICATE:
+                        logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Module '%s' has already been defined\n",name);
+                        result=ERROR;
+                        break;
+                case SKIPLIST_OK:
+                        result=OK;
+                        break;
+                default:
+                        logit(NSLOG_CONFIG_ERROR,TRUE,"Error: Could not add module '%s' to skiplist\n",name);
+                        result=ERROR;
+                        break;
+                        }
+                }
+
+        /* handle errors */
+        if(result==ERROR){
+                my_free(new_module->args);
+                my_free(new_module->path);
+                my_free(new_module->type);
+                my_free(new_module->name);
+                my_free(new_module);
+                return NULL;
+                }
+
+        /* modules are sorted alphabetically, so add new items to tail of list */
+        if(module_list==NULL){
+                module_list=new_module;
+                module_list_tail=module_list;
+                }
+        else {
+                module_list_tail->next=new_module;
+                module_list_tail=new_module;
+                }
+
+        return new_module;
+        }
+
+#ifdef NSCORE
+int add_module_objects_to_neb(void){
+	module *temp_module;
+	int total_objects=0;
+
+        for(temp_module=module_list,total_objects=0;temp_module!=NULL;temp_module=temp_module->next,total_objects++){
+
+		/* just an idea to re-use the type a bit better - MF 2011-04-30 FIXME */
+		//if!strcmp(temp_module->module_type,"neb"){
+#ifdef USE_EVENT_BROKER
+		neb_add_module(temp_module->path,temp_module->args,TRUE);
+#endif
+		//}
+	}
+
+	return OK;
+
+}
+#endif
 
 /******************************************************************/
 /******************** OBJECT SEARCH FUNCTIONS *********************/
@@ -2584,6 +2694,18 @@ service * find_service(char *host_name,char *svc_desc){
 	return skiplist_find_first(object_skiplists[SERVICE_SKIPLIST],&temp_service,NULL);
         }
 
+
+/* given a module name, find a module from the list in memory */
+module * find_module(char *name){
+        module temp_module;
+
+        if(name==NULL)
+                return NULL;
+
+        temp_module.name=name;
+
+        return skiplist_find_first(object_skiplists[MODULE_SKIPLIST],&temp_module,NULL);
+        }
 
 
 
@@ -3282,6 +3404,8 @@ int free_object_data(void){
 	hostescalation *next_hostescalation=NULL;
         escalation_condition *this_escalation_condition=NULL;
         escalation_condition *next_escalation_condition=NULL;
+	module *this_module=NULL;
+	module *next_module=NULL;
 	register int x=0;
 	register int i=0;
 
@@ -3757,6 +3881,22 @@ int free_object_data(void){
 
 	/* reset pointers */
 	hostescalation_list=NULL;
+
+        /**** free memory for the module list ****/
+        this_module=module_list;
+        while(this_module!=NULL){
+                next_module=this_module->next;
+                my_free(this_module->name);
+                my_free(this_module->type);
+                my_free(this_module->path);
+                my_free(this_module->args);
+                my_free(this_module);
+                this_module=next_module;
+                }
+
+        /* reset pointers */
+        module_list=NULL;
+
 
 	/* free object skiplists */
 	free_object_skiplists();

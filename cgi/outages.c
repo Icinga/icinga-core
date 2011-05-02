@@ -241,7 +241,12 @@ int process_cgivars(void){
 		else if(!strcmp(variables[x],"csvoutput")){
 			display_header=FALSE;
 			content_type=CSV_CONTENT;
-			}
+		}
+
+		else if(!strcmp(variables[x],"jsonoutput")){
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
 
 			/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -287,6 +292,7 @@ void display_network_outages(void){
 	time_t current_time;
 	char state_duration[48];
 	int total_entries=0;
+	int json_start=TRUE;
 
 	/* find all hosts that are causing network outages */
 	find_hosts_causing_outages();
@@ -304,7 +310,9 @@ void display_network_outages(void){
 			number_of_blocking_problem_hosts++;
 		}
 
-	if(content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT) {
+		printf("\"outages\": [\n");
+	} else if(content_type==CSV_CONTENT) {
 		printf("%sSEVERITY%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sSTATE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -360,7 +368,15 @@ void display_network_outages(void){
 		else if(temp_hoststatus->status==HOST_DOWN)
 			status="DOWN";
 
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT) {
+			// always add a comma, except for the first line
+			if (json_start==FALSE)
+				printf(",\n");
+			json_start=FALSE;
+			printf("{ \"severity\": \"%d\", ",temp_hostoutage->severity);
+			printf(" \"host\": \"%s\", ",(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name);
+			printf(" \"state\": \"%s\", ",status);
+		} else if(content_type==CSV_CONTENT) {
 			printf("%s%d%s%s",csv_data_enclosure,temp_hostoutage->severity,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
@@ -373,7 +389,9 @@ void display_network_outages(void){
 		}
 
 		total_comments=number_of_host_comments(temp_hostoutage->hst->name);
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT) {
+			printf(" \"notes\": \"%d\", ",total_comments);
+		} else if(content_type==CSV_CONTENT) {
 			printf("%s%d%s%s",csv_data_enclosure,total_comments,csv_data_enclosure,csv_delimiter);
 		} else {
 			if(total_comments>0){
@@ -394,7 +412,11 @@ void display_network_outages(void){
 		snprintf(state_duration,sizeof(state_duration)-1,"%2dd %2dh %2dm %2ds%s",days,hours,minutes,seconds,(temp_hoststatus->last_state_change==(time_t)0)?"+":"");
 		state_duration[sizeof(state_duration)-1]='\x0';
 
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT) {
+			printf(" \"state_duration\": \"%s\", ",state_duration);
+			printf(" \"hosts_affected\": \"%d\", ",temp_hostoutage->affected_child_hosts);
+			printf(" \"services_affected\": \"%d\"}\n",temp_hostoutage->affected_child_services);
+		} else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,state_duration,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,temp_hostoutage->affected_child_hosts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s\n",csv_data_enclosure,temp_hostoutage->affected_child_services,csv_data_enclosure);
@@ -422,13 +444,15 @@ void display_network_outages(void){
 		}
 	}
 
-	if(content_type!=CSV_CONTENT) {
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT) {
 		printf("</TABLE>\n");
 
 		printf("</DIV></P>\n");
 
 		if(total_entries==0)
 			printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n",total_entries);
+	}else if (content_type==JSON_CONTENT){
+		printf("\n]\n");
 	}
 
 	/* free memory allocated to the host outage list */

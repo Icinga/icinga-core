@@ -313,6 +313,11 @@ void check_for_host_flapping(host *hst, int update, int actual_check, int allow_
 int service_notification(service *svc, int type, char *not_author, char *not_data, int options){}
 
 
+/* Icinga special */
+int     event_profiling_enabled=FALSE;
+void    profiler_update(int event, struct timeval start){}
+
+
 int main(int argc, char **argv){
 	int result;
 	int error=FALSE;

@@ -207,6 +207,7 @@ extern serviceescalation *serviceescalation_list;
 extern servicedependency *servicedependency_list;
 extern hostdependency   *hostdependency_list;
 extern hostescalation   *hostescalation_list;
+extern module           *module_list;
 
 extern host		**host_hashlist;
 extern service		**service_hashlist;
@@ -1844,6 +1845,7 @@ int pre_flight_object_check(int *w, int *e){
 	servicedependency *temp_sd=NULL;
 	hostdependency *temp_hd=NULL;
 	escalation_condition *temp_escalation_condition=NULL;
+	module *temp_module=NULL;
 	char *buf=NULL;
 	char *temp_command_name="";
 	int found=FALSE;
@@ -2772,6 +2774,26 @@ int pre_flight_object_check(int *w, int *e){
 	if(verify_config==TRUE)
 		printf("\tChecked %d time periods.\n",total_objects);
 
+
+        /*****************************************/
+        /* check all modules...                  */
+        /*****************************************/
+        if(verify_config==TRUE)
+                printf("Checking modules...\n");
+
+        for(temp_module=module_list,total_objects=0;temp_module!=NULL;temp_module=temp_module->next,total_objects++){
+
+                /* check for illegal characters in module name */
+                if(use_precached_objects==FALSE){
+                        if(contains_illegal_object_chars(temp_module->name)==TRUE){
+                                logit(NSLOG_VERIFICATION_ERROR,TRUE,"Error: The name of module '%s' contains one or more illegal characters.",temp_module->name);
+                                errors++;
+                                }
+                        }
+                }
+
+        if(verify_config==TRUE)
+                printf("\tChecked %d modules.\n",total_objects);
 
 
        /* update warning and error count */

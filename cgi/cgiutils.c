@@ -131,6 +131,7 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
+int		show_tac_header=FALSE;
 int		showlog_initial_states=TRUE;
 int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
@@ -166,6 +167,7 @@ int embedded=FALSE;
 int display_header=TRUE;
 int refresh=TRUE;
 int daemon_check=TRUE;
+int tac_header=FALSE;
 
 extern char alert_message;
 extern char *host_name;
@@ -553,6 +555,9 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
 
+		else if(!strcmp(var,"show_tac_header"))
+			show_tac_header=(atoi(val)>0)?TRUE:FALSE;
+
 		else if(!strcmp(var,"showlog_initial_state") || !strcmp(var,"showlog_initial_states"))
 			showlog_initial_states=(atoi(val)>0)?TRUE:FALSE;
 
@@ -833,6 +838,8 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_css         = TAC_CSS;
                         cgi_title       = "Tactical Monitoring Overview";
                         cgi_body_class  = "tac";
+			if (tac_header==TRUE && show_tac_header==FALSE)
+				refresh=FALSE;
                         break;
                 case TRENDS_CGI_ID:
                         cgi_name        = TRENDS_CGI;
@@ -848,6 +855,11 @@ void document_header(int cgi_id, int use_stylesheet){
                         cgi_body_class  = "error";
                         break;
         }
+
+
+	// don't refresh non html output
+	if(content_type==JSON_CONTENT || content_type==CSV_CONTENT)
+		refresh=FALSE;
 
 	if(content_type==WML_CONTENT){
                 /* used by cmd.cgi */
@@ -909,7 +921,8 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(content_type==JSON_CONTENT) {
 		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
-		printf("{\n");
+		printf("{ \"cgi_json_version\": \"%s\",\n",JSON_OUTPUT_VERSION);
+		printf("\"%s\": {\n",cgi_body_class);
 		return;
 	}
 
@@ -917,6 +930,27 @@ void document_header(int cgi_id, int use_stylesheet){
 	if(cgi_id!=ERROR_CGI_ID){
 		// send HTML CONTENT
 		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
+	}
+
+	/* is this tac.cgi?tac_header */
+	if(cgi_id==TAC_CGI_ID && tac_header==TRUE) {
+
+		printf("<html>\n");
+		printf("<head>\n");
+		printf("<title>Icinga</title>\n");
+		printf("<meta name='robots' content='noindex, nofollow' />\n");
+
+		/* is show_tac_header=1 in cgi.cfg? */
+		if(show_tac_header==TRUE)
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n",url_stylesheets_path,TAC_HEADER_CSS);
+		else //no? show the classic header as the default
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n",url_stylesheets_path);
+
+		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
+		printf("</head>\n");
+		printf("<body>\n");
+
+		return; //safely return
 	}
 
 	if(embedded==TRUE)
@@ -1084,11 +1118,15 @@ void document_footer(int cgi_id){
 	}
 
 	if(content_type==JSON_CONTENT){
-		printf("}\n");
+		printf("}\n}\n");
 		return;
 	}
 
-	if(embedded || content_type!=HTML_CONTENT)
+	/*
+	   top is embedded, so if this is top we don't want to return
+	   otherwise if embedded or HTML_CONTENT we do want to return
+	*/
+	if((embedded || content_type!=HTML_CONTENT) && tac_header==FALSE)
 		return;
 
 	if(cgi_id==STATUSWML_CGI_ID) {
@@ -2252,6 +2290,17 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 			printf("ERROR: %s\n",title);
 		if(text!=NULL && text[0]!='\x0')
 			printf("ERROR: %s\n",text);
+	} else if(content_type==JSON_CONTENT) {
+		printf("\"error\": {\n\"title\": ");
+		if(title!=NULL && title[0]!='\x0')
+			printf("\"%s\",\n",title);
+		else
+			printf("null,\n");
+		printf("\"text\": ");
+		if(text!=NULL && text[0]!='\x0')
+			printf("\"%s\"\n}",text);
+		else
+			printf("null\n}");
 	} else {
 		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
 		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>",url_images_path,CMD_STOP_ICON);
@@ -2303,6 +2352,7 @@ char *get_export_csv_link(char *cgi) {
 int write_to_cgi_log(char *buffer) {
 	FILE *fp;
 	time_t log_time;
+	int write_retries=10, i=0;
 
 	/* we don't do anything if logging is deactivated or no logfile configured */
 	if(use_logging==FALSE || !strcmp(cgi_log_file,""))
@@ -2313,8 +2363,13 @@ int write_to_cgi_log(char *buffer) {
 	// allways check if log file has to be rotated
 	rotate_log_file();
 
-	fp=fopen(cgi_log_file,"a+");
-	if(fp==NULL)
+	// open log file and try again if failed
+	while((fp=fopen(cgi_log_file,"a+"))==NULL && i<write_retries) {
+		usleep(10);
+		i++;
+	}
+
+	if(i>=write_retries)
 		return ERROR;
 
 	/* strip any newlines from the end of the buffer */

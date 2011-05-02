@@ -260,6 +260,7 @@ extern hostgroup       *hostgroup_list;
 extern command         *command_list;
 extern timeperiod      *timeperiod_list;
 extern serviceescalation *serviceescalation_list;
+extern module          *module_list;
 
 notification    *notification_list;
 
@@ -671,6 +672,12 @@ int main(int argc, char **argv, char **env){
 
 			/* read in the configuration files (main and resource config files) */
 			result=read_main_config_file(config_file);
+
+			/* we need to read the modules in the first place as object configuration before neb modules are initialized/loaded */
+			result=read_object_config_data(config_file,READ_MODULES,FALSE,FALSE);
+
+			/* add modules to neb */
+			result=add_module_objects_to_neb();
 
 			/* NOTE 11/06/07 EG moved to after we read config files, as user may have overridden timezone offset */
 			/* get program (re)start time and save as macro */

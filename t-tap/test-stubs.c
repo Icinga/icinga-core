@@ -121,9 +121,11 @@ int syslog_local_facility;
 int log_current_states;
 int log_long_plugin_output;
 
-int grab_host_macros(icinga_macros *mac, host *hst) {}
+int grab_host_macros(host *hst) {}
+int grab_host_macros_r(icinga_macros *mac, host *hst) {}
 
-int grab_service_macros(icinga_macros *mac, service *svc) {}
+int grab_service_macros(service *svc) {}
+int grab_service_macros_r(icinga_macros *mac, service *svc) {}
 
 void broker_log_data(int a, int b, int c, char *d, unsigned long e, time_t f, struct timeval *g) {}
 
@@ -153,7 +155,8 @@ check_result    check_result_info;
 char *temp_path;
 int dbuf_init(dbuf *db, int chunk_size){}
 int update_check_stats(int check_type, time_t check_time){}
-int set_all_macro_environment_vars(icinga_macros *mac, int set){}
+int set_all_macro_environment_vars(int set){}
+int set_all_macro_environment_vars_r(icinga_macros *mac, int set){}
 int close_command_file(void){}
 void reset_sighandler(void){}
 void service_check_sighandler(int sig){}
@@ -215,8 +218,13 @@ int handle_host_state(host *hst){}
 /* Icinga special */
 int      stalking_event_handlers_for_hosts;
 int      stalking_event_handlers_for_services;
+
+int	event_profiling_enabled=FALSE;
+void 	profiler_update(int event, struct timeval start){}
+
 int has_shell_metachars(const char *s){}
 int handle_host_event(host *hst){}
+
 
 /* Icinga CGIs */
 char alert_message;

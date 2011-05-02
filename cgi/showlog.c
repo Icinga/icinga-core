@@ -495,6 +495,12 @@ int process_cgivars(void){
 			content_type=CSV_CONTENT;
 		}
 
+		/* we found the CSV output option */
+		else if(!strcmp(variables[x],"jsonoutput")) {
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
+
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
 			embedded=TRUE;
@@ -544,8 +550,10 @@ void display_logentries() {
 	int newest_archive=0;
 	int current_archive=0;
 	int user_has_seen_something=FALSE;
+	int json_start=TRUE;
 	struct tm *time_ptr=NULL;
 	logentry *temp_entry=NULL;
+	int count=0;
 
 
 	/* Add default filters */
@@ -681,17 +689,21 @@ void display_logentries() {
 	/* now we start displaying the log entries */
 	else {
 
-		if (content_type!=CSV_CONTENT) {
-			printf("<DIV CLASS='logEntries'>\n");
-
-			/* add export to csv link */
-			printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s' target='_blank'>Export to CSV</a></DIV>\n",get_export_csv_link(SHOWLOG_CGI));
-		} else {
+		if(content_type==JSON_CONTENT) {
+			display_timebreaks=FALSE;
+			printf("\"log_entries\": [\n");
+		}else if(content_type==CSV_CONTENT) {
 			display_timebreaks=FALSE;
 
 			printf("%sTimestamp%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sDate Time%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sLog Entry%s\n",csv_data_enclosure,csv_data_enclosure);
+
+		} else {
+			printf("<DIV CLASS='logEntries'>\n");
+
+			/* add export to csv link */
+			printf("<div class='csv_export_link' align=right style='margin-right:1em;'><a href='%s' target='_blank'>Export to CSV</a></DIV>\n",get_export_csv_link(SHOWLOG_CGI));
 		}
 
 		for(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry->next) {
@@ -851,7 +863,8 @@ void display_logentries() {
 			current_message_date[sizeof(current_message_date)-1]='\x0';
 
 			if(strcmp(last_message_date,current_message_date)!=0 && display_timebreaks==TRUE){
-				printf("<BR CLEAR='all'>\n");
+				printf("</DIV>\n");
+				printf("<BR>\n");
 				printf("<DIV>\n");
 				printf("<table border=0 width=99%% CLASS='dateTimeBreak' align=center><tr>");
 				printf("<td width=40%%><hr width=100%%></td>");
@@ -859,7 +872,7 @@ void display_logentries() {
 				printf("<td width=40%%><hr width=100%%></td>");
 				printf("</tr></table>\n");
 				printf("</DIV>\n");
-				printf("<BR CLEAR='all'><DIV CLASS='logEntries'>\n");
+				printf("<BR><DIV CLASS='logEntries'>\n");
 				strncpy(last_message_date,current_message_date,sizeof(last_message_date));
 				last_message_date[sizeof(last_message_date)-1]='\x0';
 			}
@@ -867,31 +880,46 @@ void display_logentries() {
 			get_time_string(&temp_entry->timestamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			strip(date_time);
 
-			/* displays log entry depending on requested content type */
-			if (content_type==CSV_CONTENT) {
+			/* preparing logentries for json and csv output */
+			if(content_type==CSV_CONTENT || content_type==JSON_CONTENT){
 				for (i = 0; i < strlen(temp_entry->entry_text)-1; i++)
 					*(temp_entry->entry_text+i) = *(temp_entry->entry_text+i+1);
 				temp_entry->entry_text[strlen(temp_entry->entry_text)-1]='\x0';
+			}
 
+			/* displays log entry depending on requested content type */
+			if(content_type==JSON_CONTENT) {
+				// always add a comma, except for the first line
+				if (json_start==FALSE)
+					printf(",\n");
+				json_start=FALSE;
+				printf("{ \"timestamp\": \"%lu\", ",temp_entry->timestamp);
+				printf(" \"date_time\": \"%s\", ",date_time);
+				printf(" \"log_entry\": \"%s\"}",temp_entry->entry_text);
+			}else if(content_type==CSV_CONTENT) {
 				printf("%s%lu%s%s",csv_data_enclosure,temp_entry->timestamp,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s\n",csv_data_enclosure,temp_entry->entry_text,csv_data_enclosure);
 			}else{
 				if(display_frills==TRUE)
-					printf("<img align='left' src='%s%s' alt='%s' title='%s'>",url_images_path,image,image_alt,image_alt);
+					printf("<img align=left src='%s%s' alt='%s' title='%s'>",url_images_path,image,image_alt,image_alt);
 				printf("[%s] %s",date_time,(temp_entry->entry_text==NULL)?"":html_encode(temp_entry->entry_text,FALSE));
 				if(enable_splunk_integration==TRUE){
 					printf("&nbsp;&nbsp;&nbsp;");
 					display_splunk_generic_url(temp_entry->entry_text,2);
 				}
-				printf("<br clear='all'>\n");
+				printf("<br clear=all>\n");
 			}
 
 			user_has_seen_something=TRUE;
+			count++;
 		}
 
-		if (content_type!=CSV_CONTENT)
-			printf("</DIV><HR>\n");
+		if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
+			printf("</DIV><br><div align=center>%d entries displayed</div><HR>\n",count);
+		}else if (content_type==JSON_CONTENT)
+			printf("\n]\n");
+
 	}
 
 	free_log_entries();

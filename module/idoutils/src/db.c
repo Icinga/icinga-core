@@ -1294,11 +1294,11 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 
         if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext ok\n");
-                idi->dbinfo.dbversion=OCI_GetString(idi->dbinfo.oci_resultset, 1);
+                idi->dbinfo.dbversion=strdup(OCI_GetString(idi->dbinfo.oci_resultset, 1));
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", idi->dbinfo.dbversion);
         } else {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext not ok\n");
         }
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", dbversion);
 
 
 #endif
@@ -1311,8 +1311,14 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	free(name);
 
 	/* check dbversion against program version */
-	if(strcmp(idi->dbinfo.dbversion, IDO2DB_VERSION)!=0){
-		syslog(LOG_ERR, "Error: DB Version %s does not match program version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_VERSION);
+	if(idi->dbinfo.dbversion==NULL){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() dbversion is NULL\n");
+		syslog(LOG_ERR, "Error: DB Version cannot be retrieved. Please check the upgrade docs and verify the db schema!");
+		return IDO_ERROR;
+	}
+	if(strcmp(idi->dbinfo.dbversion, IDO2DB_SCHEMA_VERSION)!=0){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() db version %s does not match schema version %s\n", idi->dbinfo.dbversion, IDO2DB_SCHEMA_VERSION);
+		syslog(LOG_ERR, "Error: DB Version %s does not match needed schema version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO2DB_SCHEMA_VERSION);
 		return IDO_ERROR;
 	}
 
@@ -1370,7 +1376,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
 		/* disconnect from database */
 		ido2db_db_disconnect(idi);
@@ -1418,7 +1424,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
                 /* disconnect from database */
                 ido2db_db_disconnect(idi);
@@ -1784,7 +1790,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         else {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
                 /* disconnect from database */
                 ido2db_db_disconnect(idi);
@@ -1825,7 +1831,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
         if(!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_kill_threads();
+		ido2db_terminate_threads();
 
                 /* disconnect from database */
                 ido2db_db_disconnect(idi);
@@ -2772,7 +2778,7 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_perform_maintenance() start\n");
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_perform_maintenance() max_logentries_age=%lu, max_ack_age=%lu\n", idi->dbinfo.max_logentries_age, idi->dbinfo.max_logentries_age);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_perform_maintenance() max_logentries_age=%lu, max_ack_age=%lu\n", idi->dbinfo.max_logentries_age, idi->dbinfo.max_logentries_age);
 
 	/* get the current time */
 	time(&current_time);

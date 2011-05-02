@@ -5,6 +5,10 @@ Icinga 1.4.x Change Log
 1.4.0 - 11/05/2011
 
 ENHANCEMENTS
+* core: re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option #1413
+* core: add downtime delete commands made "distributable" by deleting by host group name, host name or start time/comment (Opsview team) #1344
+* core: add 'module' as object config, allowing cfg_dir usage loading multiple modules without touching broker_module in icinga.cfg #162
+
 * classic ui: merged reading of logfiles into one function. It's easier now to add enhancements. #972
 * classic ui: Adding some more icons to showlog.cgi #1239
 * classic ui: adding entry time of comments in tooltip's in status.cgi #1244
@@ -18,11 +22,27 @@ ENHANCEMENTS
 * classic ui: Allow display of Network Outages for authorized hosts #1320 (thx mjbrooks)
 * classic ui: remove useless memory allocation when reading logfiles reverse (lifo) #1387
 * classic ui: speed up data processing in summary.cgi #1392
+* classic ui: Add an optional alternative CGI driven view for the top frame (Matthew Brooks) #1406
+* classic ui: Added json output "&jsonoutput" to nearly all pages in classic ui #1217
+* classic ui: allow searching for host display_name normal and via regexp #1393
+* classic ui: display host/service dependencies in host/service details in extinfo.cgi #1300
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
+* idoutils: reduce housekeeping cycle to every 3600s, set housekeeping thread startup delay to 300s #1157
+* idoutils: introduce schema version and check against that instead of program version #1368
+* idoutils: non-blocking icinga core while config dump at startup to ido2db #866
+	** main thread dumps in dynamic buffer, worker threads reads and processes data
+	** this causes more cpu usage in the beginning, but afterall Icinga core won't block
+* idoutils: install sample (commented) config in modules/idoutils.cfg using new 'module' object config #162
+
+* config: increase default debug file size to 100M #1316
+
+* install: add --with-ext-cmd-file-dir= to configure, allowing icinga.cmd dir to be altered #1268
+
 
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
+* core: fix timeperiods daylight saving time problem (Luca Di Stefano) #1370
 
 * classic ui: Fixing tooltip's in status.cgi, not showing messages with carriage return #1244
 * classic ui: fixed csv export link to make it XSS save (IE) #1275
@@ -36,8 +56,9 @@ FIXES
 * idoutils: update oracle hints in ido2db.cfg with tnsnames.ora and port cfg #1283
 * idoutils: idomod: larger buffer size (by Opsview) #1286
 * idoutils: fix rdbms deconnect after connection error #1313
+* idoutils: fix race condition when issueing multiple reloads results in hanging IDO2DB processes #1410
+* idoutils: fix postgresql: integer not big enough for bytes_processed (Stig Sandbeck) #1401
 
-* install: replace configure option --with-checkresults-dir by --with-spool-dir #1224
 * install: use *.so instead of *.o for solaris, patch in contrib/solaris/ #524
 
 

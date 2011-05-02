@@ -170,6 +170,8 @@ extern int content_type;
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
+int json_list_start=TRUE;
+
 int display_type=REPORT_RECENT_ALERTS;
 int show_all_hosts=TRUE;
 int show_all_hostgroups=TRUE;
@@ -750,7 +752,13 @@ int process_cgivars(void){
 		else if(!strcmp(variables[x],"csvoutput")){
 			display_header=FALSE;
 			content_type=CSV_CONTENT;
-			}
+		}
+
+		/* we found the JSON output option */
+		else if(!strcmp(variables[x],"jsonoutput")){
+			display_header=FALSE;
+			content_type=JSON_CONTENT;
+		}
 
 		/* we found the embed option */
 		else if(!strcmp(variables[x],"embedded"))
@@ -1111,7 +1119,7 @@ int process_cgivars(void){
 	free_cgivars(variables);
 
 	return error;
-        }
+}
 
 /* reads log files for archived event data */
 void read_archived_event_data(void){
@@ -1535,7 +1543,7 @@ void determine_standard_report_options(void){
 	        }
 
 	return;
-        }
+}
 
 /* displays report */
 void display_report(void){
@@ -1554,7 +1562,19 @@ void display_report(void){
 		return;
 	}
 
-	if(content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT) {
+		if(display_type==REPORT_ALERT_TOTALS)
+			printf("\"overall_alert_totals\": [\n");
+		if(display_type==REPORT_HOST_ALERT_TOTALS)
+			printf("\"alert_totals_by_host\": {\n");
+		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
+			printf("\"alert_totals_by_hostgroup\": {\n");
+		if(display_type==REPORT_SERVICE_ALERT_TOTALS)
+			printf("\"alert_totals_by_service\": {\n");
+		if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS)
+			printf("\"alert_totals_by_servicegroup\": {\n");
+
+	}else if(content_type==CSV_CONTENT) {
 		if(display_type==REPORT_HOST_ALERT_TOTALS || display_type==REPORT_SERVICE_ALERT_TOTALS)
 			printf("%sHOST_NAME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
@@ -1577,11 +1597,13 @@ void display_report(void){
 			printf("%sHOST_UNREACHABLE_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sHOST_ALL_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sHOST_ALL_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
-			printf("%sHOST_ALL_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%sHOST_ALL_TOTAL%s",csv_data_enclosure,csv_data_enclosure);
 		}
 
 		/* Service Alerts Head */
 		if(alert_types & AE_SERVICE_ALERT){
+			if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS)
+				printf("%s",csv_delimiter);
 			printf("%sSERVICE_OK_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sSERVICE_OK_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sSERVICE_OK_TOTAL%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -1597,6 +1619,8 @@ void display_report(void){
 			printf("%sSERVICE_ALL_SOFT%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sSERVICE_ALL_HARD%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 			printf("%sSERVICE_ALL_TOTAL%s\n",csv_data_enclosure,csv_data_enclosure);
+		} else {
+			printf("\n");
 		}
 	} else {
 		printf("<BR>\n");
@@ -1660,8 +1684,13 @@ void display_report(void){
 		}
 	}
 
-	if(content_type!=CSV_CONTENT)
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT)
 		printf("</DIV>\n");
+	else if (content_type==JSON_CONTENT) {
+		printf("\n]\n");
+		if(display_type!=REPORT_ALERT_TOTALS)
+			printf("\n}\n");
+	}
 
 	return;
 }
@@ -1671,6 +1700,7 @@ void display_recent_alerts(void){
 	archived_event *temp_event;
 	int current_item=0;
 	int odd=0;
+	int json_start=TRUE;
 	char *status_bgclass="";
 	char *status="";
 	char date_time[MAX_DATETIME_LENGTH];
@@ -1678,7 +1708,9 @@ void display_recent_alerts(void){
 	host *temp_host=NULL;
 	service *temp_service=NULL;
 
-	if(content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT)
+		printf("\"recent_alerts\": [\n");
+	else if(content_type==CSV_CONTENT) {
 		printf("%sTIME%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sALERT_TYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -1723,7 +1755,19 @@ void display_recent_alerts(void){
 
 		get_time_string(&temp_event->time_stamp,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT) {
+			// always add a comma, except for the first line
+			if (json_start==FALSE)
+				printf(",\n");
+			json_start=FALSE;
+			printf("{ \"time\": \"%s\", ",date_time);
+			printf("\"alert_type\": \"%s\", ",(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert");
+			printf("\"host\": \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+			if (temp_event->event_type==AE_HOST_ALERT)
+				printf("\"service\": null, ");
+			else
+				printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
@@ -1781,7 +1825,11 @@ void display_recent_alerts(void){
 			break;
 		}
 
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT) {
+			printf("\"state\": \"%s\", ",status);
+			printf("\"state_type\": \"%s\", ",(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD");
+			printf("\"information\": \"%s\"}",temp_event->event_info);
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s\n",csv_data_enclosure,temp_event->event_info,csv_data_enclosure);
@@ -1796,10 +1844,12 @@ void display_recent_alerts(void){
 		}
 	}
 
-	if(content_type!=CSV_CONTENT) {
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-	}
+	}else if (content_type==JSON_CONTENT)
+		printf("\n]\n");
+
 
 	return;
 }
@@ -1858,7 +1908,7 @@ alert_producer *add_producer(int producer_type, char *host_name, char *service_d
 	producer_list=new_producer;
 
 	return new_producer;
-        }
+}
 
 void free_producer_list(void){
 	alert_producer *this_producer=NULL;
@@ -1877,7 +1927,7 @@ void free_producer_list(void){
 	producer_list=NULL;
 
 	return;
-        }
+}
 
 /* displays top alerts */
 void display_top_alerts(void){
@@ -1890,6 +1940,7 @@ void display_top_alerts(void){
 	int producer_type=AE_HOST_PRODUCER;
 	int current_item=0;
 	int odd=0;
+	int json_start=TRUE;
 	char *bgclass="";
 
 	/* process all events */
@@ -1947,7 +1998,9 @@ void display_top_alerts(void){
 	producer_list=temp_list;
 
 
-	if(content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT) {
+		printf("\"top_alert_producers\": [\n");
+	}else if(content_type==CSV_CONTENT) {
 		printf("%sRANK%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sPRODUCER_TYPE%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
 		printf("%sHOST%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
@@ -1987,7 +2040,20 @@ void display_top_alerts(void){
 			bgclass="Even";
 		}
 
-		if(content_type==CSV_CONTENT) {
+		if(content_type==JSON_CONTENT) {
+			// always add a comma, except for the first line
+			if (json_start==FALSE)
+				printf(",\n");
+			json_start=FALSE;
+			printf("{ \"rank\": \"%d\", ",current_item);
+			printf(" \"producer_type\": \"%s\", ",(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service");
+			printf(" \"host\": \"%s\", ",temp_producer->host_name);
+			if (temp_producer->producer_type==AE_HOST_PRODUCER)
+				printf(" \"service\": null, ");
+			else
+				printf(" \"service\": \"%s\", ",temp_producer->service_description);
+			printf(" \"total_alerts\": \"%d\"}",temp_producer->total_alerts);
+		}else if(content_type==CSV_CONTENT) {
 			printf("%s%d%s%s",csv_data_enclosure,current_item,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service",csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,temp_producer->host_name,csv_data_enclosure,csv_delimiter);
@@ -2015,10 +2081,11 @@ void display_top_alerts(void){
 		}
 	}
 
-	if(content_type!=CSV_CONTENT) {
+	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-	}
+	}else if (content_type==JSON_CONTENT)
+		printf("\n]\n");
 	
 	return;
 }
@@ -2040,6 +2107,8 @@ void display_alerts(void){
 	int hard_service_critical_alerts=0;
 	int soft_service_critical_alerts=0;
 
+	int json_start=TRUE;
+
 	archived_event *temp_event;
 	host *temp_host;
 	service *temp_service;
@@ -2055,7 +2124,15 @@ void display_alerts(void){
 		if(show_all_hostgroups==FALSE && target_hostgroup!=NULL){
 			if(is_host_member_of_hostgroup(target_hostgroup,target_host)==FALSE)
 				return;
-			}
+		}
+
+		if(content_type==JSON_CONTENT) {
+			if(json_list_start==FALSE)
+				printf("],\n");
+			json_list_start=FALSE;
+			printf("\"host_name\": \"%s\",\n",target_host->name);
+			printf("\"report\": [\n");
+		}
 	}
 
 	if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS) {
@@ -2065,6 +2142,14 @@ void display_alerts(void){
 		/* make sure the user is authorized to view this hostgroup */
 		if(is_authorized_for_hostgroup(target_hostgroup,&current_authdata)==FALSE)
 			return;
+
+		if(content_type==JSON_CONTENT) {
+			if(json_list_start==FALSE)
+				printf("],\n");
+			json_list_start=FALSE;
+			printf("\"hostgroup_name\": \"%s\",\n",target_hostgroup->group_name);
+			printf("\"report\": [\n");
+		}
 	}
 	if(display_type==REPORT_SERVICE_ALERT_TOTALS) {
 		if(target_service==NULL)
@@ -2084,6 +2169,16 @@ void display_alerts(void){
 			if(strcmp(target_host->name,target_service->host_name))
 				return;
 			}
+
+		if(content_type==JSON_CONTENT) {
+			if(json_list_start==FALSE)
+				printf("],\n");
+			json_list_start=FALSE;
+			printf("\"host_name\": \"%s\",\n",target_service->host_name);
+			printf("\"service\": \"%s\",\n",target_service->description);
+			printf("\"report\": [\n");
+		}
+
 	}
 
 	if(display_type==REPORT_SERVICEGROUP_ALERT_TOTALS) {
@@ -2093,6 +2188,14 @@ void display_alerts(void){
 		/* make sure the user is authorized to view this servicegroup */
 		if(is_authorized_for_servicegroup(target_servicegroup,&current_authdata)==FALSE)
 			return;
+
+		if(content_type==JSON_CONTENT) {
+			if(json_list_start==FALSE)
+				printf("],\n");
+			json_list_start=FALSE;
+			printf("\"servicegroup_name\": \"%s\",\n",target_servicegroup->group_name);
+			printf("\"report\": [\n");
+		}
 	}
 
 	/* process all events */
@@ -2173,7 +2276,55 @@ void display_alerts(void){
 	}
 
 
-	if (content_type==CSV_CONTENT) {
+	if(content_type==JSON_CONTENT) {
+		// always add a comma, except for the first line
+		if (json_start==FALSE)
+			printf(",\n");
+		json_start=FALSE;
+
+		/* Host Alerts Data */
+		if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS){
+			printf("{ \"host_up_soft\": \"%d\", ",soft_host_up_alerts);
+			printf("\"host_up_hard\": \"%d\", ",hard_host_up_alerts);
+			printf("\"host_up_total\": \"%d\", ",soft_host_up_alerts+hard_host_up_alerts);
+			printf("\"host_down_soft\": \"%d\", ",soft_host_down_alerts);
+			printf("\"host_down_hard\": \"%d\", ",hard_host_down_alerts);
+			printf("\"host_down_total\": \"%d\", ",soft_host_down_alerts+hard_host_down_alerts);
+			printf("\"host_unreachable_soft\": \"%d\", ",soft_host_unreachable_alerts);
+			printf("\"host_unreachable_hard\": \"%d\", ",hard_host_unreachable_alerts);
+			printf("\"host_unreachable_total\": \"%d\", ",soft_host_unreachable_alerts+hard_host_unreachable_alerts);
+			printf("\"host_all_soft\": \"%d\", ",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts);
+			printf("\"host_all_hard\": \"%d\", ",hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts);
+			printf("\"host_all_total\": \"%d\"",soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
+		}
+
+		/* Service Alerts Data */
+		if(alert_types & AE_SERVICE_ALERT){
+			if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS)
+				printf(", ");
+			else
+				printf("{ ");
+
+			printf("\"service_ok_soft\": \"%d\", ",soft_service_ok_alerts);
+			printf("\"service_ok_hard\": \"%d\", ",hard_service_ok_alerts);
+			printf("\"service_ok_total\": \"%d\", ",soft_service_ok_alerts+hard_service_ok_alerts);
+			printf("\"service_warning_soft\": \"%d\", ",soft_service_warning_alerts);
+			printf("\"service_warning_hard\": \"%d\", ",hard_service_warning_alerts);
+			printf("\"service_warning_total\": \"%d\", ",soft_service_warning_alerts+hard_service_warning_alerts);
+			printf("\"service_unknown_soft\": \"%d\", ",soft_service_unknown_alerts);
+			printf("\"service_unknown_hard\": \"%d\", ",hard_service_unknown_alerts);
+			printf("\"service_unknown_total\": \"%d\", ",soft_service_unknown_alerts+hard_service_unknown_alerts);
+			printf("\"service_critical_soft\": \"%d\", ",soft_service_critical_alerts);
+			printf("\"service_critical_hard\": \"%d\", ",hard_service_critical_alerts);
+			printf("\"service_critical_total\": \"%d\", ",soft_service_critical_alerts+hard_service_critical_alerts);
+			printf("\"service_all_soft\": \"%d\", ",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts);
+			printf("\"service_all_hard\": \"%d\", ",hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
+			printf("\"service_all_total\": \"%d\"}",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
+		} else {
+			printf("}");
+		}
+
+	}else if(content_type==CSV_CONTENT) {
 		if(display_type==REPORT_HOST_ALERT_TOTALS)
 			printf("%s%s%s%s",csv_data_enclosure,target_host->name,csv_data_enclosure,csv_delimiter);
 		if(display_type==REPORT_HOSTGROUP_ALERT_TOTALS)
@@ -2198,11 +2349,13 @@ void display_alerts(void){
 			printf("%s%d%s%s",csv_data_enclosure,soft_host_unreachable_alerts+hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
-			printf("%s%d%s%s",csv_data_enclosure,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts,csv_data_enclosure,csv_delimiter);
+			printf("%s%d%s",csv_data_enclosure,soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts,csv_data_enclosure);
 		}
 
 		/* Service Alerts Data */
 		if(alert_types & AE_SERVICE_ALERT){
+			if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS)
+				printf("%s",csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,soft_service_ok_alerts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,hard_service_ok_alerts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,soft_service_ok_alerts+hard_service_ok_alerts,csv_data_enclosure,csv_delimiter);
@@ -2218,6 +2371,8 @@ void display_alerts(void){
 			printf("%s%d%s%s",csv_data_enclosure,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s\n",csv_data_enclosure,soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts,csv_data_enclosure);
+		} else {
+			printf("\n");
 		}
 	}else{
 		printf("<BR>\n");

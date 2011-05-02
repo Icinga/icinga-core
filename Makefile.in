@@ -35,6 +35,7 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 LOGDIR=@localstatedir@
 CHECKRESULTDIR=@CHECKRESULTDIR@
+EXTCMDFILEDIR=@EXTCMDFILEDIR@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 CGIDIR=@sbindir@
@@ -411,6 +412,7 @@ install-basic:
 install-config:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/objects
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/modules
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
 	$(INSTALL) -b -m 660 $(INSTALL_OPTS) sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
@@ -485,8 +487,8 @@ install-daemoninit:
 
 
 install-commandmode:
-	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(LOGDIR)/rw
-	chmod g+s $(DESTDIR)$(LOGDIR)/rw
+	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(EXTCMDFILEDIR)
+	chmod g+s $(DESTDIR)$(EXTCMDFILEDIR)
 
 	@echo ""
 	@echo "*** External command directory configured ***"

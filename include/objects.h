@@ -52,7 +52,7 @@
 
 /***************** SKIP LISTS ****************/
 
-#define NUM_OBJECT_SKIPLISTS                   12
+#define NUM_OBJECT_SKIPLISTS                   13
 
 #define HOST_SKIPLIST                          0
 #define SERVICE_SKIPLIST                       1
@@ -66,6 +66,7 @@
 #define SERVICEDEPENDENCY_SKIPLIST             9
 #define HOSTESCALATION_SKIPLIST                10
 #define SERVICEESCALATION_SKIPLIST             11
+#define MODULE_SKIPLIST                        12
 
 /****************** DEFINITIONS *******************/
 /*#define VOLATILE_FALSE 0 - uses FALSE*/
@@ -688,6 +689,16 @@ typedef struct hostdependency_struct{
         }hostdependency;
 
 
+/* MODULE structure */
+typedef struct module_struct{
+        char    *name;
+        char    *type;
+        char    *path;
+        char    *args;
+        struct module_struct *next;
+        struct module_struct *nexthash;
+        }module;
+
 
 
 /****************** HASH STRUCTURES ********************/
@@ -760,6 +771,9 @@ servicesmember *add_service_link_to_host(host *,service *);
 escalation_condition *add_serviceescalation_condition(serviceescalation *, escalation_condition *, char *, char *, int, int, int, int, int, int, int); /* add a condition to a service escalation in memory */
 escalation_condition *add_hostescalation_condition(hostescalation *, escalation_condition *, char *, char *, int, int, int, int, int, int, int); /* add a condition to a host escalation in memory */
 
+module *add_module(char *,char *,char *,char *);							/* adds a module definition */
+int add_module_objects_to_neb(void);									/* add modules to neb, backwards compatible */
+
 /*** Object Skiplist Functions ****/
 int init_object_skiplists(void);
 int free_object_skiplists(void);
@@ -776,6 +790,7 @@ int skiplist_compare_hostescalation(void *a, void *b);
 int skiplist_compare_serviceescalation(void *a, void *b);
 int skiplist_compare_hostdependency(void *a, void *b);
 int skiplist_compare_servicedependency(void *a, void *b);
+int skiplist_compare_module(void *a, void *b);
 
 int get_host_count(void);
 int get_service_count(void);
@@ -791,6 +806,7 @@ contact * find_contact(char *);							                /* finds a contact object 
 contactgroup * find_contactgroup(char *);					                /* finds a contactgroup object */
 command * find_command(char *);							                /* finds a command object */
 service * find_service(char *,char *);								/* finds a service object */
+module * find_module(char *);							                /* finds a module object */
 
 
 /**** Object Traversal Functions ****/

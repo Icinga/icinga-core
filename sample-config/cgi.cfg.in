@@ -442,6 +442,16 @@ tac_show_only_hard_state=0
 
 
 
+# SHOW TAC INFORMATION IN TOP FRAME
+# This options places tactical overview information in the top frame
+# similar to the view that's in icinga-web.
+# By default it is disabled and only the simple, original style
+# header is shown.
+
+show_tac_header=0
+
+
+
 # SHOW INITIAL STATES IN SHOWLOG OPTION
 # This options allows you to specify if initial states
 # of hosts and services should be shown in showlog.cgi

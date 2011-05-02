@@ -103,6 +103,8 @@ scheduled_downtime *find_downtime_by_similar_content(int,char *,char *,char *,ch
 
 void free_downtime_data(void);                                       /* frees memory allocated to scheduled downtime list */
 
+int delete_downtime_by_hostname_service_description_start_time_comment(char *,char *,time_t,char *);
+
 #ifdef __cplusplus
   }
 #endif

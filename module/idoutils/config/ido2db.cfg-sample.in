@@ -218,21 +218,22 @@ clean_config_tables_on_core_startup=1
 
 
 # ***EXPERIMENTAL*** DB TRIMMING INTERVAL
-# ido2db default db trimming interval is set to 60 SECONDS.
+# ido2db default db trimming interval is set to 3600 SECONDS.
 # Some environments will require higher or lower values. This setting is
 # highly experimental!!!
 # Modify at your own risk to set the interval DB trimming interval
-# to an appropriate value. If left blank, it defaults to 60 seconds.
+# to an appropriate value. If left blank, it defaults to 3600 seconds.
 
-trim_db_interval=60
+trim_db_interval=3600
 
 
 # DB TRIMMING THREAD DELAY ON STARTUP
 # ido2db spawns a thread for parallel db trimming. This option can be
 # modified to extend/minimize the initial wait delay at startup.
-# Default is set to 60 seconds in order to allow startup routines.
+# Default is set to 300 seconds in order to allow startup routines.
+# 300 seconds is also the minimum value, lower ones will be overwritten.
 
-housekeeping_thread_startup_delay=60
+housekeeping_thread_startup_delay=300
 
 
 
@@ -273,7 +274,8 @@ debug_file=@localstatedir@/ido2db.debug
 # automatically be deleted.  This helps ensure your disk space usage doesn't
 # get out of control when debugging.
 
-max_debug_file_size=1000000
+# 100M
+max_debug_file_size=100000000
 
 
 
