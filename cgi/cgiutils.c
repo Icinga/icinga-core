@@ -189,7 +189,7 @@ extern int CGI_ID;
 
 /* used for logging function */
 char		cgi_log_file[MAX_FILENAME_LENGTH]="";
-char		cgi_log_archive_dir[MAX_FILENAME_LENGTH]="";
+char		cgi_log_archive_path[MAX_FILENAME_LENGTH]="";
 int		use_logging=FALSE;
 int		cgi_log_rotation_method=LOG_ROTATION_NONE;
 
@@ -443,14 +443,14 @@ int read_cgi_config_file(char *filename){
                                 strcat(url_stylesheets_path,"/");
 
 			}
-		else if(!strcmp(var,"cgi_log_archive_dir")){
+		else if(!strcmp(var,"cgi_log_archive_path")){
 
-			strncpy(cgi_log_archive_dir,val,sizeof(cgi_log_archive_dir));
-			cgi_log_archive_dir[sizeof(cgi_log_archive_dir)-1]='\x0';
+			strncpy(cgi_log_archive_path,val,sizeof(cgi_log_archive_path));
+			cgi_log_archive_path[sizeof(cgi_log_archive_path)-1]='\x0';
 
-			strip(cgi_log_archive_dir);
-			if(cgi_log_archive_dir[strlen(cgi_log_archive_dir)-1]!='/' && (strlen(cgi_log_archive_dir) < sizeof(cgi_log_archive_dir)-1))
-				strcat(cgi_log_archive_dir,"/");
+			strip(cgi_log_archive_path);
+			if(cgi_log_archive_path[strlen(cgi_log_archive_path)-1]!='/' && (strlen(cgi_log_archive_path) < sizeof(cgi_log_archive_path)-1))
+				strcat(cgi_log_archive_path,"/");
 
 			}
 		else if(!strcmp(var,"cgi_log_file")){
@@ -1745,11 +1745,11 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write logfile to %s</DIV>",dir_to_check);
 		}
 		if (cgi_log_rotation_method!=LOG_ROTATION_NONE) {
-			if(!strcmp(cgi_log_archive_dir,""))
-				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Log rotation is configured but option \"cgi_log_archive_dir\" isn't</DIV>");
+			if(!strcmp(cgi_log_archive_path,""))
+				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Log rotation is configured but option \"cgi_log_archive_path\" isn't</DIV>");
 			else {
-				if (access(cgi_log_archive_dir, W_OK) != 0)
-					printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write to \"cgi_log_archive_dir\": %s</DIV>",cgi_log_archive_dir);
+				if (access(cgi_log_archive_path, W_OK) != 0)
+					printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write to \"cgi_log_archive_path\": %s</DIV>",cgi_log_archive_path);
 			}
 		}
 		free(dir_to_check);
@@ -2396,7 +2396,7 @@ int rotate_log_file(){
 	time_t current_time, rotate_ts;
 
 	/* if there is no log arhive configured we don't do anything */
-	if(!strcmp(cgi_log_archive_dir,""))
+	if(!strcmp(cgi_log_archive_path,""))
 		return ERROR;
 
 	/* get the current time */
@@ -2450,7 +2450,7 @@ int rotate_log_file(){
 	// from here on file gets rotated.
 
 	/* get the archived filename to use */
-	dummy=asprintf(&log_archive,"%s/icinga-cgi-%02d-%02d-%d-%02d.log", cgi_log_archive_dir, ts->tm_mon+1, ts->tm_mday, ts->tm_year+1900, ts->tm_hour);
+	dummy=asprintf(&log_archive,"%s/icinga-cgi-%02d-%02d-%d-%02d.log", cgi_log_archive_path, ts->tm_mon+1, ts->tm_mday, ts->tm_year+1900, ts->tm_hour);
 
 	/* rotate the log file */
 	rename_result=my_rename(cgi_log_file,log_archive);
