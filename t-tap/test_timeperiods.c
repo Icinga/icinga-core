@@ -540,13 +540,15 @@ int main(int argc, char **argv){
         test_time=1256508001;
         is_valid_time = check_time_against_period(test_time, temp_timeperiod);
         ok( is_valid_time==ERROR, "Sun Oct 25 22:00:01 2009 - false" );
-        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        //_get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        _get_next_valid_time_per_timeperiod(test_time, &chosen_valid_time, test_time, temp_timeperiod);
         ok( chosen_valid_time==1257033600, "Next valid time=Sun Nov 1 00:00:00 2009");
  
         test_time=1256513000;
         is_valid_time = check_time_against_period(test_time, temp_timeperiod);
         ok( is_valid_time==ERROR, "Sun Oct 25 23:23:20 2009 - false" );
-        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        //_get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        _get_next_valid_time_per_timeperiod(test_time, &chosen_valid_time, test_time, temp_timeperiod);
         ok( chosen_valid_time==1257033600, "Next valid time=Sun Nov 1 00:00:00 2009");
  
  
@@ -560,7 +562,8 @@ int main(int argc, char **argv){
         test_time=1268109420;
         is_valid_time = check_time_against_period(test_time, temp_timeperiod);
         ok( is_valid_time==ERROR, "Mon Mar  8 23:37:00 2010 - false");
-        _get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        //_get_next_valid_time(test_time, test_time, &chosen_valid_time, temp_timeperiod);
+        _get_next_valid_time_per_timeperiod(test_time, &chosen_valid_time, test_time, temp_timeperiod);
         ok( chosen_valid_time==1268115300, "Next valid time=Tue Mar  9 01:15:00 2010" );
 
 	cleanup();

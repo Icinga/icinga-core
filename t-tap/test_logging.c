@@ -24,6 +24,11 @@
 #define TEST_LOGGING 1
 #include "test-stubs.c"
 
+/* Icinga special */
+log_current_states=TRUE;
+use_daemon_log=TRUE;
+
+
 char *saved_source;
 char *saved_dest;
 int my_rename(char *source, char *dest) {
@@ -64,6 +69,7 @@ main (int argc, char **argv)
 	log_file="var/icinga.log";
 	log_rotation_method=LOG_ROTATION_HOURLY;
 	ok(system("cp var/icinga.log.dummy var/icinga.log")==0, "Copied in dummy icinga.log for archiving");
+
 	ok(rotate_log_file(rotation_time) == OK, "Log rotation should work happily");
 
 	ok( system("diff var/icinga.log var/icinga.log.expected > /dev/null")==0, "Got correct contents of icinga.log");

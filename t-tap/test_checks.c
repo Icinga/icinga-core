@@ -135,7 +135,6 @@ setup_objects(time_t time) {
 int
 main (int argc, char **argv){
 	time_t now=0L;
-	int log_service_event_flag;
 
 	plan_tests(11);
 
