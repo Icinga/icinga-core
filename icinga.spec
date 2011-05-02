@@ -223,6 +223,7 @@ fi
 %{_datadir}/icinga/sidebar.html
 %{_datadir}/icinga/ssi
 %{_datadir}/icinga/stylesheets
+%{_datadir}/icinga/log
 
 %files idoutils
 %defattr(-,icinga,icinga,-)
@@ -247,6 +248,7 @@ fi
 - remove perl subst for eventhandler submit_check_result, this is now done by configure
 - remove top.html
 - honour modules/ in icinga cfg and modules/idoutils.cfg for neb definitions
+- add /icinga/log for cmd.cgi logging, includes .htaccess
 
 * Tue Mar 31 2011 Christoph Maser <cmaser@gmx.de> - 1.3.1-1
 - update for release 1.3.1
