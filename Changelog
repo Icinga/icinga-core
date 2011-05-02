@@ -26,6 +26,7 @@ ENHANCEMENTS
 * classic ui: Added json output "&jsonoutput" to nearly all pages in classic ui #1217
 * classic ui: allow searching for host display_name normal and via regexp #1393
 * classic ui: display host/service dependencies in host/service details in extinfo.cgi #1300
+* classic ui: add module object definition for viewing with config.cgi including csv+json output #162
 
 * idoutils: add db socket as config option in ido2db.cfg for mysql and postgresql #1107
 * idoutils: reduce housekeeping cycle to every 3600s, set housekeeping thread startup delay to 300s #1157

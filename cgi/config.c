@@ -52,6 +52,7 @@ extern servicedependency *servicedependency_list;
 extern serviceescalation *serviceescalation_list;
 extern hostdependency *hostdependency_list;
 extern hostescalation *hostescalation_list;
+extern module *module_list;
 
 extern int display_header;
 extern int content_type;
@@ -76,6 +77,7 @@ void display_serviceescalations(void);
 void display_hostdependencies(void);
 void display_hostescalations(void);
 void display_command_expansion(void);
+void display_modules(void);
 
 void print_export_link(void);
 
@@ -197,6 +199,7 @@ int main(void){
 			printf("<option value='contacts' %s>Contacts\n",(display_type==DISPLAY_CONTACTS)?"SELECTED":"");
 			printf("<option value='contactgroups' %s>Contact Groups\n",(display_type==DISPLAY_CONTACTGROUPS)?"SELECTED":"");
 			printf("<option value='timeperiods' %s>Timeperiods\n",(display_type==DISPLAY_TIMEPERIODS)?"SELECTED":"");
+			printf("<option value='modules' %s>Modules\n",(display_type==DISPLAY_MODULES)?"SELECTED":"");
 			printf("<option value='commands' %s>Commands\n",(display_type==DISPLAY_COMMANDS)?"SELECTED":"");
 			printf("<option value='command' %s>Command Expansion\n",(display_type==DISPLAY_COMMAND_EXPANSION)?"SELECTED":"");
 			printf("</select>\n");
@@ -250,6 +253,10 @@ int main(void){
 		break;
 	case DISPLAY_COMMAND_EXPANSION:
 		/* Reusing DISPLAY_COMMANDS help until further notice */
+		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
+		break;
+	case DISPLAY_MODULES:
+		/* reuse commands context help */
 		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
 		break;
 	case DISPLAY_ALL:
@@ -308,6 +315,9 @@ int main(void){
 	case DISPLAY_COMMAND_EXPANSION:
 		display_command_expansion();
 		break;
+	case DISPLAY_MODULES:
+		display_modules();
+		break;
 	case DISPLAY_ALL:
 		if (content_type==JSON_CONTENT) {
 			display_hosts();
@@ -333,6 +343,8 @@ int main(void){
 			display_hostdependencies();
 			printf(",\n");
 			display_hostescalations();
+			printf(",\n");
+			display_modules();
 			break;
 		}
 	default:
@@ -396,6 +408,8 @@ int process_cgivars(void){
 				display_type=DISPLAY_HOSTESCALATIONS;
 			else if(!strcmp(variables[x],"command"))
 				display_type=DISPLAY_COMMAND_EXPANSION;
+			else if(!strcmp(variables[x],"modules"))
+				display_type=DISPLAY_MODULES;
 			else if(!strcmp(variables[x],"all"))
 				display_type=DISPLAY_ALL;
 
@@ -3400,6 +3414,96 @@ void display_hostescalations(void){
 	return;
 }
 
+
+void display_modules(void){
+        module *temp_module;
+        int odd=0;
+        char *bg_class="";
+        int json_start=TRUE;
+        int i=0;
+
+        if(content_type==JSON_CONTENT) {
+                printf("\"modules\": [\n");
+        }else if(content_type==CSV_CONTENT) {
+                printf("%sModule Name%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+                printf("%sModule Type%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+                printf("%sModule Path%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+                printf("%sModule Args%s",csv_data_enclosure,csv_data_enclosure);
+                printf("\n");
+        } else {
+                printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Module%s%s</DIV></P>\n",
+                        (*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+
+                printf("<P><DIV ALIGN=CENTER>\n");
+                printf("<TABLE BORDER=0 CLASS='data'>\n");
+
+                print_export_link();
+
+                printf("<TR><TH CLASS='data'>Module Name</TH><TH CLASS='data'>Module Type</TH><TH CLASS='data'>Module Path</TH><TH CLASS='data'>Module Args</TH></TR>\n");
+        }
+
+        /* check all modules */
+        for(temp_module=module_list;temp_module!=NULL;temp_module=temp_module->next) if (((*to_expand)=='\0')||(!strcmp(to_expand,temp_module->name))){
+
+                if(odd){
+                        odd=0;
+                        bg_class="dataEven";
+                }else{  
+                        odd=1;
+                        bg_class="dataOdd";
+                }
+
+                /* print list in json format */
+                if(content_type==JSON_CONTENT) {
+                        // always add a comma, except for the first line
+                        if (json_start==FALSE)
+                                printf(",\n");
+                        json_start=FALSE;
+
+                        printf("{ \"module_name\": \"%s\", ",temp_module->name);
+                        printf("\"module_type\": \"%s\", ",temp_module->type);
+                        printf("\"module_path\": \"%s\", ",temp_module->path);
+
+                        // escaping all double qoutes
+                        printf("\"module_args\": \"");
+                        for(i=0;i<(int)strlen(temp_module->args);i++) {
+                                if((char)temp_module->args[i]==(char)'"')
+                                        printf("\\%c",temp_module->args[i]);
+                                else
+                                        printf("%c",temp_module->args[i]);
+                        }
+                        printf("\" }");
+
+                /* print list in csv format */
+                }else if(content_type==CSV_CONTENT) {
+                        printf("%s%s%s%s",csv_data_enclosure,temp_module->name,csv_data_enclosure,csv_delimiter);
+                        printf("%s%s%s%s",csv_data_enclosure,temp_module->type,csv_data_enclosure,csv_delimiter);
+                        printf("%s%s%s%s",csv_data_enclosure,temp_module->path,csv_data_enclosure,csv_delimiter);
+                        printf("%s%s%s\n",csv_data_enclosure,temp_module->args,csv_data_enclosure);
+                }else{
+                        printf("<TR CLASS='%s'>\n",bg_class);
+
+                        printf("<TD CLASS='%s'><A NAME='%s'></A>%s</TD>\n",bg_class,url_encode(temp_module->name),html_encode(temp_module->name,FALSE));
+                        printf("<TD CLASS='%s'>%s</TD>\n",bg_class,html_encode(temp_module->type,FALSE));
+                        printf("<TD CLASS='%s'>%s</TD>\n",bg_class,html_encode(temp_module->path,FALSE));
+                        printf("<TD CLASS='%s'>%s</TD>\n",bg_class,html_encode(temp_module->args,FALSE));
+
+                        printf("</TR>\n");
+                }
+        }
+
+        if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
+                printf("</TABLE>\n");
+                printf("</DIV>\n");
+                printf("</P>\n");
+        }else if(content_type==JSON_CONTENT)
+                printf("\n]\n");
+
+        return;
+}
+
+
+
 char *hash_color(int i){
 	char c;
 
@@ -3632,6 +3736,7 @@ void display_options(void){
 	printf("<option value='contacts' %s>Contacts\n",(display_type==DISPLAY_CONTACTS)?"SELECTED":"");
 	printf("<option value='contactgroups' %s>Contact Groups\n",(display_type==DISPLAY_CONTACTGROUPS)?"SELECTED":"");
 	printf("<option value='timeperiods' %s>Timeperiods\n",(display_type==DISPLAY_TIMEPERIODS)?"SELECTED":"");
+	printf("<option value='modules' %s>Modules\n",(display_type==DISPLAY_MODULES)?"SELECTED":"");
 	printf("<option value='commands' %s>Commands\n",(display_type==DISPLAY_COMMANDS)?"SELECTED":"");
 	printf("<option value='command' %s>Command Expansion\n",(display_type==DISPLAY_COMMAND_EXPANSION)?"SELECTED":"");
 	printf("</select>\n");
