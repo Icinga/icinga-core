@@ -131,7 +131,7 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
-int		show_tac_header=FALSE;
+int		show_tac_header=TRUE;
 int		showlog_initial_states=TRUE;
 int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
