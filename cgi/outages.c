@@ -373,8 +373,8 @@ void display_network_outages(void){
 			if (json_start==FALSE)
 				printf(",\n");
 			json_start=FALSE;
-			printf("{ \"severity\": \"%d\", ",temp_hostoutage->severity);
-			printf(" \"host\": \"%s\", ",(temp_hostoutage->hst->display_name!=NULL)?temp_hostoutage->hst->display_name:temp_hostoutage->hst->name);
+			printf("{ \"severity\": %d, ",temp_hostoutage->severity);
+			printf(" \"host\": \"%s\", ",(temp_hostoutage->hst->display_name!=NULL)?json_encode(temp_hostoutage->hst->display_name):json_encode(temp_hostoutage->hst->name));
 			printf(" \"state\": \"%s\", ",status);
 		} else if(content_type==CSV_CONTENT) {
 			printf("%s%d%s%s",csv_data_enclosure,temp_hostoutage->severity,csv_data_enclosure,csv_delimiter);
@@ -390,7 +390,7 @@ void display_network_outages(void){
 
 		total_comments=number_of_host_comments(temp_hostoutage->hst->name);
 		if(content_type==JSON_CONTENT) {
-			printf(" \"notes\": \"%d\", ",total_comments);
+			printf(" \"notes\": %d, ",total_comments);
 		} else if(content_type==CSV_CONTENT) {
 			printf("%s%d%s%s",csv_data_enclosure,total_comments,csv_data_enclosure,csv_delimiter);
 		} else {
@@ -414,8 +414,8 @@ void display_network_outages(void){
 
 		if(content_type==JSON_CONTENT) {
 			printf(" \"state_duration\": \"%s\", ",state_duration);
-			printf(" \"hosts_affected\": \"%d\", ",temp_hostoutage->affected_child_hosts);
-			printf(" \"services_affected\": \"%d\"}\n",temp_hostoutage->affected_child_services);
+			printf(" \"hosts_affected\": %d, ",temp_hostoutage->affected_child_hosts);
+			printf(" \"services_affected\": %d }\n",temp_hostoutage->affected_child_services);
 		} else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,state_duration,csv_data_enclosure,csv_delimiter);
 			printf("%s%d%s%s",csv_data_enclosure,temp_hostoutage->affected_child_hosts,csv_data_enclosure,csv_delimiter);

@@ -3385,7 +3385,7 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>%% Time Up</TH><TH CLASS='data'>%% Time Down</TH><TH CLASS='data'>%% Time Unreachable</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
 	} else if(content_type==JSON_CONTENT){
-		printf("%s\"hostgroup\": \"%s\",\n",(json_list_start==FALSE)?",":"",hg->group_name);
+		printf("%s\"hostgroup\": \"%s\",\n",(json_list_start==FALSE)?",":"",json_encode(hg->group_name));
 		printf("\"host_state_breakdowns\": [\n");
 		json_list_start=FALSE;
 
@@ -3468,48 +3468,48 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 				printf(",\n");
 
 			/* host name */
-			printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
+			printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
 
                         /* up times */
-			printf(" \"%s\": \"%lu\", ",lower_header[1],temp_subject->scheduled_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[2],percent_time_up_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_up_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[5],percent_time_up_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_up_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[7],temp_subject->time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[8],percent_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_up_known);
+			printf(" \"%s\": %lu, ",lower_header[1],temp_subject->scheduled_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[2],percent_time_up_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_up_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[5],percent_time_up_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_up_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[7],temp_subject->time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[8],percent_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_up_known);
 
                         /* down times */
-			printf(" \"%s\": \"%lu\", ",lower_header[10],temp_subject->scheduled_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[11],percent_time_down_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_down_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[14],percent_time_down_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_down_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[16],temp_subject->time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[17],percent_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_down_known);
+			printf(" \"%s\": %lu, ",lower_header[10],temp_subject->scheduled_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[11],percent_time_down_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_down_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[14],percent_time_down_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_down_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[16],temp_subject->time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[17],percent_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_down_known);
 
                         /* unreachable times */
-			printf(" \"%s\": \"%lu\", ",lower_header[19],temp_subject->scheduled_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[20],percent_time_unreachable_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unreachable_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[23],percent_time_unreachable_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unreachable_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[25],temp_subject->time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[26],percent_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unreachable_known);
+			printf(" \"%s\": %lu, ",lower_header[19],temp_subject->scheduled_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[20],percent_time_unreachable_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unreachable_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[23],percent_time_unreachable_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unreachable_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[25],temp_subject->time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[26],percent_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unreachable_known);
 
                         /* indeterminate times */
-			printf(" \"%s\": \"%lu\", ",lower_header[28],temp_subject->time_indeterminate_notrunning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[29],percent_time_indeterminate_notrunning);
-			printf(" \"%s\": \"%lu\", ",lower_header[30],temp_subject->time_indeterminate_nodata);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_indeterminate_nodata);
-			printf(" \"%s\": \"%lu\", ",lower_header[32],time_indeterminate);
-			printf(" \"%s\": \"%2.3f\"} ",lower_header[33],percent_time_indeterminate);
+			printf(" \"%s\": %lu, ",lower_header[28],temp_subject->time_indeterminate_notrunning);
+			printf(" \"%s\": %2.3f, ",lower_header[29],percent_time_indeterminate_notrunning);
+			printf(" \"%s\": %lu, ",lower_header[30],temp_subject->time_indeterminate_nodata);
+			printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_indeterminate_nodata);
+			printf(" \"%s\": %lu, ",lower_header[32],time_indeterminate);
+			printf(" \"%s\": %2.3f} ",lower_header[33],percent_time_indeterminate);
 
 			json_start=FALSE;
 
@@ -3587,13 +3587,13 @@ void display_specific_hostgroup_availability(hostgroup *hg){
 		printf("</table>\n");
 		printf("</DIV>\n");
 	}else if (content_type==JSON_CONTENT){
-		printf(", { \"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
-		printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
-		printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
-		printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
-		printf("\"average_percent_time_unreachable\": \"%2.3f\", ",average_percent_time_unreachable);
-		printf("\"average_percent_time_unreachable_known\": \"%2.3f\", ",average_percent_time_unreachable_known);
-		printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+		printf(", { \"average_percent_time_up\": %2.3f, ",average_percent_time_up);
+		printf("\"average_percent_time_up_known\": %2.3f, ",average_percent_time_up_known);
+		printf("\"average_percent_time_down\": %2.3f, ",average_percent_time_down);
+		printf("\"average_percent_time_down_known\": %2.3f, ",average_percent_time_down_known);
+		printf("\"average_percent_time_unreachable\": %2.3f, ",average_percent_time_unreachable);
+		printf("\"average_percent_time_unreachable_known\": %2.3f, ",average_percent_time_unreachable_known);
+		printf("\"average_percent_time_indeterminate\": %2.3f }",average_percent_time_indeterminate);
 		printf(" ]\n");
 	} else if(content_type==CSV_CONTENT){
 		/* average */
@@ -3763,7 +3763,7 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>%% Time Up</TH><TH CLASS='data'>%% Time Down</TH><TH CLASS='data'>%% Time Unreachable</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
 	} else if(content_type==JSON_CONTENT){
-		printf("%s\"servicegroup\": \"%s\",\n",(json_list_start==FALSE)?",":"",sg->group_name);
+		printf("%s\"servicegroup\": \"%s\",\n",(json_list_start==FALSE)?",":"",json_encode(sg->group_name));
 		printf("\"host_state_breakdowns\": [\n");
 		json_list_start=FALSE;
 
@@ -3846,48 +3846,48 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 				printf(",\n");
 
 			/* host name */
-			printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
+			printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
 
                         /* up times */
-			printf(" \"%s\": \"%lu\", ",lower_header[1],temp_subject->scheduled_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[2],percent_time_up_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_up_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[5],percent_time_up_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_up_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[7],temp_subject->time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[8],percent_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_up_known);
+			printf(" \"%s\": %lu, ",lower_header[1],temp_subject->scheduled_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[2],percent_time_up_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_up_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[5],percent_time_up_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_up_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[7],temp_subject->time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[8],percent_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_up_known);
 
                         /* down times */
-			printf(" \"%s\": \"%lu\", ",lower_header[10],temp_subject->scheduled_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[11],percent_time_down_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_down_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[14],percent_time_down_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_down_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[16],temp_subject->time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[17],percent_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_down_known);
+			printf(" \"%s\": %lu, ",lower_header[10],temp_subject->scheduled_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[11],percent_time_down_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_down_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[14],percent_time_down_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_down_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[16],temp_subject->time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[17],percent_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_down_known);
 
                         /* unreachable times */
-			printf(" \"%s\": \"%lu\", ",lower_header[19],temp_subject->scheduled_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[20],percent_time_unreachable_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unreachable_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[23],percent_time_unreachable_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unreachable_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[25],temp_subject->time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[26],percent_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unreachable_known);
+			printf(" \"%s\": %lu, ",lower_header[19],temp_subject->scheduled_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[20],percent_time_unreachable_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unreachable_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[23],percent_time_unreachable_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unreachable_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[25],temp_subject->time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[26],percent_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unreachable_known);
 
                         /* indeterminate times */
-			printf(" \"%s\": \"%lu\", ",lower_header[28],temp_subject->time_indeterminate_notrunning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[29],percent_time_indeterminate_notrunning);
-			printf(" \"%s\": \"%lu\", ",lower_header[30],temp_subject->time_indeterminate_nodata);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_indeterminate_nodata);
-			printf(" \"%s\": \"%lu\", ",lower_header[32],time_indeterminate);
-			printf(" \"%s\": \"%2.3f\"} ",lower_header[33],percent_time_indeterminate);
+			printf(" \"%s\": %lu, ",lower_header[28],temp_subject->time_indeterminate_notrunning);
+			printf(" \"%s\": %2.3f, ",lower_header[29],percent_time_indeterminate_notrunning);
+			printf(" \"%s\": %lu, ",lower_header[30],temp_subject->time_indeterminate_nodata);
+			printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_indeterminate_nodata);
+			printf(" \"%s\": %lu, ",lower_header[32],time_indeterminate);
+			printf(" \"%s\": %2.3f} ",lower_header[33],percent_time_indeterminate);
 
 			json_start=FALSE;
 
@@ -4029,15 +4029,15 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 
 	} else if(content_type==JSON_CONTENT){
 		printf(", {\"average_percent_times\": null, ");
-		printf("\"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
-		printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
-		printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
-		printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
-		printf("\"average_percent_time_unreachable\": \"%2.3f\", ",average_percent_time_unreachable);
-		printf("\"average_percent_time_unreachable_known\": \"%2.3f\", ",average_percent_time_unreachable_known);
-		printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+		printf("\"average_percent_time_up\": %2.3f, ",average_percent_time_up);
+		printf("\"average_percent_time_up_known\": %2.3f, ",average_percent_time_up_known);
+		printf("\"average_percent_time_down\": %2.3f, ",average_percent_time_down);
+		printf("\"average_percent_time_down_known\": %2.3f, ",average_percent_time_down_known);
+		printf("\"average_percent_time_unreachable\": %2.3f, ",average_percent_time_unreachable);
+		printf("\"average_percent_time_unreachable_known\": %2.3f, ",average_percent_time_unreachable_known);
+		printf("\"average_percent_time_indeterminate\": %2.3f }",average_percent_time_indeterminate);
 
-		printf("],\n\"servicegroup\": \"%s\",\n",sg->group_name);
+		printf("],\n\"servicegroup\": \"%s\",\n",json_encode(sg->group_name));
 		printf("\"service_state_breakdowns\": [\n");
 		json_list_start=FALSE;
 
@@ -4135,61 +4135,61 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 				printf(",\n");
 
                         /* host name and service description */
-			printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
-			printf(" \"%s\": \"%s\", ",lower_header[1],temp_subject->service_description);
+			printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
+			printf(" \"%s\": \"%s\", ",lower_header[1],json_encode(temp_subject->service_description));
 
                         /* ok times */
-			printf(" \"%s\": \"%lu\", ",lower_header[2],temp_subject->scheduled_time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_ok_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[4],percent_time_ok_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[5],temp_subject->time_ok-temp_subject->scheduled_time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_ok_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[7],percent_time_ok_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[8],temp_subject->time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[10],percent_time_ok_known);
+			printf(" \"%s\": %lu, ",lower_header[2],temp_subject->scheduled_time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_ok_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[4],percent_time_ok_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[5],temp_subject->time_ok-temp_subject->scheduled_time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_ok_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[7],percent_time_ok_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[8],temp_subject->time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[10],percent_time_ok_known);
 
                         /* warning times */
-			printf(" \"%s\": \"%lu\", ",lower_header[11],temp_subject->scheduled_time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_warning_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[13],percent_time_warning_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[14],temp_subject->time_warning-temp_subject->scheduled_time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_warning_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[16],percent_time_warning_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[17],temp_subject->time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[19],percent_time_warning_known);
+			printf(" \"%s\": %lu, ",lower_header[11],temp_subject->scheduled_time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_warning_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[13],percent_time_warning_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[14],temp_subject->time_warning-temp_subject->scheduled_time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_warning_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[16],percent_time_warning_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[17],temp_subject->time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[19],percent_time_warning_known);
 
                         /* unknown times */
-			printf(" \"%s\": \"%lu\", ",lower_header[20],temp_subject->scheduled_time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unknown_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[22],percent_time_unknown_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[23],temp_subject->time_unknown-temp_subject->scheduled_time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unknown_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[25],percent_time_unknown_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[26],temp_subject->time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[28],percent_time_unknown_known);
+			printf(" \"%s\": %lu, ",lower_header[20],temp_subject->scheduled_time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unknown_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[22],percent_time_unknown_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[23],temp_subject->time_unknown-temp_subject->scheduled_time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unknown_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[25],percent_time_unknown_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[26],temp_subject->time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[28],percent_time_unknown_known);
 
                         /* critical times */
-			printf(" \"%s\": \"%lu\", ",lower_header[29],temp_subject->scheduled_time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[30],percent_time_critical_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_critical_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[32],temp_subject->time_critical-temp_subject->scheduled_time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[33],percent_time_critical_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[34],percent_time_critical_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[35],temp_subject->time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[36],percent_time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[37],percent_time_critical_known);
+			printf(" \"%s\": %lu, ",lower_header[29],temp_subject->scheduled_time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[30],percent_time_critical_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_critical_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[32],temp_subject->time_critical-temp_subject->scheduled_time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[33],percent_time_critical_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[34],percent_time_critical_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[35],temp_subject->time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[36],percent_time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[37],percent_time_critical_known);
 
 
                         /* indeterminate times */
-			printf(" \"%s\": \"%lu\", ",lower_header[38],temp_subject->time_indeterminate_notrunning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[39],percent_time_indeterminate_notrunning);
-			printf(" \"%s\": \"%lu\", ",lower_header[40],temp_subject->time_indeterminate_nodata);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[41],percent_time_indeterminate_nodata);
-			printf(" \"%s\": \"%lu\", ",lower_header[42],time_indeterminate);
-			printf(" \"%s\": \"%2.3f\"} ",lower_header[43],percent_time_indeterminate);
+			printf(" \"%s\": %lu, ",lower_header[38],temp_subject->time_indeterminate_notrunning);
+			printf(" \"%s\": %2.3f, ",lower_header[39],percent_time_indeterminate_notrunning);
+			printf(" \"%s\": %lu, ",lower_header[40],temp_subject->time_indeterminate_nodata);
+			printf(" \"%s\": %2.3f, ",lower_header[41],percent_time_indeterminate_nodata);
+			printf(" \"%s\": %lu, ",lower_header[42],time_indeterminate);
+			printf(" \"%s\": %2.3f} ",lower_header[43],percent_time_indeterminate);
 
 			json_start=FALSE;
 
@@ -4280,15 +4280,15 @@ void display_specific_servicegroup_availability(servicegroup *sg){
 		printf("</table>\n");
 		printf("</DIV>\n");
 	}else if (content_type==JSON_CONTENT){
-		printf(",{ \"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
-		printf("\"average_percent_time_ok_known\": \"%2.3f\", ",average_percent_time_ok_known);
-		printf("\"average_percent_time_warning\": \"%2.3f\", ",average_percent_time_warning);
-		printf("\"average_percent_time_warning_known\": \"%2.3f\", ",average_percent_time_warning_known);
-		printf("\"average_percent_time_unknown\": \"%2.3f\", ",average_percent_time_unknown);
-		printf("\"average_percent_time_unknown_known\": \"%2.3f\", ",average_percent_time_unknown_known);
-		printf("\"average_percent_time_critical\": \"%2.3f\", ",average_percent_time_critical);
-		printf("\"average_percent_time_critical_known\": \"%2.3f\", ",average_percent_time_critical_known);
-		printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+		printf(",{ \"average_percent_time_ok\": %2.3f, ",average_percent_time_ok);
+		printf("\"average_percent_time_ok_known\": %2.3f, ",average_percent_time_ok_known);
+		printf("\"average_percent_time_warning\": %2.3f, ",average_percent_time_warning);
+		printf("\"average_percent_time_warning_known\": %2.3f, ",average_percent_time_warning_known);
+		printf("\"average_percent_time_unknown\": %2.3f, ",average_percent_time_unknown);
+		printf("\"average_percent_time_unknown_known\": %2.3f, ",average_percent_time_unknown_known);
+		printf("\"average_percent_time_critical\": %2.3f, ",average_percent_time_critical);
+		printf("\"average_percent_time_critical_known\": %2.3f, ",average_percent_time_critical_known);
+		printf("\"average_percent_time_indeterminate\": %2.3f }",average_percent_time_indeterminate);
 		printf(" ]\n");
 	} else if(content_type==CSV_CONTENT){
 		/* average */
@@ -4675,48 +4675,48 @@ void display_host_availability(void){
 			printf("\"hosts\": [\n");
 
 			/* host name */
-			printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
+			printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
 
                         /* up times */
-			printf(" \"%s\": \"%lu\", ",lower_header[1],temp_subject->scheduled_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[2],percent_time_up_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_up_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[5],percent_time_up_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_up_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[7],temp_subject->time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[8],percent_time_up);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_up_known);
+			printf(" \"%s\": %lu, ",lower_header[1],temp_subject->scheduled_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[2],percent_time_up_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_up_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[5],percent_time_up_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_up_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[7],temp_subject->time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[8],percent_time_up);
+			printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_up_known);
 
                         /* down times */
-			printf(" \"%s\": \"%lu\", ",lower_header[10],temp_subject->scheduled_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[11],percent_time_down_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_down_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[14],percent_time_down_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_down_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[16],temp_subject->time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[17],percent_time_down);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_down_known);
+			printf(" \"%s\": %lu, ",lower_header[10],temp_subject->scheduled_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[11],percent_time_down_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_down_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[14],percent_time_down_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_down_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[16],temp_subject->time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[17],percent_time_down);
+			printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_down_known);
 
                         /* unreachable times */
-			printf(" \"%s\": \"%lu\", ",lower_header[19],temp_subject->scheduled_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[20],percent_time_unreachable_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unreachable_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[23],percent_time_unreachable_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unreachable_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[25],temp_subject->time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[26],percent_time_unreachable);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unreachable_known);
+			printf(" \"%s\": %lu, ",lower_header[19],temp_subject->scheduled_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[20],percent_time_unreachable_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unreachable_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[23],percent_time_unreachable_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unreachable_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[25],temp_subject->time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[26],percent_time_unreachable);
+			printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unreachable_known);
 
                         /* indeterminate times */
-			printf(" \"%s\": \"%lu\", ",lower_header[28],temp_subject->time_indeterminate_notrunning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[29],percent_time_indeterminate_notrunning);
-			printf(" \"%s\": \"%lu\", ",lower_header[30],temp_subject->time_indeterminate_nodata);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_indeterminate_nodata);
-			printf(" \"%s\": \"%lu\", ",lower_header[32],time_indeterminate);
-			printf(" \"%s\": \"%2.3f\"}\n]\n}",lower_header[33],percent_time_indeterminate);
+			printf(" \"%s\": %lu, ",lower_header[28],temp_subject->time_indeterminate_notrunning);
+			printf(" \"%s\": %2.3f, ",lower_header[29],percent_time_indeterminate_notrunning);
+			printf(" \"%s\": %lu, ",lower_header[30],temp_subject->time_indeterminate_nodata);
+			printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_indeterminate_nodata);
+			printf(" \"%s\": %lu, ",lower_header[32],time_indeterminate);
+			printf(" \"%s\": %2.3f}\n]\n}",lower_header[33],percent_time_indeterminate);
 
 		} else if(content_type==CSV_CONTENT){
 
@@ -4893,48 +4893,48 @@ void display_host_availability(void){
 					printf(",\n");
 
 				/* host name */
-				printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
+				printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
 
 	                        /* up times */
-				printf(" \"%s\": \"%lu\", ",lower_header[1],temp_subject->scheduled_time_up);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[2],percent_time_up_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_up_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[5],percent_time_up_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_up_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[7],temp_subject->time_up);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[8],percent_time_up);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_up_known);
+				printf(" \"%s\": %lu, ",lower_header[1],temp_subject->scheduled_time_up);
+				printf(" \"%s\": %2.3f, ",lower_header[2],percent_time_up_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_up_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[4],temp_subject->time_up-temp_subject->scheduled_time_up);
+				printf(" \"%s\": %2.3f, ",lower_header[5],percent_time_up_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_up_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[7],temp_subject->time_up);
+				printf(" \"%s\": %2.3f, ",lower_header[8],percent_time_up);
+				printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_up_known);
 
 	                        /* down times */
-				printf(" \"%s\": \"%lu\", ",lower_header[10],temp_subject->scheduled_time_down);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[11],percent_time_down_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_down_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[14],percent_time_down_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_down_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[16],temp_subject->time_down);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[17],percent_time_down);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_down_known);
+				printf(" \"%s\": %lu, ",lower_header[10],temp_subject->scheduled_time_down);
+				printf(" \"%s\": %2.3f, ",lower_header[11],percent_time_down_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_down_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[13],temp_subject->time_down-temp_subject->scheduled_time_down);
+				printf(" \"%s\": %2.3f, ",lower_header[14],percent_time_down_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_down_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[16],temp_subject->time_down);
+				printf(" \"%s\": %2.3f, ",lower_header[17],percent_time_down);
+				printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_down_known);
 
 	                        /* unreachable times */
-				printf(" \"%s\": \"%lu\", ",lower_header[19],temp_subject->scheduled_time_unreachable);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[20],percent_time_unreachable_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unreachable_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[23],percent_time_unreachable_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unreachable_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[25],temp_subject->time_unreachable);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[26],percent_time_unreachable);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unreachable_known);
+				printf(" \"%s\": %lu, ",lower_header[19],temp_subject->scheduled_time_unreachable);
+				printf(" \"%s\": %2.3f, ",lower_header[20],percent_time_unreachable_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unreachable_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[22],temp_subject->time_unreachable-temp_subject->scheduled_time_unreachable);
+				printf(" \"%s\": %2.3f, ",lower_header[23],percent_time_unreachable_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unreachable_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[25],temp_subject->time_unreachable);
+				printf(" \"%s\": %2.3f, ",lower_header[26],percent_time_unreachable);
+				printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unreachable_known);
 
 	                        /* indeterminate times */
-				printf(" \"%s\": \"%lu\", ",lower_header[28],temp_subject->time_indeterminate_notrunning);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[29],percent_time_indeterminate_notrunning);
-				printf(" \"%s\": \"%lu\", ",lower_header[30],temp_subject->time_indeterminate_nodata);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_indeterminate_nodata);
-				printf(" \"%s\": \"%lu\", ",lower_header[32],time_indeterminate);
-				printf(" \"%s\": \"%2.3f\"} ",lower_header[33],percent_time_indeterminate);
+				printf(" \"%s\": %lu, ",lower_header[28],temp_subject->time_indeterminate_notrunning);
+				printf(" \"%s\": %2.3f, ",lower_header[29],percent_time_indeterminate_notrunning);
+				printf(" \"%s\": %lu, ",lower_header[30],temp_subject->time_indeterminate_nodata);
+				printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_indeterminate_nodata);
+				printf(" \"%s\": %lu, ",lower_header[32],time_indeterminate);
+				printf(" \"%s\": %2.3f} ",lower_header[33],percent_time_indeterminate);
 
 				json_start=FALSE;
 
@@ -5011,13 +5011,13 @@ void display_host_availability(void){
 			printf("</table>\n");
 			printf("</DIV>\n");
 		}else if (content_type==JSON_CONTENT){
-			printf(",{ \"average_percent_time_up\": \"%2.3f\", ",average_percent_time_up);
-			printf("\"average_percent_time_up_known\": \"%2.3f\", ",average_percent_time_up_known);
-			printf("\"average_percent_time_down\": \"%2.3f\", ",average_percent_time_down);
-			printf("\"average_percent_time_down_known\": \"%2.3f\", ",average_percent_time_down_known);
-			printf("\"average_percent_time_unreachable\": \"%2.3f\", ",average_percent_time_unreachable);
-			printf("\"average_percent_time_unreachable_known\": \"%2.3f\", ",average_percent_time_unreachable_known);
-			printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+			printf(",{ \"average_percent_time_up\": %2.3f, ",average_percent_time_up);
+			printf("\"average_percent_time_up_known\": %2.3f, ",average_percent_time_up_known);
+			printf("\"average_percent_time_down\": %2.3f, ",average_percent_time_down);
+			printf("\"average_percent_time_down_known\": %2.3f, ",average_percent_time_down_known);
+			printf("\"average_percent_time_unreachable\": %2.3f, ",average_percent_time_unreachable);
+			printf("\"average_percent_time_unreachable_known\": %2.3f, ",average_percent_time_unreachable_known);
+			printf("\"average_percent_time_indeterminate\": %2.3f }",average_percent_time_indeterminate);
 			printf(" ] }\n");
 		} else if(content_type==CSV_CONTENT){
 			/* average */
@@ -5349,61 +5349,61 @@ void display_service_availability(void){
 			printf("\"services\": [\n");
 
                         /* host name and service description */
-			printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
-			printf(" \"%s\": \"%s\", ",lower_header[1],temp_subject->service_description);
+			printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
+			printf(" \"%s\": \"%s\", ",lower_header[1],json_encode(temp_subject->service_description));
 
                         /* ok times */
-			printf(" \"%s\": \"%lu\", ",lower_header[2],temp_subject->scheduled_time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_ok_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[4],percent_time_ok_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[5],temp_subject->time_ok-temp_subject->scheduled_time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_ok_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[7],percent_time_ok_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[8],temp_subject->time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_ok);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[10],percent_time_ok_known);
+			printf(" \"%s\": %lu, ",lower_header[2],temp_subject->scheduled_time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_ok_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[4],percent_time_ok_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[5],temp_subject->time_ok-temp_subject->scheduled_time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_ok_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[7],percent_time_ok_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[8],temp_subject->time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_ok);
+			printf(" \"%s\": %2.3f, ",lower_header[10],percent_time_ok_known);
 
                         /* warning times */
-			printf(" \"%s\": \"%lu\", ",lower_header[11],temp_subject->scheduled_time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_warning_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[13],percent_time_warning_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[14],temp_subject->time_warning-temp_subject->scheduled_time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_warning_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[16],percent_time_warning_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[17],temp_subject->time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_warning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[19],percent_time_warning_known);
+			printf(" \"%s\": %lu, ",lower_header[11],temp_subject->scheduled_time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_warning_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[13],percent_time_warning_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[14],temp_subject->time_warning-temp_subject->scheduled_time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_warning_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[16],percent_time_warning_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[17],temp_subject->time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_warning);
+			printf(" \"%s\": %2.3f, ",lower_header[19],percent_time_warning_known);
 
                         /* unknown times */
-			printf(" \"%s\": \"%lu\", ",lower_header[20],temp_subject->scheduled_time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unknown_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[22],percent_time_unknown_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[23],temp_subject->time_unknown-temp_subject->scheduled_time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unknown_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[25],percent_time_unknown_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[26],temp_subject->time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unknown);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[28],percent_time_unknown_known);
+			printf(" \"%s\": %lu, ",lower_header[20],temp_subject->scheduled_time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unknown_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[22],percent_time_unknown_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[23],temp_subject->time_unknown-temp_subject->scheduled_time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unknown_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[25],percent_time_unknown_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[26],temp_subject->time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unknown);
+			printf(" \"%s\": %2.3f, ",lower_header[28],percent_time_unknown_known);
 
                         /* critical times */
-			printf(" \"%s\": \"%lu\", ",lower_header[29],temp_subject->scheduled_time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[30],percent_time_critical_scheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_critical_scheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[32],temp_subject->time_critical-temp_subject->scheduled_time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[33],percent_time_critical_unscheduled);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[34],percent_time_critical_unscheduled_known);
-			printf(" \"%s\": \"%lu\", ",lower_header[35],temp_subject->time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[36],percent_time_critical);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[37],percent_time_critical_known);
+			printf(" \"%s\": %lu, ",lower_header[29],temp_subject->scheduled_time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[30],percent_time_critical_scheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_critical_scheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[32],temp_subject->time_critical-temp_subject->scheduled_time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[33],percent_time_critical_unscheduled);
+			printf(" \"%s\": %2.3f, ",lower_header[34],percent_time_critical_unscheduled_known);
+			printf(" \"%s\": %lu, ",lower_header[35],temp_subject->time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[36],percent_time_critical);
+			printf(" \"%s\": %2.3f, ",lower_header[37],percent_time_critical_known);
 
 
                         /* indeterminate times */
-			printf(" \"%s\": \"%lu\", ",lower_header[38],temp_subject->time_indeterminate_notrunning);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[39],percent_time_indeterminate_notrunning);
-			printf(" \"%s\": \"%lu\", ",lower_header[40],temp_subject->time_indeterminate_nodata);
-			printf(" \"%s\": \"%2.3f\", ",lower_header[41],percent_time_indeterminate_nodata);
-			printf(" \"%s\": \"%lu\", ",lower_header[42],time_indeterminate);
-			printf(" \"%s\": \"%2.3f\"}\n]\n}",lower_header[43],percent_time_indeterminate);
+			printf(" \"%s\": %lu, ",lower_header[38],temp_subject->time_indeterminate_notrunning);
+			printf(" \"%s\": %2.3f, ",lower_header[39],percent_time_indeterminate_notrunning);
+			printf(" \"%s\": %lu, ",lower_header[40],temp_subject->time_indeterminate_nodata);
+			printf(" \"%s\": %2.3f, ",lower_header[41],percent_time_indeterminate_nodata);
+			printf(" \"%s\": %lu, ",lower_header[42],time_indeterminate);
+			printf(" \"%s\": %2.3f}\n]\n}",lower_header[43],percent_time_indeterminate);
 
                 } else if(content_type==CSV_CONTENT){
 
@@ -5609,61 +5609,61 @@ void display_service_availability(void){
 					printf(",\n");
 
 	                        /* host name and service description */
-				printf("{ \"%s\": \"%s\", ",lower_header[0],temp_subject->host_name);
-				printf(" \"%s\": \"%s\", ",lower_header[1],temp_subject->service_description);
+				printf("{ \"%s\": \"%s\", ",lower_header[0],json_encode(temp_subject->host_name));
+				printf(" \"%s\": \"%s\", ",lower_header[1],json_encode(temp_subject->service_description));
 
 	                        /* ok times */
-				printf(" \"%s\": \"%lu\", ",lower_header[2],temp_subject->scheduled_time_ok);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[3],percent_time_ok_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[4],percent_time_ok_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[5],temp_subject->time_ok-temp_subject->scheduled_time_ok);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[6],percent_time_ok_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[7],percent_time_ok_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[8],temp_subject->time_ok);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[9],percent_time_ok);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[10],percent_time_ok_known);
+				printf(" \"%s\": %lu, ",lower_header[2],temp_subject->scheduled_time_ok);
+				printf(" \"%s\": %2.3f, ",lower_header[3],percent_time_ok_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[4],percent_time_ok_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[5],temp_subject->time_ok-temp_subject->scheduled_time_ok);
+				printf(" \"%s\": %2.3f, ",lower_header[6],percent_time_ok_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[7],percent_time_ok_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[8],temp_subject->time_ok);
+				printf(" \"%s\": %2.3f, ",lower_header[9],percent_time_ok);
+				printf(" \"%s\": %2.3f, ",lower_header[10],percent_time_ok_known);
 
 	                        /* warning times */
-				printf(" \"%s\": \"%lu\", ",lower_header[11],temp_subject->scheduled_time_warning);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[12],percent_time_warning_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[13],percent_time_warning_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[14],temp_subject->time_warning-temp_subject->scheduled_time_warning);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[15],percent_time_warning_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[16],percent_time_warning_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[17],temp_subject->time_warning);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[18],percent_time_warning);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[19],percent_time_warning_known);
+				printf(" \"%s\": %lu, ",lower_header[11],temp_subject->scheduled_time_warning);
+				printf(" \"%s\": %2.3f, ",lower_header[12],percent_time_warning_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[13],percent_time_warning_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[14],temp_subject->time_warning-temp_subject->scheduled_time_warning);
+				printf(" \"%s\": %2.3f, ",lower_header[15],percent_time_warning_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[16],percent_time_warning_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[17],temp_subject->time_warning);
+				printf(" \"%s\": %2.3f, ",lower_header[18],percent_time_warning);
+				printf(" \"%s\": %2.3f, ",lower_header[19],percent_time_warning_known);
 
 	                        /* unknown times */
-				printf(" \"%s\": \"%lu\", ",lower_header[20],temp_subject->scheduled_time_unknown);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[21],percent_time_unknown_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[22],percent_time_unknown_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[23],temp_subject->time_unknown-temp_subject->scheduled_time_unknown);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[24],percent_time_unknown_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[25],percent_time_unknown_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[26],temp_subject->time_unknown);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[27],percent_time_unknown);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[28],percent_time_unknown_known);
+				printf(" \"%s\": %lu, ",lower_header[20],temp_subject->scheduled_time_unknown);
+				printf(" \"%s\": %2.3f, ",lower_header[21],percent_time_unknown_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[22],percent_time_unknown_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[23],temp_subject->time_unknown-temp_subject->scheduled_time_unknown);
+				printf(" \"%s\": %2.3f, ",lower_header[24],percent_time_unknown_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[25],percent_time_unknown_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[26],temp_subject->time_unknown);
+				printf(" \"%s\": %2.3f, ",lower_header[27],percent_time_unknown);
+				printf(" \"%s\": %2.3f, ",lower_header[28],percent_time_unknown_known);
 
 	                        /* critical times */
-				printf(" \"%s\": \"%lu\", ",lower_header[29],temp_subject->scheduled_time_critical);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[30],percent_time_critical_scheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[31],percent_time_critical_scheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[32],temp_subject->time_critical-temp_subject->scheduled_time_critical);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[33],percent_time_critical_unscheduled);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[34],percent_time_critical_unscheduled_known);
-				printf(" \"%s\": \"%lu\", ",lower_header[35],temp_subject->time_critical);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[36],percent_time_critical);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[37],percent_time_critical_known);
+				printf(" \"%s\": %lu, ",lower_header[29],temp_subject->scheduled_time_critical);
+				printf(" \"%s\": %2.3f, ",lower_header[30],percent_time_critical_scheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_critical_scheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[32],temp_subject->time_critical-temp_subject->scheduled_time_critical);
+				printf(" \"%s\": %2.3f, ",lower_header[33],percent_time_critical_unscheduled);
+				printf(" \"%s\": %2.3f, ",lower_header[34],percent_time_critical_unscheduled_known);
+				printf(" \"%s\": %lu, ",lower_header[35],temp_subject->time_critical);
+				printf(" \"%s\": %2.3f, ",lower_header[36],percent_time_critical);
+				printf(" \"%s\": %2.3f, ",lower_header[37],percent_time_critical_known);
 
 
 	                        /* indeterminate times */
-				printf(" \"%s\": \"%lu\", ",lower_header[38],temp_subject->time_indeterminate_notrunning);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[39],percent_time_indeterminate_notrunning);
-				printf(" \"%s\": \"%lu\", ",lower_header[40],temp_subject->time_indeterminate_nodata);
-				printf(" \"%s\": \"%2.3f\", ",lower_header[41],percent_time_indeterminate_nodata);
-				printf(" \"%s\": \"%lu\", ",lower_header[42],time_indeterminate);
-				printf(" \"%s\": \"%2.3f\"} ",lower_header[43],percent_time_indeterminate);
+				printf(" \"%s\": %lu, ",lower_header[38],temp_subject->time_indeterminate_notrunning);
+				printf(" \"%s\": %2.3f, ",lower_header[39],percent_time_indeterminate_notrunning);
+				printf(" \"%s\": %lu, ",lower_header[40],temp_subject->time_indeterminate_nodata);
+				printf(" \"%s\": %2.3f, ",lower_header[41],percent_time_indeterminate_nodata);
+				printf(" \"%s\": %lu, ",lower_header[42],time_indeterminate);
+				printf(" \"%s\": %2.3f} ",lower_header[43],percent_time_indeterminate);
 
 				json_start=FALSE;
 
@@ -5757,15 +5757,15 @@ void display_service_availability(void){
 			printf("</table>\n");
 			printf("</DIV>\n");
 		}else if (content_type==JSON_CONTENT){
-			printf(",{ \"average_percent_time_ok\": \"%2.3f\", ",average_percent_time_ok);
-			printf("\"average_percent_time_ok_known\": \"%2.3f\", ",average_percent_time_ok_known);
-			printf("\"average_percent_time_warning\": \"%2.3f\", ",average_percent_time_warning);
-			printf("\"average_percent_time_warning_known\": \"%2.3f\", ",average_percent_time_warning_known);
-			printf("\"average_percent_time_unknown\": \"%2.3f\", ",average_percent_time_unknown);
-			printf("\"average_percent_time_unknown_known\": \"%2.3f\", ",average_percent_time_unknown_known);
-			printf("\"average_percent_time_critical\": \"%2.3f\", ",average_percent_time_critical);
-			printf("\"average_percent_time_critical_known\": \"%2.3f\", ",average_percent_time_critical_known);
-			printf("\"average_percent_time_indeterminate\": \"%2.3f\" }",average_percent_time_indeterminate);
+			printf(",{ \"average_percent_time_ok\": %2.3f, ",average_percent_time_ok);
+			printf("\"average_percent_time_ok_known\": %2.3f, ",average_percent_time_ok_known);
+			printf("\"average_percent_time_warning\": %2.3f, ",average_percent_time_warning);
+			printf("\"average_percent_time_warning_known\": %2.3f, ",average_percent_time_warning_known);
+			printf("\"average_percent_time_unknown\": %2.3f, ",average_percent_time_unknown);
+			printf("\"average_percent_time_unknown_known\": %2.3f, ",average_percent_time_unknown_known);
+			printf("\"average_percent_time_critical\": %2.3f, ",average_percent_time_critical);
+			printf("\"average_percent_time_critical_known\": %2.3f, ",average_percent_time_critical_known);
+			printf("\"average_percent_time_indeterminate\": %2.3f }",average_percent_time_indeterminate);
 			printf(" ] }\n");
 		} else if(content_type==CSV_CONTENT){
 			/* average */

@@ -979,7 +979,7 @@ void show_process_info(void){
 		else
 			printf("\"last_log_file_rotation\": \"%s\",\n",last_log_rotation_time);
 
-		printf("\"icinga_pid\": \"%d\",\n",nagios_pid);
+		printf("\"icinga_pid\": %d,\n",nagios_pid);
 		printf("\"notifications_enabled\": %s,\n",(enable_notifications==TRUE)?"true":"false");
 		printf("\"service_checks_being_executed\": %s,\n",(execute_service_checks==TRUE)?"true":"false");
 		printf("\"passive_service_checks_being_accepted\": %s,\n",(accept_passive_service_checks==TRUE)?"true":"false");
@@ -1312,7 +1312,7 @@ void show_host_info(void){
 
 	if (content_type==JSON_CONTENT) {
 		printf("\"host_info\": {\n");
-		printf("\"host_name\": \"%s\",\n",host_name);
+		printf("\"host_name\": \"%s\",\n",json_encode(host_name));
 		if(temp_hoststatus->has_been_checked==FALSE)
 			printf("\"has_been_checked\": false\n");
 		else {
@@ -1325,13 +1325,13 @@ void show_host_info(void){
 				printf("\"status_duration\": \"%s\",\n",state_duration);
 			printf("\"status_duration_in_seconds\": %lu,\n",(unsigned long)ts_state_duration);
 			if(temp_hoststatus->long_plugin_output!=NULL)
-				printf("\"status_information\": \"%s %s\",\n",temp_hoststatus->long_plugin_output,temp_hoststatus->plugin_output);
+				printf("\"status_information\": \"%s %s\",\n",json_encode(temp_hoststatus->long_plugin_output),json_encode(temp_hoststatus->plugin_output));
 			else
-				printf("\"status_information\": \"%s\",\n",temp_hoststatus->plugin_output);
+				printf("\"status_information\": \"%s\",\n",json_encode(temp_hoststatus->plugin_output));
 			if (temp_hoststatus->perf_data==NULL)
 				printf("\"performance_data\": null,\n");
 			else
-				printf("\"performance_data\": \"%s\",\n",temp_hoststatus->perf_data);
+				printf("\"performance_data\": \"%s\",\n",json_encode(temp_hoststatus->perf_data));
 			printf("\"current_attempt\": %d,\n",temp_hoststatus->current_attempt);
 			printf("\"max_attempts\": %d,\n",temp_hoststatus->max_attempts);
 			printf("\"check_type\": \"%s\",\n",(temp_hoststatus->check_type==HOST_CHECK_ACTIVE)?"active":"passive");
@@ -1712,8 +1712,8 @@ void show_service_info(void){
 	
 	if (content_type==JSON_CONTENT) {
 		printf("\"service_info\": {\n");
-		printf("\"host_name\": \"%s\",\n",host_name);
-		printf("\"service_description\": \"%s\",\n",service_desc);
+		printf("\"host_name\": \"%s\",\n",json_encode(host_name));
+		printf("\"service_description\": \"%s\",\n",json_encode(service_desc));
 		if(temp_svcstatus->has_been_checked==FALSE)
 			printf("\"has_been_checked\": false\n");
 		else {
@@ -1726,13 +1726,13 @@ void show_service_info(void){
 				printf("\"status_duration\": \"%s\",\n",state_duration);
 			printf("\"status_duration_in_seconds\": %lu,\n",(unsigned long)ts_state_duration);
 			if(temp_svcstatus->long_plugin_output!=NULL)
-				printf("\"status_information\": \"%s %s\",\n",temp_svcstatus->long_plugin_output,temp_svcstatus->plugin_output);
+				printf("\"status_information\": \"%s %s\",\n",json_encode(temp_svcstatus->long_plugin_output),json_encode(temp_svcstatus->plugin_output));
 			else
-				printf("\"status_information\": \"%s\",\n",temp_svcstatus->plugin_output);
+				printf("\"status_information\": \"%s\",\n",json_encode(temp_svcstatus->plugin_output));
 			if (temp_svcstatus->perf_data==NULL)
 				printf("\"performance_data\": null,\n");
 			else
-				printf("\"performance_data\": \"%s\",\n",temp_svcstatus->perf_data);
+				printf("\"performance_data\": \"%s\",\n",json_encode(temp_svcstatus->perf_data));
 			printf("\"current_attempt\": %d,\n",temp_svcstatus->current_attempt);
 			printf("\"max_attempts\": %d,\n",temp_svcstatus->max_attempts);
 			printf("\"check_type\": \"%s\",\n",(temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)?"active":"passive");
@@ -2782,7 +2782,6 @@ void show_comments(int type){
 	char expire_time[MAX_DATETIME_LENGTH];
 	int colspan=8;
 	int json_start=TRUE;
-	int i=0;
 
 	/* define colspan */
 	if(display_type==DISPLAY_COMMENTS) {
@@ -2905,22 +2904,14 @@ void show_comments(int type){
 
 			printf("{ ");
 			if(display_type==DISPLAY_COMMENTS) {
-				printf("\"host_name\": \"%s\", ",temp_host->name);
+				printf("\"host_name\": \"%s\", ",json_encode(temp_host->name));
 				if(type==SERVICE_COMMENT)
-					printf("\"service_description\": \"%s\", ",temp_service->description);
+					printf("\"service_description\": \"%s\", ",json_encode(temp_service->description));
 				printf("\"comment_type\": \"%s\", ",(type==HOST_COMMENT)?"HOST":"SERVICE");
 			}
 			printf("\"entry_time\": \"%s\", ",date_time);
-			printf("\"author\": \"%s\", ",temp_comment->author);
-			// escaping all double qoutes
-			printf("\"comment\": \"");
-			for(i=0;i<(int)strlen(temp_comment->comment_data);i++) {
-				if((char)temp_comment->comment_data[i]==(char)'"')
-					printf("\\%c",temp_comment->comment_data[i]);
-				else
-					printf("%c",temp_comment->comment_data[i]);
-			}
-			printf("\", ");
+			printf("\"author\": \"%s\", ",json_encode(temp_comment->author));
+			printf("\"comment\": \"%s\", ",json_encode(temp_comment->comment_data));
 			printf("\"comment_id\": %lu, ",temp_comment->comment_id);
 			printf("\"persistent\": %s, ",(temp_comment->persistent==TRUE)?"true":"false");
 			printf("\"comment_type\": \"%s\", ",comment_type);
@@ -2993,7 +2984,6 @@ void show_downtime(int type){
 	int total_downtime=0;
 	int colspan=10;
 	int json_start=TRUE;
-	int i=0;
 
 	/* define colspan */
 	if(display_type==DISPLAY_DOWNTIME) {
@@ -3098,9 +3088,9 @@ void show_downtime(int type){
 
 			printf("{ ");
 			if(display_type==DISPLAY_DOWNTIME) {
-				printf("\"host_name\": \"%s\", ",temp_host->name);
+				printf("\"host_name\": \"%s\", ",json_encode(temp_host->name));
 				if(type==SERVICE_DOWNTIME)
-					printf("\"service_description\": \"%s\", ",temp_service->description);
+					printf("\"service_description\": \"%s\", ",json_encode(temp_service->description));
 				printf("\"downtime_type\": \"%s\", ",(type==HOST_DOWNTIME)?"HOST":"SERVICE");
 			}
 		}else if(content_type==CSV_CONTENT) {
@@ -3128,19 +3118,11 @@ void show_downtime(int type){
 			if (temp_downtime->author==NULL)
 				printf("\"author\": null, ");
 			else
-				printf("\"author\": \"%s\", ",temp_downtime->author);
+				printf("\"author\": \"%s\", ",json_encode(temp_downtime->author));
 			if (temp_downtime->author==NULL)
 				printf("\"comment\": null, ");
-			else {
-				printf("\"comment\": \"");
-				for(i=0;i<(int)strlen(temp_downtime->comment);i++) {
-					if((char)temp_downtime->comment[i]==(char)'"')
-						printf("\\%c",temp_downtime->comment[i]);
-					else
-						printf("%c",temp_downtime->comment[i]);
-				}
-				printf("\", ");
-			}
+			else
+				printf("\"comment\": \"%s\", ",json_encode(temp_downtime->comment));
 		} else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_downtime->author==NULL)?"N/A":temp_downtime->author,csv_data_enclosure,csv_delimiter);
@@ -3446,9 +3428,9 @@ void show_scheduling_queue(void){
 				printf(",\n");
 			json_start=FALSE;
 
-			printf("{ \"host_name\": \"%s\", ",display_host);
+			printf("{ \"host_name\": \"%s\", ",json_encode(display_host));
 			if (temp_sortdata->is_service==TRUE) {
-				printf("\"service_description\": \"%s\", ",display_service);
+				printf("\"service_description\": \"%s\", ",json_encode(display_service));
 				printf("\"type\": \"SERVICE_CHECK\", ");
 			}else
 				printf("\"type\": \"HOST_CHECK\", ");

@@ -893,9 +893,9 @@ void display_logentries() {
 				if (json_start==FALSE)
 					printf(",\n");
 				json_start=FALSE;
-				printf("{ \"timestamp\": \"%lu\", ",temp_entry->timestamp);
+				printf("{ \"timestamp\": %lu, ",temp_entry->timestamp);
 				printf(" \"date_time\": \"%s\", ",date_time);
-				printf(" \"log_entry\": \"%s\"}",temp_entry->entry_text);
+				printf(" \"log_entry\": \"%s\"}",json_encode(temp_entry->entry_text));
 			}else if(content_type==CSV_CONTENT) {
 				printf("%s%lu%s%s",csv_data_enclosure,temp_entry->timestamp,csv_data_enclosure,csv_delimiter);
 				printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
