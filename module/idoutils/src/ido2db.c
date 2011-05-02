@@ -1347,9 +1347,10 @@ int ido2db_handle_client_connection(int sd){
 
 		/* check for completed lines of input */
 		/* 2011-02-23 MF: only do that in a worker thread */
-		/*
+		/* 2011-05-02 MF: redo it the old way */
+
 		ido2db_check_for_client_input(&idi);
-		*/
+
 
 		/* should we disconnect the client? */
 		if(idi.disconnect_client==IDO_TRUE){
@@ -1435,6 +1436,7 @@ int ido2db_idi_init(ido2db_idi *idi){
 
 /* checks for single lines of input from a client connection */
 /* 2011-02-23 MF: called in worker thread */
+/* 2011-05-02 MF: restructured sequential */
 int ido2db_check_for_client_input(ido2db_idi *idi){
 	char *buf=NULL;
 	register int x;
@@ -1448,7 +1450,7 @@ int ido2db_check_for_client_input(ido2db_idi *idi){
 	/* check if buffer full? bail out and tell main to disconnect the client! FIXME */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() dbuf.size=%lu\n", dbuf.used_size);
 
-	pthread_mutex_lock(&ido2db_dbuf_lock);
+	//pthread_mutex_lock(&ido2db_dbuf_lock);
 
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() ido2db_dbuf_lock start\n");
 
@@ -1491,7 +1493,7 @@ int ido2db_check_for_client_input(ido2db_idi *idi){
 		}
 	}
 
-	pthread_mutex_unlock(&ido2db_dbuf_lock);
+	//pthread_mutex_unlock(&ido2db_dbuf_lock);
 
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() ido2db_dbuf_lock end\n");
 
@@ -2645,7 +2647,7 @@ void * ido2db_thread_worker(void *data) {
                 }
 
 		/* check for client input */
-		ido2db_check_for_client_input(idi);
+		//ido2db_check_for_client_input(idi);
 
 		/* sleep a bit */
 		nanosleep(&delay, NULL);
