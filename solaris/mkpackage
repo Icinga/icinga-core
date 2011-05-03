@@ -1,38 +1,43 @@
-#! /bin/sh
+#!/bin/sh
 
-if [ "z$1" = "z" ] ; then
-	echo You must specify an architecture to build for!
-	exit 1
-fi
+LD_RUN_PATH=/usr/lib:/usr/local/lib
 
-case "$1" in
-	solaris)
-		LD_RUN_PATH=/usr/lib:/usr/local/lib
-		autoreconf
-		PATH=.:..:$PATH configure --with-cgiurl=/icinga/cgi-bin \
+usage() {
+    echo "Usage: `basename ${0}` <icinga-user> <icinga-group> <cmd-user> <cmd-group> <pkg_name> [num make_jobs]"
+    exit 1
+}
+
+[ $# -eq 0 ] && usage
+
+icinga_user=${1}
+icinga_group=${2}
+cmd_user=${3}
+cmd_group=${4}
+pkg_name=${5}
+make_jobs=${6:-2}  # Use 2 Makejobs if not set
+config_file="configure.in"
+
+[ ! -f ${config_file}.solbak ] && cp ${config_file} ${config_file}.solbak
+sed -e "s/^\(SOL_PKG_NAME=\).*\$/\1${pkg_name}/" ${config_file} > ${config_file}.tmp
+mv ${config_file}.tmp ${config_file}
+
+autoreconf
+
+PATH=.:..:${PATH} configure \
+--prefix=/usr/local/icinga \
+--with-cgiurl=/icinga/cgi-bin \
 --with-htmurl=/icinga \
+--with-icinga-user=${icinga_user} \
+--with-icinga-grp=${icinga_group} \
+--with-command-user=${cmd_user} \
+--with-command-grp=${cmd_group} \
 --with-lockfile=/var/run/icinga.pid \
---with-icinga-user=icinga \
---with-icinga-grp=icinga \
---with-command-user=icinga \
---with-command-grp=www \
---prefix=/usr/local \
---exec-prefix=/usr/local/sbin \
---bindir=/usr/local/sbin \
---sbindir=/usr/local/lib/icinga/cgi \
---libexecdir=/usr/local/lib/icinga/plugins \
---datadir=/usr/local/share/icinga \
---sysconfdir=/etc/icinga \
 --localstatedir=/var/log/icinga \
+--with-httpd-conf=/usr/local/apache2/conf \
+--with-gd-lib=/usr/local/lib \
+--with-gd-inc=/usr/local/include \
 --with-mail=/usr/bin/mailx
-		make pkgclean
-		make all
-		make pkgset
-		;;
-	*)
-		echo Platform $1 is not currently supported
-		exit 1
-		;;
-esac
 
-exit 0
+make pkgclean
+make -j${make_jobs} all
+make pkgset

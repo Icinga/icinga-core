@@ -1,0 +1,25 @@
+#!/bin/sh
+
+SVCCFG=/usr/sbin/svccfg
+GREP=/usr/bin/grep
+USERADD=/usr/sbin/useradd
+GROUPADD=/usr/sbin/groupadd
+
+${SVCCFG} import /var/svc/manifest/application/icinga.xml
+
+${GREP} icinga /etc/passwd > /dev/null 2> /dev/null
+if [ $? -ne 0 ]; then
+        ${USERADD} -m icinga >/dev/null
+fi
+
+${GREP} icinga /etc/group > /dev/null 2> /dev/null
+if [ $? -ne 0 ]; then
+        ${GROUPADD} icinga >/dev/null
+fi
+
+${GREP} www /etc/group > /dev/null 2> /dev/null
+if [ $? -ne 0 ]; then
+        ${GROUPADD} www
+fi
+
+exit 0
