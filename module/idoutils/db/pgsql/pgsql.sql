@@ -55,19 +55,19 @@ $$ LANGUAGE plpgsql;
 --
 
 CREATE TABLE  icinga_acknowledgements (
-  acknowledgement_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  entry_time_usec INTEGER NOT NULL default 0,
-  acknowledgement_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  state INTEGER NOT NULL default 0,
-  author_name TEXT NOT NULL default '',
-  comment_data TEXT NOT NULL default '',
-  is_sticky INTEGER NOT NULL default 0,
-  persistent_comment INTEGER NOT NULL default 0,
-  notify_contacts INTEGER NOT NULL default 0,
-  PRIMARY KEY  (acknowledgement_id)
+  acknowledgement_id bigserial,
+  instance_id bigint default 0,
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  entry_time_usec INTEGER  default 0,
+  acknowledgement_type INTEGER  default 0,
+  object_id bigint default 0,
+  state INTEGER  default 0,
+  author_name TEXT  default '',
+  comment_data TEXT  default '',
+  is_sticky INTEGER  default 0,
+  persistent_comment INTEGER  default 0,
+  notify_contacts INTEGER  default 0,
+  CONSTRAINT PK_acknowledgement_id PRIMARY KEY (acknowledgement_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -77,13 +77,13 @@ CREATE TABLE  icinga_acknowledgements (
 --
 
 CREATE TABLE  icinga_commands (
-  command_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  command_line TEXT NOT NULL default '',
-  PRIMARY KEY  (command_id),
-  UNIQUE (instance_id,object_id,config_type)
+  command_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  object_id bigint default 0,
+  command_line TEXT  default '',
+  CONSTRAINT PK_command_id PRIMARY KEY (command_id) ,
+  CONSTRAINT UQ_commands UNIQUE (instance_id,object_id,config_type)
 ) ;
 
 -- --------------------------------------------------------
@@ -93,25 +93,25 @@ CREATE TABLE  icinga_commands (
 --
 
 CREATE TABLE  icinga_commenthistory (
-  commenthistory_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  entry_time_usec INTEGER NOT NULL default 0,
-  comment_type INTEGER NOT NULL default 0,
-  entry_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  comment_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  internal_comment_id INTEGER NOT NULL default 0,
-  author_name TEXT NOT NULL default '',
-  comment_data TEXT NOT NULL default '',
-  is_persistent INTEGER NOT NULL default 0,
-  comment_source INTEGER NOT NULL default 0,
-  expires INTEGER NOT NULL default 0,
-  expiration_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  deletion_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  deletion_time_usec INTEGER NOT NULL default 0,
-  PRIMARY KEY  (commenthistory_id),
-  UNIQUE (instance_id,comment_time,internal_comment_id)
+  commenthistory_id bigserial,
+  instance_id bigint default 0,
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  entry_time_usec INTEGER  default 0,
+  comment_type INTEGER  default 0,
+  entry_type INTEGER  default 0,
+  object_id bigint default 0,
+  comment_time timestamp  default '1970-01-01 00:00:00',
+  internal_comment_id bigint default 0,
+  author_name TEXT  default '',
+  comment_data TEXT  default '',
+  is_persistent INTEGER  default 0,
+  comment_source INTEGER  default 0,
+  expires INTEGER  default 0,
+  expiration_time timestamp  default '1970-01-01 00:00:00',
+  deletion_time timestamp  default '1970-01-01 00:00:00',
+  deletion_time_usec INTEGER  default 0,
+  CONSTRAINT PK_commenthistory_id PRIMARY KEY (commenthistory_id) ,
+  CONSTRAINT UQ_commenthistory UNIQUE (instance_id,comment_time,internal_comment_id)
 );
 
 -- --------------------------------------------------------
@@ -121,23 +121,23 @@ CREATE TABLE  icinga_commenthistory (
 --
 
 CREATE TABLE  icinga_comments (
-  comment_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  entry_time_usec INTEGER NOT NULL default 0,
-  comment_type INTEGER NOT NULL default 0,
-  entry_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  comment_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  internal_comment_id INTEGER NOT NULL default 0,
-  author_name TEXT NOT NULL default '',
-  comment_data TEXT NOT NULL default '',
-  is_persistent INTEGER NOT NULL default 0,
-  comment_source INTEGER NOT NULL default 0,
-  expires INTEGER NOT NULL default 0,
-  expiration_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  PRIMARY KEY  (comment_id),
-  UNIQUE (instance_id,comment_time,internal_comment_id)
+  comment_id bigserial,
+  instance_id bigint default 0,
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  entry_time_usec INTEGER  default 0,
+  comment_type INTEGER  default 0,
+  entry_type INTEGER  default 0,
+  object_id bigint default 0,
+  comment_time timestamp  default '1970-01-01 00:00:00',
+  internal_comment_id bigint default 0,
+  author_name TEXT  default '',
+  comment_data TEXT  default '',
+  is_persistent INTEGER  default 0,
+  comment_source INTEGER  default 0,
+  expires INTEGER  default 0,
+  expiration_time timestamp  default '1970-01-01 00:00:00',
+  CONSTRAINT PK_comment_id PRIMARY KEY (comment_id) ,
+  CONSTRAINT UQ_comments UNIQUE (instance_id,comment_time,internal_comment_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -147,12 +147,12 @@ CREATE TABLE  icinga_comments (
 --
 
 CREATE TABLE  icinga_configfiles (
-  configfile_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  configfile_type INTEGER NOT NULL default 0,
-  configfile_path TEXT NOT NULL default '',
-  PRIMARY KEY  (configfile_id),
-  UNIQUE (instance_id,configfile_type,configfile_path)
+  configfile_id bigserial,
+  instance_id bigint default 0,
+  configfile_type INTEGER  default 0,
+  configfile_path TEXT  default '',
+  CONSTRAINT PK_configfile_id PRIMARY KEY (configfile_id) ,
+  CONSTRAINT UQ_configfiles UNIQUE (instance_id,configfile_type,configfile_path)
 );
 
 -- --------------------------------------------------------
@@ -162,12 +162,12 @@ CREATE TABLE  icinga_configfiles (
 --
 
 CREATE TABLE  icinga_configfilevariables (
-  configfilevariable_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  configfile_id INTEGER NOT NULL default 0,
-  varname TEXT NOT NULL default '',
-  varvalue TEXT NOT NULL default '',
-  PRIMARY KEY  (configfilevariable_id)
+  configfilevariable_id bigserial,
+  instance_id bigint default 0,
+  configfile_id bigint default 0,
+  varname TEXT  default '',
+  varvalue TEXT  default '',
+  CONSTRAINT PK_configfilevariable_id PRIMARY KEY (configfilevariable_id) 
   --UNIQUE (instance_id,configfile_id) 
   -- varname/varvalue are not unique!
 ) ;
@@ -179,22 +179,22 @@ CREATE TABLE  icinga_configfilevariables (
 --
 
 CREATE TABLE  icinga_conninfo (
-  conninfo_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  agent_name TEXT NOT NULL default '',
-  agent_version TEXT NOT NULL default '',
-  disposition TEXT NOT NULL default '',
-  connect_source TEXT NOT NULL default '',
-  connect_type TEXT NOT NULL default '',
-  connect_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  disconnect_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_checkin_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  data_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  data_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  bytes_processed BIGINT NOT NULL default 0,
-  lines_processed BIGINT NOT NULL default 0,
-  entries_processed INTEGER NOT NULL default 0,
-  PRIMARY KEY  (conninfo_id)
+  conninfo_id bigserial,
+  instance_id bigint default 0,
+  agent_name TEXT  default '',
+  agent_version TEXT  default '',
+  disposition TEXT  default '',
+  connect_source TEXT  default '',
+  connect_type TEXT  default '',
+  connect_time timestamp  default '1970-01-01 00:00:00',
+  disconnect_time timestamp  default '1970-01-01 00:00:00',
+  last_checkin_time timestamp  default '1970-01-01 00:00:00',
+  data_start_time timestamp  default '1970-01-01 00:00:00',
+  data_end_time timestamp  default '1970-01-01 00:00:00',
+  bytes_processed bigint  default 0,
+  lines_processed bigint  default 0,
+  entries_processed bigint  default 0,
+  CONSTRAINT PK_conninfo_id PRIMARY KEY (conninfo_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -204,13 +204,13 @@ CREATE TABLE  icinga_conninfo (
 --
 
 CREATE TABLE  icinga_contactgroups (
-  contactgroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  contactgroup_object_id INTEGER NOT NULL default 0,
-  alias TEXT NOT NULL default '',
-  PRIMARY KEY  (contactgroup_id),
-  UNIQUE (instance_id,config_type,contactgroup_object_id)
+  contactgroup_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  contactgroup_object_id bigint default 0,
+  alias TEXT  default '',
+  CONSTRAINT PK_contactgroup_id PRIMARY KEY (contactgroup_id) ,
+  CONSTRAINT UQ_contactgroups UNIQUE (instance_id,config_type,contactgroup_object_id)
 );
 
 -- --------------------------------------------------------
@@ -220,12 +220,12 @@ CREATE TABLE  icinga_contactgroups (
 --
 
 CREATE TABLE  icinga_contactgroup_members (
-  contactgroup_member_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  contactgroup_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (contactgroup_member_id),
-  UNIQUE (contactgroup_id,contact_object_id)
+  contactgroup_member_id bigserial,
+  instance_id bigint default 0,
+  contactgroup_id bigint default 0,
+  contact_object_id bigint default 0,
+  CONSTRAINT PK_contactgroup_member_id PRIMARY KEY (contactgroup_member_id) ,
+  CONSTRAINT UQ_contactgroup_members UNIQUE (contactgroup_id,contact_object_id)
 );
 
 -- --------------------------------------------------------
@@ -235,17 +235,17 @@ CREATE TABLE  icinga_contactgroup_members (
 --
 
 CREATE TABLE  icinga_contactnotificationmethods (
-  contactnotificationmethod_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  contactnotification_id INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  command_object_id INTEGER NOT NULL default 0,
-  command_args TEXT NOT NULL default '',
-  PRIMARY KEY  (contactnotificationmethod_id),
-  UNIQUE (instance_id,contactnotification_id,start_time,start_time_usec)
+  contactnotificationmethod_id bigserial,
+  instance_id bigint default 0,
+  contactnotification_id bigint default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  command_object_id bigint default 0,
+  command_args TEXT  default '',
+  CONSTRAINT PK_contactnotificationmethod_id PRIMARY KEY (contactnotificationmethod_id) ,
+  CONSTRAINT UQ_contactnotificationmethods UNIQUE (instance_id,contactnotification_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -255,16 +255,16 @@ CREATE TABLE  icinga_contactnotificationmethods (
 --
 
 CREATE TABLE  icinga_contactnotifications (
-  contactnotification_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  notification_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  PRIMARY KEY  (contactnotification_id),
-  UNIQUE (instance_id,contact_object_id,start_time,start_time_usec)
+  contactnotification_id bigserial,
+  instance_id bigint default 0,
+  notification_id bigint default 0,
+  contact_object_id bigint default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  CONSTRAINT PK_contactnotification_id PRIMARY KEY (contactnotification_id) ,
+  CONSTRAINT UQ_contactnotifications UNIQUE (instance_id,contact_object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -274,31 +274,31 @@ CREATE TABLE  icinga_contactnotifications (
 --
 
 CREATE TABLE  icinga_contacts (
-  contact_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  alias TEXT NOT NULL default '',
-  email_address TEXT NOT NULL default '',
-  pager_address TEXT NOT NULL default '',
-  host_timeperiod_object_id INTEGER NOT NULL default 0,
-  service_timeperiod_object_id INTEGER NOT NULL default 0,
-  host_notifications_enabled INTEGER NOT NULL default 0,
-  service_notifications_enabled INTEGER NOT NULL default 0,
-  can_submit_commands INTEGER NOT NULL default 0,
-  notify_service_recovery INTEGER NOT NULL default 0,
-  notify_service_warning INTEGER NOT NULL default 0,
-  notify_service_unknown INTEGER NOT NULL default 0,
-  notify_service_critical INTEGER NOT NULL default 0,
-  notify_service_flapping INTEGER NOT NULL default 0,
-  notify_service_downtime INTEGER NOT NULL default 0,
-  notify_host_recovery INTEGER NOT NULL default 0,
-  notify_host_down INTEGER NOT NULL default 0,
-  notify_host_unreachable INTEGER NOT NULL default 0,
-  notify_host_flapping INTEGER NOT NULL default 0,
-  notify_host_downtime INTEGER NOT NULL default 0,
-  PRIMARY KEY  (contact_id),
-  UNIQUE (instance_id,config_type,contact_object_id)
+  contact_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  contact_object_id bigint default 0,
+  alias TEXT  default '',
+  email_address TEXT  default '',
+  pager_address TEXT  default '',
+  host_timeperiod_object_id bigint default 0,
+  service_timeperiod_object_id bigint default 0,
+  host_notifications_enabled INTEGER  default 0,
+  service_notifications_enabled INTEGER  default 0,
+  can_submit_commands INTEGER  default 0,
+  notify_service_recovery INTEGER  default 0,
+  notify_service_warning INTEGER  default 0,
+  notify_service_unknown INTEGER  default 0,
+  notify_service_critical INTEGER  default 0,
+  notify_service_flapping INTEGER  default 0,
+  notify_service_downtime INTEGER  default 0,
+  notify_host_recovery INTEGER  default 0,
+  notify_host_down INTEGER  default 0,
+  notify_host_unreachable INTEGER  default 0,
+  notify_host_flapping INTEGER  default 0,
+  notify_host_downtime INTEGER  default 0,
+  CONSTRAINT PK_contact_id PRIMARY KEY (contact_id) ,
+  CONSTRAINT UQ_contacts UNIQUE (instance_id,config_type,contact_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -308,19 +308,19 @@ CREATE TABLE  icinga_contacts (
 --
 
 CREATE TABLE  icinga_contactstatus (
-  contactstatus_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  host_notifications_enabled INTEGER NOT NULL default 0,
-  service_notifications_enabled INTEGER NOT NULL default 0,
-  last_host_notification timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_service_notification timestamp NOT NULL default '1970-01-01 00:00:00',
-  modified_attributes INTEGER NOT NULL default 0,
-  modified_host_attributes INTEGER NOT NULL default 0,
-  modified_service_attributes INTEGER NOT NULL default 0,
-  PRIMARY KEY  (contactstatus_id),
-  UNIQUE  (contact_object_id)
+  contactstatus_id bigserial,
+  instance_id bigint default 0,
+  contact_object_id bigint default 0,
+  status_update_time timestamp  default '1970-01-01 00:00:00',
+  host_notifications_enabled INTEGER  default 0,
+  service_notifications_enabled INTEGER  default 0,
+  last_host_notification timestamp  default '1970-01-01 00:00:00',
+  last_service_notification timestamp  default '1970-01-01 00:00:00',
+  modified_attributes INTEGER  default 0,
+  modified_host_attributes INTEGER  default 0,
+  modified_service_attributes INTEGER  default 0,
+  CONSTRAINT PK_contactstatus_id PRIMARY KEY (contactstatus_id) ,
+  CONSTRAINT UQ_contactstatus UNIQUE (contact_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -330,13 +330,13 @@ CREATE TABLE  icinga_contactstatus (
 --
 
 CREATE TABLE  icinga_contact_addresses (
-  contact_address_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  contact_id INTEGER NOT NULL default 0,
-  address_number INTEGER NOT NULL default 0,
-  address TEXT NOT NULL default '',
-  PRIMARY KEY  (contact_address_id),
-  UNIQUE  (contact_id,address_number)
+  contact_address_id bigserial,
+  instance_id bigint default 0,
+  contact_id bigint default 0,
+  address_number INTEGER  default 0,
+  address TEXT  default '',
+  CONSTRAINT PK_contact_address_id PRIMARY KEY (contact_address_id) ,
+  CONSTRAINT UQ_contact_addresses UNIQUE (contact_id,address_number)
 ) ;
 
 -- --------------------------------------------------------
@@ -346,14 +346,14 @@ CREATE TABLE  icinga_contact_addresses (
 --
 
 CREATE TABLE  icinga_contact_notificationcommands (
-  contact_notificationcommand_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  contact_id INTEGER NOT NULL default 0,
-  notification_type INTEGER NOT NULL default 0,
-  command_object_id INTEGER NOT NULL default 0,
-  command_args TEXT NOT NULL default '',
-  PRIMARY KEY  (contact_notificationcommand_id),
-  UNIQUE  (contact_id,notification_type,command_object_id,command_args)
+  contact_notificationcommand_id bigserial,
+  instance_id bigint default 0,
+  contact_id bigint default 0,
+  notification_type INTEGER  default 0,
+  command_object_id bigint default 0,
+  command_args TEXT  default '',
+  CONSTRAINT PK_contact_notificationcommand_id PRIMARY KEY (contact_notificationcommand_id) ,
+  CONSTRAINT UQ_contact_notificationcommands UNIQUE (contact_id,notification_type,command_object_id,command_args)
 ) ;
 
 -- --------------------------------------------------------
@@ -363,15 +363,15 @@ CREATE TABLE  icinga_contact_notificationcommands (
 --
 
 CREATE TABLE  icinga_customvariables (
-  customvariable_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  has_been_modified INTEGER NOT NULL default 0,
-  varname TEXT NOT NULL default '',
-  varvalue TEXT NOT NULL default '',
-  PRIMARY KEY  (customvariable_id),
-  UNIQUE (object_id,config_type,varname)
+  customvariable_id bigserial,
+  instance_id bigint default 0,
+  object_id bigint default 0,
+  config_type INTEGER  default 0,
+  has_been_modified INTEGER  default 0,
+  varname TEXT  default '',
+  varvalue TEXT  default '',
+  CONSTRAINT PK_customvariable_id PRIMARY KEY (customvariable_id) ,
+  CONSTRAINT UQ_customvariables UNIQUE (object_id,config_type,varname)
 ) ;
 CREATE INDEX icinga_customvariables_i ON icinga_customvariables(varname);
 
@@ -382,15 +382,15 @@ CREATE INDEX icinga_customvariables_i ON icinga_customvariables(varname);
 --
 
 CREATE TABLE  icinga_customvariablestatus (
-  customvariablestatus_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  has_been_modified INTEGER NOT NULL default 0,
-  varname TEXT NOT NULL default '',
-  varvalue TEXT NOT NULL default '',
-  PRIMARY KEY  (customvariablestatus_id),
-  UNIQUE (object_id,varname)
+  customvariablestatus_id bigserial,
+  instance_id bigint default 0,
+  object_id bigint default 0,
+  status_update_time timestamp  default '1970-01-01 00:00:00',
+  has_been_modified INTEGER  default 0,
+  varname TEXT  default '',
+  varvalue TEXT  default '',
+  CONSTRAINT PK_customvariablestatus_id PRIMARY KEY (customvariablestatus_id) ,
+  CONSTRAINT UQ_customvariablestatus UNIQUE (object_id,varname)
 ) ;
 CREATE INDEX icinga_customvariablestatus_i ON icinga_customvariablestatus(varname);
 
@@ -402,11 +402,11 @@ CREATE INDEX icinga_customvariablestatus_i ON icinga_customvariablestatus(varnam
 --
 
 CREATE TABLE  icinga_dbversion (
-  dbversion_id SERIAL,
-  name TEXT NOT NULL default '',
-  version TEXT NOT NULL default '',
-  PRIMARY KEY (dbversion_id),
-  UNIQUE (name)
+  dbversion_id bigserial,
+  name TEXT  default '',
+  version TEXT  default '',
+  CONSTRAINT PK_dbversion_id PRIMARY KEY (dbversion_id) ,
+  CONSTRAINT UQ_dbversion UNIQUE (name)
 ) ;
 
 -- --------------------------------------------------------
@@ -416,27 +416,27 @@ CREATE TABLE  icinga_dbversion (
 --
 
 CREATE TABLE  icinga_downtimehistory (
-  downtimehistory_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  downtime_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  author_name TEXT NOT NULL default '',
-  comment_data TEXT NOT NULL default '',
-  internal_downtime_id INTEGER NOT NULL default 0,
-  triggered_by_id INTEGER NOT NULL default 0,
-  is_fixed INTEGER NOT NULL default 0,
-  duration INTEGER NOT NULL default 0,
-  scheduled_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  scheduled_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  was_started INTEGER NOT NULL default 0,
-  actual_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  actual_start_time_usec INTEGER NOT NULL default 0,
-  actual_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  actual_end_time_usec INTEGER NOT NULL default 0,
-  was_cancelled INTEGER NOT NULL default 0,
-  PRIMARY KEY  (downtimehistory_id),
-  UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
+  downtimehistory_id bigserial,
+  instance_id bigint default 0,
+  downtime_type INTEGER  default 0,
+  object_id bigint default 0,
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  author_name TEXT  default '',
+  comment_data TEXT  default '',
+  internal_downtime_id bigint default 0,
+  triggered_by_id bigint default 0,
+  is_fixed INTEGER  default 0,
+  duration INTEGER  default 0,
+  scheduled_start_time timestamp  default '1970-01-01 00:00:00',
+  scheduled_end_time timestamp  default '1970-01-01 00:00:00',
+  was_started INTEGER  default 0,
+  actual_start_time timestamp  default '1970-01-01 00:00:00',
+  actual_start_time_usec INTEGER  default 0,
+  actual_end_time timestamp  default '1970-01-01 00:00:00',
+  actual_end_time_usec INTEGER  default 0,
+  was_cancelled INTEGER  default 0,
+  CONSTRAINT PK_downtimehistory_id PRIMARY KEY (downtimehistory_id) ,
+  CONSTRAINT UQ_downtimehistory UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -446,27 +446,27 @@ CREATE TABLE  icinga_downtimehistory (
 --
 
 CREATE TABLE  icinga_eventhandlers (
-  eventhandler_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  eventhandler_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  state INTEGER NOT NULL default 0,
-  state_type INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  command_object_id INTEGER NOT NULL default 0,
-  command_args TEXT NOT NULL default '',
-  command_line TEXT NOT NULL default '',
-  timeout INTEGER NOT NULL default 0,
-  early_timeout INTEGER NOT NULL default 0,
-  execution_time double precision NOT NULL default 0,
-  return_code INTEGER NOT NULL default 0,
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  PRIMARY KEY  (eventhandler_id),
-  UNIQUE (instance_id,object_id,start_time,start_time_usec)
+  eventhandler_id bigserial,
+  instance_id bigint default 0,
+  eventhandler_type INTEGER  default 0,
+  object_id bigint default 0,
+  state INTEGER  default 0,
+  state_type INTEGER  default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  command_object_id bigint default 0,
+  command_args TEXT  default '',
+  command_line TEXT  default '',
+  timeout INTEGER  default 0,
+  early_timeout INTEGER  default 0,
+  execution_time double precision  default 0,
+  return_code INTEGER  default 0,
+  output TEXT  default '',
+  long_output TEXT  default '',
+  CONSTRAINT PK_eventhandler_id PRIMARY KEY (eventhandler_id) ,
+  CONSTRAINT UQ_eventhandlers UNIQUE (instance_id,object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -476,13 +476,13 @@ CREATE TABLE  icinga_eventhandlers (
 --
 
 CREATE TABLE  icinga_externalcommands (
-  externalcommand_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  command_type INTEGER NOT NULL default 0,
-  command_name TEXT NOT NULL default '',
-  command_args TEXT NOT NULL default '',
-  PRIMARY KEY  (externalcommand_id)
+  externalcommand_id bigserial,
+  instance_id bigint default 0,
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  command_type INTEGER  default 0,
+  command_name TEXT  default '',
+  command_args TEXT  default '',
+  CONSTRAINT PK_externalcommand_id PRIMARY KEY (externalcommand_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -492,20 +492,20 @@ CREATE TABLE  icinga_externalcommands (
 --
 
 CREATE TABLE  icinga_flappinghistory (
-  flappinghistory_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  event_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  event_time_usec INTEGER NOT NULL default 0,
-  event_type INTEGER NOT NULL default 0,
-  reason_type INTEGER NOT NULL default 0,
-  flapping_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  percent_state_change double precision NOT NULL default 0,
-  low_threshold double precision NOT NULL default 0,
-  high_threshold double precision NOT NULL default 0,
-  comment_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  internal_comment_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (flappinghistory_id)
+  flappinghistory_id bigserial,
+  instance_id bigint default 0,
+  event_time timestamp  default '1970-01-01 00:00:00',
+  event_time_usec INTEGER  default 0,
+  event_type INTEGER  default 0,
+  reason_type INTEGER  default 0,
+  flapping_type INTEGER  default 0,
+  object_id bigint default 0,
+  percent_state_change double precision  default 0,
+  low_threshold double precision  default 0,
+  high_threshold double precision  default 0,
+  comment_time timestamp  default '1970-01-01 00:00:00',
+  internal_comment_id bigint default 0,
+  CONSTRAINT PK_flappinghistory_id PRIMARY KEY (flappinghistory_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -515,31 +515,31 @@ CREATE TABLE  icinga_flappinghistory (
 --
 
 CREATE TABLE  icinga_hostchecks (
-  hostcheck_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  check_type INTEGER NOT NULL default 0,
-  is_raw_check INTEGER NOT NULL default 0,
-  current_check_attempt INTEGER NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  state INTEGER NOT NULL default 0,
-  state_type INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  command_object_id INTEGER NOT NULL default 0,
-  command_args TEXT NOT NULL default '',
-  command_line TEXT NOT NULL default '',
-  timeout INTEGER NOT NULL default 0,
-  early_timeout INTEGER NOT NULL default 0,
-  execution_time double precision NOT NULL default 0,
-  latency double precision NOT NULL default 0,
-  return_code INTEGER NOT NULL default 0,
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  perfdata TEXT NOT NULL default '',
-  PRIMARY KEY  (hostcheck_id)
+  hostcheck_id bigserial,
+  instance_id bigint default 0,
+  host_object_id bigint default 0,
+  check_type INTEGER  default 0,
+  is_raw_check INTEGER  default 0,
+  current_check_attempt INTEGER  default 0,
+  max_check_attempts INTEGER  default 0,
+  state INTEGER  default 0,
+  state_type INTEGER  default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  command_object_id bigint default 0,
+  command_args TEXT  default '',
+  command_line TEXT  default '',
+  timeout INTEGER  default 0,
+  early_timeout INTEGER  default 0,
+  execution_time double precision  default 0,
+  latency double precision  default 0,
+  return_code INTEGER  default 0,
+  output TEXT  default '',
+  long_output TEXT  default '',
+  perfdata TEXT  default '',
+  CONSTRAINT PK_hostcheck_id PRIMARY KEY (hostcheck_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -549,19 +549,19 @@ CREATE TABLE  icinga_hostchecks (
 --
 
 CREATE TABLE  icinga_hostdependencies (
-  hostdependency_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  dependent_host_object_id INTEGER NOT NULL default 0,
-  dependency_type INTEGER NOT NULL default 0,
-  inherits_parent INTEGER NOT NULL default 0,
-  timeperiod_object_id INTEGER NOT NULL default 0,
-  fail_on_up INTEGER NOT NULL default 0,
-  fail_on_down INTEGER NOT NULL default 0,
-  fail_on_unreachable INTEGER NOT NULL default 0,
-  PRIMARY KEY  (hostdependency_id),
-  UNIQUE (instance_id,config_type,host_object_id,dependent_host_object_id,dependency_type,inherits_parent,fail_on_up,fail_on_down,fail_on_unreachable)
+  hostdependency_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  host_object_id bigint default 0,
+  dependent_host_object_id bigint default 0,
+  dependency_type INTEGER  default 0,
+  inherits_parent INTEGER  default 0,
+  timeperiod_object_id bigint default 0,
+  fail_on_up INTEGER  default 0,
+  fail_on_down INTEGER  default 0,
+  fail_on_unreachable INTEGER  default 0,
+  CONSTRAINT PK_hostdependency_id PRIMARY KEY (hostdependency_id) ,
+  CONSTRAINT UQ_hostdependencies UNIQUE (instance_id,config_type,host_object_id,dependent_host_object_id,dependency_type,inherits_parent,fail_on_up,fail_on_down,fail_on_unreachable)
 ) ;
 
 -- --------------------------------------------------------
@@ -571,19 +571,19 @@ CREATE TABLE  icinga_hostdependencies (
 --
 
 CREATE TABLE  icinga_hostescalations (
-  hostescalation_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  timeperiod_object_id INTEGER NOT NULL default 0,
-  first_notification INTEGER NOT NULL default 0,
-  last_notification INTEGER NOT NULL default 0,
-  notification_interval double precision NOT NULL default 0,
-  escalate_on_recovery INTEGER NOT NULL default 0,
-  escalate_on_down INTEGER NOT NULL default 0,
-  escalate_on_unreachable INTEGER NOT NULL default 0,
-  PRIMARY KEY  (hostescalation_id),
-  UNIQUE (instance_id,config_type,host_object_id,timeperiod_object_id,first_notification,last_notification)
+  hostescalation_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  host_object_id bigint default 0,
+  timeperiod_object_id bigint default 0,
+  first_notification INTEGER  default 0,
+  last_notification INTEGER  default 0,
+  notification_interval double precision  default 0,
+  escalate_on_recovery INTEGER  default 0,
+  escalate_on_down INTEGER  default 0,
+  escalate_on_unreachable INTEGER  default 0,
+  CONSTRAINT PK_hostescalation_id PRIMARY KEY (hostescalation_id) ,
+  CONSTRAINT UQ_hostescalations UNIQUE (instance_id,config_type,host_object_id,timeperiod_object_id,first_notification,last_notification)
 ) ;
 
 -- --------------------------------------------------------
@@ -593,12 +593,12 @@ CREATE TABLE  icinga_hostescalations (
 --
 
 CREATE TABLE  icinga_hostescalation_contactgroups (
-  hostescalation_contactgroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  hostescalation_id INTEGER NOT NULL default 0,
-  contactgroup_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (hostescalation_contactgroup_id),
-  UNIQUE (hostescalation_id,contactgroup_object_id)
+  hostescalation_contactgroup_id bigserial,
+  instance_id bigint default 0,
+  hostescalation_id bigint default 0,
+  contactgroup_object_id bigint default 0,
+  CONSTRAINT PK_hostescalation_contactgroup_id PRIMARY KEY (hostescalation_contactgroup_id) ,
+  CONSTRAINT UQ_hostescalation_contactgroups UNIQUE (hostescalation_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -608,12 +608,12 @@ CREATE TABLE  icinga_hostescalation_contactgroups (
 --
 
 CREATE TABLE  icinga_hostescalation_contacts (
-  hostescalation_contact_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  hostescalation_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (hostescalation_contact_id),
-  UNIQUE (instance_id,hostescalation_id,contact_object_id)
+  hostescalation_contact_id bigserial,
+  instance_id bigint default 0,
+  hostescalation_id bigint default 0,
+  contact_object_id bigint default 0,
+  CONSTRAINT PK_hostescalation_contact_id PRIMARY KEY (hostescalation_contact_id) ,
+  CONSTRAINT UQ_hostescalation_contacts UNIQUE (instance_id,hostescalation_id,contact_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -623,13 +623,13 @@ CREATE TABLE  icinga_hostescalation_contacts (
 --
 
 CREATE TABLE  icinga_hostgroups (
-  hostgroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  hostgroup_object_id INTEGER NOT NULL default 0,
-  alias TEXT NOT NULL default '',
-  PRIMARY KEY  (hostgroup_id),
-  UNIQUE (instance_id,hostgroup_object_id)
+  hostgroup_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  hostgroup_object_id bigint default 0,
+  alias TEXT  default '',
+  CONSTRAINT PK_hostgroup_id PRIMARY KEY (hostgroup_id) ,
+  CONSTRAINT UQ_hostgroups UNIQUE (instance_id,hostgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -639,12 +639,12 @@ CREATE TABLE  icinga_hostgroups (
 --
 
 CREATE TABLE  icinga_hostgroup_members (
-  hostgroup_member_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  hostgroup_id INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (hostgroup_member_id),
-  UNIQUE (hostgroup_id,host_object_id)
+  hostgroup_member_id bigserial,
+  instance_id bigint default 0,
+  hostgroup_id bigint default 0,
+  host_object_id bigint default 0,
+  CONSTRAINT PK_hostgroup_member_id PRIMARY KEY (hostgroup_member_id) ,
+  CONSTRAINT UQ_hostgroup_members UNIQUE (hostgroup_id,host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -654,67 +654,67 @@ CREATE TABLE  icinga_hostgroup_members (
 --
 
 CREATE TABLE  icinga_hosts (
-  host_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  alias TEXT NOT NULL default '',
-  display_name TEXT NOT NULL default '',
-  address TEXT NOT NULL default '',
-  address6 TEXT NOT NULL default '',
-  check_command_object_id INTEGER NOT NULL default 0,
-  check_command_args TEXT NOT NULL default '',
-  eventhandler_command_object_id INTEGER NOT NULL default 0,
-  eventhandler_command_args TEXT NOT NULL default '',
-  notification_timeperiod_object_id INTEGER NOT NULL default 0,
-  check_timeperiod_object_id INTEGER NOT NULL default 0,
-  failure_prediction_options TEXT NOT NULL default '',
-  check_interval double precision NOT NULL default 0,
-  retry_interval double precision NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  first_notification_delay double precision NOT NULL default 0,
-  notification_interval double precision NOT NULL default 0,
-  notify_on_down INTEGER NOT NULL default 0,
-  notify_on_unreachable INTEGER NOT NULL default 0,
-  notify_on_recovery INTEGER NOT NULL default 0,
-  notify_on_flapping INTEGER NOT NULL default 0,
-  notify_on_downtime INTEGER NOT NULL default 0,
-  stalk_on_up INTEGER NOT NULL default 0,
-  stalk_on_down INTEGER NOT NULL default 0,
-  stalk_on_unreachable INTEGER NOT NULL default 0,
-  flap_detection_enabled INTEGER NOT NULL default 0,
-  flap_detection_on_up INTEGER NOT NULL default 0,
-  flap_detection_on_down INTEGER NOT NULL default 0,
-  flap_detection_on_unreachable INTEGER NOT NULL default 0,
-  low_flap_threshold double precision NOT NULL default 0,
-  high_flap_threshold double precision NOT NULL default 0,
-  process_performance_data INTEGER NOT NULL default 0,
-  freshness_checks_enabled INTEGER NOT NULL default 0,
-  freshness_threshold INTEGER NOT NULL default 0,
-  passive_checks_enabled INTEGER NOT NULL default 0,
-  event_handler_enabled INTEGER NOT NULL default 0,
-  active_checks_enabled INTEGER NOT NULL default 0,
-  retain_status_information INTEGER NOT NULL default 0,
-  retain_nonstatus_information INTEGER NOT NULL default 0,
-  notifications_enabled INTEGER NOT NULL default 0,
-  obsess_over_host INTEGER NOT NULL default 0,
-  failure_prediction_enabled INTEGER NOT NULL default 0,
-  notes TEXT NOT NULL default '',
-  notes_url TEXT NOT NULL default '',
-  action_url TEXT NOT NULL default '',
-  icon_image TEXT NOT NULL default '',
-  icon_image_alt TEXT NOT NULL default '',
-  vrml_image TEXT NOT NULL default '',
-  statusmap_image TEXT NOT NULL default '',
-  have_2d_coords INTEGER NOT NULL default 0,
-  x_2d INTEGER NOT NULL default 0,
-  y_2d INTEGER NOT NULL default 0,
-  have_3d_coords INTEGER NOT NULL default 0,
-  x_3d double precision NOT NULL default 0,
-  y_3d double precision NOT NULL default 0,
-  z_3d double precision NOT NULL default 0,
-  PRIMARY KEY  (host_id),
-  UNIQUE (instance_id,config_type,host_object_id)
+  host_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  host_object_id bigint default 0,
+  alias TEXT  default '',
+  display_name TEXT  default '',
+  address TEXT  default '',
+  address6 TEXT  default '',
+  check_command_object_id bigint default 0,
+  check_command_args TEXT  default '',
+  eventhandler_command_object_id bigint default 0,
+  eventhandler_command_args TEXT  default '',
+  notification_timeperiod_object_id bigint default 0,
+  check_timeperiod_object_id bigint default 0,
+  failure_prediction_options TEXT  default '',
+  check_interval double precision  default 0,
+  retry_interval double precision  default 0,
+  max_check_attempts INTEGER  default 0,
+  first_notification_delay double precision  default 0,
+  notification_interval double precision  default 0,
+  notify_on_down INTEGER  default 0,
+  notify_on_unreachable INTEGER  default 0,
+  notify_on_recovery INTEGER  default 0,
+  notify_on_flapping INTEGER  default 0,
+  notify_on_downtime INTEGER  default 0,
+  stalk_on_up INTEGER  default 0,
+  stalk_on_down INTEGER  default 0,
+  stalk_on_unreachable INTEGER  default 0,
+  flap_detection_enabled INTEGER  default 0,
+  flap_detection_on_up INTEGER  default 0,
+  flap_detection_on_down INTEGER  default 0,
+  flap_detection_on_unreachable INTEGER  default 0,
+  low_flap_threshold double precision  default 0,
+  high_flap_threshold double precision  default 0,
+  process_performance_data INTEGER  default 0,
+  freshness_checks_enabled INTEGER  default 0,
+  freshness_threshold INTEGER  default 0,
+  passive_checks_enabled INTEGER  default 0,
+  event_handler_enabled INTEGER  default 0,
+  active_checks_enabled INTEGER  default 0,
+  retain_status_information INTEGER  default 0,
+  retain_nonstatus_information INTEGER  default 0,
+  notifications_enabled INTEGER  default 0,
+  obsess_over_host INTEGER  default 0,
+  failure_prediction_enabled INTEGER  default 0,
+  notes TEXT  default '',
+  notes_url TEXT  default '',
+  action_url TEXT  default '',
+  icon_image TEXT  default '',
+  icon_image_alt TEXT  default '',
+  vrml_image TEXT  default '',
+  statusmap_image TEXT  default '',
+  have_2d_coords INTEGER  default 0,
+  x_2d INTEGER  default 0,
+  y_2d INTEGER  default 0,
+  have_3d_coords INTEGER  default 0,
+  x_3d double precision  default 0,
+  y_3d double precision  default 0,
+  z_3d double precision  default 0,
+  CONSTRAINT PK_host_id PRIMARY KEY (host_id) ,
+  CONSTRAINT UQ_hosts UNIQUE (instance_id,config_type,host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -724,55 +724,55 @@ CREATE TABLE  icinga_hosts (
 --
 
 CREATE TABLE  icinga_hoststatus (
-  hoststatus_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  perfdata TEXT NOT NULL default '',
-  current_state INTEGER NOT NULL default 0,
-  has_been_checked INTEGER NOT NULL default 0,
-  should_be_scheduled INTEGER NOT NULL default 0,
-  current_check_attempt INTEGER NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  last_check timestamp NOT NULL default '1970-01-01 00:00:00',
-  next_check timestamp NOT NULL default '1970-01-01 00:00:00',
-  check_type INTEGER NOT NULL default 0,
-  last_state_change timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_hard_state_change timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_hard_state INTEGER NOT NULL default 0,
-  last_time_up timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_time_down timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_time_unreachable timestamp NOT NULL default '1970-01-01 00:00:00',
-  state_type INTEGER NOT NULL default 0,
-  last_notification timestamp NOT NULL default '1970-01-01 00:00:00',
-  next_notification timestamp NOT NULL default '1970-01-01 00:00:00',
-  no_more_notifications INTEGER NOT NULL default 0,
-  notifications_enabled INTEGER NOT NULL default 0,
-  problem_has_been_acknowledged INTEGER NOT NULL default 0,
-  acknowledgement_type INTEGER NOT NULL default 0,
-  current_notification_number INTEGER NOT NULL default 0,
-  passive_checks_enabled INTEGER NOT NULL default 0,
-  active_checks_enabled INTEGER NOT NULL default 0,
-  event_handler_enabled INTEGER NOT NULL default 0,
-  flap_detection_enabled INTEGER NOT NULL default 0,
-  is_flapping INTEGER NOT NULL default 0,
-  percent_state_change double precision NOT NULL default 0,
-  latency double precision NOT NULL default 0,
-  execution_time double precision NOT NULL default 0,
-  scheduled_downtime_depth INTEGER NOT NULL default 0,
-  failure_prediction_enabled INTEGER NOT NULL default 0,
-  process_performance_data INTEGER NOT NULL default 0,
-  obsess_over_host INTEGER NOT NULL default 0,
-  modified_host_attributes INTEGER NOT NULL default 0,
-  event_handler TEXT NOT NULL default '',
-  check_command TEXT NOT NULL default '',
-  normal_check_interval double precision NOT NULL default 0,
-  retry_check_interval double precision NOT NULL default 0,
-  check_timeperiod_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (hoststatus_id),
-  UNIQUE (host_object_id)
+  hoststatus_id bigserial,
+  instance_id bigint default 0,
+  host_object_id bigint default 0,
+  status_update_time timestamp  default '1970-01-01 00:00:00',
+  output TEXT  default '',
+  long_output TEXT  default '',
+  perfdata TEXT  default '',
+  current_state INTEGER  default 0,
+  has_been_checked INTEGER  default 0,
+  should_be_scheduled INTEGER  default 0,
+  current_check_attempt INTEGER  default 0,
+  max_check_attempts INTEGER  default 0,
+  last_check timestamp  default '1970-01-01 00:00:00',
+  next_check timestamp  default '1970-01-01 00:00:00',
+  check_type INTEGER  default 0,
+  last_state_change timestamp  default '1970-01-01 00:00:00',
+  last_hard_state_change timestamp  default '1970-01-01 00:00:00',
+  last_hard_state INTEGER  default 0,
+  last_time_up timestamp  default '1970-01-01 00:00:00',
+  last_time_down timestamp  default '1970-01-01 00:00:00',
+  last_time_unreachable timestamp  default '1970-01-01 00:00:00',
+  state_type INTEGER  default 0,
+  last_notification timestamp  default '1970-01-01 00:00:00',
+  next_notification timestamp  default '1970-01-01 00:00:00',
+  no_more_notifications INTEGER  default 0,
+  notifications_enabled INTEGER  default 0,
+  problem_has_been_acknowledged INTEGER  default 0,
+  acknowledgement_type INTEGER  default 0,
+  current_notification_number INTEGER  default 0,
+  passive_checks_enabled INTEGER  default 0,
+  active_checks_enabled INTEGER  default 0,
+  event_handler_enabled INTEGER  default 0,
+  flap_detection_enabled INTEGER  default 0,
+  is_flapping INTEGER  default 0,
+  percent_state_change double precision  default 0,
+  latency double precision  default 0,
+  execution_time double precision  default 0,
+  scheduled_downtime_depth INTEGER  default 0,
+  failure_prediction_enabled INTEGER  default 0,
+  process_performance_data INTEGER  default 0,
+  obsess_over_host INTEGER  default 0,
+  modified_host_attributes INTEGER  default 0,
+  event_handler TEXT  default '',
+  check_command TEXT  default '',
+  normal_check_interval double precision  default 0,
+  retry_check_interval double precision  default 0,
+  check_timeperiod_object_id bigint default 0,
+  CONSTRAINT PK_hoststatus_id PRIMARY KEY (hoststatus_id) ,
+  CONSTRAINT UQ_hoststatus UNIQUE (host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -782,12 +782,12 @@ CREATE TABLE  icinga_hoststatus (
 --
 
 CREATE TABLE  icinga_host_contactgroups (
-  host_contactgroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  host_id INTEGER NOT NULL default 0,
-  contactgroup_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (host_contactgroup_id),
-  UNIQUE (host_id,contactgroup_object_id)
+  host_contactgroup_id bigserial,
+  instance_id bigint default 0,
+  host_id bigint default 0,
+  contactgroup_object_id bigint default 0,
+  CONSTRAINT PK_host_contactgroup_id PRIMARY KEY (host_contactgroup_id) ,
+  CONSTRAINT UQ_host_contactgroups UNIQUE (host_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -797,11 +797,11 @@ CREATE TABLE  icinga_host_contactgroups (
 --
 
 CREATE TABLE  icinga_host_contacts (
-  host_contact_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  host_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (host_contact_id)
+  host_contact_id bigserial,
+  instance_id bigint default 0,
+  host_id bigint default 0,
+  contact_object_id bigint default 0,
+  CONSTRAINT PK_host_contact_id PRIMARY KEY (host_contact_id) 
 )  ;
 
 -- --------------------------------------------------------
@@ -811,12 +811,12 @@ CREATE TABLE  icinga_host_contacts (
 --
 
 CREATE TABLE  icinga_host_parenthosts (
-  host_parenthost_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  host_id INTEGER NOT NULL default 0,
-  parent_host_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (host_parenthost_id),
-  UNIQUE (host_id,parent_host_object_id)
+  host_parenthost_id bigserial,
+  instance_id bigint default 0,
+  host_id bigint default 0,
+  parent_host_object_id bigint default 0,
+  CONSTRAINT PK_host_parenthost_id PRIMARY KEY (host_parenthost_id) ,
+  CONSTRAINT UQ_host_parenthosts UNIQUE (host_id,parent_host_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -826,10 +826,10 @@ CREATE TABLE  icinga_host_parenthosts (
 --
 
 CREATE TABLE  icinga_instances (
-  instance_id SERIAL,
-  instance_name TEXT NOT NULL default '',
-  instance_description TEXT NOT NULL default '',
-  PRIMARY KEY  (instance_id)
+  instance_id bigserial,
+  instance_name TEXT  default '',
+  instance_description TEXT  default '',
+  CONSTRAINT PK_instance_id PRIMARY KEY (instance_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -839,16 +839,16 @@ CREATE TABLE  icinga_instances (
 --
 
 CREATE TABLE  icinga_logentries (
-  logentry_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  logentry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  entry_time_usec INTEGER NOT NULL default 0,
-  logentry_type INTEGER NOT NULL default 0,
-  logentry_data TEXT NOT NULL default '',
-  realtime_data INTEGER NOT NULL default 0,
-  inferred_data_extracted INTEGER NOT NULL default 0,
-  PRIMARY KEY  (logentry_id)
+  logentry_id bigserial,
+  instance_id bigint default 0,
+  logentry_time timestamp  default '1970-01-01 00:00:00',
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  entry_time_usec INTEGER  default 0,
+  logentry_type INTEGER  default 0,
+  logentry_data TEXT  default '',
+  realtime_data INTEGER  default 0,
+  inferred_data_extracted INTEGER  default 0,
+  CONSTRAINT PK_logentry_id PRIMARY KEY (logentry_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -858,22 +858,22 @@ CREATE TABLE  icinga_logentries (
 --
 
 CREATE TABLE  icinga_notifications (
-  notification_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  notification_type INTEGER NOT NULL default 0,
-  notification_reason INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  state INTEGER NOT NULL default 0,
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  escalated INTEGER NOT NULL default 0,
-  contacts_notified INTEGER NOT NULL default 0,
-  PRIMARY KEY  (notification_id),
-  UNIQUE (instance_id,object_id,start_time,start_time_usec)
+  notification_id bigserial,
+  instance_id bigint default 0,
+  notification_type INTEGER  default 0,
+  notification_reason INTEGER  default 0,
+  object_id bigint default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  state INTEGER  default 0,
+  output TEXT  default '',
+  long_output TEXT  default '',
+  escalated INTEGER  default 0,
+  contacts_notified INTEGER  default 0,
+  CONSTRAINT PK_notification_id PRIMARY KEY (notification_id) ,
+  CONSTRAINT UQ_notifications UNIQUE (instance_id,object_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -883,13 +883,13 @@ CREATE TABLE  icinga_notifications (
 --
 
 CREATE TABLE  icinga_objects (
-  object_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  objecttype_id INTEGER NOT NULL default 0,
+  object_id bigserial,
+  instance_id bigint default 0,
+  objecttype_id bigint default 0,
   name1 TEXT,
   name2 TEXT,
-  is_active INTEGER NOT NULL default 0,
-  PRIMARY KEY  (object_id)
+  is_active INTEGER  default 0,
+  CONSTRAINT PK_object_id PRIMARY KEY (object_id) 
 --  UNIQUE (objecttype_id,name1,name2)
 ) ;
 CREATE INDEX icinga_objects_i ON icinga_objects(objecttype_id,name1,name2);
@@ -901,16 +901,16 @@ CREATE INDEX icinga_objects_i ON icinga_objects(objecttype_id,name1,name2);
 --
 
 CREATE TABLE  icinga_processevents (
-  processevent_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  event_type INTEGER NOT NULL default 0,
-  event_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  event_time_usec INTEGER NOT NULL default 0,
-  process_id INTEGER NOT NULL default 0,
-  program_name TEXT NOT NULL default '',
-  program_version TEXT NOT NULL default '',
-  program_date TEXT NOT NULL default '',
-  PRIMARY KEY  (processevent_id)
+  processevent_id bigserial,
+  instance_id bigint default 0,
+  event_type INTEGER  default 0,
+  event_time timestamp  default '1970-01-01 00:00:00',
+  event_time_usec INTEGER  default 0,
+  process_id bigint default 0,
+  program_name TEXT  default '',
+  program_version TEXT  default '',
+  program_date TEXT  default '',
+  CONSTRAINT PK_processevent_id PRIMARY KEY (processevent_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -920,33 +920,33 @@ CREATE TABLE  icinga_processevents (
 --
 
 CREATE TABLE  icinga_programstatus (
-  programstatus_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  program_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  program_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  is_currently_running INTEGER NOT NULL default 0,
-  process_id INTEGER NOT NULL default 0,
-  daemon_mode INTEGER NOT NULL default 0,
-  last_command_check timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_log_rotation timestamp NOT NULL default '1970-01-01 00:00:00',
-  notifications_enabled INTEGER NOT NULL default 0,
-  active_service_checks_enabled INTEGER NOT NULL default 0,
-  passive_service_checks_enabled INTEGER NOT NULL default 0,
-  active_host_checks_enabled INTEGER NOT NULL default 0,
-  passive_host_checks_enabled INTEGER NOT NULL default 0,
-  event_handlers_enabled INTEGER NOT NULL default 0,
-  flap_detection_enabled INTEGER NOT NULL default 0,
-  failure_prediction_enabled INTEGER NOT NULL default 0,
-  process_performance_data INTEGER NOT NULL default 0,
-  obsess_over_hosts INTEGER NOT NULL default 0,
-  obsess_over_services INTEGER NOT NULL default 0,
-  modified_host_attributes INTEGER NOT NULL default 0,
-  modified_service_attributes INTEGER NOT NULL default 0,
-  global_host_event_handler TEXT NOT NULL default '',
-  global_service_event_handler TEXT NOT NULL default '',
-  PRIMARY KEY  (programstatus_id),
-  UNIQUE (instance_id)
+  programstatus_id bigserial,
+  instance_id bigint default 0,
+  status_update_time timestamp  default '1970-01-01 00:00:00',
+  program_start_time timestamp  default '1970-01-01 00:00:00',
+  program_end_time timestamp  default '1970-01-01 00:00:00',
+  is_currently_running INTEGER  default 0,
+  process_id bigint default 0,
+  daemon_mode INTEGER  default 0,
+  last_command_check timestamp  default '1970-01-01 00:00:00',
+  last_log_rotation timestamp  default '1970-01-01 00:00:00',
+  notifications_enabled INTEGER  default 0,
+  active_service_checks_enabled INTEGER  default 0,
+  passive_service_checks_enabled INTEGER  default 0,
+  active_host_checks_enabled INTEGER  default 0,
+  passive_host_checks_enabled INTEGER  default 0,
+  event_handlers_enabled INTEGER  default 0,
+  flap_detection_enabled INTEGER  default 0,
+  failure_prediction_enabled INTEGER  default 0,
+  process_performance_data INTEGER  default 0,
+  obsess_over_hosts INTEGER  default 0,
+  obsess_over_services INTEGER  default 0,
+  modified_host_attributes INTEGER  default 0,
+  modified_service_attributes INTEGER  default 0,
+  global_host_event_handler TEXT  default '',
+  global_service_event_handler TEXT  default '',
+  CONSTRAINT PK_programstatus_id PRIMARY KEY (programstatus_id) ,
+  CONSTRAINT UQ_programstatus UNIQUE (instance_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -956,12 +956,12 @@ CREATE TABLE  icinga_programstatus (
 --
 
 CREATE TABLE  icinga_runtimevariables (
-  runtimevariable_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  varname TEXT NOT NULL default '',
-  varvalue TEXT NOT NULL default '',
-  PRIMARY KEY  (runtimevariable_id),
-  UNIQUE (instance_id,varname)
+  runtimevariable_id bigserial,
+  instance_id bigint default 0,
+  varname TEXT  default '',
+  varvalue TEXT  default '',
+  CONSTRAINT PK_runtimevariable_id PRIMARY KEY (runtimevariable_id) ,
+  CONSTRAINT UQ_runtimevariables UNIQUE (instance_id,varname)
 ) ;
 
 -- --------------------------------------------------------
@@ -971,24 +971,24 @@ CREATE TABLE  icinga_runtimevariables (
 --
 
 CREATE TABLE  icinga_scheduleddowntime (
-  scheduleddowntime_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  downtime_type INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  entry_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  author_name TEXT NOT NULL default '',
-  comment_data TEXT NOT NULL default '',
-  internal_downtime_id INTEGER NOT NULL default 0,
-  triggered_by_id INTEGER NOT NULL default 0,
-  is_fixed INTEGER NOT NULL default 0,
-  duration INTEGER NOT NULL default 0,
-  scheduled_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  scheduled_end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  was_started INTEGER NOT NULL default 0,
-  actual_start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  actual_start_time_usec INTEGER NOT NULL default 0,
-  PRIMARY KEY  (scheduleddowntime_id),
-  UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
+  scheduleddowntime_id bigserial,
+  instance_id bigint default 0,
+  downtime_type INTEGER  default 0,
+  object_id bigint default 0,
+  entry_time timestamp  default '1970-01-01 00:00:00',
+  author_name TEXT  default '',
+  comment_data TEXT  default '',
+  internal_downtime_id bigint default 0,
+  triggered_by_id bigint default 0,
+  is_fixed INTEGER  default 0,
+  duration INTEGER  default 0,
+  scheduled_start_time timestamp  default '1970-01-01 00:00:00',
+  scheduled_end_time timestamp  default '1970-01-01 00:00:00',
+  was_started INTEGER  default 0,
+  actual_start_time timestamp  default '1970-01-01 00:00:00',
+  actual_start_time_usec INTEGER  default 0,
+  CONSTRAINT PK_scheduleddowntime_id PRIMARY KEY (scheduleddowntime_id) ,
+  CONSTRAINT UQ_scheduleddowntime UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -998,30 +998,30 @@ CREATE TABLE  icinga_scheduleddowntime (
 --
 
 CREATE TABLE  icinga_servicechecks (
-  servicecheck_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  service_object_id INTEGER NOT NULL default 0,
-  check_type INTEGER NOT NULL default 0,
-  current_check_attempt INTEGER NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  state INTEGER NOT NULL default 0,
-  state_type INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  command_object_id INTEGER NOT NULL default 0,
-  command_args TEXT NOT NULL default '',
-  command_line TEXT NOT NULL default '',
-  timeout INTEGER NOT NULL default 0,
-  early_timeout INTEGER NOT NULL default 0,
-  execution_time double precision NOT NULL default 0,
-  latency double precision NOT NULL default 0,
-  return_code INTEGER NOT NULL default 0,
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  perfdata TEXT NOT NULL default '',
-  PRIMARY KEY  (servicecheck_id)
+  servicecheck_id bigserial,
+  instance_id bigint default 0,
+  service_object_id bigint default 0,
+  check_type INTEGER  default 0,
+  current_check_attempt INTEGER  default 0,
+  max_check_attempts INTEGER  default 0,
+  state INTEGER  default 0,
+  state_type INTEGER  default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  command_object_id bigint default 0,
+  command_args TEXT  default '',
+  command_line TEXT  default '',
+  timeout INTEGER  default 0,
+  early_timeout INTEGER  default 0,
+  execution_time double precision  default 0,
+  latency double precision  default 0,
+  return_code INTEGER  default 0,
+  output TEXT  default '',
+  long_output TEXT  default '',
+  perfdata TEXT  default '',
+  CONSTRAINT PK_servicecheck_id PRIMARY KEY (servicecheck_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -1031,20 +1031,20 @@ CREATE TABLE  icinga_servicechecks (
 --
 
 CREATE TABLE  icinga_servicedependencies (
-  servicedependency_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  service_object_id INTEGER NOT NULL default 0,
-  dependent_service_object_id INTEGER NOT NULL default 0,
-  dependency_type INTEGER NOT NULL default 0,
-  inherits_parent INTEGER NOT NULL default 0,
-  timeperiod_object_id INTEGER NOT NULL default 0,
-  fail_on_ok INTEGER NOT NULL default 0,
-  fail_on_warning INTEGER NOT NULL default 0,
-  fail_on_unknown INTEGER NOT NULL default 0,
-  fail_on_critical INTEGER NOT NULL default 0,
-  PRIMARY KEY  (servicedependency_id),
-  UNIQUE (instance_id,config_type,service_object_id,dependent_service_object_id,dependency_type,inherits_parent,fail_on_ok,fail_on_warning,fail_on_unknown,fail_on_critical)
+  servicedependency_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  service_object_id bigint default 0,
+  dependent_service_object_id bigint default 0,
+  dependency_type INTEGER  default 0,
+  inherits_parent INTEGER  default 0,
+  timeperiod_object_id bigint default 0,
+  fail_on_ok INTEGER  default 0,
+  fail_on_warning INTEGER  default 0,
+  fail_on_unknown INTEGER  default 0,
+  fail_on_critical INTEGER  default 0,
+  CONSTRAINT PK_servicedependency_id PRIMARY KEY (servicedependency_id) ,
+  CONSTRAINT UQ_servicedependencies UNIQUE (instance_id,config_type,service_object_id,dependent_service_object_id,dependency_type,inherits_parent,fail_on_ok,fail_on_warning,fail_on_unknown,fail_on_critical)
 ) ;
 
 -- --------------------------------------------------------
@@ -1054,20 +1054,20 @@ CREATE TABLE  icinga_servicedependencies (
 --
 
 CREATE TABLE  icinga_serviceescalations (
-  serviceescalation_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  service_object_id INTEGER NOT NULL default 0,
-  timeperiod_object_id INTEGER NOT NULL default 0,
-  first_notification INTEGER NOT NULL default 0,
-  last_notification INTEGER NOT NULL default 0,
-  notification_interval double precision NOT NULL default 0,
-  escalate_on_recovery INTEGER NOT NULL default 0,
-  escalate_on_warning INTEGER NOT NULL default 0,
-  escalate_on_unknown INTEGER NOT NULL default 0,
-  escalate_on_critical INTEGER NOT NULL default 0,
-  PRIMARY KEY  (serviceescalation_id),
-  UNIQUE (instance_id,config_type,service_object_id,timeperiod_object_id,first_notification,last_notification)
+  serviceescalation_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  service_object_id bigint default 0,
+  timeperiod_object_id bigint default 0,
+  first_notification INTEGER  default 0,
+  last_notification INTEGER  default 0,
+  notification_interval double precision  default 0,
+  escalate_on_recovery INTEGER  default 0,
+  escalate_on_warning INTEGER  default 0,
+  escalate_on_unknown INTEGER  default 0,
+  escalate_on_critical INTEGER  default 0,
+  CONSTRAINT PK_serviceescalation_id PRIMARY KEY (serviceescalation_id) ,
+  CONSTRAINT UQ_serviceescalations UNIQUE (instance_id,config_type,service_object_id,timeperiod_object_id,first_notification,last_notification)
 ) ;
 
 -- --------------------------------------------------------
@@ -1077,12 +1077,12 @@ CREATE TABLE  icinga_serviceescalations (
 --
 
 CREATE TABLE  icinga_serviceescalation_contactgroups (
-  serviceescalation_contactgroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  serviceescalation_id INTEGER NOT NULL default 0,
-  contactgroup_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (serviceescalation_contactgroup_id),
-  UNIQUE (serviceescalation_id,contactgroup_object_id)
+  serviceescalation_contactgroup_id bigserial,
+  instance_id bigint default 0,
+  serviceescalation_id bigint default 0,
+  contactgroup_object_id bigint default 0,
+  CONSTRAINT PK_serviceescalation_contactgroup_id PRIMARY KEY (serviceescalation_contactgroup_id) ,
+  CONSTRAINT UQ_serviceescalation_contactgro UNIQUE (serviceescalation_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1092,12 +1092,12 @@ CREATE TABLE  icinga_serviceescalation_contactgroups (
 --
 
 CREATE TABLE  icinga_serviceescalation_contacts (
-  serviceescalation_contact_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  serviceescalation_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (serviceescalation_contact_id),
-  UNIQUE (instance_id,serviceescalation_id,contact_object_id)
+  serviceescalation_contact_id bigserial,
+  instance_id bigint default 0,
+  serviceescalation_id bigint default 0,
+  contact_object_id bigint default 0,
+  CONSTRAINT PK_serviceescalation_contact_id PRIMARY KEY (serviceescalation_contact_id) ,
+  CONSTRAINT UQ_serviceescalation_contacts UNIQUE (instance_id,serviceescalation_id,contact_object_id)
 )  ;
 
 -- --------------------------------------------------------
@@ -1107,13 +1107,13 @@ CREATE TABLE  icinga_serviceescalation_contacts (
 --
 
 CREATE TABLE  icinga_servicegroups (
-  servicegroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  servicegroup_object_id INTEGER NOT NULL default 0,
-  alias TEXT NOT NULL default '',
-  PRIMARY KEY  (servicegroup_id),
-  UNIQUE (instance_id,config_type,servicegroup_object_id)
+  servicegroup_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  servicegroup_object_id bigint default 0,
+  alias TEXT  default '',
+  CONSTRAINT PK_servicegroup_id PRIMARY KEY (servicegroup_id) ,
+  CONSTRAINT UQ_servicegroups UNIQUE (instance_id,config_type,servicegroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1123,12 +1123,12 @@ CREATE TABLE  icinga_servicegroups (
 --
 
 CREATE TABLE  icinga_servicegroup_members (
-  servicegroup_member_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  servicegroup_id INTEGER NOT NULL default 0,
-  service_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (servicegroup_member_id),
-  UNIQUE (servicegroup_id,service_object_id)
+  servicegroup_member_id bigserial,
+  instance_id bigint default 0,
+  servicegroup_id bigint default 0,
+  service_object_id bigint default 0,
+  CONSTRAINT PK_servicegroup_member_id PRIMARY KEY (servicegroup_member_id) ,
+  CONSTRAINT UQ_servicegroup_members UNIQUE (servicegroup_id,service_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1138,60 +1138,60 @@ CREATE TABLE  icinga_servicegroup_members (
 --
 
 CREATE TABLE  icinga_services (
-  service_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  host_object_id INTEGER NOT NULL default 0,
-  service_object_id INTEGER NOT NULL default 0,
-  display_name TEXT NOT NULL default '',
-  check_command_object_id INTEGER NOT NULL default 0,
-  check_command_args TEXT NOT NULL default '',
-  eventhandler_command_object_id INTEGER NOT NULL default 0,
-  eventhandler_command_args TEXT NOT NULL default '',
-  notification_timeperiod_object_id INTEGER NOT NULL default 0,
-  check_timeperiod_object_id INTEGER NOT NULL default 0,
-  failure_prediction_options TEXT NOT NULL default '',
-  check_interval double precision NOT NULL default 0,
-  retry_interval double precision NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  first_notification_delay double precision NOT NULL default 0,
-  notification_interval double precision NOT NULL default 0,
-  notify_on_warning INTEGER NOT NULL default 0,
-  notify_on_unknown INTEGER NOT NULL default 0,
-  notify_on_critical INTEGER NOT NULL default 0,
-  notify_on_recovery INTEGER NOT NULL default 0,
-  notify_on_flapping INTEGER NOT NULL default 0,
-  notify_on_downtime INTEGER NOT NULL default 0,
-  stalk_on_ok INTEGER NOT NULL default 0,
-  stalk_on_warning INTEGER NOT NULL default 0,
-  stalk_on_unknown INTEGER NOT NULL default 0,
-  stalk_on_critical INTEGER NOT NULL default 0,
-  is_volatile INTEGER NOT NULL default 0,
-  flap_detection_enabled INTEGER NOT NULL default 0,
-  flap_detection_on_ok INTEGER NOT NULL default 0,
-  flap_detection_on_warning INTEGER NOT NULL default 0,
-  flap_detection_on_unknown INTEGER NOT NULL default 0,
-  flap_detection_on_critical INTEGER NOT NULL default 0,
-  low_flap_threshold double precision NOT NULL default 0,
-  high_flap_threshold double precision NOT NULL default 0,
-  process_performance_data INTEGER NOT NULL default 0,
-  freshness_checks_enabled INTEGER NOT NULL default 0,
-  freshness_threshold INTEGER NOT NULL default 0,
-  passive_checks_enabled INTEGER NOT NULL default 0,
-  event_handler_enabled INTEGER NOT NULL default 0,
-  active_checks_enabled INTEGER NOT NULL default 0,
-  retain_status_information INTEGER NOT NULL default 0,
-  retain_nonstatus_information INTEGER NOT NULL default 0,
-  notifications_enabled INTEGER NOT NULL default 0,
-  obsess_over_service INTEGER NOT NULL default 0,
-  failure_prediction_enabled INTEGER NOT NULL default 0,
-  notes TEXT NOT NULL default '',
-  notes_url TEXT NOT NULL default '',
-  action_url TEXT NOT NULL default '',
-  icon_image TEXT NOT NULL default '',
-  icon_image_alt TEXT NOT NULL default '',
-  PRIMARY KEY  (service_id),
-  UNIQUE (instance_id,config_type,service_object_id)
+  service_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  host_object_id bigint default 0,
+  service_object_id bigint default 0,
+  display_name TEXT  default '',
+  check_command_object_id bigint default 0,
+  check_command_args TEXT  default '',
+  eventhandler_command_object_id bigint default 0,
+  eventhandler_command_args TEXT  default '',
+  notification_timeperiod_object_id bigint default 0,
+  check_timeperiod_object_id bigint default 0,
+  failure_prediction_options TEXT  default '',
+  check_interval double precision  default 0,
+  retry_interval double precision  default 0,
+  max_check_attempts INTEGER  default 0,
+  first_notification_delay double precision  default 0,
+  notification_interval double precision  default 0,
+  notify_on_warning INTEGER  default 0,
+  notify_on_unknown INTEGER  default 0,
+  notify_on_critical INTEGER  default 0,
+  notify_on_recovery INTEGER  default 0,
+  notify_on_flapping INTEGER  default 0,
+  notify_on_downtime INTEGER  default 0,
+  stalk_on_ok INTEGER  default 0,
+  stalk_on_warning INTEGER  default 0,
+  stalk_on_unknown INTEGER  default 0,
+  stalk_on_critical INTEGER  default 0,
+  is_volatile INTEGER  default 0,
+  flap_detection_enabled INTEGER  default 0,
+  flap_detection_on_ok INTEGER  default 0,
+  flap_detection_on_warning INTEGER  default 0,
+  flap_detection_on_unknown INTEGER  default 0,
+  flap_detection_on_critical INTEGER  default 0,
+  low_flap_threshold double precision  default 0,
+  high_flap_threshold double precision  default 0,
+  process_performance_data INTEGER  default 0,
+  freshness_checks_enabled INTEGER  default 0,
+  freshness_threshold INTEGER  default 0,
+  passive_checks_enabled INTEGER  default 0,
+  event_handler_enabled INTEGER  default 0,
+  active_checks_enabled INTEGER  default 0,
+  retain_status_information INTEGER  default 0,
+  retain_nonstatus_information INTEGER  default 0,
+  notifications_enabled INTEGER  default 0,
+  obsess_over_service INTEGER  default 0,
+  failure_prediction_enabled INTEGER  default 0,
+  notes TEXT  default '',
+  notes_url TEXT  default '',
+  action_url TEXT  default '',
+  icon_image TEXT  default '',
+  icon_image_alt TEXT  default '',
+  CONSTRAINT PK_service_id PRIMARY KEY (service_id) ,
+  CONSTRAINT UQ_services UNIQUE (instance_id,config_type,service_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1201,56 +1201,56 @@ CREATE TABLE  icinga_services (
 --
 
 CREATE TABLE  icinga_servicestatus (
-  servicestatus_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  service_object_id INTEGER NOT NULL default 0,
-  status_update_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  perfdata TEXT NOT NULL default '',
-  current_state INTEGER NOT NULL default 0,
-  has_been_checked INTEGER NOT NULL default 0,
-  should_be_scheduled INTEGER NOT NULL default 0,
-  current_check_attempt INTEGER NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  last_check timestamp NOT NULL default '1970-01-01 00:00:00',
-  next_check timestamp NOT NULL default '1970-01-01 00:00:00',
-  check_type INTEGER NOT NULL default 0,
-  last_state_change timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_hard_state_change timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_hard_state INTEGER NOT NULL default 0,
-  last_time_ok timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_time_warning timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_time_unknown timestamp NOT NULL default '1970-01-01 00:00:00',
-  last_time_critical timestamp NOT NULL default '1970-01-01 00:00:00',
-  state_type INTEGER NOT NULL default 0,
-  last_notification timestamp NOT NULL default '1970-01-01 00:00:00',
-  next_notification timestamp NOT NULL default '1970-01-01 00:00:00',
-  no_more_notifications INTEGER NOT NULL default 0,
-  notifications_enabled INTEGER NOT NULL default 0,
-  problem_has_been_acknowledged INTEGER NOT NULL default 0,
-  acknowledgement_type INTEGER NOT NULL default 0,
-  current_notification_number INTEGER NOT NULL default 0,
-  passive_checks_enabled INTEGER NOT NULL default 0,
-  active_checks_enabled INTEGER NOT NULL default 0,
-  event_handler_enabled INTEGER NOT NULL default 0,
-  flap_detection_enabled INTEGER NOT NULL default 0,
-  is_flapping INTEGER NOT NULL default 0,
-  percent_state_change double precision NOT NULL default 0,
-  latency double precision NOT NULL default 0,
-  execution_time double precision NOT NULL default 0,
-  scheduled_downtime_depth INTEGER NOT NULL default 0,
-  failure_prediction_enabled INTEGER NOT NULL default 0,
-  process_performance_data INTEGER NOT NULL default 0,
-  obsess_over_service INTEGER NOT NULL default 0,
-  modified_service_attributes INTEGER NOT NULL default 0,
-  event_handler TEXT NOT NULL default '',
-  check_command TEXT NOT NULL default '',
-  normal_check_interval double precision NOT NULL default 0,
-  retry_check_interval double precision NOT NULL default 0,
-  check_timeperiod_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (servicestatus_id),
-  UNIQUE (service_object_id)
+  servicestatus_id bigserial,
+  instance_id bigint default 0,
+  service_object_id bigint default 0,
+  status_update_time timestamp  default '1970-01-01 00:00:00',
+  output TEXT  default '',
+  long_output TEXT  default '',
+  perfdata TEXT  default '',
+  current_state INTEGER  default 0,
+  has_been_checked INTEGER  default 0,
+  should_be_scheduled INTEGER  default 0,
+  current_check_attempt INTEGER  default 0,
+  max_check_attempts INTEGER  default 0,
+  last_check timestamp  default '1970-01-01 00:00:00',
+  next_check timestamp  default '1970-01-01 00:00:00',
+  check_type INTEGER  default 0,
+  last_state_change timestamp  default '1970-01-01 00:00:00',
+  last_hard_state_change timestamp  default '1970-01-01 00:00:00',
+  last_hard_state INTEGER  default 0,
+  last_time_ok timestamp  default '1970-01-01 00:00:00',
+  last_time_warning timestamp  default '1970-01-01 00:00:00',
+  last_time_unknown timestamp  default '1970-01-01 00:00:00',
+  last_time_critical timestamp  default '1970-01-01 00:00:00',
+  state_type INTEGER  default 0,
+  last_notification timestamp  default '1970-01-01 00:00:00',
+  next_notification timestamp  default '1970-01-01 00:00:00',
+  no_more_notifications INTEGER  default 0,
+  notifications_enabled INTEGER  default 0,
+  problem_has_been_acknowledged INTEGER  default 0,
+  acknowledgement_type INTEGER  default 0,
+  current_notification_number INTEGER  default 0,
+  passive_checks_enabled INTEGER  default 0,
+  active_checks_enabled INTEGER  default 0,
+  event_handler_enabled INTEGER  default 0,
+  flap_detection_enabled INTEGER  default 0,
+  is_flapping INTEGER  default 0,
+  percent_state_change double precision  default 0,
+  latency double precision  default 0,
+  execution_time double precision  default 0,
+  scheduled_downtime_depth INTEGER  default 0,
+  failure_prediction_enabled INTEGER  default 0,
+  process_performance_data INTEGER  default 0,
+  obsess_over_service INTEGER  default 0,
+  modified_service_attributes INTEGER  default 0,
+  event_handler TEXT  default '',
+  check_command TEXT  default '',
+  normal_check_interval double precision  default 0,
+  retry_check_interval double precision  default 0,
+  check_timeperiod_object_id bigint default 0,
+  CONSTRAINT PK_servicestatus_id PRIMARY KEY (servicestatus_id) ,
+  CONSTRAINT UQ_servicestatus UNIQUE (service_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1260,12 +1260,12 @@ CREATE TABLE  icinga_servicestatus (
 --
 
 CREATE TABLE  icinga_service_contactgroups (
-  service_contactgroup_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  service_id INTEGER NOT NULL default 0,
-  contactgroup_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (service_contactgroup_id),
-  UNIQUE (service_id,contactgroup_object_id)
+  service_contactgroup_id bigserial,
+  instance_id bigint default 0,
+  service_id bigint default 0,
+  contactgroup_object_id bigint default 0,
+  CONSTRAINT PK_service_contactgroup_id PRIMARY KEY (service_contactgroup_id) ,
+  CONSTRAINT UQ_service_contactgroups UNIQUE (service_id,contactgroup_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1275,11 +1275,11 @@ CREATE TABLE  icinga_service_contactgroups (
 --
 
 CREATE TABLE  icinga_service_contacts (
-  service_contact_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  service_id INTEGER NOT NULL default 0,
-  contact_object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (service_contact_id)
+  service_contact_id bigserial,
+  instance_id bigint default 0,
+  service_id bigint default 0,
+  contact_object_id bigint default 0,
+  CONSTRAINT PK_service_contact_id PRIMARY KEY (service_contact_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -1289,21 +1289,21 @@ CREATE TABLE  icinga_service_contacts (
 --
 
 CREATE TABLE  icinga_statehistory (
-  statehistory_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  state_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  state_time_usec INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  state_change INTEGER NOT NULL default 0,
-  state INTEGER NOT NULL default 0,
-  state_type INTEGER NOT NULL default 0,
-  current_check_attempt INTEGER NOT NULL default 0,
-  max_check_attempts INTEGER NOT NULL default 0,
-  last_state INTEGER NOT NULL default '-1',
-  last_hard_state INTEGER NOT NULL default '-1',
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  PRIMARY KEY  (statehistory_id)
+  statehistory_id bigserial,
+  instance_id bigint default 0,
+  state_time timestamp  default '1970-01-01 00:00:00',
+  state_time_usec INTEGER  default 0,
+  object_id bigint default 0,
+  state_change INTEGER  default 0,
+  state INTEGER  default 0,
+  state_type INTEGER  default 0,
+  current_check_attempt INTEGER  default 0,
+  max_check_attempts INTEGER  default 0,
+  last_state INTEGER  default '-1',
+  last_hard_state INTEGER  default '-1',
+  output TEXT  default '',
+  long_output TEXT  default '',
+  CONSTRAINT PK_statehistory_id PRIMARY KEY (statehistory_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -1313,21 +1313,21 @@ CREATE TABLE  icinga_statehistory (
 --
 
 CREATE TABLE  icinga_systemcommands (
-  systemcommand_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  start_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  start_time_usec INTEGER NOT NULL default 0,
-  end_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  end_time_usec INTEGER NOT NULL default 0,
-  command_line TEXT NOT NULL default '',
-  timeout INTEGER NOT NULL default 0,
-  early_timeout INTEGER NOT NULL default 0,
-  execution_time double precision NOT NULL default 0,
-  return_code INTEGER NOT NULL default 0,
-  output TEXT NOT NULL default '',
-  long_output TEXT NOT NULL default '',
-  PRIMARY KEY  (systemcommand_id),
-  UNIQUE (instance_id,start_time,start_time_usec)
+  systemcommand_id bigserial,
+  instance_id bigint default 0,
+  start_time timestamp  default '1970-01-01 00:00:00',
+  start_time_usec INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
+  end_time_usec INTEGER  default 0,
+  command_line TEXT  default '',
+  timeout INTEGER  default 0,
+  early_timeout INTEGER  default 0,
+  execution_time double precision  default 0,
+  return_code INTEGER  default 0,
+  output TEXT  default '',
+  long_output TEXT  default '',
+  CONSTRAINT PK_systemcommand_id PRIMARY KEY (systemcommand_id) ,
+  CONSTRAINT UQ_systemcommands UNIQUE (instance_id,start_time,start_time_usec)
 ) ;
 
 -- --------------------------------------------------------
@@ -1337,15 +1337,15 @@ CREATE TABLE  icinga_systemcommands (
 --
 
 CREATE TABLE  icinga_timedeventqueue (
-  timedeventqueue_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  event_type INTEGER NOT NULL default 0,
-  queued_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  queued_time_usec INTEGER NOT NULL default 0,
-  scheduled_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  recurring_event INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  PRIMARY KEY  (timedeventqueue_id)
+  timedeventqueue_id bigserial,
+  instance_id bigint default 0,
+  event_type INTEGER  default 0,
+  queued_time timestamp  default '1970-01-01 00:00:00',
+  queued_time_usec INTEGER  default 0,
+  scheduled_time timestamp  default '1970-01-01 00:00:00',
+  recurring_event INTEGER  default 0,
+  object_id bigint default 0,
+  CONSTRAINT PK_timedeventqueue_id PRIMARY KEY (timedeventqueue_id) 
 ) ;
 
 -- --------------------------------------------------------
@@ -1355,20 +1355,20 @@ CREATE TABLE  icinga_timedeventqueue (
 --
 
 CREATE TABLE  icinga_timedevents (
-  timedevent_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  event_type INTEGER NOT NULL default 0,
-  queued_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  queued_time_usec INTEGER NOT NULL default 0,
-  event_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  event_time_usec INTEGER NOT NULL default 0,
-  scheduled_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  recurring_event INTEGER NOT NULL default 0,
-  object_id INTEGER NOT NULL default 0,
-  deletion_time timestamp NOT NULL default '1970-01-01 00:00:00',
-  deletion_time_usec INTEGER NOT NULL default 0,
-  PRIMARY KEY  (timedevent_id),
-  UNIQUE (instance_id,event_type,scheduled_time,object_id)
+  timedevent_id bigserial,
+  instance_id bigint default 0,
+  event_type INTEGER  default 0,
+  queued_time timestamp  default '1970-01-01 00:00:00',
+  queued_time_usec INTEGER  default 0,
+  event_time timestamp  default '1970-01-01 00:00:00',
+  event_time_usec INTEGER  default 0,
+  scheduled_time timestamp  default '1970-01-01 00:00:00',
+  recurring_event INTEGER  default 0,
+  object_id bigint default 0,
+  deletion_time timestamp  default '1970-01-01 00:00:00',
+  deletion_time_usec INTEGER  default 0,
+  CONSTRAINT PK_timedevent_id PRIMARY KEY (timedevent_id) ,
+  CONSTRAINT UQ_timedevents UNIQUE (instance_id,event_type,scheduled_time,object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1378,13 +1378,13 @@ CREATE TABLE  icinga_timedevents (
 --
 
 CREATE TABLE  icinga_timeperiods (
-  timeperiod_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  config_type INTEGER NOT NULL default 0,
-  timeperiod_object_id INTEGER NOT NULL default 0,
-  alias TEXT NOT NULL default '',
-  PRIMARY KEY  (timeperiod_id),
-  UNIQUE (instance_id,config_type,timeperiod_object_id)
+  timeperiod_id bigserial,
+  instance_id bigint default 0,
+  config_type INTEGER  default 0,
+  timeperiod_object_id bigint default 0,
+  alias TEXT  default '',
+  CONSTRAINT PK_timeperiod_id PRIMARY KEY (timeperiod_id) ,
+  CONSTRAINT UQ_timeperiods UNIQUE (instance_id,config_type,timeperiod_object_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1394,14 +1394,14 @@ CREATE TABLE  icinga_timeperiods (
 --
 
 CREATE TABLE  icinga_timeperiod_timeranges (
-  timeperiod_timerange_id SERIAL,
-  instance_id INTEGER NOT NULL default 0,
-  timeperiod_id INTEGER NOT NULL default 0,
-  day INTEGER NOT NULL default 0,
-  start_sec INTEGER NOT NULL default 0,
-  end_sec INTEGER NOT NULL default 0,
-  PRIMARY KEY  (timeperiod_timerange_id),
-  UNIQUE (timeperiod_id,day,start_sec,end_sec)
+  timeperiod_timerange_id bigserial,
+  instance_id bigint default 0,
+  timeperiod_id bigint default 0,
+  day INTEGER  default 0,
+  start_sec INTEGER  default 0,
+  end_sec INTEGER  default 0,
+  CONSTRAINT PK_timeperiod_timerange_id PRIMARY KEY (timeperiod_timerange_id) ,
+  CONSTRAINT UQ_timeperiod_timeranges UNIQUE (timeperiod_id,day,start_sec,end_sec)
 ) ;
 
 
@@ -1557,7 +1557,7 @@ CREATE INDEX objects_inst_id_idx ON icinga_objects(instance_id);
 -- #236
 CREATE INDEX loge_time_idx on icinga_logentries(logentry_time);
 -- CREATE INDEX loge_data_idx on icinga_logentries(logentry_data);
-CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id ASC, logentry_time DESC);
+CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id, logentry_time);
 
 
 -- commenthistory

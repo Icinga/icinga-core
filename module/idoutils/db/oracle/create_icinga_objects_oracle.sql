@@ -2169,17 +2169,11 @@ CREATE SEQUENCE seq_timeperiods
    nocache nomaxvalue;
  
 
--- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '&&ICINGA_VERSION');
-commit;
-
 /* final check */
 select object_name,object_type,status  from user_objects where status !='VALID';
 
 /* goodbye */
-prompt Object creation finished, ready to start!
+prompt Object creation finished
 spool off;
 
 
