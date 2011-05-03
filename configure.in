@@ -1129,6 +1129,9 @@ else
 	echo ""
 fi
 
+TESTS_CFLAGS="$CFLAGS"
+AC_SUBST(TESTS_CFLAGS)
+
 dnl set -Wall based on os/compiler
 AC_MSG_CHECKING(for -Wall based on os/compiler)
         case $host_os in

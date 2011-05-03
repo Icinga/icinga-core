@@ -9,8 +9,7 @@ SRC_BASE=../base
 SRC_CGI=../cgi
 
 CC=@CC@
-#CFLAGS=@CFLAGS@ @DEFS@ -DNSCORE -I../include -I../tap/src
-CFLAGS=-g -O2 @DEFS@ -DNSCORE -I../include -I../tap/src
+CFLAGS=@TESTS_CFLAGS@ @DEFS@ -DNSCORE -I../include -I../tap/src
 TAPOBJ=../tap/src/tap.o
 
 TESTS = test_logging test_events test_timeperiods test_icinga_config
