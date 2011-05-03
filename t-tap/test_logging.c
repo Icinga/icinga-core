@@ -25,8 +25,8 @@
 #include "test-stubs.c"
 
 /* Icinga special */
-log_current_states=TRUE;
-use_daemon_log=TRUE;
+int log_current_states=TRUE;
+int use_daemon_log=TRUE;
 
 
 char *saved_source;
