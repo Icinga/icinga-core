@@ -8,7 +8,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-04-03 Thomas Dressler
+-- current version: 2011-05-03 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
