@@ -20,7 +20,8 @@ oracle/
 
 
 scripts/
-	- Install and Upgrade Scripts for IDOUtils MySQL
+	- Install Scripts for IDOUtils MySQL,Oracle and Postgresql
+	- edit defines within these scripts for your needs before running!
 
 queries/
 	- Example queries for selecting data
