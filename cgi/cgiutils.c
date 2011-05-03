@@ -1539,7 +1539,7 @@ char * html_encode(char *input, int escape_newlines){
 		if((char)input[x]==(char)'\x0'){
 			encoded_html_string[y]='\x0';
 			break;
-		        }
+		}
 
 		/* alpha-numeric characters and spaces don't get encoded */
 		else if(((char)input[x]==(char)' ') || ((char)input[x]>='0' && (char)input[x]<='9') || ((char)input[x]>='A' && (char)input[x]<='Z') || ((char)input[x]>=(char)'a' && (char)input[x]<=(char)'z'))
@@ -2798,4 +2798,28 @@ int string_to_time(char *buffer, time_t *t){
 	*t=mktime(&lt);
 
 	return OK;
+}
+
+char *json_encode(char *input) {
+	char *encoded_string;
+	int len=0;
+	int i,j;
+
+	/* we need up to twice the space to do the conversion */
+	len=(int)strlen(input);
+	if((encoded_string=(char *)malloc(len*2+1))==NULL)
+		return "";
+	
+        for(i=0,j=0;i<len;i++) {
+	
+                if((char)input[i]==(char)'"') {
+			encoded_string[j++]='\\';
+			encoded_string[j++]=input[i];
+                }else
+			encoded_string[j++]=input[i];
+        }
+
+	encoded_string[j]='\x0';
+
+	return encoded_string;
 }

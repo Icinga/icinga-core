@@ -674,16 +674,16 @@ void display_notifications(void){
 				if(content_type==JSON_CONTENT) {
 					if (json_start==FALSE)
 						printf(",\n");
-					printf("{\"host\": \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+					printf("{\"host\": \"%s\", ",(temp_host->display_name!=NULL)?json_encode(temp_host->display_name):json_encode(temp_host->name));
 					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)
-						printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+						printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?json_encode(temp_service->display_name):json_encode(temp_service->description));
 					else
 						printf("\"service\": null, ");
 					printf("\"type\": \"%s\", ",alert_level);
 					printf("\"time\": \"%s\", ",date_time);
-					printf("\"contact\": \"%s\", ",contact_name);
-					printf("\"notification_command\": \"%s\", ",method_name);
-					printf("\"information\": \"%s\"}",escape_newlines(temp_buffer));
+					printf("\"contact\": \"%s\", ",json_encode(contact_name));
+					printf("\"notification_command\": \"%s\", ",json_encode(method_name));
+					printf("\"information\": \"%s\"}",json_encode(escape_newlines(temp_buffer)));
 				} else if(content_type==CSV_CONTENT) {
 					printf("%s%s%s%s",csv_data_enclosure,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name,csv_data_enclosure,csv_delimiter);
 					if(temp_entry->type==LOGENTRY_SERVICE_NOTIFICATION)

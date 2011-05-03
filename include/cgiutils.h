@@ -627,6 +627,7 @@ void convert_timeperiod_to_times(int, time_t *, time_t *);	/* converts time peri
 int string_to_time(char *, time_t *);				/* converts a defined formated string to unix timestamp */
 
 int is_dlst_time(time_t *);
+char *json_encode(char *);
 
 /******************************** MULTIURL PATCH *******************************/
 

@@ -1762,11 +1762,11 @@ void display_recent_alerts(void){
 			json_start=FALSE;
 			printf("{ \"time\": \"%s\", ",date_time);
 			printf("\"alert_type\": \"%s\", ",(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert");
-			printf("\"host\": \"%s\", ",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+			printf("\"host\": \"%s\", ",(temp_host->display_name!=NULL)?json_encode(temp_host->display_name):json_encode(temp_host->name));
 			if (temp_event->event_type==AE_HOST_ALERT)
 				printf("\"service\": null, ");
 			else
-				printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description);
+				printf("\"service\": \"%s\", ",(temp_service->display_name!=NULL)?json_encode(temp_service->display_name):json_encode(temp_service->description));
 		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,date_time,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_event->event_type==AE_HOST_ALERT)?"Host Alert":"Service Alert",csv_data_enclosure,csv_delimiter);
@@ -1828,7 +1828,7 @@ void display_recent_alerts(void){
 		if(content_type==JSON_CONTENT) {
 			printf("\"state\": \"%s\", ",status);
 			printf("\"state_type\": \"%s\", ",(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD");
-			printf("\"information\": \"%s\"}",temp_event->event_info);
+			printf("\"information\": \"%s\"}",json_encode(temp_event->event_info));
 		}else if(content_type==CSV_CONTENT) {
 			printf("%s%s%s%s",csv_data_enclosure,status,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_event->state_type==AE_SOFT_STATE)?"SOFT":"HARD",csv_data_enclosure,csv_delimiter);
@@ -2045,14 +2045,14 @@ void display_top_alerts(void){
 			if (json_start==FALSE)
 				printf(",\n");
 			json_start=FALSE;
-			printf("{ \"rank\": \"%d\", ",current_item);
+			printf("{ \"rank\": %d, ",current_item);
 			printf(" \"producer_type\": \"%s\", ",(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service");
-			printf(" \"host\": \"%s\", ",temp_producer->host_name);
+			printf(" \"host\": \"%s\", ",json_encode(temp_producer->host_name));
 			if (temp_producer->producer_type==AE_HOST_PRODUCER)
 				printf(" \"service\": null, ");
 			else
-				printf(" \"service\": \"%s\", ",temp_producer->service_description);
-			printf(" \"total_alerts\": \"%d\"}",temp_producer->total_alerts);
+				printf(" \"service\": \"%s\", ",json_encode(temp_producer->service_description));
+			printf(" \"total_alerts\": %d}",temp_producer->total_alerts);
 		}else if(content_type==CSV_CONTENT) {
 			printf("%s%d%s%s",csv_data_enclosure,current_item,csv_data_enclosure,csv_delimiter);
 			printf("%s%s%s%s",csv_data_enclosure,(temp_producer->producer_type==AE_HOST_PRODUCER)?"Host":"Service",csv_data_enclosure,csv_delimiter);
@@ -2130,7 +2130,7 @@ void display_alerts(void){
 			if(json_list_start==FALSE)
 				printf("],\n");
 			json_list_start=FALSE;
-			printf("\"host_name\": \"%s\",\n",target_host->name);
+			printf("\"host_name\": \"%s\",\n",json_encode(target_host->name));
 			printf("\"report\": [\n");
 		}
 	}
@@ -2147,7 +2147,7 @@ void display_alerts(void){
 			if(json_list_start==FALSE)
 				printf("],\n");
 			json_list_start=FALSE;
-			printf("\"hostgroup_name\": \"%s\",\n",target_hostgroup->group_name);
+			printf("\"hostgroup_name\": \"%s\",\n",json_encode(target_hostgroup->group_name));
 			printf("\"report\": [\n");
 		}
 	}
@@ -2174,8 +2174,8 @@ void display_alerts(void){
 			if(json_list_start==FALSE)
 				printf("],\n");
 			json_list_start=FALSE;
-			printf("\"host_name\": \"%s\",\n",target_service->host_name);
-			printf("\"service\": \"%s\",\n",target_service->description);
+			printf("\"host_name\": \"%s\",\n",json_encode(target_service->host_name));
+			printf("\"service\": \"%s\",\n",json_encode(target_service->description));
 			printf("\"report\": [\n");
 		}
 
@@ -2193,7 +2193,7 @@ void display_alerts(void){
 			if(json_list_start==FALSE)
 				printf("],\n");
 			json_list_start=FALSE;
-			printf("\"servicegroup_name\": \"%s\",\n",target_servicegroup->group_name);
+			printf("\"servicegroup_name\": \"%s\",\n",json_encode(target_servicegroup->group_name));
 			printf("\"report\": [\n");
 		}
 	}
@@ -2284,18 +2284,18 @@ void display_alerts(void){
 
 		/* Host Alerts Data */
 		if(alert_types & AE_HOST_ALERT && display_type!=REPORT_SERVICE_ALERT_TOTALS){
-			printf("{ \"host_up_soft\": \"%d\", ",soft_host_up_alerts);
-			printf("\"host_up_hard\": \"%d\", ",hard_host_up_alerts);
-			printf("\"host_up_total\": \"%d\", ",soft_host_up_alerts+hard_host_up_alerts);
-			printf("\"host_down_soft\": \"%d\", ",soft_host_down_alerts);
-			printf("\"host_down_hard\": \"%d\", ",hard_host_down_alerts);
-			printf("\"host_down_total\": \"%d\", ",soft_host_down_alerts+hard_host_down_alerts);
-			printf("\"host_unreachable_soft\": \"%d\", ",soft_host_unreachable_alerts);
-			printf("\"host_unreachable_hard\": \"%d\", ",hard_host_unreachable_alerts);
-			printf("\"host_unreachable_total\": \"%d\", ",soft_host_unreachable_alerts+hard_host_unreachable_alerts);
-			printf("\"host_all_soft\": \"%d\", ",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts);
-			printf("\"host_all_hard\": \"%d\", ",hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts);
-			printf("\"host_all_total\": \"%d\"",soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
+			printf("{ \"host_up_soft\": %d, ",soft_host_up_alerts);
+			printf("\"host_up_hard\": %d, ",hard_host_up_alerts);
+			printf("\"host_up_total\": %d, ",soft_host_up_alerts+hard_host_up_alerts);
+			printf("\"host_down_soft\": %d, ",soft_host_down_alerts);
+			printf("\"host_down_hard\": %d, ",hard_host_down_alerts);
+			printf("\"host_down_total\": %d, ",soft_host_down_alerts+hard_host_down_alerts);
+			printf("\"host_unreachable_soft\": %d, ",soft_host_unreachable_alerts);
+			printf("\"host_unreachable_hard\": %d, ",hard_host_unreachable_alerts);
+			printf("\"host_unreachable_total\": %d, ",soft_host_unreachable_alerts+hard_host_unreachable_alerts);
+			printf("\"host_all_soft\": %d, ",soft_host_up_alerts+soft_host_down_alerts+soft_host_unreachable_alerts);
+			printf("\"host_all_hard\": %d, ",hard_host_up_alerts+hard_host_down_alerts+hard_host_unreachable_alerts);
+			printf("\"host_all_total\": %d",soft_host_up_alerts+hard_host_up_alerts+soft_host_down_alerts+hard_host_down_alerts+soft_host_unreachable_alerts+hard_host_unreachable_alerts);
 		}
 
 		/* Service Alerts Data */
@@ -2305,21 +2305,21 @@ void display_alerts(void){
 			else
 				printf("{ ");
 
-			printf("\"service_ok_soft\": \"%d\", ",soft_service_ok_alerts);
-			printf("\"service_ok_hard\": \"%d\", ",hard_service_ok_alerts);
-			printf("\"service_ok_total\": \"%d\", ",soft_service_ok_alerts+hard_service_ok_alerts);
-			printf("\"service_warning_soft\": \"%d\", ",soft_service_warning_alerts);
-			printf("\"service_warning_hard\": \"%d\", ",hard_service_warning_alerts);
-			printf("\"service_warning_total\": \"%d\", ",soft_service_warning_alerts+hard_service_warning_alerts);
-			printf("\"service_unknown_soft\": \"%d\", ",soft_service_unknown_alerts);
-			printf("\"service_unknown_hard\": \"%d\", ",hard_service_unknown_alerts);
-			printf("\"service_unknown_total\": \"%d\", ",soft_service_unknown_alerts+hard_service_unknown_alerts);
-			printf("\"service_critical_soft\": \"%d\", ",soft_service_critical_alerts);
-			printf("\"service_critical_hard\": \"%d\", ",hard_service_critical_alerts);
-			printf("\"service_critical_total\": \"%d\", ",soft_service_critical_alerts+hard_service_critical_alerts);
-			printf("\"service_all_soft\": \"%d\", ",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts);
-			printf("\"service_all_hard\": \"%d\", ",hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
-			printf("\"service_all_total\": \"%d\"}",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
+			printf("\"service_ok_soft\": %d, ",soft_service_ok_alerts);
+			printf("\"service_ok_hard\": %d, ",hard_service_ok_alerts);
+			printf("\"service_ok_total\": %d, ",soft_service_ok_alerts+hard_service_ok_alerts);
+			printf("\"service_warning_soft\": %d, ",soft_service_warning_alerts);
+			printf("\"service_warning_hard\": %d, ",hard_service_warning_alerts);
+			printf("\"service_warning_total\": %d, ",soft_service_warning_alerts+hard_service_warning_alerts);
+			printf("\"service_unknown_soft\": %d, ",soft_service_unknown_alerts);
+			printf("\"service_unknown_hard\": %d, ",hard_service_unknown_alerts);
+			printf("\"service_unknown_total\": %d, ",soft_service_unknown_alerts+hard_service_unknown_alerts);
+			printf("\"service_critical_soft\": %d, ",soft_service_critical_alerts);
+			printf("\"service_critical_hard\": %d, ",hard_service_critical_alerts);
+			printf("\"service_critical_total\": %d, ",soft_service_critical_alerts+hard_service_critical_alerts);
+			printf("\"service_all_soft\": %d, ",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts);
+			printf("\"service_all_hard\": %d, ",hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
+			printf("\"service_all_total\": %d}",soft_service_ok_alerts+soft_service_warning_alerts+soft_service_unknown_alerts+soft_service_critical_alerts+hard_service_ok_alerts+hard_service_warning_alerts+hard_service_unknown_alerts+hard_service_critical_alerts);
 		} else {
 			printf("}");
 		}
