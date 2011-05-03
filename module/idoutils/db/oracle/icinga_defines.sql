@@ -13,6 +13,6 @@ icinga tablespaces and user must fit definitions in create_icinga_objects_oracle
 DEFINE DATATBS=ICINGA_DATA1
 DEFINE IDXTBS=ICINGA_IDX1
 DEFINE LOBTBS=ICINGA_LOB1
-DEFINE ICINGA_USER=icinga_r14
+DEFINE ICINGA_USER=icinga
 DEFINE ICINGA_PASSWORD=icinga
 

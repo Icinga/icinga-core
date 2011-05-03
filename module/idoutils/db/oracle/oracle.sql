@@ -16,7 +16,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 -- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-04-03 Thomas Dressler
+-- current version: 2011-05-03 Thomas Dressler
 --
 -- -- --------------------------------------------------------
 */
@@ -32,9 +32,9 @@ DEFINE ICINGA_VERSION=1.4.0
 icinga tablespaces and user must fit definitions in create_icinga_objects_oracle.sql
 */
 
-DEFINE DATATBS=ICINGA_DATA
-DEFINE IDXTBS=ICINGA_IDX
-DEFINE LOBTBS=ICINGA_LOB
+DEFINE DATATBS=ICINGA_DATA1
+DEFINE IDXTBS=ICINGA_IDX1
+DEFINE LOBTBS=ICINGA_LOB1
 DEFINE ICINGA_USER=icinga
 DEFINE ICINGA_PASSWORD=icinga
 
