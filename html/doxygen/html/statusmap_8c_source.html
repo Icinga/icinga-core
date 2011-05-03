@@ -139,9 +139,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00055"></a>00055 <span class="keyword">extern</span> <span class="keywordtype">char</span> <a class="code" href="avail_8c.html#a163a607d4cca208f90dc49a7e68a156f">url_stylesheets_path</a>[<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>];
 <a name="l00056"></a>00056 <span class="keyword">extern</span> <span class="keywordtype">char</span> <a class="code" href="avail_8c.html#af8652f07f9fda4cbfaaf36c2f5e82ee1">url_js_path</a>[<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>];
 <a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keyword">extern</span> <a class="code" href="structhost__struct.html">host</a> *<a class="code" href="checks_8c.html#a51302445a334b0bf861727194af89ef9">host_list</a>;
+<a name="l00058"></a>00058 <span class="keyword">extern</span> <a class="code" href="structhost__struct.html">host</a> *<a class="code" href="checks_8c.html#a7efb54fbdc5a556ffdbe25c56e6e7469">host_list</a>;
 <a name="l00059"></a>00059 <span class="keyword">extern</span> <a class="code" href="structhostgroup__struct.html">hostgroup</a> *<a class="code" href="base_2config_8c.html#a4a15afed3efea74c99e450dc19fc9f5d">hostgroup_list</a>;
-<a name="l00060"></a>00060 <span class="keyword">extern</span> <a class="code" href="structservice__struct.html">service</a> *<a class="code" href="checks_8c.html#a6e707761b44bcc37041ed00343a9d3f1">service_list</a>;
+<a name="l00060"></a>00060 <span class="keyword">extern</span> <a class="code" href="structservice__struct.html">service</a> *<a class="code" href="checks_8c.html#aa680c491c2d6c99868a3789592868c15">service_list</a>;
 <a name="l00061"></a>00061 <span class="keyword">extern</span> hoststatus *<a class="code" href="cgiutils_8c.html#af3be329eef9e9423e750bd8b8e2aa971">hoststatus_list</a>;
 <a name="l00062"></a>00062 <span class="keyword">extern</span> servicestatus *<a class="code" href="cgiutils_8c.html#a7f2de938ba0e4bfbdfcec24a76b75891">servicestatus_list</a>;
 <a name="l00063"></a>00063 
@@ -2723,66 +2723,74 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l02639"></a>02639                         x_offset=<a class="code" href="statusmap_8c.html#a50be339714e53c6d537580539d1ea8b6">nagios_icon_x</a>+(<a class="code" href="statusmap_8c.html#aa848b82c996e1350602528f3ea811386">DEFAULT_NODE_WIDTH</a>/2)-<a class="code" href="statusmap_8c.html#a2291b788af4998d4a944c53d895b4c30">canvas_x</a>;
 <a name="l02640"></a>02640                         y_offset=<a class="code" href="statusmap_8c.html#adb57a29776f2a89f45212d08ce730f00">nagios_icon_y</a>+(<a class="code" href="statusmap_8c.html#a6a5111e1b8ded869e389e625e12f4987">DEFAULT_NODE_HEIGHT</a>/2)-<a class="code" href="statusmap_8c.html#a1eb2e0411281aa7d1cdf746de16818b2">canvas_y</a>;
 <a name="l02641"></a>02641 
-<a name="l02642"></a>02642                         <span class="comment">/* draw &quot;slice&quot; dividers */</span>
-<a name="l02643"></a>02643                         <span class="keywordflow">if</span>(immediate_children&gt;1 || layer&gt;1){
-<a name="l02644"></a>02644 
-<a name="l02645"></a>02645                                 <span class="comment">/* draw &quot;leftmost&quot; divider */</span>
-<a name="l02646"></a>02646                                 gdImageLine(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,(<span class="keywordtype">int</span>)x_coord[0]+x_offset,(<span class="keywordtype">int</span>)y_coord[0]+y_offset,(<span class="keywordtype">int</span>)x_coord[1]+x_offset,(<span class="keywordtype">int</span>)y_coord[1]+y_offset,<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
-<a name="l02647"></a>02647 
-<a name="l02648"></a>02648                                 <span class="comment">/* draw &quot;rightmost&quot; divider */</span>
-<a name="l02649"></a>02649                                 gdImageLine(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,(<span class="keywordtype">int</span>)x_coord[2]+x_offset,(<span class="keywordtype">int</span>)y_coord[2]+y_offset,(<span class="keywordtype">int</span>)x_coord[3]+x_offset,(<span class="keywordtype">int</span>)y_coord[3]+y_offset,<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
-<a name="l02650"></a>02650                                 }
+<a name="l02642"></a>02642                         <span class="comment">/* if the host should be drawn */</span>
+<a name="l02643"></a>02643                         <span class="comment">/* this enforces the privacy of hosts that are not eligble to be drawn */</span>
+<a name="l02644"></a>02644                         <span class="keywordflow">if</span>(temp_host-&gt;<a class="code" href="structhost__struct.html#a7bc434f5683f05985dc3e86b40f89c87">should_be_drawn</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l02645"></a>02645 
+<a name="l02646"></a>02646                                 <span class="comment">/* draw &quot;slice&quot; dividers */</span>
+<a name="l02647"></a>02647                                 <span class="keywordflow">if</span>(immediate_children&gt;1 || layer&gt;1){
+<a name="l02648"></a>02648 
+<a name="l02649"></a>02649                                         <span class="comment">/* draw &quot;leftmost&quot; divider */</span>
+<a name="l02650"></a>02650                                         gdImageLine(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,(<span class="keywordtype">int</span>)x_coord[0]+x_offset,(<span class="keywordtype">int</span>)y_coord[0]+y_offset,(<span class="keywordtype">int</span>)x_coord[1]+x_offset,(<span class="keywordtype">int</span>)y_coord[1]+y_offset,<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
 <a name="l02651"></a>02651 
-<a name="l02652"></a>02652                         <span class="comment">/* determine arc drawing angles */</span>
-<a name="l02653"></a>02653                         arc_start_angle=current_drawing_angle-90.0;
-<a name="l02654"></a>02654                         <span class="keywordflow">while</span>(arc_start_angle&lt;0.0)
-<a name="l02655"></a>02655                                 arc_start_angle+=360.0;
-<a name="l02656"></a>02656                         arc_end_angle=arc_start_angle+available_angle;
-<a name="l02657"></a>02657 
-<a name="l02658"></a>02658                         <span class="comment">/* draw inner arc */</span>
-<a name="l02659"></a>02659                         gdImageArc(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,x_offset,y_offset,(radius-(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,(radius-(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,floor(arc_start_angle),ceil(arc_end_angle),<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
-<a name="l02660"></a>02660 
-<a name="l02661"></a>02661                         <span class="comment">/* draw outer arc */</span>
-<a name="l02662"></a>02662                         gdImageArc(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,x_offset,y_offset,(radius+(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,(radius+(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,floor(arc_start_angle),ceil(arc_end_angle),<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
-<a name="l02663"></a>02663 
-<a name="l02664"></a>02664 
-<a name="l02665"></a>02665                         <span class="comment">/* determine center of &quot;slice&quot; and fill with appropriate color */</span>
-<a name="l02666"></a>02666                         center_x=-(sin(-(current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
-<a name="l02667"></a>02667                         center_y=-(sin((90+current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
-<a name="l02668"></a>02668                         translated_x=center_x+x_offset;
-<a name="l02669"></a>02669                         translated_y=center_y+y_offset;
-<a name="l02670"></a>02670 
-<a name="l02671"></a>02671                         <span class="comment">/* determine background color */</span>
-<a name="l02672"></a>02672                         temp_hoststatus=find_hoststatus(temp_host-&gt;<a class="code" href="structhost__struct.html#a29629acc48c023596d81b061b5f135f7">name</a>);
-<a name="l02673"></a>02673                         <span class="keywordflow">if</span>(temp_hoststatus==NULL)
-<a name="l02674"></a>02674                                 bgcolor=<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>;
-<a name="l02675"></a>02675                         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_hoststatus-&gt;status==<a class="code" href="icinga_8h.html#a19d20cca11e4cf399742ad25c05d73fb">HOST_DOWN</a> || temp_hoststatus-&gt;status==<a class="code" href="icinga_8h.html#ab1433105627834e0a2c670250bf64285">HOST_UNREACHABLE</a>)
-<a name="l02676"></a>02676                                 bgcolor=<a class="code" href="statusmap_8c.html#acf5c353a56da0761dc3987fa932fc71c">color_lightred</a>;
-<a name="l02677"></a>02677                         <span class="keywordflow">else</span>
-<a name="l02678"></a>02678                                 bgcolor=<a class="code" href="statusmap_8c.html#afefb688f8712a8058f2966649221680a">color_lightgreen</a>;
-<a name="l02679"></a>02679 
-<a name="l02680"></a>02680                         <span class="comment">/* fill slice with background color */</span>
-<a name="l02681"></a>02681                         <span class="comment">/* the fill function only works with coordinates that are in bounds of the actual image */</span>
-<a name="l02682"></a>02682                         <span class="keywordflow">if</span>(translated_x&gt;0 &amp;&amp; translated_y&gt;0 &amp;&amp; translated_x&lt;<a class="code" href="statusmap_8c.html#af06bf419d5c1a1cf7b7c8b3408efdd60">canvas_width</a> &amp;&amp; translated_y&lt;<a class="code" href="statusmap_8c.html#aef8e9ee02cfb1ca5fbb7db3a69e4fce5">canvas_height</a>)
-<a name="l02683"></a>02683                                 gdImageFillToBorder(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,translated_x,translated_y,<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>,bgcolor);
+<a name="l02652"></a>02652                                         <span class="comment">/* draw &quot;rightmost&quot; divider */</span>
+<a name="l02653"></a>02653                                         gdImageLine(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,(<span class="keywordtype">int</span>)x_coord[2]+x_offset,(<span class="keywordtype">int</span>)y_coord[2]+y_offset,(<span class="keywordtype">int</span>)x_coord[3]+x_offset,(<span class="keywordtype">int</span>)y_coord[3]+y_offset,<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
+<a name="l02654"></a>02654                                         }
+<a name="l02655"></a>02655 
+<a name="l02656"></a>02656 
+<a name="l02657"></a>02657                                 <span class="comment">/* determine arc drawing angles */</span>
+<a name="l02658"></a>02658                                 arc_start_angle=current_drawing_angle-90.0;
+<a name="l02659"></a>02659                                 <span class="keywordflow">while</span>(arc_start_angle&lt;0.0)
+<a name="l02660"></a>02660                                         arc_start_angle+=360.0;
+<a name="l02661"></a>02661                                 arc_end_angle=arc_start_angle+available_angle;
+<a name="l02662"></a>02662 
+<a name="l02663"></a>02663                                 <span class="comment">/* draw inner arc */</span>
+<a name="l02664"></a>02664                                 gdImageArc(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,x_offset,y_offset,(radius-(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,(radius-(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,floor(arc_start_angle),ceil(arc_end_angle),<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
+<a name="l02665"></a>02665 
+<a name="l02666"></a>02666                                 <span class="comment">/* draw outer arc */</span>
+<a name="l02667"></a>02667                                 gdImageArc(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,x_offset,y_offset,(radius+(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,(radius+(<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>/2))*2,floor(arc_start_angle),ceil(arc_end_angle),<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>);
+<a name="l02668"></a>02668 
+<a name="l02669"></a>02669 
+<a name="l02670"></a>02670                                 <span class="comment">/* determine center of &quot;slice&quot; and fill with appropriate color */</span>
+<a name="l02671"></a>02671                                 center_x=-(sin(-(current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
+<a name="l02672"></a>02672                                 center_y=-(sin((90+current_drawing_angle+(available_angle/2.0))*(M_PI/180.0))*(radius));
+<a name="l02673"></a>02673                                 translated_x=center_x+x_offset;
+<a name="l02674"></a>02674                                 translated_y=center_y+y_offset;
+<a name="l02675"></a>02675 
+<a name="l02676"></a>02676                                 <span class="comment">/* determine background color */</span>
+<a name="l02677"></a>02677                                 temp_hoststatus=find_hoststatus(temp_host-&gt;<a class="code" href="structhost__struct.html#a29629acc48c023596d81b061b5f135f7">name</a>);
+<a name="l02678"></a>02678                                 <span class="keywordflow">if</span>(temp_hoststatus==NULL)
+<a name="l02679"></a>02679                                         bgcolor=<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>;
+<a name="l02680"></a>02680                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_hoststatus-&gt;status==<a class="code" href="icinga_8h.html#a19d20cca11e4cf399742ad25c05d73fb">HOST_DOWN</a> || temp_hoststatus-&gt;status==<a class="code" href="icinga_8h.html#ab1433105627834e0a2c670250bf64285">HOST_UNREACHABLE</a>)
+<a name="l02681"></a>02681                                         bgcolor=<a class="code" href="statusmap_8c.html#acf5c353a56da0761dc3987fa932fc71c">color_lightred</a>;
+<a name="l02682"></a>02682                                 <span class="keywordflow">else</span>
+<a name="l02683"></a>02683                                         bgcolor=<a class="code" href="statusmap_8c.html#afefb688f8712a8058f2966649221680a">color_lightgreen</a>;
 <a name="l02684"></a>02684 
-<a name="l02685"></a>02685                         <span class="comment">/* recurse into child host ... */</span>
-<a name="l02686"></a>02686                         <a class="code" href="statusmap_8c.html#a59def88998897cd947bcd5031a3b80db">draw_circular_layer_markup</a>(temp_host,current_drawing_angle+((available_angle-clipped_available_angle)/2),clipped_available_angle,layer+1,radius+<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>);
-<a name="l02687"></a>02687 
-<a name="l02688"></a>02688                         <span class="comment">/* increment current drawing angle */</span>
-<a name="l02689"></a>02689                         current_drawing_angle+=available_angle;
-<a name="l02690"></a>02690                         }
-<a name="l02691"></a>02691                 }
+<a name="l02685"></a>02685 
+<a name="l02686"></a>02686                                 <span class="comment">/* fill slice with background color */</span>
+<a name="l02687"></a>02687                                 <span class="comment">/* the fill function only works with coordinates that are in bounds of the actual image */</span>
+<a name="l02688"></a>02688                                 <span class="keywordflow">if</span>(translated_x&gt;0 &amp;&amp; translated_y&gt;0 &amp;&amp; translated_x&lt;<a class="code" href="statusmap_8c.html#af06bf419d5c1a1cf7b7c8b3408efdd60">canvas_width</a> &amp;&amp; translated_y&lt;<a class="code" href="statusmap_8c.html#aef8e9ee02cfb1ca5fbb7db3a69e4fce5">canvas_height</a>)
+<a name="l02689"></a>02689                                         gdImageFillToBorder(<a class="code" href="statusmap_8c.html#a2aaa7ae1172dc0dd5c2221584b3ac13d">map_image</a>,translated_x,translated_y,<a class="code" href="statusmap_8c.html#af588d299b88ed20991e7b9f98885cc72">color_lightgrey</a>,bgcolor);
+<a name="l02690"></a>02690 
+<a name="l02691"></a>02691                                 }
 <a name="l02692"></a>02692 
-<a name="l02693"></a>02693         <span class="keywordflow">return</span>;
-<a name="l02694"></a>02694         }
+<a name="l02693"></a>02693                         <span class="comment">/* recurse into child host ... */</span>
+<a name="l02694"></a>02694                         <a class="code" href="statusmap_8c.html#a59def88998897cd947bcd5031a3b80db">draw_circular_layer_markup</a>(temp_host,current_drawing_angle+((available_angle-clipped_available_angle)/2),clipped_available_angle,layer+1,radius+<a class="code" href="statusmap_8c.html#a2f0ae8f3b3585a8230cb48877fdf9a3d">CIRCULAR_DRAWING_RADIUS</a>);
 <a name="l02695"></a>02695 
+<a name="l02696"></a>02696                         <span class="comment">/* increment current drawing angle */</span>
+<a name="l02697"></a>02697                         current_drawing_angle+=available_angle;
+<a name="l02698"></a>02698                         }
+<a name="l02699"></a>02699                 }
+<a name="l02700"></a>02700 
+<a name="l02701"></a>02701         <span class="keywordflow">return</span>;
+<a name="l02702"></a>02702         }
+<a name="l02703"></a>02703 
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="statusmap_8c.html">statusmap.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:19 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:39 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

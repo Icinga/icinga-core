@@ -118,6 +118,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>scheduled_check
 : <a class="el" href="structcheck__result__struct.html#ac3d4cf6179d9c2b29f98be9f2ca2941a">check_result_struct</a>
 </li>
+<li>scheduled_downtime_depth
+: <a class="el" href="structstatusdata__struct.html#aee015b3d6185a69a9501e65ddcffb1d1">statusdata_struct</a>
+</li>
 <li>scheduled_time_critical
 : <a class="el" href="structavail__subject__struct.html#a02417a267b3685f5e284711d7e61b26a">avail_subject_struct</a>
 </li>
@@ -159,20 +162,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="structtimeslice__data__struct.html#a56e51ca7a4406e927a907abb436eaaab">timeslice_data_struct</a>
 </li>
 <li>service_description
-: <a class="el" href="structavail__subject__struct.html#addc68ecb8c94ad9f480652d9db6e8bf4">avail_subject_struct</a>
+: <a class="el" href="structnebstruct__acknowledgement__struct.html#abcaca01ef0957c2c82ef7f17fc9e38c2">nebstruct_acknowledgement_struct</a>
 , <a class="el" href="structnebstruct__statechange__struct.html#ab42047ec498d7252cab4c4cf0de8bede">nebstruct_statechange_struct</a>
+, <a class="el" href="structavail__subject__struct.html#addc68ecb8c94ad9f480652d9db6e8bf4">avail_subject_struct</a>
 , <a class="el" href="structservicesmember__struct.html#a89fea8b74d85b53ce8558d1f61a36f65">servicesmember_struct</a>
-, <a class="el" href="structarchived__event__struct.html#accf8af3ac9ff9d743feb2744f3e617df">archived_event_struct</a>
 , <a class="el" href="structescalation__condition__struct.html#a1a439e46eeda2c6bc6fd9432c04cee05">escalation_condition_struct</a>
+, <a class="el" href="structarchived__event__struct.html#accf8af3ac9ff9d743feb2744f3e617df">archived_event_struct</a>
 , <a class="el" href="structservicedependency__struct.html#acafed11bcd80bf28aabce9e191369907">servicedependency_struct</a>
-, <a class="el" href="structalert__producer__struct.html#a43b2fc6573e815883f2f4f3f18c09709">alert_producer_struct</a>
 , <a class="el" href="structxodtemplate__service__struct.html#a3db042fba5d5ea63264851a9c01c55df">xodtemplate_service_struct</a>
+, <a class="el" href="structalert__producer__struct.html#a43b2fc6573e815883f2f4f3f18c09709">alert_producer_struct</a>
 , <a class="el" href="structxodtemplate__escalation__condition__struct.html#ac8b14708866229bee54b67c12f5a085b">xodtemplate_escalation_condition_struct</a>
-, <a class="el" href="structcomment__struct.html#a4562f22f78c485d19f2d422d280d4198">comment_struct</a>
 , <a class="el" href="structxodtemplate__servicedependency__struct.html#a60d8fbe454bc8b5995cce8103f41c49c">xodtemplate_servicedependency_struct</a>
+, <a class="el" href="structcomment__struct.html#a4562f22f78c485d19f2d422d280d4198">comment_struct</a>
 , <a class="el" href="structxodtemplate__serviceescalation__struct.html#a6e06761e45cb598186d5adb0a654cf3a">xodtemplate_serviceescalation_struct</a>
-, <a class="el" href="structscheduled__downtime__struct.html#a6832da598408fbf942d33363a16b16ae">scheduled_downtime_struct</a>
 , <a class="el" href="structxodtemplate__serviceextinfo__struct.html#a7347d9cde35d568e6ff61d4682c12fad">xodtemplate_serviceextinfo_struct</a>
+, <a class="el" href="structscheduled__downtime__struct.html#a6832da598408fbf942d33363a16b16ae">scheduled_downtime_struct</a>
 , <a class="el" href="structxodtemplate__servicelist__struct.html#a15b1d1563bccb0d03f49152bb63bf73d">xodtemplate_servicelist_struct</a>
 , <a class="el" href="structcheck__result__struct.html#a3cd7e3c42f1bce1761e6c84b76588877">check_result_struct</a>
 , <a class="el" href="structpassive__check__result__struct.html#a0ae21cd8936c3c2e6a91eb8af18e1800">passive_check_result_struct</a>
@@ -184,7 +188,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="structnebstruct__notification__struct.html#ac0af98e00d297f5b4ce254e9aa37a741">nebstruct_notification_struct</a>
 , <a class="el" href="structnebstruct__contact__notification__struct.html#a3146f704ad4f81e705f2f3cd4b081432">nebstruct_contact_notification_struct</a>
 , <a class="el" href="structnebstruct__contact__notification__method__struct.html#ababc5328b47826ccfbdeac8aa8048190">nebstruct_contact_notification_method_struct</a>
-, <a class="el" href="structnebstruct__acknowledgement__struct.html#abcaca01ef0957c2c82ef7f17fc9e38c2">nebstruct_acknowledgement_struct</a>
 </li>
 <li>service_groups
 : <a class="el" href="structxodtemplate__service__struct.html#aed1c8efd54c090897408633ac638d176">xodtemplate_service_struct</a>
@@ -252,28 +255,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="structxodtemplate__daterange__struct.html#a63d0c10ab15b6e35c3018e47b2aa7d86">xodtemplate_daterange_struct</a>
 </li>
 <li>smday
-: <a class="el" href="structdaterange__struct.html#a2b11fe1c52944be6794b98970ec4e1c4">daterange_struct</a>
-, <a class="el" href="structxodtemplate__daterange__struct.html#a37ea5f22b058b7f280c11ffeae3e45d4">xodtemplate_daterange_struct</a>
+: <a class="el" href="structxodtemplate__daterange__struct.html#a37ea5f22b058b7f280c11ffeae3e45d4">xodtemplate_daterange_struct</a>
+, <a class="el" href="structdaterange__struct.html#a2b11fe1c52944be6794b98970ec4e1c4">daterange_struct</a>
 </li>
 <li>smon
-: <a class="el" href="structxodtemplate__daterange__struct.html#a9abe4240729382d3d11e9e04f03fc547">xodtemplate_daterange_struct</a>
-, <a class="el" href="structdaterange__struct.html#a193b929d793c4af88306041edfd4d529">daterange_struct</a>
+: <a class="el" href="structdaterange__struct.html#a193b929d793c4af88306041edfd4d529">daterange_struct</a>
+, <a class="el" href="structxodtemplate__daterange__struct.html#a9abe4240729382d3d11e9e04f03fc547">xodtemplate_daterange_struct</a>
 </li>
 <li>source
 : <a class="el" href="structcomment__struct.html#a3cbdf9d59dc9488ba681a5f5fca9f03e">comment_struct</a>
 , <a class="el" href="structnebstruct__comment__struct.html#adb04c432f175bb5fc0b8b8bd676671fc">nebstruct_comment_struct</a>
 </li>
 <li>stalk_on_critical
-: <a class="el" href="structxodtemplate__service__struct.html#a5def81897ae4f9e0df0638377d416765">xodtemplate_service_struct</a>
-, <a class="el" href="structservice__struct.html#a7d2b73584c8f734c3115f6cc9ec14133">service_struct</a>
+: <a class="el" href="structservice__struct.html#a7d2b73584c8f734c3115f6cc9ec14133">service_struct</a>
+, <a class="el" href="structxodtemplate__service__struct.html#a5def81897ae4f9e0df0638377d416765">xodtemplate_service_struct</a>
 </li>
 <li>stalk_on_down
 : <a class="el" href="structhost__struct.html#a6385929b59a76d7248e7462f61febb6a">host_struct</a>
 , <a class="el" href="structxodtemplate__host__struct.html#a28891bc219f28a8df5873ff2a231498b">xodtemplate_host_struct</a>
 </li>
 <li>stalk_on_ok
-: <a class="el" href="structxodtemplate__service__struct.html#a73055779f4be9e2bfb140e80de330821">xodtemplate_service_struct</a>
-, <a class="el" href="structservice__struct.html#ab5a68bd42dac0b3c16e9f6b8271d2f06">service_struct</a>
+: <a class="el" href="structservice__struct.html#ab5a68bd42dac0b3c16e9f6b8271d2f06">service_struct</a>
+, <a class="el" href="structxodtemplate__service__struct.html#a73055779f4be9e2bfb140e80de330821">xodtemplate_service_struct</a>
 </li>
 <li>stalk_on_unknown
 : <a class="el" href="structservice__struct.html#a23c16f15e032a2d4ecab6bbf3ca401f5">service_struct</a>
@@ -288,69 +291,81 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="structxodtemplate__host__struct.html#ae4d3aee721727f3f43356d8a7f0603cd">xodtemplate_host_struct</a>
 </li>
 <li>stalk_on_warning
-: <a class="el" href="structxodtemplate__service__struct.html#aab0eefd40666aea4f3dcdb7edd70e07a">xodtemplate_service_struct</a>
-, <a class="el" href="structservice__struct.html#a301e35ebb1b47badd65bd8b6a40a3033">service_struct</a>
+: <a class="el" href="structservice__struct.html#a301e35ebb1b47badd65bd8b6a40a3033">service_struct</a>
+, <a class="el" href="structxodtemplate__service__struct.html#aab0eefd40666aea4f3dcdb7edd70e07a">xodtemplate_service_struct</a>
 </li>
 <li>start
 : <a class="el" href="structpr__chunk.html#a2356e51541dbe18e18c588fb076a95cb">pr_chunk</a>
 </li>
 <li>start_time
-: <a class="el" href="structscheduled__downtime__struct.html#a32045816273bd00e37dc146bbb1f339d">scheduled_downtime_struct</a>
-, <a class="el" href="structnebstruct__system__command__struct.html#aabd7905a54ec7a55939a6a9298498b35">nebstruct_system_command_struct</a>
-, <a class="el" href="structnebstruct__service__check__struct.html#a1cd90715ac40702b8c2b9f7510496a42">nebstruct_service_check_struct</a>
-, <a class="el" href="structnebstruct__downtime__struct.html#ac085289c9d691834dffb4d2373e3d1dd">nebstruct_downtime_struct</a>
-, <a class="el" href="structnebstruct__contact__notification__struct.html#a9a070678ebe3b88d6964a74479b0bead">nebstruct_contact_notification_struct</a>
-, <a class="el" href="structnebstruct__contact__notification__method__struct.html#acb093f4d7b5777e250fb7790b040917f">nebstruct_contact_notification_method_struct</a>
-, <a class="el" href="structnebstruct__notification__struct.html#a76b91a5bef8911755a66ea40b0529686">nebstruct_notification_struct</a>
-, <a class="el" href="structcheck__result__struct.html#a11d8f52db02cb2d119f061ea4ed434f7">check_result_struct</a>
-, <a class="el" href="structnebstruct__host__check__struct.html#a37c26cab657aa110dfc5852a1ac18c51">nebstruct_host_check_struct</a>
+: <a class="el" href="structnebstruct__system__command__struct.html#aabd7905a54ec7a55939a6a9298498b35">nebstruct_system_command_struct</a>
+, <a class="el" href="structscheduled__downtime__struct.html#a32045816273bd00e37dc146bbb1f339d">scheduled_downtime_struct</a>
 , <a class="el" href="structnebstruct__event__handler__struct.html#ab74da5a79b5f8adfcf77be9c2f19472e">nebstruct_event_handler_struct</a>
+, <a class="el" href="structcheck__result__struct.html#a11d8f52db02cb2d119f061ea4ed434f7">check_result_struct</a>
+, <a class="el" href="structnebstruct__contact__notification__struct.html#a9a070678ebe3b88d6964a74479b0bead">nebstruct_contact_notification_struct</a>
+, <a class="el" href="structnebstruct__service__check__struct.html#a1cd90715ac40702b8c2b9f7510496a42">nebstruct_service_check_struct</a>
+, <a class="el" href="structnebstruct__notification__struct.html#a76b91a5bef8911755a66ea40b0529686">nebstruct_notification_struct</a>
+, <a class="el" href="structnebstruct__contact__notification__method__struct.html#acb093f4d7b5777e250fb7790b040917f">nebstruct_contact_notification_method_struct</a>
+, <a class="el" href="structnebstruct__host__check__struct.html#a37c26cab657aa110dfc5852a1ac18c51">nebstruct_host_check_struct</a>
+, <a class="el" href="structnebstruct__downtime__struct.html#ac085289c9d691834dffb4d2373e3d1dd">nebstruct_downtime_struct</a>
 </li>
 <li>state
-: <a class="el" href="structnebstruct__statechange__struct.html#a7b2cae0c66a68f9324b2aa90c49587bd">nebstruct_statechange_struct</a>
-, <a class="el" href="structnebstruct__contact__notification__struct.html#adc9f283025796471ed8a99b039233a1d">nebstruct_contact_notification_struct</a>
-, <a class="el" href="structnebstruct__service__check__struct.html#a7d8a7b7153a5de7da40ce001553f2d80">nebstruct_service_check_struct</a>
-, <a class="el" href="structnebstruct__contact__notification__method__struct.html#a200908a45e2dd1e16fa5345e6026c6ef">nebstruct_contact_notification_method_struct</a>
+: <a class="el" href="structnebstruct__event__handler__struct.html#a89890cc3b92a3dc7e7b420b430ca0033">nebstruct_event_handler_struct</a>
+, <a class="el" href="structprofiler__item.html#a40890ec3577d1be021632e1776b88e28">profiler_item</a>
 , <a class="el" href="structarchived__event__struct.html#acf90e3df55e7ddb52cf5ce194d5d7ad9">archived_event_struct</a>
 , <a class="el" href="structnebstruct__host__check__struct.html#ac6cd8d46cd541bf4c2dcc950911a9900">nebstruct_host_check_struct</a>
+, <a class="el" href="structnebstruct__contact__notification__struct.html#adc9f283025796471ed8a99b039233a1d">nebstruct_contact_notification_struct</a>
 , <a class="el" href="structnebstruct__notification__struct.html#aa17728f6573aa3824420aa288cf4d993">nebstruct_notification_struct</a>
+, <a class="el" href="structnebstruct__contact__notification__method__struct.html#a200908a45e2dd1e16fa5345e6026c6ef">nebstruct_contact_notification_method_struct</a>
+, <a class="el" href="structnebstruct__service__check__struct.html#a7d8a7b7153a5de7da40ce001553f2d80">nebstruct_service_check_struct</a>
 , <a class="el" href="structnebstruct__acknowledgement__struct.html#a727a1fdcc28e6f9b231823a489898865">nebstruct_acknowledgement_struct</a>
-, <a class="el" href="structprofiler__item.html#a40890ec3577d1be021632e1776b88e28">profiler_item</a>
-, <a class="el" href="structnebstruct__event__handler__struct.html#a89890cc3b92a3dc7e7b420b430ca0033">nebstruct_event_handler_struct</a>
+, <a class="el" href="structnebstruct__statechange__struct.html#a7b2cae0c66a68f9324b2aa90c49587bd">nebstruct_statechange_struct</a>
+</li>
+<li>state_duration
+: <a class="el" href="structstatusdata__struct.html#a8f921a0fa38fe219ff15e9449aa0da67">statusdata_struct</a>
 </li>
 <li>state_info
 : <a class="el" href="structarchived__state__struct.html#ae721231a032bcd49e58cbe4eb0b7c7f0">archived_state_struct</a>
 </li>
 <li>state_type
-: <a class="el" href="structnebstruct__event__handler__struct.html#a40969875c93645303fc511e446c2c44c">nebstruct_event_handler_struct</a>
-, <a class="el" href="structnebstruct__service__check__struct.html#acb8897f645dae7a935040c5b8925129d">nebstruct_service_check_struct</a>
-, <a class="el" href="structarchived__event__struct.html#a1d9d9421d8195c875c3785089d9a0a64">archived_event_struct</a>
+: <a class="el" href="structnebstruct__service__check__struct.html#acb8897f645dae7a935040c5b8925129d">nebstruct_service_check_struct</a>
 , <a class="el" href="structnebstruct__statechange__struct.html#aaa46b443af5995e26848c8a8f7b98e32">nebstruct_statechange_struct</a>
+, <a class="el" href="structarchived__event__struct.html#a1d9d9421d8195c875c3785089d9a0a64">archived_event_struct</a>
+, <a class="el" href="structnebstruct__event__handler__struct.html#a40969875c93645303fc511e446c2c44c">nebstruct_event_handler_struct</a>
 , <a class="el" href="structnebstruct__host__check__struct.html#aeae897cf181e887d49129414b14f837a">nebstruct_host_check_struct</a>
 , <a class="el" href="structarchived__state__struct.html#a11e341502bada7a217d677ae8c1bf415">archived_state_struct</a>
 </li>
 <li>statechange_type
 : <a class="el" href="structnebstruct__statechange__struct.html#ab13915580010764a553a13fca20cdf2a">nebstruct_statechange_struct</a>
 </li>
+<li>status
+: <a class="el" href="structstatusdata__struct.html#a35fc38509a5e6fcc633b7c5519b5df4a">statusdata_struct</a>
+, <a class="el" href="structsort__struct.html#a0a5128116844fcd1bbe4ac7a23679f11">sort_struct</a>
+</li>
+<li>status_string
+: <a class="el" href="structstatusdata__struct.html#aa3e8987cf35960cb8889f24091afbd90">statusdata_struct</a>
+</li>
 <li>statusmap_image
-: <a class="el" href="structxodtemplate__hostextinfo__struct.html#a64fa5d2b284bdec87b49066703956c5e">xodtemplate_hostextinfo_struct</a>
+: <a class="el" href="structxodtemplate__host__struct.html#adba95b65d9a8a566b03d985578b8210b">xodtemplate_host_struct</a>
 , <a class="el" href="structhost__struct.html#a044e0b9bf603e2a771da6a826c305fbe">host_struct</a>
-, <a class="el" href="structxodtemplate__host__struct.html#adba95b65d9a8a566b03d985578b8210b">xodtemplate_host_struct</a>
+, <a class="el" href="structxodtemplate__hostextinfo__struct.html#a64fa5d2b284bdec87b49066703956c5e">xodtemplate_hostextinfo_struct</a>
 </li>
 <li>strvalue
 : <a class="el" href="structpr__chunk.html#a4fbd309f1c5ce00ebd9a475ee75585c7">pr_chunk</a>
 </li>
+<li>svc_description
+: <a class="el" href="structstatusdata__struct.html#aa2c6651a8965048cbcc643dac8ba7132">statusdata_struct</a>
+</li>
 <li>svcstatus
-: <a class="el" href="structservicesort__struct.html#a64492eb5455da51d1051d07366c5c31c">servicesort_struct</a>
-, <a class="el" href="structsortdata__struct.html#af36f25f00dc840c5538d3f66208e2fa7">sortdata_struct</a>
+: <a class="el" href="structsortdata__struct.html#af36f25f00dc840c5538d3f66208e2fa7">sortdata_struct</a>
 </li>
 <li>swday
 : <a class="el" href="structxodtemplate__daterange__struct.html#a36fad1abaab001ec8515e8cb490b8f4d">xodtemplate_daterange_struct</a>
 , <a class="el" href="structdaterange__struct.html#a043846fe0bcb8e61f2860508391f4f4b">daterange_struct</a>
 </li>
 <li>swday_offset
-: <a class="el" href="structxodtemplate__daterange__struct.html#ac0863934481574ff36e2e2b2a871c0a4">xodtemplate_daterange_struct</a>
-, <a class="el" href="structdaterange__struct.html#ac4f374102495f80f724c0e9fe1072eaa">daterange_struct</a>
+: <a class="el" href="structdaterange__struct.html#ac4f374102495f80f724c0e9fe1072eaa">daterange_struct</a>
+, <a class="el" href="structxodtemplate__daterange__struct.html#ac0863934481574ff36e2e2b2a871c0a4">xodtemplate_daterange_struct</a>
 </li>
 <li>syear
 : <a class="el" href="structxodtemplate__daterange__struct.html#ae861ad689acea3fbf222e2a3a80806aa">xodtemplate_daterange_struct</a>
@@ -361,7 +376,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:25 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:43 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

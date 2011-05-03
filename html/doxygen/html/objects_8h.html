@@ -117,13 +117,14 @@ Data Structures</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structservicedependency__struct.html">servicedependency_struct</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhostescalation__struct.html">hostescalation_struct</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhostdependency__struct.html">hostdependency_struct</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmodule__struct.html">module_struct</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhost__cursor__struct.html">host_cursor_struct</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a47e1946f21becf4f8d4efc333a70e3de">CURRENT_OBJECT_STRUCTURE_VERSION</a>&#160;&#160;&#160;307</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#aa18b952e639f0116d2fe00d1d2fb5782">MAX_STATE_HISTORY_ENTRIES</a>&#160;&#160;&#160;21</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#af533076ecb49802c42fbcdc1357721d6">MAX_CONTACT_ADDRESSES</a>&#160;&#160;&#160;6</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a32836e5c6b7bbb1b5338d014c916826d">NUM_OBJECT_SKIPLISTS</a>&#160;&#160;&#160;12</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a32836e5c6b7bbb1b5338d014c916826d">NUM_OBJECT_SKIPLISTS</a>&#160;&#160;&#160;13</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a54a63db9ec90856b8fa2cfa12057c0b5">HOST_SKIPLIST</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a30b4dfc5b12b0fd218baa64f00ff7dba">SERVICE_SKIPLIST</a>&#160;&#160;&#160;1</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a00849c387afdd01975072d4783367da6">COMMAND_SKIPLIST</a>&#160;&#160;&#160;2</td></tr>
@@ -136,6 +137,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a133cf916398dfcaba53cd2b98e7280c2">SERVICEDEPENDENCY_SKIPLIST</a>&#160;&#160;&#160;9</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a3cf901b14c723ffec62173dde58fc11d">HOSTESCALATION_SKIPLIST</a>&#160;&#160;&#160;10</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#adb36fb262b90c7605614a90b28a0308c">SERVICEESCALATION_SKIPLIST</a>&#160;&#160;&#160;11</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a9bffd31e87ce43706c62c7557c19585e">MODULE_SKIPLIST</a>&#160;&#160;&#160;12</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#aa6a4581bcc26c7f002fb8a51b2f80c32">VOLATILE_WITH_RENOTIFICATION_INTERVAL</a>&#160;&#160;&#160;2</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a624de032718fe5724ce49d0336fb874e">EC_CONNECTOR_NO</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ab447a28b56bda66b91ad4b0a054c753d">EC_CONNECTOR_OR</a>&#160;&#160;&#160;1</td></tr>
@@ -176,6 +178,7 @@ Typedefs</h2></td></tr>
 <a class="el" href="structhostescalation__struct.html">hostescalation_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a38eccdd74f57c6ea7dc7e5bc4336d255">hostescalation</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <br class="typebreak"/>
 <a class="el" href="structhostdependency__struct.html">hostdependency_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#afa8f00a70afe9cac9ffd5abb4f11d6d2">hostdependency</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structmodule__struct.html">module_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a0ea4f633a5f9f88e1603aaeb1f2b2e69">module</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structhost__cursor__struct.html">host_cursor_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ae8db621b0647669766192d6feff4d053">host_cursor</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -219,6 +222,8 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicesmember__struct.html">servicesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ad5e870f6bf4ab34988578bae1a2fa050">add_service_link_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *, <a class="el" href="structservice__struct.html">service</a> *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a7957cfe3bf453e13838fdcc13daee19a">add_serviceescalation_condition</a> (<a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *, char *, char *, int, int, int, int, int, int, int)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a8a36970d6e8cbc8ced4ea06696bcc061">add_hostescalation_condition</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *, char *, char *, int, int, int, int, int, int, int)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmodule__struct.html">module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a866b99e879365d792cf9e5e8ceee0901">add_module</a> (char *, char *, char *, char *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a0b65ee4f0612ded557b04b8e3a8ecfce">add_module_objects_to_neb</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a6a85d803fafc67c5f34f9611aa5922bc">init_object_skiplists</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#aadc4f83483390bb4befa70fa24b1377c">free_object_skiplists</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a01765f4cb9556662cec40d997ad067c4">skiplist_compare_text</a> (const char *val1a, const char *val1b, const char *val2a, const char *val2b)</td></tr>
@@ -234,6 +239,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a95de4036f54b6f81a527315b182ba8e5">skiplist_compare_serviceescalation</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#acbc8f06dad61395988c7c4c70a7ad8c7">skiplist_compare_hostdependency</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a2136d3fad9c984a0988ee2668a3af945">skiplist_compare_servicedependency</a> (void *a, void *b)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a765ed221988369d11cc4fd671a194913">skiplist_compare_module</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ad3efd9c6199159dab11260b5303e3cfb">get_host_count</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a2f0251deca5fb3be62af1f1f6b6efe84">get_service_count</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeperiod__struct.html">timeperiod</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a259b3b41d6d51844fa7123869f1f3d4b">find_timeperiod</a> (char *)</td></tr>
@@ -244,6 +250,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroup__struct.html">contactgroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a88b4820764b2c36dd1b0e862504c228b">find_contactgroup</a> (char *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcommand__struct.html">command</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ad0d212bd3167204ce24a4b7781fe72ee">find_command</a> (char *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservice__struct.html">service</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ae7077605975d6f0a0819b0da433056fe">find_service</a> (char *, char *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmodule__struct.html">module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ac405404b7f044423319d24cd94b8f801">find_module</a> (char *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#adab0195fbba5a7b7ffc45b64bd161735">get_first_hostescalation_by_host</a> (char *, void **)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#a2305d74d72b0432933c359076eb448f6">get_next_hostescalation_by_host</a> (char *, void **)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8h.html#ab25339f9ccbaa6b4a07bd7f6e34b11c3">get_first_serviceescalation_by_service</a> (char *, char *, void **)</td></tr>
@@ -344,7 +351,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00079">79</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00080">80</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +366,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00077">77</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00078">78</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -374,7 +381,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00078">78</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00079">79</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -468,12 +475,27 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9bffd31e87ce43706c62c7557c19585e"></a><!-- doxytag: member="objects.h::MODULE_SKIPLIST" ref="a9bffd31e87ce43706c62c7557c19585e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MODULE_SKIPLIST&#160;&#160;&#160;12</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00069">69</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a32836e5c6b7bbb1b5338d014c916826d"></a><!-- doxytag: member="objects.h::NUM_OBJECT_SKIPLISTS" ref="a32836e5c6b7bbb1b5338d014c916826d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define NUM_OBJECT_SKIPLISTS&#160;&#160;&#160;12</td>
+          <td class="memname">#define NUM_OBJECT_SKIPLISTS&#160;&#160;&#160;13</td>
         </tr>
       </table>
 </div>
@@ -569,7 +591,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00073">73</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00074">74</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -611,7 +633,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00085">85</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00086">86</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +726,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00083">83</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00084">84</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -773,6 +795,19 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0ea4f633a5f9f88e1603aaeb1f2b2e69"></a><!-- doxytag: member="objects.h::module" ref="a0ea4f633a5f9f88e1603aaeb1f2b2e69" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structmodule__struct.html">module_struct</a> <a class="el" href="structmodule__struct.html">module</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a4d18930f3e6c63b371221bd9c09c731c"></a><!-- doxytag: member="objects.h::objectlist" ref="a4d18930f3e6c63b371221bd9c09c731c" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -797,7 +832,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8h_source.html#l00084">84</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
+<p>Definition at line <a class="el" href="objects_8h_source.html#l00085">85</a> of file <a class="el" href="objects_8h_source.html">objects.h</a>.</p>
 
 </div>
 </div>
@@ -918,7 +953,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00895">895</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00921">921</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -947,7 +982,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01828">1828</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01854">1854</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1102,7 +1137,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01268">1268</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01294">1294</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1131,7 +1166,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01529">1529</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01555">1555</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1160,7 +1195,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00982">982</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01008">1008</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1189,7 +1224,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02383">2383</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02409">2409</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1218,7 +1253,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02391">2391</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02417">2417</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1247,7 +1282,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01812">1812</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01838">1838</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1276,7 +1311,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02012">2012</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02038">2038</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1305,7 +1340,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01467">1467</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01493">1493</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1334,7 +1369,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00947">947</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00973">973</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1363,7 +1398,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02348">2348</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02374">2374</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1392,7 +1427,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01778">1778</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01804">1804</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1421,7 +1456,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01977">1977</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02003">2003</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1456,7 +1491,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01459">1459</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01485">1485</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1526,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00990">990</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01016">1016</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1526,7 +1561,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02431">2431</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02457">2457</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1561,7 +1596,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01820">1820</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01846">1846</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1656,7 +1691,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00530">530</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00556">556</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1685,7 +1720,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00472">472</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00498">498</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2038,7 +2073,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00600">600</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00626">626</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2109,7 +2144,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02103">2103</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02129">2129</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2138,7 +2173,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01389">1389</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01415">1415</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2167,7 +2202,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01071">1071</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01097">1097</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2232,7 +2267,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02177">2177</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02203">2203</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2315,7 +2350,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02338">2338</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02364">2364</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2362,7 +2397,65 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00998">998</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01024">1024</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a866b99e879365d792cf9e5e8ceee0901"></a><!-- doxytag: member="objects.h::add_module" ref="a866b99e879365d792cf9e5e8ceee0901" args="(char *, char *, char *, char *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmodule__struct.html">module</a>* add_module </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02504">2504</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0b65ee4f0612ded557b04b8e3a8ecfce"></a><!-- doxytag: member="objects.h::add_module_objects_to_neb" ref="a0b65ee4f0612ded557b04b8e3a8ecfce" args="(void)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int add_module_objects_to_neb </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -2391,7 +2484,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00855">855</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00881">881</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2702,7 +2795,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01564">1564</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01590">1590</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2791,7 +2884,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02020">2020</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02046">2046</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2820,7 +2913,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00921">921</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00947">947</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2849,7 +2942,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01424">1424</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01450">1450</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2884,7 +2977,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01199">1199</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01225">1225</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2978,7 +3071,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01891">1891</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01917">1917</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3061,7 +3154,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02343">2343</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02369">2369</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3108,7 +3201,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01126">1126</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01152">1152</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3137,7 +3230,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00409">409</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00435">435</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3172,7 +3265,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00567">567</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00593">593</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3213,7 +3306,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00494">494</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00520">520</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3232,7 +3325,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02562">2562</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02672">2672</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3251,7 +3344,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02536">2536</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02646">2646</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3270,7 +3363,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02549">2549</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02659">2659</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3289,7 +3382,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02497">2497</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02607">2607</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3308,7 +3401,26 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02510">2510</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02620">2620</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac405404b7f044423319d24cd94b8f801"></a><!-- doxytag: member="objects.h::find_module" ref="ac405404b7f044423319d24cd94b8f801" args="(char *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmodule__struct.html">module</a>* find_module </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02699">2699</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3337,7 +3449,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02575">2575</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02685">2685</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3356,7 +3468,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02523">2523</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02633">2633</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3375,7 +3487,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02484">2484</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02594">2594</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3394,7 +3506,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l03240">3240</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03362">3362</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3413,7 +3525,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00127">127</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00136">136</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3442,7 +3554,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02644">2644</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02766">2766</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3471,7 +3583,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02594">2594</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02716">2716</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3506,7 +3618,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02668">2668</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02790">2790</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3541,7 +3653,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02618">2618</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02740">2740</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3560,7 +3672,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00382">382</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00408">408</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3589,7 +3701,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02656">2656</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02778">2778</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3618,7 +3730,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02606">2606</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02728">2728</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3653,7 +3765,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02681">2681</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02803">2803</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3688,7 +3800,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02631">2631</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02753">2753</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3707,7 +3819,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00391">391</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00417">417</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3726,7 +3838,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00101">101</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00108">108</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3755,7 +3867,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02951">2951</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03073">3073</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3811,7 +3923,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l03040">3040</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03162">3162</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3867,7 +3979,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02926">2926</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03048">3048</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3896,7 +4008,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02994">2994</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03116">3116</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3925,7 +4037,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l03082">3082</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03204">3204</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3954,7 +4066,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02756">2756</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02878">2878</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3983,7 +4095,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02788">2788</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02910">2910</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4012,7 +4124,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02861">2861</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02983">2983</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4041,7 +4153,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02883">2883</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03005">3005</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4097,7 +4209,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02905">2905</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03027">3027</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4116,7 +4228,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02799">2799</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02921">2921</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4135,7 +4247,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02829">2829</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02951">2951</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4154,7 +4266,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02814">2814</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02936">2936</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4173,7 +4285,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02845">2845</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02967">2967</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4214,7 +4326,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00078">78</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00085">85</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4243,7 +4355,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00202">202</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00211">211</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4272,7 +4384,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00238">238</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00247">247</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4301,7 +4413,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00256">256</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00265">265</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4330,7 +4442,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00166">166</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00175">175</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4359,7 +4471,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00346">346</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00355">355</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4388,7 +4500,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00310">310</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00319">319</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4417,7 +4529,36 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00274">274</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00283">283</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a765ed221988369d11cc4fd671a194913"></a><!-- doxytag: member="objects.h::skiplist_compare_module" ref="a765ed221988369d11cc4fd671a194913" args="(void *a, void *b)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int skiplist_compare_module </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00390">390</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4446,7 +4587,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00184">184</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00193">193</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4475,7 +4616,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00364">364</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00373">373</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4504,7 +4645,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00328">328</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00337">337</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4533,7 +4674,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00292">292</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00301">301</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4574,7 +4715,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00137">137</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00146">146</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4603,7 +4744,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00220">220</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00229">229</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4612,7 +4753,7 @@ Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="objects_8h.html">objects.h</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:24 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:43 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

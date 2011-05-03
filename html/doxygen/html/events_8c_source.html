@@ -179,13 +179,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00095"></a>00095 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="keywordtype">int</span>      <a class="code" href="base_2config_8c.html#a32244f609ee91c91f754bd38fea7ae03">event_profiling_enabled</a>;
 <a name="l00096"></a>00096 <span class="preprocessor">#endif</span>
 <a name="l00097"></a>00097 <span class="preprocessor"></span>
-<a name="l00098"></a><a class="code" href="test__events_8c.html#a5fc3341e76625e95ab611a9f9237b839">00098</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="checks_8c.html#a5fc3341e76625e95ab611a9f9237b839">event_list_low</a>=NULL;
-<a name="l00099"></a><a class="code" href="test__events_8c.html#aef1b09ea5f55dbb0015d8094bab1f1ec">00099</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="checks_8c.html#aef1b09ea5f55dbb0015d8094bab1f1ec">event_list_low_tail</a>=NULL;
-<a name="l00100"></a><a class="code" href="test__events_8c.html#aa5e8cad8fba97edbd96b5464e32cc752">00100</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="events_8c.html#aa5e8cad8fba97edbd96b5464e32cc752">event_list_high</a>=NULL;
-<a name="l00101"></a><a class="code" href="test__events_8c.html#ac864767c3f86198b432832256fcf29c7">00101</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="events_8c.html#ac864767c3f86198b432832256fcf29c7">event_list_high_tail</a>=NULL;
+<a name="l00098"></a><a class="code" href="base_2utils_8c.html#a5fc3341e76625e95ab611a9f9237b839">00098</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="checks_8c.html#a5fc3341e76625e95ab611a9f9237b839">event_list_low</a>=NULL;
+<a name="l00099"></a><a class="code" href="events_8c.html#aef1b09ea5f55dbb0015d8094bab1f1ec">00099</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="checks_8c.html#aef1b09ea5f55dbb0015d8094bab1f1ec">event_list_low_tail</a>=NULL;
+<a name="l00100"></a><a class="code" href="base_2utils_8c.html#aa5e8cad8fba97edbd96b5464e32cc752">00100</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="events_8c.html#aa5e8cad8fba97edbd96b5464e32cc752">event_list_high</a>=NULL;
+<a name="l00101"></a><a class="code" href="events_8c.html#ac864767c3f86198b432832256fcf29c7">00101</a> <a class="code" href="structtimed__event__struct.html">timed_event</a> *<a class="code" href="events_8c.html#ac864767c3f86198b432832256fcf29c7">event_list_high_tail</a>=NULL;
 <a name="l00102"></a>00102 
-<a name="l00103"></a>00103 <span class="keyword">extern</span> <a class="code" href="structhost__struct.html">host</a>     *<a class="code" href="checks_8c.html#a51302445a334b0bf861727194af89ef9">host_list</a>;
-<a name="l00104"></a>00104 <span class="keyword">extern</span> <a class="code" href="structservice__struct.html">service</a>  *<a class="code" href="checks_8c.html#a6e707761b44bcc37041ed00343a9d3f1">service_list</a>;
+<a name="l00103"></a>00103 <span class="keyword">extern</span> <a class="code" href="structhost__struct.html">host</a>     *<a class="code" href="checks_8c.html#a7efb54fbdc5a556ffdbe25c56e6e7469">host_list</a>;
+<a name="l00104"></a>00104 <span class="keyword">extern</span> <a class="code" href="structservice__struct.html">service</a>  *<a class="code" href="checks_8c.html#aa680c491c2d6c99868a3789592868c15">service_list</a>;
 <a name="l00105"></a>00105 
 <a name="l00106"></a><a class="code" href="idomod_8c.html#a756e2bda1d1cf5aaf7a90a145b82543a">00106</a> <a class="code" href="structsched__info__struct.html">sched_info</a> <a class="code" href="base_2config_8c.html#a756e2bda1d1cf5aaf7a90a145b82543a">scheduling_info</a>;
 <a name="l00107"></a>00107 
@@ -487,7 +487,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00403"></a>00403         <span class="keywordflow">for</span>(temp_service=service_list;temp_service!=NULL;temp_service=temp_service-&gt;<a class="code" href="structservice__struct.html#a32394c09b9ce32d454c99f8a90e77e8b">next</a>){
 <a name="l00404"></a>00404 
 <a name="l00405"></a>00405                 <span class="comment">/* update status of all services (scheduled or not) */</span>
-<a name="l00406"></a>00406                 <a class="code" href="test-stubs_8c.html#ab3bf2b99590a08aa7b30aea2e6796949">update_service_status</a>(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l00406"></a>00406                 update_service_status(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l00407"></a>00407 
 <a name="l00408"></a>00408                 <span class="comment">/* skip most services that shouldn&#39;t be scheduled */</span>
 <a name="l00409"></a>00409                 <span class="keywordflow">if</span>(temp_service-&gt;should_be_scheduled==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
@@ -622,7 +622,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00538"></a>00538         <span class="keywordflow">for</span>(temp_host=host_list;temp_host!=NULL;temp_host=temp_host-&gt;<a class="code" href="structhost__struct.html#a1978313b0f984953066cdb6c1c4ee31c">next</a>){
 <a name="l00539"></a>00539 
 <a name="l00540"></a>00540                 <span class="comment">/* update status of all hosts (scheduled or not) */</span>
-<a name="l00541"></a>00541                 <a class="code" href="test-stubs_8c.html#a76e923124f22e937a04f608066b5b505">update_host_status</a>(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l00541"></a>00541                 update_host_status(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l00542"></a>00542 
 <a name="l00543"></a>00543                 <span class="comment">/* skip most hosts that shouldn&#39;t be scheduled */</span>
 <a name="l00544"></a>00544                 <span class="keywordflow">if</span>(temp_host-&gt;should_be_scheduled==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
@@ -1342,7 +1342,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01258"></a>01258 
 <a name="l01259"></a>01259                                         temp_event-&gt;<a class="code" href="structtimed__event__struct.html#ab587fd4005d25a52e689ac52cc19dd35">run_time</a>=temp_service-&gt;next_check;
 <a name="l01260"></a>01260                                         <a class="code" href="events_8c.html#aa794c69458107f2f37800beb11944f5a">reschedule_event</a>(temp_event,&amp;event_list_low,&amp;event_list_low_tail);
-<a name="l01261"></a>01261                                         <a class="code" href="test-stubs_8c.html#ab3bf2b99590a08aa7b30aea2e6796949">update_service_status</a>(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01261"></a>01261                                         update_service_status(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01262"></a>01262 
 <a name="l01263"></a>01263                                         run_event=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
 <a name="l01264"></a>01264                                         }
@@ -1386,7 +1386,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01302"></a>01302 
 <a name="l01303"></a>01303                                         temp_event-&gt;<a class="code" href="structtimed__event__struct.html#ab587fd4005d25a52e689ac52cc19dd35">run_time</a>=temp_host-&gt;next_check;
 <a name="l01304"></a>01304                                         <a class="code" href="events_8c.html#aa794c69458107f2f37800beb11944f5a">reschedule_event</a>(temp_event,&amp;event_list_low,&amp;event_list_low_tail);
-<a name="l01305"></a>01305                                         <a class="code" href="test-stubs_8c.html#a76e923124f22e937a04f608066b5b505">update_host_status</a>(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01305"></a>01305                                         update_host_status(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01306"></a>01306 
 <a name="l01307"></a>01307                                         run_event=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
 <a name="l01308"></a>01308                                         }
@@ -1458,7 +1458,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01374"></a>01374                 <span class="comment">/* update status information occassionally - NagVis watches the NDOUtils DB to see if Icinga is alive */</span>
 <a name="l01375"></a>01375                 <span class="keywordflow">if</span>((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)(current_time-last_status_update)&gt;5){
 <a name="l01376"></a>01376                         last_status_update=<a class="code" href="status_8c.html#ab1938d5563a4d7b5ef9b9f74a685508b">current_time</a>;
-<a name="l01377"></a>01377                         <a class="code" href="test__checks_8c.html#ad3b120c05c744372ff13d1c1fcca6786">update_program_status</a>(<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01377"></a>01377                         update_program_status(<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01378"></a>01378                         }
 <a name="l01379"></a>01379 
 <a name="l01380"></a>01380 <span class="comment">/* make sure gcc3 won&#39;t hit here */</span>
@@ -1601,7 +1601,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01517"></a>01517                 <a class="code" href="logging_8c.html#a9011e466a55abe0e359455a18f86c3ef">log_debug_info</a>(<a class="code" href="logging_8h.html#a9490695bc553bfa40b8131fca5c0f07b">DEBUGL_EVENTS</a>,0,<span class="stringliteral">&quot;** Status Data Save Event\n&quot;</span>);
 <a name="l01518"></a>01518 
 <a name="l01519"></a>01519                 <span class="comment">/* save all status data (program, host, and service) */</span>
-<a name="l01520"></a>01520                 <a class="code" href="test-stubs_8c.html#a46c806098e11bca17b2508c7b8239b3a">update_all_status_data</a>();
+<a name="l01520"></a>01520                 update_all_status_data();
 <a name="l01521"></a>01521                 <span class="keywordflow">break</span>;
 <a name="l01522"></a>01522 
 <a name="l01523"></a>01523         <span class="keywordflow">case</span> <a class="code" href="icinga_8h.html#a73c9d53561204c695658e50a1266ac18">EVENT_SCHEDULED_DOWNTIME</a>:
@@ -1610,7 +1610,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01526"></a>01526 
 <a name="l01527"></a>01527                 <span class="comment">/* process scheduled downtime info */</span>
 <a name="l01528"></a>01528                 <span class="keywordflow">if</span>(event-&gt;<a class="code" href="structtimed__event__struct.html#acf4bcbbb5e85490b262342efaba53be7">event_data</a>){
-<a name="l01529"></a>01529                         <a class="code" href="test-stubs_8c.html#a370cc878705bef1b9f57fea20e3cb35a">handle_scheduled_downtime_by_id</a>(*(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> *)event-&gt;<a class="code" href="structtimed__event__struct.html#acf4bcbbb5e85490b262342efaba53be7">event_data</a>);
+<a name="l01529"></a>01529                         handle_scheduled_downtime_by_id(*(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> *)event-&gt;<a class="code" href="structtimed__event__struct.html#acf4bcbbb5e85490b262342efaba53be7">event_data</a>);
 <a name="l01530"></a>01530                         free(event-&gt;<a class="code" href="structtimed__event__struct.html#acf4bcbbb5e85490b262342efaba53be7">event_data</a>);
 <a name="l01531"></a>01531                         <span class="keyword">event</span>-&gt;event_data=NULL;
 <a name="l01532"></a>01532                         }
@@ -1637,7 +1637,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01553"></a>01553                 <a class="code" href="logging_8c.html#a9011e466a55abe0e359455a18f86c3ef">log_debug_info</a>(<a class="code" href="logging_8h.html#a9490695bc553bfa40b8131fca5c0f07b">DEBUGL_EVENTS</a>,0,<span class="stringliteral">&quot;** Expire Downtime Event\n&quot;</span>);
 <a name="l01554"></a>01554 
 <a name="l01555"></a>01555                 <span class="comment">/* check for expired scheduled downtime entries */</span>
-<a name="l01556"></a>01556                 <a class="code" href="test-stubs_8c.html#aa646a5574e0cd9113387c77f38d53e07">check_for_expired_downtime</a>();
+<a name="l01556"></a>01556                 check_for_expired_downtime();
 <a name="l01557"></a>01557                 <span class="keywordflow">break</span>;
 <a name="l01558"></a>01558 
 <a name="l01559"></a>01559         <span class="keywordflow">case</span> <a class="code" href="icinga_8h.html#aef6f5bd749031b9a598e393cad5c7a96">EVENT_RESCHEDULE_CHECKS</a>:
@@ -1653,7 +1653,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01569"></a>01569                 <a class="code" href="logging_8c.html#a9011e466a55abe0e359455a18f86c3ef">log_debug_info</a>(<a class="code" href="logging_8h.html#a9490695bc553bfa40b8131fca5c0f07b">DEBUGL_EVENTS</a>,0,<span class="stringliteral">&quot;** Expire Comment Event\n&quot;</span>);
 <a name="l01570"></a>01570 
 <a name="l01571"></a>01571                 <span class="comment">/* check for expired comment */</span>
-<a name="l01572"></a>01572                 <a class="code" href="test-stubs_8c.html#ae93aafd0eb6ffc59bc9038eabf5a6a40">check_for_expired_comment</a>((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)event-&gt;<a class="code" href="structtimed__event__struct.html#acf4bcbbb5e85490b262342efaba53be7">event_data</a>);
+<a name="l01572"></a>01572                 check_for_expired_comment((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)event-&gt;<a class="code" href="structtimed__event__struct.html#acf4bcbbb5e85490b262342efaba53be7">event_data</a>);
 <a name="l01573"></a>01573                 <span class="keywordflow">break</span>;
 <a name="l01574"></a>01574 
 <a name="l01575"></a>01575         <span class="keywordflow">case</span> <a class="code" href="icinga_8h.html#a3a2267fca063eb383b6f637422ed2cca">EVENT_USER_FUNCTION</a>:
@@ -1865,12 +1865,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01781"></a>01781                 <span class="keywordflow">if</span>(temp_event-&gt;<a class="code" href="structtimed__event__struct.html#a07431a09f5ea160cc672347851843060">event_type</a>==<a class="code" href="icinga_8h.html#adac8bc2857b48c06d324ceda474084c8">EVENT_HOST_CHECK</a>){
 <a name="l01782"></a>01782                         temp_event-&gt;<a class="code" href="structtimed__event__struct.html#ab587fd4005d25a52e689ac52cc19dd35">run_time</a>=new_run_time;
 <a name="l01783"></a>01783                         temp_host-&gt;next_check=new_run_time;
-<a name="l01784"></a>01784                         <a class="code" href="test-stubs_8c.html#a76e923124f22e937a04f608066b5b505">update_host_status</a>(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01784"></a>01784                         update_host_status(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01785"></a>01785                         }
 <a name="l01786"></a>01786                 <span class="keywordflow">else</span>{
 <a name="l01787"></a>01787                         temp_event-&gt;<a class="code" href="structtimed__event__struct.html#ab587fd4005d25a52e689ac52cc19dd35">run_time</a>=new_run_time;
 <a name="l01788"></a>01788                         temp_service-&gt;next_check=new_run_time;
-<a name="l01789"></a>01789                         <a class="code" href="test-stubs_8c.html#ab3bf2b99590a08aa7b30aea2e6796949">update_service_status</a>(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01789"></a>01789                         update_service_status(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01790"></a>01790                         }
 <a name="l01791"></a>01791 
 <a name="l01792"></a>01792                 current_icd_offset+=inter_check_delay;
@@ -1974,7 +1974,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01890"></a>01890                 temp_service-&gt;next_notification=<a class="code" href="base_2notifications_8c.html#a795786e176191288166f25c6c1b9d595">get_next_service_notification_time</a>(temp_service,temp_service-&gt;last_notification);
 <a name="l01891"></a>01891 
 <a name="l01892"></a>01892                 <span class="comment">/* update the status data */</span>
-<a name="l01893"></a>01893                 <a class="code" href="test-stubs_8c.html#ab3bf2b99590a08aa7b30aea2e6796949">update_service_status</a>(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01893"></a>01893                 update_service_status(temp_service,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01894"></a>01894                 }
 <a name="l01895"></a>01895 
 <a name="l01896"></a>01896         <span class="comment">/* adjust host timestamps */</span>
@@ -1991,7 +1991,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01907"></a>01907                 temp_host-&gt;next_host_notification=<a class="code" href="base_2notifications_8c.html#a735ba2035f5a2c532f8b333c531daf61">get_next_host_notification_time</a>(temp_host,temp_host-&gt;last_host_notification);
 <a name="l01908"></a>01908 
 <a name="l01909"></a>01909                 <span class="comment">/* update the status data */</span>
-<a name="l01910"></a>01910                 <a class="code" href="test-stubs_8c.html#a76e923124f22e937a04f608066b5b505">update_host_status</a>(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01910"></a>01910                 update_host_status(temp_host,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01911"></a>01911                 }
 <a name="l01912"></a>01912 
 <a name="l01913"></a>01913         <span class="comment">/* adjust program timestamps */</span>
@@ -2000,7 +2000,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l01916"></a>01916         <a class="code" href="events_8c.html#a7dc07fa278cfb1bb6556c9c2e38e40ca">adjust_timestamp_for_time_change</a>(last_time,current_time,time_difference,&amp;<a class="code" href="broker_8c.html#aeb85ffd1c5c7f91fe9ccb3e4f58584a2">last_command_check</a>);
 <a name="l01917"></a>01917 
 <a name="l01918"></a>01918         <span class="comment">/* update the status data */</span>
-<a name="l01919"></a>01919         <a class="code" href="test__checks_8c.html#ad3b120c05c744372ff13d1c1fcca6786">update_program_status</a>(<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l01919"></a>01919         update_program_status(<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l01920"></a>01920 
 <a name="l01921"></a>01921         <span class="keywordflow">return</span>;
 <a name="l01922"></a>01922         }
@@ -2064,7 +2064,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="events_8c.html">events.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:18 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:38 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

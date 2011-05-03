@@ -116,39 +116,40 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00032"></a><a class="code" href="xpddefault_8h.html#af2eab6a3f46612cd9f20940e0340ea5a">00032</a> <span class="preprocessor">#define DEFAULT_HOST_PERFDATA_FILE_TEMPLATE &quot;[HOSTPERFDATA]\t$TIMET$\t$HOSTNAME$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$&quot;</span>
 <a name="l00033"></a><a class="code" href="xpddefault_8h.html#a469d21857e7f105c7cf4bcaeb8d343c0">00033</a> <span class="preprocessor"></span><span class="preprocessor">#define DEFAULT_SERVICE_PERFDATA_FILE_TEMPLATE &quot;[SERVICEPERFDATA]\t$TIMET$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$&quot;</span>
 <a name="l00034"></a>00034 <span class="preprocessor"></span>
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a5a9a859e7d9dc361268081d50434cbaf">xpddefault_initialize_performance_data</a>(<span class="keywordtype">char</span> *);
-<a name="l00038"></a>00038 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#ac8b2923ea27c5f9797b8e94e01650f6f">xpddefault_cleanup_performance_data</a>(<span class="keywordtype">char</span> *);
-<a name="l00039"></a>00039 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a468863e068c1ee4a1b4c27f337eeed83">xpddefault_grab_config_info</a>(<span class="keywordtype">char</span> *);
-<a name="l00040"></a>00040 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a192c0e3fefebcdcb5a3dd65d6d787b8a">xpddefault_grab_config_directives</a>(<span class="keywordtype">char</span> *);
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#abcadddc41c1dddbe5979b24006df4fc1">xpddefault_update_service_performance_data</a>(<a class="code" href="structservice__struct.html">service</a> *);
-<a name="l00043"></a>00043 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a8809504e2621e6957179e6ea6363b809">xpddefault_update_host_performance_data</a>(<a class="code" href="structhost__struct.html">host</a> *);
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a781483d6017b876e41d9d38f6f568af2">xpddefault_run_service_performance_data_command</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structservice__struct.html">service</a> *);
-<a name="l00046"></a>00046 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a5bceb427c1a52801ddb4213c6f34b877">xpddefault_run_host_performance_data_command</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structhost__struct.html">host</a> *);
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a8e625625eef815852cd6ac66fc05cb2d">xpddefault_update_service_performance_data_file</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structservice__struct.html">service</a> *);
-<a name="l00049"></a>00049 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a311414a19b68a0c6b02253908bdc282f">xpddefault_update_host_performance_data_file</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structhost__struct.html">host</a> *);
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a0fa7db34f2487cbc75c398119ab63c0b">xpddefault_preprocess_file_templates</a>(<span class="keywordtype">char</span> *);
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#ada557a9c550d1feda9c1de23bef7f38b">xpddefault_open_host_perfdata_file</a>(<span class="keywordtype">void</span>);
-<a name="l00054"></a>00054 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a92960e981f7a8940f73f186a9033607f">xpddefault_open_service_perfdata_file</a>(<span class="keywordtype">void</span>);
-<a name="l00055"></a>00055 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#ae459cd430509ea493c7f1e59e5db948a">xpddefault_close_host_perfdata_file</a>(<span class="keywordtype">void</span>);
-<a name="l00056"></a>00056 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a602488430def5ac0f7ba41acab54501a">xpddefault_close_service_perfdata_file</a>(<span class="keywordtype">void</span>);
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a09a4ed97aacd556194069afb5255e8ab">xpddefault_process_host_perfdata_file</a>(<span class="keywordtype">void</span>);
-<a name="l00059"></a>00059 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#acc97e86cb8dadbcdd87bfbfa22e0297a">xpddefault_process_service_perfdata_file</a>(<span class="keywordtype">void</span>);
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 <span class="preprocessor">#endif</span>
+<a name="l00035"></a><a class="code" href="xpddefault_8h.html#a8033696cf5ff86718f95998461a5ab8d">00035</a> <span class="preprocessor">#define DEFAULT_HOST_PERFDATA_PROCESS_EMPTY_RESULTS     1</span>
+<a name="l00036"></a><a class="code" href="xpddefault_8h.html#a48c99a85fa36ae61ddc5ceeb227c1cc3">00036</a> <span class="preprocessor"></span><span class="preprocessor">#define DEFAULT_SERVICE_PERFDATA_PROCESS_EMPTY_RESULTS  1</span>
+<a name="l00037"></a>00037 <span class="preprocessor"></span>
+<a name="l00038"></a>00038 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a5a9a859e7d9dc361268081d50434cbaf">xpddefault_initialize_performance_data</a>(<span class="keywordtype">char</span> *);
+<a name="l00039"></a>00039 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#ac8b2923ea27c5f9797b8e94e01650f6f">xpddefault_cleanup_performance_data</a>(<span class="keywordtype">char</span> *);
+<a name="l00040"></a>00040 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a468863e068c1ee4a1b4c27f337eeed83">xpddefault_grab_config_info</a>(<span class="keywordtype">char</span> *);
+<a name="l00041"></a>00041 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a192c0e3fefebcdcb5a3dd65d6d787b8a">xpddefault_grab_config_directives</a>(<span class="keywordtype">char</span> *);
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#abcadddc41c1dddbe5979b24006df4fc1">xpddefault_update_service_performance_data</a>(<a class="code" href="structservice__struct.html">service</a> *);
+<a name="l00044"></a>00044 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a8809504e2621e6957179e6ea6363b809">xpddefault_update_host_performance_data</a>(<a class="code" href="structhost__struct.html">host</a> *);
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a781483d6017b876e41d9d38f6f568af2">xpddefault_run_service_performance_data_command</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structservice__struct.html">service</a> *);
+<a name="l00047"></a>00047 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a5bceb427c1a52801ddb4213c6f34b877">xpddefault_run_host_performance_data_command</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structhost__struct.html">host</a> *);
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a8e625625eef815852cd6ac66fc05cb2d">xpddefault_update_service_performance_data_file</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structservice__struct.html">service</a> *);
+<a name="l00050"></a>00050 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a311414a19b68a0c6b02253908bdc282f">xpddefault_update_host_performance_data_file</a>(<a class="code" href="structicinga__macros.html">icinga_macros</a> *mac, <a class="code" href="structhost__struct.html">host</a> *);
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a0fa7db34f2487cbc75c398119ab63c0b">xpddefault_preprocess_file_templates</a>(<span class="keywordtype">char</span> *);
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#ada557a9c550d1feda9c1de23bef7f38b">xpddefault_open_host_perfdata_file</a>(<span class="keywordtype">void</span>);
+<a name="l00055"></a>00055 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a92960e981f7a8940f73f186a9033607f">xpddefault_open_service_perfdata_file</a>(<span class="keywordtype">void</span>);
+<a name="l00056"></a>00056 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#ae459cd430509ea493c7f1e59e5db948a">xpddefault_close_host_perfdata_file</a>(<span class="keywordtype">void</span>);
+<a name="l00057"></a>00057 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a602488430def5ac0f7ba41acab54501a">xpddefault_close_service_perfdata_file</a>(<span class="keywordtype">void</span>);
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#a09a4ed97aacd556194069afb5255e8ab">xpddefault_process_host_perfdata_file</a>(<span class="keywordtype">void</span>);
+<a name="l00060"></a>00060 <span class="keywordtype">int</span> <a class="code" href="xpddefault_8c.html#acc97e86cb8dadbcdd87bfbfa22e0297a">xpddefault_process_service_perfdata_file</a>(<span class="keywordtype">void</span>);
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="xpddefault_8h.html">xpddefault.h</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:23 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:42 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

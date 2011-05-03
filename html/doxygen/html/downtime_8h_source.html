@@ -161,12 +161,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00077"></a>00077 
 <a name="l00078"></a>00078 <span class="keywordtype">int</span> register_downtime(<span class="keywordtype">int</span>,<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>);
 <a name="l00079"></a>00079 <span class="keywordtype">int</span> handle_scheduled_downtime(<a class="code" href="structscheduled__downtime__struct.html">scheduled_downtime</a> *);
-<a name="l00080"></a>00080 <span class="keywordtype">int</span> <a class="code" href="test-stubs_8c.html#a370cc878705bef1b9f57fea20e3cb35a">handle_scheduled_downtime_by_id</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>);
+<a name="l00080"></a>00080 <span class="keywordtype">int</span> handle_scheduled_downtime_by_id(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>);
 <a name="l00081"></a>00081 
 <a name="l00082"></a>00082 <span class="keywordtype">int</span> check_pending_flex_host_downtime(<a class="code" href="structhost__struct.html">host</a> *);
-<a name="l00083"></a>00083 <span class="keywordtype">int</span> <a class="code" href="test-stubs_8c.html#a44376b69e8dce7aa9f8e042e6d674bad">check_pending_flex_service_downtime</a>(<a class="code" href="structservice__struct.html">service</a> *);
+<a name="l00083"></a>00083 <span class="keywordtype">int</span> check_pending_flex_service_downtime(<a class="code" href="structservice__struct.html">service</a> *);
 <a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="keywordtype">int</span> <a class="code" href="test-stubs_8c.html#aa646a5574e0cd9113387c77f38d53e07">check_for_expired_downtime</a>(<span class="keywordtype">void</span>);
+<a name="l00085"></a>00085 <span class="keywordtype">int</span> check_for_expired_downtime(<span class="keywordtype">void</span>);
 <a name="l00086"></a>00086 <span class="preprocessor">#endif</span>
 <a name="l00087"></a>00087 <span class="preprocessor"></span>
 <a name="l00088"></a>00088 <span class="keywordtype">int</span> <a class="code" href="downtime_8c.html#a5a598acacf51aedcae6609b2603a1e21">add_host_downtime</a>(<span class="keywordtype">char</span> *,time_t,<span class="keywordtype">char</span> *,<span class="keywordtype">char</span> *,time_t,time_t,<span class="keywordtype">int</span>,<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>,<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>,<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>,<span class="keywordtype">int</span>);
@@ -187,17 +187,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00103"></a>00103 
 <a name="l00104"></a>00104 <span class="keywordtype">void</span> <a class="code" href="downtime_8c.html#a5fe1f91c90029cb9809f152a5668ca42">free_downtime_data</a>(<span class="keywordtype">void</span>);                                       <span class="comment">/* frees memory allocated to scheduled downtime list */</span>
 <a name="l00105"></a>00105 
-<a name="l00106"></a>00106 <span class="preprocessor">#ifdef __cplusplus</span>
-<a name="l00107"></a>00107 <span class="preprocessor"></span>  }
-<a name="l00108"></a>00108 <span class="preprocessor">#endif</span>
-<a name="l00109"></a>00109 <span class="preprocessor"></span>
+<a name="l00106"></a>00106 <span class="keywordtype">int</span> <a class="code" href="downtime_8h.html#ad46856ba45e4021ec089df2aafaccfc6">delete_downtime_by_hostname_service_description_start_time_comment</a>(<span class="keywordtype">char</span> *,<span class="keywordtype">char</span> *,time_t,<span class="keywordtype">char</span> *);
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00109"></a>00109 <span class="preprocessor"></span>  }
 <a name="l00110"></a>00110 <span class="preprocessor">#endif</span>
+<a name="l00111"></a>00111 <span class="preprocessor"></span>
+<a name="l00112"></a>00112 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="downtime_8h.html">downtime.h</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:20 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:40 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

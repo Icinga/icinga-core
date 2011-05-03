@@ -419,7 +419,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00335"></a>00335 
 <a name="l00336"></a>00336 
 <a name="l00337"></a>00337 <span class="comment">/* deletes all non-persistent acknowledgement comments for a particular service */</span>
-<a name="l00338"></a>00338 <span class="keywordtype">int</span> <a class="code" href="test-stubs_8c.html#a7f0c8a3a07b03f4eafb009087f6fe61e">delete_service_acknowledgement_comments</a>(<a class="code" href="structservice__struct.html">service</a> *svc){
+<a name="l00338"></a>00338 <span class="keywordtype">int</span> delete_service_acknowledgement_comments(<a class="code" href="structservice__struct.html">service</a> *svc){
 <a name="l00339"></a>00339         <span class="keywordtype">int</span> result=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>;
 <a name="l00340"></a>00340         <a class="code" href="structcomment__struct.html">comment</a> *temp_comment=NULL;
 <a name="l00341"></a>00341         <a class="code" href="structcomment__struct.html">comment</a> *next_comment=NULL;
@@ -439,7 +439,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00355"></a>00355 
 <a name="l00356"></a>00356 
 <a name="l00357"></a>00357 <span class="comment">/* checks for an expired comment (and removes it) */</span>
-<a name="l00358"></a>00358 <span class="keywordtype">int</span> <a class="code" href="test-stubs_8c.html#ae93aafd0eb6ffc59bc9038eabf5a6a40">check_for_expired_comment</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> comment_id){
+<a name="l00358"></a>00358 <span class="keywordtype">int</span> check_for_expired_comment(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> comment_id){
 <a name="l00359"></a>00359         <a class="code" href="structcomment__struct.html">comment</a> *temp_comment=NULL;
 <a name="l00360"></a>00360 
 <a name="l00361"></a>00361         <span class="comment">/* check all comments */</span>
@@ -820,7 +820,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="comments_8c.html">comments.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:20 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:39 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

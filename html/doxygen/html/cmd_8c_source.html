@@ -2799,73 +2799,75 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l02845"></a>02845                 <span class="keywordflow">return</span> <a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>;
 <a name="l02846"></a>02846         }
 <a name="l02847"></a>02847 
-<a name="l02848"></a>02848         <span class="comment">/* write command to cgi log */</span>
-<a name="l02849"></a>02849         sprintf(buffer, <span class="stringliteral">&quot;EXTERNAL COMMAND: %s;&quot;</span>, current_authdata.<a class="code" href="structauthdata__struct.html#a4803021222dfcdc5a8bf40e7c0850fe7">username</a>);
-<a name="l02850"></a>02850         p = index(cmd, <span class="charliteral">&#39;]&#39;</span>);
-<a name="l02851"></a>02851         <span class="keywordflow">if</span> (p!=NULL)
-<a name="l02852"></a>02852                 p+=2;
-<a name="l02853"></a>02853         <span class="keywordflow">else</span>
-<a name="l02854"></a>02854                 p=&amp;cmd[0];
-<a name="l02855"></a>02855         strncat(buffer, p, <span class="keyword">sizeof</span>(buffer)-strlen(buffer)-1);
-<a name="l02856"></a>02856         <a class="code" href="cgiutils_8c.html#a19f3e1909cf6c3aa96b64c2567aceb1d">write_to_cgi_log</a>(buffer);
-<a name="l02857"></a>02857 
-<a name="l02858"></a>02858         <span class="comment">/* log comments if forced */</span>
-<a name="l02859"></a>02859         <span class="keywordflow">if</span>(<a class="code" href="cgiutils_8c.html#aca94ac41a098489df6a09c35226e4737">enforce_comments_on_actions</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>) {
-<a name="l02860"></a>02860                 sprintf(ip_address,<span class="stringliteral">&quot;%s&quot;</span>,getenv(<span class="stringliteral">&quot;REMOTE_ADDR&quot;</span>));
-<a name="l02861"></a>02861                 sprintf(buffer, <span class="stringliteral">&quot;FORCED COMMENT: %s;%s;%s;%s&quot;</span>, current_authdata.<a class="code" href="structauthdata__struct.html#a4803021222dfcdc5a8bf40e7c0850fe7">username</a>,(ip_address!=NULL)?ip_address:<span class="stringliteral">&quot;unknown remote address&quot;</span>,<a class="code" href="cmd_8c.html#a0477c66a0ad7740ddfaafdfca7b8656d">comment_author</a>,<a class="code" href="cmd_8c.html#a7fa8a08726d2ff86eea2cd94a5980c68">comment_data</a>);
-<a name="l02862"></a>02862                 <a class="code" href="cgiutils_8c.html#a19f3e1909cf6c3aa96b64c2567aceb1d">write_to_cgi_log</a>(buffer);
-<a name="l02863"></a>02863         }
-<a name="l02864"></a>02864 
-<a name="l02865"></a>02865         <span class="comment">/* write the command to file */</span>
-<a name="l02866"></a>02866         fprintf(fp, <span class="stringliteral">&quot;%s\n&quot;</span>, cmd);
-<a name="l02867"></a>02867 
-<a name="l02868"></a>02868         <span class="comment">/* flush buffer */</span>
-<a name="l02869"></a>02869         fflush(fp);
-<a name="l02870"></a>02870 
-<a name="l02871"></a>02871         fclose(fp);
+<a name="l02848"></a>02848         <span class="comment">// get remote address</span>
+<a name="l02849"></a>02849         sprintf(ip_address,<span class="stringliteral">&quot;%s&quot;</span>,getenv(<span class="stringliteral">&quot;REMOTE_ADDR&quot;</span>));
+<a name="l02850"></a>02850 
+<a name="l02851"></a>02851         <span class="comment">/* write command to cgi log */</span>
+<a name="l02852"></a>02852         sprintf(buffer, <span class="stringliteral">&quot;EXTERNAL COMMAND: %s;%s;&quot;</span>, current_authdata.<a class="code" href="structauthdata__struct.html#a4803021222dfcdc5a8bf40e7c0850fe7">username</a>,(ip_address!=NULL)?ip_address:<span class="stringliteral">&quot;unknown remote address&quot;</span>);
+<a name="l02853"></a>02853         p = index(cmd, <span class="charliteral">&#39;]&#39;</span>);
+<a name="l02854"></a>02854         <span class="keywordflow">if</span> (p!=NULL)
+<a name="l02855"></a>02855                 p+=2;
+<a name="l02856"></a>02856         <span class="keywordflow">else</span>
+<a name="l02857"></a>02857                 p=&amp;cmd[0];
+<a name="l02858"></a>02858         strncat(buffer, p, <span class="keyword">sizeof</span>(buffer)-strlen(buffer)-1);
+<a name="l02859"></a>02859         <a class="code" href="cgiutils_8c.html#a19f3e1909cf6c3aa96b64c2567aceb1d">write_to_cgi_log</a>(buffer);
+<a name="l02860"></a>02860 
+<a name="l02861"></a>02861         <span class="comment">/* log comments if forced */</span>
+<a name="l02862"></a>02862         <span class="keywordflow">if</span>(<a class="code" href="cgiutils_8c.html#aca94ac41a098489df6a09c35226e4737">enforce_comments_on_actions</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>) {
+<a name="l02863"></a>02863                 sprintf(buffer, <span class="stringliteral">&quot;FORCED COMMENT: %s;%s;%s;%s&quot;</span>, current_authdata.<a class="code" href="structauthdata__struct.html#a4803021222dfcdc5a8bf40e7c0850fe7">username</a>,(ip_address!=NULL)?ip_address:<span class="stringliteral">&quot;unknown remote address&quot;</span>,<a class="code" href="cmd_8c.html#a0477c66a0ad7740ddfaafdfca7b8656d">comment_author</a>,<a class="code" href="cmd_8c.html#a7fa8a08726d2ff86eea2cd94a5980c68">comment_data</a>);
+<a name="l02864"></a>02864                 <a class="code" href="cgiutils_8c.html#a19f3e1909cf6c3aa96b64c2567aceb1d">write_to_cgi_log</a>(buffer);
+<a name="l02865"></a>02865         }
+<a name="l02866"></a>02866 
+<a name="l02867"></a>02867         <span class="comment">/* write the command to file */</span>
+<a name="l02868"></a>02868         fprintf(fp, <span class="stringliteral">&quot;%s\n&quot;</span>, cmd);
+<a name="l02869"></a>02869 
+<a name="l02870"></a>02870         <span class="comment">/* flush buffer */</span>
+<a name="l02871"></a>02871         fflush(fp);
 <a name="l02872"></a>02872 
-<a name="l02873"></a>02873         <span class="keywordflow">return</span> <a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>;
-<a name="l02874"></a>02874 }
-<a name="l02875"></a>02875 
-<a name="l02876"></a><a class="code" href="cmd_8c.html#a039c6c81c4df34a3c1fd010cd34a677b">02876</a> <span class="keywordtype">void</span> <a class="code" href="cmd_8c.html#a039c6c81c4df34a3c1fd010cd34a677b" title="strips out semicolons and newlines from comment data">clean_comment_data</a>(<span class="keywordtype">char</span> *buffer){
-<a name="l02877"></a>02877         <span class="keywordtype">int</span> x;
-<a name="l02878"></a>02878         <span class="keywordtype">int</span> y;
-<a name="l02879"></a>02879 
-<a name="l02880"></a>02880         y=(int)strlen(buffer);
+<a name="l02873"></a>02873         fclose(fp);
+<a name="l02874"></a>02874 
+<a name="l02875"></a>02875         <span class="keywordflow">return</span> <a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>;
+<a name="l02876"></a>02876 }
+<a name="l02877"></a>02877 
+<a name="l02878"></a><a class="code" href="cmd_8c.html#a039c6c81c4df34a3c1fd010cd34a677b">02878</a> <span class="keywordtype">void</span> <a class="code" href="cmd_8c.html#a039c6c81c4df34a3c1fd010cd34a677b" title="strips out semicolons and newlines from comment data">clean_comment_data</a>(<span class="keywordtype">char</span> *buffer){
+<a name="l02879"></a>02879         <span class="keywordtype">int</span> x;
+<a name="l02880"></a>02880         <span class="keywordtype">int</span> y;
 <a name="l02881"></a>02881 
-<a name="l02882"></a>02882         <span class="keywordflow">for</span>(x=0;x&lt;y;x++){
-<a name="l02883"></a>02883                 <span class="keywordflow">if</span>(buffer[x]==<span class="charliteral">&#39;;&#39;</span> || buffer[x]==<span class="charliteral">&#39;\n&#39;</span> || buffer[x]==<span class="charliteral">&#39;\r&#39;</span> )
-<a name="l02884"></a>02884                         buffer[x]=<span class="charliteral">&#39; &#39;</span>;
-<a name="l02885"></a>02885         }
-<a name="l02886"></a>02886 
-<a name="l02887"></a>02887         <span class="keywordflow">return</span>;
-<a name="l02888"></a>02888 }
-<a name="l02889"></a>02889 
-<a name="l02890"></a><a class="code" href="cmd_8c.html#aac895bf83d10749b68af5ebb1ce00b9b">02890</a> <span class="keywordtype">void</span> <a class="code" href="cmd_8c.html#aac895bf83d10749b68af5ebb1ce00b9b" title="checks start and end time and if start_time is before end_time">check_comment_sanity</a>(<span class="keywordtype">int</span> *e){
-<a name="l02891"></a>02891         <span class="keywordflow">if</span>(!strcmp(<a class="code" href="cmd_8c.html#a0477c66a0ad7740ddfaafdfca7b8656d">comment_author</a>,<span class="stringliteral">&quot;&quot;</span>))
-<a name="l02892"></a>02892                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;Author name was not entered&quot;</span>);
-<a name="l02893"></a>02893         <span class="keywordflow">if</span>(!strcmp(<a class="code" href="cmd_8c.html#a7fa8a08726d2ff86eea2cd94a5980c68">comment_data</a>,<span class="stringliteral">&quot;&quot;</span>))
-<a name="l02894"></a>02894                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;Comment data was not entered&quot;</span>);
-<a name="l02895"></a>02895 
-<a name="l02896"></a>02896         <span class="keywordflow">return</span>;
-<a name="l02897"></a>02897 }
-<a name="l02898"></a>02898 
-<a name="l02899"></a><a class="code" href="cmd_8c.html#a464a712d5e4cac8a065d2a794acad06d">02899</a> <span class="keywordtype">void</span> <a class="code" href="cmd_8c.html#a464a712d5e4cac8a065d2a794acad06d" title="checks if comment and author are not empty strings">check_time_sanity</a>(<span class="keywordtype">int</span> *e) {
-<a name="l02900"></a>02900         <span class="keywordflow">if</span> (<a class="code" href="cmd_8c.html#ad20e89e0c86aa812dc3a8e2fb7b5777b">start_time</a>==(time_t)0)
-<a name="l02901"></a>02901                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;Start time can&#39;t be zero or date format couldn&#39;t be recognized correctly&quot;</span>);
-<a name="l02902"></a>02902         <span class="keywordflow">if</span> (<a class="code" href="cmd_8c.html#a1e324d62e65642694c00de363bf8a8ba">end_time</a>==(time_t)0)
-<a name="l02903"></a>02903                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;End time can&#39;t be zero or date format couldn&#39;t be recognized correctly&quot;</span>);
-<a name="l02904"></a>02904         <span class="keywordflow">if</span> (<a class="code" href="cmd_8c.html#a1e324d62e65642694c00de363bf8a8ba">end_time</a>&lt;<a class="code" href="cmd_8c.html#ad20e89e0c86aa812dc3a8e2fb7b5777b">start_time</a>)
-<a name="l02905"></a>02905                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;End date before start date&quot;</span>);
-<a name="l02906"></a>02906 
-<a name="l02907"></a>02907         <span class="keywordflow">return</span>;
-<a name="l02908"></a>02908 }
+<a name="l02882"></a>02882         y=(int)strlen(buffer);
+<a name="l02883"></a>02883 
+<a name="l02884"></a>02884         <span class="keywordflow">for</span>(x=0;x&lt;y;x++){
+<a name="l02885"></a>02885                 <span class="keywordflow">if</span>(buffer[x]==<span class="charliteral">&#39;;&#39;</span> || buffer[x]==<span class="charliteral">&#39;\n&#39;</span> || buffer[x]==<span class="charliteral">&#39;\r&#39;</span> )
+<a name="l02886"></a>02886                         buffer[x]=<span class="charliteral">&#39; &#39;</span>;
+<a name="l02887"></a>02887         }
+<a name="l02888"></a>02888 
+<a name="l02889"></a>02889         <span class="keywordflow">return</span>;
+<a name="l02890"></a>02890 }
+<a name="l02891"></a>02891 
+<a name="l02892"></a><a class="code" href="cmd_8c.html#aac895bf83d10749b68af5ebb1ce00b9b">02892</a> <span class="keywordtype">void</span> <a class="code" href="cmd_8c.html#aac895bf83d10749b68af5ebb1ce00b9b" title="checks start and end time and if start_time is before end_time">check_comment_sanity</a>(<span class="keywordtype">int</span> *e){
+<a name="l02893"></a>02893         <span class="keywordflow">if</span>(!strcmp(<a class="code" href="cmd_8c.html#a0477c66a0ad7740ddfaafdfca7b8656d">comment_author</a>,<span class="stringliteral">&quot;&quot;</span>))
+<a name="l02894"></a>02894                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;Author name was not entered&quot;</span>);
+<a name="l02895"></a>02895         <span class="keywordflow">if</span>(!strcmp(<a class="code" href="cmd_8c.html#a7fa8a08726d2ff86eea2cd94a5980c68">comment_data</a>,<span class="stringliteral">&quot;&quot;</span>))
+<a name="l02896"></a>02896                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;Comment data was not entered&quot;</span>);
+<a name="l02897"></a>02897 
+<a name="l02898"></a>02898         <span class="keywordflow">return</span>;
+<a name="l02899"></a>02899 }
+<a name="l02900"></a>02900 
+<a name="l02901"></a><a class="code" href="cmd_8c.html#a464a712d5e4cac8a065d2a794acad06d">02901</a> <span class="keywordtype">void</span> <a class="code" href="cmd_8c.html#a464a712d5e4cac8a065d2a794acad06d" title="checks if comment and author are not empty strings">check_time_sanity</a>(<span class="keywordtype">int</span> *e) {
+<a name="l02902"></a>02902         <span class="keywordflow">if</span> (<a class="code" href="cmd_8c.html#ad20e89e0c86aa812dc3a8e2fb7b5777b">start_time</a>==(time_t)0)
+<a name="l02903"></a>02903                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;Start time can&#39;t be zero or date format couldn&#39;t be recognized correctly&quot;</span>);
+<a name="l02904"></a>02904         <span class="keywordflow">if</span> (<a class="code" href="cmd_8c.html#a1e324d62e65642694c00de363bf8a8ba">end_time</a>==(time_t)0)
+<a name="l02905"></a>02905                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;End time can&#39;t be zero or date format couldn&#39;t be recognized correctly&quot;</span>);
+<a name="l02906"></a>02906         <span class="keywordflow">if</span> (<a class="code" href="cmd_8c.html#a1e324d62e65642694c00de363bf8a8ba">end_time</a>&lt;<a class="code" href="cmd_8c.html#ad20e89e0c86aa812dc3a8e2fb7b5777b">start_time</a>)
+<a name="l02907"></a>02907                 error[(*e)++].message=strdup(<span class="stringliteral">&quot;End date before start date&quot;</span>);
+<a name="l02908"></a>02908 
+<a name="l02909"></a>02909         <span class="keywordflow">return</span>;
+<a name="l02910"></a>02910 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="cmd_8c.html">cmd.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:19 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:39 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
