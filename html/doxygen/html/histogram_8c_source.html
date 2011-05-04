@@ -199,9 +199,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00115"></a>00115 
 <a name="l00116"></a>00116 <span class="keyword">extern</span> <span class="keywordtype">int</span>     <a class="code" href="base_2config_8c.html#ab994c46c876a9f9f338e28c170dd3e4e">log_rotation_method</a>;
 <a name="l00117"></a>00117 
-<a name="l00118"></a>00118 <span class="keyword">extern</span> <a class="code" href="structhost__struct.html">host</a> *<a class="code" href="checks_8c.html#a51302445a334b0bf861727194af89ef9">host_list</a>;
-<a name="l00119"></a>00119 <span class="keyword">extern</span> <a class="code" href="structservice__struct.html">service</a> *<a class="code" href="checks_8c.html#a6e707761b44bcc37041ed00343a9d3f1">service_list</a>;
-<a name="l00120"></a>00120 
+<a name="l00118"></a>00118 <span class="keyword">extern</span> <a class="code" href="structhost__struct.html">host</a> *<a class="code" href="checks_8c.html#a7efb54fbdc5a556ffdbe25c56e6e7469">host_list</a>;
+<a name="l00119"></a>00119 <span class="keyword">extern</span> <a class="code" href="structservice__struct.html">service</a> *<a class="code" href="checks_8c.html#aa680c491c2d6c99868a3789592868c15">service_list</a>;
+<a name="l00120"></a>00120 <span class="keyword">extern</span> <a class="code" href="structlogentry__struct.html" title="log entry data struct">logentry</a> *<a class="code" href="avail_8c.html#aa2a9f22e8f32284071f99631037e77c9">entry_list</a>;
 <a name="l00121"></a>00121 
 <a name="l00122"></a>00122 
 <a name="l00123"></a><a class="code" href="histogram_8c.html#a19816b8e476055a6453f6ed39761b04e">00123</a> <a class="code" href="structauthdata__struct.html">authdata</a> <a class="code" href="avail_8c.html#a19816b8e476055a6453f6ed39761b04e">current_authdata</a>;
@@ -2180,245 +2180,259 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l02096"></a>02096         printf(<span class="stringliteral">&quot;Newest archive: %d\n&quot;</span>,newest_archive);
 <a name="l02097"></a>02097 <span class="preprocessor">#endif</span>
 <a name="l02098"></a>02098 <span class="preprocessor"></span>
-<a name="l02099"></a>02099         <span class="comment">/* read in all the necessary archived logs */</span>
-<a name="l02100"></a>02100         <span class="keywordflow">for</span>(current_archive=newest_archive;current_archive&lt;=oldest_archive;current_archive++){
-<a name="l02101"></a>02101 
-<a name="l02102"></a>02102                 <span class="comment">/* get the name of the log file that contains this archive */</span>
-<a name="l02103"></a>02103                 <a class="code" href="readlogs_8c.html#ab7ce9309de24a4f9c2b28668911fd012" title="returns the file name of a log file depending on archive number and log_rotation_method ...">get_log_archive_to_use</a>(current_archive,filename,<span class="keyword">sizeof</span>(filename)-1);
-<a name="l02104"></a>02104 
-<a name="l02105"></a>02105 <span class="preprocessor">#ifdef DEBUG2</span>
-<a name="l02106"></a>02106 <span class="preprocessor"></span>                printf(<span class="stringliteral">&quot;\tCurrent archive: %d (%s)\n&quot;</span>,current_archive,filename);
-<a name="l02107"></a>02107 <span class="preprocessor">#endif</span>
-<a name="l02108"></a>02108 <span class="preprocessor"></span>
-<a name="l02109"></a>02109                 <span class="comment">/* scan the log file for archived state data */</span>
-<a name="l02110"></a>02110                 <a class="code" href="avail_8c.html#a2ee869930226c82c78ff16679173cc05">scan_log_file_for_archived_state_data</a>(filename);
-<a name="l02111"></a>02111                 }
-<a name="l02112"></a>02112 
-<a name="l02113"></a>02113         <span class="keywordflow">return</span>;
-<a name="l02114"></a>02114 }
-<a name="l02115"></a>02115 
-<a name="l02116"></a>02116 
+<a name="l02099"></a>02099         <span class="comment">/* Service filter */</span>
+<a name="l02100"></a>02100         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#aa185f2ecf772cb57505cc1bda9af1ce0">LOGENTRY_SERVICE_OK</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02101"></a>02101         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a6df1fc7978c0fa8e66a46b0e1dda8d18">LOGENTRY_SERVICE_WARNING</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02102"></a>02102         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a892702b0e468209f4644de9e85be426e">LOGENTRY_SERVICE_CRITICAL</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02103"></a>02103         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a661545a7150794c1043e01676d647f3e">LOGENTRY_SERVICE_UNKNOWN</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02104"></a>02104         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a5d607fa36320baf36814002da7e3614a">LOGENTRY_SERVICE_RECOVERY</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02105"></a>02105 
+<a name="l02106"></a>02106         <span class="comment">/* Host filter */</span>
+<a name="l02107"></a>02107         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#aaa05701eaaaa4905fe522db0fb4428bc">LOGENTRY_HOST_UP</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02108"></a>02108         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a59c640bdadeed2d8a97c806a667bb377">LOGENTRY_HOST_DOWN</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02109"></a>02109         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a1b60afe6e1e448620db6f59dde06abc6">LOGENTRY_HOST_UNREACHABLE</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02110"></a>02110         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a5dd8a610fc9237d58b00c76c7b0ddb40">LOGENTRY_HOST_RECOVERY</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02111"></a>02111 
+<a name="l02112"></a>02112         <span class="comment">/* system message */</span>
+<a name="l02113"></a>02113         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a48326692b6efe4ab80481f138c738eed">LOGENTRY_STARTUP</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02114"></a>02114         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#ae80679c0b7bfd7fcb384312b3bcedc4e">LOGENTRY_RESTART</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02115"></a>02115         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#abe960fed98fdae4f59e903514efca30f">LOGENTRY_SHUTDOWN</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
+<a name="l02116"></a>02116         <a class="code" href="readlogs_8c.html#a5e5c09ef8687ffd6c81449942edd8138" title="Add Filter to the list of log filters.">add_log_filter</a>(<a class="code" href="readlogs_8h.html#a90303d773762683aebf158ba95e012b6">LOGENTRY_BAILOUT</a>,<a class="code" href="readlogs_8h.html#a6014bc54c5b2c803303207d7b8f09bfd">LOGFILTER_INCLUDE</a>);
 <a name="l02117"></a>02117 
-<a name="l02118"></a>02118 <span class="comment">/* grabs archives state data from a log file */</span>
-<a name="l02119"></a>02119 <span class="keywordtype">void</span> <a class="code" href="avail_8c.html#a2ee869930226c82c78ff16679173cc05">scan_log_file_for_archived_state_data</a>(<span class="keywordtype">char</span> *filename){
-<a name="l02120"></a>02120         <span class="keywordtype">char</span> *input=NULL;
-<a name="l02121"></a>02121         <span class="keywordtype">char</span> entry_host_name[<a class="code" href="include_2common_8h.html#a23c82337fe6c21111837512469ea40af">MAX_INPUT_BUFFER</a>];
-<a name="l02122"></a>02122         <span class="keywordtype">char</span> entry_service_desc[<a class="code" href="include_2common_8h.html#a23c82337fe6c21111837512469ea40af">MAX_INPUT_BUFFER</a>];
-<a name="l02123"></a>02123         <span class="keywordtype">char</span> *temp_buffer;
-<a name="l02124"></a>02124         <a class="code" href="structlogentry__struct.html" title="log entry data struct">logentry</a> *temp_entry=NULL;
-<a name="l02125"></a>02125         <span class="keywordtype">int</span> status;
-<a name="l02126"></a>02126 
-<a name="l02127"></a>02127         <span class="comment">/* print something so browser doesn&#39;t time out */</span>
-<a name="l02128"></a>02128         <span class="keywordflow">if</span>(<a class="code" href="avail_8c.html#aa0c17588e219a0f3df9507e75ea0949f">content_type</a>==<a class="code" href="cgiutils_8h.html#a9e4256a1b327e4b8e76a269bf5287c00">HTML_CONTENT</a>){
-<a name="l02129"></a>02129                 printf(<span class="stringliteral">&quot; &quot;</span>);
-<a name="l02130"></a>02130                 fflush(NULL);
-<a name="l02131"></a>02131         }
-<a name="l02132"></a>02132 
-<a name="l02133"></a>02133         status = <a class="code" href="readlogs_8c.html#ab9731b0c308d263368cb0fda392a4fe3" title="Read&#39;s a defined log file and stores the entries into entry list struct.">get_log_entries</a>(filename,NULL,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>,<a class="code" href="avail_8c.html#aa559b2f4e7fa951d5a42a01764f40acf">t1</a>-(60*60*24*<a class="code" href="avail_8c.html#a5b94c214142473633fb6531366c3e0ab">backtrack_archives</a>),<a class="code" href="avail_8c.html#a0e8a1d93450ad3fca3857f5ff756791e">t2</a>);
-<a name="l02134"></a>02134         
-<a name="l02135"></a>02135         <span class="keywordflow">if</span> (status!=<a class="code" href="readlogs_8h.html#af907bbc3bf323f7f1e49193ee33f4d09">READLOG_OK</a>) {
-<a name="l02136"></a>02136 <span class="preprocessor">#ifdef DEBUG2</span>
-<a name="l02137"></a>02137 <span class="preprocessor"></span>                printf(<span class="stringliteral">&quot;Could not open file &#39;%s&#39; for reading.\n&quot;</span>,filename);
-<a name="l02138"></a>02138 <span class="preprocessor">#endif</span>
-<a name="l02139"></a>02139 <span class="preprocessor"></span>                <span class="keywordflow">return</span>;
-<a name="l02140"></a>02140         }<span class="keywordflow">else</span>{
-<a name="l02141"></a>02141 
-<a name="l02142"></a>02142 <span class="preprocessor">#ifdef DEBUG2</span>
-<a name="l02143"></a>02143 <span class="preprocessor"></span>                printf(<span class="stringliteral">&quot;Scanning log file &#39;%s&#39; for archived state data...\n&quot;</span>,filename);
-<a name="l02144"></a>02144 <span class="preprocessor">#endif</span>
-<a name="l02145"></a>02145 <span class="preprocessor"></span>
-<a name="l02146"></a>02146                 <span class="keywordflow">for</span>(temp_entry=<a class="code" href="readlogs_8c.html#ad4934cdc3913a07f739cd3859dc96d29" title="returns next log entry from log entry list">next_log_entry</a>();temp_entry!=NULL;temp_entry=<a class="code" href="readlogs_8c.html#ad4934cdc3913a07f739cd3859dc96d29" title="returns next log entry from log entry list">next_log_entry</a>()) {
-<a name="l02147"></a>02147 
-<a name="l02148"></a>02148                         <span class="comment">/* free memory */</span>
-<a name="l02149"></a>02149                         free(input);
-<a name="l02150"></a>02150                         input=NULL;
-<a name="l02151"></a>02151                         <span class="keywordflow">if</span>((input=strdup(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>))==NULL)
-<a name="l02152"></a>02152                                 <span class="keywordflow">continue</span>;
-<a name="l02153"></a>02153 
-<a name="l02154"></a>02154                         <span class="comment">/* program starts/restarts */</span>
-<a name="l02155"></a>02155                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a48326692b6efe4ab80481f138c738eed">LOGENTRY_STARTUP</a>)
-<a name="l02156"></a>02156                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a4046f28f3971b604593062f4e8452e68">AS_PROGRAM_START</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02157"></a>02157                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#ae80679c0b7bfd7fcb384312b3bcedc4e">LOGENTRY_RESTART</a>)
-<a name="l02158"></a>02158                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a4046f28f3971b604593062f4e8452e68">AS_PROGRAM_START</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02159"></a>02159 
-<a name="l02160"></a>02160                         <span class="comment">/* program stops */</span>
-<a name="l02161"></a>02161                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#abe960fed98fdae4f59e903514efca30f">LOGENTRY_SHUTDOWN</a>)
-<a name="l02162"></a>02162                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a97d392bf35e18cef202d4160ab9573b2">AS_PROGRAM_END</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02163"></a>02163                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a90303d773762683aebf158ba95e012b6">LOGENTRY_BAILOUT</a>)
-<a name="l02164"></a>02164                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a97d392bf35e18cef202d4160ab9573b2">AS_PROGRAM_END</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02165"></a>02165 
-<a name="l02166"></a>02166                         <span class="keywordflow">if</span>(<a class="code" href="avail_8c.html#a7b50193f4e7d5976ac65a44694c15767">display_type</a>==<a class="code" href="histogram_8c.html#a064367f41faacb0a423a91a11e2e09cc">DISPLAY_HOST_HISTOGRAM</a>){
-<a name="l02167"></a>02167                                 <span class="keywordflow">switch</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>){
-<a name="l02168"></a>02168 
-<a name="l02169"></a>02169                                         <span class="comment">/* normal host alerts and initial/current states */</span>
-<a name="l02170"></a>02170                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a59c640bdadeed2d8a97c806a667bb377">LOGENTRY_HOST_DOWN</a>:
-<a name="l02171"></a>02171                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a1b60afe6e1e448620db6f59dde06abc6">LOGENTRY_HOST_UNREACHABLE</a>:
-<a name="l02172"></a>02172                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a5dd8a610fc9237d58b00c76c7b0ddb40">LOGENTRY_HOST_RECOVERY</a>:
-<a name="l02173"></a>02173                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#aaa05701eaaaa4905fe522db0fb4428bc">LOGENTRY_HOST_UP</a>:
-<a name="l02174"></a>02174 
-<a name="l02175"></a>02175                                                 <span class="comment">/* get host name */</span>
-<a name="l02176"></a>02176                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;:&quot;</span>);
-<a name="l02177"></a>02177                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(NULL,<span class="stringliteral">&quot;;&quot;</span>);
-<a name="l02178"></a>02178                                                 strncpy(entry_host_name,(temp_buffer==NULL)?<span class="stringliteral">&quot;&quot;</span>:temp_buffer+1,<span class="keyword">sizeof</span>(entry_host_name));
-<a name="l02179"></a>02179                                                 entry_host_name[<span class="keyword">sizeof</span>(entry_host_name)-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
-<a name="l02180"></a>02180 
-<a name="l02181"></a>02181                                                 <span class="keywordflow">if</span>(strcmp(<a class="code" href="avail_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>,entry_host_name))
-<a name="l02182"></a>02182                                                         <span class="keywordflow">continue</span>;
-<a name="l02183"></a>02183 
-<a name="l02184"></a>02184                                                 <span class="comment">/* skip soft states if necessary */</span>
-<a name="l02185"></a>02185                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; <a class="code" href="histogram_8c.html#ac3b6a4b1984bb561979ec2a178bbfdaf">GRAPH_SOFT_STATETYPES</a>) &amp;&amp; strstr(input,<span class="stringliteral">&quot;;SOFT;&quot;</span>))
-<a name="l02186"></a>02186                                                         <span class="keywordflow">continue</span>;
-<a name="l02187"></a>02187 
-<a name="l02188"></a>02188                                                 <span class="comment">/* skip hard states if necessary */</span>
-<a name="l02189"></a>02189                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; <a class="code" href="histogram_8c.html#a103f058ccb53beb1d484a81a604c256d">GRAPH_HARD_STATETYPES</a>) &amp;&amp; strstr(input,<span class="stringliteral">&quot;;HARD;&quot;</span>))
-<a name="l02190"></a>02190                                                         <span class="keywordflow">continue</span>;
-<a name="l02191"></a>02191 
-<a name="l02192"></a>02192                                                 <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a59c640bdadeed2d8a97c806a667bb377">LOGENTRY_HOST_DOWN</a>)
-<a name="l02193"></a>02193                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a4ca423f13f8c2569dc85e1a7065a8a49">AS_HOST_DOWN</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02194"></a>02194                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a1b60afe6e1e448620db6f59dde06abc6">LOGENTRY_HOST_UNREACHABLE</a>)
-<a name="l02195"></a>02195                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a365f6b41ab31332c8fb9a6a2f8a680b8">AS_HOST_UNREACHABLE</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02196"></a>02196                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a5dd8a610fc9237d58b00c76c7b0ddb40">LOGENTRY_HOST_RECOVERY</a> || temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#aaa05701eaaaa4905fe522db0fb4428bc">LOGENTRY_HOST_UP</a>)
-<a name="l02197"></a>02197                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a8fbe91306a88107d9aee46cece53096b">AS_HOST_UP</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02198"></a>02198 
-<a name="l02199"></a>02199                                                 <span class="keywordflow">break</span>;
-<a name="l02200"></a>02200                                 }
-<a name="l02201"></a>02201                         }
-<a name="l02202"></a>02202 
-<a name="l02203"></a>02203                         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="avail_8c.html#a7b50193f4e7d5976ac65a44694c15767">display_type</a>==<a class="code" href="histogram_8c.html#ab27de8cd429c2412e44ab212bf076d67">DISPLAY_SERVICE_HISTOGRAM</a>){
-<a name="l02204"></a>02204                                 <span class="keywordflow">switch</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>){
-<a name="l02205"></a>02205 
-<a name="l02206"></a>02206                                         <span class="comment">/* normal service alerts and initial/current states */</span>
-<a name="l02207"></a>02207                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a892702b0e468209f4644de9e85be426e">LOGENTRY_SERVICE_CRITICAL</a>:
-<a name="l02208"></a>02208                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a6df1fc7978c0fa8e66a46b0e1dda8d18">LOGENTRY_SERVICE_WARNING</a>:
-<a name="l02209"></a>02209                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a661545a7150794c1043e01676d647f3e">LOGENTRY_SERVICE_UNKNOWN</a>:
-<a name="l02210"></a>02210                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a5d607fa36320baf36814002da7e3614a">LOGENTRY_SERVICE_RECOVERY</a>:
-<a name="l02211"></a>02211                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#aa185f2ecf772cb57505cc1bda9af1ce0">LOGENTRY_SERVICE_OK</a>:
-<a name="l02212"></a>02212 
-<a name="l02213"></a>02213                                                 <span class="comment">/* get host name */</span>
-<a name="l02214"></a>02214                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;:&quot;</span>);
-<a name="l02215"></a>02215                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(NULL,<span class="stringliteral">&quot;;&quot;</span>);
-<a name="l02216"></a>02216                                                 strncpy(entry_host_name,(temp_buffer==NULL)?<span class="stringliteral">&quot;&quot;</span>:temp_buffer+1,<span class="keyword">sizeof</span>(entry_host_name));
-<a name="l02217"></a>02217                                                 entry_host_name[<span class="keyword">sizeof</span>(entry_host_name)-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
+<a name="l02118"></a>02118         <span class="comment">/* read in all the necessary archived logs */</span>
+<a name="l02119"></a>02119         <span class="keywordflow">for</span>(current_archive=newest_archive;current_archive&lt;=oldest_archive;current_archive++){
+<a name="l02120"></a>02120 
+<a name="l02121"></a>02121                 <span class="comment">/* get the name of the log file that contains this archive */</span>
+<a name="l02122"></a>02122                 <a class="code" href="readlogs_8c.html#ab7ce9309de24a4f9c2b28668911fd012" title="returns the file name of a log file depending on archive number and log_rotation_method ...">get_log_archive_to_use</a>(current_archive,filename,<span class="keyword">sizeof</span>(filename)-1);
+<a name="l02123"></a>02123 
+<a name="l02124"></a>02124 <span class="preprocessor">#ifdef DEBUG2</span>
+<a name="l02125"></a>02125 <span class="preprocessor"></span>                printf(<span class="stringliteral">&quot;\tCurrent archive: %d (%s)\n&quot;</span>,current_archive,filename);
+<a name="l02126"></a>02126 <span class="preprocessor">#endif</span>
+<a name="l02127"></a>02127 <span class="preprocessor"></span>
+<a name="l02128"></a>02128                 <span class="comment">/* scan the log file for archived state data */</span>
+<a name="l02129"></a>02129                 <a class="code" href="avail_8c.html#a2ee869930226c82c78ff16679173cc05">scan_log_file_for_archived_state_data</a>(filename);
+<a name="l02130"></a>02130         }
+<a name="l02131"></a>02131 
+<a name="l02132"></a>02132         <a class="code" href="readlogs_8c.html#af573d0bed26bef432de92a21ebbf13a8" title="frees all memory allocated to list of log filters in memory">free_log_filters</a>();
+<a name="l02133"></a>02133 
+<a name="l02134"></a>02134         <span class="keywordflow">return</span>;
+<a name="l02135"></a>02135 }
+<a name="l02136"></a>02136 
+<a name="l02137"></a>02137 
+<a name="l02138"></a>02138 
+<a name="l02139"></a>02139 <span class="comment">/* grabs archives state data from a log file */</span>
+<a name="l02140"></a>02140 <span class="keywordtype">void</span> <a class="code" href="avail_8c.html#a2ee869930226c82c78ff16679173cc05">scan_log_file_for_archived_state_data</a>(<span class="keywordtype">char</span> *filename){
+<a name="l02141"></a>02141         <span class="keywordtype">char</span> entry_host_name[<a class="code" href="include_2common_8h.html#a23c82337fe6c21111837512469ea40af">MAX_INPUT_BUFFER</a>];
+<a name="l02142"></a>02142         <span class="keywordtype">char</span> entry_service_desc[<a class="code" href="include_2common_8h.html#a23c82337fe6c21111837512469ea40af">MAX_INPUT_BUFFER</a>];
+<a name="l02143"></a>02143         <span class="keywordtype">char</span> *temp_buffer;
+<a name="l02144"></a>02144         <a class="code" href="structlogentry__struct.html" title="log entry data struct">logentry</a> *temp_entry=NULL;
+<a name="l02145"></a>02145         <span class="keywordtype">int</span> status;
+<a name="l02146"></a>02146 
+<a name="l02147"></a>02147         <span class="comment">/* print something so browser doesn&#39;t time out */</span>
+<a name="l02148"></a>02148         <span class="keywordflow">if</span>(<a class="code" href="avail_8c.html#aa0c17588e219a0f3df9507e75ea0949f">content_type</a>==<a class="code" href="cgiutils_8h.html#a9e4256a1b327e4b8e76a269bf5287c00">HTML_CONTENT</a>){
+<a name="l02149"></a>02149                 printf(<span class="stringliteral">&quot; &quot;</span>);
+<a name="l02150"></a>02150                 fflush(NULL);
+<a name="l02151"></a>02151         }
+<a name="l02152"></a>02152 
+<a name="l02153"></a>02153         status = <a class="code" href="readlogs_8c.html#ab9731b0c308d263368cb0fda392a4fe3" title="Read&#39;s a defined log file and stores the entries into entry list struct.">get_log_entries</a>(filename,NULL,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>,<a class="code" href="avail_8c.html#aa559b2f4e7fa951d5a42a01764f40acf">t1</a>-(60*60*24*<a class="code" href="avail_8c.html#a5b94c214142473633fb6531366c3e0ab">backtrack_archives</a>),<a class="code" href="avail_8c.html#a0e8a1d93450ad3fca3857f5ff756791e">t2</a>);
+<a name="l02154"></a>02154         
+<a name="l02155"></a>02155         <span class="keywordflow">if</span> (status!=<a class="code" href="readlogs_8h.html#af907bbc3bf323f7f1e49193ee33f4d09">READLOG_OK</a>) {
+<a name="l02156"></a>02156 <span class="preprocessor">#ifdef DEBUG2</span>
+<a name="l02157"></a>02157 <span class="preprocessor"></span>                printf(<span class="stringliteral">&quot;Could not open file &#39;%s&#39; for reading.\n&quot;</span>,filename);
+<a name="l02158"></a>02158 <span class="preprocessor">#endif</span>
+<a name="l02159"></a>02159 <span class="preprocessor"></span>                <span class="comment">/* free memory */</span>
+<a name="l02160"></a>02160                 <a class="code" href="readlogs_8c.html#a091d21dab887ab9d5a493881a3f0d8fd" title="frees all memory allocated to list of log entries in memory">free_log_entries</a>();
+<a name="l02161"></a>02161                 <span class="keywordflow">return</span>;
+<a name="l02162"></a>02162         }<span class="keywordflow">else</span>{
+<a name="l02163"></a>02163 
+<a name="l02164"></a>02164 <span class="preprocessor">#ifdef DEBUG2</span>
+<a name="l02165"></a>02165 <span class="preprocessor"></span>                printf(<span class="stringliteral">&quot;Scanning log file &#39;%s&#39; for archived state data...\n&quot;</span>,filename);
+<a name="l02166"></a>02166 <span class="preprocessor">#endif</span>
+<a name="l02167"></a>02167 <span class="preprocessor"></span>
+<a name="l02168"></a>02168                 <span class="keywordflow">for</span>(temp_entry=entry_list;temp_entry!=NULL;temp_entry=temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a7d54733f5669bebe61df0f1288fe66">next</a>) {
+<a name="l02169"></a>02169 
+<a name="l02170"></a>02170                         <span class="comment">/* program starts/restarts */</span>
+<a name="l02171"></a>02171                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a48326692b6efe4ab80481f138c738eed">LOGENTRY_STARTUP</a>)
+<a name="l02172"></a>02172                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a4046f28f3971b604593062f4e8452e68">AS_PROGRAM_START</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02173"></a>02173                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#ae80679c0b7bfd7fcb384312b3bcedc4e">LOGENTRY_RESTART</a>)
+<a name="l02174"></a>02174                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a4046f28f3971b604593062f4e8452e68">AS_PROGRAM_START</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02175"></a>02175 
+<a name="l02176"></a>02176                         <span class="comment">/* program stops */</span>
+<a name="l02177"></a>02177                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#abe960fed98fdae4f59e903514efca30f">LOGENTRY_SHUTDOWN</a>)
+<a name="l02178"></a>02178                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a97d392bf35e18cef202d4160ab9573b2">AS_PROGRAM_END</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02179"></a>02179                         <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a90303d773762683aebf158ba95e012b6">LOGENTRY_BAILOUT</a>)
+<a name="l02180"></a>02180                                 <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a97d392bf35e18cef202d4160ab9573b2">AS_PROGRAM_END</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02181"></a>02181 
+<a name="l02182"></a>02182                         <span class="keywordflow">if</span>(<a class="code" href="avail_8c.html#a7b50193f4e7d5976ac65a44694c15767">display_type</a>==<a class="code" href="histogram_8c.html#a064367f41faacb0a423a91a11e2e09cc">DISPLAY_HOST_HISTOGRAM</a>){
+<a name="l02183"></a>02183                                 <span class="keywordflow">switch</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>){
+<a name="l02184"></a>02184 
+<a name="l02185"></a>02185                                         <span class="comment">/* normal host alerts and initial/current states */</span>
+<a name="l02186"></a>02186                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a59c640bdadeed2d8a97c806a667bb377">LOGENTRY_HOST_DOWN</a>:
+<a name="l02187"></a>02187                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a1b60afe6e1e448620db6f59dde06abc6">LOGENTRY_HOST_UNREACHABLE</a>:
+<a name="l02188"></a>02188                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a5dd8a610fc9237d58b00c76c7b0ddb40">LOGENTRY_HOST_RECOVERY</a>:
+<a name="l02189"></a>02189                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#aaa05701eaaaa4905fe522db0fb4428bc">LOGENTRY_HOST_UP</a>:
+<a name="l02190"></a>02190 
+<a name="l02191"></a>02191                                                 <span class="comment">/* get host name */</span>
+<a name="l02192"></a>02192                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;:&quot;</span>);
+<a name="l02193"></a>02193                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(NULL,<span class="stringliteral">&quot;;&quot;</span>);
+<a name="l02194"></a>02194                                                 strncpy(entry_host_name,(temp_buffer==NULL)?<span class="stringliteral">&quot;&quot;</span>:temp_buffer+1,<span class="keyword">sizeof</span>(entry_host_name));
+<a name="l02195"></a>02195                                                 entry_host_name[<span class="keyword">sizeof</span>(entry_host_name)-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
+<a name="l02196"></a>02196 
+<a name="l02197"></a>02197                                                 <span class="keywordflow">if</span>(strcmp(<a class="code" href="avail_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>,entry_host_name))
+<a name="l02198"></a>02198                                                         <span class="keywordflow">continue</span>;
+<a name="l02199"></a>02199 
+<a name="l02200"></a>02200                                                 <span class="comment">/* skip soft states if necessary */</span>
+<a name="l02201"></a>02201                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; <a class="code" href="histogram_8c.html#ac3b6a4b1984bb561979ec2a178bbfdaf">GRAPH_SOFT_STATETYPES</a>) &amp;&amp; strstr(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;;SOFT;&quot;</span>))
+<a name="l02202"></a>02202                                                         <span class="keywordflow">continue</span>;
+<a name="l02203"></a>02203 
+<a name="l02204"></a>02204                                                 <span class="comment">/* skip hard states if necessary */</span>
+<a name="l02205"></a>02205                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; <a class="code" href="histogram_8c.html#a103f058ccb53beb1d484a81a604c256d">GRAPH_HARD_STATETYPES</a>) &amp;&amp; strstr(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;;HARD;&quot;</span>))
+<a name="l02206"></a>02206                                                         <span class="keywordflow">continue</span>;
+<a name="l02207"></a>02207 
+<a name="l02208"></a>02208                                                 <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a59c640bdadeed2d8a97c806a667bb377">LOGENTRY_HOST_DOWN</a>)
+<a name="l02209"></a>02209                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a4ca423f13f8c2569dc85e1a7065a8a49">AS_HOST_DOWN</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02210"></a>02210                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a1b60afe6e1e448620db6f59dde06abc6">LOGENTRY_HOST_UNREACHABLE</a>)
+<a name="l02211"></a>02211                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a365f6b41ab31332c8fb9a6a2f8a680b8">AS_HOST_UNREACHABLE</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02212"></a>02212                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a5dd8a610fc9237d58b00c76c7b0ddb40">LOGENTRY_HOST_RECOVERY</a> || temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#aaa05701eaaaa4905fe522db0fb4428bc">LOGENTRY_HOST_UP</a>)
+<a name="l02213"></a>02213                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a8fbe91306a88107d9aee46cece53096b">AS_HOST_UP</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02214"></a>02214 
+<a name="l02215"></a>02215                                                 <span class="keywordflow">break</span>;
+<a name="l02216"></a>02216                                 }
+<a name="l02217"></a>02217                         }
 <a name="l02218"></a>02218 
-<a name="l02219"></a>02219                                                 <span class="keywordflow">if</span>(strcmp(<a class="code" href="avail_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>,entry_host_name))
-<a name="l02220"></a>02220                                                         <span class="keywordflow">continue</span>;
-<a name="l02221"></a>02221                                 
-<a name="l02222"></a>02222                                                 <span class="comment">/* get service description */</span>
-<a name="l02223"></a>02223                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(NULL,<span class="stringliteral">&quot;;&quot;</span>);
-<a name="l02224"></a>02224                                                 strncpy(entry_service_desc,(temp_buffer==NULL)?<span class="stringliteral">&quot;&quot;</span>:temp_buffer,<span class="keyword">sizeof</span>(entry_service_desc));
-<a name="l02225"></a>02225                                                 entry_service_desc[<span class="keyword">sizeof</span>(entry_service_desc)-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
-<a name="l02226"></a>02226 
-<a name="l02227"></a>02227                                                 <span class="keywordflow">if</span>(strcmp(<a class="code" href="avail_8c.html#abcaaec3b3fa5930176e13f734a73ecde">service_desc</a>,entry_service_desc))
-<a name="l02228"></a>02228                                                         <span class="keywordflow">continue</span>;
-<a name="l02229"></a>02229 
-<a name="l02230"></a>02230                                                 <span class="comment">/* skip soft states if necessary */</span>
-<a name="l02231"></a>02231                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; GRAPH_SOFT_STATETYPES) &amp;&amp; strstr(input,<span class="stringliteral">&quot;;SOFT;&quot;</span>))
-<a name="l02232"></a>02232                                                         <span class="keywordflow">continue</span>;
-<a name="l02233"></a>02233 
-<a name="l02234"></a>02234                                                 <span class="comment">/* skip hard states if necessary */</span>
-<a name="l02235"></a>02235                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; GRAPH_HARD_STATETYPES) &amp;&amp; strstr(input,<span class="stringliteral">&quot;;HARD;&quot;</span>))
+<a name="l02219"></a>02219                         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="avail_8c.html#a7b50193f4e7d5976ac65a44694c15767">display_type</a>==<a class="code" href="histogram_8c.html#ab27de8cd429c2412e44ab212bf076d67">DISPLAY_SERVICE_HISTOGRAM</a>){
+<a name="l02220"></a>02220                                 <span class="keywordflow">switch</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>){
+<a name="l02221"></a>02221 
+<a name="l02222"></a>02222                                         <span class="comment">/* normal service alerts and initial/current states */</span>
+<a name="l02223"></a>02223                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a892702b0e468209f4644de9e85be426e">LOGENTRY_SERVICE_CRITICAL</a>:
+<a name="l02224"></a>02224                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a6df1fc7978c0fa8e66a46b0e1dda8d18">LOGENTRY_SERVICE_WARNING</a>:
+<a name="l02225"></a>02225                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a661545a7150794c1043e01676d647f3e">LOGENTRY_SERVICE_UNKNOWN</a>:
+<a name="l02226"></a>02226                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#a5d607fa36320baf36814002da7e3614a">LOGENTRY_SERVICE_RECOVERY</a>:
+<a name="l02227"></a>02227                                         <span class="keywordflow">case</span> <a class="code" href="readlogs_8h.html#aa185f2ecf772cb57505cc1bda9af1ce0">LOGENTRY_SERVICE_OK</a>:
+<a name="l02228"></a>02228 
+<a name="l02229"></a>02229                                                 <span class="comment">/* get host name */</span>
+<a name="l02230"></a>02230                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;:&quot;</span>);
+<a name="l02231"></a>02231                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(NULL,<span class="stringliteral">&quot;;&quot;</span>);
+<a name="l02232"></a>02232                                                 strncpy(entry_host_name,(temp_buffer==NULL)?<span class="stringliteral">&quot;&quot;</span>:temp_buffer+1,<span class="keyword">sizeof</span>(entry_host_name));
+<a name="l02233"></a>02233                                                 entry_host_name[<span class="keyword">sizeof</span>(entry_host_name)-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
+<a name="l02234"></a>02234 
+<a name="l02235"></a>02235                                                 <span class="keywordflow">if</span>(strcmp(<a class="code" href="avail_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>,entry_host_name))
 <a name="l02236"></a>02236                                                         <span class="keywordflow">continue</span>;
-<a name="l02237"></a>02237 
-<a name="l02238"></a>02238                                                 <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a892702b0e468209f4644de9e85be426e">LOGENTRY_SERVICE_CRITICAL</a>)
-<a name="l02239"></a>02239                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a70c600cf231f4f60ef07bd6521cdfd03">AS_SVC_CRITICAL</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02240"></a>02240                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a6df1fc7978c0fa8e66a46b0e1dda8d18">LOGENTRY_SERVICE_WARNING</a>)
-<a name="l02241"></a>02241                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a93f9800015943fff85667a75b13b1354">AS_SVC_WARNING</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02242"></a>02242                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a661545a7150794c1043e01676d647f3e">LOGENTRY_SERVICE_UNKNOWN</a>)
-<a name="l02243"></a>02243                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a8a5aa458f38d82dbaad675185a59e3b3">AS_SVC_UNKNOWN</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02244"></a>02244                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a5d607fa36320baf36814002da7e3614a">LOGENTRY_SERVICE_RECOVERY</a> || temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#aa185f2ecf772cb57505cc1bda9af1ce0">LOGENTRY_SERVICE_OK</a>)
-<a name="l02245"></a>02245                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a591ff69174b651d4f78e14d80a2986f5">AS_SVC_OK</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
-<a name="l02246"></a>02246                                         <span class="keywordflow">break</span>;
-<a name="l02247"></a>02247                                 }
-<a name="l02248"></a>02248                         }
-<a name="l02249"></a>02249                 
-<a name="l02250"></a>02250                         <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>);
-<a name="l02251"></a>02251                         <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(temp_entry);
-<a name="l02252"></a>02252                 }
-<a name="l02253"></a>02253                 <span class="comment">/* free memory */</span>
-<a name="l02254"></a>02254                 <a class="code" href="readlogs_8c.html#a091d21dab887ab9d5a493881a3f0d8fd" title="frees all memory allocated to list of log entries in memory">free_log_entries</a>();
-<a name="l02255"></a>02255                 free(input);
-<a name="l02256"></a>02256         }       
-<a name="l02257"></a>02257         <span class="keywordflow">return</span>;
-<a name="l02258"></a>02258 }
-<a name="l02259"></a>02259 
-<a name="l02260"></a>02260 
-<a name="l02261"></a>02261 <span class="keywordtype">void</span> <a class="code" href="avail_8c.html#a471740fdb87f7c736cc021dc9e67ecb3">compute_report_times</a>(<span class="keywordtype">void</span>){
-<a name="l02262"></a>02262         time_t <a class="code" href="status_8c.html#ab1938d5563a4d7b5ef9b9f74a685508b">current_time</a>;
-<a name="l02263"></a>02263         <span class="keyword">struct </span>tm *st;
-<a name="l02264"></a>02264         <span class="keyword">struct </span>tm *et;
-<a name="l02265"></a>02265 
-<a name="l02266"></a>02266         <span class="comment">/* get the current time */</span>
-<a name="l02267"></a>02267         time(&amp;current_time);
-<a name="l02268"></a>02268 
-<a name="l02269"></a>02269         st=localtime(&amp;current_time);
+<a name="l02237"></a>02237                                 
+<a name="l02238"></a>02238                                                 <span class="comment">/* get service description */</span>
+<a name="l02239"></a>02239                                                 temp_buffer=<a class="code" href="shared_8c.html#a3cb00755a99d761debc38b7252aa263d">my_strtok</a>(NULL,<span class="stringliteral">&quot;;&quot;</span>);
+<a name="l02240"></a>02240                                                 strncpy(entry_service_desc,(temp_buffer==NULL)?<span class="stringliteral">&quot;&quot;</span>:temp_buffer,<span class="keyword">sizeof</span>(entry_service_desc));
+<a name="l02241"></a>02241                                                 entry_service_desc[<span class="keyword">sizeof</span>(entry_service_desc)-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
+<a name="l02242"></a>02242 
+<a name="l02243"></a>02243                                                 <span class="keywordflow">if</span>(strcmp(<a class="code" href="avail_8c.html#abcaaec3b3fa5930176e13f734a73ecde">service_desc</a>,entry_service_desc))
+<a name="l02244"></a>02244                                                         <span class="keywordflow">continue</span>;
+<a name="l02245"></a>02245 
+<a name="l02246"></a>02246                                                 <span class="comment">/* skip soft states if necessary */</span>
+<a name="l02247"></a>02247                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; GRAPH_SOFT_STATETYPES) &amp;&amp; strstr(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;;SOFT;&quot;</span>))
+<a name="l02248"></a>02248                                                         <span class="keywordflow">continue</span>;
+<a name="l02249"></a>02249 
+<a name="l02250"></a>02250                                                 <span class="comment">/* skip hard states if necessary */</span>
+<a name="l02251"></a>02251                                                 <span class="keywordflow">if</span>(!(<a class="code" href="histogram_8c.html#a040779df1936cce9c3bf6a32394a879f">graph_statetypes</a> &amp; GRAPH_HARD_STATETYPES) &amp;&amp; strstr(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a4422665a218f6ea56553ebfc2f119eb9">entry_text</a>,<span class="stringliteral">&quot;;HARD;&quot;</span>))
+<a name="l02252"></a>02252                                                         <span class="keywordflow">continue</span>;
+<a name="l02253"></a>02253 
+<a name="l02254"></a>02254                                                 <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a892702b0e468209f4644de9e85be426e">LOGENTRY_SERVICE_CRITICAL</a>)
+<a name="l02255"></a>02255                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a70c600cf231f4f60ef07bd6521cdfd03">AS_SVC_CRITICAL</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02256"></a>02256                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a6df1fc7978c0fa8e66a46b0e1dda8d18">LOGENTRY_SERVICE_WARNING</a>)
+<a name="l02257"></a>02257                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a93f9800015943fff85667a75b13b1354">AS_SVC_WARNING</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02258"></a>02258                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a661545a7150794c1043e01676d647f3e">LOGENTRY_SERVICE_UNKNOWN</a>)
+<a name="l02259"></a>02259                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a8a5aa458f38d82dbaad675185a59e3b3">AS_SVC_UNKNOWN</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02260"></a>02260                                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#a5d607fa36320baf36814002da7e3614a">LOGENTRY_SERVICE_RECOVERY</a> || temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a8a56dc400c6490790ebaf0836dd44871">type</a>==<a class="code" href="readlogs_8h.html#aa185f2ecf772cb57505cc1bda9af1ce0">LOGENTRY_SERVICE_OK</a>)
+<a name="l02261"></a>02261                                                         <a class="code" href="avail_8c.html#a79cce745c885c5aaf025022e209c23e4">add_archived_state</a>(<a class="code" href="histogram_8c.html#a591ff69174b651d4f78e14d80a2986f5">AS_SVC_OK</a>,temp_entry-&gt;<a class="code" href="structlogentry__struct.html#a3331c244dd40d466961aa148d175aa5c">timestamp</a>);
+<a name="l02262"></a>02262                                         <span class="keywordflow">break</span>;
+<a name="l02263"></a>02263                                 }
+<a name="l02264"></a>02264                         }
+<a name="l02265"></a>02265                 }
+<a name="l02266"></a>02266         }       
+<a name="l02267"></a>02267 
+<a name="l02268"></a>02268         <span class="comment">/* free memory */</span>
+<a name="l02269"></a>02269         <a class="code" href="readlogs_8c.html#a091d21dab887ab9d5a493881a3f0d8fd" title="frees all memory allocated to list of log entries in memory">free_log_entries</a>();
 <a name="l02270"></a>02270 
-<a name="l02271"></a>02271         st-&gt;tm_sec=<a class="code" href="avail_8c.html#a1d66274852b01ef27fe75a3f103e1e53">start_second</a>;
-<a name="l02272"></a>02272         st-&gt;tm_min=<a class="code" href="avail_8c.html#a382f77b799baaadc8341ad2c528d5a39">start_minute</a>;
-<a name="l02273"></a>02273         st-&gt;tm_hour=<a class="code" href="avail_8c.html#af5f7c19232953b2236d846fa7697e8cb">start_hour</a>;
-<a name="l02274"></a>02274         st-&gt;tm_mday=<a class="code" href="avail_8c.html#af3aca4981c1c41dc984265c7d1873dcb">start_day</a>;
-<a name="l02275"></a>02275         st-&gt;tm_mon=<a class="code" href="avail_8c.html#a7bc2260de5a30735f1fb2f14b1919d87">start_month</a>-1;
-<a name="l02276"></a>02276         st-&gt;tm_year=<a class="code" href="avail_8c.html#a222968203a216e9372dfa15bb08a1cdd">start_year</a>-1900;
-<a name="l02277"></a>02277         st-&gt;tm_isdst=-1;
-<a name="l02278"></a>02278 
-<a name="l02279"></a>02279         <a class="code" href="avail_8c.html#aa559b2f4e7fa951d5a42a01764f40acf">t1</a>=mktime(st);
-<a name="l02280"></a>02280 
-<a name="l02281"></a>02281         et=localtime(&amp;current_time);
+<a name="l02271"></a>02271         <span class="keywordflow">return</span>;
+<a name="l02272"></a>02272 }
+<a name="l02273"></a>02273 
+<a name="l02274"></a>02274 
+<a name="l02275"></a>02275 <span class="keywordtype">void</span> <a class="code" href="avail_8c.html#a471740fdb87f7c736cc021dc9e67ecb3">compute_report_times</a>(<span class="keywordtype">void</span>){
+<a name="l02276"></a>02276         time_t <a class="code" href="status_8c.html#ab1938d5563a4d7b5ef9b9f74a685508b">current_time</a>;
+<a name="l02277"></a>02277         <span class="keyword">struct </span>tm *st;
+<a name="l02278"></a>02278         <span class="keyword">struct </span>tm *et;
+<a name="l02279"></a>02279 
+<a name="l02280"></a>02280         <span class="comment">/* get the current time */</span>
+<a name="l02281"></a>02281         time(&amp;current_time);
 <a name="l02282"></a>02282 
-<a name="l02283"></a>02283         et-&gt;tm_sec=<a class="code" href="avail_8c.html#a8a7234c896c49a77123cba09e6ab07c0">end_second</a>;
-<a name="l02284"></a>02284         et-&gt;tm_min=<a class="code" href="avail_8c.html#a36b4665d25007c6c976f8c7019f2b595">end_minute</a>;
-<a name="l02285"></a>02285         et-&gt;tm_hour=<a class="code" href="avail_8c.html#ae0e844fb67e30bc9e925202f08cf8275">end_hour</a>;
-<a name="l02286"></a>02286         et-&gt;tm_mday=<a class="code" href="avail_8c.html#ac95f06a49df5defa46d3d67fe4ab32c6">end_day</a>;
-<a name="l02287"></a>02287         et-&gt;tm_mon=<a class="code" href="avail_8c.html#ab032d0b4d39706ecdf5922b429a84085">end_month</a>-1;
-<a name="l02288"></a>02288         et-&gt;tm_year=<a class="code" href="avail_8c.html#a74b8d0d2be2f27adaa1f79fb481db4ba">end_year</a>-1900;
-<a name="l02289"></a>02289         et-&gt;tm_isdst=-1;
-<a name="l02290"></a>02290 
-<a name="l02291"></a>02291         <a class="code" href="avail_8c.html#a0e8a1d93450ad3fca3857f5ff756791e">t2</a>=mktime(et);
-<a name="l02292"></a>02292 }
-<a name="l02293"></a>02293 
+<a name="l02283"></a>02283         st=localtime(&amp;current_time);
+<a name="l02284"></a>02284 
+<a name="l02285"></a>02285         st-&gt;tm_sec=<a class="code" href="avail_8c.html#a1d66274852b01ef27fe75a3f103e1e53">start_second</a>;
+<a name="l02286"></a>02286         st-&gt;tm_min=<a class="code" href="avail_8c.html#a382f77b799baaadc8341ad2c528d5a39">start_minute</a>;
+<a name="l02287"></a>02287         st-&gt;tm_hour=<a class="code" href="avail_8c.html#af5f7c19232953b2236d846fa7697e8cb">start_hour</a>;
+<a name="l02288"></a>02288         st-&gt;tm_mday=<a class="code" href="avail_8c.html#af3aca4981c1c41dc984265c7d1873dcb">start_day</a>;
+<a name="l02289"></a>02289         st-&gt;tm_mon=<a class="code" href="avail_8c.html#a7bc2260de5a30735f1fb2f14b1919d87">start_month</a>-1;
+<a name="l02290"></a>02290         st-&gt;tm_year=<a class="code" href="avail_8c.html#a222968203a216e9372dfa15bb08a1cdd">start_year</a>-1900;
+<a name="l02291"></a>02291         st-&gt;tm_isdst=-1;
+<a name="l02292"></a>02292 
+<a name="l02293"></a>02293         <a class="code" href="avail_8c.html#aa559b2f4e7fa951d5a42a01764f40acf">t1</a>=mktime(st);
 <a name="l02294"></a>02294 
-<a name="l02295"></a>02295 
-<a name="l02296"></a>02296 <span class="comment">/* draws a solid line */</span>
-<a name="l02297"></a><a class="code" href="histogram_8c.html#a00a1a0add73f95122c5150e2df0f7c22">02297</a> <span class="keywordtype">void</span> <a class="code" href="histogram_8c.html#a00a1a0add73f95122c5150e2df0f7c22">draw_line</a>(<span class="keywordtype">int</span> x1,<span class="keywordtype">int</span> y1,<span class="keywordtype">int</span> x2,<span class="keywordtype">int</span> y2,<span class="keywordtype">int</span> color){
-<a name="l02298"></a>02298         <span class="keywordtype">int</span> styleSolid[1];
-<a name="l02299"></a>02299 
-<a name="l02300"></a>02300         styleSolid[0]=color;
-<a name="l02301"></a>02301 
-<a name="l02302"></a>02302         <span class="comment">/* sets current style to a solid line */</span>
-<a name="l02303"></a>02303         gdImageSetStyle(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,styleSolid,1);
+<a name="l02295"></a>02295         et=localtime(&amp;current_time);
+<a name="l02296"></a>02296 
+<a name="l02297"></a>02297         et-&gt;tm_sec=<a class="code" href="avail_8c.html#a8a7234c896c49a77123cba09e6ab07c0">end_second</a>;
+<a name="l02298"></a>02298         et-&gt;tm_min=<a class="code" href="avail_8c.html#a36b4665d25007c6c976f8c7019f2b595">end_minute</a>;
+<a name="l02299"></a>02299         et-&gt;tm_hour=<a class="code" href="avail_8c.html#ae0e844fb67e30bc9e925202f08cf8275">end_hour</a>;
+<a name="l02300"></a>02300         et-&gt;tm_mday=<a class="code" href="avail_8c.html#ac95f06a49df5defa46d3d67fe4ab32c6">end_day</a>;
+<a name="l02301"></a>02301         et-&gt;tm_mon=<a class="code" href="avail_8c.html#ab032d0b4d39706ecdf5922b429a84085">end_month</a>-1;
+<a name="l02302"></a>02302         et-&gt;tm_year=<a class="code" href="avail_8c.html#a74b8d0d2be2f27adaa1f79fb481db4ba">end_year</a>-1900;
+<a name="l02303"></a>02303         et-&gt;tm_isdst=-1;
 <a name="l02304"></a>02304 
-<a name="l02305"></a>02305         <span class="comment">/* draws a line (dashed) */</span>
-<a name="l02306"></a>02306         gdImageLine(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,x1,y1,x2,y2,gdStyled);
+<a name="l02305"></a>02305         <a class="code" href="avail_8c.html#a0e8a1d93450ad3fca3857f5ff756791e">t2</a>=mktime(et);
+<a name="l02306"></a>02306 }
 <a name="l02307"></a>02307 
-<a name="l02308"></a>02308         <span class="keywordflow">return</span>;
-<a name="l02309"></a>02309 }
-<a name="l02310"></a>02310 
-<a name="l02311"></a>02311 
-<a name="l02312"></a>02312 <span class="comment">/* draws a dashed line */</span>
-<a name="l02313"></a><a class="code" href="histogram_8c.html#a4c3475f1a3541333be3f9d192150732d">02313</a> <span class="keywordtype">void</span> <a class="code" href="histogram_8c.html#a4c3475f1a3541333be3f9d192150732d">draw_dashed_line</a>(<span class="keywordtype">int</span> x1,<span class="keywordtype">int</span> y1,<span class="keywordtype">int</span> x2,<span class="keywordtype">int</span> y2,<span class="keywordtype">int</span> color){
-<a name="l02314"></a>02314         <span class="keywordtype">int</span> styleDashed[6];
+<a name="l02308"></a>02308 
+<a name="l02309"></a>02309 
+<a name="l02310"></a>02310 <span class="comment">/* draws a solid line */</span>
+<a name="l02311"></a><a class="code" href="histogram_8c.html#a00a1a0add73f95122c5150e2df0f7c22">02311</a> <span class="keywordtype">void</span> <a class="code" href="histogram_8c.html#a00a1a0add73f95122c5150e2df0f7c22">draw_line</a>(<span class="keywordtype">int</span> x1,<span class="keywordtype">int</span> y1,<span class="keywordtype">int</span> x2,<span class="keywordtype">int</span> y2,<span class="keywordtype">int</span> color){
+<a name="l02312"></a>02312         <span class="keywordtype">int</span> styleSolid[1];
+<a name="l02313"></a>02313 
+<a name="l02314"></a>02314         styleSolid[0]=color;
 <a name="l02315"></a>02315 
-<a name="l02316"></a>02316         styleDashed[0]=color;
-<a name="l02317"></a>02317         styleDashed[1]=color;
-<a name="l02318"></a>02318         styleDashed[2]=gdTransparent;
-<a name="l02319"></a>02319         styleDashed[3]=gdTransparent;
-<a name="l02320"></a>02320         styleDashed[4]=gdTransparent;
-<a name="l02321"></a>02321         styleDashed[5]=gdTransparent;
-<a name="l02322"></a>02322 
-<a name="l02323"></a>02323         <span class="comment">/* sets current style to a solid line */</span>
-<a name="l02324"></a>02324         gdImageSetStyle(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,styleDashed,6);
+<a name="l02316"></a>02316         <span class="comment">/* sets current style to a solid line */</span>
+<a name="l02317"></a>02317         gdImageSetStyle(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,styleSolid,1);
+<a name="l02318"></a>02318 
+<a name="l02319"></a>02319         <span class="comment">/* draws a line (dashed) */</span>
+<a name="l02320"></a>02320         gdImageLine(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,x1,y1,x2,y2,gdStyled);
+<a name="l02321"></a>02321 
+<a name="l02322"></a>02322         <span class="keywordflow">return</span>;
+<a name="l02323"></a>02323 }
+<a name="l02324"></a>02324 
 <a name="l02325"></a>02325 
-<a name="l02326"></a>02326         <span class="comment">/* draws a line (dashed) */</span>
-<a name="l02327"></a>02327         gdImageLine(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,x1,y1,x2,y2,gdStyled);
-<a name="l02328"></a>02328 
-<a name="l02329"></a>02329         <span class="keywordflow">return</span>;
-<a name="l02330"></a>02330 }
-<a name="l02331"></a>02331 
+<a name="l02326"></a>02326 <span class="comment">/* draws a dashed line */</span>
+<a name="l02327"></a><a class="code" href="histogram_8c.html#a4c3475f1a3541333be3f9d192150732d">02327</a> <span class="keywordtype">void</span> <a class="code" href="histogram_8c.html#a4c3475f1a3541333be3f9d192150732d">draw_dashed_line</a>(<span class="keywordtype">int</span> x1,<span class="keywordtype">int</span> y1,<span class="keywordtype">int</span> x2,<span class="keywordtype">int</span> y2,<span class="keywordtype">int</span> color){
+<a name="l02328"></a>02328         <span class="keywordtype">int</span> styleDashed[6];
+<a name="l02329"></a>02329 
+<a name="l02330"></a>02330         styleDashed[0]=color;
+<a name="l02331"></a>02331         styleDashed[1]=color;
+<a name="l02332"></a>02332         styleDashed[2]=gdTransparent;
+<a name="l02333"></a>02333         styleDashed[3]=gdTransparent;
+<a name="l02334"></a>02334         styleDashed[4]=gdTransparent;
+<a name="l02335"></a>02335         styleDashed[5]=gdTransparent;
+<a name="l02336"></a>02336 
+<a name="l02337"></a>02337         <span class="comment">/* sets current style to a solid line */</span>
+<a name="l02338"></a>02338         gdImageSetStyle(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,styleDashed,6);
+<a name="l02339"></a>02339 
+<a name="l02340"></a>02340         <span class="comment">/* draws a line (dashed) */</span>
+<a name="l02341"></a>02341         gdImageLine(<a class="code" href="histogram_8c.html#ab827cd8efa764fe41376b3eaa0f47b98">histogram_image</a>,x1,y1,x2,y2,gdStyled);
+<a name="l02342"></a>02342 
+<a name="l02343"></a>02343         <span class="keywordflow">return</span>;
+<a name="l02344"></a>02344 }
+<a name="l02345"></a>02345 
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="histogram_8c.html">histogram.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:19 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:39 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

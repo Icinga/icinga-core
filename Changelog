@@ -36,6 +36,7 @@ ENHANCEMENTS
 * config: increase default debug file size to 100M #1316
 
 * install: add --with-ext-cmd-file-dir= to configure, allowing icinga.cmd dir to be altered #1268
+* install: add make option to install doxygen development docu "install-dev-docu" #1309
 
 
 FIXES

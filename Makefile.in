@@ -111,6 +111,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
 	@printf "\t%-23s - %s\n" "install-api" "install php api"
+	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
 
 
 # FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
@@ -352,6 +353,9 @@ submodule-update-latest:
 
 install-html:
 	cd $(SRC_HTM) && $(MAKE) install
+
+install-dev-docu:
+	cd $(SRC_HTM) && $(MAKE) install-dev-docu
 
 install-base:
 	cd $(SRC_BASE) && $(MAKE) install

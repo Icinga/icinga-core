@@ -110,6 +110,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a95de4036f54b6f81a527315b182ba8e5">skiplist_compare_serviceescalation</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#acbc8f06dad61395988c7c4c70a7ad8c7">skiplist_compare_hostdependency</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a2136d3fad9c984a0988ee2668a3af945">skiplist_compare_servicedependency</a> (void *a, void *b)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a765ed221988369d11cc4fd671a194913">skiplist_compare_module</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ad3efd9c6199159dab11260b5303e3cfb">get_host_count</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a2f0251deca5fb3be62af1f1f6b6efe84">get_service_count</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeperiod__struct.html">timeperiod</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a818a569880c8d2f33c7440560b78a43c">add_timeperiod</a> (char *name, char *alias)</td></tr>
@@ -118,40 +119,41 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaterange__struct.html">daterange</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a26b3ad4c4cd26ab617e9d604ad843412">add_exception_to_timeperiod</a> (<a class="el" href="structtimeperiod__struct.html">timeperiod</a> *period, int type, int syear, int smon, int smday, int swday, int swday_offset, int eyear, int emon, int emday, int ewday, int ewday_offset, int skip_interval)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimerange__struct.html">timerange</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a00f6b0ef20562bc3d9b59d78f86e7c8a">add_timerange_to_daterange</a> (<a class="el" href="structdaterange__struct.html">daterange</a> *drange, unsigned long <a class="el" href="cmd_8c.html#ad20e89e0c86aa812dc3a8e2fb7b5777b">start_time</a>, unsigned long <a class="el" href="cmd_8c.html#a1e324d62e65642694c00de363bf8a8ba">end_time</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhost__struct.html">host</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#af4c30e5cac692374748e74c0ed835963">add_host</a> (char *name, char *display_name, char *alias, char *address, char *address6, char *check_period, int initial_state, double check_interval, double retry_interval, int max_attempts, int notify_up, int notify_down, int notify_unreachable, int notify_flapping, int notify_downtime, double notification_interval, double first_notification_delay, char *notification_period, int notifications_enabled, char *check_command, int checks_enabled, int accept_passive_checks, char *event_handler, int event_handler_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_up, int flap_detection_on_down, int flap_detection_on_unreachable, int stalk_on_up, int stalk_on_down, int stalk_on_unreachable, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, char *vrml_image, char *statusmap_image, int x_2d, int y_2d, int have_2d_coords, double x_3d, double y_3d, double z_3d, int have_3d_coords, int should_be_drawn, int retain_status_information, int retain_nonstatus_information, int obsess_over_host)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostsmember__struct.html">hostsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#adf5e3e8bd79548e318dd4b435bd54359">add_parent_host_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostsmember__struct.html">hostsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#adf5e3e8bd79548e318dd4b435bd54359">add_parent_host_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostsmember__struct.html">hostsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a8de18ababeef9ca0bcdfc217a15e6ce2">add_child_link_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, <a class="el" href="structhost__struct.html">host</a> *child_ptr)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicesmember__struct.html">servicesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a197521945f50f5a827bb28d862e00a19">add_service_link_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, <a class="el" href="structservice__struct.html">service</a> *service_ptr)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroupsmember__struct.html">contactgroupsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a9e65299eaff5ff7ae4d342cf70a63a5a">add_contactgroup_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, char *group_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactsmember__struct.html">contactsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a1c5ed8008f1b4e8965d7595c72021025">add_contact_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, char *contact_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ac08838ed143438cd3d7f37a55b592f72">add_custom_variable_to_host</a> (<a class="el" href="structhost__struct.html">host</a> *hst, char *varname, char *varvalue)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostgroup__struct.html">hostgroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#afed2676cf36459e007534bb7f0a42ada">add_hostgroup</a> (char *name, char *alias, char *notes, char *notes_url, char *action_url)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostsmember__struct.html">hostsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a9360239071a94fdd631345967fba1787">add_host_to_hostgroup</a> (<a class="el" href="structhostgroup__struct.html">hostgroup</a> *temp_hostgroup, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostsmember__struct.html">hostsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a9360239071a94fdd631345967fba1787">add_host_to_hostgroup</a> (<a class="el" href="structhostgroup__struct.html">hostgroup</a> *temp_hostgroup, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicegroup__struct.html">servicegroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a2e4564a5dde84387895ac8f05c48da30">add_servicegroup</a> (char *name, char *alias, char *notes, char *notes_url, char *action_url)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicesmember__struct.html">servicesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ae91b5da2e35eabfeceed8176e8784995">add_service_to_servicegroup</a> (<a class="el" href="structservicegroup__struct.html">servicegroup</a> *temp_servicegroup, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicesmember__struct.html">servicesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ae91b5da2e35eabfeceed8176e8784995">add_service_to_servicegroup</a> (<a class="el" href="structservicegroup__struct.html">servicegroup</a> *temp_servicegroup, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact__struct.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a4b7e0b883abfac1af75bb49ceef3b810">add_contact</a> (char *name, char *alias, char *email, char *pager, char **addresses, char *svc_notification_period, char *host_notification_period, int notify_service_ok, int notify_service_critical, int notify_service_warning, int notify_service_unknown, int notify_service_flapping, int notify_service_downtime, int notify_host_up, int notify_host_down, int notify_host_unreachable, int notify_host_flapping, int notify_host_downtime, int host_notifications_enabled, int service_notifications_enabled, int can_submit_commands, int retain_status_information, int retain_nonstatus_information)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcommandsmember__struct.html">commandsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a9197778ea675a131d22b14a3977dee42">add_host_notification_command_to_contact</a> (<a class="el" href="structcontact__struct.html">contact</a> *cntct, char *command_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcommandsmember__struct.html">commandsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a8a23a5cd1581bca1b42ea564fc9e2006">add_service_notification_command_to_contact</a> (<a class="el" href="structcontact__struct.html">contact</a> *cntct, char *command_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a328516557c27f84f37198d33bc59fe7a">add_custom_variable_to_contact</a> (<a class="el" href="structcontact__struct.html">contact</a> *cntct, char *varname, char *varvalue)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroup__struct.html">contactgroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a7770a76d09217179bcb580a6146af525">add_contactgroup</a> (char *name, char *alias)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactsmember__struct.html">contactsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a24cb4e3015ad8bdc370ea982dac4d1fd">add_contact_to_contactgroup</a> (<a class="el" href="structcontactgroup__struct.html">contactgroup</a> *grp, char *contact_name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservice__struct.html">service</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a0ed87db980cc18e8d2ce15b1b82070c5">add_service</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *description, char *display_name, char *check_period, int initial_state, int max_attempts, int parallelize, int accept_passive_checks, double check_interval, double retry_interval, double notification_interval, double first_notification_delay, char *notification_period, int notify_recovery, int notify_unknown, int notify_warning, int notify_critical, int notify_flapping, int notify_downtime, int notifications_enabled, int is_volatile, char *event_handler, int event_handler_enabled, char *check_command, int checks_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_ok, int flap_detection_on_warning, int flap_detection_on_unknown, int flap_detection_on_critical, int stalk_on_ok, int stalk_on_warning, int stalk_on_unknown, int stalk_on_critical, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, int retain_status_information, int retain_nonstatus_information, int obsess_over_service)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservice__struct.html">service</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a0ed87db980cc18e8d2ce15b1b82070c5">add_service</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *description, char *display_name, char *check_period, int initial_state, int max_attempts, int parallelize, int accept_passive_checks, double check_interval, double retry_interval, double notification_interval, double first_notification_delay, char *notification_period, int notify_recovery, int notify_unknown, int notify_warning, int notify_critical, int notify_flapping, int notify_downtime, int notifications_enabled, int is_volatile, char *event_handler, int event_handler_enabled, char *check_command, int checks_enabled, int flap_detection_enabled, double low_flap_threshold, double high_flap_threshold, int flap_detection_on_ok, int flap_detection_on_warning, int flap_detection_on_unknown, int flap_detection_on_critical, int stalk_on_ok, int stalk_on_warning, int stalk_on_unknown, int stalk_on_critical, int process_perfdata, int failure_prediction_enabled, char *failure_prediction_options, int check_freshness, int freshness_threshold, char *notes, char *notes_url, char *action_url, char *icon_image, char *icon_image_alt, int retain_status_information, int retain_nonstatus_information, int obsess_over_service)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroupsmember__struct.html">contactgroupsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a6cc12c28ed66cc9337a3c29b005ce373">add_contactgroup_to_service</a> (<a class="el" href="structservice__struct.html">service</a> *svc, char *group_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactsmember__struct.html">contactsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#aa6fde3489a144000f6f5a8c0ccd5dda7">add_contact_to_service</a> (<a class="el" href="structservice__struct.html">service</a> *svc, char *contact_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ab25a297e30c782f6913a881d522192de">add_custom_variable_to_service</a> (<a class="el" href="structservice__struct.html">service</a> *svc, char *varname, char *varvalue)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcommand__struct.html">command</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#af541be8df46357ae5a6045b53443be72">add_command</a> (char *name, char *value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#aab7a016ede61d6e22be5c85b2346f24e">add_serviceescalation</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *description, int first_notification, int last_notification, double notification_interval, char *escalation_period, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_recovery)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#aab7a016ede61d6e22be5c85b2346f24e">add_serviceescalation</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *description, int first_notification, int last_notification, double notification_interval, char *escalation_period, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_recovery)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroupsmember__struct.html">contactgroupsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a9ad7e730052d2c8165abf2300eea93e3">add_contactgroup_to_serviceescalation</a> (<a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *se, char *group_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactsmember__struct.html">contactsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a75651111db2a52875c44490663f74c1c">add_contact_to_serviceescalation</a> (<a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *se, char *contact_name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicedependency__struct.html">servicedependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a0120c8480460cdb402b6b6e3f4f06f74">add_service_dependency</a> (char *dependent_host_name, char *dependent_service_description, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int dependency_type, int inherits_parent, int fail_on_ok, int fail_on_warning, int fail_on_unknown, int fail_on_critical, int fail_on_pending, char *dependency_period)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a4aef70581945445f9959788ad1bc15ac">add_host_dependency</a> (char *dependent_host_name, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, int dependency_type, int inherits_parent, int fail_on_up, int fail_on_down, int fail_on_unreachable, int fail_on_pending, char *dependency_period)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a540f977004888c3463ea99e88555226c">add_hostescalation</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, int first_notification, int last_notification, double notification_interval, char *escalation_period, int escalate_on_down, int escalate_on_unreachable, int escalate_on_recovery)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a5d0311fc4591420c778ee1dc3a9fe0b9">add_host_service_escalation_condition</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *my_hostescalation, <a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *my_serviceescalation, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *last_condition, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a153bdc70e778b503bc07284f67cd4041">add_hostescalation_condition</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *my_hostescalation, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *last_condition, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a6e49eacc2e16573c4c25b0632150823e">add_serviceescalation_condition</a> (<a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *my_serviceescalation, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *last_condition, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicedependency__struct.html">servicedependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a0120c8480460cdb402b6b6e3f4f06f74">add_service_dependency</a> (char *dependent_host_name, char *dependent_service_description, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int dependency_type, int inherits_parent, int fail_on_ok, int fail_on_warning, int fail_on_unknown, int fail_on_critical, int fail_on_pending, char *dependency_period)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a4aef70581945445f9959788ad1bc15ac">add_host_dependency</a> (char *dependent_host_name, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, int dependency_type, int inherits_parent, int fail_on_up, int fail_on_down, int fail_on_unreachable, int fail_on_pending, char *dependency_period)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a540f977004888c3463ea99e88555226c">add_hostescalation</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, int first_notification, int last_notification, double notification_interval, char *escalation_period, int escalate_on_down, int escalate_on_unreachable, int escalate_on_recovery)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a5d0311fc4591420c778ee1dc3a9fe0b9">add_host_service_escalation_condition</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *my_hostescalation, <a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *my_serviceescalation, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *last_condition, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a153bdc70e778b503bc07284f67cd4041">add_hostescalation_condition</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *my_hostescalation, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *last_condition, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a6e49eacc2e16573c4c25b0632150823e">add_serviceescalation_condition</a> (<a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *my_serviceescalation, <a class="el" href="structescalation__condition__struct.html">escalation_condition</a> *last_condition, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *service_description, int connector, int escalate_on_down, int escalate_on_unreachable, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_ok)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroupsmember__struct.html">contactgroupsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a58018b17cf89620fd106308da56927a9">add_contactgroup_to_hostescalation</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *he, char *group_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactsmember__struct.html">contactsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a67c3d9ea04a2ee66d9b898e7d0c872a3">add_contact_to_hostescalation</a> (<a class="el" href="structhostescalation__struct.html">hostescalation</a> *he, char *contact_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactsmember__struct.html">contactsmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#aaac5ddc6087f83f7fde5cde3f9aabce7">add_contact_to_object</a> (<a class="el" href="structcontactsmember__struct.html">contactsmember</a> **object_ptr, char *contactname)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a778e98177db49e0bb07e04e53928f0db">add_custom_variable_to_object</a> (<a class="el" href="structcustomvariablesmember__struct.html">customvariablesmember</a> **object_ptr, char *varname, char *varvalue)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmodule__struct.html">module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a277a32df78bde76c298333af51f6c7b0">add_module</a> (char *name, char *type, char *path, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtimeperiod__struct.html">timeperiod</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a720727fb6707e27a815f00d2ee32d7c1">find_timeperiod</a> (char *name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhost__struct.html">host</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a00522e51ee51756c73a5395e6d1498d3">find_host</a> (char *name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostgroup__struct.html">hostgroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#aa7d4295d39f8443f9f19b1d04649dc92">find_hostgroup</a> (char *name)</td></tr>
@@ -159,15 +161,16 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontact__struct.html">contact</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a5293c9bf6790cf9f1c795ea2116dc96c">find_contact</a> (char *name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcontactgroup__struct.html">contactgroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a8aaf7bb1f39824b7c3b41e01f941f5a9">find_contactgroup</a> (char *name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcommand__struct.html">command</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a152a4a0d29a978922a9fe8ad54d1ac8b">find_command</a> (char *name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservice__struct.html">service</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ab1d2d0b3d54898c574aa58b9fe332aa6">find_service</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_desc)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a128ce3e799c36f9efabe6d97e05a4c12">get_first_hostescalation_by_host</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a02d1ff03b0a9a63876faa02b1cfb7a5d">get_next_hostescalation_by_host</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ae0cd0e875b060ce44a534788f9964b32">get_first_serviceescalation_by_service</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a974433f2d71e5d42db50e69b0ac9155a">get_next_serviceescalation_by_service</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a548bd02d785a9bc99c58599312e3ec51">get_first_hostdependency_by_dependent_host</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ab963c7b6af43e541e5a147f5ac3f5aa6">get_next_hostdependency_by_dependent_host</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicedependency__struct.html">servicedependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#abb428bf603eeb073ffa8df096aa2edc2">get_first_servicedependency_by_dependent_service</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicedependency__struct.html">servicedependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ac6e6f7b659c12d79bb4c4ea0b4742989">get_next_servicedependency_by_dependent_service</a> (char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservice__struct.html">service</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ab1d2d0b3d54898c574aa58b9fe332aa6">find_service</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_desc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmodule__struct.html">module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#adaabac128bca67d6510dc6ed44c11bdf">find_module</a> (char *name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a128ce3e799c36f9efabe6d97e05a4c12">get_first_hostescalation_by_host</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a02d1ff03b0a9a63876faa02b1cfb7a5d">get_next_hostescalation_by_host</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ae0cd0e875b060ce44a534788f9964b32">get_first_serviceescalation_by_service</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a974433f2d71e5d42db50e69b0ac9155a">get_next_serviceescalation_by_service</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a548bd02d785a9bc99c58599312e3ec51">get_first_hostdependency_by_dependent_host</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ab963c7b6af43e541e5a147f5ac3f5aa6">get_next_hostdependency_by_dependent_host</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicedependency__struct.html">servicedependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#abb428bf603eeb073ffa8df096aa2edc2">get_first_servicedependency_by_dependent_service</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structservicedependency__struct.html">servicedependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ac6e6f7b659c12d79bb4c4ea0b4742989">get_next_servicedependency_by_dependent_service</a> (char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, void **ptr)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a7896e31e51e6e38dff684569b815eb0a">is_host_immediate_child_of_host</a> (<a class="el" href="structhost__struct.html">host</a> *parent_host, <a class="el" href="structhost__struct.html">host</a> *child_host)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#af058adf089f5da336d7b4a7a4264d2c2">is_host_immediate_parent_of_host</a> (<a class="el" href="structhost__struct.html">host</a> *child_host, <a class="el" href="structhost__struct.html">host</a> *parent_host)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a766aafd041420739f6c6f29d71b66c2d">number_of_immediate_child_hosts</a> (<a class="el" href="structhost__struct.html">host</a> *hst)</td></tr>
@@ -209,6 +212,8 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostdependency__struct.html">hostdependency</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#adce9b37940fbabbcb4a156bf3b3198c1">hostdependency_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a7e0992c0412f246b107354e4f3e25ba1">hostescalation_list</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhostescalation__struct.html">hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a41c91433c25de5d8d081317b62d3c1ce">hostescalation_list_tail</a> = NULL</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmodule__struct.html">module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a6b14931ee1b8e8f97f1295d9a87cdc54">module_list</a> = NULL</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmodule__struct.html">module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#ad569c36116e41011e7344282348f99b7">module_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structskiplist__struct.html">skiplist</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objects_8c.html#a6c32034915bbb82dcc8bec33e1fe7b8c">object_skiplists</a> [NUM_OBJECT_SKIPLISTS]</td></tr>
 </table>
 <hr/><h2>Function Documentation</h2>
@@ -237,7 +242,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00895">895</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00921">921</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -266,7 +271,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01828">1828</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01854">1854</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -421,7 +426,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01268">1268</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01294">1294</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -450,7 +455,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01529">1529</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01555">1555</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -479,7 +484,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00982">982</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01008">1008</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -508,7 +513,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02383">2383</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02409">2409</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -537,7 +542,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02391">2391</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02417">2417</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -566,7 +571,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01812">1812</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01838">1838</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -595,7 +600,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02012">2012</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02038">2038</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -624,7 +629,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01467">1467</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01493">1493</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -653,7 +658,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00947">947</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00973">973</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -682,7 +687,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02348">2348</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02374">2374</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -711,7 +716,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01778">1778</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01804">1804</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -740,7 +745,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01977">1977</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02003">2003</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -775,7 +780,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01459">1459</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01485">1485</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -810,7 +815,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00990">990</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01016">1016</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -845,7 +850,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02431">2431</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02457">2457</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -880,7 +885,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01820">1820</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01846">1846</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -975,7 +980,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00530">530</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00556">556</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1004,7 +1009,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00472">472</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00498">498</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1357,7 +1362,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00600">600</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00626">626</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1428,7 +1433,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02103">2103</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02129">2129</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1462,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01389">1389</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01415">1415</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1546,7 +1551,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02255">2255</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02281">2281</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1575,7 +1580,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01071">1071</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01097">1097</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1640,7 +1645,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02177">2177</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02203">2203</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1728,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02338">2338</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02364">2364</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1770,7 +1775,48 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00998">998</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01024">1024</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a277a32df78bde76c298333af51f6c7b0"></a><!-- doxytag: member="objects.c::add_module" ref="a277a32df78bde76c298333af51f6c7b0" args="(char *name, char *type, char *path, char *args)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmodule__struct.html">module</a>* add_module </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02504">2504</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -1799,7 +1845,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00855">855</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00881">881</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2110,7 +2156,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01564">1564</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01590">1590</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2199,7 +2245,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02020">2020</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02046">2046</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2228,7 +2274,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00921">921</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00947">947</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2257,7 +2303,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01424">1424</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01450">1450</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2292,7 +2338,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01199">1199</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01225">1225</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2369,7 +2415,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01891">1891</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01917">1917</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2452,7 +2498,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02343">2343</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02369">2369</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2499,7 +2545,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l01126">1126</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l01152">1152</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2528,7 +2574,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00409">409</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00435">435</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2563,7 +2609,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00567">567</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00593">593</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2604,7 +2650,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00494">494</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00520">520</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2623,7 +2669,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02562">2562</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02672">2672</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2642,7 +2688,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02536">2536</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02646">2646</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2661,7 +2707,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02549">2549</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02659">2659</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2680,7 +2726,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02497">2497</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02607">2607</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2699,7 +2745,26 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02510">2510</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02620">2620</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adaabac128bca67d6510dc6ed44c11bdf"></a><!-- doxytag: member="objects.c::find_module" ref="adaabac128bca67d6510dc6ed44c11bdf" args="(char *name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmodule__struct.html">module</a>* find_module </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02699">2699</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2728,7 +2793,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02575">2575</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02685">2685</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2747,7 +2812,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02523">2523</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02633">2633</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2766,7 +2831,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02484">2484</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02594">2594</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2785,7 +2850,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l03240">3240</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03362">3362</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2804,7 +2869,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00127">127</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00136">136</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2833,7 +2898,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02644">2644</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02766">2766</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2862,7 +2927,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02594">2594</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02716">2716</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2897,7 +2962,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02668">2668</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02790">2790</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2932,7 +2997,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02618">2618</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02740">2740</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2951,7 +3016,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00382">382</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00408">408</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2980,7 +3045,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02656">2656</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02778">2778</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3009,7 +3074,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02606">2606</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02728">2728</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3044,7 +3109,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02681">2681</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02803">2803</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3079,7 +3144,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02631">2631</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02753">2753</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3098,7 +3163,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00391">391</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00417">417</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3117,7 +3182,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00101">101</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00108">108</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3146,7 +3211,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02951">2951</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03073">3073</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3175,7 +3240,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l03040">3040</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03162">3162</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3204,7 +3269,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02926">2926</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03048">3048</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3233,7 +3298,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02994">2994</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03116">3116</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3262,7 +3327,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l03082">3082</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03204">3204</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3291,7 +3356,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02756">2756</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02878">2878</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3320,7 +3385,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02788">2788</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02910">2910</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3349,7 +3414,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02861">2861</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02983">2983</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3378,7 +3443,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02883">2883</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03005">3005</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3407,7 +3472,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02905">2905</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l03027">3027</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3426,7 +3491,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02799">2799</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02921">2921</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3445,7 +3510,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02829">2829</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02951">2951</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3464,7 +3529,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02814">2814</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02936">2936</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3483,7 +3548,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l02845">2845</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l02967">2967</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3524,7 +3589,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00078">78</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00085">85</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3553,7 +3618,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00202">202</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00211">211</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3582,7 +3647,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00238">238</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00247">247</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3611,7 +3676,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00256">256</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00265">265</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3640,7 +3705,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00166">166</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00175">175</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3669,7 +3734,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00346">346</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00355">355</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3698,7 +3763,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00310">310</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00319">319</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3727,7 +3792,36 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00274">274</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00283">283</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a765ed221988369d11cc4fd671a194913"></a><!-- doxytag: member="objects.c::skiplist_compare_module" ref="a765ed221988369d11cc4fd671a194913" args="(void *a, void *b)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int skiplist_compare_module </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00390">390</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3756,7 +3850,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00184">184</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00193">193</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3785,7 +3879,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00364">364</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00373">373</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3814,7 +3908,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00328">328</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00337">337</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3843,7 +3937,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00292">292</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00301">301</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3884,7 +3978,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00137">137</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00146">146</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3913,7 +4007,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00220">220</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00229">229</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3923,13 +4017,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcommand__struct.html">command</a>* <a class="el" href="test__timeperiods_8c.html#a9a492850fa6692dc161ac48fff09e2b5">command_list</a> = NULL</td>
+          <td class="memname"><a class="el" href="structcommand__struct.html">command</a>* <a class="el" href="idomod_8c.html#a9a492850fa6692dc161ac48fff09e2b5">command_list</a> = NULL</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00052">52</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00058">58</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3944,7 +4038,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00052">52</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00058">58</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3959,7 +4053,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00048">48</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00054">54</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3974,7 +4068,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00048">48</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00054">54</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3983,13 +4077,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcontactgroup__struct.html">contactgroup</a>* <a class="el" href="test__timeperiods_8c.html#aedbc4ad6955f964b3dbff1bbf5fb309d">contactgroup_list</a> = NULL</td>
+          <td class="memname"><a class="el" href="structcontactgroup__struct.html">contactgroup</a>* <a class="el" href="idomod_8c.html#aedbc4ad6955f964b3dbff1bbf5fb309d">contactgroup_list</a> = NULL</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00049">49</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00055">55</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4004,7 +4098,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00049">49</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00055">55</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4019,7 +4113,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00046">46</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00052">52</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4034,7 +4128,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00046">46</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00052">52</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4049,7 +4143,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00056">56</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00062">62</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4064,7 +4158,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00056">56</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00062">62</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4079,7 +4173,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00057">57</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00063">63</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4094,7 +4188,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00057">57</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00063">63</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4103,13 +4197,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structhostgroup__struct.html">hostgroup</a>* <a class="el" href="test__timeperiods_8c.html#a4a15afed3efea74c99e450dc19fc9f5d">hostgroup_list</a> = NULL</td>
+          <td class="memname"><a class="el" href="structhostgroup__struct.html">hostgroup</a>* <a class="el" href="idomod_8c.html#a4a15afed3efea74c99e450dc19fc9f5d">hostgroup_list</a> = NULL</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00050">50</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00056">56</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4124,7 +4218,37 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00050">50</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00056">56</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6b14931ee1b8e8f97f1295d9a87cdc54"></a><!-- doxytag: member="objects.c::module_list" ref="a6b14931ee1b8e8f97f1295d9a87cdc54" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmodule__struct.html">module</a>* <a class="el" href="objects_8c.html#a6b14931ee1b8e8f97f1295d9a87cdc54">module_list</a> = NULL</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00064">64</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad569c36116e41011e7344282348f99b7"></a><!-- doxytag: member="objects.c::module_list_tail" ref="ad569c36116e41011e7344282348f99b7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmodule__struct.html">module</a> * <a class="el" href="objects_8c.html#ad569c36116e41011e7344282348f99b7">module_list_tail</a> = NULL</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00064">64</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4139,7 +4263,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00059">59</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00066">66</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4154,7 +4278,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00047">47</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00053">53</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4169,7 +4293,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00047">47</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00053">53</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4184,7 +4308,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00055">55</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00061">61</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4199,7 +4323,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00055">55</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00061">61</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4208,13 +4332,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a>* <a class="el" href="test__timeperiods_8c.html#a68a48bbf7142eb2cc9785aa86cc71c3f">serviceescalation_list</a> = NULL</td>
+          <td class="memname"><a class="el" href="structserviceescalation__struct.html">serviceescalation</a>* <a class="el" href="idomod_8c.html#a68a48bbf7142eb2cc9785aa86cc71c3f">serviceescalation_list</a> = NULL</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00054">54</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00060">60</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4229,7 +4353,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00054">54</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00060">60</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4244,7 +4368,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00051">51</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00057">57</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4259,7 +4383,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00051">51</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00057">57</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4268,13 +4392,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structtimeperiod__struct.html">timeperiod</a>* <a class="el" href="test__timeperiods_8c.html#ae2e0edcdc460ca51c836c07df857f85e">timeperiod_list</a> = NULL</td>
+          <td class="memname"><a class="el" href="structtimeperiod__struct.html">timeperiod</a>* <a class="el" href="idomod_8c.html#ae2e0edcdc460ca51c836c07df857f85e">timeperiod_list</a> = NULL</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00053">53</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00059">59</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4289,7 +4413,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00053">53</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00059">59</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -4298,7 +4422,7 @@ Variables</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="objects_8c.html">objects.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:23 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:42 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

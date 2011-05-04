@@ -110,7 +110,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#aa1390f33d4bdcb784c752d4becf1787e">xodtemplate_grab_config_info</a> (char *<a class="el" href="trends_8c.html#a49546db9991f44e208a1124ce79d62be">main_config_file</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a9e2762a678642b5ecb741f589e3b3af4">xodtemplate_process_config_dir</a> (char *dirname, int options)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#aa63de6be40b80f3f900197891369bfb8">xodtemplate_process_config_file</a> (char *filename, int options)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a36f8e83b0f78f0c877100fd81e225ef2">xodtemplate_begin_object_definition</a> (char *input, int options, int <a class="el" href="test__timeperiods_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>, int start_line)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a36f8e83b0f78f0c877100fd81e225ef2">xodtemplate_begin_object_definition</a> (char *input, int options, int <a class="el" href="idomod_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>, int start_line)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#afd925ce7ab53f96840b5ef5da2e2ae63">xodtemplate_add_object_property</a> (char *input, int options)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a522c33a0e34e81e9abdca56fb4b82763">xodtemplate_end_object_definition</a> (int options)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__customvariablesmember__struct.html">xodtemplate_customvariablesmember</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a6ccb20e63e713a2130e7d7a16d58e846">xodtemplate_add_custom_variable_to_host</a> (<a class="el" href="structxodtemplate__host__struct.html">xodtemplate_host</a> *hst, char *varname, char *varvalue)</td></tr>
@@ -135,6 +135,7 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a1ef575e619035d696f85897dcfa7e4aa">xodtemplate_register_service</a> (<a class="el" href="structxodtemplate__service__struct.html">xodtemplate_service</a> *this_service)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a88cea6e56a00cb7c4a15757facf9c64b">xodtemplate_register_hostdependency</a> (<a class="el" href="structxodtemplate__hostdependency__struct.html">xodtemplate_hostdependency</a> *this_hostdependency)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a642fca7ba26ff49474ec501da9e6dc78">xodtemplate_register_hostescalation</a> (<a class="el" href="structxodtemplate__hostescalation__struct.html">xodtemplate_hostescalation</a> *this_hostescalation)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a4503b011bd9ff81acda2360ea55399dc">xodtemplate_register_module</a> (<a class="el" href="structxodtemplate__module__struct.html">xodtemplate_module</a> *this_module)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a4124f5fd5c3c318ec0217c3033e03db3">xodtemplate_init_xobject_skiplists</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a05a6ccfdab83d2f14ca5a6acb4f05baf">xodtemplate_free_xobject_skiplists</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a8f549c5e0baaa8de7dfcd89072e3a41e">xodtemplate_skiplist_compare_text</a> (const char *val1a, const char *val1b, const char *val2a, const char *val2b)</td></tr>
@@ -164,6 +165,8 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#ab37ddcc779316230104810dc8a53c278">xodtemplate_skiplist_compare_serviceescalation</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#af253ee6a72721cdabe6dc0304c0683b9">xodtemplate_skiplist_compare_hostextinfo_template</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a9daa8eb4b664de187432d36eccd2c161">xodtemplate_skiplist_compare_serviceextinfo_template</a> (void *a, void *b)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a134a48acf2bf9d57f824f259fce1ecc6">xodtemplate_skiplist_compare_module</a> (void *a, void *b)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a5020295279632854908675abe84ad323">xodtemplate_skiplist_compare_module_template</a> (void *a, void *b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a8a4f9509b0f76bcbb6a89ca725d2fe2d">xodtemplate_free_memory</a> (void)</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -181,6 +184,7 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__hostescalation__struct.html">xodtemplate_hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a3d731303d18ae92d888946fd3973a688">xodtemplate_hostescalation_list</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__hostextinfo__struct.html">xodtemplate_hostextinfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a397eeec5b26388225b31c552bf2f80cf">xodtemplate_hostextinfo_list</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__serviceextinfo__struct.html">xodtemplate_serviceextinfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#aed18c2197feff15d69a5fc8e5869ae0e">xodtemplate_serviceextinfo_list</a> = NULL</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__module__struct.html">xodtemplate_module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a71debbb0413fcb74446d8226c7f1c366">xodtemplate_module_list</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__timeperiod__struct.html">xodtemplate_timeperiod</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a2cb2d21eff163a8e56e569a9ac3ad964">xodtemplate_timeperiod_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__command__struct.html">xodtemplate_command</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a19a79ec45608af7c4e6a1a69769a51ec">xodtemplate_command_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__contactgroup__struct.html">xodtemplate_contactgroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a3e725a0fac1374d551a55ec98b6b1484">xodtemplate_contactgroup_list_tail</a> = NULL</td></tr>
@@ -195,6 +199,7 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__hostescalation__struct.html">xodtemplate_hostescalation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a41884aa0177f324eb97bcf16b7033644">xodtemplate_hostescalation_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__hostextinfo__struct.html">xodtemplate_hostextinfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a54c1dc869ff40d36f37f68f3252cf052">xodtemplate_hostextinfo_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__serviceextinfo__struct.html">xodtemplate_serviceextinfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a69f4be2ebc60b5f917fba3ef83656798">xodtemplate_serviceextinfo_list_tail</a> = NULL</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structxodtemplate__module__struct.html">xodtemplate_module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a1a54950b9bf3777fc6c56e589bd550d4">xodtemplate_module_list_tail</a> = NULL</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structskiplist__struct.html">skiplist</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a3e72fef63e1b501688527ab4dca030e8">xobject_template_skiplists</a> [NUM_XOBJECT_SKIPLISTS]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structskiplist__struct.html">skiplist</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a248ecc312a806681993d519d88eae94c">xobject_skiplists</a> [NUM_XOBJECT_SKIPLISTS]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xodtemplate_8c.html#a22fbbc272640b1223ff84b1321e115e0">xodtemplate_current_object</a> = NULL</td></tr>
@@ -218,7 +223,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00136">136</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00138">138</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -267,7 +272,7 @@ Variables</h2></td></tr>
                 } \
         } <span class="keywordflow">while</span> (0)
 </pre></div>
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00862">862</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00865">865</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -286,7 +291,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00141">141</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00143">143</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -305,7 +310,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00137">137</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00139">139</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -324,7 +329,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00139">139</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00141">141</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -360,7 +365,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03814">3814</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03908">3908</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -395,7 +400,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03798">3798</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03892">3892</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -430,7 +435,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03822">3822</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03916">3916</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -465,7 +470,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03806">3806</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03900">3900</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -566,7 +571,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l04129">4129</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l04223">4223</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -595,7 +600,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l01149">1149</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l01163">1163</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -636,7 +641,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00895">895</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00898">898</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -665,7 +670,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l14095">14095</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l14420">14420</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -684,7 +689,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03785">3785</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03879">3879</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -703,7 +708,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11827">11827</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12135">12135</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -722,7 +727,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11285">11285</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11558">11558</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -751,7 +756,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l04165">4165</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l04259">4259</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -786,7 +791,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l08988">8988</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09166">9166</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -815,7 +820,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l04185">4185</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l04279">4279</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -834,7 +839,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00502">502</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00505">505</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -853,7 +858,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11242">11242</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11513">11513</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -888,7 +893,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03864">3864</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l03958">3958</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -917,7 +922,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00575">575</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00578">578</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -946,7 +951,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00654">654</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00657">657</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -987,7 +992,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00158">158</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00160">160</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1006,7 +1011,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09042">9042</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09220">9220</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1025,7 +1030,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09311">9311</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09489">9489</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1044,7 +1049,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09064">9064</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09242">9242</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1063,7 +1068,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09368">9368</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09546">9546</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1082,7 +1087,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09521">9521</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09699">9699</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1101,7 +1106,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09558">9558</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09736">9736</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1120,7 +1125,26 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09100">9100</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09278">9278</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4503b011bd9ff81acda2360ea55399dc"></a><!-- doxytag: member="xodtemplate.c::xodtemplate_register_module" ref="a4503b011bd9ff81acda2360ea55399dc" args="(xodtemplate_module *this_module)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int xodtemplate_register_module </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structxodtemplate__module__struct.html">xodtemplate_module</a> *&#160;</td>
+          <td class="paramname"><em>this_module</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09826">9826</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1139,7 +1163,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l08755">8755</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l08923">8923</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1158,7 +1182,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09455">9455</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09633">9633</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1177,7 +1201,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09178">9178</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09356">9356</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1196,7 +1220,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09219">9219</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09397">9397</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1215,7 +1239,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09135">9135</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09313">9313</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1234,7 +1258,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l08874">8874</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l09052">9052</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1263,7 +1287,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11460">11460</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11733">11733</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1292,7 +1316,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11441">11441</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11714">11714</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1321,7 +1345,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11498">11498</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11771">11771</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1350,7 +1374,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11479">11479</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11752">11752</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1379,7 +1403,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11536">11536</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11809">11809</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1432,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11517">11517</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11790">11790</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1437,7 +1461,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11346">11346</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11619">11619</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1490,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11327">11327</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11600">11600</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1495,7 +1519,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11650">11650</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11923">11923</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1524,7 +1548,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11631">11631</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11904">11904</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1577,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11726">11726</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11999">11999</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1582,7 +1606,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11707">11707</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11980">11980</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1611,7 +1635,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11783">11783</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12056">12056</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1640,7 +1664,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11574">11574</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11847">11847</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1669,7 +1693,65 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11555">11555</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11828">11828</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a134a48acf2bf9d57f824f259fce1ecc6"></a><!-- doxytag: member="xodtemplate.c::xodtemplate_skiplist_compare_module" ref="a134a48acf2bf9d57f824f259fce1ecc6" args="(void *a, void *b)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int xodtemplate_skiplist_compare_module </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12093">12093</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5020295279632854908675abe84ad323"></a><!-- doxytag: member="xodtemplate.c::xodtemplate_skiplist_compare_module_template" ref="a5020295279632854908675abe84ad323" args="(void *a, void *b)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int xodtemplate_skiplist_compare_module_template </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12111">12111</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1698,7 +1780,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11384">11384</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11657">11657</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1727,7 +1809,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11365">11365</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11638">11638</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1756,7 +1838,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11688">11688</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11961">11961</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1785,7 +1867,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11669">11669</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11942">11942</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1814,7 +1896,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11764">11764</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12037">12037</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1843,7 +1925,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11745">11745</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12018">12018</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1872,7 +1954,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11802">11802</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l12075">12075</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1901,7 +1983,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11612">11612</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11885">11885</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1930,7 +2012,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11593">11593</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11866">11866</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -1971,7 +2053,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11297">11297</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11570">11570</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2000,7 +2082,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11422">11422</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11695">11695</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2029,7 +2111,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11403">11403</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l11676">11676</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2060,7 +2142,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00125">125</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00127">127</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2075,7 +2157,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00113">113</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00115">115</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2090,7 +2172,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00112">112</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00114">114</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2105,7 +2187,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00122">122</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00124">124</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2135,7 +2217,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00097">97</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00098">98</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2150,7 +2232,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00120">120</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00122">122</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2180,7 +2262,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00103">103</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00104">104</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2210,7 +2292,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00098">98</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00099">99</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2225,7 +2307,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00119">119</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00121">121</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2240,7 +2322,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00116">116</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00118">118</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2255,7 +2337,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00117">117</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00119">119</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2285,7 +2367,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00104">104</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00105">105</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2315,7 +2397,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00106">106</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00107">107</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2345,7 +2427,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00107">107</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00108">108</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2375,7 +2457,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00108">108</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00109">109</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2405,7 +2487,37 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00099">99</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00100">100</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a71debbb0413fcb74446d8226c7f1c366"></a><!-- doxytag: member="xodtemplate.c::xodtemplate_module_list" ref="a71debbb0413fcb74446d8226c7f1c366" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structxodtemplate__module__struct.html">xodtemplate_module</a>* <a class="el" href="xodtemplate_8c.html#a71debbb0413fcb74446d8226c7f1c366">xodtemplate_module_list</a> = NULL</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00095">95</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1a54950b9bf3777fc6c56e589bd550d4"></a><!-- doxytag: member="xodtemplate.c::xodtemplate_module_list_tail" ref="a1a54950b9bf3777fc6c56e589bd550d4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structxodtemplate__module__struct.html">xodtemplate_module</a>* <a class="el" href="xodtemplate_8c.html#a1a54950b9bf3777fc6c56e589bd550d4">xodtemplate_module_list_tail</a> = NULL</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00111">111</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2420,7 +2532,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00123">123</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00125">125</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2450,7 +2562,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00105">105</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00106">106</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2480,7 +2592,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00101">101</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00102">102</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2510,7 +2622,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00102">102</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00103">103</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2540,7 +2652,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00109">109</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00110">110</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2570,7 +2682,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00100">100</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00101">101</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2600,7 +2712,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00096">96</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
+<p>Definition at line <a class="el" href="xodtemplate_8c_source.html#l00097">97</a> of file <a class="el" href="xodtemplate_8c_source.html">xodtemplate.c</a>.</p>
 
 </div>
 </div>
@@ -2609,7 +2721,7 @@ Variables</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="xodtemplate_8c.html">xodtemplate.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:24 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:43 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

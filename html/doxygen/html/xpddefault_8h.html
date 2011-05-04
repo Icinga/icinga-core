@@ -93,6 +93,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xpddefault_8h.html#af2eab6a3f46612cd9f20940e0340ea5a">DEFAULT_HOST_PERFDATA_FILE_TEMPLATE</a>&#160;&#160;&#160;&quot;[HOSTPERFDATA]\t$TIMET$\t$HOSTNAME$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xpddefault_8h.html#a469d21857e7f105c7cf4bcaeb8d343c0">DEFAULT_SERVICE_PERFDATA_FILE_TEMPLATE</a>&#160;&#160;&#160;&quot;[SERVICEPERFDATA]\t$TIMET$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$&quot;</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xpddefault_8h.html#a8033696cf5ff86718f95998461a5ab8d">DEFAULT_HOST_PERFDATA_PROCESS_EMPTY_RESULTS</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xpddefault_8h.html#a48c99a85fa36ae61ddc5ceeb227c1cc3">DEFAULT_SERVICE_PERFDATA_PROCESS_EMPTY_RESULTS</a>&#160;&#160;&#160;1</td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xpddefault_8h.html#a3638cd0164d751bc450bdbe459b0e644">xpddefault_initialize_performance_data</a> (char *)</td></tr>
@@ -129,6 +131,21 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a8033696cf5ff86718f95998461a5ab8d"></a><!-- doxytag: member="xpddefault.h::DEFAULT_HOST_PERFDATA_PROCESS_EMPTY_RESULTS" ref="a8033696cf5ff86718f95998461a5ab8d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFAULT_HOST_PERFDATA_PROCESS_EMPTY_RESULTS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xpddefault_8h_source.html#l00035">35</a> of file <a class="el" href="xpddefault_8h_source.html">xpddefault.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a469d21857e7f105c7cf4bcaeb8d343c0"></a><!-- doxytag: member="xpddefault.h::DEFAULT_SERVICE_PERFDATA_FILE_TEMPLATE" ref="a469d21857e7f105c7cf4bcaeb8d343c0" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -141,6 +158,21 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="xpddefault_8h_source.html#l00033">33</a> of file <a class="el" href="xpddefault_8h_source.html">xpddefault.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48c99a85fa36ae61ddc5ceeb227c1cc3"></a><!-- doxytag: member="xpddefault.h::DEFAULT_SERVICE_PERFDATA_PROCESS_EMPTY_RESULTS" ref="a48c99a85fa36ae61ddc5ceeb227c1cc3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFAULT_SERVICE_PERFDATA_PROCESS_EMPTY_RESULTS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="xpddefault_8h_source.html#l00036">36</a> of file <a class="el" href="xpddefault_8h_source.html">xpddefault.h</a>.</p>
 
 </div>
 </div>
@@ -160,7 +192,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00354">354</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00363">363</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -179,7 +211,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00615">615</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00632">632</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -198,7 +230,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00629">629</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00646">646</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -217,7 +249,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00118">118</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00121">121</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -236,7 +268,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00080">80</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00083">83</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -255,7 +287,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00210">210</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00219">219</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -274,7 +306,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00566">566</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00583">583</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -293,7 +325,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00591">591</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00608">608</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -312,7 +344,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00643">643</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00660">660</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -331,7 +363,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00771">771</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00788">788</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -350,7 +382,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00832">832</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00849">849</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -379,7 +411,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00514">514</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00531">531</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -408,7 +440,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00466">466</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00483">483</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -427,7 +459,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00423">423</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00436">436</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -456,7 +488,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00729">729</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00746">746</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -475,7 +507,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00381">381</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00390">390</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -504,7 +536,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00687">687</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
+<p>Definition at line <a class="el" href="xpddefault_8c_source.html#l00704">704</a> of file <a class="el" href="xpddefault_8c_source.html">xpddefault.c</a>.</p>
 
 </div>
 </div>
@@ -513,7 +545,7 @@ Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="xpddefault_8h.html">xpddefault.h</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:24 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:43 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

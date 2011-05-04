@@ -103,6 +103,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#abb1b462ee3d4d7c1cae5e34e5145cbfd">IDO2DB_NAME</a>&#160;&#160;&#160;&quot;IDO2DB&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a762ca455a57c8009f6ec4cd1e6b08e7a">IDO2DB_DATE</a>&#160;&#160;&#160;&quot;05-11-2011&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ad9dbb956c0cc4e1ea750ae8de3115894">IDO2DB_VERSION</a>&#160;&#160;&#160;&quot;1.4.0&quot;</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ab50176c6b185edd87456639af2670d65">IDO2DB_SCHEMA_VERSION</a>&#160;&#160;&#160;&quot;1.4.0&quot;</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a4279e6d2545e8bc40051b7a99c9f532d">IDO2DB_MBUF_CONTACTGROUP</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ae309845b3c437efa5537543204d84678">IDO2DB_MBUF_CONTACTGROUPMEMBER</a>&#160;&#160;&#160;1</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a935ab4ca5cd336472560f82caa7ed554">IDO2DB_MBUF_SERVICEGROUPMEMBER</a>&#160;&#160;&#160;2</td></tr>
@@ -203,9 +204,15 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#adb47aada967503ee664597bf96722e39">IDO2DB_DEBUGV_BASIC</a>&#160;&#160;&#160;0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a1a030a549fb7754e2458aa7f850d69da">IDO2DB_DEBUGV_MORE</a>&#160;&#160;&#160;1</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a7ef3739f6f4b7a6355f8a2cf8cd1ad71">IDO2DB_DEBUGV_MOST</a>&#160;&#160;&#160;2</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#aeb99fefc675eea40f306f1f4084a0b45">DEFAULT_TRIM_DB_INTERVAL</a>&#160;&#160;&#160;60</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a7b1898c7c4f8336479304cc4b827870b">DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY</a>&#160;&#160;&#160;60</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#aeb99fefc675eea40f306f1f4084a0b45">DEFAULT_TRIM_DB_INTERVAL</a>&#160;&#160;&#160;3600</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a7b1898c7c4f8336479304cc4b827870b">DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY</a>&#160;&#160;&#160;300</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a703bc322be4ccb6bd4155d485daeb285">DEFAULT_OCI_ERRORS_TO_SYSLOG</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a57b689c069d61731b5261a72677c2560">IDO2DB_CLEANER_THREADS</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#af8d8d7cc9a7b7886c6db5fda1beb5bc5">IDO2DB_WORKER_THREADS</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ae06aad3c8a6f8de9f6f07adda2352b95">IDO2DB_NR_OF_THREADS</a>&#160;&#160;&#160;(IDO2DB_CLEANER_THREADS+IDO2DB_WORKER_THREADS)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a85939d1482d3bd9903a04bb015254ddc">IDO2DB_THREAD_POOL_CLEANER</a>&#160;&#160;&#160;0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a38e273376f23a2e17606dc38791e6d8d">IDO2DB_THREAD_POOL_WORKER</a>&#160;&#160;&#160;1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a288f8d0dfff35faeeb5ac682297e18c9">IDO2DB_DEFAULT_THREAD_STACK_SIZE</a>&#160;&#160;&#160;65536</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structido2db__mbuf__struct.html">ido2db_mbuf_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ae0f731028ea81d3cc5a3aca1262b4ea1">ido2db_mbuf</a></td></tr>
@@ -233,8 +240,8 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#aaa5047944a02bf110d06e511fb877b98">ido2db_wait_for_connections</a> (void)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ad8670e8992b6bff3724859a95c47cb9a">ido2db_handle_client_connection</a> (int)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a918617b0d7fa8c9e95119bdc9fead47e">ido2db_idi_init</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ada596f92ef607f40db1e38d1bcad07c1">ido2db_check_for_client_input</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *, <a class="el" href="structido__dbuf__struct.html">ido_dbuf</a> *, pthread_t *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a69ddb9e731a669833add85617c3fd749">ido2db_handle_client_input</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *, char *, pthread_t *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a2fbcb65fbb8eece6675dcc57a68cd948">ido2db_check_for_client_input</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#add29da2e1aee28325645d40c58891b37">ido2db_handle_client_input</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *, char *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a73187baaf63ec3a09e047b92413d91b4">ido2db_start_input_data</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a2a53502607f308fd66122c7d9930e2eb">ido2db_end_input_data</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a4903aa7f59080e3d03b3fd34eb16a11e">ido2db_add_input_data_item</a> (<a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *, int, char *)</td></tr>
@@ -248,7 +255,10 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a9d0675139445808b73143a9d02c55906">ido2db_convert_string_to_timeval</a> (char *, struct timeval *)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a41ec38b7ad432f23ae27fa524f162c80">ido2db_log_debug_info</a> (int, int, const char *,...)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#ab3ef4313a21d2353ecc8eb5ffb15086f">ido2db_thread_cleanup</a> (void *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a2736c793ca4023019d32b38245cafce5">ido2db_kill_threads</a> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a07627d9451ea0ad16b5a50542997c73e">ido2db_thread_worker</a> (void *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#adf00c90c6f431d0514c24e62b6d15492">ido2db_terminate_threads</a> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#a3ac762840798215e2b0eea30fedf51d2">terminate_worker_thread</a> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ido2db_8h.html#af92f5c4f4ecd1e0609d1e980e829d0f8">terminate_cleanup_thread</a> (void)</td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="a7b1898c7c4f8336479304cc4b827870b"></a><!-- doxytag: member="ido2db.h::DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY" ref="a7b1898c7c4f8336479304cc4b827870b" args="" -->
@@ -256,13 +266,13 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY&#160;&#160;&#160;60</td>
+          <td class="memname">#define DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY&#160;&#160;&#160;300</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00371">371</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00373">373</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -277,7 +287,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00375">375</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00377">377</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -286,13 +296,28 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEFAULT_TRIM_DB_INTERVAL&#160;&#160;&#160;60</td>
+          <td class="memname">#define DEFAULT_TRIM_DB_INTERVAL&#160;&#160;&#160;3600</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00367">367</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00369">369</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a57b689c069d61731b5261a72677c2560"></a><!-- doxytag: member="ido2db.h::IDO2DB_CLEANER_THREADS" ref="a57b689c069d61731b5261a72677c2560" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_CLEANER_THREADS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00382">382</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -307,7 +332,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00349">349</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00351">351</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -322,7 +347,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00350">350</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00352">352</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -352,7 +377,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00270">270</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00272">272</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -367,7 +392,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00271">271</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00273">273</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +407,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00272">272</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00274">274</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -397,7 +422,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00273">273</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00275">275</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +437,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00274">274</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00276">276</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -427,7 +452,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00268">268</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00270">270</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -442,7 +467,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00275">275</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00277">277</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -457,7 +482,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00269">269</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00271">271</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -472,7 +497,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00276">276</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00278">278</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -487,7 +512,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00277">277</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00279">279</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -502,7 +527,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00258">258</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00260">260</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -517,7 +542,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00259">259</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00261">261</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +557,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00260">260</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00262">262</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -547,7 +572,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00261">261</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00263">263</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +587,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00262">262</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00264">264</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -577,7 +602,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00256">256</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00258">258</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +617,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00255">255</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00257">257</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -607,7 +632,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00263">263</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00265">265</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -622,7 +647,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00257">257</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00259">259</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -637,7 +662,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00264">264</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00266">266</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -652,7 +677,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00265">265</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00267">267</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -667,7 +692,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00356">356</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00358">358</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -682,7 +707,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00357">357</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00359">359</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -697,7 +722,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00358">358</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00360">360</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -712,7 +737,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00359">359</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00361">361</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +752,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00361">361</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00363">363</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +767,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00362">362</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00364">364</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -757,7 +782,22 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00363">363</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00365">365</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a288f8d0dfff35faeeb5ac682297e18c9"></a><!-- doxytag: member="ido2db.h::IDO2DB_DEFAULT_THREAD_STACK_SIZE" ref="a288f8d0dfff35faeeb5ac682297e18c9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_DEFAULT_THREAD_STACK_SIZE&#160;&#160;&#160;65536</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00389">389</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -772,7 +812,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00280">280</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00282">282</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -787,7 +827,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00322">322</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00324">324</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -802,7 +842,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00325">325</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00327">327</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -817,7 +857,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00315">315</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00317">317</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -832,7 +872,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00314">314</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00316">316</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -847,7 +887,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00316">316</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00318">318</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -862,7 +902,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00318">318</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00320">320</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -877,7 +917,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00340">340</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00342">342</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -892,7 +932,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00308">308</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00310">310</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -907,7 +947,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00296">296</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00298">298</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -922,7 +962,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00295">295</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00297">297</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -937,7 +977,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00329">329</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00331">331</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -952,7 +992,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00342">342</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00344">344</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -967,7 +1007,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00343">343</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00345">345</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -982,7 +1022,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00320">320</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00322">322</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -997,7 +1037,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00321">321</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00323">323</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1012,7 +1052,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00324">324</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00326">326</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +1067,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00309">309</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00311">311</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1082,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00304">304</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00306">306</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1057,7 +1097,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00317">317</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00319">319</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1112,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00310">310</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00312">312</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1087,7 +1127,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00307">307</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00309">309</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1102,7 +1142,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00332">332</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00334">334</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1117,7 +1157,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00336">336</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00338">338</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1172,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00338">338</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00340">340</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1147,7 +1187,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00344">344</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00346">346</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1162,7 +1202,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00333">333</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00335">335</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1177,7 +1217,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00312">312</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00314">314</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1192,7 +1232,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00302">302</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00304">304</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1207,7 +1247,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00298">298</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00300">300</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1262,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00327">327</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00329">329</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1237,7 +1277,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00293">293</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00295">295</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1252,7 +1292,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00305">305</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00307">307</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1267,7 +1307,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00300">300</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00302">302</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1322,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00311">311</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00313">313</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1297,7 +1337,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00328">328</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00330">330</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1312,7 +1352,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00319">319</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00321">321</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1327,7 +1367,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00330">330</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00332">332</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1342,7 +1382,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00306">306</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00308">308</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1357,7 +1397,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00334">334</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00336">336</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1372,7 +1412,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00337">337</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00339">339</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1427,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00339">339</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00341">341</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1402,7 +1442,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00345">345</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00347">347</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1417,7 +1457,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00335">335</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00337">337</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1432,7 +1472,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00313">313</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00315">315</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1447,7 +1487,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00323">323</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00325">325</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1462,7 +1502,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00303">303</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00305">305</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1477,7 +1517,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00301">301</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00303">303</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1492,7 +1532,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00341">341</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00343">343</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1507,7 +1547,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00289">289</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00291">291</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1522,7 +1562,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00288">288</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00290">290</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1537,7 +1577,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00287">287</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00289">289</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1552,7 +1592,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00286">286</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00288">288</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1567,7 +1607,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00063">63</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00065">65</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1582,7 +1622,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00061">61</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00063">63</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1597,7 +1637,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00055">55</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00057">57</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1612,7 +1652,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00056">56</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00058">58</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1627,7 +1667,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00059">59</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00061">61</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1642,7 +1682,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00052">52</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00054">54</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1657,7 +1697,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00046">46</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00048">48</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1672,7 +1712,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00047">47</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00049">49</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1687,7 +1727,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00058">58</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00060">60</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1702,7 +1742,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00049">49</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00051">51</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1717,7 +1757,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00051">51</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00053">53</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1732,7 +1772,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00054">54</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00056">56</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1747,7 +1787,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00057">57</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00059">59</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1762,7 +1802,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00048">48</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00050">50</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1777,7 +1817,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00050">50</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00052">52</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1792,7 +1832,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00053">53</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00055">55</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1811,6 +1851,21 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae06aad3c8a6f8de9f6f07adda2352b95"></a><!-- doxytag: member="ido2db.h::IDO2DB_NR_OF_THREADS" ref="ae06aad3c8a6f8de9f6f07adda2352b95" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_NR_OF_THREADS&#160;&#160;&#160;(IDO2DB_CLEANER_THREADS+IDO2DB_WORKER_THREADS)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00384">384</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a4897b9cb8b59dbc88138e8af2f3bf714"></a><!-- doxytag: member="ido2db.h::IDO2DB_OBJECT_HASHSLOTS" ref="a4897b9cb8b59dbc88138e8af2f3bf714" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1822,7 +1877,52 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00282">282</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00284">284</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab50176c6b185edd87456639af2670d65"></a><!-- doxytag: member="ido2db.h::IDO2DB_SCHEMA_VERSION" ref="ab50176c6b185edd87456639af2670d65" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_SCHEMA_VERSION&#160;&#160;&#160;&quot;1.4.0&quot;</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00019">19</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a85939d1482d3bd9903a04bb015254ddc"></a><!-- doxytag: member="ido2db.h::IDO2DB_THREAD_POOL_CLEANER" ref="a85939d1482d3bd9903a04bb015254ddc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_THREAD_POOL_CLEANER&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00386">386</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a38e273376f23a2e17606dc38791e6d8d"></a><!-- doxytag: member="ido2db.h::IDO2DB_THREAD_POOL_WORKER" ref="a38e273376f23a2e17606dc38791e6d8d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_THREAD_POOL_WORKER&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00387">387</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1838,6 +1938,21 @@ Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="ido2db_8h_source.html#l00017">17</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af8d8d7cc9a7b7886c6db5fda1beb5bc5"></a><!-- doxytag: member="ido2db.h::IDO2DB_WORKER_THREADS" ref="af8d8d7cc9a7b7886c6db5fda1beb5bc5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IDO2DB_WORKER_THREADS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8h_source.html#l00383">383</a> of file <a class="el" href="ido2db_8h_source.html">ido2db.h</a>.</p>
 
 </div>
 </div>
@@ -1926,7 +2041,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01813">1813</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01866">1866</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -1967,11 +2082,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01993">1993</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02046">2046</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ada596f92ef607f40db1e38d1bcad07c1"></a><!-- doxytag: member="ido2db.h::ido2db_check_for_client_input" ref="ada596f92ef607f40db1e38d1bcad07c1" args="(ido2db_idi *, ido_dbuf *, pthread_t *)" -->
+<a class="anchor" id="a2fbcb65fbb8eece6675dcc57a68cd948"></a><!-- doxytag: member="ido2db.h::ido2db_check_for_client_input" ref="a2fbcb65fbb8eece6675dcc57a68cd948" args="(ido2db_idi *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1979,30 +2094,14 @@ Functions</h2></td></tr>
           <td class="memname">int ido2db_check_for_client_input </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structido2db__input__data__info__struct.html">ido2db_idi</a> *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structido__dbuf__struct.html">ido_dbuf</a> *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">pthread_t *&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01403">1403</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01440">1440</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2021,7 +2120,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00694">694</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00705">705</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2040,7 +2139,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00973">973</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00984">984</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2059,7 +2158,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00910">910</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00921">921</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2106,7 +2205,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02313">2313</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02366">2366</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2135,7 +2234,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02374">2374</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02427">2427</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2164,7 +2263,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02349">2349</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02402">2402</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2193,7 +2292,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02335">2335</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02388">2388</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2222,7 +2321,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02393">2393</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02446">2446</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2251,7 +2350,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02432">2432</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02485">2485</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2280,7 +2379,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02413">2413</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02466">2466</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2299,7 +2398,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00786">786</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00797">797</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2328,7 +2427,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00711">711</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00722">722</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2347,7 +2446,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02042">2042</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02095">2095</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2366,7 +2465,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02274">2274</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02327">2327</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2385,7 +2484,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02228">2228</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02281">2281</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2404,7 +2503,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00635">635</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00646">646</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2423,11 +2522,11 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01164">1164</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01176">1176</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a69ddb9e731a669833add85617c3fd749"></a><!-- doxytag: member="ido2db.h::ido2db_handle_client_input" ref="a69ddb9e731a669833add85617c3fd749" args="(ido2db_idi *, char *, pthread_t *)" -->
+<a class="anchor" id="add29da2e1aee28325645d40c58891b37"></a><!-- doxytag: member="ido2db.h::ido2db_handle_client_input" ref="add29da2e1aee28325645d40c58891b37" args="(ido2db_idi *, char *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -2441,12 +2540,6 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">pthread_t *&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -2458,7 +2551,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01456">1456</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01507">1507</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2477,7 +2570,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01362">1362</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01397">1397</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2496,26 +2589,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00598">598</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2736c793ca4023019d32b38245cafce5"></a><!-- doxytag: member="ido2db.h::ido2db_kill_threads" ref="a2736c793ca4023019d32b38245cafce5" args="(void)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int ido2db_kill_threads </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02687">2687</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00609">609</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2556,7 +2630,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02502">2502</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02555">2555</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2575,7 +2649,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00934">934</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00945">945</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2604,7 +2678,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00314">314</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00325">325</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2623,7 +2697,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00390">390</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00401">401</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2642,7 +2716,7 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00434">434</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l00445">445</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2661,7 +2735,26 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01788">1788</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01841">1841</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adf00c90c6f431d0514c24e62b6d15492"></a><!-- doxytag: member="ido2db.h::ido2db_terminate_threads" ref="adf00c90c6f431d0514c24e62b6d15492" args="(void)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ido2db_terminate_threads </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02807">2807</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2680,7 +2773,26 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02563">2563</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02685">2685</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a07627d9451ea0ad16b5a50542997c73e"></a><!-- doxytag: member="ido2db.h::ido2db_thread_worker" ref="a07627d9451ea0ad16b5a50542997c73e" args="(void *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* ido2db_thread_worker </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02617">2617</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2699,7 +2811,45 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01003">1003</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l01015">1015</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af92f5c4f4ecd1e0609d1e980e829d0f8"></a><!-- doxytag: member="ido2db.h::terminate_cleanup_thread" ref="af92f5c4f4ecd1e0609d1e980e829d0f8" args="(void)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int terminate_cleanup_thread </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02836">2836</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3ac762840798215e2b0eea30fedf51d2"></a><!-- doxytag: member="ido2db.h::terminate_worker_thread" ref="a3ac762840798215e2b0eea30fedf51d2" args="(void)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int terminate_worker_thread </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="ido2db_8c_source.html#l02822">2822</a> of file <a class="el" href="ido2db_8c_source.html">ido2db.c</a>.</p>
 
 </div>
 </div>
@@ -2708,7 +2858,7 @@ Functions</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="ido2db_8h.html">ido2db.h</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:24 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:43 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

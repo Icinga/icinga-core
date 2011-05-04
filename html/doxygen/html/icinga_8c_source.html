@@ -344,700 +344,707 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00260"></a>00260 <span class="keyword">extern</span> <a class="code" href="structcommand__struct.html">command</a>         *<a class="code" href="base_2config_8c.html#a9a492850fa6692dc161ac48fff09e2b5">command_list</a>;
 <a name="l00261"></a>00261 <span class="keyword">extern</span> <a class="code" href="structtimeperiod__struct.html">timeperiod</a>      *<a class="code" href="base_2config_8c.html#ae2e0edcdc460ca51c836c07df857f85e">timeperiod_list</a>;
 <a name="l00262"></a>00262 <span class="keyword">extern</span> <a class="code" href="structserviceescalation__struct.html">serviceescalation</a> *<a class="code" href="base_2config_8c.html#a68a48bbf7142eb2cc9785aa86cc71c3f">serviceescalation_list</a>;
-<a name="l00263"></a>00263 
-<a name="l00264"></a><a class="code" href="base_2utils_8c.html#a78c463e6f4c8735520d6819b2aa21a5b">00264</a> <a class="code" href="structnotify__list__struct.html">notification</a>    *<a class="code" href="base_2config_8c.html#a78c463e6f4c8735520d6819b2aa21a5b">notification_list</a>;
-<a name="l00265"></a>00265 
-<a name="l00266"></a><a class="code" href="base_2utils_8c.html#a3c4ba85a60252149f09be4923bc98b4a">00266</a> <a class="code" href="structcheck__result__struct.html">check_result</a>    <a class="code" href="checks_8c.html#a3c4ba85a60252149f09be4923bc98b4a">check_result_info</a>;
-<a name="l00267"></a><a class="code" href="base_2utils_8c.html#a9a65c5bcf2a37699d3438209379f79c2">00267</a> <a class="code" href="structcheck__result__struct.html">check_result</a>    *<a class="code" href="checks_8c.html#a9a65c5bcf2a37699d3438209379f79c2">check_result_list</a>=NULL;
-<a name="l00268"></a><a class="code" href="base_2utils_8c.html#a339144b840e81ab177c4c80178da7470">00268</a> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   <a class="code" href="base_2config_8c.html#a339144b840e81ab177c4c80178da7470">max_check_result_file_age</a>=<a class="code" href="icinga_8h.html#a53916a704d0ba8180afc33897e69aa02">DEFAULT_MAX_CHECK_RESULT_AGE</a>;
-<a name="l00269"></a>00269 
-<a name="l00270"></a><a class="code" href="base_2utils_8c.html#a196b79fb855aaef5e5af1817202ab24f">00270</a> <a class="code" href="structdbuf__struct.html">dbuf</a>            <a class="code" href="icinga_8c.html#a196b79fb855aaef5e5af1817202ab24f">check_result_dbuf</a>;
-<a name="l00271"></a>00271 
-<a name="l00272"></a><a class="code" href="base_2utils_8c.html#ac0c5df0ac52923268176eddeb6b179e3">00272</a> <a class="code" href="structcircular__buffer__struct.html">circular_buffer</a> <a class="code" href="commands_8c.html#ac0c5df0ac52923268176eddeb6b179e3">external_command_buffer</a>;
-<a name="l00273"></a><a class="code" href="base_2utils_8c.html#a4c93e00636e0a69527e56420e284d416">00273</a> <a class="code" href="structcircular__buffer__struct.html">circular_buffer</a> <a class="code" href="icinga_8c.html#a4c93e00636e0a69527e56420e284d416">check_result_buffer</a>;
-<a name="l00274"></a><a class="code" href="base_2utils_8c.html#a5c1a9b9ccaf872452bec541a26ab586b">00274</a> pthread_t       <a class="code" href="checks_8c.html#a5c1a9b9ccaf872452bec541a26ab586b">worker_threads</a>[<a class="code" href="icinga_8h.html#a39f497fe500265af5f37b35c16224047">TOTAL_WORKER_THREADS</a>];
-<a name="l00275"></a><a class="code" href="base_2utils_8c.html#aa9e89558ebe0496997935aca44cc0123">00275</a> <span class="keywordtype">int</span>             <a class="code" href="commands_8c.html#aa9e89558ebe0496997935aca44cc0123">external_command_buffer_slots</a>=<a class="code" href="icinga_8h.html#ac334e31a6c3b1182e60b74905288f7b3">DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS</a>;
-<a name="l00276"></a>00276 
-<a name="l00277"></a><a class="code" href="base_2utils_8c.html#a2b9afeefba56c9290ac7cbbecc923639">00277</a> <a class="code" href="structcheck__stats__struct.html">check_stats</a>     <a class="code" href="icinga_8c.html#a2b9afeefba56c9290ac7cbbecc923639">check_statistics</a>[<a class="code" href="include_2common_8h.html#aa7a5f37f784624687d6766812bc99b2e">MAX_CHECK_STATS_TYPES</a>];
-<a name="l00278"></a>00278 
-<a name="l00279"></a><a class="code" href="base_2utils_8c.html#a4dd633413e09f17ee505abe8699254da">00279</a> <span class="keywordtype">char</span>            *<a class="code" href="base_2config_8c.html#a4dd633413e09f17ee505abe8699254da">debug_file</a>;
-<a name="l00280"></a><a class="code" href="base_2utils_8c.html#a6a7850ecbb72e1e42b73aefa00562183">00280</a> <span class="keywordtype">int</span>             <a class="code" href="base_2config_8c.html#a6a7850ecbb72e1e42b73aefa00562183">debug_level</a>=<a class="code" href="icinga_8h.html#a18da678808a23365d00c58cdae11e29e">DEFAULT_DEBUG_LEVEL</a>;
-<a name="l00281"></a><a class="code" href="base_2utils_8c.html#a34a87268f6423660b89263430f5f776c">00281</a> <span class="keywordtype">int</span>             <a class="code" href="base_2config_8c.html#a34a87268f6423660b89263430f5f776c">debug_verbosity</a>=<a class="code" href="icinga_8h.html#a58eafed6db11bb59dd14a48d27f1c350">DEFAULT_DEBUG_VERBOSITY</a>;
-<a name="l00282"></a><a class="code" href="base_2utils_8c.html#ac919486c0bf77cab5e1ec2f0aba1803f">00282</a> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   <a class="code" href="checks_8c.html#ac919486c0bf77cab5e1ec2f0aba1803f">max_debug_file_size</a>=<a class="code" href="icinga_8h.html#a1b4a7d421150633227ab66a5f09a2a18">DEFAULT_MAX_DEBUG_FILE_SIZE</a>;
-<a name="l00283"></a>00283 
-<a name="l00284"></a><a class="code" href="icinga_8c.html#a7c1d654b7b6114d7a0abc8d351dd1bcd">00284</a> <span class="keywordtype">int</span> <a class="code" href="checks_8c.html#a7c1d654b7b6114d7a0abc8d351dd1bcd">dummy</a>;      <span class="comment">/* reduce compiler warnings */</span>
-<a name="l00285"></a>00285 
+<a name="l00263"></a>00263 <span class="keyword">extern</span> <a class="code" href="structmodule__struct.html">module</a>          *<a class="code" href="base_2config_8c.html#a6b14931ee1b8e8f97f1295d9a87cdc54">module_list</a>;
+<a name="l00264"></a>00264 
+<a name="l00265"></a><a class="code" href="base_2utils_8c.html#a78c463e6f4c8735520d6819b2aa21a5b">00265</a> <a class="code" href="structnotify__list__struct.html">notification</a>    *<a class="code" href="base_2config_8c.html#a78c463e6f4c8735520d6819b2aa21a5b">notification_list</a>;
+<a name="l00266"></a>00266 
+<a name="l00267"></a><a class="code" href="base_2utils_8c.html#a3c4ba85a60252149f09be4923bc98b4a">00267</a> <a class="code" href="structcheck__result__struct.html">check_result</a>    <a class="code" href="checks_8c.html#a3c4ba85a60252149f09be4923bc98b4a">check_result_info</a>;
+<a name="l00268"></a><a class="code" href="base_2utils_8c.html#a9a65c5bcf2a37699d3438209379f79c2">00268</a> <a class="code" href="structcheck__result__struct.html">check_result</a>    *<a class="code" href="checks_8c.html#a9a65c5bcf2a37699d3438209379f79c2">check_result_list</a>=NULL;
+<a name="l00269"></a><a class="code" href="base_2utils_8c.html#a339144b840e81ab177c4c80178da7470">00269</a> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   <a class="code" href="base_2config_8c.html#a339144b840e81ab177c4c80178da7470">max_check_result_file_age</a>=<a class="code" href="icinga_8h.html#a53916a704d0ba8180afc33897e69aa02">DEFAULT_MAX_CHECK_RESULT_AGE</a>;
+<a name="l00270"></a>00270 
+<a name="l00271"></a><a class="code" href="base_2utils_8c.html#a196b79fb855aaef5e5af1817202ab24f">00271</a> <a class="code" href="structdbuf__struct.html">dbuf</a>            <a class="code" href="icinga_8c.html#a196b79fb855aaef5e5af1817202ab24f">check_result_dbuf</a>;
+<a name="l00272"></a>00272 
+<a name="l00273"></a><a class="code" href="base_2utils_8c.html#ac0c5df0ac52923268176eddeb6b179e3">00273</a> <a class="code" href="structcircular__buffer__struct.html">circular_buffer</a> <a class="code" href="commands_8c.html#ac0c5df0ac52923268176eddeb6b179e3">external_command_buffer</a>;
+<a name="l00274"></a><a class="code" href="base_2utils_8c.html#a4c93e00636e0a69527e56420e284d416">00274</a> <a class="code" href="structcircular__buffer__struct.html">circular_buffer</a> <a class="code" href="icinga_8c.html#a4c93e00636e0a69527e56420e284d416">check_result_buffer</a>;
+<a name="l00275"></a><a class="code" href="base_2utils_8c.html#a5c1a9b9ccaf872452bec541a26ab586b">00275</a> pthread_t       <a class="code" href="checks_8c.html#a5c1a9b9ccaf872452bec541a26ab586b">worker_threads</a>[<a class="code" href="icinga_8h.html#a39f497fe500265af5f37b35c16224047">TOTAL_WORKER_THREADS</a>];
+<a name="l00276"></a><a class="code" href="base_2utils_8c.html#aa9e89558ebe0496997935aca44cc0123">00276</a> <span class="keywordtype">int</span>             <a class="code" href="commands_8c.html#aa9e89558ebe0496997935aca44cc0123">external_command_buffer_slots</a>=<a class="code" href="icinga_8h.html#ac334e31a6c3b1182e60b74905288f7b3">DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS</a>;
+<a name="l00277"></a>00277 
+<a name="l00278"></a><a class="code" href="base_2utils_8c.html#a2b9afeefba56c9290ac7cbbecc923639">00278</a> <a class="code" href="structcheck__stats__struct.html">check_stats</a>     <a class="code" href="icinga_8c.html#a2b9afeefba56c9290ac7cbbecc923639">check_statistics</a>[<a class="code" href="include_2common_8h.html#aa7a5f37f784624687d6766812bc99b2e">MAX_CHECK_STATS_TYPES</a>];
+<a name="l00279"></a>00279 
+<a name="l00280"></a><a class="code" href="base_2utils_8c.html#a4dd633413e09f17ee505abe8699254da">00280</a> <span class="keywordtype">char</span>            *<a class="code" href="base_2config_8c.html#a4dd633413e09f17ee505abe8699254da">debug_file</a>;
+<a name="l00281"></a><a class="code" href="base_2utils_8c.html#a6a7850ecbb72e1e42b73aefa00562183">00281</a> <span class="keywordtype">int</span>             <a class="code" href="base_2config_8c.html#a6a7850ecbb72e1e42b73aefa00562183">debug_level</a>=<a class="code" href="icinga_8h.html#a18da678808a23365d00c58cdae11e29e">DEFAULT_DEBUG_LEVEL</a>;
+<a name="l00282"></a><a class="code" href="base_2utils_8c.html#a34a87268f6423660b89263430f5f776c">00282</a> <span class="keywordtype">int</span>             <a class="code" href="base_2config_8c.html#a34a87268f6423660b89263430f5f776c">debug_verbosity</a>=<a class="code" href="icinga_8h.html#a58eafed6db11bb59dd14a48d27f1c350">DEFAULT_DEBUG_VERBOSITY</a>;
+<a name="l00283"></a><a class="code" href="base_2utils_8c.html#ac919486c0bf77cab5e1ec2f0aba1803f">00283</a> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   <a class="code" href="checks_8c.html#ac919486c0bf77cab5e1ec2f0aba1803f">max_debug_file_size</a>=<a class="code" href="icinga_8h.html#a1b4a7d421150633227ab66a5f09a2a18">DEFAULT_MAX_DEBUG_FILE_SIZE</a>;
+<a name="l00284"></a>00284 
+<a name="l00285"></a><a class="code" href="icinga_8c.html#a7c1d654b7b6114d7a0abc8d351dd1bcd">00285</a> <span class="keywordtype">int</span> <a class="code" href="checks_8c.html#a7c1d654b7b6114d7a0abc8d351dd1bcd">dummy</a>;      <span class="comment">/* reduce compiler warnings */</span>
 <a name="l00286"></a>00286 
-<a name="l00287"></a>00287 <span class="comment">/* Following main() declaration required by older versions of Perl ut 5.00503 */</span>
-<a name="l00288"></a><a class="code" href="icinga_8c.html#a7b26396c9888d66d997b0007e8ff1e60">00288</a> <span class="keywordtype">int</span> <a class="code" href="icinga_8c.html#a7b26396c9888d66d997b0007e8ff1e60">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv, <span class="keywordtype">char</span> **env){
-<a name="l00289"></a>00289         <span class="keywordtype">int</span> result;
-<a name="l00290"></a>00290         <span class="keywordtype">int</span> <a class="code" href="cmd_8c.html#aa6a44bb7540c4f54ca854e7eccc677c0">error</a>=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
-<a name="l00291"></a>00291         <span class="keywordtype">char</span> *buffer=NULL;
-<a name="l00292"></a>00292         <span class="keywordtype">char</span> *dummy_c=NULL;
-<a name="l00293"></a>00293         <span class="keywordtype">int</span> display_license=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
-<a name="l00294"></a>00294         <span class="keywordtype">int</span> display_help=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
-<a name="l00295"></a>00295         <span class="keywordtype">int</span> <a class="code" href="test__checks_8c.html#a4e1e0e72dd773439e333c84dd762a9c3">c</a>=0;
-<a name="l00296"></a>00296         <span class="keyword">struct </span>tm *tm, tm_s;
-<a name="l00297"></a>00297         time_t now;
-<a name="l00298"></a>00298         <span class="keywordtype">char</span> datestring[256];
-<a name="l00299"></a>00299         <a class="code" href="structicinga__macros.html">icinga_macros</a> *mac;
-<a name="l00300"></a>00300 
-<a name="l00301"></a>00301 <span class="preprocessor">#ifdef HAVE_GETOPT_H</span>
-<a name="l00302"></a>00302 <span class="preprocessor"></span>        <span class="keywordtype">int</span> option_index=0;
-<a name="l00303"></a>00303         <span class="keyword">static</span> <span class="keyword">struct </span>option long_options[]=
-<a name="l00304"></a>00304         {
-<a name="l00305"></a>00305                 {<span class="stringliteral">&quot;help&quot;</span>,no_argument,0,<span class="charliteral">&#39;h&#39;</span>},
-<a name="l00306"></a>00306                 {<span class="stringliteral">&quot;version&quot;</span>,no_argument,0,<span class="charliteral">&#39;V&#39;</span>},
-<a name="l00307"></a>00307                 {<span class="stringliteral">&quot;license&quot;</span>,no_argument,0,<span class="charliteral">&#39;V&#39;</span>},
-<a name="l00308"></a>00308                 {<span class="stringliteral">&quot;verify-config&quot;</span>,no_argument,0,<span class="charliteral">&#39;v&#39;</span>},
-<a name="l00309"></a>00309                 {<span class="stringliteral">&quot;daemon&quot;</span>,no_argument,0,<span class="charliteral">&#39;d&#39;</span>},
-<a name="l00310"></a>00310                 {<span class="stringliteral">&quot;test-scheduling&quot;</span>,no_argument,0,<span class="charliteral">&#39;s&#39;</span>},
-<a name="l00311"></a>00311                 {<span class="stringliteral">&quot;show-scheduling&quot;</span>,no_argument,0,<span class="charliteral">&#39;S&#39;</span>},
-<a name="l00312"></a>00312                 {<span class="stringliteral">&quot;dont-verify-objects&quot;</span>,no_argument,0,<span class="charliteral">&#39;o&#39;</span>},
-<a name="l00313"></a>00313                 {<span class="stringliteral">&quot;dont-verify-paths&quot;</span>,no_argument,0,<span class="charliteral">&#39;x&#39;</span>},
-<a name="l00314"></a>00314                 {<span class="stringliteral">&quot;precache-objects&quot;</span>,no_argument,0,<span class="charliteral">&#39;p&#39;</span>},
-<a name="l00315"></a>00315                 {<span class="stringliteral">&quot;use-precached-objects&quot;</span>,no_argument,0,<span class="charliteral">&#39;u&#39;</span>},
-<a name="l00316"></a>00316                 {0,0,0,0}
-<a name="l00317"></a>00317         };
-<a name="l00318"></a>00318 <span class="preprocessor">#endif</span>
-<a name="l00319"></a>00319 <span class="preprocessor"></span>
-<a name="l00320"></a>00320         mac = <a class="code" href="macros_8c.html#ab140ad54ce6173c73864a7b1da8c68fe">get_global_macros</a>();
-<a name="l00321"></a>00321 
-<a name="l00322"></a>00322         <span class="comment">/* make sure we have the correct number of command line arguments */</span>
-<a name="l00323"></a>00323         <span class="keywordflow">if</span>(argc&lt;2)
-<a name="l00324"></a>00324                 error=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00325"></a>00325 
+<a name="l00287"></a>00287 
+<a name="l00288"></a>00288 <span class="comment">/* Following main() declaration required by older versions of Perl ut 5.00503 */</span>
+<a name="l00289"></a><a class="code" href="icinga_8c.html#a7b26396c9888d66d997b0007e8ff1e60">00289</a> <span class="keywordtype">int</span> <a class="code" href="icinga_8c.html#a7b26396c9888d66d997b0007e8ff1e60">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv, <span class="keywordtype">char</span> **env){
+<a name="l00290"></a>00290         <span class="keywordtype">int</span> result;
+<a name="l00291"></a>00291         <span class="keywordtype">int</span> <a class="code" href="cmd_8c.html#aa6a44bb7540c4f54ca854e7eccc677c0">error</a>=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+<a name="l00292"></a>00292         <span class="keywordtype">char</span> *buffer=NULL;
+<a name="l00293"></a>00293         <span class="keywordtype">char</span> *dummy_c=NULL;
+<a name="l00294"></a>00294         <span class="keywordtype">int</span> display_license=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+<a name="l00295"></a>00295         <span class="keywordtype">int</span> display_help=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+<a name="l00296"></a>00296         <span class="keywordtype">int</span> c=0;
+<a name="l00297"></a>00297         <span class="keyword">struct </span>tm *tm, tm_s;
+<a name="l00298"></a>00298         time_t now;
+<a name="l00299"></a>00299         <span class="keywordtype">char</span> datestring[256];
+<a name="l00300"></a>00300         <a class="code" href="structicinga__macros.html">icinga_macros</a> *mac;
+<a name="l00301"></a>00301 
+<a name="l00302"></a>00302 <span class="preprocessor">#ifdef HAVE_GETOPT_H</span>
+<a name="l00303"></a>00303 <span class="preprocessor"></span>        <span class="keywordtype">int</span> option_index=0;
+<a name="l00304"></a>00304         <span class="keyword">static</span> <span class="keyword">struct </span>option long_options[]=
+<a name="l00305"></a>00305         {
+<a name="l00306"></a>00306                 {<span class="stringliteral">&quot;help&quot;</span>,no_argument,0,<span class="charliteral">&#39;h&#39;</span>},
+<a name="l00307"></a>00307                 {<span class="stringliteral">&quot;version&quot;</span>,no_argument,0,<span class="charliteral">&#39;V&#39;</span>},
+<a name="l00308"></a>00308                 {<span class="stringliteral">&quot;license&quot;</span>,no_argument,0,<span class="charliteral">&#39;V&#39;</span>},
+<a name="l00309"></a>00309                 {<span class="stringliteral">&quot;verify-config&quot;</span>,no_argument,0,<span class="charliteral">&#39;v&#39;</span>},
+<a name="l00310"></a>00310                 {<span class="stringliteral">&quot;daemon&quot;</span>,no_argument,0,<span class="charliteral">&#39;d&#39;</span>},
+<a name="l00311"></a>00311                 {<span class="stringliteral">&quot;test-scheduling&quot;</span>,no_argument,0,<span class="charliteral">&#39;s&#39;</span>},
+<a name="l00312"></a>00312                 {<span class="stringliteral">&quot;show-scheduling&quot;</span>,no_argument,0,<span class="charliteral">&#39;S&#39;</span>},
+<a name="l00313"></a>00313                 {<span class="stringliteral">&quot;dont-verify-objects&quot;</span>,no_argument,0,<span class="charliteral">&#39;o&#39;</span>},
+<a name="l00314"></a>00314                 {<span class="stringliteral">&quot;dont-verify-paths&quot;</span>,no_argument,0,<span class="charliteral">&#39;x&#39;</span>},
+<a name="l00315"></a>00315                 {<span class="stringliteral">&quot;precache-objects&quot;</span>,no_argument,0,<span class="charliteral">&#39;p&#39;</span>},
+<a name="l00316"></a>00316                 {<span class="stringliteral">&quot;use-precached-objects&quot;</span>,no_argument,0,<span class="charliteral">&#39;u&#39;</span>},
+<a name="l00317"></a>00317                 {0,0,0,0}
+<a name="l00318"></a>00318         };
+<a name="l00319"></a>00319 <span class="preprocessor">#endif</span>
+<a name="l00320"></a>00320 <span class="preprocessor"></span>
+<a name="l00321"></a>00321         mac = <a class="code" href="macros_8c.html#ab140ad54ce6173c73864a7b1da8c68fe">get_global_macros</a>();
+<a name="l00322"></a>00322 
+<a name="l00323"></a>00323         <span class="comment">/* make sure we have the correct number of command line arguments */</span>
+<a name="l00324"></a>00324         <span class="keywordflow">if</span>(argc&lt;2)
+<a name="l00325"></a>00325                 error=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
 <a name="l00326"></a>00326 
-<a name="l00327"></a>00327         <span class="comment">/* get all command line arguments */</span>
-<a name="l00328"></a>00328         <span class="keywordflow">while</span>(1){
-<a name="l00329"></a>00329 
-<a name="l00330"></a>00330 <span class="preprocessor">#ifdef HAVE_GETOPT_H</span>
-<a name="l00331"></a>00331 <span class="preprocessor"></span>                c=getopt_long(argc,argv,<span class="stringliteral">&quot;+hVvdsoxpuS&quot;</span>,long_options,&amp;option_index);
-<a name="l00332"></a>00332 <span class="preprocessor">#else</span>
-<a name="l00333"></a>00333 <span class="preprocessor"></span>                c=getopt(argc,argv,<span class="stringliteral">&quot;+hVvdsoxpuS&quot;</span>);
-<a name="l00334"></a>00334 <span class="preprocessor">#endif</span>
-<a name="l00335"></a>00335 <span class="preprocessor"></span>
-<a name="l00336"></a>00336                 <span class="keywordflow">if</span>(c==-1 || c==EOF)
-<a name="l00337"></a>00337                         <span class="keywordflow">break</span>;
-<a name="l00338"></a>00338 
-<a name="l00339"></a>00339                 <span class="keywordflow">switch</span>(c){
-<a name="l00340"></a>00340 
-<a name="l00341"></a>00341                 <span class="keywordflow">case</span> <span class="charliteral">&#39;?&#39;</span>: <span class="comment">/* usage */</span>
-<a name="l00342"></a>00342                 <span class="keywordflow">case</span> <span class="charliteral">&#39;h&#39;</span>:
-<a name="l00343"></a>00343                         display_help=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00344"></a>00344                         <span class="keywordflow">break</span>;
-<a name="l00345"></a>00345 
-<a name="l00346"></a>00346                 <span class="keywordflow">case</span> <span class="charliteral">&#39;V&#39;</span>: <span class="comment">/* version */</span>
-<a name="l00347"></a>00347                         display_license=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00348"></a>00348                         <span class="keywordflow">break</span>;
-<a name="l00349"></a>00349 
-<a name="l00350"></a>00350                 <span class="keywordflow">case</span> <span class="charliteral">&#39;v&#39;</span>: <span class="comment">/* verify */</span>
-<a name="l00351"></a>00351                         verify_config=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00352"></a>00352                         <span class="keywordflow">break</span>;
-<a name="l00353"></a>00353 
-<a name="l00354"></a>00354                 <span class="keywordflow">case</span> <span class="charliteral">&#39;s&#39;</span>: <span class="comment">/* scheduling check */</span>
-<a name="l00355"></a>00355                         test_scheduling=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00356"></a>00356                         <span class="keywordflow">break</span>;
-<a name="l00357"></a>00357 
-<a name="l00358"></a>00358                 <span class="keywordflow">case</span> <span class="charliteral">&#39;S&#39;</span>: <span class="comment">/* scheduling check and show queue*/</span>
-<a name="l00359"></a>00359                         show_schedule=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00360"></a>00360                         test_scheduling=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00361"></a>00361                         <span class="keywordflow">break</span>;
-<a name="l00362"></a>00362 
-<a name="l00363"></a>00363                 <span class="keywordflow">case</span> <span class="charliteral">&#39;d&#39;</span>: <span class="comment">/* daemon mode */</span>
-<a name="l00364"></a>00364                         daemon_mode=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00365"></a>00365                         <span class="keywordflow">break</span>;
-<a name="l00366"></a>00366 
-<a name="l00367"></a>00367                 <span class="keywordflow">case</span> <span class="charliteral">&#39;o&#39;</span>: <span class="comment">/* don&#39;t verify objects */</span>
-<a name="l00368"></a>00368                         <span class="comment">/*</span>
-<a name="l00369"></a>00369 <span class="comment">                        verify_object_relationships=FALSE;</span>
-<a name="l00370"></a>00370 <span class="comment">                        */</span>
-<a name="l00371"></a>00371                         <span class="keywordflow">break</span>;
-<a name="l00372"></a>00372 
-<a name="l00373"></a>00373                 <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>: <span class="comment">/* don&#39;t verify circular paths */</span>
-<a name="l00374"></a>00374                         verify_circular_paths=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
-<a name="l00375"></a>00375                         <span class="keywordflow">break</span>;
-<a name="l00376"></a>00376 
-<a name="l00377"></a>00377                 <span class="keywordflow">case</span> <span class="charliteral">&#39;p&#39;</span>: <span class="comment">/* precache object config */</span>
-<a name="l00378"></a>00378                         precache_objects=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00379"></a>00379                         <span class="keywordflow">break</span>;
-<a name="l00380"></a>00380 
-<a name="l00381"></a>00381                 <span class="keywordflow">case</span> <span class="charliteral">&#39;u&#39;</span>: <span class="comment">/* use precached object config */</span>
-<a name="l00382"></a>00382                         use_precached_objects=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00383"></a>00383                         <span class="keywordflow">break</span>;
-<a name="l00384"></a>00384 
-<a name="l00385"></a>00385                 <span class="keywordflow">default</span>:
-<a name="l00386"></a>00386                         <span class="keywordflow">break</span>;
-<a name="l00387"></a>00387                         }
-<a name="l00388"></a>00388 
-<a name="l00389"></a>00389                 }
-<a name="l00390"></a>00390 
-<a name="l00391"></a>00391         <span class="comment">/* make sure we have the right combination of arguments */</span>
-<a name="l00392"></a>00392         <span class="keywordflow">if</span>(precache_objects==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> &amp;&amp; (test_scheduling==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a> &amp;&amp; verify_config==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)){
-<a name="l00393"></a>00393                 error=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00394"></a>00394                 display_help=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00395"></a>00395                 }
-<a name="l00396"></a>00396 
-<a name="l00397"></a>00397 <span class="preprocessor">#ifdef DEBUG_MEMORY</span>
-<a name="l00398"></a>00398 <span class="preprocessor"></span>        mtrace();
-<a name="l00399"></a>00399 <span class="preprocessor">#endif</span>
-<a name="l00400"></a>00400 <span class="preprocessor"></span>
-<a name="l00401"></a>00401         <span class="keywordflow">if</span>(daemon_mode==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
-<a name="l00402"></a>00402                 printf(<span class="stringliteral">&quot;\n%s %s\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a> ,<a class="code" href="include_2common_8h.html#a2f10abd650e471fae2d7e8c63d41206a">PROGRAM_VERSION</a>);
-<a name="l00403"></a>00403                 printf(<span class="stringliteral">&quot;Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n&quot;</span>);
-<a name="l00404"></a>00404                 printf(<span class="stringliteral">&quot;Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors\n&quot;</span>);
-<a name="l00405"></a>00405                 printf(<span class="stringliteral">&quot;Copyright (c) 1999-2009 Ethan Galstad\n&quot;</span>);
-<a name="l00406"></a>00406                 printf(<span class="stringliteral">&quot;Last Modified: %s\n&quot;</span>,<a class="code" href="include_2common_8h.html#a8ecb9b224327942e4a81a43d05b0f36e">PROGRAM_MODIFICATION_DATE</a>);
-<a name="l00407"></a>00407                 printf(<span class="stringliteral">&quot;License: GPL\n\n&quot;</span>);
-<a name="l00408"></a>00408                 }
-<a name="l00409"></a>00409 
-<a name="l00410"></a>00410         <span class="comment">/* just display the license */</span>
-<a name="l00411"></a>00411         <span class="keywordflow">if</span>(display_license==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00412"></a>00412 
-<a name="l00413"></a>00413                 printf(<span class="stringliteral">&quot;This program is free software; you can redistribute it and/or modify\n&quot;</span>);
-<a name="l00414"></a>00414                 printf(<span class="stringliteral">&quot;it under the terms of the GNU General Public License version 2 as\n&quot;</span>);
-<a name="l00415"></a>00415                 printf(<span class="stringliteral">&quot;published by the Free Software Foundation.\n\n&quot;</span>);
-<a name="l00416"></a>00416                 printf(<span class="stringliteral">&quot;This program is distributed in the hope that it will be useful,\n&quot;</span>);
-<a name="l00417"></a>00417                 printf(<span class="stringliteral">&quot;but WITHOUT ANY WARRANTY; without even the implied warranty of\n&quot;</span>);
-<a name="l00418"></a>00418                 printf(<span class="stringliteral">&quot;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n&quot;</span>);
-<a name="l00419"></a>00419                 printf(<span class="stringliteral">&quot;GNU General Public License for more details.\n\n&quot;</span>);
-<a name="l00420"></a>00420                 printf(<span class="stringliteral">&quot;You should have received a copy of the GNU General Public License\n&quot;</span>);
-<a name="l00421"></a>00421                 printf(<span class="stringliteral">&quot;along with this program; if not, write to the Free Software\n&quot;</span>);
-<a name="l00422"></a>00422                 printf(<span class="stringliteral">&quot;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n\n&quot;</span>);
-<a name="l00423"></a>00423 
-<a name="l00424"></a>00424                 exit(<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>);
-<a name="l00425"></a>00425                 }
-<a name="l00426"></a>00426 
-<a name="l00427"></a>00427         <span class="comment">/* make sure we got the main config file on the command line... */</span>
-<a name="l00428"></a>00428         <span class="keywordflow">if</span>(optind&gt;=argc)
-<a name="l00429"></a>00429                 error=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00430"></a>00430 
-<a name="l00431"></a>00431         <span class="comment">/* if there are no command line options (or if we encountered an error), print usage */</span>
-<a name="l00432"></a>00432         <span class="keywordflow">if</span>(error==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> || display_help==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00433"></a>00433 
-<a name="l00434"></a>00434                 printf(<span class="stringliteral">&quot;Usage: %s [options] &lt;main_config_file&gt;\n&quot;</span>,argv[0]);
-<a name="l00435"></a>00435                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00436"></a>00436                 printf(<span class="stringliteral">&quot;Options:\n&quot;</span>);
-<a name="l00437"></a>00437                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00438"></a>00438                 printf(<span class="stringliteral">&quot;  -v, --verify-config          Verify all configuration data\n&quot;</span>);
-<a name="l00439"></a>00439                 printf(<span class="stringliteral">&quot;  -s, --test-scheduling        Shows projected/recommended check scheduling and other\n&quot;</span>);
-<a name="l00440"></a>00440                 printf(<span class="stringliteral">&quot;                               diagnostic info based on the current configuration files.\n&quot;</span>);
-<a name="l00441"></a>00441                 printf(<span class="stringliteral">&quot;  -S, --show-scheduling        Same as -s, but also show the scheduling queue\n&quot;</span>);
-<a name="l00442"></a>00442                 <span class="comment">/*printf(&quot;  -o, --dont-verify-objects    Don&#39;t verify object relationships - USE WITH CAUTION!\n&quot;);*/</span>
-<a name="l00443"></a>00443                 printf(<span class="stringliteral">&quot;  -x, --dont-verify-paths      Don&#39;t check for circular object paths - USE WITH CAUTION!\n&quot;</span>);
-<a name="l00444"></a>00444                 printf(<span class="stringliteral">&quot;  -p, --precache-objects       Precache object configuration - use with -v or -s options\n&quot;</span>);
-<a name="l00445"></a>00445                 printf(<span class="stringliteral">&quot;  -u, --use-precached-objects  Use precached object config file\n&quot;</span>);
-<a name="l00446"></a>00446                 printf(<span class="stringliteral">&quot;  -d, --daemon                 Starts %s in daemon mode, instead of as a foreground process\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
-<a name="l00447"></a>00447                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00448"></a>00448                 printf(<span class="stringliteral">&quot;Visit the %s website at http://www.icinga.org/ for bug fixes, new\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
-<a name="l00449"></a>00449                 printf(<span class="stringliteral">&quot;releases, online documentation, FAQs, information on subscribing to\n&quot;</span>);
-<a name="l00450"></a>00450                 printf(<span class="stringliteral">&quot;the mailing lists, and commercial support options for %s.\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
-<a name="l00451"></a>00451                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00452"></a>00452 
-<a name="l00453"></a>00453                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00454"></a>00454                 }
-<a name="l00455"></a>00455 
+<a name="l00327"></a>00327 
+<a name="l00328"></a>00328         <span class="comment">/* get all command line arguments */</span>
+<a name="l00329"></a>00329         <span class="keywordflow">while</span>(1){
+<a name="l00330"></a>00330 
+<a name="l00331"></a>00331 <span class="preprocessor">#ifdef HAVE_GETOPT_H</span>
+<a name="l00332"></a>00332 <span class="preprocessor"></span>                c=getopt_long(argc,argv,<span class="stringliteral">&quot;+hVvdsoxpuS&quot;</span>,long_options,&amp;option_index);
+<a name="l00333"></a>00333 <span class="preprocessor">#else</span>
+<a name="l00334"></a>00334 <span class="preprocessor"></span>                c=getopt(argc,argv,<span class="stringliteral">&quot;+hVvdsoxpuS&quot;</span>);
+<a name="l00335"></a>00335 <span class="preprocessor">#endif</span>
+<a name="l00336"></a>00336 <span class="preprocessor"></span>
+<a name="l00337"></a>00337                 <span class="keywordflow">if</span>(c==-1 || c==EOF)
+<a name="l00338"></a>00338                         <span class="keywordflow">break</span>;
+<a name="l00339"></a>00339 
+<a name="l00340"></a>00340                 <span class="keywordflow">switch</span>(c){
+<a name="l00341"></a>00341 
+<a name="l00342"></a>00342                 <span class="keywordflow">case</span> <span class="charliteral">&#39;?&#39;</span>: <span class="comment">/* usage */</span>
+<a name="l00343"></a>00343                 <span class="keywordflow">case</span> <span class="charliteral">&#39;h&#39;</span>:
+<a name="l00344"></a>00344                         display_help=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00345"></a>00345                         <span class="keywordflow">break</span>;
+<a name="l00346"></a>00346 
+<a name="l00347"></a>00347                 <span class="keywordflow">case</span> <span class="charliteral">&#39;V&#39;</span>: <span class="comment">/* version */</span>
+<a name="l00348"></a>00348                         display_license=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00349"></a>00349                         <span class="keywordflow">break</span>;
+<a name="l00350"></a>00350 
+<a name="l00351"></a>00351                 <span class="keywordflow">case</span> <span class="charliteral">&#39;v&#39;</span>: <span class="comment">/* verify */</span>
+<a name="l00352"></a>00352                         verify_config=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00353"></a>00353                         <span class="keywordflow">break</span>;
+<a name="l00354"></a>00354 
+<a name="l00355"></a>00355                 <span class="keywordflow">case</span> <span class="charliteral">&#39;s&#39;</span>: <span class="comment">/* scheduling check */</span>
+<a name="l00356"></a>00356                         test_scheduling=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00357"></a>00357                         <span class="keywordflow">break</span>;
+<a name="l00358"></a>00358 
+<a name="l00359"></a>00359                 <span class="keywordflow">case</span> <span class="charliteral">&#39;S&#39;</span>: <span class="comment">/* scheduling check and show queue*/</span>
+<a name="l00360"></a>00360                         show_schedule=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00361"></a>00361                         test_scheduling=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00362"></a>00362                         <span class="keywordflow">break</span>;
+<a name="l00363"></a>00363 
+<a name="l00364"></a>00364                 <span class="keywordflow">case</span> <span class="charliteral">&#39;d&#39;</span>: <span class="comment">/* daemon mode */</span>
+<a name="l00365"></a>00365                         daemon_mode=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00366"></a>00366                         <span class="keywordflow">break</span>;
+<a name="l00367"></a>00367 
+<a name="l00368"></a>00368                 <span class="keywordflow">case</span> <span class="charliteral">&#39;o&#39;</span>: <span class="comment">/* don&#39;t verify objects */</span>
+<a name="l00369"></a>00369                         <span class="comment">/*</span>
+<a name="l00370"></a>00370 <span class="comment">                        verify_object_relationships=FALSE;</span>
+<a name="l00371"></a>00371 <span class="comment">                        */</span>
+<a name="l00372"></a>00372                         <span class="keywordflow">break</span>;
+<a name="l00373"></a>00373 
+<a name="l00374"></a>00374                 <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>: <span class="comment">/* don&#39;t verify circular paths */</span>
+<a name="l00375"></a>00375                         verify_circular_paths=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+<a name="l00376"></a>00376                         <span class="keywordflow">break</span>;
+<a name="l00377"></a>00377 
+<a name="l00378"></a>00378                 <span class="keywordflow">case</span> <span class="charliteral">&#39;p&#39;</span>: <span class="comment">/* precache object config */</span>
+<a name="l00379"></a>00379                         precache_objects=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00380"></a>00380                         <span class="keywordflow">break</span>;
+<a name="l00381"></a>00381 
+<a name="l00382"></a>00382                 <span class="keywordflow">case</span> <span class="charliteral">&#39;u&#39;</span>: <span class="comment">/* use precached object config */</span>
+<a name="l00383"></a>00383                         use_precached_objects=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00384"></a>00384                         <span class="keywordflow">break</span>;
+<a name="l00385"></a>00385 
+<a name="l00386"></a>00386                 <span class="keywordflow">default</span>:
+<a name="l00387"></a>00387                         <span class="keywordflow">break</span>;
+<a name="l00388"></a>00388                         }
+<a name="l00389"></a>00389 
+<a name="l00390"></a>00390                 }
+<a name="l00391"></a>00391 
+<a name="l00392"></a>00392         <span class="comment">/* make sure we have the right combination of arguments */</span>
+<a name="l00393"></a>00393         <span class="keywordflow">if</span>(precache_objects==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> &amp;&amp; (test_scheduling==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a> &amp;&amp; verify_config==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)){
+<a name="l00394"></a>00394                 error=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00395"></a>00395                 display_help=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00396"></a>00396                 }
+<a name="l00397"></a>00397 
+<a name="l00398"></a>00398 <span class="preprocessor">#ifdef DEBUG_MEMORY</span>
+<a name="l00399"></a>00399 <span class="preprocessor"></span>        mtrace();
+<a name="l00400"></a>00400 <span class="preprocessor">#endif</span>
+<a name="l00401"></a>00401 <span class="preprocessor"></span>
+<a name="l00402"></a>00402         <span class="keywordflow">if</span>(daemon_mode==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
+<a name="l00403"></a>00403                 printf(<span class="stringliteral">&quot;\n%s %s\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a> ,<a class="code" href="include_2common_8h.html#a2f10abd650e471fae2d7e8c63d41206a">PROGRAM_VERSION</a>);
+<a name="l00404"></a>00404                 printf(<span class="stringliteral">&quot;Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n&quot;</span>);
+<a name="l00405"></a>00405                 printf(<span class="stringliteral">&quot;Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors\n&quot;</span>);
+<a name="l00406"></a>00406                 printf(<span class="stringliteral">&quot;Copyright (c) 1999-2009 Ethan Galstad\n&quot;</span>);
+<a name="l00407"></a>00407                 printf(<span class="stringliteral">&quot;Last Modified: %s\n&quot;</span>,<a class="code" href="include_2common_8h.html#a8ecb9b224327942e4a81a43d05b0f36e">PROGRAM_MODIFICATION_DATE</a>);
+<a name="l00408"></a>00408                 printf(<span class="stringliteral">&quot;License: GPL\n\n&quot;</span>);
+<a name="l00409"></a>00409                 }
+<a name="l00410"></a>00410 
+<a name="l00411"></a>00411         <span class="comment">/* just display the license */</span>
+<a name="l00412"></a>00412         <span class="keywordflow">if</span>(display_license==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00413"></a>00413 
+<a name="l00414"></a>00414                 printf(<span class="stringliteral">&quot;This program is free software; you can redistribute it and/or modify\n&quot;</span>);
+<a name="l00415"></a>00415                 printf(<span class="stringliteral">&quot;it under the terms of the GNU General Public License version 2 as\n&quot;</span>);
+<a name="l00416"></a>00416                 printf(<span class="stringliteral">&quot;published by the Free Software Foundation.\n\n&quot;</span>);
+<a name="l00417"></a>00417                 printf(<span class="stringliteral">&quot;This program is distributed in the hope that it will be useful,\n&quot;</span>);
+<a name="l00418"></a>00418                 printf(<span class="stringliteral">&quot;but WITHOUT ANY WARRANTY; without even the implied warranty of\n&quot;</span>);
+<a name="l00419"></a>00419                 printf(<span class="stringliteral">&quot;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n&quot;</span>);
+<a name="l00420"></a>00420                 printf(<span class="stringliteral">&quot;GNU General Public License for more details.\n\n&quot;</span>);
+<a name="l00421"></a>00421                 printf(<span class="stringliteral">&quot;You should have received a copy of the GNU General Public License\n&quot;</span>);
+<a name="l00422"></a>00422                 printf(<span class="stringliteral">&quot;along with this program; if not, write to the Free Software\n&quot;</span>);
+<a name="l00423"></a>00423                 printf(<span class="stringliteral">&quot;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n\n&quot;</span>);
+<a name="l00424"></a>00424 
+<a name="l00425"></a>00425                 exit(<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>);
+<a name="l00426"></a>00426                 }
+<a name="l00427"></a>00427 
+<a name="l00428"></a>00428         <span class="comment">/* make sure we got the main config file on the command line... */</span>
+<a name="l00429"></a>00429         <span class="keywordflow">if</span>(optind&gt;=argc)
+<a name="l00430"></a>00430                 error=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00431"></a>00431 
+<a name="l00432"></a>00432         <span class="comment">/* if there are no command line options (or if we encountered an error), print usage */</span>
+<a name="l00433"></a>00433         <span class="keywordflow">if</span>(error==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> || display_help==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00434"></a>00434 
+<a name="l00435"></a>00435                 printf(<span class="stringliteral">&quot;Usage: %s [options] &lt;main_config_file&gt;\n&quot;</span>,argv[0]);
+<a name="l00436"></a>00436                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00437"></a>00437                 printf(<span class="stringliteral">&quot;Options:\n&quot;</span>);
+<a name="l00438"></a>00438                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00439"></a>00439                 printf(<span class="stringliteral">&quot;  -v, --verify-config          Verify all configuration data\n&quot;</span>);
+<a name="l00440"></a>00440                 printf(<span class="stringliteral">&quot;  -s, --test-scheduling        Shows projected/recommended check scheduling and other\n&quot;</span>);
+<a name="l00441"></a>00441                 printf(<span class="stringliteral">&quot;                               diagnostic info based on the current configuration files.\n&quot;</span>);
+<a name="l00442"></a>00442                 printf(<span class="stringliteral">&quot;  -S, --show-scheduling        Same as -s, but also show the scheduling queue\n&quot;</span>);
+<a name="l00443"></a>00443                 <span class="comment">/*printf(&quot;  -o, --dont-verify-objects    Don&#39;t verify object relationships - USE WITH CAUTION!\n&quot;);*/</span>
+<a name="l00444"></a>00444                 printf(<span class="stringliteral">&quot;  -x, --dont-verify-paths      Don&#39;t check for circular object paths - USE WITH CAUTION!\n&quot;</span>);
+<a name="l00445"></a>00445                 printf(<span class="stringliteral">&quot;  -p, --precache-objects       Precache object configuration - use with -v or -s options\n&quot;</span>);
+<a name="l00446"></a>00446                 printf(<span class="stringliteral">&quot;  -u, --use-precached-objects  Use precached object config file\n&quot;</span>);
+<a name="l00447"></a>00447                 printf(<span class="stringliteral">&quot;  -d, --daemon                 Starts %s in daemon mode, instead of as a foreground process\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
+<a name="l00448"></a>00448                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00449"></a>00449                 printf(<span class="stringliteral">&quot;Visit the %s website at http://www.icinga.org/ for bug fixes, new\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
+<a name="l00450"></a>00450                 printf(<span class="stringliteral">&quot;releases, online documentation, FAQs, information on subscribing to\n&quot;</span>);
+<a name="l00451"></a>00451                 printf(<span class="stringliteral">&quot;the mailing lists, and commercial support options for %s.\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
+<a name="l00452"></a>00452                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00453"></a>00453 
+<a name="l00454"></a>00454                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00455"></a>00455                 }
 <a name="l00456"></a>00456 
-<a name="l00457"></a>00457         <span class="comment">/* config file is last argument specified */</span>
-<a name="l00458"></a>00458         <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>=(<span class="keywordtype">char</span> *)strdup(argv[optind]);
-<a name="l00459"></a>00459         <span class="keywordflow">if</span>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>==NULL){
-<a name="l00460"></a>00460                 printf(<span class="stringliteral">&quot;Error allocating memory.\n&quot;</span>);
-<a name="l00461"></a>00461                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00462"></a>00462                 }
-<a name="l00463"></a>00463 
-<a name="l00464"></a>00464         <span class="comment">/* make sure the config file uses an absolute path */</span>
-<a name="l00465"></a>00465         <span class="keywordflow">if</span>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>[0]!=<span class="charliteral">&#39;/&#39;</span>){
-<a name="l00466"></a>00466 
-<a name="l00467"></a>00467                 <span class="comment">/* save the name of the config file */</span>
-<a name="l00468"></a>00468                 buffer=(<span class="keywordtype">char</span> *)strdup(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00469"></a>00469 
-<a name="l00470"></a>00470                 <span class="comment">/* reallocate a larger chunk of memory */</span>
-<a name="l00471"></a>00471                 <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>=(<span class="keywordtype">char</span> *)realloc(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>);
-<a name="l00472"></a>00472                 <span class="keywordflow">if</span>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>==NULL){
-<a name="l00473"></a>00473                         printf(<span class="stringliteral">&quot;Error allocating memory.\n&quot;</span>);
-<a name="l00474"></a>00474                         exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00475"></a>00475                         }
-<a name="l00476"></a>00476 
-<a name="l00477"></a>00477                 <span class="comment">/* get absolute path of current working directory */</span>
-<a name="l00478"></a>00478                 dummy_c=getcwd(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>);
-<a name="l00479"></a>00479 
-<a name="l00480"></a>00480                 <span class="comment">/* append a forward slash */</span>
-<a name="l00481"></a>00481                 strncat(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<span class="stringliteral">&quot;/&quot;</span>,1);
-<a name="l00482"></a>00482                 <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>[<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
-<a name="l00483"></a>00483 
-<a name="l00484"></a>00484                 <span class="comment">/* append the config file to the path */</span>
-<a name="l00485"></a>00485                 strncat(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,buffer,<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>-strlen(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>)-1);
-<a name="l00486"></a>00486                 <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>[<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
-<a name="l00487"></a>00487 
-<a name="l00488"></a>00488                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(buffer);
-<a name="l00489"></a>00489                 }
-<a name="l00490"></a>00490 
+<a name="l00457"></a>00457 
+<a name="l00458"></a>00458         <span class="comment">/* config file is last argument specified */</span>
+<a name="l00459"></a>00459         <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>=(<span class="keywordtype">char</span> *)strdup(argv[optind]);
+<a name="l00460"></a>00460         <span class="keywordflow">if</span>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>==NULL){
+<a name="l00461"></a>00461                 printf(<span class="stringliteral">&quot;Error allocating memory.\n&quot;</span>);
+<a name="l00462"></a>00462                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00463"></a>00463                 }
+<a name="l00464"></a>00464 
+<a name="l00465"></a>00465         <span class="comment">/* make sure the config file uses an absolute path */</span>
+<a name="l00466"></a>00466         <span class="keywordflow">if</span>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>[0]!=<span class="charliteral">&#39;/&#39;</span>){
+<a name="l00467"></a>00467 
+<a name="l00468"></a>00468                 <span class="comment">/* save the name of the config file */</span>
+<a name="l00469"></a>00469                 buffer=(<span class="keywordtype">char</span> *)strdup(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00470"></a>00470 
+<a name="l00471"></a>00471                 <span class="comment">/* reallocate a larger chunk of memory */</span>
+<a name="l00472"></a>00472                 <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>=(<span class="keywordtype">char</span> *)realloc(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>);
+<a name="l00473"></a>00473                 <span class="keywordflow">if</span>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>==NULL){
+<a name="l00474"></a>00474                         printf(<span class="stringliteral">&quot;Error allocating memory.\n&quot;</span>);
+<a name="l00475"></a>00475                         exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00476"></a>00476                         }
+<a name="l00477"></a>00477 
+<a name="l00478"></a>00478                 <span class="comment">/* get absolute path of current working directory */</span>
+<a name="l00479"></a>00479                 dummy_c=getcwd(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>);
+<a name="l00480"></a>00480 
+<a name="l00481"></a>00481                 <span class="comment">/* append a forward slash */</span>
+<a name="l00482"></a>00482                 strncat(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<span class="stringliteral">&quot;/&quot;</span>,1);
+<a name="l00483"></a>00483                 <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>[<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
+<a name="l00484"></a>00484 
+<a name="l00485"></a>00485                 <span class="comment">/* append the config file to the path */</span>
+<a name="l00486"></a>00486                 strncat(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,buffer,<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>-strlen(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>)-1);
+<a name="l00487"></a>00487                 <a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>[<a class="code" href="include_2common_8h.html#a6773b93f3093658c3dcb569de3b4bdb2">MAX_FILENAME_LENGTH</a>-1]=<span class="stringliteral">&#39;\x0&#39;</span>;
+<a name="l00488"></a>00488 
+<a name="l00489"></a>00489                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(buffer);
+<a name="l00490"></a>00490                 }
 <a name="l00491"></a>00491 
-<a name="l00492"></a>00492         <span class="comment">/* we&#39;re just verifying the configuration... */</span>
-<a name="l00493"></a>00493         <span class="keywordflow">if</span>(verify_config==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00494"></a>00494 
-<a name="l00495"></a>00495                 <span class="comment">/* reset program variables */</span>
-<a name="l00496"></a>00496                 <a class="code" href="base_2utils_8c.html#ae40e82b5d069d689fdbae2f35970d0a7">reset_variables</a>();
-<a name="l00497"></a>00497 
-<a name="l00498"></a>00498                 printf(<span class="stringliteral">&quot;Reading configuration data...\n&quot;</span>);
-<a name="l00499"></a>00499 
-<a name="l00500"></a>00500                 <span class="comment">/* read in the configuration files (main config file, resource and object config files) */</span>
-<a name="l00501"></a>00501                 <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#a05eba6fb65aaf61da035d303c96242f4">read_main_config_file</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>))==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00502"></a>00502 
-<a name="l00503"></a>00503                         printf(<span class="stringliteral">&quot;   Read main config file okay...\n&quot;</span>);
-<a name="l00504"></a>00504 
-<a name="l00505"></a>00505                         <span class="comment">/* drop privileges */</span>
-<a name="l00506"></a>00506                         <span class="keywordflow">if</span>((result=<a class="code" href="base_2utils_8c.html#ab2ed30bc8d926d59453297fb5386dcf8">drop_privileges</a>(<a class="code" href="base_2config_8c.html#a05cfb9b76ef2434c8e0ccf88207999a6">nagios_user</a>,<a class="code" href="base_2config_8c.html#a18f68ce260b08820f7b519437e84beb4">nagios_group</a>))==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>)
-<a name="l00507"></a>00507                                 printf(<span class="stringliteral">&quot;   Failed to drop privileges.  Aborting.&quot;</span>);
-<a name="l00508"></a>00508                         <span class="keywordflow">else</span>{
-<a name="l00509"></a>00509                                 <span class="comment">/* read object config files */</span>
-<a name="l00510"></a>00510                                 <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#ae06c898f53859bb011d43fd8744d7710">read_all_object_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>))==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00511"></a>00511                                         printf(<span class="stringliteral">&quot;   Read object config files okay...\n&quot;</span>);
-<a name="l00512"></a>00512                                 <span class="keywordflow">else</span>
-<a name="l00513"></a>00513                                         printf(<span class="stringliteral">&quot;   Error processing object config files!\n&quot;</span>);
-<a name="l00514"></a>00514                                 }
-<a name="l00515"></a>00515                         }
-<a name="l00516"></a>00516                 <span class="keywordflow">else</span>
-<a name="l00517"></a>00517                         printf(<span class="stringliteral">&quot;   Error processing main config file!\n\n&quot;</span>);
-<a name="l00518"></a>00518 
-<a name="l00519"></a>00519                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00520"></a>00520 
-<a name="l00521"></a>00521                 <span class="comment">/* there was a problem reading the config files */</span>
-<a name="l00522"></a>00522                 <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00523"></a>00523 
-<a name="l00524"></a>00524                         <span class="comment">/* if the config filename looks fishy, warn the user */</span>
-<a name="l00525"></a>00525                         <span class="keywordflow">if</span>(!strstr(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<span class="stringliteral">&quot;nagios.cfg&quot;</span>) || !strstr(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<span class="stringliteral">&quot;icinga.cfg&quot;</span>)){
-<a name="l00526"></a>00526                                 printf(<span class="stringliteral">&quot;\n***&gt; The name of the main configuration file looks suspicious...\n&quot;</span>);
-<a name="l00527"></a>00527                                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00528"></a>00528                                 printf(<span class="stringliteral">&quot;     Make sure you are specifying the name of the MAIN configuration file on\n&quot;</span>);
-<a name="l00529"></a>00529                                 printf(<span class="stringliteral">&quot;     the command line and not the name of another configuration file.  The\n&quot;</span>);
-<a name="l00530"></a>00530                                 printf(<span class="stringliteral">&quot;     main configuration file is typically &#39;/usr/local/icinga/etc/icinga.cfg&#39;\n&quot;</span>);
-<a name="l00531"></a>00531                                 }
-<a name="l00532"></a>00532 
-<a name="l00533"></a>00533                         printf(<span class="stringliteral">&quot;\n***&gt; One or more problems was encountered while processing the config files...\n&quot;</span>);
-<a name="l00534"></a>00534                         printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00535"></a>00535                         printf(<span class="stringliteral">&quot;     Check your configuration file(s) to ensure that they contain valid\n&quot;</span>);
-<a name="l00536"></a>00536                         printf(<span class="stringliteral">&quot;     directives and data definitions.  If you are upgrading from a previous\n&quot;</span>);
-<a name="l00537"></a>00537                         printf(<span class="stringliteral">&quot;     version of %s, you should be aware that some variables/definitions\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
-<a name="l00538"></a>00538                         printf(<span class="stringliteral">&quot;     may have been removed or modified in this version.  Make sure to read\n&quot;</span>);
-<a name="l00539"></a>00539                         printf(<span class="stringliteral">&quot;     the HTML documentation regarding the config files, as well as the\n&quot;</span>);
-<a name="l00540"></a>00540                         printf(<span class="stringliteral">&quot;     &#39;Whats New&#39; section to find out what has changed.\n\n&quot;</span>);
-<a name="l00541"></a>00541                         }
-<a name="l00542"></a>00542 
-<a name="l00543"></a>00543                 <span class="comment">/* the config files were okay, so run the pre-flight check */</span>
-<a name="l00544"></a>00544                 <span class="keywordflow">else</span>{
-<a name="l00545"></a>00545 
-<a name="l00546"></a>00546                         printf(<span class="stringliteral">&quot;Running pre-flight check on configuration data...\n\n&quot;</span>);
-<a name="l00547"></a>00547 
-<a name="l00548"></a>00548                         <span class="comment">/* run the pre-flight check to make sure things look okay... */</span>
-<a name="l00549"></a>00549                         result=<a class="code" href="base_2config_8c.html#adc802cf7b2838963a0f9ada72be9b3d6">pre_flight_check</a>();
-<a name="l00550"></a>00550 
-<a name="l00551"></a>00551                         <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00552"></a>00552                                 printf(<span class="stringliteral">&quot;\nThings look okay - No serious problems were detected during the pre-flight check\n&quot;</span>);
-<a name="l00553"></a>00553                         <span class="keywordflow">else</span>{
-<a name="l00554"></a>00554                                 printf(<span class="stringliteral">&quot;\n***&gt; One or more problems was encountered while running the pre-flight check...\n&quot;</span>);
-<a name="l00555"></a>00555                                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00556"></a>00556                                 printf(<span class="stringliteral">&quot;     Check your configuration file(s) to ensure that they contain valid\n&quot;</span>);
-<a name="l00557"></a>00557                                 printf(<span class="stringliteral">&quot;     directives and data definitions.  If you are upgrading from a previous\n&quot;</span>);
-<a name="l00558"></a>00558                                 printf(<span class="stringliteral">&quot;     version of %s, you should be aware that some variables/definitions\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
-<a name="l00559"></a>00559                                 printf(<span class="stringliteral">&quot;     may have been removed or modified in this version.  Make sure to read\n&quot;</span>);
-<a name="l00560"></a>00560                                 printf(<span class="stringliteral">&quot;     the HTML documentation regarding the config files, as well as the\n&quot;</span>);
-<a name="l00561"></a>00561                                 printf(<span class="stringliteral">&quot;     &#39;Whats New&#39; section to find out what has changed.\n\n&quot;</span>);
-<a name="l00562"></a>00562                                 }
-<a name="l00563"></a>00563                         }
-<a name="l00564"></a>00564 
-<a name="l00565"></a>00565                 <span class="comment">/* clean up after ourselves */</span>
-<a name="l00566"></a>00566                 <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
-<a name="l00567"></a>00567 
-<a name="l00568"></a>00568                 <span class="comment">/* free config_file */</span>
-<a name="l00569"></a>00569                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00570"></a>00570 
-<a name="l00571"></a>00571                 <span class="comment">/* exit */</span>
-<a name="l00572"></a>00572                 exit(result);
-<a name="l00573"></a>00573                 }
-<a name="l00574"></a>00574 
+<a name="l00492"></a>00492 
+<a name="l00493"></a>00493         <span class="comment">/* we&#39;re just verifying the configuration... */</span>
+<a name="l00494"></a>00494         <span class="keywordflow">if</span>(verify_config==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00495"></a>00495 
+<a name="l00496"></a>00496                 <span class="comment">/* reset program variables */</span>
+<a name="l00497"></a>00497                 <a class="code" href="base_2utils_8c.html#ae40e82b5d069d689fdbae2f35970d0a7">reset_variables</a>();
+<a name="l00498"></a>00498 
+<a name="l00499"></a>00499                 printf(<span class="stringliteral">&quot;Reading configuration data...\n&quot;</span>);
+<a name="l00500"></a>00500 
+<a name="l00501"></a>00501                 <span class="comment">/* read in the configuration files (main config file, resource and object config files) */</span>
+<a name="l00502"></a>00502                 <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#a05eba6fb65aaf61da035d303c96242f4">read_main_config_file</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>))==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00503"></a>00503 
+<a name="l00504"></a>00504                         printf(<span class="stringliteral">&quot;   Read main config file okay...\n&quot;</span>);
+<a name="l00505"></a>00505 
+<a name="l00506"></a>00506                         <span class="comment">/* drop privileges */</span>
+<a name="l00507"></a>00507                         <span class="keywordflow">if</span>((result=<a class="code" href="base_2utils_8c.html#ab2ed30bc8d926d59453297fb5386dcf8">drop_privileges</a>(<a class="code" href="base_2config_8c.html#a05cfb9b76ef2434c8e0ccf88207999a6">nagios_user</a>,<a class="code" href="base_2config_8c.html#a18f68ce260b08820f7b519437e84beb4">nagios_group</a>))==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>)
+<a name="l00508"></a>00508                                 printf(<span class="stringliteral">&quot;   Failed to drop privileges.  Aborting.&quot;</span>);
+<a name="l00509"></a>00509                         <span class="keywordflow">else</span>{
+<a name="l00510"></a>00510                                 <span class="comment">/* read object config files */</span>
+<a name="l00511"></a>00511                                 <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#ae06c898f53859bb011d43fd8744d7710">read_all_object_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>))==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00512"></a>00512                                         printf(<span class="stringliteral">&quot;   Read object config files okay...\n&quot;</span>);
+<a name="l00513"></a>00513                                 <span class="keywordflow">else</span>
+<a name="l00514"></a>00514                                         printf(<span class="stringliteral">&quot;   Error processing object config files!\n&quot;</span>);
+<a name="l00515"></a>00515                                 }
+<a name="l00516"></a>00516                         }
+<a name="l00517"></a>00517                 <span class="keywordflow">else</span>
+<a name="l00518"></a>00518                         printf(<span class="stringliteral">&quot;   Error processing main config file!\n\n&quot;</span>);
+<a name="l00519"></a>00519 
+<a name="l00520"></a>00520                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00521"></a>00521 
+<a name="l00522"></a>00522                 <span class="comment">/* there was a problem reading the config files */</span>
+<a name="l00523"></a>00523                 <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00524"></a>00524 
+<a name="l00525"></a>00525                         <span class="comment">/* if the config filename looks fishy, warn the user */</span>
+<a name="l00526"></a>00526                         <span class="keywordflow">if</span>(!strstr(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<span class="stringliteral">&quot;nagios.cfg&quot;</span>) || !strstr(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<span class="stringliteral">&quot;icinga.cfg&quot;</span>)){
+<a name="l00527"></a>00527                                 printf(<span class="stringliteral">&quot;\n***&gt; The name of the main configuration file looks suspicious...\n&quot;</span>);
+<a name="l00528"></a>00528                                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00529"></a>00529                                 printf(<span class="stringliteral">&quot;     Make sure you are specifying the name of the MAIN configuration file on\n&quot;</span>);
+<a name="l00530"></a>00530                                 printf(<span class="stringliteral">&quot;     the command line and not the name of another configuration file.  The\n&quot;</span>);
+<a name="l00531"></a>00531                                 printf(<span class="stringliteral">&quot;     main configuration file is typically &#39;/usr/local/icinga/etc/icinga.cfg&#39;\n&quot;</span>);
+<a name="l00532"></a>00532                                 }
+<a name="l00533"></a>00533 
+<a name="l00534"></a>00534                         printf(<span class="stringliteral">&quot;\n***&gt; One or more problems was encountered while processing the config files...\n&quot;</span>);
+<a name="l00535"></a>00535                         printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00536"></a>00536                         printf(<span class="stringliteral">&quot;     Check your configuration file(s) to ensure that they contain valid\n&quot;</span>);
+<a name="l00537"></a>00537                         printf(<span class="stringliteral">&quot;     directives and data definitions.  If you are upgrading from a previous\n&quot;</span>);
+<a name="l00538"></a>00538                         printf(<span class="stringliteral">&quot;     version of %s, you should be aware that some variables/definitions\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
+<a name="l00539"></a>00539                         printf(<span class="stringliteral">&quot;     may have been removed or modified in this version.  Make sure to read\n&quot;</span>);
+<a name="l00540"></a>00540                         printf(<span class="stringliteral">&quot;     the HTML documentation regarding the config files, as well as the\n&quot;</span>);
+<a name="l00541"></a>00541                         printf(<span class="stringliteral">&quot;     &#39;Whats New&#39; section to find out what has changed.\n\n&quot;</span>);
+<a name="l00542"></a>00542                         }
+<a name="l00543"></a>00543 
+<a name="l00544"></a>00544                 <span class="comment">/* the config files were okay, so run the pre-flight check */</span>
+<a name="l00545"></a>00545                 <span class="keywordflow">else</span>{
+<a name="l00546"></a>00546 
+<a name="l00547"></a>00547                         printf(<span class="stringliteral">&quot;Running pre-flight check on configuration data...\n\n&quot;</span>);
+<a name="l00548"></a>00548 
+<a name="l00549"></a>00549                         <span class="comment">/* run the pre-flight check to make sure things look okay... */</span>
+<a name="l00550"></a>00550                         result=<a class="code" href="base_2config_8c.html#adc802cf7b2838963a0f9ada72be9b3d6">pre_flight_check</a>();
+<a name="l00551"></a>00551 
+<a name="l00552"></a>00552                         <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00553"></a>00553                                 printf(<span class="stringliteral">&quot;\nThings look okay - No serious problems were detected during the pre-flight check\n&quot;</span>);
+<a name="l00554"></a>00554                         <span class="keywordflow">else</span>{
+<a name="l00555"></a>00555                                 printf(<span class="stringliteral">&quot;\n***&gt; One or more problems was encountered while running the pre-flight check...\n&quot;</span>);
+<a name="l00556"></a>00556                                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00557"></a>00557                                 printf(<span class="stringliteral">&quot;     Check your configuration file(s) to ensure that they contain valid\n&quot;</span>);
+<a name="l00558"></a>00558                                 printf(<span class="stringliteral">&quot;     directives and data definitions.  If you are upgrading from a previous\n&quot;</span>);
+<a name="l00559"></a>00559                                 printf(<span class="stringliteral">&quot;     version of %s, you should be aware that some variables/definitions\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>);
+<a name="l00560"></a>00560                                 printf(<span class="stringliteral">&quot;     may have been removed or modified in this version.  Make sure to read\n&quot;</span>);
+<a name="l00561"></a>00561                                 printf(<span class="stringliteral">&quot;     the HTML documentation regarding the config files, as well as the\n&quot;</span>);
+<a name="l00562"></a>00562                                 printf(<span class="stringliteral">&quot;     &#39;Whats New&#39; section to find out what has changed.\n\n&quot;</span>);
+<a name="l00563"></a>00563                                 }
+<a name="l00564"></a>00564                         }
+<a name="l00565"></a>00565 
+<a name="l00566"></a>00566                 <span class="comment">/* clean up after ourselves */</span>
+<a name="l00567"></a>00567                 <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00568"></a>00568 
+<a name="l00569"></a>00569                 <span class="comment">/* free config_file */</span>
+<a name="l00570"></a>00570                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00571"></a>00571 
+<a name="l00572"></a>00572                 <span class="comment">/* exit */</span>
+<a name="l00573"></a>00573                 exit(result);
+<a name="l00574"></a>00574                 }
 <a name="l00575"></a>00575 
-<a name="l00576"></a>00576         <span class="comment">/* we&#39;re just testing scheduling... */</span>
-<a name="l00577"></a>00577         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(test_scheduling==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00578"></a>00578 
-<a name="l00579"></a>00579                 <span class="comment">/* reset program variables */</span>
-<a name="l00580"></a>00580                 <a class="code" href="base_2utils_8c.html#ae40e82b5d069d689fdbae2f35970d0a7">reset_variables</a>();
-<a name="l00581"></a>00581 
-<a name="l00582"></a>00582                 <span class="comment">/* read in the configuration files (main config file and all host config files) */</span>
-<a name="l00583"></a>00583                 result=<a class="code" href="base_2config_8c.html#a05eba6fb65aaf61da035d303c96242f4">read_main_config_file</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00584"></a>00584 
-<a name="l00585"></a>00585                 <span class="comment">/* drop privileges */</span>
-<a name="l00586"></a>00586                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00587"></a>00587                         <span class="keywordflow">if</span>((result=<a class="code" href="base_2utils_8c.html#ab2ed30bc8d926d59453297fb5386dcf8">drop_privileges</a>(<a class="code" href="base_2config_8c.html#a05cfb9b76ef2434c8e0ccf88207999a6">nagios_user</a>,<a class="code" href="base_2config_8c.html#a18f68ce260b08820f7b519437e84beb4">nagios_group</a>))==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>)
-<a name="l00588"></a>00588                                 printf(<span class="stringliteral">&quot;Failed to drop privileges.  Aborting.&quot;</span>);
-<a name="l00589"></a>00589 
-<a name="l00590"></a>00590                 <span class="comment">/* read object config files */</span>
-<a name="l00591"></a>00591                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00592"></a>00592                         result=<a class="code" href="base_2config_8c.html#ae06c898f53859bb011d43fd8744d7710">read_all_object_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00593"></a>00593 
-<a name="l00594"></a>00594                 <span class="comment">/* read initial service and host state information */</span>
-<a name="l00595"></a>00595                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00596"></a>00596                         <a class="code" href="sretention_8c.html#a4e38b4d2ae3f053a1ea9faab4eaaa501">initialize_retention_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00597"></a>00597                         <a class="code" href="sretention_8c.html#a3e768d3cacceb98ccf8e3a6dad043102">read_initial_state_information</a>();
-<a name="l00598"></a>00598                         }
-<a name="l00599"></a>00599 
-<a name="l00600"></a>00600                 <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00601"></a>00601                         printf(<span class="stringliteral">&quot;***&gt; One or more problems was encountered while reading configuration data...\n&quot;</span>);
-<a name="l00602"></a>00602 
-<a name="l00603"></a>00603                 <span class="comment">/* run the pre-flight check to make sure everything looks okay */</span>
-<a name="l00604"></a>00604                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00605"></a>00605                         <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#adc802cf7b2838963a0f9ada72be9b3d6">pre_flight_check</a>())!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00606"></a>00606                                 printf(<span class="stringliteral">&quot;***&gt; One or more problems was encountered while running the pre-flight check...\n&quot;</span>);
-<a name="l00607"></a>00607                         }
-<a name="l00608"></a>00608 
-<a name="l00609"></a>00609                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00610"></a>00610 
-<a name="l00611"></a>00611                         <span class="comment">/* initialize the event timing loop */</span>
-<a name="l00612"></a>00612                         <a class="code" href="events_8c.html#adc4d69c98d2a17131fdcf7403bb76e9a">init_timing_loop</a>();
-<a name="l00613"></a>00613 
-<a name="l00614"></a>00614                         <span class="comment">/* display schedule */</span>
-<a name="l00615"></a>00615                         <span class="keywordflow">if</span>(show_schedule == <a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
-<a name="l00616"></a>00616                                 <a class="code" href="events_8c.html#a8e0e6a4e76dc787a6f6249a5ac88b185">display_schedule</a>();
-<a name="l00617"></a>00617 
-<a name="l00618"></a>00618                         <span class="comment">/* display scheduling information */</span>
-<a name="l00619"></a>00619                         <a class="code" href="events_8c.html#a196bb60706c8a84e921a9df832416703">display_scheduling_info</a>();
-<a name="l00620"></a>00620 
-<a name="l00621"></a>00621                         <span class="keywordflow">if</span>(precache_objects==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00622"></a>00622                                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
-<a name="l00623"></a>00623                                 printf(<span class="stringliteral">&quot;OBJECT PRECACHING\n&quot;</span>);
-<a name="l00624"></a>00624                                 printf(<span class="stringliteral">&quot;-----------------\n&quot;</span>);
-<a name="l00625"></a>00625                                 printf(<span class="stringliteral">&quot;Object config files were precached.\n&quot;</span>);
-<a name="l00626"></a>00626                                 }
-<a name="l00627"></a>00627                         }
-<a name="l00628"></a>00628 
-<a name="l00629"></a>00629 <span class="preprocessor">#undef TEST_TIMEPERIODS</span>
-<a name="l00630"></a>00630 <span class="preprocessor"></span><span class="preprocessor">#ifdef TEST_TIMEPERIODS</span>
-<a name="l00631"></a>00631 <span class="preprocessor"></span>                <span class="comment">/* DO SOME TIMEPERIOD TESTING - ADDED 08/11/2009 */</span>
-<a name="l00632"></a>00632                 time_t now, pref_time, valid_time;
-<a name="l00633"></a>00633                 <a class="code" href="structtimeperiod__struct.html">timeperiod</a> *tp;
-<a name="l00634"></a>00634                 tp=<a class="code" href="objects_8c.html#a720727fb6707e27a815f00d2ee32d7c1">find_timeperiod</a>(<span class="stringliteral">&quot;247_exclusion&quot;</span>);
-<a name="l00635"></a>00635                 time(&amp;now);
-<a name="l00636"></a>00636                 pref_time=now;
-<a name="l00637"></a>00637                 <a class="code" href="base_2utils_8c.html#a887cf03e0c7cfc020e10e9f1949aae2e">get_next_valid_time</a>(pref_time,&amp;valid_time,tp);
-<a name="l00638"></a>00638                 printf(<span class="stringliteral">&quot;=====\n&quot;</span>);
-<a name="l00639"></a>00639                 printf(<span class="stringliteral">&quot;CURRENT:   %lu = %s&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)now,ctime(&amp;now));
-<a name="l00640"></a>00640                 printf(<span class="stringliteral">&quot;PREFERRED: %lu = %s&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)pref_time,ctime(&amp;pref_time));
-<a name="l00641"></a>00641                 printf(<span class="stringliteral">&quot;NEXT:      %lu = %s&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)valid_time,ctime(&amp;valid_time));
-<a name="l00642"></a>00642                 printf(<span class="stringliteral">&quot;=====\n&quot;</span>);
-<a name="l00643"></a>00643 <span class="preprocessor">#endif</span>
-<a name="l00644"></a>00644 <span class="preprocessor"></span>
-<a name="l00645"></a>00645                 <span class="comment">/* clean up after ourselves */</span>
-<a name="l00646"></a>00646                 <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
-<a name="l00647"></a>00647 
-<a name="l00648"></a>00648                 <span class="comment">/* exit */</span>
-<a name="l00649"></a>00649                 exit(result);
-<a name="l00650"></a>00650                 }
-<a name="l00651"></a>00651 
+<a name="l00576"></a>00576 
+<a name="l00577"></a>00577         <span class="comment">/* we&#39;re just testing scheduling... */</span>
+<a name="l00578"></a>00578         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(test_scheduling==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00579"></a>00579 
+<a name="l00580"></a>00580                 <span class="comment">/* reset program variables */</span>
+<a name="l00581"></a>00581                 <a class="code" href="base_2utils_8c.html#ae40e82b5d069d689fdbae2f35970d0a7">reset_variables</a>();
+<a name="l00582"></a>00582 
+<a name="l00583"></a>00583                 <span class="comment">/* read in the configuration files (main config file and all host config files) */</span>
+<a name="l00584"></a>00584                 result=<a class="code" href="base_2config_8c.html#a05eba6fb65aaf61da035d303c96242f4">read_main_config_file</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00585"></a>00585 
+<a name="l00586"></a>00586                 <span class="comment">/* drop privileges */</span>
+<a name="l00587"></a>00587                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00588"></a>00588                         <span class="keywordflow">if</span>((result=<a class="code" href="base_2utils_8c.html#ab2ed30bc8d926d59453297fb5386dcf8">drop_privileges</a>(<a class="code" href="base_2config_8c.html#a05cfb9b76ef2434c8e0ccf88207999a6">nagios_user</a>,<a class="code" href="base_2config_8c.html#a18f68ce260b08820f7b519437e84beb4">nagios_group</a>))==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>)
+<a name="l00589"></a>00589                                 printf(<span class="stringliteral">&quot;Failed to drop privileges.  Aborting.&quot;</span>);
+<a name="l00590"></a>00590 
+<a name="l00591"></a>00591                 <span class="comment">/* read object config files */</span>
+<a name="l00592"></a>00592                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00593"></a>00593                         result=<a class="code" href="base_2config_8c.html#ae06c898f53859bb011d43fd8744d7710">read_all_object_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00594"></a>00594 
+<a name="l00595"></a>00595                 <span class="comment">/* read initial service and host state information */</span>
+<a name="l00596"></a>00596                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00597"></a>00597                         <a class="code" href="sretention_8c.html#a4e38b4d2ae3f053a1ea9faab4eaaa501">initialize_retention_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00598"></a>00598                         <a class="code" href="sretention_8c.html#a3e768d3cacceb98ccf8e3a6dad043102">read_initial_state_information</a>();
+<a name="l00599"></a>00599                         }
+<a name="l00600"></a>00600 
+<a name="l00601"></a>00601                 <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00602"></a>00602                         printf(<span class="stringliteral">&quot;***&gt; One or more problems was encountered while reading configuration data...\n&quot;</span>);
+<a name="l00603"></a>00603 
+<a name="l00604"></a>00604                 <span class="comment">/* run the pre-flight check to make sure everything looks okay */</span>
+<a name="l00605"></a>00605                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00606"></a>00606                         <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#adc802cf7b2838963a0f9ada72be9b3d6">pre_flight_check</a>())!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00607"></a>00607                                 printf(<span class="stringliteral">&quot;***&gt; One or more problems was encountered while running the pre-flight check...\n&quot;</span>);
+<a name="l00608"></a>00608                         }
+<a name="l00609"></a>00609 
+<a name="l00610"></a>00610                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00611"></a>00611 
+<a name="l00612"></a>00612                         <span class="comment">/* initialize the event timing loop */</span>
+<a name="l00613"></a>00613                         <a class="code" href="events_8c.html#adc4d69c98d2a17131fdcf7403bb76e9a">init_timing_loop</a>();
+<a name="l00614"></a>00614 
+<a name="l00615"></a>00615                         <span class="comment">/* display schedule */</span>
+<a name="l00616"></a>00616                         <span class="keywordflow">if</span>(show_schedule == <a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
+<a name="l00617"></a>00617                                 <a class="code" href="events_8c.html#a8e0e6a4e76dc787a6f6249a5ac88b185">display_schedule</a>();
+<a name="l00618"></a>00618 
+<a name="l00619"></a>00619                         <span class="comment">/* display scheduling information */</span>
+<a name="l00620"></a>00620                         <a class="code" href="events_8c.html#a196bb60706c8a84e921a9df832416703">display_scheduling_info</a>();
+<a name="l00621"></a>00621 
+<a name="l00622"></a>00622                         <span class="keywordflow">if</span>(precache_objects==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00623"></a>00623                                 printf(<span class="stringliteral">&quot;\n&quot;</span>);
+<a name="l00624"></a>00624                                 printf(<span class="stringliteral">&quot;OBJECT PRECACHING\n&quot;</span>);
+<a name="l00625"></a>00625                                 printf(<span class="stringliteral">&quot;-----------------\n&quot;</span>);
+<a name="l00626"></a>00626                                 printf(<span class="stringliteral">&quot;Object config files were precached.\n&quot;</span>);
+<a name="l00627"></a>00627                                 }
+<a name="l00628"></a>00628                         }
+<a name="l00629"></a>00629 
+<a name="l00630"></a>00630 <span class="preprocessor">#undef TEST_TIMEPERIODS</span>
+<a name="l00631"></a>00631 <span class="preprocessor"></span><span class="preprocessor">#ifdef TEST_TIMEPERIODS</span>
+<a name="l00632"></a>00632 <span class="preprocessor"></span>                <span class="comment">/* DO SOME TIMEPERIOD TESTING - ADDED 08/11/2009 */</span>
+<a name="l00633"></a>00633                 time_t now, pref_time, valid_time;
+<a name="l00634"></a>00634                 <a class="code" href="structtimeperiod__struct.html">timeperiod</a> *tp;
+<a name="l00635"></a>00635                 tp=<a class="code" href="objects_8c.html#a720727fb6707e27a815f00d2ee32d7c1">find_timeperiod</a>(<span class="stringliteral">&quot;247_exclusion&quot;</span>);
+<a name="l00636"></a>00636                 time(&amp;now);
+<a name="l00637"></a>00637                 pref_time=now;
+<a name="l00638"></a>00638                 <a class="code" href="base_2utils_8c.html#a887cf03e0c7cfc020e10e9f1949aae2e">get_next_valid_time</a>(pref_time,&amp;valid_time,tp);
+<a name="l00639"></a>00639                 printf(<span class="stringliteral">&quot;=====\n&quot;</span>);
+<a name="l00640"></a>00640                 printf(<span class="stringliteral">&quot;CURRENT:   %lu = %s&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)now,ctime(&amp;now));
+<a name="l00641"></a>00641                 printf(<span class="stringliteral">&quot;PREFERRED: %lu = %s&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)pref_time,ctime(&amp;pref_time));
+<a name="l00642"></a>00642                 printf(<span class="stringliteral">&quot;NEXT:      %lu = %s&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)valid_time,ctime(&amp;valid_time));
+<a name="l00643"></a>00643                 printf(<span class="stringliteral">&quot;=====\n&quot;</span>);
+<a name="l00644"></a>00644 <span class="preprocessor">#endif</span>
+<a name="l00645"></a>00645 <span class="preprocessor"></span>
+<a name="l00646"></a>00646                 <span class="comment">/* clean up after ourselves */</span>
+<a name="l00647"></a>00647                 <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00648"></a>00648 
+<a name="l00649"></a>00649                 <span class="comment">/* exit */</span>
+<a name="l00650"></a>00650                 exit(result);
+<a name="l00651"></a>00651                 }
 <a name="l00652"></a>00652 
-<a name="l00653"></a>00653         <span class="comment">/* else start to monitor things... */</span>
-<a name="l00654"></a>00654         <span class="keywordflow">else</span>{
-<a name="l00655"></a>00655 
-<a name="l00656"></a>00656 <span class="comment">/* make sure gcc3 won&#39;t hit here */</span>
-<a name="l00657"></a>00657 <span class="preprocessor">#ifndef GCCTOOOLD</span>
-<a name="l00658"></a>00658 <span class="preprocessor"></span>        <span class="comment">/* This is Sparta! */</span>
-<a name="l00659"></a>00659         <span class="keywordflow">if</span>(event_profiling_enabled==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
-<a name="l00660"></a>00660                 <a class="code" href="profiler_8c.html#ac93b749b24ee6977401b1e0c9fb0bb3b">profiler_init</a>();
-<a name="l00661"></a>00661 <span class="preprocessor">#endif</span>
-<a name="l00662"></a>00662 <span class="preprocessor"></span>
-<a name="l00663"></a>00663                 <span class="comment">/* keep monitoring things until we get a shutdown command */</span>
-<a name="l00664"></a>00664                 <span class="keywordflow">do</span>{
-<a name="l00665"></a>00665 
-<a name="l00666"></a>00666                         <span class="comment">/* reset program variables */</span>
-<a name="l00667"></a>00667                         <a class="code" href="base_2utils_8c.html#ae40e82b5d069d689fdbae2f35970d0a7">reset_variables</a>();
-<a name="l00668"></a>00668 
-<a name="l00669"></a>00669                         <span class="comment">/* get PID */</span>
-<a name="l00670"></a>00670                         nagios_pid=(int)getpid();
-<a name="l00671"></a>00671 
-<a name="l00672"></a>00672                         <span class="comment">/* read in the configuration files (main and resource config files) */</span>
-<a name="l00673"></a>00673                         result=<a class="code" href="base_2config_8c.html#a05eba6fb65aaf61da035d303c96242f4">read_main_config_file</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00674"></a>00674 
-<a name="l00675"></a>00675                         <span class="comment">/* NOTE 11/06/07 EG moved to after we read config files, as user may have overridden timezone offset */</span>
-<a name="l00676"></a>00676                         <span class="comment">/* get program (re)start time and save as macro */</span>
-<a name="l00677"></a>00677                         program_start=time(NULL);
-<a name="l00678"></a>00678                         <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a6a75b9ae7ad08bd586731522ec21a5ab">MACRO_PROCESSSTARTTIME</a>]);
-<a name="l00679"></a>00679                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a6a75b9ae7ad08bd586731522ec21a5ab">MACRO_PROCESSSTARTTIME</a>],<span class="stringliteral">&quot;%lu&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)program_start);
-<a name="l00680"></a>00680 
-<a name="l00681"></a>00681                         <span class="comment">/* open debug log */</span>
-<a name="l00682"></a>00682                         <a class="code" href="logging_8c.html#a7a776449460252a9e0bdc4b407f3709a">open_debug_log</a>();
-<a name="l00683"></a>00683 
-<a name="l00684"></a>00684                         <span class="comment">/* drop privileges */</span>
-<a name="l00685"></a>00685                         <span class="keywordflow">if</span>(<a class="code" href="base_2utils_8c.html#ab2ed30bc8d926d59453297fb5386dcf8">drop_privileges</a>(<a class="code" href="base_2config_8c.html#a05cfb9b76ef2434c8e0ccf88207999a6">nagios_user</a>,<a class="code" href="base_2config_8c.html#a18f68ce260b08820f7b519437e84beb4">nagios_group</a>)==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>){
-<a name="l00686"></a>00686 
-<a name="l00687"></a>00687                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a> | <a class="code" href="logging_8h.html#a7eeb3698af991d137e2fdcda7b9e41a4">NSLOG_CONFIG_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Failed to drop privileges.  Aborting.&quot;</span>);
-<a name="l00688"></a>00688 
-<a name="l00689"></a>00689                                 <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
-<a name="l00690"></a>00690                                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00691"></a>00691                                 }
-<a name="l00692"></a>00692 
-<a name="l00693"></a>00693 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00694"></a>00694 <span class="preprocessor"></span>                        <span class="comment">/* initialize modules */</span>
-<a name="l00695"></a>00695                         <a class="code" href="nebmods_8h.html#afc3906c0869d51d472732daebdef5d64">neb_init_modules</a>();
-<a name="l00696"></a>00696                         <a class="code" href="nebmods_8h.html#a12f0998848b078145b1113b22499e971">neb_init_callback_list</a>();
-<a name="l00697"></a>00697 <span class="preprocessor">#endif</span>
-<a name="l00698"></a>00698 <span class="preprocessor"></span>
-<a name="l00699"></a>00699                         <span class="comment">/* this must be logged after we read config data, as user may have changed location of main log file */</span>
-<a name="l00700"></a>00700                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>, <a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <span class="stringliteral">&quot;%s %s starting... (PID=%d)\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>, <a class="code" href="include_2common_8h.html#a2f10abd650e471fae2d7e8c63d41206a">PROGRAM_VERSION</a>, (<span class="keywordtype">int</span>)getpid() );
-<a name="l00701"></a>00701 
-<a name="l00702"></a>00702                         <span class="comment">/* log the local time - may be different than clock time due to timezone offset */</span>
-<a name="l00703"></a>00703                         now=time(NULL);
-<a name="l00704"></a>00704                         tm=localtime_r(&amp;now, &amp;tm_s);
-<a name="l00705"></a>00705                         strftime(datestring,<span class="keyword">sizeof</span>(datestring),<span class="stringliteral">&quot;%a %b %d %H:%M:%S %Z %Y&quot;</span>,tm);
-<a name="l00706"></a>00706                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Local time is %s&quot;</span>,datestring);
-<a name="l00707"></a>00707 
-<a name="l00708"></a>00708                         <span class="comment">/* write log version/info */</span>
-<a name="l00709"></a>00709                         <a class="code" href="logging_8c.html#a4ced6f9b89f4f63fbfd57c192123870c">write_log_file_info</a>(NULL);
-<a name="l00710"></a>00710 
-<a name="l00711"></a>00711 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00712"></a>00712 <span class="preprocessor"></span>                        <span class="comment">/* load modules */</span>
-<a name="l00713"></a>00713                         <a class="code" href="nebmods_8h.html#aedfde052f2856146a6afb566d1068283">neb_load_all_modules</a>();
+<a name="l00653"></a>00653 
+<a name="l00654"></a>00654         <span class="comment">/* else start to monitor things... */</span>
+<a name="l00655"></a>00655         <span class="keywordflow">else</span>{
+<a name="l00656"></a>00656 
+<a name="l00657"></a>00657 <span class="comment">/* make sure gcc3 won&#39;t hit here */</span>
+<a name="l00658"></a>00658 <span class="preprocessor">#ifndef GCCTOOOLD</span>
+<a name="l00659"></a>00659 <span class="preprocessor"></span>        <span class="comment">/* This is Sparta! */</span>
+<a name="l00660"></a>00660         <span class="keywordflow">if</span>(event_profiling_enabled==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
+<a name="l00661"></a>00661                 <a class="code" href="profiler_8c.html#ac93b749b24ee6977401b1e0c9fb0bb3b">profiler_init</a>();
+<a name="l00662"></a>00662 <span class="preprocessor">#endif</span>
+<a name="l00663"></a>00663 <span class="preprocessor"></span>
+<a name="l00664"></a>00664                 <span class="comment">/* keep monitoring things until we get a shutdown command */</span>
+<a name="l00665"></a>00665                 <span class="keywordflow">do</span>{
+<a name="l00666"></a>00666 
+<a name="l00667"></a>00667                         <span class="comment">/* reset program variables */</span>
+<a name="l00668"></a>00668                         <a class="code" href="base_2utils_8c.html#ae40e82b5d069d689fdbae2f35970d0a7">reset_variables</a>();
+<a name="l00669"></a>00669 
+<a name="l00670"></a>00670                         <span class="comment">/* get PID */</span>
+<a name="l00671"></a>00671                         nagios_pid=(int)getpid();
+<a name="l00672"></a>00672 
+<a name="l00673"></a>00673                         <span class="comment">/* read in the configuration files (main and resource config files) */</span>
+<a name="l00674"></a>00674                         result=<a class="code" href="base_2config_8c.html#a05eba6fb65aaf61da035d303c96242f4">read_main_config_file</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00675"></a>00675 
+<a name="l00676"></a>00676                         <span class="comment">/* we need to read the modules in the first place as object configuration before neb modules are initialized/loaded */</span>
+<a name="l00677"></a>00677                         result=<a class="code" href="objects_8c.html#af04a78108c4431caebca0fa2086b4281">read_object_config_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#a1ee25888d24379d83051e34487ccea22">READ_MODULES</a>,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>,<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l00678"></a>00678 
+<a name="l00679"></a>00679                         <span class="comment">/* add modules to neb */</span>
+<a name="l00680"></a>00680                         result=<a class="code" href="objects_8h.html#a0b65ee4f0612ded557b04b8e3a8ecfce">add_module_objects_to_neb</a>();
+<a name="l00681"></a>00681 
+<a name="l00682"></a>00682                         <span class="comment">/* NOTE 11/06/07 EG moved to after we read config files, as user may have overridden timezone offset */</span>
+<a name="l00683"></a>00683                         <span class="comment">/* get program (re)start time and save as macro */</span>
+<a name="l00684"></a>00684                         program_start=time(NULL);
+<a name="l00685"></a>00685                         <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a6a75b9ae7ad08bd586731522ec21a5ab">MACRO_PROCESSSTARTTIME</a>]);
+<a name="l00686"></a>00686                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a6a75b9ae7ad08bd586731522ec21a5ab">MACRO_PROCESSSTARTTIME</a>],<span class="stringliteral">&quot;%lu&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)program_start);
+<a name="l00687"></a>00687 
+<a name="l00688"></a>00688                         <span class="comment">/* open debug log */</span>
+<a name="l00689"></a>00689                         <a class="code" href="logging_8c.html#a7a776449460252a9e0bdc4b407f3709a">open_debug_log</a>();
+<a name="l00690"></a>00690 
+<a name="l00691"></a>00691                         <span class="comment">/* drop privileges */</span>
+<a name="l00692"></a>00692                         <span class="keywordflow">if</span>(<a class="code" href="base_2utils_8c.html#ab2ed30bc8d926d59453297fb5386dcf8">drop_privileges</a>(<a class="code" href="base_2config_8c.html#a05cfb9b76ef2434c8e0ccf88207999a6">nagios_user</a>,<a class="code" href="base_2config_8c.html#a18f68ce260b08820f7b519437e84beb4">nagios_group</a>)==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>){
+<a name="l00693"></a>00693 
+<a name="l00694"></a>00694                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a> | <a class="code" href="logging_8h.html#a7eeb3698af991d137e2fdcda7b9e41a4">NSLOG_CONFIG_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Failed to drop privileges.  Aborting.&quot;</span>);
+<a name="l00695"></a>00695 
+<a name="l00696"></a>00696                                 <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00697"></a>00697                                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00698"></a>00698                                 }
+<a name="l00699"></a>00699 
+<a name="l00700"></a>00700 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00701"></a>00701 <span class="preprocessor"></span>                        <span class="comment">/* initialize modules */</span>
+<a name="l00702"></a>00702                         <a class="code" href="nebmods_8h.html#afc3906c0869d51d472732daebdef5d64">neb_init_modules</a>();
+<a name="l00703"></a>00703                         <a class="code" href="nebmods_8h.html#a12f0998848b078145b1113b22499e971">neb_init_callback_list</a>();
+<a name="l00704"></a>00704 <span class="preprocessor">#endif</span>
+<a name="l00705"></a>00705 <span class="preprocessor"></span>
+<a name="l00706"></a>00706                         <span class="comment">/* this must be logged after we read config data, as user may have changed location of main log file */</span>
+<a name="l00707"></a>00707                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>, <a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <span class="stringliteral">&quot;%s %s starting... (PID=%d)\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a>, <a class="code" href="include_2common_8h.html#a2f10abd650e471fae2d7e8c63d41206a">PROGRAM_VERSION</a>, (<span class="keywordtype">int</span>)getpid() );
+<a name="l00708"></a>00708 
+<a name="l00709"></a>00709                         <span class="comment">/* log the local time - may be different than clock time due to timezone offset */</span>
+<a name="l00710"></a>00710                         now=time(NULL);
+<a name="l00711"></a>00711                         tm=localtime_r(&amp;now, &amp;tm_s);
+<a name="l00712"></a>00712                         strftime(datestring,<span class="keyword">sizeof</span>(datestring),<span class="stringliteral">&quot;%a %b %d %H:%M:%S %Z %Y&quot;</span>,tm);
+<a name="l00713"></a>00713                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Local time is %s&quot;</span>,datestring);
 <a name="l00714"></a>00714 
-<a name="l00715"></a>00715                         <span class="comment">/* send program data to broker */</span>
-<a name="l00716"></a>00716                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#ab6420c34735d26ac1f43c1ece2d2a885">NEBTYPE_PROCESS_PRELAUNCH</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
-<a name="l00717"></a>00717 <span class="preprocessor">#endif</span>
-<a name="l00718"></a>00718 <span class="preprocessor"></span>
-<a name="l00719"></a>00719                         <span class="comment">/* read in all object config data */</span>
-<a name="l00720"></a>00720                         <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00721"></a>00721                                 result=<a class="code" href="base_2config_8c.html#ae06c898f53859bb011d43fd8744d7710">read_all_object_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00722"></a>00722 
-<a name="l00723"></a>00723                         <span class="comment">/* there was a problem reading the config files */</span>
-<a name="l00724"></a>00724                         <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00725"></a>00725                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a> | <a class="code" href="logging_8h.html#a7eeb3698af991d137e2fdcda7b9e41a4">NSLOG_CONFIG_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to one or more errors encountered in the configuration files. Run %s from the command line with the -v option to verify your config before restarting. (PID=%d)&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a> ,(<span class="keywordtype">int</span>)getpid());
-<a name="l00726"></a>00726 
-<a name="l00727"></a>00727                         <span class="keywordflow">else</span>{
-<a name="l00728"></a>00728 
-<a name="l00729"></a>00729                                 <span class="comment">/* run the pre-flight check to make sure everything looks okay*/</span>
-<a name="l00730"></a>00730                                 <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#adc802cf7b2838963a0f9ada72be9b3d6">pre_flight_check</a>())!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
-<a name="l00731"></a>00731                                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a> | <a class="code" href="logging_8h.html#a212443889ead5b70a8b2100040d7e786">NSLOG_VERIFICATION_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to errors encountered while running the pre-flight check.  Run %s from the command line with the -v option to verify your config before restarting. (PID=%d)\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a> ,(<span class="keywordtype">int</span>)getpid());
-<a name="l00732"></a>00732                                 }
+<a name="l00715"></a>00715                         <span class="comment">/* write log version/info */</span>
+<a name="l00716"></a>00716                         <a class="code" href="logging_8c.html#a4ced6f9b89f4f63fbfd57c192123870c">write_log_file_info</a>(NULL);
+<a name="l00717"></a>00717 
+<a name="l00718"></a>00718 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00719"></a>00719 <span class="preprocessor"></span>                        <span class="comment">/* load modules */</span>
+<a name="l00720"></a>00720                         <a class="code" href="nebmods_8h.html#aedfde052f2856146a6afb566d1068283">neb_load_all_modules</a>();
+<a name="l00721"></a>00721 
+<a name="l00722"></a>00722                         <span class="comment">/* send program data to broker */</span>
+<a name="l00723"></a>00723                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#ab6420c34735d26ac1f43c1ece2d2a885">NEBTYPE_PROCESS_PRELAUNCH</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
+<a name="l00724"></a>00724 <span class="preprocessor">#endif</span>
+<a name="l00725"></a>00725 <span class="preprocessor"></span>
+<a name="l00726"></a>00726                         <span class="comment">/* read in all object config data */</span>
+<a name="l00727"></a>00727                         <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00728"></a>00728                                 result=<a class="code" href="base_2config_8c.html#ae06c898f53859bb011d43fd8744d7710">read_all_object_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00729"></a>00729 
+<a name="l00730"></a>00730                         <span class="comment">/* there was a problem reading the config files */</span>
+<a name="l00731"></a>00731                         <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00732"></a>00732                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a> | <a class="code" href="logging_8h.html#a7eeb3698af991d137e2fdcda7b9e41a4">NSLOG_CONFIG_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to one or more errors encountered in the configuration files. Run %s from the command line with the -v option to verify your config before restarting. (PID=%d)&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a> ,(<span class="keywordtype">int</span>)getpid());
 <a name="l00733"></a>00733 
-<a name="l00734"></a>00734                         <span class="comment">/* an error occurred that prevented us from (re)starting */</span>
-<a name="l00735"></a>00735                         <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00736"></a>00736 
-<a name="l00737"></a>00737                                 <span class="comment">/* if we were restarting, we need to cleanup from the previous run */</span>
-<a name="l00738"></a>00738                                 <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00739"></a>00739 
-<a name="l00740"></a>00740                                         <span class="comment">/* clean up the status data */</span>
-<a name="l00741"></a>00741                                         cleanup_status_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>);
-<a name="l00742"></a>00742 
-<a name="l00743"></a>00743                                         <span class="comment">/* shutdown the external command worker thread */</span>
-<a name="l00744"></a>00744                                         <a class="code" href="base_2utils_8c.html#a8b6387e8a78646884927fa4aad5b8e5c">shutdown_command_file_worker_thread</a>();
-<a name="l00745"></a>00745 
-<a name="l00746"></a>00746                                         <span class="comment">/* close and delete the external command file FIFO */</span>
-<a name="l00747"></a>00747                                         <a class="code" href="base_2utils_8c.html#a5e15280db8f3a81c3d955260965899a0">close_command_file</a>();
-<a name="l00748"></a>00748 
-<a name="l00749"></a>00749                                         <span class="comment">/* cleanup embedded perl interpreter */</span>
-<a name="l00750"></a>00750                                         <span class="keywordflow">if</span>(embedded_perl_initialized==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
-<a name="l00751"></a>00751                                                 <a class="code" href="base_2utils_8c.html#a5d9488da9bffb927386511722a9f9088">deinit_embedded_perl</a>();
-<a name="l00752"></a>00752                                         }
-<a name="l00753"></a>00753 
-<a name="l00754"></a>00754 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00755"></a>00755 <span class="preprocessor"></span>                                <span class="comment">/* send program data to broker */</span>
-<a name="l00756"></a>00756                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a318cb73d3d2366b85955558ac0c3c872">NEBFLAG_PROCESS_INITIATED</a>,<a class="code" href="broker_8h.html#a62ab05041c3993d71e7034d6c1888342">NEBATTR_SHUTDOWN_ABNORMAL</a>,NULL);
-<a name="l00757"></a>00757 <span class="preprocessor">#endif</span>
-<a name="l00758"></a>00758 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
-<a name="l00759"></a>00759                                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00760"></a>00760                                 }
-<a name="l00761"></a>00761 
-<a name="l00762"></a>00762 
-<a name="l00763"></a>00763 
-<a name="l00764"></a>00764                         <span class="comment">/* initialize embedded Perl interpreter */</span>
-<a name="l00765"></a>00765                         <span class="comment">/* NOTE 02/15/08 embedded Perl must be initialized if compiled in, regardless of whether or not its enabled in the config file */</span>
-<a name="l00766"></a>00766                         <span class="comment">/* It compiled it, but not initialized, Icinga will segfault in readdir() calls, as libperl takes this function over */</span>
-<a name="l00767"></a>00767                         <span class="keywordflow">if</span>(embedded_perl_initialized==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
-<a name="l00768"></a>00768 <span class="comment">/*                              if(enable_embedded_perl==TRUE){*/</span>
-<a name="l00769"></a>00769 <span class="preprocessor">#ifdef EMBEDDEDPERL</span>
-<a name="l00770"></a>00770 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#ab4c204e0936d72a870db17dac199f631">init_embedded_perl</a>(env);
-<a name="l00771"></a>00771 <span class="preprocessor">#else</span>
-<a name="l00772"></a>00772 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#ab4c204e0936d72a870db17dac199f631">init_embedded_perl</a>(NULL);
-<a name="l00773"></a>00773 <span class="preprocessor">#endif</span>
-<a name="l00774"></a>00774 <span class="preprocessor"></span>                                embedded_perl_initialized=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
-<a name="l00775"></a>00775 <span class="comment">/*                                      }*/</span>
-<a name="l00776"></a>00776                                 }
-<a name="l00777"></a>00777 
-<a name="l00778"></a>00778                         <span class="comment">/* handle signals (interrupts) */</span>
-<a name="l00779"></a>00779                         <a class="code" href="base_2utils_8c.html#a27963b96111eca3c22923a79fcc572d3">setup_sighandler</a>();
-<a name="l00780"></a>00780 
-<a name="l00781"></a>00781 
-<a name="l00782"></a>00782 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00783"></a>00783 <span class="preprocessor"></span>                        <span class="comment">/* send program data to broker */</span>
-<a name="l00784"></a>00784                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a42aa7ba36067a78b38df41fe4d166559">NEBTYPE_PROCESS_START</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
-<a name="l00785"></a>00785 <span class="preprocessor">#endif</span>
-<a name="l00786"></a>00786 <span class="preprocessor"></span>
-<a name="l00787"></a>00787                         <span class="comment">/* enter daemon mode (unless we&#39;re restarting...) */</span>
-<a name="l00788"></a>00788                         <span class="keywordflow">if</span>(daemon_mode==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> &amp;&amp; <a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
-<a name="l00789"></a>00789 
-<a name="l00790"></a>00790                                 result=<a class="code" href="base_2utils_8c.html#ab0c78c4962794992755b9e39517292db">daemon_init</a>();
-<a name="l00791"></a>00791 
-<a name="l00792"></a>00792                                 <span class="comment">/* we had an error daemonizing, so bail... */</span>
-<a name="l00793"></a>00793                                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>){
-<a name="l00794"></a>00794                                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to failure to daemonize. (PID=%d)&quot;</span>,(<span class="keywordtype">int</span>)getpid());
-<a name="l00795"></a>00795 
-<a name="l00796"></a>00796 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00797"></a>00797 <span class="preprocessor"></span>                                        <span class="comment">/* send program data to broker */</span>
-<a name="l00798"></a>00798                                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a318cb73d3d2366b85955558ac0c3c872">NEBFLAG_PROCESS_INITIATED</a>,<a class="code" href="broker_8h.html#a62ab05041c3993d71e7034d6c1888342">NEBATTR_SHUTDOWN_ABNORMAL</a>,NULL);
-<a name="l00799"></a>00799 <span class="preprocessor">#endif</span>
-<a name="l00800"></a>00800 <span class="preprocessor"></span>                                        <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
-<a name="l00801"></a>00801                                         exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00802"></a>00802                                         }
-<a name="l00803"></a>00803 
-<a name="l00804"></a>00804                                 dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;buffer,<span class="stringliteral">&quot;Finished daemonizing... (New PID=%d)\n&quot;</span>,(<span class="keywordtype">int</span>)getpid());
-<a name="l00805"></a>00805                                 <a class="code" href="logging_8c.html#a2666b989ff5a55fa516aab49511b3742">write_to_all_logs</a>(buffer,<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>);
-<a name="l00806"></a>00806                                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(buffer);
-<a name="l00807"></a>00807 
-<a name="l00808"></a>00808                                 <span class="comment">/* get new PID */</span>
-<a name="l00809"></a>00809                                 nagios_pid=(int)getpid();
-<a name="l00810"></a>00810                                 }
-<a name="l00811"></a>00811 
-<a name="l00812"></a>00812                         <span class="comment">/* open the command file (named pipe) for reading */</span>
-<a name="l00813"></a>00813                         result=<a class="code" href="base_2utils_8c.html#a811af233e8723896b522cfe24223d4c3">open_command_file</a>();
-<a name="l00814"></a>00814                         <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
-<a name="l00815"></a>00815 
-<a name="l00816"></a>00816                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to errors encountered while trying to initialize the external command file... (PID=%d)\n&quot;</span>,(<span class="keywordtype">int</span>)getpid());
-<a name="l00817"></a>00817 
-<a name="l00818"></a>00818 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00819"></a>00819 <span class="preprocessor"></span>                                <span class="comment">/* send program data to broker */</span>
-<a name="l00820"></a>00820                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a318cb73d3d2366b85955558ac0c3c872">NEBFLAG_PROCESS_INITIATED</a>,<a class="code" href="broker_8h.html#a62ab05041c3993d71e7034d6c1888342">NEBATTR_SHUTDOWN_ABNORMAL</a>,NULL);
-<a name="l00821"></a>00821 <span class="preprocessor">#endif</span>
-<a name="l00822"></a>00822 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
-<a name="l00823"></a>00823                                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
-<a name="l00824"></a>00824                                 }
-<a name="l00825"></a>00825 
-<a name="l00826"></a>00826                         <span class="comment">/* initialize status data unless we&#39;re starting */</span>
-<a name="l00827"></a>00827                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)
-<a name="l00828"></a>00828                                 initialize_status_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00829"></a>00829 
-<a name="l00830"></a>00830                         <span class="comment">/* read initial service and host state information  */</span>
-<a name="l00831"></a>00831                         <a class="code" href="sretention_8c.html#a4e38b4d2ae3f053a1ea9faab4eaaa501">initialize_retention_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00832"></a>00832                         <a class="code" href="sretention_8c.html#a3e768d3cacceb98ccf8e3a6dad043102">read_initial_state_information</a>();
-<a name="l00833"></a>00833                         <a class="code" href="sretention_8c.html#a9f9c2005c38893b203c7ae3c6696c739">sync_state_information</a>();
-<a name="l00834"></a>00834 
-<a name="l00835"></a>00835                         <span class="comment">/* initialize comment data */</span>
-<a name="l00836"></a>00836                         initialize_comment_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00837"></a>00837 
-<a name="l00838"></a>00838                         <span class="comment">/* initialize scheduled downtime data */</span>
-<a name="l00839"></a>00839                         initialize_downtime_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00840"></a>00840 
-<a name="l00841"></a>00841                         <span class="comment">/* initialize performance data */</span>
-<a name="l00842"></a>00842                         <a class="code" href="perfdata_8c.html#a5091eaf8253afab9701e97bbe287b9e1">initialize_performance_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00843"></a>00843 
-<a name="l00844"></a>00844                         <span class="comment">/* initialize the event timing loop */</span>
-<a name="l00845"></a>00845                         <a class="code" href="events_8c.html#adc4d69c98d2a17131fdcf7403bb76e9a">init_timing_loop</a>();
-<a name="l00846"></a>00846 
-<a name="l00847"></a>00847                         <span class="comment">/* initialize check statistics */</span>
-<a name="l00848"></a>00848                         <a class="code" href="base_2utils_8c.html#a8822fb8e42bd6606b333cf8953f38c4e">init_check_stats</a>();
-<a name="l00849"></a>00849 
-<a name="l00850"></a>00850                         <span class="comment">/* update all status data (with retained information) */</span>
-<a name="l00851"></a>00851                         <a class="code" href="test-stubs_8c.html#a46c806098e11bca17b2508c7b8239b3a">update_all_status_data</a>();
-<a name="l00852"></a>00852 
-<a name="l00853"></a>00853                         <span class="comment">/* log initial host and service state */</span>
-<a name="l00854"></a>00854                         <a class="code" href="logging_8c.html#a2b1974c0ac5ec2e021048849a1e9a53b">log_host_states</a>(<a class="code" href="icinga_8h.html#a4e3fcad222fbdc5938440b0800a2d5d1">INITIAL_STATES</a>,NULL);
-<a name="l00855"></a>00855                         <a class="code" href="logging_8c.html#a61f38155c2872fed19eeec9984105d7a">log_service_states</a>(<a class="code" href="icinga_8h.html#a4e3fcad222fbdc5938440b0800a2d5d1">INITIAL_STATES</a>,NULL);
+<a name="l00734"></a>00734                         <span class="keywordflow">else</span>{
+<a name="l00735"></a>00735 
+<a name="l00736"></a>00736                                 <span class="comment">/* run the pre-flight check to make sure everything looks okay*/</span>
+<a name="l00737"></a>00737                                 <span class="keywordflow">if</span>((result=<a class="code" href="base_2config_8c.html#adc802cf7b2838963a0f9ada72be9b3d6">pre_flight_check</a>())!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>)
+<a name="l00738"></a>00738                                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a> | <a class="code" href="logging_8h.html#a212443889ead5b70a8b2100040d7e786">NSLOG_VERIFICATION_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to errors encountered while running the pre-flight check.  Run %s from the command line with the -v option to verify your config before restarting. (PID=%d)\n&quot;</span>, <a class="code" href="include_2common_8h.html#a3b6a35b8be8405a9db72cc5dea97954b">PROGRAM_NAME</a> ,(<span class="keywordtype">int</span>)getpid());
+<a name="l00739"></a>00739                                 }
+<a name="l00740"></a>00740 
+<a name="l00741"></a>00741                         <span class="comment">/* an error occurred that prevented us from (re)starting */</span>
+<a name="l00742"></a>00742                         <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00743"></a>00743 
+<a name="l00744"></a>00744                                 <span class="comment">/* if we were restarting, we need to cleanup from the previous run */</span>
+<a name="l00745"></a>00745                                 <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00746"></a>00746 
+<a name="l00747"></a>00747                                         <span class="comment">/* clean up the status data */</span>
+<a name="l00748"></a>00748                                         cleanup_status_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>);
+<a name="l00749"></a>00749 
+<a name="l00750"></a>00750                                         <span class="comment">/* shutdown the external command worker thread */</span>
+<a name="l00751"></a>00751                                         <a class="code" href="base_2utils_8c.html#a8b6387e8a78646884927fa4aad5b8e5c">shutdown_command_file_worker_thread</a>();
+<a name="l00752"></a>00752 
+<a name="l00753"></a>00753                                         <span class="comment">/* close and delete the external command file FIFO */</span>
+<a name="l00754"></a>00754                                         <a class="code" href="base_2utils_8c.html#a5e15280db8f3a81c3d955260965899a0">close_command_file</a>();
+<a name="l00755"></a>00755 
+<a name="l00756"></a>00756                                         <span class="comment">/* cleanup embedded perl interpreter */</span>
+<a name="l00757"></a>00757                                         <span class="keywordflow">if</span>(embedded_perl_initialized==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
+<a name="l00758"></a>00758                                                 <a class="code" href="base_2utils_8c.html#a5d9488da9bffb927386511722a9f9088">deinit_embedded_perl</a>();
+<a name="l00759"></a>00759                                         }
+<a name="l00760"></a>00760 
+<a name="l00761"></a>00761 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00762"></a>00762 <span class="preprocessor"></span>                                <span class="comment">/* send program data to broker */</span>
+<a name="l00763"></a>00763                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a318cb73d3d2366b85955558ac0c3c872">NEBFLAG_PROCESS_INITIATED</a>,<a class="code" href="broker_8h.html#a62ab05041c3993d71e7034d6c1888342">NEBATTR_SHUTDOWN_ABNORMAL</a>,NULL);
+<a name="l00764"></a>00764 <span class="preprocessor">#endif</span>
+<a name="l00765"></a>00765 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00766"></a>00766                                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00767"></a>00767                                 }
+<a name="l00768"></a>00768 
+<a name="l00769"></a>00769 
+<a name="l00770"></a>00770 
+<a name="l00771"></a>00771                         <span class="comment">/* initialize embedded Perl interpreter */</span>
+<a name="l00772"></a>00772                         <span class="comment">/* NOTE 02/15/08 embedded Perl must be initialized if compiled in, regardless of whether or not its enabled in the config file */</span>
+<a name="l00773"></a>00773                         <span class="comment">/* It compiled it, but not initialized, Icinga will segfault in readdir() calls, as libperl takes this function over */</span>
+<a name="l00774"></a>00774                         <span class="keywordflow">if</span>(embedded_perl_initialized==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
+<a name="l00775"></a>00775 <span class="comment">/*                              if(enable_embedded_perl==TRUE){*/</span>
+<a name="l00776"></a>00776 <span class="preprocessor">#ifdef EMBEDDEDPERL</span>
+<a name="l00777"></a>00777 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#ab4c204e0936d72a870db17dac199f631">init_embedded_perl</a>(env);
+<a name="l00778"></a>00778 <span class="preprocessor">#else</span>
+<a name="l00779"></a>00779 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#ab4c204e0936d72a870db17dac199f631">init_embedded_perl</a>(NULL);
+<a name="l00780"></a>00780 <span class="preprocessor">#endif</span>
+<a name="l00781"></a>00781 <span class="preprocessor"></span>                                embedded_perl_initialized=<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>;
+<a name="l00782"></a>00782 <span class="comment">/*                                      }*/</span>
+<a name="l00783"></a>00783                                 }
+<a name="l00784"></a>00784 
+<a name="l00785"></a>00785                         <span class="comment">/* handle signals (interrupts) */</span>
+<a name="l00786"></a>00786                         <a class="code" href="base_2utils_8c.html#a27963b96111eca3c22923a79fcc572d3">setup_sighandler</a>();
+<a name="l00787"></a>00787 
+<a name="l00788"></a>00788 
+<a name="l00789"></a>00789 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00790"></a>00790 <span class="preprocessor"></span>                        <span class="comment">/* send program data to broker */</span>
+<a name="l00791"></a>00791                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a42aa7ba36067a78b38df41fe4d166559">NEBTYPE_PROCESS_START</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
+<a name="l00792"></a>00792 <span class="preprocessor">#endif</span>
+<a name="l00793"></a>00793 <span class="preprocessor"></span>
+<a name="l00794"></a>00794                         <span class="comment">/* enter daemon mode (unless we&#39;re restarting...) */</span>
+<a name="l00795"></a>00795                         <span class="keywordflow">if</span>(daemon_mode==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> &amp;&amp; <a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
+<a name="l00796"></a>00796 
+<a name="l00797"></a>00797                                 result=<a class="code" href="base_2utils_8c.html#ab0c78c4962794992755b9e39517292db">daemon_init</a>();
+<a name="l00798"></a>00798 
+<a name="l00799"></a>00799                                 <span class="comment">/* we had an error daemonizing, so bail... */</span>
+<a name="l00800"></a>00800                                 <span class="keywordflow">if</span>(result==<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>){
+<a name="l00801"></a>00801                                         <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to failure to daemonize. (PID=%d)&quot;</span>,(<span class="keywordtype">int</span>)getpid());
+<a name="l00802"></a>00802 
+<a name="l00803"></a>00803 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00804"></a>00804 <span class="preprocessor"></span>                                        <span class="comment">/* send program data to broker */</span>
+<a name="l00805"></a>00805                                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a318cb73d3d2366b85955558ac0c3c872">NEBFLAG_PROCESS_INITIATED</a>,<a class="code" href="broker_8h.html#a62ab05041c3993d71e7034d6c1888342">NEBATTR_SHUTDOWN_ABNORMAL</a>,NULL);
+<a name="l00806"></a>00806 <span class="preprocessor">#endif</span>
+<a name="l00807"></a>00807 <span class="preprocessor"></span>                                        <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00808"></a>00808                                         exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00809"></a>00809                                         }
+<a name="l00810"></a>00810 
+<a name="l00811"></a>00811                                 dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;buffer,<span class="stringliteral">&quot;Finished daemonizing... (New PID=%d)\n&quot;</span>,(<span class="keywordtype">int</span>)getpid());
+<a name="l00812"></a>00812                                 <a class="code" href="logging_8c.html#a2666b989ff5a55fa516aab49511b3742">write_to_all_logs</a>(buffer,<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>);
+<a name="l00813"></a>00813                                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(buffer);
+<a name="l00814"></a>00814 
+<a name="l00815"></a>00815                                 <span class="comment">/* get new PID */</span>
+<a name="l00816"></a>00816                                 nagios_pid=(int)getpid();
+<a name="l00817"></a>00817                                 }
+<a name="l00818"></a>00818 
+<a name="l00819"></a>00819                         <span class="comment">/* open the command file (named pipe) for reading */</span>
+<a name="l00820"></a>00820                         result=<a class="code" href="base_2utils_8c.html#a811af233e8723896b522cfe24223d4c3">open_command_file</a>();
+<a name="l00821"></a>00821                         <span class="keywordflow">if</span>(result!=<a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>){
+<a name="l00822"></a>00822 
+<a name="l00823"></a>00823                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a> | <a class="code" href="logging_8h.html#a2c8074e3a23c3a04f25029ba2bcdc7fe">NSLOG_RUNTIME_ERROR</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Bailing out due to errors encountered while trying to initialize the external command file... (PID=%d)\n&quot;</span>,(<span class="keywordtype">int</span>)getpid());
+<a name="l00824"></a>00824 
+<a name="l00825"></a>00825 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00826"></a>00826 <span class="preprocessor"></span>                                <span class="comment">/* send program data to broker */</span>
+<a name="l00827"></a>00827                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a318cb73d3d2366b85955558ac0c3c872">NEBFLAG_PROCESS_INITIATED</a>,<a class="code" href="broker_8h.html#a62ab05041c3993d71e7034d6c1888342">NEBATTR_SHUTDOWN_ABNORMAL</a>,NULL);
+<a name="l00828"></a>00828 <span class="preprocessor">#endif</span>
+<a name="l00829"></a>00829 <span class="preprocessor"></span>                                <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00830"></a>00830                                 exit(<a class="code" href="include_2common_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a>);
+<a name="l00831"></a>00831                                 }
+<a name="l00832"></a>00832 
+<a name="l00833"></a>00833                         <span class="comment">/* initialize status data unless we&#39;re starting */</span>
+<a name="l00834"></a>00834                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)
+<a name="l00835"></a>00835                                 initialize_status_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00836"></a>00836 
+<a name="l00837"></a>00837                         <span class="comment">/* read initial service and host state information  */</span>
+<a name="l00838"></a>00838                         <a class="code" href="sretention_8c.html#a4e38b4d2ae3f053a1ea9faab4eaaa501">initialize_retention_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00839"></a>00839                         <a class="code" href="sretention_8c.html#a3e768d3cacceb98ccf8e3a6dad043102">read_initial_state_information</a>();
+<a name="l00840"></a>00840                         <a class="code" href="sretention_8c.html#a9f9c2005c38893b203c7ae3c6696c739">sync_state_information</a>();
+<a name="l00841"></a>00841 
+<a name="l00842"></a>00842                         <span class="comment">/* initialize comment data */</span>
+<a name="l00843"></a>00843                         initialize_comment_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00844"></a>00844 
+<a name="l00845"></a>00845                         <span class="comment">/* initialize scheduled downtime data */</span>
+<a name="l00846"></a>00846                         initialize_downtime_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00847"></a>00847 
+<a name="l00848"></a>00848                         <span class="comment">/* initialize performance data */</span>
+<a name="l00849"></a>00849                         <a class="code" href="perfdata_8c.html#a5091eaf8253afab9701e97bbe287b9e1">initialize_performance_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00850"></a>00850 
+<a name="l00851"></a>00851                         <span class="comment">/* initialize the event timing loop */</span>
+<a name="l00852"></a>00852                         <a class="code" href="events_8c.html#adc4d69c98d2a17131fdcf7403bb76e9a">init_timing_loop</a>();
+<a name="l00853"></a>00853 
+<a name="l00854"></a>00854                         <span class="comment">/* initialize check statistics */</span>
+<a name="l00855"></a>00855                         <a class="code" href="base_2utils_8c.html#a8822fb8e42bd6606b333cf8953f38c4e">init_check_stats</a>();
 <a name="l00856"></a>00856 
-<a name="l00857"></a>00857                         <span class="comment">/* reset the restart flag */</span>
-<a name="l00858"></a>00858                         <a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+<a name="l00857"></a>00857                         <span class="comment">/* update all status data (with retained information) */</span>
+<a name="l00858"></a>00858                         update_all_status_data();
 <a name="l00859"></a>00859 
-<a name="l00860"></a>00860 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00861"></a>00861 <span class="preprocessor"></span>                        <span class="comment">/* send program data to broker */</span>
-<a name="l00862"></a>00862                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a3d570531739387f1ab7640bbb99a2704">NEBTYPE_PROCESS_EVENTLOOPSTART</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
-<a name="l00863"></a>00863 <span class="preprocessor">#endif</span>
-<a name="l00864"></a>00864 <span class="preprocessor"></span>
-<a name="l00865"></a>00865                         <span class="comment">/* get event start time and save as macro */</span>
-<a name="l00866"></a>00866                         event_start=time(NULL);
-<a name="l00867"></a>00867                         <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a50785baee115a06e10e894b796a29f0c">MACRO_EVENTSTARTTIME</a>]);
-<a name="l00868"></a>00868                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a50785baee115a06e10e894b796a29f0c">MACRO_EVENTSTARTTIME</a>],<span class="stringliteral">&quot;%lu&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)event_start);
-<a name="l00869"></a>00869 
-<a name="l00870"></a>00870                         <span class="comment">/***** start monitoring all services *****/</span>
-<a name="l00871"></a>00871                         <span class="comment">/* (doesn&#39;t return until a restart or shutdown signal is encountered) */</span>
-<a name="l00872"></a>00872                         <a class="code" href="events_8c.html#a59ea5a602545e5a1d31a5d84836edf0e">event_execution_loop</a>();
-<a name="l00873"></a>00873 
-<a name="l00874"></a>00874                         <span class="comment">/* 03/01/2007 EG Moved from sighandler() to prevent FUTEX locking problems under NPTL */</span>
-<a name="l00875"></a>00875                         <span class="comment">/* 03/21/2007 EG SIGSEGV signals are still logged in sighandler() so we don&#39;t loose them */</span>
-<a name="l00876"></a>00876                         <span class="comment">/* did we catch a signal? */</span>
-<a name="l00877"></a>00877                         <span class="keywordflow">if</span>(caught_signal==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
-<a name="l00878"></a>00878 
-<a name="l00879"></a>00879                                 <span class="keywordflow">if</span>(sig_id==SIGHUP)
-<a name="l00880"></a>00880                                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;buffer,<span class="stringliteral">&quot;Caught SIGHUP, restarting...\n&quot;</span>);
-<a name="l00881"></a>00881                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(sig_id!=SIGSEGV)
-<a name="l00882"></a>00882                                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;buffer,<span class="stringliteral">&quot;Caught SIG%s, shutting down...\n&quot;</span>,<a class="code" href="icinga_8c.html#a8b84b2f08d8a7a6a7f1e6dff51b4b7f0">sigs</a>[sig_id]);
-<a name="l00883"></a>00883 
-<a name="l00884"></a>00884                                 <a class="code" href="logging_8c.html#a2666b989ff5a55fa516aab49511b3742">write_to_all_logs</a>(buffer,<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>);
-<a name="l00885"></a>00885                                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(buffer);
-<a name="l00886"></a>00886                                 }
-<a name="l00887"></a>00887 
-<a name="l00888"></a>00888 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
-<a name="l00889"></a>00889 <span class="preprocessor"></span>                        <span class="comment">/* send program data to broker */</span>
-<a name="l00890"></a>00890                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#ad92bb51290236c49fb1d99a0e227ac29">NEBTYPE_PROCESS_EVENTLOOPEND</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
-<a name="l00891"></a>00891                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
-<a name="l00892"></a>00892                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a4ad595d0ec9247a12fdf9bdc9a557cc6">NEBFLAG_USER_INITIATED</a>,<a class="code" href="broker_8h.html#aaaeffaa1e3c743d5c82b29d4bb58e1c5">NEBATTR_SHUTDOWN_NORMAL</a>,NULL);
-<a name="l00893"></a>00893                         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
-<a name="l00894"></a>00894                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#afac1e494eb34e240b118017fb138a104">NEBTYPE_PROCESS_RESTART</a>,<a class="code" href="broker_8h.html#a4ad595d0ec9247a12fdf9bdc9a557cc6">NEBFLAG_USER_INITIATED</a>,<a class="code" href="broker_8h.html#a685415b403f1f4ea5f53360000af4414">NEBATTR_RESTART_NORMAL</a>,NULL);
-<a name="l00895"></a>00895 <span class="preprocessor">#endif</span>
-<a name="l00896"></a>00896 <span class="preprocessor"></span>
-<a name="l00897"></a>00897                         <span class="comment">/* save service and host state information */</span>
-<a name="l00898"></a>00898                         <a class="code" href="sretention_8c.html#a8a1b36f2ad57e4436cd762806acc2132">save_state_information</a>(<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
-<a name="l00899"></a>00899                         <a class="code" href="sretention_8c.html#a1935011d0e524941c9aad50339e6c724">cleanup_retention_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00900"></a>00900 
-<a name="l00901"></a>00901                         <span class="comment">/* clean up performance data */</span>
-<a name="l00902"></a>00902                         <a class="code" href="perfdata_8c.html#ad4e18468722decb9582beecfbf6bf6a1">cleanup_performance_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00903"></a>00903 
-<a name="l00904"></a>00904                         <span class="comment">/* clean up the scheduled downtime data */</span>
-<a name="l00905"></a>00905                         cleanup_downtime_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00906"></a>00906 
-<a name="l00907"></a>00907                         <span class="comment">/* clean up the comment data */</span>
-<a name="l00908"></a>00908                         cleanup_comment_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00909"></a>00909 
-<a name="l00910"></a>00910                         <span class="comment">/* clean up the status data unless we&#39;re restarting */</span>
-<a name="l00911"></a>00911                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)
-<a name="l00912"></a>00912                                 cleanup_status_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>);
+<a name="l00860"></a>00860                         <span class="comment">/* log initial host and service state */</span>
+<a name="l00861"></a>00861                         <a class="code" href="logging_8c.html#a2b1974c0ac5ec2e021048849a1e9a53b">log_host_states</a>(<a class="code" href="icinga_8h.html#a4e3fcad222fbdc5938440b0800a2d5d1">INITIAL_STATES</a>,NULL);
+<a name="l00862"></a>00862                         <a class="code" href="logging_8c.html#a61f38155c2872fed19eeec9984105d7a">log_service_states</a>(<a class="code" href="icinga_8h.html#a4e3fcad222fbdc5938440b0800a2d5d1">INITIAL_STATES</a>,NULL);
+<a name="l00863"></a>00863 
+<a name="l00864"></a>00864                         <span class="comment">/* reset the restart flag */</span>
+<a name="l00865"></a>00865                         <a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>=<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>;
+<a name="l00866"></a>00866 
+<a name="l00867"></a>00867 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00868"></a>00868 <span class="preprocessor"></span>                        <span class="comment">/* send program data to broker */</span>
+<a name="l00869"></a>00869                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a3d570531739387f1ab7640bbb99a2704">NEBTYPE_PROCESS_EVENTLOOPSTART</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
+<a name="l00870"></a>00870 <span class="preprocessor">#endif</span>
+<a name="l00871"></a>00871 <span class="preprocessor"></span>
+<a name="l00872"></a>00872                         <span class="comment">/* get event start time and save as macro */</span>
+<a name="l00873"></a>00873                         event_start=time(NULL);
+<a name="l00874"></a>00874                         <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a50785baee115a06e10e894b796a29f0c">MACRO_EVENTSTARTTIME</a>]);
+<a name="l00875"></a>00875                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;mac-&gt;<a class="code" href="structicinga__macros.html#a673659b93a3e39a4b80c144a7d753592">x</a>[<a class="code" href="macros_8h.html#a50785baee115a06e10e894b796a29f0c">MACRO_EVENTSTARTTIME</a>],<span class="stringliteral">&quot;%lu&quot;</span>,(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)event_start);
+<a name="l00876"></a>00876 
+<a name="l00877"></a>00877                         <span class="comment">/***** start monitoring all services *****/</span>
+<a name="l00878"></a>00878                         <span class="comment">/* (doesn&#39;t return until a restart or shutdown signal is encountered) */</span>
+<a name="l00879"></a>00879                         <a class="code" href="events_8c.html#a59ea5a602545e5a1d31a5d84836edf0e">event_execution_loop</a>();
+<a name="l00880"></a>00880 
+<a name="l00881"></a>00881                         <span class="comment">/* 03/01/2007 EG Moved from sighandler() to prevent FUTEX locking problems under NPTL */</span>
+<a name="l00882"></a>00882                         <span class="comment">/* 03/21/2007 EG SIGSEGV signals are still logged in sighandler() so we don&#39;t loose them */</span>
+<a name="l00883"></a>00883                         <span class="comment">/* did we catch a signal? */</span>
+<a name="l00884"></a>00884                         <span class="keywordflow">if</span>(caught_signal==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00885"></a>00885 
+<a name="l00886"></a>00886                                 <span class="keywordflow">if</span>(sig_id==SIGHUP)
+<a name="l00887"></a>00887                                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;buffer,<span class="stringliteral">&quot;Caught SIGHUP, restarting...\n&quot;</span>);
+<a name="l00888"></a>00888                                 <span class="keywordflow">else</span> <span class="keywordflow">if</span>(sig_id!=SIGSEGV)
+<a name="l00889"></a>00889                                         dummy=<a class="code" href="snprintf_8c.html#a28a648dd20504ebc0c03623a28d82c93">asprintf</a>(&amp;buffer,<span class="stringliteral">&quot;Caught SIG%s, shutting down...\n&quot;</span>,<a class="code" href="icinga_8c.html#a8b84b2f08d8a7a6a7f1e6dff51b4b7f0">sigs</a>[sig_id]);
+<a name="l00890"></a>00890 
+<a name="l00891"></a>00891                                 <a class="code" href="logging_8c.html#a2666b989ff5a55fa516aab49511b3742">write_to_all_logs</a>(buffer,<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>);
+<a name="l00892"></a>00892                                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(buffer);
+<a name="l00893"></a>00893                                 }
+<a name="l00894"></a>00894 
+<a name="l00895"></a>00895 <span class="preprocessor">#ifdef USE_EVENT_BROKER</span>
+<a name="l00896"></a>00896 <span class="preprocessor"></span>                        <span class="comment">/* send program data to broker */</span>
+<a name="l00897"></a>00897                         <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#ad92bb51290236c49fb1d99a0e227ac29">NEBTYPE_PROCESS_EVENTLOOPEND</a>,<a class="code" href="broker_8h.html#ae7b50b735fa9d5baf42ab19525993635">NEBFLAG_NONE</a>,<a class="code" href="broker_8h.html#a2e1afa1e543c76a752561dbc9eb38d65">NEBATTR_NONE</a>,NULL);
+<a name="l00898"></a>00898                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
+<a name="l00899"></a>00899                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#a8d8e4285232cec5d344af84c4dc1e7b9">NEBTYPE_PROCESS_SHUTDOWN</a>,<a class="code" href="broker_8h.html#a4ad595d0ec9247a12fdf9bdc9a557cc6">NEBFLAG_USER_INITIATED</a>,<a class="code" href="broker_8h.html#aaaeffaa1e3c743d5c82b29d4bb58e1c5">NEBATTR_SHUTDOWN_NORMAL</a>,NULL);
+<a name="l00900"></a>00900                         <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
+<a name="l00901"></a>00901                                 <a class="code" href="broker_8h.html#ac3b3a920cabd7e78a5edf10d5025e915">broker_program_state</a>(<a class="code" href="broker_8h.html#afac1e494eb34e240b118017fb138a104">NEBTYPE_PROCESS_RESTART</a>,<a class="code" href="broker_8h.html#a4ad595d0ec9247a12fdf9bdc9a557cc6">NEBFLAG_USER_INITIATED</a>,<a class="code" href="broker_8h.html#a685415b403f1f4ea5f53360000af4414">NEBATTR_RESTART_NORMAL</a>,NULL);
+<a name="l00902"></a>00902 <span class="preprocessor">#endif</span>
+<a name="l00903"></a>00903 <span class="preprocessor"></span>
+<a name="l00904"></a>00904                         <span class="comment">/* save service and host state information */</span>
+<a name="l00905"></a>00905                         <a class="code" href="sretention_8c.html#a8a1b36f2ad57e4436cd762806acc2132">save_state_information</a>(<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
+<a name="l00906"></a>00906                         <a class="code" href="sretention_8c.html#a1935011d0e524941c9aad50339e6c724">cleanup_retention_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00907"></a>00907 
+<a name="l00908"></a>00908                         <span class="comment">/* clean up performance data */</span>
+<a name="l00909"></a>00909                         <a class="code" href="perfdata_8c.html#ad4e18468722decb9582beecfbf6bf6a1">cleanup_performance_data</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00910"></a>00910 
+<a name="l00911"></a>00911                         <span class="comment">/* clean up the scheduled downtime data */</span>
+<a name="l00912"></a>00912                         cleanup_downtime_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
 <a name="l00913"></a>00913 
-<a name="l00914"></a>00914                         <span class="comment">/* close and delete the external command file FIFO unless we&#39;re restarting */</span>
-<a name="l00915"></a>00915                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
-<a name="l00916"></a>00916                                 <a class="code" href="base_2utils_8c.html#a8b6387e8a78646884927fa4aad5b8e5c">shutdown_command_file_worker_thread</a>();
-<a name="l00917"></a>00917                                 <a class="code" href="base_2utils_8c.html#a5e15280db8f3a81c3d955260965899a0">close_command_file</a>();
-<a name="l00918"></a>00918                                 }
-<a name="l00919"></a>00919 
-<a name="l00920"></a>00920                         <span class="comment">/* cleanup embedded perl interpreter */</span>
-<a name="l00921"></a>00921                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)
-<a name="l00922"></a>00922                                 <a class="code" href="base_2utils_8c.html#a5d9488da9bffb927386511722a9f9088">deinit_embedded_perl</a>();
-<a name="l00923"></a>00923 
-<a name="l00924"></a>00924                         <span class="comment">/* shutdown stuff... */</span>
-<a name="l00925"></a>00925                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00914"></a>00914                         <span class="comment">/* clean up the comment data */</span>
+<a name="l00915"></a>00915                         cleanup_comment_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00916"></a>00916 
+<a name="l00917"></a>00917                         <span class="comment">/* clean up the status data unless we&#39;re restarting */</span>
+<a name="l00918"></a>00918                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)
+<a name="l00919"></a>00919                                 cleanup_status_data(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>);
+<a name="l00920"></a>00920 
+<a name="l00921"></a>00921                         <span class="comment">/* close and delete the external command file FIFO unless we&#39;re restarting */</span>
+<a name="l00922"></a>00922                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>){
+<a name="l00923"></a>00923                                 <a class="code" href="base_2utils_8c.html#a8b6387e8a78646884927fa4aad5b8e5c">shutdown_command_file_worker_thread</a>();
+<a name="l00924"></a>00924                                 <a class="code" href="base_2utils_8c.html#a5e15280db8f3a81c3d955260965899a0">close_command_file</a>();
+<a name="l00925"></a>00925                                 }
 <a name="l00926"></a>00926 
-<a name="l00927"></a>00927                                 <span class="comment">/* make sure lock file has been removed - it may not have been if we received a shutdown command */</span>
-<a name="l00928"></a>00928                                 <span class="keywordflow">if</span>(daemon_mode==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
-<a name="l00929"></a>00929                                         unlink(<a class="code" href="base_2config_8c.html#a55d7cb41b1bacf3965ecc3592b0502fa">lock_file</a>);
+<a name="l00927"></a>00927                         <span class="comment">/* cleanup embedded perl interpreter */</span>
+<a name="l00928"></a>00928                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>)
+<a name="l00929"></a>00929                                 <a class="code" href="base_2utils_8c.html#a5d9488da9bffb927386511722a9f9088">deinit_embedded_perl</a>();
 <a name="l00930"></a>00930 
-<a name="l00931"></a>00931                                 <span class="comment">/* log a shutdown message */</span>
-<a name="l00932"></a>00932                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Successfully shutdown... (PID=%d)\n&quot;</span>,(<span class="keywordtype">int</span>)getpid());
-<a name="l00933"></a>00933                                 }
-<a name="l00934"></a>00934 
-<a name="l00935"></a>00935                         <span class="comment">/* clean up after ourselves */</span>
-<a name="l00936"></a>00936                         <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00931"></a>00931                         <span class="comment">/* shutdown stuff... */</span>
+<a name="l00932"></a>00932                         <span class="keywordflow">if</span>(<a class="code" href="checks_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>){
+<a name="l00933"></a>00933 
+<a name="l00934"></a>00934                                 <span class="comment">/* make sure lock file has been removed - it may not have been if we received a shutdown command */</span>
+<a name="l00935"></a>00935                                 <span class="keywordflow">if</span>(daemon_mode==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>)
+<a name="l00936"></a>00936                                         unlink(<a class="code" href="base_2config_8c.html#a55d7cb41b1bacf3965ecc3592b0502fa">lock_file</a>);
 <a name="l00937"></a>00937 
-<a name="l00938"></a>00938                         <span class="comment">/* close debug log */</span>
-<a name="l00939"></a>00939                         <a class="code" href="logging_8c.html#ab65b9dee521f9530c49f1bd2878b71a8">close_debug_log</a>();
-<a name="l00940"></a>00940 
-<a name="l00941"></a>00941                         }<span class="keywordflow">while</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> &amp;&amp; <a class="code" href="checks_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
-<a name="l00942"></a>00942 
-<a name="l00943"></a>00943                 <span class="comment">/* free misc memory */</span>
-<a name="l00944"></a>00944                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
-<a name="l00945"></a>00945                 }
-<a name="l00946"></a>00946 
-<a name="l00947"></a>00947         <span class="keywordflow">return</span> <a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>;
-<a name="l00948"></a>00948         }
+<a name="l00938"></a>00938                                 <span class="comment">/* log a shutdown message */</span>
+<a name="l00939"></a>00939                                 <a class="code" href="logging_8c.html#aa9aa4f91f0251a0461bf4c5de0b2be84">logit</a>(<a class="code" href="logging_8h.html#a22cc13d1c001b95c6c68386fe98d5b17">NSLOG_PROCESS_INFO</a>,<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>,<span class="stringliteral">&quot;Successfully shutdown... (PID=%d)\n&quot;</span>,(<span class="keywordtype">int</span>)getpid());
+<a name="l00940"></a>00940                                 }
+<a name="l00941"></a>00941 
+<a name="l00942"></a>00942                         <span class="comment">/* clean up after ourselves */</span>
+<a name="l00943"></a>00943                         <a class="code" href="base_2utils_8c.html#aeb94fbd457627182ceee7e505f432541">cleanup</a>();
+<a name="l00944"></a>00944 
+<a name="l00945"></a>00945                         <span class="comment">/* close debug log */</span>
+<a name="l00946"></a>00946                         <a class="code" href="logging_8c.html#ab65b9dee521f9530c49f1bd2878b71a8">close_debug_log</a>();
+<a name="l00947"></a>00947 
+<a name="l00948"></a>00948                         }<span class="keywordflow">while</span>(<a class="code" href="checks_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a>==<a class="code" href="include_2common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a> &amp;&amp; <a class="code" href="checks_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a>==<a class="code" href="include_2common_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>);
 <a name="l00949"></a>00949 
-<a name="l00950"></a>00950 
+<a name="l00950"></a>00950                 <span class="comment">/* free misc memory */</span>
+<a name="l00951"></a>00951                 <a class="code" href="include_2common_8h.html#a9b12a99aae3efc49af9be50afc17b526">my_free</a>(<a class="code" href="commands_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a>);
+<a name="l00952"></a>00952                 }
+<a name="l00953"></a>00953 
+<a name="l00954"></a>00954         <span class="keywordflow">return</span> <a class="code" href="include_2common_8h.html#aba51915c87d64af47fb1cc59348961c9">OK</a>;
+<a name="l00955"></a>00955         }
+<a name="l00956"></a>00956 
+<a name="l00957"></a>00957 
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="icinga_8c.html">icinga.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:18 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:38 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>

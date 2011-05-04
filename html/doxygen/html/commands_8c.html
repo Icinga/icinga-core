@@ -117,13 +117,16 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#aeb5da88f6cdad44471c57b0fb12a6eb2">cmd_schedule_host_service_checks</a> (int cmd, char *args, int force)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a0eab42b1b2ef804d91aef9202a6b44e1">cmd_signal_process</a> (int cmd, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a00100dfcf45338c4ae58b715b82e9186">cmd_process_service_check_result</a> (int cmd, time_t check_time, char *args)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a2e519ecc2f37887c88c6d5b36ca7fcbf">process_passive_service_check</a> (time_t check_time, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, int return_code, char *output)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a2e519ecc2f37887c88c6d5b36ca7fcbf">process_passive_service_check</a> (time_t check_time, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, char *svc_description, int return_code, char *output)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#ae1f94415fa1fad3133d381033ca16263">cmd_process_host_check_result</a> (int cmd, time_t check_time, char *args)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a3fce9e60d0f551d3d8c8b3b6a4bcd277">process_passive_host_check</a> (time_t check_time, char *<a class="el" href="test__xsddefault_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, int return_code, char *output)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a3fce9e60d0f551d3d8c8b3b6a4bcd277">process_passive_host_check</a> (time_t check_time, char *<a class="el" href="trends_8c.html#a02aa7a3fdc25e6809e64d0ac48ad68dc">host_name</a>, int return_code, char *output)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a9edcd3087e4b02a2adf739c795bbf5f8">cmd_acknowledge_problem</a> (int cmd, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a11d2bc3854db586ce3a6263b8b8a311d">cmd_remove_acknowledgement</a> (int cmd, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a0a2041a42dd2637d1284f93f9da390bc">cmd_schedule_downtime</a> (int cmd, time_t entry_time, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a39d4287c64f60e84f4d04e2024e29d9c">cmd_delete_downtime</a> (int cmd, char *args)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a5057a4350abaf2581d224bd759e67442">cmd_delete_downtime_by_host_name</a> (int cmd, char *args)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a0d27a02010ade0136cc8795fa2f410d2">cmd_delete_downtime_by_hostgroup_name</a> (int cmd, char *args)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#ae0fecc48f4b3167f4dc03ea606596aab">cmd_delete_downtime_by_start_time_comment</a> (int cmd, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a56616bca360a0c34afc57ea1edfbbae1">cmd_change_object_int_var</a> (int cmd, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#ace4a461b1b7399efe450c408f9657167">cmd_change_object_char_var</a> (int cmd, char *args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commands_8c.html#a736db2fad944429de75ad842c9b2d496">cmd_change_object_custom_var</a> (int cmd, char *args)</td></tr>
@@ -282,7 +285,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03899">3899</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04081">4081</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -335,7 +338,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03933">3933</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04115">4115</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -383,7 +386,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02321">2321</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02340">2340</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -418,7 +421,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01758">1758</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01777">1777</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -447,7 +450,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02943">2943</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03125">3125</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -476,7 +479,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03292">3292</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03474">3474</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -505,7 +508,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02659">2659</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02841">2841</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -534,7 +537,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01872">1872</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01891">1891</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -563,7 +566,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01837">1837</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01856">1856</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -592,7 +595,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01818">1818</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01837">1837</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -621,7 +624,94 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02639">2639</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02658">2658</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5057a4350abaf2581d224bd759e67442"></a><!-- doxytag: member="commands.c::cmd_delete_downtime_by_host_name" ref="a5057a4350abaf2581d224bd759e67442" args="(int cmd, char *args)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cmd_delete_downtime_by_host_name </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02678">2678</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0d27a02010ade0136cc8795fa2f410d2"></a><!-- doxytag: member="commands.c::cmd_delete_downtime_by_hostgroup_name" ref="a0d27a02010ade0136cc8795fa2f410d2" args="(int cmd, char *args)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cmd_delete_downtime_by_hostgroup_name </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02723">2723</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae0fecc48f4b3167f4dc03ea606596aab"></a><!-- doxytag: member="commands.c::cmd_delete_downtime_by_start_time_comment" ref="ae0fecc48f4b3167f4dc03ea606596aab" args="(int cmd, char *args)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cmd_delete_downtime_by_start_time_comment </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02807">2807</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -650,7 +740,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03420">3420</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03602">3602</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -685,7 +775,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02184">2184</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02203">2203</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -720,7 +810,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02031">2031</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02050">2050</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -749,7 +839,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02398">2398</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02417">2417</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -778,7 +868,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01920">1920</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01939">1939</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -813,7 +903,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02438">2438</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02457">2457</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -848,7 +938,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01976">1976</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01995">1995</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -877,7 +967,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02011">2011</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02030">2030</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -896,7 +986,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04795">4795</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04977">4977</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -915,7 +1005,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03558">3558</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03740">3740</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -962,7 +1052,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03727">3727</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03909">3909</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -981,7 +1071,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03796">3796</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03978">3978</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1000,7 +1090,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03850">3850</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04032">4032</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1109,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04483">4483</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04665">4665</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1038,7 +1128,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04457">4457</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04639">4639</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1057,7 +1147,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04743">4743</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04925">4925</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1076,7 +1166,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03663">3663</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03845">3845</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1095,7 +1185,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04298">4298</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04480">4480</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1204,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04135">4135</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04317">4317</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1133,7 +1223,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04847">4847</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05029">5029</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1152,7 +1242,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03456">3456</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03638">3638</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1261,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04405">4405</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04587">4587</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1190,7 +1280,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04691">4691</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04873">4873</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1299,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03611">3611</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03793">3793</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1228,7 +1318,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04769">4769</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04951">4951</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1247,7 +1337,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03531">3531</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03713">3713</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1294,7 +1384,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03689">3689</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03871">3871</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1313,7 +1403,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03769">3769</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03951">3951</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1332,7 +1422,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03823">3823</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04005">4005</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1351,7 +1441,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04510">4510</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04692">4692</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1370,7 +1460,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04431">4431</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04613">4613</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1389,7 +1479,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04717">4717</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04899">4899</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1498,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03637">3637</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03819">3819</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1427,7 +1517,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04271">4271</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04453">4453</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1446,7 +1536,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04108">4108</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04290">4290</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1465,7 +1555,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04821">4821</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05003">5003</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1484,7 +1574,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03484">3484</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03666">3666</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1503,7 +1593,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04378">4378</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04560">4560</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1522,7 +1612,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04665">4665</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04847">4847</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1541,7 +1631,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03585">3585</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l03767">3767</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1576,7 +1666,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01653">1653</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01672">1672</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1611,7 +1701,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01692">1692</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01711">1711</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1665,7 +1755,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l00795">795</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l00802">802</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1729,7 +1819,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01192">1192</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01211">1211</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1764,7 +1854,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01330">1330</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01349">1349</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1783,7 +1873,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l05004">5004</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05186">5186</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1824,7 +1914,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02221">2221</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02240">2240</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1871,7 +1961,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l02079">2079</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l02098">2098</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1906,7 +1996,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01427">1427</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01446">1446</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1941,7 +2031,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l01526">1526</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l01545">1545</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1960,7 +2050,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03967">3967</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04149">4149</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -1979,7 +2069,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03983">3983</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04165">4165</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2050,7 +2140,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03877">3877</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04059">4059</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2079,7 +2169,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04977">4977</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05159">5159</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2108,7 +2198,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04990">4990</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05172">5172</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2127,7 +2217,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04217">4217</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04399">4399</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2146,7 +2236,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04054">4054</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04236">4236</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2165,7 +2255,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04162">4162</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04344">4344</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2184,7 +2274,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l03999">3999</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04181">4181</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2203,7 +2293,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04925">4925</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05107">5107</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2222,7 +2312,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04611">4611</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04793">4793</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2241,7 +2331,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04873">4873</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05055">5055</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2260,7 +2350,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04557">4557</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04739">4739</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2279,7 +2369,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04324">4324</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04506">4506</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2298,7 +2388,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04244">4244</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04426">4426</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2317,7 +2407,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04081">4081</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04263">4263</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2336,7 +2426,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04190">4190</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04372">4372</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2355,7 +2445,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04027">4027</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04209">4209</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2374,7 +2464,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04951">4951</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05133">5133</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2393,7 +2483,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04638">4638</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04820">4820</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2412,7 +2502,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04899">4899</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l05081">5081</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2431,7 +2521,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04584">4584</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04766">4766</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2450,7 +2540,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="commands_8c_source.html#l04351">4351</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
+<p>Definition at line <a class="el" href="commands_8c_source.html#l04533">4533</a> of file <a class="el" href="commands_8c_source.html">commands.c</a>.</p>
 
 </div>
 </div>
@@ -2490,7 +2580,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#abf64fe29cddb0d890bbece7d4d970c18">check_external_commands</a></td>
+          <td class="memname">int <a class="el" href="cmd_8c.html#abf64fe29cddb0d890bbece7d4d970c18">check_external_commands</a></td>
         </tr>
       </table>
 </div>
@@ -2535,7 +2625,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#a7efed83b6f6698f73e4ede444065917c">command_check_interval</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#a7efed83b6f6698f73e4ede444065917c">command_check_interval</a></td>
         </tr>
       </table>
 </div>
@@ -2550,7 +2640,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* <a class="el" href="test__timeperiods_8c.html#ad6bb81fae52e357701eadd493eca7902">command_file</a></td>
+          <td class="memname">char* <a class="el" href="cmd_8c.html#a5e3303ef968853d32d6e631cb56606c9">command_file</a></td>
         </tr>
       </table>
 </div>
@@ -2565,7 +2655,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#a8d1be59b1a087eaeb87f6e4774cb499a">command_file_fd</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#a8d1be59b1a087eaeb87f6e4774cb499a">command_file_fd</a></td>
         </tr>
       </table>
 </div>
@@ -2580,7 +2670,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">FILE* <a class="el" href="test__timeperiods_8c.html#a67e68b43d7661b866f04f4609dd1decf">command_file_fp</a></td>
+          <td class="memname">FILE* <a class="el" href="base_2utils_8c.html#a67e68b43d7661b866f04f4609dd1decf">command_file_fp</a></td>
         </tr>
       </table>
 </div>
@@ -2595,7 +2685,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* <a class="el" href="test__timeperiods_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a></td>
+          <td class="memname">char* <a class="el" href="idomod_8c.html#ac269be8b91ae4b24df48de5d8ad7e7a7">config_file</a></td>
         </tr>
       </table>
 </div>
@@ -2700,13 +2790,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcircular__buffer__struct.html">circular_buffer</a> <a class="el" href="test__timeperiods_8c.html#ac0c5df0ac52923268176eddeb6b179e3">external_command_buffer</a></td>
+          <td class="memname"><a class="el" href="structcircular__buffer__struct.html">circular_buffer</a> <a class="el" href="base_2utils_8c.html#ac0c5df0ac52923268176eddeb6b179e3">external_command_buffer</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="icinga_8c_source.html#l00272">272</a> of file <a class="el" href="icinga_8c_source.html">icinga.c</a>.</p>
+<p>Definition at line <a class="el" href="icinga_8c_source.html#l00273">273</a> of file <a class="el" href="icinga_8c_source.html">icinga.c</a>.</p>
 
 </div>
 </div>
@@ -2715,13 +2805,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#aa9e89558ebe0496997935aca44cc0123">external_command_buffer_slots</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#aa9e89558ebe0496997935aca44cc0123">external_command_buffer_slots</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="icinga_8c_source.html#l00275">275</a> of file <a class="el" href="icinga_8c_source.html">icinga.c</a>.</p>
+<p>Definition at line <a class="el" href="icinga_8c_source.html#l00276">276</a> of file <a class="el" href="icinga_8c_source.html">icinga.c</a>.</p>
 
 </div>
 </div>
@@ -2745,7 +2835,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcommand__struct.html">command</a>* <a class="el" href="test__timeperiods_8c.html#a446a1015872b0b803359e329127d67dc">global_host_event_handler_ptr</a></td>
+          <td class="memname"><a class="el" href="structcommand__struct.html">command</a>* <a class="el" href="base_2utils_8c.html#a446a1015872b0b803359e329127d67dc">global_host_event_handler_ptr</a></td>
         </tr>
       </table>
 </div>
@@ -2775,7 +2865,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcommand__struct.html">command</a>* <a class="el" href="test__timeperiods_8c.html#abb28c580288a78deb5c4202eb7c7e0ad">global_service_event_handler_ptr</a></td>
+          <td class="memname"><a class="el" href="structcommand__struct.html">command</a>* <a class="el" href="base_2utils_8c.html#abb28c580288a78deb5c4202eb7c7e0ad">global_service_event_handler_ptr</a></td>
         </tr>
       </table>
 </div>
@@ -2796,7 +2886,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00046">46</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00052">52</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -2818,7 +2908,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">time_t <a class="el" href="test__timeperiods_8c.html#aeb85ffd1c5c7f91fe9ccb3e4f58584a2">last_command_check</a></td>
+          <td class="memname">time_t <a class="el" href="extinfo_8c.html#aeb85ffd1c5c7f91fe9ccb3e4f58584a2">last_command_check</a></td>
         </tr>
       </table>
 </div>
@@ -2833,7 +2923,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">time_t <a class="el" href="test__timeperiods_8c.html#a3345a3ba93555dc1bd4405d8a9db19e8">last_command_status_update</a></td>
+          <td class="memname">time_t <a class="el" href="base_2utils_8c.html#a3345a3ba93555dc1bd4405d8a9db19e8">last_command_status_update</a></td>
         </tr>
       </table>
 </div>
@@ -2848,7 +2938,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#a4fd5c348c6bd19b33d05d97d921e8f44">log_external_commands</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#a4fd5c348c6bd19b33d05d97d921e8f44">log_external_commands</a></td>
         </tr>
       </table>
 </div>
@@ -2863,7 +2953,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#ad0b68c2d5394aea2ad23c94641936dc1">log_external_commands_user</a></td>
+          <td class="memname">int <a class="el" href="cmd_8c.html#ad0b68c2d5394aea2ad23c94641936dc1">log_external_commands_user</a></td>
         </tr>
       </table>
 </div>
@@ -2878,7 +2968,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* <a class="el" href="test__timeperiods_8c.html#abb31cd37c986dc4fd87305ea83516af1">log_file</a></td>
+          <td class="memname">char* <a class="el" href="status_8c.html#a62c50efca40f11bcb52442df5aeb8912">log_file</a></td>
         </tr>
       </table>
 </div>
@@ -2893,7 +2983,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#a5e7d59bfd5de9be3ca0ab421999029ef">log_passive_checks</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#a5e7d59bfd5de9be3ca0ab421999029ef">log_passive_checks</a></td>
         </tr>
       </table>
 </div>
@@ -3019,7 +3109,7 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="objects_8c_source.html#l00047">47</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
+<p>Definition at line <a class="el" href="objects_8c_source.html#l00053">53</a> of file <a class="el" href="objects_8c_source.html">objects.c</a>.</p>
 
 </div>
 </div>
@@ -3028,7 +3118,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#aadf2eea990498582cc7dac355c3d7e71">sigrestart</a></td>
         </tr>
       </table>
 </div>
@@ -3043,7 +3133,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="test__timeperiods_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a></td>
+          <td class="memname">int <a class="el" href="base_2utils_8c.html#a2b5f7762caad7a548645f2d9c4cdee47">sigshutdown</a></td>
         </tr>
       </table>
 </div>
@@ -3058,7 +3148,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* <a class="el" href="test__timeperiods_8c.html#af9f03269d81f06c6a86926e77620eed4">temp_file</a></td>
+          <td class="memname">char* <a class="el" href="base_2utils_8c.html#af9f03269d81f06c6a86926e77620eed4">temp_file</a></td>
         </tr>
       </table>
 </div>
@@ -3073,7 +3163,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char* <a class="el" href="test__timeperiods_8c.html#ac633a7a52422f2b1d56ed02a56dc8fcf">temp_path</a></td>
+          <td class="memname">char* <a class="el" href="base_2utils_8c.html#ac633a7a52422f2b1d56ed02a56dc8fcf">temp_path</a></td>
         </tr>
       </table>
 </div>
@@ -3088,13 +3178,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">pthread_t <a class="el" href="test__timeperiods_8c.html#a5c1a9b9ccaf872452bec541a26ab586b">worker_threads</a>[TOTAL_WORKER_THREADS]</td>
+          <td class="memname">pthread_t <a class="el" href="base_2utils_8c.html#a5c1a9b9ccaf872452bec541a26ab586b">worker_threads</a>[TOTAL_WORKER_THREADS]</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="icinga_8c_source.html#l00274">274</a> of file <a class="el" href="icinga_8c_source.html">icinga.c</a>.</p>
+<p>Definition at line <a class="el" href="icinga_8c_source.html#l00275">275</a> of file <a class="el" href="icinga_8c_source.html">icinga.c</a>.</p>
 
 </div>
 </div>
@@ -3103,7 +3193,7 @@ Variables</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="commands_8c.html">commands.c</a>      </li>
-      <li class="footer">Generated on Tue Mar 29 2011 17:19:23 for Icinga-core by&#160;
+      <li class="footer">Generated on Tue May 3 2011 22:33:42 for Icinga-core by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </li>
     </ul>
