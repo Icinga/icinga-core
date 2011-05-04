@@ -3,18 +3,19 @@
 LD_RUN_PATH=/usr/lib:/usr/local/lib
 
 usage() {
-    echo "Usage: `basename ${0}` <icinga-user> <icinga-group> <cmd-user> <cmd-group> <pkg_name> [num make_jobs]"
+    echo "Usage: `basename ${0}` <prefix> <icinga-user> <icinga-group> <cmd-user> <cmd-group> <pkg_name> [num make_jobs]"
     exit 1
 }
 
 [ $# -eq 0 ] && usage
 
-icinga_user=${1}
-icinga_group=${2}
-cmd_user=${3}
-cmd_group=${4}
-pkg_name=${5}
-make_jobs=${6:-2}  # Use 2 Makejobs if not set
+prefix=${1}
+icinga_user=${2}
+icinga_group=${3}
+cmd_user=${4}
+cmd_group=${5}
+pkg_name=${6}
+make_jobs=${7:-2}  # Use 2 Makejobs if not set
 config_file="configure.in"
 
 [ ! -f ${config_file}.solbak ] && cp ${config_file} ${config_file}.solbak
@@ -24,7 +25,7 @@ mv ${config_file}.tmp ${config_file}
 autoreconf
 
 PATH=.:..:${PATH} configure \
---prefix=/usr/local/icinga \
+--prefix=${prefix} \
 --with-cgiurl=/icinga/cgi-bin \
 --with-htmurl=/icinga \
 --with-icinga-user=${icinga_user} \
