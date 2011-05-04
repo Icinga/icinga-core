@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Host Checks</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch05.html" title="ChapterÂ 5.Â The Basics">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="macrolist.html" title="Standard Macros in Icinga">
 <link rel="next" href="servicechecks.html" title="Service Checks">
 </head>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Host Checks</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="macrolist.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 5.Â The Basics</th>
-<td width="20%" align="right">Â <a accesskey="n" href="servicechecks.html">Next</a>
+<a accesskey="p" href="macrolist.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="servicechecks.html">Next</a>
 </td>
 </tr>
 </table>
@@ -107,7 +107,7 @@
     <p>Hosts which have their <span class="emphasis"><em>max_check_attempts</em></span> value set to <span class="bold"><strong>1</strong></span> can cause
     serious performance problems. The reason? If Icinga needs to determine their true state using the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">network reachability</a> logic (to see if they're DOWN or UNREACHABLE), it will have to
     launch <span class="bold"><strong>serial</strong></span> checks of all of the host's immediate parents. Just to reiterate, those checks
-    are run <span class="emphasis"><em>serially</em></span>, rather than in parallel, so it can cause a big performance hit. For this reason, I
+    are run <span class="emphasis"><em>serially</em></span>, rather than in parallel, so it can cause a big performance hit. For this reason, we
     would recommend that you always use a value greater than 1 for the <span class="emphasis"><em>max_check_attempts</em></span> directives in your
     host definitions.</p>
   </td></tr>
@@ -226,25 +226,25 @@
   server that keeps spontaneously rebooting as soon as the operating system loads. That's always a fun scenario to have to deal
   with. Icinga can detect when hosts start flapping, and can suppress notifications until flapping stops and the host's
   state stabilizes. More information on the flap detection logic can be found <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">here</a>.</p>
-  <a class="indexterm" name="id5050798"></a>
+  <a class="indexterm" name="id1921393"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="macrolist.html">Prev</a>Â </td>
+<a accesskey="p" href="macrolist.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="servicechecks.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="servicechecks.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Standard Macros in IcingaÂ </td>
+<td width="40%" align="left" valign="top">Standard Macros in Icinga </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â Service Checks</td>
+<td width="40%" align="right" valign="top"> Service Checks</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -1,0 +1,103 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Database changes/alterations</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch12.html" title="Chapter 12. IDOUtils">
+<link rel="prev" href="db_model.html" title="IDOUtils Database Model">
+<link rel="next" href="ix01.html" title="Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Database changes/alterations</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="db_model.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 12. IDOUtils</th>
+<td width="20%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Database changes/alterations">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="db_changes"></a>Database changes/alterations</h2></div></div></div>
+  
+
+  <p><a name="db_changes-instancename"></a> <span class="bold"><strong>Change the instance name</strong></span></p>
+
+  <p>You may have the need to change the instance name. There are some steps to be done which are described in this section. Thanks to
+  <a class="link" href="https://dev.icinga.org/users/210" target="_top">ralfk</a> who provided us with these instructions.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Stop Icinga and ido2db daemons (since otherwise a new instance would automatically be added to DB instead of renaming
+      it)</p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga stop
+ #&gt; /etc/init.d/ido2db stop</pre>
+    </li>
+<li class="listitem">
+      <p>Change the instance name in <code class="filename">/usr/local/icinga/etc/idomod.cfg</code> </p>
+<pre class="programlisting"> instance_name=newinstance</pre>
+    </li>
+<li class="listitem">
+      <p>Change the instance name in the database table "icinga_instances" or "instances"</p>
+
+      <p><span class="bold"><strong>MySQL/PostgreSQL</strong></span></p>
+
+      <pre class="programlisting"> SQL&gt; UPDATE icinga_instances SET instance_name='NEWNAME' WHERE instance_name='OLDNAME';</pre>
+
+      <p><span class="bold"><strong>Oracle</strong></span></p>
+
+      <pre class="programlisting"> SQL&gt; UPDATE instances SET instance_name='NEWNAME' WHERE instance_name='OLDNAME';</pre>
+    </li>
+<li class="listitem">
+      <p>Change the instance name in the command pipe configuration in one of these files (site file in first place)</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><code class="filename">/usr/local/icinga-web/app/modules/Web/config/icinga-io.xml</code></p>
+        </li>
+<li class="listitem">
+          <p><code class="filename">/usr/local/icinga-web/app/modules/Web/config/icinga-io.site.xml</code></p>
+        </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p>Clear the Web Cache</p>
+<pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
+    </li>
+<li class="listitem">
+      <p>Start Icinga and ido2db Daemons</p>
+<pre class="programlisting"> #&gt; /etc/init.d/ido2db start
+ #&gt; /etc/init.d/icinga start</pre>
+    </li>
+</ul></div>
+
+  <a class="indexterm" name="id1991341"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="db_model.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ix01.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">IDOUtils Database Model </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Index</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

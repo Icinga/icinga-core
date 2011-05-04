@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Externe Befehle</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="next" href="eventhandlers.html" title="Eventhandler">
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Externe Befehle</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch07.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="ch07.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="eventhandlers.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="eventhandlers.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,54 +29,54 @@
 <a name="extcommands"></a>Externe Befehle</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Icinga kann Befehle aus externen Applikationen verarbeiten (einschlieÃŸlich der CGIs) und verschiedene Aspekte
-  seiner Ãœberwachungsfunktionen aufgrund der Befehle verÃ¤ndern, die es erhÃ¤lt. Externe Applikationen kÃ¶nnen Befehle "einreichen",
-  indem sie in das <a class="link" href="configmain.html#configmain-command_file">command file</a> schreiben, das regelmÃ¤ÃŸig vom Icinga-Daemon
+  <p>Icinga kann Befehle aus externen Applikationen verarbeiten (einschließlich der CGIs) und verschiedene Aspekte
+  seiner Überwachungsfunktionen aufgrund der Befehle verändern, die es erhält. Externe Applikationen können Befehle "einreichen",
+  indem sie in das <a class="link" href="configmain.html#configmain-command_file">command file</a> schreiben, das regelmäßig vom Icinga-Daemon
   verarbeitet wird.</p>
 
   <div class="mediaobject" align="right"><img src="../images/externalcommands.png" align="right"></div>
 
   <p><span class="bold"><strong>Externe Befehle aktivieren</strong></span></p>
 
-  <p>Damit Icinga externe Befehle verarbeitet, mÃ¼ssen Sie folgendes tun:</p>
+  <p>Damit Icinga externe Befehle verarbeitet, müssen Sie folgendes tun:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>aktivieren Sie die PrÃ¼fung auf externe Befehle mit der <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Option.</p>
+      <p>aktivieren Sie die Prüfung auf externe Befehle mit der <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Option.</p>
     </li>
 <li class="listitem">
-      <p>setzen Sie die Wiederholrate von BefehlsprÃ¼fungen mit der <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Option.</p>
+      <p>setzen Sie die Wiederholrate von Befehlsprüfungen mit der <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Option.</p>
     </li>
 <li class="listitem">
       <p>definieren Sie den Ort des Command-File mit der <a class="link" href="configmain.html#configmain-command_file">command_file</a>-Option.</p>
     </li>
 <li class="listitem">
-      <p>setzen Sie korrekte Berechtigungen fÃ¼r das Verzeichnis, welches das External-Command-File enthÃ¤lt, wie in der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> beschrieben.</p>
+      <p>setzen Sie korrekte Berechtigungen für das Verzeichnis, welches das External-Command-File enthält, wie in der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> beschrieben.</p>
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Wann prÃ¼ft Icinga auf externe Befehle?</strong></span></p>
+  <p><span class="bold"><strong>Wann prüft Icinga auf externe Befehle?</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>in regelmÃ¤ÃŸigen Intervallen, wie sie durch die Option <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> in der Hauptkonfigurationsdatei angegeben
+      <p>in regelmäßigen Intervallen, wie sie durch die Option <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> in der Hauptkonfigurationsdatei angegeben
       sind</p>
     </li>
 <li class="listitem">
-      <p>direkt nachdem <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> ausgefÃ¼hrt werden. Das passiert zusÃ¤tzlich zum
-      regelmÃ¤ÃŸigen Zyklus von externen BefehlsprÃ¼fungen und wird getan, um unverzÃ¼gliche AktivitÃ¤ten zu ermÃ¶glichen, falls ein
+      <p>direkt nachdem <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> ausgeführt werden. Das passiert zusätzlich zum
+      regelmäßigen Zyklus von externen Befehlsprüfungen und wird getan, um unverzügliche Aktivitäten zu ermöglichen, falls ein
       Eventhandler Befehle an Icinga schickt.</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Externe Befehle benutzen</strong></span></p>
 
-  <p>Externe Befehle kÃ¶nnen benutzt werden, um eine Reihe von Dingen zu erreichen, wÃ¤hrend Icinga lÃ¤uft. Beispiele
-  dafÃ¼r, was getan werden kann, umfassen u.a. vorÃ¼bergehend Benachrichtigungen fÃ¼r Services und Hosts zu deaktivieren,
-  vorÃ¼bergehend Service-PrÃ¼fungen zu deaktivieren, sofortige Service-PrÃ¼fungen zu erzwingen, Kommentare fÃ¼r Hosts und Services
-  hinzuzufÃ¼gen usw.</p>
+  <p>Externe Befehle können benutzt werden, um eine Reihe von Dingen zu erreichen, während Icinga läuft. Beispiele
+  dafür, was getan werden kann, umfassen u.a. vorübergehend Benachrichtigungen für Services und Hosts zu deaktivieren,
+  vorübergehend Service-Prüfungen zu deaktivieren, sofortige Service-Prüfungen zu erzwingen, Kommentare für Hosts und Services
+  hinzuzufügen usw.</p>
 
   <p><span class="bold"><strong>Befehlsformat</strong></span></p>
 
@@ -86,30 +86,30 @@
   <pre class="screen"> [<span class="emphasis"><em> Zeit</em></span>] <span class="emphasis"><em> Befehls-ID</em></span>;<span class="emphasis"><em> Befehlsargumente</em></span> </pre>
 
   <p>...wobei <span class="emphasis"><em>Zeit</em></span> die Zeit (im <span class="emphasis"><em>time_t</em></span>-Format) ist, zu der die externe Applikation
-  den externen Befehl an das Command-File geschickt hat. Die Werte fÃ¼r die <span class="emphasis"><em>Befehls-ID</em></span> und die
-  <span class="emphasis"><em>Befehlsargumente</em></span> hÃ¤ngen davon ab, welcher Befehl an Icinga geschickt wird.</p>
+  den externen Befehl an das Command-File geschickt hat. Die Werte für die <span class="emphasis"><em>Befehls-ID</em></span> und die
+  <span class="emphasis"><em>Befehlsargumente</em></span> hängen davon ab, welcher Befehl an Icinga geschickt wird.</p>
 
-  <p>Eine komplette Liste der Befehle, die benutzt werden kÃ¶nnen, finden Sie in der <a class="link" href="extcommands2.html" title="Liste der externen Befehle">Liste der
+  <p>Eine komplette Liste der Befehle, die benutzt werden können, finden Sie in der <a class="link" href="extcommands2.html" title="Liste der externen Befehle">Liste der
   externen Befehle</a>.</p>
-  <a class="indexterm" name="id5645972"></a>
+  <a class="indexterm" name="id3502550"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch07.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="ch07.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="eventhandlers.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="eventhandlers.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Kapitel 7. Fortgeschrittene ThemenÂ </td>
+<td width="40%" align="left" valign="top">Kapitel 7. Fortgeschrittene Themen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Eventhandler</td>
+<td width="40%" align="right" valign="top"> Eventhandler</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

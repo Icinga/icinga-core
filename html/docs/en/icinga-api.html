@@ -1,13 +1,13 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Installation and use of the Icinga API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch11.html" title="Chapter 11. Development">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch11.html" title="Chapter�11.�Development">
 <link rel="prev" href="extcommands2.html" title="List of External Commands">
-<link rel="next" href="icinga-web-api.html" title="The Icinga Web REST API">
+<link rel="next" href="icinga-web-api.html" title="The Icinga-Web REST API">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Installation and use of the Icinga API</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="extcommands2.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 11. Development</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-api.html">Next</a>
+<a accesskey="p" href="extcommands2.html">Prev</a>�</td>
+<th width="60%" align="center">Chapter�11.�Development</th>
+<td width="20%" align="right">�<a accesskey="n" href="icinga-web-api.html">Next</a>
 </td>
 </tr>
 </table>
@@ -74,8 +74,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Icinga API is already included in the package with Core, IDOUtils and docs and also installed during 'make install'. If you
-        already installed this package, there's no need to install Icinga API. It is located by default in /usr/local/icinga/share/icinga-api/ and you
+        <p>Icinga-API is already included in the package with Core, IDOUtils and docs and also installed during 'make install'. If you
+        already installed this package, there's no need to install Icinga-API. It is located by default in /usr/local/icinga/share/icinga-api/ and you
         can skip this section!</p>
     </td></tr>
 </table></div>
@@ -86,8 +86,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>If you just require Icinga API for Icinga-Web, and already installed the Core with IDOUtils, skip this Howto and refer directly
-        to <a class="link" href="icinga-web-scratch.html" title="Installation of the Icinga Web Frontend">installing Icinga Web</a>.</p>
+        <p>If you just require Icinga-API for Icinga-Web, and already installed the Core with IDOUtils, skip this Howto and refer directly
+        to <a class="link" href="icinga-web-scratch.html" title="Installation of the Icinga-Web Frontend">installing Icinga Web</a>.</p>
     </td></tr>
 </table></div>
 
@@ -108,12 +108,12 @@
 <li class="listitem">
             <p><span class="bold"><strong>Installation</strong></span></p>
 
-            <p>Unpack Icinga API run configure and install it.</p>
+            <p>Unpack Icinga-API run configure and install it.</p>
 
             <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
  # ./configure</pre>
 
-            <p>You can set the prefix where it will be installed, and point Icinga API where your Icinga and IDOUtils config is located and which
+            <p>You can set the prefix where it will be installed, and point Icinga-API where your Icinga and IDOUtils config is located and which
             users are required to run (those settings are directly applied when installing the API through Icinga Core Installation).</p>
 
             <pre class="programlisting"> # ./configure --datarootdir=/usr/local/icinga/share \
@@ -139,7 +139,7 @@
 
     <p><span class="bold"><strong>Configuration</strong></span></p>
 
-    <p>If you are developing you own Addon based on the Icinga API, you need the following associative array. </p>
+    <p>If you are developing you own Addon based on the Icinga-API, you need the following associative array. </p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
     'host'         =&gt; '&lt;Database hostname&gt;', 
@@ -193,22 +193,22 @@
 
             <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
- -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
+ -&gt;setResultColumns(array(&#8217;HOST_NAME&#8217;, &#8216;HOST_CURRENT_STATE&#8217;))
  -&gt;fetch();</pre>
 
             <p>By using setSearchFilter() you can define filters to narrow down the result set:</p>
 
             <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
- -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
- -&gt;setSearchFilter(HOST_NAME, ‘Switch%’, IcingaApi::MATCH_LIKE)
+ -&gt;setResultColumns(array(&#8217;HOST_NAME&#8217;, &#8216;HOST_CURRENT_STATE&#8217;))
+ -&gt;setSearchFilter(HOST_NAME, &#8216;Switch%&#8217;, IcingaApi::MATCH_LIKE)
  -&gt;fetch();</pre>
         </li>
 <li class="listitem">
             <p><span class="bold"><strong>Processing results</strong></span></p>
 
             <pre class="programlisting"> foreach($apiRes as $apiHandle){
-    echo ‘Host ‘.$apiHandle-&gt;HOST_NAME.’ has state ‘.$apiHandle-&gt;HOST_CURRENT_STATE.’&lt;br /&gt;’;
+    echo &#8216;Host &#8216;.$apiHandle-&gt;HOST_NAME.&#8217; has state &#8216;.$apiHandle-&gt;HOST_CURRENT_STATE.&#8217;&lt;br /&gt;&#8217;;
  }</pre>
 <p>Output without filter:</p>
 
@@ -233,7 +233,7 @@
 
             <pre class="programlisting"> &lt;?
  // Path to icinga api file
- $apiFile = ‘icinga-api/IcingaApi.php’;
+ $apiFile = &#8216;icinga-api/IcingaApi.php&#8217;;
  
  // Database connection
  $idoConfig = array (
@@ -269,27 +269,27 @@
         </li>
 </ol></div>
 
-    <a class="indexterm" name="id5096851"></a>
+    <a class="indexterm" name="id1969674"></a>
 
-    <a class="indexterm" name="id5096882"></a>
+    <a class="indexterm" name="id1969690"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="extcommands2.html">Prev</a> </td>
+<a accesskey="p" href="extcommands2.html">Prev</a>�</td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-api.html">Next</a>
+<td width="40%" align="right">�<a accesskey="n" href="icinga-web-api.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">List of External Commands </td>
+<td width="40%" align="left" valign="top">List of External Commands�</td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> The Icinga Web REST API</td>
+<td width="40%" align="right" valign="top">�The Icinga-Web REST API</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">� 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

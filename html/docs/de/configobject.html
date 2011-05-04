@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Ãœberblick Objektkonfiguration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Überblick Objektkonfiguration</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">
 <link rel="next" href="objectdefinitions.html" title="Objektdefinitionen">
@@ -13,25 +13,25 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Ãœberblick Objektkonfiguration</th></tr>
+<tr><th colspan="3" align="center">Überblick Objektkonfiguration</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configmain.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="configmain.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
-<td width="20%" align="right">Â <a accesskey="n" href="objectdefinitions.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="objectdefinitions.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Ãœberblick Objektkonfiguration">
+<div class="section" title="Überblick Objektkonfiguration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="configobject"></a>Ãœberblick Objektkonfiguration</h2></div></div></div>
+<a name="configobject"></a>Überblick Objektkonfiguration</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Was sind Objekte?</strong></span></p>
 
-  <p>Objekte sind alle Elemente, die an der Ãœberwachungs- und Benachrichtigungslogik beteiligt sind. Objekttypen
+  <p>Objekte sind alle Elemente, die an der Überwachungs- und Benachrichtigungslogik beteiligt sind. Objekttypen
   umfassen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -63,15 +63,15 @@
       <p>Benachrichtigungseskalationen</p>
     </li>
 <li class="listitem">
-      <p>Benachrichtigungs- und AusfÃ¼hrungsabhÃ¤ngigkeiten</p>
+      <p>Benachrichtigungs- und Ausführungsabhängigkeiten</p>
     </li>
 </ul></div>
 
-  <p>Mehr Informationen darÃ¼ber, was Objekte sind und wie sie in Beziehung zueinander stehen, finden Sie nachstehend.</p>
+  <p>Mehr Informationen darüber, was Objekte sind und wie sie in Beziehung zueinander stehen, finden Sie nachstehend.</p>
 
   <p><span class="bold"><strong>Wo werden Objekte definiert?</strong></span></p>
 
-  <p>Objekte kÃ¶nnen in einer oder mehreren Konfigurationsdateien und/oder Verzeichnissen definiert werden, die Sie mit den
+  <p>Objekte können in einer oder mehreren Konfigurationsdateien und/oder Verzeichnissen definiert werden, die Sie mit den
   <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>- und/oder <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktiven in
   der Hauptkonfigurationsdatei angeben.</p>
 
@@ -80,23 +80,23 @@
 
   <p><span class="bold"><strong>include_file / include_dir</strong></span></p>
 
-  <p>Eine Objektdefinitionsdatei kann andere Objektdefinitionsdateien einschlieÃŸen mit Hilfe der
+  <p>Eine Objektdefinitionsdatei kann andere Objektdefinitionsdateien einschließen mit Hilfe der
   <span class="bold"><strong>include_file=&lt; file_name&gt;</strong></span>- und <span class="bold"><strong>include_dir=&lt;directory_name&gt;</strong></span>
-  -Direktiven. Die erste schlieÃŸt nur die einzelne angegebene Datei ein, die zweite wird im angegebenen Verzeichnis alle Dateien
-  mit der Endung <span class="emphasis"><em>.cfg</em></span> einschlieÃŸen. Diese Direktiven kÃ¶nnen mehrfach angegeben werden, um mehrere Dateien und/oder
-  Verzeichnisse einzuschlieÃŸen.</p>
+  -Direktiven. Die erste schließt nur die einzelne angegebene Datei ein, die zweite wird im angegebenen Verzeichnis alle Dateien
+  mit der Endung <span class="emphasis"><em>.cfg</em></span> einschließen. Diese Direktiven können mehrfach angegeben werden, um mehrere Dateien und/oder
+  Verzeichnisse einzuschließen.</p>
   <p>Die Direktiven sind nicht in den eigentlichen Definitionen eines Objektes erlaubt, sondern sollten vor, nach oder zwischen
   Objektdefinitionen auftreten. Sie sind eng mit den <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a>- und
   <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a>-Direktiven in der Hauptkonfigurationsdatei verwandt.</p>
-  <p>Diese Direktiven kÃ¶nnen verkettet werden, d.h. eine Objektdefinitionsdatei, die in der Hauptkonfigurationsdatei durch eine
+  <p>Diese Direktiven können verkettet werden, d.h. eine Objektdefinitionsdatei, die in der Hauptkonfigurationsdatei durch eine
   <span class="bold"><strong>cfg_file=</strong></span>- oder <span class="bold"><strong>cfg_dir=</strong></span>-Direktive eingeschlossen wird, kann
   <span class="bold"><strong>include_file=</strong></span> oder <span class="bold"><strong>include_dir=</strong></span> enthalten, um eine weitere
-  Objektdefinitionsdatei einzuschlieÃŸen, die ebenfalls <span class="bold"><strong>include_file=</strong></span> oder
-  <span class="bold"><strong>include_dir=</strong></span> enthÃ¤lt, um eine weitere Datei einzuschlieÃŸen, und so fort.</p>
+  Objektdefinitionsdatei einzuschließen, die ebenfalls <span class="bold"><strong>include_file=</strong></span> oder
+  <span class="bold"><strong>include_dir=</strong></span> enthält, um eine weitere Datei einzuschließen, und so fort.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen,
   werden verschiedene Beispiel-Objektkonfigurationsdateien in <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span> abgelegt. Sie
-  kÃ¶nnen diese Beispieldateien benutzen, um zu sehen, wie Objektvererbung funktioniert und lernen, wie Sie Ihre eigenen
+  können diese Beispieldateien benutzen, um zu sehen, wie Objektvererbung funktioniert und lernen, wie Sie Ihre eigenen
   Objektdefinitionen anlegen.</p>
 
   <p><span class="bold"><strong>Wie werden Objekte definiert?</strong></span></p>
@@ -105,13 +105,13 @@
   Icinga-Konfiguration auf lange Sicht zu verwalten. Grundlegende Informationen, wie Objekte in Ihren Konfigurationsdateien
   definiert werden, finden Sie <a class="link" href="objectdefinitions.html" title="Objektdefinitionen">hier</a>.</p>
 
-  <p>Sobald Sie mit den Grundlagen vertraut sind, wie Objekte zu definieren sind, sollten Sie bei <a class="link" href="objectinheritance.html" title="Objektvererbung">Objektvererbung</a> weiterlesen, weil es Ihre Konfiguration robuster fÃ¼r die Zukunft macht.
-  Erfahrene Benutzer kÃ¶nnen einige fortgeschrittene MÃ¶glichkeiten der Objektdefinition ausnutzen, die in der Dokumentation zu
-  <a class="link" href="objecttricks.html" title="Zeitsparende Tricks fÃ¼r Objektdefinitionen">Objekt-Tricks</a> beschrieben sind.</p>
+  <p>Sobald Sie mit den Grundlagen vertraut sind, wie Objekte zu definieren sind, sollten Sie bei <a class="link" href="objectinheritance.html" title="Objektvererbung">Objektvererbung</a> weiterlesen, weil es Ihre Konfiguration robuster für die Zukunft macht.
+  Erfahrene Benutzer können einige fortgeschrittene Möglichkeiten der Objektdefinition ausnutzen, die in der Dokumentation zu
+  <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> beschrieben sind.</p>
 
-  <p><a name="configobject-objectoverview"></a><span class="bold"><strong>Objekte erklÃ¤rt</strong></span></p>
+  <p><a name="configobject-objectoverview"></a><span class="bold"><strong>Objekte erklärt</strong></span></p>
 
-  <p>Einige der Hauptobjekttypen werden nachfolgend genauer erklÃ¤rt...</p>
+  <p>Einige der Hauptobjekttypen werden nachfolgend genauer erklärt...</p>
 
   <div class="informaltable">
     <table border="0">
@@ -127,10 +127,10 @@
               <span class="bold"><strong>Hosts</strong></span>
 
                
-            </a> sind eins der zentralen Objekte in der Ãœberwachungslogik. Wichtige Attribute von Hosts sind:</p>
+            </a> sind eins der zentralen Objekte in der Überwachungslogik. Wichtige Attribute von Hosts sind:</p>
           <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                <p>Hosts sind normaler Weise physikalische GerÃ¤te in Ihrem Netzwerk (Server, Workstations, Router, Switches,
+                <p>Hosts sind normaler Weise physikalische Geräte in Ihrem Netzwerk (Server, Workstations, Router, Switches,
                 Drucker usw.).</p>
               </li>
 <li class="listitem">
@@ -140,7 +140,7 @@
                 <p>Hosts haben einen oder mehrere Services, die mit ihm verbunden sind.</p>
               </li>
 <li class="listitem">
-                <p>Hosts kÃ¶nnen Eltern/Kind-Beziehungen mit anderen Hosts haben, oftmals dargestellt durch reale
+                <p>Hosts können Eltern/Kind-Beziehungen mit anderen Hosts haben, oftmals dargestellt durch reale
                 Netzwerkverbindungen, die in der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeits</a>-Logik benutzt
                 wird.</p>
               </li>
@@ -150,8 +150,8 @@
               <span class="bold"><strong>Hostgruppen</strong></span>
 
                
-            </a> sind Gruppen von einem oder mehreren Hosts. Hostgruppen kÃ¶nnen es einfacher machen, (1) den Status von in
-          Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks fÃ¼r Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
+            </a> sind Gruppen von einem oder mehreren Hosts. Hostgruppen können es einfacher machen, (1) den Status von in
+          Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
 </tr></tbody>
@@ -172,13 +172,13 @@
               <span class="bold"><strong>Services</strong></span>
 
                
-            </a> sind eins der zentralen Objekte in der Ãœberwachungslogik. Services sind mit Hosts verbunden und kÃ¶nnen:</p>
+            </a> sind eins der zentralen Objekte in der Überwachungslogik. Services sind mit Hosts verbunden und können:</p>
           <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>Attribute eines Hosts sein (CPU-Auslastung, Plattenbelegung, Laufzeit, usw.)</p>
               </li>
 <li class="listitem">
-                <p>Services sein, die durch den Host zur VerfÃ¼gung gestellt werden (HTTP, POP3, FTP, SSH, usw.)</p>
+                <p>Services sein, die durch den Host zur Verfügung gestellt werden (HTTP, POP3, FTP, SSH, usw.)</p>
               </li>
 <li class="listitem">
                 <p>andere Dinge sein, die mit dem Host verbunden sind (DNS records, usw.)</p>
@@ -189,8 +189,8 @@
               <span class="bold"><strong>Servicegruppen</strong></span>
 
                
-            </a> sind Gruppen von einem oder mehreren Services. Servicegruppen kÃ¶nnen es einfacher machen, (1) den Status von
-          in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks fÃ¼r Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
+            </a> sind Gruppen von einem oder mehreren Services. Servicegruppen können es einfacher machen, (1) den Status von
+          in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
 </tr></tbody>
@@ -217,7 +217,7 @@
                 usw.)</p>
               </li>
 <li class="listitem">
-                <p>Kontakte erhalten Benachrichtigungen zu Hosts und Services, fÃ¼r die sie verantwortlich sind</p>
+                <p>Kontakte erhalten Benachrichtigungen zu Hosts und Services, für die sie verantwortlich sind</p>
               </li>
 </ul></div> <p><a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">
                
@@ -225,7 +225,7 @@
               <span class="bold"><strong>Kontaktgruppen</strong></span>
 
                
-            </a> sind Gruppen von einem oder mehreren Kontakten. Kontaktgruppen kÃ¶nnen es einfacher machen, alle Leute zu
+            </a> sind Gruppen von einem oder mehreren Kontakten. Kontaktgruppen können es einfacher machen, alle Leute zu
           definieren, die informiert werden, wenn bestimmte Host- oder Serviceprobleme auftreten.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> </p></td>
@@ -249,12 +249,12 @@
                
             </a> werden benutzt, um zu kontrollieren:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                <p>wann Hosts und Services Ã¼berwacht werden</p>
+                <p>wann Hosts und Services überwacht werden</p>
               </li>
 <li class="listitem">
                 <p>wann Kontakte Benachrichtigungen erhalten</p>
               </li>
-</ul></div> <p>Informationen darÃ¼ber, wie Zeitfenster arbeiten, finden Sie <a class="link" href="timeperiods.html" title="Zeitfenster">hier</a>.</p>
+</ul></div> <p>Informationen darüber, wie Zeitfenster arbeiten, finden Sie <a class="link" href="timeperiods.html" title="Zeitfenster">hier</a>.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span> </p></td>
 </tr></tbody>
@@ -275,10 +275,10 @@
               <span class="bold"><strong>Befehle</strong></span>
 
                
-            </a> werden benutzt, um Icinga mitzuteilen, welche Programme, Scripte usw. es ausfÃ¼hren soll:</p>
+            </a> werden benutzt, um Icinga mitzuteilen, welche Programme, Scripte usw. es ausführen soll:</p>
           <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                <p>Host- und Service-PrÃ¼fungen</p>
+                <p>Host- und Service-Prüfungen</p>
               </li>
 <li class="listitem">
                 <p>Benachrichtigungen</p>
@@ -295,25 +295,25 @@
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id5586941"></a>
+  <a class="indexterm" name="id3441394"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configmain.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="configmain.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="objectdefinitions.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="objectdefinitions.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Optionen der HauptkonfigurationsdateiÂ </td>
+<td width="40%" align="left" valign="top">Optionen der Hauptkonfigurationsdatei </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Objektdefinitionen</td>
+<td width="40%" align="right" valign="top"> Objektdefinitionen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

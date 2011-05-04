@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Eskalations-Bedingung</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="escalations.html" title="Benachrichtigungseskalationen">
 <link rel="next" href="oncallrotation.html" title="Bereitschafts-Rotation">
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Eskalations-Bedingung</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="escalations.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="escalations.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="oncallrotation.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="oncallrotation.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -31,20 +31,20 @@
 
   <p><span class="bold"><strong>Einleitung</strong></span></p>
 
-  <p>Ab Icinga 1.0.1 ist ein Patch implementiert, so dass Sie nun eine Eskalations-Bedingung definieren kÃ¶nnen (Ã¤hnlich wie escalation_options
+  <p>Ab Icinga 1.0.1 ist ein Patch implementiert, so dass Sie nun eine Eskalations-Bedingung definieren können (ähnlich wie escalation_options
   [w,u,c,r]). Eine Eskalation mit einer definierten Bedingung wird nur dann eskalieren, wenn der aktuelle Zustand eines bestimmten
-  Hosts/Services mit der angegebenen Bedingung Ã¼bereinstimmt. Ein mÃ¶gliches Anwendungsbeispiel kÃ¶nnte das folgende Szenario
+  Hosts/Services mit der angegebenen Bedingung übereinstimmt. Ein mögliches Anwendungsbeispiel könnte das folgende Szenario
   sein:</p>
 
-  <p>Stellen Sie sich zwei verschiedene Eskalationen fÃ¼r den selben Service <span class="emphasis"><em>foo</em></span> vor. Eine soll nur dann
+  <p>Stellen Sie sich zwei verschiedene Eskalationen für den selben Service <span class="emphasis"><em>foo</em></span> vor. Eine soll nur dann
   eskalieren, wenn der Service <span class="emphasis"><em>bar</em></span> OK ist, die andere soll eskalieren, wenn <span class="emphasis"><em>bar</em></span> CRITICAL
   oder WARNING ist. Nun stellen Sie sich vor, dass <span class="emphasis"><em>foo</em></span> der zentrale Service einer Firma ist und der Administrator sofort reagieren
-  muss, wenn der Service down ist. <span class="emphasis"><em>bar</em></span> kÃ¶nnte ein Service sein, der angibt, ob der Admin im BÃ¼ro oder zu Hause ist. Die Eskalation
-  wÃ¼rde wie folgt reagieren:</p>
+  muss, wenn der Service down ist. <span class="emphasis"><em>bar</em></span> könnte ein Service sein, der angibt, ob der Admin im Büro oder zu Hause ist. Die Eskalation
+  würde wie folgt reagieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>wenn der Administrator im BÃ¼ro ist, dann sende zuerst eine e-Mail, nach 5 Minuten dann eine SMS</p>
+      <p>wenn der Administrator im Büro ist, dann sende zuerst eine e-Mail, nach 5 Minuten dann eine SMS</p>
     </li>
 <li class="listitem">
       <p>wenn der Administrator zu Hause ist, dann sende zuerst eine SMS und nach 30 Minuten eine zweite SMS an den
@@ -56,7 +56,7 @@
 
   <p><span class="bold"><strong>Syntax</strong></span></p>
 
-  <p>Die Direktive escalation_condition ist komplett optional und kann sowohl fÃ¼r Host- als auch fÃ¼r Service-Eskalationen
+  <p>Die Direktive escalation_condition ist komplett optional und kann sowohl für Host- als auch für Service-Eskalationen
   definiert werden. Die Syntax lautet: </p>
 
   <p><code class="literal">escalation_condition &lt;condition&gt; ( [ &amp; / | ] &lt;condition&gt; )</code></p>
@@ -64,8 +64,8 @@
   <p>wobei &lt;condition&gt; entweder <code class="literal">host hostname = [u,d,o]</code> oder <code class="literal">service
   hostname.service_description = [w,u,c,o]</code> ist.</p>
 
-  <p>Wie Sie sehen kÃ¶nnen, akzeptiert escalation_condition eine Liste von einer oder mehreren Bedingungen, die durch "&amp;"
-  (logisches UND) oder "|" (logisches ODER) getrennt sind. Die Bedeutungen von [w,u,c,o,d] unterscheiden sich geringfÃ¼gig von denen,
+  <p>Wie Sie sehen können, akzeptiert escalation_condition eine Liste von einer oder mehreren Bedingungen, die durch "&amp;"
+  (logisches UND) oder "|" (logisches ODER) getrennt sind. Die Bedeutungen von [w,u,c,o,d] unterscheiden sich geringfügig von denen,
   die bei escalation_options benutzt werden: </p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -79,10 +79,10 @@
       <p>c = CRITICAL</p>
     </li>
 <li class="listitem">
-      <p>o = OK fÃ¼r Services oder UP fÃ¼r hosts (man kÃ¶nnte an ONLINE denken)</p>
+      <p>o = OK für Services oder UP für hosts (man könnte an ONLINE denken)</p>
     </li>
 <li class="listitem">
-      <p>d = Down fÃ¼r hosts</p>
+      <p>d = Down für hosts</p>
     </li>
 </ul></div>
 
@@ -95,29 +95,29 @@
    contact_groups          admins, managers
    escalation_condition    host linux=d | service linux.SSH=w,c
    }</pre>
-<p> Diese Beispiel-Eskalation wÃ¼rde eskalieren, wenn der HOST 'linux' DOWN ist oder der Service 'linux.SSH' WARNING oder
+<p> Diese Beispiel-Eskalation würde eskalieren, wenn der HOST 'linux' DOWN ist oder der Service 'linux.SSH' WARNING oder
   CRITICAL.</p>
 
   <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
-  <a class="indexterm" name="id5650614"></a>
+  <a class="indexterm" name="id3507199"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="escalations.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="escalations.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="oncallrotation.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="oncallrotation.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">BenachrichtigungseskalationenÂ </td>
+<td width="40%" align="left" valign="top">Benachrichtigungseskalationen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Bereitschafts-Rotation</td>
+<td width="40%" align="right" valign="top"> Bereitschafts-Rotation</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

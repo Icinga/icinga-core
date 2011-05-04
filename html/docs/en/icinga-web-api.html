@@ -1,41 +1,41 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>The Icinga Web REST API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>The Icinga-Web REST API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch11.html" title="ChapterÂ 11.Â Development">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch11.html" title="Chapter 11. Development">
 <link rel="prev" href="icinga-api.html" title="Installation and use of the Icinga API">
-<link rel="next" href="ch12.html" title="ChapterÂ 12.Â IDOUtils">
+<link rel="next" href="ch12.html" title="Chapter 12. IDOUtils">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">The Icinga Web REST API</th></tr>
+<tr><th colspan="3" align="center">The Icinga-Web REST API</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icinga-api.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 11.Â Development</th>
-<td width="20%" align="right">Â <a accesskey="n" href="ch12.html">Next</a>
+<a accesskey="p" href="icinga-api.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 11. Development</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch12.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="The Icinga Web REST API">
+<div class="section" title="The Icinga-Web REST API">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-api"></a>The Icinga Web REST API</h2></div></div></div>
+<a name="icinga-web-api"></a>The Icinga-Web REST API</h2></div></div></div>
   
 
-  <p>In this document we'll describe the Icinga Web REST API (yes, we know that the term is not yet completed) which allows you to
+  <p>In this document we'll describe the Icinga-Web REST API (yes, we know that the term is not yet completed) which allows you to
   request your monitoring information via GET or POST requests (in the future (&gt;1.2), you will also be able to send commands via
   PUT).</p>
 
   <p><span class="bold"><strong>Why should I use the API?</strong></span></p>
 
-  <p>For most people, the combination Icinga/Icinga Web will fit most needs. You can watch your monitoring status, act on problems
+  <p>For most people, the combination Icinga/Icinga-Web will fit most needs. You can watch your monitoring status, act on problems
   and extend it to suit your needs (Modules/Cronks).</p>
 
   <p>But sometimes, you have another piece of software that is interested in some monitoring data (for example: <a class="link" href="http://www.icinga.org/2010/07/16/icinga-chromed-status-for-google-chrome/chromium/" target="_top">Icinga-Chromed-Status</a>). You could
@@ -43,7 +43,7 @@
   certainly no fun for the developer. The goal of the REST API is to return the data you want (and only the data you want) in a
   standardized, machine-readable format like JSON or XML</p>
 
-  <p><span class="bold"><strong>Features of the Icinga Web REST API </strong></span></p>
+  <p><span class="bold"><strong>Features of the Icinga-Web REST API </strong></span></p>
 
   <p>Currently supported (v1.2): </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -78,10 +78,10 @@
         <p>Send commands via PUT</p>
       </li></ul></div>
 
-  <p><span class="bold"><strong>What's the difference between the Icinga API and the Icinga Web REST API? </strong></span></p>
+  <p><span class="bold"><strong>What's the difference between the Icinga-API and the Icinga-Web REST API? </strong></span></p>
 
-  <p>The Icinga API can at this point considered as an internal toolkit to access the database informations. In fact, the REST API acts
-  on top of this API and extends it via the HTTP protocol. In the future, the Icinga API will be merged into Icinga Web.</p>
+  <p>The Icinga-API can at this point considered as an internal toolkit to access the database informations. In fact, the REST API acts
+  on top of this API and extends it via the HTTP protocol. In the future, the Icinga-API will be merged into Icinga-Web.</p>
 
   <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
@@ -112,7 +112,7 @@
 
   <pre class="programlisting">icinga-web/bin/clearcache.sh</pre>
 
-  <p>Now, in Icinga Web, you have to add a user with API access: </p>
+  <p>Now, in Icinga-Web, you have to add a user with API access: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>Create a new user</p>
@@ -390,25 +390,25 @@ http://localhost/icinga-web/web/api/xml </pre>
 
   <p>This would return the same result as the GET request shown before.</p>
 
-  <a class="indexterm" name="id5097613"></a>
+  <a class="indexterm" name="id1970380"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icinga-api.html">Prev</a>Â </td>
+<a accesskey="p" href="icinga-api.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="ch12.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="ch12.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Installation and use of the Icinga APIÂ </td>
+<td width="40%" align="left" valign="top">Installation and use of the Icinga API </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â ChapterÂ 12.Â IDOUtils</td>
+<td width="40%" align="right" valign="top"> Chapter 12. IDOUtils</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

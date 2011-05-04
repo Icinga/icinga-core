@@ -1,69 +1,69 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Aktive PrÃ¼fungen (Active Checks)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Aktive Prüfungen (Active Checks)</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="servicechecks.html" title="Service-PrÃ¼fungen (Service Checks)">
-<link rel="next" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">
+<link rel="prev" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">
+<link rel="next" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Aktive PrÃ¼fungen (Active Checks)</th></tr>
+<tr><th colspan="3" align="center">Aktive Prüfungen (Active Checks)</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="servicechecks.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="servicechecks.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="passivechecks.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="passivechecks.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Aktive PrÃ¼fungen (Active Checks)">
+<div class="section" title="Aktive Prüfungen (Active Checks)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="activechecks"></a>Aktive PrÃ¼fungen (Active Checks)</h2></div></div></div>
+<a name="activechecks"></a>Aktive Prüfungen (Active Checks)</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Icinga ist in der Lage, Hosts und Services auf zwei Arten zu Ã¼berwachen: aktiv und passiv. Passive PrÃ¼fungen werden
-  <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">anderswo</a> beschrieben, so dass wir uns hier auf aktive PrÃ¼fungen konzentrieren. Aktive
-  PrÃ¼fungen sind die gebrÃ¤uchlichste Methode zur Ãœberwachung von Hosts und Services. Die Hauptmerkmale von aktiven PrÃ¼fungen
+  <p>Icinga ist in der Lage, Hosts und Services auf zwei Arten zu überwachen: aktiv und passiv. Passive Prüfungen werden
+  <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">anderswo</a> beschrieben, so dass wir uns hier auf aktive Prüfungen konzentrieren. Aktive
+  Prüfungen sind die gebräuchlichste Methode zur Überwachung von Hosts und Services. Die Hauptmerkmale von aktiven Prüfungen
   sind</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>aktive PrÃ¼fungen werden vom Icinga-Prozess veranlasst</p>
+      <p>aktive Prüfungen werden vom Icinga-Prozess veranlasst</p>
     </li>
 <li class="listitem">
-      <p>aktive PrÃ¼fungen laufen auf einer regelmÃ¤ÃŸig geplanten Basis</p>
+      <p>aktive Prüfungen laufen auf einer regelmäßig geplanten Basis</p>
     </li>
 </ul></div>
 
   <div class="mediaobject"><img src="../images/activechecks.png"></div>
 
-  <p><span class="bold"><strong>Wie werden aktive PrÃ¼fungen durchgefÃ¼hrt?</strong></span></p>
+  <p><span class="bold"><strong>Wie werden aktive Prüfungen durchgeführt?</strong></span></p>
 
-  <p>Aktive PrÃ¼fungen werden durch die PrÃ¼fungslogik im Icinga-Daemon veranlasst. Wenn Icinga den Status eines
-  Hosts oder Services prÃ¼fen muss, wird es ein Plugin ausfÃ¼hren und die Informationen Ã¼bergeben, was geprÃ¼ft werden soll. Das
-  Plugin wird dann den Betriebszustand des Hosts oder Service prÃ¼fen und die Ergebnisse an den Icinga-Daemon zurÃ¼ckmelden.
-  Icinga wird die Ergebnisse der Host- oder Service-PrÃ¼fung verarbeiten und entsprechend notwendige Aktionen ausfÃ¼hren
-  (z.B. Benachrichtigungen versenden, Eventhandler ausfÃ¼ren, usw.).</p>
+  <p>Aktive Prüfungen werden durch die Prüfungslogik im Icinga-Daemon veranlasst. Wenn Icinga den Status eines
+  Hosts oder Services prüfen muss, wird es ein Plugin ausführen und die Informationen übergeben, was geprüft werden soll. Das
+  Plugin wird dann den Betriebszustand des Hosts oder Service prüfen und die Ergebnisse an den Icinga-Daemon zurückmelden.
+  Icinga wird die Ergebnisse der Host- oder Service-Prüfung verarbeiten und entsprechend notwendige Aktionen ausführen
+  (z.B. Benachrichtigungen versenden, Eventhandler ausfüren, usw.).</p>
 
   <p>Mehr Informationen, wie Plugins arbeiten, finden Sie <a class="link" href="plugins.html" title="Icinga Plugins">hier</a>.</p>
 
-  <p><span class="bold"><strong>Wann werden aktive PrÃ¼fungen ausgefÃ¼hrt?</strong></span></p>
+  <p><span class="bold"><strong>Wann werden aktive Prüfungen ausgeführt?</strong></span></p>
 
-  <p>Aktive PrÃ¼fungen werden ausgefÃ¼hrt</p>
+  <p>Aktive Prüfungen werden ausgeführt</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>in regelmÃ¤ÃŸigen Intervallen, wie sie in den <span class="emphasis"><em>check_interval</em></span> und
+      <p>in regelmäßigen Intervallen, wie sie in den <span class="emphasis"><em>check_interval</em></span> und
       <span class="emphasis"><em>retry_interval</em></span>-Optionen in Ihren Host- und Service-Definitionen festgelegt sind</p>
     </li>
 <li class="listitem">
@@ -71,34 +71,34 @@
     </li>
 </ul></div>
 
-  <p>RegelmÃ¤ÃŸig geplante PrÃ¼fungen erfolgen in Intervallen, die den Einstellungen in <span class="emphasis"><em>check_interval</em></span> oder
-  <span class="emphasis"><em>retry_interval</em></span> in Ihren Host- oder Service-Definitionen entsprechen, abhÃ¤ngig davon, in welchem <a class="link" href="statetypes.html" title="Statustypen">Statustyp</a> sich der Host oder Service befindet.</p>
+  <p>Regelmäßig geplante Prüfungen erfolgen in Intervallen, die den Einstellungen in <span class="emphasis"><em>check_interval</em></span> oder
+  <span class="emphasis"><em>retry_interval</em></span> in Ihren Host- oder Service-Definitionen entsprechen, abhängig davon, in welchem <a class="link" href="statetypes.html" title="Statustypen">Statustyp</a> sich der Host oder Service befindet.</p>
 
-  <p>PrÃ¼fungen nach Bedarf werden ausgefÃ¼hrt, wann immer Icinga die Notwendigkeit sieht, die neuesten
-  Statusinformationen Ã¼ber einen bestimmten Host oder Service zu ermitteln. Wenn Icinga beispielsweise die <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Erreichbarkeit</a> eines Hosts feststellt, wird es oft PrÃ¼fungen von Eltern- und Kind-Hosts
-  durchfÃ¼hren, um den genauen Status eines bestimmten Netzwerk-Segments zu ermitteln. PrÃ¼fungen nach Bedarf finden sich auch in
-  der <a class="link" href="dependencychecks.html" title="Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">vorausschauenden AbhÃ¤ngigkeitsprÃ¼fung</a>s-Logik, um sicherzustellen, dass Icinga
-  mÃ¶glichst genaue Statusinformationen hat.</p>
-  <a class="indexterm" name="id5627833"></a>
-  <a class="indexterm" name="id5627843"></a>
+  <p>Prüfungen nach Bedarf werden ausgeführt, wann immer Icinga die Notwendigkeit sieht, die neuesten
+  Statusinformationen über einen bestimmten Host oder Service zu ermitteln. Wenn Icinga beispielsweise die <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Erreichbarkeit</a> eines Hosts feststellt, wird es oft Prüfungen von Eltern- und Kind-Hosts
+  durchführen, um den genauen Status eines bestimmten Netzwerk-Segments zu ermitteln. Prüfungen nach Bedarf finden sich auch in
+  der <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauenden Abhängigkeitsprüfung</a>s-Logik, um sicherzustellen, dass Icinga
+  möglichst genaue Statusinformationen hat.</p>
+  <a class="indexterm" name="id3484172"></a>
+  <a class="indexterm" name="id3484208"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="servicechecks.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="servicechecks.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="passivechecks.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="passivechecks.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Service-PrÃ¼fungen (Service Checks)Â </td>
+<td width="40%" align="left" valign="top">Service-Prüfungen (Service Checks) </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Passive PrÃ¼fungen (Passive Checks)</td>
+<td width="40%" align="right" valign="top"> Passive Prüfungen (Passive Checks)</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

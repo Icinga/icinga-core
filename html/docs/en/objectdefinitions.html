@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Object Definitions</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch03.html" title="ChapterÂ 3.Â Configuring Icinga">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="configobject.html" title="Object Configuration Overview">
 <link rel="next" href="customobjectvars.html" title="Custom Object Variables">
 </head>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Object Definitions</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configobject.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 3.Â Configuring Icinga</th>
-<td width="20%" align="right">Â <a accesskey="n" href="customobjectvars.html">Next</a>
+<a accesskey="p" href="configobject.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
+<td width="20%" align="right"> <a accesskey="n" href="customobjectvars.html">Next</a>
 </td>
 </tr>
 </table>
@@ -33,7 +33,7 @@
 
   <p>One of the features of Icingas object configuration format is that you can create object definitions that inherit properties
   from other object definitions. An explanation of how object inheritence works can be found <a class="link" href="objectinheritance.html" title="Object Inheritance">here</a>.
-  We strongly suggest that you familiarize yourself with object inheritence once you read over the documentation presented below, as it will
+  We strongly suggest that you familiarise yourself with object inheritence once you read over the documentation presented below, as it will
   make the job of creating and maintaining object definitions much easier than it otherwise would be. Also, read up on the <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object tricks</a> that offer shortcuts for otherwise tedious configuration tasks.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -114,13 +114,15 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Extended service information definitions</a></p>
 
-  <a class="indexterm" name="id5010091"></a>
+  <p><a class="link" href="objectdefinitions.html#objectdefinitions-module">Module definitions</a></p>
 
-  <a class="indexterm" name="id5010105"></a>
+  <a class="indexterm" name="id1878596"></a>
+
+  <a class="indexterm" name="id1878604"></a>
 
   <div class="section" title="Host definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5010121"></a>Host definition</h3></div></div></div>
+<a name="id1878618"></a>Host definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-host"></a> <span class="bold"><strong>Host definition</strong></span></p>
@@ -137,7 +139,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -152,12 +154,12 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define host{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><p><span class="emphasis"><em>host_name</em></span></p></td>
+<td><p><span class="color"><font color="red">host_name</font></span></p></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><p><span class="emphasis"><em>alias</em></span></p></td>
+<td><p><span class="color"><font color="red">alias</font></span></p></td>
 <td><p>alias</p></td>
 </tr>
 <tr>
@@ -167,7 +169,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p><span class="emphasis"><em>address</em></span></p></td>
+<td><p><span class="color"><font color="red">address</font></span></p></td>
 <td><p>address</p></td>
 </tr>
 <tr>
@@ -197,7 +199,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>max_check_attempts</em></span></td>
+<td><span class="color"><font color="red">max_check_attempts</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -222,7 +224,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p><span class="emphasis"><em>check_period</em></span></p></td>
+<td><p><span class="color"><font color="red">check_period</font></span></p></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
@@ -287,17 +289,17 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contacts</em></span></td>
+<td><span class="color"><font color="red">contacts</font></span></td>
 <td><p>contacts</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td><span class="color"><font color="red">contact_groups</font></span></td>
 <td>contact_groups</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>notification_interval</em></span></td>
+<td><span class="color"><font color="red">notification_interval</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -307,7 +309,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>notification_period</em></span></td>
+<td><span class="color"><font color="red">notification_period</font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
@@ -371,7 +373,7 @@
 <td><p>x_coord,y_coord,z_coord</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -731,12 +733,21 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>vrml_image</strong></span>:</p></td>
-<td><p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This
+<td>
+<p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This
             image will be used as the texture map for the specified host in the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a> CGI.
             Unlike the image you use for the <span class="emphasis"><em>&lt;icon_image&gt;</em></span> variable, this one should probably
-            <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit wierd. Images for hosts are assumed
+            <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit weird. Images for hosts are assumed
             to be in the <span class="bold"><strong>logos/</strong></span> subdirectory in your HTML images directory (i.e.
-            <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p></td>
+            <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p>
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>This directive has no effect in Icinga</p></td></tr>
+</table></div>
+</td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>statusmap_image</strong></span>:</p></td>
@@ -789,14 +800,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5012724"></a>
+    <a class="indexterm" name="id1879599"></a>
 
-    <a class="indexterm" name="id5012733"></a>
+    <a class="indexterm" name="id1881275"></a>
   </div>
 
   <div class="section" title="Hostgroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5010123"></a>Hostgroup Definition</h3></div></div></div>
+<a name="id1878620"></a>Hostgroup Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-hostgroup"></a><span class="bold"><strong>Host Group Definition</strong></span></p>
@@ -813,7 +824,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -828,12 +839,12 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostgroup{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>hostgroup_name</em></span></td>
+<td><span class="color"><font color="red">hostgroup_name</font></span></td>
 <td><p>hostgroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>alias</em></span></td>
+<td><span class="color"><font color="red">alias</font></span></td>
 <td><p>alias</p></td>
 </tr>
 <tr>
@@ -862,7 +873,7 @@
 <td><p>url</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -932,14 +943,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5013245"></a>
+    <a class="indexterm" name="id1881807"></a>
 
-    <a class="indexterm" name="id5013253"></a>
+    <a class="indexterm" name="id1881816"></a>
   </div>
 
   <div class="section" title="Service Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5012747"></a>Service Definition</h3></div></div></div>
+<a name="id1881290"></a>Service Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-service"></a><span class="bold"><strong>Service Definition</strong></span></p>
@@ -958,7 +969,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -973,7 +984,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define service{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -983,7 +994,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_description</em></span></td>
+<td><span class="color"><font color="red">service_description</font></span></td>
 <td><p>service_description</p></td>
 </tr>
 <tr>
@@ -1003,7 +1014,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>check_command</em></span></td>
+<td><span class="color"><font color="red">check_command</font></span></td>
 <td><p>command_name</p></td>
 </tr>
 <tr>
@@ -1013,17 +1024,17 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>max_check_attempts</em></span></td>
+<td><span class="color"><font color="red">max_check_attempts</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>check_interval</em></span></td>
+<td><span class="color"><font color="red">check_interval</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>retry_interval</em></span></td>
+<td><span class="color"><font color="red">retry_interval</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -1038,7 +1049,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>check_period</em></span></td>
+<td><span class="color"><font color="red">check_period</font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
@@ -1103,7 +1114,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>notification_interval</em></span></td>
+<td><span class="color"><font color="red">notification_interval</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -1113,7 +1124,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>notification_period</em></span></td>
+<td><span class="color"><font color="red">notification_period</font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
@@ -1128,12 +1139,12 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contacts</em></span></td>
+<td><span class="color"><font color="red">contacts</font></span></td>
 <td><p>contacts</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td><span class="color"><font color="red">contact_groups</font></span></td>
 <td><p>contact_groups</p></td>
 </tr>
 <tr>
@@ -1167,7 +1178,7 @@
 <td>alt_string</td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -1480,14 +1491,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5014091"></a>
+    <a class="indexterm" name="id1884020"></a>
 
-    <a class="indexterm" name="id5015455"></a>
+    <a class="indexterm" name="id1882715"></a>
   </div>
 
   <div class="section" title="Servicegroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5013270"></a>Servicegroup Definition</h3></div></div></div>
+<a name="id1881833"></a>Servicegroup Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-servicegroup"></a><span class="bold"><strong>Service Group Definition</strong></span></p>
@@ -1504,7 +1515,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -1519,12 +1530,12 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define servicegroup{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>servicegroup_name</em></span></td>
+<td><span class="color"><font color="red">servicegroup_name</font></span></td>
 <td><p>servicegroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>alias</em></span></td>
+<td><span class="color"><font color="red">alias</font></span></td>
 <td><p>alias</p></td>
 </tr>
 <tr>
@@ -1553,7 +1564,7 @@
 <td><p>url</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -1629,14 +1640,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5016022"></a>
+    <a class="indexterm" name="id1884654"></a>
 
-    <a class="indexterm" name="id5016112"></a>
+    <a class="indexterm" name="id1884744"></a>
   </div>
 
   <div class="section" title="Contact Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5015580"></a>Contact Definition</h3></div></div></div>
+<a name="id1884200"></a>Contact Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-contact"></a><span class="bold"><strong>Contact Definition</strong></span></p>
@@ -1654,7 +1665,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -1669,7 +1680,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define contact{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contact_name</em></span></td>
+<td><span class="color"><font color="red">contact_name</font></span></td>
 <td><p>contact_name</p></td>
 </tr>
 <tr>
@@ -1684,42 +1695,42 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_notifications_enabled</em></span></td>
+<td><span class="color"><font color="red">host_notifications_enabled</font></span></td>
 <td><p>[0/1]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_notifications_enabled</em></span></td>
+<td><span class="color"><font color="red">service_notifications_enabled</font></span></td>
 <td><p>[0/1]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_notification_period</em></span></td>
+<td><span class="color"><font color="red">host_notification_period</font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_notification_period</em></span></td>
+<td><span class="color"><font color="red">service_notification_period</font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_notification_options</em></span></td>
+<td><span class="color"><font color="red">host_notification_options</font></span></td>
 <td><p>[d,u,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_notification_options</em></span></td>
+<td><span class="color"><font color="red">service_notification_options</font></span></td>
 <td><p>[w,u,c,r,f,s,n]</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_notification_commands</em></span></td>
+<td><span class="color"><font color="red">host_notification_commands</font></span></td>
 <td><p>command_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_notification_commands</em></span></td>
+<td><span class="color"><font color="red">service_notification_commands</font></span></td>
 <td><p>command_name</p></td>
 </tr>
 <tr>
@@ -1753,7 +1764,7 @@
 <td><p>[0/1]</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -1900,14 +1911,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5017251"></a>
+    <a class="indexterm" name="id1885836"></a>
 
-    <a class="indexterm" name="id5017268"></a>
+    <a class="indexterm" name="id1885947"></a>
   </div>
 
   <div class="section" title="Contactgroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5016128"></a>Contactgroup Definition</h3></div></div></div>
+<a name="id1884760"></a>Contactgroup Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-contactgroup"></a><span class="bold"><strong>Contact Group Definition</strong></span></p>
@@ -1925,7 +1936,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -1940,12 +1951,12 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define contactgroup{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contactgroup_name</em></span></td>
+<td><span class="color"><font color="red">contactgroup_name</font></span></td>
 <td><p>contactgroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>alias</em></span></td>
+<td><span class="color"><font color="red">alias</font></span></td>
 <td><p>alias</p></td>
 </tr>
 <tr>
@@ -1959,7 +1970,7 @@
 <td><p>contactgroups</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -2008,14 +2019,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5017646"></a>
+    <a class="indexterm" name="id1886338"></a>
 
-    <a class="indexterm" name="id5017654"></a>
+    <a class="indexterm" name="id1886345"></a>
   </div>
 
   <div class="section" title="Timeperiod Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5017280"></a>Timeperiod Definition</h3></div></div></div>
+<a name="id1885961"></a>Timeperiod Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-timeperiod"></a><span class="bold"><strong>Time Period Definition</strong></span></p>
@@ -2035,7 +2046,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -2050,12 +2061,12 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define timeperiod{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>timeperiod_name</em></span></td>
+<td><span class="color"><font color="red">timeperiod_name</font></span></td>
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>alias</em></span></td>
+<td><span class="color"><font color="red">alias</font></span></td>
 <td><p>alias</p></td>
 </tr>
 <tr>
@@ -2074,7 +2085,7 @@
 <td>[timeperiod1,timeperiod2,...,timeperiodn]</td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -2116,7 +2127,8 @@
         day 20 - -1                     00:00-24:00             ; 20th to the last day of every month
         july 10 - 15                    00:00-24:00             ; July 10th to July 15th of every year
         april 10 - may 15               00:00-24:00             ; April 10th to May 15th of every year
-        tuesday 1 april - friday 2 may  00:00-24:00     ; 1st Tuesday in April to 2nd Friday in May of every year
+        tuesday 1 april - friday 2 may  00:00-24:00     ; 1st Tuesday in April
+                                                    ; to 2nd Friday in May of every year
         }
 
  define timeperiod{
@@ -2127,7 +2139,8 @@
         monday 3 - thursday 4 / 2            00:00-24:00     ; Every other day from 3rd Monday to 4th Thursday of every month
         day 1 - 15 / 5                       00:00-24:00     ; Every 5 days from the 1st to the 15th day of every month
         july 10 - 15 / 2                     00:00-24:00     ; Every other day from July 10th to July 15th of every year
-        tuesday 1 april - friday 2 may / 6   00:00-24:00     ; Every 6 days from the 1st Tuesday in April to the 2nd Friday in May of every year
+        tuesday 1 april - friday 2 may / 6   00:00-24:00     ; Every 6 days from the 1st Tuesday in April
+                                                         ; to the 2nd Friday in May of every year
         }</pre>
 
     <p><span class="emphasis"><em>Directive Descriptions:</em></span></p>
@@ -2174,14 +2187,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5018021"></a>
+    <a class="indexterm" name="id1886808"></a>
 
-    <a class="indexterm" name="id5018105"></a>
+    <a class="indexterm" name="id1886815"></a>
   </div>
 
   <div class="section" title="Command Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5017668"></a>Command Definition</h3></div></div></div>
+<a name="id1886359"></a>Command Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-command"></a><span class="bold"><strong>Command Definition</strong></span></p>
@@ -2200,7 +2213,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -2215,16 +2228,16 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define command{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>command_name</em></span></td>
+<td><span class="color"><font color="red">command_name</font></span></td>
 <td><p>command_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>command_line</em></span></td>
+<td><span class="color"><font color="red">command_line</font></span></td>
 <td><p>command_line</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -2281,14 +2294,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5018465"></a>
+    <a class="indexterm" name="id1887184"></a>
 
-    <a class="indexterm" name="id5018501"></a>
+    <a class="indexterm" name="id1887221"></a>
   </div>
 
   <div class="section" title="Servicedependency Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5018120"></a>Servicedependency Definition</h3></div></div></div>
+<a name="id1886833"></a>Servicedependency Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-servicedependency"></a><span class="bold"><strong>Service Dependency Definition</strong></span></p>
@@ -2307,7 +2320,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional. However, you must supply at least one type of
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you must supply at least one type of
       criteria for the definition to be of much use.</p>
     </td></tr>
 </table></div>
@@ -2323,7 +2336,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define servicedependency{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>dependent_host_name</em></span></td>
+<td><span class="color"><font color="red">dependent_host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -2333,12 +2346,12 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>dependent_service_description</em></span></td>
+<td><span class="color"><font color="red">dependent_service_description</font></span></td>
 <td><p>service_description</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -2348,7 +2361,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_description</em></span></td>
+<td><span class="color"><font color="red">service_description</font></span></td>
 <td><p>service_description</p></td>
 </tr>
 <tr>
@@ -2372,7 +2385,7 @@
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -2473,14 +2486,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5019322"></a>
+    <a class="indexterm" name="id1888063"></a>
 
-    <a class="indexterm" name="id5019339"></a>
+    <a class="indexterm" name="id1888080"></a>
   </div>
 
   <div class="section" title="Serviceescalation Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5018514"></a>Serviceescalation Definition</h3></div></div></div>
+<a name="id1887235"></a>Serviceescalation Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-serviceescalation"></a><span class="bold"><strong>Service Escalation Definition</strong></span></p>
@@ -2498,7 +2511,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -2513,7 +2526,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define serviceescalation{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -2523,37 +2536,37 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>servicegroup_name</em></span></td>
+<td><span class="color"><font color="red">servicegroup_name</font></span></td>
 <td><p>servicegroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_description</em></span></td>
+<td><span class="color"><font color="red">service_description</font></span></td>
 <td><p>service_description</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contacts</em></span></td>
+<td><span class="color"><font color="red">contacts</font></span></td>
 <td><p>contacts</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td><span class="color"><font color="red">contact_groups</font></span></td>
 <td><p>contactgroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>first_notification</em></span></td>
+<td><span class="color"><font color="red">first_notification</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>last_notification</em></span></td>
+<td><span class="color"><font color="red">last_notification</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>notification_interval</em></span></td>
+<td><span class="color"><font color="red">notification_interval</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -2602,7 +2615,7 @@
 <td><p>#</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -2757,14 +2770,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5020456"></a>
+    <a class="indexterm" name="id1889151"></a>
 
-    <a class="indexterm" name="id5020462"></a>
+    <a class="indexterm" name="id1889245"></a>
   </div>
 
   <div class="section" title="Hostdependency Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5019353"></a>Hostdependency Definition</h3></div></div></div>
+<a name="id1888095"></a>Hostdependency Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-hostdependency"></a><span class="bold"><strong>Host Dependency Definition</strong></span></p>
@@ -2783,7 +2796,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -2798,7 +2811,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostdependency{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>dependent_host_name</em></span></td>
+<td><span class="color"><font color="red">dependent_host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -2808,7 +2821,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -2837,7 +2850,7 @@
 <td><p>timeperiod_name</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -2924,14 +2937,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5021150"></a>
+    <a class="indexterm" name="id1889945"></a>
 
-    <a class="indexterm" name="id5021147"></a>
+    <a class="indexterm" name="id1889963"></a>
   </div>
 
   <div class="section" title="Hostescalation Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5020478"></a>Hostescalation Definition</h3></div></div></div>
+<a name="id1889260"></a>Hostescalation Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-hostescalation"></a><span class="bold"><strong>Host Escalation Definition</strong></span></p>
@@ -2949,7 +2962,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Directives"</em></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
     </td></tr>
 </table></div>
 
@@ -2964,7 +2977,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostescalation{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -2974,27 +2987,27 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contacts</em></span></td>
+<td><span class="color"><font color="red">contacts</font></span></td>
 <td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>contact_groups</em></span></td>
+<td><span class="color"><font color="red">contact_groups</font></span></td>
 <td>contactgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>first_notification</em></span></td>
+<td><span class="color"><font color="red">first_notification</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>last_notification</em></span></td>
+<td><span class="color"><font color="red">last_notification</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>notification_interval</em></span></td>
+<td><span class="color"><font color="red">notification_interval</font></span></td>
 <td><p>#</p></td>
 </tr>
 <tr>
@@ -3028,7 +3041,7 @@
 <td><p>#</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -3155,14 +3168,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5022022"></a>
+    <a class="indexterm" name="id1890849"></a>
 
-    <a class="indexterm" name="id5022028"></a>
+    <a class="indexterm" name="id1890855"></a>
   </div>
 
   <div class="section" title="Hostextinfo Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5021182"></a>Hostextinfo Definition</h3></div></div></div>
+<a name="id1889977"></a>Hostextinfo Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-hostextinfo"></a><span class="bold"><strong>Extended Host Information Definition</strong></span></p>
@@ -3180,7 +3193,7 @@
 <tr><td align="left" valign="top">
       <p>All directives contained in extended host information definitions are also available in <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>. Thus, you can choose to define the directives below in your host definitions
       if it makes your configuration simpler. Separate extended host information definitions will continue to be supported for backward
-      compatability.</p>
+      compatibility.</p>
     </td></tr>
 </table></div>
 
@@ -3192,7 +3205,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Variables"</em></span> are required while the others are optional. However, you need to supply at least one optional
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you need to supply at least one optional
       variable in each definition for it to be of much use.</p>
     </td></tr>
 </table></div>
@@ -3208,7 +3221,7 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define hostextinfo{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
@@ -3257,7 +3270,7 @@
 <td>x_coord,y_coord,z_coord</td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -3335,7 +3348,7 @@
 <p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This
             image will be used as the texture map for the specified host in the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a> CGI.
             Unlike the image you use for the <span class="emphasis"><em>&lt;icon_image&gt;</em></span> variable, this one should probably
-            <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit wierd. Images for hosts are assumed
+            <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit weird. Images for hosts are assumed
             to be in the <span class="bold"><strong>logos/</strong></span> subdirectory in your HTML images directory (i.e.
             <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -3400,14 +3413,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5022784"></a>
+    <a class="indexterm" name="id1891682"></a>
 
-    <a class="indexterm" name="id5022854"></a>
+    <a class="indexterm" name="id1891689"></a>
   </div>
 
   <div class="section" title="Serviceextinfo Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id5022044"></a>Serviceextinfo Definition</h3></div></div></div>
+<a name="id1890869"></a>Serviceextinfo Definition</h3></div></div></div>
     
 
     <p><a name="objectdefinitions-serviceextinfo"></a><span class="bold"><strong>Extended Service Information
@@ -3427,7 +3440,7 @@
 <tr><td align="left" valign="top">
       <p>As of Nagios 3.x, all directives contained in extended service information definitions are also available in <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definitions</a>. Thus, you can choose to define the directives below in your service
       definitions if it makes your configuration simpler. Separate extended service information definitions will continue to be supported
-      for backward compatability.</p>
+      for backward compatibility.</p>
     </td></tr>
 </table></div>
 
@@ -3439,7 +3452,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="emphasis"><em>"Variables"</em></span>are required while the others are optional. However, you need to supply at least one optional
+      <p><span class="color"><font color="red">"Directives"</font></span>are required while the others are optional. However, you need to supply at least one optional
       variable in each definition for it to be of much use.</p>
     </td></tr>
 </table></div>
@@ -3455,12 +3468,12 @@
 <tr><td colspan="3" align="left" valign="middle"><p>define serviceextinfo{</p></td></tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>host_name</em></span></td>
+<td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="emphasis"><em>service_description</em></span></td>
+<td><span class="color"><font color="red">service_description</font></span></td>
 <td><p>service_description</p></td>
 </tr>
 <tr>
@@ -3489,7 +3502,7 @@
 <td><p>alt_string</p></td>
 </tr>
 <tr>
-<td><p>Â Â Â </p></td>
+<td><p>   </p></td>
 <td colspan="2" align="left" valign="middle"><p>}</p></td>
 </tr>
 </tbody>
@@ -3507,7 +3520,7 @@
         icon_image_alt          Security-Related Alerts
         }</pre>
 
-    <p><span class="emphasis"><em>Variable Descriptions:</em></span></p>
+    <p><span class="emphasis"><em>Directive Descriptions:</em></span></p>
 
     <div class="informaltable">
       <table border="0">
@@ -3566,28 +3579,164 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id5023434"></a>
+    <a class="indexterm" name="id1892294"></a>
 
-    <a class="indexterm" name="id5023453"></a>
+    <a class="indexterm" name="id1892304"></a>
   </div>
+
+  <div class="section" title="Module Definition">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id1891700"></a>Module Definition</h3></div></div></div>
+    
+
+    <p><a name="objectdefinitions-module"></a><span class="bold"><strong>Module Definition</strong></span></p>
+
+    <p><span class="emphasis"><em>Description:</em></span></p>
+
+    <p>A module definition is used to specify information about a module. It can be used instead of a broker_module entry in the main configuration file thus being more flexible (you can use cfg_file/cfg_dir entries to include it).</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Module definitions are available starting with Icinga 1.4.</p>
+    </td></tr>
+</table></div>
+
+    <p><span class="emphasis"><em>Definition Format:</em></span></p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
+    </td></tr>
+</table></div>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr><td colspan="3" align="left" valign="middle"><p>define module{</p></td></tr>
+<tr>
+<td><p>
+            </p></td>
+<td><p><span class="color"><font color="red">module_name</font></span></p></td>
+<td><p>module name</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p><span class="color"><font color="red">path</font></span></p></td>
+<td><p>path</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p>args</p></td>
+<td><p>arguments</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p>module_type</p></td>
+<td><p>neb</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td colspan="2" align="left" valign="middle"><p>}</p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p><span class="emphasis"><em>Example Definitions:</em></span></p>
+
+    <pre class="screen"> define module{
+        module_name    ido_mod
+        path           /usr/local/icinga/bin/idomod.o
+        module_type    neb
+        args           config_file=/usr/local/icinga/etc/idomod.cfg
+        }</pre>
+
+    <p>Based on the <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a> documentation the module definition would look like this:</p>
+
+    <pre class="screen"> define module{
+        module_name    mklivestatus
+        path           /usr/local/lib/mk-livestatus/livestatus.o
+        module_type    neb
+        args           /var/lib/nagios/rw/live
+        }</pre>
+
+    <p><span class="emphasis"><em>Directive Descriptions:</em></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>module_name</strong></span>:</p></td>
+<td><p>This directive identifies the unique name of the module so you cannot have two modules with the same module name.
+            It is mandatory, otherwise the config will not be accepted and the module will not be loaded.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>module_type</strong></span>:</p></td>
+<td><p>This optional directive defines the type of the module, e.g. 'neb' for event broker modules. This directive is intended to allow further filtering on the module loading.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>path</strong></span>:</p></td>
+<td><p>This mandatory directive specifies the path to the module binary to be loaded. For event broker modules like
+            idomod the user running the core must be allowed to read and load the module.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>args</strong></span>:</p></td>
+<td><p>This directive defines optional arguments passed to the module. idomod needs config_file=.../idomod.cfg while other
+            modules have their own syntax. This directive is passed as argument string to the event broker module loader if used as neb
+            module.</p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Templating should be possible but it has not been tested extensively with Icinga 1.4.</p>
+    </td></tr>
+</table></div>
+
+    <a class="indexterm" name="id1892691"></a>
+  </div>
+
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configobject.html">Prev</a>Â </td>
+<a accesskey="p" href="configobject.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="customobjectvars.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="customobjectvars.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Object Configuration OverviewÂ </td>
+<td width="40%" align="left" valign="top">Object Configuration Overview </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â Custom Object Variables</td>
+<td width="40%" align="right" valign="top"> Custom Object Variables</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

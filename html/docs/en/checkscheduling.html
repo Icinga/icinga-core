@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Service and Host Check Scheduling</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch07.html" title="ChapterÂ 7.Â Advanced Topics">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="passivestatetranslation.html" title="Passive Host State Translation">
 <link rel="next" href="cgiincludes.html" title="Custom CGI Headers and Footers">
 </head>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Service and Host Check Scheduling</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="passivestatetranslation.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 7.Â Advanced Topics</th>
-<td width="20%" align="right">Â <a accesskey="n" href="cgiincludes.html">Next</a>
+<a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgiincludes.html">Next</a>
 </td>
 </tr>
 </table>
@@ -43,10 +43,10 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>normal_check_interval</em></span></p>
+      <p><span class="emphasis"><em>check_interval</em></span></p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>retry_check_interval</em></span></p>
+      <p><span class="emphasis"><em>retry_interval</em></span></p>
     </li>
 <li class="listitem">
       <p><span class="emphasis"><em>check_period</em></span></p>
@@ -183,7 +183,7 @@
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span> </p></td>
 </tr>
 <tr>
-<td>Â </td>
+<td> </td>
 <td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span> </p></td>
 </tr>
 </tbody>
@@ -349,28 +349,28 @@
   <p><a name="checkscheduling-service_options"></a><span class="bold"><strong>Service Definition Options That Affect
   Scheduling</strong></span></p>
 
-  <p>Each service definition contains a <span class="emphasis"><em>normal_check_interval</em></span> and
-  <span class="emphasis"><em>retry_check_interval</em></span> option. Hopefully this will clarify what these two options do, how they relate to the
+  <p>Each service definition contains a <span class="emphasis"><em>check_interval</em></span> and
+  <span class="emphasis"><em>retry_interval</em></span> option. Hopefully this will clarify what these two options do, how they relate to the
   <span class="emphasis"><em>max_check_attempts</em></span> option in the service definition, and how they affect the scheduling of the
   service.</p>
 
-  <p>First off, the <span class="emphasis"><em>normal_check_interval</em></span> option is the interval at which the service is checked under
+  <p>First off, the <span class="emphasis"><em>check_interval</em></span> option is the interval at which the service is checked under
   "normal" circumstances. "Normal" circumstances mean whenever the service is in an OK state or when its in a <a class="link" href="statetypes.html" title="State Types">hard</a> non-OK state.</p>
 
   <p>When a service first changes from an OK state to a non-OK state, Icinga gives you the ability to temporarily slow
   down or speed up the interval at which subsequent checks of that service will occur. When the service first changes state,
   Icinga will perform up to <span class="emphasis"><em>max_check_attempts</em></span>-1 retries of the service check before it decides its a
-  real problem. While the service is being retried, it is scheduled according to the <span class="emphasis"><em>retry_check_interval</em></span>
-  option, which might be faster or slower than the normal <span class="emphasis"><em>normal_check_interval</em></span> option. While the service is
+  real problem. While the service is being retried, it is scheduled according to the <span class="emphasis"><em>retry_interval</em></span>
+  option, which might be faster or slower than the normal <span class="emphasis"><em>check_interval</em></span> option. While the service is
   being rechecked (up to <span class="emphasis"><em>max_check_attempts</em></span>-1 times), the service is in a <a class="link" href="statetypes.html" title="State Types">soft
   state</a>. If the service is rechecked <span class="emphasis"><em>max_check_attempts</em></span>-1 times and it is still in a non-OK state, the
   service turns into a <a class="link" href="statetypes.html" title="State Types">hard state</a> and is subsequently rescheduled at the normal rate specified
   by the <span class="emphasis"><em>check_interval</em></span> option.</p>
 
   <p>On a side note, it you specify a value of 1 for the <span class="emphasis"><em>max_check_attempts</em></span> option, the service will not
-  ever be checked at the interval specified by the <span class="emphasis"><em>retry_check_interval</em></span> option. Instead, it immediately turns
+  ever be checked at the interval specified by the <span class="emphasis"><em>retry_interval</em></span> option. Instead, it immediately turns
   into a <a class="link" href="statetypes.html" title="State Types">hard state</a> and is subsequently rescheduled at the rate specified by the
-  <span class="emphasis"><em>normal_check_interval</em></span> option.</p>
+  <span class="emphasis"><em>check_interval</em></span> option.</p>
 
   <p><span class="bold"><strong>TODO</strong></span></p>
 
@@ -380,39 +380,39 @@
 
   <p>This documentation is being rewritten. Stay tuned for more information in a later beta release...</p>
 
-  <a class="indexterm" name="id5079909"></a>
-  <a class="indexterm" name="id5079916"></a>
-  <a class="indexterm" name="id5079925"></a>
-  <a class="indexterm" name="id5079934"></a>
-  <a class="indexterm" name="id5079945"></a>
-  <a class="indexterm" name="id5079954"></a>
-  <a class="indexterm" name="id5079964"></a>
-  <a class="indexterm" name="id5079973"></a>
-  <a class="indexterm" name="id5079981"></a>
-  <a class="indexterm" name="id5079993"></a>
-  <a class="indexterm" name="id5079984"></a>
-  <a class="indexterm" name="id5080011"></a>
-  <a class="indexterm" name="id5080021"></a>
-  <a class="indexterm" name="id5080031"></a>
+  <a class="indexterm" name="id1950774"></a>
+  <a class="indexterm" name="id1950787"></a>
+  <a class="indexterm" name="id1950794"></a>
+  <a class="indexterm" name="id1950804"></a>
+  <a class="indexterm" name="id1950775"></a>
+  <a class="indexterm" name="id1950824"></a>
+  <a class="indexterm" name="id1950833"></a>
+  <a class="indexterm" name="id1950841"></a>
+  <a class="indexterm" name="id1950851"></a>
+  <a class="indexterm" name="id1950842"></a>
+  <a class="indexterm" name="id1950870"></a>
+  <a class="indexterm" name="id1950880"></a>
+  <a class="indexterm" name="id1950871"></a>
+  <a class="indexterm" name="id1950901"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="passivestatetranslation.html">Prev</a>Â </td>
+<a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="cgiincludes.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="cgiincludes.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Passive Host State TranslationÂ </td>
+<td width="40%" align="left" valign="top">Passive Host State Translation </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â Custom CGI Headers and
+<td width="40%" align="right" valign="top"> Custom CGI Headers and
   Footers</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

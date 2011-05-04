@@ -1,12 +1,12 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Schnellstart-Installationsanleitungen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="beginners.html" title="Hinweise fÃ¼r Neulinge">
+<link rel="prev" href="beginners.html" title="Hinweise für Neulinge">
 <link rel="next" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Schnellstart-Installationsanleitungen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="beginners.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="beginners.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right">Â <a accesskey="n" href="quickstart-icinga.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="quickstart-icinga.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,58 +29,87 @@
 <a name="quickstart"></a>Schnellstart-Installationsanleitungen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Diese Schnellstartanleitungen sind dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von 20
-  Minuten aus dem Quellcode installieren und Ihren lokalen Rechner damit Ã¼berwachen. Hier werden keine fortgeschrittenen
-  Installationsoptionen vorgestellt - lediglich die Grundlagen, die fÃ¼r 95% aller Benutzer funktionieren, die anfangen wollen. AuÃŸerdem gibt
-  es eine neue Schnellstartanleitung fÃ¼r die Installation von Icinga zusammen mit den IDOUtils fÃ¼r die Anbindung einer
-  MySQL-, Oracle- oder PostgreSQL-Datenbank.</p>
+  <p>Diese Schnellstartanleitungen sind dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von 20 bis
+  30 Minuten aus dem Quellcode installieren und Ihren lokalen Rechner damit überwachen. Hier werden keine fortgeschrittenen
+  Installationsoptionen vorgestellt - lediglich die Grundlagen, die für 95% aller Benutzer funktionieren, die anfangen wollen.</p>
+
+  <p>Verweise zu Konfigurations-Tools und anderen Addons finden Sie <a class="link" href="addons.html" title="Icinga Addons">hier</a>.</p>
+
+  <p>Außerdem gibt es eine neue Schnellstartanleitung für die Installation von Icinga zusammen mit den IDOUtils für die
+  Anbindung einer MySQL-, Oracle- oder PostgreSQL-Datenbank.</p>
 
   <p><span class="bold"><strong>Anleitungen</strong></span></p>
 
   <p>In den Schnellstart-Anleitungen wird auf verschiedene Linux-Distributionen eingegangen, u.a. Fedora, Ubuntu und
-  openSuSE. Einige Distributionen sind Ã¤hnlich, so dass Sie diese Anleitungen voraussichtlich auch fÃ¼r RedHat, Debian
-  und SLES verwenden kÃ¶nnen. Von Marcel Hecko stammt eine Anleitung fÃ¼r Icinga auf FreeBSD</p>
+  openSuSE. Einige Distributionen sind ähnlich, so dass Sie diese Anleitungen voraussichtlich auch für RedHat, Debian
+  und SLES verwenden können. Von Marcel Hecko stammt eine Anleitung für Icinga auf FreeBSD</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Bitte beachten Sie, dass sich teilweise die Namen der Pakete zwischen verschiedenen Versionen des gleichen Betriebssystems
+    verändern. Wenn Sie also die genannten Pakete nicht finden, dann sollten Sie Ihre bevorzugte Suchmaschine nutzen, um den korrekten Namen
+    zu ermitteln.</p>
+  </td></tr>
+</table></div>
+
+  <p>Die <a class="link" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">Schnellstartanleitung für Linux</a> und die <a class="link" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">Schnellstartanleitung für FreeBSD</a> geben Ihnen Anweisungen für die Installation von
+  Icinga, grundlegenden Plugins, um verschiedene Dinge zu prüfen, und der klassischen GUI, auf die sie mit Ihrem Web-Browser
+  zugreifen können. Das äußere Erscheinungsbild ist Nagios-ähnlich, obwohl die GUI verschiedene Verbesserungen bietet (z.B.
+  erweiterter CSV-Export, Befehle gleichzeitig für mehrere Objekte, usw.). Es gibt keine Datenbank und alle Informationen werden in normalen
+  Dateien gespeichert. Icinga-Web ist in diesem Setup <span class="emphasis"><em>nicht</em></span> verfügbar.</p>
+
+  <p>Mit Hilfe der <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Schnellstartanleitung für Icinga mit IDOUtils</a> und der <a class="link" href="quickstart-idoutils-freebsd.html" title="Icinga-Schnellstart mit IDOUtils auf FreeBSD">Schnellstartanleitung für Icinga mit IDOUtils für FreeBSD</a> bekommen Sie
+  die o.g. Dinge sowie eine Datenbank zur Speicherung von aktuellen und historischen Informationen. Die Datenbank wird
+  <span class="emphasis"><em>nicht</em></span> benutzt, um die Konfiguration über ein Web-Interface zu ermöglichen. Es gibt verschiedene <a class="link" href="addons.html" title="Icinga Addons">Addons</a>, die auf diesen Zweck spezialisiert sind und es gibt keine Pläne für ein eingebautes Tool. Das neue
+  Icinga-Webinterface kann installiert werden, wenn Sie dieses Setup benutzen. Separate Anweisungen finden Sie <a class="link" href="icinga-web-scratch.html" title="Installation des Icinga-Web Frontend">hier</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">Schnellstartanleitung fÃ¼r Linux</a></p>
+      <p><a class="link" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">Schnellstartanleitung für Linux</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">Schnellstartanleitung fÃ¼r FreeBSD</a></p>
+      <p><a class="link" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">Schnellstartanleitung für FreeBSD</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Schnellstartanleitung fÃ¼r Icinga mit IDOUtils</a></p>
+      <p><a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Schnellstartanleitung für Icinga mit IDOUtils</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Schnellstartanleitung für Icinga mit IDOUtils für FreeBSD</a></p>
     </li>
 </ul></div>
 
-  <p>Wenn Sie Icinga auf einem Betriebssystem oder einer Linux-Distribution installieren, die oben nicht aufgefÃ¼hrt ist,
-  lesen Sie die <a class="xref" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">â€žIcinga-Schnellstart auf Linuxâ€œ</a>-Anleitung, um einen Ãœberblick zu bekommen, was zu tun ist. Befehlsnamen, Pfade und
-  anderes variiert stark zwischen verschiedenen Betriebssystemen/Distributionen, so dass Sie wahrscheinlich die Installationsanleitung ein
-  wenig anpassen mÃ¼ssen, damit sie fÃ¼r Ihren besonderen Fall funktioniert.</p>
+  <p>Wenn Sie Icinga auf einem Betriebssystem oder einer Linux-Distribution installieren, die oben nicht aufgeführt ist,
+  lesen Sie die <a class="link" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">Schnellstartanleitung für Linux</a>, um einen Überblick zu bekommen, was zu tun ist.
+  Befehlsnamen, Pfade und anderes variiert stark zwischen verschiedenen Betriebssystemen/Distributionen, so dass Sie wahrscheinlich die
+  Installationsanleitung ein wenig anpassen müssen, damit sie für Ihren besonderen Fall funktioniert.</p>
 
-  <a class="indexterm" name="id5559637"></a>
+  <a class="indexterm" name="id3413796"></a>
 
-  <a class="indexterm" name="id5559648"></a>
+  <a class="indexterm" name="id3413806"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="beginners.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="beginners.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="quickstart-icinga.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="quickstart-icinga.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Hinweise fÃ¼r NeulingeÂ </td>
+<td width="40%" align="left" valign="top">Hinweise für Neulinge </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Icinga-Schnellstart auf Linux</td>
+<td width="40%" align="right" valign="top"> Icinga-Schnellstart auf Linux</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>CGI Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch03.html" title="ChapterÂ 3.Â Configuring Icinga">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="customobjectvars.html" title="Custom Object Variables">
 <link rel="next" href="cgiauth.html" title="Authentication And Authorization In The CGIs">
 </head>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">CGI Configuration File Options</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="customobjectvars.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 3.Â Configuring Icinga</th>
-<td width="20%" align="right">Â <a accesskey="n" href="cgiauth.html">Next</a>
+<a accesskey="p" href="customobjectvars.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgiauth.html">Next</a>
 </td>
 </tr>
 </table>
@@ -178,6 +178,42 @@
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-splunk_url">Splunk URL</a></p>
     </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-persistent_ack_comments">Persistent Acknowledge Comments</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-showlog_initial_states">Show Initial States</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="../../../../../">Show Current States</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-tab_friendly_titles">Show Object Type in Tab Title</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-add_notif_num">Show Service State and Notifications Number</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-http_charset">HTTP character set</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-first_day_of_week">First Day of Week</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-use_logging">CGI Command Logging</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-cgi_log_file">CGI Log File</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI Log Rotation Method</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-cgi_log_archive_path">CGI Log Archive Path</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-enforce_comments_on_actions">Enforce comments on Actions</a></p>
+    </li>
 </ul></div>
 
   <p><a name="configcgi-main_cfg_file"></a> <span class="bold"><strong>Main Configuration File Location</strong></span></p>
@@ -195,8 +231,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -220,8 +256,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -246,7 +282,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>url_html_path=/icinga</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>url_html_path=/icinga</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -271,8 +307,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
-          </span></p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -296,7 +332,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>use_authentication=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>use_authentication=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -334,7 +370,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>default_user_name=guest</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_user_name=guest</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -367,7 +403,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -393,8 +429,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -422,7 +458,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -449,7 +485,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -476,7 +512,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -504,7 +540,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -533,7 +569,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -562,8 +598,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -588,7 +624,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>lock_author_names=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>lock_author_names=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -623,8 +659,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -667,8 +703,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -705,7 +741,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>default_statusmap_layout=4</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_statusmap_layout=4</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -773,7 +809,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statuswrl_include=myworld.wrl</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>statuswrl_include=myworld.wrl</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -808,7 +844,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>default_statuswrl_layout=4</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_statuswrl_layout=4</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -864,7 +900,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>refresh_rate=90</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>refresh_rate=90</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -923,61 +959,61 @@
 <p>
                
 
-              <span class="color">
+              <span class="color"><font color="red">
                  
 
                 <span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span>
 
                  
-              </span>
+              </font></span>
 
                
             </p> <p>
                
 
-              <span class="color">
+              <span class="color"><font color="red">
                  
 
                 <span class="bold"><strong>host_down_sound=hostd.wav</strong></span>
 
                  
-              </span>
+              </font></span>
 
                
             </p> <p>
                
 
-              <span class="color">
+              <span class="color"><font color="red">
                  
 
                 <span class="bold"><strong>service_critical_sound=critical.wav</strong></span>
 
                  
-              </span>
+              </font></span>
 
                
             </p> <p>
                
 
-              <span class="color">
+              <span class="color"><font color="red">
                  
 
                 <span class="bold"><strong>service_warning_sound=warning.wav</strong></span>
 
                  
-              </span>
+              </font></span>
 
                
             </p> <p>
                
 
-              <span class="color">
+              <span class="color"><font color="red">
                  
 
                 <span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span>
 
                  
-              </span>
+              </font></span>
 
                
             </p>
@@ -1008,8 +1044,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>ping_syntax=/bin/ping -n -U -c 5
-          $HOSTADDRESS$</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>ping_syntax=/bin/ping -n -U -c 5
+          $HOSTADDRESS$</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1033,7 +1069,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>escape_html_tags=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>escape_html_tags=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1058,7 +1094,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>notes_url_target=_blank</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>notes_url_target=_blank</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1084,7 +1120,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>action_url_target=_blank</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>action_url_target=_blank</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1110,7 +1146,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span> </span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1135,7 +1171,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>enable_splunk_integration=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>enable_splunk_integration=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1161,8 +1197,8 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span>
-          </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span>
+          </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1185,7 +1221,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>persistent_ack_comments=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>persistent_ack_comments=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1229,7 +1265,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>showlog_initial_states=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>showlog_initial_states=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1281,7 +1317,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>showlog_current_states=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>showlog_current_states=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1333,7 +1369,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>tab_friendly_titles=1</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>tab_friendly_titles=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1400,7 +1436,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>add_notif_num_hard=28</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>add_notif_num_hard=28</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1448,7 +1484,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>http_charset=utf-8</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>http_charset=utf-8</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1467,88 +1503,332 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id5029052"></a>
+  <p><a name="configcgi-first_day_of_week"></a> <span class="bold"><strong>Set first day of week</strong></span></p>
 
-  <a class="indexterm" name="id5029024"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>first_day_of_week=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>first_day_of_week=1</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5029072"></a>
+  <p>This sets the first day of the week which is used in several CGI-reports. Default is 0 = sunday. 1 = monday will be suitable for
+  countries adhering to ISO 8601.</p>
 
-  <a class="indexterm" name="id5029083"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5029098"></a>
+  <p><a name="configcgi-use_logging"></a> <span class="bold"><strong>Logging of CGI commands</strong></span></p>
 
-  <a class="indexterm" name="id5029113"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>use_logging=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>use_logging=1</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5029126"></a>
+  <p>This option enables the logging of CGI commands in a separate log file. Default is 0 = logging disabled, 1 = logging enabled.</p>
 
-  <a class="indexterm" name="id5029139"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5029153"></a>
+  <p><a name="configcgi-cgi_log_file"></a> <span class="bold"><strong>Set the name of the log file</strong></span></p>
 
-  <a class="indexterm" name="id5029166"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>cgi_log_file=name of log file</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_file=/usr/local/icinga/var/cgi_logs/icinga-cgi.log</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5029140"></a>
+  <p>This option sets the location of the CGI log file.</p>
 
-  <a class="indexterm" name="id5029194"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
+  <p><a name="configcgi-cgi_log_rotation_method"></a> <span class="bold"><strong>Set log file rotation method</strong></span></p>
 
-  <a class="indexterm" name="id5029208"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>log file rotation method=&lt;d|w|m&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_rotation_method=d</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5029222"></a>
+  <p>This is the rotation method that you would like Icinga to use for your CGI log file. Values are as follows:</p>
 
-  <a class="indexterm" name="id5029237"></a>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>h = Hourly (rotate the log at the top of each hour)</p>
+    </li>
+<li class="listitem">
+      <p>d = Daily (rotate the log at midnight each day - this is the default)</p>
+    </li>
+<li class="listitem">
+      <p>w = Weekly (rotate the log at midnight on Saturday)</p>
+    </li>
+<li class="listitem">
+      <p>m = Monthly (rotate the log at midnight on the last day of the month)</p>
+    </li>
+</ul></div>
 
-  <a class="indexterm" name="id5029250"></a>
 
-  <a class="indexterm" name="id5029264"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5029277"></a>
+  <p><a name="configcgi-cgi_log_archive_path"></a> <span class="bold"><strong>Set first day of week</strong></span></p>
 
-  <a class="indexterm" name="id5029293"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>cgi_log_archive_path=&lt;archive directory&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/var/cgi_logs</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5029278"></a>
+  <p>This is the directory where Icinga should place CGI log files that have been rotated. This option is ignored if you choose
+  to not use the <a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI log rotation</a> functionality.</p>
 
-  <a class="indexterm" name="id5029321"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5029334"></a>
+  <p><a name="configcgi-enforce_comments_on_actions"></a> <span class="bold"><strong>Enforce comments on actions</strong></span></p>
 
-  <a class="indexterm" name="id5029348"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>enforce_comments_on_actions=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>enforce_comments_on_actions=1</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5029360"></a>
+  <p>Enforces the need to enter a comment on actions entered via the CGIs. 0 = do not enforce comment (default), 1 = enforce comment.
+  </p>
 
-  <a class="indexterm" name="id5029374"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>The option use_logging has to be enabled, otherwise there will be no logging of comments.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5029389"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5029399"></a>
+  <a class="indexterm" name="id1899138"></a>
 
-  <a class="indexterm" name="id5029414"></a>
+  <a class="indexterm" name="id1899145"></a>
 
-  <a class="indexterm" name="id5029401"></a>
+  <a class="indexterm" name="id1899158"></a>
 
-  <a class="indexterm" name="id5029441"></a>
+  <a class="indexterm" name="id1899170"></a>
 
-  <a class="indexterm" name="id5029428"></a>
+  <a class="indexterm" name="id1899183"></a>
 
-  <a class="indexterm" name="id5029442"></a>
+  <a class="indexterm" name="id1899196"></a>
+
+  <a class="indexterm" name="id1899197"></a>
+
+  <a class="indexterm" name="id1899223"></a>
+
+  <a class="indexterm" name="id1899237"></a>
+
+  <a class="indexterm" name="id1899250"></a>
+
+  <a class="indexterm" name="id1899264"></a>
+
+  <a class="indexterm" name="id1899278"></a>
+
+  <a class="indexterm" name="id1899292"></a>
+
+  <a class="indexterm" name="id1899280"></a>
+
+  <a class="indexterm" name="id1899320"></a>
+
+  <a class="indexterm" name="id1899333"></a>
+
+  <a class="indexterm" name="id1899346"></a>
+
+  <a class="indexterm" name="id1899360"></a>
+
+  <a class="indexterm" name="id1899375"></a>
+
+  <a class="indexterm" name="id1899361"></a>
+
+  <a class="indexterm" name="id1899402"></a>
+
+  <a class="indexterm" name="id1899417"></a>
+
+  <a class="indexterm" name="id1899431"></a>
+
+  <a class="indexterm" name="id1899444"></a>
+
+  <a class="indexterm" name="id1899458"></a>
+
+  <a class="indexterm" name="id1899473"></a>
+
+  <a class="indexterm" name="id1899459"></a>
+
+  <a class="indexterm" name="id1899499"></a>
+
+  <a class="indexterm" name="id1899512"></a>
+
+  <a class="indexterm" name="id1899525"></a>
+
+  <a class="indexterm" name="id1899513"></a>
+
+  <a class="indexterm" name="id1899555"></a>
+
+  <a class="indexterm" name="id1899527"></a>
+
+  <a class="indexterm" name="id1899575"></a>
+
+  <a class="indexterm" name="id1899592"></a>
+
+  <a class="indexterm" name="id1899577"></a>
+
+  <a class="indexterm" name="id1899619"></a>
+
+  <a class="indexterm" name="id1899632"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="customobjectvars.html">Prev</a>Â </td>
+<a accesskey="p" href="customobjectvars.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="cgiauth.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="cgiauth.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Custom Object VariablesÂ </td>
+<td width="40%" align="left" valign="top">Custom Object Variables </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â Authentication And
+<td width="40%" align="right" valign="top"> Authentication And
   Authorization In The CGIs</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

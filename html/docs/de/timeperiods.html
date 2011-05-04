@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Zeitfenster</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="statetypes.html" title="Statustypen">
 <link rel="next" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Zeitfenster</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="statetypes.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="statetypes.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="networkreachability.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="networkreachability.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -30,28 +30,28 @@
     
     <p> oder...</p>
     <p>
-      <span class="bold"><strong>EinfÃ¼hrung</strong></span>
+      <span class="bold"><strong>Einführung</strong></span>
     </p>
       <div class="mediaobject"><img src="../images/objects-timeperiods.png"></div>
-    <p><a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster</a>-Definitionen erlauben Ihnen zu kontrollieren, wann verschiedene Aspekte der Ãœberwachungs- und Alarmierungslogik arbeiten. Zum Beispiel kÃ¶nnen Sie einschrÃ¤nken</p>
+    <p><a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster</a>-Definitionen erlauben Ihnen zu kontrollieren, wann verschiedene Aspekte der Überwachungs- und Alarmierungslogik arbeiten. Zum Beispiel können Sie einschränken</p>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> wann regelmÃ¤ÃŸig geplante Host- und Service-PrÃ¼fungen ausgefÃ¼hrt werden</p>
+        <p> wann regelmäßig geplante Host- und Service-Prüfungen ausgeführt werden</p>
       </li>
 <li class="listitem">
         <p> wann Benachrichtigungen versandt werden</p>
       </li>
 <li class="listitem">
-        <p> wann Benachrichtigungs-Eskalationen benutzt werden kÃ¶nnen</p>
+        <p> wann Benachrichtigungs-Eskalationen benutzt werden können</p>
       </li>
 <li class="listitem">
-        <p> wann AbhÃ¤ngigkeiten gÃ¼ltig sind</p>
+        <p> wann Abhängigkeiten gültig sind</p>
       </li>
 </ul></div>
     <p>
       <span class="bold"><strong>Vorrang bei Zeitfenstern</strong></span>
     </p>
-    <p>Zeitfenster-<a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Definitionen</a> kÃ¶nnen mehrere Typen von Direktiven enthalten, einschlieÃŸlich Wochentagen, Monatstagen und Kalenderdaten. Verschiedene Typen von Direktiven haben unterschiedliche Vorrang-Ebenen und kÃ¶nnen andere Direktiven in Ihren Zeitfenster-Definitionen auÃŸer Kraft setzen. Die Rangfolge fÃ¼r verschiedene Typen von Direktiven (in absteigender Reihenfolge) ist wie folgt:</p>
+    <p>Zeitfenster-<a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Definitionen</a> können mehrere Typen von Direktiven enthalten, einschließlich Wochentagen, Monatstagen und Kalenderdaten. Verschiedene Typen von Direktiven haben unterschiedliche Vorrang-Ebenen und können andere Direktiven in Ihren Zeitfenster-Definitionen außer Kraft setzen. Die Rangfolge für verschiedene Typen von Direktiven (in absteigender Reihenfolge) ist wie folgt:</p>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p> Kalenderdaten (2008-01-01)</p>
@@ -72,60 +72,60 @@
         <p> normaler Wochentag (Tuesday)</p>
       </li>
 </ul></div>
-    <p>Beispiele fÃ¼r verschiedene Zeitfenster-Direktiven finden Sie <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">hier</a>.</p>
+    <p>Beispiele für verschiedene Zeitfenster-Direktiven finden Sie <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">hier</a>.</p>
     <p>
-      <span class="bold"><strong>Wie Zeitfenster mit Host- und Service-PrÃ¼fungen arbeiten</strong></span>
+      <span class="bold"><strong>Wie Zeitfenster mit Host- und Service-Prüfungen arbeiten</strong></span>
     </p>
-    <p>Host- und Service-Definitionen haben eine optionale <span class="emphasis"><em>check_period</em></span>-Direktive, die es Ihnen erlaubt, ein Zeitfenster anzugeben, das zur EinschrÃ¤nkung benutzt werden sollte, wann regelmÃ¤ÃŸig geplante aktive PrÃ¼fungen des Hosts oder Service stattfinden.</p>
-    <p>Wenn Sie die <span class="emphasis"><em>check_period</em></span>-Direktive nicht nutzen, um ein Zeitfenster anzugeben, wird Icinga in der Lage sein, aktive PrÃ¼fungen fÃ¼r den Host oder Service zu jeder Zeit zu planen, wenn es nÃ¶tig ist. Dies ist in Wirklichkeit ein 24x7-Ãœberwachungsszenario.</p>
-    <p>Ein Zeitfenster in der <span class="emphasis"><em>check_period</em></span>-Direktive anzugeben erlaubt Ihnen die EinschrÃ¤nkung der Zeit, wann Icinga regelmÃ¤ÃŸige aktive Host- oder Service-PrÃ¼fungen plant. Wenn Icinga versucht, einen Host oder Service neu zu planen, wird es sicherstellen, dass die nÃ¤chste PrÃ¼fung in einen gÃ¼ltigen Zeitbereich im definierten Zeitfenster fÃ¤llt. Falls das nicht zutreffen sollte, wird Icinga die Zeit der nÃ¤chsten PrÃ¼fung so anpassen, dass sie in die nÃ¤chste "gÃ¼ltige" Zeit im angegebenen Zeitfenster fÃ¤llt. Das bedeutet, dass der Host oder Service vielleicht wÃ¤hrend der nÃ¤chsten Stunde, des nÃ¤chsten Tages oder der nÃ¤chsten Woche, etc. nicht geprÃ¼ft wird.</p>
+    <p>Host- und Service-Definitionen haben eine optionale <span class="emphasis"><em>check_period</em></span>-Direktive, die es Ihnen erlaubt, ein Zeitfenster anzugeben, das zur Einschränkung benutzt werden sollte, wann regelmäßig geplante aktive Prüfungen des Hosts oder Service stattfinden.</p>
+    <p>Wenn Sie die <span class="emphasis"><em>check_period</em></span>-Direktive nicht nutzen, um ein Zeitfenster anzugeben, wird Icinga in der Lage sein, aktive Prüfungen für den Host oder Service zu jeder Zeit zu planen, wenn es nötig ist. Dies ist in Wirklichkeit ein 24x7-Überwachungsszenario.</p>
+    <p>Ein Zeitfenster in der <span class="emphasis"><em>check_period</em></span>-Direktive anzugeben erlaubt Ihnen die Einschränkung der Zeit, wann Icinga regelmäßige aktive Host- oder Service-Prüfungen plant. Wenn Icinga versucht, einen Host oder Service neu zu planen, wird es sicherstellen, dass die nächste Prüfung in einen gültigen Zeitbereich im definierten Zeitfenster fällt. Falls das nicht zutreffen sollte, wird Icinga die Zeit der nächsten Prüfung so anpassen, dass sie in die nächste "gültige" Zeit im angegebenen Zeitfenster fällt. Das bedeutet, dass der Host oder Service vielleicht während der nächsten Stunde, des nächsten Tages oder der nächsten Woche, etc. nicht geprüft wird.</p>
     <p><span class="inlinemediaobject"><img src="../images/note.gif"></span>
- Anmerkung: PrÃ¼fungen nach Bedarf und passive PrÃ¼fungen sind nicht durch das Zeitfenster beschrÃ¤nkt, das Sie in der <span class="emphasis"><em>check_period</em></span>-Direktive angeben. Nur regelmÃ¤ÃŸig geplante aktive PrÃ¼fungen werden beschrÃ¤nkt.</p>
-    <p>AuÃŸer Sie haben einen guten Grund das zu tun, wÃ¼rden wir raten, dass Sie all Ihre Hosts und Services mit einem Zeitfenster Ã¼berwachen, das einen 24x7-Zeitbereich abdeckt. Falls Sie das nicht tun, kÃ¶nnen Sie wÃ¤hrend der "blackout"-Zeiten in einige Probleme laufen (Zeiten, die nicht gÃ¼ltig sind in der Zeitfenster-Definition):</p>
+ Anmerkung: Prüfungen nach Bedarf und passive Prüfungen sind nicht durch das Zeitfenster beschränkt, das Sie in der <span class="emphasis"><em>check_period</em></span>-Direktive angeben. Nur regelmäßig geplante aktive Prüfungen werden beschränkt.</p>
+    <p>Außer Sie haben einen guten Grund das zu tun, würden wir raten, dass Sie all Ihre Hosts und Services mit einem Zeitfenster überwachen, das einen 24x7-Zeitbereich abdeckt. Falls Sie das nicht tun, können Sie während der "blackout"-Zeiten in einige Probleme laufen (Zeiten, die nicht gültig sind in der Zeitfenster-Definition):</p>
     <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-        <p> der Status des Hosts oder Service wird in der blackout-Zeit unverÃ¤ndert erscheinen.</p>
+        <p> der Status des Hosts oder Service wird in der blackout-Zeit unverändert erscheinen.</p>
       </li>
 <li class="listitem">
-        <p> Kontakte werden wÃ¤hrend der blackout-Zeit wahrscheinlich nicht erneut Ã¼ber Host- oder Service-Probleme informiert werden.</p>
+        <p> Kontakte werden während der blackout-Zeit wahrscheinlich nicht erneut über Host- oder Service-Probleme informiert werden.</p>
       </li>
 <li class="listitem">
-        <p> falls sich ein Host oder Service wÃ¤hrend einer blackout-Zeit erholt, werden Kontakte nicht umgehend Ã¼ber die Erholung informiert.</p>
+        <p> falls sich ein Host oder Service während einer blackout-Zeit erholt, werden Kontakte nicht umgehend über die Erholung informiert.</p>
       </li>
 </ol></div>
     <p>
       <span class="bold"><strong>Wie Zeitfenster mit Kontakt-Benachrichtigungen arbeiten</strong></span>
     </p>
-    <p>Durch das Angeben eines Zeitfensters in der <span class="emphasis"><em>notification_period</em></span>-Direktive einer Host- oder Service-Definition kontrollieren Sie, wann Icinga Benachrichtigungen versenden darf, um Ã¼ber Probleme oder Erholungen fÃ¼r den Host oder Service zu informieren. Wenn eine Host-Benachrichtigung versandt werden soll, prÃ¼ft Icinga, ob die aktuelle Zeit in einem gÃ¼ltigen Bereich der <span class="emphasis"><em>notification_period</em></span> liegt. Wenn eine gÃ¼ltige Zeit vorliegt, wird Icinga versuchen, jeden Kontakt Ã¼ber das Problem oder die Erholung zu informieren.</p>
-    <p>Sie kÃ¶nnen Zeitfenster auch nutzen, um zu kontrollieren, wann Benachrichtigungen an einzelne Kontakte versandt werden. Durch die Nutzung der <span class="emphasis"><em>service_notification_period</em></span>- und der <span class="emphasis"><em>host_notification_period</em></span>-Direktiven in den <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definitionen</a> sind Sie in der Lage, eine tatsÃ¤chliche Rufbereitschaft fÃ¼r jeden Kontakt zu definieren. Kontakte werden Host- und Service-Benachrichtigungen nur wÃ¤hrend der Zeiten erhalten, die Sie in den Benachrichtigungs-Direktiven angegeben haben.</p>
-    <p>Beispiele, wie Zeitfenster-Definitionen fÃ¼r Rufbereitschafts-Wechsel angelegt werden, finden Sie <a class="link" href="oncallrotation.html" title="Bereitschafts-Rotation">hier</a>.</p>
+    <p>Durch das Angeben eines Zeitfensters in der <span class="emphasis"><em>notification_period</em></span>-Direktive einer Host- oder Service-Definition kontrollieren Sie, wann Icinga Benachrichtigungen versenden darf, um über Probleme oder Erholungen für den Host oder Service zu informieren. Wenn eine Host-Benachrichtigung versandt werden soll, prüft Icinga, ob die aktuelle Zeit in einem gültigen Bereich der <span class="emphasis"><em>notification_period</em></span> liegt. Wenn eine gültige Zeit vorliegt, wird Icinga versuchen, jeden Kontakt über das Problem oder die Erholung zu informieren.</p>
+    <p>Sie können Zeitfenster auch nutzen, um zu kontrollieren, wann Benachrichtigungen an einzelne Kontakte versandt werden. Durch die Nutzung der <span class="emphasis"><em>service_notification_period</em></span>- und der <span class="emphasis"><em>host_notification_period</em></span>-Direktiven in den <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definitionen</a> sind Sie in der Lage, eine tatsächliche Rufbereitschaft für jeden Kontakt zu definieren. Kontakte werden Host- und Service-Benachrichtigungen nur während der Zeiten erhalten, die Sie in den Benachrichtigungs-Direktiven angegeben haben.</p>
+    <p>Beispiele, wie Zeitfenster-Definitionen für Rufbereitschafts-Wechsel angelegt werden, finden Sie <a class="link" href="oncallrotation.html" title="Bereitschafts-Rotation">hier</a>.</p>
     <p>
       <span class="bold"><strong>Wie Zeitfenster mit Benachrichtigungs-Eskalationen arbeiten</strong></span>
     </p>
-    <p>Service- und Host-<a class="link" href="escalations.html" title="Benachrichtigungseskalationen">Benachrichtigungs-Eskalationen</a> haben eine optionale <span class="emphasis"><em>escalation_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Eskalation gÃ¼ltig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>escalation_period</em></span>-Direktive nicht in einer Eskalations-Definition benutzen, ist diese Eskalation zu allen Zeiten gÃ¼ltig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>escalation_period</em></span>-Direktive angeben, wird Icinga die Eskalations-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gÃ¼ltig sind.</p>
+    <p>Service- und Host-<a class="link" href="escalations.html" title="Benachrichtigungseskalationen">Benachrichtigungs-Eskalationen</a> haben eine optionale <span class="emphasis"><em>escalation_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Eskalation gültig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>escalation_period</em></span>-Direktive nicht in einer Eskalations-Definition benutzen, ist diese Eskalation zu allen Zeiten gültig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>escalation_period</em></span>-Direktive angeben, wird Icinga die Eskalations-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gültig sind.</p>
     <p>
-      <span class="bold"><strong>Wie Zeitfenster mit AbhÃ¤ngigkeiten arbeiten</strong></span>
+      <span class="bold"><strong>Wie Zeitfenster mit Abhängigkeiten arbeiten</strong></span>
     </p>
-    <p>Service- und Host-<a class="link" href="dependencies.html" title="Host- und Service-AbhÃ¤ngigkeiten">AbhÃ¤ngigkeiten</a> haben eine optionale <span class="emphasis"><em>dependency_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die AbhÃ¤ngigkeit gÃ¼ltig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>dependency_period</em></span>-Direktive nicht in einer AbhÃ¤ngigkeits-Definition benutzen, ist diese AbhÃ¤ngigkeit zu allen Zeiten gÃ¼ltig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>dependency_period</em></span>-Direktive angeben, wird Icinga die AbhÃ¤ngigkeits-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gÃ¼ltig sind.</p>
-  <a class="indexterm" name="id5629711"></a>
+    <p>Service- und Host-<a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">Abhängigkeiten</a> haben eine optionale <span class="emphasis"><em>dependency_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Abhängigkeit gültig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>dependency_period</em></span>-Direktive nicht in einer Abhängigkeits-Definition benutzen, ist diese Abhängigkeit zu allen Zeiten gültig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>dependency_period</em></span>-Direktive angeben, wird Icinga die Abhängigkeits-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gültig sind.</p>
+  <a class="indexterm" name="id3486077"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="statetypes.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="statetypes.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="networkreachability.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="networkreachability.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">StatustypenÂ </td>
+<td width="40%" align="left" valign="top">Statustypen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</td>
+<td width="40%" align="right" valign="top"> Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

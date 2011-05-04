@@ -1,38 +1,38 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Installation und Benutzung der Icinga API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Installation und Benutzung der Icinga-API</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung">
 <link rel="prev" href="extcommands2.html" title="Liste der externen Befehle">
-<link rel="next" href="icinga-web-api.html" title="Die Icinga Web REST API">
+<link rel="next" href="icinga-web-api.html" title="Die Icinga-Web REST API">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Installation und Benutzung der Icinga API</th></tr>
+<tr><th colspan="3" align="center">Installation und Benutzung der Icinga-API</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="extcommands2.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="extcommands2.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 11. Entwicklung</th>
-<td width="20%" align="right">Â <a accesskey="n" href="icinga-web-api.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="icinga-web-api.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Installation und Benutzung der Icinga API">
+<div class="section" title="Installation und Benutzung der Icinga-API">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-api"></a>Installation und Benutzung der Icinga API</h2></div></div></div>
+<a name="icinga-api"></a>Installation und Benutzung der Icinga-API</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-  <p>Sie benÃ¶tigen installierte und lauffÃ¤hige Versionen von Icinga und IDOUtils oder MKLiveStatus, um die Icinga API
-  nutzen zu kÃ¶nnen. </p>
+  <p>Sie benötigen installierte und lauffähige Versionen von Icinga und IDOUtils oder MKLiveStatus, um die Icinga-API
+  nutzen zu können. </p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
@@ -48,8 +48,8 @@
 <li class="listitem">
       <p><span class="bold"><strong>RHEL/Fedora/CentOS</strong></span></p>
 
-      <p>Stellen Sie sicher, dass Sie ein Repository/Packages fÃ¼r PHP 5.2.x zur VerfÃ¼gung haben - RHEL/CentOS (CentOS &lt;= 5.4)
-      unterstÃ¼tzen lediglich 5.1.6.</p>
+      <p>Stellen Sie sicher, dass Sie ein Repository/Packages für PHP 5.2.x zur Verfügung haben - RHEL/CentOS (CentOS &lt;= 5.4)
+      unterstützen lediglich 5.1.6.</p>
 
       <pre class="programlisting"> # yum install php-pdo php-mysql|pgsql </pre>
     </li>
@@ -86,9 +86,9 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Die Icinga API ist innerhalb des Pakets von Icinga Core, IDOUtils und Docs enthalten und wird wÃ¤hrend 'make
-        install' mit installiert. Sofern Sie das schon durchgefÃ¼hrt haben, befindet sich die API standardmÃ¤ÃŸig in
-        /usr/local/icinga/share/icinga-api/ und Sie kÃ¶nnen diesen Abschnitt Ã¼berspringen.</p>
+        <p>Die Icinga-API ist innerhalb des Pakets von Icinga Core, IDOUtils und Docs enthalten und wird während 'make
+        install' mit installiert. Sofern Sie das schon durchgeführt haben, befindet sich die API standardmäßig in
+        /usr/local/icinga/share/icinga-api/ und Sie können diesen Abschnitt überspringen.</p>
       </td></tr>
 </table></div>
 
@@ -98,34 +98,34 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Wenn Sie die Icinga API fÃ¼r das neue Icinga Web benÃ¶tigen und schon Icinga Core mit den IDOUtils installiert
-        haben, kÃ¶nnen Sie diesen Guide verlassen und direkt <a class="link" href="icinga-web-scratch.html" title="Installation des Icinga Web Frontend">Icinga Web</a> installieren.</p>
+        <p>Wenn Sie die Icinga-API für das neue Icinga-Web benötigen und schon Icinga Core mit den IDOUtils installiert
+        haben, können Sie diesen Guide verlassen und direkt <a class="link" href="icinga-web-scratch.html" title="Installation des Icinga-Web Frontend">Icinga-Web</a> installieren.</p>
       </td></tr>
 </table></div>
 
       <p><span class="bold"><strong>Download</strong></span></p>
 
-      <p>Sie kÃ¶nnen die Icinga API direkt aus dem GIT Repository beziehen, fÃ¼r einen frischen Clone fÃ¼hren Sie folgenden Befehl
+      <p>Sie können die Icinga-API direkt aus dem GIT Repository beziehen, für einen frischen Clone führen Sie folgenden Befehl
       aus:</p>
 
       <pre class="programlisting"> # git clone git://git.icinga.org/icinga-api.git</pre>
 
-      <p>Sofern Sie lediglich ein Update benÃ¶tigen:</p>
+      <p>Sofern Sie lediglich ein Update benötigen:</p>
 
       <pre class="programlisting"> # cd icinga-api &amp;&amp; git pull origin master</pre>
 
-      <p>Oder laden Sie einen Snapshot direkt Ã¼ber das Gitweb: <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
+      <p>Oder laden Sie einen Snapshot direkt über das Gitweb: <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
 
       <p><span class="bold"><strong>Installation</strong></span></p>
 
-      <p>Entpacken Sie die Icinga API, fÃ¼hren Sie configure aus und installieren Sie die Icinga API </p>
+      <p>Entpacken Sie die Icinga-API, führen Sie configure aus und installieren Sie die Icinga-API </p>
 <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz</pre>
 <p>
       </p>
 <pre class="programlisting"> # ./configure</pre>
 
-      <p>Sie kÃ¶nnen den PrÃ¤fix definieren, wohin die Icinga API installiert wird, sowie den Ort der Systemkonfiguration fÃ¼r Icinga
-      Core und IDOUtils und die ausfÃ¼hrenden Benutzer. All diese Informationen werden bei einer Installation durch das Core Paket
+      <p>Sie können den Präfix definieren, wohin die Icinga-API installiert wird, sowie den Ort der Systemkonfiguration für Icinga
+      Core und IDOUtils und die ausführenden Benutzer. All diese Informationen werden bei einer Installation durch das Core Paket
       direkt gesetzt. </p>
 <pre class="programlisting"> # ./configure --datarootdir=/usr/local/icinga/share \
     --sysconfdir=/usr/local/icinga/etc \
@@ -142,8 +142,8 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Die --with-web...-Direktiven mÃ¼ssen gesetzt sein. Anderenfalls werden die Web-Logs nicht korrekt erstellt. AuÃŸerdem kann
-      dies zu einem leeren Haupt-Cronk fÃ¼hren. Bitte beachten Sie, dass die Werte von 'user' und 'group' abhÃ¤ngig von der Distribution
+<tr><td align="left" valign="top"><p>Die --with-web...-Direktiven müssen gesetzt sein. Anderenfalls werden die Web-Logs nicht korrekt erstellt. Außerdem kann
+      dies zu einem leeren Haupt-Cronk führen. Bitte beachten Sie, dass die Werte von 'user' und 'group' abhängig von der Distribution
       sind.</p></td></tr>
 </table></div>
 <p>
@@ -155,7 +155,7 @@
 
   <p><span class="bold"><strong>Konfiguration</strong></span></p>
 
-  <p>Wenn Sie Ihr eigenes Addon auf Basis der Icinga API entwickeln mÃ¶chten, benÃ¶tigen Sie das folgende assoziative
+  <p>Wenn Sie Ihr eigenes Addon auf Basis der Icinga-API entwickeln möchten, benötigen Sie das folgende assoziative
   Array:</p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
@@ -178,9 +178,9 @@
     'table_prefix' =&gt; 'icinga_',
  );</pre>
 
-  <p><span class="bold"><strong>UnterstÃ¼tzte Backends</strong></span></p>
+  <p><span class="bold"><strong>Unterstützte Backends</strong></span></p>
 
-  <p>Aktuell sind folgende Backend Typen verfÃ¼gbar. Mehr Information finden Sie unter doc/icinga-api-types.txt.</p>
+  <p>Aktuell sind folgende Backend Typen verfügbar. Mehr Information finden Sie unter doc/icinga-api-types.txt.</p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>IDOUtils DB - OK</p>
@@ -199,7 +199,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>Datenermittlung</strong></span></p>
 
-      <p>Host-Namen und zugehÃ¶rige ZustÃ¤nde</p>
+      <p>Host-Namen und zugehörige Zustände</p>
 
       <p>Erzeugen Sie eine Instant der Klasse IcingaApi:</p>
 
@@ -212,7 +212,7 @@
  -&gt;setResultColumns(array('HOST_NAME', 'HOST_CURRENT_STATE'))
  -&gt;fetch();</pre>
 
-      <p>Mit Hilfe von setSearchFilter() kÃ¶nnen Sie Filter benutzen, um die Suche einzuschrÃ¤nken:</p>
+      <p>Mit Hilfe von setSearchFilter() können Sie Filter benutzen, um die Suche einzuschränken:</p>
 
       <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
@@ -280,32 +280,32 @@
  }
  ?&gt;</pre>
 
-      <p>FÃ¼r nÃ¤here Informationen werfen Sie bitte einen Blick in das <a class="link" href="http://git.icinga.org/" target="_top">git repository</a>
+      <p>Für nähere Informationen werfen Sie bitte einen Blick in das <a class="link" href="http://git.icinga.org/" target="_top">git repository</a>
       oder die Beispiele im doc/examples-Verzeichnis.</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id5673202"></a>
+  <a class="indexterm" name="id3531773"></a>
 
-  <a class="indexterm" name="id5673220"></a>
+  <a class="indexterm" name="id3531780"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="extcommands2.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="extcommands2.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="icinga-web-api.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="icinga-web-api.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Liste der externen BefehleÂ </td>
+<td width="40%" align="left" valign="top">Liste der externen Befehle </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Die Icinga Web REST API</td>
+<td width="40%" align="right" valign="top"> Die Icinga-Web REST API</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

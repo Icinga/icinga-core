@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="timeperiods.html" title="Zeitfenster">
 <link rel="next" href="notifications.html" title="Benachrichtigungen">
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="timeperiods.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="timeperiods.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="notifications.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="notifications.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,44 +29,44 @@
 <a name="networkreachability"></a>Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Falls Sie jemals im technischen Support gearbeitet haben, hatten Sie zweifelsohne Benutzer, die Ihnen erzÃ¤hlt haben, "das
-  Internet sei down". Als Techniker waren Sie ziemlich sicher, daÃŸ keiner den Stromstecker aus dem Internet gezogen hatte.
+  <p>Falls Sie jemals im technischen Support gearbeitet haben, hatten Sie zweifelsohne Benutzer, die Ihnen erzählt haben, "das
+  Internet sei down". Als Techniker waren Sie ziemlich sicher, daß keiner den Stromstecker aus dem Internet gezogen hatte.
   Irgendetwas muss schiefgehen zwischen dem Stuhl des Benutzers und dem Internet.</p>
 
   <p>Angenommen es ist ein technisches Problem, dann werden Sie nach dem Problem suchen. Vielleicht ist der PC des Benutzers
   ausgeschaltet oder das Netzwerkkabel ist gezogen oder der zentrale Router Ihres Unternehmen nimmt gerade eine Auszeit. Was immer
-  das Problem sein mag, eines ist sehr sicher - das Internet ist nicht down. Es ist lediglich nicht fÃ¼r den Benutzer
+  das Problem sein mag, eines ist sehr sicher - das Internet ist nicht down. Es ist lediglich nicht für den Benutzer
   erreichbar.</p>
 
-  <p>Icinga ist in der Lage festzustellen, ob die Hosts, die Sie Ã¼berwachen, in einem DOWN- oder UNREACHABLE-Zustand
-  sind. Dies sind sehr unterschiedliche (obwohl durchaus verwandte) ZustÃ¤nde und kÃ¶nnen Ihnen helfen, schnell die Grundursache fÃ¼r
-  Netzwerkprobleme festzustellen. Hier nun, wie die Netzwerk-Erreichbarkeitslogik arbeitet, um zwischen diesen beiden ZustÃ¤nden zu
+  <p>Icinga ist in der Lage festzustellen, ob die Hosts, die Sie überwachen, in einem DOWN- oder UNREACHABLE-Zustand
+  sind. Dies sind sehr unterschiedliche (obwohl durchaus verwandte) Zustände und können Ihnen helfen, schnell die Grundursache für
+  Netzwerkprobleme festzustellen. Hier nun, wie die Netzwerk-Erreichbarkeitslogik arbeitet, um zwischen diesen beiden Zuständen zu
   unterscheiden...</p>
 
   <p><span class="bold"><strong>Beispiel-Netzwerk</strong></span></p>
 
   <p>Werfen Sie einen Blick auf das einfache Netzwerk-Diagramm. Lassen Sie uns annehmen, dass Sie alle Hosts (Server, Router,
-  Switches, etc.) Ã¼berwachen, die abgebildet sind. Icinga ist installiert und lauffÃ¤hig auf dem
+  Switches, etc.) überwachen, die abgebildet sind. Icinga ist installiert und lauffähig auf dem
   <span class="emphasis"><em>Icinga</em></span>-Host.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/reachability1.png"></span></p>
 
   <p><span class="bold"><strong>Definieren von Eltern/Kind-Beziehungen</strong></span></p>
 
-  <p>Um Icinga in die Lage zu versetzen, zwischen DOWN und UNREACHABLE-ZustÃ¤nden der Ã¼berwachten Hosts zu unterscheiden,
-  mÃ¼ssen Sie Icinga mitteilen, wie diese Hosts miteinander verbunden sind - vom Standpunkt des Icinga-Daemons aus
-  gesehen. Um dies zu tun verfolgen Sie den Weg, den ein Datenpaket vom Icinga-Daemon zu jedem einzelnen Host nehmen wÃ¼rde.
+  <p>Um Icinga in die Lage zu versetzen, zwischen DOWN und UNREACHABLE-Zuständen der überwachten Hosts zu unterscheiden,
+  müssen Sie Icinga mitteilen, wie diese Hosts miteinander verbunden sind - vom Standpunkt des Icinga-Daemons aus
+  gesehen. Um dies zu tun verfolgen Sie den Weg, den ein Datenpaket vom Icinga-Daemon zu jedem einzelnen Host nehmen würde.
   Jeder Switch, Router und Server, den das Paket trifft oder passiert, wird als "Hop" angesehen und erfordert, dass Sie eine
   Eltern/Kind-Beziehung in Icinga definieren. Hier nun, wie die Host-Eltern/Kind-Beziehung aus der Sicht von Icinga
   aussieht:</p>
 
   <p><span class="inlinemediaobject"><img src="../images/reachability2.png"></span></p>
 
-  <p>Nun, da Sie wissen, wie die Eltern/Kind-Beziehungen fÃ¼r Ã¼berwachte Hosts aussehen, wie konfigurieren Sie Icinga, um
-  sie abzubilden? Die <span class="emphasis"><em>parents</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> erlaubt Ihnen, das zu tun. Hier nun, wie die (verkÃ¼rzten)
-  Host-Definitionen mit Eltern/Kind-Beziehung fÃ¼r dieses Beispiel aussehen wÃ¼rden:</p>
+  <p>Nun, da Sie wissen, wie die Eltern/Kind-Beziehungen für überwachte Hosts aussehen, wie konfigurieren Sie Icinga, um
+  sie abzubilden? Die <span class="emphasis"><em>parents</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> erlaubt Ihnen, das zu tun. Hier nun, wie die (verkürzten)
+  Host-Definitionen mit Eltern/Kind-Beziehung für dieses Beispiel aussehen würden:</p>
 
   <pre class="screen"> define host{
         host_name               Icinga   ; &lt;-- der lokale Host hat keine Eltern - es ist der am weitesten oben stehende Host
@@ -117,8 +117,8 @@
   <p><span class="inlinemediaobject"><img src="../images/reachability3.png"></span></p>
 
   <p>Wenn Hosts den Status wechseln (d.h. von UP zu DOWN) wird die Host-Erreichbarkeitslogik in Icinga anspringen. Die
-  Erreichbarkeits-Logik wird parallele PrÃ¼fungen der Eltern und Kinder aller Hosts veranlassen, deren Status sich Ã¤ndert. Dies
-  erlaubt es Icinga schnell den aktuellen Status Ihrer Netzwerk-Infrastruktur zu ermitteln, wenn Ã„nderungen
+  Erreichbarkeits-Logik wird parallele Prüfungen der Eltern und Kinder aller Hosts veranlassen, deren Status sich ändert. Dies
+  erlaubt es Icinga schnell den aktuellen Status Ihrer Netzwerk-Infrastruktur zu ermitteln, wenn Änderungen
   auftreten.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/reachability4.png"></span></p>
@@ -128,39 +128,39 @@
 
   <p>Icinga wird feststellen, dass alle Hosts "unterhalb" <span class="emphasis"><em>Router1</em></span> alle in einem UNREACHABLE Status
   sind, weil Icinga sie nicht erreichen kann. <span class="emphasis"><em>Router1</em></span> ist DOWN und blockiert den Weg zu diesen anderen
-  Hosts. Diese Hosts kÃ¶nnen wunderbar funktionieren oder offline sein - Icinga weiÃŸ es nicht, weil es sie nicht erreichen
+  Hosts. Diese Hosts können wunderbar funktionieren oder offline sein - Icinga weiß es nicht, weil es sie nicht erreichen
   kann. Deshalb wird Icinga sie als UNREACHABLE ansehen anstatt DOWN.</p>
 
-  <p><span class="bold"><strong>UNREACHABLE ZustÃ¤nde und Benachrichtigungen</strong></span></p>
+  <p><span class="bold"><strong>UNREACHABLE Zustände und Benachrichtigungen</strong></span></p>
 
-  <p>StandardmÃ¤ÃŸig wird Icinga Kontakte Ã¼ber Hosts im DOWN und UNREACHABLE-Status informieren. Als ein Admin/Techniker
-  mÃ¶chten Sie vielleicht keine Benachrichtigungen Ã¼ber Hosts erhalten, die UNREACHABLE sind. Sie kennen Ihre Netzwerkstruktur und
+  <p>Standardmäßig wird Icinga Kontakte über Hosts im DOWN und UNREACHABLE-Status informieren. Als ein Admin/Techniker
+  möchten Sie vielleicht keine Benachrichtigungen über Hosts erhalten, die UNREACHABLE sind. Sie kennen Ihre Netzwerkstruktur und
   wenn Icinga Sie informiert, dass der Router/die Firewall unten ist, dann wissen Sie, dass alles dahinter nicht erreichbar
   ist.</p>
 
-  <p>Falls Sie sich eine Flut von Benachrichtigungen Ã¼ber UNREACHABLE-ZustÃ¤nde wÃ¤hrend eines Netzwerkausfalls ersparen mÃ¶chten,
-  kÃ¶nnen Sie die unreachable (u)-Option der <span class="emphasis"><em>notification_options</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen und/oder die <span class="emphasis"><em>host_notification_options</em></span>-Direktive
-  in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt</a>-Direktiven ausschlieÃŸen.</p>
-  <a class="indexterm" name="id5629971"></a>
-  <a class="indexterm" name="id5629982"></a>
+  <p>Falls Sie sich eine Flut von Benachrichtigungen über UNREACHABLE-Zustände während eines Netzwerkausfalls ersparen möchten,
+  können Sie die unreachable (u)-Option der <span class="emphasis"><em>notification_options</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen und/oder die <span class="emphasis"><em>host_notification_options</em></span>-Direktive
+  in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt</a>-Direktiven ausschließen.</p>
+  <a class="indexterm" name="id3486332"></a>
+  <a class="indexterm" name="id3486347"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="timeperiods.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="timeperiods.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="notifications.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="notifications.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">ZeitfensterÂ </td>
+<td width="40%" align="left" valign="top">Zeitfenster </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Benachrichtigungen</td>
+<td width="40%" align="right" valign="top"> Benachrichtigungen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

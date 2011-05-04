@@ -1,99 +1,99 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Angepasste CGI-Kopf- und FuÃŸzeilen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Angepasste CGI-Kopf- und Fußzeilen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="checkscheduling.html" title="Service- und Host-PrÃ¼fungsplanung">
+<link rel="prev" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">
 <link rel="next" href="objectinheritance.html" title="Objektvererbung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Angepasste CGI-Kopf- und FuÃŸzeilen</th></tr>
+<tr><th colspan="3" align="center">Angepasste CGI-Kopf- und Fußzeilen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="checkscheduling.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="checkscheduling.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="objectinheritance.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="objectinheritance.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Angepasste CGI-Kopf- und FuÃŸzeilen">
+<div class="section" title="Angepasste CGI-Kopf- und Fußzeilen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiincludes"></a>Angepasste CGI-Kopf- und FuÃŸzeilen</h2></div></div></div>
+<a name="cgiincludes"></a>Angepasste CGI-Kopf- und Fußzeilen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Wenn Sie Icinga-Installationen fÃ¼r Kunden machen, dann mÃ¶chten Sie vielleicht, dass in den <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen Ã¼ber die CGIs">CGIs</a> angepasste Kopf- und FuÃŸzeilen angezeigt werden. Dies ist besonders dann nÃ¼tzlich, wenn Sie
-  Support-Kontaktinformationen u.Ã¤. fÃ¼r den Endbenutzer anzeigen mÃ¶chten.</p>
+  <p>Wenn Sie Icinga-Installationen für Kunden machen, dann möchten Sie vielleicht, dass in den <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">CGIs</a> angepasste Kopf- und Fußzeilen angezeigt werden. Dies ist besonders dann nützlich, wenn Sie
+  Support-Kontaktinformationen u.ä. für den Endbenutzer anzeigen möchten.</p>
 
-  <p>Es ist wichtig anzumerken, dass angepasste Dateien mit Kopf- und FuÃŸzeilen nicht in irgendeiner Form vorverarbeitet werden
-  (solange es sich nicht um ausfÃ¼hrbare Dateien handelt), bevor sie angezeigt werden. Der Inhalt der Kopf- und FuÃŸzeilen wird ganz
-  einfach gelesen und in der CGI-Ausgabe angezeigt. Das bedeutet, dass diese Dateien lediglich Informationen enthalten kÃ¶nnen, die
+  <p>Es ist wichtig anzumerken, dass angepasste Dateien mit Kopf- und Fußzeilen nicht in irgendeiner Form vorverarbeitet werden
+  (solange es sich nicht um ausführbare Dateien handelt), bevor sie angezeigt werden. Der Inhalt der Kopf- und Fußzeilen wird ganz
+  einfach gelesen und in der CGI-Ausgabe angezeigt. Das bedeutet, dass diese Dateien lediglich Informationen enthalten können, die
   ein Web-Browser versteht (HTML, JavaScript, usw.).</p>
 
-  <p>Wenn die angepassten Kopf- und FuÃŸzeilendateien ausfÃ¼hrbar sind, dann werden sie ausgefÃ¼hrt und die Ausgaben an den
-  Benutzer zurÃ¼ckgeliefert, so dass die Dateien gÃ¼ltigen HTML-Code enthalten sollten. Auf diese Weise kÃ¶nnen Sie Ihre eigenen CGIs
-  nutzen, um Daten in der Icinga-Anzeige auszugeben. Dies kann genutzt werden, um mit ddraw Grafiken aus rrdtool einzufÃ¼gen
-  und BefehlsmenÃ¼s im Icinga-Fenster anzuzeigen. Die ausfÃ¼hrbaren angepassten Kopf- und FuÃŸzeilendateien werden mit der
-  gleichen CGI-Umgebung ausgefÃ¼hrt wie das Icinga-Haupt-CGI, so dass Ihre Dateien die Abfrageinformationen,
-  Benutzerauthentifizierungsinformationen usw. analysieren kÃ¶nnen, um entsprechende Ausgaben zu erzeugen.</p>
+  <p>Wenn die angepassten Kopf- und Fußzeilendateien ausführbar sind, dann werden sie ausgeführt und die Ausgaben an den
+  Benutzer zurückgeliefert, so dass die Dateien gültigen HTML-Code enthalten sollten. Auf diese Weise können Sie Ihre eigenen CGIs
+  nutzen, um Daten in der Icinga-Anzeige auszugeben. Dies kann genutzt werden, um mit ddraw Grafiken aus rrdtool einzufügen
+  und Befehlsmenüs im Icinga-Fenster anzuzeigen. Die ausführbaren angepassten Kopf- und Fußzeilendateien werden mit der
+  gleichen CGI-Umgebung ausgeführt wie das Icinga-Haupt-CGI, so dass Ihre Dateien die Abfrageinformationen,
+  Benutzerauthentifizierungsinformationen usw. analysieren können, um entsprechende Ausgaben zu erzeugen.</p>
 
   <p><span class="bold"><strong>Wie funktioniert es?</strong></span></p>
 
-  <p>Sie kÃ¶nnen angepasste Kopf- und FuÃŸzeilen in die Ausgaben der CGIs einschlieÃŸen, indem Sie entsprechend benannte
+  <p>Sie können angepasste Kopf- und Fußzeilen in die Ausgaben der CGIs einschließen, indem Sie entsprechend benannte
   HTML-Dateien im <span class="emphasis"><em>ssi</em></span>-Unterverzeichnis des Icinga-HTML-Verzeichnisses (z.B.
   <span class="emphasis"><em>/usr/local/icinga/share/ssi</em></span>) ablegen.</p>
 
-  <p>Angepasste Kopfzeilen werden direkt hinter dem &lt;BODY&gt;-Tag in der CGI-Ausgabe eingefÃ¼gt, wÃ¤hrend angepasste FuÃŸzeilen
-  direkt vor dem schlieÃŸenden &lt;/BODY&gt;-Tag eingefÃ¼gt werden.</p>
+  <p>Angepasste Kopfzeilen werden direkt hinter dem &lt;BODY&gt;-Tag in der CGI-Ausgabe eingefügt, während angepasste Fußzeilen
+  direkt vor dem schließenden &lt;/BODY&gt;-Tag eingefügt werden.</p>
 
-  <p>Es gibt zwei Arten von angepassten Kopf- und FuÃŸzeilen:</p>
+  <p>Es gibt zwei Arten von angepassten Kopf- und Fußzeilen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Globale Kopf-/FuÃŸzeilen: diese Dateien sollten <span class="emphasis"><em>common-header.ssi</em></span> und
+      <p>Globale Kopf-/Fußzeilen: diese Dateien sollten <span class="emphasis"><em>common-header.ssi</em></span> und
       <span class="emphasis"><em>common-footer.ssi</em></span> benannt werden. Wenn diese Dateien existieren, werden sie in die Ausgaben aller CGIs
-      eingefÃ¼gt.</p>
+      eingefügt.</p>
     </li>
 <li class="listitem">
-      <p>CGI-spezifische Kopf-/FuÃŸzeilen: diese Dateinamen sollten im Format <span class="emphasis"><em>CGINAME-header.ssi</em></span> und
+      <p>CGI-spezifische Kopf-/Fußzeilen: diese Dateinamen sollten im Format <span class="emphasis"><em>CGINAME-header.ssi</em></span> und
       <span class="emphasis"><em>CGINAME-footer.ssi</em></span> benannt werden, wobei <span class="emphasis"><em>CGINAME</em></span> der (Datei-) Name des CGIs ohne
-      die .cgi-Erweiterung ist. Die Kopf- und FuÃŸzeilendateien des <a class="link" href="cgis.html#cgis-summary_cgi">alert summary CGI</a>
-      (summary.cgi) wÃ¼rden beispielsweise <span class="emphasis"><em>summary-header.ssi</em></span> und <span class="emphasis"><em>summary-footer.ssi</em></span>
-      heiÃŸen.</p>
+      die .cgi-Erweiterung ist. Die Kopf- und Fußzeilendateien des <a class="link" href="cgis.html#cgis-summary_cgi">alert summary CGI</a>
+      (summary.cgi) würden beispielsweise <span class="emphasis"><em>summary-header.ssi</em></span> und <span class="emphasis"><em>summary-footer.ssi</em></span>
+      heißen.</p>
     </li>
 </ul></div>
 
-  <p>Sie sind nicht gezwungen, irgendwelche angepassten Kopf- und FuÃŸzeilen zu benutzen. Sie kÃ¶nnen nur eine globale Kopfzeile
-  benutzen, wenn Sie mÃ¶chten. Sie kÃ¶nnen nur CGI-spezifische Kopfzeilen und eine globale FuÃŸzeile benutzen, wenn Sie mÃ¶chten. Ganz
+  <p>Sie sind nicht gezwungen, irgendwelche angepassten Kopf- und Fußzeilen zu benutzen. Sie können nur eine globale Kopfzeile
+  benutzen, wenn Sie möchten. Sie können nur CGI-spezifische Kopfzeilen und eine globale Fußzeile benutzen, wenn Sie möchten. Ganz
   wie Sie wollen. Wirklich.</p>
-  <a class="indexterm" name="id5656366"></a>
+  <a class="indexterm" name="id3512950"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="checkscheduling.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="checkscheduling.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="objectinheritance.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="objectinheritance.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Service- und Host-PrÃ¼fungsplanungÂ </td>
+<td width="40%" align="left" valign="top">Service- und Host-Prüfungsplanung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Objektvererbung</td>
+<td width="40%" align="right" valign="top"> Objektvererbung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

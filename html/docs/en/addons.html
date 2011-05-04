@@ -1,13 +1,13 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Icinga Addons</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch10.html" title="ChapterÂ 10.Â Additional software">
-<link rel="prev" href="ch10.html" title="ChapterÂ 10.Â Additional software">
-<link rel="next" href="nsca.html" title="NSCA">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch10.html" title="Chapter 10. Additional software">
+<link rel="prev" href="ch10.html" title="Chapter 10. Additional software">
+<link rel="next" href="nrpe.html" title="NRPE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Icinga Addons</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch10.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 10.Â Additional software</th>
-<td width="20%" align="right">Â <a accesskey="n" href="nsca.html">Next</a>
+<a accesskey="p" href="ch10.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 10. Additional software</th>
+<td width="20%" align="right"> <a accesskey="n" href="nrpe.html">Next</a>
 </td>
 </tr>
 </table>
@@ -41,7 +41,8 @@
       <p><a name="addons-conf"></a>Managing the config files through a web interface</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.nconf.org" target="_top">NConf</a>, <a class="link" href="http://www.nagiosql.org" target="_top">NagiosQL</a>, ...</p>
+          <p><a class="link" href="http://www.nconf.org" target="_top">NConf</a>, <a class="link" href="http://www.nagiosql.org" target="_top">NagiosQL</a>, 
+          <a class="link" href="http://www.netways.de/nc/en/de/produkte/icinga/addons/lconf" target="_top">LConf</a>, <a class="link" href="http://sourceforge.net/projects/lilac" target="_top">Lilac</a>, ...</p>
         </li></ul></div>
     </li>
 <li class="listitem">
@@ -49,7 +50,7 @@
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p><a class="link" href="nsca.html" title="NSCA">NSCA</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+          <p><a class="link" href="nsca.html" title="NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
         </li>
 <li class="listitem">
           <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
@@ -73,7 +74,7 @@
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p><a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">PNP4Nagios</a></p>
+          <p><a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a></p>
         </li>
 <li class="listitem">
           <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a></p>
@@ -117,7 +118,8 @@
   accomplished by using the <span class="emphasis"><em>check_by_ssh</em></span> plugin, although it can impose a higher CPU load on the monitoring machine -
   especially if you are monitoring hundreds or thousands of hosts.</p>
 
-  <p>The NRPE addon and documentation can be found at <a class="link" href="http://www.nagios.org/" target="_top">http://www.nagios.org/</a>.</p>
+  <p>The NRPE addon can be found at <a class="link" href="https://git.icinga.org/?p=icinga-nrpe.git" target="_top">https://git.icinga.org/?p=icinga-nrpe.git</a>.
+  You will find the <a class="link" href="nrpe.html" title="NRPE">documentation</a> in the next section.</p>
 
   <p><a name="addons-nsca"></a><span class="bold"><strong>NSCA</strong></span></p>
 
@@ -140,65 +142,73 @@
   <p>The IDOUtils addon install instructions can be found in the <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Quickstart-Idoutils</a> and more
   documentation can be found at <a class="link" href="http://docs.icinga.org/latest/en/" target="_top">http://docs.icinga.org/</a>.</p>
 
-  <a class="indexterm" name="id5088531"></a>
+  <a class="indexterm" name="id1959409"></a>
 
-  <a class="indexterm" name="id5088540"></a>
+  <a class="indexterm" name="id1959428"></a>
 
-  <a class="indexterm" name="id5088557"></a>
+  <a class="indexterm" name="id1959444"></a>
 
-  <a class="indexterm" name="id5088570"></a>
+  <a class="indexterm" name="id1959429"></a>
 
-  <a class="indexterm" name="id5088571"></a>
+  <a class="indexterm" name="id1959458"></a>
 
-  <a class="indexterm" name="id5088542"></a>
+  <a class="indexterm" name="id1959481"></a>
 
-  <a class="indexterm" name="id5088594"></a>
+  <a class="indexterm" name="id1959490"></a>
 
-  <a class="indexterm" name="id5088619"></a>
+  <a class="indexterm" name="id1959504"></a>
 
-  <a class="indexterm" name="id5088626"></a>
+  <a class="indexterm" name="id1959505"></a>
 
-  <a class="indexterm" name="id5088579"></a>
+  <a class="indexterm" name="id1959527"></a>
 
-  <a class="indexterm" name="id5088650"></a>
+  <a class="indexterm" name="id1959528"></a>
 
-  <a class="indexterm" name="id5088666"></a>
+  <a class="indexterm" name="id1959551"></a>
 
-  <a class="indexterm" name="id5088673"></a>
+  <a class="indexterm" name="id1959560"></a>
 
-  <a class="indexterm" name="id5088689"></a>
+  <a class="indexterm" name="id1959575"></a>
 
-  <a class="indexterm" name="id5088696"></a>
+  <a class="indexterm" name="id1959584"></a>
 
-  <a class="indexterm" name="id5088712"></a>
+  <a class="indexterm" name="id1959598"></a>
 
-  <a class="indexterm" name="id5088719"></a>
+  <a class="indexterm" name="id1959607"></a>
 
-  <a class="indexterm" name="id5088734"></a>
+  <a class="indexterm" name="id1959622"></a>
 
-  <a class="indexterm" name="id5088735"></a>
+  <a class="indexterm" name="id1959631"></a>
 
-  <a class="indexterm" name="id5088758"></a>
+  <a class="indexterm" name="id1959646"></a>
 
-  <a class="indexterm" name="id5088767"></a>
+  <a class="indexterm" name="id1959654"></a>
+
+  <a class="indexterm" name="id1959669"></a>
+
+  <a class="indexterm" name="id1959678"></a>
+
+  <a class="indexterm" name="id1959693"></a>
+
+  <a class="indexterm" name="id1959702"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch10.html">Prev</a>Â </td>
+<a accesskey="p" href="ch10.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="nsca.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="nrpe.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">ChapterÂ 10.Â Additional softwareÂ </td>
+<td width="40%" align="left" valign="top">Chapter 10. Additional software </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â NSCA</td>
+<td width="40%" align="right" valign="top"> NRPE</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

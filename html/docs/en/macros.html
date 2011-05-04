@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Understanding Macros and How They Work</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch05.html" title="ChapterÂ 5.Â The Basics">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="plugins.html" title="Icinga Plugins">
 <link rel="next" href="macrolist.html" title="Standard Macros in Icinga">
 </head>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Understanding Macros and How They Work</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="plugins.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 5.Â The Basics</th>
-<td width="20%" align="right">Â <a accesskey="n" href="macrolist.html">Next</a>
+<a accesskey="p" href="plugins.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="macrolist.html">Next</a>
 </td>
 </tr>
 </table>
@@ -63,7 +63,7 @@
 
   <p>the expanded/final command line to be executed for the host's check command would look like this:</p>
 
-  <pre class="screen"># /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 100.0,90% -c 200.0,60%</pre>
+  <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 100.0,90% -c 200.0,60%</pre>
 
   <p>Pretty simple, right? The beauty in this is that you can use a single command definition to check an unlimited number of
   hosts. Each host can be checked with the same command definition because each host's address is automatically substituted in the
@@ -82,7 +82,7 @@
         ...
         }</pre>
 
-  <p>In the example above, the service check command has two arguments (which can be referenced with <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a> macros). The $ARG1$ macro will be "<span class="color">200.0,80%</span>" and $ARG2$ will be "<span class="color">400.0,40%</span>" (both
+  <p>In the example above, the service check command has two arguments (which can be referenced with <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a> macros). The $ARG1$ macro will be "<span class="color"><font color="red">200.0,80%</font></span>" and $ARG2$ will be "<span class="color"><font color="red">400.0,40%</font></span>" (both
   without quotes). Assuming we are using the host definition given earlier and a <span class="emphasis"><em>check_ping</em></span> command defined
   like this:</p>
 
@@ -93,7 +93,7 @@
 
   <p>the expanded/final command line to be executed for the service's check command would look like this:</p>
 
-  <pre class="screen"># /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 200.0,80% -c 400.0,40%</pre>
+  <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 200.0,80% -c 400.0,40%</pre>
 
   <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
@@ -213,7 +213,7 @@
         ...
         }</pre>
 
-  <p>The _MACADDRESS custom variable would be available in a macro called <span class="color">$_HOSTMACADDRESS$</span>. More information on custom object variables and how they can be used in macros can be
+  <p>The _MACADDRESS custom variable would be available in a macro called <span class="color"><font color="red">$_HOSTMACADDRESS$</font></span>. More information on custom object variables and how they can be used in macros can be
   found <a class="link" href="customobjectvars.html" title="Custom Object Variables">here</a>.</p>
 
   <p><span class="bold"><strong>Macro Cleansing</strong></span></p>
@@ -268,25 +268,25 @@
 
   <p>A list of all the macros that are available in Icinga, as well as a chart of when they can be used, can be found
   <a class="link" href="macrolist.html" title="Standard Macros in Icinga">here</a>.</p>
-  <a class="indexterm" name="id5032064"></a>
+  <a class="indexterm" name="id1902666"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="plugins.html">Prev</a>Â </td>
+<a accesskey="p" href="plugins.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="macrolist.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="macrolist.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Icinga PluginsÂ </td>
+<td width="40%" align="left" valign="top">Icinga Plugins </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â Standard Macros in Icinga</td>
+<td width="40%" align="right" valign="top"> Standard Macros in Icinga</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

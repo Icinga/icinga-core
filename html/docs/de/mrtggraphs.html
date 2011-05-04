@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>grafische Darstellung von Performance-Informationen mit MRTG</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="icingastats.html" title="Nutzung des Icingastats-Utilitys">
 <link rel="next" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">grafische Darstellung von Performance-Informationen mit MRTG</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icingastats.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="icingastats.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
-<td width="20%" align="right">Â <a accesskey="n" href="ch09.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,9 +29,9 @@
 <a name="mrtggraphs"></a>grafische Darstellung von Performance-Informationen mit MRTG</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Das <a class="link" href="icingastats.html" target="_top">icingastats</a>-Utility erlaubt Ihnen zusammen mit <a class="link" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>, verschiedene Icinga-Performance-Statistiken Ã¼ber eine bestimmten
+  <p>Das <a class="link" href="icingastats.html" target="_top">icingastats</a>-Utility erlaubt Ihnen zusammen mit <a class="link" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>, verschiedene Icinga-Performance-Statistiken über eine bestimmten
   Zeitraum grafisch darzustellen. Das ist wichtig, weil es Ihnen helfen kann</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -39,10 +39,10 @@
       <p>dass Icinga effizient arbeitet</p>
     </li>
 <li class="listitem">
-      <p>um Problembereiche im Ãœberwachungsprozess zu lokalisieren</p>
+      <p>um Problembereiche im Überwachungsprozess zu lokalisieren</p>
     </li>
 <li class="listitem">
-      <p>um die EinflÃ¼sse von Ã„nderungen in Ihrer Icinga-Konfiguration zu beobachten</p>
+      <p>um die Einflüsse von Änderungen in Ihrer Icinga-Konfiguration zu beobachten</p>
     </li>
 </ul></div>
 
@@ -50,15 +50,15 @@
 
   <p>Schnipsel von MRTG-Beispieldateien zur Darstellung von verschiedenen Icinga-Performance-Statistiken finden Sie in
   der <span class="emphasis"><em>mrtg.cfg</em></span>-Datei im <span class="emphasis"><em>sample-config/</em></span>-Unterverzeichnis in der
-  Icinga-Distribution. Sie kÃ¶nnen auch Graphen von anderen Performance-Informationen erstellen, wenn Sie wollen - die
+  Icinga-Distribution. Sie können auch Graphen von anderen Performance-Informationen erstellen, wenn Sie wollen - die
   Beispiele liefern Ihnen dazu einen guten Ausgangspunkt.</p>
 
-  <p>Sobald Sie diese BeispieleintrÃ¤ge in die MRTG-Konfigurationsdatei (/etc/mrtg/mrtg.cfg) kopieren, sollten Sie einige neue
-  Graphen haben, wenn MRTG das nÃ¤chste Mal lÃ¤uft.</p>
+  <p>Sobald Sie diese Beispieleinträge in die MRTG-Konfigurationsdatei (/etc/mrtg/mrtg.cfg) kopieren, sollten Sie einige neue
+  Graphen haben, wenn MRTG das nächste Mal läuft.</p>
 
   <p><span class="bold"><strong>Beispielgraphen</strong></span></p>
 
-  <p>Wir werden beschreiben, welche Bedeutung einige der Beispielgraphen haben und wofÃ¼r sie benutzt werden kÃ¶nnen...</p>
+  <p>Wir werden beschreiben, welche Bedeutung einige der Beispielgraphen haben und wofür sie benutzt werden können...</p>
 
   <div class="informaltable">
     <table border="0">
@@ -69,21 +69,21 @@
 <tbody>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>Aktive Host-PrÃ¼fungen</strong></span> - Dieser Graph zeigt, wie
-          viele aktive Host-PrÃ¼fungen (regelmÃ¤ÃŸig geplant und nach Bedarf) Ã¼ber die Zeit auftraten. NÃ¼tzlich zum Verstehen
+<p> <span class="bold"><strong>Aktive Host-Prüfungen</strong></span> - Dieser Graph zeigt, wie
+          viele aktive Host-Prüfungen (regelmäßig geplant und nach Bedarf) über die Zeit auftraten. Nützlich zum Verstehen
           von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
-                  <a class="link" href="hostchecks.html" title="Host-PrÃ¼fungen (Host checks)">Host-PrÃ¼fungen</a>
+                  <a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">Host-Prüfungen</a>
                 </p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="dependencychecks.html" title="Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">voraussschauende Host-AbhÃ¤ngigkeitsprÃ¼fungen</a>
+                  <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">voraussschauende Host-Abhängigkeitsprüfungen</a>
                 </p>
               </li>
 <li class="listitem">
-                <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte PrÃ¼fungen">zwischengespeicherten PrÃ¼fungen</a> (cached checks)</p>
+                <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">zwischengespeicherten Prüfungen</a> (cached checks)</p>
               </li>
 </ul></div>
 </td>
@@ -95,21 +95,21 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>Aktive Service-PrÃ¼fungen</strong></span> - Dieser Graph zeigt,
-          wie viele aktive Service-PrÃ¼fungen (regelmÃ¤ÃŸig geplant und nach Bedarf) Ã¼ber die Zeit auftraten. NÃ¼tzlich zum Verstehen
+<p> <span class="bold"><strong>Aktive Service-Prüfungen</strong></span> - Dieser Graph zeigt,
+          wie viele aktive Service-Prüfungen (regelmäßig geplant und nach Bedarf) über die Zeit auftraten. Nützlich zum Verstehen
           von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
-                  <a class="link" href="servicechecks.html" title="Service-PrÃ¼fungen (Service Checks)">Service-PrÃ¼fungen</a>
+                  <a class="link" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">Service-Prüfungen</a>
                 </p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="dependencychecks.html" title="Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">voraussschauende Service-AbhÃ¤ngigkeitsprÃ¼fungen</a>
+                  <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">voraussschauende Service-Abhängigkeitsprüfungen</a>
                 </p>
               </li>
 <li class="listitem">
-                <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte PrÃ¼fungen">zwischengespeicherten PrÃ¼fungen</a> (cached checks)</p>
+                <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">zwischengespeicherten Prüfungen</a> (cached checks)</p>
               </li>
 </ul></div>
 </td>
@@ -122,14 +122,14 @@
 <tr>
 <td align="left" valign="top">
 <p> <span class="bold"><strong>Zwischengespeicherte Host- und
-          Service-PrÃ¼fungen</strong></span> - Dieser Graph zeigt, wie viele zwischengespeicherte Host- und Service-PrÃ¼fungen
-          (regelmÃ¤ÃŸig geplant und nach Bedarf) Ã¼ber die Zeit auftraten. NÃ¼tzlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+          Service-Prüfungen</strong></span> - Dieser Graph zeigt, wie viele zwischengespeicherte Host- und Service-Prüfungen
+          (regelmäßig geplant und nach Bedarf) über die Zeit auftraten. Nützlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-                <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte PrÃ¼fungen">zwischengespeicherten PrÃ¼fungen</a> (cached checks)</p>
+                <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">zwischengespeicherten Prüfungen</a> (cached checks)</p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="dependencychecks.html" title="Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">voraussschauende Host- und Service-AbhÃ¤ngigkeitsprÃ¼fungen</a>
+                  <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">voraussschauende Host- und Service-Abhängigkeitsprüfungen</a>
                 </p>
               </li>
 </ul></div>
@@ -142,11 +142,11 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>Passive Host- und Service-PrÃ¼fungen</strong></span> - Dieser
-          Graph zeigt, wie viele passive Host- und Service-PrÃ¼fungen (regelmÃ¤ÃŸig geplant und nach Bedarf) Ã¼ber die Zeit auftraten.
-          NÃ¼tzlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<p> <span class="bold"><strong>Passive Host- und Service-Prüfungen</strong></span> - Dieser
+          Graph zeigt, wie viele passive Host- und Service-Prüfungen (regelmäßig geplant und nach Bedarf) über die Zeit auftraten.
+          Nützlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
                 <p>
-                  <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">passiven PrÃ¼fungen</a>
+                  <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passiven Prüfungen</a>
                 </p>
               </li></ul></div>
 </td>
@@ -158,11 +158,11 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>aktive Host-/ServiceprÃ¼fungen</strong></span> - Dieser Graph
-          zeigt, wie viele (die Gesamtzahl von) Hosts und Service aktiv Ã¼ber die Zeit geprÃ¼ft wurden. NÃ¼tzlich zum Verstehen
+<p> <span class="bold"><strong>aktive Host-/Serviceprüfungen</strong></span> - Dieser Graph
+          zeigt, wie viele (die Gesamtzahl von) Hosts und Service aktiv über die Zeit geprüft wurden. Nützlich zum Verstehen
           von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
                 <p>
-                  <a class="link" href="activechecks.html" title="Aktive PrÃ¼fungen (Active Checks)">aktiven PrÃ¼fungen</a>
+                  <a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">aktiven Prüfungen</a>
                 </p>
               </li></ul></div>
 </td>
@@ -174,11 +174,11 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>passive Host-/ServiceprÃ¼fungen</strong></span> - Dieser Graph
-          zeigt, wie viele (die Gesamtzahl von) Hosts und Service passiv Ã¼ber die Zeit geprÃ¼ft wurden. NÃ¼tzlich zum Verstehen
+<p> <span class="bold"><strong>passive Host-/Serviceprüfungen</strong></span> - Dieser Graph
+          zeigt, wie viele (die Gesamtzahl von) Hosts und Service passiv über die Zeit geprüft wurden. Nützlich zum Verstehen
           von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
                 <p>
-                  <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">passiven PrÃ¼fungen</a>
+                  <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passiven Prüfungen</a>
                 </p>
               </li></ul></div>
 </td>
@@ -190,21 +190,21 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>durchschnittliche Service-PrÃ¼fungs-Latenz- und
-          AusfÃ¼hrungszeiten</strong></span> - Dieser Graph zeigt die durchschnittlichen Service-PrÃ¼fungs-Latenz- und AusfÃ¼hrungszeiten
-          Ã¼ber die Zeit. NÃ¼tzlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<p> <span class="bold"><strong>durchschnittliche Service-Prüfungs-Latenz- und
+          Ausführungszeiten</strong></span> - Dieser Graph zeigt die durchschnittlichen Service-Prüfungs-Latenz- und Ausführungszeiten
+          über die Zeit. Nützlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
-                  <a class="link" href="servicechecks.html" title="Service-PrÃ¼fungen (Service Checks)">Service-PrÃ¼fungen</a>
+                  <a class="link" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">Service-Prüfungen</a>
                 </p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="tuning.html" title="Icinga fÃ¼r maximale Leistung optimieren">Leistungsoptimierung</a>
+                  <a class="link" href="tuning.html" title="Icinga für maximale Leistung optimieren">Leistungsoptimierung</a>
                 </p>
               </li>
-</ul></div> <p>Konstant hohe Latenzzeiten kÃ¶nnen ein Anzeichen dafÃ¼r sein, eine oder mehrere der folgenden
-          Variablen zu Ã¤ndern:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+</ul></div> <p>Konstant hohe Latenzzeiten können ein Anzeichen dafür sein, eine oder mehrere der folgenden
+          Variablen zu ändern:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
                   <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a>
@@ -230,10 +230,10 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>durchschnittliche Service-ZustandsÃ¤nderungen</strong></span> -
-          Dieser Graph zeigt die durchschnittliche prozentuale Service-ZustandsÃ¤nderung (ein MaÃŸstab fÃ¼r die Sprunghaftigkeit) von
-          Services Ã¼ber die Zeit, heruntergebrochen auf Services, die in der letzten Zeit aktiv oder passiv geprÃ¼ft wurden.
-          NÃ¼tzlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<p> <span class="bold"><strong>durchschnittliche Service-Zustandsänderungen</strong></span> -
+          Dieser Graph zeigt die durchschnittliche prozentuale Service-Zustandsänderung (ein Maßstab für die Sprunghaftigkeit) von
+          Services über die Zeit, heruntergebrochen auf Services, die in der letzten Zeit aktiv oder passiv geprüft wurden.
+          Nützlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
                 <p>
                   <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung</a>
                 </p>
@@ -247,21 +247,21 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>durchschnittliche Host-PrÃ¼fungs-Latenz- und
-          AusfÃ¼hrungszeiten</strong></span> - Dieser Graph zeigt die durchschnittlichen Host-PrÃ¼fungs-Latenz- und AusfÃ¼hrungszeiten
-          Ã¼ber die Zeit. NÃ¼tzlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<p> <span class="bold"><strong>durchschnittliche Host-Prüfungs-Latenz- und
+          Ausführungszeiten</strong></span> - Dieser Graph zeigt die durchschnittlichen Host-Prüfungs-Latenz- und Ausführungszeiten
+          über die Zeit. Nützlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
-                  <a class="link" href="hostchecks.html" title="Host-PrÃ¼fungen (Host checks)">Host-PrÃ¼fungen</a>
+                  <a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">Host-Prüfungen</a>
                 </p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="tuning.html" title="Icinga fÃ¼r maximale Leistung optimieren">Leistungsoptimierung</a>
+                  <a class="link" href="tuning.html" title="Icinga für maximale Leistung optimieren">Leistungsoptimierung</a>
                 </p>
               </li>
-</ul></div> <p>Konstant hohe Latenzzeiten kÃ¶nnen ein Anzeichen dafÃ¼r sein, eine oder mehrere der folgenden
-          Variablen zu Ã¤ndern:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+</ul></div> <p>Konstant hohe Latenzzeiten können ein Anzeichen dafür sein, eine oder mehrere der folgenden
+          Variablen zu ändern:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
                   <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a>
@@ -287,10 +287,10 @@
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> <span class="bold"><strong>durchschnittliche Host-ZustandsÃ¤nderungen</strong></span> -
-          Dieser Graph zeigt die durchschnittliche prozentuale Host-ZustandsÃ¤nderung (ein MaÃŸstab fÃ¼r die Sprunghaftigkeit) von
-          Services Ã¼ber die Zeit, heruntergebrochen auf Services, die in der letzten Zeit aktiv oder passiv geprÃ¼ft wurden.
-          NÃ¼tzlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+<p> <span class="bold"><strong>durchschnittliche Host-Zustandsänderungen</strong></span> -
+          Dieser Graph zeigt die durchschnittliche prozentuale Host-Zustandsänderung (ein Maßstab für die Sprunghaftigkeit) von
+          Services über die Zeit, heruntergebrochen auf Services, die in der letzten Zeit aktiv oder passiv geprüft wurden.
+          Nützlich zum Verstehen von:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
                 <p>
                   <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung</a>
                 </p>
@@ -305,22 +305,22 @@
 <tr>
 <td align="left" valign="top">
 <p> <span class="bold"><strong>externe Befehle</strong></span> - Dieser Graph zeigt, wie viele
-          externe Befehle von Icinga Ã¼ber die Zeit verarbeitet wurden. Solange Sie nicht eine groÃŸe Zahl von externen
-          Befehlen verarbeiten (wie im Fall von verteilten Ãœberwachungsumgebungen), sollte dieser Graph nahezu leer sein. Die
-          Ãœberwachung von externen Befehlen kann nÃ¼tzlich sein zum Verstehen von EinflÃ¼ssen durch:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+          externe Befehle von Icinga über die Zeit verarbeitet wurden. Solange Sie nicht eine große Zahl von externen
+          Befehlen verarbeiten (wie im Fall von verteilten Überwachungsumgebungen), sollte dieser Graph nahezu leer sein. Die
+          Überwachung von externen Befehlen kann nützlich sein zum Verstehen von Einflüssen durch:</p> <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
                 <p>
-                  <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">passiven PrÃ¼fungen</a>
+                  <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passiven Prüfungen</a>
                 </p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="distributed.html" title="Verteilte Ãœberwachung">verteilte Ãœberwachung</a>
+                  <a class="link" href="distributed.html" title="Verteilte Überwachung">verteilte Überwachung</a>
                 </p>
               </li>
 <li class="listitem">
                 <p>
-                  <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Ãœberwachung">redundante/Failover-Ãœberwachung</a>
+                  <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">redundante/Failover-Überwachung</a>
                 </p>
               </li>
 </ul></div>
@@ -333,9 +333,9 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p> <span class="bold"><strong>externe Befehlspuffer</strong></span> - Dieser Graph zeigt, wie
-          viele externe Befehlspuffer Ã¼ber die Zeit benutzt wurden. Wenn die Zahl von benutzten Befehlspuffern regelmÃ¤ÃŸig nahe an
-          der Zahl von verfÃ¼gbaren Puffern ist, dann sollten Sie wahrscheinlich den Wert der <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a> erhÃ¶hen. Puffer werden benÃ¶tigt,
-          um temporÃ¤r die externen Befehle zu speichern in der Zeit, wo sie vom <a class="link" href="configmain.html#configmain-command_file">external
+          viele externe Befehlspuffer über die Zeit benutzt wurden. Wenn die Zahl von benutzten Befehlspuffern regelmäßig nahe an
+          der Zahl von verfügbaren Puffern ist, dann sollten Sie wahrscheinlich den Wert der <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a> erhöhen. Puffer werden benötigt,
+          um temporär die externen Befehle zu speichern in der Zeit, wo sie vom <a class="link" href="configmain.html#configmain-command_file">external
           command file</a> gelesen werden bis zur Verarbeitung durch den Icinga-Daemon.</p></td>
 <td align="left" valign="top">
 <p> </p>
@@ -346,25 +346,25 @@
 </tbody>
 </table>
   </div>
-  <a class="indexterm" name="id5662876"></a>
+  <a class="indexterm" name="id3519459"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icingastats.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="icingastats.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="ch09.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Nutzung des Icingastats-UtilitysÂ </td>
+<td width="40%" align="left" valign="top">Nutzung des Icingastats-Utilitys </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Kapitel 9. Integration mit anderer Software</td>
+<td width="40%" align="right" valign="top"> Kapitel 9. Integration mit anderer Software</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

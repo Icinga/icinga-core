@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Tuning Icinga For Maximum Performance</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch08.html" title="ChapterÂ 8.Â Security and Performance Tuning">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
 <link rel="prev" href="cgisecurity.html" title="Enhanced CGI Security and Authentication">
 <link rel="next" href="faststartup.html" title="Fast Startup Options">
 </head>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Tuning Icinga For Maximum Performance</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgisecurity.html">Prev</a>Â </td>
-<th width="60%" align="center">ChapterÂ 8.Â Security and Performance Tuning</th>
-<td width="20%" align="right">Â <a accesskey="n" href="faststartup.html">Next</a>
+<a accesskey="p" href="cgisecurity.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="faststartup.html">Next</a>
 </td>
 </tr>
 </table>
@@ -122,13 +122,12 @@
 <li class="listitem">
       <p><span class="bold"><strong>Schedule regular host checks</strong></span> . Scheduling regular checks of hosts can actually help
       performance in Icinga. This is due to the way the <a class="link" href="cachedchecks.html" title="Cached Checks">cached check logic</a> works (see
-      below). Prior to Icinga 3, regularly scheduled host checks used to result in a big performance hit. This is no longer
-      the case, as host checks are run in parallel - just like service checks. To schedule regular checks of a host, set the
+      below). Host checks are run in parallel - just like service checks. To schedule regular checks of a host, set the
       <span class="emphasis"><em>check_interval</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> to
       something greater than 0.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Enable cached host checks</strong></span> . Beginning in Icinga 3, on-demand host checks can
+      <p><span class="bold"><strong>Enable cached host checks</strong></span> . On-demand host checks can
       benefit from caching. On-demand host checks are performed whenever Icinga detects a service state change. These
       on-demand checks are executed because Icinga wants to know if the host associated with the service changed state. By
       enabling cached host checks, you can optimize performance. In some cases, Icinga may be able to used the old/cached
@@ -137,7 +136,7 @@
       above). More information on cached checks can be found <a class="link" href="cachedchecks.html" title="Cached Checks">here</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Don't use agressive host checking</strong></span> . Unless you're having problems with Icinga
+      <p><span class="bold"><strong>Don't use agressive host checking</strong></span>. Unless you're having problems with Icinga
       recognizing host recoveries, We would recommend not enabling the <a class="link" href="configmain.html#configmain-use_agressive_host_checking">use_aggressive_host_checking</a> option. With this option turned off
       host checks will execute much faster, resulting in speedier processing of service check results. However, host recoveries
       can be missed under certain circumstances when this it turned off. For example, if a host recovers and all of the services
@@ -170,26 +169,26 @@
       new IDE drives.</p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id5084610"></a>
+  <a class="indexterm" name="id1955028"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgisecurity.html">Prev</a>Â </td>
+<a accesskey="p" href="cgisecurity.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="faststartup.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="faststartup.html">Next</a>
 </td>
 </tr>
 <tr>
 <td width="40%" align="left" valign="top">Enhanced CGI Security and
-  AuthenticationÂ </td>
+  Authentication </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â Fast Startup Options</td>
+<td width="40%" align="right" valign="top"> Fast Startup Options</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

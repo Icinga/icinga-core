@@ -1,42 +1,42 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Redundante und Failover-Netzwerk-Ãœberwachung</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Redundante und Failover-Netzwerk-Überwachung</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="distributed.html" title="Verteilte Ãœberwachung">
+<link rel="prev" href="distributed.html" title="Verteilte Überwachung">
 <link rel="next" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Redundante und Failover-Netzwerk-Ãœberwachung</th></tr>
+<tr><th colspan="3" align="center">Redundante und Failover-Netzwerk-Überwachung</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="distributed.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="distributed.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="flapping.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="flapping.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Redundante und Failover-Netzwerk-Ãœberwachung">
+<div class="section" title="Redundante und Failover-Netzwerk-Überwachung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="redundancy"></a>Redundante und Failover-Netzwerk-Ãœberwachung</h2></div></div></div>
+<a name="redundancy"></a>Redundante und Failover-Netzwerk-Überwachung</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Dieser Abschnitt beschreibt einige Szenarien zum Implementieren von redundanten Ãœberwachungs-Hosts auf verschiedenen Arten
-  von Netzwerk-Layouts. Mit redundanten Hosts kÃ¶nnen Sie die Ãœberwachung Ihres Netzwerkes aufrecht erhalten, wenn der primÃ¤re
-  Host, auf dem Icinga lÃ¤uft, ausfÃ¤llt oder wenn Teile Ihres Netzwerkes unerreichbar werden.</p>
+  <p>Dieser Abschnitt beschreibt einige Szenarien zum Implementieren von redundanten Überwachungs-Hosts auf verschiedenen Arten
+  von Netzwerk-Layouts. Mit redundanten Hosts können Sie die Überwachung Ihres Netzwerkes aufrecht erhalten, wenn der primäre
+  Host, auf dem Icinga läuft, ausfällt oder wenn Teile Ihres Netzwerkes unerreichbar werden.</p>
 
-  <p><span class="color"> <span class="bold"><strong>Anmerkung:</strong></span> </span> Wenn Sie gerade lernen,
-  wie Icinga zu nutzen ist, wÃ¼rden wir empfehlen, Redundanz so lange nicht zu implementieren, bis Sie mit den <a class="link" href="redundancy.html#redundancy-prerequisites">Voraussetzungen</a> vertraut sind. Redundanz ist ein relativ komplexes Thema und es ist
+  <p><span class="color"><font color="red"> <span class="bold"><strong>Anmerkung:</strong></span> </font></span> Wenn Sie gerade lernen,
+  wie Icinga zu nutzen ist, würden wir empfehlen, Redundanz so lange nicht zu implementieren, bis Sie mit den <a class="link" href="redundancy.html#redundancy-prerequisites">Voraussetzungen</a> vertraut sind. Redundanz ist ein relativ komplexes Thema und es ist
   noch schwieriger, es zu implementieren.</p>
 
   <p><span class="bold"><strong>Index</strong></span></p>
@@ -45,54 +45,54 @@
 
   <p><a class="link" href="redundancy.html#redundancy-samples">Beispiel-Scripte</a></p>
 
-  <p><a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1 - Redundante Ãœberwachung</a></p>
+  <p><a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1 - Redundante Überwachung</a></p>
 
-  <p><a class="link" href="redundancy.html#redundancy-scenario_2">Szenario 2 - Failover Ãœberwachung</a></p>
+  <p><a class="link" href="redundancy.html#redundancy-scenario_2">Szenario 2 - Failover Überwachung</a></p>
 
   <p><a name="redundancy-prerequisites"></a> <span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-  <p>Bevor Sie Ã¼berhaupt daran denken kÃ¶nnen, Redundanz mit Icinga zu implementieren, mÃ¼ssen Sie mit folgenden Dingen
+  <p>Bevor Sie überhaupt daran denken können, Redundanz mit Icinga zu implementieren, müssen Sie mit folgenden Dingen
   vertraut werden...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Implementieren von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a> fÃ¼r Hosts und Services</p>
+      <p>Implementieren von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a> für Hosts und Services</p>
     </li>
 <li class="listitem">
-      <p>Erteilen von <a class="link" href="extcommands.html" title="Externe Befehle">externen Befehlen</a> an Icinga Ã¼ber Shell-Scripts</p>
+      <p>Erteilen von <a class="link" href="extcommands.html" title="Externe Befehle">externen Befehlen</a> an Icinga über Shell-Scripts</p>
     </li>
 <li class="listitem">
-      <p>AusfÃ¼hren von Plugins auf entfernten Hosts mit Hilfe des <a class="link" href="addons.html#addons-nrpe">NRPE Addons</a> oder
+      <p>Ausführen von Plugins auf entfernten Hosts mit Hilfe des <a class="link" href="addons.html#addons-nrpe">NRPE Addons</a> oder
       einer anderen Methode</p>
     </li>
 <li class="listitem">
-      <p>ÃœberprÃ¼fen des Zustands des Icinga-Prozesses mit dem <span class="emphasis"><em>check_nagios</em></span> Plugin</p>
+      <p>Überprüfen des Zustands des Icinga-Prozesses mit dem <span class="emphasis"><em>check_nagios</em></span> Plugin</p>
     </li>
 </ul></div>
 
   <p><a name="redundancy-samples"></a> <span class="bold"><strong>Beispiel-Scripte</strong></span></p>
 
   <p>Jedes dieser Beispiel-Scripte, die wir in dieser Dokumentation benutzen, finden Sie im
-  <span class="emphasis"><em>eventhandlers/</em></span>-Unterverzeichnis der Icinga-Distribution. Vielleicht mÃ¼ssen Sie sie modifizieren,
+  <span class="emphasis"><em>eventhandlers/</em></span>-Unterverzeichnis der Icinga-Distribution. Vielleicht müssen Sie sie modifizieren,
   damit sie auf Ihrem System funktionieren...</p>
 
-  <p><a name="redundancy-scenario_1"></a> <span class="bold"><strong>Szenario 1 - Redundante Ãœberwachung</strong></span></p>
+  <p><a name="redundancy-scenario_1"></a> <span class="bold"><strong>Szenario 1 - Redundante Überwachung</strong></span></p>
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Dies ist eine einfache (und harmlose) Methode, redundante Ãœberwachungs-Hosts zu implementieren, und es wird nur gegen eine
-  begrenzte Anzahl von AusfÃ¤llen schÃ¼tzen. Komplexere Setups werden benÃ¶tigt, um intelligentere Redundanz, bessere Redundanz Ã¼ber
+  <p>Dies ist eine einfache (und harmlose) Methode, redundante Überwachungs-Hosts zu implementieren, und es wird nur gegen eine
+  begrenzte Anzahl von Ausfällen schützen. Komplexere Setups werden benötigt, um intelligentere Redundanz, bessere Redundanz über
   verschiedene Netzwerk-Segmente hinweg zu bieten.</p>
 
   <p><span class="bold"><strong>Ziele</strong></span></p>
 
-  <p>Das Ziel dieser Art von Redundanz-Implementierung ist einfach. Sowohl der "Master"- als auch der "Slave"-Host Ã¼berwachen
-  die gleichen Hosts und Services auf dem Netzwerk. Unter normalen UmstÃ¤nden wird nur der "Master"-Host Benachrichtigungen an
-  Kontakte versenden. Wir wollen, dass der "Slave"-Host die Benachrichtigung von Kontakten Ã¼bernimmt, wenn:</p>
+  <p>Das Ziel dieser Art von Redundanz-Implementierung ist einfach. Sowohl der "Master"- als auch der "Slave"-Host überwachen
+  die gleichen Hosts und Services auf dem Netzwerk. Unter normalen Umständen wird nur der "Master"-Host Benachrichtigungen an
+  Kontakte versenden. Wir wollen, dass der "Slave"-Host die Benachrichtigung von Kontakten übernimmt, wenn:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>der "Master"-Host, auf dem Icinga lÃ¤uft, "down" ist oder...</p>
+      <p>der "Master"-Host, auf dem Icinga läuft, "down" ist oder...</p>
     </li>
 <li class="listitem">
       <p>der Icinga-Prozess auf dem "Master"-Host aus irgendeinem Grund stoppt</p>
@@ -102,7 +102,7 @@
   <p><span class="bold"><strong>Netzwork-Layout-Diagramm</strong></span></p>
 
   <p>Das untenstehende Diagramm zeigt ein sehr simples Netzwerk-Setup. Bei diesem Szenario nehmen wir an, dass auf den Hosts A
-  und E Icinga lÃ¤uft und alle gezeigten Hosts Ã¼berwacht werden. Host A ist der "Master"-Host und Host E der
+  und E Icinga läuft und alle gezeigten Hosts überwacht werden. Host A ist der "Master"-Host und Host E der
   "Slave"-Host.</p>
 
   <div class="informaltable">
@@ -112,42 +112,42 @@
 </table>
   </div>
 
-  <p><span class="bold"><strong>anfÃ¤ngliche Programmeinstellungen</strong></span></p>
+  <p><span class="bold"><strong>anfängliche Programmeinstellungen</strong></span></p>
 
-  <p>Auf dem Slave-Host (Host E) wird die ursprÃ¼ngliche <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive deaktiviert, so dass dadurch der Versand von
+  <p>Auf dem Slave-Host (Host E) wird die ursprüngliche <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive deaktiviert, so dass dadurch der Versand von
   Host- oder Service-Benachrichtigungen verhindert wird. Sie sollten auch sicherstellen, dass die <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Direktive deaktiviert ist. Das war einfach
   genug...</p>
 
-  <p><span class="bold"><strong>anfÃ¤ngliche Konfiguration</strong></span></p>
+  <p><span class="bold"><strong>anfängliche Konfiguration</strong></span></p>
 
-  <p>Als nÃ¤chstes sollten wir die Unterschiede zwischen den <a class="link" href="configobject.html" title="Ãœberblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> von
+  <p>Als nächstes sollten wir die Unterschiede zwischen den <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> von
   Master- und Slave-Host(s) betrachten...</p>
 
   <p>Wir gehen davon aus, dass Sie den Master-Host (Host A) so konfiguriert haben, dass er alle Services auf den gezeigten
-  Hosts des Diagramms Ã¼berwacht. Der Slave-Host (Host E) sollte die gleichen Hosts und Services Ã¼berwachen, mit folgenden ZusÃ¤tzen
+  Hosts des Diagramms überwacht. Der Slave-Host (Host E) sollte die gleichen Hosts und Services überwachen, mit folgenden Zusätzen
   in der Konfigurationsdatei...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Die Host-Definition fÃ¼r Host A (in der Host-Konfigurationsdatei von Host E) sollte einen Host-<a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> enthalten. Der Name fÃ¼r den Host-Eventhandler lautet <span class="color">handle-master-host-event</span>.</p>
+      <p>Die Host-Definition für Host A (in der Host-Konfigurationsdatei von Host E) sollte einen Host-<a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> enthalten. Der Name für den Host-Eventhandler lautet <span class="color"><font color="red">handle-master-host-event</font></span>.</p>
     </li>
 <li class="listitem">
-      <p>Die Konfigurationsdatei auf Host E enthÃ¤lt einen Service, der den Status des Icinga-Prozesses auf Host A prÃ¼ft.
-      Lassen Sie uns annehmen, dass diese PrÃ¼fung das <span class="emphasis"><em>check_nagios</em></span>-Plugin auf Host A aufruft. Das kann durch
+      <p>Die Konfigurationsdatei auf Host E enthält einen Service, der den Status des Icinga-Prozesses auf Host A prüft.
+      Lassen Sie uns annehmen, dass diese Prüfung das <span class="emphasis"><em>check_nagios</em></span>-Plugin auf Host A aufruft. Das kann durch
       eine der in den <span class="bold"><strong>FAQ</strong></span> beschriebenen Methoden erfolgen.</p>
     </li>
 <li class="listitem">
-      <p>Die Service-Definition fÃ¼r den Icinga-Prozess auf Host A sollte einen <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a>-Eintrag enthalten. Als Namen fÃ¼r diese Service-Eventhandler wÃ¤hlen wir <span class="color">handle-master-proc-event</span>.</p>
+      <p>Die Service-Definition für den Icinga-Prozess auf Host A sollte einen <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a>-Eintrag enthalten. Als Namen für diese Service-Eventhandler wählen wir <span class="color"><font color="red">handle-master-proc-event</font></span>.</p>
     </li>
 </ul></div>
 
   <p>Es ist wichtig anzumerken, dass Host A (der Master-Host) keine Ahnung von Host E (dem Slave-Host) hat. In diesem Szenario
-  besteht ganz einfach keine Notwendigkeit dazu. NatÃ¼rlich kÃ¶nnen Sie von Host A Services auf Host E Ã¼berwachen, aber das hat
+  besteht ganz einfach keine Notwendigkeit dazu. Natürlich können Sie von Host A Services auf Host E überwachen, aber das hat
   nichts mit der Implementierung von Redundanz zu tun...</p>
 
   <p><span class="bold"><strong>Eventhandler-Befehlsdefinitionen</strong></span></p>
 
-  <p>Wir mÃ¼ssen kurz innehalten und beschreiben, wie die Befehlsdefinitionen fÃ¼r die Eventhandler auf dem Slave-Host aussehen.
+  <p>Wir müssen kurz innehalten und beschreiben, wie die Befehlsdefinitionen für die Eventhandler auf dem Slave-Host aussehen.
   Hier ist ein Beispiel...</p>
 
   <pre class="screen"> define command{
@@ -160,14 +160,14 @@
  }</pre>
 
   <p>Dies setzt voraus, dass Sie die Eventhandler-Scripte im Verzeichnis
-  <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span> abgelegt haben. Sie kÃ¶nnen sie ablegen, wohin Sie wollen, aber dann
-  mÃ¼ssen Sie die beigefÃ¼gten Beispiele anpassen.</p>
+  <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span> abgelegt haben. Sie können sie ablegen, wohin Sie wollen, aber dann
+  müssen Sie die beigefügten Beispiele anpassen.</p>
 
   <p><span class="bold"><strong>Eventhandler-Scripte</strong></span></p>
 
   <p>Okay, lassen Sie uns nun einen Blick darauf werden, wie die Eventhandler-Scripte aussehen...</p>
 
-  <p>Host-Eventhandler (<span class="color">handle-master-host-event</span>):</p>
+  <p>Host-Eventhandler (<span class="color"><font color="red">handle-master-host-event</font></span>):</p>
 
   <pre class="screen"> #!/bin/sh
  # Only take action on hard host states...
@@ -193,7 +193,7 @@
  esac
  exit 0</pre>
 
-  <p>Service-Eventhandler (<span class="color">handle-master-proc-event</span>):</p>
+  <p>Service-Eventhandler (<span class="color"><font color="red">handle-master-proc-event</font></span>):</p>
 
   <pre class="screen"> #!/bin/sh
  # Only take action on hard service states...
@@ -226,81 +226,81 @@
  esac
  exit 0</pre>
 
-  <p><span class="bold"><strong>Was tun sie fÃ¼r uns</strong></span></p>
+  <p><span class="bold"><strong>Was tun sie für uns</strong></span></p>
 
-  <p>Auf dem Slave-Host (Host E) sind anfÃ¤nglich die Benachrichtigungen deaktiviert, so dass er keine Host- oder
-  Service-Benachrichtigungen versendet, solange der Icinga-Prozess auf dem Master-Host (Host A) noch lÃ¤uft.</p>
+  <p>Auf dem Slave-Host (Host E) sind anfänglich die Benachrichtigungen deaktiviert, so dass er keine Host- oder
+  Service-Benachrichtigungen versendet, solange der Icinga-Prozess auf dem Master-Host (Host A) noch läuft.</p>
 
   <p>Der Icinga-Prozess auf dem Slave-host (Host E) wird zum Master-Host, wenn...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>der Master-Host (Host A) "down" geht und der <span class="emphasis"><em> <span class="color">handle-master-host-event</span> </em></span> -Host-Eventhandler ausgefÃ¼hrt wird.</p>
+      <p>der Master-Host (Host A) "down" geht und der <span class="emphasis"><em> <span class="color"><font color="red">handle-master-host-event</font></span> </em></span> -Host-Eventhandler ausgeführt wird.</p>
     </li>
 <li class="listitem">
-      <p>der Icinga-Prozess auf dem Master-Host (Host A) aufhÃ¶rt zu arbeiten und der <span class="emphasis"><em> <span class="color">handle-master-proc-event</span> </em></span> -Service-Eventhandler ausgefÃ¼hrt wird.</p>
+      <p>der Icinga-Prozess auf dem Master-Host (Host A) aufhört zu arbeiten und der <span class="emphasis"><em> <span class="color"><font color="red">handle-master-proc-event</font></span> </em></span> -Service-Eventhandler ausgeführt wird.</p>
     </li>
 </ul></div>
 
   <p>Wenn bei dem Icinga-Prozess auf dem Slave-Host (Host E) Benachrichtigungen aktiviert sind, kann er
-  Benachrichtigungen Ã¼ber jegliche Host- und Service-Probleme und Erholungen versenden. An diesem Punkt hat Host E die
-  Verantwortlichkeiten Ã¼ber die Benachrichtigung von Kontakten Ã¼ber Host- und Service-Probleme Ã¼bernommen!</p>
+  Benachrichtigungen über jegliche Host- und Service-Probleme und Erholungen versenden. An diesem Punkt hat Host E die
+  Verantwortlichkeiten über die Benachrichtigung von Kontakten über Host- und Service-Probleme übernommen!</p>
 
   <p>Der Icinga-Prozess auf Host E wird wieder zum Host-Slave, wenn...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>sich Host A wieder erholt und der <span class="emphasis"><em> <span class="color">handle-master-host-event</span> </em></span> -Host-Eventhandler ausgefÃ¼hrt wird.</p>
+      <p>sich Host A wieder erholt und der <span class="emphasis"><em> <span class="color"><font color="red">handle-master-host-event</font></span> </em></span> -Host-Eventhandler ausgeführt wird.</p>
     </li>
 <li class="listitem">
-      <p>sich der Icinga-Prozess auf Host A wieder erholt und den <span class="emphasis"><em> <span class="color">handle-master-proc-event</span> </em></span> -Service-Eventhandler ausfÃ¼hrt.</p>
+      <p>sich der Icinga-Prozess auf Host A wieder erholt und den <span class="emphasis"><em> <span class="color"><font color="red">handle-master-proc-event</font></span> </em></span> -Service-Eventhandler ausführt.</p>
     </li>
 </ul></div>
 
   <p>Wenn bei dem Icinga-Prozess auf dem Slave-Host (Host E) Benachrichtigungen deaktiviert sind, wird er keine
-  Benachrichtigungen mehr Ã¼ber Host- und Service-Probleme und Erholungen versenden. An diesem Punkt hat Host E die
-  Verantwortlichkeiten Ã¼ber die Benachrichtigung von Kontakten Ã¼ber Host- und Service-Probleme an Host A Ã¼bergeben. Alles ist
+  Benachrichtigungen mehr über Host- und Service-Probleme und Erholungen versenden. An diesem Punkt hat Host E die
+  Verantwortlichkeiten über die Benachrichtigung von Kontakten über Host- und Service-Probleme an Host A übergeben. Alles ist
   wieder so, als wir angefangen haben!</p>
 
-  <p><span class="bold"><strong>ZeitverzÃ¶gerungen</strong></span></p>
+  <p><span class="bold"><strong>Zeitverzögerungen</strong></span></p>
 
-  <p>Redundanz bei Icinga ist in keinster Weise perfekt. Eins der offenkundigeren Probleme ist die VerzÃ¶gerung zwischen
-  dem Ausfall von Host A und der Ãœbernahme durch Host E. Das ist bedingt durch folgende Dinge...</p>
+  <p>Redundanz bei Icinga ist in keinster Weise perfekt. Eins der offenkundigeren Probleme ist die Verzögerung zwischen
+  dem Ausfall von Host A und der Übernahme durch Host E. Das ist bedingt durch folgende Dinge...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>die Zeit zwischen dem Ausfall des Master-Host und dem ersten Mal, dass der Slave-Host ein Problem entdeckt</p>
     </li>
 <li class="listitem">
-      <p>die Zeit, die benÃ¶tigt wird, um festzustellen, dass der Master-Host wirklich ein Problem hat (unter Verwendung von
-      Host- oder Service-PrÃ¼fwiederholungen auf dem Slave-Host)</p>
+      <p>die Zeit, die benötigt wird, um festzustellen, dass der Master-Host wirklich ein Problem hat (unter Verwendung von
+      Host- oder Service-Prüfwiederholungen auf dem Slave-Host)</p>
     </li>
 <li class="listitem">
-      <p>die Zeit zwischen der AusfÃ¼hrung des Eventhandlers und der Zeit, zu der Icinga das nÃ¤chste Mal auf externe
-      Befehle prÃ¼ft</p>
+      <p>die Zeit zwischen der Ausführung des Eventhandlers und der Zeit, zu der Icinga das nächste Mal auf externe
+      Befehle prüft</p>
     </li>
 </ul></div>
 
-  <p>Sie kÃ¶nnen diese VerzÃ¶gerung minimieren durch...</p>
+  <p>Sie können diese Verzögerung minimieren durch...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>eine hohe Frequenz von (Wiederholungs-) PrÃ¼fungen fÃ¼r Services auf Host E. Das kann durch die
+      <p>eine hohe Frequenz von (Wiederholungs-) Prüfungen für Services auf Host E. Das kann durch die
       <span class="emphasis"><em>check_interval</em></span>- und <span class="emphasis"><em>retry_interval</em></span>-Optionen in jeder Service-Definition erreicht
       werden.</p>
     </li>
 <li class="listitem">
-      <p>eine Zahl der Host-WiederholungsprÃ¼fungen fÃ¼r Host A (auf Host E), die eine schnelle Erkennung von Host-Problemen
+      <p>eine Zahl der Host-Wiederholungsprüfungen für Host A (auf Host E), die eine schnelle Erkennung von Host-Problemen
       erlaubt. Das wird erreicht durch das <span class="emphasis"><em>max_check_attempts</em></span>-Argument in der Host-Definition.</p>
     </li>
 <li class="listitem">
-      <p>erhÃ¶hen der Frequenz der <a class="link" href="extcommands.html" title="Externe Befehle">external command</a>-PrÃ¼fungen auf Host E. Dies wird erreicht
+      <p>erhöhen der Frequenz der <a class="link" href="extcommands.html" title="Externe Befehle">external command</a>-Prüfungen auf Host E. Dies wird erreicht
       durch die Anpassung der <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Option in der
       Hauptkonfigurationsdatei.</p>
     </li>
 </ul></div>
 
-  <p>Wenn sich Icinga auf Host A erholt, gibt es ebenfalls eine VerzÃ¶gerung, bevor Host E wieder zu einem Slave-Host
+  <p>Wenn sich Icinga auf Host A erholt, gibt es ebenfalls eine Verzögerung, bevor Host E wieder zu einem Slave-Host
   wird. Das wird durch folgende Dinge beeinflusst...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -309,106 +309,106 @@
       erkennt</p>
     </li>
 <li class="listitem">
-      <p>die Zeit zwischen der AusfÃ¼hrung des Eventhandlers auf Host A und der Zeit, zu der Icinga-Prozess auf Host E
-      das nÃ¤chste Mal auf externe Befehle prÃ¼ft</p>
+      <p>die Zeit zwischen der Ausführung des Eventhandlers auf Host A und der Zeit, zu der Icinga-Prozess auf Host E
+      das nächste Mal auf externe Befehle prüft</p>
     </li>
 </ul></div>
 
-  <p>Die genaue VerzÃ¶gerung zwischen dem Ãœbergang der Verantwortlichkeiten hÃ¤ngt davon ab, wieviele Services Sie definiert
-  haben, dem Intervall, in dem Services geprÃ¼ft werden, und einer Menge pures GlÃ¼ck. Auf jeden Falls ist es besser als
+  <p>Die genaue Verzögerung zwischen dem Übergang der Verantwortlichkeiten hängt davon ab, wieviele Services Sie definiert
+  haben, dem Intervall, in dem Services geprüft werden, und einer Menge pures Glück. Auf jeden Falls ist es besser als
   nichts.</p>
 
-  <p><span class="bold"><strong>SpezialfÃ¤lle</strong></span></p>
+  <p><span class="bold"><strong>Spezialfälle</strong></span></p>
 
-  <p>Eins sollten Sie beachten: Wenn Host A "down" geht, werden bei Host E die Benachrichtigungen aktiviert und er Ã¼bernimmt
-  die Verantwortung fÃ¼r das Informieren der Kontakte bei Problemen. Wenn sich Host A wieder erholt, werden bei Host E die
+  <p>Eins sollten Sie beachten: Wenn Host A "down" geht, werden bei Host E die Benachrichtigungen aktiviert und er übernimmt
+  die Verantwortung für das Informieren der Kontakte bei Problemen. Wenn sich Host A wieder erholt, werden bei Host E die
   Benachrichtigungen deaktiviert. Falls der Icinga-Prozess - wenn sich Host A erholt - auf Host A nicht sauber startet,
-  gibt es eine Zeitspanne, wÃ¤hrend der keiner der beiden Hosts die Kontakte Ã¼ber Probleme informiert! GlÃ¼cklicherweise
-  berÃ¼cksichtigt die Service-PrÃ¼flogik in Icinga diesen Umstand. Das nÃ¤chste Mal, wenn der Icinga-Prozess auf Host E
-  den Status des Icinga-Prozesses auf Host A prÃ¼ft, wird er feststellen, dass dieser nicht lÃ¤uft. Auf Host E werden dann
-  wieder die Benachrichtigungen aktiviert und er wird erneut die Verantwortung fÃ¼r die Benachrichtigung der Kontakte
-  Ã¼bernehmen.</p>
+  gibt es eine Zeitspanne, während der keiner der beiden Hosts die Kontakte über Probleme informiert! Glücklicherweise
+  berücksichtigt die Service-Prüflogik in Icinga diesen Umstand. Das nächste Mal, wenn der Icinga-Prozess auf Host E
+  den Status des Icinga-Prozesses auf Host A prüft, wird er feststellen, dass dieser nicht läuft. Auf Host E werden dann
+  wieder die Benachrichtigungen aktiviert und er wird erneut die Verantwortung für die Benachrichtigung der Kontakte
+  übernehmen.</p>
 
-  <p>Der exakte Wert fÃ¼r die Zeit, wÃ¤hrend der keiner der Hosts das Netzwerk Ã¼berwacht, ist schwer zu ermitteln. Offensichtlich
-  kann diese Zeit durch die ErhÃ¶hung der Frequenz von Service-PrÃ¼fungen (auf Host E) fÃ¼r Host A minimiert werden. Der Rest ist
+  <p>Der exakte Wert für die Zeit, während der keiner der Hosts das Netzwerk überwacht, ist schwer zu ermitteln. Offensichtlich
+  kann diese Zeit durch die Erhöhung der Frequenz von Service-Prüfungen (auf Host E) für Host A minimiert werden. Der Rest ist
   purer Zufall, aber die gesamte "Blackout"-Zeit sollte nicht allzu hoch sein.</p>
 
-  <p><a name="redundancy-scenario_2"></a> <span class="bold"><strong>Szenario 2 - Failover-Ãœberwachung</strong></span></p>
+  <p><a name="redundancy-scenario_2"></a> <span class="bold"><strong>Szenario 2 - Failover-Überwachung</strong></span></p>
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Failover-Ãœberwachung ist Ã¤hnlich wie die redundante Ãœberwachung (wie beschrieben in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1</a>).</p>
+  <p>Failover-Überwachung ist ähnlich wie die redundante Überwachung (wie beschrieben in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1</a>).</p>
 
   <p><span class="bold"><strong>Ziele</strong></span></p>
 
-  <p>Das grundlegende Ziel der Failover-Ãœberwachung besteht darin, dass der Icinga-Prozess auf dem Slave-Host untÃ¤tig
-  ist, wÃ¤hrend der Icinga-Prozess auf dem Master-Host lÃ¤uft. Wenn der Prozess auf dem Master-Host stoppt (oder der Host
-  "down" geht), Ã¼bernimmt der Icinga-Prozess auf dem Slave-Host die gesamte Ãœberwachung.</p>
+  <p>Das grundlegende Ziel der Failover-Überwachung besteht darin, dass der Icinga-Prozess auf dem Slave-Host untätig
+  ist, während der Icinga-Prozess auf dem Master-Host läuft. Wenn der Prozess auf dem Master-Host stoppt (oder der Host
+  "down" geht), übernimmt der Icinga-Prozess auf dem Slave-Host die gesamte Überwachung.</p>
 
-  <p>WÃ¤hrend es Ihnen die in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1</a> beschriebene Methode erlaubt, weiterhin
-  Benachrichtigungen zu erhalten, wenn der Master-Host "down" geht, gibt es einige Fallen. Das grÃ¶ÃŸte Problem besteht darin, dass
-  der Slave-Host die gleichen Hosts und Services wie der Master <span class="emphasis"><em>zur gleichen Zeit wie der Master</em></span> Ã¼berwacht!
-  Dies kann Probleme durch Ã¼bermÃ¤ÃŸigen Traffic und Load auf den Ã¼berwachten Maschinen verursachen, wenn Sie viele Services
-  definiert haben. Hier nun, wie Sie das Problem umgehen kÃ¶nnen.</p>
+  <p>Während es Ihnen die in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1</a> beschriebene Methode erlaubt, weiterhin
+  Benachrichtigungen zu erhalten, wenn der Master-Host "down" geht, gibt es einige Fallen. Das größte Problem besteht darin, dass
+  der Slave-Host die gleichen Hosts und Services wie der Master <span class="emphasis"><em>zur gleichen Zeit wie der Master</em></span> überwacht!
+  Dies kann Probleme durch übermäßigen Traffic und Load auf den überwachten Maschinen verursachen, wenn Sie viele Services
+  definiert haben. Hier nun, wie Sie das Problem umgehen können.</p>
 
   <p><span class="bold"><strong>Initiale Programm-Einstellungen</strong></span></p>
 
-  <p>Deaktivieren Sie aktive Service-PrÃ¼fungen und Benachrichtigungen auf dem Slave-Host durch die <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>- und die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktiven. Dies wird den Slave-Host davon abhalten,
-  Services und Hosts zu Ã¼berwachen und Benachrichtigungen zu versenden, wÃ¤hrend der Icinga-Prozess auf dem Master-Host noch
-  lÃ¤uft. Stellen Sie auÃŸerdem sicher, dass die <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Direktive auf dem Slave-Host aktiviert ist.</p>
+  <p>Deaktivieren Sie aktive Service-Prüfungen und Benachrichtigungen auf dem Slave-Host durch die <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>- und die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktiven. Dies wird den Slave-Host davon abhalten,
+  Services und Hosts zu überwachen und Benachrichtigungen zu versenden, während der Icinga-Prozess auf dem Master-Host noch
+  läuft. Stellen Sie außerdem sicher, dass die <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Direktive auf dem Slave-Host aktiviert ist.</p>
 
-  <p><span class="bold"><strong>Master-Prozess-PrÃ¼fungen</strong></span></p>
+  <p><span class="bold"><strong>Master-Prozess-Prüfungen</strong></span></p>
 
-  <p>Setzen Sie einen cron-Job auf dem Slave-Host auf, der periodisch (sagen wir jede Minute) lÃ¤uft und den Status des
-  Icinga-Prozesses auf dem Master-Host (mit dem <span class="emphasis"><em>check_nrpe</em></span> auf dem Slave-Host und den <a class="link" href="addons.html#addons-nrpe">nrpe daemon</a> und <span class="emphasis"><em>check_nagios</em></span>-Plugins auf dem Master-Host) prÃ¼ft. Das Script
-  sollte den Return-Code des <span class="emphasis"><em>check_nrpe-Plugins</em></span> prÃ¼fen. Falls es einen nicht-OK-Status zurÃ¼ckliefert, sollte
+  <p>Setzen Sie einen cron-Job auf dem Slave-Host auf, der periodisch (sagen wir jede Minute) läuft und den Status des
+  Icinga-Prozesses auf dem Master-Host (mit dem <span class="emphasis"><em>check_nrpe</em></span> auf dem Slave-Host und den <a class="link" href="addons.html#addons-nrpe">nrpe daemon</a> und <span class="emphasis"><em>check_nagios</em></span>-Plugins auf dem Master-Host) prüft. Das Script
+  sollte den Return-Code des <span class="emphasis"><em>check_nrpe-Plugins</em></span> prüfen. Falls es einen nicht-OK-Status zurückliefert, sollte
   das Script den entsprechenden Befehl an das <a class="link" href="configmain.html#configmain-command_file">external command file</a> senden, um
-  sowohl die Benachrichtigungen als auch die aktiven Service-PrÃ¼fungen zu aktivieren. Falls das Plugin einen OK-Status
-  zurÃ¼ckliefert, sollte das Script Befehle an das external command file senden, um sowohl Benachrichtigungen als auch aktive
-  PrÃ¼fungen zu deaktivieren.</p>
+  sowohl die Benachrichtigungen als auch die aktiven Service-Prüfungen zu aktivieren. Falls das Plugin einen OK-Status
+  zurückliefert, sollte das Script Befehle an das external command file senden, um sowohl Benachrichtigungen als auch aktive
+  Prüfungen zu deaktivieren.</p>
 
-  <p>Auf diese Weise lÃ¤uft jeweils nur ein Prozess, der Hosts und Services prÃ¼ft, was wesentlich effizienter ist als alles
-  doppelt zu Ã¼berwachen.</p>
+  <p>Auf diese Weise läuft jeweils nur ein Prozess, der Hosts und Services prüft, was wesentlich effizienter ist als alles
+  doppelt zu überwachen.</p>
 
-  <p>Auch von Interesse: Sie mÃ¼ssen <span class="emphasis"><em>nicht</em></span> wie in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1</a>
+  <p>Auch von Interesse: Sie müssen <span class="emphasis"><em>nicht</em></span> wie in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1</a>
   beschrieben die Host- und Service-Handler definieren, weil die Dinge anders behandelt werden.</p>
 
-  <p><span class="bold"><strong>ZusÃ¤tzliche Themen</strong></span></p>
+  <p><span class="bold"><strong>Zusätzliche Themen</strong></span></p>
 
-  <p>An diesem Punkt haben Sie ein sehr einfaches Failover-Ãœberwachungs-Setup implementiert. Trotzdem gibt es einen weiteren
-  Punkt, den Sie berÃ¼cksichtigen sollten, damit die Dinge besser laufen.</p>
+  <p>An diesem Punkt haben Sie ein sehr einfaches Failover-Überwachungs-Setup implementiert. Trotzdem gibt es einen weiteren
+  Punkt, den Sie berücksichtigen sollten, damit die Dinge besser laufen.</p>
 
-  <p>Das groÃŸe Problem dabei, wie die Dinge bisher konfiguriert sind, besteht darin, dass der Slave-Host nicht den aktuellen
-  Status von Hosts und Services kennt, wenn er die Ãœberwachung Ã¼bernimmt. Ein Weg, dieses Problem zu lÃ¶sen, ist es, die <a class="link" href="configmain.html#configmain-ocsp_command">ocsp command</a>-Option auf dem Master-Host zu aktivieren und alle Service-PrÃ¼fergebnisse
+  <p>Das große Problem dabei, wie die Dinge bisher konfiguriert sind, besteht darin, dass der Slave-Host nicht den aktuellen
+  Status von Hosts und Services kennt, wenn er die Überwachung übernimmt. Ein Weg, dieses Problem zu lösen, ist es, die <a class="link" href="configmain.html#configmain-ocsp_command">ocsp command</a>-Option auf dem Master-Host zu aktivieren und alle Service-Prüfergebnisse
   mit dem <a class="link" href="addons.html#addons-nsca">nsca Addon</a> an den Slave-Host zu schicken. Der Slave-Host wird dann aktuelle
-  Status-Informationen fÃ¼r alle Services haben, wenn er die Ãœberwachung Ã¼bernimmt. Weil aktive Service-PrÃ¼fungen auf dem
-  Slave-Host nicht aktiviert sind, werden sie nicht ausgefÃ¼hrt. Host-PrÃ¼fungen hingegen werden nach Bedarf ausgefÃ¼hrt. Das
-  bedeutet, dass sowohl Master- als auch Slave-Host Host-PrÃ¼fungen ausfÃ¼hren, wenn sie benÃ¶tigt werden, was kein Problem
-  darstellen sollte, weil die Mehrzahl der Ãœberwachung Service-PrÃ¼fungen betrifft.</p>
+  Status-Informationen für alle Services haben, wenn er die Überwachung übernimmt. Weil aktive Service-Prüfungen auf dem
+  Slave-Host nicht aktiviert sind, werden sie nicht ausgeführt. Host-Prüfungen hingegen werden nach Bedarf ausgeführt. Das
+  bedeutet, dass sowohl Master- als auch Slave-Host Host-Prüfungen ausführen, wenn sie benötigt werden, was kein Problem
+  darstellen sollte, weil die Mehrzahl der Überwachung Service-Prüfungen betrifft.</p>
 
   <p>Das ist eigentlich alles, was das Setup betrifft.</p>
-  <a class="indexterm" name="id5649185"></a>
-  <a class="indexterm" name="id5649192"></a>
-  <a class="indexterm" name="id5649138"></a>
-  <a class="indexterm" name="id5649212"></a>
+  <a class="indexterm" name="id3505771"></a>
+  <a class="indexterm" name="id3505779"></a>
+  <a class="indexterm" name="id3505788"></a>
+  <a class="indexterm" name="id3505799"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="distributed.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="distributed.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="flapping.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="flapping.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Verteilte ÃœberwachungÂ </td>
+<td width="40%" align="left" valign="top">Verteilte Überwachung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Erkennung und Behandlung von Status-Flattern</td>
+<td width="40%" align="right" valign="top"> Erkennung und Behandlung von Status-Flattern</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

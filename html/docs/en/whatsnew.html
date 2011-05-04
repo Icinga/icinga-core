@@ -1,311 +1,139 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>What's New in Icinga 1.3</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>What's New in Icinga 1.4</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="ch01.html" title="Chapter¬†1.¬†About">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch01.html" title="Chapter†1.†About">
 <link rel="prev" href="about.html" title="About Icinga">
-<link rel="next" href="ch02.html" title="Chapter¬†2.¬†Getting Started">
+<link rel="next" href="ch02.html" title="Chapter†2.†Getting Started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">What's New in Icinga 1.3</th></tr>
+<tr><th colspan="3" align="center">What's New in Icinga 1.4</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="about.html">Prev</a>¬†</td>
-<th width="60%" align="center">Chapter¬†1.¬†About</th>
-<td width="20%" align="right">¬†<a accesskey="n" href="ch02.html">Next</a>
+<a accesskey="p" href="about.html">Prev</a>†</td>
+<th width="60%" align="center">Chapter†1.†About</th>
+<td width="20%" align="right">†<a accesskey="n" href="ch02.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="What's New in Icinga 1.3">
+<div class="section" title="What's New in Icinga 1.4">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>What's New in Icinga 1.3</h2></div></div></div>
+<a name="whatsnew"></a>What's New in Icinga 1.4</h2></div></div></div>
   
 
+  <p><span class="bold"><strong>1.4.0</strong></span></p>
 
-  <p><span class="bold"><strong>1.3.0</strong></span></p>
+  <p><span class="bold"><strong>Icinga-Core:</strong></span></p>
 
-  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
+  <p>- re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option</p>
+  <p>- add downtime delete commands made "distributable" by deleting by host group name, host name or start time/comment (Opsview team)</p>
+  <p>- add 'module' as object config, allowing cfg_dir usage loading multiple modules without touching broker_module in icinga.cfg</p>
 
-<p>* add basic dualstacked IPv6 support with address6 as host definition attribute</p>
-<p>* add support for same host service dependencies with servicegroups</p>
-<p>* allow eventbroker modules to override sending notifications</p>
-<p>* allow empty hostgroup assignments for services as opt-in config option</p>
-<p>* fix host alias saved in resention data survived reconfiguration</p>
-<p>* performance-data handling and checking is now thread-safe so long as embedded perl is not used</p>
-<p>* fix extraneous alerts for services when host is down</p>
-<p>* fix race condition on flexible downtime commands when duration not set or zero</p>
+  <p>- fix: flexible downtime on service hard state change doesn't get triggered/activated</p>
+  <p>- fix: timeperiods daylight saving time problem (Luca Di Stefano)</p>
 
   <p><span class="bold"><strong>Icinga IDOUtils: </strong></span></p>
 
-<p>* add dbversion check in ido2db and print error to syslog in case of non-matching</p>
-<p>* only insert service and host checks when they are finally processed, increase performance by replacing insert/update with single insert</p>
-<p>* add multi valued inserts for host|service_contacts instead of single insert/update loops</p>
-<p>* do not clear host|service|scheduleddowntime status tables on core restart/reload</p>
-<p>* fix solaris, lacks asprintf</p>
-<p>* fix string escaping for backslashes in postgresql</p>
-
+  <p>- add db socket as config option in ido2db.cfg for mysql and postgresql</p>
+  <p>- reduce housekeeping cycle to 3600s, set housekeeping thread startup delay to 300s</p>
+  <p>- introduce schema version and check against that instead of program version</p>
+  <p>- non-blocking icinga core while config dump at startup to ido2db</p>
+  <p>- install sample (commented) config in modules/idoutils.cfg using new 'module' object config</p>
+  <p>- fix: update oracle hints in ido2db.cfg with tnsnames.ora and port cfg</p>
+  <p>- fix: idomod: larger buffer size (by Opsview)</p>
+  <p>- fix: rdbms deconnect after connection error</p>
+  <p>- fix: race condition when issuing multiple reloads results in hanging IDO2DB processes</p>
+  <p>- fix: postgresql: integer not big enough for bytes_processed (Stig Sandbeck)</p>
 
   <p><span class="bold"><strong>Icinga Classic UI:</strong></span></p>
 
-<p>* add address6 next to address in several views</p>
-<p>* add service states to annotate with current notification number opt-in</p>
-<p>* adding "Attempt" column to host status detail list</p>
-<p>* add trend timeperiod feature to locate the next problem</p>
-<p>* add configurable http charset support (default utf-8) within the cgis</p>
-<p>* add csv export to config.cgi</p>
-<p>* fix authorized_for_read_only can execute command over the status.cgi</p>
+  <p>- merged reading of logfiles into one function. It's easier now to add enhancements.</p>
+  <p>- adding some more icons to showlog.cgi</p>
+  <p>- adding entry time of comments in tooltip's in status.cgi </p>
+  <p>- searching in the Icinga Logfile</p>
+  <p>- changed print_generic_error() function to support csv output</p>
+  <p>- added parameter to get_log_entries() function to use beginning and end timestamp</p>
+  <p>- show downtime in host detail and service detail view</p>
+  <p>- store cmd.cgi submissions in log</p>
+  <p>- enforce a need for comment for action taken in cmd.cgi</p>
+  <p>- add config option to set start of week (sunday/monday)</p>
+  <p>- allow display of Network Outages for authorized hosts (thx mjbrooks)</p>
+  <p>- remove useless memory allocation when reading logfiles reverse (lifo)</p>
+  <p>- speed up data processing in summary.cgi</p>
+  <p>- add an optional alternative CGI driven view for the top frame (Matthew Brooks)</p>
+  <p>- added json output "&amp;jsonoutput" to nearly all pages in classic ui</p>
+  <p>- allow searching for host display_name normal and via regexp</p>
+  <p>- display host/service dependencies in host/service details in extinfo.cgi</p>
 
+  <p>- fix: tooltip's in status.cgi, not showing messages with carriage return</p>
+  <p>- fix: csv export link to make it XSS save (IE)</p>
+  <p>- fix: cmd.cgi: acknowledgement multiline comment -&gt; command not being processed</p>
+  <p>- fix: statusmap.cgi: fixed XSS vulnerability</p>
+  <p>- fix: display_name survive reconfiguration and is use instead of host_name in classic ui</p>
+  <p>- fix: don't show pause/continue urls on non-refreshable pages</p>
+  <p>- fix: segfaults if no default_user_name= given in cgi.cfg</p>
+  <p>- fix: Prevent statusmap.cgi markup from drawing when host should not be drawn (Matthew Brooks)</p>
 
-  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
+  <p><span class="bold"><strong>Config / Install:</strong></span></p>
 
-<p>* save, edit, delete your own custom cronks (grids, portals, ...)</p>
-<p>* persistent columns, widths and sort orders</p>
-<p>* added tabslider</p>
-<p>* added simple duration field</p>
-<p>* added downtimes cronk</p>
-<p>* added filter for downtimes/acknowledgements</p>
-<p>* add customized icons for cronks menu</p>
-<p>* cronks now open with single click</p>
-<p>* move log window to LogView cronk</p>
-<p>* added refresh, filters and principals for logview cronk</p>
-<p>* change default endtime for scheduled service/host downtime events to (current time) + 2 hours</p>
-<p>* new tabs only opened if tab with the same name does not exist</p>
-<p>* add address6 to hosts view</p>
+  <p>- config: increase default debug file size to 100M</p> 
+  <p>- install: add --with-ext-cmd-file-dir= to configure, allowing icinga.cmd dir to be altered</p>
+  <p>- fix: install: use *.so instead of *.o for solaris, patch in contrib/solaris/</p>
 
+  <p><span class="bold"><strong>Icinga-Web:</strong></span></p>
 
-  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
+  <p>- check for Icinga being loaded completely</p>
+  <p>- fix: session cookie lifetime</p>
+  <p>- fix: missing commands: remove acknowledgements</p>
 
-<p>* better hints for customized configuration and new section "Upgrade Icinga-web"</p>
-<p>* add hints/list about parameters of the cgis</p>
-<p>* add quickstart guide for freebsd and idoutils</p>
-<p>* add address6 directive to host object definition</p>
-<p>* fix object inheritance - only one level for important values</p>
-<p>* fix icinga-web requires mod_rewrite by default</p>
+  <p><span class="bold"><strong>Icinga-Docs:</strong></span></p>
 
+  <p>- provide basic NRPE documentation</p>
+  <p>- add cgiparams / filter properties</p>
+  <p>- reformat several listings (too wide in PDF)</p>
+  <p>- add colours to HTML pages (xsl stylesheet)</p>
 
 <p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
 
-
-  <p><span class="bold"><strong>1.2.1</strong></span></p>
-
-  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
-
-  <p>* corrected "re notification for downtime after icinga restart", fixing downtime detection issues</p>
-
-  <p>* fix initscript, no error when stopping stale lock (OMD patch)</p>
-
-  <p>* fix epn tag for disabling ePN (Yannick Charton)</p>
-
-  <p>* fix snprintf in make for Solaris</p>
-
-  <p>* fix ignoring empty definitions, only warn</p>
-
-  <p><span class="bold"><strong>Icinga IDOUtils: </strong></span></p>
-
-  <p>* fix disconnecting on errors misbheaving, not closing db and daemon</p>
-
-  <p><span class="bold"><strong>Icinga Classic UI:</strong></span></p>
-
-  <p>* fix for "Schedule a check of all services on this host" not working properly in cmd.cgi</p>
-
-  <p>* add config options to hide initial state and current state log entries in showlog.cgi </p>
-
-  <p>* extinfo comment table cell names (Oliver Graf)</p>
-
-  <p>* add csv export to avail.cgi (single|all hosts|services|servicegroups|hostgroups)</p>
-
-  <p>* comment tooltip now show's quotes and back slashes</p>
-
-  <p>* fix change statusmap logo name to icinga</p>
-
-  <p>* add support for ICINGA_ env vars for cgis</p>
-
-  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
-
-  <p>* add option cache clearing from the webinterface</p>
-
-  <p>* fix URL cronk getting static links</p>
-
-  <p>* added favicon to template </p>
-
-  <p>* disabled free edit of language preference</p>
-
-  <p>* fixed pgsql schema</p>
-
-  <p>* fixed wrong time format in data commands</p>
-
-  <p>* fixed starttime format in commands and interface freezing when trying to send an invalid form</p>
-
-  <p>* fixed error window on invalid credentials</p>
-
-  <p>* count queries are not allowed to be grouped</p>
-
-  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
-
-  <p>* add more info on plugin usage</p>
-
-  <p>* fix pnp install, epn support</p>
-
-  <p>* remove flush privilegues on mysql</p>
-
-  <p>* add hint for safe_mode=off for PHP 5.3</p>
-
-  <p>* add cgiurl hint to nagios-plugins install</p>
-
-  <p>* add hint for selinux in IDOUtils Quickstart</p>
-
-
-  <p><span class="bold"><strong>1.2.0</strong></span></p>
-
-  <p>First unified stable release of Icinga Core and Icinga Web.</p>
-
-  <p><span class="bold"><strong>Icinga Core:</strong></span></p>
-
-  <p>* disable eventprofiler on Solaris gcc3, preventing core dumps</p>
-
-  <p>* fix scheduled downtime notifications resent on restart/reload</p>
-
-  <p>* add the possibility to use * as a wildcard for all hosts in servicegroup definition</p>
-
-  <p>* add config option to disable logging into the daemon log file</p>
-
-  <p>* add eventhandler override</p>
-
-  <p>* remove program update checks</p>
-
-  <p>* don't skip hostchecks when servicechecks are disabled</p>
-
-  <p><span class="bold"><strong>Icinga IDOUtils:</strong></span></p>
-
-  <p>* fix ido2db forking if database connection failed, now immediately disconnecting the client</p>
-
-  <p>* fix database port in ido2db.cfg not honoured using libdbi</p>
-
-
-  <p><span class="bold"><strong>Icinga Classic UI</strong></span></p>
-
-  <p>* Tooltips for comments in status.cgi</p>
-
-  <p> ‚Äì you don‚Äôt have to open the host/service anymore to see the comments, just move your mouse over.</p>
-
-  <p>* Multiple delete of comments and downtimes</p>
-
-  <p> ‚Äì now you can tick the items you want to delete and click the delete button</p>
-
-  <p> ‚Äì just like multiple commands support in status.cgi.</p>
-
-  <p>* CVS export on pretty much every page</p>
-
-  <p> ‚Äì you can now export various lists and status data directly. There is a small ‚ÄúExport to CSV‚Äù link bringing up a page with the
-  current content in csv format. Adding two new config options where you can decide which characters are used for output format completes
-  this nifty enhancement</p>
-
-  <p>* Commands expander for config display. This will help at $ARGn$ substitution and showing the exact command line the core will
-  attempt to execute. Long awaited feature, big thanks to Jochen Bern!</p>
-
-  <p>* Combined fixes including a slightly modified menu, adding unhandled host/service problems, javascript library updates, fixed
-  segfaults on Solaris in status.cgi without query_string and also complete drop of php as dependency for the classic ui</p>
-
-  <p>To have a deeper look, please visit the Changelog</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>See: doc/Changelog</p>
-    </li></ul></div>
-
-  <p><span class="bold"><strong>Icinga Web:</strong></span></p>
-
-  <p>* Pending states: shows a special status for checks that have not yet been executed</p>
-
-  <p>* Better logging, stricter errors: More about what icinga-web is doing, catch strict errors</p>
-
-  <p>* Site configuration: Place your custom configuration into site xml files which are not overwritten</p>
-
-  <p>* Comments for hosts and services seamlessly integrated</p>
-
-  <p>* PNP4Nagios: integrated on the fly if you want</p>
-
-  <p>* Search for objects performs excellently!</p>
-
-  <p>* Device icons from the icinga configuration</p>
-
-  <p>Insidertips and more documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
-
-  <p>To have a deeper look, please visit the changelog-web</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>See: doc/CHANGELOG</p>
-    </li></ul></div>
-
-  <p><span class="bold"><strong>Icinga Reporting:</strong></span></p>
-
-  <p>* Finished Icinga Reporting package in the git, download from <a class="link" href="git://git.icinga.org/icinga-reports.git/" target="_top">git://git.icinga.org/icinga-reports.git/</a></p>
-
-  <p>* Installation guide in the wiki, please visit: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#25-Icinga-Reporting" target="_top">Icinga-Wiki</a></p>
-
-  <p><span class="bold"><strong>Icinga Docs:</strong></span></p>
-
-  <p>* New Document for integrating PNP4Nagios to Icinga-Web</p>
-
-  <p>* New Document for the Icinga-Web API</p>
-
-  <p>* New Documents for the external Commands</p>
-
-  <p>* New Images</p>
-
-  <p>* Updates and fixes for upgrading Icinga and IDOUtils, visit the docs for more Information <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">upgrading_idoutils</a></p>
-
-  <p>* Updates and fixes for API-section</p>
-
-  <p>* Updates and fixes for Web-Install-Section</p>
-
-  <p>* Updates for objectdefinitions and Classic UI configuration options.</p>
-
-  <p>* Updates for extended docs for the IDOUtils, Chapter 11.</p>
-
-  <p>* New testing guides for Icinga: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#2-Development" target="_top">Icinga-Development</a></p>
-
-  <p>Insidertips and more documentation for Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
-
   <p>Should you find any issues, please report them to one of the following links:</p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga Core</a></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga-Core</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga Web</a></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga-Web</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga API</a></p>
-<p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga Reporting</a></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga-API</a></p>
+<p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga-Reporting</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga Docs</a></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
 
-  <a class="indexterm" name="id4980892"></a>
+  <a class="indexterm" name="id1848900"></a>
 
-  
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="about.html">Prev</a>¬†</td>
+<a accesskey="p" href="about.html">Prev</a>†</td>
 <td width="20%" align="center"><a accesskey="u" href="ch01.html">Up</a></td>
-<td width="40%" align="right">¬†<a accesskey="n" href="ch02.html">Next</a>
+<td width="40%" align="right">†<a accesskey="n" href="ch02.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">About Icinga¬†</td>
+<td width="40%" align="left" valign="top">About Icinga†</td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">¬†Chapter¬†2.¬†Getting Started</td>
+<td width="40%" align="right" valign="top">†Chapter†2.†Getting Started</td>
 </tr>
 </table>
 </div>
-<P class="copyright">¬© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

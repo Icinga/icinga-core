@@ -1,13 +1,13 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Kapitel 3. Icinga konfigurieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
-<link rel="up" href="index.html" title="Icinga Version 1.3 Dokumentation">
-<link rel="prev" href="monitoring-publicservices.html" title="Ã–ffentlich zugÃ¤ngliche Dienste Ã¼berwachen">
-<link rel="next" href="config.html" title="KonfigurationsÃ¼berblick">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="up" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="prev" href="monitoring-publicservices.html" title="Öffentlich zugängliche Dienste überwachen">
+<link rel="next" href="config.html" title="Konfigurationsüberblick">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +16,9 @@
 <tr><th colspan="3" align="center">Kapitel 3. Icinga konfigurieren</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="monitoring-publicservices.html">ZurÃ¼ck</a>Â </td>
-<th width="60%" align="center">Â </th>
-<td width="20%" align="right">Â <a accesskey="n" href="config.html">Weiter</a>
+<a accesskey="p" href="monitoring-publicservices.html">Zurück</a> </td>
+<th width="60%" align="center"> </th>
+<td width="20%" align="right"> <a accesskey="n" href="config.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -30,27 +30,28 @@
 <div class="toc">
 <p><b>Inhaltsverzeichnis</b></p>
 <dl>
-<dt><span class="section"><a href="config.html">KonfigurationsÃ¼berblick</a></span></dt>
+<dt><span class="section"><a href="config.html">Konfigurationsüberblick</a></span></dt>
 <dt><span class="section"><a href="configmain.html">Optionen der Hauptkonfigurationsdatei</a></span></dt>
-<dt><span class="section"><a href="configobject.html">Ãœberblick Objektkonfiguration</a></span></dt>
+<dt><span class="section"><a href="configobject.html">Überblick Objektkonfiguration</a></span></dt>
 <dt><span class="section"><a href="objectdefinitions.html">Objektdefinitionen</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="objectdefinitions.html#id5587269">Host-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5587271">Hostgruppen-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5589755">Service-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5590274">Servicegruppen-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5592539">Kontakt-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5593084">Kontaktgruppen-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5594250">Zeitfenster-Definition (timeperiod)</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5594628">Befehls-Definition (command)</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5595076">Service-AbhÃ¤ngigkeits-Definition (servicedependency)</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5595463">Serviceeskalations-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5596295">Host-AbhÃ¤ngigkeits-Definition (hostdependency)</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5597414">Host-Eskalations-Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5598104">erweiterte Hostinformations-Definition (hostextinfo)</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id5599001">erweiterte Serviceinformations-Definition (serviceextinfo)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3441723">Host-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3441725">Hostgruppen-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3444251">Service-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3444787">Servicegruppen-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3447109">Kontakt-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3447665">Kontaktgruppen-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3448877">Zeitfenster-Definition (timeperiod)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3449274">Befehls-Definition (command)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3449732">Service-Abhängigkeits-Definition (servicedependency)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3450135">Serviceeskalations-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3450988">Host-Abhängigkeits-Definition (hostdependency)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3452145">Host-Eskalations-Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3452850">erweiterte Hostinformations-Definition (hostextinfo)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3453778">erweiterte Serviceinformations-Definition (serviceextinfo)</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id3454558">Module-Definition</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="customobjectvars.html">MaÃŸgeschneiderte Objektvariablen</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html">Maßgeschneiderte Objektvariablen</a></span></dt>
 <dt><span class="section"><a href="configcgi.html">Optionen CGI-Konfigurationsdatei</a></span></dt>
 <dt><span class="section"><a href="cgiauth.html">Authentifizierung und Autorisierung in den CGIs</a></span></dt>
 </dl>
@@ -76,18 +77,18 @@
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="monitoring-publicservices.html">ZurÃ¼ck</a>Â </td>
-<td width="20%" align="center">Â </td>
-<td width="40%" align="right">Â <a accesskey="n" href="config.html">Weiter</a>
+<a accesskey="p" href="monitoring-publicservices.html">Zurück</a> </td>
+<td width="20%" align="center"> </td>
+<td width="40%" align="right"> <a accesskey="n" href="config.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Ã–ffentlich zugÃ¤ngliche Dienste Ã¼berwachenÂ </td>
+<td width="40%" align="left" valign="top">Öffentlich zugängliche Dienste überwachen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â KonfigurationsÃ¼berblick</td>
+<td width="40%" align="right" valign="top"> Konfigurationsüberblick</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

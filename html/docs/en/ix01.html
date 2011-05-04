@@ -1,12 +1,12 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Index</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="up" href="index.html" title="Icinga Version 1.3 Documentation">
-<link rel="prev" href="db_model.html" title="IDOUtils Database Model">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="prev" href="db_changes.html" title="Database changes/alterations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -15,16 +15,16 @@
 <tr><th colspan="3" align="center">Index</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="db_model.html">Prev</a>Â </td>
-<th width="60%" align="center">Â </th>
-<td width="20%" align="right">Â </td>
+<a accesskey="p" href="db_changes.html">Prev</a> </td>
+<th width="60%" align="center"> </th>
+<td width="20%" align="right"> </td>
 </tr>
 </table>
 <hr>
 </div>
 <div class="index" title="Index">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id5098457"></a>Index</h2></div></div></div>
+<a name="id1991355"></a>Index</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -59,6 +59,10 @@
 <dt>check_mk, <a class="indexterm" href="addons.html#addons-mon">Icinga Addons</a>
 </dt>
 <dt>IDOUtils, <a class="indexterm" href="addons.html#addons-idoutils">Icinga Addons</a>
+</dt>
+<dt>LConf, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
+</dt>
+<dt>Lilac, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
 </dt>
 <dt>MKLiveStatus-Integration, <a class="indexterm" href="int-mklivestatus.html">MKLiveStatus Integration</a>
 </dt>
@@ -230,6 +234,8 @@
 </dt>
 <dt>Extended Information CGI, <a class="indexterm" href="cgis.html#cgis-extinfo_cgi">Icinga Classic UI: Information On The CGIs</a>
 </dt>
+<dt>Filter properties, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Information On CGI parameters</a>
+</dt>
 <dt>Network Outages CGI, <a class="indexterm" href="cgis.html#cgis-outages_cgi">Icinga Classic UI: Information On The CGIs</a>
 </dt>
 <dt>Notfication CGI, <a class="indexterm" href="cgis.html#cgis-notifications_cgi">Icinga Classic UI: Information On The CGIs</a>
@@ -247,6 +253,15 @@
 <dt>WAP Interface CGI, <a class="indexterm" href="cgis.html#cgis-statuswml_cgi">Icinga Classic UI: Information On The CGIs</a>
 </dt>
 </dl></dd>
+<dt>cgi_log_archive_path=</dt>
+<dd><dl><dt>Set location of CGI log archive directory, <a class="indexterm" href="configcgi.html#configcgi-cgi_log_archive_path">CGI Configuration File Options</a>
+</dt></dl></dd>
+<dt>cgi_log_file=</dt>
+<dd><dl><dt>Set location of CGI log file, <a class="indexterm" href="configcgi.html#configcgi-cgi_log_file">CGI Configuration File Options</a>
+</dt></dl></dd>
+<dt>cgi_log_rotation_method=</dt>
+<dd><dl><dt>Set rotation method of CGI log file, <a class="indexterm" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>check_external_commands=</dt>
 <dd><dl><dt>External Command Check, <a class="indexterm" href="configmain.html#configmain-check_external_commands">Main Configuration File Options</a>
 </dt></dl></dd>
@@ -385,8 +400,9 @@
 <dt>enable_splunk_integration=</dt>
 <dd><dl><dt>Splunk Integration Option, <a class="indexterm" href="configcgi.html#configcgi-enable_splunk_integration">CGI Configuration File Options</a>
 </dt></dl></dd>
-<dt>Erweiterte Serviceinformations-Definition (extended serviceinformation-Definition), <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Serviceextinfo Definition</a>
-</dt>
+<dt>enforce_comments_on_actions=</dt>
+<dd><dl><dt>Enforce comments on actions, <a class="indexterm" href="configcgi.html#configcgi-enforce_comments_on_actions">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>Escalations</dt>
 <dd><dl>
 <dt>Escalation condition, <a class="indexterm" href="escalation_condition.html">Escalation Condition</a>
@@ -413,6 +429,8 @@
 <dt>execute_service_checks=</dt>
 <dd><dl><dt>Service Check Execution, <a class="indexterm" href="configmain.html#configmain-execute_service_checks">Main Configuration File Options</a>
 </dt></dl></dd>
+<dt>Extended service information definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Serviceextinfo Definition</a>
+</dt>
 <dt>External Commands, <a class="indexterm" href="adaptive.html#adaptive_monitoring">Adaptive Monitoring</a>
 </dt>
 <dt>External commands</dt>
@@ -484,6 +502,12 @@
 <dt>DEL_ALL_HOST_COMMENTS, <a class="indexterm" href="extcommands2.html#extcmd2-del_all_host_comments">List of External Commands</a>
 </dt>
 <dt>DEL_ALL_SVC_COMMENTS, <a class="indexterm" href="extcommands2.html#extcmd2-del_all_svc_comments">List of External Commands</a>
+</dt>
+<dt>DEL_DOWNTIME_BY_HOSTGROUP_NAME, <a class="indexterm" href="extcommands2.html#extcmd2-del_downtime_by_hostgroup_name">List of External Commands</a>
+</dt>
+<dt>DEL_DOWNTIME_BY_HOST_NAME, <a class="indexterm" href="extcommands2.html#extcmd2-del_downtime_by_host_name">List of External Commands</a>
+</dt>
+<dt>DEL_DOWNTIME_BY_START_TIME_COMMENT, <a class="indexterm" href="extcommands2.html#extcmd2-del_downtime_by_start_time_comment">List of External Commands</a>
 </dt>
 <dt>DEL_HOST_COMMENT, <a class="indexterm" href="extcommands2.html#extcmd2-del_host_comment">List of External Commands</a>
 </dt>
@@ -745,6 +769,9 @@
 </dt></dl></dd>
 <dt>Fast Startup Options, <a class="indexterm" href="faststartup.html#fast_startup">Fast Startup Options</a>
 </dt>
+<dt>first_day_of_week=</dt>
+<dd><dl><dt>Set first day of week, <a class="indexterm" href="configcgi.html#configcgi-first_day_of_week">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>Flapping</dt>
 <dd><dl><dt>Detection and Handling of State Flapping, <a class="indexterm" href="flapping.html#state_flapping">Detection and Handling of State Flapping</a>
 </dt></dl></dd>
@@ -825,6 +852,9 @@
 <dt>host_perfdata_file_template=</dt>
 <dd><dl><dt>Host Performance Data File, <a class="indexterm" href="configmain.html#configmain-host_perfdata_file_template">Main Configuration File Options</a>
 </dt></dl></dd>
+<dt>host_perfdata_process_empty_results</dt>
+<dd><dl><dt>Process Empty Host Performance Data Results, <a class="indexterm" href="configmain.html#configmain-process_empty_results">Main Configuration File Options</a>
+</dt></dl></dd>
 <dt>How Do I Use Plugin X?, <a class="indexterm" href="plugins.html#plugins-howto">Icinga Plugins</a>
 </dt>
 <dt>Howtos</dt>
@@ -837,9 +867,6 @@
 <div class="indexdiv">
 <h3>I</h3>
 <dl>
-<dt>Icinga API</dt>
-<dd><dl><dt>Icinga Web REST API;, <a class="indexterm" href="icinga-web-api.html">The Icinga Web REST API</a>
-</dt></dl></dd>
 <dt>Icinga command line options</dt>
 <dd><dl>
 <dt>option -d (daemon mode), <a class="indexterm" href="startstop.html#start_stop">Starting and Stopping Icinga</a>
@@ -859,30 +886,38 @@
 </dl></dd>
 <dt>Icinga logging options, <a class="indexterm" href="startstop.html#start_stop">Starting and Stopping Icinga</a>
 </dt>
-<dt>Icinga Reporting with JasperServer</dt>
-<dd><dl><dt>Icinga Reporting, <a class="indexterm" href="reporting.html">Installation of the Icinga Reporting with JasperServer</a>
-</dt></dl></dd>
-<dt>Icinga Web</dt>
-<dd><dl>
-<dt>Configuration Options, <a class="indexterm" href="icinga-web-config.html">Configuration Overview of Icinga Web</a>
-</dt>
-<dt>Customised Configuration, <a class="indexterm" href="icinga-web-config.html">Configuration Overview of Icinga Web</a>
-</dt>
-<dt>Overview (&lt;= 1.2.x), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro">Introduction to Icinga Web (up to 1.2.x)</a>
-</dt>
-<dt>Overview (&gt;= 1.3), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.3">Introduction to Icinga Web (&gt;= 1.3.x)</a>
-</dt>
-<dt>Session Lifetime, <a class="indexterm" href="icinga-web-config.html#configweb-session-lifetime">Configuration Overview of Icinga Web</a>
-</dt>
-<dt>Timezone, <a class="indexterm" href="icinga-web-config.html#configweb-timezone">Configuration Overview of Icinga Web</a>
-</dt>
-<dt>Update/upgrade Icinga Web database, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga Web and Icinga Web Database</a>
-</dt>
-<dt>Update/upgrade of Icinga Web, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga Web and Icinga Web Database</a>
-</dt>
-</dl></dd>
 <dt>Icinga-API, <a class="indexterm" href="icinga-api.html">Installation and use of the Icinga API</a>
 </dt>
+<dd><dl><dt>Icinga-Web REST API;, <a class="indexterm" href="icinga-web-api.html">The Icinga-Web REST API</a>
+</dt></dl></dd>
+<dt>Icinga-Reporting with JasperServer</dt>
+<dd><dl><dt>Icinga-Reporting, <a class="indexterm" href="reporting.html">Installation of the Icinga-Reporting with JasperServer</a>
+</dt></dl></dd>
+<dt>Icinga-Web</dt>
+<dd><dl>
+<dt>Authentication, <a class="indexterm" href="icinga-web-config.html#configweb-auth">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Change default timezone, <a class="indexterm" href="icinga-web-config.html#configweb-timezone">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Configuration Options, <a class="indexterm" href="icinga-web-config.html">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Customised Configuration, <a class="indexterm" href="icinga-web-config.html">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Icinga-API connection, <a class="indexterm" href="icinga-web-config.html#configweb-api">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Module configuration, <a class="indexterm" href="icinga-web-config.html#configweb-module">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Overview (&lt;= 1.2.x), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro">Introduction to Icinga-Web (up to 1.2.x)</a>
+</dt>
+<dt>Overview (&gt;= 1.3), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.3">Introduction to Icinga-Web (&gt;= 1.3.x)</a>
+</dt>
+<dt>Session Cookie Lifetime, <a class="indexterm" href="icinga-web-config.html#configweb-session-lifetime">Configuration Overview of Icinga-Web</a>
+</dt>
+<dt>Update/upgrade Icinga-Web database, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga-Web and Icinga-Web Database</a>
+</dt>
+<dt>Update/upgrade of Icinga-Web, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga-Web and Icinga-Web Database</a>
+</dt>
+</dl></dd>
 <dt>Icingastats</dt>
 <dd><dl><dt>Using The Icingastats Utility, <a class="indexterm" href="icingastats.html#icinga_stats">Using The Icingastats Utility</a>
 </dt></dl></dd>
@@ -895,6 +930,8 @@
 <dt>IDOUtils</dt>
 <dd><dl>
 <dt>Central Tables, <a class="indexterm" href="db_model.html#dbm_ct">Central Tables</a>
+</dt>
+<dt>Change instance name, <a class="indexterm" href="db_changes.html#db_changes-instancename">Database changes/alterations</a>
 </dt>
 <dt>Configuration Tables, <a class="indexterm" href="db_model.html#dbm_cf"> Configuration Tables</a>
 </dt>
@@ -911,7 +948,7 @@
 <dt>illegal_object_name_chars=</dt>
 <dd><dl><dt>Illegal Object Name, <a class="indexterm" href="configmain.html#configmain-illegal_object_name_chars">Main Configuration File Options</a>
 </dt></dl></dd>
-<dt>Installation of the Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga Web Frontend</a>
+<dt>Installation of the Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga-Web Frontend</a>
 </dt>
 <dt>Integration Overview, <a class="indexterm" href="integration.html#Icinga_integration">Integration Overview</a>
 </dt>
@@ -925,7 +962,11 @@
 <dl>
 <dt>Large Installation Tweaks, <a class="indexterm" href="largeinstalltweaks.html#large_install_tweaks">Large Installation Tweaks</a>
 </dt>
+<dt>LConf, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
+</dt>
 <dt>Licensing, <a class="indexterm" href="about.html#licensing">About Icinga</a>
+</dt>
+<dt>Lilac, <a class="indexterm" href="addons.html#addons-conf">Icinga Addons</a>
 </dt>
 <dt>lock_author=</dt>
 <dd><dl><dt>Lock Author Names, <a class="indexterm" href="configcgi.html#configcgi-lock_author_names">CGI Configuration File Options</a>
@@ -1369,6 +1410,13 @@
 <dt>notification_timeout=</dt>
 <dd><dl><dt>Notification Timeout, <a class="indexterm" href="configmain.html#configmain-notification_timeout">Main Configuration File Options</a>
 </dt></dl></dd>
+<dt>nrpe</dt>
+<dd><dl>
+<dt>nrpe, <a class="indexterm" href="nrpe.html">NRPE</a>
+</dt>
+<dt>send_nrpe, <a class="indexterm" href="nrpe.html">NRPE</a>
+</dt>
+</dl></dd>
 <dt>NSCA</dt>
 <dd><dl>
 <dt>nsca, <a class="indexterm" href="nsca.html">NSCA</a>
@@ -1404,6 +1452,8 @@
 </dt>
 <dt>Hostgroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostgroup">Hostgroup Definition</a>
 </dt>
+<dt>Module, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-module">Module Definition</a>
+</dt>
 <dt>Retention, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-retention_notes">Object Definitions</a>
 </dt>
 <dt>Service, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-service">Service Definition</a>
@@ -1412,6 +1462,8 @@
 </dt>
 <dt>Service Escalation, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceescalation">Serviceescalation Definition</a>
 </dt>
+<dt>Service Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Serviceextinfo Definition</a>
+</dt>
 <dt>Servicegroup, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegroup Definition</a>
 </dt>
 <dt>Time-Saving Tricks For Object Definitions, <a class="indexterm" href="objecttricks.html#object_tricks">Time-Saving Tricks For Object Definitions</a>
@@ -1419,6 +1471,9 @@
 <dt>Timeperiod, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-timeperiod">Timeperiod Definition</a>
 </dt>
 </dl></dd>
+<dt>Object definitions</dt>
+<dd><dl><dt>Service Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">Hostextinfo Definition</a>
+</dt></dl></dd>
 <dt>Object Inheritance, <a class="indexterm" href="objectinheritance.html#object_inheritance">Object Inheritance</a>
 </dt>
 <dd><dl>
@@ -1437,9 +1492,6 @@
 </dl></dd>
 <dt>object_cache_file=</dt>
 <dd><dl><dt>Object Cache File, <a class="indexterm" href="configmain.html#configmain-object_cache_file">Main Configuration File Options</a>
-</dt></dl></dd>
-<dt>Objektdefinitionen</dt>
-<dd><dl><dt>Service Extended Information, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-hostextinfo">Hostextinfo Definition</a>, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceextinfo">Serviceextinfo Definition</a>
 </dt></dl></dd>
 <dt>obsess_over_hosts=</dt>
 <dd><dl><dt>Obsess Over Hosts Option, <a class="indexterm" href="configmain.html#configmain-obsess_over_hosts">Main Configuration File Options</a>
@@ -1495,10 +1547,12 @@
 </dt>
 <dt>Integrating a new plugin, <a class="indexterm" href="plugins.html#plugins-hints">Icinga Plugins</a>
 </dt>
+<dt>Plugins and macros, <a class="indexterm" href="plugins.html#plugins-hints">Icinga Plugins</a>
+</dt>
 </dl></dd>
 <dt>PNP4Nagios, <a class="indexterm" href="addons.html#addons-vis">Icinga Addons</a>
 </dt>
-<dd><dl><dt>pnp with Icinga Web, <a class="indexterm" href="icinga-web-pnp.html">Integration of PNP4Nagios into Icinga Web</a>
+<dd><dl><dt>pnp with Icinga-Web, <a class="indexterm" href="icinga-web-pnp.html">Integration of PNP4Nagios into Icinga-Web</a>
 </dt></dl></dd>
 <dt>precached_object_file=</dt>
 <dd><dl><dt>Precached Object File, <a class="indexterm" href="configmain.html#configmain-precached_object_file">Main Configuration File Options</a>
@@ -1658,6 +1712,9 @@
 </dt></dl></dd>
 <dt>service_perfdata_file_template=</dt>
 <dd><dl><dt>Service Performance Data File, <a class="indexterm" href="configmain.html#configmain-service_perfdata_file_template">Main Configuration File Options</a>
+</dt></dl></dd>
+<dt>service_perfdata_process_empty_results</dt>
+<dd><dl><dt>Process Empty Service Performance Data Results, <a class="indexterm" href="configmain.html#configmain-process_empty_results">Main Configuration File Options</a>
 </dt></dl></dd>
 <dt>showlog_current_states=</dt>
 <dd><dl><dt>Show current states, <a class="indexterm" href="configcgi.html#configcgi-showlog_current_states">CGI Configuration File Options</a>
@@ -1854,9 +1911,9 @@
 <div class="indexdiv">
 <h3>U</h3>
 <dl>
-<dt>Update/upgrade Icinga Web database, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga Web and Icinga Web Database</a>
+<dt>Update/upgrade Icinga-Web database, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga-Web and Icinga-Web Database</a>
 </dt>
-<dt>Update/upgrade of Icinga Web, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga Web and Icinga Web Database</a>
+<dt>Update/upgrade of Icinga-Web, <a class="indexterm" href="upgrading_icingaweb.html">Upgrading Icinga-Web and Icinga-Web Database</a>
 </dt>
 <dt>Upgrading, <a class="indexterm" href="upgrading.html#upgrading_nagios">Upgrading (to) Icinga</a>
 </dt>
@@ -1887,6 +1944,9 @@
 </dt></dl></dd>
 <dt>use_large_installation_tweaks=</dt>
 <dd><dl><dt>Large Installation Tweaks, <a class="indexterm" href="configmain.html#configmain-use_large_installation_tweaks">Main Configuration File Options</a>
+</dt></dl></dd>
+<dt>use_logging=</dt>
+<dd><dl><dt>Enable/disable CGI command logging, <a class="indexterm" href="configcgi.html#configcgi-use_logging">CGI Configuration File Options</a>
 </dt></dl></dd>
 <dt>use_regexp_matching=</dt>
 <dd><dl><dt>Regular Expression Matching, <a class="indexterm" href="configmain.html#configmain-use_regexp_matching">Main Configuration File Options</a>
@@ -1920,13 +1980,13 @@
 <div class="indexdiv">
 <h3>W</h3>
 <dl>
-<dt>Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga Web Frontend</a>
+<dt>Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga-Web Frontend</a>
 </dt>
-<dd><dl><dt>Errors in the, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga Web Frontend</a>
+<dd><dl><dt>Errors in the, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga-Web Frontend</a>
 </dt></dl></dd>
 <dt>What is Icinga?, <a class="indexterm" href="about.html#whatsicinga">About Icinga</a>
 </dt>
-<dt>What's new in Icinga, <a class="indexterm" href="whatsnew.html">What's New in Icinga 1.3</a>
+<dt>What's new in Icinga, <a class="indexterm" href="whatsnew.html">What's New in Icinga 1.4</a>
 </dt>
 </dl>
 </div>
@@ -1937,17 +1997,17 @@
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="db_model.html">Prev</a>Â </td>
-<td width="20%" align="center">Â </td>
-<td width="40%" align="right">Â </td>
+<a accesskey="p" href="db_changes.html">Prev</a> </td>
+<td width="20%" align="center"> </td>
+<td width="40%" align="right"> </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">IDOUtils Database ModelÂ </td>
+<td width="40%" align="left" valign="top">Database changes/alterations </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">Â </td>
+<td width="40%" align="right" valign="top"> </td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

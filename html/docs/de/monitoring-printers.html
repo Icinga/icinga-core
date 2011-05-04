@@ -1,45 +1,45 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Netzwerk-Drucker Ã¼berwachen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Netzwerk-Drucker überwachen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="monitoring-netware.html" title="Netware-Server Ã¼berwachen">
-<link rel="next" href="monitoring-routers.html" title="Router und Switches Ã¼berwachen">
+<link rel="prev" href="monitoring-netware.html" title="Netware-Server überwachen">
+<link rel="next" href="monitoring-routers.html" title="Router und Switches überwachen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Netzwerk-Drucker Ã¼berwachen</th></tr>
+<tr><th colspan="3" align="center">Netzwerk-Drucker überwachen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="monitoring-netware.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="monitoring-netware.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right">Â <a accesskey="n" href="monitoring-routers.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-routers.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Netzwerk-Drucker Ã¼berwachen">
+<div class="section" title="Netzwerk-Drucker überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-printers"></a>Netzwerk-Drucker Ã¼berwachen</h2></div></div></div>
+<a name="monitoring-printers"></a>Netzwerk-Drucker überwachen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
   <div class="mediaobject" align="right"><img src="../images/printer.png" align="right"></div>
 
-  <p>Dieses Dokument beschreibt, wie Sie den Status von Netzwerkdruckern Ã¼berwachen kÃ¶nnen. HP-Drucker haben
-  interne/externe JetDirect-Karten/Devices, andere Print-Server (wie der Troy PocketPro 100S oder der Netgear PS101) unterstÃ¼tzen
+  <p>Dieses Dokument beschreibt, wie Sie den Status von Netzwerkdruckern überwachen können. HP-Drucker haben
+  interne/externe JetDirect-Karten/Devices, andere Print-Server (wie der Troy PocketPro 100S oder der Netgear PS101) unterstützen
   das JetDirect-Protokoll.</p>
 
   <p>Das <span class="emphasis"><em>check_hpjd</em></span>-Plugin (das Bestandteil der Icinga-Distribution ist), erlaubt Ihnen die
-  Ãœberwachung des Zustands von JetDirect-fÃ¤higen Druckern, auf denen SNMP aktiviert ist. Das Plugin kann die folgenden
-  DruckerzustÃ¤nde erkennen:</p>
+  Überwachung des Zustands von JetDirect-fähigen Druckern, auf denen SNMP aktiviert ist. Das Plugin kann die folgenden
+  Druckerzustände erkennen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -71,72 +71,79 @@
     </li>
 </ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-KonfigurationseintrÃ¤ge beziehen
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen
   sich auf Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>,
   <span class="emphasis"><em>templates.cfg</em></span>, etc.) definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung
   folgen.</p>
 
-  <p><span class="bold"><strong>Ãœberblick</strong></span></p>
+  <p><span class="bold"><strong>Überblick</strong></span></p>
 
   <div class="mediaobject"><img src="../images/monitoring-printers.png"></div>
 
-  <p>Die Ãœberwachung des Zustands eines Netzwerkdruckers ist ziemlich einfach. Bei JetDirect-fÃ¤higen Druckern ist normalerweise
-  SNMP aktiviert, so dass Icinga ihren Zustand mit Hilfe des <span class="emphasis"><em>check_hpjd</em></span>-Plugins Ã¼berwachen
+  <p>Die Überwachung des Zustands eines Netzwerkdruckers ist ziemlich einfach. Bei JetDirect-fähigen Druckern ist normalerweise
+  SNMP aktiviert, so dass Icinga ihren Zustand mit Hilfe des <span class="emphasis"><em>check_hpjd</em></span>-Plugins überwachen
   kann.</p>
 
-  <p>Das <span class="emphasis"><em>check_hpjd</em></span>-Plugin wird nur dann kompiliert und installiert, wenn Sie die net-snmp- und
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top"><p>Das <span class="emphasis"><em>check_hpjd</em></span>-Plugin wird nur dann kompiliert und installiert, wenn Sie die net-snmp- und
   net-snmp-utils-Pakete auf Ihrem System haben. Stellen Sie sicher, dass das Plugin im
-  <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>-Verzeichnis existiert, bevor Sie fortfahren. Falls nicht, installieren Sie net-snmp
-  und net-snmp-utils und kompilieren und installieren Sie die Icinga-Plugins erneut.</p>
+  <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>-Verzeichnis existiert, bevor Sie fortfahren. Falls nicht, installieren Sie net-snmp und
+  net-snmp-utils und kompilieren und installieren Sie die Icinga-Plugins erneut, nachdem Sie "make clean" im Source-Verzeichnis
+  ausgeführt haben. Einzelheiten finden Sie in der <a class="link" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">Schnellstartanleitung</a>.</p></td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Schritte</strong></span></p>
 
-  <p>Es gibt einige Schritte, die Sie durchfÃ¼hren mÃ¼ssen, um einen neuen Netzwerkdrucker zu Ã¼berwachen. Das sind:</p>
+  <p>Es gibt einige Schritte, die Sie durchführen müssen, um einen neuen Netzwerkdrucker zu überwachen. Das sind:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>erfÃ¼llen Sie einmalige Voraussetzungen</p>
+      <p>erfüllen Sie einmalige Voraussetzungen</p>
     </li>
 <li class="listitem">
-      <p>erstellen Sie neue Host- und Service-Definitionen zur Ãœberwachung des Druckers</p>
+      <p>erstellen Sie neue Host- und Service-Definitionen zur Überwachung des Druckers</p>
     </li>
 <li class="listitem">
       <p>starten Sie den Icinga-Daemon neu</p>
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Was bereits fÃ¼r Sie vorbereitet wurde</strong></span></p>
+  <p><span class="bold"><strong>Was bereits für Sie vorbereitet wurde</strong></span></p>
 
-  <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben fÃ¼r Sie erledigt:</p>
+  <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben für Sie erledigt:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>Eine <span class="emphasis"><em>check_hpjd</em></span>-Befehlsdefinition ist in der <span class="emphasis"><em>commands.cfg</em></span>-Datei vorhanden.
-      Das erlaubt Ihnen die Nutzung des <span class="emphasis"><em>check_hpjd</em></span>-Plugins zur Ãœberwachung von Netzwerkdruckern.</p>
+      Das erlaubt Ihnen die Nutzung des <span class="emphasis"><em>check_hpjd</em></span>-Plugins zur Überwachung von Netzwerkdruckern.</p>
     </li>
 <li class="listitem">
-      <p>Eine Host-Vorlage fÃ¼r Drucker (namens <span class="emphasis"><em>generic-printer</em></span>) wurde bereits in der
+      <p>Eine Host-Vorlage für Drucker (namens <span class="emphasis"><em>generic-printer</em></span>) wurde bereits in der
       <span class="emphasis"><em>templates.cfg</em></span>-Datei erstellt. Das erlaubt es Ihnen, Drucker-Host-Definitionen auf einfache Weise
-      hinzuzufÃ¼gen.</p>
+      hinzuzufügen.</p>
     </li>
 </ul></div>
 
-  <p>Die o.g. Konfigurationsdateien finden Sie im <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>-Verzeichnis. Sie kÃ¶nnen
+  <p>Die o.g. Konfigurationsdateien finden Sie im <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>-Verzeichnis. Sie können
   diese und andere Definitionen anpassen, damit Sie Ihren Anforderungen besser entsprechen. Allerdings empfehlen wir Ihnen, noch
-  ein wenig damit zu warten, bis Sie besser mit der Konfiguration von Icinga vertraut sind. FÃ¼r den Moment folgen Sie
-  einfach den nachfolgenden Anweisungen und Sie werden im Nu Ihre Netzwerkdrucker Ã¼berwachen.</p>
+  ein wenig damit zu warten, bis Sie besser mit der Konfiguration von Icinga vertraut sind. Für den Moment folgen Sie
+  einfach den nachfolgenden Anweisungen und Sie werden im Nu Ihre Netzwerkdrucker überwachen.</p>
 
   <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-  <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Netzwerkdrucker zu Ã¼berwachen, dann mÃ¼ssen Sie ein paar
-  zusÃ¤tzliche Dinge tun. Denken Sie daran, dass Sie dies nur fÃ¼r den *ersten* Netzwerkdrucker machen mÃ¼ssen, den Sie Ã¼berwachen
+  <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Netzwerkdrucker zu überwachen, dann müssen Sie ein paar
+  zusätzliche Dinge tun. Denken Sie daran, dass Sie dies nur für den *ersten* Netzwerkdrucker machen müssen, den Sie überwachen
   wollen.</p>
 
   <p>Editieren Sie die Hauptkonfigurationsdatei.</p>
 
   <pre class="screen"> vi /usr/local/icinga/etc/nagios.cfg</pre>
 
-  <p>Entfernen Sie das fÃ¼hrende Hash-(#)-Zeichen der folgenden Zeile in der Hauptkonfigurationsdatei:</p>
+  <p>Entfernen Sie das führende Hash-(#)-Zeichen der folgenden Zeile in der Hauptkonfigurationsdatei:</p>
 
   <pre class="screen"> #cfg_file=/usr/local/icinga/etc/objects/printer.cfg</pre>
 
@@ -144,22 +151,22 @@
 
   <p>Was haben Sie gerade getan? Sie haben Icinga mitgeteilt, in der
   <span class="emphasis"><em>/usr/local/icinga/etc/objects/printer.cfg</em></span>-Datei nach weiteren Objektdefinitionen zu schauen. Dort werden
-  Sie Drucker-Host- und Service-Definitionen einfÃ¼gen. Diese Konfigurationsdatei enthÃ¤lt bereits einige Beispiel-Host-, Hostgroup-
-  und Service-Definitionen. FÃ¼r den *ersten* Netzwerkdrucker, den Sie Ã¼berwachen, passen Sie einfach die Beispiel-Host- und
+  Sie Drucker-Host- und Service-Definitionen einfügen. Diese Konfigurationsdatei enthält bereits einige Beispiel-Host-, Hostgroup-
+  und Service-Definitionen. Für den *ersten* Netzwerkdrucker, den Sie überwachen, passen Sie einfach die Beispiel-Host- und
   Service-Definitionen an, statt neue zu erstellen.</p>
 
   <p><span class="bold"><strong>Icinga konfigurieren</strong></span></p>
 
-  <p>Sie mÃ¼ssen einige <a class="link" href="objectdefinitions.html" title="Objektdefinitionen">Objektdefinitionen anlegen</a>, um einen neuen Drucker zu
-  Ã¼berwachen.</p>
+  <p>Sie müssen einige <a class="link" href="objectdefinitions.html" title="Objektdefinitionen">Objektdefinitionen anlegen</a>, um einen neuen Drucker zu
+  überwachen.</p>
 
-  <p>Ã–ffnen Sie die <span class="emphasis"><em>printer.cfg</em></span>-Datei.</p>
+  <p>Öffnen Sie die <span class="emphasis"><em>printer.cfg</em></span>-Datei.</p>
 
   <pre class="screen"> vi /usr/local/icinga/etc/objects/printer.cfg</pre>
 
-  <p>FÃ¼gen Sie eine neue <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definition fÃ¼r den Netzwerkdrucker hinzu, den Sie
-  Ã¼berwachen mÃ¶chten. Wenn dies der *erste* Netzwerkdrucker ist, den Sie Ã¼berwachen, dann kÃ¶nnen Sie einfach die
-  Beispiel-Definitionen in der <span class="emphasis"><em>printer.cfg</em></span>-Datei anpassen. Ã„ndern Sie die <span class="emphasis"><em>host_name</em></span>-,
+  <p>Fügen Sie eine neue <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definition für den Netzwerkdrucker hinzu, den Sie
+  überwachen möchten. Wenn dies der *erste* Netzwerkdrucker ist, den Sie überwachen, dann können Sie einfach die
+  Beispiel-Definitionen in der <span class="emphasis"><em>printer.cfg</em></span>-Datei anpassen. Ändern Sie die <span class="emphasis"><em>host_name</em></span>-,
   <span class="emphasis"><em>alias</em></span>- und <span class="emphasis"><em>address</em></span>-Felder auf die entsprechenden Werte des Netzwerkdruckers.</p>
 
   <pre class="screen"> define host{
@@ -170,16 +177,16 @@
         hostgroups      allhosts                ; Host groups this printer is associated with
         }</pre>
 
-  <p>Nun kÃ¶nnen Sie (in der gleichen Konfigurationsdatei) einige Service-Definitionen hinzufÃ¼gen, um Icinga mitzuteilen,
-  welche Dinge auf dem Drucker zu Ã¼berwachen sind. Wenn dies der *erste* Drucker ist, den Sie Ã¼berwachen, dann kÃ¶nnen Sie einfach
+  <p>Nun können Sie (in der gleichen Konfigurationsdatei) einige Service-Definitionen hinzufügen, um Icinga mitzuteilen,
+  welche Dinge auf dem Drucker zu überwachen sind. Wenn dies der *erste* Drucker ist, den Sie überwachen, dann können Sie einfach
   die Beispiel-Definitionen in der <span class="emphasis"><em>printer.cfg</em></span>-Datei anpassen.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Ersetzen Sie "<span class="emphasis"><em>hplj2605dn</em></span>" in der folgenden Beispiel-Definition durch den
-  Namen, den Sie in der <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definition angegeben haben, die Sie gerade hinzugefÃ¼gt
+  Namen, den Sie in der <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definition angegeben haben, die Sie gerade hinzugefügt
   haben.</p>
 
-  <p>FÃ¼gen Sie die folgende Service-Definition hinzu, um den Zustand des Druckers zu prÃ¼fen. Der Service benutzt das
-  <span class="emphasis"><em>check_hpjd</em></span>-Plugin, um den Drucker alle zehn Minuten zu prÃ¼fen. Der Wert fÃ¼r die SNMP-Community lautet in
+  <p>Fügen Sie die folgende Service-Definition hinzu, um den Zustand des Druckers zu prüfen. Der Service benutzt das
+  <span class="emphasis"><em>check_hpjd</em></span>-Plugin, um den Drucker alle zehn Minuten zu prüfen. Der Wert für die SNMP-Community lautet in
   diesem Beispiel "public".</p>
 
   <pre class="screen"> define service{
@@ -187,52 +194,52 @@
         host_name               hplj2605dn              ; The name of the host the service is associated with
         service_description     Printer Status          ; The service description
         check_command           check_hpjd!-C public    ; The command used to monitor the service
-        normal_check_interval   10                      ; Check the service every 10 minutes under normal conditions
-        retry_check_interval    1                       ; Re-check the service every minute until its final/hard state is determined
+        check_interval          10                      ; Check the service every 10 minutes under normal conditions
+        retry_interval          1                       ; Re-check the service every minute until its final/hard state is determined
         }</pre>
 
-  <p>FÃ¼gen Sie die folgende Service-Definition hinzu, um alle zehn Minuten einen Ping an den Drucker zu senden. Das ist
-  nÃ¼tzlich, um die generelle Netzwerkverbindung und Werte fÃ¼r RTA und Paketverlust zu Ã¼berwachen.</p>
+  <p>Fügen Sie die folgende Service-Definition hinzu, um alle zehn Minuten einen Ping an den Drucker zu senden. Das ist
+  nützlich, um die generelle Netzwerkverbindung und Werte für RTA und Paketverlust zu überwachen.</p>
 
   <pre class="screen"> define service{
         use                     generic-service
         host_name               hplj2605dn
         service_description     PING
         check_command           check_ping!3000.0,80%!5000.0,100%
-        normal_check_interval   10
-        retry_check_interval    1
+        check_interval          10
+        retry_interval          1
         }</pre>
 
   <p>Speichern Sie die Datei.</p>
 
   <p><span class="bold"><strong>Icinga neu starten</strong></span></p>
 
-  <p>Sobald Sie die neuen Host- und Service-Definitionen in der <span class="emphasis"><em>printer.cfg</em></span>-Datei hinzugefÃ¼gt haben, sind
-  Sie bereit, mit der Ãœberwachung des Druckers zu beginnen. Um dies zu tun, mÃ¼ssen Sie <a class="link" href="verifyconfig.html" title="ÃœberprÃ¼fen Ihrer Icinga-Konfiguration">die
-  Konfigurationsdateien Ã¼berprÃ¼fen</a> und <a class="link" href="startstop.html" title="Icinga starten und stoppen">Icinga neu starten</a>.</p>
+  <p>Sobald Sie die neuen Host- und Service-Definitionen in der <span class="emphasis"><em>printer.cfg</em></span>-Datei hinzugefügt haben, sind
+  Sie bereit, mit der Überwachung des Druckers zu beginnen. Um dies zu tun, müssen Sie <a class="link" href="verifyconfig.html" title="Überprüfen Ihrer Icinga-Konfiguration">die
+  Konfigurationsdateien überprüfen</a> und <a class="link" href="startstop.html" title="Icinga starten und stoppen">Icinga neu starten</a>.</p>
 
-  <p>Wenn die ÃœberprÃ¼fung irgendwelche Fehler enthÃ¤lt, dann mÃ¼ssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher,
-  dass Sie Icinga nicht (erneut) starten, bevor die ÃœberprÃ¼fung ohne Fehler durchgelaufen ist!</p>
-  <a class="indexterm" name="id5566815"></a>
-  <a class="indexterm" name="id5566823"></a>
+  <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher,
+  dass Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
+  <a class="indexterm" name="id3420903"></a>
+  <a class="indexterm" name="id3421118"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="monitoring-netware.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="monitoring-netware.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="monitoring-routers.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-routers.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Netware-Server Ã¼berwachenÂ </td>
+<td width="40%" align="left" valign="top">Netware-Server überwachen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Router und Switches Ã¼berwachen</td>
+<td width="40%" align="right" valign="top"> Router und Switches überwachen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

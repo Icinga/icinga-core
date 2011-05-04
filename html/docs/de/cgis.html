@@ -1,42 +1,42 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Icinga Classic UI: Informationen Ã¼ber die CGIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Icinga Classic UI: Informationen über die CGIs</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
-<link rel="up" href="ch06.html" title="Kapitel 6. Die BenutzeroberflÃ¤chen">
-<link rel="prev" href="ch06.html" title="Kapitel 6. Die BenutzeroberflÃ¤chen">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
+<link rel="prev" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="next" href="cgiparams.html" title="Informationen zu den CGI-Parametern">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Classic UI: Informationen Ã¼ber die CGIs</th></tr>
+<tr><th colspan="3" align="center">Icinga Classic UI: Informationen über die CGIs</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch06.html">ZurÃ¼ck</a>Â </td>
-<th width="60%" align="center">Kapitel 6. Die BenutzeroberflÃ¤chen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="cgiparams.html">Weiter</a>
+<a accesskey="p" href="ch06.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgiparams.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Classic UI: Informationen Ã¼ber die CGIs">
+<div class="section" title="Icinga Classic UI: Informationen über die CGIs">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgis"></a>Icinga Classic UI: Informationen Ã¼ber die CGIs</h2></div></div></div>
+<a name="cgis"></a>Icinga Classic UI: Informationen über die CGIs</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung in das Icinga Classic UI</strong></span></p>
+  <p><span class="bold"><strong>Einführung in das Icinga Classic UI</strong></span></p>
 
   <p>Die verschiedenen mit dem Icinga Core gelieferten CGIs werden hier beschrieben, zusammen mit den Autorisierungsanforderungen
-  fÃ¼r den Zugriff und den Gebrauch jedes CGIs. Im Grundzustand erwarten die CGIs, dass Sie sich dem Web-Server gegenÃ¼ber authentifiziert
-  haben und autorisiert sind, jede Information zu sehen, die Sie anfordern. Mehr Informationen Ã¼ber die Konfiguration der Autorisierung
+  für den Zugriff und den Gebrauch jedes CGIs. Im Grundzustand erwarten die CGIs, dass Sie sich dem Web-Server gegenüber authentifiziert
+  haben und autorisiert sind, jede Information zu sehen, die Sie anfordern. Mehr Informationen über die Konfiguration der Autorisierung
   finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <p>Die CGIs kÃ¶nnen Ã¼ber verschiedene Parameter gesteuert werden. Mehr Informationen finden Sie <a class="link" href="cgiparams.html" title="Informationen zu den CGI-Parametern">hier</a>.</p>
+  <p>Die CGIs können über verschiedene Parameter gesteuert werden. Mehr Informationen finden Sie <a class="link" href="cgiparams.html" title="Informationen zu den CGI-Parametern">hier</a>.</p>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
@@ -70,7 +70,7 @@
 
   <p><a class="link" href="cgis.html#cgis-summary_cgi">Alert summary CGI</a></p>
 
-  <p><a class="link" href="cgis.html#cgis-changes">Ã„nderungen am Classic UI</a></p>
+  <p><a class="link" href="cgis.html#cgis-changes">Änderungen am Classic UI</a></p>
 
   <p><a name="cgis-status_cgi"></a><span class="bold"><strong>Status CGI</strong></span></p>
 
@@ -91,27 +91,27 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>status.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>status.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dies ist das wichtigste mit Icinga gelieferte CGI. Es erlaubt Ihnen den aktuellen Status aller Ã¼berwachten Hosts und Services
-  zu sehen. Das Status-CGI kann zwei Arten von Ausgaben liefern - einen Status-Ãœberblick aller Hostgruppen (oder einer bestimmten
+  <p>Dies ist das wichtigste mit Icinga gelieferte CGI. Es erlaubt Ihnen den aktuellen Status aller überwachten Hosts und Services
+  zu sehen. Das Status-CGI kann zwei Arten von Ausgaben liefern - einen Status-Überblick aller Hostgruppen (oder einer bestimmten
   Hostgruppe) und eine detaillierte Anzeige aller Services (oder diese bezogen auf einen bestimmten Host).</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie alle Hosts und Services ansehen, deren Kontakt Sie
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie alle Hosts und Services ansehen, deren Kontakt Sie
       sind.</p>
     </li>
 </ul></div>
@@ -125,12 +125,12 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>statusmap.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>statusmap.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI erstellt eine Karte aller Hosts, die Sie in Ihrem Netzwerk definiert haben. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder hÃ¶her), um ein PNG-Bild Ihrer Netzwerk-Struktur zu
-  erstellen. Die verwendeten Koordinaten (zusammen mit den optionalen Icons) werden aus den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen genommen. Wenn Sie es vorziehen, dass das CGI automatisch fÃ¼r Sie Koordinaten
+  <p>Dieses CGI erstellt eine Karte aller Hosts, die Sie in Ihrem Netzwerk definiert haben. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher), um ein PNG-Bild Ihrer Netzwerk-Struktur zu
+  erstellen. Die verwendeten Koordinaten (zusammen mit den optionalen Icons) werden aus den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen genommen. Wenn Sie es vorziehen, dass das CGI automatisch für Sie Koordinaten
   generiert, nutzen Sie die <a class="link" href="configcgi.html#configcgi-default_statusmap_layout">default_statusmap_layout</a>-Direktive, um einen
   Layout-Algorithmus zu definieren.</p>
 
@@ -138,11 +138,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"><span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span></a> sind, kÃ¶nnen
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"><span class="emphasis"><em>für alle Hosts autorisiert</em></span></a> sind, können
       Sie alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie alle Services ansehen, deren Kontakt Sie
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie alle Services ansehen, deren Kontakt Sie
       sind.</p>
     </li>
 </ul></div>
@@ -154,8 +154,8 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Anmerkung: Benutzer, die nicht autorisiert sind, bestimmte Hosts zu sehen, werden <span class="emphasis"><em>unbekannte</em></span> Knoten an diesen
-    Stellen sehen. Uns ist klar, dass sie eigentlich <span class="emphasis"><em>Ã¼berhaupt nichts</em></span> dort sehen sollten, aber es ist nicht sinnvoll,
-    eine Karte zu generieren, wenn man nicht die ganzen Host-AbhÃ¤ngigkeiten sehen kann.</p>
+    Stellen sehen. Uns ist klar, dass sie eigentlich <span class="emphasis"><em>überhaupt nichts</em></span> dort sehen sollten, aber es ist nicht sinnvoll,
+    eine Karte zu generieren, wenn man nicht die ganzen Host-Abhängigkeiten sehen kann.</p>
   </td></tr>
 </table></div>
 
@@ -168,33 +168,33 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>statuswml.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>statuswml.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI dient als WAP-Interface fÃ¼r Netzwerk-Status-Informationen. Wenn Sie ein GerÃ¤t mit WAP-UnterstÃ¼tzung haben (z.B. ein
-  Internet-fÃ¤higes Handy), kÃ¶nnen Sie Statusinformationen ansehen, wÃ¤hrend Sie unterwegs sind. Verschiedene Status-Anzeigen enthalten
-  Hostgruppen-Zusammenfassung, Hostgruppen-Ãœbersicht, Host-Details, Service-Details, alle Probleme und alle unbehandelten Probleme.
-  ZusÃ¤tzlich zur Ansicht von Statusinformationen kÃ¶nnen Sie mit Ihrem Handy auch Benachrichtigungen und PrÃ¼fungen deaktivieren und Probleme
-  bestÃ¤tigen. Ziemlich cool, oder?</p>
+  <p>Dieses CGI dient als WAP-Interface für Netzwerk-Status-Informationen. Wenn Sie ein Gerät mit WAP-Unterstützung haben (z.B. ein
+  Internet-fähiges Handy), können Sie Statusinformationen ansehen, während Sie unterwegs sind. Verschiedene Status-Anzeigen enthalten
+  Hostgruppen-Zusammenfassung, Hostgruppen-Übersicht, Host-Details, Service-Details, alle Probleme und alle unbehandelten Probleme.
+  Zusätzlich zur Ansicht von Statusinformationen können Sie mit Ihrem Handy auch Benachrichtigungen und Prüfungen deaktivieren und Probleme
+  bestätigen. Ziemlich cool, oder?</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_system_information"> <span class="emphasis"><em>fÃ¼r Systeminformationen autorisiert</em></span>
-      </a> sind, kÃ¶nnen Sie Icinga-Prozess-Informationen ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_system_information"> <span class="emphasis"><em>für Systeminformationen autorisiert</em></span>
+      </a> sind, können Sie Icinga-Prozess-Informationen ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Zustandsdaten fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie Zustandsdaten für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Zustandsdaten fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie Zustandsdaten für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie Zustandsdaten fÃ¼r alle Hosts und Services ansehen,
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Zustandsdaten für alle Hosts und Services ansehen,
       deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -208,29 +208,29 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>tac.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>tac.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI dient als Sicht aus der "Vogelperspektive" auf alle Netzwerk-Ãœberwachungs-AktivitÃ¤ten. Es erlaubt Ihnen schnell
-  NetzwerkausfÃ¤lle sowie Host- und Service-ZustÃ¤nde zu erkennen. Es unterscheidet zwischen Problemen, die auf irgendeine Weise "behandelt"
-  wurden (z.B. bestÃ¤tigt oder Benachrichtigungen deaktiviert) und solchen, die nicht behandelt wurden und die deshalb Beachtung erfordern.
-  Das ist sehr hilfreich, wenn Sie viele zu Ã¼berwachende Hosts und Services haben und einen einzelnen Bildschirm zur Alarmierung Ã¼ber
-  Probleme einsetzen mÃ¶chten.</p>
+  <p>Dieses CGI dient als Sicht aus der "Vogelperspektive" auf alle Netzwerk-Überwachungs-Aktivitäten. Es erlaubt Ihnen schnell
+  Netzwerkausfälle sowie Host- und Service-Zustände zu erkennen. Es unterscheidet zwischen Problemen, die auf irgendeine Weise "behandelt"
+  wurden (z.B. bestätigt oder Benachrichtigungen deaktiviert) und solchen, die nicht behandelt wurden und die deshalb Beachtung erfordern.
+  Das ist sehr hilfreich, wenn Sie viele zu überwachende Hosts und Services haben und einen einzelnen Bildschirm zur Alarmierung über
+  Probleme einsetzen möchten.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie alle Hosts und Services ansehen, deren Kontakt Sie
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie alle Hosts und Services ansehen, deren Kontakt Sie
       sind.</p>
     </li>
 </ul></div>
@@ -244,21 +244,21 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>outages.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>outages.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI zeigt eine Liste von "Problem"-Hosts, die NetzwerkausfÃ¤lle hervorrufen. Dies kann besonders dann hilfreich sein, wenn Sie
-  ein groÃŸes Netzwerk haben und schnell die Quelle des Problems identifizieren mÃ¶chten. Hosts werden sortiert nach der Schwere des Ausfalls,
+  <p>Dieses CGI zeigt eine Liste von "Problem"-Hosts, die Netzwerkausfälle hervorrufen. Dies kann besonders dann hilfreich sein, wenn Sie
+  ein großes Netzwerk haben und schnell die Quelle des Problems identifizieren möchten. Hosts werden sortiert nach der Schwere des Ausfalls,
   den sie bewirken.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie alle Hosts ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie alle Hosts ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie alle Hosts ansehen, deren Kontakt Sie sind.</p>
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie alle Hosts ansehen, deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
 
@@ -271,18 +271,18 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>config.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>config.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
   <p>Dieses CGI erlaubt es Ihnen, Objekte (z.B. Hosts, Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster, Services, etc.) anzusehen, die
-  Sie in Ihrer/Ihren <a class="link" href="configobject.html" title="Ãœberblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a> definiert haben.</p>
+  Sie in Ihrer/Ihren <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a> definiert haben.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>Sie mÃ¼ssen <a class="link" href="configcgi.html#configcgi-authorized_for_configuration_information"> <span class="emphasis"><em>fÃ¼r Konfigurationsinformationen
-      autorisiert</em></span> </a> sein, um jegliche Konfigurationsinformationen ansehen zu kÃ¶nnen.</p>
+      <p>Sie müssen <a class="link" href="configcgi.html#configcgi-authorized_for_configuration_information"> <span class="emphasis"><em>für Konfigurationsinformationen
+      autorisiert</em></span> </a> sein, um jegliche Konfigurationsinformationen ansehen zu können.</p>
     </li></ul></div>
 
   <p><a name="cgis-cmd_cgi"></a><span class="bold"><strong>Command CGI</strong></span></p>
@@ -294,7 +294,7 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>cmd.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>cmd.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
@@ -305,19 +305,19 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Sie mÃ¼ssen <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands"> <span class="emphasis"><em>fÃ¼r System-Befehle autorisiert</em></span> </a>
+      <p>Sie müssen <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands"> <span class="emphasis"><em>für System-Befehle autorisiert</em></span> </a>
       sein, um Befehle zu erteilen, die den Icinga-Prozess beeinflussen (Start, Stop, Modus-Wechsel, etc.).</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts-Befehle autorisiert</em></span> </a>
-      sind, kÃ¶nnen Sie Befehle fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services erteilen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts-Befehle autorisiert</em></span> </a>
+      sind, können Sie Befehle für alle Hosts <span class="bold"><strong>und</strong></span> alle Services erteilen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Service-Befehle autorisiert</em></span>
-      </a> sind, kÃ¶nnen Sie Befehle fÃ¼r alle Services erteilen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Service-Befehle autorisiert</em></span>
+      </a> sind, können Sie Befehle für alle Services erteilen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie Befehle fÃ¼r alle Hosts und Services erteilen, deren
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Befehle für alle Hosts und Services erteilen, deren
       Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -325,9 +325,9 @@
   <p><span class="bold"><strong>Anmerkungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>Wenn Sie sich entschieden haben, die Option <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> fÃ¼r die CGIs
-      nicht zu nutzen, wird dieses CGI <span class="emphasis"><em>jedem</em></span> die MÃ¶glichkeit verweigern, Befehle zu erteilen. Dies geschieht zu Ihrem
-      eigenen Schutz. Wir wÃ¼rden empfehlen, dieses CGI komplett zu entfernen, wenn Sie die Authentifizierung fÃ¼r CGI nicht nutzen.</p>
+      <p>Wenn Sie sich entschieden haben, die Option <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> für die CGIs
+      nicht zu nutzen, wird dieses CGI <span class="emphasis"><em>jedem</em></span> die Möglichkeit verweigern, Befehle zu erteilen. Dies geschieht zu Ihrem
+      eigenen Schutz. Wir würden empfehlen, dieses CGI komplett zu entfernen, wenn Sie die Authentifizierung für CGI nicht nutzen.</p>
     </li></ul></div>
 
   <p><a name="cgis-extinfo_cgi"></a><span class="bold"><strong>Extended Information CGI</strong></span></p>
@@ -349,14 +349,14 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>extinfo.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>extinfo.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
   <p>Dieses CGI erlaubt es Ihnen, Icinga-Prozess-Informationen, Host- und Service-Zustandsstatistiken, Host- und
-  Service-Kommentare und mehr anzusehen. Es dient auch als Startpunkt, um Ã¼ber das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> Befehle
+  Service-Kommentare und mehr anzusehen. Es dient auch als Startpunkt, um über das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> Befehle
   an Icinga zu erteilen. Obwohl dieses CGI mehrere Argumente hat, sollten Sie besser darauf verzichten. Die meisten wechseln zwischen
-  verschiedenen Revisionen von Icinga. Sie kÃ¶nnen dieses CGI erreichen, indem Sie auf 'Network Health' bzw. 'Process Information' in
+  verschiedenen Revisionen von Icinga. Sie können dieses CGI erreichen, indem Sie auf 'Network Health' bzw. 'Process Information' in
   der setilichen Navigationsleiste klicken oder auf einen Host- oder Service-Link in der Ausgabe des <a class="link" href="cgis.html#cgis-status_cgi">status
   CGI</a>.</p>
 
@@ -364,19 +364,19 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Sie mÃ¼ssen <a class="link" href="configcgi.html#configcgi-authorized_for_system_information"> <span class="emphasis"><em>fÃ¼r Systeminformationen autorisiert</em></span>
-      </a> sein, um Icinga-Prozess-Informationen ansehen zu kÃ¶nnen.</p>
+      <p>Sie müssen <a class="link" href="configcgi.html#configcgi-authorized_for_system_information"> <span class="emphasis"><em>für Systeminformationen autorisiert</em></span>
+      </a> sein, um Icinga-Prozess-Informationen ansehen zu können.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r lle Hosts autorisiert</em></span> </a> sind, kÃ¶nnen
-      Sie erweiterte Informationen fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für lle Hosts autorisiert</em></span> </a> sind, können
+      Sie erweiterte Informationen für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie erweiterte Informationen fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie erweiterte Informationen für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie erweiterte Informationen fÃ¼r alle Hosts und
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie erweiterte Informationen für alle Hosts und
       Services ansehen, deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -390,18 +390,18 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>showlog.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>showlog.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI zeigt das <a class="link" href="configmain.html#configmain-log_file">log file</a>. Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, kÃ¶nnen Sie in archivierten Log-Dateien blÃ¤ttern, indem Sie
+  <p>Dieses CGI zeigt das <a class="link" href="configmain.html#configmain-log_file">log file</a>. Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, können Sie in archivierten Log-Dateien blättern, indem Sie
   die Navigations-Links oben auf der Seite benutzen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>Sie mÃ¼ssen <a class="link" href="configcgi.html#configcgi-authorized_for_system_information"> <span class="emphasis"><em>fÃ¼r Systeminformationen autorisiert</em></span>
-      </a> sein, um das Logfile ansehen zu kÃ¶nnen.</p>
+      <p>Sie müssen <a class="link" href="configcgi.html#configcgi-authorized_for_system_information"> <span class="emphasis"><em>für Systeminformationen autorisiert</em></span>
+      </a> sein, um das Logfile ansehen zu können.</p>
     </li></ul></div>
 
   <p><a name="cgis-history_cgi"></a><span class="bold"><strong>Alert History CGI</strong></span></p>
@@ -413,29 +413,29 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>history.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>history.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird benutzt, um die Problem-Historie fÃ¼r einen oder alle Hosts anzuzeigen. Die Ausgabe ist grundsÃ¤tzlich ein Auszug der
-  Informationen, die Ã¼ber das <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a> angezeigt werden. Sie haben die MÃ¶glichkeit, die Ausgabe
+  <p>Dieses CGI wird benutzt, um die Problem-Historie für einen oder alle Hosts anzuzeigen. Die Ausgabe ist grundsätzlich ein Auszug der
+  Informationen, die über das <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a> angezeigt werden. Sie haben die Möglichkeit, die Ausgabe
   zu filtern, um nur die Problemtypen anzuzeigen, die Sie sehen wollen (z.B. Hard- und/oder Soft-Alarme, verschiedene Typen von Service- und
   Host-Alarmen, alle Arten von Alarmen, usw.). Wenn Sie die <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert
-  haben, kÃ¶nnen Sie in archivierten Log-Dateien blÃ¤ttern, indem Sie die Navigations-Links oben auf der Seite benutzen.</p>
+  haben, können Sie in archivierten Log-Dateien blättern, indem Sie die Navigations-Links oben auf der Seite benutzen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie historische Informationen fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie historische Informationen für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie historische Informationen fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie historische Informationen für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie historische Informationen fÃ¼r alle Hosts und
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie historische Informationen für alle Hosts und
       Services ansehen, deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -449,30 +449,30 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>notifications.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>notifications.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
   <p>Dieses CGI wird genutzt, um Host- und Service-Benachrichtigungen anzuzeigen, die an verschiedene Kontakte versandt wurden. Die
-  Ausgabe ist grundsÃ¤tzlich ein Auszug der Informationen, die Ã¼ber das <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a> angezeigt
-  werden. Sie haben die MÃ¶glichkeit, die Ausgabe zu filtern, um nur die Benachrichtigungen anzuzeigen, die Sie sehen wollen (z.B.
+  Ausgabe ist grundsätzlich ein Auszug der Informationen, die über das <a class="link" href="cgis.html#cgis-showlog_cgi">log file CGI</a> angezeigt
+  werden. Sie haben die Möglichkeit, die Ausgabe zu filtern, um nur die Benachrichtigungen anzuzeigen, die Sie sehen wollen (z.B.
   Service-Benachrichtigungen, Host-Benachrichtigungen, Benachrichtigungen, die an bestimmte Kontakte versandt wurden, usw.). Wenn Sie die
-  <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, kÃ¶nnen Sie in archivierten Log-Dateien blÃ¤ttern, indem
+  <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktiviert haben, können Sie in archivierten Log-Dateien blättern, indem
   Sie die Navigations-Links oben auf der Seite benutzen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Benachrichtigungen fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie Benachrichtigungen für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Benachrichtigungen fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie Benachrichtigungen für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie Benachrichtigungen fÃ¼r alle Hosts und Services
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Benachrichtigungen für alle Hosts und Services
       ansehen, deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -486,29 +486,29 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>trends.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>trends.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um einen Graphen Ã¼ber Host- oder Service-ZustÃ¤nde fÃ¼r einen beliebigen Zeitraum zu erstellen. Damit dieses
+  <p>Dieses CGI wird genutzt, um einen Graphen über Host- oder Service-Zustände für einen beliebigen Zeitraum zu erstellen. Damit dieses
   CGI von Wert ist, sollten Sie <a class="link" href="configmain-log_rotation_method" target="_top">log rotation</a> aktivieren und archivierte Logs in dem
   Verzeichnis lagern, das durch die <a class="link" href="configmain-log_archive_path" target="_top">log_archive_path</a>-Direktive angegeben wird. Das CGI
-  nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder hÃ¶her), um die Trend-Grafiken zu
+  nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher), um die Trend-Grafiken zu
   erstellen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Trends fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie Trends für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Trends fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie Trends für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie Trends fÃ¼r alle Hosts und Services ansehen, deren
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Trends für alle Hosts und Services ansehen, deren
       Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -528,11 +528,11 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>avail.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>avail.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um einen Bericht Ã¼ber die VerfÃ¼gbarkeit von Hosts oder Service fÃ¼r einen benutzerdefinierten Zeitraum zu
+  <p>Dieses CGI wird genutzt, um einen Bericht über die Verfügbarkeit von Hosts oder Service für einen benutzerdefinierten Zeitraum zu
   erstellen. Damit dieses CGI von Wert ist, sollten Sie <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> aktivieren und
   archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain.html#configmain-log_archive_path">log_archive_path</a>-Direktive
   angegeben wird.</p>
@@ -541,15 +541,15 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie VerfÃ¼gbarkeitsdaten fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie Verfügbarkeitsdaten für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie VerfÃ¼gbarkeitsdaten fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie Verfügbarkeitsdaten für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie VerfÃ¼gbarkeitsdaten fÃ¼r alle Hosts und Services
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Verfügbarkeitsdaten für alle Hosts und Services
       ansehen, deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -563,29 +563,29 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>histogram.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>histogram.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI wird genutzt, um einen Bericht Ã¼ber die VerfÃ¼gbarkeit von Hosts oder Service fÃ¼r einen benutzerdefinierten Zeitraum zu
+  <p>Dieses CGI wird genutzt, um einen Bericht über die Verfügbarkeit von Hosts oder Service für einen benutzerdefinierten Zeitraum zu
   erstellen. Damit dieses CGI von Wert ist, sollten Sie <a class="link" href="configmain-log_rotation_method" target="_top">log rotation</a> aktivieren und
   archivierte Logs in dem Verzeichnis lagern, das durch die <a class="link" href="configmain-log_archive_path" target="_top">log_archive_path</a>-Direktive
-  angegeben wird. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder hÃ¶her),
+  angegeben wird. Das CGI nutzt Thomas Boutells <a class="link" href="http://www.boutell.com/gd/" target="_top">gd</a>-Library (Version 1.6.3 oder höher),
   um die Histogramm-Grafiken zu erstellen.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Histogramme fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie Histogramme für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Histogramme fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie Histogramme für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie Histogramme fÃ¼r alle Hosts und Services ansehen,
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Histogramme für alle Hosts und Services ansehen,
       deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
@@ -599,38 +599,38 @@
 </table>
   </div>
 
-  <p>Dateiname:<span class="color"> <span class="bold"><strong>summary.cgi</strong></span> </span></p>
+  <p>Dateiname:<span class="color"><font color="red"> <span class="bold"><strong>summary.cgi</strong></span> </font></span></p>
 
   <p><span class="bold"><strong>Beschreibung:</strong></span></p>
 
-  <p>Dieses CGI stellt einige generische Berichte Ã¼ber Host- und Service-Alarmdaten zur VerfÃ¼gung, darunter Gesamtzahl Alarme,
+  <p>Dieses CGI stellt einige generische Berichte über Host- und Service-Alarmdaten zur Verfügung, darunter Gesamtzahl Alarme,
   Alarm-Spitzenreiter, etc.</p>
 
   <p><span class="bold"><strong>Autorisierungsanforderungen:</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>fÃ¼r alle Hosts autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Summary-Informationen fÃ¼r alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts"> <span class="emphasis"><em>für alle Hosts autorisiert</em></span> </a> sind,
+      können Sie Summary-Informationen für alle Hosts <span class="bold"><strong>und</strong></span> alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>fÃ¼r alle Services autorisiert</em></span> </a> sind,
-      kÃ¶nnen Sie Summary-Informationen fÃ¼r alle Services ansehen.</p>
+      <p>Wenn Sie <a class="link" href="configcgi.html#configcgi-authorized_for_all_services"> <span class="emphasis"><em>für alle Services autorisiert</em></span> </a> sind,
+      können Sie Summary-Informationen für alle Services ansehen.</p>
     </li>
 <li class="listitem">
-      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, kÃ¶nnen Sie Summary-Informationen fÃ¼r alle Hosts und Services
+      <p>Wenn Sie ein <span class="emphasis"><em>authentifizierter Kontakt</em></span> sind, können Sie Summary-Informationen für alle Hosts und Services
       ansehen, deren Kontakt Sie sind.</p>
     </li>
 </ul></div>
 
-  <p><a name="cgis-changes"></a><span class="bold"><strong>Ã„nderungen am Classic UI</strong></span></p>
+  <p><a name="cgis-changes"></a><span class="bold"><strong>Änderungen am Classic UI</strong></span></p>
 
-  <p>Diese Ã„nderungen sind im Laufe der Zeit eingeflossen, so dass sie ggf. nicht in Ihrer Version von Icinga verfÃ¼gbar
+  <p>Diese Änderungen sind im Laufe der Zeit eingeflossen, so dass sie ggf. nicht in Ihrer Version von Icinga verfügbar
   sind.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Das Aussehen des "General"-Abschnitts auf der linke Seite hat sich erneut geÃ¤ndert</p>
+      <p>Das Aussehen des "General"-Abschnitts auf der linke Seite hat sich erneut geändert</p>
 
       <p><a name="cgis-general_cgi"></a><span class="bold"><strong>General CGI</strong></span></p>
 
@@ -649,26 +649,26 @@
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>general.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>general.cgi</strong></span> </font></span> </p></td>
 </tr></tbody>
 </table>
       </div>
 
-      <p>Beim Klick auf die entsprechende Flagge kÃ¶nnen Sie weiterhin auf die Dokumentation in der dargestellten Sprache zugreifen. </p>
+      <p>Beim Klick auf die entsprechende Flagge können Sie weiterhin auf die Dokumentation in der dargestellten Sprache zugreifen. </p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Es gibt keine Option, um die Sprache im Classic UI zu Ã¤ndern. DafÃ¼r sind Anpassungen im Source-Code notwendig.</p>
+          <p>Es gibt keine Option, um die Sprache im Classic UI zu ändern. Dafür sind Anpassungen im Source-Code notwendig.</p>
         </td></tr>
 </table></div>
-<p>Nun kÃ¶nnen Sie wieder nach Hosts suchen, ohne weitere Dinge anzuklicken.</p>
+<p>Nun können Sie wieder nach Hosts suchen, ohne weitere Dinge anzuklicken.</p>
     </li>
 <li class="listitem">
-      <p>Das klassische Interface wird in regelmÃ¤ÃŸigen Intervallen aktualisiert. Manchmal ist das nicht erwÃ¼nscht, z.B. wenn Sie ein
-      bestimmtes Objekt betrachten mÃ¶chten. In diesem Fall kÃ¶nnen Sie die automatische Aktualisierung durch Klicken auf [pause] deaktivieren
+      <p>Das klassische Interface wird in regelmäßigen Intervallen aktualisiert. Manchmal ist das nicht erwünscht, z.B. wenn Sie ein
+      bestimmtes Objekt betrachten möchten. In diesem Fall können Sie die automatische Aktualisierung durch Klicken auf [pause] deaktivieren
       (direkt neben dem Text "Updated every 90 seconds" links oben im Status-Fenster). Klicken auf [continue] aktiviert die Aktualisierung
       wieder.</p>
 
@@ -689,7 +689,7 @@
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>pause.cgi</strong></span> </span> </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>pause.cgi</strong></span> </font></span> </p></td>
 </tr></tbody>
 </table>
       </div>
@@ -711,16 +711,16 @@
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>continue.cgi</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>continue.cgi</strong></span> </font></span>
               </p></td>
 </tr></tbody>
 </table>
       </div>
     </li>
 <li class="listitem">
-      <p>Die Seiten "Host Detail" und "Service Detail" wurden erweitert, so dass Sie nun Befehle fÃ¼r mehrere Objekte gleichzeitig
-      erteilen kÃ¶nnen (ab Icinga 1.2). Nun kÃ¶nnen Sie ein oder mehrere Objekte durch Check-Boxen neben den Objekten auswÃ¤hlen. Durch
-      aktivieren der Check-Box neben "Status information" werden alle Services eines Hosts ausgewÃ¤hlt.</p>
+      <p>Die Seiten "Host Detail" und "Service Detail" wurden erweitert, so dass Sie nun Befehle für mehrere Objekte gleichzeitig
+      erteilen können (ab Icinga 1.2). Nun können Sie ein oder mehrere Objekte durch Check-Boxen neben den Objekten auswählen. Durch
+      aktivieren der Check-Box neben "Status information" werden alle Services eines Hosts ausgewählt.</p>
 
       <p><a name="cgi-statusinfo_cgi"></a><span class="bold"><strong>Statusinfo CGI</strong></span></p>
 
@@ -739,7 +739,7 @@
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>statusinfo.cgi</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>statusinfo.cgi</strong></span> </font></span>
               </p></td>
 </tr></tbody>
 </table>
@@ -762,20 +762,20 @@
 </colgroup>
 <tbody><tr>
 <td><p>File Name:</p></td>
-<td><p> <span class="color"> <span class="bold"><strong>commands.cgi</strong></span> </span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>commands.cgi</strong></span> </font></span>
               </p></td>
 </tr></tbody>
 </table>
       </div>
 
-      <p>Nach dem Klick auf "Select command" zeigt eine Drop-Down-Liste die verfÃ¼gbaren Befehle. Nach der Auswahl einer Aktion und dem
-      anschlieÃŸenden Klick auf "Submit" wird der Befehl fÃ¼r die ausgewÃ¤hlten Objekte ausgefÃ¼hrt.</p>
+      <p>Nach dem Klick auf "Select command" zeigt eine Drop-Down-Liste die verfügbaren Befehle. Nach der Auswahl einer Aktion und dem
+      anschließenden Klick auf "Submit" wird der Befehl für die ausgewählten Objekte ausgeführt.</p>
     </li>
 <li class="listitem">
-      <p>"Export to CSV" wurde auf verschiedenen Seiten hinzugefÃ¼gt (ab Icinga 1.2).</p>
+      <p>"Export to CSV" wurde auf verschiedenen Seiten hinzugefügt (ab Icinga 1.2).</p>
     </li>
 <li class="listitem">
-      <p>Die Zellen der Tabelle in extinfo.cgi haben Namen bekommen. Mit Hilfe von SSI-Fragmenten kÃ¶nnen Sie JavaScript-Code einbinden,
+      <p>Die Zellen der Tabelle in extinfo.cgi haben Namen bekommen. Mit Hilfe von SSI-Fragmenten können Sie JavaScript-Code einbinden,
       um auf die Daten dieser Zellen zuzugreifen (ab Icinga 1.2.1).</p>
 
       <p>Der Beispiel-Code benutzt Daten der Zelle "comment_data", um einen Link zu erzeugen (Dank an Oliver Graf).</p>
@@ -795,55 +795,55 @@ window.onload=urlify;
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id5634332"></a>
+  <a class="indexterm" name="id3490699"></a>
 
-  <a class="indexterm" name="id5634278"></a>
+  <a class="indexterm" name="id3490710"></a>
 
-  <a class="indexterm" name="id5634357"></a>
+  <a class="indexterm" name="id3490723"></a>
 
-  <a class="indexterm" name="id5634371"></a>
+  <a class="indexterm" name="id3490737"></a>
 
-  <a class="indexterm" name="id5634384"></a>
+  <a class="indexterm" name="id3490750"></a>
 
-  <a class="indexterm" name="id5634398"></a>
+  <a class="indexterm" name="id3490763"></a>
 
-  <a class="indexterm" name="id5634411"></a>
+  <a class="indexterm" name="id3490776"></a>
 
-  <a class="indexterm" name="id5634425"></a>
+  <a class="indexterm" name="id3490790"></a>
 
-  <a class="indexterm" name="id5634439"></a>
+  <a class="indexterm" name="id3490804"></a>
 
-  <a class="indexterm" name="id5634451"></a>
+  <a class="indexterm" name="id3490817"></a>
 
-  <a class="indexterm" name="id5634465"></a>
+  <a class="indexterm" name="id3490831"></a>
 
-  <a class="indexterm" name="id5634479"></a>
+  <a class="indexterm" name="id3490844"></a>
 
-  <a class="indexterm" name="id5634493"></a>
+  <a class="indexterm" name="id3490858"></a>
 
-  <a class="indexterm" name="id5634506"></a>
+  <a class="indexterm" name="id3490872"></a>
 
-  <a class="indexterm" name="id5634520"></a>
+  <a class="indexterm" name="id3490885"></a>
 
-  <a class="indexterm" name="id5634533"></a>
+  <a class="indexterm" name="id3490899"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch06.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="ch06.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="cgiparams.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="cgiparams.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Kapitel 6. Die BenutzeroberflÃ¤chenÂ </td>
+<td width="40%" align="left" valign="top">Kapitel 6. Die Benutzeroberflächen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Informationen zu den CGI-Parametern</td>
+<td width="40%" align="right" valign="top"> Informationen zu den CGI-Parametern</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

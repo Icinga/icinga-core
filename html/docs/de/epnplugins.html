@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Entwickeln von Plugins fÃ¼r die Nutzung mit Embedded Perl</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Entwickeln von Plugins für die Nutzung mit Embedded Perl</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung">
 <link rel="prev" href="pluginapi.html" title="Nagios Plugin API">
 <link rel="next" href="extcommands2.html" title="Liste der externen Befehle">
@@ -13,27 +13,27 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Entwickeln von Plugins fÃ¼r die Nutzung mit Embedded Perl</th></tr>
+<tr><th colspan="3" align="center">Entwickeln von Plugins für die Nutzung mit Embedded Perl</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="pluginapi.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="pluginapi.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 11. Entwicklung</th>
-<td width="20%" align="right">Â <a accesskey="n" href="extcommands2.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="extcommands2.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Entwickeln von Plugins fÃ¼r die Nutzung mit Embedded Perl">
+<div class="section" title="Entwickeln von Plugins für die Nutzung mit Embedded Perl">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="epnplugins"></a>Entwickeln von Plugins fÃ¼r die Nutzung mit Embedded Perl</h2></div></div></div>
+<a name="epnplugins"></a>Entwickeln von Plugins für die Nutzung mit Embedded Perl</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
   <p>Stanley Hopcroft hat ziemlich viel mit dem eingebetten Perl-Interpreter gearbeitet und die Vor- und Nachteile der Nutzung
   kommentiert. Er hat auch verschiedene Hinweise gegeben, um Perl-Plugins zu erstellen, die sauber mit dem eingebetteten
-  Interpreter laufen. Der Ã¼berwiegende Teil dieser Dokumentation stammt aus seinen Kommentaren.</p>
+  Interpreter laufen. Der überwiegende Teil dieser Dokumentation stammt aus seinen Kommentaren.</p>
 
   <p>Es ist anzumerken, dass sich "ePN", wie in dieser Dokumentation verwendet, auf den eingebetteten Perl-Interpreter, oder
   wenn Ihnen das lieber ist, auf Icinga kompiliert mit einem eingebetteten Perl-Interpreter bezieht.</p>
@@ -42,14 +42,14 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Durchschnittliche Perl-Entwickler mit einem VerstÃ¤ndnis fÃ¼r die mÃ¤chtigen Eigenschaften der Sprache ohne Wissen der
+      <p>Durchschnittliche Perl-Entwickler mit einem Verständnis für die mächtigen Eigenschaften der Sprache ohne Wissen der
       Interna bzw. einem vertieften Wissen dieser Eigenschaften.</p>
     </li>
 <li class="listitem">
-      <p>die mit einem benutzenden Wissen statt einem tiefen VerstÃ¤ndnis</p>
+      <p>die mit einem benutzenden Wissen statt einem tiefen Verständnis</p>
     </li>
 <li class="listitem">
-      <p>wenn Sie glÃ¼cklich sind mit Perl-Objekten, sprich Verwaltung, Datenstrukturen und dem Debugger, dann ist das
+      <p>wenn Sie glücklich sind mit Perl-Objekten, sprich Verwaltung, Datenstrukturen und dem Debugger, dann ist das
       wahrscheinlich ausreichend.</p>
     </li>
 </ul></div>
@@ -79,7 +79,7 @@
           <p>denken Sie an Timeout-Verwaltung</p>
         </li>
 <li class="listitem">
-          <p>rufen Sie print_usage auf (das Sie liefern mÃ¼ssen), wenn keine Kommandozeilenparameter Ã¼bergeben wurden</p>
+          <p>rufen Sie print_usage auf (das Sie liefern müssen), wenn keine Kommandozeilenparameter übergeben wurden</p>
         </li>
 <li class="listitem">
           <p>benutzen Sie Standard-Optionen (eg H 'host', V 'version')</p>
@@ -88,7 +88,7 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Dinge, die Sie tun mÃ¼ssen, um ein Perl-Plugin fÃ¼r ePN zu entwickeln</strong></span></p>
+  <p><span class="bold"><strong>Dinge, die Sie tun müssen, um ein Perl-Plugin für ePN zu entwickeln</strong></span></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -107,18 +107,18 @@ DATA
 %prognum = map { my($a, $b) = split; ($a, $b) } split(/\n/, $data) ;</pre>
     </li>
 <li class="listitem">
-      <p>BEGIN-BlÃ¶cke werden nicht so funktionieren, wie Sie das erwarten. Es wird das Beste sein, wenn Sie darauf
+      <p>BEGIN-Blöcke werden nicht so funktionieren, wie Sie das erwarten. Es wird das Beste sein, wenn Sie darauf
       verzichten.</p>
     </li>
 <li class="listitem">
-      <p>stellen Sie sicher, dass es wÃ¤hrend des Compile absolut sauber ist, d.h.</p>
+      <p>stellen Sie sicher, dass es während des Compile absolut sauber ist, d.h.</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
           <p>use strict</p>
         </li>
 <li class="listitem">
-          <p>use perl -w (andere Switches [namentlich T] kÃ¶nnten nicht weiterhelfen)</p>
+          <p>use perl -w (andere Switches [namentlich T] könnten nicht weiterhelfen)</p>
         </li>
 <li class="listitem">
           <p>use perl -c</p>
@@ -127,17 +127,17 @@ DATA
     </li>
 <li class="listitem">
       <p>Vermeiden Sie lexikalische Variablen (my) mit globalem Geltungsbereich, um damit __variable__ Daten in Unterroutinen
-      zu Ã¼bergeben. Das ist in der Tat __fatal__, wenn die Unterroutine mehrfach aufgerufen wird, wÃ¤hrend die PrÃ¼fung lÃ¤uft.
+      zu übergeben. Das ist in der Tat __fatal__, wenn die Unterroutine mehrfach aufgerufen wird, während die Prüfung läuft.
       Solche Unterroutinen arbeiten als 'closures', die den ersten Wert der globalen lexikalischen Variable bei folgenden Aufrufen
       der Unterroutine beibehalten. Wenn die globale Variable allerdings read-only ist (bei einer komplizierten Struktur zum
       Beispiel), dann ist das kein Problem. Was Bekman <a class="link" href="http://perl.apache.org/docs/1.0/guide/" target="_top">Ihnen statt
-      dessen rÃ¤t</a>, ist eines der folgenden Dinge:</p>
+      dessen rät</a>, ist eines der folgenden Dinge:</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          <p>machen Sie die Unterroutine anonym und rufen Sie sie z.B. Ã¼ber eine Code-Referenz auf</p>
+          <p>machen Sie die Unterroutine anonym und rufen Sie sie z.B. über eine Code-Referenz auf</p>
 
-          <pre class="screen">Ã¤ndern Sie dies               in  
+          <pre class="screen">ändern Sie dies               in  
 my $x = 1 ;                   my $x = 1 ;
 sub a { .. Process $x ... }   $a_cr = sub { ... Process $x ... } ;
 .                             .
@@ -152,51 +152,51 @@ a ;                           &amp;$a_cr ;
           Modul)</p>
         </li>
 <li class="listitem">
-          <p>Ã¼bergeben Sie Informationen an Unterroutinen als Referenzen oder Aliases (\$lex_var oder $_[n])</p>
+          <p>übergeben Sie Informationen an Unterroutinen als Referenzen oder Aliases (\$lex_var oder $_[n])</p>
         </li>
 <li class="listitem">
-          <p>ersetzen Sie Lexikale durch Package Globals und schlieÃŸen Sie diese von 'use strict'-Beanstandungen durch 'use
+          <p>ersetzen Sie Lexikale durch Package Globals und schließen Sie diese von 'use strict'-Beanstandungen durch 'use
           vars qw(global1 global2 ..)' aus</p>
         </li>
 </ul></div>
     </li>
 <li class="listitem">
-      <p>Seien Sie sich bewusst, woher Sie mehr Informationen bekommen kÃ¶nnen.</p>
+      <p>Seien Sie sich bewusst, woher Sie mehr Informationen bekommen können.</p>
 
-      <p>NÃ¼tzliche Informationen kÃ¶nnen Sie von den Ã¼blichen VerdÃ¤chtigen bekommen (die O'Reilly-Bï¿½cher, plus Damien Conways
-      "Object Oriented Perl"), aber um den wirklich nÃ¼tzlichen Kram im richtigen Kontext zu bekommen, starten Sie mit Stas
+      <p>Nützliche Informationen können Sie von den üblichen Verdächtigen bekommen (die O'Reilly-B&#65533;cher, plus Damien Conways
+      "Object Oriented Perl"), aber um den wirklich nützlichen Kram im richtigen Kontext zu bekommen, starten Sie mit Stas
       Bekman's mod_perl guide unter <a class="link" href="http://perl.apache.org/guide/" target="_top">http://perl.apache.org/guide/</a>.</p>
 
-      <p>Dieses wundervolle Dokument in BuchgrÃ¶ÃŸe hat Ã¼berhaupt nichts mit Icinga zu tun, aber dafÃ¼r umso mehr mit dem
-      Schreiben von Perl-Programmen fÃ¼r den eingebetteten Perl-Interpreter in Apache (d.h. Doug MacEacherns
+      <p>Dieses wundervolle Dokument in Buchgröße hat überhaupt nichts mit Icinga zu tun, aber dafür umso mehr mit dem
+      Schreiben von Perl-Programmen für den eingebetteten Perl-Interpreter in Apache (d.h. Doug MacEacherns
       mod_perl).</p>
 
-      <p>Die perlembed-Manpage ist wichtig fÃ¼r den Zusammenhang und die Ermunterung..</p>
+      <p>Die perlembed-Manpage ist wichtig für den Zusammenhang und die Ermunterung..</p>
 
-      <p>Auf der Basis, dass Lincoln Stein und Doug MacEachern ein oder zwei Dinge Ã¼ber Perl und eingebettetes Perl wissen, ist
+      <p>Auf der Basis, dass Lincoln Stein und Doug MacEachern ein oder zwei Dinge über Perl und eingebettetes Perl wissen, ist
       ihr Buch 'Writing Apache Modules with Perl and C' ziemlich sicher einen Blick wert.</p>
     </li>
 <li class="listitem">
-      <p>Achten Sie darauf, dass Ihr Plugin mit ePN vielleicht merkwÃ¼rdige Werte zurÃ¼ckliefert und dass das wahrscheinlich an
+      <p>Achten Sie darauf, dass Ihr Plugin mit ePN vielleicht merkwürdige Werte zurückliefert und dass das wahrscheinlich an
       dem unter Punkt 4 angesprochenen Problem liegt</p>
     </li>
 <li class="listitem">
-      <p>Seien Sie darauf vorbereitet, dass Sie debuggen Ã¼ber:</p>
+      <p>Seien Sie darauf vorbereitet, dass Sie debuggen über:</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
           <p>ein Test-ePN und</p>
         </li>
 <li class="listitem">
-          <p>print-Befehle in Ihr Plugin einfÃ¼gen, um Variablenwerte auf STDERR auszugeben (da Sie STDOUT nicht verwenden
-          kÃ¶nnen)</p>
+          <p>print-Befehle in Ihr Plugin einfügen, um Variablenwerte auf STDERR auszugeben (da Sie STDOUT nicht verwenden
+          können)</p>
         </li>
 <li class="listitem">
-          <p>print-Befehle in p1.pl einfÃ¼gen, um anzuzeigen, was ePN glaubt, was Ihr Plugin ist, bevor es versucht, das
-          auszufÃ¼hren (vi)</p>
+          <p>print-Befehle in p1.pl einfügen, um anzuzeigen, was ePN glaubt, was Ihr Plugin ist, bevor es versucht, das
+          auszuführen (vi)</p>
         </li>
 <li class="listitem">
-          <p>ePN im Vordergrund-Modus auszufÃ¼hren (mÃ¶glicherweise in Verbindung mit den obigen Empfehlungen)</p>
+          <p>ePN im Vordergrund-Modus auszuführen (möglicherweise in Verbindung mit den obigen Empfehlungen)</p>
         </li>
 <li class="listitem">
           <p>das 'Deparse#-Modul in Ihrem Modul zu benutzen, um zu sehen, wie der Parser es optimiert hat und was der
@@ -207,19 +207,19 @@ a ;                           &amp;$a_cr ;
       <pre class="screen"> perl -MO::Deparse &lt;your_program&gt;</pre>
     </li>
 <li class="listitem">
-      <p>Beachten Sie, in was ePN Ihr Plugin transformiert, und falls alles andere fehlschlÃ¤gt, debuggen Sie die transformierte
+      <p>Beachten Sie, in was ePN Ihr Plugin transformiert, und falls alles andere fehlschlägt, debuggen Sie die transformierte
       Version.</p>
 
-      <p>Wie Sie unten sehen kÃ¶nnen, schreibt p1.pl Ihr Plugin um in eine Unterroutine namens 'hndlr' im Package
+      <p>Wie Sie unten sehen können, schreibt p1.pl Ihr Plugin um in eine Unterroutine namens 'hndlr' im Package
       'Embed::&lt;something_related_to_your_plugin_file_name&gt;'.</p>
 
       <p>Ihr Plugin wird ggf. Kommandozeilenparameter in @ARGV erwarten, so dass p1.pl auch @_ an @ARGV zuweist.</p>
 
-      <p>Dies wiederum wird 'eval'-t und falls dieser Test mit einem Fehler fehlschlÃ¤gt (jeder Parse- oder Laufzeitfehler),
+      <p>Dies wiederum wird 'eval'-t und falls dieser Test mit einem Fehler fehlschlägt (jeder Parse- oder Laufzeitfehler),
       wird das Plugin 'rausgeschmissen'.</p>
 
       <p>Die folgenden Ausgaben zeigen, wie ein Test-ePN das <span class="emphasis"><em>check_rpc</em></span>-Plugin transformiert hat, bevor es
-      versucht, es auszufÃ¼hren. Der meiste Code des eigentlichen Plugins wird nicht gezeigt, weil wir nur an den Umformungen
+      versucht, es auszuführen. Der meiste Code des eigentlichen Plugins wird nicht gezeigt, weil wir nur an den Umformungen
       interessiert sind, die der ePN am Plugin vorgenommen hat). Zur Verdeutlichung sind die Umformungen in rot
       dargestellt:</p>
 
@@ -248,41 +248,41 @@ a ;                           &amp;$a_cr ;
 #
 # Copyright Notice: GPL
 #
-<span class="emphasis"><em> ... der Rest des Plugin-Codes folgt (und wurde aus GrÃ¼nden der KÃ¼rze entfernt) ...</em></span>
+<span class="emphasis"><em> ... der Rest des Plugin-Codes folgt (und wurde aus Gründen der Kürze entfernt) ...</em></span>
 }</pre>
     </li>
 <li class="listitem">
-      <p>Nutzen Sie 'use diagnostics' nicht in einem produktiven ePN. Wir glauben, es sorgt dafÃ¼r, dass __alle__ Perl-Plugins
-      CRITICAL zurÃ¼ckliefern.</p>
+      <p>Nutzen Sie 'use diagnostics' nicht in einem produktiven ePN. Wir glauben, es sorgt dafür, dass __alle__ Perl-Plugins
+      CRITICAL zurückliefern.</p>
     </li>
 <li class="listitem">
-      <p>Ãœberlegen Sie, ob Sie ein Mini-ePN benutzen, um Ihr Plugin zu testen. Das ist nicht ausreichend, um zu garantieren,
-      dass Ihr Plugin mit einem ePN fehlerfrei ausgefÃ¼hrt wird, aber wenn bereits der Plugin-Test fehlschlÃ¤gt, dann wird er auf
-      jeden Fall mit Ihrem ePN fehlschlagen. <span class="color">[ Ein Beispiel-Mini-ePN ist im
+      <p>Überlegen Sie, ob Sie ein Mini-ePN benutzen, um Ihr Plugin zu testen. Das ist nicht ausreichend, um zu garantieren,
+      dass Ihr Plugin mit einem ePN fehlerfrei ausgeführt wird, aber wenn bereits der Plugin-Test fehlschlägt, dann wird er auf
+      jeden Fall mit Ihrem ePN fehlschlagen. <span class="color"><font color="red">[ Ein Beispiel-Mini-ePN ist im
       <span class="emphasis"><em>contrib/</em></span>-Verzeichnis der Icinga-Distribution zu finden. Wechseln Sie in das contrib/-Verzeichnis
-      und tippen Sie 'make mini_epn', um es zu kompilieren. Es muss im gleichen Verzeichnis ausgefÃ¼hrt werden, in dem die
-      p1.pl-Datei steht (diese Datei wird mit Icinga ausgeliefert). ]</span></p>
+      und tippen Sie 'make mini_epn', um es zu kompilieren. Es muss im gleichen Verzeichnis ausgeführt werden, in dem die
+      p1.pl-Datei steht (diese Datei wird mit Icinga ausgeliefert). ]</font></span></p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id5666981"></a>
+  <a class="indexterm" name="id3524784"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="pluginapi.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="pluginapi.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="extcommands2.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="extcommands2.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Nagios Plugin APIÂ </td>
+<td width="40%" align="left" valign="top">Nagios Plugin API </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Liste der externen Befehle</td>
+<td width="40%" align="right" valign="top"> Liste der externen Befehle</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

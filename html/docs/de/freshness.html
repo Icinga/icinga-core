@@ -1,90 +1,90 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Service- und Host-Frische-PrÃ¼fungen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Service- und Host-Frische-Prüfungen</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.3 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="volatileservices.html" title="sprunghafte Services">
-<link rel="next" href="distributed.html" title="Verteilte Ãœberwachung">
+<link rel="next" href="distributed.html" title="Verteilte Überwachung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service- und Host-Frische-PrÃ¼fungen</th></tr>
+<tr><th colspan="3" align="center">Service- und Host-Frische-Prüfungen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="volatileservices.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="volatileservices.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right">Â <a accesskey="n" href="distributed.html">Weiter</a>
+<td width="20%" align="right"> <a accesskey="n" href="distributed.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Service- und Host-Frische-PrÃ¼fungen">
+<div class="section" title="Service- und Host-Frische-Prüfungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="freshness"></a>Service- und Host-Frische-PrÃ¼fungen</h2></div></div></div>
+<a name="freshness"></a>Service- und Host-Frische-Prüfungen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
+  <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Icinga unterstÃ¼tzt ein Feature, das die "Frische" (Freshness) der Host- und Service-PrÃ¼fungen Ã¼berprÃ¼ft. Der Zweck
-  der Frische-PrÃ¼fung ist es, bei passiven Host- und Service-PrÃ¼fungen sicherzustellen, dass diese regelmÃ¤ÃŸig von externen
-  Applikationen zur VerfÃ¼gung gestellt werden.</p>
+  <p>Icinga unterstützt ein Feature, das die "Frische" (Freshness) der Host- und Service-Prüfungen überprüft. Der Zweck
+  der Frische-Prüfung ist es, bei passiven Host- und Service-Prüfungen sicherzustellen, dass diese regelmäßig von externen
+  Applikationen zur Verfügung gestellt werden.</p>
 
-  <p>Frische-PrÃ¼fungen sind sinnvoll, wenn Sie sicherstellen wollen, dass <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">passive
-  PrÃ¼fungen</a> so regelmÃ¤ÃŸig empfangen werden wie Sie das erwarten. Das kann in <a class="link" href="distributed.html" title="Verteilte Ãœberwachung">verteilten</a>
-  und <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Ãœberwachung">Failover</a> Ãœberwachungsumgebungen sehr sinnvoll sein.</p>
+  <p>Frische-Prüfungen sind sinnvoll, wenn Sie sicherstellen wollen, dass <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passive
+  Prüfungen</a> so regelmäßig empfangen werden wie Sie das erwarten. Das kann in <a class="link" href="distributed.html" title="Verteilte Überwachung">verteilten</a>
+  und <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">Failover</a> Überwachungsumgebungen sehr sinnvoll sein.</p>
 
   <div class="mediaobject" align="right"><img src="../images/freshness.png" align="right"></div>
 
-  <p><span class="bold"><strong>Wie funktioniert die Frische-PrÃ¼fung?</strong></span></p>
+  <p><span class="bold"><strong>Wie funktioniert die Frische-Prüfung?</strong></span></p>
 
-  <p>Icinga prÃ¼ft periodisch die Frische der Ergebnisse fÃ¼r alle Hosts und Services, bei denen Frische-PrÃ¼fungen
+  <p>Icinga prüft periodisch die Frische der Ergebnisse für alle Hosts und Services, bei denen Frische-Prüfungen
   aktiviert sind.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>ein Frische-Schwellwert wird fÃ¼r jeden Host oder Service berechnet.</p>
+      <p>ein Frische-Schwellwert wird für jeden Host oder Service berechnet.</p>
     </li>
 <li class="listitem">
-      <p>fÃ¼r jeden Host/Service wird das Alter des letzten PrÃ¼fungsergebnisses mit dem Frische-Schwellwert verglichen.</p>
+      <p>für jeden Host/Service wird das Alter des letzten Prüfungsergebnisses mit dem Frische-Schwellwert verglichen.</p>
     </li>
 <li class="listitem">
-      <p>wenn das Alter des letzten PrÃ¼fungsergebnisses grÃ¶ÃŸer als der Frisch-Schwellwert ist, wird das PrÃ¼fergebnis als
+      <p>wenn das Alter des letzten Prüfungsergebnisses größer als der Frisch-Schwellwert ist, wird das Prüfergebnis als
       "abgestanden" (stale) betrachtet.</p>
     </li>
 <li class="listitem">
-      <p>wenn das PrÃ¼fergebnis als abgestanden angesehen wird, wird Icinga eine <a class="link" href="activechecks.html" title="Aktive PrÃ¼fungen (Active Checks)">aktive
-      PrÃ¼fung</a> fÃ¼r den Host oder Service mit dem Kommando ausfÃ¼hren, das in der Host- oder Service-Definition angegeben
+      <p>wenn das Prüfergebnis als abgestanden angesehen wird, wird Icinga eine <a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">aktive
+      Prüfung</a> für den Host oder Service mit dem Kommando ausführen, das in der Host- oder Service-Definition angegeben
       ist.</p>
     </li>
 </ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Eine aktive PrÃ¼fung wird ausgefÃ¼hrt, selbst wenn aktive PrÃ¼fungen programmweit oder auf Host-
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Eine aktive Prüfung wird ausgeführt, selbst wenn aktive Prüfungen programmweit oder auf Host-
   bzw. Service-spezifischer Basis deaktiviert sind.</p>
 
-  <p>Wenn Sie beispielsweise einen Frische-Schwellwert von 60 fÃ¼r einen Ihrer Services haben, wird Icinga diesen Service
-  als abgestanden ansehen, wenn das letzte PrÃ¼fergebnis Ã¤lter als 60 Sekunden ist.</p>
+  <p>Wenn Sie beispielsweise einen Frische-Schwellwert von 60 für einen Ihrer Services haben, wird Icinga diesen Service
+  als abgestanden ansehen, wenn das letzte Prüfergebnis älter als 60 Sekunden ist.</p>
 
-  <p><span class="bold"><strong>Frische-PrÃ¼fungen aktivieren</strong></span></p>
+  <p><span class="bold"><strong>Frische-Prüfungen aktivieren</strong></span></p>
 
-  <p>Was Sie tun mÃ¼ssen, um Frische-PrÃ¼fungen zu aktivieren...</p>
+  <p>Was Sie tun müssen, um Frische-Prüfungen zu aktivieren...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>aktivieren Sie Frische-PrÃ¼fungen auf programmweiter Basis mit den <a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a> und <a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a>-Direktiven.</p>
+      <p>aktivieren Sie Frische-Prüfungen auf programmweiter Basis mit den <a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a> und <a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a>-Direktiven.</p>
     </li>
 <li class="listitem">
       <p>benutzen Sie die <a class="link" href="configmain.html#configmain-service_freshness_check_interval">service_freshness_check_interval</a>-
       und <a class="link" href="configmain.html#configmain-host_freshness_check_interval">host_freshness_check_interval</a>-Optionen, um Icinga
-      mitzuteilen, wie oft es die Frische von Host- und Service-Ergebnissen prÃ¼fen soll.</p>
+      mitzuteilen, wie oft es die Frische von Host- und Service-Ergebnissen prüfen soll.</p>
     </li>
 <li class="listitem">
-      <p>aktivieren Sie Frische-PrÃ¼fungen auf Host- und Service-spezifischer Basis, indem Sie die
+      <p>aktivieren Sie Frische-Prüfungen auf Host- und Service-spezifischer Basis, indem Sie die
       <span class="emphasis"><em>check_freshness</em></span>-Option in Ihrer Host- und Service-Definitionen auf 1 setzen.</p>
     </li>
 <li class="listitem">
@@ -93,49 +93,49 @@
     </li>
 <li class="listitem">
       <p>konfigurieren Sie die <span class="emphasis"><em>check_command</em></span>-Option in Ihren Host- oder Service-Definitionen, so dass sie
-      ein gÃ¼ltiges Script enthalten, das benutzt werden kann, um den Host oder Service aktiv zu prÃ¼fen, wenn er als abgestanden
+      ein gültiges Script enthalten, das benutzt werden kann, um den Host oder Service aktiv zu prüfen, wenn er als abgestanden
       angesehen wird.</p>
     </li>
 <li class="listitem">
       <p>Die <span class="emphasis"><em>check_period</em></span>-Option in Ihren Host- und Service-Definitionen wird benutzt, wenn Icinga
-      festlegt, wann ein Host oder Service auf Frische geprÃ¼ft werden soll, um sicherzustellen, dass es sich um ein gÃ¼ltiges
+      festlegt, wann ein Host oder Service auf Frische geprüft werden soll, um sicherzustellen, dass es sich um ein gültiges
       Zeitfenster handelt.</p>
     </li>
 </ul></div>
 
   <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie keinen Host- oder Service-spezifischen <span class="emphasis"><em>freshness_threshold</em></span>-Wert
   angeben (oder ihn auf Null setzen), wird Icinga automatisch einen Schwellwert berechnen, der darauf basiert, wie oft Sie
-  den jeweiligen Host- oder Service Ã¼berwachen. Wir wÃ¼rden empfehlen, dass Sie explizit einen Frische-Schwellwert angeben, statt
-  dass Icinga einen fÃ¼r Sie auswÃ¤hlt.</p>
+  den jeweiligen Host- oder Service überwachen. Wir würden empfehlen, dass Sie explizit einen Frische-Schwellwert angeben, statt
+  dass Icinga einen für Sie auswählt.</p>
 
   <p><span class="bold"><strong>Beispiel</strong></span></p>
 
-  <p>Ein Beispiel fÃ¼r einen Service, der eine Frische-PrÃ¼fung benÃ¶tigen kÃ¶nnte, wÃ¤re einer, der den Status Ihrer nÃ¤chtlichen
+  <p>Ein Beispiel für einen Service, der eine Frische-Prüfung benötigen könnte, wäre einer, der den Status Ihrer nächtlichen
   Backups meldet. Vielleicht haben Sie ein externes Script, welches das Ergebnis des Backup-Jobs an Icinga meldet, sobald
-  das Backup beendet ist. In diesem Fall werden alle PrÃ¼fungen/Ergebnisse fÃ¼r diesen Service durch eine externe Applikation mit
-  Hilfe von passiven PrÃ¼fungen zur VerfÃ¼gung gestellt. Um sicherzustellen, dass der Status des Backup-Jobs tÃ¤glich gemeldet wird,
-  kÃ¶nnen Sie die Frische-PrÃ¼fung fÃ¼r diesen Service aktivieren. Falls das externe Script das Ergebnis des Backup-Jobs nicht
+  das Backup beendet ist. In diesem Fall werden alle Prüfungen/Ergebnisse für diesen Service durch eine externe Applikation mit
+  Hilfe von passiven Prüfungen zur Verfügung gestellt. Um sicherzustellen, dass der Status des Backup-Jobs täglich gemeldet wird,
+  können Sie die Frische-Prüfung für diesen Service aktivieren. Falls das externe Script das Ergebnis des Backup-Jobs nicht
   meldet, kann Icinga ein kritisches Ergebnis imitieren, indem man folgendes tut...</p>
 
-  <p>Nachfolgend, wie die Definition fÃ¼r den Service aussehen kÃ¶nnte (einige benÃ¶tigte Optionen fehlen...)</p>
+  <p>Nachfolgend, wie die Definition für den Service aussehen könnte (einige benötigte Optionen fehlen...)</p>
 
   <pre class="screen"> define service{
         host_name               backup-server
         service_description     ArcServe Backup Job
-        active_checks_enabled   0               ; aktive PrÃ¼fungen sind NICHT aktiviert
-        passive_checks_enabled  1               ; passive PrÃ¼fungen sind aktiviert (dadurch werden Ergebnisse gemeldet)
+        active_checks_enabled   0               ; aktive Prüfungen sind NICHT aktiviert
+        passive_checks_enabled  1               ; passive Prüfungen sind aktiviert (dadurch werden Ergebnisse gemeldet)
         check_freshness         1
         freshness_threshold     93600           ; 26 Stunden Schwellwert, nachdem Backups nicht immer zur gleichen Zeit beendet sind
-        check_command           no-backup-report        ; dieses Kommando wird nur ausgefÃ¼hrt, wenn der Service als "abgestanden" angesehen wird
+        check_command           no-backup-report        ; dieses Kommando wird nur ausgeführt, wenn der Service als "abgestanden" angesehen wird
         ...andere Optionen...
         }</pre>
 
-  <p>Beachten Sie, dass aktive PrÃ¼fungen fÃ¼r den Service deaktiviert sind. Das ist so, weil die Ergebnisse fÃ¼r den Service nur
-  durch eine externe Applikation geliefert werden. Die Frische-PrÃ¼fung ist aktiviert und der Frische-Schwellwert ist auf 26
-  Stunden gesetzt. Das ist ein bisschen mehr als 24 Stunden, weil Backup-Jobs ab und zu lÃ¤nger dauern (abhÃ¤ngig davon, wie viele
+  <p>Beachten Sie, dass aktive Prüfungen für den Service deaktiviert sind. Das ist so, weil die Ergebnisse für den Service nur
+  durch eine externe Applikation geliefert werden. Die Frische-Prüfung ist aktiviert und der Frische-Schwellwert ist auf 26
+  Stunden gesetzt. Das ist ein bisschen mehr als 24 Stunden, weil Backup-Jobs ab und zu länger dauern (abhängig davon, wie viele
   Daten zu sichern sind, wie viel Netzwerkverkehr herrscht, usw.). Das <span class="emphasis"><em>no-backup-report</em></span>-Kommando wird nur
-  ausgefÃ¼hrt, wenn die Ergebnissse des Service als abgestanden angesehen werden. Die Definition des
-  <span class="emphasis"><em>no-backup-report</em></span>-Kommandos kÃ¶nnte wie folgt aussehen...</p>
+  ausgeführt, wenn die Ergebnissse des Service als abgestanden angesehen werden. Die Definition des
+  <span class="emphasis"><em>no-backup-report</em></span>-Kommandos könnte wie folgt aussehen...</p>
 
   <pre class="screen"> define command{
         command_name    no-backup-report
@@ -143,29 +143,29 @@
         }</pre>
 
   <p>Falls Icinga erkennt, dass das Service-Ergebnis abgestanden ist, wird es das
-  <span class="emphasis"><em>no-backup-report</em></span>-Kommando als eine aktive Service-PrÃ¼fung ausfÃ¼hren. Das fÃ¼hrt dazu, dass das
-  <span class="emphasis"><em>check_dummy</em></span>-Plugin ausgefÃ¼hrt wird, das einen kritischen Status an Icinga meldet. Der Service wird
-  dann in einen kritischen Zustand gehen (falls das nicht bereits der Fall ist) und wahrscheinlich wird jemand Ã¼ber das Problem
+  <span class="emphasis"><em>no-backup-report</em></span>-Kommando als eine aktive Service-Prüfung ausführen. Das führt dazu, dass das
+  <span class="emphasis"><em>check_dummy</em></span>-Plugin ausgeführt wird, das einen kritischen Status an Icinga meldet. Der Service wird
+  dann in einen kritischen Zustand gehen (falls das nicht bereits der Fall ist) und wahrscheinlich wird jemand über das Problem
   informiert.</p>
-  <a class="indexterm" name="id5647320"></a>
+  <a class="indexterm" name="id3503898"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="volatileservices.html">ZurÃ¼ck</a>Â </td>
+<a accesskey="p" href="volatileservices.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right">Â <a accesskey="n" href="distributed.html">Weiter</a>
+<td width="40%" align="right"> <a accesskey="n" href="distributed.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">sprunghafte ServicesÂ </td>
+<td width="40%" align="left" valign="top">sprunghafte Services </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top">Â Verteilte Ãœberwachung</td>
+<td width="40%" align="right" valign="top"> Verteilte Überwachung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">Â© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
