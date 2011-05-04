@@ -22,25 +22,30 @@ define ICINGA_VERSION=1.4.0
 -- this particular step can be skipped safetly
 -- --------------------------------------------------------
 /* set real TBS names on which you have quota, no checks are implemented!*/
-define DATATBS='ICINGA_DATA';
-define LOBTBS='ICINGA_DATA';
-define IXTBS='ICINGA_IDX';
+define DATATBS='ICINGA_DATA1';
+define LOBTBS='ICINGA_LOB1';
+define IXTBS='ICINGA_IDX1';
 
 -- --------------------------------------------------------
--- rewrite objects
+-- relocate objects into seperate tablespaces for DATA, INDEX and LOB
+-- Feature #1354 seperate Data, Index and Lobs https://dev.icinga.org/issues/1354
+-- Feature #1355 drop unnessary constraints and rename remaining https://dev.icinga.org/issues/1355
+-- alter sequences nocache
 -- --------------------------------------------------------
-@alter_icinga13_objects.sql
+@oracle_alter_icinga13_objects.sql
 -- --------------------------------------------------------
 -- recreate functions
+-- add NO_DATA_FOUND exception handler 
+-- https://dev.icinga.org/issues/1363
 -- --------------------------------------------------------
-@recreate_icinga13_functions.sql
+@oracle_recreate_icinga13_functions.sql
 
 -- --------------------------------------------------------
 -- remove number limitations
 -- fixes Bug #1173: int(11) to small for some of ido tables
 -- https://dev.icinga.org/issues/1173
 -- --------------------------------------------------------
-@alter_icinga13_numbers.sql
+@oracle_alter_icinga13_numbers.sql
 
 /* script will be terminated on the first error */
 whenever sqlerror exit failure

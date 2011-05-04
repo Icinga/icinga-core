@@ -8,7 +8,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-04-03 Thomas Dressler
+-- current version: 2011-05-03 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
@@ -2169,17 +2169,11 @@ CREATE SEQUENCE seq_timeperiods
    nocache nomaxvalue;
  
 
--- -----------------------------------------
--- set dbversion
--- -----------------------------------------
-INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '&&ICINGA_VERSION');
-commit;
-
 /* final check */
 select object_name,object_type,status  from user_objects where status !='VALID';
 
 /* goodbye */
-prompt Object creation finished, ready to start!
+prompt Object creation finished
 spool off;
 
 

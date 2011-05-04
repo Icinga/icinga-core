@@ -8,11 +8,36 @@
 --
 -- works with Oracle10+ and sqlplus
 -- for because of grants on v$ views this must run as sys 
--- if not needed, normal dba user is valid to run
 -- initial version: 2011-03-07 Thomas Dressler
--- current version: 2011-03-27 
+-- current version: 2011-05-03 
 -- --------------------------------------------------------
 */
+-- -----------------------------------------
+-- set defines
+-- EDIT icinga_defines.sql!
+-- -----------------------------------------
+
+/*
+filesystems to use for distributing index and data. In low frequency environments
+this can be the same. trailing slash is mandantory
+*/
+DEFINE DATAFS=./
+DEFINE IDXFS=./
+DEFINE LOBFS=./
+/*
+icinga tablespaces and user must fit definitions in create_icinga_objects_oracle.sql
+*/
+
+DEFINE DATATBS=ICINGA_DATA1
+DEFINE IDXTBS=ICINGA_IDX1
+DEFINE LOBTBS=ICINGA_LOB1
+DEFINE ICINGA_USER=icinga
+DEFINE ICINGA_PASSWORD=icinga
+
+/*
+overwrite previous defines if needed
+*/
+@icinga_defines.sql
 -- -----------------------------------------
 -- set sqlplus parameter
 -- -----------------------------------------
@@ -23,7 +48,7 @@ set feedback on
 
 /* logging */
 spool create_oracle_sys.log
-whenever sqlerror resume next
+whenever sqlerror continue
 -- -----------------------------------------
 -- drop existing user if any
 -- -----------------------------------------
@@ -38,7 +63,7 @@ prompt "nonexistent tablespace" errors on the next statement can be ignored
  DROP TABLESPACE &&IDXTBS including contents and datafiles;
  DROP TABLESPACE &&LOBTBS including contents and datafiles;
 
-/*from now we will exit on all errors */
+ /* from now we will exit on all errors */
 whenever sqlerror exit failure
 
 -- -----------------------------------------
@@ -65,7 +90,7 @@ create user &ICINGA_USER identified by &ICINGA_PASSWORD
 	default tablespace &DATATBS 
 	temporary tablespace temp;
 
-/* assing tablespace quotas*/
+/* assing tablespace quotas */
 alter user &&ICINGA_USER quota unlimited on &&DATATBS;
 alter user &&ICINGA_USER quota unlimited on &&IDXTBS;
 alter user &&ICINGA_USER quota unlimited on &&LOBTBS;
@@ -89,4 +114,5 @@ grant select on v_$statname to &&ICINGA_USER;
 
 prompt system prepared, run now create_icinga_objects_oracle.sql as &&ICINGA_USER
 spool off;
+
 

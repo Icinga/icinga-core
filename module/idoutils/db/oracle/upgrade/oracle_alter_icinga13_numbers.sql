@@ -5,13 +5,13 @@
 -- called by oracle-upgrade-1.4.0.sql
 -- --------------------------------------------------------
 -- remove number limitations
--- fixes Bug #1173: int(11) to small for some of ido tables
--- https://dev.icinga.org/issues/1173
+-- fixes Bug #1173: int(11) to small for some of ido tables https://dev.icinga.org/issues/1173
+--       Bug #1401: integer not big enough for bytes_processed https://dev.icinga.org/issues/1401
 -- --------------------------------------------------------
 -- works with Oracle10+ and sqlplus
 -- 
 -- initial version: 2011-03-01 Thomas Dressler
--- current version: 2011-03-27 Thomas Dressler
+-- current version: 2011-05-01 Thomas Dressler
 -- --------------------------------------------------------
 */
 -- -----------------------------------------

@@ -16,7 +16,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 -- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-04-03 Thomas Dressler
+-- current version: 2011-05-03 Thomas Dressler
 --
 -- -- --------------------------------------------------------
 */
@@ -25,25 +25,23 @@ DEFINE ICINGA_VERSION=1.4.0
 
 -- -----------------------------------------
 -- set defines
--- EDIT THIS !
+-- EDIT THIS or icinga_defines.sql
 -- -----------------------------------------
 
-/*
-filesystems to use for distributing index and data. In low frequency environments
-this can be the same. trailing slash is mandantory
-*/
-DEFINE DATAFS=./
-DEFINE IDXFS=./
-DEFINE LOBFS=./
 /*
 icinga tablespaces and user must fit definitions in create_icinga_objects_oracle.sql
 */
 
-DEFINE DATATBS=ICINGA_DATA
-DEFINE IDXTBS=ICINGA_IDX
-DEFINE LOBTBS=ICINGA_LOB
+DEFINE DATATBS=ICINGA_DATA1
+DEFINE IDXTBS=ICINGA_IDX1
+DEFINE LOBTBS=ICINGA_LOB1
 DEFINE ICINGA_USER=icinga
 DEFINE ICINGA_PASSWORD=icinga
+
+/*
+overwrite previous defines if needed
+*/
+@icinga_defines.sql
 -- -----------------------------------------
 -- set sqlplus parameter
 -- -----------------------------------------
@@ -55,29 +53,17 @@ set echo on;
 set feedback on;
 SET ESCAPE \
 
--- -----------------------------------------
--- load current instance
--- -----------------------------------------
-column inst new_value dbinst noprint;
-SELECT instance_name inst  FROM v$instance;
--- -----------------------------------------
--- second connect may fail if instance_name != your tns name
--- replace &dbinst with real name 
--- -----------------------------------------
-DEFINE myinst=&dbinst
+
 
 -- -----------------------------------------
--- run user and tablespace creation
--- CAUTION: THIS WILL DROP EXISTING USER AND TABLESPACE WITH SAME NAME
+-- Create icinga objects
 -- -----------------------------------------
-@create_oracle_sys.sql
-
--- -----------------------------------------
--- Connect to the newly created user 
--- and create icinga objects
--- -----------------------------------------
-connect &&ICINGA_USER./&&ICINGA_PASSWORD@&&myinst
 @create_icinga_objects_oracle.sql
 
+-- -----------------------------------------
+-- set dbversion
+-- -----------------------------------------
+INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '&&ICINGA_VERSION');
+commit;
 /*goodbye */
 exit;

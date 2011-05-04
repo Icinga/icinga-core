@@ -1,14 +1,17 @@
 /*
 -- --------------------------------------------------------
--- move_icinga13_objects.sql
+-- oracle_move_icinga13_objects.sql
 -- oracle schema update script for icinga V1.3.0 to V1.4.0
 -- called by oracle-upgrade-1.4.0.sql
 -- --------------------------------------------------------
--- seperates constraints, lobs and indexes
+
+-- Feature #1354 seperate Data, Index and Lobs https://dev.icinga.org/issues/1354
+-- Feature #1355 drop unnessary constraints and rename remaining https://dev.icinga.org/issues/1355
+-- alter sequences nocache
+
 -- works with Oracle10+ and sqlplus
---
 -- initial version: 2011-03-01 Thomas Dressler
--- current version: 2011-04-03 Thomas Dressler
+-- current version: 2011-05-01 Thomas Dressler
 --
 -- this will ask you for the tablespace names unless you run it from oracle-upgrade-1.4.0.sql 
 -- or defined it previous in defines (eg. define IDXTBS=<yourDATATBS> ....)
