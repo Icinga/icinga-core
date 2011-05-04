@@ -22,7 +22,7 @@
 -- set sqlplus parameter
 -- -----------------------------------------
 set sqlprompt "&&_USER@&&_CONNECT_IDENTIFIER SQL>"
-set serveroutput on size 20000
+set serveroutput on size 900000
 set echo on
 set feedback on
 
