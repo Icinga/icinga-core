@@ -8,7 +8,7 @@
 # instance of Icinga and is used to seperate data coming from multiple
 # instances.  Defaults to 'default' (without quotes).
 
-instance_name=default
+instance_name=@IDO_INSTANCE_NAME@
 
 
 

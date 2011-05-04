@@ -32,6 +32,7 @@ ENHANCEMENTS
 * idoutils: reduce housekeeping cycle to every 3600s, set housekeeping thread startup delay to 300s #1157
 * idoutils: introduce schema version and check against that instead of program version #1368
 * idoutils: install sample (commented) config in modules/idoutils.cfg using new 'module' object config #162
+* idoutils: add configure flag to set ido instance_name other than 'default' in idomod.cfg #1167
 
 * config: increase default debug file size to 100M #1316
 

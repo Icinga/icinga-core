@@ -631,6 +631,7 @@ ido2db_name
 icingastats_name
 icinga_name
 DBLIBS
+IDO_INSTANCE_NAME
 BROKER_H
 BROKER_O
 MOD_LDFLAGS
@@ -755,6 +756,7 @@ enable_nanosleep
 enable_event_broker
 enable_state_based_escal_ranges
 enable_idoutils
+with_ido_instance_name
 enable_oracle
 enable_pgsql
 with_ocilib_lib
@@ -1444,6 +1446,8 @@ Optional Packages:
                           slash)
   --with-htmurl=<local-url>
                           sets URL for public html
+  --ido-instance-name=<instancename>
+                          sets instance_name for IDOUtils
   --with-ocilib-lib=DIR   sets location of the ocilib library
   --with-ocilib-inc=DIR   sets location of the ocilib include files,
   --with-oracle-lib=DIR   sets location of the oracle library
@@ -6104,6 +6108,20 @@ if test x$USE_IDOUTILS = xyes; then
 		as_fn_error $? "--enable-idoutils needs also --enable-event-broker" "$LINENO" 5
 	fi
 
+		IDO_INSTANCE_NAME=no
+
+# Check whether --with-ido-instance-name was given.
+if test "${with_ido_instance_name+set}" = set; then :
+  withval=$with_ido_instance_name; IDO_INSTANCE_NAME=$withval
+else
+  IDO_INSTANCE_NAME=no
+fi
+
+	if test x$IDO_INSTANCE_NAME = xno; then
+	        IDO_INSTANCE_NAME="default"
+	fi
+
+
 
 
 		USE_OCILIB=no
@@ -8324,8 +8342,8 @@ else
 $as_echo "             Event Broker:  no" >&6; }
 fi
 if test x$USE_IDOUTILS = xyes; then
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result:            Build IDOUtils:  yes" >&5
-$as_echo "           Build IDOUtils:  yes" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:            Build IDOUtils:  yes, instance_name=$IDO_INSTANCE_NAME" >&5
+$as_echo "           Build IDOUtils:  yes, instance_name=$IDO_INSTANCE_NAME" >&6; }
 else
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Build IDOUtils:  no" >&5
 $as_echo "           Build IDOUtils:  no" >&6; }

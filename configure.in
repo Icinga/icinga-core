@@ -704,6 +704,14 @@ if test x$USE_IDOUTILS = xyes; then
 		AC_MSG_ERROR([--enable-idoutils needs also --enable-event-broker])
 	fi
 
+	dnl instance name
+	IDO_INSTANCE_NAME=no
+	AC_ARG_WITH(ido-instance-name,AC_HELP_STRING([--ido-instance-name=<instancename>],[sets instance_name for IDOUtils]),IDO_INSTANCE_NAME=$withval,IDO_INSTANCE_NAME=no)
+	if test x$IDO_INSTANCE_NAME = xno; then
+	        IDO_INSTANCE_NAME="default"
+	fi
+	AC_SUBST(IDO_INSTANCE_NAME)
+
 	dnl check if oracle enabled, then require ocilib
 	dnl check if pgsql enabled, then require libpq
 	dnl else require libpq
@@ -1228,7 +1236,7 @@ else
 AC_MSG_RESULT([             Event Broker:  no])
 fi
 if test x$USE_IDOUTILS = xyes; then
-AC_MSG_RESULT([           Build IDOUtils:  yes])
+AC_MSG_RESULT([           Build IDOUtils:  yes, instance_name=$IDO_INSTANCE_NAME])
 else
 AC_MSG_RESULT([           Build IDOUtils:  no])
 fi
