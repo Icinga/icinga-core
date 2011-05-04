@@ -44,14 +44,14 @@ PROJECT_BRIEF          = "next gen monitoring"
 # exceed 55 pixels and the maximum width should not exceed 200 pixels. 
 # Doxygen will copy the logo to the output directory.
 
-PROJECT_LOGO           = icinga_logo4-300x109.png
+PROJECT_LOGO           = html/doxygen/icinga_logo4-300x109.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = /Users/ricardo/Documents/Doxygen/files
+OUTPUT_DIRECTORY       = html/doxygen
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
@@ -137,7 +137,7 @@ FULL_PATH_NAMES        = YES
 # If left blank the directory from which doxygen is run is used as the 
 # path to strip.
 
-STRIP_FROM_PATH        = "/Volumes/Icinga Devel/icinga/icinga-core"
+STRIP_FROM_PATH        = "/Volumes/Icinga Devel/icinga/icinga-core/"
 
 # The STRIP_FROM_INC_PATH tag can be used to strip a user-defined part of 
 # the path mentioned in the documentation of a class, which tells 
@@ -694,16 +694,16 @@ EXCLUDE_SYMLINKS       = YES
 # against the file with absolute path, so to exclude all test directories 
 # for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       =  *._*.c \
-                         /*/._* \
-                         /*/.git/* \
-                         /*/docbook/* \
-                         /*/docs/* \
-                         /*/doxygen/* \
-                         /*/module/icinga-api/* \
-                         /*/t/* \
-                         /*/tap/* \
-                         /*/t-tap/*
+EXCLUDE_PATTERNS       = */._* \
+                         *._*.c \
+                         */.git/* \
+                         */docbook/* \
+                         */docs/* \
+                         */doxygen/* \
+                         */module/icinga-api/* \
+                         */t/* \
+                         */tap/* \
+                         */t-tap/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names 
 # (namespaces, classes, functions, etc.) that should be excluded from the 
