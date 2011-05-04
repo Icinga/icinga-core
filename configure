@@ -621,6 +621,8 @@ GDLIBS
 CGIEXTRAS
 USE_LIBTAP
 subdirs
+SOL_PKG_NAME
+ARCH
 VERSION
 PACKDIR
 PATH_TO_TRACEROUTE
@@ -6546,7 +6548,11 @@ _ACEOF
 
 
 VERSION=$PKG_VERSION
-PACKDIR=`pwd`/pkg
+PACKDIR=`pwd`/solaris_pkg
+SOL_PKG_NAME=Icinga
+ARCH=`uname -p`
+
+
 
 
 
@@ -6866,14 +6872,14 @@ $as_echo_n "checking for -Wall based on os/compiler... " >&6; }
 			CFLAGS="-Wall $CFLAGS"
 		;;
                 freebsd*)
-			CFLAGS="-Wall $CFLAGS"
+			CFLAGS=?"-Wall $CFLAGS"
                 ;;
                 *)
                 ;;
         esac
 
 
-ac_config_files="$ac_config_files Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql"
+ac_config_files="$ac_config_files Makefile subst solaris/pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql"
 
 
 
@@ -7497,7 +7503,7 @@ do
     "include/snprintf.h") CONFIG_HEADERS="$CONFIG_HEADERS include/snprintf.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "subst") CONFIG_FILES="$CONFIG_FILES subst" ;;
-    "pkginfo") CONFIG_FILES="$CONFIG_FILES pkginfo" ;;
+    "solaris/pkginfo") CONFIG_FILES="$CONFIG_FILES solaris/pkginfo" ;;
     "base/Makefile") CONFIG_FILES="$CONFIG_FILES base/Makefile" ;;
     "common/Makefile") CONFIG_FILES="$CONFIG_FILES common/Makefile" ;;
     "contrib/Makefile") CONFIG_FILES="$CONFIG_FILES contrib/Makefile" ;;
