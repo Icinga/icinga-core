@@ -18,7 +18,7 @@
 -- set sqlplus parameter
 -- -----------------------------------------
 set sqlprompt "&&_USER@&&_CONNECT_IDENTIFIER SQL>"
-set serveroutput on size 20000
+set serveroutput on size 100000
 set pagesize 200;
 set linesize 200;
 set heading off;
