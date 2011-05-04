@@ -517,36 +517,56 @@ fullinstall:
 # Solaris pkgmk
 PACKDIR=@PACKDIR@
 VERSION=@VERSION@
+SOL_PKG_NAME=@SOL_PKG_NAME@
+SUN_OS_RELEASE=$(shell uname -r | cut -f2 -d. )
+SUN_PLATFORM=$(shell uname -p)
 
 Prototype:
-	if [ ! -d $(PACKDIR) ] ; then mkdir $(PACKDIR); fi
-	if [ ! -d $(PACKDIR)/etc ] ; then mkdir $(PACKDIR)/etc; fi
-	if [ ! -d $(PACKDIR)/etc/init.d ] ; then mkdir $(PACKDIR)/etc/init.d; fi
-	if [ ! -d $(PACKDIR)/etc/icinga ] ; then mkdir $(PACKDIR)/etc/icinga; fi
+	rm -rf $(PACKDIR)
+	mkdir -p $(PACKDIR)
+	mkdir -p $(PACKDIR)/$(CFGDIR)/objects
 	$(MAKE) all
-	$(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' fullinstall
-	$(INSTALL) -m 644 sample-config/icinga.cfg $(PACKDIR)$(CFGDIR)/icinga.cfg.$(VERSION)
-	$(INSTALL) -m 644 sample-config/cgi.cfg $(PACKDIR)$(CFGDIR)/cgi.cfg.$(VERSION)
-	$(INSTALL) -m 640 sample-config/resource.cfg $(PACKDIR)$(CFGDIR)/resource.cfg.$(VERSION)
-	$(INSTALL) -m 664 sample-config/template-object/bigger.cfg $(PACKDIR)$(CFGDIR)/bigger.cfg.$(VERSION)
-	$(INSTALL) -m 664 sample-config/template-object/minimal.cfg $(PACKDIR)$(CFGDIR)/minimal.cfg.$(VERSION)
-	$(INSTALL) -m 664 sample-config/template-object/checkcommands.cfg $(PACKDIR)$(CFGDIR)/checkcommands.cfg.$(VERSION)
-	$(INSTALL) -m 664 sample-config/template-object/misccommands.cfg $(PACKDIR)$(CFGDIR)/misccommands.cfg.$(VERSION)
-	cd contrib; $(MAKE) all; $(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' install
-	echo i pkginfo> Prototype
-	if [ -f checkinstall ] ; then echo i checkinstall>> Prototype; fi
-	if [ -f preinstall ] ; then echo i preinstall>> Prototype; fi
-	if [ -f postinstall ] ; then echo i postinstall>> Prototype; fi
-	pkgproto $(PACKDIR)=/ | sed -e "s|$(LOGNAME) $(GROUP)$$|root root|" | egrep -v "(s|d) none (/|/etc|/var|/usr|/usr/local) " >> Prototype
+	$(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' \
+	    install install-commandmode install-webconf install-idoutils
+	cd sample-config; \
+	for file in *.cfg; \
+	do \
+	    $(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/$$file.$(VERSION); \
+	done
+	chmod 640 $(PACKDIR)/$(CFGDIR)/resource.cfg.$(VERSION)
+	cd sample-config/template-object; \
+	for file in *.cfg; \
+	do \
+	    $(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/objects/$$file.$(VERSION); \
+	done
+	mkdir -p $(PACKDIR)/lib/svc/method/
+	$(INSTALL) -o root -g bin -m 555 daemon-init $(PACKDIR)/lib/svc/method/icinga
+	mkdir -p $(PACKDIR)/var/svc/manifest/application/
+	$(INSTALL) -m 444 -o root -g root solaris/icinga.xml $(PACKDIR)/var/svc/manifest/application/
+	#cd contrib; $(MAKE) all; $(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' install
+	echo i pkginfo > solaris/Prototype
+	if [ -f solaris/checkinstall.in ] ; then cat solaris/checkinstall.in | sed 's/!SUN_PLATFORM!/$(SUN_PLATFORM)/g' > solaris/checkinstall; fi
+	cd solaris; \
+	for file in checkinstall preinstall postinstall preremove postremove depend i.manifest r.manifest; \
+	do \
+	    if [ -f $$file ] ; then echo i $$file >> Prototype; fi ; \
+	done
+	pkgproto $(PACKDIR)=/ | sed -e "s|$(LOGNAME) $(GROUP)$$|root root|" | egrep -v "(s|d) none (/ |/var|/usr|/etc|/lib)" >> solaris/Prototype
 
 pkg/icinga/pkgmap: Prototype
-	mkdir $(PACKDIR)/icinga
-	pkgmk -o -r / -f Prototype -d $(PACKDIR) icinga
+	mkdir $(PACKDIR)/$(SOL_PKG_NAME)
+	cd solaris; pkgmk -o -r / -f Prototype -d $(PACKDIR) $(SOL_PKG_NAME)
 
-icinga.SPARC.pkg.tar.gz: pkg/icinga/pkgmap
-	cd $(PACKDIR) && tar -cf - icinga | gzip -9 -c > ../icinga.SPARC.pkg.tar.gz
+icinga.sun.pkg.tar.gz: pkg/icinga/pkgmap
+	cd $(PACKDIR) && tar -cf - icinga | gzip -9 -c > ../icinga-$(VERSION)-Sol$(SUN_OS_RELEASE)-$(SUN_PLATFORM).pkg.tar.gz
 
-pkgset: icinga.SPARC.pkg.tar.gz
+icinga.sun.pkg: pkg/icinga/pkgmap
+	pkgtrans -s $(PACKDIR) ../icinga-$(VERSION)-Sol$(SUN_OS_RELEASE)-$(SUN_PLATFORM).pkg $(SOL_PKG_NAME)
+
+pkgsettar: icinga.sun.pkg.tar.gz
+
+pkgset: icinga.sun.pkg
 
 pkgclean:
-	rm -rf pkg Prototype icinga.SPARC.pkg.tar.gz
+	rm -rf solaris_pkg solaris/Prototype icinga-$(VERSION)-$(SUN_PLATFORM).pkg.tar.gz icinga-$(VERSION)-$(SUN_PLATFORM).pkg
+

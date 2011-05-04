@@ -913,9 +913,13 @@ AC_DEFINE_UNQUOTED(TRACEROUTE_COMMAND,"$PATH_TO_TRACEROUTE",[traceroute command 
 dnl Package directory for Solaris pkgmk (and other OSs, eventually)
 dnl VERSION=`grep 1.0 include/common.h | cut -d ' ' -f 3 | sed 's/"//g'`
 VERSION=$PKG_VERSION
-PACKDIR=`pwd`/pkg
+PACKDIR=`pwd`/solaris_pkg
+SOL_PKG_NAME=Icinga
+ARCH=`uname -p`
 AC_SUBST(PACKDIR)
 AC_SUBST(VERSION)
+AC_SUBST(ARCH)
+AC_SUBST(SOL_PKG_NAME)
 
 AC_MSG_CHECKING(for type va_list)
 AC_TRY_COMPILE([#ifdef __STDC__
@@ -1148,14 +1152,14 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
 			CFLAGS="-Wall $CFLAGS"
 		;;
                 freebsd*)
-			CFLAGS="-Wall $CFLAGS"
+			CFLAGS=?"-Wall $CFLAGS"
                 ;;
                 *)
                 ;;
         esac
 
 
-AC_OUTPUT(Makefile subst pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql)
+AC_OUTPUT(Makefile subst solaris/pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql)
 
 
 perl subst $srcdir/include/locations.h
