@@ -2361,7 +2361,7 @@ int write_to_cgi_log(char *buffer) {
 	time(&log_time);
 
 	// allways check if log file has to be rotated
-	rotate_log_file();
+	rotate_cgi_log_file();
 
 	// open log file and try again if failed
 	while((fp=fopen(cgi_log_file,"a+"))==NULL && i<write_retries) {
@@ -2384,7 +2384,7 @@ int write_to_cgi_log(char *buffer) {
 }
 
 /* rotates the cgi log file */
-int rotate_log_file(){
+int rotate_cgi_log_file(){
 	char temp_buffer[MAX_INPUT_BUFFER]="";
 	char method_string[16]="";
 	char *log_archive=NULL;

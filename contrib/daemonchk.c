@@ -1,8 +1,8 @@
-#include "config.h"
-#include "common.h"
-#include "locations.h"
-#include "cgiutils.h"
-#include "getcgi.h"
+#include "../include/config.h"
+#include "../include/common.h"
+#include "../include/locations.h"
+#include "../include/cgiutils.h"
+#include "../include/getcgi.h"
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
 #endif

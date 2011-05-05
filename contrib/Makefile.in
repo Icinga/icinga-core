@@ -61,7 +61,7 @@ daemonchk.cgi: daemonchk.o $(CGI_O) $(CGI_H) $(COMMON_H)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(CGI_O)
 
 daemonchk.o: daemonchk.c
-	$(CC) $(CLFAGS) -c -o $@ $< -I$(SRC_INCLUDE)
+	$(CC) $(CFLAGS) -c -o $@ $< -I$(SRC_INCLUDE)
 
 mini_epn: mini_epn.c
 	perl -MExtUtils::Embed -e xsinit
