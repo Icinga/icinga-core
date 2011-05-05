@@ -84,31 +84,86 @@ div.tacheader-overall-status-item {
 }
 
 div.tacheader-status-ok {
-	background-color: #00cc33;
+	background-color: #00CC33;
 }
 
 div.tacheader-status-warning {
-	background-color: #ffA500;
+	background-color: #FFA500;
+}
+
+div.tacheader-status-warning-passive {
+        border: 1px #FFA500 solid;
+	background-color: #FFBF4F;
+}
+
+div.tacheader-status-warning-acknowledged {
+        border: 1px #FFA500 solid;
+        color: #FFA500;
+        font-weight: bolder;
 }
 
 div.tacheader-status-critical {
-	background-color: #ff3300;
+	background-color: #FF3300;
+}
+
+div.tacheader-status-critical-passive {
+        border: 1px #FF3300 solid;
+	background-color: #F5A9A9;
+}
+
+div.tacheader-status-critical-acknowledged {
+        border: 1px #FF3300 solid;
+        color: #FF3300;
+        font-weight: bolder;
 }
 
 div.tacheader-status-up {
-	background-color: #00cc33;
+	background-color: #00CC33;
 }
 
 div.tacheader-status-down {
-	background-color: #ff3300;
+	background-color: #FF3300;
+}
+
+div.tacheader-status-down-passive {
+        border: 1px #FF3300 solid;
+	background-color: #F5A9A9;
+}
+
+div.tacheader-status-down-acknowledged {
+        border: 1px #FF3300 solid;
+        color: #FF3300;
+        font-weight: bolder;
 }
 
 div.tacheader-status-unreachable {
 	background-color: #E066FF;
 }
 
+div.tacheader-status-unreachable-passive {
+        border: 1px #E066FF solid;
+	background-color: #E68BFF;
+}
+
+div.tacheader-status-unreachable-acknowledged {
+        border: 1px #E066FF solid;
+        color: #E066FF;
+        font-weight: bolder;
+}
+
 div.tacheader-status-unknown {
 	background-color: #E066FF;
+}
+
+div.tacheader-status-unknown-passive {
+        border: 1px #E066FF solid;
+	background-color: #E68BFF;
+}
+
+div.tacheader-status-unknown-acknowledged {
+        border: 1px #E066FF solid;
+        color: #E066FF;
+        font-weight: bolder;
 }
 
 table.tacheader-monitor-performance-container {
