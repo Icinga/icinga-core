@@ -577,7 +577,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 	/* find all the object definitions we already have */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id='%lu'", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
+	if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
 		buf = NULL;
 
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
@@ -887,7 +887,7 @@ int ido2db_set_all_objects_as_inactive(ido2db_idi *idi) {
 
 	/* mark all objects as being inactive */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "UPDATE %s SET is_active='0' WHERE instance_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET is_active='0' WHERE instance_id=%lu",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS],
 			idi->dbinfo.instance_id) == -1)
 		buf = NULL;
@@ -951,7 +951,7 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
-			"UPDATE %s SET is_active='1' WHERE instance_id='%lu' AND objecttype_id='%d' AND object_id='%lu'",
+			"UPDATE %s SET is_active='1' WHERE instance_id=%lu AND objecttype_id=%d AND object_id=%lu",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS],
 			idi->dbinfo.instance_id, object_type, object_id) == -1)
 		buf = NULL;
@@ -1061,7 +1061,7 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	/* make sure we aren't importing a duplicate log entry... */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-	if (asprintf(&buf, "SELECT logentry_id FROM %s WHERE instance_id='%lu' AND logentry_time=%s AND logentry_data='%s'", ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES], idi->dbinfo.instance_id, ts[0], es[0]) == -1)
+	if (asprintf(&buf, "SELECT logentry_id FROM %s WHERE instance_id=%lu AND logentry_time=%s AND logentry_data='%s'", ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES], idi->dbinfo.instance_id, ts[0], es[0]) == -1)
 		buf = NULL;
 
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
@@ -1136,7 +1136,7 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	/* save entry to db */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES ('%lu', %s, %s, '0', '%lu', '%s', '0', '0')",
+			"INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (%lu, %s, %s, '0', %lu, '%s', '0', '0')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[0], ts[0], type, (es[0] == NULL) ? ""
 					: es[0]) == -1)
@@ -1277,7 +1277,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 
 	/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) VALUES ('%lu', '%d', %s, '%lu', '%lu', '%s', '%s', '%s')",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, process_id, program_name, program_version, program_date) VALUES (%lu, %d, %s, %lu, %lu, '%s', '%s', '%s')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_PROCESSEVENTS],
 			idi->dbinfo.instance_id, type, ts[0], tstamp.tv_usec, process_id,
 			es[0], es[1], es[2]) == -1)
@@ -1443,7 +1443,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			&& tstamp.tv_sec >= idi->dbinfo.latest_realtime_data_time) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		if (asprintf(&buf, "UPDATE %s SET program_end_time=%s, is_currently_running='0' WHERE instance_id='%lu'",
+		if (asprintf(&buf, "UPDATE %s SET program_end_time=%s, is_currently_running='0' WHERE instance_id=%lu",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS], ts[0],
 				idi->dbinfo.instance_id) == -1)
 			buf = NULL;
@@ -1621,7 +1621,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 		/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		if (asprintf(&buf, "UPDATE %s SET deletion_time=%s, deletion_time_usec='%lu' WHERE instance_id='%lu' AND event_type='%d' AND scheduled_time=%s AND recurring_event='%d' AND object_id='%lu'",
+		if (asprintf(&buf, "UPDATE %s SET deletion_time=%s, deletion_time_usec=%lu WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND recurring_event=%d AND object_id=%lu",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS], ts[0],
 				tstamp.tv_usec, idi->dbinfo.instance_id, event_type, ts[1],
 				recurring_event, object_id) == -1)
@@ -1699,7 +1699,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		/* clear old entries from db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-		if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND scheduled_time<=%s",
+		if (asprintf(&buf, "DELETE FROM %s WHERE instance_id=%lu AND scheduled_time<=%s",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
 				idi->dbinfo.instance_id, ts[0]) == -1)
 			buf = NULL;
@@ -1786,7 +1786,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		/* clear entry from db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-		if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND event_type='%d' AND scheduled_time=%s AND recurring_event='%d' AND object_id='%lu'",
+		if (asprintf(&buf, "DELETE FROM %s WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND recurring_event=%d AND object_id=%lu",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
 				idi->dbinfo.instance_id, event_type, ts[1], recurring_event,
 				object_id) == -1)
@@ -1851,7 +1851,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 			/* clear entries from db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-			if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND scheduled_time<%s",
+			if (asprintf(&buf, "DELETE FROM %s WHERE instance_id=%lu AND scheduled_time<%s",
 					ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
 					idi->dbinfo.instance_id, ts[1]) == -1)
 				buf = NULL;
@@ -1955,7 +1955,7 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	/* save entry to db */
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES ('%lu', %s, %s, '%lu', '%lu', '%s', '1', '1')",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, logentry_time, entry_time, entry_time_usec, logentry_type, logentry_data, realtime_data, inferred_data_extracted) VALUES (%lu, %s, %s, %lu, %lu, '%s', '1', '1')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES],
 			idi->dbinfo.instance_id, ts[1], ts[0], tstamp.tv_usec, letype,
 			es[0]) == -1)
@@ -2964,7 +2964,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 
 		if (asprintf(
 				&buf,
-				"UPDATE %s SET deletion_time=%s, deletion_time_usec='%lu' WHERE instance_id='%lu' AND comment_time=%s AND internal_comment_id='%lu'",
+				"UPDATE %s SET deletion_time=%s, deletion_time_usec=%lu WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY], ts[0],
 				tstamp.tv_usec, idi->dbinfo.instance_id, ts[1],
 				internal_comment_id) == -1)
@@ -3076,7 +3076,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 
 		if (asprintf(
 				&buf,
-				"DELETE FROM %s WHERE instance_id='%lu' AND comment_time=%s AND internal_comment_id='%lu'",
+				"DELETE FROM %s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
 				idi->dbinfo.instance_id, ts[1], internal_comment_id) == -1)
 			buf = NULL;
@@ -3246,7 +3246,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
 		if (asprintf(&buf,
-				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec='%lu', was_started='%d' WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
+				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec=%lu, was_started=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY], ts[0],
 				tstamp.tv_usec, 1, idi->dbinfo.instance_id, downtime_type,
 				object_id, ts[1], ts[2], ts[3]) == -1)
@@ -3331,7 +3331,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 		if (asprintf(
 				&buf,
-				"UPDATE %s SET actual_end_time=%s, actual_end_time_usec='%lu', was_cancelled='%d' WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
+				"UPDATE %s SET actual_end_time=%s, actual_end_time_usec=%lu, was_cancelled=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY], ts[0],
 				tstamp.tv_usec, (attr == NEBATTR_DOWNTIME_STOP_CANCELLED) ? 1
 						: 0, idi->dbinfo.instance_id, downtime_type, object_id,
@@ -3464,7 +3464,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
 		if (asprintf(&buf,
-				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec='%lu', was_started='%d' WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
+				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec=%lu, was_started=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME], ts[0],
 				tstamp.tv_usec, 1, idi->dbinfo.instance_id, downtime_type,
 				object_id, ts[1], ts[2], ts[3]) == -1)
@@ -3551,7 +3551,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
 		if (asprintf(&buf,
-				"DELETE FROM %s WHERE instance_id='%lu' AND downtime_type='%d' AND object_id='%lu' AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
+				"DELETE FROM %s WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME],
 				idi->dbinfo.instance_id, downtime_type, object_id, ts[1],
 				ts[2], ts[3]) == -1)
@@ -3678,7 +3678,7 @@ int ido2db_handle_flappingdata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s (instance_id, event_time, event_time_usec, event_type, reason_type, flapping_type, object_id, percent_state_change, low_threshold, high_threshold, comment_time, internal_comment_id) VALUES ('%lu', %s, '%lu', '%d', '%d', '%d', '%lu', '%lf', '%lf', '%lf', %s, '%lu')",
+			"INSERT INTO %s (instance_id, event_time, event_time_usec, event_type, reason_type, flapping_type, object_id, percent_state_change, low_threshold, high_threshold, comment_time, internal_comment_id) VALUES (%lu, %s, %lu, %d, %d, %d, %lu, '%lf', '%lf', '%lf', %s, %lu)",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_FLAPPINGHISTORY],
 			idi->dbinfo.instance_id, ts[0], tstamp.tv_usec, type, attr,
 			flapping_type, object_id, percent_state_change, low_threshold,
@@ -4513,7 +4513,7 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 
 	/* save entry to db */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, command_type, entry_time, command_name, command_args) VALUES ('%lu', '%d', %s, '%s', '%s')",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, command_type, entry_time, command_name, command_args) VALUES (%lu, %d, %s, '%s', '%s')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_EXTERNALCOMMANDS],
 			idi->dbinfo.instance_id, command_type, ts, es[0], es[1]) == -1)
 		buf = NULL;
@@ -4856,7 +4856,7 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(
 			&buf,
-			"INSERT INTO %s (instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, last_state, last_hard_state, output, long_output) VALUES ('%lu', %s, '%lu', '%lu', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s')",
+			"INSERT INTO %s (instance_id, state_time, state_time_usec, object_id, state_change, state, state_type, current_check_attempt, max_check_attempts, last_state, last_hard_state, output, long_output) VALUES (%lu, %s, %lu, %lu, %d, %d, %d, %d, %d, %d, %d, '%s', '%s')",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_STATEHISTORY],
 			idi->dbinfo.instance_id, ts[0], tstamp.tv_usec, object_id,
 			state_change_occurred, state, state_type, current_attempt,
@@ -5103,7 +5103,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 		es[2] = ido2db_db_escape_string(idi, varvalue);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		if (asprintf(&buf,"(instance_id, configfile_id, varname, varvalue) VALUES ('%lu', '%lu', '%s', '%s')",
+		if (asprintf(&buf,"(instance_id, configfile_id, varname, varvalue) VALUES (%lu, %lu, '%s', '%s')",
 				idi->dbinfo.instance_id, configfile_id, es[1], es[2]) == -1)
 			buf = NULL;
 

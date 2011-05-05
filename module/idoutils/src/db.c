@@ -1364,6 +1364,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
 				idi->dbinfo.instance_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "instance_id");
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(instance_id=%lu)\n", idi->dbinfo.instance_id);
 				have_instance = IDO_TRUE;
 			}
 		}
@@ -1559,7 +1560,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	ts = ido2db_db_timet_to_sql(idi, idi->data_start_time);
 
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES (%lu, NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
 			idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
 			idi->disposition, idi->connect_source, idi->connect_type) == -1)
@@ -1887,7 +1888,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 
         ts = ido2db_db_timet_to_sql(idi, idi->data_start_time);
 
-        if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES ('%lu', NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+        if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES (%lu, NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
                         ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
                         idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
                         idi->disposition, idi->connect_source, idi->connect_type) == -1)
@@ -2096,7 +2097,7 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 	ts = ido2db_db_timet_to_sql(idi, idi->data_end_time);
 
 	/* record last connection information */
-	if (asprintf(&buf, "UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET disconnect_time=NOW(), last_checkin_time=NOW(), data_end_time=%s, bytes_processed=%lu, lines_processed=%lu, entries_processed=%lu WHERE conninfo_id=%lu",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO], ts,
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
@@ -2173,7 +2174,7 @@ int ido2db_db_checkin(ido2db_idi *idi) {
 
 	/* record last connection information */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=NOW(), bytes_processed='%lu', lines_processed='%lu', entries_processed='%lu' WHERE conninfo_id='%lu'",
+	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=NOW(), bytes_processed=%lu, lines_processed=%lu, entries_processed=%lu WHERE conninfo_id=%lu",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
 			idi->bytes_processed, idi->lines_processed, idi->entries_processed,
 			idi->dbinfo.conninfo_id) == -1)
@@ -2580,7 +2581,7 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 		return IDO_ERROR;
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu'", table_name, idi->dbinfo.instance_id) == -1)
+	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id=%lu", table_name, idi->dbinfo.instance_id) == -1)
 		buf = NULL;
 
 	result = ido2db_db_query(idi, buf);
@@ -2638,7 +2639,7 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-	if (asprintf(&buf,"SELECT %s AS latest_time FROM %s WHERE instance_id='%lu' ORDER BY %s DESC LIMIT 1 OFFSET 0",
+	if (asprintf(&buf,"SELECT %s AS latest_time FROM %s WHERE instance_id=%lu ORDER BY %s DESC LIMIT 1 OFFSET 0",
 			field_name, table_name, idi->dbinfo.instance_id, field_name) == -1)
 		buf = NULL;
 
@@ -2658,7 +2659,7 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-        if( asprintf(&buf,"SELECT ( ( ( SELECT * FROM ( SELECT %s FROM %s WHERE instance_id='%lu' ORDER BY %s DESC) WHERE ROWNUM = 1 ) - to_date( '01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss' )) * 86400) AS latest_time FROM DUAL"
+        if( asprintf(&buf,"SELECT ( ( ( SELECT * FROM ( SELECT %s FROM %s WHERE instance_id=%lu ORDER BY %s DESC) WHERE ROWNUM = 1 ) - to_date( '01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss' )) * 86400) AS latest_time FROM DUAL"
                     ,(field_name==NULL)?"":field_name
                     ,table_name
                     ,idi->dbinfo.instance_id
@@ -2722,7 +2723,7 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id='%lu' AND %s<%s",
+	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id=%lu AND %s<%s",
 			table_name, idi->dbinfo.instance_id, field_name, ts[0]) == -1)
 		buf = NULL;
 
