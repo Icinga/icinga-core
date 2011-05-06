@@ -485,6 +485,28 @@ extern "C" {
 #define CONTEXTHELP_SUMMARY_ALERT_PRODUCERS		"N7"
 #define CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS	"N8"
 
+/************************** TAC TITLES ****************************/
+#define TAC_TITLE_HOST_UP_ALL				"All Hosts up"
+#define TAC_TITLE_HOST_DOWN_UNACK_ACTIVE		"Active unacknowledged Hosts down"
+#define TAC_TITLE_HOST_DOWN_UNACK_PASSIVE		"Passive unacknowledged Hosts down"
+#define TAC_TITLE_HOST_DOWN_ACK				"All acknowledged Hosts down"
+#define TAC_TITLE_HOST_UNREACHABLE_UNACK_ACTIVE		"Active unacknowledged Hosts unreachable"
+#define TAC_TITLE_HOST_UNREACHABLE_UNACK_PASSIVE	"Passive unacknowledged Hosts unreachable"
+#define TAC_TITLE_HOST_UNREACHABLE_ACK			"All acknowledged Hosts unreachable"
+#define TAC_TITLE_HOST_TOTAL_ALL			"All Hosts in total"
+
+#define TAC_TITLE_SVC_OK_ALL				"All Services up"
+#define TAC_TITLE_SVC_WARNING_UNACK_ACTIVE		"Active unacknowledged Services warning"
+#define TAC_TITLE_SVC_WARNING_UNACK_PASSIVE		"Passive unacknowledged Services warning"
+#define TAC_TITLE_SVC_WARNING_ACK			"All acknowledged Services warning"
+#define TAC_TITLE_SVC_CRITICAL_UNACK_ACTIVE		"Active unacknowledged Services critical"
+#define TAC_TITLE_SVC_CRITICAL_UNACK_PASSIVE		"Passive unacknowledged Services critical"
+#define TAC_TITLE_SVC_CRITICAL_ACK			"All acknowledged Services critical"
+#define TAC_TITLE_SVC_UNKNOWN_UNACK_ACTIVE		"Active unacknowledged Services unknown"
+#define TAC_TITLE_SVC_UNKNOWN_UNACK_PASSIVE		"Passive  unacknowledged Services unknown"
+#define TAC_TITLE_SVC_UNKNOWN_ACK			"All acknowledged Services unknown"
+#define TAC_TITLE_SVC_TOTAL_ALL				"All Services in total"
+
 
 /************************** HTTP CHARSET ****************************/
 

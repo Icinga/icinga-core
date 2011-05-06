@@ -914,20 +914,26 @@ void display_tac_overview(void){
 	} else if(tac_header==TRUE && show_tac_header==TRUE){ // we want the tac header
 
 		printf("<table width='100%%' border='0'>\n");
+
 		printf("<tr>\n");
 		printf("<td width='auto'><table border='0'>\n");
+
 		printf("<tr>\n");
 		printf("<td nowrap='nowrap'><img src='%s%s' alt='Hosts' width='16' height='16' align='right' /></td>\n",url_images_path,TAC_HEADER_HOST_ICON);
 		printf("<td><table width='92%%' border='0'>\n");
+
+		/* 1. Row Hosts */
 		printf("<tr>\n");
+
+		/* Hosts UP */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
-
 		printf("<div class='tacheader-status %s'>",(hosts_up > 0)?"tacheader-status-up color":"gray");
-
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d'> %d UP </a></div>\n",STATUS_CGI,HOST_UP,hosts_up);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d' title='%s'> %d UP </a></div>\n",STATUS_CGI,HOST_UP,TAC_TITLE_HOST_UP_ALL,hosts_up);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		/* Hosts DOWN */
 		printf("<td width=auto>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
 
@@ -941,12 +947,13 @@ void display_tac_overview(void){
 			tacheader_color = "gray";
 
 		printf("<div class='tacheader-status %s'>",tacheader_color);
-
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'> %d </a>/",STATUS_CGI,HOST_DOWN,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_CHECKS_ENABLED,hosts_down_unacknowledged);
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'> %d </a>/",STATUS_CGI,HOST_DOWN,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_PASSIVE_CHECK,hosts_down_passive_unacknowledged);
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'> %d </a>DOWN </div>\n",STATUS_CGI,HOST_DOWN,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_ACKNOWLEDGED,hosts_down_acknowledged);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d' title='%s'> %d </a>/",STATUS_CGI,HOST_DOWN,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_CHECKS_ENABLED,TAC_TITLE_HOST_DOWN_UNACK_ACTIVE,hosts_down_unacknowledged);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d' title='%s'> %d </a>/",STATUS_CGI,HOST_DOWN,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_PASSIVE_CHECK,TAC_TITLE_HOST_DOWN_UNACK_PASSIVE,hosts_down_passive_unacknowledged);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d' title='%s'> %d </a>DOWN </div>\n",STATUS_CGI,HOST_DOWN,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_ACKNOWLEDGED,TAC_TITLE_HOST_DOWN_ACK,hosts_down_acknowledged);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		/* Hosts UNREACHABLE */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
 
@@ -960,33 +967,39 @@ void display_tac_overview(void){
 			tacheader_color = "gray";
 
 		printf("<div class='tacheader-status %s'>",tacheader_color);
-
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'> %d </a>/",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_CHECKS_ENABLED,hosts_unreachable_unacknowledged);
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'> %d </a>/",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_PASSIVE_CHECK,hosts_unreachable_passive_unacknowledged);
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d'> %d </a>UNREACHABLE </div>\n",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_ACKNOWLEDGED,hosts_unreachable_acknowledged);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d' title='%s'> %d </a>/",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_CHECKS_ENABLED,TAC_TITLE_HOST_UNREACHABLE_UNACK_ACTIVE,hosts_unreachable_unacknowledged);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d' title='%s'> %d </a>/",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_UNACKNOWLEDGED|HOST_PASSIVE_CHECK,TAC_TITLE_HOST_UNREACHABLE_UNACK_PASSIVE,hosts_unreachable_passive_unacknowledged);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail&hoststatustypes=%d&hostprops=%d' title='%s'> %d </a>UNREACHABLE </div>\n",STATUS_CGI,HOST_UNREACHABLE,HOST_NO_SCHEDULED_DOWNTIME|HOST_STATE_ACKNOWLEDGED,TAC_TITLE_HOST_UNREACHABLE_ACK,hosts_unreachable_acknowledged);
 		printf("</div>\n");
 		printf("</td>\n");
 		printf("<td>\n");
+
+		/* Hosts IN TOTAL */
 		printf("<div class='tacheader-overall-status-item'>\n");
 		printf("<div class='tacheader-status gray'>");
-		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail'> %d IN TOTAL </a></div>\n",STATUS_CGI,total_hosts);
+		printf("<a target='main' href='%s?hostgroup=all&style=hostdetail' title='%s'> %d IN TOTAL </a></div>\n",STATUS_CGI,TAC_TITLE_HOST_TOTAL_ALL,total_hosts);
 		printf("</div>\n");
 		printf("</td>\n");
+
 		printf("</tr>\n");
 		printf("</table></td>\n");
 		printf("</tr>\n");
+
+		/* 2. Row Services */
 		printf("<tr>\n");
 		printf("<td><img src='%s%s' alt='Services' width='16' height='16' align='right' /></td>\n",url_images_path,TAC_HEADER_SERVICE_ICON);
 		printf("<td nowrap='nowrap'><table width=auto border='0'>\n");
 		printf("<tr>\n");
+
+		/* Services OK */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
-
 		printf("<div class='tacheader-status %s'>",(services_ok > 0)?"tacheader-status-ok color":"gray");
-
-		printf("<a target='main' href='%s?host=all&style=detail&servicestatustypes=%d'> %d OK </a></div>\n",STATUS_CGI,SERVICE_OK,services_ok);
+		printf("<a target='main' href='%s?host=all&style=detail&servicestatustypes=%d' title='%s'> %d OK </a></div>\n",STATUS_CGI,SERVICE_OK,TAC_TITLE_SVC_OK_ALL,services_ok);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		/* Services WARNING */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
 
@@ -1000,12 +1013,13 @@ void display_tac_overview(void){
 			tacheader_color = "gray";
 
 		printf("<div class='tacheader-status %s'>",tacheader_color);
-
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>/",STATUS_CGI,SERVICE_WARNING,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_CHECKS_ENABLED,services_warning_unacknowledged);
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>/",STATUS_CGI,SERVICE_WARNING,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_PASSIVE_CHECK,services_warning_passive_unacknowledged);
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>WARNING </div>\n",STATUS_CGI,SERVICE_WARNING,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_ACKNOWLEDGED,services_warning_acknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>/",STATUS_CGI,SERVICE_WARNING,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_CHECKS_ENABLED,TAC_TITLE_SVC_WARNING_UNACK_ACTIVE,services_warning_unacknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>/",STATUS_CGI,SERVICE_WARNING,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_PASSIVE_CHECK,TAC_TITLE_SVC_WARNING_UNACK_PASSIVE,services_warning_passive_unacknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>WARNING </div>\n",STATUS_CGI,SERVICE_WARNING,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_ACKNOWLEDGED,TAC_TITLE_SVC_WARNING_ACK,services_warning_acknowledged);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		/* Services CRITICAL */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
 
@@ -1019,12 +1033,13 @@ void display_tac_overview(void){
 			tacheader_color = "gray";
 
 		printf("<div class='tacheader-status %s'>",tacheader_color);
-
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>/",STATUS_CGI,SERVICE_CRITICAL,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_CHECKS_ENABLED,services_critical_unacknowledged);
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>/",STATUS_CGI,SERVICE_CRITICAL,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_PASSIVE_CHECK,services_critical_passive_unacknowledged);
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>CRITICAL </div>\n",STATUS_CGI,SERVICE_CRITICAL,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_ACKNOWLEDGED,services_critical_acknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>/",STATUS_CGI,SERVICE_CRITICAL,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_CHECKS_ENABLED,TAC_TITLE_SVC_CRITICAL_UNACK_ACTIVE,services_critical_unacknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>/",STATUS_CGI,SERVICE_CRITICAL,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_PASSIVE_CHECK,TAC_TITLE_SVC_CRITICAL_UNACK_PASSIVE,services_critical_passive_unacknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>CRITICAL </div>\n",STATUS_CGI,SERVICE_CRITICAL,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_ACKNOWLEDGED,TAC_TITLE_SVC_CRITICAL_ACK,services_critical_acknowledged);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		/* Services UNKNOWN */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
 
@@ -1038,20 +1053,23 @@ void display_tac_overview(void){
 			tacheader_color = "gray";
 
 		printf("<div class='tacheader-status %s'>",tacheader_color);
-
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>/",STATUS_CGI,SERVICE_UNKNOWN,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_CHECKS_ENABLED,services_unknown_unacknowledged);
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>/",STATUS_CGI,SERVICE_UNKNOWN,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_PASSIVE_CHECK,services_unknown_passive_unacknowledged);
-		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d'> %d </a>UNKNOWN </div>\n",STATUS_CGI,SERVICE_UNKNOWN,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_ACKNOWLEDGED,services_unknown_acknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>/",STATUS_CGI,SERVICE_UNKNOWN,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_CHECKS_ENABLED,TAC_TITLE_SVC_UNKNOWN_UNACK_ACTIVE,services_unknown_unacknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>/",STATUS_CGI,SERVICE_UNKNOWN,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_UNACKNOWLEDGED|SERVICE_PASSIVE_CHECK,TAC_TITLE_SVC_UNKNOWN_UNACK_PASSIVE,services_unknown_passive_unacknowledged);
+		printf("<a target='main' href='%s?host=all&type=detail&servicestatustypes=%d&hoststatustypes=%d&serviceprops=%d' title='%s'> %d </a>UNKNOWN </div>\n",STATUS_CGI,SERVICE_UNKNOWN,HOST_UP|HOST_PENDING,SERVICE_NO_SCHEDULED_DOWNTIME|SERVICE_STATE_ACKNOWLEDGED,TAC_TITLE_SVC_UNKNOWN_ACK,services_unknown_acknowledged);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		/* Services IN TOTAL */
 		printf("<td>\n");
 		printf("<div class='tacheader-overall-status-item'>\n");
 		printf("<div class='tacheader-status gray'>");
-		printf("<a target='main' href='%s?host=all'> %d IN TOTAL </a></div>\n",STATUS_CGI,total_services);
+		printf("<a target='main' href='%s?host=all' title='%s'> %d IN TOTAL </a></div>\n",STATUS_CGI,TAC_TITLE_SVC_TOTAL_ALL,total_services);
 		printf("</div>\n");
 		printf("</td>\n");
+
 		printf("</tr>\n");
 		printf("</table></td>\n");
+
 		printf("</tr>\n");
 		printf("</table></td>\n");
 
