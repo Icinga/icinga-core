@@ -80,6 +80,67 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 
+  <a name="upgrading_idoutils_1.4"></a>
+
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.4</strong></span></p>
+
+  <p><span class="bold"><strong>Oracle</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>The minimum supported version is Oracle 10g R2. Older versions may still work.</p>
+    </li>
+<li class="listitem">
+      <p>The optional separation of data, index and lob tablespaces is introduced. Modify <code class="filename">oracle-upgrade-1.4.0.sql</code>
+      and define your tablespaces. You can provide your existing tablespace names for all defines.</p>
+
+      <p>Actions:</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>remove number limitations</p>
+        </li>
+<li class="listitem">
+          <p>drop most of existing NOT NULL constraints</p>
+        </li>
+<li class="listitem">
+          <p>label constraints</p>
+        </li>
+<li class="listitem">
+          <p>recreate index and LOBs in new tablespaces</p>
+        </li>
+<li class="listitem">
+          <p>set sequences NOCACHE</p>
+        </li>
+<li class="listitem">
+          <p>changes Oracle functions to trap NO_DATA exceptions</p>
+        </li>
+</ul></div>
+    </li>
+</ul></div>
+
+  <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Upgrading IDOUtils for Oracle to 1.4 requires some kind of "magic". Make sure to</p>
+
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+        <p>copy the complete <code class="filename">upgrade</code> folder</p>
+      </li>
+<li class="listitem">
+        <p>edit <code class="filename">oracle-upgrade-1.4.0.sql</code> and set the tablespaces for DATA, LOB and IXT</p>
+      </li>
+<li class="listitem">
+        <p>run the upgrade script</p>
+      </li>
+</ol></div>
+  </td></tr>
+</table></div>
+
   <a name="upgrading_idoutils_1.3"></a>
 
   <p><span class="bold"><strong>Upgrading IDOUtils to 1.3</strong></span></p>
@@ -93,13 +154,17 @@
   usual, not leaving an upgrade version behind!).</p>
 
   <p>After you finished the upgrade you should check the database version.</p>
-  <pre class="programlisting"> SQL&gt; SELECT * FROM icinga_dbversion;</pre> 
+
+  <pre class="programlisting"> SQL&gt; SELECT * FROM icinga_dbversion;</pre>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>The Oracle tablename is "dbversion" (instead of "icinga_dbversion").</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>The Oracle tablename is "dbversion" (instead of "icinga_dbversion").</p>
+  </td></tr>
 </table></div>
 
   <a name="upgrading_idoutils_1.0.3"></a>
@@ -280,7 +345,7 @@
   <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the
   script will fail.</p>
 
-  <a class="indexterm" name="id1854555"></a>
+  <a class="indexterm" name="id5617876"></a>
 </div>
 <div class="navfooter">
 <hr>

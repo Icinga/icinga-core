@@ -185,7 +185,7 @@
       <p><a class="link" href="configcgi.html#configcgi-showlog_initial_states">Show Initial States</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="../../../../../">Show Current States</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-showlog_current_states">Show Current States</a></p>
     </li>
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-tab_friendly_titles">Show Object Type in Tab Title</a></p>
@@ -213,6 +213,9 @@
     </li>
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-enforce_comments_on_actions">Enforce comments on Actions</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-show_tac_header">Show Header with Tactical Information</a></p>
     </li>
 </ul></div>
 
@@ -1273,14 +1276,15 @@
   </div>
 
   <p>This option allows you to specify if initial states of hosts and services should be shown in showlog.cgi.</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>
-       This option only works if the option "log_initial_states" in icinga.cfg is set to 1. 
-    </p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This option only works if the option "log_initial_states" in icinga.cfg is set to 1.</p>
+  </td></tr>
 </table></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -1325,14 +1329,15 @@
   </div>
 
   <p>This option allows you to specify if current states of hosts and services should be shown in showlog.cgi.</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>
-       This option only works if the option "log_current_states" in icinga.cfg is set to 1. 
-   </p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This option only works if the option "log_current_states" in icinga.cfg is set to 1.</p>
+  </td></tr>
 </table></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -1383,16 +1388,16 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-       <p>[Host]</p>
+      <p>[Host]</p>
     </li>
 <li class="listitem">
-       <p>{HostGroup}</p>
+      <p>{HostGroup}</p>
     </li>
 <li class="listitem">
-       <p>ServiceDesc @ Host</p>
+      <p>ServiceDesc @ Host</p>
     </li>
 <li class="listitem">
-       <p>(ServiceGroup)</p>
+      <p>(ServiceGroup)</p>
     </li>
 </ul></div>
 
@@ -1553,8 +1558,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>use_logging=1</strong></span> </font></span>
-          </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>use_logging=1</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1572,7 +1576,7 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-cgi_log_file"></a> <span class="bold"><strong>Set the name of the log file</strong></span></p>
+  <p><a name="configcgi-cgi_log_file"></a> <span class="bold"><strong>CGI log file</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -1583,12 +1587,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>cgi_log_file=name of log file</strong></span> </p></td>
+<td><p> <span class="bold"><strong>cgi_log_file=&lt;file_name&gt;</strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_file=/usr/local/icinga/var/cgi_logs/icinga-cgi.log</strong></span> </font></span>
-          </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_file=/usr/local/icinga/share/log/icinga-cgi.log</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1605,7 +1608,8 @@
     <p>This option is available starting with Icinga 1.4.</p>
   </td></tr>
 </table></div>
-  <p><a name="configcgi-cgi_log_rotation_method"></a> <span class="bold"><strong>Set log file rotation method</strong></span></p>
+
+  <p><a name="configcgi-cgi_log_rotation_method"></a> <span class="bold"><strong>CGI log file rotation method</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -1631,9 +1635,6 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>h = Hourly (rotate the log at the top of each hour)</p>
-    </li>
-<li class="listitem">
       <p>d = Daily (rotate the log at midnight each day - this is the default)</p>
     </li>
 <li class="listitem">
@@ -1643,7 +1644,6 @@
       <p>m = Monthly (rotate the log at midnight on the last day of the month)</p>
     </li>
 </ul></div>
-
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1655,7 +1655,7 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-cgi_log_archive_path"></a> <span class="bold"><strong>Set first day of week</strong></span></p>
+  <p><a name="configcgi-cgi_log_archive_path"></a> <span class="bold"><strong>CGI Log Archive Path</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -1670,15 +1670,14 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/var/cgi_logs</strong></span> </font></span>
-          </p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/share/log</strong></span> </font></span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This is the directory where Icinga should place CGI log files that have been rotated. This option is ignored if you choose
-  to not use the <a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI log rotation</a> functionality.</p>
+  <p>This is the directory where Icinga should place CGI log files that have been rotated. This option is ignored if you choose to
+  not use the <a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI log rotation</a> functionality.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1712,8 +1711,8 @@
 </table>
   </div>
 
-  <p>Enforces the need to enter a comment on actions entered via the CGIs. 0 = do not enforce comment (default), 1 = enforce comment.
-  </p>
+  <p>Enforces the need to enter a comment on actions entered via the CGIs. 0 = do not enforce comment (default), 1 = enforce
+  comment.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1735,81 +1734,159 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1899138"></a>
+  <p><a name="configcgi-show_tac_header"></a> <span class="bold"><strong>Show header with tactical information</strong></span></p>
 
-  <a class="indexterm" name="id1899145"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>show_tac_header=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_tac_header=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id1899158"></a>
+  <p>There's a new CGI driven top frame that is enabled by default. The new view has a similar feel to the header that is in Icinga-Web
+  and includes important tactical and monitor performance information so you can always be informed of issues.</p>
 
-  <a class="indexterm" name="id1899170"></a>
+  <p>If you want to keep the old minimalistic look, the new CGI top view can be disabled with the directive:
+  <code class="literal">show_tac_header=0</code></p>
 
-  <a class="indexterm" name="id1899183"></a>
+  <p>The layout for the display of entries for each type is "X / Y / Z" where:</p>
 
-  <a class="indexterm" name="id1899196"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup><col></colgroup>
+<tbody>
+<tr><td align="left" valign="top"><p>X = Active unacknowledged</p></td></tr>
+<tr><td align="left" valign="top"><p>Y = Passive unacknowledged</p></td></tr>
+<tr><td align="left" valign="top"><p>Z = Acknowledged</p></td></tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id1899197"></a>
+  <p>The X/Y/Z numbers themselves are click-able and will bring you to a list of all the services or hosts related to the respective
+  entry.</p>
 
-  <a class="indexterm" name="id1899223"></a>
+  <p>Colouring for these entries has the following logical flow:</p>
 
-  <a class="indexterm" name="id1899237"></a>
+  <pre class="programlisting"> 1+ / *  / *  = Full colour, full saturation
+ 0  / 1+ / *  = Full colour but desaturated, rim coloured
+ 0  / 0  / 1+ = Rim coloured, text coloured and bold
+ 0  / 0  / *  = Grey
+  </pre>
 
-  <a class="indexterm" name="id1899250"></a>
+  <p>These colours are located in <code class="filename">html/stylesheets/tacheader.css</code> for easy customisation. For example, if your setup
+  is distributed and primarily depends upon passive checks then you may prefer to make passive check issues stand out with the same
+  colouring as active checks.</p>
 
-  <a class="indexterm" name="id1899264"></a>
+  <div class="figure">
+<a name="id5662667"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<div class="figure-contents">
+    
 
-  <a class="indexterm" name="id1899278"></a>
+    <div class="mediaobject"><img src="../images/tac_header2.png" alt="Example of new header"></div>
+  </div>
+</div>
+<br class="figure-break">
 
-  <a class="indexterm" name="id1899292"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id1899280"></a>
+  <a class="indexterm" name="id5662692"></a>
 
-  <a class="indexterm" name="id1899320"></a>
+  <a class="indexterm" name="id5662699"></a>
 
-  <a class="indexterm" name="id1899333"></a>
+  <a class="indexterm" name="id5662714"></a>
 
-  <a class="indexterm" name="id1899346"></a>
+  <a class="indexterm" name="id5662524"></a>
 
-  <a class="indexterm" name="id1899360"></a>
+  <a class="indexterm" name="id5662700"></a>
 
-  <a class="indexterm" name="id1899375"></a>
+  <a class="indexterm" name="id5662726"></a>
 
-  <a class="indexterm" name="id1899361"></a>
+  <a class="indexterm" name="id5662768"></a>
 
-  <a class="indexterm" name="id1899402"></a>
+  <a class="indexterm" name="id5662781"></a>
 
-  <a class="indexterm" name="id1899417"></a>
+  <a class="indexterm" name="id5662796"></a>
 
-  <a class="indexterm" name="id1899431"></a>
+  <a class="indexterm" name="id5662809"></a>
 
-  <a class="indexterm" name="id1899444"></a>
+  <a class="indexterm" name="id5662824"></a>
 
-  <a class="indexterm" name="id1899458"></a>
+  <a class="indexterm" name="id5662838"></a>
 
-  <a class="indexterm" name="id1899473"></a>
+  <a class="indexterm" name="id5662852"></a>
 
-  <a class="indexterm" name="id1899459"></a>
+  <a class="indexterm" name="id5662839"></a>
 
-  <a class="indexterm" name="id1899499"></a>
+  <a class="indexterm" name="id5662881"></a>
 
-  <a class="indexterm" name="id1899512"></a>
+  <a class="indexterm" name="id5662867"></a>
 
-  <a class="indexterm" name="id1899525"></a>
+  <a class="indexterm" name="id5662906"></a>
 
-  <a class="indexterm" name="id1899513"></a>
+  <a class="indexterm" name="id5662922"></a>
 
-  <a class="indexterm" name="id1899555"></a>
+  <a class="indexterm" name="id5662935"></a>
 
-  <a class="indexterm" name="id1899527"></a>
+  <a class="indexterm" name="id5662950"></a>
 
-  <a class="indexterm" name="id1899575"></a>
+  <a class="indexterm" name="id5662962"></a>
 
-  <a class="indexterm" name="id1899592"></a>
+  <a class="indexterm" name="id5662974"></a>
 
-  <a class="indexterm" name="id1899577"></a>
+  <a class="indexterm" name="id5662990"></a>
 
-  <a class="indexterm" name="id1899619"></a>
+  <a class="indexterm" name="id5662976"></a>
 
-  <a class="indexterm" name="id1899632"></a>
+  <a class="indexterm" name="id5663018"></a>
+
+  <a class="indexterm" name="id5663031"></a>
+
+  <a class="indexterm" name="id5663046"></a>
+
+  <a class="indexterm" name="id5663032"></a>
+
+  <a class="indexterm" name="id5663072"></a>
+
+  <a class="indexterm" name="id5663004"></a>
+
+  <a class="indexterm" name="id5663102"></a>
+
+  <a class="indexterm" name="id5663087"></a>
+
+  <a class="indexterm" name="id5663124"></a>
+
+  <a class="indexterm" name="id5663141"></a>
+
+  <a class="indexterm" name="id5663153"></a>
+
+  <a class="indexterm" name="id5663168"></a>
+
+  <a class="indexterm" name="id5663180"></a>
+
+  <a class="indexterm" name="id5663193"></a>
+
+  <a class="indexterm" name="id5663207"></a>
 </div>
 <div class="navfooter">
 <hr>

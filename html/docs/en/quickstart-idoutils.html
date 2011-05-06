@@ -122,6 +122,24 @@
  #&gt; make
  #&gt; make install</pre>
 
+  <p><span class="emphasis"><em>Icinga 1.4</em></span></p>
+
+  <p>As of Icinga 1.4 the minimum expected Oracle version is Oracle 10gR2. Older versions may work, but are not
+  supported. Oracle scripts are designed to split data, index and lobs into different tablespaces. For this reason there is a new
+  prerequisite to define the tablespace names you want to use. If you are working in a small environment, you can set all defines to the
+  same real tablespace. You will find a new script <code class="filename">icinga_defines.sql</code> which you have to adapt for your needs before
+  applying <code class="filename">oracle.sql</code>. For your convenience there is a new script <code class="filename">create_oracle_sys.sql</code> included,
+  which should help you to create the necessary tablespaces and an Icinga application user and must run as SYS. It will make use of
+  <code class="filename">icinga_defines.sql</code> as well. Object creation has been moved from <code class="filename">oracle.sql</code> to the script
+  <code class="filename">create_icinga_objects_oracle.sql</code>. The former <code class="filename">oracle.sql</code> has been redesigned as a master script
+  to record all other scripts as includes and expects these includes within the current directory. For this reason you should start
+  <code class="filename">sqlplus</code> executing <code class="filename">oracle.sql</code> within this directory. This way the creation of user and
+  tablespaces and the creation of Icinga tables runs in one step. As an all-in-one sample you will find a new script
+  <code class="filename">db/scripts/create_oracledb.sh</code>. Edit variables to suit your needs and enjoy. If you prefer to do SYS steps for
+  yourself, please uncomment <code class="filename">create_oracle_sys.sql</code> and make sure that your database Icinga user and tables exist
+  and are defined with the same (or more) rights and that the correct settings have been applied to
+  <code class="filename">icinga_defines.sql</code>.</p>
+
   <p><span class="bold"><strong>Install Packages</strong></span></p>
 
   <p>You can install your packages by running the following commands (as root or sudo):</p>
@@ -176,32 +194,40 @@
 
   <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
   net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>The devel packages might be place on the SDK DVDs.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>The devel packages might be place on the SDK DVDs.</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>MySQL:</strong></span></p>
-  <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" and the libdbi
-  packages "libdbi", "libdbi-devel", "libdbi-drivers" and "libdbi-dbd-mysql".</p> 
+
+  <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" and the libdbi packages
+  "libdbi", "libdbi-devel", "libdbi-drivers" and "libdbi-dbd-mysql".</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>In OpenSuSE 11 (SLES 11) the name of the package was changed from "mysql-devel" to "libmysqlclient-devel".</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>In OpenSuSE 11 (SLES 11) the name of the package was changed from "mysql-devel" to "libmysqlclient-devel".</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
-  <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "postgresql", "postgresql-devel", "postgresql-server" and
-  the libdbi packages "libdbi", "libdbi-devel" and "libdbi-drivers".</p>
+
+  <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "postgresql", "postgresql-devel", "postgresql-server" and the
+  libdbi packages "libdbi", "libdbi-devel" and "libdbi-drivers".</p>
 
   <p>Using old OpenSuSE (SLES) versions including version 10 it is most likely that there aren't any libdbi packages so you have to
-  download and compile the sources. Replace &lt;rdbm&gt; with your desired RDBM like mysql or pgsql. Remember that the Oracle driver is
-  not yet working and read the appropriate section with ocilib instead of libdbi.</p>
+  download and compile the sources. Replace &lt;rdbm&gt; with your desired RDBM like mysql or pgsql. Remember that the Oracle driver is not
+  yet working and read the appropriate section with ocilib instead of libdbi.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -266,6 +292,7 @@
   <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
  #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data</pre>
+
   <p>(or www, wwwrun, apache depending on the distribution)</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -387,13 +414,18 @@
 <p> or shorter </p>
 <pre class="programlisting"> #&gt; make fullinstall</pre>
 
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Install IDOUtils and applicable event broker modules only using the primary make install target. Do not manually copy and overwrite the existing module as this will result in a segfault on icinga core which is using idomod.o directly preventing usage of a temporary copy explicitely. This is useful for <a class="link" href="http://omdistro.org/" target="_top">OMD.</a></p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Install IDOUtils and applicable event broker modules only using the primary make install target. Do not manually copy and
+    overwrite the existing module as this will result in a segfault on icinga core which is using idomod.o directly preventing usage of a
+    temporary copy explicitely. This is useful for <a class="link" href="http://omdistro.org/" target="_top">OMD.</a></p>
+  </td></tr>
 </table></div>
+
   <p>The Icinga-API will be installed during "make install" so if you are required to install it manually please try:
   </p>
 <pre class="programlisting"> #&gt; make install-api</pre>
@@ -453,8 +485,9 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Starting with Icinga 1.4 you can use the new module definition in one of your object configuration files instead of
-  specifying a broker_module entry:</p>
+    <p>Starting with Icinga 1.4 you can use the new module definition in one of your object configuration files instead of
+    specifying a broker_module entry:</p>
+
     <pre class="screen"> define module{
         module_name    ido_mod
         path           /usr/local/icinga/bin/idomod.o
@@ -558,9 +591,9 @@
 
   <p><span class="bold"><strong>Oracle:</strong></span></p>
 
-  <p>Create a database schema and username/password (refer to the Oracle documentation at http://www.oracle.com or consult your
-  DBA). Import the database scheme with sqlplus (or your preferred method). Copy <code class="filename">module/idoutils/db/oracle/oracle.sql</code>
-  to $ORACLE_HOME</p>
+  <p>Create a database schema and username/password (refer to the Oracle documentation at http://www.oracle.com or consult your DBA).
+  Import the database scheme with sqlplus (or your preferred method). Copy <code class="filename">module/idoutils/db/oracle/oracle.sql</code> to
+  $ORACLE_HOME</p>
 
   <pre class="programlisting"> #&gt; su - oracle
  $&gt; sqlplus dbuser/dbpass
@@ -641,8 +674,9 @@
 
   <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
 
-  <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security Enhanced 
-  Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the Icinga-CGIs.</p>
+  <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
+  Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
+  Icinga-CGIs.</p>
 
   <p>Check if SELinux runs in enforcing mode</p>
 
@@ -743,8 +777,7 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-
-  <a class="indexterm" name="id1852069"></a>
+  <a class="indexterm" name="id5615247"></a>
 </div>
 <div class="navfooter">
 <hr>
