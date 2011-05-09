@@ -1363,7 +1363,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				idi->dbinfo.instance_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "instance_id");
+				idi->dbinfo.instance_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "instance_id");
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(instance_id=%lu)\n", idi->dbinfo.instance_id);
 				have_instance = IDO_TRUE;
 			}
@@ -1783,7 +1783,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 
                 if (idi->dbinfo.dbi_result != NULL) {
                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                idi->dbinfo.instance_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "instance_id");
+                                idi->dbinfo.instance_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "instance_id");
                                 have_instance = IDO_TRUE;
                         }
                 }
@@ -2242,10 +2242,10 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 	register int x, y, z;
 	char *newbuf = NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) start\n", buf);
-
 	if (idi == NULL || buf == NULL)
 		return NULL;
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) start\n", buf);
 
 	z = strlen(buf);
 

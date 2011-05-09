@@ -150,7 +150,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				*object_id = dbi_result_get_uint(idi->dbinfo.dbi_result, "object_id");
+				*object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
 			} else {
 				result = IDO_ERROR;
 			}
@@ -583,9 +583,9 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
 		while (idi->dbinfo.dbi_result) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				object_id = dbi_result_get_uint(idi->dbinfo.dbi_result,
+				object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result,
 						"object_id");
-				objecttype_id = dbi_result_get_int(idi->dbinfo.dbi_result,
+				objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result,
 						"objecttype_id");
 				ido2db_add_cached_object_id(idi, objecttype_id,
 						dbi_result_get_string_copy(idi->dbinfo.dbi_result,
