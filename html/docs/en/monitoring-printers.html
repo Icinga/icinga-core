@@ -103,7 +103,8 @@
 <tr><td align="left" valign="top"><p>The <span class="emphasis"><em>check_hpjd</em></span> plugin will only get compiled and installed if you have the net-snmp and
   net-snmp-utils packages installed on your system. Make sure the plugin exists in <span class="emphasis"><em>/usr/local/icinga/libexec</em></span> before you
   continue. If it doesn't, install net-snmp and net-snmp-utils and recompile/reinstall the Nagios plugins after issuing "make clean"
-  the source directory. Take a look at the <a class="link" href="quickstart-icinga.html" title="Icinga Quickstart">Quickstart Guide</a> for details.</p></td></tr>
+  in the source directory. Take a look at the <a class="link" href="quickstart-icinga.html" title="Icinga Quickstart">Quickstart Guide</a> for details.
+  </p></td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Steps</strong></span></p>
@@ -180,7 +181,7 @@
         use             generic-printer ; Inherit default values from a template
         host_name       hplj2605dn      ; The name we're giving to this printer
         alias           HP LaserJet 2605dn      ; A longer name associated with the printer
-        address         192.168.1.30    ; IP address of the printer
+        address         192.168.1.30            ; IP address of the printer
         hostgroups      allhosts                ; Host groups this printer is associated with
         } </pre>
 
@@ -204,12 +205,12 @@
   used to query the printer is "public" in this example.</p>
 
   <pre class="screen"> define service{
-        use                     generic-service         ; Inherit values from a template
-        host_name               hplj2605dn              ; The name of the host the service is associated with
-        service_description     Printer Status          ; The service description
-        check_command           check_hpjd!-C public    ; The command used to monitor the service
-        check_interval          10      ; Check the service every 10 minutes under normal conditions
-        retry_interval          1       ; Re-check the service every minute until its final/hard state is determined
+        use                   generic-service   ; Inherit values from a template
+        host_name             hplj2605dn        ; The name of the host the service is associated with
+        service_description   Printer Status    ; The service description
+        check_command         check_hpjd!-C public    ; The command used to monitor the service
+        check_interval        10      ; Check the service every 10 minutes under normal conditions
+        retry_interval        1       ; Re-check every minute until its final/hard state is determined
         }</pre>
 
   <p>Add the following service definition to ping the printer every 10 minutes by default. This is useful for monitoring RTA,
@@ -233,7 +234,7 @@
 
   <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
   you don't (re)start Icinga until the verification process completes without any errors!</p>
-  <a class="indexterm" name="id5619475"></a>
+  <a class="indexterm" name="id1432758"></a>
 </div>
 <div class="navfooter">
 <hr>

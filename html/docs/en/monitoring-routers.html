@@ -194,7 +194,7 @@
         service_description     PING            ; The service description
         check_command           check_ping!200.0,20%!600.0,60%  ; The command used to monitor the service
         check_interval          5       ; Check the service every 5 minutes under normal conditions
-        retry_interval          1       ; Re-check the service every minute until its final/hard state is determined
+        retry_interval          1       ; Re-check every minute until its final/hard state is determined
         }</pre>
 
   <p>This service will be:</p>
@@ -244,7 +244,7 @@
   <span class="emphasis"><em>check_snmp</em></span> plugin to only load the "RFC1213-MIB" instead of every single MIB that's installed on your
   system, which can help speed things up.</p>
 
-  <p>That's it for the SNMP monitoring example. There are a million things that can be monitored via SNMP, so its up to you to
+  <p>That's it for the SNMP monitoring example. There are a million things that can be monitored via SNMP, so it's up to you to
   decide what you need and want to monitor. Good luck!</p>
 
   <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
@@ -293,7 +293,7 @@
 
   <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
   you don't (re)start Icinga until the verification process completes without any errors!</p>
-  <a class="indexterm" name="id5620116"></a>
+  <a class="indexterm" name="id1433396"></a>
 </div>
 <div class="navfooter">
 <hr>

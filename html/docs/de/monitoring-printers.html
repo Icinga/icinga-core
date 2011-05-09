@@ -170,11 +170,11 @@
   <span class="emphasis"><em>alias</em></span>- und <span class="emphasis"><em>address</em></span>-Felder auf die entsprechenden Werte des Netzwerkdruckers.</p>
 
   <pre class="screen"> define host{
-        use             generic-printer         ; Inherit default values from a template
-        host_name       hplj2605dn              ; The name we're giving to this printer
+        use             generic-printer   ; Inherit default values from a template
+        host_name       hplj2605dn        ; The name we're giving to this printer
         alias           HP LaserJet 2605dn      ; A longer name associated with the printer
-        address         192.168.1.30            ; IP address of the printer
-        hostgroups      allhosts                ; Host groups this printer is associated with
+        address         192.168.1.30      ; IP address of the printer
+        hostgroups      allhosts          ; Host groups this printer is associated with
         }</pre>
 
   <p>Nun können Sie (in der gleichen Konfigurationsdatei) einige Service-Definitionen hinzufügen, um Icinga mitzuteilen,
@@ -190,12 +190,12 @@
   diesem Beispiel "public".</p>
 
   <pre class="screen"> define service{
-        use                     generic-service         ; Inherit values from a template
-        host_name               hplj2605dn              ; The name of the host the service is associated with
-        service_description     Printer Status          ; The service description
-        check_command           check_hpjd!-C public    ; The command used to monitor the service
-        check_interval          10                      ; Check the service every 10 minutes under normal conditions
-        retry_interval          1                       ; Re-check the service every minute until its final/hard state is determined
+        use                   generic-service   ; Inherit values from a template
+        host_name             hplj2605dn        ; The name of the host the service is associated with
+        service_description   Printer Status    ; The service description
+        check_command         check_hpjd!-C public    ; The command used to monitor the service
+        check_interval        10                ; Check the service every 10 minutes under normal conditions
+        retry_interval        1                 ; Re-check every minute until its final/hard state is determined
         }</pre>
 
   <p>Fügen Sie die folgende Service-Definition hinzu, um alle zehn Minuten einen Ping an den Drucker zu senden. Das ist
@@ -220,8 +220,8 @@
 
   <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher,
   dass Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
-  <a class="indexterm" name="id4458661"></a>
-  <a class="indexterm" name="id4458804"></a>
+  <a class="indexterm" name="id1463311"></a>
+  <a class="indexterm" name="id1463338"></a>
 </div>
 <div class="navfooter">
 <hr>

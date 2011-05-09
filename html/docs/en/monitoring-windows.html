@@ -202,7 +202,7 @@
 
   <p>Open the <span class="emphasis"><em>windows.cfg</em></span> file for editing.</p>
 
-  <pre class="screen"># vi /usr/local/icinga/etc/objects/windows.cfg</pre>
+  <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/windows.cfg</pre>
 
   <p>Add a new <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> definition for the Windows machine that you're going to
   monitor. If this is the *first* Windows machine you're monitoring, you can simply modify the sample host definition in
@@ -210,7 +210,8 @@
   <span class="emphasis"><em>address</em></span> fields to appropriate values for the Windows box.</p>
 
   <pre class="screen"> define host{
-        use             windows-server  ; Inherit default values from a Windows server template (make sure you keep this line!)
+        ; Inherit default values from a Windows server template
+        use             windows-server   ; make sure you keep this line!
         host_name       winserver
         alias           My Windows Server
         address         192.168.1.2
@@ -320,7 +321,7 @@
   <span class="emphasis"><em>check_nt</em></span> command definition to include the password. Open the <span class="emphasis"><em>commands.cfg</em></span> file for
   editing.</p>
 
-  <pre class="screen"># vi /usr/local/icinga/etc/objects/commands.cfg</pre>
+  <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/commands.cfg</pre>
 
   <p>Change the definition of the <span class="emphasis"><em>check_nt</em></span> command to include the "-s &lt;PASSWORD&gt;" argument (where
   PASSWORD is the password you specified on the Windows machine) like this:</p>
@@ -350,8 +351,8 @@
 
   <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
   you don't (re)start Icinga until the verification process completes without any errors!</p>
-  <a class="indexterm" name="id5618592"></a>
-  <a class="indexterm" name="id5618600"></a>
+  <a class="indexterm" name="id1431899"></a>
+  <a class="indexterm" name="id1431870"></a>
 </div>
 <div class="navfooter">
 <hr>

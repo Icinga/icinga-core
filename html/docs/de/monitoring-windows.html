@@ -203,7 +203,7 @@
 
   <p>Editieren Sie die <span class="emphasis"><em>windows.cfg</em></span>-Datei.</p>
 
-  <pre class="screen"> vi /usr/local/icinga/etc/objects/windows.cfg</pre>
+  <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/windows.cfg</pre>
 
   <p>Fügen Sie eine neue <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definition für den Windows-Rechner hinzu, den Sie
   überwachen möchten. Wenn dies der *erste* Windows-Rechner ist, den Sie überwachen, dann können Sie einfach die
@@ -211,7 +211,8 @@
   <span class="emphasis"><em>alias</em></span>- und <span class="emphasis"><em>address</em></span>-Felder auf die entsprechenden Werte des Windows-Rechners.</p>
 
   <pre class="screen"> define host{
-        use             windows-server  ; Standard-Werte von einer Windows-Server-Vorlage erben (diese Zeile nicht löschen!)
+        ; Standard-Werte von einer Windows-Server-Vorlage erben
+        use             windows-server  ; diese Zeile nicht löschen!
         host_name       winserver
         alias           My Windows Server
         address         192.168.1.2
@@ -323,7 +324,7 @@
   die <span class="emphasis"><em>check_nt</em></span>-Befehlsdefinition anpassen, damit sie das Passwort enthält. Öffnen Sie die
   <span class="emphasis"><em>commands.cfg</em></span>-Datei.</p>
 
-  <pre class="screen"> vi /usr/local/icinga/etc/objects/commands.cfg</pre>
+  <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/commands.cfg</pre>
 
   <p>Ändern Sie die Definition des <span class="emphasis"><em>check_nt</em></span>-Befehls, damit sie das "-s &lt;PASSWORD&gt;"-Argument enthält
   (wobei PASSWORD das Passwort ist, das Sie auf dem Windows-Rechner angegeben haben):</p>
@@ -342,9 +343,9 @@
 
   <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher,
   dass Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
-  <a class="indexterm" name="id4457863"></a>
-  <a class="indexterm" name="id4457872"></a>
-  <a class="indexterm" name="id4457881"></a>
+  <a class="indexterm" name="id1462373"></a>
+  <a class="indexterm" name="id1462410"></a>
+  <a class="indexterm" name="id1462420"></a>
 </div>
 <div class="navfooter">
 <hr>
