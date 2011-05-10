@@ -2809,8 +2809,10 @@ int commit_command(int cmd){
 }
 
 int write_command_to_file(char *cmd){
-	char buffer[MAX_INPUT_BUFFER];
-	char ip_address[16];
+	char *buffer;
+	char *buffer2;
+	char *ip_address;
+	int dummy;
 	char *p;
 	FILE *fp;
 	struct stat statbuf;
@@ -2845,22 +2847,25 @@ int write_command_to_file(char *cmd){
 		return ERROR;
 	}
 
-	// get remote address
-	sprintf(ip_address,"%s",getenv("REMOTE_ADDR"));
+	/* get remote address */
+	ip_address=strdup(getenv("REMOTE_ADDR"));
 
 	/* write command to cgi log */
-	sprintf(buffer, "EXTERNAL COMMAND: %s;%s;", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address");
+	dummy=asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address");
+
 	p = index(cmd, ']');
 	if (p!=NULL)
 		p+=2;
 	else
 		p=&cmd[0];
-	strncat(buffer, p, sizeof(buffer)-strlen(buffer)-1);
-	write_to_cgi_log(buffer);
+
+	dummy=asprintf(&buffer2,"%s%s",buffer,p);
+
+	write_to_cgi_log(buffer2);
 
 	/* log comments if forced */
 	if(enforce_comments_on_actions==TRUE) {
-		sprintf(buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
+		dummy=asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
 		write_to_cgi_log(buffer);
 	}
 
