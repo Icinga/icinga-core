@@ -205,7 +205,6 @@ fi
 %files doc
 %defattr(-,icinga,icinga,-)
 %{_datadir}/icinga/docs
-%{_datadir}/icinga/doxygen
 
 %files gui
 %defattr(-,icinga,icinga,-)
@@ -223,7 +222,7 @@ fi
 %{_datadir}/icinga/sidebar.html
 %{_datadir}/icinga/ssi
 %{_datadir}/icinga/stylesheets
-%{_datadir}/icinga/log
+%attr(0755,%{apacheuser},%{apachegroup}) %{_datadir}/icinga/log
 
 %files idoutils
 %defattr(-,icinga,icinga,-)
@@ -246,7 +245,8 @@ fi
 * Thu Apr 28 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.0-1
 - update for release 1.4.0
 - remove perl subst for eventhandler submit_check_result, this is now done by configure
-- remove top.html
+- remove top.html, doxygen
+- set cgi log permissions to apache user
 - honour modules/ in icinga cfg and modules/idoutils.cfg for neb definitions
 - add /icinga/log for cmd.cgi logging, includes .htaccess
 
