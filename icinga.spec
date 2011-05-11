@@ -12,7 +12,7 @@
 Summary: Open Source host, service and network monitoring program
 Name: icinga
 Version: 1.4.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: http://www.icinga.org/
