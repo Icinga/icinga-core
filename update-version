@@ -10,10 +10,10 @@ else
 fi
 
 # Current version number
-CURRENTVERSION=1.4.0
+CURRENTVERSION=1.5.0
 
 # Last date
-LASTDATE=05-11-2011
+LASTDATE=08-17-2011
 
 if [ "x$1" = "x" ]
 then
@@ -45,7 +45,7 @@ fi
 perl -i -p -e "s/Version: .*/Version: $newversion/;" icinga.spec
 
 # Update version number Doxyfile
-perl -i -p -e "s/PROJECT_NUMBER         = .*/PROJECT_NUMBER         = $newversion/;" Doxyfile
+#perl -i -p -e "s/PROJECT_NUMBER         = .*/PROJECT_NUMBER         = $newversion/;" Doxyfile
 
 # Update version number in Makefile.in
 perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" Makefile.in
