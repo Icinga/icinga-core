@@ -12,7 +12,7 @@
 Summary: Open Source host, service and network monitoring program
 Name: icinga
 Version: 1.5.0
-Release: 2%{?dist}
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: http://www.icinga.org/
@@ -28,7 +28,7 @@ BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
-Provides: nagios = %{version}
+Provides: nagios
 
 %description
 Icinga is an application, system and network monitoring application.
@@ -242,6 +242,9 @@ fi
 
 
 %changelog
+* Wed May 18 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.0-1
+- set to 1.5.0 target, remove provides nagios version
+
 * Wed May 11 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.0-2
 - undo changes on icinga-cmd group, use icingacmd like before
 
