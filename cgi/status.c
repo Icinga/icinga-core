@@ -105,6 +105,7 @@ typedef struct statusdata_struct{
 	int		scheduled_downtime_depth;
 	int		notifications_enabled;
 	int		checks_enabled;
+	int		accept_passive_checks;
 	int		is_flapping;
 	struct statusdata_struct *next;
 	}statusdata;
@@ -1638,7 +1639,10 @@ void show_service_detail(void){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,NOTIFICATIONS_DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_hoststatus->checks_enabled==FALSE){
-					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Checks of this host have been disabled'd TITLE='Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					if(temp_hoststatus->accept_passive_host_checks==TRUE)
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active Checks of this host have been disabled'd TITLE='Active Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,PASSIVE_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					else
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and Passive Checks of this host have been disabled'd TITLE='Active and Passive Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_hoststatus->is_flapping==TRUE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is flapping between states' TITLE='This host is flapping between states'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,FLAPPING_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
@@ -1722,13 +1726,14 @@ void show_service_detail(void){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
 				printf("&service=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This service problem has been acknowledged' TITLE='This service problem has been acknowledged'></A></TD>",url_encode(temp_status->svc_description),url_images_path,ACKNOWLEDGEMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 			}
-			if(temp_status->checks_enabled==FALSE && temp_service->accept_passive_service_checks==FALSE){
-				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
-				printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and passive checks have been disabled for this service' TITLE='Active and passive checks have been disabled for this service'></A></TD>",url_encode(temp_status->svc_description),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			}
-			else if(temp_status->checks_enabled==FALSE){
-				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
-				printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active checks of the service have been disabled - only passive checks are being accepted' TITLE='Active checks of the service have been disabled - only passive checks are being accepted'></A></TD>",url_encode(temp_status->svc_description),url_images_path,PASSIVE_ONLY_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+			if(temp_status->checks_enabled==FALSE){
+				if(temp_status->accept_passive_checks==FALSE){
+					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
+					printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and passive checks have been disabled for this service' TITLE='Active and passive checks have been disabled for this service'></A></TD>",url_encode(temp_status->svc_description),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+				}else{
+					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
+					printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active checks of the service have been disabled - only passive checks are being accepted' TITLE='Active checks of the service have been disabled - only passive checks are being accepted'></A></TD>",url_encode(temp_status->svc_description),url_images_path,PASSIVE_ONLY_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+				}
 			}
 			if(temp_status->notifications_enabled==FALSE){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
@@ -2125,7 +2130,10 @@ void show_host_detail(void){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,NOTIFICATIONS_DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_statusdata->checks_enabled==FALSE){
-					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Checks of this host have been disabled' TITLE='Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					if(temp_statusdata->accept_passive_checks==TRUE)
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active Checks of this host have been disabled'd TITLE='Active Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,PASSIVE_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					else
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and Passive Checks of this host have been disabled'd TITLE='Active and Passive Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_statusdata->is_flapping==TRUE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is flapping between states' TITLE='This host is flapping between states'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,FLAPPING_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
@@ -5049,6 +5057,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	int scheduled_downtime_depth=0;
 	int notifications_enabled=FALSE;
 	int checks_enabled=FALSE;
+	int accept_passive_checks=FALSE;
 
 	if (status_type==HOST_STATUS) {
 		if (host_status==NULL)
@@ -5074,6 +5083,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 		scheduled_downtime_depth=host_status->scheduled_downtime_depth;
 		notifications_enabled=host_status->notifications_enabled;
 		checks_enabled=host_status->checks_enabled;
+		accept_passive_checks=host_status->accept_passive_host_checks;
 		is_flapping=host_status->is_flapping;
 
 		plugin_output_short=host_status->plugin_output;
@@ -5110,6 +5120,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 		scheduled_downtime_depth=service_status->scheduled_downtime_depth;
 		notifications_enabled=service_status->notifications_enabled;
 		checks_enabled=service_status->checks_enabled;
+		accept_passive_checks=service_status->accept_passive_service_checks;
 		is_flapping=service_status->is_flapping;
 
 		plugin_output_short=service_status->plugin_output;
@@ -5192,6 +5203,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	new_statusdata->scheduled_downtime_depth=scheduled_downtime_depth;
 	new_statusdata->notifications_enabled=notifications_enabled;
 	new_statusdata->checks_enabled=checks_enabled;
+	new_statusdata->accept_passive_checks=accept_passive_checks;
 	new_statusdata->is_flapping=is_flapping;
 
 	new_statusdata->plugin_output=(plugin_output==NULL)?NULL:strdup(plugin_output);
@@ -5422,12 +5434,19 @@ int passes_host_properties_filter(hoststatus *temp_hoststatus){
 	if((host_properties & HOST_SOFT_STATE) && temp_hoststatus->state_type==HARD_STATE)
 		return FALSE;
 
+	if((host_properties & HOST_NOT_ALL_CHECKS_DISABLED) && temp_hoststatus->checks_enabled==FALSE && temp_hoststatus->accept_passive_host_checks==FALSE)
+		return FALSE;
+
+	if((host_properties & HOST_STATE_HANDLED) && (temp_hoststatus->scheduled_downtime_depth<=0 && (temp_hoststatus->checks_enabled==TRUE || temp_hoststatus->accept_passive_host_checks==TRUE)))
+		return FALSE;
+
 	return TRUE;
 }
 
 
 /* check service properties filter */
 int passes_service_properties_filter(servicestatus *temp_servicestatus){
+	hoststatus *temp_hoststatus=NULL;
 
 	if((service_properties & SERVICE_SCHEDULED_DOWNTIME) && temp_servicestatus->scheduled_downtime_depth<=0)
 		return FALSE;
@@ -5488,6 +5507,20 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus){
 
 	if((service_properties & SERVICE_SOFT_STATE) && temp_servicestatus->state_type==HARD_STATE)
 		return FALSE;
+
+	if((service_properties & SERVICE_NOT_ALL_CHECKS_DISABLED) && temp_servicestatus->checks_enabled==FALSE && temp_servicestatus->accept_passive_service_checks==FALSE)
+		return FALSE;
+
+	if(service_properties & SERVICE_STATE_HANDLED) {
+		if (temp_servicestatus->scheduled_downtime_depth>0)
+			return TRUE;
+		if (temp_servicestatus->checks_enabled==FALSE && temp_servicestatus->accept_passive_service_checks==FALSE)
+			return TRUE;
+		temp_hoststatus=find_hoststatus(temp_servicestatus->host_name);
+		if (temp_hoststatus!=NULL && (temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE))
+			return TRUE;
+		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -5615,6 +5648,14 @@ void show_filters(void){
 				printf("%s In Soft State",(found==1)?" &amp;":"");
 				found=1;
 			}
+			if(host_properties & HOST_STATE_HANDLED){
+				printf("%s Problem Handled",(found==1)?" &amp;":"");
+				found=1;
+			}
+			if(host_properties & HOST_NOT_ALL_CHECKS_DISABLED){
+				printf("%s Not All Checks Disabled",(found==1)?" &amp;":"");
+				found=1;
+			}
 		}
 		printf("</td>");
 		printf("</tr>\n");
@@ -5734,6 +5775,14 @@ void show_filters(void){
 			}
 			if(service_properties & SERVICE_SOFT_STATE){
 				printf("%s In Soft State",(found==1)?" &amp;":"");
+				found=1;
+			}
+			if(service_properties & SERVICE_STATE_HANDLED){
+				printf("%s Problem Handled",(found==1)?" &amp;":"");
+				found=1;
+			}
+			if(service_properties & SERVICE_NOT_ALL_CHECKS_DISABLED){
+				printf("%s Not All Checks Disabled",(found==1)?" &amp;":"");
 				found=1;
 			}
 		}
