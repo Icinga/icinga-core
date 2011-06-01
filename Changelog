@@ -2,6 +2,14 @@
 Icinga 1.4.x Change Log
 #######################
 
+1.4.1 - ??/06/2011
+
+ENHANCEMENTS
+
+FIXES
+* classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
+
+
 1.4.0 - 11/05/2011
 
 ENHANCEMENTS
