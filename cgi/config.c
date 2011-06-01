@@ -429,7 +429,7 @@ int process_cgivars(void){
 				error=TRUE;
 				break;
 			}
-			strncpy(to_expand,variables[x],MAX_COMMAND_BUFFER);
+			strncpy(to_expand,escape_string(variables[x]),MAX_COMMAND_BUFFER);
 			to_expand[MAX_COMMAND_BUFFER-1]='\0';
 		}
 
