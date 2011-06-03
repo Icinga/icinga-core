@@ -140,6 +140,8 @@ int		add_notif_num_soft=0;
 int		enforce_comments_on_actions=FALSE;
 int		week_starts_on_monday=FALSE;
 
+int		show_partial_hostgroups=FALSE;
+
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
 extern command         *command_list;
@@ -370,6 +372,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"show_all_services_host_is_authorized_for"))
 			show_all_services_host_is_authorized_for=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"show_partial_hostgroups"))
+			show_partial_hostgroups=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"use_pending_states"))
 			use_pending_states=(atoi(val)>0)?TRUE:FALSE;

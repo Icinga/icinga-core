@@ -71,6 +71,9 @@ extern servicegroup *servicegroup_list;
 extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 
+/* show any hosts in hostgroups the user is authorized for */
+extern show_partial_hostgroups;
+
 #define MAX_MESSAGE_BUFFER		4096
 
 #define DISPLAY_HOSTS			0
@@ -3484,7 +3487,7 @@ void show_hostgroup_overviews(void){
 			for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 				/* make sure the user is authorized to view this hostgroup */
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 					continue;
 
 				// always add a comma, except for the first line
@@ -3501,7 +3504,7 @@ void show_hostgroup_overviews(void){
 			if(temp_hostgroup==NULL)
 				hostgroup_error=TRUE;
 			else {
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
 
 					show_hostgroup_overview(temp_hostgroup);
 
@@ -3525,7 +3528,7 @@ void show_hostgroup_overviews(void){
 
 		printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Service Overview For ");
 		if(show_all_hostgroups==TRUE)
-			printf("All Host Groups");
+			printf("%s",show_partial_hostgroups?"All Host Groups<br>(Partial Hostgroups Enabled)":"All Host Groups");
 		else
 			printf("Host Group '%s'",hostgroup_name);
 		printf("</DIV>\n");
@@ -3555,7 +3558,7 @@ void show_hostgroup_overviews(void){
 			for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 				/* make sure the user is authorized to view this hostgroup */
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 					continue;
 
 				if(current_column==1)
@@ -3598,7 +3601,7 @@ void show_hostgroup_overviews(void){
 				printf("<DIV ALIGN=CENTER>\n");
 				printf("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0><TR><TD ALIGN=CENTER>\n");
 
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
 
 					show_hostgroup_overview(temp_hostgroup);
 
@@ -3650,7 +3653,7 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 	int json_start=TRUE;
 
 	/* make sure the user is authorized to view this hostgroup */
-	if(is_authorized_for_hostgroup(hstgrp,&current_authdata)==FALSE)
+	if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(hstgrp,&current_authdata)==FALSE)
 		return;
 
 	/* print json format */
@@ -3677,6 +3680,10 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 		/* find the host... */
 		temp_host=find_host(temp_member->host_name);
 		if(temp_host==NULL)
+			continue;
+
+		/* only show in partial hostgroups if user is authorized to view this host */
+		if (show_partial_hostgroups==TRUE && is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
 		/* find the host status */
@@ -3981,7 +3988,7 @@ void show_hostgroup_summaries(void){
 		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 			/* make sure the user is authorized to view this hostgroup */
-			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+			if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 				continue;
 
 			if(odd==0)
@@ -4587,7 +4594,7 @@ void show_hostgroup_grids(void){
 		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 			/* make sure the user is authorized to view this hostgroup */
-			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+			if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 				continue;
 
 			if(odd==0)
@@ -4687,6 +4694,10 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		/* find the host... */
 		temp_host=find_host(temp_member->host_name);
 		if(temp_host==NULL)
+			continue;
+
+		/* only show in partial hostgroups if user is authorized to view this host */
+		if (show_partial_hostgroups==TRUE && is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
 		/* grab macros */
