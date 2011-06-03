@@ -441,6 +441,15 @@ status_show_long_plugin_output=0
 tac_show_only_hard_state=0
 
 
+# SUPPRESS MAINTENANCE DOWNTIME
+# This options suppresses the state coloring of hosts and services
+# that are in a scheduled downtime. It sets their coloring to gray,
+# so they no longer draw extra attention to themselves, making it
+# so only actual problems are the ones that stand out.
+# By default it is disabled.
+
+suppress_maintenance_downtime=0
+
 
 # SHOW TAC INFORMATION IN TOP FRAME
 # This options places tactical overview information in

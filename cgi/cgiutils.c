@@ -131,6 +131,7 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
+int		suppress_maintenance_downtime=FALSE;
 int		show_tac_header=TRUE;
 int		showlog_initial_states=TRUE;
 int		showlog_current_states=TRUE;
@@ -554,6 +555,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"suppress_maintenance_downtime"))
+			suppress_maintenance_downtime=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"show_tac_header"))
 			show_tac_header=(atoi(val)>0)?TRUE:FALSE;

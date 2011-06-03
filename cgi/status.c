@@ -64,6 +64,8 @@ extern int enable_splunk_integration;
 
 extern int status_show_long_plugin_output;
 
+extern int suppress_maintenance_downtime;
+
 extern host *host_list;
 extern service *service_list;
 extern hostgroup *hostgroup_list;
@@ -1545,30 +1547,29 @@ void show_service_detail(void){
 
 		status=temp_status->status_string;
 		status_class=temp_status->status_string;
-		if(temp_status->status==SERVICE_PENDING){
+		if (temp_status->status==SERVICE_PENDING){
 			status_bg_class=(odd)?"Even":"Odd";
-		}
-		else if(temp_status->status==SERVICE_OK){
+		} else if(suppress_maintenance_downtime==TRUE && temp_status->scheduled_downtime_depth>0){
+			status_class="DOWNTIME";
 			status_bg_class=(odd)?"Even":"Odd";
-		}
-		else if(temp_status->status==SERVICE_WARNING){
-			if(temp_status->problem_has_been_acknowledged==TRUE)
+		} else if(temp_status->status==SERVICE_OK){
+			status_bg_class=(odd)?"Even":"Odd";
+		} else if(temp_status->status==SERVICE_WARNING){
+			if (temp_status->problem_has_been_acknowledged==TRUE)
 				status_bg_class="BGWARNINGACK";
 			else if(temp_status->scheduled_downtime_depth>0)
 				status_bg_class="BGWARNINGSCHED";
 			else
 				status_bg_class="BGWARNING";
-		}
-		else if(temp_status->status==SERVICE_UNKNOWN){
-			if(temp_status->problem_has_been_acknowledged==TRUE)
+		} else if(temp_status->status==SERVICE_UNKNOWN){
+			if (temp_status->problem_has_been_acknowledged==TRUE)
 				status_bg_class="BGUNKNOWNACK";
-			else if(temp_status->scheduled_downtime_depth>0)
+			else if (temp_status->scheduled_downtime_depth>0)
 				status_bg_class="BGUNKNOWNSCHED";
 			else
 				status_bg_class="BGUNKNOWN";
-		}
-		else if(temp_status->status==SERVICE_CRITICAL){
-			if(temp_status->problem_has_been_acknowledged==TRUE)
+		} else if(temp_status->status==SERVICE_CRITICAL){
+			if (temp_status->problem_has_been_acknowledged==TRUE)
 				status_bg_class="BGCRITICALACK";
 			else if(temp_status->scheduled_downtime_depth>0)
 				status_bg_class="BGCRITICALSCHED";
@@ -1589,22 +1590,26 @@ void show_service_detail(void){
 				/* grab macros */
 				grab_host_macros_r(mac, temp_host);
 
-				if(temp_hoststatus->status==HOST_DOWN){
-					if(temp_hoststatus->problem_has_been_acknowledged==TRUE)
+				/* first, we color it as maintenance if that is preferred */
+				if (suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0){
+					host_status_bg_class="HOSTDOWNTIME";
+
+				/* otherwise we color it as its appropriate state */
+				} else if (temp_hoststatus->status==HOST_DOWN){
+					if (temp_hoststatus->problem_has_been_acknowledged==TRUE)
 						host_status_bg_class="HOSTDOWNACK";
 					else if(temp_hoststatus->scheduled_downtime_depth>0)
 						host_status_bg_class="HOSTDOWNSCHED";
 					else
 						host_status_bg_class="HOSTDOWN";
-				}
-				else if(temp_hoststatus->status==HOST_UNREACHABLE){
-					if(temp_hoststatus->problem_has_been_acknowledged==TRUE)
+				} else if (temp_hoststatus->status==HOST_UNREACHABLE){
+					if (temp_hoststatus->problem_has_been_acknowledged==TRUE)
 						host_status_bg_class="HOSTUNREACHABLEACK";
 					else if(temp_hoststatus->scheduled_downtime_depth>0)
 						host_status_bg_class="HOSTUNREACHABLESCHED";
 					else
 						host_status_bg_class="HOSTUNREACHABLE";
-				}else
+				} else
 					host_status_bg_class=(odd)?"Even":"Odd";
 
 				printf("<TD CLASS='status%s'>",host_status_bg_class);
@@ -2063,6 +2068,10 @@ void show_host_detail(void){
 
 			if(temp_statusdata->status==HOST_PENDING){
 				status_class="PENDING";
+				status_bg_class=(odd)?"Even":"Odd";
+			}
+			else if(suppress_maintenance_downtime==TRUE && temp_statusdata->scheduled_downtime_depth>0){
+				status_class="DOWNTIME";
 				status_bg_class=(odd)?"Even":"Odd";
 			}
 			else if(temp_statusdata->status==HOST_UP){

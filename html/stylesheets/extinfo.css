@@ -79,20 +79,22 @@ th.downtime { text-align: left; font-size: 10pt;  background-color: #707677; col
 .modeACTIVE { background-color: #00cc33; color: #fff; }
 .modeSTANDBY { background-color: #ffa500; color: #fff; }
 
-div.hostUP, div.hostDOWN, div.hostUNREACHABLE { display: inline; }
+div.hostUP, div.hostDOWN, div.hostUNREACHABLE, div.hostDOWNTIME { display: inline; }
 .hostUP { background-color: #00cc33; color: #fff; }
 .hostDOWN { background-color: #ff3300; color: #fff; }
 .hostUNREACHABLE { background-color: #bf44b2; color: #fff; }
-tr.dataEven td.hostUP, tr.dataEven td.hostDOWN, tr.dataEven .hostUNREACHABLE { text-align: center; }
-tr.dataOdd td.hostUP, tr.dataOdd td.hostDOWN, tr.dataOdd .hostUNREACHABLE { text-align: center; }
+.hostDOWNTIME { background-color: #acacac; color: #fff; }
+tr.dataEven td.hostUP, tr.dataEven td.hostDOWN, tr.dataEven .hostUNREACHABLE, tr.dataEven .hostDOWNTIME { text-align: center; }
+tr.dataOdd td.hostUP, tr.dataOdd td.hostDOWN, tr.dataOdd .hostUNREACHABLE, tr.dataOdd .hostDOWNTIME { text-align: center; }
 
-div.serviceOK, div.serviceWARNING, div.serviceUNKNOWN, div.serviceCRITICAL { display: inline; }
+div.serviceOK, div.serviceWARNING, div.serviceUNKNOWN, div.serviceCRITICAL, div.serviceDOWNTIME { display: inline; }
 .serviceOK { background-color: #00cc33; color: #fff; }
 .serviceWARNING { background-color: #ffa500; color: #fff; }
 .serviceUNKNOWN { background-color: #bf44b2; color: #fff; }
 .serviceCRITICAL { background-color: #ff3300; color: #fff; }
-tr.dataEven td.serviceOK, tr.dataEven td.serviceWARNING, tr.dataEven td.serviceUNKNOWN, tr.dataEven td.serviceCRITICAL { text-align: center; }
-tr.dataOdd td.serviceOK, tr.dataOdd td.serviceWARNING, tr.dataOdd td.serviceUNKNOWN, tr.dataOdd td.serviceCRITICAL { text-align: center; }
+.serviceDOWNTIME { background-color: #acacac; color: #fff; }
+tr.dataEven td.serviceOK, tr.dataEven td.serviceWARNING, tr.dataEven td.serviceUNKNOWN, tr.dataEven td.serviceCRITICAL, tr.dataEven td.serviceDOWNTIME { text-align: center; }
+tr.dataOdd td.serviceOK, tr.dataOdd td.serviceWARNING, tr.dataOdd td.serviceUNKNOWN, tr.dataOdd td.serviceCRITICAL, tr.dataOdd td.serviceDOWNTIME { text-align: center; }
 
 .commandPanel { background-color: #fff; }
 .commentPanel { background-color: #fff; }
