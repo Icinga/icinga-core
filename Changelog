@@ -1,6 +1,16 @@
 #######################
-Icinga 1.4.x Change Log
+Icinga 1.5.x Change Log
 #######################
+
+1.5.0 - ??/08/2011
+
+ENHANCEMENTS
+* classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
+* classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
+
+FIXES
+* classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
+
 
 1.4.0 - 11/05/2011
 

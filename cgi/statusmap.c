@@ -65,6 +65,8 @@ extern char *statusmap_background_image;
 
 extern int default_statusmap_layout_method;
 
+extern int suppress_maintenance_downtime;
+
 #define DEFAULT_NODE_WIDTH		40
 #define DEFAULT_NODE_HEIGHT		65
 
@@ -1582,8 +1584,13 @@ void draw_hosts(void){
 
 
 			temp_hoststatus=find_hoststatus(temp_host->name);
-			if(temp_hoststatus!=NULL){
-				if(temp_hoststatus->status==HOST_DOWN)
+			if (temp_hoststatus!=NULL){
+				/* first, we color it as maintenance if that is preferred */
+				if (suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0)
+					status_color=color_grey;
+
+				/* otherwise we color it as its appropriate state */
+				else if(temp_hoststatus->status==HOST_DOWN)
 					status_color=color_red;
 				else if(temp_hoststatus->status==HOST_UNREACHABLE)
 					status_color=color_red;
@@ -1621,6 +1628,8 @@ void draw_hosts(void){
 
 				/* calculate width of border */
 				if(temp_hoststatus==NULL)
+					inner_radius=outer_radius;
+				if(suppress_maintenance_downtime==FALSE && temp_hoststatus->scheduled_downtime_depth>0)
 					inner_radius=outer_radius;
 				else if((temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE) && temp_hoststatus->problem_has_been_acknowledged==FALSE)
 					inner_radius=outer_radius-3;
@@ -1795,10 +1804,20 @@ void draw_host_text(char *name,int x,int y){
 	temp_hoststatus=find_hoststatus(name);
 
 	/* get the status of the host (pending, up, down, or unreachable) */
-	if(temp_hoststatus!=NULL){
-
+	if (temp_hoststatus!=NULL){
 		/* draw the status string */
-		if(temp_hoststatus->status==HOST_DOWN){
+		if (suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0){
+			if(temp_hoststatus->status==HOST_UP)
+				strncpy(temp_buffer,"Up",sizeof(temp_buffer));
+			else if(temp_hoststatus->status==HOST_DOWN)
+				strncpy(temp_buffer,"Down)",sizeof(temp_buffer));
+			else if(temp_hoststatus->status==HOST_UNREACHABLE)
+				strncpy(temp_buffer,"Unreachable",sizeof(temp_buffer));
+			else //catch any other state (just in case)
+				strncpy(temp_buffer,"Maintenance",sizeof(temp_buffer));
+			status_color=color_grey;
+			}
+		else if(temp_hoststatus->status==HOST_DOWN){
 			strncpy(temp_buffer,"Down",sizeof(temp_buffer));
 			status_color=color_red;
                         }
@@ -1814,7 +1833,7 @@ void draw_host_text(char *name,int x,int y){
 			strncpy(temp_buffer,"Pending",sizeof(temp_buffer));
 			status_color=color_grey;
                         }
-		else{
+		else {
 			strncpy(temp_buffer,"Unknown",sizeof(temp_buffer));
 			status_color=color_orange;
 	                }
@@ -1881,25 +1900,36 @@ void write_host_popup_text(host *hst){
 	printf("<tr><td class=\\\"popupText\\\">Address6:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>",html_encode(hst->address6,TRUE));
 	printf("<tr><td class=\\\"popupText\\\">State:</td><td class=\\\"popupText\\\"><b>");
 
-	/* get the status of the host (pending, up, down, or unreachable) */
-	if(temp_status->status==HOST_DOWN){
+	/* show the status of the host (maintenance, pending, up, down, or unreachable) */
+	/* first, we mark it as maintenance if that is preferred */
+	if (suppress_maintenance_downtime==TRUE && temp_status->scheduled_downtime_depth>0){
+		if(temp_status->status==HOST_UP)
+			printf("<font color=gray>Up (Maintenance)");
+		else if(temp_status->status==HOST_DOWN)
+			printf("<font color=gray>Down (Maintenance)");
+		else if(temp_status->status==HOST_UNREACHABLE)
+			printf("<font color=gray>Unreachable (Maintenance)");
+		else if(temp_status->status==HOST_PENDING)
+			printf("<font color=gray>Pending (Maintenance)");
+		else //catch any other state (just in case)
+			printf("<font color=gray>Maintenance");
+
+		if(temp_status->problem_has_been_acknowledged==TRUE)//somewhat meaningless in this context, but possible
+			printf(" (Acknowledged)");
+		printf("</font>");
+	} else if(temp_status->status==HOST_DOWN){
 		printf("<font color=red>Down");
 		if(temp_status->problem_has_been_acknowledged==TRUE)
 			printf(" (Acknowledged)");
 		printf("</font>");
-	        }
-
-	else if(temp_status->status==HOST_UNREACHABLE){
+	} else if(temp_status->status==HOST_UNREACHABLE){
 		printf("<font color=red>Unreachable");
 		if(temp_status->problem_has_been_acknowledged==TRUE)
 			printf(" (Acknowledged)");
 		printf("</font>");
-	        }
-
-	else if(temp_status->status==HOST_UP)
+	} else if(temp_status->status==HOST_UP){
 		printf("<font color=green>Up</font>");
-
-	else if(temp_status->status==HOST_PENDING)
+	} else if(temp_status->status==HOST_PENDING)
 		printf("Pending");
 
 	printf("</b></td></tr>");
@@ -2676,6 +2706,8 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 				/* determine background color */
 				temp_hoststatus=find_hoststatus(temp_host->name);
 				if(temp_hoststatus==NULL)
+					bgcolor=color_lightgrey;
+				else if(suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0)
 					bgcolor=color_lightgrey;
 				else if(temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE)
 					bgcolor=color_lightred;

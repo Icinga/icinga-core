@@ -68,6 +68,8 @@ extern int		event_profiling_enabled;
 extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
+extern int              suppress_maintenance_downtime;
+
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
@@ -90,7 +92,6 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern servicedependency *servicedependency_list;
 extern hostdependency *hostdependency_list;
-
 
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
@@ -1298,14 +1299,26 @@ void show_host_info(void){
 		snprintf(status_age,sizeof(status_age)-1,"%2dd %2dh %2dm %2ds",days,hours,minutes,seconds);
 	status_age[sizeof(status_age)-1]='\x0';
 
+	/* first, we mark and color it as maintenance if that is preferred */
+	if (suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0){
+		if(temp_hoststatus->status==HOST_UP)
+			strcpy(state_string,"UP (MAINTENANCE)");
+		else if(temp_hoststatus->status==HOST_DOWN)
+			strcpy(state_string,"DOWN (MAINTENANCE)");
+		else if(temp_hoststatus->status==HOST_UNREACHABLE)
+			strcpy(state_string,"UNREACHABLE (MAINTENANCE)");
+		else //catch any other state (just in case)
+			strcpy(state_string,"MAINTENANCE");
+		bg_class="hostDOWNTIME";
 
-	if(temp_hoststatus->status==HOST_UP){
+	/* otherwise we mark and color it with its appropriate state */
+	} else if (temp_hoststatus->status==HOST_UP){
 		strcpy(state_string,"UP");
 		bg_class="hostUP";
-	}else if(temp_hoststatus->status==HOST_DOWN){
+	} else if (temp_hoststatus->status==HOST_DOWN){
 		strcpy(state_string,"DOWN");
 		bg_class="hostDOWN";
-	}else if(temp_hoststatus->status==HOST_UNREACHABLE){
+	} else if (temp_hoststatus->status==HOST_UNREACHABLE){
 		strcpy(state_string,"UNREACHABLE");
 		bg_class="hostUNREACHABLE";
 	}
@@ -1690,16 +1703,22 @@ void show_service_info(void){
 		snprintf(state_duration,sizeof(state_duration)-1,"%2dd %2dh %2dm %2ds%s",days,hours,minutes,seconds,(temp_svcstatus->last_state_change==(time_t)0)?"+":"");
 	state_duration[sizeof(state_duration)-1]='\x0';
 
-	if(temp_svcstatus->status==SERVICE_OK){
+	/* first, we mark and color it as maintenance if that is preferred */
+	if (suppress_maintenance_downtime==TRUE && temp_svcstatus->scheduled_downtime_depth>0){
+		strcpy(state_string,"MAINTENANCE");
+		bg_class="serviceDOWNTIME";
+
+	/* otherwise we mark and color it with its appropriate state */
+	} else if (temp_svcstatus->status==SERVICE_OK){
 		strcpy(state_string,"OK");
 		bg_class="serviceOK";
-	}else if(temp_svcstatus->status==SERVICE_WARNING){
+	} else if (temp_svcstatus->status==SERVICE_WARNING){
 		strcpy(state_string,"WARNING");
 		bg_class="serviceWARNING";
-	}else if(temp_svcstatus->status==SERVICE_CRITICAL){
+	} else if (temp_svcstatus->status==SERVICE_CRITICAL){
 		strcpy(state_string,"CRITICAL");
 		bg_class="serviceCRITICAL";
-	}else{
+	} else {
 		strcpy(state_string,"UNKNOWN");
 		bg_class="serviceUNKNOWN";
 	}
