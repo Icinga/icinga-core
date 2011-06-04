@@ -131,7 +131,9 @@ int		color_transparency_index_b=255;
 
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
+int		suppress_maintenance_downtime=FALSE;
 int		show_tac_header=TRUE;
+int		show_tac_header_pending=TRUE;
 int		showlog_initial_states=TRUE;
 int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
@@ -139,6 +141,8 @@ int		add_notif_num_hard=0;
 int		add_notif_num_soft=0;
 int		enforce_comments_on_actions=FALSE;
 int		week_starts_on_monday=FALSE;
+
+int		show_partial_hostgroups=FALSE;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -371,6 +375,9 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"show_all_services_host_is_authorized_for"))
 			show_all_services_host_is_authorized_for=(atoi(val)>0)?TRUE:FALSE;
 
+		else if(!strcmp(var,"show_partial_hostgroups"))
+			show_partial_hostgroups=(atoi(val)>0)?TRUE:FALSE;
+
 		else if(!strcmp(var,"use_pending_states"))
 			use_pending_states=(atoi(val)>0)?TRUE:FALSE;
 
@@ -555,8 +562,14 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"tac_show_only_hard_state"))
 			tac_show_only_hard_state=(atoi(val)>0)?TRUE:FALSE;
 
+		else if(!strcmp(var,"suppress_maintenance_downtime"))
+			suppress_maintenance_downtime=(atoi(val)>0)?TRUE:FALSE;
+
 		else if(!strcmp(var,"show_tac_header"))
 			show_tac_header=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"show_tac_header_pending"))
+			show_tac_header_pending=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"showlog_initial_state") || !strcmp(var,"showlog_initial_states"))
 			showlog_initial_states=(atoi(val)>0)?TRUE:FALSE;

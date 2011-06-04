@@ -265,6 +265,17 @@ authorized_for_all_host_commands=icingaadmin
 show_all_services_host_is_authorized_for=1
 
 
+# SHOW PARTIAL HOSTGROUPS
+# By default, a user only sees a hostgroup and the hosts within it if
+# they are an authorized contact for all of the hosts of the group. By
+# enabling this option hostgroups will show a partial listing of hosts
+# the user is an authorized contact for in the hostgroups.
+# Values: 0 - disabled, user only sees full hostgroups (default)
+#         1 - enabled, user sees partial hostgroups
+
+show_partial_hostgroups=0
+
+
 # STATUSMAP BACKGROUND IMAGE
 # This option allows you to specify an image to be used as a
 # background in the statusmap CGI.  It is assumed that the image
@@ -441,6 +452,15 @@ status_show_long_plugin_output=0
 tac_show_only_hard_state=0
 
 
+# SUPPRESS MAINTENANCE DOWNTIME
+# This options suppresses the state coloring of hosts and services
+# that are in a scheduled downtime. It sets their coloring to gray,
+# so they no longer draw extra attention to themselves, making it
+# so only actual problems are the ones that stand out.
+# By default it is disabled.
+
+suppress_maintenance_downtime=0
+
 
 # SHOW TAC INFORMATION IN TOP FRAME
 # This options places tactical overview information in
@@ -448,6 +468,16 @@ tac_show_only_hard_state=0
 # By default it is enabled.
 
 show_tac_header=1
+
+
+# SHOW PENDING IN TAC HEADER
+# This options enables the display of pending counts in
+# the tac header. If your display is less than 1024x768
+# and this is enabled, the tactical information may not
+# fit well in the top frame.
+# By default it is enabled.
+
+show_tac_header_pending=1
 
 
 

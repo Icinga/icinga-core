@@ -367,6 +367,8 @@ extern "C" {
 #define HOST_ACTIVE_CHECK		131072
 #define HOST_HARD_STATE			262144
 #define HOST_SOFT_STATE			524288
+#define HOST_STATE_HANDLED		1048576
+#define HOST_NOT_ALL_CHECKS_DISABLED	2097152	
 
 
 #define SERVICE_SCHEDULED_DOWNTIME	1
@@ -389,6 +391,8 @@ extern "C" {
 #define SERVICE_ACTIVE_CHECK		131072
 #define SERVICE_HARD_STATE		262144
 #define SERVICE_SOFT_STATE		524288
+#define SERVICE_STATE_HANDLED		1048576
+#define SERVICE_NOT_ALL_CHECKS_DISABLED	2097152
 
 
 /****************************** SSI TYPES  ********************************/
@@ -486,26 +490,22 @@ extern "C" {
 #define CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS	"N8"
 
 /************************** TAC TITLES ****************************/
-#define TAC_TITLE_HOST_UP_ALL				"All Hosts up"
-#define TAC_TITLE_HOST_DOWN_UNACK_ACTIVE		"Active unacknowledged Hosts down"
-#define TAC_TITLE_HOST_DOWN_UNACK_PASSIVE		"Passive unacknowledged Hosts down"
-#define TAC_TITLE_HOST_DOWN_ACK				"All acknowledged Hosts down"
-#define TAC_TITLE_HOST_UNREACHABLE_UNACK_ACTIVE		"Active unacknowledged Hosts unreachable"
-#define TAC_TITLE_HOST_UNREACHABLE_UNACK_PASSIVE	"Passive unacknowledged Hosts unreachable"
-#define TAC_TITLE_HOST_UNREACHABLE_ACK			"All acknowledged Hosts unreachable"
-#define TAC_TITLE_HOST_TOTAL_ALL			"All Hosts in total"
 
-#define TAC_TITLE_SVC_OK_ALL				"All Services up"
-#define TAC_TITLE_SVC_WARNING_UNACK_ACTIVE		"Active unacknowledged Services warning"
-#define TAC_TITLE_SVC_WARNING_UNACK_PASSIVE		"Passive unacknowledged Services warning"
-#define TAC_TITLE_SVC_WARNING_ACK			"All acknowledged Services warning"
-#define TAC_TITLE_SVC_CRITICAL_UNACK_ACTIVE		"Active unacknowledged Services critical"
-#define TAC_TITLE_SVC_CRITICAL_UNACK_PASSIVE		"Passive unacknowledged Services critical"
-#define TAC_TITLE_SVC_CRITICAL_ACK			"All acknowledged Services critical"
-#define TAC_TITLE_SVC_UNKNOWN_UNACK_ACTIVE		"Active unacknowledged Services unknown"
-#define TAC_TITLE_SVC_UNKNOWN_UNACK_PASSIVE		"Passive  unacknowledged Services unknown"
-#define TAC_TITLE_SVC_UNKNOWN_ACK			"All acknowledged Services unknown"
-#define TAC_TITLE_SVC_TOTAL_ALL				"All Services in total"
+#define TAC_TITLE_HOST_NOT_DISABLED			"Hosts Not Disabled"
+#define TAC_TITLE_HOST_DISABLED				"Hosts Disabled"
+#define TAC_TITLE_HOST_UNACK_HOSTS			"Unacknowledged Hosts"
+#define TAC_TITLE_HOST_ACK_HOSTS			"Acknowledged Hosts"
+#define TAC_TITLE_HOST_NON_URGENT			"Handled Hosts"
+#define TAC_TITLE_HOST_PROBLEM_ALL			"All Problem Hosts"
+#define TAC_TITLE_HOST_ALL				"All Hosts"
+
+#define TAC_TITLE_SVC_NOT_DISABLED			"Services Not Disabled"
+#define TAC_TITLE_SVC_DISABLED				"Services Disabled"
+#define TAC_TITLE_SVC_UNACK_SERVICES			"Unacknowledged Services"
+#define TAC_TITLE_SVC_ACK_SERVICES			"Acknowledged Services"
+#define TAC_TITLE_SVC_NON_URGENT			"Handled Services"
+#define TAC_TITLE_SVC_PROBLEM_ALL			"All Problem Services"
+#define TAC_TITLE_SVC_ALL				"All Services"
 
 
 /************************** HTTP CHARSET ****************************/
@@ -514,7 +514,7 @@ extern "C" {
 
 /************************** JSON OUTPUT VERSION ************************/
 
-#define JSON_OUTPUT_VERSION "1.4.0"
+#define JSON_OUTPUT_VERSION "1.4.1"
 
 
 /************************** BUFFER  ***************************************/
