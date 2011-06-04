@@ -7,6 +7,8 @@ Icinga 1.4.x Change Log
 ENHANCEMENTS
 
 FIXES
+* core: fix retain status file over an init script reload #1579
+
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: better handling of writing to cgi.log in cmd.cgi #1161
 * classic ui: fixing tac.cgi header problems with counting and adding pending and descritptions #1505 #1506 #1508
