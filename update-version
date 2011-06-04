@@ -94,14 +94,4 @@ perl -i -p -e "s/FILE2SOCK_DATE \".*\"/FILE2SOCK_DATE \"$SHORTDATE\"/;" module/i
 perl -i -p -e "s/LOG2IDO_VERSION \".*\"/LOG2IDO_VERSION \"$newversion\"/;" module/idoutils/src/log2ido.c
 perl -i -p -e "s/LOG2IDO_DATE \".*\"/LOG2IDO_DATE \"$SHORTDATE\"/;" module/idoutils/src/log2ido.c
 
-# Update dbversion in IDOUtils
-# mysql INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
-# pgsql SELECT updatedbversion('1.3.0');
-# oracle DEFINE ICINGA_VERSION=1.3.0
-
-perl -i -p -e "s/VALUES \(\'idoutils\', \'.*\'\)/VALUES \(\'idoutils\', \'$newversion\'\)/;" module/idoutils/db/mysql/mysql.sql
-perl -i -p -e "s/version=\'.*\'/version=\'$newversion\'/;" module/idoutils/db/mysql/mysql.sql
-perl -i -p -e "s/updatedbversion\(\'.*\'\)/updatedbversion\(\'$newversion\'\)/;" module/idoutils/db/pgsql/pgsql.sql
-perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" module/idoutils/db/oracle/oracle.sql
-
 
