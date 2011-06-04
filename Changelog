@@ -8,7 +8,9 @@ ENHANCEMENTS
 
 FIXES
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
-
+* classic ui: better handling of writing to cgi.log in cmd.cgi #1161
+* classic ui: fixing tac.cgi header problems with counting and adding pending and descritptions #1505 #1506 #1508
+* classic ui: corrected behaviour of pending states in tac header #1508
 
 1.4.0 - 11/05/2011
 
