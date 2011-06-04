@@ -7,6 +7,8 @@ Icinga 1.5.x Change Log
 ENHANCEMENTS
 
 FIXES
+* core: remove duplicated unlinks for check result files with multiple results #1615
+
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 
 
