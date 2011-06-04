@@ -1,0 +1,381 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>grafische Darstellung von Performance-Informationen mit PNP4Nagios</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
+<link rel="prev" href="icingastats.html" title="Nutzung des Icingastats-Utilitys">
+<link rel="next" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">grafische Darstellung von Performance-Informationen mit PNP4Nagios</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="icingastats.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="grafische Darstellung von Performance-Informationen mit PNP4Nagios">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="perfgraphs"></a><a name="perf_graphs"></a>grafische Darstellung von Performance-Informationen mit PNP4Nagios</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Das <a class="link" href="icingastats.html" target="_top">icingastats</a>-Utility erlaubt Ihnen zusammen mit <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a>, verschiedene Icinga-Performance-Statistiken über eine
+  bestimmten Zeitraum grafisch darzustellen. Das ist wichtig, weil es Ihnen helfen kann</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>dass Icinga effizient arbeitet</p>
+    </li>
+<li class="listitem">
+      <p>um Problembereiche im Überwachungsprozess zu lokalisieren</p>
+    </li>
+<li class="listitem">
+      <p>um die Einflüsse von Änderungen in Ihrer Icinga-Konfiguration zu beobachten</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+
+  <p>PNP4Nagios ist eines der populärsten Addons wegen der einfachen Installation und geringem Wartungsaufwand während des Betriebs. Die
+  Dokumentation zusammen mit weiteren Links zum Download der Software finden Sie unter <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">http://docs.pnp4nagios.org/de/pnp-0.6/start</a>.</p>
+
+  <p><a class="link" href="https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Nagios/check_nagiostats" target="_top">check_nagiostats</a> wurde von
+  <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=7773" target="_top">Jochen Bern</a> erstellt. Es wird über die
+  crontab aufgerufen und liefert die Daten als passive Prüfergebnisse. Trotz des Namens funktioniert das Plugin auch mit
+  Icinga.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Nach dem Herunterladen des Plugins und Ablegen im Plugin-Verzeichnis (z.B. <code class="filename">/usr/local/icinga/libexec</code>, falls
+      Sie die Schnellstartanleitung benutzt haben) müssen Sie die Werte im Konfigurationsabschnitt des Scripts anpassen.</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>Am <span class="bold"><strong>wichtig</strong></span>sten ist "<code class="literal">EXEC=</code><code class="filename">/path/to/icingastats</code>"
+          (z.B. <code class="filename">/usr/local/icinga/bin/icingastats</code>), das auf das <code class="filename">icingastats</code>-Binary zeigen
+          muss.</p>
+        </li>
+<li class="listitem">
+          <p>Abhängig von Ihren Bedürfnissen möchten Sie ggf. den Wert für <code class="literal">CUMULATE</code> von "AVG" auf "MIN" oder "MAX"
+          ändern: Die Einstellung von <code class="literal">TIMEFRAME</code> beeinflusst die Zeitperiode, die für die Ausgabe von kumulierten Werten
+          benutzt wird</p>
+        </li>
+<li class="listitem">
+          <p>Das Ändern der Werte von <code class="literal">PASSIVE_EMERGENCY_HOST</code> und <code class="literal">PASSIVE_EMERGENCY_SERVICE</code> sollte
+          nicht notwendig sein, weil diese Werte als Parameter an das Script übergeben werden.</p>
+        </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p>Stellen Sie sicher, dass Ihre Objektkonfigurationsdateien eine passende Service-Definition enthalten, wie z.B.</p>
+<pre class="programlisting"> define service{
+    host_name               &lt;the Icinga server&gt;
+    service_description     icingastats # (or something appropriate)
+    active_checks_enabled   0
+    check_command           check_dummy!0
+    ...
+ }</pre>
+<p>Vergessen Sie nicht den Neustart von Icinga nach dieser Änderung.</p>
+    </li>
+<li class="listitem">
+      <p>Legen Sie einen logischen Link im templates-Verzeichnis von PNP4Nagios an</p>
+<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
+<p>
+      Stellen Sie sicher, dass <span class="emphasis"><em>icingastats</em></span> (ohne die Endung .php) zu dem Wert passt, den Sie in der Service-Definition
+      angegeben haben. Leerzeichen in der Service-Beschreibung müssen durch Unterstriche (_) im Dateinamen ersetzt werden (z.B. "Icinga
+      Stats" --&gt; "Icinga_Stats.php")</p>
+    </li>
+<li class="listitem">
+      <p>Fügen Sie eine Zeile zur crontab des Icinga-Benutzers hinzu, die das <code class="filename">icingastats</code>-Binary aufruft und
+      die Ergebnisse an die Command-Pipe weiterleitet</p>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats -passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/icinga.cmd</pre>
+<p>
+      Auf diese Weise werden die Werte in regelmäßigen Intervallen aktualisiert.</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Beispiel-Graphen</strong></span></p>
+
+  <p>Wir werden beschreiben, was die durch <code class="filename">check_nagiostats</code> erzeugten Graphen bedeuten und wofür sie benutzt werden
+  können...</p>
+
+  <p><span class="bold"><strong>Durchschnittliche Host-/Service-Prüfungslatenz</strong></span></p>
+
+  <div class="figure">
+<a name="id2906733"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_lat.png" alt="Durchschnittliche Host-/Service-Prüfungslatenz"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt die durchschnittlichen Latenzzeiten von Hosts und Services über die Zeit gesehen, getrennt nach aktiven und
+  passiven Prüfungen. Das ist nützlich zum Verständnis von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">Host-Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">Service-Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">Aktiven Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">Passiven Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="tuning.html" title="Icinga für maximale Leistung optimieren">Performance-Tuning</a></p>
+    </li>
+</ul></div>
+
+  <p>Durchgehend hohe Latenzen können ein Hinweis darauf sein, dass eine oder mehrere der folgenden Variablen angepasst werden
+  sollten:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Service-Statistiken</strong></span></p>
+
+  <div class="figure">
+<a name="id2906879"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_svc.png" alt="Service-Statistiken"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt die Werte für die einzelnen Service-Zustände zusammen mit der durchschnittlichen Zahl von geprüften Services an,
+  die aktiv bzw. passiv in der von Ihnen angegebenen Zeitperiode geprüft wurden. Das ist nützlich zum Verständnis von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">Service-Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">Vorausschauenden Service-Abhängigkeitsprüfungen (predictive service dependency
+      checks)</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">Zwischengespeicherten Prüfungen (cached checks)</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung (flap detection)</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Host-Statistiken</strong></span></p>
+
+  <div class="figure">
+<a name="id2906961"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_host.png" alt="Host-Statistiken"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt die Werte für die einzelnen Host-Zustände zusammen mit der durchschnittlichen Zahl von geprüften Hosts an, die
+  aktiv bzw. passiv in der von Ihnen angegebenen Zeitperiode geprüft wurden. Das ist nützlich zum Verständnis von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">Host-Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">Vorausschauenden Host-Abhängigkeitsprüfungen (predictive host dependency checks)</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">Zwischengespeicherten Prüfungen (cached checks)</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung (flap detection)</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Durchschnittliche Ausführungszeiten</strong></span></p>
+
+  <div class="figure">
+<a name="id2907046"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_exec.png" alt="Durchschnittliche Ausführungszeiten"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt die durchschnittlichen Ausführungszeit von Host- und Service-Prüfungen über die Zeit gesehen. Das ist nützlich
+  zum Verständnis von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">Host-Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">Service-Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="tuning.html" title="Icinga für maximale Leistung optimieren">Performance-Tuning</a></p>
+    </li>
+</ul></div>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Um ehrlich zu sein: Wir haben die Graphen ein wenig verändert, bezogen auf die Farben. Gelb ist teilweise schwierig vom
+    Hintergrund zu unterscheiden so dass wir einige Zeilen in der PNP4Nagios-Template-Datei
+    <code class="filename">template.dist/nagiostats.php</code> von <code class="code">$i=0;</code> in <code class="code">$i=1;</code> geändert haben.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Zusätzliche Graphen</strong></span></p>
+
+  <p>Nun ja, wir haben das Template noch ein bisschen mehr verändert, weil das Plugin zwar die Daten liefert, aber keine dazugehörigen
+  Graphen. (Beim Blick in das Template ist es aber sehr anzupassen, falls Sie die folgenden Graphen wirklich benötigen.</p>
+
+  <p><span class="bold"><strong>Externe Befehle</strong></span> (external commands)</p>
+
+  <div class="figure">
+<a name="id2907148"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_extcmd.png" alt="Externe Befehle"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt, wie viele externe Befehle vom Icinga-Daemon über die Zeit gesehen verarbeitet wurden. Solange Sie keine
+  große Anzahl von externen Befehlen verarbeiten (wie z.B. im Falle einer verteilten Überwachungsumgebung), dann kann dieser Graph fast leer
+  sein. Die Überwachung von externen Befehlen kann nützlich sein für das Verständnis der Auswirkung von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">Passiven Prüfungen</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="distributed.html" title="Verteilte Überwachung">Verteilter Überwachung</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">Redundante/Failover-Überwachung</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Puffer für externe Befehle</strong></span> (external command buffers)</p>
+
+  <div class="figure">
+<a name="id2907224"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_cmdbuf.png" alt="Puffer für externe Befehle"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Der Graph zeigt, wie viele Puffer für externe Befehle über die Zeit gesehen benutzt wurden. Wenn die Zahl von benutzten Puffern
+  regelmäßig fast die Zahl von verfügbaren Puffern erreicht, dann ist es wahrscheinlich, dass Sie die Anzahl von verfügbaren Puffern mit
+  Hilfe der Direktive <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a> erhöhen sollten. Jeder
+  Puffer kann genau einen externen Befehl aufnehmen. Puffer werden für die vorübergehende Aufbewahrung von externen Befehlen genutzt, und
+  zwar vom Lesen aus dem <a class="link" href="configmain.html#configmain-command_file">external command file</a> bis zur Verarbeitung durch den
+  IcingaDaemon.</p>
+
+  <p>Wie Sie sehen wird nur ein Puffer genutzt und das ist genau der für die Ergebnisse des check_nagiostats-Plugins.</p>
+
+  <p><span class="bold"><strong>Zwischengespeicherte Host- und Service-Prüfungen</strong></span> (cached host and service checks)</p>
+
+  <div class="figure">
+<a name="id2907272"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_cached.png" alt="Zwischengespeicherte Host- und Service-Prüfungen"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt, wie viele zwischengespeicherte Host- und Service-Prüfungen über die Zeit aufgetreten sind. Das ist nützlich zum
+  Verständnis von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">Zwischengespeicherten Prüfungen (cached checks)</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">Vorausschauenden Host- und Service-Abhängigkeitsprüfungen (predictive host and service
+      dependency checks)</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Durchschnittliche Zustandswechsel</strong></span></p>
+
+  <div class="figure">
+<a name="id2907343"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_state_chg.png" alt="Durchschnittliche Zustandswechsel"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>Dieser Graph zeigt den durchschnittlichen prozentualen Zustandswechsel (ein Maß für die Sprunghaftigkeit) über die Zeit gesehen,
+  unterschieden nach Hosts und Service, die zuletzt aktiv oder passiv geprüft wurden. Das ist nützlich zum Verständnis von:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung (flap detection)</a></p>
+    </li></ul></div>
+
+  <a class="indexterm" name="id2907315"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="icingastats.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Nutzung des Icingastats-Utilitys </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Kapitel 9. Integration mit anderer Software</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

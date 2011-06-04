@@ -1,0 +1,371 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Graphing Performance Info With PNP4Nagios</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
+<link rel="prev" href="icingastats.html" title="Using The Icingastats Utility">
+<link rel="next" href="ch09.html" title="Chapter 9. Integration With Other Software">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Graphing Performance Info With PNP4Nagios</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="icingastats.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch09.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Graphing Performance Info With PNP4Nagios">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="perfgraphs"></a><a name="perf_graphs"></a>Graphing Performance Info With PNP4Nagios</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>The <a class="link" href="icingastats.html" title="Using The Icingastats Utility">icingastats</a> utility allows you to graph various Icinga performance statistics over
+  time using <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a>. This is important because it can help you
+  to:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Ensure Icinga is operating efficiently</p>
+    </li>
+<li class="listitem">
+      <p>Locate problem areas in the monitoring process</p>
+    </li>
+<li class="listitem">
+      <p>Observe the performance impacts of changes in your Icinga configuration</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+
+  <p>PNP4Nagios is one of the most popular addons due to easy installation and little maintenance during operation. The documentation
+  along with further links to download the software can be found at <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">http://docs.pnp4nagios.org/pnp-0.6/start</a>.</p>
+
+  <p><a class="link" href="https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Nagios/check_nagiostats" target="_top">check_nagiostats</a> was
+  published by <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=7773" target="_top">Jochen Bern</a> and will be called
+  via crontab to submit passive check results. Despite its name it can be use for Icinga as well.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>After downloading the plugin and placing it into the plugin directory (e.g. <code class="filename">/usr/local/icinga/libexec</code> if
+      you used the quickstart installation guides) you have to check the values of the configuration section within the script.</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>Most <span class="bold"><strong>important</strong></span> is "<code class="literal">EXEC=</code><code class="filename">/path/to/icingastats</code>" (e.g.
+          <code class="filename">/usr/local/icinga/bin/icingastats</code>) pointing to the <code class="filename">icingastats</code> binary.</p>
+        </li>
+<li class="listitem">
+          <p>Depending on your likings you may want to change the value of <code class="literal">CUMULATE</code> from "AVG" to "MIN" or "MAX",
+          respectively. The setting of <code class="literal">TIMEFRAME</code> influences the timeperiod which will be used for cumulated values in the
+          output of the plugin.</p>
+        </li>
+<li class="listitem">
+          <p>Changing the values of <code class="literal">PASSIVE_EMERGENCY_HOST</code> and <code class="literal">PASSIVE_EMERGENCY_SERVICE</code> shouldn't
+          be necessary because you pass the values as arguments to the script.</p>
+        </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p>Make sure that your object configuration files contain a matching service definition such as</p>
+<pre class="programlisting"> define service{
+    host_name               &lt;the Icinga server&gt;
+    service_description     icingastats # (or something appropriate)
+    active_checks_enabled   0
+    check_command           check_dummy!0
+    ...
+ }</pre>
+<p>Don't forget to restart Icinga after this change.</p>
+    </li>
+<li class="listitem">
+      <p>Create a symbolic link in the templates folder of PNP4Nagios</p>
+<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
+<p>Make
+      sure that <span class="emphasis"><em>icingastats</em></span> (without the extension .php) matches the value you specified for the service description.
+      Blanks in the service description have to be replaced by underscores in the filename (e.g. "Icinga Stats" --&gt;
+      "Icinga_Stats.php")</p>
+    </li>
+<li class="listitem">
+      <p>Add a line to the crontab of the Icinga user which will call the <code class="filename">icingastats</code> binary and submit the
+      results to the command pipe</p>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats -passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/icinga.cmd</pre>
+<p>
+      This way the values are updated in regular intervals.</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Example Graphs</strong></span></p>
+
+  <p>We'll describe what the graphs produced by <code class="filename">check_nagiostats</code> mean and what they can be used for...</p>
+
+  <p><span class="bold"><strong>Average Host / Service Check Latency</strong></span></p>
+
+  <div class="figure">
+<a name="id5758916"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_lat.png" alt="Average Host / Service Check Latency"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows the average latency times of hosts and services over time for both active and passive checks, respectively. Useful
+  for understanding:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="hostchecks.html" title="Host Checks">Host checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="servicechecks.html" title="Service Checks">Service checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="activechecks.html" title="Active Checks">Active checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="tuning.html" title="Tuning Icinga For Maximum Performance">Performance tuning</a></p>
+    </li>
+</ul></div>
+
+  <p>Consistently high latencies can be an indication that one or more of the following variables need tweaking:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Service Statistics</strong></span></p>
+
+  <div class="figure">
+<a name="id5759059"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_svc.png" alt="Service Statistics"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows the values for the several service states along with the average number of services being checked
+  actively/passively within the timeperiod you specified. Useful for understanding:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="servicechecks.html" title="Service Checks">Service checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">Predictive service dependency checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="cachedchecks.html" title="Cached Checks">Cached checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Host Statistics</strong></span></p>
+
+  <div class="figure">
+<a name="id5759070"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_host.png" alt="Host Statistics"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows the values for the several host states along with the average number of hosts being checked actively/passively
+  within the timeperiod you specified. Useful for understanding:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="hostchecks.html" title="Host Checks">Host checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">Predictive host dependency checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="cachedchecks.html" title="Cached Checks">Cached checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Average Execution Times</strong></span></p>
+
+  <div class="figure">
+<a name="id5759209"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_exec.png" alt="Average Execution Times"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows the average execution times of hosts and services over time. Useful for understanding:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="hostchecks.html" title="Host Checks">Host checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="servicechecks.html" title="Service Checks">Service checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="tuning.html" title="Tuning Icinga For Maximum Performance">Performance tuning</a></p>
+    </li>
+</ul></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>To be honest: We tweaked the graphs a bit, meaning the colours. Yellow is sometimes hard to distinguish from the background so we
+    changed some lines in the PNP4Nagios template file <code class="filename">template.dist/nagiostats.php</code> from <code class="code">$i=0;</code> to
+    <code class="code">$i=1;</code>.</p>
+  </td></tr>
+</table></div>
+
+  <p><span class="bold"><strong>Additional graphs</strong></span></p>
+
+  <p>Well, we tweaked the template a bit more because the plugin delivers the data but there aren't appropriate graphs (but looking at
+  the template file it is very easy to add the lines if you really need the following graphs).</p>
+
+  <p><span class="bold"><strong>External Commands</strong></span></p>
+
+  <div class="figure">
+<a name="id5759320"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_extcmd.png" alt="External Commands"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows how may external commands have been processed by the Icinga daemon over time. Unless you're processing a
+  large number of external commands (as in the case with distributed monitoring setups), this graph may appear mostly empty. Monitoring
+  external commands can be useful for understanding the impacts of:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="distributed.html" title="Distributed Monitoring">Distributed monitoring</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">Redundant/failover monitoring</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>External Command Buffers</strong></span></p>
+
+  <div class="figure">
+<a name="id5759400"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_cmdbuf.png" alt="External Command Buffers"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows how many external command buffer slots are in use over time. If the number of used buffers is near the number of
+  available buffers on a regular basis, it is likely you need to increase the available <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a>. Each buffer slot can hold one external command.
+  Buffers are used for temporarily holding external commands from the time they are read from the <a class="link" href="configmain.html#configmain-command_file">external command file</a> to the time they are processed by the Icinga daemon.</p>
+
+  <p>As you can see just one buffer is used and that's the one for the graphs as mentioned above.</p>
+
+  <p><span class="bold"><strong>Cached Host and Service Checks</strong></span></p>
+
+  <div class="figure">
+<a name="id5759451"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_cached.png" alt="Cached Host and Service Checks"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows how may cached host and service checks have occurred over time. Useful for understanding:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="cachedchecks.html" title="Cached Checks">Cached checks</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">Predictive host and service dependency checks</a></p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Average State Changes</strong></span></p>
+
+  <div class="figure">
+<a name="id5759513"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
+<div class="figure-contents">
+    
+
+    <div class="mediaobject"><img src="../images/perfdata_state_chg.png" alt="Average State Changes"></div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p>This graph shows the average percent state change (a measure of volatility) over time, broken down by hosts and services that were
+  last checked either actively or passively. Useful for understanding:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
+    </li></ul></div>
+
+  <a class="indexterm" name="id5759548"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="icingastats.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch09.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Using The Icingastats Utility </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 9. Integration With Other Software</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

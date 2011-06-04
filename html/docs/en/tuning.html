@@ -41,10 +41,10 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Graph performance statistics with MRTG</strong></span> . In order to keep track of how well your
+      <p><span class="bold"><strong>Graph performance statistics with PNP4Nagios</strong></span> . In order to keep track of how well your
       Icinga installation handles load over time and how your configuration changes affect it, you should be graphing
-      several important statistics with MRTG. This is really, really, really useful when it comes to tuning the performance of a
-      Icinga installation. Really. Information on how to do this can be found <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">here</a>.</p>
+      several important statistics with PNP4Nagios. This is really, really, really useful when it comes to tuning the performance of a
+      Icinga installation. Really. Information on how to do this can be found <a class="link" href="perfgraphs.html" title="Graphing Performance Info With PNP4Nagios">here</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Use large installation tweaks</strong></span> . Enabling the <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a> option may provide you with better
@@ -68,12 +68,12 @@
       amount of time the Icinga daemon can spend processing the results of host and service checks before moving on to
       other things - like executing new host and service checks. Too high of a value can result in large latencies for your host
       and service checks. Too low of a value can have the same effect. If you're experiencing high latencies, adjust this variable
-      and see what effect it has. Again, you should be <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">graphing statistics</a> in order to make this
+      and see what effect it has. Again, you should be <a class="link" href="perfgraphs.html" title="Graphing Performance Info With PNP4Nagios">graphing statistics</a> in order to make this
       determination.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Adjust buffer slots</strong></span> . You may need to adjust the value of the <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external_command_buffer_slots</a> option. Graphing buffer slot
-      statistics with <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">MRTG</a> (see above) is critical in determining what values you should use for
+      statistics with <a class="link" href="perfgraphs.html" title="Graphing Performance Info With PNP4Nagios">PNP4Nagios</a> (see above) is critical in determining what values you should use for
       this option.</p>
     </li>
 <li class="listitem">
@@ -153,8 +153,8 @@
       command file</a> (by a separate thread) before they are processed by the Icinga daemon. If your Icinga
       daemon is receiving a lot of passive checks or external commands, you could end up in a situation where the buffers are
       always full. This results in child processes (external scripts, NSCA daemon, etc.) blocking when they attempt to write to
-      the external command file. We would highly recommend that you graph external command buffer slot usage using MRTG and the
-      nagiostats utility as described <a class="link" href="mrtggraphs.html" title="Graphing Performance Info With MRTG">here</a>, so you understand the typical external command
+      the external command file. We would highly recommend that you graph external command buffer slot usage using PNP4Nagios and the
+      nagiostats utility as described <a class="link" href="perfgraphs.html" title="Graphing Performance Info With PNP4Nagios">here</a>, so you understand the typical external command
       buffer usage of your Icinga installation.</p>
     </li>
 <li class="listitem">
@@ -169,7 +169,7 @@
       new IDE drives.</p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1531846"></a>
+  <a class="indexterm" name="id5757681"></a>
 </div>
 <div class="navfooter">
 <hr>
