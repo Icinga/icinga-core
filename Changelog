@@ -14,6 +14,9 @@ FIXES
 * classic ui: fixing tac.cgi header problems with counting and adding pending and descritptions #1505 #1506 #1508
 * classic ui: corrected behaviour of pending states in tac header #1508
 
+* install: fix event handlers cmd file location in contrib #1501
+
+
 1.4.0 - 11/05/2011
 
 ENHANCEMENTS

@@ -1,1 +1,5 @@
 submit_check_result
+disable_active_service_checks
+disable_notifications
+enable_active_service_checks
+enable_notifications
