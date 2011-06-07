@@ -13,6 +13,8 @@ FIXES
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 
+* install: fix event handlers cmd file location in contrib #1501
+
 
 1.4.0 - 11/05/2011
 
