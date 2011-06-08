@@ -11,8 +11,8 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.4.0
-Release: 3%{?dist}
+Version: 1.4.1
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: http://www.icinga.org/
@@ -242,6 +242,9 @@ fi
 
 
 %changelog
+* Sun Jun 05 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.1-1
+- update to 1.4.1
+
 * Wed May 18 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.0-3
 - undo provides nagios version
 

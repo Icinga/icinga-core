@@ -214,6 +214,7 @@
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils CPPFLAGS=-I/usr/local/include \
+    CFLAGS="-I/usr/local/include -L/usr/local/lib" \
     --with-dbi-lib=/usr/local/lib --with-dbi-inc=/usr/local/include</pre>
 
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -224,6 +225,24 @@
 <tr><td align="left" valign="top">
     <p>Appending <span class="emphasis"><em>CPPFLAGS=-I/usr/local/include</em></span> is important for the IDOUtils and the broker modul
     respectively.</p>
+  </td></tr>
+</table></div>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>You should include <code class="literal">CFLAGS=..."</code> like specified above. Otherwise you might get the following lines in
+    <code class="filename">icinga.log</code>:
+    </p>
+<pre class="screen"> Error: Module &#8216;/usr/local/icinga/bin/idomod.o&#8217; is using an old or unspecified version of the event broker API. Module will
+ be unloaded.
+ Event broker module &#8216;/usr/local/icinga/bin/idomod.o&#8217; deinitialized successfully.</pre>
+<p>
+    More details on this error can be found <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top">
+    here</a>.
+    </p>
   </td></tr>
 </table></div>
 
@@ -514,7 +533,7 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id1429531"></a>
+  <a class="indexterm" name="id5600904"></a>
 </div>
 <div class="navfooter">
 <hr>

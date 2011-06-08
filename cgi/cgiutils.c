@@ -132,6 +132,7 @@ int		color_transparency_index_b=255;
 int		status_show_long_plugin_output=FALSE;
 int		tac_show_only_hard_state=FALSE;
 int		show_tac_header=TRUE;
+int		show_tac_header_pending=TRUE;
 int		showlog_initial_states=TRUE;
 int		showlog_current_states=TRUE;
 int		tab_friendly_titles=FALSE;
@@ -557,6 +558,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"show_tac_header"))
 			show_tac_header=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"show_tac_header_pending"))
+			show_tac_header_pending=(atoi(val)>0)?TRUE:FALSE;
 
 		else if(!strcmp(var,"showlog_initial_state") || !strcmp(var,"showlog_initial_states"))
 			showlog_initial_states=(atoi(val)>0)?TRUE:FALSE;

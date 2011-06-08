@@ -450,6 +450,16 @@ tac_show_only_hard_state=0
 show_tac_header=1
 
 
+# SHOW PENDING IN TAC HEADER
+# This options enables the display of pending counts in
+# the tac header. If your display is less than 1024x768
+# and this is enabled, the tactical information may not
+# fit well in the top frame.
+# By default it is enabled.
+
+show_tac_header_pending=1
+
+
 
 # SHOW INITIAL STATES IN SHOWLOG OPTION
 # This options allows you to specify if initial states

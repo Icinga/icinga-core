@@ -8273,7 +8273,13 @@ fi
 
 
 perl subst $srcdir/include/locations.h
+
 perl subst $srcdir/contrib/eventhandlers/submit_check_result
+perl subst $srcdir/contrib/eventhandlers/disable_active_service_checks
+perl subst $srcdir/contrib/eventhandlers/disable_notifications
+perl subst $srcdir/contrib/eventhandlers/enable_active_service_checks
+perl subst $srcdir/contrib/eventhandlers/enable_notifications
+
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
 
