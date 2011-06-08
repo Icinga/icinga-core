@@ -83,40 +83,6 @@ div.tacheader-overall-status-item {
 	padding: 3px;
 }
 
-div.tacheader-status-ok {
-	background-color: #00CC33;
-}
-
-div.tacheader-status-warning {
-	background-color: #FFA500;
-}
-
-div.tacheader-status-warning-passive {
-        border: 1px #FFA500 solid;
-	background-color: #FFBF4F;
-}
-
-div.tacheader-status-warning-acknowledged {
-        border: 1px #FFA500 solid;
-        color: #FFA500;
-        font-weight: bolder;
-}
-
-div.tacheader-status-critical {
-	background-color: #FF3300;
-}
-
-div.tacheader-status-critical-passive {
-        border: 1px #FF3300 solid;
-	background-color: #F5A9A9;
-}
-
-div.tacheader-status-critical-acknowledged {
-        border: 1px #FF3300 solid;
-        color: #FF3300;
-        font-weight: bolder;
-}
-
 div.tacheader-status-up {
 	background-color: #00CC33;
 }
@@ -125,12 +91,12 @@ div.tacheader-status-down {
 	background-color: #FF3300;
 }
 
-div.tacheader-status-down-passive {
+div.tacheader-status-down-acknowledged {
         border: 1px #FF3300 solid;
 	background-color: #F5A9A9;
 }
 
-div.tacheader-status-down-acknowledged {
+div.tacheader-status-down-handled {
         border: 1px #FF3300 solid;
         color: #FF3300;
         font-weight: bolder;
@@ -140,14 +106,48 @@ div.tacheader-status-unreachable {
 	background-color: #E066FF;
 }
 
-div.tacheader-status-unreachable-passive {
+div.tacheader-status-unreachable-acknowledged {
         border: 1px #E066FF solid;
 	background-color: #E68BFF;
 }
 
-div.tacheader-status-unreachable-acknowledged {
+div.tacheader-status-unreachable-handled {
         border: 1px #E066FF solid;
         color: #E066FF;
+        font-weight: bolder;
+}
+
+div.tacheader-status-ok {
+	background-color: #00CC33;
+}
+
+div.tacheader-status-warning {
+	background-color: #FFA500;
+}
+
+div.tacheader-status-warning-acknowledged {
+        border: 1px #FFA500 solid;
+	background-color: #FFBF4F;
+}
+
+div.tacheader-status-warning-handled {
+        border: 1px #FFA500 solid;
+        color: #FFA500;
+        font-weight: bolder;
+}
+
+div.tacheader-status-critical {
+	background-color: #FF3300;
+}
+
+div.tacheader-status-critical-acknowledged {
+        border: 1px #FF3300 solid;
+	background-color: #F5A9A9;
+}
+
+div.tacheader-status-critical-handled {
+        border: 1px #FF3300 solid;
+        color: #FF3300;
         font-weight: bolder;
 }
 
@@ -155,15 +155,19 @@ div.tacheader-status-unknown {
 	background-color: #E066FF;
 }
 
-div.tacheader-status-unknown-passive {
+div.tacheader-status-unknown-acknowledged {
         border: 1px #E066FF solid;
 	background-color: #E68BFF;
 }
 
-div.tacheader-status-unknown-acknowledged {
+div.tacheader-status-unknown-handled {
         border: 1px #E066FF solid;
         color: #E066FF;
         font-weight: bolder;
+}
+
+div.tacheader-status-pending {
+	background-color: #51BCD7;
 }
 
 table.tacheader-monitor-performance-container {
@@ -171,15 +175,6 @@ table.tacheader-monitor-performance-container {
 	margin: 6px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-}
-
-div.tacheader-status-pending {
-	background-color: #51BCD7;
-}
-
-div.tacheader-status-pending-passive {
-	border: 1px #51BCD7 solid;
-	background-color: #438090;
 }
 
 .tacheader-monitor-performance-container a {

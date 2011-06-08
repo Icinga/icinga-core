@@ -68,6 +68,8 @@ extern int		event_profiling_enabled;
 extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
+extern int              suppress_maintenance_downtime;
+
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
@@ -90,7 +92,6 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern servicedependency *servicedependency_list;
 extern hostdependency *hostdependency_list;
-
 
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
@@ -1298,14 +1299,26 @@ void show_host_info(void){
 		snprintf(status_age,sizeof(status_age)-1,"%2dd %2dh %2dm %2ds",days,hours,minutes,seconds);
 	status_age[sizeof(status_age)-1]='\x0';
 
+	/* first, we mark and color it as maintenance if that is preferred */
+	if (suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0){
+		if(temp_hoststatus->status==HOST_UP)
+			strcpy(state_string,"UP (MAINTENANCE)");
+		else if(temp_hoststatus->status==HOST_DOWN)
+			strcpy(state_string,"DOWN (MAINTENANCE)");
+		else if(temp_hoststatus->status==HOST_UNREACHABLE)
+			strcpy(state_string,"UNREACHABLE (MAINTENANCE)");
+		else //catch any other state (just in case)
+			strcpy(state_string,"MAINTENANCE");
+		bg_class="hostDOWNTIME";
 
-	if(temp_hoststatus->status==HOST_UP){
+	/* otherwise we mark and color it with its appropriate state */
+	} else if (temp_hoststatus->status==HOST_UP){
 		strcpy(state_string,"UP");
 		bg_class="hostUP";
-	}else if(temp_hoststatus->status==HOST_DOWN){
+	} else if (temp_hoststatus->status==HOST_DOWN){
 		strcpy(state_string,"DOWN");
 		bg_class="hostDOWN";
-	}else if(temp_hoststatus->status==HOST_UNREACHABLE){
+	} else if (temp_hoststatus->status==HOST_UNREACHABLE){
 		strcpy(state_string,"UNREACHABLE");
 		bg_class="hostUNREACHABLE";
 	}
@@ -1334,12 +1347,18 @@ void show_host_info(void){
 				printf("\"performance_data\": \"%s\",\n",json_encode(temp_hoststatus->perf_data));
 			printf("\"current_attempt\": %d,\n",temp_hoststatus->current_attempt);
 			printf("\"max_attempts\": %d,\n",temp_hoststatus->max_attempts);
-			printf("\"check_type\": \"%s\",\n",(temp_hoststatus->check_type==HOST_CHECK_ACTIVE)?"active":"passive");
+
+			if (temp_hoststatus->checks_enabled==TRUE)
+				printf("\"check_type\": \"active\",\n");
+			else if(temp_hoststatus->accept_passive_host_checks==TRUE)
+				printf("\"check_type\": \"passive\",\n");
+			else
+				printf("\"check_type\": \"disabled\",\n");
 
 			get_time_string(&temp_hoststatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			printf("\"last_check_time\": \"%s\",\n",date_time);
 
-			if(temp_hoststatus->check_type==HOST_CHECK_ACTIVE)
+			if (temp_hoststatus->checks_enabled==TRUE)
 				printf("\"check_latency\": %.3f,\n",temp_hoststatus->latency);
 			else
 				printf("\"check_latency\": null,\n");
@@ -1434,13 +1453,15 @@ void show_host_info(void){
 			get_time_string(&temp_hoststatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			printf("<TR><TD CLASS='dataVar'>Last Check Time:</td><td CLASS='dataVal'>%s</td></tr>\n",date_time);
 
-			if (temp_hoststatus->check_type==HOST_CHECK_ACTIVE)
-				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n",
-					CONFIG_CGI,url_encode(temp_host->host_check_command));
-			else printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
+			if (temp_hoststatus->checks_enabled==TRUE)
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n",CONFIG_CGI,url_encode(temp_host->host_check_command));
+			else if (temp_hoststatus->accept_passive_host_checks==TRUE) 
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
+			else
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>DISABLED</TD></TR>\n");
 
 			printf("<TR><TD CLASS='dataVar' NOWRAP>Check Latency / Duration:</TD><TD CLASS='dataVal'>");
-			if(temp_hoststatus->check_type==HOST_CHECK_ACTIVE)
+			if (temp_hoststatus->checks_enabled==TRUE)
 				printf("%.3f",temp_hoststatus->latency);
 			else
 				printf("N/A");
@@ -1682,16 +1703,22 @@ void show_service_info(void){
 		snprintf(state_duration,sizeof(state_duration)-1,"%2dd %2dh %2dm %2ds%s",days,hours,minutes,seconds,(temp_svcstatus->last_state_change==(time_t)0)?"+":"");
 	state_duration[sizeof(state_duration)-1]='\x0';
 
-	if(temp_svcstatus->status==SERVICE_OK){
+	/* first, we mark and color it as maintenance if that is preferred */
+	if (suppress_maintenance_downtime==TRUE && temp_svcstatus->scheduled_downtime_depth>0){
+		strcpy(state_string,"MAINTENANCE");
+		bg_class="serviceDOWNTIME";
+
+	/* otherwise we mark and color it with its appropriate state */
+	} else if (temp_svcstatus->status==SERVICE_OK){
 		strcpy(state_string,"OK");
 		bg_class="serviceOK";
-	}else if(temp_svcstatus->status==SERVICE_WARNING){
+	} else if (temp_svcstatus->status==SERVICE_WARNING){
 		strcpy(state_string,"WARNING");
 		bg_class="serviceWARNING";
-	}else if(temp_svcstatus->status==SERVICE_CRITICAL){
+	} else if (temp_svcstatus->status==SERVICE_CRITICAL){
 		strcpy(state_string,"CRITICAL");
 		bg_class="serviceCRITICAL";
-	}else{
+	} else {
 		strcpy(state_string,"UNKNOWN");
 		bg_class="serviceUNKNOWN";
 	}
@@ -1735,12 +1762,18 @@ void show_service_info(void){
 				printf("\"performance_data\": \"%s\",\n",json_encode(temp_svcstatus->perf_data));
 			printf("\"current_attempt\": %d,\n",temp_svcstatus->current_attempt);
 			printf("\"max_attempts\": %d,\n",temp_svcstatus->max_attempts);
-			printf("\"check_type\": \"%s\",\n",(temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)?"active":"passive");
+
+			if(temp_svcstatus->checks_enabled==TRUE)
+				printf("\"check_type\": \"active\",\n");
+			else if(temp_svcstatus->accept_passive_service_checks==TRUE)
+				printf("\"check_type\": \"passive\",\n");
+			else
+				printf("\"check_type\": \"disabled\",\n");
 
 			get_time_string(&temp_svcstatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			printf("\"last_check_time\": \"%s\",\n",date_time);
 
-			if(temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)
+			if(temp_svcstatus->checks_enabled==TRUE)
 				printf("\"check_latency\": %.3f,\n",temp_svcstatus->latency);
 			else
 				printf("\"check_latency\": null,\n");
@@ -1835,13 +1868,16 @@ void show_service_info(void){
 			get_time_string(&temp_svcstatus->last_check,date_time,(int)sizeof(date_time),SHORT_DATE_TIME);
 			printf("<TR><TD CLASS='dataVar'>Last Check Time:</TD><TD CLASS='dataVal'>%s</TD></TR>\n",date_time);
 
-			if (temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)
+			if (temp_svcstatus->checks_enabled==TRUE)
 				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n",
 					CONFIG_CGI,url_encode(temp_service->service_check_command));
-			else printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
+			else if (temp_svcstatus->accept_passive_service_checks==TRUE)
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
+			else
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>DISABLED</TD></TR>\n");
 
 			printf("<TR><TD CLASS='dataVar' NOWRAP>Check Latency / Duration:</TD><TD CLASS='dataVal'>");
-			if(temp_svcstatus->check_type==SERVICE_CHECK_ACTIVE)
+			if(temp_svcstatus->checks_enabled==TRUE)
 				printf("%.3f",temp_svcstatus->latency);
 			else
 				printf("N/A");
@@ -2317,7 +2353,7 @@ void show_performance_data(void){
 			continue;
 
 		/* is this an active or passive check? */
-		if(temp_servicestatus->check_type==SERVICE_CHECK_ACTIVE){
+		if(temp_servicestatus->checks_enabled==TRUE){
 
 			total_active_service_checks++;
 
@@ -2363,9 +2399,8 @@ void show_performance_data(void){
 				active_service_checks_start++;
 			if(temp_servicestatus->last_check!=(time_t)0)
 				active_service_checks_ever++;
-		        }
 
-		else{
+		}else if(temp_servicestatus->accept_passive_service_checks==TRUE){
 			total_passive_service_checks++;
 
 			total_service_percent_change_b+=temp_servicestatus->percent_state_change;
@@ -2390,8 +2425,8 @@ void show_performance_data(void){
 				passive_service_checks_start++;
 			if(temp_servicestatus->last_check!=(time_t)0)
 				passive_service_checks_ever++;
-		        }
-	        }
+		}
+	}
 
 	/* check all hosts */
 	for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
