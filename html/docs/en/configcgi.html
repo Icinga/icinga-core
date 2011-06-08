@@ -217,6 +217,9 @@
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-show_tac_header">Show Header with Tactical Information</a></p>
     </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-show_tac_header_pending">Show Header with Pending Counts</a></p>
+    </li>
 </ul></div>
 
   <p><a name="configcgi-main_cfg_file"></a> <span class="bold"><strong>Main Configuration File Location</strong></span></p>
@@ -1156,7 +1159,7 @@
 </table>
   </div>
 
-  <p>This options allows you to specify if the tactical overview should only show hard states on hosts and services. If you set this
+  <p>This option allows you to specify if the tactical overview should only show hard states on hosts and services. If you set this
   option to 1 the tactical overview shows only states on hosts and services. By default disabled, all states will be shown.</p>
 
   <p><a name="configcgi-enable_splunk_integration"></a> <span class="bold"><strong>Splunk Integration Option</strong></span></p>
@@ -1791,7 +1794,7 @@
   colouring as active checks.</p>
 
   <div class="figure">
-<a name="id1475708"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<a name="id5647362"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
 <div class="figure-contents">
     
 
@@ -1810,83 +1813,120 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1475733"></a>
+  <p><a name="configcgi-show_tac_header_pending"></a> <span class="bold"><strong>Show header including pending counts</strong></span></p>
 
-  <a class="indexterm" name="id1475719"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>show_tac_header_pending=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_tac_header_pending=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id1475757"></a>
+  <p>This option enables the display of pending counts in the tac header. If your display is less than 1024x768 and this is enabled,
+  the tactical information may not fit well in the top frame. By default it is disabled.</p>
 
-  <a class="indexterm" name="id1475770"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.4.1</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id1475784"></a>
+  <a class="indexterm" name="id5647504"></a>
 
-  <a class="indexterm" name="id1475797"></a>
+  <a class="indexterm" name="id5647476"></a>
 
-  <a class="indexterm" name="id1475810"></a>
+  <a class="indexterm" name="id5647524"></a>
 
-  <a class="indexterm" name="id1475819"></a>
+  <a class="indexterm" name="id5647537"></a>
 
-  <a class="indexterm" name="id1475838"></a>
+  <a class="indexterm" name="id5647551"></a>
 
-  <a class="indexterm" name="id1475852"></a>
+  <a class="indexterm" name="id5647564"></a>
 
-  <a class="indexterm" name="id1475866"></a>
+  <a class="indexterm" name="id5647579"></a>
 
-  <a class="indexterm" name="id1475880"></a>
+  <a class="indexterm" name="id5647592"></a>
 
-  <a class="indexterm" name="id1475888"></a>
+  <a class="indexterm" name="id5647606"></a>
 
-  <a class="indexterm" name="id1475907"></a>
+  <a class="indexterm" name="id5647620"></a>
 
-  <a class="indexterm" name="id1475921"></a>
+  <a class="indexterm" name="id5647607"></a>
 
-  <a class="indexterm" name="id1475930"></a>
+  <a class="indexterm" name="id5647650"></a>
 
-  <a class="indexterm" name="id1475944"></a>
+  <a class="indexterm" name="id5647661"></a>
 
-  <a class="indexterm" name="id1475962"></a>
+  <a class="indexterm" name="id5647635"></a>
 
-  <a class="indexterm" name="id1475976"></a>
+  <a class="indexterm" name="id5647662"></a>
 
-  <a class="indexterm" name="id1475990"></a>
+  <a class="indexterm" name="id5647702"></a>
 
-  <a class="indexterm" name="id1476004"></a>
+  <a class="indexterm" name="id5647715"></a>
 
-  <a class="indexterm" name="id1476017"></a>
+  <a class="indexterm" name="id5647730"></a>
 
-  <a class="indexterm" name="id1476031"></a>
+  <a class="indexterm" name="id5647716"></a>
 
-  <a class="indexterm" name="id1476044"></a>
+  <a class="indexterm" name="id5647758"></a>
 
-  <a class="indexterm" name="id1476053"></a>
+  <a class="indexterm" name="id5647744"></a>
 
-  <a class="indexterm" name="id1476071"></a>
+  <a class="indexterm" name="id5647786"></a>
 
-  <a class="indexterm" name="id1476086"></a>
+  <a class="indexterm" name="id5647799"></a>
 
-  <a class="indexterm" name="id1476100"></a>
+  <a class="indexterm" name="id5647813"></a>
 
-  <a class="indexterm" name="id1476113"></a>
+  <a class="indexterm" name="id5647827"></a>
 
-  <a class="indexterm" name="id1476127"></a>
+  <a class="indexterm" name="id5647841"></a>
 
-  <a class="indexterm" name="id1476141"></a>
+  <a class="indexterm" name="id5647855"></a>
 
-  <a class="indexterm" name="id1476156"></a>
+  <a class="indexterm" name="id5647866"></a>
 
-  <a class="indexterm" name="id1476166"></a>
+  <a class="indexterm" name="id5647867"></a>
 
-  <a class="indexterm" name="id1476180"></a>
+  <a class="indexterm" name="id5647893"></a>
 
-  <a class="indexterm" name="id1476193"></a>
+  <a class="indexterm" name="id5647909"></a>
 
-  <a class="indexterm" name="id1476206"></a>
+  <a class="indexterm" name="id5647896"></a>
 
-  <a class="indexterm" name="id1476220"></a>
+  <a class="indexterm" name="id5647924"></a>
 
-  <a class="indexterm" name="id1476233"></a>
+  <a class="indexterm" name="id5647946"></a>
 
-  <a class="indexterm" name="id1476248"></a>
+  <a class="indexterm" name="id5647959"></a>
+
+  <a class="indexterm" name="id5647947"></a>
+
+  <a class="indexterm" name="id5647961"></a>
+
+  <a class="indexterm" name="id5647975"></a>
+
+  <a class="indexterm" name="id5648016"></a>
+
+  <a class="indexterm" name="id5648028"></a>
 </div>
 <div class="navfooter">
 <hr>

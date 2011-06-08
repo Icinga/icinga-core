@@ -220,7 +220,8 @@
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
-    --enable-idoutils CPPFLAGS=-I/usr/local/include
+    --enable-idoutils CPPFLAGS=-I/usr/local/include \
+    CFLAGS="-I/usr/local/include -L/usr/local/lib" \
     --with-dbi-lib=/usr/local/lib --with-dbi-inc=/usr/local/include</pre>
 
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -233,6 +234,25 @@
     Broker-Modul.</p>
   </td></tr>
 </table></div>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Sie sollten <code class="literal">CFLAGS=..."</code> wie oben angegeben benutzen. Anderenfalls finden Sie ggf. später folgende Zeilen in
+    <code class="filename">icinga.log</code>:
+    </p>
+<pre class="screen"> Error: Module &#8216;/usr/local/icinga/bin/idomod.o&#8217; is using an old or unspecified version of the event broker API. Module will
+ be unloaded.
+ Event broker module &#8216;/usr/local/icinga/bin/idomod.o&#8217; deinitialized successfully.</pre>
+<p>
+    Mehr Informationen zu diesem Fehler finden Sie <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top">
+    hier</a>.
+    </p>
+  </td></tr>
+</table></div>
+
 
   <p><span class="bold"><strong>Mit SSL-Verschlüsselung:</strong></span></p>
 
@@ -511,7 +531,7 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id1459921"></a>
+  <a class="indexterm" name="id5674647"></a>
 </div>
 <div class="navfooter">
 <hr>
