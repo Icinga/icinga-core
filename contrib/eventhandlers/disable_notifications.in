@@ -1,9 +1,7 @@
 #!/bin/sh
 
 # Write a command to the Nagios command file to cause
-# it to disable active service checks.  This can be
-# referred to as 'standby' mode in a redundant monitoring
-# environment.
+# it to disable host and service notifications
 
 # Notes: 
 # 1) This script is not intended to be used as an 
@@ -16,11 +14,11 @@
 
 printfcmd="/usr/bin/printf"
 
-CommandFile="/usr/local/nagios/var/rw/nagios.cmd"
+CommandFile="@EXTCMDFILEDIR@/icinga.cmd"
 
 # get the current date/time in seconds since UNIX epoch
 datetime=`date +%s`
 
 # pipe the command to the command file
-`$printfcmd "[%i] STOP_EXECUTING_SVC_CHECKS\n" $datetime >> $CommandFile`
+`$printfcmd "[%i] DISABLE_NOTIFICATIONS;%i\n" $datetime $datetime >> $CommandFile`
 

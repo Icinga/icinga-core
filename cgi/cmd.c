@@ -60,6 +60,7 @@ extern int  daemon_check;
 
 extern int enforce_comments_on_actions;
 extern int date_format;
+extern int use_logging;
 
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
@@ -2810,7 +2811,6 @@ int commit_command(int cmd){
 
 int write_command_to_file(char *cmd){
 	char *buffer;
-	char *buffer2;
 	char *ip_address;
 	int dummy;
 	char *p;
@@ -2847,26 +2847,31 @@ int write_command_to_file(char *cmd){
 		return ERROR;
 	}
 
-	/* get remote address */
-	ip_address=strdup(getenv("REMOTE_ADDR"));
+	if(use_logging==TRUE) {
+		// find closing bracket in cmd line
+		p = strchr(cmd, ']');
+		// if found get everything after closing bracket
+		if (p!=NULL)
+			p+=2;
+		else	// get complete command line
+			p=&cmd[0];
 
-	/* write command to cgi log */
-	dummy=asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address");
+		/* get remote address */
+		ip_address=strdup(getenv("REMOTE_ADDR"));
 
-	p = index(cmd, ']');
-	if (p!=NULL)
-		p+=2;
-	else
-		p=&cmd[0];
+		/* construct log entry */
+		dummy=asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",p);
 
-	dummy=asprintf(&buffer2,"%s%s",buffer,p);
-
-	write_to_cgi_log(buffer2);
-
-	/* log comments if forced */
-	if(enforce_comments_on_actions==TRUE) {
-		dummy=asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
+		/* write command to cgi log */
 		write_to_cgi_log(buffer);
+
+		/* log comments if forced */
+		if(enforce_comments_on_actions==TRUE) {
+			my_free(buffer);
+			dummy=asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
+			write_to_cgi_log(buffer);
+		}
+		my_free(buffer);
 	}
 
 	/* write the command to file */
