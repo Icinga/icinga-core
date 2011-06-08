@@ -112,7 +112,7 @@ void print_expand_input(int type){
 	else if (type==DISPLAY_HOSTESCALATIONS){	seldesc=" Escalations for Host";	}
 	printf("<tr><td align=left class='reportSelectSubTitle'>Show Only%s:</td></tr>\n",seldesc);
 	printf("<tr><td align=left class='reportSelectItem'><input type='text' name='expand'\n");
-	printf("value='%s'>",html_encode(to_expand,FALSE));
+	printf("value='%s'>",escape_string(to_expand));
 }
 
 int main(void){
@@ -429,7 +429,7 @@ int process_cgivars(void){
 				error=TRUE;
 				break;
 			}
-			strncpy(to_expand,escape_string(variables[x]),MAX_COMMAND_BUFFER);
+			strncpy(to_expand,variables[x],MAX_COMMAND_BUFFER);
 			to_expand[MAX_COMMAND_BUFFER-1]='\0';
 		}
 
@@ -516,7 +516,7 @@ void display_hosts(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P><DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -1076,7 +1076,7 @@ void display_hostgroups(void){
 		printf("%sAction URL%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host Group%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -1209,7 +1209,7 @@ void display_servicegroups(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service Group%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -1348,7 +1348,7 @@ void display_contacts(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Contact%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -1629,7 +1629,7 @@ void display_contactgroups(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Contact Group%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -1771,7 +1771,7 @@ void display_services(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":"s Named or on Host "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":"s Named or on Host "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -2314,7 +2314,7 @@ void display_timeperiods(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Time Period%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -2591,7 +2591,7 @@ void display_commands(void){
 		printf("\n");
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P><DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -2664,7 +2664,7 @@ void display_servicedependencies(void){
 		printf("%sDependency Failure Options%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service Dependencie%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":"s Involving Host "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":"s Involving Host "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -2819,7 +2819,7 @@ void display_serviceescalations(void){
 		printf("%sEscalation Options%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service Escalation%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":"s on Host "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":"s on Host "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -3067,7 +3067,7 @@ void display_hostdependencies(void){
 		printf("%sDependency Failure Options%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host Dependencie%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":"s Involving Host "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":"s Involving Host "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -3202,7 +3202,7 @@ void display_hostescalations(void){
 		printf("%sEscalation Options%s\n",csv_data_enclosure,csv_data_enclosure);
 	} else {
 		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host Escalation%s%s</DIV></P>\n",
-			(*to_expand=='\0'?"s":"s for Host "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+			(*to_expand=='\0'?"s":"s for Host "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
@@ -3421,7 +3421,7 @@ void display_modules(void){
                 printf("\n");
         } else {
                 printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Module%s%s</DIV></P>\n",
-                        (*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":html_encode(to_expand,FALSE)));
+                        (*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
                 printf("<P><DIV ALIGN=CENTER>\n");
                 printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -3548,9 +3548,9 @@ void display_command_expansion(void){
 	if ((*to_expand)!='\0'){
 		arg_count[0]=0;
 
-		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'>%s",command_args[0]);
+		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'>%s",escape_string(command_args[0]));
 		for (i=1;(i<MAX_COMMAND_ARGUMENTS)&&command_args[i];i++)
-			printf("!<FONT\n   COLOR='%s'>%s</FONT>",hash_color(i),command_args[i]);
+			printf("!<FONT\n   COLOR='%s'>%s</FONT>",hash_color(i),escape_string(command_args[i]));
 		printf("\n</TD></TR>\n");
 
 		/* check all commands */
@@ -3607,7 +3607,7 @@ void display_command_expansion(void){
 								if (command_args[i]){
 									if (*(command_args[i])!='\0') printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
 										hash_color(i),((lead_space[i]>0)||(trail_space[i]>0)?"<U>&zwj;":""),
-										html_encode(command_args[i],FALSE),((lead_space[i]>0)||(trail_space[i]>0)?"&zwj;</U>":""));
+										escape_string(command_args[i]),((lead_space[i]>0)||(trail_space[i]>0)?"&zwj;</U>":""));
 									else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
 									}
 								else printf("<FONT COLOR='#0000FF'>(undefined)</FONT>");
@@ -3632,13 +3632,13 @@ void display_command_expansion(void){
 					if (arg_count[i]==0){
 						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#FF0000'>unused:</FONT></TD>\n",bg_class,bg_class);
 						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='%s'>%s%s%s</FONT></TD></TR>\n",bg_class,i,hash_color(i),
-							((lead_space[i]>0)||(trail_space[i]>0)?"<U>&zwj;":""),html_encode(command_args[i],FALSE),
+							((lead_space[i]>0)||(trail_space[i]>0)?"<U>&zwj;":""),escape_string(command_args[i]),
 							((lead_space[i]>0)||(trail_space[i]>0)?"&zwj;</U>":""));
 						}
 					else if (arg_count[i]>1){
 						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'>used %u x:</TD>\n",bg_class,bg_class,i);
 						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='%s'>%s%s%s</FONT></TD></TR>\n",bg_class,i,hash_color(i),
-							((lead_space[i]>0)||(trail_space[i]>0)?"<U>&zwj;":""),html_encode(command_args[i],FALSE),
+							((lead_space[i]>0)||(trail_space[i]>0)?"<U>&zwj;":""),escape_string(command_args[i]),
 							((lead_space[i]>0)||(trail_space[i]>0)?"&zwj;</U>":""));
 						}
 					if ((lead_space[i]>0)||(trail_space[i]>0)){
@@ -3673,13 +3673,13 @@ void display_command_expansion(void){
 			if (!arg_count[0]){
 				printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd' ALIGN='right'><FONT\n");
 				printf("COLOR='#FF0000'>Error:</FONT></TD><TD CLASS='dataOdd'><FONT COLOR='#FF0000'>No\n");
-				printf("command &quot;%s&quot; found</FONT></TD></TR>\n",html_encode(command_args[0],FALSE));
+				printf("command &quot;%s&quot; found</FONT></TD></TR>\n",escape_string(command_args[0]));
 			}
 	}
 
 	printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'><FORM\n");
 	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'><INPUT\n",CONFIG_CGI);
-	printf("TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n",html_encode(to_expand,FALSE));
+	printf("TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n",escape_string(to_expand));
 	printf("<INPUT TYPE='SUBMIT' VALUE='Go'></FORM></TD></TR>\n");
 
 	printf("</TABLE>\n");
