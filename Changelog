@@ -2,7 +2,16 @@
 Icinga 1.4.x Change Log
 #######################
 
-1.4.1 - ??/06/2011
+1.4.2 - ??/??/2011
+
+ENHANCEMENTS
+
+FIXES
+* classic ui: re-fix xss vulnerability and string escaping for command expansion #1605 #1624
+* classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
+
+
+1.4.1 - 08/06/2011
 
 ENHANCEMENTS
 
@@ -10,9 +19,12 @@ FIXES
 * core: fix retain status file over an init script reload #1579
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
+<<<<<<< HEAD
 * classic ui: better handling of writing to cgi.log in cmd.cgi #1161
 * classic ui: fixing tac.cgi header problems with counting and adding pending and descritptions #1505 #1506 #1508
 * classic ui: corrected behaviour of pending states in tac header #1508
+=======
+>>>>>>> e770ac8... classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
 
 * install: fix event handlers cmd file location in contrib #1501
 
