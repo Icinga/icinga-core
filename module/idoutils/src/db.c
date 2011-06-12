@@ -3288,7 +3288,7 @@ int ido2db_oci_prepared_statement_objects_insert(ido2db_idi *idi) {
                 }
 
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() after rebind\n");
-                OCI_RegisterUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, ":id");
+                OCI_RegisterUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, MT(":id"));
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() after register\n");
         } else {
         	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() No Connection\n");
