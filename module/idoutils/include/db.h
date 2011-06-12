@@ -35,6 +35,7 @@ typedef struct ido2db_dbconfig_struct{
         unsigned long clean_realtime_tables_on_core_startup;
         unsigned long clean_config_tables_on_core_startup;
 	unsigned long oci_errors_to_syslog;
+	unsigned int oracle_trace_level;
         }ido2db_dbconfig;
 
 /*************** DB server types ***************/
@@ -159,6 +160,9 @@ int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 void ido2db_ocilib_err_handler(OCI_Error *);
 unsigned long ido2db_ocilib_insert_id(ido2db_idi *, char *);
 int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *, char *);
+int ido2db_oci_set_trace_event(OCI_Connection *,unsigned int);
+int ido2db_oci_execute_out(OCI_Connection *,OCI_Statement *,char *);
+int ido2db_oci_set_appinfo(OCI_Connection *, char *);
 #endif /* Oracle ocilib specific */
 
 #endif

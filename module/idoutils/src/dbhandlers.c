@@ -209,7 +209,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 
 		        /* execute statement */
 		        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2)) {
-		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2() execute error\n");
+		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) execute error\n",es[0],es[1]);
 		                return IDO_ERROR;
 		        }
 
@@ -219,9 +219,9 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 
 		        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%lu) insert_id\n", *object_id);
+		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id=%lu selected\n",es[0],es[1], *object_id);
 		        } else {
-		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2() insert_id could not be fetched\n");
+		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id could not be found\n",es[0],es[1]);
 				result = IDO_ERROR;
 		        }
 
@@ -249,7 +249,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_null_name2)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2() execute error\n");
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(null,%s) execute error\n",es[1]);
                                 return IDO_ERROR;
                         }
 
@@ -258,11 +258,11 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
                         idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_null_name2);
 
                         if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(%lu) insert_id\n", *object_id);
+                        		*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(null,%s) object id=%lu selected\n", es[1],*object_id);
                         } else {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2() insert_id could not be fetched\n");
-				result = IDO_ERROR;
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(null,%s) object id could not be fetched\n",es[1]);
+                                result = IDO_ERROR;
                         }
 
 
@@ -290,7 +290,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2_null)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null() execute error\n");
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%s,null) execute error\n",es[0]);
                                 return IDO_ERROR;
                         }
                         OCI_Commit(idi->dbinfo.oci_connection);
@@ -298,11 +298,11 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
                         idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_name2_null);
 
                         if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%lu) insert_id\n", *object_id);
+                        		*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%s,null) object id=%lu selected\n", es[0],*object_id);
                         } else {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null() insert_id could not be fetched\n");
-				result = IDO_ERROR;
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%s,null) object id could not be found\n",es[0]);
+                                result = IDO_ERROR;
                         }
 
 
@@ -326,7 +326,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 
                         /* execute statement */
                         if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null() execute error\n");
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(null,null) execute error\n");
                                 return IDO_ERROR;
                         }
 
@@ -334,11 +334,11 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
                         idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null);
 
                         if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(%lu) insert_id\n", *object_id);
+                        	*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
+                             ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(null,null) object id=%lu selected\n", *object_id);
                         } else {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null() insert_id could not be fetched\n");
-				result = IDO_ERROR;
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(null,null) object id could not found\n");
+                                result = IDO_ERROR;
                         }
 
 
@@ -487,56 +487,66 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	data[1] = (void *) &object_type;
 	data[2] = (void *) &es[0];
 	data[3] = (void *) &es[1];
+	/* FIXME: OCILIB claims statement is not prepared , but no prepare error occured
+	 * and statement sql is available with statement handle
+	 * */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind instance id %lu\n",idi->dbinfo.instance_id);
 
-        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, MT(":X1"), (big_uint *) data[0])) {
-	        return IDO_ERROR;
-        }
-
-        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_insert, MT(":X2"), (int *) data[1])) {
+	if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, MT(":X1"),  (big_uint *) data[0])) {
+		    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind instance id failed\n");
+		    return IDO_ERROR;
+	}
+    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind type\n");
+    if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_insert, MT(":X2"), (int *) data[1])) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind type failed\n");
         	return IDO_ERROR;
-        }
+    }
 
 	/* check if name1/2 would be NULL, explicitely bind that to NULL so that the IS NULL from the selects match */
+    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name1\n");
 	if(name1==NULL) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name1=0\n");
 		if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_insert, ":X3")==IDO_ERROR) {
 			//syslog(LOG_USER | LOG_INFO, "bind null name1=%s FAIL\n", es[0]);
 			return IDO_ERROR;
 		}
 	} else {
 		//syslog(LOG_USER | LOG_INFO, "bind value name1=%s\n", es[0]);
-	        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X3"), *(char **) data[2], 0)) {
-        		return IDO_ERROR;
-	        }
+	   if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X3"), *(char **) data[2], 0)) {
+      		return IDO_ERROR;
+	   }
 	}
-
-        if(name2==NULL) {
-                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_insert, ":X4")==IDO_ERROR) {
-                        //syslog(LOG_USER | LOG_INFO, "bind null name2=%s FAIL\n", es[1]);
-                        return IDO_ERROR;
-                }
-        } else {
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name2\n");
+    if(name2==NULL) {
+      	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() name2=0\n");
+        if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_insert, ":X4")==IDO_ERROR) {
+             //syslog(LOG_USER | LOG_INFO, "bind null name2=%s FAIL\n", es[1]);
+             return IDO_ERROR;
+        }
+    } else {
 		//syslog(LOG_USER | LOG_INFO, "bind value name2=%s\n", es[1]);
-	        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X4"), *(char **) data[3], 0)) {
-		        return IDO_ERROR;
-	        }
-        }
+	    if(!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X4"), *(char **) data[3], 0)) {
+	        return IDO_ERROR;
+	    }
+    }
 
+    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() execute\n");
+    /* execute statement */
+    if(!OCI_Execute(idi->dbinfo.oci_statement_objects_insert)) {
+       	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() execute error\n");
+        return IDO_ERROR;
+    }
 
-        /* execute statement */
-        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_insert)) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert() execute error\n");
-                return IDO_ERROR;
-        }
-
-        OCI_Commit(idi->dbinfo.oci_connection);
-        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_insert);
-
-        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                *object_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert(%lu) insert_id\n", *object_id);
-        } else {
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert() insert_id could not be fetched\n");
-        }
+    OCI_Commit(idi->dbinfo.oci_connection);
+    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() get rs\n");
+    idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_insert);
+    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() fetch\n");
+    if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+             *object_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
+             ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert OK with inserted object id=%lu\n", *object_id);
+    } else {
+             ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_insert() inserted object id could not be fetched\n");
+    }
 
 
 	/* do not free statement yet! */
@@ -552,11 +562,10 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	free(buf1);
 	free(buf2);
 
-        for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++)
+    for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++)
                 free(es[x]);
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert(%lu) end\n", *object_id);
-
+    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert(object id=%lu) end\n", *object_id);
 	return result;
 }
 

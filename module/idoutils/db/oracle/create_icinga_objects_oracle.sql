@@ -8,13 +8,13 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-05-03 Thomas Dressler
+-- current version: 2011-06-10 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
 -- set sqlplus parameter
 -- -----------------------------------------
-define ICINGA_VERSION=1.4.0
+define ICINGA_VERSION=1.5.0
 
 set sqlprompt "&&_USER@&&_CONNECT_IDENTIFIER SQL>"
 /* drop all objects  if called seperately*/
@@ -147,7 +147,97 @@ END;
 /
 
 
-
+-- --------------------------------------------------------
+-- set trace event procedure
+-- --------------------------------------------------------
+CREATE or replace procedure set_trace_event(trace_level integer) 
+/*
+requires explicit alter session privilege
+select on v$session and v$process is recommanded
+--trace_level valid values (for explanations see oracle docs)
+0 - pseudo level TRACE OFF
+1 – standard SQL trace no, no wait events, or bind variables.
+4 – Bind variables only
+8 – Wait events only
+12 – Bind Variables and Wait Events
+*/
+  IS
+    mysid integer;
+    text varchar2(200);
+    output varchar(200);
+    mypid integer;
+    myfile varchar2(255);
+  no_table EXCEPTION;
+  no_rights EXCEPTION;
+  invalid_name exception;
+  invalid_level Exception;
+  
+  PRAGMA EXCEPTION_INIT(no_table, -942);
+  PRAGMA EXCEPTION_INIT(invalid_name, -904);
+  PRAGMA EXCEPTION_INIT(no_rights, -1031);
+  BEGIN
+    mysid:=0;
+    mypid:=0;
+    /* get own sid */
+    select sys_context('USERENV','SID') into mysid from dual;
+    /*check trace level*/
+    if trace_level not in (0,1,4,8,12) then
+      raise invalid_level;
+    end if;
+    if trace_level=0 then
+      text:='ALTER SESSION SET EVENTS ''10046 TRACE NAME CONTEXT OFF''';
+      output:='Session trace event set off for SID '||to_char(mysid);
+    else
+      text:='ALTER SESSION SET EVENTS ''10046 TRACE NAME CONTEXT FOREVER, LEVEL '||to_char( trace_level)||' ''';
+      output:='Session trace event set to level '||to_char(trace_level)|| ' for SID '||to_char(mysid);
+    end if;
+    --dbms_output.put_line('Execute:'||text);
+    begin
+      execute immediate text; 
+    exception
+    /* surpress errors*/
+    when no_rights then
+      /* ora 1031 indicates no alter session priviledge */
+      dbms_output.put_line('Error: No "Alter session" right');
+    
+    end;
+    
+    dbms_output.put_line(output);
+    /* optional */
+    begin
+      if trace_level>0 then
+        text:='select p.spid  from v$process p,v$session s where s.paddr=p.addr and s.sid='||to_char(mysid);
+        --dbms_output.put_line('Execute:'||text);
+        EXECUTE IMMEDIATE text  into mypid;
+        output:='Tracefile:<user_dump_dest>/<inst>_ora_'||to_char(mypid)||'.trc';
+        text:='select p.tracefile from v$process p,v$session s where s.paddr=p.addr and s.sid='||to_char(mysid) ;
+        --dbms_output.put_line('Execute:'||text);
+        begin
+          EXECUTE IMMEDIATE text into myfile;
+          output:='Tracefile:'||myfile;
+        exception
+        when invalid_name then
+          null;
+          dbms_output.put_line('Tracefile field not available, guess name' );
+        when others then
+           dbms_output.put_line(sqlerrm);
+        end;
+        dbms_output.put_line(output);
+      end if;
+    exception
+    when invalid_level then
+      dbms_output.put_line('Error:Only levels 0,1,4,8,12 are valid');
+    when no_table then
+        /* Ora 942 indicatin no access to v$view */
+        dbms_output.put_line('Warning:No access to v$session and/or v$process');
+    when others then
+        dbms_output.put_line('Warning:Cannot get ProcessID:'||sqlerrm);      
+    end;
+    
+    
+END set_trace_event;
+/ 
+  
 -- --------------------------------------------------------
 -- database table creation: icinga
 -- --------------------------------------------------------
