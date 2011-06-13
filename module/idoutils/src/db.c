@@ -6208,7 +6208,7 @@ int ido2db_oci_set_trace_event(OCI_Connection *cn,unsigned int trace_level) {
  * executes a statement and handle DBMS_OUTPUT
  * @param OCI_Connection
  * @param OCI_Statement
- * @returns IDO_OK
+ * @return IDO_OK
  */
 int ido2db_oci_execute_out(OCI_Connection *cn,OCI_Statement *st, char * fname) {
 	const dtext *p;
@@ -6226,6 +6226,12 @@ int ido2db_oci_execute_out(OCI_Connection *cn,OCI_Statement *st, char * fname) {
 	}
 	return IDO_OK;
 }
+/**
+ * set oracle session application info details
+ * @param OCI_Connection
+ * @param action string (agent_name)
+ * @return IDO_OK
+ */
 int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 	/* set oracle session application info module*/
 		 char * fname="ido2db_oci_set_appinfo";

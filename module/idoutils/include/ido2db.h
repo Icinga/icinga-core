@@ -377,8 +377,8 @@ typedef struct ido2db_input_data_info_struct{
 #define DEFAULT_OCI_ERRORS_TO_SYSLOG 		1
 
 /************* oracle trace level defaults ************/
-#define DEFAULT_ORACLE_TRACE_LEVEL 		8
-#define ORACLE_TRACE_LEVEL_OFF 		0
+#define DEFAULT_ORACLE_TRACE_LEVEL		4
+#define ORACLE_TRACE_LEVEL_OFF 			0
 /************* n worker threads ****************/
 
 #define IDO2DB_CLEANER_THREADS			1
