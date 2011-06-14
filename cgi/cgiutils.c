@@ -1054,16 +1054,16 @@ void document_header(int cgi_id, int use_stylesheet){
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-/*		printf("<script language='javascript'>");
-		printf("$(document).ready(function(e) {");
-		printf("try {");
-		printf("$('body select').msDropDown();");
-		printf("} catch(e) {");
-		printf("alert(e.message);");
-		printf("}");
-		printf("});");
+		printf("<script language='javascript'>\n");
+		printf("$(document).ready(function() { \n");
+		printf("try { \n oHandler = $(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\");\n");
+		printf("oHandler.visible(true);\n");
+		printf("$(\"#ver\").html($.msDropDown.version);\n");
+		printf("} catch(e) {\n");
+		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("});\n");
 		printf("</script>\n");
-*/
+
 		/* Javascript lib to show tooltips */
 	}
 

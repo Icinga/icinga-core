@@ -5826,7 +5826,7 @@ void show_servicecommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)'CLASS='serviceTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='dropdown' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5859,11 +5859,11 @@ void show_hostcommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)' CLASS='hostTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='dropdown' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
-			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)'</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
 			printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>",CMD_SCHEDULE_HOST_CHECK,url_images_path,DELAY_ICON);
 			printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>",CMD_PROCESS_HOST_CHECK_RESULT,url_images_path,PASSIVE_ICON);
 			printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>",CMD_DISABLE_PASSIVE_HOST_CHECKS,url_images_path,DISABLED_ICON);
