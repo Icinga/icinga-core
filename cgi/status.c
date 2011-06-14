@@ -74,7 +74,7 @@ extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 
 /* show any hosts in hostgroups the user is authorized for */
-extern show_partial_hostgroups;
+extern int show_partial_hostgroups;
 
 #define MAX_MESSAGE_BUFFER		4096
 
