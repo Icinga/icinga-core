@@ -143,6 +143,7 @@ int		enforce_comments_on_actions=FALSE;
 int		week_starts_on_monday=FALSE;
 
 int		show_partial_hostgroups=FALSE;
+int		default_downtime_duration=7200;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -552,6 +553,9 @@ int read_cgi_config_file(char *filename){
 
 		else if(!strcmp(var,"lock_author_names"))
 			lock_author_names=(atoi(val)>0)?TRUE:FALSE;
+
+		else if(!strcmp(var,"default_downtime_duration"))
+			default_downtime_duration=atoi(val);
 
 		else if(!strcmp(var,"use_ssl_authentication"))
 			use_ssl_authentication=(atoi(val)>0)?TRUE:FALSE;

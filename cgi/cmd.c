@@ -61,6 +61,7 @@ extern int  daemon_check;
 extern int enforce_comments_on_actions;
 extern int date_format;
 extern int use_logging;
+extern int default_downtime_duration;
 
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
@@ -823,6 +824,7 @@ void print_help_box(char *content) {
 
 void print_form_element(int element,int cmd) {
 	time_t t;
+	int t_hour,t_min;
 	char buffer[MAX_INPUT_BUFFER];
 
 	switch(element) {
@@ -930,7 +932,7 @@ void print_form_element(int element,int cmd) {
 	case PRINT_CHECK_TIME:
 		time(&t);
 		if (element == PRINT_END_TIME )
-			t+=(unsigned long)7200;
+			t+=(unsigned long)default_downtime_duration;
 		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
 		printf("<tr><td class=\"objectDescription descriptionleft\">");
 		if (element == PRINT_START_TIME ){
@@ -948,6 +950,10 @@ void print_form_element(int element,int cmd) {
 		break;
 
 	case PRINT_FIXED_FLEXIBLE_TYPE:
+		default_downtime_duration = default_downtime_duration / 60;
+		t_min = default_downtime_duration % 60;
+		default_downtime_duration = default_downtime_duration - t_min;
+		t_hour = (default_downtime_duration / 60 ) ;
 
 		snprintf(help_text,sizeof(help_text),"If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify. If you do not select the <i>fixed</i> "
 				 "option, %s will treat this as <i>flexible</i> downtime. Flexible downtime starts when the host goes down or becomes unreachable / service becomes critical (sometime between the "
@@ -971,9 +977,9 @@ void print_form_element(int element,int cmd) {
 		printf("</td><td align=\"left\">\n");
 		printf("\t<table border=0  cellspacing=0 cellpadding=0>\n");
 		printf("\t\t<tr>\n");
-		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='2' SIZE=2 MAXLENGTH=2></td>\n");
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='%d' SIZE=2 MAXLENGTH=2></td>\n",t_hour);
 		printf("\t\t\t<td width=\"50\">&nbsp;Hours</td>\n");
-		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='minutes' VALUE='0' SIZE=2 MAXLENGTH=2></td>\n");
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='minutes' VALUE='%d' SIZE=2 MAXLENGTH=2></td>\n",t_min);
 		printf("\t\t\t<td width=\"50\">&nbsp;Minutes</td>\n");
 		printf("\t\t</tr>\n");
 		printf("\t</table>\n");
