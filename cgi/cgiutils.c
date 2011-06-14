@@ -973,6 +973,7 @@ void document_header(int cgi_id, int use_stylesheet){
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
+	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">",http_charset);
 	printf("<title>\n");
 
 	if(cgi_id == STATUS_CGI_ID){
