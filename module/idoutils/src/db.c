@@ -570,8 +570,17 @@ int ido2db_db_connect(ido2db_idi *idi) {
     } else {
         idi->dbinfo.connected = IDO_TRUE;
         syslog(LOG_USER | LOG_INFO, "Successfully connected to oracle database");
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to %s database\n", ido2db_db_settings.dbserver);
-
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Successfully connected to database '%s'@'%s'"
+					" (server version %i.%i.%i, client version [%u], ocilib version %u.%u.%u) \n",
+					ido2db_db_settings.username,
+					ido2db_db_settings.dbname,
+					OCI_GetServerMajorVersion(idi->dbinfo.oci_connection),
+					OCI_GetServerMinorVersion(idi->dbinfo.oci_connection),
+					OCI_GetServerRevisionVersion(idi->dbinfo.oci_connection),
+					OCI_GetVersionConnection(idi->dbinfo.oci_connection),
+					OCILIB_MAJOR_VERSION,
+					OCILIB_MINOR_VERSION,
+					OCILIB_REVISION_VERSION);
 	}
 
         /* initialize prepared statements */
