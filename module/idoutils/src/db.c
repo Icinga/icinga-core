@@ -2917,6 +2917,7 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
     const char * err_msg;
     char * errt_msg = NULL;
     char * buf=NULL;
+    char binds[16384];
 	unsigned int err_pos=0;
 
 	err_type = OCI_ErrorGetType(err);
@@ -2931,8 +2932,14 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 	if (st) {
 		sql= OCI_GetSql(st);
 		err_pos=OCI_GetSqlErrorPos(st);
-		asprintf(&buf,"%s - MSG %s at pos %u in QUERY '%s'",
-				errt_msg,err_msg,err_pos,sql);
+		if (OCI_GetBindCount(st)>0) {
+			ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);
+			asprintf(&buf,"%s - MSG %s at pos %u in QUERY '%s' -->%s",
+							errt_msg,err_msg,err_pos,sql,binds);
+		}else{
+			asprintf(&buf,"%s - MSG %s at pos %u in QUERY '%s'",
+						errt_msg,err_msg,err_pos,sql);
+		}
 	}else{
 		asprintf(&buf,"%s - MSG %s",
 						errt_msg,err_msg);
@@ -6188,6 +6195,7 @@ int ido2db_oci_set_trace_event(OCI_Connection *cn,unsigned int trace_level) {
 		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Prepare failed:\n",fname);
 		 return IDO_ERROR;
 	 }
+
 	 /* bind level parameter */
 	 if(!(OCI_BindUnsignedInt(st,MT(":level"),&trace_level))) {
 		 OCI_StatementFree(st);
@@ -6213,6 +6221,10 @@ int ido2db_oci_set_trace_event(OCI_Connection *cn,unsigned int trace_level) {
 int ido2db_oci_execute_out(OCI_Connection *cn,OCI_Statement *st, char * fname) {
 	const dtext *p;
 	int ret;
+	/* print binds in Level SQL */
+	char binds[1600];
+	ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Binds:%s\n",fname,binds);
 
 	OCI_ServerEnableOutput(cn , 32000, 1, 2000);
 	ret=OCI_Execute(st);
@@ -6268,7 +6280,6 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 		  	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind action failed:\n",fname);
 		   	 return IDO_ERROR;
 		 }
-
 		 /* execute statement */
 		 ret=ido2db_oci_execute_out(cn,st,fname);
 		 if (ret==IDO_OK) {
@@ -6279,6 +6290,200 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 		 OCI_StatementFree(st);
 		 if (app_info) free(app_info);
 		 return ret;
+}
+/**
+ * print bind names and values
+ * @param OCI_Connection
+ * @param buffer size
+ * @param buffer pointer
+ */
+void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
+    OCI_Bind *bn;
+    char text[2500];
+    char val[2000];
+	char fmt[256];
+    const mtext * name;
+	unsigned int type=0;
+	unsigned int subtype=0;
+	void * data;
+	OCI_Date *dt;
+	OCI_Timestamp *ts;
+	OCI_Interval *inv;
+	OCI_File *file;
+	unsigned int size=0;
+    unsigned int count=0;
+    unsigned int i;
+
+    if (st==NULL) return;
+    /* get bind count */
+    count=OCI_GetBindCount(st);
+    if (count==0) return;
+    sprintf(text,"%u BindVars:",count);
+    strcpy((char *)outp,text);
+    /* loop through bind vars */
+    for (i=1;i<=count;i++) {
+        /* get bind parameter */
+    	bn=OCI_GetBind(st,i);
+    	name=OCI_BindGetName(bn);
+	type=OCI_BindGetType(bn);
+	subtype=OCI_BindGetSubtype(bn);
+	data=OCI_BindGetData(bn);
+	size=OCI_BindGetDataSize(bn);
+	/*
+	 * different handling per data type
+	 * build string values
+	 * type in 'fmt'
+	 * values in 'val'
+	*/
+	strcpy(val,"");
+	switch(type) {
+            case OCI_CDT_NUMERIC : //short, int, long long, double
+		switch (subtype) {
+		case OCI_NUM_SHORT:
+                    strcpy(fmt,"Short");
+		    sprintf(val,"'%i'",*(short *) data);
+		    break;
+                case OCI_NUM_INT:
+                    strcpy(fmt,"Int");
+                    sprintf(val,"'%d'",*(int *) data);
+                    break;
+                case OCI_NUM_BIGINT:
+                    strcpy(fmt,"BigInt");
+                    sprintf(val,"'%lld'",*(long long *) data);
+                    break;
+                case OCI_NUM_USHORT:
+                    strcpy(fmt,"ushort");
+                    sprintf(val,"'%u'",*(unsigned short *) data);
+                    break;
+                case OCI_NUM_UINT:
+                    strcpy(fmt,"uInt");
+                    sprintf(val,"'%u'",*(unsigned int *) data);
+                    break;
+                case OCI_NUM_BIGUINT:
+                    strcpy(fmt,"Big uInt");
+                    sprintf(val,"'%llu'",*(unsigned long long *) data);
+                    break;
+                case OCI_NUM_DOUBLE:
+                    strcpy(fmt,"Double");
+                    sprintf(val,"'%f'",*(double *) data);
+                    break;
+                }
+                break;
+
+            case OCI_CDT_DATETIME : //OCI_Date *
+                strcpy(fmt,"Date");
+                dt=(OCI_Date *)data;
+                OCI_DateToText(dt,"YYYY-MM-DD HH24:MI:SS",sizeof(val)-5,text);
+                sprintf(val,"'%s'",text);
+                break;
+            case OCI_CDT_TEXT : //dtext *
+                strncpy(text,(char *)data,sizeof(val)-20);
+                sprintf(val,"'%s'",text);
+                if (strlen(val)<strlen(data)+2) {
+                    strcat(val,"...");
+                }
+                sprintf(fmt,"Text Size:%u",strlen(data));
+                break;
+            case OCI_CDT_LONG : //OCI_Long *
+                switch(subtype) {
+                }
+                strcpy(fmt,"Long");
+                sprintf(val,"(n/a) Size: %u",size);
+                break;
+            case OCI_CDT_CURSOR : //OCI_Statement *
+                strcpy(fmt,"Cursor");
+                sprintf(val,"(n/a)");
+                break;
+            case OCI_CDT_LOB : //OCI_Lob *
+                switch(subtype) {
+                case OCI_BLOB:
+                	strcpy(fmt,"BLob");
+                	sprintf(val,"(n/a) Size: %u",size);
+                    break;
+                case OCI_CLOB:
+                	strcpy(fmt,"CLob");
+                	sprintf(val,"(n/a) Size: %u",size);
+                    break;
+                case OCI_NCLOB:
+        		strcpy(fmt,"NCLob");
+	                sprintf(val,"(n/a) Size: %u",size);
+                    break;
+                }
+                break;
+            case OCI_CDT_FILE : //OCI_File *
+                switch(subtype) {
+                case OCI_BFILE:
+                    strcpy(fmt,"BFile");
+                    break;
+                case OCI_CFILE:
+                    strcpy(fmt,"CFile");
+                    break;
+                }
+                file=(OCI_File *)data;
+                strncpy(text,(char *)OCI_FileGetName(file),sizeof(val)-20);
+                sprintf(val,"(FileName: '%s')",text);
+                break;
+            case OCI_CDT_TIMESTAMP : //OCI_Timestamp *
+                switch(subtype) {
+                case OCI_TIMESTAMP:
+                    strcpy(fmt,"Timestamp");
+                    break;
+                case OCI_TIMESTAMP_TZ:
+                    strcpy(fmt,"TimeStamp TZ");
+                    break;
+                case OCI_TIMESTAMP_LTZ:
+                    strcpy(fmt,"TimeStamp LTZ");
+                    break;
+                }
+                ts=(OCI_Timestamp *)data;
+                OCI_TimestampToText(ts,"YYYY-MM-DD HH24:MI:SS FF6",sizeof(val)-15,text,6);
+                sprintf(val,"'%s'",text);
+                break;
+            case OCI_CDT_INTERVAL : //OCI_Interval *
+                switch(subtype) {
+                case OCI_INTERVAL_YM:
+                    strcpy(fmt,"Interval YM");
+                    break;
+                case OCI_INTERVAL_DS:
+                    strcpy(fmt,"Interval DS");
+                    break;
+                }
+                inv=(OCI_Interval *)data;
+                OCI_IntervalToText(inv,10,6,sizeof(val)-15,text);
+                sprintf(val,"'%s'",text);
+                break;
+            case OCI_CDT_RAW : //void *
+                strcpy(fmt,"RAW");
+                sprintf(val,"(n/a) Size: %u",size);
+                break;
+            case OCI_CDT_OBJECT : //OCI_Object *
+                strcpy(fmt,"Object");
+                sprintf(val,"(n/a)");
+                break;
+            case OCI_CDT_COLLECTION : //OCI_Coll *
+                strcpy(fmt,"Collection");
+                sprintf(val,"(n/a)");
+                break;
+            case OCI_CDT_REF : //OCI_Ref *
+                strcpy(fmt,"Ref");
+                sprintf(val,"(n/a)");
+                break;
+            //case OCI_CDT_UNKNOWN: //not known
+            default:
+                strcpy(fmt,"Unknown");
+                break;
+            }//switch
+
+            sprintf(text,"[Name:'%s',Type:%s,Val:%s]",name,fmt,val);
+            /* add to provided buffer, short strings is needed */
+            strncat((char *)outp,text,bsize-strlen((char*)outp)-15);
+            if(strlen((char *)outp)>bsize-14) {
+                /* buffer full, notice this and exit */
+                strcat((char *)outp,"...->shorted!");
+                break;
+            }
+
+        }//for
 }
 
 #endif /* Oracle ocilib specific */
