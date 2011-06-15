@@ -20,6 +20,8 @@ FIXES
 
 * install: fix event handlers cmd file location in contrib #1501
 
+* config: deprecate log_external_commands_user #1619
+
 
 1.4.0 - 11/05/2011
 

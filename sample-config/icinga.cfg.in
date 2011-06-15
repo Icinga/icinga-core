@@ -377,7 +377,11 @@ log_passive_checks=1
 
 
 
-# LOG EXTERNAL COMMAND USER
+# LOG EXTERNAL COMMAND USER - THIS WILL BE DEPRECATED!!!
+# Future Icinga versions after 1.5 will ignore this config option,
+# use the CGI logging feature instead (or any other logger/wrapper
+# to the command pipe).
+#
 # This option allows you to enable the logging of the current user
 # of external commands.
 # The syntax will be CMD;username;cmdargs instead of CMD;cmdargs
