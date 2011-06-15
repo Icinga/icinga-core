@@ -17,11 +17,16 @@ ENHANCEMENTS
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results #1615
 * core: fix retain status file over an init script reload #1579
+* core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) #1331
+* core: make command_check_interval=-1 equal to 5s instead of 60s, targetting as often as possible (Andreas Ericsson) #1651
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
 
 * install: fix event handlers cmd file location in contrib #1501
+
+* config: deprecate log_external_commands_user #1619
+* config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
 
 
 1.4.0 - 11/05/2011

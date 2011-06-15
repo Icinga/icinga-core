@@ -109,9 +109,11 @@ status_file=@localstatedir@/status.dat
 
 # STATUS FILE UPDATE INTERVAL
 # This option determines the frequency (in seconds) that
-# Icinga will periodically dump program, host, and 
+# Icinga will periodically dump program, host, and
 # service status data.
+# Increase the value, if you don't require it that often.
 
+#status_update_interval=30
 status_update_interval=10
 
 
@@ -176,10 +178,13 @@ command_file=@EXTCMDFILEDIR@/icinga.cmd
 
 # EXTERNAL COMMAND BUFFER SLOTS
 # This settings is used to tweak the number of items or "slots" that
-# the Icinga daemon should allocate to the buffer that holds incoming 
-# external commands before they are processed.  As external commands 
-# are processed by the daemon, they are removed from the buffer.  
+# the Icinga daemon should allocate to the buffer that holds incoming
+# external commands before they are processed.  As external commands
+# are processed by the daemon, they are removed from the buffer.
+# Increase the value, if you are using addons like check_mk supplying
+# more external commands (passive check results) than usual.
 
+#external_command_buffer_slots=32768
 external_command_buffer_slots=4096
 
 
@@ -377,7 +382,11 @@ log_passive_checks=1
 
 
 
-# LOG EXTERNAL COMMAND USER
+# LOG EXTERNAL COMMAND USER - THIS WILL BE DEPRECATED!!!
+# Future Icinga versions after 1.5 will ignore this config option,
+# use the CGI logging feature instead (or any other logger/wrapper
+# to the command pipe).
+#
 # This option allows you to enable the logging of the current user
 # of external commands.
 # The syntax will be CMD;username;cmdargs instead of CMD;cmdargs
@@ -496,7 +505,10 @@ max_concurrent_checks=0
 # HOST AND SERVICE CHECK REAPER FREQUENCY
 # This is the frequency (in seconds!) that Icinga will process
 # the results of host and service checks.
+# Lower this value in larger environments to allow faster
+# check result processing (requires more cpu power).
 
+#check_result_reaper_frequency=1
 check_result_reaper_frequency=10
 
 
@@ -663,7 +675,12 @@ sleep_time=0.25
 # service checks, host checks, event handlers, notifications, the
 # ocsp command, and performance data commands.  All values are in
 # seconds.
+# Increase the timeout values in case you are experiencing a lot
+# of check timeouts. Addons like e.g. check_mk will perform
+# one combined active servicecheck which could take longer than
+# the default of 60sec.
 
+#service_check_timeout=120
 service_check_timeout=60
 host_check_timeout=30
 event_handler_timeout=30
@@ -1220,9 +1237,13 @@ p1_file=@bindir@/p1.pl
 # This option determines whether or not the embedded Perl interpreter
 # will be enabled during runtime.  This option has no effect if Icinga
 # has not been compiled with support for embedded Perl.
+# This option is intentionally disabled by default, because embedded
+# perl can cause memory leaks and make Icinga unstable if not properly
+# used.
+# Only enable this setting when you really know what you are doing!
 # Values: 0 = disable interpreter, 1 = enable interpreter
 
-enable_embedded_perl=1
+enable_embedded_perl=0
 
 
 
@@ -1340,13 +1361,15 @@ use_large_installation_tweaks=0
 # This option determines whether or not Icinga will make all standard
 # macros available as environment variables when host/service checks
 # and system commands (event handlers, notifications, etc.) are
-# executed.  Enabling this option can cause performance issues in 
+# executed.  Enabling this option can cause performance issues in
 # large installations, as it will consume a bit more memory and (more
 # importantly) consume more CPU.
-# Values: 1 - Enable environment variable macros (default)
-#         0 - Disable environment variable macros
+# Keep in mind that various addons/plugins will require this setting
+# to be enabled (e.g. check_oracle_health) for special usage.
+# Values: 1 - Enable environment variable macros
+#         0 - Disable environment variable macros (default)
 
-enable_environment_macros=1
+enable_environment_macros=0
 
 
 
