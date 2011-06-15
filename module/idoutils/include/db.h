@@ -157,6 +157,8 @@ int ido2db_db_perform_maintenance(ido2db_idi *);
 int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
+#define OCI_VARCHAR_SIZE 4096
+#define OCI_STR_SIZE 256
 void ido2db_ocilib_err_handler(OCI_Error *);
 unsigned long ido2db_ocilib_insert_id(ido2db_idi *, char *);
 int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *, char *);

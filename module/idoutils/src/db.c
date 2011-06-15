@@ -2926,7 +2926,7 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
     const char * err_msg;
     char * errt_msg = NULL;
     char * buf=NULL;
-    char binds[16384];
+    char * binds=NULL;
 	unsigned int err_pos=0;
 
 	err_type = OCI_ErrorGetType(err);
@@ -2942,9 +2942,16 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 		sql= OCI_GetSql(st);
 		err_pos=OCI_GetSqlErrorPos(st);
 		if (OCI_GetBindCount(st)>0) {
-			ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);
-			asprintf(&buf,"%s - MSG %s at pos %u in QUERY '%s' -->%s",
-							errt_msg,err_msg,err_pos,sql,binds);
+			binds=malloc(OCI_VARCHAR_SIZE*16);
+			if (binds==NULL) {
+			     binds=strdup("Error:Memory Allocation Error");
+			}else{
+				ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);
+				asprintf(&buf,"%s - MSG %s at pos %u in QUERY '%s' -->%s",
+											errt_msg,err_msg,err_pos,sql,binds);
+				free(binds);
+			}
+
 		}else{
 			asprintf(&buf,"%s - MSG %s at pos %u in QUERY '%s'",
 						errt_msg,err_msg,err_pos,sql);
@@ -6308,9 +6315,9 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
  */
 void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
     OCI_Bind *bn;
-    char text[2500];
-    char val[2000];
-	char fmt[256];
+    char *text=NULL;
+    char *val=NULL;
+    char *fmt=NULL;
     const mtext * name;
 	unsigned int type=0;
 	unsigned int subtype=0;
@@ -6324,6 +6331,16 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
     unsigned int i;
 
     if (st==NULL) return;
+    text=malloc(OCI_VARCHAR_SIZE+20);
+    val=malloc(OCI_VARCHAR_SIZE+5);
+    fmt=malloc(OCI_STR_SIZE+5);
+    if (text == NULL || val ==NULL || fmt==NULL) {
+    	if (text) free(text);
+        if (val) free(val);
+        if (fmt) free(fmt);
+        strcpy((char *)outp,"Memory Allocation Error!");
+        return;
+     }
     /* get bind count */
     count=OCI_GetBindCount(st);
     if (count==0) return;
@@ -6382,11 +6399,11 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
             case OCI_CDT_DATETIME : //OCI_Date *
                 strcpy(fmt,"Date");
                 dt=(OCI_Date *)data;
-                OCI_DateToText(dt,"YYYY-MM-DD HH24:MI:SS",sizeof(val)-5,text);
+                OCI_DateToText(dt,"YYYY-MM-DD HH24:MI:SS",OCI_VARCHAR_SIZE,text);
                 sprintf(val,"'%s'",text);
                 break;
             case OCI_CDT_TEXT : //dtext *
-                strncpy(text,(char *)data,sizeof(val)-20);
+                strncpy(text,(char *)data,OCI_VARCHAR_SIZE);
                 sprintf(val,"'%s'",text);
                 if (strlen(val)<strlen(data)+2) {
                     strcat(val,"...");
@@ -6429,7 +6446,7 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
                     break;
                 }
                 file=(OCI_File *)data;
-                strncpy(text,(char *)OCI_FileGetName(file),sizeof(val)-20);
+                strncpy(text,(char *)OCI_FileGetName(file),OCI_VARCHAR_SIZE);
                 sprintf(val,"(FileName: '%s')",text);
                 break;
             case OCI_CDT_TIMESTAMP : //OCI_Timestamp *
@@ -6445,7 +6462,7 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
                     break;
                 }
                 ts=(OCI_Timestamp *)data;
-                OCI_TimestampToText(ts,"YYYY-MM-DD HH24:MI:SS FF6",sizeof(val)-15,text,6);
+                OCI_TimestampToText(ts,"YYYY-MM-DD HH24:MI:SS FF6",OCI_VARCHAR_SIZE,text,6);
                 sprintf(val,"'%s'",text);
                 break;
             case OCI_CDT_INTERVAL : //OCI_Interval *
@@ -6458,7 +6475,7 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
                     break;
                 }
                 inv=(OCI_Interval *)data;
-                OCI_IntervalToText(inv,10,6,sizeof(val)-15,text);
+                OCI_IntervalToText(inv,10,6,OCI_VARCHAR_SIZE,text);
                 sprintf(val,"'%s'",text);
                 break;
             case OCI_CDT_RAW : //void *
@@ -6493,6 +6510,9 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
             }
 
         }//for
+    	free(text);
+        free(val);
+        free(fmt);
 }
 
 #endif /* Oracle ocilib specific */
