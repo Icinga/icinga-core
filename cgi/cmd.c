@@ -408,6 +408,7 @@ int main(void){
 
 int process_cgivars(void){
 	char **variables;
+	char *temp_buffer=NULL;
 	int error=FALSE;
 	int x;
 	int z = 0;
@@ -551,6 +552,33 @@ int process_cgivars(void){
 
 				/* Store service description in struct */
 				commands[(x-2)].description = service_desc;
+			}
+		}
+
+		/* we found a combined host/service */
+		else if(!strcmp(variables[x],"hostservice")){
+			x++;
+			if(variables[x]==NULL){
+				error=TRUE;
+				break;
+			}
+
+			temp_buffer=strtok(variables[x],"^");
+
+			if((host_name=(char *)strdup(temp_buffer))==NULL)
+				host_name="";
+			else {
+				strip_html_brackets(host_name);
+				commands[x].host_name = host_name;
+			}
+
+			temp_buffer=strtok(NULL,"");
+
+			if((service_desc=(char *)strdup(temp_buffer))==NULL)
+				service_desc="";
+			else {
+				strip_html_brackets(service_desc);
+				commands[x].description = service_desc;
 			}
 		}
 

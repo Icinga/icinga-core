@@ -1054,21 +1054,8 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(cgi_id == STATUS_CGI_ID) {
 		/* Set everything in a form, so checkboxes can be searched after and checked. */
-		printf("<form name='tableform' id='tableform'>\n");
+		printf("<form name='tableform' id='tableform' action='%s' method='POST'>\n",CMD_CGI);
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>\n");
-
-		/* Print out the activator for the dropdown (which must be between the body tags */
-		printf("<script language='javascript'>\n");
-		printf("$(document).ready(function() { \n");
-		printf("try { \n oHandler = $(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\");\n");
-		printf("oHandler.visible(true);\n");
-		printf("$(\"#ver\").html($.msDropDown.version);\n");
-		printf("} catch(e) {\n");
-		printf("alert(\"Error: \"+e.message);\n}\n");
-		printf("});\n");
-		printf("</script>\n");
-
-		/* Javascript lib to show tooltips */
 	}
 
 	if(cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID) {
