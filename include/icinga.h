@@ -92,6 +92,7 @@ extern "C" {
 #define DEFAULT_OCHP_TIMEOUT					15	/* max time in seconds to wait for obsessive compulsive processing commands to complete */
 #define DEFAULT_PERFDATA_TIMEOUT                		5       /* max time in seconds to wait for performance data commands to complete */
 #define DEFAULT_TIME_CHANGE_THRESHOLD				900	/* compensate for time changes of more than 15 minutes */
+#define DEFAULT_EXTERNAL_COMMAND_CHECK_INTERVAL			5	/* check interval in seconds to be used, if set to -1 in icinga.cfg */
 
 #define DEFAULT_LOG_HOST_RETRIES				0	/* don't log host retries */
 #define DEFAULT_LOG_SERVICE_RETRIES				0	/* don't log service retries */
