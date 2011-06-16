@@ -9,6 +9,9 @@ ENHANCEMENTS
 FIXES
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 
+* idoutils: do not update start_time of already started downtimes #1658
+* idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
+
 
 1.4.0 - 11/05/2011
 
