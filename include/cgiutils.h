@@ -521,6 +521,7 @@ extern "C" {
 
 #define MAX_MESSAGE_BUFFER              4096
 
+#define MAX_CGI_INPUT_PAIRS		1000		/**< max number of cgi vars excepted */
 
 /************************** DISPLAY STYLE  ********************************/
 

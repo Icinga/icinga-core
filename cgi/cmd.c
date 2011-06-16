@@ -71,7 +71,7 @@ extern comment *comment_list;
  @{**/
 #define MAX_AUTHOR_LENGTH		64
 #define MAX_COMMENT_LENGTH		1024
-#define NUMBER_OF_STRUCTS		500		/**< Set a limit of 500 structs, which is around 125 checks total */
+#define NUMBER_OF_STRUCTS		((MAX_CGI_INPUT_PAIRS*2)+100)		/**< Depends on amount of MAX_CGI_INPUT_PAIRS */
 /** @}*/
 
 /** @name ELEMET TEMPLATE TYPES
