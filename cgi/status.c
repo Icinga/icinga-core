@@ -1937,6 +1937,8 @@ void show_host_detail(void){
 				printf("host name");
 			else if(sort_option==SORT_HOSTSTATUS)
 				printf("host status");
+			else if(sort_option==SORT_HOSTURGENCY)
+				printf("host urgency");
 			else if(sort_option==SORT_LASTCHECKTIME)
 				printf("last check time");
 			else if(sort_option==SORT_CURRENTATTEMPT)
@@ -5314,6 +5316,12 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 			else
 				return FALSE;
 		}
+		else if(sort_option==SORT_HOSTURGENCY){
+			if(HOST_URGENCY(new_status->status) <= HOST_URGENCY(temp_status->status))
+				return TRUE;
+			else
+				return FALSE;
+		}
 		else if(sort_option==SORT_HOSTNAME){
 			if(strcasecmp(new_status->host_name,temp_status->host_name)<0)
 				return TRUE;
@@ -5347,6 +5355,12 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 		}
 		else if(sort_option==SORT_SERVICESTATUS && status_type == SERVICE_STATUS){
 			if(new_status->status > temp_status->status)
+				return TRUE;
+			else
+				return FALSE;
+		}
+		else if(sort_option==SORT_HOSTURGENCY){
+			if(HOST_URGENCY(new_status->status) > HOST_URGENCY(temp_status->status))
 				return TRUE;
 			else
 				return FALSE;
