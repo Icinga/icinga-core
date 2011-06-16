@@ -28,6 +28,7 @@ FIXES
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
 
 * install: fix event handlers cmd file location in contrib #1501
+* install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
 
 * config: deprecate log_external_commands_user #1619
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635

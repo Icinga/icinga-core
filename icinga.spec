@@ -140,6 +140,7 @@ Documentation for %{name}
 ### move idoutils sample configs to final name
 mv %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg-sample %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg
 mv %{buildroot}%{_sysconfdir}/icinga/idomod.cfg-sample %{buildroot}%{_sysconfdir}/icinga/idomod.cfg
+mv %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg-sample %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg
 
 ### copy idoutils db-script
 cp -r module/idoutils/db %{buildroot}%{_sysconfdir}/icinga/idoutils
@@ -243,7 +244,7 @@ fi
 
 %changelog
 * Wed May 18 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.0-1
-- set to 1.5.0 target, remove provides nagios version
+- set to 1.5.0 target, remove provides nagios version, set idoutils.cfg-sample
 
 * Wed May 11 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.0-2
 - undo changes on icinga-cmd group, use icingacmd like before
