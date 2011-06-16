@@ -22,6 +22,7 @@ FIXES
 * core: fix problem where acknowledgements were getting reset when a hard state change occurred (Ton Voon) #1618
 * core: avoid using global macros when sending notifications (Andreas Ericsson) #1653
 * core: avoid sending notifications to the wrong contact (Andreas Ericsson) #1654
+* core: try to avoid a single check being reaped multiple times (Andreas Ericsson) #1652
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
