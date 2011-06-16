@@ -10,6 +10,10 @@ ENHANCEMENTS
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
 
+* install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
+	** only when embedded perl is enabled
+	** affects (new_)mini_epn and icinga.cfg
+
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results #1615
 * core: fix retain status file over an init script reload #1579

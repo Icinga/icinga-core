@@ -1229,7 +1229,7 @@ date_format=us
 # embedded Perl interpreter) is located.  If you didn't compile
 # Icinga with embedded Perl support, this option has no effect.
 
-p1_file=@bindir@/p1.pl
+p1_file=@P1FILELOC@/p1.pl
 
 
 
