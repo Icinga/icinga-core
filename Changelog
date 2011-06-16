@@ -15,6 +15,7 @@ FIXES
 * idoutils: do not update start_time of already started downtimes #1658
 * idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
 
+* install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
 
 
 1.4.1 - 08/06/2011

@@ -140,6 +140,7 @@ Documentation for %{name}
 ### move idoutils sample configs to final name
 mv %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg-sample %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg
 mv %{buildroot}%{_sysconfdir}/icinga/idomod.cfg-sample %{buildroot}%{_sysconfdir}/icinga/idomod.cfg
+mv %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg-sample %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg
 
 ### copy idoutils db-script
 cp -r module/idoutils/db %{buildroot}%{_sysconfdir}/icinga/idoutils
@@ -242,6 +243,10 @@ fi
 
 
 %changelog
+<<<<<<< HEAD
+* Mon Jun 20 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.2-1
+- update to 1.4.2, mv idoutils.cfg-sample
+
 * Sun Jun 05 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.1-1
 - update to 1.4.1
 
