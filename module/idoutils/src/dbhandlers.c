@@ -3246,7 +3246,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
 		if (asprintf(&buf,
-				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec=%lu, was_started=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
+				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec=%lu, was_started=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s AND was_started=0",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY], ts[0],
 				tstamp.tv_usec, 1, idi->dbinfo.instance_id, downtime_type,
 				object_id, ts[1], ts[2], ts[3]) == -1)
@@ -3464,7 +3464,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
 		if (asprintf(&buf,
-				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec=%lu, was_started=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s",
+				"UPDATE %s SET actual_start_time=%s, actual_start_time_usec=%lu, was_started=%d WHERE instance_id=%lu AND downtime_type=%d AND object_id=%lu AND entry_time=%s AND scheduled_start_time=%s AND scheduled_end_time=%s AND was_started=0",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME], ts[0],
 				tstamp.tv_usec, 1, idi->dbinfo.instance_id, downtime_type,
 				object_id, ts[1], ts[2], ts[3]) == -1)
@@ -3498,37 +3498,37 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
         data[7] = (void *) &start_time;
         data[8] = (void *) &end_time;
 
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X1"), (big_uint *) data[0])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X2"), (big_uint *) data[1])) {
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X2"), (big_uint *) data[1])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X3"), (int *) data[2])) {
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X3"), (int *) data[2])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X4"), (big_uint *) data[3])) {
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X4"), (big_uint *) data[3])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X5"), (int *) data[4])) {
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X5"), (int *) data[4])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X6"), (big_uint *) data[5])) {
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X6"), (big_uint *) data[5])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X7"), (big_uint *) data[6])) { /* unixtimestamp instead of time2sql */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X7"), (big_uint *) data[6])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X8"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X8"), (big_uint *) data[7])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(":X9"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(":X9"), (big_uint *) data[8])) { /* unixtimestamp instead of time2sql */
                                 return IDO_ERROR;
                         }
 
                         /* execute statement */
-                        if(!OCI_Execute(idi->dbinfo.oci_statement_downtimehistory_update_start)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_downtimehistory_update_start() execute error\n");
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_scheduleddowntime_update_start)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_scheduleddowntime_update_start() execute error\n");
                                 return IDO_ERROR;
                         }
 

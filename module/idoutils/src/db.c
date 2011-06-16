@@ -1020,6 +1020,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
+        /* scheduleddowntime_update start */
+        if(ido2db_oci_prepared_statement_scheduleddowntime_update_start(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
+                return IDO_ERROR;
+        }
+
         /* downtimehistory_update stop */
         if(ido2db_oci_prepared_statement_downtimehistory_update_stop(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
@@ -1210,6 +1216,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	OCI_StatementFree(idi->dbinfo.oci_statement_comments_delete);
 
 	OCI_StatementFree(idi->dbinfo.oci_statement_downtimehistory_update_start);
+	OCI_StatementFree(idi->dbinfo.oci_statement_scheduleddowntime_update_start);
 	OCI_StatementFree(idi->dbinfo.oci_statement_downtimehistory_update_stop);
 	OCI_StatementFree(idi->dbinfo.oci_statement_downtime_delete);
 
@@ -4604,7 +4611,7 @@ int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi) 
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf, "UPDATE %s SET actual_start_time=(SELECT unixts2date(:X1) FROM DUAL), actual_start_time_usec=:X2, was_started=:X3 WHERE instance_id=:X4 AND downtime_type=:X5 AND object_id=:X6 AND entry_time=(SELECT unixts2date(:X7) FROM DUAL) AND scheduled_start_time=(SELECT unixts2date(:X8) FROM DUAL) AND scheduled_end_time=(SELECT unixts2date(:X9) FROM DUAL)", 
+        if(asprintf(&buf, "UPDATE %s SET actual_start_time=(SELECT unixts2date(:X1) FROM DUAL), actual_start_time_usec=:X2, was_started=:X3 WHERE instance_id=:X4 AND downtime_type=:X5 AND object_id=:X6 AND entry_time=(SELECT unixts2date(:X7) FROM DUAL) AND scheduled_start_time=(SELECT unixts2date(:X8) FROM DUAL) AND scheduled_end_time=(SELECT unixts2date(:X9) FROM DUAL) AND was_started=0", 
                 ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
                         buf = NULL;
         }
@@ -4619,6 +4626,41 @@ int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi) 
                 OCI_AllowRebinding(idi->dbinfo.oci_statement_downtimehistory_update_start, 1);
 
                 if(!OCI_Prepare(idi->dbinfo.oci_statement_downtimehistory_update_start, MT(buf))) {
+                        free(buf); 
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_scheduleddowntime_update_start(ido2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "UPDATE %s SET actual_start_time=(SELECT unixts2date(:X1) FROM DUAL), actual_start_time_usec=:X2, was_started=:X3 WHERE instance_id=:X4 AND downtime_type=:X5 AND object_id=:X6 AND entry_time=(SELECT unixts2date(:X7) FROM DUAL) AND scheduled_start_time=(SELECT unixts2date(:X8) FROM DUAL) AND scheduled_end_time=(SELECT unixts2date(:X9) FROM DUAL) AND was_started=0",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
+                        buf = NULL;
+        }
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_scheduleddowntime_update_start = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_scheduleddowntime_update_start, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_scheduleddowntime_update_start, MT(buf))) {
                         free(buf); 
                         return IDO_ERROR;
                 }
