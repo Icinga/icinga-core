@@ -13,6 +13,7 @@ ENHANCEMENTS
 * classic ui: default downtime duration is configurable in cgi.cfg #1642
 * classic ui: Added ability to combine host and service in one CGI parameter (Aaron Brady) #1633
 * classic ui: Changed tac.cgi to distinct between active, passive and disabled properly #1120
+* classic ui: Add log entries to json output of avail.cgi #1659
 
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results #1615

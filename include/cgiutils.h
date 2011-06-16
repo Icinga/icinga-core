@@ -514,7 +514,7 @@ extern "C" {
 
 /************************** JSON OUTPUT VERSION ************************/
 
-#define JSON_OUTPUT_VERSION "1.4.1"
+#define JSON_OUTPUT_VERSION "1.5.0"
 
 
 /************************** BUFFER  ***************************************/
