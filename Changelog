@@ -15,6 +15,7 @@ FIXES
 * core: fix retain status file over an init script reload #1579
 * core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) #1331
 * core: make command_check_interval=-1 equal to 5s instead of 60s, targetting as often as possible (Andreas Ericsson) #1651
+* core: fix problem where acknowledgements were getting reset when a hard state change occurred (Ton Voon) #1618
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
