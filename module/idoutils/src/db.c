@@ -6451,7 +6451,7 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
                 if (strlen(val)<strlen(data)+2) {
                     strcat(val,"...");
                 }
-                sprintf(fmt,"Text Size:%u",strlen(data));
+                sprintf(fmt,"Text Size:%u",(unsigned int)strlen(data));
                 break;
             case OCI_CDT_LONG : //OCI_Long *
                 switch(subtype) {
