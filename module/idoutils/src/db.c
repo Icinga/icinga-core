@@ -104,6 +104,7 @@ int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_downtimehistory_update_stop(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_conninfo_update(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_conninfo_update_checkin(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_scheduleddowntime_update_start(ido2db_idi *idi);
 
 /* delete stuff */
 int ido2db_oci_prepared_statement_timedeventqueue_delete(ido2db_idi *idi);
