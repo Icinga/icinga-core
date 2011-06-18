@@ -90,6 +90,7 @@ int ido2db_oci_prepared_statement_objects_select_name1_name2(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_objects_select_cached(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_logentries_select(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_instances_select(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_sequence_select(ido2db_idi *idi);
 
 /* update stuff */
 int ido2db_oci_prepared_statement_objects_update_inactive(ido2db_idi *idi);
@@ -1064,16 +1065,22 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_instances_delete_time() failed\n");
                 return IDO_ERROR;
         }
+        /* sequence */
+        if(ido2db_oci_prepared_statement_sequence_select(idi) == IDO_ERROR) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sequence_select() failed\n");
+        	return IDO_ERROR;
+        }
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sequence_select prepare statements end\n");
 
         /* dbversion */
         if(ido2db_oci_prepared_statement_dbversion_select(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() failed\n");
                 return IDO_ERROR;
         }
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() prepare statements end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() prepare statements end\n");
 
 	/* start oracle trace if activated */
-			ido2db_oci_set_trace_event(idi->dbinfo.oci_connection,ido2db_db_settings.oracle_trace_level);
+	ido2db_oci_set_trace_event(idi->dbinfo.oci_connection,ido2db_db_settings.oracle_trace_level);
 #endif /* Oracle ocilib specific */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect(%d) end\n", result);
@@ -1231,6 +1238,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_downtime_delete,"oci_statement_downtime_delete");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_instances_select,"oci_statement_instances_select");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_sequence_select,"oci_statement_sequence_select");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_conninfo_update,"oci_statement_conninfo_update");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_conninfo_update_checkin,"oci_statement_conninfo_update_checkin");
@@ -2983,47 +2991,47 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 	free(buf);
 }
 
-/* use defined triggers/sequences to emulate last insert id in oracle */
-unsigned long ido2db_ocilib_insert_id(ido2db_idi *idi, char *seq_name) {
+/**
+ * retrieving last sequence value for ids
+ * its using select last_number from user_sequences.
+ * This is save because only the same process=session will change sequence values
+ * previous used .currval is only valid if the same session executed .nextval before
+ * @param idi structure
+ * @param sequence_name
+ * @return last_number from user_sequences or zero
+ */
+unsigned long ido2db_oci_sequence_lastid(ido2db_idi *idi, char *seq_name) {
 
-	unsigned long insert_id = 0;
-	char *buf = NULL;
-
-	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id(%s) seq_name\n", seq_name);
-	if(asprintf(&buf, "SELECT %s.CURRVAL FROM DUAL", seq_name) == -1)
-		buf = NULL;
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id(%s) buf\n", buf);
-
-	if(idi->dbinfo.oci_connection) {
-
-		idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
-
-	        OCI_ExecuteStmt(idi->dbinfo.oci_statement, MT(buf));
-		OCI_Commit(idi->dbinfo.oci_connection);
-
-	        /*  get result set */
-	        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement);
-
-		if(idi->dbinfo.oci_resultset == NULL) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id() nextrow not ok\n");
-		} else {
-
-			/* check if next row */
-	                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-	                	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_ocilib_insert_id() nextrow ok\n");
-	                        insert_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
-	                }
-		}
-
-		/* free statement */
-		OCI_StatementFree(idi->dbinfo.oci_statement);
-
-	} else {
-		insert_id = -1;
+	unsigned long insert_id = 0L;
+	char * fname="ido2db_oci_sequence_lastid";
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() start\n",fname);
+	if (idi==NULL || seq_name==NULL){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:At least one parameter is NULL\n",fname);
+		return insert_id;
 	}
+        if(!OCI_BindString(idi->dbinfo.oci_statement_sequence_select, MT(":X1"), seq_name, 0)) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s(%s) Error:Bind Name failed\n",fname,seq_name);
+                return insert_id;
+        }
+        if(ido2db_oci_execute_out(idi->dbinfo.oci_statement_sequence_select,fname)==IDO_ERROR) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s(%s) Execute error\n",fname,seq_name);
+        	return insert_id;
+        }
 
-	free(buf);
+	/*  get result set */
+	idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_sequence_select);
 
+	if(idi->dbinfo.oci_resultset != NULL) {
+		/* check if next row */
+	        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+	                insert_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+	                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s(%s) id=%lu\n",fname,seq_name,insert_id);
+	        }
+	}
+	if (insert_id==0L){
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s(%s) Warning:No Result\n",fname,seq_name);
+        }
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s(%s) end\n",fname,seq_name);
 	return insert_id;
 }
 
@@ -3037,18 +3045,19 @@ unsigned long ido2db_ocilib_insert_id(ido2db_idi *idi, char *seq_name) {
 /* SEQUENCE                         */
 /************************************/
 
-/*
 int ido2db_oci_prepared_statement_sequence_select(ido2db_idi *idi) {
-
+	char *fname="oci_prepared_statement_sequence_lastid";
         char *buf = NULL;
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() start\n",fname);
 
-        if(asprintf(&buf, "SELECT :X1.CURRVAL FROM DUAL") == -1) {
-                        buf = NULL;
+        if(asprintf(&buf, "SELECT last_number from user_sequences where sequence_name=upper(:X1)") == -1) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Error:memory allocation failed\n",fname);
+                buf = NULL;
+                return IDO_ERROR;
         }
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+        ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s query: %s\n",fname, buf);
 
         if(idi->dbinfo.oci_connection) {
 
@@ -3057,20 +3066,22 @@ int ido2db_oci_prepared_statement_sequence_select(ido2db_idi *idi) {
                 OCI_AllowRebinding(idi->dbinfo.oci_statement_sequence_select, 1);
 
                 if(!OCI_Prepare(idi->dbinfo.oci_statement_sequence_select, MT(buf))) {
+                	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Error:prepare failed failed\n",fname);
                         free(buf); 
                         return IDO_ERROR;
                 }
         } else {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Error:No Connection\n",fname);
                 free(buf);
                 return IDO_ERROR;
         }
         free(buf);
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s end\n",fname);
 
         return IDO_OK;
 }
-*/
+
 
 /************************************/
 /* INSTANCES                        */

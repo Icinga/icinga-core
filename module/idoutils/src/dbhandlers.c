@@ -2277,7 +2277,7 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 		if(asprintf(&seq_name, "seq_notifications")==-1)
 			seq_name=NULL;
-                idi->dbinfo.last_notification_id = ido2db_ocilib_insert_id(idi, seq_name);
+                idi->dbinfo.last_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
                 free(seq_name);
 
@@ -2411,7 +2411,7 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_contactnotifications")==-1)
 			seq_name=NULL;
-                idi->dbinfo.last_contact_notification_id = ido2db_ocilib_insert_id(idi, seq_name);
+                idi->dbinfo.last_contact_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
 		free(seq_name);
 
@@ -4986,7 +4986,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_configfiles")==-1)
 			seq_name=NULL;
-                configfile_id = ido2db_ocilib_insert_id(idi, seq_name);
+                configfile_id = ido2db_oci_sequence_lastid(idi, seq_name);
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) \n", configfile_id);
                 free(seq_name);
 
@@ -5465,7 +5465,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_hosts")==-1)
 			seq_name=NULL;
-                host_id = ido2db_ocilib_insert_id(idi, seq_name);
+                host_id = ido2db_oci_sequence_lastid(idi, seq_name);
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition(%lu) \n", host_id);
                 free(seq_name);
 
@@ -5758,7 +5758,7 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_hostgroups")==-1)
 			seq_name=NULL;
-		group_id = ido2db_ocilib_insert_id(idi, seq_name);
+		group_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", group_id);
                 free(seq_name);
 
@@ -6065,7 +6065,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_services")==-1)
 			seq_name=NULL;
-		service_id = ido2db_ocilib_insert_id(idi, seq_name);
+		service_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", service_id);
                 free(seq_name);
 
@@ -6326,7 +6326,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_servicegroups")==-1)
 			seq_name=NULL;
-		group_id = ido2db_ocilib_insert_id(idi, seq_name);
+		group_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%lu) group_id\n", group_id);
                 free(seq_name);
 
@@ -6646,7 +6646,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_hostescalations")==-1)
 			seq_name=NULL;
-                escalation_id = ido2db_ocilib_insert_id(idi, seq_name);
+                escalation_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", escalation_id);
                 free(seq_name);
 
@@ -6852,7 +6852,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_serviceescalations")==-1)
 			seq_name=NULL;
-                escalation_id = ido2db_ocilib_insert_id(idi, seq_name);
+                escalation_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", escalation_id);
                 free(seq_name);
 
@@ -7101,7 +7101,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_timeperiods")==-1)
 			seq_name=NULL;
-                timeperiod_id = ido2db_ocilib_insert_id(idi, seq_name);
+                timeperiod_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", timeperiod_id);
                 free(seq_name);
 #endif /* Oracle ocilib specific */
@@ -7332,7 +7332,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 if(asprintf(&seq_name, "seq_contacts")==-1)
 			seq_name=NULL;
-                contact_id = ido2db_ocilib_insert_id(idi, seq_name);
+                contact_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(ido2db_idi *idi)(%lu) contact_id\n", contact_id);
                 free(seq_name);
 #endif /* Oracle ocilib specific */
@@ -7693,7 +7693,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
                 dummy=asprintf(&seq_name, "seq_contactgroups");
-                group_id = ido2db_ocilib_insert_id(idi, seq_name);
+                group_id = ido2db_oci_sequence_lastid(idi, seq_name);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", group_id);
                 free(seq_name);
 
