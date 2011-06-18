@@ -63,7 +63,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	/* null names mean no object id */
 	if (name1 == NULL && name2 == NULL) {
 		*object_id = 0L;
-	        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id() return null names\n");
+	        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id() null names=ID 0:shouldnt not happen\n");
 		return IDO_OK;
 	}
 
@@ -177,14 +177,9 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	/* check if we lost connection, and reconnect */
         if(ido2db_db_reconnect(idi)==IDO_ERROR)
 		return IDO_ERROR;
-
-	/* above code for other rdbms is real bullshit and not even modular for prepared statements ... */
-	/* ......... db.c ......... */
-	/* ok we have prepared 4 queries - now for the fun part */
-	/* if name1/2 is NULL, the prepared statement will already now about that, and the value does not get binded */
-
-	if(name1 != NULL && name2 != NULL) {
-
+        /**
+         * #1655 new prepared statement can handle both, null and values
+         */
 			es[0] = ido2db_db_escape_string(idi, name1);
 			es[1] = ido2db_db_escape_string(idi, name2);
 
@@ -200,12 +195,33 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X2"), (int *) data[1])) {
                                 return IDO_ERROR;
                         }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X3"), *(char **) data[2], 0)) {
-                                return IDO_ERROR;
+                        /* check if name1/2 would be NULL, explicitely bind that to NULL so that the IS NULL from the selects match */
+                        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name1\n");
+                        if(name1==NULL) {
+                        		if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_select_name1_name2, ":X3")==IDO_ERROR) {
+                        			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name1=null failed\n");
+                        			return IDO_ERROR;
+                        		}
+                        } else {
+                        	   if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X3"), *(char **) data[2], 0)) {
+                        		   ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name1=%s failed\n",data[2]);
+                              		return IDO_ERROR;
+                        	   }
                         }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X4"), *(char **) data[3], 0)) {
-                                return IDO_ERROR;
+                        // Name2
+                        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name2\n");
+                        if(name2==NULL) {
+                                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_objects_select_name1_name2, ":X4")==IDO_ERROR) {
+                                	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name2=null failed\n");
+                                     return IDO_ERROR;
+                                }
+                        } else {
+                        	    if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X4"), *(char **) data[3], 0)) {
+                        	    	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name2=%s failed\n",data[3]);
+                        	        return IDO_ERROR;
+                        	    }
                         }
+
 
 		        /* execute statement */
 		        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2)) {
@@ -213,137 +229,18 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 		                return IDO_ERROR;
 		        }
 
-			OCI_Commit(idi->dbinfo.oci_connection);
-
+		        OCI_Commit(idi->dbinfo.oci_connection);
 		        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_name2);
-
 		        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 				*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
 		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id=%lu selected\n",es[0],es[1], *object_id);
 		        } else {
 		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id could not be found\n",es[0],es[1]);
-				result = IDO_ERROR;
+		                result = IDO_ERROR;
 		        }
 
 		        /* do not free statement yet! */
 
-	}
-	else if(name1 == NULL && name2 != NULL) {
-
-                        es[0] = NULL;
-                        es[1] = ido2db_db_escape_string(idi, name2);
-
-		        data[0] = (void *) &idi->dbinfo.instance_id;
-		        data[1] = (void *) &object_type;
-		        data[2] = (void *) &es[1];
-
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(":X1"), (big_uint *) data[0])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(":X2"), (int *) data[1])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(":X3"), *(char **) data[2], 0)) {
-                                return IDO_ERROR;
-                        }
-
-                        /* execute statement */
-                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_null_name2)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(null,%s) execute error\n",es[1]);
-                                return IDO_ERROR;
-                        }
-
-                        OCI_Commit(idi->dbinfo.oci_connection);
-
-                        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_null_name2);
-
-                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                        		*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-                        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(null,%s) object id=%lu selected\n", es[1],*object_id);
-                        } else {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2(null,%s) object id could not be fetched\n",es[1]);
-                                result = IDO_ERROR;
-                        }
-
-
-                        /* do not free statement yet! */
-
-	}
-	else if(name1 !=NULL && name2 == NULL) {
-
-                        es[0] = ido2db_db_escape_string(idi, name1);
-                        es[1] = NULL;
-
-		        data[0] = (void *) &idi->dbinfo.instance_id;
-		        data[1] = (void *) &object_type;
-		        data[2] = (void *) &es[0];
-
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(":X1"), (big_uint *) data[0])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(":X2"), (int *) data[1])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(":X3"), *(char **) data[2], 0)) {
-                                return IDO_ERROR;
-                        }
-
-                        /* execute statement */
-                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2_null)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%s,null) execute error\n",es[0]);
-                                return IDO_ERROR;
-                        }
-                        OCI_Commit(idi->dbinfo.oci_connection);
-
-                        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_name2_null);
-
-                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                        		*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%s,null) object id=%lu selected\n", es[0],*object_id);
-                        } else {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2_null(%s,null) object id could not be found\n",es[0]);
-                                result = IDO_ERROR;
-                        }
-
-
-                        /* do not free statement yet! */
-
-	}
-	else if(name1 == NULL && name2 == NULL) {
-
-                        es[0] = NULL;
-                        es[1] = NULL;
-
-		        data[0] = (void *) &idi->dbinfo.instance_id;
-		        data[1] = (void *) &object_type;
-
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, MT(":X1"), (big_uint *) data[0])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, MT(":X2"), (int *) data[1])) {
-                                return IDO_ERROR;
-                        }
-
-                        /* execute statement */
-                        if(!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(null,null) execute error\n");
-                                return IDO_ERROR;
-                        }
-
-                        OCI_Commit(idi->dbinfo.oci_connection);
-                        idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null);
-
-                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                        	*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-                             ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(null,null) object id=%lu selected\n", *object_id);
-                        } else {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_null_name2_null(null,null) object id could not found\n");
-                                result = IDO_ERROR;
-                        }
-
-
-                        /* do not free statement yet! */
-	}
 
 
 #endif /* Oracle ocilib specific */

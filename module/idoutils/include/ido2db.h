@@ -163,11 +163,8 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_statehistory;
 	OCI_Statement* oci_statement_instances;
 	OCI_Statement* oci_statement_conninfo;
-	/* well oh well */
+	/* retrieve object ids by name */
 	OCI_Statement* oci_statement_objects_select_name1_name2;
-	OCI_Statement* oci_statement_objects_select_name1_null_name2;
-	OCI_Statement* oci_statement_objects_select_name1_name2_null;
-	OCI_Statement* oci_statement_objects_select_name1_null_name2_null;
 	OCI_Statement* oci_statement_objects_select_cached;
 	/* update */
 	OCI_Statement* oci_statement_objects_update_inactive;

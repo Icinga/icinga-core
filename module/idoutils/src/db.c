@@ -84,12 +84,9 @@ int ido2db_oci_prepared_statement_acknowledgements(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_statehistory(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_instances(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_conninfo(ido2db_idi *idi);
-/* this is screwed but should work ... */
-int ido2db_oci_prepared_statement_objects_select_name1_name2(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_objects_select_name1_null_name2(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_objects_select_name1_name2_null(ido2db_idi *idi);
-int ido2db_oci_prepared_statement_objects_select_name1_null_name2_null(ido2db_idi *idi);
+
 /* select stuff */
+int ido2db_oci_prepared_statement_objects_select_name1_name2(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_objects_select_cached(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_logentries_select(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_instances_select(ido2db_idi *idi);
@@ -941,26 +938,8 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
-        /* objects select  I: name1, name2 II: name1 IS NULL, name2 III: name1, name2 IS NULL IV: name1 IS NULL, name2 IS NULL */
+        /* objects select */
         if(ido2db_oci_prepared_statement_objects_select_name1_name2(idi) == IDO_ERROR) {
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
-                return IDO_ERROR;
-        }
-
-        /*  */
-        if(ido2db_oci_prepared_statement_objects_select_name1_null_name2(idi) == IDO_ERROR) {
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
-                return IDO_ERROR;
-        }
-
-        /*  */
-        if(ido2db_oci_prepared_statement_objects_select_name1_name2_null(idi) == IDO_ERROR) {
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
-                return IDO_ERROR;
-        }
-
-        /*  */
-        if(ido2db_oci_prepared_statement_objects_select_name1_null_name2_null(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() failed\n");
                 return IDO_ERROR;
         }
@@ -1210,9 +1189,6 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo);
 
 	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_name2);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_null_name2);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_name2_null);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null);
 	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_cached);
 	OCI_StatementFree(idi->dbinfo.oci_statement_objects_update_inactive);
 	OCI_StatementFree(idi->dbinfo.oci_statement_objects_update_active);
@@ -3306,7 +3282,7 @@ int ido2db_oci_prepared_statement_objects_insert(ido2db_idi *idi) {
                         buf = NULL;
         }
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() query: %s\n", buf);
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() query: %s\n", buf);
 
         if(idi->dbinfo.oci_connection) {
                 idi->dbinfo.oci_statement_objects_insert = OCI_StatementCreate(idi->dbinfo.oci_connection);
@@ -3318,9 +3294,9 @@ int ido2db_oci_prepared_statement_objects_insert(ido2db_idi *idi) {
                         return IDO_ERROR;
                 }
 
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() after rebind\n");
+                //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() after rebind\n");
                 OCI_RegisterUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, MT(":id"));
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() after register\n");
+                //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() after register\n");
         } else {
         	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_objects_insert() No Connection\n");
                 free(buf);
@@ -3381,7 +3357,10 @@ int ido2db_oci_prepared_statement_objects_select_name1_name2(ido2db_idi *idi) {
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1=:X3 AND name2=:X4", 
+        if(asprintf(&buf, "SELECT id FROM %s WHERE "
+        		"instance_id=:X1 AND objecttype_id=:X2 AND "
+        		"(((name1 is null) and (:X3 is null)) or (name1=:X3)) AND "
+        		"(((name2 is null) and (:X4 is null)) or (name2=:X4))",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]) == -1) {
                         buf = NULL;
         }
@@ -3407,111 +3386,6 @@ int ido2db_oci_prepared_statement_objects_select_name1_name2(ido2db_idi *idi) {
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
 
-        return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_objects_select_name1_null_name2(ido2db_idi *idi) {
- 
-        char *buf = NULL;
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
- 
-        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1 IS NULL AND name2=:X3",
-                ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]) == -1) {
-                        buf = NULL;
-        }
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
- 
-        if(idi->dbinfo.oci_connection) {
- 
-                idi->dbinfo.oci_statement_objects_select_name1_null_name2 = OCI_StatementCreate(idi->dbinfo.oci_connection);
- 
-                /* allow rebinding values */
-                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_null_name2, 1);
- 
-                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_null_name2, MT(buf))) {
-                        free(buf);
-                        return IDO_ERROR;
-                }
-        } else {
-                free(buf);
-                return IDO_ERROR;
-        }
-        free(buf);
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
- 
-        return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_objects_select_name1_name2_null(ido2db_idi *idi) {
- 
-        char *buf = NULL;
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
- 
-        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1=:X3 AND name2 IS NULL",
-                ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]) == -1) {
-                        buf = NULL;
-        }
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
- 
-        if(idi->dbinfo.oci_connection) {
- 
-                idi->dbinfo.oci_statement_objects_select_name1_name2_null = OCI_StatementCreate(idi->dbinfo.oci_connection);
- 
-                /* allow rebinding values */
-                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_name2_null, 1);
- 
-                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_name2_null, MT(buf))) {
-                        free(buf);
-                        return IDO_ERROR;
-                }
-        } else {
-                free(buf);
-                return IDO_ERROR;
-        }
-        free(buf);
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
- 
-        return IDO_OK;
-}
-
-int ido2db_oci_prepared_statement_objects_select_name1_null_name2_null(ido2db_idi *idi) {
- 
-        char *buf = NULL;
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
- 
-        if(asprintf(&buf, "SELECT id FROM %s WHERE instance_id=:X1 AND objecttype_id=:X2 AND name1 IS NULL AND name2 IS NULL",
-                ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]) == -1) {
-                        buf = NULL;
-        }
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
- 
-        if(idi->dbinfo.oci_connection) {
- 
-                idi->dbinfo.oci_statement_objects_select_name1_null_name2_null = OCI_StatementCreate(idi->dbinfo.oci_connection);
- 
-                /* allow rebinding values */
-                OCI_AllowRebinding(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, 1);
- 
-                if(!OCI_Prepare(idi->dbinfo.oci_statement_objects_select_name1_null_name2_null, MT(buf))) {
-                        free(buf);
-                        return IDO_ERROR;
-                }
-        } else {
-                free(buf);
-                return IDO_ERROR;
-        }
-        free(buf);
- 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
- 
         return IDO_OK;
 }
 
