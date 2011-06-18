@@ -4340,7 +4340,7 @@ void display_host_availability(void){
 	char time_indeterminate_string[48];
 	char time_determinate_string[48];
 	char total_time_string[48];
-	char *header[34];
+	char *header[37];
 	double percent_time_ok=0.0;
 	double percent_time_warning=0.0;
 	double percent_time_unknown=0.0;
@@ -4410,7 +4410,7 @@ void display_host_availability(void){
 	char *bgclass="";
 	int odd=1;
 	int json_start=TRUE;
-	char lower_header[34][100];
+	char lower_header[37][100];
 	int len=0;
 
 	/* calculate total time during period based on timeperiod used for reporting */
@@ -4455,10 +4455,14 @@ void display_host_availability(void){
 	header[31] = "PERCENT_TIME_UNDETERMINED_NO_DATA";
 	header[32] = "TOTAL_TIME_UNDETERMINED";
 	header[33] = "PERCENT_TOTAL_TIME_UNDETERMINED";
+	header[34] = "TOTAL_TIME_ALL";
+	header[35] = "PERCENT_TOTAL_TIME_ALL";
+	header[36] = "PERCENT_KNOWN_TIME_ALL";
+
 
 	if(content_type==JSON_CONTENT){
 		/* converting to lower case */
-		for(i=0;i<34;i++) {
+		for(i=0;i<37;i++) {
 			len=(int)strlen(header[i]);
 			for(j=0;j<len;j++) {
 				if (header[i][j]=='_')
@@ -4667,7 +4671,12 @@ void display_host_availability(void){
 				printf(" \"%s\": %lu, ",lower_header[30],temp_subject->time_indeterminate_nodata);
 				printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_indeterminate_nodata);
 				printf(" \"%s\": %lu, ",lower_header[32],time_indeterminate);
-				printf(" \"%s\": %2.3f, \n",lower_header[33],percent_time_indeterminate);
+				printf(" \"%s\": %2.3f, ",lower_header[33],percent_time_indeterminate);
+
+				/* total times */
+				printf(" \"%s\": %lu, ",lower_header[34],total_time);
+				printf(" \"%s\": 100.000, ",lower_header[35]);
+				printf(" \"%s\": 100.000, \n",lower_header[36]);
 
 				printf("\"service_state_breakdowns\": [\n");
 			}
@@ -4791,7 +4800,7 @@ void display_host_availability(void){
 
 		} else if(content_type==CSV_CONTENT){
 
-                        for(i=0;i<34;i++)
+                        for(i=0;i<37;i++)
                                 printf("%s%s%s%s",csv_data_enclosure,header[i],csv_data_enclosure,csv_delimiter);
 
                         printf("\n");
@@ -4840,6 +4849,11 @@ void display_host_availability(void){
                         printf("%s%lu%s%s",    csv_data_enclosure,time_indeterminate,csv_data_enclosure,csv_delimiter);
                         printf("%s%2.3f%%%s%s",csv_data_enclosure,percent_time_indeterminate,csv_data_enclosure,csv_delimiter);
 
+			/* total times */
+			printf("%s%lu%s%s",csv_data_enclosure,total_time,csv_data_enclosure,csv_delimiter);
+			printf("%s100.000%%%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%s100.000%%%s",csv_data_enclosure,csv_data_enclosure);
+
                         printf("\n");
 		}
 	}
@@ -4861,7 +4875,7 @@ void display_host_availability(void){
 			printf("\"hosts\": [\n");
 		}else if(content_type==CSV_CONTENT){
 
-			for(i=0;i<34;i++)
+			for(i=0;i<37;i++)
 				printf("%s%s%s%s",csv_data_enclosure,header[i],csv_data_enclosure,csv_delimiter);
 
 			printf("\n");
@@ -5001,7 +5015,12 @@ void display_host_availability(void){
 				printf(" \"%s\": %lu, ",lower_header[30],temp_subject->time_indeterminate_nodata);
 				printf(" \"%s\": %2.3f, ",lower_header[31],percent_time_indeterminate_nodata);
 				printf(" \"%s\": %lu, ",lower_header[32],time_indeterminate);
-				printf(" \"%s\": %2.3f} ",lower_header[33],percent_time_indeterminate);
+				printf(" \"%s\": %2.3f, ",lower_header[33],percent_time_indeterminate);
+
+				/* total times */
+				printf(" \"%s\": %lu, ",lower_header[34],total_time);
+				printf(" \"%s\": 100.000, ",lower_header[35]);
+				printf(" \"%s\": 100.000} ",lower_header[36]);
 
 				json_start=FALSE;
 
@@ -5050,7 +5069,12 @@ void display_host_availability(void){
 				printf("%s%2.3f%%%s%s",csv_data_enclosure,percent_time_indeterminate_nodata,csv_data_enclosure,csv_delimiter);
 				printf("%s%lu%s%s",    csv_data_enclosure,time_indeterminate,csv_data_enclosure,csv_delimiter);
 				printf("%s%2.3f%%%s%s",csv_data_enclosure,percent_time_indeterminate,csv_data_enclosure,csv_delimiter);
-				
+
+				/* total times */
+				printf("%s%lu%s%s",csv_data_enclosure,total_time,csv_data_enclosure,csv_delimiter);
+				printf("%s100.000%%%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+				printf("%s100.000%%%s",csv_data_enclosure,csv_data_enclosure);
+
 				printf("\n");
 			}
 
@@ -5171,9 +5195,9 @@ void display_service_availability(void){
 	int i=0, j=0;
 	char *bgclass="";
 	char last_host[128]="";
-	char *header[44];
+	char *header[47];
 	int json_start=TRUE;
-	char lower_header[44][100];
+	char lower_header[47][100];
 	int len=0;
 
 
@@ -5236,9 +5260,14 @@ void display_service_availability(void){
 	header[42] = "TOTAL_TIME_UNDETERMINED";
 	header[43] = "PERCENT_TOTAL_TIME_UNDETERMINED";
 
+	/* total times */
+	header[44] = "TOTAL_TIME_ALL";
+	header[45] = "PERCENT_TOTAL_TIME_ALL";
+	header[46] = "PERCENT_KNOWN_TIME_ALL";
+
 	if(content_type==JSON_CONTENT){
 		/* converting to lower case */
-		for(i=0;i<44;i++) {
+		for(i=0;i<47;i++) {
 			len=(int)strlen(header[i]);
 			for(j=0;j<len;j++) {
 				if (header[i][j]=='_')
@@ -5352,8 +5381,8 @@ void display_service_availability(void){
 				percent_time_critical_known=(double)(((double)temp_subject->time_critical*100.0)/(double)time_determinate);
 				percent_time_critical_scheduled_known=(double)(((double)temp_subject->scheduled_time_critical*100.0)/(double)time_determinate);
 				percent_time_critical_unscheduled_known=percent_time_critical_known-percent_time_critical_scheduled_known;
-		                }
-	                }
+			}
+		}
 
                 if(content_type==HTML_CONTENT){
 
@@ -5470,11 +5499,16 @@ void display_service_availability(void){
 			printf(" \"%s\": %lu, ",lower_header[40],temp_subject->time_indeterminate_nodata);
 			printf(" \"%s\": %2.3f, ",lower_header[41],percent_time_indeterminate_nodata);
 			printf(" \"%s\": %lu, ",lower_header[42],time_indeterminate);
-			printf(" \"%s\": %2.3f}\n],\n",lower_header[43],percent_time_indeterminate);
+			printf(" \"%s\": %2.3f, ",lower_header[43],percent_time_indeterminate);
+
+			/* total times */
+			printf(" \"%s\": %lu, ",lower_header[44],total_time);
+			printf(" \"%s\": 100.000, ",lower_header[45]);
+			printf(" \"%s\": 100.000}\n],\n",lower_header[46]);
 
                 } else if(content_type==CSV_CONTENT){
 
-                        for(i=0;i<44;i++)
+                        for(i=0;i<47;i++)
                                 printf("%s%s%s%s",csv_data_enclosure,header[i],csv_data_enclosure,csv_delimiter);
 
                         printf("\n");
@@ -5535,6 +5569,11 @@ void display_service_availability(void){
                         printf("%s%lu%s%s",    csv_data_enclosure,time_indeterminate,csv_data_enclosure,csv_delimiter);
                         printf("%s%2.3f%%%s%s",csv_data_enclosure,percent_time_indeterminate,csv_data_enclosure,csv_delimiter);
 
+			/* total times */
+			printf("%s%lu%s%s",csv_data_enclosure,total_time,csv_data_enclosure,csv_delimiter);
+			printf("%s100.000%%%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+			printf("%s100.000%%%s",csv_data_enclosure,csv_data_enclosure);
+
 			printf("\n");
 
                 }
@@ -5562,7 +5601,7 @@ void display_service_availability(void){
 			printf("\"services\": [\n");
 		}else if(content_type==CSV_CONTENT){
 
-			for(i=0;i<44;i++)
+			for(i=0;i<47;i++)
 				printf("%s%s%s%s",csv_data_enclosure,header[i],csv_data_enclosure,csv_delimiter);
 
 			printf("\n");
@@ -5732,7 +5771,12 @@ void display_service_availability(void){
 				printf(" \"%s\": %lu, ",lower_header[40],temp_subject->time_indeterminate_nodata);
 				printf(" \"%s\": %2.3f, ",lower_header[41],percent_time_indeterminate_nodata);
 				printf(" \"%s\": %lu, ",lower_header[42],time_indeterminate);
-				printf(" \"%s\": %2.3f} ",lower_header[43],percent_time_indeterminate);
+				printf(" \"%s\": %2.3f, ",lower_header[43],percent_time_indeterminate);
+
+				/* total times */
+				printf(" \"%s\": %lu, ",lower_header[44],total_time);
+				printf(" \"%s\": 100.000, ",lower_header[45]);
+				printf(" \"%s\": 100.000} ",lower_header[46]);
 
 				json_start=FALSE;
 
@@ -5793,6 +5837,11 @@ void display_service_availability(void){
 				printf("%s%2.3f%%%s%s",csv_data_enclosure,percent_time_indeterminate_nodata,csv_data_enclosure,csv_delimiter);
 				printf("%s%lu%s%s",    csv_data_enclosure,time_indeterminate,csv_data_enclosure,csv_delimiter);
 				printf("%s%2.3f%%%s%s",csv_data_enclosure,percent_time_indeterminate,csv_data_enclosure,csv_delimiter);
+
+				/* total times */
+				printf("%s%lu%s%s",csv_data_enclosure,total_time,csv_data_enclosure,csv_delimiter);
+				printf("%s100.000%%%s%s",csv_data_enclosure,csv_data_enclosure,csv_delimiter);
+				printf("%s100.000%%%s",csv_data_enclosure,csv_data_enclosure);
 
 				printf("\n");
 			}
