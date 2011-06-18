@@ -2270,16 +2270,19 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 	if (idi == NULL || buf == NULL)
 		return NULL;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) start\n", buf);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string('%s') start\n", buf);
 
 	z = strlen(buf);
+        if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string('%s') Error: memory allocation failed \n", buf);
+        	return NULL;
+        }
+
 
 	/* escape characters */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	/* allocate space for the new string */
 
-        if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
-                return NULL;
 
         for (x = 0, y = 0; x < z; x++) {
 
@@ -2306,20 +2309,9 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
         /* terminate escape string */
         newbuf[y] = '\0';
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) end\n", newbuf);
-        return newbuf;
-
-        //size_t res = dbi_conn_quote_string(idi->dbinfo.dbi_conn, &buf);
-
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) end\n", buf);
-        //return buf;
-
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
-
-        if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
-                return NULL;
 
         for (x = 0, y = 0; x < z; x++) {
 
@@ -2332,17 +2324,9 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
         /* terminate escape string */
         newbuf[y] = '\0';
 
-        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) end\n", newbuf);
-        return newbuf;
-
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-
-	/* allocate space for the new string */
-	if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL)
-		return NULL;
-
 
 	for (x = 0, y = 0; x < z; x++) {
 
@@ -2355,8 +2339,10 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 
 	/* terminate escape string */
 	newbuf[y] = '\0';
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string(%s) end\n", newbuf);
+	if (strcmp(buf,newbuf)!=0) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string changed string ('%s')\n", newbuf);
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string end\n");
 	return newbuf;
 }
 
