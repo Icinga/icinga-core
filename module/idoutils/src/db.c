@@ -372,8 +372,15 @@ int ido2db_db_is_connected(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE
-	if(!OCI_IsConnected(idi->dbinfo.oci_connection))
+	if (!idi->dbinfo.oci_connection) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_is_connected() Warning:Null Connection handle \n");
 		return IDO_FALSE;
+	}
+
+	if(!OCI_IsConnected(idi->dbinfo.oci_connection)) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_is_connected() ->not connected\n");
+		return IDO_FALSE;
+	}
 #endif
 
 	return IDO_TRUE;
@@ -386,14 +393,14 @@ int ido2db_db_reconnect(ido2db_idi *idi) {
 		idi->dbinfo.connected=IDO_FALSE;
 
         /* try to reconnect... */
-        if(idi->dbinfo.connected==IDO_FALSE) {
-                if(ido2db_db_connect(idi)==IDO_ERROR){
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_reconnect(): failed.\n");
-			syslog(LOG_USER | LOG_INFO, "Error: Could not reconnect to database!");
-                        return IDO_ERROR;
-		}
-                ido2db_db_hello(idi);
-        }
+	if(idi->dbinfo.connected==IDO_FALSE) {
+        	if(ido2db_db_connect(idi)==IDO_ERROR){
+        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_reconnect(): failed.\n");
+        		syslog(LOG_USER | LOG_INFO, "Error: Could not reconnect to database!");
+        		return IDO_ERROR;
+        	}
+        	ido2db_db_hello(idi);
+	}
 
 	return IDO_OK;
 }
@@ -1080,12 +1087,24 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_disconnect() start\n");
 
-	if (idi == NULL)
+	if (idi == NULL) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_disconnect() Error:Connection structure is null\n");
+#ifdef USE_ORACLE
+		OCI_Cleanup();
+#endif
 		return IDO_ERROR;
+	}
+
 
 	/* we're not connected... */
-	if(ido2db_db_is_connected(idi)==IDO_FALSE)
+	if(ido2db_db_is_connected(idi)==IDO_FALSE) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_disconnect() already disconnected\n");
+#ifdef USE_ORACLE
+		OCI_Cleanup();
+#endif
 		return IDO_OK;
+	}
+
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_conn_close(idi->dbinfo.dbi_conn);
@@ -1103,120 +1122,123 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_disconnect() free statements\n");
+	/**
+	 *  close prepared statements
+	 *  2011-06-19 only if handle is set
+	 * */
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedevents,"oci_statement_objects_update_inactive");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedevents_queue,"oci_statement_timedevents_queue");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedeventqueue,"oci_statement_timedeventqueue");
 
-	/* close prepared statements */
-	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents);
-	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents_queue);
-	OCI_StatementFree(idi->dbinfo.oci_statement_timedeventqueue);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostchecks,"oci_statement_hostchecks");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hoststatus,"oci_statement_hoststatus");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostchecks);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hoststatus);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicechecks,"oci_statement_servicechecks");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicestatus,"oci_statement_servicestatus");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicechecks);
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicestatus);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contact_notificationcommands,"oci_statement_contact_notificationcommands");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_insert,"oci_statement_objects_insert");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_logentries_insert,"oci_statement_logentries_insert");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_programstatus,"oci_statement_programstatus");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_systemcommanddata,"oci_statement_systemcommanddata");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_eventhandlerdata,"oci_statement_eventhandlerdata");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_notificationdata,"oci_statement_notificationdata");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_contact_notificationcommands);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_insert);
-	OCI_StatementFree(idi->dbinfo.oci_statement_logentries_insert);
-	OCI_StatementFree(idi->dbinfo.oci_statement_programstatus);
-	OCI_StatementFree(idi->dbinfo.oci_statement_systemcommanddata);
-	OCI_StatementFree(idi->dbinfo.oci_statement_eventhandlerdata);
-	OCI_StatementFree(idi->dbinfo.oci_statement_notificationdata);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactnotificationdata,"oci_statement_contactnotificationdata");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactnotificationmethoddata,"oci_statement_contactnotificationmethoddata");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactnotificationdata);
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactnotificationmethoddata);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_commentdata,"oci_statement_commentdata");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_commentdata_history,"oci_statement_commentdata_history");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_commentdata);
-	OCI_StatementFree(idi->dbinfo.oci_statement_commentdata_history);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime,"oci_statement_downtimedata_scheduled_downtime");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_downtimedata_downtime_history,"oci_statement_downtimedata_downtime_history");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime);
-	OCI_StatementFree(idi->dbinfo.oci_statement_downtimedata_downtime_history);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactstatusdata,"oci_statement_contactstatusdata");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactstatusdata);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_configfilevariables,"oci_statement_configfilevariables");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_configfilevariables_insert,"oci_statement_configfilevariables_insert");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_configfilevariables);
-	OCI_StatementFree(idi->dbinfo.oci_statement_configfilevariables_insert);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_runtimevariables,"oci_statement_runtimevariables");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_runtimevariables);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_definition,"oci_statement_hostdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_parenthosts,"oci_statement_hostdefinition_parenthosts");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_contactgroups,"oci_statement_hostdefinition_contactgroups");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_contacts,"oci_statement_hostdefinition_contacts");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_parenthosts);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_contactgroups);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostdefinition_contacts);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostgroupdefinition_definition,"oci_statement_hostgroupdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,"oci_statement_hostgroupdefinition_hostgroupmembers");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostgroupdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedefinition_definition,"oci_statement_servicedefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedefinition_contactgroups,"oci_statement_servicedefinition_contactgroups");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedefinition_contacts,"oci_statement_servicedefinition_contacts");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicedefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicedefinition_contactgroups);
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicedefinition_contacts);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicegroupdefinition_definition,"oci_statement_servicegroupdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicegroupdefinition_members,"oci_statement_servicegroupdefinition_members");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicegroupdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicegroupdefinition_members);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdependencydefinition_definition,"oci_statement_hostdependencydefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedependencydefinition_definition,"oci_statement_servicedependencydefinition_definition");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostdependencydefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_servicedependencydefinition_definition);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostescalationdefinition_definition,"oci_statement_hostescalationdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostescalationdefinition_contactgroups,"oci_statement_hostescalationdefinition_contactgroups");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostescalationdefinition_contacts,"oci_statement_hostescalationdefinition_contacts");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostescalationdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostescalationdefinition_contactgroups);
-	OCI_StatementFree(idi->dbinfo.oci_statement_hostescalationdefinition_contacts);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_serviceescalationdefinition_definition,"oci_statement_serviceescalationdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_serviceescalationdefinition_contactgroups,"oci_statement_serviceescalationdefinition_contactgroups");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_serviceescalationdefinition_contacts,"oci_statement_serviceescalationdefinition_contacts");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_serviceescalationdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_serviceescalationdefinition_contactgroups);
-	OCI_StatementFree(idi->dbinfo.oci_statement_serviceescalationdefinition_contacts);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_commanddefinition_definition,"oci_statement_commanddefinition_definition");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_commanddefinition_definition);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timeperiodefinition_definition,"oci_statement_timeperiodefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,"oci_statement_timeperiodefinition_timeranges");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_timeperiodefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_timeperiodefinition_timeranges);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactdefinition_definition,"oci_statement_contactdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactdefinition_addresses,"oci_statement_contactdefinition_addresses");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands,"oci_statement_contactdefinition_servicenotificationcommands");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactdefinition_addresses);
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_save_custom_variables_customvariables,"oci_statement_save_custom_variables_customvariables");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,"oci_statement_save_custom_variables_customvariablestatus");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_save_custom_variables_customvariables);
-	OCI_StatementFree(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactgroupdefinition_definition,"oci_statement_contactgroupdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,"oci_statement_contactgroupdefinition_contactgroupmembers");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactgroupdefinition_definition);
-	OCI_StatementFree(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_process_events,"oci_statement_process_events");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_flappinghistory,"oci_statement_flappinghistory");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_external_commands,"oci_statement_external_commands");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_acknowledgements,"oci_statement_acknowledgements");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_statehistory,"oci_statement_statehistory");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_instances,"oci_statement_instances");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_conninfo,"oci_statement_conninfo");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_process_events);
-	OCI_StatementFree(idi->dbinfo.oci_statement_flappinghistory);
-	OCI_StatementFree(idi->dbinfo.oci_statement_external_commands);
-	OCI_StatementFree(idi->dbinfo.oci_statement_acknowledgements);
-	OCI_StatementFree(idi->dbinfo.oci_statement_statehistory);
-	OCI_StatementFree(idi->dbinfo.oci_statement_instances);
-	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_select_name1_name2,"oci_statement_objects_select_name1_name2");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_select_cached,"oci_statement_objects_select_cached");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_update_inactive,"oci_statement_objects_update_inactive");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_update_active,"oci_statement_objects_update_active");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_name1_name2);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_select_cached);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_update_inactive);
-	OCI_StatementFree(idi->dbinfo.oci_statement_objects_update_active);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_logentries_select,"oci_statement_logentries_select");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_programstatus_update,"oci_statement_programstatus_update");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_logentries_select);
-	OCI_StatementFree(idi->dbinfo.oci_statement_programstatus_update);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedevents_update,"oci_statement_timedevents_update");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedeventqueue_delete,"oci_statement_timedeventqueue_delete");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timedeventqueue_delete_more,"oci_statement_timedeventqueue_delete_more");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_timedevents_update);
-	OCI_StatementFree(idi->dbinfo.oci_statement_timedeventqueue_delete);
-	OCI_StatementFree(idi->dbinfo.oci_statement_timedeventqueue_delete_more);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_comment_history_update,"oci_statement_comment_history_update");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_comments_delete,"oci_statement_comments_delete");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_comment_history_update);
-	OCI_StatementFree(idi->dbinfo.oci_statement_comments_delete);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_downtimehistory_update_start,"oci_statement_downtimehistory_update_start");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_scheduleddowntime_update_start,"oci_statement_scheduleddowntime_update_start");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_downtimehistory_update_stop,"oci_statement_downtimehistory_update_stop");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_downtime_delete,"oci_statement_downtime_delete");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_downtimehistory_update_start);
-	OCI_StatementFree(idi->dbinfo.oci_statement_scheduleddowntime_update_start);
-	OCI_StatementFree(idi->dbinfo.oci_statement_downtimehistory_update_stop);
-	OCI_StatementFree(idi->dbinfo.oci_statement_downtime_delete);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_instances_select,"oci_statement_instances_select");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_instances_select);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_conninfo_update,"oci_statement_conninfo_update");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_conninfo_update_checkin,"oci_statement_conninfo_update_checkin");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo_update);
-	OCI_StatementFree(idi->dbinfo.oci_statement_conninfo_update_checkin);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_instances_delete,"oci_statement_instances_delete");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_instances_delete_time,"oci_statement_instances_delete_time");
 
-	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete);
-	OCI_StatementFree(idi->dbinfo.oci_statement_instances_delete_time);
-
-	OCI_StatementFree(idi->dbinfo.oci_statement_dbversion_select);
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_dbversion_select,"oci_statement_dbversion_select");
 
 	syslog(LOG_USER | LOG_INFO, "Successfully freed prepared statements");
 
@@ -6432,4 +6454,23 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
         free(fmt);
 }
 
+/**
+ * check cleanup statement if handle is set and free it
+ * @param st Statement handle variable
+ * @param statement name
+ * @return void
+ */
+void ido2db_oci_statement_free(OCI_Statement *st, char * stname) {
+	char * fname="ido2db_oci_statement_free";
+	if (st==NULL) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Statement %s is null\n",fname,stname);
+	}else{
+		if (OCI_StatementGetConnection(st)) {
+			OCI_StatementFree(st);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Statement %s freed\n",fname,stname);
+		}else{
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Statement %s invalid connection\n",fname,stname);
+		}
+	}
+}
 #endif /* Oracle ocilib specific */

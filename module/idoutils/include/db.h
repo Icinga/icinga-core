@@ -166,6 +166,7 @@ int ido2db_oci_set_trace_event(OCI_Connection *,unsigned int);
 int ido2db_oci_execute_out(OCI_Connection *,OCI_Statement *,char *);
 int ido2db_oci_set_appinfo(OCI_Connection *, char *);
 void ido2db_oci_print_binds(OCI_Statement *,int,char **);
+void ido2db_oci_statement_free(OCI_Statement *,char *);
 #endif /* Oracle ocilib specific */
 
 #endif
