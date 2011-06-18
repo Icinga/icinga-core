@@ -2364,8 +2364,14 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 /* SQL query conversion of time_t format to date/time format */
 /*************************************************************/
 char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
-	char *buf = NULL;
 
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+        /**
+        * oracle doesn't use this function currently
+	*/
+	return NULL;
+#else /* Oracle ocilib specific */
+	char *buf = NULL;
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql(%lu) start\n", (unsigned long)t);
 
 	switch (idi->dbinfo.server_type) {
@@ -2390,11 +2396,7 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
                         break;
                 case IDO2DB_DBSERVER_ORACLE:
 
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-                        /* unixts2date is a PL/SQL function (defined in db/oracle.sql) */
-                        if(asprintf(&buf,"(SELECT unixts2date(%lu) FROM DUAL)",(unsigned long)t)==-1)
-				buf=NULL;
-#endif /* Oracle ocilib specific */
+
 
                         break;
                 case IDO2DB_DBSERVER_SQLITE:
@@ -2408,14 +2410,20 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_timet_to_sql(%s) end\n", buf);
 
 	return buf;
+#endif
 }
 
 /*************************************************************/
 /* SQL query conversion of date/time format to time_t format */
 /*************************************************************/
 char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+	/**
+	 * oracle doesn't use this function currently
+	*/
+	return NULL;
+#else/* all others */
 	char *buf = NULL;
-
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet(%s) start\n", field);
 
 	switch (idi->dbinfo.server_type) {
@@ -2440,10 +2448,6 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
                         break;
                 case IDO2DB_DBSERVER_ORACLE:
 
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-			if(asprintf(&buf,"((SELECT ((SELECT %s FROM %%s) - TO_DATE('01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss')) * 86400) FROM DUAL)",(field==NULL)?"":field)==-1)
-				buf=NULL;
-#endif/* Oracle ocilib specific */
 
                         break;
                 case IDO2DB_DBSERVER_SQLITE:
@@ -2457,6 +2461,7 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_sql_to_timet(%s) end\n", buf);
 
 	return buf;
+#endif
 }
 
 /************************************/
