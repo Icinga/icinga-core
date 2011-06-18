@@ -163,7 +163,7 @@ void ido2db_ocilib_err_handler(OCI_Error *);
 unsigned long ido2db_ocilib_insert_id(ido2db_idi *, char *);
 int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *, char *);
 int ido2db_oci_set_trace_event(OCI_Connection *,unsigned int);
-int ido2db_oci_execute_out(OCI_Connection *,OCI_Statement *,char *);
+int ido2db_oci_execute_out(OCI_Statement *,char *);
 int ido2db_oci_set_appinfo(OCI_Connection *, char *);
 void ido2db_oci_print_binds(OCI_Statement *,int,char **);
 void ido2db_oci_statement_free(OCI_Statement *,char *);

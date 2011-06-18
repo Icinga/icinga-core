@@ -6158,36 +6158,53 @@ int ido2db_oci_set_trace_event(OCI_Connection *cn,unsigned int trace_level) {
 	 	 return IDO_ERROR;
 	 }
 	 /* execute statement and log output */
-	 ret=ido2db_oci_execute_out(cn,st,fname);
-	 if (ret==IDO_OK) {
-		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Event set successfully\n",fname);
-	 }else{
+	 ret=ido2db_oci_execute_out(st,fname);
+	 if (ret!=IDO_OK) {
 		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Event set failed\n",fname);
 	 }
-	 OCI_StatementFree(st);
+	 ido2db_oci_statement_free(st,fname);
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s end\n",fname);
 	 return ret;
 }
 /**
  * executes a statement and handle DBMS_OUTPUT
- * @param OCI_Connection
- * @param OCI_Statement
+ * @param OCI_Statement statement to execute
  * @return IDO_OK
  */
-int ido2db_oci_execute_out(OCI_Connection *cn,OCI_Statement *st, char * fname) {
+int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	const dtext *p;
 	int ret;
-	/* print binds in Level SQL */
-	char binds[1600];
-	ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);
-	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Binds:%s\n",fname,binds);
+	OCI_Connection *cn;
 
+	/* check parameter */
+	if (!st) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_execute_out: %s No valid statement handle supplied\n",fname);
+		return IDO_ERROR;
+	}
+	if (!fname) {
+		fname=strdup("ido2db_oci_execute_out");
+	}
+	/* get current connection */
+	cn=OCI_StatementGetConnection(st);
+
+	/* print binds in Level SQL */
+	char * binds=NULL;
+	binds=malloc(OCI_VARCHAR_SIZE*4);
+	if (binds) {
+		ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Binds:%s\n",fname,binds);
+		free(binds);
+	}
+	/**
+	 * enable dbms_output, execute statement and retrieve dbms_output lines
+	 */
 	OCI_ServerEnableOutput(cn , 32000, 1, 2000);
 	ret=OCI_Execute(st);
 	while ((p = OCI_ServerGetOutput(cn)))
 	{
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s DBMSOUT:%s\n",fname,p);
 	}
-
+	/* return execute status */
 	if (!ret) {
 		return IDO_ERROR;
 	}
@@ -6236,14 +6253,13 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 		   	 return IDO_ERROR;
 		 }
 		 /* execute statement */
-		 ret=ido2db_oci_execute_out(cn,st,fname);
-		 if (ret==IDO_OK) {
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:AppInfo set successfully to %s:%s\n",fname,module,action);
-		 }else{
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:AppInfo set failed\n",fname);
+		 ret=ido2db_oci_execute_out(st,fname);
+		 if (ret!=IDO_OK) {
+			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:AppInfo execute failed\n",fname);
 		 }
-		 OCI_StatementFree(st);
+		 ido2db_oci_statement_free(st,fname);
 		 if (app_info) free(app_info);
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s end\n",fname);
 		 return ret;
 }
 /**

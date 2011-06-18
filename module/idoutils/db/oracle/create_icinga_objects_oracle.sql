@@ -153,8 +153,6 @@ END;
 CREATE or replace procedure set_trace_event(trace_level integer) 
 /*
 requires explicit alter session privilege
-select on v$session and v$process is recommanded
---trace_level valid values (for explanations see oracle docs)
 0 - pseudo level TRACE OFF
 1 – standard SQL trace no, no wait events, or bind variables.
 4 – Bind variables only
@@ -167,10 +165,10 @@ select on v$session and v$process is recommanded
     output varchar(200);
     mypid integer;
     myfile varchar2(255);
-  no_table EXCEPTION;
-  no_rights EXCEPTION;
-  invalid_name exception;
-  invalid_level Exception;
+    no_table EXCEPTION;
+    no_rights EXCEPTION;
+    invalid_name exception;
+    invalid_level Exception;
   
   PRAGMA EXCEPTION_INIT(no_table, -942);
   PRAGMA EXCEPTION_INIT(invalid_name, -904);
@@ -192,20 +190,11 @@ select on v$session and v$process is recommanded
       output:='Session trace event set to level '||to_char(trace_level)|| ' for SID '||to_char(mysid);
     end if;
     --dbms_output.put_line('Execute:'||text);
-    begin
-      execute immediate text; 
-    exception
-    /* surpress errors*/
-    when no_rights then
-      /* ora 1031 indicates no alter session priviledge */
-      dbms_output.put_line('Error: No "Alter session" right');
-    
-    end;
-    
+    execute immediate text;   
     dbms_output.put_line(output);
     /* optional */
-    begin
-      if trace_level>0 then
+    
+    if trace_level>0 then
         text:='select p.spid  from v$process p,v$session s where s.paddr=p.addr and s.sid='||to_char(mysid);
         --dbms_output.put_line('Execute:'||text);
         EXECUTE IMMEDIATE text  into mypid;
@@ -223,8 +212,12 @@ select on v$session and v$process is recommanded
            dbms_output.put_line(sqlerrm);
         end;
         dbms_output.put_line(output);
-      end if;
+    end if;
     exception
+    /* surpress errors*/
+    when no_rights then
+      /* ora 1031 indicates no alter session priviledge */
+      dbms_output.put_line('Error: No "Alter session" right');
     when invalid_level then
       dbms_output.put_line('Error:Only levels 0,1,4,8,12 are valid');
     when no_table then
@@ -232,12 +225,9 @@ select on v$session and v$process is recommanded
         dbms_output.put_line('Warning:No access to v$session and/or v$process');
     when others then
         dbms_output.put_line('Warning:Cannot get ProcessID:'||sqlerrm);      
-    end;
-    
-    
 END set_trace_event;
-/ 
-  
+/
+
 -- --------------------------------------------------------
 -- database table creation: icinga
 -- --------------------------------------------------------
