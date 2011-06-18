@@ -2654,18 +2654,18 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 /**************************************************/
 int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *field_name, unsigned long *t) {
 	char *buf = NULL;
-	char *ts[1];
+	char * fname="ido2db_db_get_latest_data_time";
 	int result = IDO_OK;
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_get_latest_data_time() start\n");
-
-	if (idi == NULL || table_name == NULL || field_name == NULL || t == NULL)
-		return IDO_ERROR;
-
 	*t = (time_t) 0L;
-	ts[0] = ido2db_db_sql_to_timet(idi, field_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() start\n",fname);
+
+	if (idi == NULL || table_name == NULL || field_name == NULL || t == NULL) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:at least one parameter is NULL\n",fname);
+		return IDO_ERROR;
+	}
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
+
 
 	if (asprintf(&buf,"SELECT %s AS latest_time FROM %s WHERE instance_id=%lu ORDER BY %s DESC LIMIT 1 OFFSET 0",
 			field_name, table_name, idi->dbinfo.instance_id, field_name) == -1)
@@ -2686,26 +2686,46 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
+	//bigint is unsigned long long !
+	unsigned long long instance_id=idi->dbinfo.instance_id;
+	idi->dbinfo.oci_statement=OCI_StatementCreate(idi->dbinfo.oci_connection);
+	if (asprintf(&buf,"select max(date2unixts(%s)) from %s where instance_id=:ID",field_name,table_name)==-1){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:Memory allocation SQL failed\n",fname);
+		free(buf);
+		return IDO_ERROR;
+	}
+	if (!(OCI_Prepare(idi->dbinfo.oci_statement,buf))){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:Prepare SQL [ %s ] failed\n",fname,buf);
+		ido2db_oci_statement_free(idi->dbinfo.oci_statement,fname);
+		free(buf);
+		return IDO_ERROR;
+	}
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s() SQL [ %s ] prepared\n",fname,buf);
+	if (!(OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement,MT(":ID"), &instance_id))){
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:Bind instance_ID(%llu) failed\n",fname,instance_id);
+			ido2db_oci_statement_free(idi->dbinfo.oci_statement,fname);
+			free(buf);
+			return IDO_ERROR;
+	}
+	if ((ido2db_oci_execute_out(idi->dbinfo.oci_statement,fname))==IDO_ERROR){
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:execute failed\n",fname);
+				ido2db_oci_statement_free(idi->dbinfo.oci_statement,fname);
+				free(buf);
+				return IDO_ERROR;
+	}
+	idi->dbinfo.oci_resultset=OCI_GetResultset(idi->dbinfo.oci_statement);
 
-        if( asprintf(&buf,"SELECT ( ( ( SELECT * FROM ( SELECT %s FROM %s WHERE instance_id=%lu ORDER BY %s DESC) WHERE ROWNUM = 1 ) - to_date( '01-01-1970 00:00:00','dd-mm-yyyy hh24:mi:ss' )) * 86400) AS latest_time FROM DUAL"
-                    ,(field_name==NULL)?"":field_name
-                    ,table_name
-                    ,idi->dbinfo.instance_id
-                    ,field_name
-                   )==-1)
-                buf=NULL;
-
-        if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
-
-                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_get_latest_data_time() query ok\n");
-                if (idi->dbinfo.oci_resultset != NULL) {
-                        /* check if next row */
-                        if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-                                *t = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_get_latest_data_time(%lu)\n", *t);
-                        }
+        if (idi->dbinfo.oci_resultset != NULL) {
+        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s query ok\n",fname);
+        	/* check if next row */
+                if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+                    *t = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
+                    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() latest=%lu\n",fname, *t);
+                }else{
+                	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Nothing to fetch\n",fname);
                 }
         }
+
 
 #endif /* Oracle ocilib specific */
 
@@ -2716,17 +2736,13 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 #ifdef USE_PGSQL /* pgsql */
 
 #endif
-
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-
-	OCI_StatementFree(idi->dbinfo.oci_statement);
-
+        ido2db_oci_statement_free(idi->dbinfo.oci_statement,fname);
 #endif /* Oracle ocilib specific */
 
 	free(buf);
-        free(ts[0]);
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_get_latest_data_time() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() end\n",fname);
 	return result;
 }
 
