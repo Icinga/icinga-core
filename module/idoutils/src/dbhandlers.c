@@ -189,7 +189,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 		        data[3] = (void *) &es[1];
 
 
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X1"), (big_uint *) data[0])) {
+                        if(!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X1"), (big_uint *) data[0])) {
                                 return IDO_ERROR;
                         }
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X2"), (int *) data[1])) {
@@ -397,12 +397,12 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() extra prepare failed\n");
 		 return IDO_ERROR;
 	}
-	OCI_RegisterUnsignedBigInt(st,MT(":id"));
+	OCI_RegisterUnsignedInt(st,MT(":id"));
 	idi->dbinfo.oci_statement_objects_insert=st;
 	/* --end workaround-- */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind instance id %lu\n",idi->dbinfo.instance_id);
-	if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_objects_insert, MT(":X1"),  (big_uint *) data[0])) {
+	if(!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_insert, MT(":X1"),  (uint *) data[0])) {
 		    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind instance id failed\n");
 		    return IDO_ERROR;
 	}
@@ -453,7 +453,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
     idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_insert);
     ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() fetch\n");
     if(OCI_FetchNext(idi->dbinfo.oci_resultset)) {
-             *object_id = OCI_GetInt(idi->dbinfo.oci_resultset, 1);
+             *object_id = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
              ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() OK with inserted object id=%lu\n", *object_id);
     } else {
              ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() inserted object id could not be fetched\n");
