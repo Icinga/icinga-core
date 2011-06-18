@@ -2600,10 +2600,13 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
         void *data[2];
 #endif
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table() start\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table(%s) start\n",table_name);
 
-	if (idi == NULL || table_name == NULL)
+	if (idi == NULL || table_name == NULL){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table(%s) Error:IDI or table name NULL\n",table_name);
 		return IDO_ERROR;
+	}
+
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(&buf, "DELETE FROM %s WHERE instance_id=%lu", table_name, idi->dbinfo.instance_id) == -1)
@@ -2642,7 +2645,7 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 
 #endif /* Oracle ocilib specific */
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_clear_table(%s) end\n",table_name);
 	return result;
 }
 
