@@ -189,7 +189,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 		        data[3] = (void *) &es[1];
 
 
-                        if(!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X1"), (big_uint *) data[0])) {
+                        if(!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X1"), (uint *) data[0])) {
                                 return IDO_ERROR;
                         }
                         if(!OCI_BindInt(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X2"), (int *) data[1])) {
