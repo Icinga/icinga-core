@@ -1815,8 +1815,7 @@ void show_service_detail(void){
 
 			/* Checkbox for service(s) */
 			if (is_authorized_for_read_only(&current_authdata)==FALSE)
-				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='hostservice' value='%s^",status_bg_class,url_encode(temp_status->host_name));
-				printf("%s'></TD>\n",url_encode(temp_status->svc_description));
+				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='hostservice' value='%s^%s'></TD>\n",status_bg_class,temp_status->host_name,temp_status->svc_description);
 
 			if(enable_splunk_integration==TRUE)
 				display_splunk_service_url(temp_service);
@@ -2215,7 +2214,7 @@ void show_host_detail(void){
 
 				/* Checkbox for host(s) */
 				if (is_authorized_for_read_only(&current_authdata)==FALSE)
-					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='host' value='%s'></TD>\n",status_bg_class,url_encode(temp_statusdata->host_name));
+					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='host' value='%s'></TD>\n",status_bg_class,temp_statusdata->host_name);
 
 
 
