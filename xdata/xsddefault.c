@@ -60,6 +60,7 @@ time_t program_start;
 int daemon_mode;
 time_t last_command_check;
 time_t last_log_rotation;
+time_t status_file_creation_time;
 int enable_notifications;
 int execute_service_checks;
 int accept_passive_service_checks;
@@ -967,6 +968,10 @@ int xsddefault_read_status_data(char *config_file,int options){
 			switch(data_type){
 
 			case XSDDEFAULT_INFO_DATA:
+#ifdef NSCGI
+				if(!strcmp(var,"created"))
+					status_file_creation_time=strtoul(val,NULL,10);
+#endif
 				break;
 
 			case XSDDEFAULT_PROGRAMSTATUS_DATA:
