@@ -7,6 +7,8 @@ Icinga 1.4.x Change Log
 ENHANCEMENTS
 
 FIXES
+* core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) #1331
+
 * classic ui: re-fix xss vulnerability and string escaping for command expansion #1605 #1624
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
 
@@ -21,7 +23,6 @@ ENHANCEMENTS
 
 FIXES
 * core: fix retain status file over an init script reload #1579
-* core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) #1331
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: better handling of writing to cgi.log in cmd.cgi #1161
