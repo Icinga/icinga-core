@@ -107,7 +107,8 @@ Documentation for %{name}
     --enable-embedded-perl \
     --enable-idoutils \
     --with-httpd-conf=%{apacheconfdir} \
-    --with-init-dir=%{_initrddir}
+    --with-init-dir=%{_initrddir} \
+    --with-p1-file-dir="%{_libdir}/icinga"
 %{__make} %{?_smp_mflags} all
 
 %install
@@ -197,7 +198,7 @@ fi
 %config(noreplace) %{_sysconfdir}/icinga/resource.cfg
 %{_bindir}/icinga
 %{_bindir}/icingastats
-%{_bindir}/p1.pl
+%{_libdir}/icinga/p1.pl
 %{logdir}
 %dir %{_localstatedir}/icinga
 %dir %{_localstatedir}/icinga/checkresults
