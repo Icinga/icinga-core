@@ -85,6 +85,7 @@ extern int      enable_failure_prediction;
 extern int      process_performance_data;
 extern time_t   last_command_check;
 extern time_t   last_log_rotation;
+extern time_t	status_file_creation_time;
 
 /** readlogs.c **/
 int		log_rotation_method=LOG_ROTATION_NONE;
@@ -94,7 +95,7 @@ extern time_t	next_scheduled_log_rotation;
 char		log_file[MAX_INPUT_BUFFER];
 char		log_archive_path[MAX_INPUT_BUFFER];
 
-
+int		status_update_interval=60;
 int             check_external_commands=0;
 
 int             log_external_commands_user=FALSE;
@@ -143,6 +144,7 @@ int		enforce_comments_on_actions=FALSE;
 int		week_starts_on_monday=FALSE;
 
 int		show_partial_hostgroups=FALSE;
+int		default_downtime_duration=7200;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -553,6 +555,9 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"lock_author_names"))
 			lock_author_names=(atoi(val)>0)?TRUE:FALSE;
 
+		else if(!strcmp(var,"default_downtime_duration"))
+			default_downtime_duration=atoi(val);
+
 		else if(!strcmp(var,"use_ssl_authentication"))
 			use_ssl_authentication=(atoi(val)>0)?TRUE:FALSE;
 
@@ -635,6 +640,12 @@ int read_main_config_file(char *filename){
 			temp_buffer=strtok(input,"=");
 			temp_buffer=strtok(NULL,"\x0");
 			interval_length=(temp_buffer==NULL)?60:atoi(temp_buffer);
+		        }
+
+		else if(strstr(input,"status_update_interval=")==input){
+			temp_buffer=strtok(input,"=");
+			temp_buffer=strtok(NULL,"\x0");
+			status_update_interval=(temp_buffer==NULL)?60:atoi(temp_buffer);
 		        }
 
 		else if(strstr(input,"log_file=")==input){
@@ -973,6 +984,7 @@ void document_header(int cgi_id, int use_stylesheet){
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n",url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
+	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">",http_charset);
 	printf("<title>\n");
 
 	if(cgi_id == STATUS_CGI_ID){
@@ -1049,21 +1061,8 @@ void document_header(int cgi_id, int use_stylesheet){
 
 	if(cgi_id == STATUS_CGI_ID) {
 		/* Set everything in a form, so checkboxes can be searched after and checked. */
-		printf("<form name='tableform' id='tableform'>\n");
+		printf("<form name='tableform' id='tableform' action='%s' method='POST'>\n",CMD_CGI);
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked>\n");
-
-		/* Print out the activator for the dropdown (which must be between the body tags */
-/*		printf("<script language='javascript'>");
-		printf("$(document).ready(function(e) {");
-		printf("try {");
-		printf("$('body select').msDropDown();");
-		printf("} catch(e) {");
-		printf("alert(e.message);");
-		printf("}");
-		printf("});");
-		printf("</script>\n");
-*/
-		/* Javascript lib to show tooltips */
 	}
 
 	if(cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID) {
@@ -1781,6 +1780,9 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 		if(execute_service_checks==FALSE)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
 	}
+
+	if(status_file_creation_time<(current_time-status_update_interval-10))
+		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Status data OUTDATED! Last status data update was %d seconds ago!</DIV>",(int)(current_time-status_file_creation_time));
 
 	printf("</TD></TR>\n");
 	printf("</TABLE>\n");

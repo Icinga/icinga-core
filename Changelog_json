@@ -1,0 +1,12 @@
+#######################
+Classic-UI JSON Change Log
+#######################
+
+
+1.5.0 - only values added, no existing values changed
+* added service breakdowns in hosts to avail.cgi
+* added log entries for single host and single services in avail.cgi
+* added all vars which are necessary to calculate number of hosts and services in different states
+
+1.4.0
+* initial version

@@ -24,6 +24,7 @@
 
 #include "../include/config.h"
 #include "../include/getcgi.h"
+#include "../include/cgiutils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -36,6 +37,17 @@ void sanitize_cgi_input(char **cgivars){
 	char *strptr;
 	int x,y,i;
 	int keep;
+
+	/* Added by Ricardo B. 2011-06-16
+	   Somehow on POST the plus gets turned into HEX so we have to convert it back to blank after all parsing is done.
+	*/
+	for(strptr=cgivars[i=0];strptr!=NULL;strptr=cgivars[++i]){
+
+		for(x=0,y=0;strptr[x]!='\x0';x++){
+			if(strptr[x]=='+')
+				strptr[x]=' ';
+		}
+	}
 
 	/* don't strip for now... */
 	return;
@@ -55,13 +67,13 @@ void sanitize_cgi_input(char **cgivars){
 #endif
 			if(keep==1)
 				strptr[y++]=strptr[x];
-		        }
+		}
 
 		strptr[y]='\x0';
-	        }
+	}
 
 	return;
-        }
+}
 
 
 /* convert encoded hex string (2 characters representing an 8-bit number) to its ASCII char equivalent */
@@ -93,7 +105,7 @@ unsigned char hex_to_char(char *input){
 	outchar=(unsigned char)outint;
 
 	return outchar;
-        }
+}
 
 
 
@@ -113,14 +125,13 @@ void unescape_cgi_input(char *input){
 		else if(input[x]=='%'){
 			input[y]=hex_to_char(&input[x+1]);
 			x+=2;
-		        }
-		else
+		}else
 			input[y]=input[x];
-	        }
+	}
 	input[y]='\x0';
 
 	return;
-        }
+}
 
 
 
@@ -156,12 +167,11 @@ char **getcgivars(void){
 			if(cgiinput==NULL){
 				printf("getcgivars(): Could not allocate memory for CGI input.\n");
 				exit(1);
-			        }
+			}
 			cgiinput[0]='\x0';
-		        }
-		else
+		}else
 			cgiinput=strdup(getenv("QUERY_STRING"));
-	        }
+	}
 
 	else if(!strcmp(request_method,"POST") || !strcmp(request_method,"PUT")){
 
@@ -175,7 +185,7 @@ char **getcgivars(void){
 		if(strlen(content_type) && strncasecmp(content_type,"application/x-www-form-urlencoded",33)){
 			printf("getcgivars(): Unsupported Content-Type.\n");
 			exit(1);
-		        }
+		}
 
 		content_length_string=getenv("CONTENT_LENGTH");
 		if(content_length_string==NULL)
@@ -184,24 +194,23 @@ char **getcgivars(void){
 		if(!(content_length=atoi(content_length_string))){
 			printf("getcgivars(): No Content-Length was sent with the POST request.\n") ;
 			exit(1);
-		        }
+		}
 		/* suspicious content length */
 		if((content_length<0) || (content_length>=INT_MAX-1)){
 			printf("getcgivars(): Suspicious Content-Length was sent with the POST request.\n");
 			exit(1);
-			}
+		}
 
 		if(!(cgiinput=(char *)malloc(content_length+1))){
 			printf("getcgivars(): Could not allocate memory for CGI input.\n");
 			exit(1);
-		        }
+		}
 		if(!fread(cgiinput,content_length,1,stdin)){
 			printf("getcgivars(): Could not read input from STDIN.\n");
 			exit(1);
-		        }
+		}
 		cgiinput[content_length]='\0';
-	        }
-	else{
+	}else{
 
 		printf("getcgivars(): Unsupported REQUEST_METHOD -> '%s'\n",request_method);
 		printf("\n");
@@ -217,13 +226,7 @@ char **getcgivars(void){
 		printf("\n");
 
 		exit(1);
-	        }
-
-	/* change all plus signs back to spaces */
-	for(i=0;cgiinput[i];i++){
-		if(cgiinput[i]=='+')
-			cgiinput[i]=' ';
-	        }
+	}
 
 	/* first, split on ampersands (&) to extract the name-value pairs into pairlist */
 	/* allocate memory for 256 name-value pairs at a time, increasing by same
@@ -232,20 +235,22 @@ char **getcgivars(void){
 	if(pairlist==NULL){
 		printf("getcgivars(): Could not allocate memory for name-value pairlist.\n");
 		exit(1);
-	        }
+	}
 	paircount=0;
 	nvpair=strtok(cgiinput,"&");
 	while(nvpair){
 		pairlist[paircount++]=strdup(nvpair);
+		if(paircount>MAX_CGI_INPUT_PAIRS)
+			break;
 		if(!(paircount%256)){
 			pairlist=(char **)realloc(pairlist,(paircount+256)*sizeof(char **));
 			if(pairlist==NULL){
 				printf("getcgivars(): Could not re-allocate memory for name-value pairlist.\n");
 				exit(1);
-			        }
-		        }
+			}
+		}
 		nvpair=strtok(NULL,"&");
-	        }
+	}
 
 	/* terminate the list */
 	pairlist[paircount]='\x0';
@@ -255,20 +260,19 @@ char **getcgivars(void){
 	if(cgivars==NULL){
 		printf("getcgivars(): Could not allocate memory for name-value list.\n");
 		exit(1);
-	        }
+	}
 	for(i=0;i<paircount;i++){
 
 		/* get the variable name preceding the equal (=) sign */
 		if((eqpos=strchr(pairlist[i],'='))!=NULL){
 			*eqpos='\0';
 			unescape_cgi_input(cgivars[i*2+1]=strdup(eqpos+1));
-		        }
-		else
+		}else
 			unescape_cgi_input(cgivars[i*2+1]=strdup(""));
 
 		/* get the variable value (or name/value of there was no real "pair" in the first place) */
 		unescape_cgi_input(cgivars[i*2]=strdup(pairlist[i]));
-	        }
+	}
 
 	/* terminate the name-value list */
 	cgivars[paircount*2]='\x0';
@@ -284,7 +288,7 @@ char **getcgivars(void){
 
 	/* return the list of name-value strings */
 	return cgivars;
-        }
+}
 
 
 
@@ -296,4 +300,4 @@ void free_cgivars(char **cgivars){
 		free(cgivars[x]);
 
 	return;
-        }
+}

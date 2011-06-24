@@ -9,6 +9,12 @@ ENHANCEMENTS
 
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
+* classic ui: changing drop down menu in status.cgi to jquery-dd #1644
+* classic ui: default downtime duration is configurable in cgi.cfg #1642
+* classic ui: Added ability to combine host and service in one CGI parameter (Aaron Brady) #1633
+* classic ui: Changed tac.cgi to distinct between active, passive and disabled properly #1120
+* classic ui: Add log entries to json output of avail.cgi #1659
+* classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled

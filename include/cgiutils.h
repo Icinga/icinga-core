@@ -130,7 +130,7 @@ extern "C" {
 /**************************** JAVASCRIPT NAMES ******************************/
 
 #define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
-#define JQUERY_MAIN_JS		"jquery-1.4.2.min.js"
+#define JQUERY_MAIN_JS		"jquery-1.5.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
 
@@ -343,7 +343,7 @@ extern "C" {
 #define SORT_STATEDURATION		6
 #define SORT_NEXTCHECKTIME		7
 #define SORT_HOSTSTATUS			8
-
+#define SORT_HOSTURGENCY                9
 
 /****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
 
@@ -514,13 +514,14 @@ extern "C" {
 
 /************************** JSON OUTPUT VERSION ************************/
 
-#define JSON_OUTPUT_VERSION "1.4.1"
+#define JSON_OUTPUT_VERSION "1.5.0"
 
 
 /************************** BUFFER  ***************************************/
 
 #define MAX_MESSAGE_BUFFER              4096
 
+#define MAX_CGI_INPUT_PAIRS		1000		/**< max number of cgi vars excepted */
 
 /************************** DISPLAY STYLE  ********************************/
 

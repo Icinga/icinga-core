@@ -74,7 +74,7 @@ extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
 
 /* show any hosts in hostgroups the user is authorized for */
-extern show_partial_hostgroups;
+extern int show_partial_hostgroups;
 
 #define MAX_MESSAGE_BUFFER		4096
 
@@ -1813,12 +1813,9 @@ void show_service_detail(void){
 			printf("<TD CLASS='status%s'>%s</TD>\n",status_bg_class,temp_status->attempts);
 			printf("<TD CLASS='status%s' valign='center'>%s</TD>\n",status_bg_class,temp_status->plugin_output);
 
-			if (is_authorized_for_read_only(&current_authdata)==FALSE){
-				/* Checkbox for service(s) */
-				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
-				printf("&service=%s'></TD>\n",url_encode(temp_status->svc_description));
-			}
-
+			/* Checkbox for service(s) */
+			if (is_authorized_for_read_only(&current_authdata)==FALSE)
+				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='hostservice' value='%s^%s'></TD>\n",status_bg_class,temp_status->host_name,temp_status->svc_description);
 
 			if(enable_splunk_integration==TRUE)
 				display_splunk_service_url(temp_service);
@@ -1940,6 +1937,8 @@ void show_host_detail(void){
 				printf("host name");
 			else if(sort_option==SORT_HOSTSTATUS)
 				printf("host status");
+			else if(sort_option==SORT_HOSTURGENCY)
+				printf("host urgency");
 			else if(sort_option==SORT_LASTCHECKTIME)
 				printf("last check time");
 			else if(sort_option==SORT_CURRENTATTEMPT)
@@ -2215,7 +2214,7 @@ void show_host_detail(void){
 
 				/* Checkbox for host(s) */
 				if (is_authorized_for_read_only(&current_authdata)==FALSE)
-					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_statusdata->host_name));
+					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='host' value='%s'></TD>\n",status_bg_class,temp_statusdata->host_name);
 
 
 
@@ -5317,6 +5316,12 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 			else
 				return FALSE;
 		}
+		else if(sort_option==SORT_HOSTURGENCY){
+			if(HOST_URGENCY(new_status->status) <= HOST_URGENCY(temp_status->status))
+				return TRUE;
+			else
+				return FALSE;
+		}
 		else if(sort_option==SORT_HOSTNAME){
 			if(strcasecmp(new_status->host_name,temp_status->host_name)<0)
 				return TRUE;
@@ -5350,6 +5355,12 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 		}
 		else if(sort_option==SORT_SERVICESTATUS && status_type == SERVICE_STATUS){
 			if(new_status->status > temp_status->status)
+				return TRUE;
+			else
+				return FALSE;
+		}
+		else if(sort_option==SORT_HOSTURGENCY){
+			if(HOST_URGENCY(new_status->status) > HOST_URGENCY(temp_status->status))
 				return TRUE;
 			else
 				return FALSE;
@@ -5826,7 +5837,7 @@ void show_servicecommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)'CLASS='serviceTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5849,7 +5860,19 @@ void show_servicecommand_table(void){
 			printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>",CMD_DISABLE_SVC_FLAP_DETECTION,url_images_path,DISABLED_ICON);
 			printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
 		printf("</select>");
-		printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='serviceTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+
+		/* Print out the activator for the dropdown (which must be between the body tags */
+		printf("<script language='javascript'>\n");
+		printf("$(document).ready(function() { \n");
+		printf("try { \n oHandler = $(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\");\n");
+		printf("oHandler.visible(true);\n");
+		printf("$(\"#ver\").html($.msDropDown.version);\n");
+		printf("} catch(e) {\n");
+		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("});\n");
+		printf("</script>\n");
+
+		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='serviceTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
 
@@ -5859,11 +5882,11 @@ void show_hostcommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)' CLASS='hostTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
-			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)'</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
 			printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>",CMD_SCHEDULE_HOST_CHECK,url_images_path,DELAY_ICON);
 			printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>",CMD_PROCESS_HOST_CHECK_RESULT,url_images_path,PASSIVE_ICON);
 			printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>",CMD_DISABLE_PASSIVE_HOST_CHECKS,url_images_path,DISABLED_ICON);
@@ -5888,7 +5911,19 @@ void show_hostcommand_table(void){
 			printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>",CMD_DISABLE_HOST_FLAP_DETECTION,url_images_path,DISABLED_ICON);
 			printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
 		printf("</select>");
-		printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='hostsTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+
+		/* Print out the activator for the dropdown (which must be between the body tags */
+		printf("<script language='javascript'>\n");
+		printf("$(document).ready(function() { \n");
+		printf("try { \n oHandler = $(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\");\n");
+		printf("oHandler.visible(true);\n");
+		printf("$(\"#ver\").html($.msDropDown.version);\n");
+		printf("} catch(e) {\n");
+		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("});\n");
+		printf("</script>\n");
+
+		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='hostsTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
 /* The cake is a lie! */
