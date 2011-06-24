@@ -9,7 +9,7 @@
 -- works with Oracle10+ and sqlplus
 -- for because of grants on v$ views this must run as sys 
 -- initial version: 2011-03-07 Thomas Dressler
--- current version: 2011-05-03 
+-- current version: 2011-06-10 
 -- --------------------------------------------------------
 */
 -- -----------------------------------------
@@ -103,7 +103,8 @@ grant connect,
 	create sequence, 
 	create synonym,
 	create view,
-	create type 
+	create type,
+	alter session
 to &&ICINGA_USER;
 /* monitoring views,must be grantet from SYS  */
 grant select on v_$session to &&ICINGA_USER;
@@ -114,5 +115,6 @@ grant select on v_$statname to &&ICINGA_USER;
 
 prompt system prepared, run now create_icinga_objects_oracle.sql as &&ICINGA_USER
 spool off;
+exit;
 
 

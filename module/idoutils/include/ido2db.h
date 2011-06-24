@@ -163,11 +163,8 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_statehistory;
 	OCI_Statement* oci_statement_instances;
 	OCI_Statement* oci_statement_conninfo;
-	/* well oh well */
+	/* retrieve object ids by name */
 	OCI_Statement* oci_statement_objects_select_name1_name2;
-	OCI_Statement* oci_statement_objects_select_name1_null_name2;
-	OCI_Statement* oci_statement_objects_select_name1_name2_null;
-	OCI_Statement* oci_statement_objects_select_name1_null_name2_null;
 	OCI_Statement* oci_statement_objects_select_cached;
 	/* update */
 	OCI_Statement* oci_statement_objects_update_inactive;
@@ -176,12 +173,14 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_timedevents_update;
 	OCI_Statement* oci_statement_comment_history_update;
 	OCI_Statement* oci_statement_downtimehistory_update_start;
+	OCI_Statement* oci_statement_scheduleddowntime_update_start;
 	OCI_Statement* oci_statement_downtimehistory_update_stop;
 	OCI_Statement* oci_statement_conninfo_update;
 	OCI_Statement* oci_statement_conninfo_update_checkin;
 	/* select */
 	OCI_Statement* oci_statement_logentries_select;
 	OCI_Statement* oci_statement_instances_select;
+	OCI_Statement* oci_statement_sequence_select;
 
 	/* delete */
 	OCI_Statement* oci_statement_timedeventqueue_delete;
@@ -376,7 +375,9 @@ typedef struct ido2db_input_data_info_struct{
 
 #define DEFAULT_OCI_ERRORS_TO_SYSLOG 		1
 
-
+/************* oracle trace level defaults ************/
+#define DEFAULT_ORACLE_TRACE_LEVEL		4
+#define ORACLE_TRACE_LEVEL_OFF 			0
 /************* n worker threads ****************/
 
 #define IDO2DB_CLEANER_THREADS			1

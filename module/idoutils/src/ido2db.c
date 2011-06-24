@@ -438,7 +438,7 @@ int ido2db_process_config_file(char *filename){
 	ido_mmap_fclose(thefile);
 
 	return result;
-        }
+}
 
 
 /* process a single module config variable */
@@ -598,11 +598,15 @@ int ido2db_process_config_var(char *arg){
         else if(!strcmp(var,"oci_errors_to_syslog")){
                 ido2db_db_settings.oci_errors_to_syslog=(atoi(val)>0)?IDO_TRUE:IDO_FALSE;
 	}
+        else if(!strcmp(var,"oracle_trace_level")){
+                        ido2db_db_settings.oracle_trace_level=atoi(val);
+    }
+	//syslog(LOG_ERR,"ido2db_process_config_var(%s) end\n",var);
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var() end\n");
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var(%s) end\n",var);
 
 	return IDO_OK;
-        }
+}
 
 
 /* initialize variables */
@@ -631,6 +635,7 @@ int ido2db_initialize_variables(void){
 	ido2db_db_settings.clean_realtime_tables_on_core_startup=IDO_TRUE; /* default is cleaning on startup */
 	ido2db_db_settings.clean_config_tables_on_core_startup=IDO_TRUE;
 	ido2db_db_settings.oci_errors_to_syslog=DEFAULT_OCI_ERRORS_TO_SYSLOG;
+	ido2db_db_settings.oracle_trace_level=ORACLE_TRACE_LEVEL_OFF;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_initialize_variables() end\n");
 	return IDO_OK;

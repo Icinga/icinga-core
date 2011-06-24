@@ -12,11 +12,11 @@
 -- you need sys account to run included scripts for user and tablespace creation  
 -- you *SHOULD* look into each scripts, if assingments will fit your needs before running it
 -- CAUTION: THIS WILL DROP EXISTING USER AND TABLESPACE WITH SAME NAME
--- # export TWO_TASK=<instance>; sqlplus "sys as sysdba" @ oracle.sql
+-- # export TWO_TASK=<instance>; cd <this_sql_dir>; sqlplus "sys as sysdba" @ oracle.sql
 --
 -- initial version: 2008-02-20 David Schmidt
 -- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-05-03 Thomas Dressler
+-- current version: 2011-06-10 Thomas Dressler
 --
 -- -- --------------------------------------------------------
 */

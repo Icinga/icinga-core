@@ -39,6 +39,9 @@ FIXES
 * config: deprecate log_external_commands_user #1619
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
 
+* idoutils: do not update start_time of already started downtimes #1658
+* idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
+
 
 1.4.0 - 11/05/2011
 
