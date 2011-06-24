@@ -437,7 +437,8 @@ lock_author_names=1
 # DEFAULT DOWNTIME DURATION
 # This option defines the default duration (in seconds) of fixed and
 # flexible downtimes. Default is 7200 seconds (2 hours).
-#default_donwtime_duration=7200
+
+default_downtime_duration=7200
 
 
 
