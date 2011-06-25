@@ -11,9 +11,9 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.4.1
+Version: 1.4.2
 Release: 1%{?dist}
-License: GPLv2+
+License: GPLv2
 Group: Applications/System
 URL: http://www.icinga.org/
 
@@ -243,7 +243,6 @@ fi
 
 
 %changelog
-<<<<<<< HEAD
 * Mon Jun 20 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.4.2-1
 - update to 1.4.2, mv idoutils.cfg-sample
 
