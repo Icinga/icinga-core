@@ -11,6 +11,7 @@ FIXES
 
 * classic ui: re-fix xss vulnerability and string escaping for command expansion #1605 #1624
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
+* classic ui: fixed: User can execute host/servicegroup commands even if not authorized for (Sven Nierlein) #1679
 
 * idoutils: do not update start_time of already started downtimes #1658
 * idoutils: fix started downtime update for table scheduleddowntime in oracle #1658

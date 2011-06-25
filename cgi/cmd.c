@@ -2175,11 +2175,11 @@ void commit_command_data(int cmd){
 		   cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS		|| cmd==CMD_DISABLE_HOSTGROUP_SVC_CHECKS || \
 		   cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME	|| cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME ){
 			temp_hostgroup=find_hostgroup(hostgroup_name);
-			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE)
+			if(is_authorized_for_hostgroup_commands(temp_hostgroup,&current_authdata)==TRUE)
 				is_authorized[x]=TRUE;
 		} else {
 			temp_servicegroup=find_servicegroup(servicegroup_name);
-			if(is_authorized_for_servicegroup(temp_servicegroup,&current_authdata)==TRUE)
+			if(is_authorized_for_servicegroup_commands(temp_servicegroup,&current_authdata)==TRUE)
 				is_authorized[x]=TRUE;
 		}
 
