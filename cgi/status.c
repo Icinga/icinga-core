@@ -5154,10 +5154,13 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 
 	/* plugin ouput */
 	if (status_show_long_plugin_output!=FALSE && plugin_output_long!=NULL) {
-		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
-			dummy=asprintf(&plugin_output,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
-		else
-			dummy=asprintf(&plugin_output,"%s<BR>%s",html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
+		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT) {
+			if (plugin_output_short!=NULL)
+				dummy=asprintf(&plugin_output,"%s",escape_newlines(plugin_output_long));
+			else
+				dummy=asprintf(&plugin_output,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
+		} else
+			dummy=asprintf(&plugin_output,"%s<BR>%s",(plugin_output_short==NULL)?"":html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
 	} else if (plugin_output_short!=NULL) {
 		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
 			dummy=asprintf(&plugin_output,"%s",plugin_output_short);

@@ -1536,6 +1536,9 @@ char * html_encode(char *input, int escape_newlines){
 	int x,y;
 	char temp_expansion[10];
 
+	if (input==NULL)
+		return "";
+
 	/* we need up to six times the space to do the conversion */
 	len=(int)strlen(input);
 	output_len=len*6;
