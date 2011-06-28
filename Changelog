@@ -5,6 +5,7 @@ Icinga 1.4.x Change Log
 1.4.2 - ??/??/2011
 
 ENHANCEMENTS
+* classic ui: add a check for status data freshness into cgis #1667
 
 FIXES
 * core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) #1331
