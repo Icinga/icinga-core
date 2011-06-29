@@ -149,7 +149,7 @@ mv %{buildroot}%{_datadir}/icinga/log/{.htaccess,index.htm} %{buildroot}%{logdir
 rmdir %{buildroot}%{_datadir}/icinga/log/
 
 %{__perl} -pi -e '
-        s|cgi_log_file.*|cgi_log_file=%{logdir}/cgi/icinga-cgi.log|;
+        s|cgi_log_file.*|cgi_log_file=%{logdir}/gui/icinga-cgi.log|;
         s|cgi_log_archive_path=.*|cgi_log_archive_path=%{logdir}/archives|;
    ' %{buildroot}%{_sysconfdir}/icinga/cgi.cfg
 %{__perl} -pi -e "
