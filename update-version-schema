@@ -45,6 +45,13 @@ fi
 perl -i -p -e "s/^CURRENTVERSION=.*/CURRENTVERSION=$newversion/;" update-version-schema
 perl -i -p -e "s/^LASTDATE=.*/LASTDATE=$SHORTDATE/;" update-version-schema
 
+# Update the scripts
+perl -i -p -e "s/thisversion=\".*\"/thisversion=\"$newversion\"/;" module/idoutils/db/scripts/upgradedb.in
+perl -i -p -e "s/lastversion=\".*\"/lastversion=\"$newversion\"/;" module/idoutils/db/scripts/upgradedb.in
+perl -i -p -e "s/legacyversion=\".*\"/legacyversion=\"$newversion\"/;" module/idoutils/db/scripts/upgradedb.in
+perl -i -p -e "s/thisversion=\".*\"/thisversion=\"$newversion\"/;" module/idoutils/db/scripts/installdb.in
+
+
 # Update schema version in IDOUtils
 perl -i -p -e "s/IDO2DB_SCHEMA_VERSION \".*\"/IDO2DB_SCHEMA_VERSION \"$newversion\"/;" module/idoutils/include/ido2db.h
 
