@@ -44,8 +44,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Wenn Sie die IDOUtils benutzen, dann müssen Sie auch diese aktualisieren. Weitere Informationen finden Sie im Abschnitt
-  <a class="link" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">IDOUtils-Datenbank aktualisieren</a>.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Wenn Sie die IDOUtils benutzen, dann müssen Sie auch diese aktualisieren. Weitere Informationen finden Sie im Abschnitt
+    <a class="link" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">IDOUtils-Datenbank aktualisieren</a>.</p>
+  </td></tr>
 </table></div>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -53,8 +55,9 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Wenn Sie Icinga-Web benutzen, dann müssen Sie auch diese aktualisieren. Weitere Informationen finden Sie im Abschnitt
-  <a class="link" href="upgrading_icingaweb.html" title="Aktualisierung von Icinga-Web und Icinga-Web Datenbank">Aktualisierung von Icinga-Web und Icinga-Web-Datenbank</a>.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Wenn Sie Icinga-Web benutzen, dann müssen Sie auch diese aktualisieren. Weitere Informationen finden Sie im Abschnitt <a class="link" href="upgrading_icingaweb.html" title="Aktualisierung von Icinga-Web und Icinga-Web Datenbank">Aktualisierung von Icinga-Web und Icinga-Web-Datenbank</a>.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="upgrading-icinga"></a> <span class="bold"><strong>Aktualisierung von Icinga</strong></span></p>
@@ -69,12 +72,12 @@
   haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre alte Icinga-Version
   wiederherstellen.</p>
 
-  <p>Werden Sie der icinga-Benutzer. Debian/Ubuntu-Benutzer sollten sudo -s icinga benutzen.</p>
+  <p>Werden Sie der icinga-Benutzer. Debian/Ubuntu-Benutzer sollten <code class="code">sudo -s icinga</code> benutzen.</p>
 
   <pre class="programlisting"> $&gt; su -l icinga</pre>
 
-  <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie http://www.icinga.org/ für den Verweis auf die letzte
-  Version) und entpacken Sie das Quellcode-Archiv.</p>
+  <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version) und entpacken Sie das
+  Quellcode-Archiv.</p>
 
   <p>Starten Sie das Icinga-configure-Script mit den gleichen Optionen wie bei der letzten Installation, z.B. so:</p>
 
@@ -110,7 +113,9 @@
   <pre class="screen"> #&gt; yum install php mod_php</pre>
 
   <p><span class="emphasis"><em>openSuSE / SLES:</em></span> Nutzen Sie yast zur Installation der Pakete <span class="emphasis"><em>php5</em></span> und
-  <span class="emphasis"><em>apache2-mod_php5</em></span>.</p>
+  <span class="emphasis"><em>apache2-mod_php5</em></span> oder benutzen Sie zypper</p>
+
+  <pre class="programlisting"> #&gt; zypper install php5 apache2-mod_php5</pre>
 
   <p>Stellen Sie sicher, dass Sie eine gute Datensicherung Ihrer bestehenden Nagios-Installation und der Konfigurationsdateien
   haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre alte Nagios-Version
@@ -121,18 +126,20 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>der Default-Präfix nun "/usr/local/icinga" heißt</p>
+      <p>der Default-Präfix nun "<code class="filename">/usr/local/icinga</code>" heißt</p>
     </li>
 <li class="listitem">
       <p>die Umgebungs-Makros nun mit ICINGA_ beginnen</p>
 
       <p>PNP4Nagios berücksichtigt das seit 0.6rc1 (2009.09.20), aber Sie benötigen die Makros lediglich im "sync"-Modus.</p>
+
       <p>check_multi bietet Unterstützung seit 0.21 (2010.06.03), aber Sie müssen dazu die Installation mit beginnend mit dem Schritt
-      'configure --with-nagios_name=icinga' erneut durchführen, damit die check_multi-Prozedur mit geänderten Werten erstellt wird.
-      Stattdessen können Sie auch die Option "-s" zur Übergabe von Werten benutzen.</p>
+      '<code class="code">configure --with-nagios_name=icinga</code>' erneut durchführen, damit die check_multi-Prozedur mit geänderten Werten erstellt
+      wird. Stattdessen können Sie auch die Option "-s" zur Übergabe von Werten benutzen.</p>
     </li>
 <li class="listitem">
-      <p>die Konfigurationsdateien der (verbesserten) IDOUtils heißen nun idomod.cfg/ido2db.cfg anstatt ndomod.cfg/ndo2db.cfg</p>
+      <p>die Konfigurationsdateien der (verbesserten) IDOUtils heißen nun <code class="filename">idomod.cfg/ido2db.cfg</code> anstatt
+      <code class="filename">ndomod.cfg/ndo2db.cfg</code></p>
     </li>
 </ul></div>
 
@@ -149,8 +156,8 @@
   <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.4</em></span>.tar.gz
  #&gt; cd icinga-<span class="emphasis"><em>1.4</em></span> </pre>
 
-  <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim ./configure von Nagios benutzt haben. Den
-  Aufruf finden Sie in der Datei config.log. Beispiel:</p>
+  <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim <code class="code">./configure</code> von Nagios benutzt
+  haben. Den Aufruf finden Sie in der Datei <code class="filename">config.log</code>. Beispiel:</p>
 
   <pre class="screen"> #&gt; ./configure --with-command-group=nagcmd</pre>
 
@@ -166,21 +173,42 @@
  #&gt; make install-cgis
  #&gt; make install-init</pre>
 
-  <p>Kopieren Sie Ihre Konfigurationsdateien nach /usr/local/icinga/etc bzw. /usr/local/icinga/etc/object. Vor dem Start von
-  Icinga müssen Sie noch ein paar Dinge anpassen:</p>
+  <p>Kopieren Sie Ihre Konfigurationsdateien nach <code class="filename">/usr/local/icinga/etc</code> bzw.
+  <code class="filename">/usr/local/icinga/etc/object</code>. Vor dem Start von Icinga müssen Sie noch ein paar Dinge anpassen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Benennen Sie die Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.cfg</em></span> in <span class="emphasis"><em>icinga.cfg</em></span> um und ändern Sie
-      in /usr/local/icinga/etc/icinga.cfg die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group". Das betrifft ggf.
-      auch die Pfade in der Datei.</p>
+      <p>Benennen Sie die Hauptkonfigurationsdatei <code class="filename">nagios.cfg</code> in <code class="filename">icinga.cfg</code> um und ändern Sie
+      in <code class="filename">/usr/local/icinga/etc/icinga.cfg</code> die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group".
+      Das betrifft ggf. auch die Pfade in der Datei.</p>
 
       <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
     </li>
 <li class="listitem">
-      <p>Ändern Sie in der CGI-Konfigurationsdatei <span class="emphasis"><em>cgi.cfg</em></span> die Pfad-Angaben.</p>
+      <p>Ändern Sie in der CGI-Konfigurationsdatei <code class="filename">cgi.cfg</code> die Pfad-Angaben.</p>
 
       <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./cgi.cfg/</pre>
+    </li>
+</ul></div>
+
+  <p>Kopieren Sie andere relevante Dateien von Ihrer Nagios-Installation zum neuen Standort. Falls Sie unsicher bezüglich der
+  Pfade sind, dann werfen Sie einen Blick in die Konfigurationsdateien <code class="filename">nagios.cfg</code> und/oder
+  <code class="filename">icinga.cfg</code>.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><code class="filename">retention.dat</code> (sie enthält bestimmte Statusinformationen, Kommentare und andere "bleibende" Dinge)</p>
+    </li>
+<li class="listitem">
+      <p><code class="filename">nagios.log</code> (bitte umbenennen in <code class="filename">icinga.log</code>)</p>
+    </li>
+<li class="listitem">
+      <p><code class="filename">archives/nagios-&lt;date&gt;.log</code>-Dateien (Icinga ist in der Lage, sowohl nagios-&lt;date&gt;.log als
+      auch icinga-&lt;date&gt;.log-Dateien zu verarbeiten, so dass Sie die Dateien nicht umbenennen müssen)</p>
+    </li>
+<li class="listitem">
+      <p>Sie müssen die Dateien <code class="filename">status.dat</code> und/oder <code class="filename">objects.cache</code> nicht kopieren, weil sie
+      jeweils beim Neustart erstellt werden. Bitte erstellen Sie <code class="filename">objects.precache</code> vor dem Neustart <a class="link" href="configmain.html#configmain-precached_object_file">(falls nötig)</a> anstatt die Datei zu kopieren</p>
     </li>
 </ul></div>
 
@@ -264,13 +292,13 @@
 <li class="listitem">
             <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-                  <p>Hauptkonfigurationsdatei (normalerweise <span class="emphasis"><em>nagios.cfg</em></span>)</p>
+                  <p>Hauptkonfigurationsdatei (normalerweise <code class="filename">nagios.cfg</code>)</p>
                 </li>
 <li class="listitem">
-                  <p>Ressource-Konfigurationsdatei (normalerweise <span class="emphasis"><em>resource.cfg</em></span>)</p>
+                  <p>Ressource-Konfigurationsdatei (normalerweise <code class="filename">resource.cfg</code>)</p>
                 </li>
 <li class="listitem">
-                  <p>CGI-Konfigurationsdatei (normalerweise <span class="emphasis"><em>cgi.cfg</em></span>)</p>
+                  <p>CGI-Konfigurationsdatei (normalerweise <code class="filename">cgi.cfg</code>)</p>
                 </li>
 <li class="listitem">
                   <p>all Ihre Objektdefinitionsdateien</p>
@@ -278,10 +306,10 @@
 </ul></div>
           </li>
 <li class="listitem">
-            <p>Aufbewahrungsdatei (normalerweise <span class="emphasis"><em>retention.dat</em></span>)</p>
+            <p>Aufbewahrungsdatei (normalerweise <code class="filename">retention.dat</code>)</p>
           </li>
 <li class="listitem">
-            <p>die aktuelle Nagios-Protokolldatei (normalerweise <span class="emphasis"><em>nagios.log</em></span>)</p>
+            <p>die aktuelle Nagios-Protokolldatei (normalerweise <code class="filename">nagios.log</code>)</p>
           </li>
 <li class="listitem">
             <p>archivierte Nagios-Protokolldateien</p>
@@ -299,7 +327,7 @@
       <p>Sichern Sie Ihre Original-Nagios-Konfigurationsdateien, Aufbewahrungs- und Protokolldateien wieder zurück</p>
     </li>
 <li class="listitem">
-      <p>Benennen Sie die Hauptkonfigurationsdatei <span class="emphasis"><em>nagios.conf</em></span> in <span class="emphasis"><em>icinga.conf</em></span> um und ändern Sie
+      <p>Benennen Sie die Hauptkonfigurationsdatei <code class="filename">nagios.conf</code> in <code class="filename">icinga.conf</code> um und ändern Sie
       in /usr/local/icinga/etc/icinga.cfg die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in "icinga_group".</p>
     </li>
 <li class="listitem">
@@ -312,17 +340,17 @@
   Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder APT-Paket
   entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-  <a class="indexterm" name="id5675606"></a>
+  <a class="indexterm" name="id4035961"></a>
 
-  <a class="indexterm" name="id5675636"></a>
+  <a class="indexterm" name="id4035970"></a>
 
-  <a class="indexterm" name="id5675650"></a>
+  <a class="indexterm" name="id4035985"></a>
 
-  <a class="indexterm" name="id5675664"></a>
+  <a class="indexterm" name="id4035999"></a>
 
-  <a class="indexterm" name="id5675678"></a>
+  <a class="indexterm" name="id4036010"></a>
 
-  <a class="indexterm" name="id5675693"></a>
+  <a class="indexterm" name="id4036025"></a>
 </div>
 <div class="navfooter">
 <hr>

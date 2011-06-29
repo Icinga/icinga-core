@@ -33,6 +33,15 @@
   also need to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or ask the maintainer if he has added
   those modifications to the install routine.</p>
 
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to
+  be patient and don't abort the script as it may leave the data being corrupt.</p></td></tr>
+</table></div>
+
   <p>The upgrade files can be found next to the database install files in
   <code class="literal">/path/to/icinga-src/module/idoutils/db/yourrdbm/</code>. The syntax is as follows:</p>
 
@@ -345,7 +354,7 @@
   <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the
   script will fail.</p>
 
-  <a class="indexterm" name="id5602563"></a>
+  <a class="indexterm" name="id2979679"></a>
 </div>
 <div class="navfooter">
 <hr>
