@@ -1555,6 +1555,6 @@ CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, o
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.4.1') ON DUPLICATE KEY UPDATE version='1.4.1';
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.4.0') ON DUPLICATE KEY UPDATE version='1.4.0';
 
 
