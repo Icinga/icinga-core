@@ -22,7 +22,7 @@ BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
-#Requires: nagios-plugins
+### Requires: nagios-plugins
 Provides: nagios
 
 %description
@@ -250,7 +250,6 @@ fi
 %{_datadir}/icinga/sidebar.html
 %{_datadir}/icinga/ssi
 %{_datadir}/icinga/stylesheets
-#%attr(0755,%{apacheuser},%{apachegroup}) %{_datadir}/icinga/log
 %attr(2775,icinga,icingacmd) %dir %{logdir}/gui
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
