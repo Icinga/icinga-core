@@ -5954,7 +5954,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	/* but who wouldn't like to have these fancy tooltips ;-) */
 	if(TRUE){
 		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
-		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Comment</td></tr>");
+		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Author / Comment</td></tr>");
 		for(temp_comment=get_first_comment_by_host(host_name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(host_name,temp_comment)){
 			if((svc_description==NULL && temp_comment->comment_type==HOST_COMMENT) || \
 			   (svc_description!=NULL && temp_comment->comment_type==SERVICE_COMMENT && !strcmp(temp_comment->service_description,svc_description))) {
@@ -6022,7 +6022,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 				saved_escape_html_tags_var=escape_html_tags;
 				escape_html_tags=TRUE;
 
-				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,entry_time,html_encode(escaped_output_string,TRUE));
+				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style=font-weight:bold;>%s</span><br>%s</td></tr>",comment_entry_type,entry_time,html_encode(temp_comment->author,TRUE),html_encode(escaped_output_string,TRUE));
 
 				escape_html_tags=saved_escape_html_tags_var;
 

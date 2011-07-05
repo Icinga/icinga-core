@@ -15,6 +15,7 @@ ENHANCEMENTS
 * classic ui: Changed tac.cgi to distinct between active, passive and disabled properly #1120
 * classic ui: Add log entries to json output of avail.cgi #1659
 * classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
+* classic ui: add author to comment tooltips in status.cgi #1691
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
