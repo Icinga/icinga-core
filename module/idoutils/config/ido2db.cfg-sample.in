@@ -287,3 +287,16 @@ max_debug_file_size=100000000
 
 oci_errors_to_syslog=1
 
+# ORACLE TRACE LEVEL
+# This setting activates oracle session trace for each ido2db connection using trace event
+# Level value must be one of the currently supported values (1,4,8,12) or 0 for off 
+# this requires explicit "alter session" privilege
+# select rights to v$session and v$process are recommanded
+# 0 - pseudo level TRACE OFF
+# 1 – standard SQL trace, no wait events, or bind variables.
+# 4 – Bind variables only
+# 8 – Wait events only
+# 12 – Bind Variables and Wait Events
+
+oracle_trace_level=0
+

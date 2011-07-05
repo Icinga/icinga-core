@@ -286,6 +286,15 @@ if test x$EXTCMDFILEDIR = xno; then
 fi
 AC_SUBST(EXTCMDFILEDIR)
 
+dnl Location of the embedded perl p1.pl
+P1FILELOC=no
+AC_ARG_WITH(p1-file-dir,AC_HELP_STRING([--with-p1-file-dir=<path>],[sets path to embedded perl p1.pl directory]),P1FILELOC=$withval,P1FILELOC=no)
+if test x$P1FILELOC = xno; then
+        P1FILELOC="$libdir"
+fi
+AC_SUBST(P1FILELOC)
+
+
 
 dnl Check for location of init scripts
 init_dir=/etc/rc.d/init.d
@@ -1205,7 +1214,7 @@ echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
 perl subst $srcdir/module/idoutils/config/icinga.cfg
-perl subst $srcdir/module/idoutils/config/idoutils.cfg
+perl subst $srcdir/module/idoutils/config/idoutils.cfg-sample
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
 

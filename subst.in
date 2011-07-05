@@ -28,6 +28,7 @@ while ($f = shift @ARGV) {
 		s|\@sysconfdir\@|@sysconfdir@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
 		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;
+		s|\@P1FILELOC\@|@P1FILELOC@|g;
 		s|\@IDO_INSTANCE_NAME\@|@IDO_INSTANCE_NAME@|g;
 		s|\@CHECKRESULTDIR\@|@CHECKRESULTDIR@|g;
 		s|\@datadir\@|@datarootdir@|g;

@@ -5,7 +5,7 @@
 #--
 #-- Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
 #--
-#-- current version: 2011-05-03 Thomas Dressler
+#-- current version: 2011-06-10 Thomas Dressler
 #-- -- --------------------------------------------------------
 
 #where database to connect
@@ -82,7 +82,7 @@ EOS2
 	RET=$?
 	#check if dbversion entered(last insert)
 	if [ $RET == 0 ]; then
-		echo "Connecting now as $DBUSER on $DB and create icinga Schema objects"
+		echo "Connecting now as $DBUSER on $DB and  check icinga schema version"
   	$SP /nolog <<EOS3
 connect ${DBUSER}/${DBPASS}@${DB}
 Alter session set nls_date_format='YYYY-MM-DD HH24:MI';

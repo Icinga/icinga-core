@@ -1,3 +1,5 @@
+#include "../include/locations.h"
+
 /******** BEGIN EMBEDDED PERL INTERPRETER DECLARATIONS ********/
 
 #include <EXTERN.h>

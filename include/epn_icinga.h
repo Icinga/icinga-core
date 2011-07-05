@@ -22,6 +22,9 @@
  *
  *****************************************************************************/
 
+/* needed for location of p1.pl */
+#include "locations.h"
+
 /******** BEGIN EMBEDDED PERL INTERPRETER DECLARATIONS ********/
 
 #include <EXTERN.h>

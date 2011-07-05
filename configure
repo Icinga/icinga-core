@@ -654,6 +654,7 @@ XSDH
 XSDC
 lockfile
 init_dir
+P1FILELOC
 EXTCMDFILEDIR
 TMPDIR
 CHECKRESULTDIR
@@ -744,6 +745,7 @@ with_httpd_conf
 with_checkresult_dir
 with_temp_dir
 with_ext_cmd_file_dir
+with_p1_file_dir
 with_init_dir
 with_lockfile
 with_gd_lib
@@ -1437,6 +1439,8 @@ Optional Packages:
   --with-temp-dir=<path>  sets path to temp directory
   --with-ext-cmd-file-dir=<path>
                           sets path to external command file directory
+  --with-p1-file-dir=<path>
+                          sets path to embedded perl p1.pl directory
   --with-init-dir=<path>  sets directory to place init script into
   --with-lockfile=<path>  sets path and file name for lock file
   --with-gd-lib=DIR       sets location of the gd library
@@ -5277,6 +5281,21 @@ if test x$EXTCMDFILEDIR = xno; then
 fi
 
 
+P1FILELOC=no
+
+# Check whether --with-p1-file-dir was given.
+if test "${with_p1_file_dir+set}" = set; then :
+  withval=$with_p1_file_dir; P1FILELOC=$withval
+else
+  P1FILELOC=no
+fi
+
+if test x$P1FILELOC = xno; then
+        P1FILELOC="$libdir"
+fi
+
+
+
 
 init_dir=/etc/rc.d/init.d
 if test -d /etc/rc.d/init.d; then
@@ -8307,7 +8326,7 @@ echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
 perl subst $srcdir/module/idoutils/config/icinga.cfg
-perl subst $srcdir/module/idoutils/config/idoutils.cfg
+perl subst $srcdir/module/idoutils/config/idoutils.cfg-sample
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
 
