@@ -15,6 +15,7 @@ ENHANCEMENTS
 * classic ui: Changed tac.cgi to distinct between active, passive and disabled properly #1120
 * classic ui: Add log entries to json output of avail.cgi #1659
 * classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
+* classic ui: add author to comment tooltips in status.cgi #1691
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
@@ -32,6 +33,9 @@ FIXES
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
+* classic ui: fixed: User can execute host/servicegroup commands even if not authorized for (Sven Nierlein) #1679
+* classic ui: fixed: plugin_output_short didn't get checked properly and caused segfault in status.cgi #1673
+* classic ui: fixed: submitting non existent host/service on avail.cgi causes segfault. (M. Luebben) #1700
 
 * install: fix event handlers cmd file location in contrib #1501
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
