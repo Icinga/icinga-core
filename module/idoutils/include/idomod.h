@@ -9,7 +9,7 @@
 #ifndef _NDBXT_IDOMOD_H
 #define _NDBXT_IDOMOD_H
 
-#define IDOMOD_VERSION "1.5.0"
+#define IDOMOD_VERSION "1.5.0-dev"
 #define IDOMOD_NAME "IDOMOD"
 #define IDOMOD_DATE "08-17-2011"
 

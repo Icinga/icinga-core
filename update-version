@@ -10,7 +10,7 @@ else
 fi
 
 # Current version number
-CURRENTVERSION=1.5.0
+CURRENTVERSION=1.5.0-dev
 
 # Last date
 LASTDATE=08-17-2011
