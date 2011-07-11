@@ -440,13 +440,13 @@ int main(int argc, char **argv){
 				if(show_all_hosts==TRUE)
 					printf("All Hosts");
 				else
-					printf("Host '%s'",(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+					printf("Host '%s'",(temp_host!=NULL && temp_host->display_name!=NULL)?temp_host->display_name:host_name);
 			        }
 			else if(display_type==DISPLAY_SERVICE_AVAIL){
 				if(show_all_services==TRUE)
 					printf("All Services");
 				else
-					printf("Service '%s' On Host '%s'",(temp_service->display_name!=NULL)?temp_service->display_name:temp_service->description,(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name);
+					printf("Service '%s' On Host '%s'",(temp_service!=NULL && temp_service->display_name!=NULL)?temp_service->display_name:service_desc,(temp_host!=NULL && temp_host->display_name!=NULL)?temp_host->display_name:host_name);
 		                }
 			else if(display_type==DISPLAY_HOSTGROUP_AVAIL){
 				if(show_all_hostgroups==TRUE)
