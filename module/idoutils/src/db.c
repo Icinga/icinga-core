@@ -3051,7 +3051,7 @@ int ido2db_oci_prepared_statement_sequence_select(ido2db_idi *idi) {
 
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() start\n",fname);
 
-        if(asprintf(&buf, "SELECT last_number from user_sequences where sequence_name=upper(:X1)") == -1) {
+        if(asprintf(&buf, "SELECT last_number-1 from user_sequences where sequence_name=upper(:X1)") == -1) {
         	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Error:memory allocation failed\n",fname);
                 buf = NULL;
                 return IDO_ERROR;
