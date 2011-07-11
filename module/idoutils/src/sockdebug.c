@@ -9,7 +9,7 @@
 #include "../../../include/config.h"
 #include "../include/io.h"
 
-#define SOCKDEBUG_VERSION "1.5.0-dev"
+#define SOCKDEBUG_VERSION "1.5.0"
 #define SOCKDEBUG_NAME "SOCKDEBUG"
 #define SOCKDEBUG_DATE "08-17-2011"
 
