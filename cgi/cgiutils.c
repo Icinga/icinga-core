@@ -950,6 +950,12 @@ void document_header(int cgi_id, int use_stylesheet){
 		return;
 	}
 
+	if(content_type==XML_CONTENT) {
+		printf("Content-type: text/xml; charset=\"%s\"\r\n\r\n", http_charset);
+		printf("<?xml version=\"1.0\" encoding=\"%s\"?>\n",http_charset);
+		return;
+	}
+
 
 	if(cgi_id!=ERROR_CGI_ID){
 		// send HTML CONTENT
@@ -1121,6 +1127,9 @@ void document_footer(int cgi_id){
                         cgi_name = TRENDS_CGI;
                         break;
 	}
+
+	if(content_type==XML_CONTENT)
+		return;
 
 	if(content_type==WML_CONTENT){
 		/* used by cmd.cgi */

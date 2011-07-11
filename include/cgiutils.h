@@ -284,6 +284,7 @@ extern "C" {
 #define IMAGE_CONTENT		2
 #define CSV_CONTENT		3
 #define JSON_CONTENT		4
+#define XML_CONTENT		5
 
 
 /************************ CSV OUTPUT CHARACTERS ****************************/
