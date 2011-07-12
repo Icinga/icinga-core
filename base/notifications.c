@@ -1230,6 +1230,9 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 		return OK;
 	        }
 
+	/* allocate memory for local mac */
+	memset(&mac, 0, sizeof(mac));
+
 	/* clear volatile macros */
 	clear_volatile_macros_r(&mac);
 
