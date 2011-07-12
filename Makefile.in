@@ -364,7 +364,6 @@ install-base:
 	cd $(SRC_BASE) && $(MAKE) install
 
 install-cgis:
-	$(INSTALL) -m 775 $(INSTALL_OPTS_WEB) -d $(DESTDIR)$(CGILOGDIR)
 	cd $(SRC_CGI) && $(MAKE) install
 
 install:

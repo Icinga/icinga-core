@@ -9,6 +9,7 @@ CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 CGIDIR=@sbindir@
 HTMLDIR=@datarootdir@
+CGILOGDIR=@CGILOGDIR@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
 COMMAND_OPTS=@COMMAND_OPTS@
@@ -48,10 +49,9 @@ install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/logos
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/images/interface
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/js
-	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(HTMLDIR)/log
-	$(INSTALL) -m 444 $(INSTALL_OPTS) log/.htaccess $(DESTDIR)$(HTMLDIR)/log
-	$(INSTALL) -m 644 $(INSTALL_OPTS) log/index.htm $(DESTDIR)$(HTMLDIR)/log
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(HTMLDIR)/ssi
+	$(INSTALL) -m 444 $(INSTALL_OPTS) log/.htaccess $(DESTDIR)$(CGILOGDIR)
+	$(INSTALL) -m 644 $(INSTALL_OPTS) log/index.htm $(DESTDIR)$(CGILOGDIR)
 	$(INSTALL) -m 664 $(INSTALL_OPTS) robots.txt $(DESTDIR)$(HTMLDIR)
 	$(INSTALL) -m 664 $(INSTALL_OPTS) docs/robots.txt $(DESTDIR)$(HTMLDIR)/docs
 	for file in *.html; \
