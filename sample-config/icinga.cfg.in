@@ -14,7 +14,7 @@
 # for historical purposes.  This should be the first option specified
 # in the config file!!!
 
-log_file=@localstatedir@/icinga.log
+log_file=@LOGDIR@/icinga.log
 
 
 
@@ -272,7 +272,7 @@ log_rotation_method=d
 # This is the directory where archived (rotated) log files should be 
 # placed (assuming you've chosen to do log rotation).
 
-log_archive_path=@localstatedir@/archives
+log_archive_path=@LOGDIR@/archives
 
 
 

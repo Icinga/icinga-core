@@ -20,6 +20,9 @@ ENHANCEMENTS
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
 	** affects (new_)mini_epn and icinga.cfg
+* install: add configure option to set log dir and cgi log dir and phpapi log dir #1715
+	** e.g. --with-phpapi-log-dir=/var/log/icinga/api --with-log-dir=/var/log/icinga --with-cgi-log-dir=/var/log/icinga/gui
+	** apache user permissions
 
 * config: add easy-to-use config examples and scripts for notifications #1697
 	** advanced notify-by-email
@@ -43,6 +46,7 @@ FIXES
 
 * install: fix event handlers cmd file location in contrib #1501
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
+* install: fix icinga.cmd and log dir replacement in icinga-api aubmodule #1573 #1715
 
 * config: deprecate log_external_commands_user #1619
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
