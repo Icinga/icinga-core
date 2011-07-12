@@ -1204,6 +1204,7 @@ perl subst $srcdir/sample-config/template-object/templates.cfg
 perl subst $srcdir/sample-config/template-object/commands.cfg
 perl subst $srcdir/sample-config/template-object/timeperiods.cfg
 perl subst $srcdir/sample-config/template-object/contacts.cfg
+perl subst $srcdir/sample-config/template-object/notifications.cfg
 
 perl subst $srcdir/sample-config/template-object/localhost.cfg
 perl subst $srcdir/sample-config/template-object/windows.cfg

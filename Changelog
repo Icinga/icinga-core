@@ -2,7 +2,7 @@
 Icinga 1.5.x Change Log
 #######################
 
-1.5.0 - ??/08/2011
+1.5.0 - 17/08/2011
 
 ENHANCEMENTS
 * idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
@@ -20,6 +20,10 @@ ENHANCEMENTS
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
 	** affects (new_)mini_epn and icinga.cfg
+
+* config: add easy-to-use config examples and scripts for notifications #1697
+	** advanced notify-by-email
+	** notify-by-jabber, notify-by-twitter examples
 
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results #1615

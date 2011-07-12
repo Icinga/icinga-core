@@ -210,6 +210,7 @@ fi
 %dir %{_sysconfdir}/icinga/objects
 %config(noreplace) %{_sysconfdir}/icinga/objects/commands.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/contacts.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/notifications.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/localhost.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/printer.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/switch.cfg
