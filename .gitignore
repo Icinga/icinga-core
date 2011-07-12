@@ -11,6 +11,7 @@ daemon-init-redhat
 rc.ido2db
 Makefile
 Debug
+p1.pl
 .cproject
 .project
 .settings

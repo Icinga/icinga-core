@@ -1,0 +1,132 @@
+###############################################################################
+# NOTIFICATIONS.CFG - SAMPLE NOTIFICATION COMMAND DEFINITIONS FOR ICINGA
+#
+# NOTES: This config file provides you with some example notification definitions
+#        that you can reference in host, service, and contact definitions.
+#
+#        You don't need to keep commands in a separate file from your other
+#        object definitions.  This has been done just to make things easier to
+#        understand.
+#
+# These are some advanced notification commands.  They may or may not work on
+# your system without modification.  As an example, some systems will require
+# you to use "/usr/bin/mailx" instead of "/usr/bin/mail" in the commands below.
+#
+# Furthermore, make sure to replace ICINGAHOST with the appropriate host name
+# if used in any notification as url.
+#
+# Notifications are using the macros quite a lot. Watch out for your own in the
+# official docs: http://docs.icinga.org/latest/en/macrolist.html
+#
+# Those notification commands need to be assigned to the contacts/contactgroups
+# as host_notification_commands and service_notification_commands as comma
+# separated list.
+#
+################################################################################
+
+
+################################################################################
+# NOTIFICATIONS BY EMAIL
+#
+# The idea is to add more information to the ascii-only email. This includes
+# notes_url, display_name, comment+author.
+#	subject
+#	$NOTIFICATIONTYPE$ - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$
+#	body
+#	$SHORTDATETIME$ - Info:
+#
+#	$SERVICEOUTPUT$
+#
+#	$NOTIFICATIONTYPE$ - Service $SERVICEDESC$ on Host $HOSTALIAS$ is $SERVICESTATE$
+#
+#	(Address: $HOSTADDRESS$, Displayname: $SERVICEDISPLAYNAME$)
+#
+#	Notes: $NOTIFICATIONAUTHOR$ $NOTIFICATIONCOMMENT$
+#	$SERVICENOTESURL$
+#
+#	Url:
+#	http://ICINGAHOST@cgiurl@/status.cgi?host=$HOSTNAME$
+################################################################################
+
+
+# 'notify-host-by-email-advanced' command definition
+define command{
+	command_name	notify-host-by-email-advanced
+	command_line    /usr/bin/printf "%b" "$SHORTDATETIME$ - Info:\n\n$HOSTOUTPUT$\n\n$NOTIFICATIONTYPE$ - Host $HOSTNAME$ is $HOSTSTATE$\n\n(Address: $HOSTADDRESS$ Displayname: $HOSTDISPLAYNAME$)\n\nNotes: $NOTIFICATIONAUTHOR$ $NOTIFICATIONCOMMENT$\n$HOSTNOTESURL$\n\nUrl:\nhttp://ICINGAHOST@cgiurl@/extinfo.cgi?type=1&host=$HOSTNAME$\n\n" | @MAIL_PROG@ -s "$NOTIFICATIONTYPE$ - $HOSTNAME$ is $HOSTSTATE$" $CONTACTEMAIL$
+	}
+
+# 'notify-service-by-email-advanced' command definition
+define command{
+	command_name	notify-service-by-email-advanced
+	command_line    /usr/bin/printf "%b" "$SHORTDATETIME$ - Info:\n\n$SERVICEOUTPUT$\n\n$NOTIFICATIONTYPE$ - Service $SERVICEDESC$ on Host $HOSTALIAS$ is $SERVICESTATE$\n\n(Address: $HOSTADDRESS$ Displayname: $SERVICEDISPLAYNAME$)\n\nNotes: $NOTIFICATIONAUTHOR$ $NOTIFICATIONCOMMENT$\n$SERVICENOTESURL$\n\nUrl:\nhttp://ICINGAHOST@cgiurl@/status.cgi?host=$HOSTNAME$\n\n" | @MAIL_PROG@ -s "$NOTIFICATIONTYPE$ - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$" $CONTACTEMAIL$
+	}
+
+
+################################################################################
+# NOTIFICATIONS BY JABBER (XMPP)
+#
+# http://www.gridpp.ac.uk/wiki/Nagios_jabber_notification
+# check contrib/notifications/notify_via_jabber for the script and copy it to
+# $USER1$ location (check resource.cfg)
+#
+# Hint: make sure to define 'pager' as contact attribute! Alternatively, replace
+# $CONTACTPAGER$ with $CONTACTADDRESS1$ and use 'address1' attribute instead.
+################################################################################
+
+define  command {
+        command_name    notify-service-by-jabber
+        command_line    $USER1$/notify_via_jabber $CONTACTPAGER$ "$SHORTDATETIME$ - Info: $SERVICEOUTPUT$ | $NOTIFICATIONTYPE$ - Service $SERVICEDESC$ on Host $HOSTALIAS$ is $SERVICESTATE$ | (Address: $HOSTADDRESS$ Displayname: $SERVICEDISPLAYNAME$) | Notes: $NOTIFICATIONAUTHOR$ $NOTIFICATIONCOMMENT$ $SERVICENOTESURL$ | Url: http://ICINGAHOST@cgiurl@/status.cgi?host=$HOSTNAME$"
+        }
+
+define  command {
+        command_name    notify-host-by-jabber
+        command_line    $USER1$notify_via_jabber $CONTACTPAGER$ "$SHORTDATETIME$ - Info: $HOSTOUTPUT$ | $NOTIFICATIONTYPE$ - Host $HOSTNAME$ is $HOSTSTATE$ | (Address: $HOSTADDRESS$ Displayname: $HOSTDISPLAYNAME$) | Notes: $NOTIFICATIONAUTHOR$ $NOTIFICATIONCOMMENT$ $HOSTNOTESURL$ | Url: http://ICINGAHOST@cgiurl@/extinfo.cgi?type=1&host=$HOSTNAME$"
+        }
+
+
+################################################################################
+# NOTIFICATIONS BY TWITTER
+#
+# https://wiki.icinga.org/display/howtos/notify+via+Twitter
+################################################################################
+
+define command {
+        command_name        notify-host-by-twitter
+        command_line        $USER1$/eventhandler_twitter.php -t "HOST" -h "$HOSTALIAS$" -s "$HOSTSTATE$" -o "$HOSTOUTPUT$"
+}
+
+define command {
+        command_name        notify-service-by-twitter
+        command_line        $USER1$/eventhandler_twitter.php -t "SERVICE" -h "$HOSTALIAS$" -s "$SERVICESTATE$" -d "$SERVICEDESC$" -o "$SERVICEOUTPUT$"
+}
+
+
+################################################################################
+# NOTIFICATIONS BY SMS
+#
+# First off, you need either a local sms service, or an sms gateway. Besides
+# an applicable plugin interacting the that api and integrated as notification
+# command. Below is only the command example.
+################################################################################
+
+
+define  command {
+        command_name    notify-host-by-sms
+        command_line    /usr/bin/printf "%b" "$NOTIFICATIONTYPE$ - $HOSTNAME$ is $HOSTSTATE$ $SHORTDATETIME$ - Info:\n\n$HOSTOUTPUT$\n\n($HOSTADDRESS$)" | $USER1$/notify_via_sms $CONTACTPAGER$
+        }
+
+
+define  command {
+        command_name    notify-service-by-sms
+        command_line    /usr/bin/printf "%b" "$NOTIFICATIONTYPE$ - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ $SHORTDATETIME$ - Info:\n\n$SERVICEOUTPUT$\n\n($HOSTADDRESS$)" | $USER1$/notify_via_sms $CONTACTPAGER$
+        }
+
+
+
+################################################################################
+# MORE NOTIFICATION POSSIBILITIES
+#
+# NoMa: https://www.netways.org/projects/noma/
+# IRCBot: http://www.vanheusden.com/nagircbot/
+################################################################################
+
