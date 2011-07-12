@@ -281,7 +281,7 @@ distclean: clean
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db daemon-init-redhat
 	rm -f include/dh.h
-	rm -f Makefile subst
+	rm -f Makefile subst p1.pl
 	rm -f config.log config.status config.cache
 	rm -f t/var/objects.precache.generated t/var/objects.precache
 
