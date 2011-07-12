@@ -1437,7 +1437,7 @@ debug_verbosity=1
 # DEBUG FILE
 # This option determines where Icinga should write debugging information.
 
-debug_file=@localstatedir@/icinga.debug
+debug_file=@LOGDIR@/icinga.debug
 
 
 
