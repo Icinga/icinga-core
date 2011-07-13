@@ -271,6 +271,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	char *es[2];
 #ifdef USE_ORACLE
 	void *data[4];
+	char * fname="get_object_id_with_insert";
 #endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() start\n");
 
@@ -397,8 +398,12 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() extra prepare failed\n");
 		 return IDO_ERROR;
 	}
+
 	OCI_RegisterUnsignedInt(st,MT(":id"));
+	//free old and reassign
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_insert,fname);
 	idi->dbinfo.oci_statement_objects_insert=st;
+
 	/* --end workaround-- */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind instance id %lu\n",idi->dbinfo.instance_id);
