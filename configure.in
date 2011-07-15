@@ -9,9 +9,9 @@ AC_CONFIG_HEADER(include/config.h include/snprintf.h)
 AC_PREFIX_DEFAULT(/usr/local/icinga)
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.5.0"
+PKG_VERSION="1.5.0-dev"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="08-17-2011"
+PKG_REL_DATE="07-12-2011"
 
 dnl Figure out how to invoke "install" and what install options to use.
 AC_PROG_INSTALL
@@ -233,6 +233,46 @@ AC_SUBST(command_grp)
 COMMAND_OPTS="-o $command_user -g $command_grp"
 AC_SUBST(COMMAND_OPTS)
 
+
+# Users for webfiles
+AC_DEFUN([ACICINGA_USER_GUESS],[
+   $2=$3
+   for x in $1; do
+    AC_MSG_CHECKING([if user $x exists])
+     AS_IF([ $GREP -q "^$x:" /etc/passwd ],
+           [ AC_MSG_RESULT([found]); $2=$x ; break],
+           [ AC_MSG_RESULT([not found]) ])
+   done
+  ])
+
+AC_DEFUN([ACICINGA_GROUP_GUESS],[
+   $2=$3
+   for x in $1; do
+    AC_MSG_CHECKING([if group $x exists])
+     AS_IF([ $GREP -q "^$x:" /etc/group ],
+           [ AC_MSG_RESULT([found]); $2=$x ; break],
+           [ AC_MSG_RESULT([not found]) ])
+   done
+])
+
+AC_ARG_WITH([web_user],
+        AS_HELP_STRING([--with-web-user=USER], [username for web writable files (default www-data)]),
+        web_user=$withval,
+        ACICINGA_USER_GUESS([www wwwrun www-data apache httpd nobody],[web_user],[www-data])
+)
+
+AC_ARG_WITH([web_group],
+        AS_HELP_STRING([--with-web-group=GROUP], [group for web writable files (default www-data)]),
+        web_group=$withval,
+        ACICINGA_GROUP_GUESS([www www-data apache httpd nogroup nobody],[web_group], [www-data])
+)
+AC_SUBST(web_user)
+AC_SUBST(web_group)
+
+INSTALL_OPTS_WEB="-o $web_user -g $web_group"
+AC_SUBST(INSTALL_OPTS_WEB)
+
+
 dnl Check for location of mail program
 MAIL_PROG=no
 AC_ARG_WITH(mail,AC_HELP_STRING([--with-mail=<path_to_mail>],[sets path to equivalent program to mail]),MAIL_PROG=$withval,MAIL_PROG=no)
@@ -278,13 +318,58 @@ fi
 AC_SUBST(TMPDIR)
 
 
+dnl ################
+dnl LOG DIRS
+dnl ################
+dnl Location of logging path
+LOGDIR=no
+AC_ARG_WITH(log-dir,AC_HELP_STRING([--with-log-dir=<path>],[sets path to logging directory]),LOGDIR=$withval,LOGDIR=no)
+if test x$LOGDIR = xno; then
+        LOGDIR="$localstatedir"
+fi
+AC_SUBST(LOGDIR)
+
+dnl Location of cgi logging path
+CGILOGDIR=no
+AC_ARG_WITH(cgi-log-dir,AC_HELP_STRING([--with-cgi-log-dir=<path>],[sets path to cgi logging directory]),CGILOGDIR=$withval,CGILOGDIR=no)
+if test x$CGILOGDIR = xno; then
+        CGILOGDIR="$datarootdir/log"
+fi
+AC_SUBST(CGILOGDIR)
+
+dnl ################
+dnl PHPAPI DIRS
+dnl ################
+dnl Location of phpapi logging path
+PHPAPILOGDIR=no
+AC_ARG_WITH(phpapi-log-dir,AC_HELP_STRING([--with-phpapi-log-dir=<path>],[sets path to php api logging directory]),PHPAPILOGDIR=$withval,PHPAPILOGDIR=no)
+if test x$PHPAPILOGDIR = xno; then
+        PHPAPILOGDIR="$datarootdir/icinga-api/log"
+fi
+AC_SUBST(PHPAPILOGDIR)
+
+dnl Location of phpapi icinga.cmd path
+dnl PHPAPIEXTCMDDIR=no
+dnl AC_ARG_WITH(phpapi-ext-cmd-dir,AC_HELP_STRING([--with-phpapi-ext-cmd-dir=<path>],[sets path to php api ext cmd directory]),PHPAPIEXTCMDDIR=$withval,PHPAPIEXTCMDDIR=no)
+dnl if test x$PHPAPIEXTCMDDIR = xno; then
+dnl        PHPAPIEXTCMDDIR="$localstatedir/rw"
+dnl fi
+dnl AC_SUBST(PHPAPIEXTCMDDIR)
+
+
+dnl ################
+dnl OTHER DIRS
+dnl ################
 dnl Location of the external command file path
 EXTCMDFILEDIR=no
+PHPAPIEXTCMDDIR=no
 AC_ARG_WITH(ext-cmd-file-dir,AC_HELP_STRING([--with-ext-cmd-file-dir=<path>],[sets path to external command file directory]),EXTCMDFILEDIR=$withval,EXTCMDFILEDIR=no)
 if test x$EXTCMDFILEDIR = xno; then
         EXTCMDFILEDIR="$localstatedir/rw"
 fi
+PHPAPIEXTCMDDIR="$EXTCMDFILEDIR"
 AC_SUBST(EXTCMDFILEDIR)
+AC_SUBST(PHPAPIEXTCMDDIR)
 
 dnl Location of the embedded perl p1.pl
 P1FILELOC=no
@@ -1138,17 +1223,19 @@ if test x$check_for_ssl = xyes; then
 fi
 
 if test -e "module/icinga-api/IcingaApi.php"; then
-	echo "Configuring Icinga-API ..."
-	USE_ICINGAAPI="yes"
-	AC_SUBST(USE_ICINGAAPI)
-	AC_CONFIG_SUBDIRS([module/icinga-api])
-	echo "... done"
+        echo "Configuring Icinga-API ..."
+        USE_ICINGAAPI="yes"
+        AC_SUBST(USE_ICINGAAPI)
+        dnl AC_CONFIG_SUBDIRS([module/icinga-api])
+        AC_OUTPUT(module/icinga-api/Makefile)
+        echo "done..."
 else
-	USE_ICINGAAPI="no"
-	echo "You didn't checked out the git submodule for IcingaApi."
-	echo "I'll not be able to install it."
-	echo ""
+        USE_ICINGAAPI="no"
+        echo "You didn't checked out the git submodule for IcingaApi."
+        echo "I'll not be able to install it."
+        echo ""
 fi
+
 
 TESTS_CFLAGS="$CFLAGS"
 AC_SUBST(TESTS_CFLAGS)
@@ -1176,8 +1263,8 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
         esac
 
 
-AC_OUTPUT(Makefile subst solaris/pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql)
-
+dnl OUTPUT
+AC_OUTPUT(Makefile subst solaris/pkginfo base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
 
 perl subst $srcdir/include/locations.h
 
@@ -1189,6 +1276,12 @@ perl subst $srcdir/contrib/eventhandlers/enable_notifications
 
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
+
+if test x$USE_ICINGAAPI = xyes; then
+	perl subst module/icinga-api/contrib/ido2dbparser/Ido2dbParser.php
+        perl subst module/icinga-api/objects/debug/debugTargets/icingaApiFileDebugger.php
+        perl subst module/icinga-api/objects/command/IcingaApiCommandSendSsh.php
+fi
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."
@@ -1204,6 +1297,7 @@ perl subst $srcdir/sample-config/template-object/templates.cfg
 perl subst $srcdir/sample-config/template-object/commands.cfg
 perl subst $srcdir/sample-config/template-object/timeperiods.cfg
 perl subst $srcdir/sample-config/template-object/contacts.cfg
+perl subst $srcdir/sample-config/template-object/notifications.cfg
 
 perl subst $srcdir/sample-config/template-object/localhost.cfg
 perl subst $srcdir/sample-config/template-object/windows.cfg
@@ -1236,6 +1330,7 @@ echo " -------------------------"
 AC_MSG_RESULT([        Icinga executable:  $icinga_name])
 AC_MSG_RESULT([        Icinga user/group:  $icinga_user,$icinga_grp])
 AC_MSG_RESULT([       Command user/group:  $command_user,$command_grp])
+AC_MSG_RESULT([        Apache user/group:  $web_user,$web_group])
 if test x$USEPERL = xyes; then
 if test x$PERLCACHE = xyes; then
 AC_MSG_RESULT([            Embedded Perl:  yes, with caching])
@@ -1257,6 +1352,11 @@ AC_MSG_RESULT([           Build IDOUtils:  no])
 fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
+AC_MSG_RESULT([            Log directory:  $LOGDIR])
+AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
+if test x$USE_ICINGAAPI = xyes; then
+AC_MSG_RESULT([     phpapi log directory:  $PHPAPILOGDIR])
+fi
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
 AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
