@@ -786,9 +786,9 @@ void show_history(void){
 					if(display_line==TRUE && (history_type==HOST_HISTORY || history_type==SERVICE_HISTORY)){
 						if(state_options==STATE_ALL)
 							display_line=TRUE;
-						else if((state_options & STATE_SOFT) && strstr(temp_buffer,";SOFT;"))
+						else if((state_options & STATE_SOFT) && strstr(temp_entry->entry_text,";SOFT;"))
 							display_line=TRUE;
-						else if((state_options & STATE_HARD) && strstr(temp_buffer,";HARD;"))
+						else if((state_options & STATE_HARD) && strstr(temp_entry->entry_text,";HARD;"))
 							display_line=TRUE;
 						else
 							display_line=FALSE;
@@ -821,9 +821,9 @@ void show_history(void){
 
 						if(state_options==STATE_ALL)
 							display_line=TRUE;
-						else if((state_options & STATE_SOFT) && strstr(temp_buffer,";SOFT;"))
+						else if((state_options & STATE_SOFT) && strstr(temp_entry->entry_text,";SOFT;"))
 							display_line=TRUE;
-						else if((state_options & STATE_HARD) && strstr(temp_buffer,";HARD;"))
+						else if((state_options & STATE_HARD) && strstr(temp_entry->entry_text,";HARD;"))
 							display_line=TRUE;
 						else
 							display_line=FALSE;
