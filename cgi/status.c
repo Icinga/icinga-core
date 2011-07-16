@@ -213,6 +213,7 @@ int problem_services_unknown=0;
 extern int refresh;
 extern int embedded;
 extern int display_header;
+extern int display_status_header;
 extern int daemon_check;
 extern int content_type;
 extern int escape_html_tags;
@@ -384,54 +385,70 @@ int main(void){
 		/* begin top table */
 		/* network status, hosts/service status totals */
 
-		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
-		printf("<tr>\n");
+		if(display_status_header==TRUE){
+			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+			printf("<tr>\n");
 
-		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
-		/* info table */
-		display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
-		printf("</td>\n");
+			/* left column of the first row */
+			printf("<td align=left valign=top width=33%%>\n");
+			/* info table */
+			display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
+			printf("</td>\n");
 
-		/* middle column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
-		show_host_status_totals();
-		printf("</td>\n");
+			/* middle column of top row */
+			printf("<td align=center valign=top width=33%%>\n");
+			show_host_status_totals();
+			printf("</td>\n");
 
-		/* right hand column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
-		show_service_status_totals();
-		printf("</td>\n");
+			/* right hand column of top row */
+			printf("<td align=center valign=top width=33%%>\n");
+			show_service_status_totals();
+			printf("</td>\n");
 
-		/* display context-sensitive help */
-		printf("<td align=right valign=bottom>\n");
-		if(display_type==DISPLAY_HOSTS)
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-		else if(display_type==DISPLAY_SERVICEGROUPS){
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-			else if(group_style_type==STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
-			else if(group_style_type==STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
-			else if(group_style_type==STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_SGGRID);
-		}else{
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else if(group_style_type==STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
-			else if(group_style_type==STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
-			else if(group_style_type==STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_HGGRID);
+			/* display context-sensitive help */
+			printf("<td align=right valign=bottom>\n");
+			if(display_type==DISPLAY_HOSTS)
+				if(group_style_type==STYLE_HOST_DETAIL)
+					display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+				else
+					display_context_help(CONTEXTHELP_STATUS_DETAIL);
+			else if(display_type==DISPLAY_SERVICEGROUPS){
+				if(group_style_type==STYLE_HOST_DETAIL)
+					display_context_help(CONTEXTHELP_STATUS_DETAIL);
+				else if(group_style_type==STYLE_OVERVIEW)
+					display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
+				else if(group_style_type==STYLE_SUMMARY)
+					display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
+				else if(group_style_type==STYLE_GRID)
+					display_context_help(CONTEXTHELP_STATUS_SGGRID);
+			}else{
+				if(group_style_type==STYLE_HOST_DETAIL)
+					display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+				else if(group_style_type==STYLE_OVERVIEW)
+					display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
+				else if(group_style_type==STYLE_SUMMARY)
+					display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
+				else if(group_style_type==STYLE_GRID)
+					display_context_help(CONTEXTHELP_STATUS_HGGRID);
+			}
+			printf("</td>\n");
+			printf("</tr>\n");
+			printf("</table>\n");
 		}
-		printf("</td>\n");
-		printf("</tr>\n");
-		printf("</table>\n");
+		else {
+			/* only display basic information */
+			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+			printf("<tr>\n");
+
+                        printf("<td align=left valign=top>\n");
+                        /* info table */
+                        display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
+                        printf("</td>\n");
+
+			printf("</tr>\n");
+			printf("</table>\n");
+
+		}
 
 		/* second table below */
 		printf("<br>\n");
@@ -825,6 +842,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the nostatusheader option */
+		else if(!strcmp(variables[x],"nostatusheader"))
+			display_status_header=FALSE;
 
 		/* we found the CSV output option */
 		else if(!strcmp(variables[x],"csvoutput")){
