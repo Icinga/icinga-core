@@ -27,6 +27,7 @@ ENHANCEMENTS
 * config: add easy-to-use config examples and scripts for notifications #1697
 	** advanced notify-by-email
 	** notify-by-jabber, notify-by-twitter examples
+* config: add check_dummy command definitions as example to commands.cfg #1719
 
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results #1615
