@@ -57,6 +57,29 @@ FIXES
 * idoutils: do not update start_time of already started downtimes #1658
 * idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
 
+CHANGES
+https://wiki.icinga.org/display/Dev/Changes
+
+* location of p1.pl is now default in %{_libdir}/icinga instead of %{_bindir}/icinga: configure flag for pkg --with-p1-file-dir=
+* new notification examples: contrib/notifications/* sample-config/template-object/notifications.cfg
+* eventhandlers got their proper icinga.cmd location through configure
+* p1.pl.in will be created from configure into p1.pl
+* module/idoutils/config/idoutils.cfg-sample is now installed instead of idoutils.cfg
+* add log dir options for core, cgi and phpapi log
+	** --with-log-dir=%{logdir} --with-cgi-log-dir=%{logdir}/gui --with-phpapi-log-dir=%{logdir}/api
+	** p1.pl DEBUG_LOG_PATH is replaced
+	** icinga.cfg logdir, archive, debug_file uses &nbsp;(LOGDIR) ac macro
+	** cgi.cfg cgi logfir, archive uses &nbsp;(CGILOGDIR) ac macro
+	** phpapi log and icinga.cmd target are overwritten by core configure in their places
+	** ownership of cgi and api log dirs is apache user and group
+* cgi.cfg config changes
+	** cgi_log_file=@CGILOGDIR@/icinga-cgi.log cgi_log_archive_path=@CGILOGDIR@
+	** show_partial_hostgroups=0 default_downtime_duration=7200 suppress_maintenance_downtime=0 
+* icinga.cfg config changes
+	** log_archive_path=@LOGDIR@/archives p1_file=@P1FILELOC@/p1.pl debug_file=@LOGDIR@/icinga.debug
+	** enable_embedded_perl=0 enable_environment_macros=0
+	
+
 
 1.4.0 - 11/05/2011
 
