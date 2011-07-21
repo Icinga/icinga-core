@@ -5898,8 +5898,7 @@ void show_servicecommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-//		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-		printf("<select name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5924,14 +5923,14 @@ void show_servicecommand_table(void){
 		printf("</select>");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-/*		printf("<script language='javascript'>\n");
+		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
 		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
 		printf("});\n");
 		printf("</script>\n");
-*/
+
 		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='serviceTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
@@ -5942,8 +5941,7 @@ void show_hostcommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-//		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-		printf("<select name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
@@ -5974,14 +5972,14 @@ void show_hostcommand_table(void){
 		printf("</select>");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-/*		printf("<script language='javascript'>\n");
+		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
 		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
 		printf("});\n");
 		printf("</script>\n");
-*/
+
 		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='hostsTotalsCommands' disabled='disabled'></b>\n");
 	}
 }

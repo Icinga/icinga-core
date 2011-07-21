@@ -47,6 +47,7 @@ FIXES
 * classic ui: fixed: plugin_output_short didn't get checked properly and caused segfault in status.cgi #1673
 * classic ui: fixed: submitting non existent host/service on avail.cgi causes segfault. (M. Luebben) #1700
 * classic ui: fixed: Alert History State filter for HARD/SOFT state not working (Lennart Betz) #1722
+* classic ui: fixed: jquery 1.5.2 triggers memory leak in IE #1740
 
 * install: fix event handlers cmd file location in contrib #1501
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
