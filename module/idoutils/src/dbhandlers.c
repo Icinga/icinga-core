@@ -6366,7 +6366,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI
 	/* build a multiple insert value array */
-	if(asprintf(&buf1, "INSERT INTO %s (instance_id, service_id, contactgroup_object_id) VALUES ",
+	if(asprintf(&buf1, "INSERT INTO %s (instance_id, service_id, contact_object_id) VALUES ",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTS]
 			)==-1)
 		buf1=NULL;
