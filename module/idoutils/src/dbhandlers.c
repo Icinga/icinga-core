@@ -4916,6 +4916,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
         char *seq_name = NULL;
 #endif
         void *data[4];
+	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables() start\n");
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 0, "HANDLE_CONFIGFILEVARS [1]\n");
@@ -5014,6 +5015,29 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	free(es[0]);
 
 	/* save config file variables to db */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables()  start\n");
+
+
+#ifdef USE_LIBDBI
+	/* build a multiple insert value array */
+	if(asprintf(&buf1, "INSERT INTO %s (instance_id, configfile_id, varname, varvalue) VALUES ",
+			ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]
+			)==-1)
+		buf1=NULL;
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* build a multiple insert value array */
+	if(asprintf(&buf1, "INSERT INTO %s (id, instance_id, configfile_id, varname, varvalue) SELECT seq_%s.nextval, x1, x2, x3, x4 from (",
+			ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES],
+			ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]
+			)==-1)
+		buf1=NULL;
+#endif
+
+	first=1;
+
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONFIGFILEVARIABLE];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
@@ -5027,21 +5051,61 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 		es[1] = ido2db_db_escape_string(idi, varname);
 		es[2] = ido2db_db_escape_string(idi, varvalue);
 
+		buf=buf1; /* save this pointer for later free'ing */
+
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		if (asprintf(&buf,"(instance_id, configfile_id, varname, varvalue) VALUES (%lu, %lu, '%s', '%s')",
-				idi->dbinfo.instance_id, configfile_id, es[1], es[2]) == -1)
-			buf = NULL;
 
-		if (asprintf(&buf1, "INSERT INTO %s %s",
-				ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES], buf)
-				== -1)
-			buf1 = NULL;
+		if (asprintf(&buf1,"%s%s(%lu, %lu, '%s', '%s')",
+				buf1,
+				(first==1?"":","),
+				idi->dbinfo.instance_id,
+				configfile_id,
+				es[1],
+				es[2]
+				)==-1)
+			buf1=NULL;
+#endif
 
-                result = ido2db_db_query(idi, buf1);
-                dbi_result_free(idi->dbinfo.dbi_result);
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+		if(first==1) {
+			if(asprintf(&buf1, "%s SELECT %lu as x1, %lu as x2, '%s' as x3, '%s' as x4 FROM DUAL ",
+	                                buf1,
+                                	idi->dbinfo.instance_id,
+                                	configfile_id,
+                                	es[1],
+                                	es[2]
+                                	)==-1)
+                        	buf1=NULL;
+		} else {
+			if(asprintf(&buf1, "%s UNION ALL SELECT %lu, %lu, '%s', '%s' FROM DUAL ",
+	                                buf1,
+                                	idi->dbinfo.instance_id,
+                                	configfile_id,
+                                	es[1],
+                                	es[2]
+                                	)==-1)
+                        	buf1=NULL;
+		}
+#endif /* Oracle ocilib specific */
+
 		free(buf);
-		free(buf1);
+		free(es[1]);
+		free(es[2]);
+		first=0;
+	}
 
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	if(asprintf(&buf1, "%s)", buf1)==-1)
+		buf1=NULL;
+
+#endif /* Oracle ocilib specific */
+
+	if(first==0){
+		result = ido2db_db_query(idi, buf1);
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        	dbi_result_free(idi->dbinfo.dbi_result);
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -5049,54 +5113,13 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
+		/* statement handle not re-binded */
+		OCI_StatementFree(idi->dbinfo.oci_statement);
+#endif
 
-	/* check if we lost connection, and reconnect */
-        if(ido2db_db_reconnect(idi)==IDO_ERROR)
-		return IDO_ERROR;
-
-		data[0] = (void *) &idi->dbinfo.instance_id;
-		data[1] = (void *) &configfile_id;
-		data[2] = (void *) &es[1];
-		data[3] = (void *) &es[2];
-
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X1"), (big_uint *) data[0])) {
-                                return IDO_ERROR;
-                        }
-                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X2"), (big_uint *) data[1])) {
-                                return IDO_ERROR;
-                        }
-        if(es[1]==NULL) {
-                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_configfilevariables_insert, ":X3")==IDO_ERROR) {
-                        return IDO_ERROR;
-                }
-        } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X3"), *(char **) data[2], 0)) {
-                                return IDO_ERROR;
-                        }
 	}
-        if(es[2]==NULL) {
-                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_configfilevariables_insert, ":X4")==IDO_ERROR) {
-                        return IDO_ERROR;
-                }
-        } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X4"), *(char **) data[3], 0)) {
-                                return IDO_ERROR;
-                        }
-	}
-                        /* execute statement */
-                        if(!OCI_Execute(idi->dbinfo.oci_statement_configfilevariables_insert)) {
-                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_configfilevariables_insert() execute error\n");
-                                return IDO_ERROR;
-                        }
 
-                        /* commit statement */
-                        OCI_Commit(idi->dbinfo.oci_connection);
-
-#endif /* Oracle ocilib specific */
-
-		free(es[1]);
-		free(es[2]);
-	}
+	free(buf1);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables() end\n");
 	return IDO_OK;
