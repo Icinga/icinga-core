@@ -1347,9 +1347,10 @@ int ido2db_handle_client_connection(int sd){
 		/* append data we just read to dynamic buffer */
 		buf[result]='\x0';
 		/* 2011-02-23 MF: lock dynamic buffer with a mutex when writing */
-		pthread_mutex_lock(&ido2db_dbuf_lock);
+		/* 2011-07-22 MF: redo it the old way, it may cause dead locks */
+		/* pthread_mutex_lock(&ido2db_dbuf_lock); */
 		ido_dbuf_strcat(&dbuf,buf);
-		pthread_mutex_unlock(&ido2db_dbuf_lock);
+		/* pthread_mutex_unlock(&ido2db_dbuf_lock); */
 
 		/* check for completed lines of input */
 		/* 2011-02-23 MF: only do that in a worker thread */
@@ -1456,8 +1457,6 @@ int ido2db_check_for_client_input(ido2db_idi *idi){
 	/* check if buffer full? bail out and tell main to disconnect the client! FIXME */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() dbuf.size=%lu\n", dbuf.used_size);
 
-	//pthread_mutex_lock(&ido2db_dbuf_lock);
-
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() ido2db_dbuf_lock start\n");
 
 #ifdef DEBUG_IDO2DB2
@@ -1498,8 +1497,6 @@ int ido2db_check_for_client_input(ido2db_idi *idi){
 #endif
 		}
 	}
-
-	//pthread_mutex_unlock(&ido2db_dbuf_lock);
 
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_for_client_input() ido2db_dbuf_lock end\n");
 
