@@ -26,8 +26,13 @@ while ($f = shift @ARGV) {
 		s|\@libexecdir\@|@libexecdir@|g; # put all --with-vars before directories
 		s|\@localstatedir\@|@localstatedir@|g;
 		s|\@sysconfdir\@|@sysconfdir@|g;
+		s|\@LOGDIR\@|@LOGDIR@|g;
+		s|\@CGILOGDIR\@|@CGILOGDIR@|g;
+		s|\@PHPAPILOGDIR\@|@PHPAPILOGDIR@|g;
+		s|\@PHPAPIEXTCMDDIR\@|@PHPAPIEXTCMDDIR@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
 		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;
+		s|\@P1FILELOC\@|@P1FILELOC@|g;
 		s|\@IDO_INSTANCE_NAME\@|@IDO_INSTANCE_NAME@|g;
 		s|\@CHECKRESULTDIR\@|@CHECKRESULTDIR@|g;
 		s|\@datadir\@|@datarootdir@|g;

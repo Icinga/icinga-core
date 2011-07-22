@@ -92,7 +92,7 @@ use_logging=0
 # This is the cgi log file for information about what users are doing.
 # At the moment only submitted commands from cmd.cgi will be logged.
 
-cgi_log_file=@datadir@/log/icinga-cgi.log
+cgi_log_file=@CGILOGDIR@/icinga-cgi.log
 
 
 # CGI LOG ROTATION METHOD
@@ -111,7 +111,7 @@ cgi_log_rotation_method=d
 # This is the directory where archived (rotated) cgi log files should be
 # placed (assuming you've chosen to do log rotation).
 
-cgi_log_archive_path=@datadir@/log
+cgi_log_archive_path=@CGILOGDIR@
 
 
 # FORCE COMMENT
@@ -263,6 +263,17 @@ authorized_for_all_host_commands=icingaadmin
 #         1 - enabled, user can view all services on authorized host
 
 show_all_services_host_is_authorized_for=1
+
+
+# SHOW PARTIAL HOSTGROUPS
+# By default, a user only sees a hostgroup and the hosts within it if
+# they are an authorized contact for all of the hosts of the group. By
+# enabling this option hostgroups will show a partial listing of hosts
+# the user is an authorized contact for in the hostgroups.
+# Values: 0 - disabled, user only sees full hostgroups (default)
+#         1 - enabled, user sees partial hostgroups
+
+show_partial_hostgroups=0
 
 
 # STATUSMAP BACKGROUND IMAGE
@@ -423,6 +434,14 @@ lock_author_names=1
 
 
 
+# DEFAULT DOWNTIME DURATION
+# This option defines the default duration (in seconds) of fixed and
+# flexible downtimes. Default is 7200 seconds (2 hours).
+
+default_downtime_duration=7200
+
+
+
 # SHOW LONG PLUGIN OUTPUT IN STATUS OPTION
 # This option allows you to specify the length of status information
 # in output of status.cgi. If you set the value to 1 it shows the
@@ -441,6 +460,15 @@ status_show_long_plugin_output=0
 tac_show_only_hard_state=0
 
 
+# SUPPRESS MAINTENANCE DOWNTIME
+# This options suppresses the state coloring of hosts and services
+# that are in a scheduled downtime. It sets their coloring to gray,
+# so they no longer draw extra attention to themselves, making it
+# so only actual problems are the ones that stand out.
+# By default it is disabled.
+
+suppress_maintenance_downtime=0
+
 
 # SHOW TAC INFORMATION IN TOP FRAME
 # This options places tactical overview information in
@@ -448,6 +476,16 @@ tac_show_only_hard_state=0
 # By default it is enabled.
 
 show_tac_header=1
+
+
+# SHOW PENDING IN TAC HEADER
+# This options enables the display of pending counts in
+# the tac header. If your display is less than 1024x768
+# and this is enabled, the tactical information may not
+# fit well in the top frame.
+# By default it is enabled.
+
+show_tac_header_pending=1
 
 
 

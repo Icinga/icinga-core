@@ -35,7 +35,7 @@ distclean: clean
 	rm -f Makefile
 	rm -f init-script.suse subst
 	rm -f db/scripts/prepsql db/scripts/installdb db/scripts/upgradedb
-	rm -f config/ido2db.cfg-sample config/idomod.cfg-sample config/icinga.cfg config/idoutils.cfg
+	rm -f config/ido2db.cfg-sample config/idomod.cfg-sample config/icinga.cfg config/idoutils.cfg-sample
 
 devclean: distclean
 
@@ -47,5 +47,5 @@ install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/modules
 	$(INSTALL) -m 664 $(INSTALL_OPTS) config/ido2db.cfg-sample $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 664 $(INSTALL_OPTS) config/idomod.cfg-sample $(DESTDIR)$(CFGDIR)
-	$(INSTALL) -m 664 $(INSTALL_OPTS) config/idoutils.cfg $(DESTDIR)$(CFGDIR)/modules
+	$(INSTALL) -m 664 $(INSTALL_OPTS) config/idoutils.cfg-sample $(DESTDIR)$(CFGDIR)/modules
 

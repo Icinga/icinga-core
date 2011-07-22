@@ -60,6 +60,8 @@ extern int  daemon_check;
 
 extern int enforce_comments_on_actions;
 extern int date_format;
+extern int use_logging;
+extern int default_downtime_duration;
 
 extern scheduled_downtime *scheduled_downtime_list;
 extern comment *comment_list;
@@ -69,7 +71,7 @@ extern comment *comment_list;
  @{**/
 #define MAX_AUTHOR_LENGTH		64
 #define MAX_COMMENT_LENGTH		1024
-#define NUMBER_OF_STRUCTS		500		/**< Set a limit of 500 structs, which is around 125 checks total */
+#define NUMBER_OF_STRUCTS		((MAX_CGI_INPUT_PAIRS*2)+100)		/**< Depends on amount of MAX_CGI_INPUT_PAIRS */
 /** @}*/
 
 /** @name ELEMET TEMPLATE TYPES
@@ -406,6 +408,7 @@ int main(void){
 
 int process_cgivars(void){
 	char **variables;
+	char *temp_buffer=NULL;
 	int error=FALSE;
 	int x;
 	int z = 0;
@@ -549,6 +552,33 @@ int process_cgivars(void){
 
 				/* Store service description in struct */
 				commands[(x-2)].description = service_desc;
+			}
+		}
+
+		/* we found a combined host/service */
+		else if(!strcmp(variables[x],"hostservice")){
+			x++;
+			if(variables[x]==NULL){
+				error=TRUE;
+				break;
+			}
+
+			temp_buffer=strtok(variables[x],"^");
+
+			if((host_name=(char *)strdup(temp_buffer))==NULL)
+				host_name="";
+			else {
+				strip_html_brackets(host_name);
+				commands[x].host_name = host_name;
+			}
+
+			temp_buffer=strtok(NULL,"");
+
+			if((service_desc=(char *)strdup(temp_buffer))==NULL)
+				service_desc="";
+			else {
+				strip_html_brackets(service_desc);
+				commands[x].description = service_desc;
 			}
 		}
 
@@ -822,6 +852,7 @@ void print_help_box(char *content) {
 
 void print_form_element(int element,int cmd) {
 	time_t t;
+	int t_hour,t_min;
 	char buffer[MAX_INPUT_BUFFER];
 
 	switch(element) {
@@ -929,7 +960,7 @@ void print_form_element(int element,int cmd) {
 	case PRINT_CHECK_TIME:
 		time(&t);
 		if (element == PRINT_END_TIME )
-			t+=(unsigned long)7200;
+			t+=(unsigned long)default_downtime_duration;
 		get_time_string(&t,buffer,sizeof(buffer)-1,SHORT_DATE_TIME);
 		printf("<tr><td class=\"objectDescription descriptionleft\">");
 		if (element == PRINT_START_TIME ){
@@ -947,6 +978,10 @@ void print_form_element(int element,int cmd) {
 		break;
 
 	case PRINT_FIXED_FLEXIBLE_TYPE:
+		default_downtime_duration = default_downtime_duration / 60;
+		t_min = default_downtime_duration % 60;
+		default_downtime_duration = default_downtime_duration - t_min;
+		t_hour = (default_downtime_duration / 60 ) ;
 
 		snprintf(help_text,sizeof(help_text),"If you select the <i>fixed</i> option, the downtime will be in effect between the start and end times you specify. If you do not select the <i>fixed</i> "
 				 "option, %s will treat this as <i>flexible</i> downtime. Flexible downtime starts when the host goes down or becomes unreachable / service becomes critical (sometime between the "
@@ -970,9 +1005,9 @@ void print_form_element(int element,int cmd) {
 		printf("</td><td align=\"left\">\n");
 		printf("\t<table border=0  cellspacing=0 cellpadding=0>\n");
 		printf("\t\t<tr>\n");
-		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='2' SIZE=2 MAXLENGTH=2></td>\n");
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='%d' SIZE=2 MAXLENGTH=2></td>\n",t_hour);
 		printf("\t\t\t<td width=\"50\">&nbsp;Hours</td>\n");
-		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='minutes' VALUE='0' SIZE=2 MAXLENGTH=2></td>\n");
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='minutes' VALUE='%d' SIZE=2 MAXLENGTH=2></td>\n",t_min);
 		printf("\t\t\t<td width=\"50\">&nbsp;Minutes</td>\n");
 		printf("\t\t</tr>\n");
 		printf("\t</table>\n");
@@ -2174,11 +2209,11 @@ void commit_command_data(int cmd){
 		   cmd==CMD_ENABLE_HOSTGROUP_SVC_CHECKS		|| cmd==CMD_DISABLE_HOSTGROUP_SVC_CHECKS || \
 		   cmd==CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME	|| cmd==CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME ){
 			temp_hostgroup=find_hostgroup(hostgroup_name);
-			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE)
+			if(is_authorized_for_hostgroup_commands(temp_hostgroup,&current_authdata)==TRUE)
 				is_authorized[x]=TRUE;
 		} else {
 			temp_servicegroup=find_servicegroup(servicegroup_name);
-			if(is_authorized_for_servicegroup(temp_servicegroup,&current_authdata)==TRUE)
+			if(is_authorized_for_servicegroup_commands(temp_servicegroup,&current_authdata)==TRUE)
 				is_authorized[x]=TRUE;
 		}
 
@@ -2810,7 +2845,6 @@ int commit_command(int cmd){
 
 int write_command_to_file(char *cmd){
 	char *buffer;
-	char *buffer2;
 	char *ip_address;
 	int dummy;
 	char *p;
@@ -2847,26 +2881,31 @@ int write_command_to_file(char *cmd){
 		return ERROR;
 	}
 
-	/* get remote address */
-	ip_address=strdup(getenv("REMOTE_ADDR"));
+	if(use_logging==TRUE) {
+		// find closing bracket in cmd line
+		p = strchr(cmd, ']');
+		// if found get everything after closing bracket
+		if (p!=NULL)
+			p+=2;
+		else	// get complete command line
+			p=&cmd[0];
 
-	/* write command to cgi log */
-	dummy=asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address");
+		/* get remote address */
+		ip_address=strdup(getenv("REMOTE_ADDR"));
 
-	p = index(cmd, ']');
-	if (p!=NULL)
-		p+=2;
-	else
-		p=&cmd[0];
+		/* construct log entry */
+		dummy=asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",p);
 
-	dummy=asprintf(&buffer2,"%s%s",buffer,p);
-
-	write_to_cgi_log(buffer2);
-
-	/* log comments if forced */
-	if(enforce_comments_on_actions==TRUE) {
-		dummy=asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
+		/* write command to cgi log */
 		write_to_cgi_log(buffer);
+
+		/* log comments if forced */
+		if(enforce_comments_on_actions==TRUE) {
+			my_free(buffer);
+			dummy=asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username,(ip_address!=NULL)?ip_address:"unknown remote address",comment_author,comment_data);
+			write_to_cgi_log(buffer);
+		}
+		my_free(buffer);
 	}
 
 	/* write the command to file */

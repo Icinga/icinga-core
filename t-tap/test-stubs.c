@@ -76,7 +76,6 @@ void broker_timed_event(int int1, int int2, int int3, timed_event *timed_event1,
 int check_for_expired_downtime(void) {}
 time_t get_next_service_notification_time(service *temp_service, time_t time_t1) {}
 int save_state_information(int int1) {}
-void get_time_breakdown(unsigned long long1, int *int1, int *int2, int *int3, int *int4) {}
 int check_for_external_commands(void) {}
 int check_time_against_period(time_t time_t1, timeperiod *timeperiod) {}
 time_t get_next_log_rotation_time(void) {}
@@ -136,7 +135,6 @@ int clear_host_macros_r(icinga_macros *mac) {}
 int process_macros(char *a, char **b, int c) {}
 int process_macros_r(icinga_macros *mac, char *a, char **b, int c) {}
 
-void strip(char *s) {}
 int update_host_status(host *hst,int aggregated_dump){}
 int update_service_status(service *svc,int aggregated_dump){}
 int update_all_status_data(void){}
@@ -172,11 +170,9 @@ int move_check_result_to_queue(char *checkresult_file){}
 int             free_child_process_memory=-1;
 void free_memory(icinga_macros *mac){}
 int accept_passive_service_checks=TRUE;
-int parse_check_output(char *buf, char **short_output, char **long_output, char **perf_data, int escape_newlines_please, int newlines_are_escaped){}
 int log_passive_checks=TRUE;
 int use_aggressive_host_checking=FALSE;
 int handle_service_event(service *svc){}
-int delete_service_acknowledgement_comments(service *svc){}
 unsigned long cached_host_check_horizon=DEFAULT_CACHED_HOST_CHECK_HORIZON;
 void check_for_service_flapping(service *svc, int update, int allow_flapstart_notification){}
 void check_for_host_flapping(host *hst, int update, int actual_check, int allow_flapstart_notification){}
@@ -213,7 +209,6 @@ int             accept_passive_host_checks=TRUE;
 int             passive_host_checks_are_soft=DEFAULT_PASSIVE_HOST_CHECKS_SOFT;
 int             translate_passive_host_checks=DEFAULT_TRANSLATE_PASSIVE_HOST_CHECKS;
 int             enable_predictive_host_dependency_checks=DEFAULT_ENABLE_PREDICTIVE_HOST_DEPENDENCY_CHECKS;
-int handle_host_state(host *hst){}
 
 /* Icinga special */
 int      stalking_event_handlers_for_hosts;
@@ -223,7 +218,6 @@ int	event_profiling_enabled=FALSE;
 void 	profiler_update(int event, struct timeval start){}
 
 int has_shell_metachars(const char *s){}
-int handle_host_event(host *hst){}
 
 
 /* Icinga CGIs */

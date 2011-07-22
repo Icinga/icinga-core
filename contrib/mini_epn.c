@@ -19,7 +19,7 @@ int main(int argc, char **argv, char **env) {
 #endif
 */
 
-	char *embedding[] = { "", "p1.pl" };
+	char *embedding[] = { "", DEFAULT_P1_FILE };
 	char *plugin_output ;
 	char fname[MAX_INPUT_CHARS];
 	char *args[] = {"","0", "", "", NULL };

@@ -10,13 +10,15 @@ SRC_XDATA=../xdata
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-LOGDIR=@localstatedir@
+LOGDIR=@CGILOGDIR@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 CGIDIR=@sbindir@
 HTMLDIR=@datarootdir@
+CGILOGDIR=@CGILOGDIR@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
+INSTALL_OPTS_WEB=@INSTALL_OPTS_WEB@
 COMMAND_OPTS=@COMMAND_OPTS@
 STRIP=@STRIP@
 
@@ -196,6 +198,7 @@ install-unstripped:
 	$(MAKE) install-basic
 
 install-basic:
+	$(INSTALL) -m 775 $(INSTALL_OPTS_WEB) -d $(DESTDIR)$(CGILOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CGIDIR)
 	for file in *.cgi; do \
 		$(INSTALL) -m 775 $(INSTALL_OPTS) $$file $(DESTDIR)$(CGIDIR); \

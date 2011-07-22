@@ -34,15 +34,17 @@ div.status { font-size: 10pt; text-align: center; }
 .statusEven { background-color: #e7e7e7; }
 
 .statusPENDING { text-align: center; background-color: #acacac; color: #fff; }
+.statusDOWNTIME { text-align: center; background-color: #acacac; color: #fff; }
 .statusOK { text-align: center;  background-color: #00CC33; color: #fff; }
 .statusRECOVERY { text-align: center; background-color: #00CC33; color: #fff; }
 .statusUNKNOWN { text-align: center; background-color: #E066FF; color: #fff; }
 .statusWARNING { text-align: center; background-color: #ffa500; color: #fff; }
 .statusCRITICAL { text-align: center; background-color: #ff3300; color: #fff; }
-.statusPENDING a, .statusOK a, .statusRECOVERY a, .statusUNKNOWN a, .statusWARNING a, .statusCRITICAL a { color: #000; }
-.statusPENDING a:hover, .statusOK a:hover, .statusRECOVERY a:hover, .statusUNKNOWN a:hover, .statusWARNING a:hover, .statusCRITICAL a:hover { color: #fff; }
+.statusPENDING a, .statusDOWNTIME a, .statusOK a, .statusRECOVERY a, .statusUNKNOWN a, .statusWARNING a, .statusCRITICAL a { color: #000; }
+.statusPENDING a:hover, .statusDOWNTIME a:hover, .statusOK a:hover, .statusRECOVERY a:hover, .statusUNKNOWN a:hover, .statusWARNING a:hover, .statusCRITICAL a:hover { color: #fff; }
 
 .statusHOSTPENDING { text-align: center; background-color: #acacac; color: #fff; }
+.statusHOSTDOWNTIME { text-align: center; background-color: #acacac; color: #fff; }
 .statusHOSTUP { text-align: center; background-color: #00cc33; color: #fff; }
 .statusHOSTDOWN { text-align: center; background-color: #ff3300; color: #fff; }
 .statusHOSTDOWNACK { text-align: center; background-color: #ff3300; color: #fff; }
@@ -50,8 +52,8 @@ div.status { font-size: 10pt; text-align: center; }
 .statusHOSTUNREACHABLE { text-align: center; background-color: #E066FF; color: #fff; }
 .statusHOSTUNREACHABLEACK { text-align: center; background-color: #E066FF; color: #fff; }
 .statusHOSTUNREACHABLESCHED { text-align: center; background-color: #E066FF; color: #fff; }
-.statusHOSTPENDING a, .statusHOSTUP a, .statusHOSTDOWN a, .statusHOSTDOWNACK a, .statusHOSTDOWNSCHED a, .statusHOSTUNREACHABLE a, .statusHOSTUNREACHABLEACK a, .statusHOSTUNREACHABLESCHED a { color: #000; }
-.statusHOSTPENDING a:hover, .statusHOSTUP a:hover, .statusHOSTDOWN a:hover, .statusHOSTDOWNACK a:hover, .statusHOSTDOWNSCHED a:hover, .statusHOSTUNREACHABLE a:hover, .statusHOSTUNREACHABLEACK a:hover, .statusHOSTUNREACHABLESCHED a:hover { color: #fff; }
+.statusHOSTPENDING a, .statusHOSTDOWNTIME a, .statusHOSTUP a, .statusHOSTDOWN a, .statusHOSTDOWNACK a, .statusHOSTDOWNSCHED a, .statusHOSTUNREACHABLE a, .statusHOSTUNREACHABLEACK a, .statusHOSTUNREACHABLESCHED a { color: #000; }
+.statusHOSTPENDING a:hover, .statusHOSTDOWNTIME a:hover, .statusHOSTUP a:hover, .statusHOSTDOWN a:hover, .statusHOSTDOWNACK a:hover, .statusHOSTDOWNSCHED a:hover, .statusHOSTUNREACHABLE a:hover, .statusHOSTUNREACHABLEACK a:hover, .statusHOSTUNREACHABLESCHED a:hover { color: #fff; }
 
 .statusBGUNKNOWN { background-color: #EEAEEE; }
 .statusBGUNKNOWNACK { background-color: #EEAEEE; }

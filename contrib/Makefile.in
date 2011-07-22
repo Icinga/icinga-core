@@ -45,6 +45,8 @@ clean:
 
 distclean: clean
 	rm -f Makefile
+	rm -f eventhandlers/disable_active_service_checks eventhandlers/disable_notifications eventhandlers/enable_active_service_checks eventhandlers/enable_notifications eventhandlers/submit_check_result
+
 
 devclean: distclean
 

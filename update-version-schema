@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# Get date (two formats)
+if [ -n "$2" ]; then
+    LONGDATE=`date -d "$2" "+%B %d, %Y"`
+    SHORTDATE=`date -d "$2" "+%m-%d-%Y"`
+else
+    LONGDATE=`date "+%B %d, %Y"`
+    SHORTDATE=`date "+%m-%d-%Y"`
+fi
+
+# Current version number
+CURRENTVERSION=1.5.0
+
+# Last date
+LASTDATE=08-17-2011
+
+if [ "x$1" = "x" ]
+then
+	echo "Usage: $0 <version number | \"newdate\"> [revision date]"
+	echo ""
+	echo "Run this script with the name of the new version (i.e \"2.0b1\") to"
+	echo "update version number and modification date in files."
+	echo "Use the \"newdate\" argument if you want to keep the current version"
+	echo "number and just update the modification date."
+	echo ""
+	echo "Current version=$CURRENTVERSION"
+	echo "Current Modification date=$LASTDATE"
+	echo ""
+	exit 1
+fi
+
+# Keep track of last version, as it is needed to update quickstart guide pages
+lastversion=$CURRENTVERSION
+
+# What's the new version number (if any)?
+newversion=$1
+if [ "x$newversion" = "xnewdate" ]
+then
+    # No new version number, just a new version date
+    newversion=$CURRENTVERSION
+fi
+
+# Update this file with version number and last date
+perl -i -p -e "s/^CURRENTVERSION=.*/CURRENTVERSION=$newversion/;" update-version-schema
+perl -i -p -e "s/^LASTDATE=.*/LASTDATE=$SHORTDATE/;" update-version-schema
+
+# Update the scripts
+perl -i -p -e "s/thisversion=\".*\"/thisversion=\"$newversion\"/;" module/idoutils/db/scripts/upgradedb.in
+perl -i -p -e "s/lastversion=\".*\"/lastversion=\"$newversion\"/;" module/idoutils/db/scripts/upgradedb.in
+perl -i -p -e "s/legacyversion=\".*\"/legacyversion=\"$newversion\"/;" module/idoutils/db/scripts/upgradedb.in
+perl -i -p -e "s/thisversion=\".*\"/thisversion=\"$newversion\"/;" module/idoutils/db/scripts/installdb.in
+
+
+# Update schema version in IDOUtils
+perl -i -p -e "s/IDO2DB_SCHEMA_VERSION \".*\"/IDO2DB_SCHEMA_VERSION \"$newversion\"/;" module/idoutils/include/ido2db.h
+
+# Update dbversion in IDOUtils
+# mysql INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.3.0') ON DUPLICATE KEY UPDATE version='1.3.0';
+# pgsql SELECT updatedbversion('1.3.0');
+# oracle DEFINE ICINGA_VERSION=1.3.0
+
+perl -i -p -e "s/VALUES \(\'idoutils\', \'.*\'\)/VALUES \(\'idoutils\', \'$newversion\'\)/;" module/idoutils/db/mysql/mysql.sql
+perl -i -p -e "s/version=\'.*\'/version=\'$newversion\'/;" module/idoutils/db/mysql/mysql.sql
+perl -i -p -e "s/updatedbversion\(\'.*\'\)/updatedbversion\(\'$newversion\'\)/;" module/idoutils/db/pgsql/pgsql.sql
+perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" module/idoutils/db/oracle/oracle.sql
+
+

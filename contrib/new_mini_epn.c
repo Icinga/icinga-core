@@ -176,7 +176,7 @@ void init_term_readline(void) {
 }
 
 void init_embedded_perl(void) {
-	char *embedding[] = { "", "p1.pl" };
+	char *embedding[] = { "", DEFAULT_P1_FILE };
 										/* embedding takes the place of argv[] ($argv[0] is the program name.
 										 * - which is not given to Perl).
 										 * Note that the number of args (ie the number of elements in embedding

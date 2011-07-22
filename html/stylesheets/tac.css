@@ -15,7 +15,6 @@ td { font-size: 8pt; }
 
 .title { font-weight: bold; font-size: large; background-color: #000; color: #fff; }
 .titleItem { background-color: #000;  color: #fff; }
-.infoBoxBadProcStatus { background-color: #e9e9e9; color: #ff3300; }
 
 .healthTitle { font-weight: bold; font-size: 10pt; background-color: #707677; color: #fff; }
 .healthBox { padding: 2px; background-color: #e9e9e9; color: #fff; }
@@ -27,11 +26,10 @@ td { font-size: 8pt; }
 .perfItem { font-size: 10pt; background-color: #e9e9e9; color: #6e7475; }
 .perfValue { font-size: 10pt; background-color: #e9e9e9; color: #6e7475; }
 
+/* Features */
+
 .featureTitle { font-weight: bold; font-size: 10pt; background-color: #707677; color: #fff; }
 .featureHeader { text-align: center; font-size: 10pt; background-color: #e9e9e9; color: #6e7475; }
-
-.featureEnabled { text-align: center; font-size: 10pt; background-color: #00cc33; color: #8f8f8f; }
-.featureDisabled { text-align: center; font-size: 10pt; background-color: #ff3300; color: #b3b3b3; }
 
 .featureEnabledFlapDetection { text-align: center; font-size: 10pt; background-color: #00cc33; color: #fff; }
 .featureDisabledFlapDetection { text-align: center; font-size: 10pt; background-color: #ff3300; color: #fff; }
@@ -64,25 +62,49 @@ td { font-size: 8pt; }
 .featureItemDisabledServiceHandlers a, .featureItemDisabledHostHandlers a { color: #fff; }
 .featureItemDisabledServiceHandlers a:hover, .featureItemDisabledHostHandlers a:hover { color: #000; }
 
-.featureEnabledActiveChecks { text-align: center; background-color: #00cc33; color: #fff; }
-.featureDisabledActiveChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemEnabledActiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
-.featureItemEnabledActiveHostChecks { text-align: center; background-color: #00CC33; color: #fff; }
-.featureItemDisabledActiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemDisabledActiveHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemDisabledActiveServiceChecks a { color: #fff; }
-.featureItemDisabledActiveHostChecks a { color: #fff; }
-.featureItemDisabledActiveServiceChecks a:hover, .featureItemDisabledActiveHostChecks a:hover { color: #000; }
+/* Service Checks */
 
-.featureEnabledPassiveChecks { text-align: center; background-color: #00cc33; color: #fff; }
-.featureDisabledPassiveChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemEnabledPassiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
-.featureItemEnabledPassiveHostChecks { text-align: center; background-color: #00CC33; color: #fff; }
-.featureItemDisabledPassiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemDisabledPassiveHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
-.featureItemDisabledPassiveServiceChecks a { color: #fff; }
-.featureItemDisabledPassiveHostChecks a { color: #fff; }
-.featureItemDisabledPassiveServiceChecks a:hover, .featureItemDisabledPassiveHostChecks  a:hover { color: #000; }
+.EnabledActiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
+.DisabledActiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
+.EnabledPassiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
+.DisabledPassiveServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
+
+.ItemActiveServiceChecks,
+.ItemActiveServiceChecksWithPassiveDisabled,
+.ItemPassiveServiceChecks { text-align: center; background-color: #00cc33; color: #fff; }
+.ItemDisabledServiceChecks { text-align: center; background-color: #ff3300; color: #fff; }
+
+.ItemActiveServiceChecks a,
+.ItemActiveServiceChecksWithPassiveDisabled a,
+.ItemPassiveServiceChecks a,
+.ItemDisabledServiceChecks a { color: #fff; }
+
+.ItemActiveServiceChecks a:hover,
+.ItemActiveServiceChecksWithPassiveDisabled a:hover,
+.ItemPassiveServiceChecks a:hover { color: #333333; }
+.ItemDisabledServiceChecks a:hover { color: #000; }
+
+/* Host Checks */
+
+.EnabledActiveHostChecks { text-align: center; background-color: #00cc33; color: #fff; }
+.DisabledActiveHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
+.EnabledPassiveHostChecks { text-align: center; background-color: #00cc33; color: #fff; }
+.DisabledPassiveHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
+
+.ItemActiveHostChecks,
+.ItemActiveHostChecksWithPassiveDisabled,
+.ItemPassiveHostChecks { text-align: center; background-color: #00cc33; color: #fff; }
+.ItemDisabledHostChecks { text-align: center; background-color: #ff3300; color: #fff; }
+
+.ItemActiveHostChecks a,
+.ItemActiveHostChecksWithPassiveDisabled a,
+.ItemPassiveHostChecks a,
+.ItemDisabledHostChecks a { color: #fff; }
+
+.ItemActiveHostChecks a:hover,
+.ItemActiveHostChecksWithPassiveDisabled a:hover,
+.ItemPassiveHostChecks a:hover { color: #333333; }
+.ItemDisabledHostChecks a:hover { color: #000; }
 
 /* Outages */
 
@@ -118,3 +140,4 @@ td { font-size: 8pt; }
 .serviceUnimportantProblem a { color: #000; }
 .serviceImportantProblem a:hover { color: #000; }
 .serviceUnimportantProblem a:hover { color: #6e7475; }
+.serviceUnimportantProblem .tac_break { border: 0; height: 3px; }

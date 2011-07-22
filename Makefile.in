@@ -33,9 +33,11 @@ LDFLAGS=@LDFLAGS@ @LIBS@
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-LOGDIR=@localstatedir@
+LOGDIR=@LOGDIR@
+CGILOGDIR=@CGILOGDIR@
 CHECKRESULTDIR=@CHECKRESULTDIR@
 EXTCMDFILEDIR=@EXTCMDFILEDIR@
+P1FILELOC=@P1FILELOC@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 CGIDIR=@sbindir@
@@ -43,6 +45,7 @@ LIBEXECDIR=@libexecdir@
 HTMLDIR=@datarootdir@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
+INSTALL_OPTS_WEB=@INSTALL_OPTS_WEB@
 COMMAND_OPTS=@COMMAND_OPTS@
 HTTPD_CONF=@HTTPD_CONF@
 INIT_DIR=@init_dir@
@@ -278,7 +281,7 @@ distclean: clean
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db daemon-init-redhat
 	rm -f include/dh.h
-	rm -f Makefile subst
+	rm -f Makefile subst p1.pl
 	rm -f config.log config.status config.cache
 	rm -f t/var/objects.precache.generated t/var/objects.precache
 
@@ -385,7 +388,8 @@ install-basic:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CHECKRESULTDIR)
 	if [ $(INSTALLPERLSTUFF) = yes ]; then \
-		$(INSTALL) -m 664 $(INSTALL_OPTS) p1.pl $(DESTDIR)$(BINDIR); \
+		$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(P1FILELOC); \
+		$(INSTALL) -m 664 $(INSTALL_OPTS) p1.pl $(DESTDIR)$(P1FILELOC); \
 	fi;
 
 	@echo ""
@@ -424,6 +428,7 @@ install-config:
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/templates.cfg $(DESTDIR)$(CFGDIR)/objects/templates.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/commands.cfg $(DESTDIR)$(CFGDIR)/objects/commands.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/contacts.cfg $(DESTDIR)$(CFGDIR)/objects/contacts.cfg
+	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/contacts.cfg $(DESTDIR)$(CFGDIR)/objects/notifications.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/timeperiods.cfg $(DESTDIR)$(CFGDIR)/objects/timeperiods.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/localhost.cfg $(DESTDIR)$(CFGDIR)/objects/localhost.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/windows.cfg $(DESTDIR)$(CFGDIR)/objects/windows.cfg
@@ -463,7 +468,7 @@ install-idoutils:
 
 install-api:
 	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
-                cd $(SRC_ICINGAAPI) && $(MAKE) install; \
+		cd $(SRC_ICINGAAPI) && $(MAKE) install; \
                 echo "" ;\
                 echo "*** API installed ***" ;\
 		echo "" ;\

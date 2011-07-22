@@ -64,12 +64,17 @@ extern int enable_splunk_integration;
 
 extern int status_show_long_plugin_output;
 
+extern int suppress_maintenance_downtime;
+
 extern host *host_list;
 extern service *service_list;
 extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
+
+/* show any hosts in hostgroups the user is authorized for */
+extern int show_partial_hostgroups;
 
 #define MAX_MESSAGE_BUFFER		4096
 
@@ -105,6 +110,7 @@ typedef struct statusdata_struct{
 	int		scheduled_downtime_depth;
 	int		notifications_enabled;
 	int		checks_enabled;
+	int		accept_passive_checks;
 	int		is_flapping;
 	struct statusdata_struct *next;
 	}statusdata;
@@ -1545,30 +1551,29 @@ void show_service_detail(void){
 
 		status=temp_status->status_string;
 		status_class=temp_status->status_string;
-		if(temp_status->status==SERVICE_PENDING){
+		if (temp_status->status==SERVICE_PENDING){
 			status_bg_class=(odd)?"Even":"Odd";
-		}
-		else if(temp_status->status==SERVICE_OK){
+		} else if(suppress_maintenance_downtime==TRUE && temp_status->scheduled_downtime_depth>0){
+			status_class="DOWNTIME";
 			status_bg_class=(odd)?"Even":"Odd";
-		}
-		else if(temp_status->status==SERVICE_WARNING){
-			if(temp_status->problem_has_been_acknowledged==TRUE)
+		} else if(temp_status->status==SERVICE_OK){
+			status_bg_class=(odd)?"Even":"Odd";
+		} else if(temp_status->status==SERVICE_WARNING){
+			if (temp_status->problem_has_been_acknowledged==TRUE)
 				status_bg_class="BGWARNINGACK";
 			else if(temp_status->scheduled_downtime_depth>0)
 				status_bg_class="BGWARNINGSCHED";
 			else
 				status_bg_class="BGWARNING";
-		}
-		else if(temp_status->status==SERVICE_UNKNOWN){
-			if(temp_status->problem_has_been_acknowledged==TRUE)
+		} else if(temp_status->status==SERVICE_UNKNOWN){
+			if (temp_status->problem_has_been_acknowledged==TRUE)
 				status_bg_class="BGUNKNOWNACK";
-			else if(temp_status->scheduled_downtime_depth>0)
+			else if (temp_status->scheduled_downtime_depth>0)
 				status_bg_class="BGUNKNOWNSCHED";
 			else
 				status_bg_class="BGUNKNOWN";
-		}
-		else if(temp_status->status==SERVICE_CRITICAL){
-			if(temp_status->problem_has_been_acknowledged==TRUE)
+		} else if(temp_status->status==SERVICE_CRITICAL){
+			if (temp_status->problem_has_been_acknowledged==TRUE)
 				status_bg_class="BGCRITICALACK";
 			else if(temp_status->scheduled_downtime_depth>0)
 				status_bg_class="BGCRITICALSCHED";
@@ -1589,22 +1594,26 @@ void show_service_detail(void){
 				/* grab macros */
 				grab_host_macros_r(mac, temp_host);
 
-				if(temp_hoststatus->status==HOST_DOWN){
-					if(temp_hoststatus->problem_has_been_acknowledged==TRUE)
+				/* first, we color it as maintenance if that is preferred */
+				if (suppress_maintenance_downtime==TRUE && temp_hoststatus->scheduled_downtime_depth>0){
+					host_status_bg_class="HOSTDOWNTIME";
+
+				/* otherwise we color it as its appropriate state */
+				} else if (temp_hoststatus->status==HOST_DOWN){
+					if (temp_hoststatus->problem_has_been_acknowledged==TRUE)
 						host_status_bg_class="HOSTDOWNACK";
 					else if(temp_hoststatus->scheduled_downtime_depth>0)
 						host_status_bg_class="HOSTDOWNSCHED";
 					else
 						host_status_bg_class="HOSTDOWN";
-				}
-				else if(temp_hoststatus->status==HOST_UNREACHABLE){
-					if(temp_hoststatus->problem_has_been_acknowledged==TRUE)
+				} else if (temp_hoststatus->status==HOST_UNREACHABLE){
+					if (temp_hoststatus->problem_has_been_acknowledged==TRUE)
 						host_status_bg_class="HOSTUNREACHABLEACK";
 					else if(temp_hoststatus->scheduled_downtime_depth>0)
 						host_status_bg_class="HOSTUNREACHABLESCHED";
 					else
 						host_status_bg_class="HOSTUNREACHABLE";
-				}else
+				} else
 					host_status_bg_class=(odd)?"Even":"Odd";
 
 				printf("<TD CLASS='status%s'>",host_status_bg_class);
@@ -1638,7 +1647,10 @@ void show_service_detail(void){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,NOTIFICATIONS_DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_hoststatus->checks_enabled==FALSE){
-					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Checks of this host have been disabled'd TITLE='Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					if(temp_hoststatus->accept_passive_host_checks==TRUE)
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active Checks of this host have been disabled'd TITLE='Active Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,PASSIVE_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					else
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and Passive Checks of this host have been disabled'd TITLE='Active and Passive Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_hoststatus->is_flapping==TRUE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is flapping between states' TITLE='This host is flapping between states'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_status->host_name),url_images_path,FLAPPING_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
@@ -1722,13 +1734,14 @@ void show_service_detail(void){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
 				printf("&service=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This service problem has been acknowledged' TITLE='This service problem has been acknowledged'></A></TD>",url_encode(temp_status->svc_description),url_images_path,ACKNOWLEDGEMENT_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 			}
-			if(temp_status->checks_enabled==FALSE && temp_service->accept_passive_service_checks==FALSE){
-				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
-				printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and passive checks have been disabled for this service' TITLE='Active and passive checks have been disabled for this service'></A></TD>",url_encode(temp_status->svc_description),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
-			}
-			else if(temp_status->checks_enabled==FALSE){
-				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
-				printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active checks of the service have been disabled - only passive checks are being accepted' TITLE='Active checks of the service have been disabled - only passive checks are being accepted'></A></TD>",url_encode(temp_status->svc_description),url_images_path,PASSIVE_ONLY_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+			if(temp_status->checks_enabled==FALSE){
+				if(temp_status->accept_passive_checks==FALSE){
+					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
+					printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and passive checks have been disabled for this service' TITLE='Active and passive checks have been disabled for this service'></A></TD>",url_encode(temp_status->svc_description),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+				}else{
+					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
+					printf("&service=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active checks of the service have been disabled - only passive checks are being accepted' TITLE='Active checks of the service have been disabled - only passive checks are being accepted'></A></TD>",url_encode(temp_status->svc_description),url_images_path,PASSIVE_ONLY_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+				}
 			}
 			if(temp_status->notifications_enabled==FALSE){
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_status->host_name));
@@ -1800,12 +1813,9 @@ void show_service_detail(void){
 			printf("<TD CLASS='status%s'>%s</TD>\n",status_bg_class,temp_status->attempts);
 			printf("<TD CLASS='status%s' valign='center'>%s</TD>\n",status_bg_class,temp_status->plugin_output);
 
-			if (is_authorized_for_read_only(&current_authdata)==FALSE){
-				/* Checkbox for service(s) */
-				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s",status_bg_class,url_encode(temp_status->host_name));
-				printf("&service=%s'></TD>\n",url_encode(temp_status->svc_description));
-			}
-
+			/* Checkbox for service(s) */
+			if (is_authorized_for_read_only(&current_authdata)==FALSE)
+				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='hostservice' value='%s^%s'></TD>\n",status_bg_class,temp_status->host_name,temp_status->svc_description);
 
 			if(enable_splunk_integration==TRUE)
 				display_splunk_service_url(temp_service);
@@ -1927,6 +1937,8 @@ void show_host_detail(void){
 				printf("host name");
 			else if(sort_option==SORT_HOSTSTATUS)
 				printf("host status");
+			else if(sort_option==SORT_HOSTURGENCY)
+				printf("host urgency");
 			else if(sort_option==SORT_LASTCHECKTIME)
 				printf("last check time");
 			else if(sort_option==SORT_CURRENTATTEMPT)
@@ -2065,6 +2077,10 @@ void show_host_detail(void){
 				status_class="PENDING";
 				status_bg_class=(odd)?"Even":"Odd";
 			}
+			else if(suppress_maintenance_downtime==TRUE && temp_statusdata->scheduled_downtime_depth>0){
+				status_class="DOWNTIME";
+				status_bg_class=(odd)?"Even":"Odd";
+			}
 			else if(temp_statusdata->status==HOST_UP){
 				status_class="HOSTUP";
 				status_bg_class=(odd)?"Even":"Odd";
@@ -2125,7 +2141,10 @@ void show_host_detail(void){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,NOTIFICATIONS_DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_statusdata->checks_enabled==FALSE){
-					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Checks of this host have been disabled' TITLE='Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					if(temp_statusdata->accept_passive_checks==TRUE)
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active Checks of this host have been disabled'd TITLE='Active Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,PASSIVE_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
+					else
+						printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Active and Passive Checks of this host have been disabled'd TITLE='Active and Passive Checks of this host have been disabled'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,DISABLED_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
 				}
 				if(temp_statusdata->is_flapping==TRUE){
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host is flapping between states' TITLE='This host is flapping between states'></A></TD>",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_statusdata->host_name),url_images_path,FLAPPING_ICON,STATUS_ICON_WIDTH,STATUS_ICON_HEIGHT);
@@ -2195,7 +2214,7 @@ void show_host_detail(void){
 
 				/* Checkbox for host(s) */
 				if (is_authorized_for_read_only(&current_authdata)==FALSE)
-					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='checkbox' value='&host=%s'></TD>\n",status_bg_class,url_encode(temp_statusdata->host_name));
+					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='host' value='%s'></TD>\n",status_bg_class,temp_statusdata->host_name);
 
 
 
@@ -3484,7 +3503,7 @@ void show_hostgroup_overviews(void){
 			for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 				/* make sure the user is authorized to view this hostgroup */
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 					continue;
 
 				// always add a comma, except for the first line
@@ -3501,7 +3520,7 @@ void show_hostgroup_overviews(void){
 			if(temp_hostgroup==NULL)
 				hostgroup_error=TRUE;
 			else {
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
 
 					show_hostgroup_overview(temp_hostgroup);
 
@@ -3525,7 +3544,7 @@ void show_hostgroup_overviews(void){
 
 		printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Service Overview For ");
 		if(show_all_hostgroups==TRUE)
-			printf("All Host Groups");
+			printf("%s",show_partial_hostgroups?"All Host Groups<br>(Partial Hostgroups Enabled)":"All Host Groups");
 		else
 			printf("Host Group '%s'",hostgroup_name);
 		printf("</DIV>\n");
@@ -3555,7 +3574,7 @@ void show_hostgroup_overviews(void){
 			for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 				/* make sure the user is authorized to view this hostgroup */
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 					continue;
 
 				if(current_column==1)
@@ -3598,7 +3617,7 @@ void show_hostgroup_overviews(void){
 				printf("<DIV ALIGN=CENTER>\n");
 				printf("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0><TR><TD ALIGN=CENTER>\n");
 
-				if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
+				if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==TRUE){
 
 					show_hostgroup_overview(temp_hostgroup);
 
@@ -3650,7 +3669,7 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 	int json_start=TRUE;
 
 	/* make sure the user is authorized to view this hostgroup */
-	if(is_authorized_for_hostgroup(hstgrp,&current_authdata)==FALSE)
+	if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(hstgrp,&current_authdata)==FALSE)
 		return;
 
 	/* print json format */
@@ -3677,6 +3696,10 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 		/* find the host... */
 		temp_host=find_host(temp_member->host_name);
 		if(temp_host==NULL)
+			continue;
+
+		/* only show in partial hostgroups if user is authorized to view this host */
+		if (show_partial_hostgroups==TRUE && is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
 		/* find the host status */
@@ -3981,7 +4004,7 @@ void show_hostgroup_summaries(void){
 		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 			/* make sure the user is authorized to view this hostgroup */
-			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+			if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 				continue;
 
 			if(odd==0)
@@ -4587,7 +4610,7 @@ void show_hostgroup_grids(void){
 		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
 
 			/* make sure the user is authorized to view this hostgroup */
-			if(is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+			if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 				continue;
 
 			if(odd==0)
@@ -4687,6 +4710,10 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		/* find the host... */
 		temp_host=find_host(temp_member->host_name);
 		if(temp_host==NULL)
+			continue;
+
+		/* only show in partial hostgroups if user is authorized to view this host */
+		if (show_partial_hostgroups==TRUE && is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
 		/* grab macros */
@@ -5049,6 +5076,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	int scheduled_downtime_depth=0;
 	int notifications_enabled=FALSE;
 	int checks_enabled=FALSE;
+	int accept_passive_checks=FALSE;
 
 	if (status_type==HOST_STATUS) {
 		if (host_status==NULL)
@@ -5074,6 +5102,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 		scheduled_downtime_depth=host_status->scheduled_downtime_depth;
 		notifications_enabled=host_status->notifications_enabled;
 		checks_enabled=host_status->checks_enabled;
+		accept_passive_checks=host_status->accept_passive_host_checks;
 		is_flapping=host_status->is_flapping;
 
 		plugin_output_short=host_status->plugin_output;
@@ -5110,6 +5139,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 		scheduled_downtime_depth=service_status->scheduled_downtime_depth;
 		notifications_enabled=service_status->notifications_enabled;
 		checks_enabled=service_status->checks_enabled;
+		accept_passive_checks=service_status->accept_passive_service_checks;
 		is_flapping=service_status->is_flapping;
 
 		plugin_output_short=service_status->plugin_output;
@@ -5154,10 +5184,13 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 
 	/* plugin ouput */
 	if (status_show_long_plugin_output!=FALSE && plugin_output_long!=NULL) {
-		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
-			dummy=asprintf(&plugin_output,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
-		else
-			dummy=asprintf(&plugin_output,"%s<BR>%s",html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
+		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT) {
+			if (plugin_output_short!=NULL)
+				dummy=asprintf(&plugin_output,"%s",escape_newlines(plugin_output_long));
+			else
+				dummy=asprintf(&plugin_output,"%s %s",plugin_output_short,escape_newlines(plugin_output_long));
+		} else
+			dummy=asprintf(&plugin_output,"%s<BR>%s",(plugin_output_short==NULL)?"":html_encode(plugin_output_short,TRUE),html_encode(plugin_output_long,TRUE));
 	} else if (plugin_output_short!=NULL) {
 		if(content_type==CSV_CONTENT || content_type==JSON_CONTENT)
 			dummy=asprintf(&plugin_output,"%s",plugin_output_short);
@@ -5192,6 +5225,7 @@ int add_status_data(int status_type, hoststatus *host_status, servicestatus *ser
 	new_statusdata->scheduled_downtime_depth=scheduled_downtime_depth;
 	new_statusdata->notifications_enabled=notifications_enabled;
 	new_statusdata->checks_enabled=checks_enabled;
+	new_statusdata->accept_passive_checks=accept_passive_checks;
 	new_statusdata->is_flapping=is_flapping;
 
 	new_statusdata->plugin_output=(plugin_output==NULL)?NULL:strdup(plugin_output);
@@ -5285,6 +5319,12 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 			else
 				return FALSE;
 		}
+		else if(sort_option==SORT_HOSTURGENCY){
+			if(HOST_URGENCY(new_status->status) <= HOST_URGENCY(temp_status->status))
+				return TRUE;
+			else
+				return FALSE;
+		}
 		else if(sort_option==SORT_HOSTNAME){
 			if(strcasecmp(new_status->host_name,temp_status->host_name)<0)
 				return TRUE;
@@ -5318,6 +5358,12 @@ int compare_sort_entries(int status_type, int sort_type, int sort_option, sort *
 		}
 		else if(sort_option==SORT_SERVICESTATUS && status_type == SERVICE_STATUS){
 			if(new_status->status > temp_status->status)
+				return TRUE;
+			else
+				return FALSE;
+		}
+		else if(sort_option==SORT_HOSTURGENCY){
+			if(HOST_URGENCY(new_status->status) > HOST_URGENCY(temp_status->status))
 				return TRUE;
 			else
 				return FALSE;
@@ -5422,12 +5468,19 @@ int passes_host_properties_filter(hoststatus *temp_hoststatus){
 	if((host_properties & HOST_SOFT_STATE) && temp_hoststatus->state_type==HARD_STATE)
 		return FALSE;
 
+	if((host_properties & HOST_NOT_ALL_CHECKS_DISABLED) && temp_hoststatus->checks_enabled==FALSE && temp_hoststatus->accept_passive_host_checks==FALSE)
+		return FALSE;
+
+	if((host_properties & HOST_STATE_HANDLED) && (temp_hoststatus->scheduled_downtime_depth<=0 && (temp_hoststatus->checks_enabled==TRUE || temp_hoststatus->accept_passive_host_checks==TRUE)))
+		return FALSE;
+
 	return TRUE;
 }
 
 
 /* check service properties filter */
 int passes_service_properties_filter(servicestatus *temp_servicestatus){
+	hoststatus *temp_hoststatus=NULL;
 
 	if((service_properties & SERVICE_SCHEDULED_DOWNTIME) && temp_servicestatus->scheduled_downtime_depth<=0)
 		return FALSE;
@@ -5488,6 +5541,20 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus){
 
 	if((service_properties & SERVICE_SOFT_STATE) && temp_servicestatus->state_type==HARD_STATE)
 		return FALSE;
+
+	if((service_properties & SERVICE_NOT_ALL_CHECKS_DISABLED) && temp_servicestatus->checks_enabled==FALSE && temp_servicestatus->accept_passive_service_checks==FALSE)
+		return FALSE;
+
+	if(service_properties & SERVICE_STATE_HANDLED) {
+		if (temp_servicestatus->scheduled_downtime_depth>0)
+			return TRUE;
+		if (temp_servicestatus->checks_enabled==FALSE && temp_servicestatus->accept_passive_service_checks==FALSE)
+			return TRUE;
+		temp_hoststatus=find_hoststatus(temp_servicestatus->host_name);
+		if (temp_hoststatus!=NULL && (temp_hoststatus->status==HOST_DOWN || temp_hoststatus->status==HOST_UNREACHABLE))
+			return TRUE;
+		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -5615,6 +5682,14 @@ void show_filters(void){
 				printf("%s In Soft State",(found==1)?" &amp;":"");
 				found=1;
 			}
+			if(host_properties & HOST_STATE_HANDLED){
+				printf("%s Problem Handled",(found==1)?" &amp;":"");
+				found=1;
+			}
+			if(host_properties & HOST_NOT_ALL_CHECKS_DISABLED){
+				printf("%s Not All Checks Disabled",(found==1)?" &amp;":"");
+				found=1;
+			}
 		}
 		printf("</td>");
 		printf("</tr>\n");
@@ -5736,6 +5811,14 @@ void show_filters(void){
 				printf("%s In Soft State",(found==1)?" &amp;":"");
 				found=1;
 			}
+			if(service_properties & SERVICE_STATE_HANDLED){
+				printf("%s Problem Handled",(found==1)?" &amp;":"");
+				found=1;
+			}
+			if(service_properties & SERVICE_NOT_ALL_CHECKS_DISABLED){
+				printf("%s Not All Checks Disabled",(found==1)?" &amp;":"");
+				found=1;
+			}
 		}
 		printf("</td></tr>");
 		printf("</table>\n");
@@ -5757,7 +5840,8 @@ void show_servicecommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)'CLASS='serviceTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+//		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5780,7 +5864,17 @@ void show_servicecommand_table(void){
 			printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>",CMD_DISABLE_SVC_FLAP_DETECTION,url_images_path,DISABLED_ICON);
 			printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>",CMD_ENABLE_SVC_FLAP_DETECTION,url_images_path,ENABLED_ICON);
 		printf("</select>");
-		printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='serviceTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+
+		/* Print out the activator for the dropdown (which must be between the body tags */
+/*		printf("<script language='javascript'>\n");
+		printf("$(document).ready(function() { \n");
+		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
+		printf("} catch(e) {\n");
+		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("});\n");
+		printf("</script>\n");
+*/
+		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='serviceTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
 
@@ -5790,11 +5884,12 @@ void show_hostcommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-		printf("<select name='webmenu' id='webmenu' onchange='showValue(this.value,%d,%d)' CLASS='hostTotalsCommands'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+//		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
-			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)'</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
+			printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)</option>",CMD_ENABLE_HOST_CHECK,url_images_path,ENABLED_ICON);
 			printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>",CMD_SCHEDULE_HOST_CHECK,url_images_path,DELAY_ICON);
 			printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>",CMD_PROCESS_HOST_CHECK_RESULT,url_images_path,PASSIVE_ICON);
 			printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>",CMD_DISABLE_PASSIVE_HOST_CHECKS,url_images_path,DISABLED_ICON);
@@ -5819,7 +5914,17 @@ void show_hostcommand_table(void){
 			printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>",CMD_DISABLE_HOST_FLAP_DETECTION,url_images_path,DISABLED_ICON);
 			printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>",CMD_ENABLE_HOST_FLAP_DETECTION,url_images_path,ENABLED_ICON);
 		printf("</select>");
-		printf("<br><br><b><input type='button' name='CommandButton' value='Submit' class='hostsTotalsCommands' onClick=\"cmd_submit('tableform')\" disabled='disabled'></b>\n");
+
+		/* Print out the activator for the dropdown (which must be between the body tags */
+/*		printf("<script language='javascript'>\n");
+		printf("$(document).ready(function() { \n");
+		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
+		printf("} catch(e) {\n");
+		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("});\n");
+		printf("</script>\n");
+*/
+		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='hostsTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
 /* The cake is a lie! */
@@ -5847,7 +5952,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	/* but who wouldn't like to have these fancy tooltips ;-) */
 	if(TRUE){
 		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
-		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Comment</td></tr>");
+		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Author / Comment</td></tr>");
 		for(temp_comment=get_first_comment_by_host(host_name);temp_comment!=NULL;temp_comment=get_next_comment_by_host(host_name,temp_comment)){
 			if((svc_description==NULL && temp_comment->comment_type==HOST_COMMENT) || \
 			   (svc_description!=NULL && temp_comment->comment_type==SERVICE_COMMENT && !strcmp(temp_comment->service_description,svc_description))) {
@@ -5915,7 +6020,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 				saved_escape_html_tags_var=escape_html_tags;
 				escape_html_tags=TRUE;
 
-				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td>%s</td></tr>",comment_entry_type,entry_time,html_encode(escaped_output_string,TRUE));
+				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style=font-weight:bold;>%s</span><br>%s</td></tr>",comment_entry_type,entry_time,html_encode(temp_comment->author,TRUE),html_encode(escaped_output_string,TRUE));
 
 				escape_html_tags=saved_escape_html_tags_var;
 
