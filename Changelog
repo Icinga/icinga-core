@@ -57,6 +57,7 @@ ENHANCEMENTS
 FIXES
 * core: fix flexible downtime on service hard state change doesn't get triggered/activated #1128
 * core: fix timeperiods daylight saving time problem (Luca Di Stefano) #1370
+* core: do not update host/service status during scheduler initialization on startup #1741
 
 * classic ui: Fixing tooltip's in status.cgi, not showing messages with carriage return #1244
 * classic ui: fixed csv export link to make it XSS save (IE) #1275
