@@ -7045,14 +7045,14 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	int result = IDO_OK;
 	char *es[1];
 	int x = 0;
-#ifdef USE_LIBDBI
 	char *buf = NULL;
-#endif
+	char *buf1 = NULL;
 	ido2db_mbuf mbuf;
 #ifdef USE_ORACLE
         char *seq_name = NULL;
 #endif
         void *data[5];
+	int first;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() start\n");
 
@@ -7151,6 +7151,30 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	free(es[0]);
 
 	/* save timeranges to db */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() timeranges start\n");
+
+#ifdef USE_LIBDBI
+
+	/* build a multiple insert value array */
+	if(asprintf(&buf1, "INSERT INTO %s (instance_id, timeperiod_id, day, start_sec, end_sec) VALUES ",
+			ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES]
+			)==-1)
+		buf1=NULL;
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+ 
+        /* build a multiple insert value array */
+        if(asprintf(&buf1, "INSERT INTO %s (id, instance_id, timeperiod_id, day, start_sec, end_sec) SELECT seq_%s.nextval, x1, x2, x3, x4, x5 from (",
+                        ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
+                        ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES]
+                        )==-1)
+                buf1=NULL;
+ 
+#endif /* Oracle ocilib specific */
+
+	first=1;
+
 	mbuf = idi->mbuf[IDO2DB_MBUF_TIMERANGE];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
@@ -7169,17 +7193,62 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 		start_sec = strtoul(startptr, NULL, 0);
 		end_sec = strtoul(endptr, NULL, 0);
 
-		/* save entry to db */
-	        data[0] = (void *) &idi->dbinfo.instance_id;
-	        data[1] = (void *) &timeperiod_id;
-	        data[2] = (void *) &day;
-	        data[3] = (void *) &start_sec;
-	        data[4] = (void *) &end_sec;
+		buf=buf1; /* save this pointer for later free'ing */
 
-	        result = ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(idi, data);
+#ifdef USE_LIBDBI
+                if(asprintf(&buf1, "%s%s(%lu,%lu,%d,%lu,%lu)",
+                                buf1,
+                                (first==1?"":","),
+                                idi->dbinfo.instance_id,
+                                timeperiod_id,
+                                day,
+				start_sec,
+				end_sec
+                                )==-1)
+                        buf1=NULL;
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+                if(first==1) {
+                        if(asprintf(&buf1, "%s SELECT %lu as x1, %lu as x2, %d as x3, %lu as x4, %lu as x5 FROM DUAL ",
+                                        buf1,
+                                        idi->dbinfo.instance_id,
+                                	timeperiod_id,
+                                	day,
+					start_sec,
+					end_sec
+                                        )==-1)
+                                buf1=NULL;
+                } else {
+                        if(asprintf(&buf1, "%s UNION ALL SELECT %lu, %lu, %d, %lu, %lu FROM DUAL ",
+                                        buf1,
+                                        idi->dbinfo.instance_id,
+                                	timeperiod_id,
+                                	day,
+					start_sec,
+					end_sec
+                                        )==-1)
+                                buf1=NULL;
+                }
+#endif /* Oracle ocilib specific */
+
+                free(buf);
+                first=0;
+
+	}
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+        if(asprintf(&buf1, "%s)", buf1)==-1)
+                buf1=NULL;
+
+#endif /* Oracle ocilib specific */
+
+        if(first==0){
+                result=ido2db_db_query(idi, buf1);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
+                dbi_result_free(idi->dbinfo.dbi_result);
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7188,10 +7257,16 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
+        /* statement handle not re-binded */
+        OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
-	}
+        }
+
+        free(buf1);
+
+
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() end\n");
 
