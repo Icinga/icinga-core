@@ -377,7 +377,6 @@ int main(void){
 					printf("<DIV CLASS='data'>Parents:</DIV>\n");
 					for(temp_parenthost=temp_host->parent_hosts;temp_parenthost!=NULL;temp_parenthost=temp_parenthost->next)
 						printf("<DIV CLASS='dataTitle'><A HREF='%s?host=%s'>%s</A></DIV>\n",STATUS_CGI, url_encode(temp_parenthost->host_name),temp_parenthost->host_name);
-					printf("<BR>");
 				}
 
 				/* Hostgroups */
@@ -396,7 +395,7 @@ int main(void){
 				if(found==FALSE)
 					printf("No hostgroups");
 
-				printf("</DIV><BR>\n");
+				printf("</DIV>\n");
 
 				/* Host Dependencies */
 				found=FALSE;
@@ -407,7 +406,7 @@ int main(void){
 
 					if(!strcmp(temp_hd->dependent_host_name,temp_host->name)){
 						if(found==TRUE)
-							printf("<br>");
+							printf(", ");
 
 						printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(temp_hd->host_name),html_encode(temp_hd->host_name,FALSE));
 						found=TRUE;
@@ -417,7 +416,7 @@ int main(void){
 				if(found==FALSE)
 					printf("None");
 
-				printf("</DIV><BR>\n");
+				printf("</DIV>\n");
 
 				/* Host address(6) */
 				if(!strcmp(temp_host->address6,temp_host->name)){
@@ -448,7 +447,7 @@ int main(void){
                                 if(found==FALSE)
 					printf("No servicegroups.");
 
-                                printf("</DIV><BR>\n");
+                                printf("</DIV>\n");
 
                                 /* Service Dependencies */
                                 found=FALSE;
@@ -459,7 +458,7 @@ int main(void){
 
                                         if(!strcmp(temp_sd->dependent_service_description,temp_service->description)&&!strcmp(temp_sd->dependent_host_name,temp_host->name)){
                                                 if(found==TRUE)
-                                                        printf("<br>");
+                                                        printf(", ");
 
                                                 printf("<A HREF='%s?type=%d&host=%s",EXTINFO_CGI,DISPLAY_SERVICE_INFO,url_encode(temp_sd->host_name));
                                                 printf("&service=%s'>%s on %s</A>\n",url_encode(temp_sd->service_description),html_encode(temp_sd->service_description,FALSE),html_encode(temp_sd->host_name,FALSE));
@@ -470,7 +469,7 @@ int main(void){
                                 if(found==FALSE)
                                         printf("None");
 
-                                printf("</DIV><BR>\n");
+                                printf("</DIV>\n");
 
 
 				if(!strcmp(temp_host->address6,temp_host->name)){

@@ -16,6 +16,9 @@ ENHANCEMENTS
 * classic ui: Add log entries to json output of avail.cgi #1659
 * classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
 * classic ui: add author to comment tooltips in status.cgi #1691
+* classic ui: reduce the header part of status.cgi #1507
+	** &nostatusheader used in frameset menu, info table is smaller
+	** edit menu.html and remove &nostatusheader if old behavior wanted
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
@@ -45,6 +48,7 @@ FIXES
 * classic ui: fixed: plugin_output_short didn't get checked properly and caused segfault in status.cgi #1673
 * classic ui: fixed: submitting non existent host/service on avail.cgi causes segfault. (M. Luebben) #1700
 * classic ui: fixed: Alert History State filter for HARD/SOFT state not working (Lennart Betz) #1722
+* classic ui: fixed: jquery 1.5.2 triggers memory leak in IE #1740
 
 * install: fix event handlers cmd file location in contrib #1501
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625

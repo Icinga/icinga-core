@@ -213,6 +213,7 @@ int problem_services_unknown=0;
 extern int refresh;
 extern int embedded;
 extern int display_header;
+extern int display_status_header;
 extern int daemon_check;
 extern int content_type;
 extern int escape_html_tags;
@@ -384,54 +385,70 @@ int main(void){
 		/* begin top table */
 		/* network status, hosts/service status totals */
 
-		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
-		printf("<tr>\n");
+		if(display_status_header==TRUE){
+			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+			printf("<tr>\n");
 
-		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
-		/* info table */
-		display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
-		printf("</td>\n");
+			/* left column of the first row */
+			printf("<td align=left valign=top width=33%%>\n");
+			/* info table */
+			display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
+			printf("</td>\n");
 
-		/* middle column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
-		show_host_status_totals();
-		printf("</td>\n");
+			/* middle column of top row */
+			printf("<td align=center valign=top width=33%%>\n");
+			show_host_status_totals();
+			printf("</td>\n");
 
-		/* right hand column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
-		show_service_status_totals();
-		printf("</td>\n");
+			/* right hand column of top row */
+			printf("<td align=center valign=top width=33%%>\n");
+			show_service_status_totals();
+			printf("</td>\n");
 
-		/* display context-sensitive help */
-		printf("<td align=right valign=bottom>\n");
-		if(display_type==DISPLAY_HOSTS)
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-		else if(display_type==DISPLAY_SERVICEGROUPS){
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-			else if(group_style_type==STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
-			else if(group_style_type==STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
-			else if(group_style_type==STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_SGGRID);
-		}else{
-			if(group_style_type==STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else if(group_style_type==STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
-			else if(group_style_type==STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
-			else if(group_style_type==STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_HGGRID);
+			/* display context-sensitive help */
+			printf("<td align=right valign=bottom>\n");
+			if(display_type==DISPLAY_HOSTS)
+				if(group_style_type==STYLE_HOST_DETAIL)
+					display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+				else
+					display_context_help(CONTEXTHELP_STATUS_DETAIL);
+			else if(display_type==DISPLAY_SERVICEGROUPS){
+				if(group_style_type==STYLE_HOST_DETAIL)
+					display_context_help(CONTEXTHELP_STATUS_DETAIL);
+				else if(group_style_type==STYLE_OVERVIEW)
+					display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
+				else if(group_style_type==STYLE_SUMMARY)
+					display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
+				else if(group_style_type==STYLE_GRID)
+					display_context_help(CONTEXTHELP_STATUS_SGGRID);
+			}else{
+				if(group_style_type==STYLE_HOST_DETAIL)
+					display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+				else if(group_style_type==STYLE_OVERVIEW)
+					display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
+				else if(group_style_type==STYLE_SUMMARY)
+					display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
+				else if(group_style_type==STYLE_GRID)
+					display_context_help(CONTEXTHELP_STATUS_HGGRID);
+			}
+			printf("</td>\n");
+			printf("</tr>\n");
+			printf("</table>\n");
 		}
-		printf("</td>\n");
-		printf("</tr>\n");
-		printf("</table>\n");
+		else {
+			/* only display basic information */
+			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+			printf("<tr>\n");
+
+                        printf("<td align=left valign=top>\n");
+                        /* info table */
+                        display_info_table("Current Network Status",refresh,&current_authdata, daemon_check);
+                        printf("</td>\n");
+
+			printf("</tr>\n");
+			printf("</table>\n");
+
+		}
 
 		/* second table below */
 		printf("<br>\n");
@@ -825,6 +842,10 @@ int process_cgivars(void){
 		/* we found the noheader option */
 		else if(!strcmp(variables[x],"noheader"))
 			display_header=FALSE;
+
+		/* we found the nostatusheader option */
+		else if(!strcmp(variables[x],"nostatusheader"))
+			display_status_header=FALSE;
 
 		/* we found the CSV output option */
 		else if(!strcmp(variables[x],"csvoutput")){
@@ -3667,9 +3688,46 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 	hoststatus *temp_hoststatus=NULL;
 	int odd=0;
 	int json_start=TRUE;
+	int partial_hosts=FALSE;
 
 	/* make sure the user is authorized to view this hostgroup */
 	if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(hstgrp,&current_authdata)==FALSE)
+		return;
+
+	/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
+	/* sadly, this means we are iterating over the host members twice when show_partial_hostgroups==TRUE,
+	 * so this should only be considered a temporary workaround */
+	if(show_partial_hostgroups==TRUE) {
+		for(temp_member=hstgrp->members;temp_member!=NULL;temp_member=temp_member->next){
+
+			/* find the host... */
+			temp_host=find_host(temp_member->host_name);
+			if(temp_host==NULL)
+				continue;
+
+			/* only shown in partial hostgroups if user is authorized to view this host */
+			if (is_authorized_for_host(temp_host,&current_authdata)==FALSE)
+				continue;
+
+			/* find the host status */
+			temp_hoststatus=find_hoststatus(temp_host->name);
+			if(temp_hoststatus==NULL)
+				continue;
+
+			/* make sure we will only be displaying hosts of the specified status levels */
+			if(!(host_status_types & temp_hoststatus->status))
+				continue;
+
+			/* make sure we will only be displaying hosts that have the desired properties */
+			if(passes_host_properties_filter(temp_hoststatus)==FALSE)
+				continue;
+
+			partial_hosts=TRUE;
+		}
+	}
+
+	/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
+	if(show_partial_hostgroups==TRUE && partial_hosts==FALSE)
 		return;
 
 	/* print json format */
@@ -5840,8 +5898,7 @@ void show_servicecommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-//		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-		printf("<select name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5866,14 +5923,14 @@ void show_servicecommand_table(void){
 		printf("</select>");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-/*		printf("<script language='javascript'>\n");
+		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
 		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
 		printf("});\n");
 		printf("</script>\n");
-*/
+
 		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='serviceTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
@@ -5884,8 +5941,7 @@ void show_hostcommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-//		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
-		printf("<select name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
@@ -5916,14 +5972,14 @@ void show_hostcommand_table(void){
 		printf("</select>");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-/*		printf("<script language='javascript'>\n");
+		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
 		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
 		printf("});\n");
 		printf("</script>\n");
-*/
+
 		printf("<br><br><b><input type='submit' name='CommandButton' value='Submit' class='hostsTotalsCommands' disabled='disabled'></b>\n");
 	}
 }
