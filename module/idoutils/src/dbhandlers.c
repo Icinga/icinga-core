@@ -6258,6 +6258,30 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	}
 
 	/* save contact groups to db */
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() parent_hosts start\n");
+
+#ifdef USE_LIBDBI
+
+        /* build a multiple insert value array */
+        if(asprintf(&buf1, "INSERT INTO %s (instance_id, service_id, contactgroup_object_id) VALUES ",
+                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS]
+                        )==-1)
+                buf1=NULL;
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+        /* build a multiple insert value array */
+        if(asprintf(&buf1, "INSERT INTO %s (id, instance_id, service_id, contactgroup_object_id) SELECT seq_%s.nextval, x1, x2, x3 from (",
+                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS],
+                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS]
+                        )==-1)
+                buf1=NULL;
+
+#endif /* Oracle ocilib specific */
+
+        first=1;
+
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACTGROUP];
 	for (x = 0; x < mbuf.used_lines; x++) {
 
@@ -6269,15 +6293,56 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 				IDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 				&member_id);
 
-                /* save entry to db */
-                data[0] = (void *) &idi->dbinfo.instance_id;
-                data[1] = (void *) &service_id;
-                data[2] = (void *) &member_id;
+                buf=buf1; /* save this pointer for later free'ing */
 
-                result = ido2db_query_insert_or_update_servicedefinition_contactgroups_add(idi, data);
+#ifdef USE_LIBDBI
+                if(asprintf(&buf1, "%s%s(%lu,%lu,%lu)",
+                                buf1,
+                                (first==1?"":","),
+                                idi->dbinfo.instance_id,
+                                service_id,
+                                member_id
+                                )==-1)
+                        buf1=NULL;
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+                if(first==1) {
+                        if(asprintf(&buf1, "%s SELECT %lu as x1, %lu as x2, %lu as x3 FROM DUAL ",
+                                        buf1,
+                                        idi->dbinfo.instance_id,
+                                        service_id,
+                                        member_id
+                                        )==-1)
+                                buf1=NULL;
+
+                } else {
+                        if(asprintf(&buf1, "%s UNION ALL SELECT %lu, %lu, %lu FROM DUAL ",
+                                        buf1,
+                                        idi->dbinfo.instance_id,
+                                        service_id,
+                                        member_id
+                                        )==-1)
+                                buf1=NULL;
+                }
+#endif /* Oracle ocilib specific */
+
+                free(buf);
+                first=0;
+        }
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+        if(asprintf(&buf1, "%s)", buf1)==-1)
+                buf1=NULL;
+
+#endif /* Oracle ocilib specific */
+
+        if(first==0){
+                result=ido2db_db_query(idi, buf1);
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
+                dbi_result_free(idi->dbinfo.dbi_result);
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -6286,17 +6351,22 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
+        /* statement handle not re-binded */
+        OCI_StatementFree(idi->dbinfo.oci_statement);
 
 #endif /* Oracle ocilib specific */
 
-	}
+        }
+
+        free(buf1);
+
 
 	/* save contacts to db */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() service_contacts start\n");
 
 #ifdef USE_LIBDBI
 	/* build a multiple insert value array */
-	if(asprintf(&buf1, "INSERT INTO %s (instance_id,service_id,contact_object_id) VALUES ",
+	if(asprintf(&buf1, "INSERT INTO %s (instance_id, service_id, contactgroup_object_id) VALUES ",
 			ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTS]
 			)==-1)
 		buf1=NULL;
