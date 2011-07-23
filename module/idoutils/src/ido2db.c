@@ -39,7 +39,7 @@ extern int ido2db_check_dbd_driver(void);
 
 /* use global dynamic buffer for mutex locks */
 ido_dbuf dbuf;
-static pthread_mutex_t ido2db_dbuf_lock;
+//static pthread_mutex_t ido2db_dbuf_lock;
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 static void *ido2db_thread_worker_exit_handler(void *);
