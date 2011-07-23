@@ -88,6 +88,10 @@ killproc_icinga ()
 	fi
 }
 
+kill9proc_icinga()
+{
+	kill -9 $IcingaPID
+}
 
 pid_icinga ()
 {
@@ -167,7 +171,7 @@ case "$1" in
  		# new IcingaRunFile, allowing multiple icinga daemons
  		# to (sooner or later) run - John Sellens
 		#printf 'Waiting for icinga to exit .'
- 		for i in 1 2 3 4 5 6 7 8 9 10 ; do
+ 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
  		    if status_icinga > /dev/null; then
  			printf '.'
  			sleep 1
@@ -177,7 +181,8 @@ case "$1" in
  		done
  		if status_icinga > /dev/null; then
  		    echo ''
- 		    echo 'Warning - icinga did not exit in a timely manner. Please try again.'
+ 		    echo 'Warning - icinga did not exit in a timely manner. Sending kill -9'
+		    kill9proc_icinga
  		else
  		    echo 'Stopping icinga done.'
                     rm -f $IcingaRunFile $IcingaLockDir/$IcingaLockFile

@@ -28,6 +28,7 @@ ENHANCEMENTS
 * install: add configure option to set log dir and cgi log dir and phpapi log dir #1715
 	** e.g. --with-phpapi-log-dir=/var/log/icinga/api --with-log-dir=/var/log/icinga --with-cgi-log-dir=/var/log/icinga/gui
 	** apache user permissions
+* install: after daemon stop in init script, retry and then issue a kill -9 on the daemon #1747
 
 * config: add easy-to-use config examples and scripts for notifications #1697
 	** advanced notify-by-email
