@@ -62,6 +62,7 @@ FIXES
 
 * idoutils: do not update start_time of already started downtimes #1658
 * idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
+* idoutils: remove leftover socket file in init-script startup, e.g. from a system crash #1745
 
 CHANGES
 https://wiki.icinga.org/display/Dev/Changes
