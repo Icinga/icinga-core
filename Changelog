@@ -7,7 +7,7 @@ Icinga 1.5.x Change Log
 ENHANCEMENTS
 * idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
 * idoutils: dump multiline mbufs as bluk inserts, part 1 #1110
-	** configfilevariables, host contacts/parents, service contacts, timeranges, host/servicegroup memebers
+	** configfilevariables, host contacts/parents, service contacts, timeranges, host/service/contactgroup memebers
 
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
