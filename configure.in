@@ -1256,7 +1256,7 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
 			CFLAGS="-Wall $CFLAGS"
 		;;
                 freebsd*)
-			CFLAGS=?"-Wall $CFLAGS"
+			CFLAGS="-Wall $CFLAGS"
                 ;;
                 *)
                 ;;
