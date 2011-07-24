@@ -2393,11 +2393,11 @@ int ido2db_convert_string_to_int(char *buf, int *i){
 	if(buf==NULL)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int(%s) start\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int(%s) start\n", buf);
 
 	*i=atoi(buf);
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int(%d) end\n", *i);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_int(%d) end\n", *i);
 	return IDO_OK;
         }
 
@@ -2408,7 +2408,7 @@ int ido2db_convert_string_to_float(char *buf, float *f){
 	if(buf==NULL)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float(%s) start\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float(%s) start\n", buf);
 
 #ifdef HAVE_STRTOF
 	*f=strtof(buf,&endptr);
@@ -2422,7 +2422,7 @@ int ido2db_convert_string_to_float(char *buf, float *f){
 	if(errno==ERANGE)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float(%f) end\n", *f);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_float(%f) end\n", *f);
 	return IDO_OK;
         }
 
@@ -2433,7 +2433,7 @@ int ido2db_convert_string_to_double(char *buf, double *d){
 	if(buf==NULL)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double(%s) start\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double(%s) start\n", buf);
 
 	*d=strtod(buf,&endptr);
 
@@ -2442,7 +2442,7 @@ int ido2db_convert_string_to_double(char *buf, double *d){
 	if(errno==ERANGE)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double(%lf) end\n", *d);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_double(%lf) end\n", *d);
 	return IDO_OK;
         }
 
@@ -2453,7 +2453,7 @@ int ido2db_convert_string_to_long(char *buf, long *l){
 	if(buf==NULL)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long(%s) start\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long(%s) start\n", buf);
 
 	*l=strtol(buf,&endptr,0);
 
@@ -2462,7 +2462,7 @@ int ido2db_convert_string_to_long(char *buf, long *l){
 	if(*l==0L && endptr==buf)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long(%l) end\n", *l);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_long(%l) end\n", *l);
 	return IDO_OK;
         }
 
@@ -2473,7 +2473,7 @@ int ido2db_convert_string_to_unsignedlong(char *buf, unsigned long *ul){
 	if(buf==NULL)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong(%s) start\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong(%s) start\n", buf);
 
 	*ul=strtoul(buf,&endptr,0);
 	if(*ul==ULONG_MAX && errno==ERANGE)
@@ -2481,7 +2481,7 @@ int ido2db_convert_string_to_unsignedlong(char *buf, unsigned long *ul){
 	if(*ul==0L && endptr==buf)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong(%lu) end\n", *ul);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_unsignedlong(%lu) end\n", *ul);
 	return IDO_OK;
 }
 
@@ -2494,7 +2494,7 @@ int ido2db_convert_string_to_timeval(char *buf, struct timeval *tv){
 	if(buf==NULL)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_timeval(%s) start\n", buf);
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_timeval(%s) start\n", buf);
 
 	tv->tv_sec=(time_t)0L;
 	tv->tv_usec=(suseconds_t)0L;
@@ -2513,7 +2513,7 @@ int ido2db_convert_string_to_timeval(char *buf, struct timeval *tv){
 	if(result==IDO_ERROR)
 		return IDO_ERROR;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_timeval() end\n");
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_convert_string_to_timeval() end\n");
 	return IDO_OK;
         }
 

@@ -31,6 +31,52 @@ whenever sqlerror exit failure
 spool oracle-upgrade-&&ICINGA_VERSION..log
 
 -- --------------------------------------------------------
+-- alter performance data column
+-- --------------------------------------------------------
+/* change perfdata column on servicechecks to clob to allow unlimited performance data storage */
+alter table servicechecks rename column perfdata to p_old;
+alter table servicechecks add(perfdata clob) lob (perfdata) store as servicechecks_perf_lob(tablespace &LOBTBS);
+update servicechecks set perfdata=p_old;
+commit;
+alter table servicechecks drop column p_old;
+
+/* change perfdata column on hoststatus to clob to allow unlimited performance data storage */
+alter table servicestatus rename column perfdata to p_old;
+alter table servicestatus add(perfdata clob) lob (perfdata) store as servicestatus_perf_lob(tablespace &LOBTBS); 
+update servicestatus set perfdata=p_old;
+commit;
+alter table servicestatus drop column p_old;
+
+/* change perfdata column on hostchecks to clob to allow unlimited performance data storage */
+alter table hostchecks rename column perfdata to p_old;
+alter table hostchecks add(perfdata clob) lob (perfdata) store as hostchecks_perf_lob(tablespace &LOBTBS); 
+update hostchecks set perfdata=p_old;
+commit;
+alter table hostchecks drop column p_old;
+
+/* change perfdata column on hoststatus to clob to allow unlimited performance data storage */
+alter table hoststatus rename column perfdata to p_old;
+alter table hoststatus add(perfdata clob) lob (perfdata) store as hoststatus_perf_lob(tablespace &LOBTBS); 
+update hoststatus set perfdata=p_old;
+commit;
+alter table hoststatus drop column p_old;
+
+-- --------------------------------------------------------
+-- change logentry_data column on logentries to clob 
+-- --------------------------------------------------------
+alter table logentries rename column logentry_data to d_old;
+alter table logentries add(logentry_data clob) lob (logentry_data) store as logentries_data_lob(tablespace &LOBTBS); 
+update logentries set logentry_data=d_old;
+commit;
+alter table logentries drop column d_old;
+
+-- --------------------------------------------------------
+-- add missed long_output column for eventhandler 
+-- --------------------------------------------------------
+alter table eventhandlers add (long_output clob) lob (long_output) store as eventhandlers_out_lob(tablespace &&LOBTBS);
+
+
+-- --------------------------------------------------------
 -- set trace event procedure
 -- --------------------------------------------------------
 CREATE or replace procedure set_trace_event(trace_level integer) 
