@@ -61,17 +61,25 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 /* CONFIGFILEVARIABLES */
 int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data);
 
+/* RUNTIMEVARIABLES */
+int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **data);
+
 /* HOSTDEFINITION */
 int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *idi, void **data);
 
 /* HOSTGROUPDEFINITION */
 int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2db_idi *idi, void **data);
 
 /* SERVICEDEFINITION */
 int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi *idi, void **data);
 
 /* SERVICEGROUPDEFINITION */
 int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi *idi, void **data);
 
 /* HOSTDEPENDENCYDEFINITION */
 int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db_idi *idi, void **data);
@@ -94,6 +102,7 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 
 /*  TIMEPERIODDEFINITION */
 int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi *idi, void **data);
 
 /* CONTACTDEFINITION */
 int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *idi, void **data);
@@ -106,5 +115,6 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 
 /* CONTACTGROUPDEFINITION */
 int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add(ido2db_idi *idi, void **data);
 
 #endif

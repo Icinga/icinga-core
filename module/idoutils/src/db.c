@@ -46,12 +46,18 @@ int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ido2db_idi *id
 int ido2db_oci_prepared_statement_downtimedata_downtime_history(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_contactstatusdata(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_configfilevariables(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_runtimevariables(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hostdefinition_definition(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hostdefinition_contacts(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hostgroupdefinition_definition(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_servicedefinition_definition(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_servicedefinition_contacts(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_servicegroupdefinition_definition(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_servicegroupdefinition_members(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hostdependencydefinition_definition(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_servicedependencydefinition_definition(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_hostescalationdefinition_definition(ido2db_idi *idi);
@@ -61,14 +67,17 @@ int ido2db_oci_prepared_statement_serviceescalationdefinition_definition(ido2db_
 int ido2db_oci_prepared_statement_serviceescalationdefinition_contactgroups(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_serviceescalationdefinition_contacts(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_timeperiodefinition_definition(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_contactdefinition_definition(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_contactdefinition_addresses(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_contactdefinition_servicenotificationcommands(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_save_custom_variables_customvariables(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_contactgroupdefinition_definition(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_commanddefinition_definition(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_process_events(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_configfilevariables_insert(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_flappinghistory(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_external_commands(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_acknowledgements(ido2db_idi *idi);
@@ -716,9 +725,32 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
+        if(ido2db_oci_prepared_statement_configfilevariables_insert(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configfilevariables_insert() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* runtimevariables */
+        if(ido2db_oci_prepared_statement_runtimevariables(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_runtimevariables() failed\n");
+                return IDO_ERROR;
+        }
+
         /* hostdefinition_definition */
         if(ido2db_oci_prepared_statement_hostdefinition_definition(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_definition() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* hostdefinition_parenthosts */
+        if(ido2db_oci_prepared_statement_hostdefinition_parenthosts(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_parenthosts() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* hostdefinition_contactgroups */
+        if(ido2db_oci_prepared_statement_hostdefinition_contactgroups(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostdefinition_contactgroups() failed\n");
                 return IDO_ERROR;
         }
 
@@ -734,9 +766,21 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
+        /* hostgroupdefinition_hostgroupmembers */
+        if(ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers() failed\n");
+                return IDO_ERROR;
+        }
+
         /* servicedefinition_definition */
         if(ido2db_oci_prepared_statement_servicedefinition_definition(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicedefinition_definition() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* servicedefinition_contactgroups */
+        if(ido2db_oci_prepared_statement_servicedefinition_contactgroups(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicedefinition_contactgroups() failed\n");
                 return IDO_ERROR;
         }
 
@@ -749,6 +793,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
         /* servicegroupdefinition_definition */
         if(ido2db_oci_prepared_statement_servicegroupdefinition_definition(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicegroupdefinition_definition() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* servicegroupdefinition_members */
+        if(ido2db_oci_prepared_statement_servicegroupdefinition_members(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_servicegroupdefinition_members() failed\n");
                 return IDO_ERROR;
         }
 
@@ -806,6 +856,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
                 return IDO_ERROR;
         }
 
+        /* timeperiodefinition_timeranges */
+        if(ido2db_oci_prepared_statement_timeperiodefinition_timeranges(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_timeperiodefinition_timeranges() failed\n");
+                return IDO_ERROR;
+        }
+
         /* contactdefinition_definition */
         if(ido2db_oci_prepared_statement_contactdefinition_definition(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactdefinition_definition() failed\n");
@@ -839,6 +895,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
         /* contactgroupdefinition_definition */
         if(ido2db_oci_prepared_statement_contactgroupdefinition_definition(idi) == IDO_ERROR) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactgroupdefinition_definition() failed\n");
+                return IDO_ERROR;
+        }
+
+        /* contactgroupdefinition_contactgroupmembers */
+        if(ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers() failed\n");
                 return IDO_ERROR;
         }
 
@@ -1102,16 +1164,24 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactstatusdata,"oci_statement_contactstatusdata");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_configfilevariables,"oci_statement_configfilevariables");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_configfilevariables_insert,"oci_statement_configfilevariables_insert");
+
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_runtimevariables,"oci_statement_runtimevariables");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_definition,"oci_statement_hostdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_parenthosts,"oci_statement_hostdefinition_parenthosts");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_contactgroups,"oci_statement_hostdefinition_contactgroups");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdefinition_contacts,"oci_statement_hostdefinition_contacts");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostgroupdefinition_definition,"oci_statement_hostgroupdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,"oci_statement_hostgroupdefinition_hostgroupmembers");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedefinition_definition,"oci_statement_servicedefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedefinition_contactgroups,"oci_statement_servicedefinition_contactgroups");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedefinition_contacts,"oci_statement_servicedefinition_contacts");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicegroupdefinition_definition,"oci_statement_servicegroupdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicegroupdefinition_members,"oci_statement_servicegroupdefinition_members");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_hostdependencydefinition_definition,"oci_statement_hostdependencydefinition_definition");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_servicedependencydefinition_definition,"oci_statement_servicedependencydefinition_definition");
@@ -1127,6 +1197,8 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_commanddefinition_definition,"oci_statement_commanddefinition_definition");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timeperiodefinition_definition,"oci_statement_timeperiodefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,"oci_statement_timeperiodefinition_timeranges");
+
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactdefinition_definition,"oci_statement_contactdefinition_definition");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactdefinition_addresses,"oci_statement_contactdefinition_addresses");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactdefinition_servicenotificationcommands,"oci_statement_contactdefinition_servicenotificationcommands");
@@ -1135,6 +1207,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_save_custom_variables_customvariablestatus,"oci_statement_save_custom_variables_customvariablestatus");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactgroupdefinition_definition,"oci_statement_contactgroupdefinition_definition");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,"oci_statement_contactgroupdefinition_contactgroupmembers");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_process_events,"oci_statement_process_events");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_flappinghistory,"oci_statement_flappinghistory");
@@ -4685,7 +4758,75 @@ int ido2db_oci_prepared_statement_configfilevariables(ido2db_idi *idi) {
         return IDO_OK;
 }
 
+int ido2db_oci_prepared_statement_configfilevariables_insert(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND configfile_id=:X2 AND varname=:X3) WHEN MATCHED THEN UPDATE SET varvalue=:X4 WHEN NOT MATCHED THEN INSERT (id, instance_id, configfile_id, varname, varvalue) VALUES (seq_configfilevariables.nextval, :X1, :X2, :X3, :X4)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1) {
+                        buf = NULL;
+        }
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_configfilevariables_insert = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_configfilevariables_insert, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_configfilevariables_insert, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return IDO_OK;
+}
+
+
+
+int ido2db_oci_prepared_statement_runtimevariables(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (instance_id=:X1 AND varname=:X2) WHEN MATCHED THEN UPDATE SET varvalue=:X3 WHEN NOT MATCHED THEN INSERT (id, instance_id, varname, varvalue) VALUES (seq_runtimevariables.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_runtimevariables = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_runtimevariables, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_runtimevariables, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return IDO_OK;
+}
 
 
 /************************************/
@@ -4727,6 +4868,73 @@ int ido2db_oci_prepared_statement_hostdefinition_definition(ido2db_idi *idi) {
         return IDO_OK;
 }
 
+int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (host_id=:X2 AND parent_host_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, host_id, parent_host_object_id) VALUES (seq_host_parenthosts.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdefinition_parenthosts = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdefinition_parenthosts, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }   
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (host_id=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, host_id, contactgroup_object_id) VALUES (seq_host_contactgroups.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostdefinition_contactgroups = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostdefinition_contactgroups, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }   
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return IDO_OK;
+}
 
 int ido2db_oci_prepared_statement_hostdefinition_contacts(ido2db_idi *idi) {
  
@@ -4802,6 +5010,40 @@ int ido2db_oci_prepared_statement_hostgroupdefinition_definition(ido2db_idi *idi
         return IDO_OK;
 }
 
+int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (hostgroup_id=:X2 AND host_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, hostgroup_id, host_object_id) VALUES (seq_hostgroup_members.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return IDO_OK;
+}
+
 
 /************************************/
 /* SERVICEDEFINITION                */
@@ -4842,6 +5084,39 @@ int ido2db_oci_prepared_statement_servicedefinition_definition(ido2db_idi *idi) 
         return IDO_OK;
 }
 
+int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ido2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (service_id=:X2 AND contactgroup_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, service_id, contactgroup_object_id) VALUES (seq_service_contactgroups.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS]) == -1) {
+                        buf = NULL;
+        }
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if(idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_servicedefinition_contactgroups = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicedefinition_contactgroups, 1);
+
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return IDO_OK;
+}
 
 int ido2db_oci_prepared_statement_servicedefinition_contacts(ido2db_idi *idi) {
 
@@ -4914,6 +5189,40 @@ int ido2db_oci_prepared_statement_servicegroupdefinition_definition(ido2db_idi *
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
 
+        return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_servicegroupdefinition_members(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (servicegroup_id=:X2 AND service_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, servicegroup_id, service_object_id) VALUES (seq_servicegroup_members.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_servicegroupdefinition_members = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_servicegroupdefinition_members, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
         return IDO_OK;
 }
 
@@ -5289,6 +5598,40 @@ int ido2db_oci_prepared_statement_timeperiodefinition_definition(ido2db_idi *idi
         return IDO_OK;
 }
 
+int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (timeperiod_id=:X2 AND day=:X3 AND start_sec=:X4 AND end_sec=:X5) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, timeperiod_id, day, start_sec, end_sec) VALUES (seq_timep_timer.nextval, :X1, :X2, :X3, :X4, :X5)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_timeperiodefinition_timeranges = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return IDO_OK;
+}
+
 
 /************************************/
 /* CONTACTDEFINTION                 */
@@ -5511,6 +5854,39 @@ int ido2db_oci_prepared_statement_contactgroupdefinition_definition(ido2db_idi *
         return IDO_OK;
 }
 
+int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido2db_idi *idi) {
+ 
+        char *buf = NULL;
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+ 
+        if(asprintf(&buf, "MERGE INTO %s USING DUAL ON (contactgroup_id=:X2 AND contact_object_id=:X3) WHEN MATCHED THEN UPDATE SET instance_id=:X1 WHEN NOT MATCHED THEN INSERT (id, instance_id, contactgroup_id, contact_object_id) VALUES (seq_contactgroup_members.nextval, :X1, :X2, :X3)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS]) == -1) {
+                        buf = NULL;
+        }
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+ 
+        if(idi->dbinfo.oci_connection) {
+ 
+                idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers = OCI_StatementCreate(idi->dbinfo.oci_connection);
+ 
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, 1);
+ 
+                if(!OCI_Prepare(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+ 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+ 
+        return IDO_OK;
+}
 
 
 /************************************/

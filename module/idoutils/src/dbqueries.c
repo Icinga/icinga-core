@@ -4026,6 +4026,134 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 
 /************************************/
+/* RUNTIMEVARIABLES                 */
+/************************************/
+
+int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_runtimevariables_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, varname, varvalue) VALUES (%lu, '%s', '%s') ON DUPLICATE KEY UPDATE varvalue='%s'",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(char **) data[1],
+                                        *(char **) data[2],		/* insert end */
+                                        *(char **) data[2]             /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET varvalue='%s' WHERE instance_id=%lu AND varname='%s'",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES],
+                                        *(char **) data[2],             /* update start/end */
+                                        *(unsigned long *) data[0],     /* unique constraint start */
+                                        *(char **) data[1]		/* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, varname, varvalue) VALUES (%lu, '%s', '%s')",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(char **) data[1],
+                                        *(char **) data[2]             /* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_runtimevariables, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+        if(*(char **) data[1]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_runtimevariables, ":X2")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_runtimevariables, MT(":X2"), *(char **) data[1], 0)) {
+                                return IDO_ERROR;
+                        }
+	}
+        if(*(char **) data[2]==NULL) {
+                if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_runtimevariables, ":X3")==IDO_ERROR) {
+                        return IDO_ERROR;
+                }
+        } else {
+                        if(!OCI_BindString(idi->dbinfo.oci_statement_runtimevariables, MT(":X3"), *(char **) data[2], 0)) {
+                                return IDO_ERROR;
+                        }
+	}
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_runtimevariables)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_runtimevariables() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_runtimevariables_add() end\n");
+
+        return result;
+}
+
+
+/************************************/
 /* HOSTDEFINITION                   */
 /************************************/
 
@@ -4609,6 +4737,230 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 }
 
 
+int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_parenthosts_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, host_id, parent_host_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2],     /* insert end */
+                                        *(unsigned long *) data[0]      /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE host_id=%lu AND parent_host_object_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],    	/* unique constraint start */
+                                        *(unsigned long *) data[2]	/* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, host_id, parent_host_object_id) VALUES (%lu, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2]     /* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X3"), (big_uint *) data[2])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_parenthosts)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_hostdefinition_parenthosts() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_parenthosts_add() end\n");
+
+        return result;
+}
+
+
+int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contactgroups_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, host_id, contactgroup_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2],     /* insert end */
+                                        *(unsigned long *) data[0]     	/* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE host_id=%lu AND contactgroup_object_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],     /* unique constraint start */
+                                        *(unsigned long *) data[2]     /* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, host_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2]     /* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X3"), (big_uint *) data[2])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_contactgroups)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_hostdefinition_contactgroups() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_contactgroups_add() end\n");
+
+        return result;
+}
+
+
 /************************************/
 /* HOSTGROUPDEFINITION              */
 /************************************/
@@ -4737,6 +5089,112 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
         return result;
 }
 
+
+int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, hostgroup_id, host_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2],     /* insert end */
+                                        *(unsigned long *) data[0]     /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE hostgroup_id=%lu AND host_object_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],     /* unique constraint start */
+                                        *(unsigned long *) data[2]      /* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, hostgroup_id, host_object_id) VALUES (%lu, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2]     /* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X3"), (big_uint *) data[2])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_hostgroupdefinition_hostgroupmembers() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add() end\n");
+
+        return result;
+}
 
 
 /************************************/
@@ -5251,6 +5709,118 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 }
 
 
+int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contactgroups_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, service_id, contactgroup_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2],     /* insert end */
+                                        *(unsigned long *) data[0]     /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE service_id=%lu AND contactgroup_object_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],     /* unique constraint start */
+                                        *(unsigned long *) data[2]     /* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, service_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2]     /* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X3"), (big_uint *) data[2])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_servicedefinition_contactgroups)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_servicedefinition_contactgroups() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_contactgroups_add() end\n");
+
+        return result;
+}
+
+
 /************************************/
 /* SERVICEGROUPDEFINITION           */
 /************************************/
@@ -5374,6 +5944,119 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
                         /* do not free statement yet! */
 #endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_definition_add() end\n");
+
+        return result;
+}
+
+
+int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_members_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, servicegroup_id, service_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2],     /* insert end */
+                                        *(unsigned long *) data[0]     /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE servicegroup_id=%lu AND service_object_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],     /* unique constraint start */
+                                        *(unsigned long *) data[2]     /* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, servicegroup_id, service_object_id) VALUES (%lu, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2]     /* insert end */
+
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X3"), (big_uint *) data[2])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_servicegroupdefinition_members)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_servicegroupdefinition_members() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_members_add() end\n");
 
         return result;
 }
@@ -6744,6 +7427,128 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 }
 
 
+int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_timeranges_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, timeperiod_id, day, start_sec, end_sec) VALUES (%lu, %lu, %d, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],
+                                        *(int *) data[2],
+                                        *(unsigned long *) data[3],
+                                        *(unsigned long *) data[4],	/* insert end */
+                                        *(unsigned long *) data[0]     /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE timeperiod_id=%lu AND day=%d AND start_sec=%lu AND end_sec=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],	/* unique constraint start */
+                                        *(int *) data[2],
+                                        *(unsigned long *) data[3],
+                                        *(unsigned long *) data[4]	/* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, timeperiod_id, day, start_sec, end_sec) VALUES (%lu, %lu, %d, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],
+                                        *(int *) data[2],
+                                        *(unsigned long *) data[3],
+                                        *(unsigned long *) data[4]	/* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindInt(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X3"), (int *) data[2])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X4"), (big_uint *) data[3])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X5"), (big_uint *) data[4])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_timeperiodefinition_timeranges)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_timeperiodefinition_timeranges() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_timeranges_add() end\n");
+
+        return result;
+}
+
+
 /************************************/
 /* CONTACTDEFINITION                */
 /************************************/
@@ -7821,6 +8626,119 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 
         return result;
 }
+
+
+int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add(ido2db_idi *idi, void **data) {
+        int result = IDO_OK;
+#ifdef USE_LIBDBI
+        char * query1 = NULL;
+        char * query2 = NULL;
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add() start\n");
+
+        if (idi == NULL)
+                return IDO_ERROR;
+
+        if (idi->dbinfo.connected == IDO_FALSE)
+                return IDO_ERROR;
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+        switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_MYSQL:
+                        dummy=asprintf(&query1, "INSERT INTO %s (instance_id, contactgroup_id, contact_object_id) VALUES (%lu, %lu, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2],     /* insert end */
+                                        *(unsigned long *) data[0]     /* update start/end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+                        break;
+                case IDO2DB_DBSERVER_PGSQL:
+                        dummy=asprintf(&query1, "UPDATE %s SET instance_id=%lu WHERE contactgroup_id=%lu AND contact_object_id=%lu",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* update start/end */
+                                        *(unsigned long *) data[1],    	/* unique constraint start */ 
+                                        *(unsigned long *) data[2]     /* unique constraint end */
+                        );
+                        /* send query to db */
+                        result = ido2db_db_query(idi, query1);
+			free(query1);
+
+                        /* check result if update was ok */
+			if(dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                                /* try insert instead */
+                                dummy=asprintf(&query2, "INSERT INTO %s (instance_id, contactgroup_id, contact_object_id) VALUES (%lu, %lu, %lu)",
+                                        ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS],
+                                        *(unsigned long *) data[0],     /* insert start */
+                                        *(unsigned long *) data[1],     
+                                        *(unsigned long *) data[2]     /* insert end */
+                                );
+                                /* send query to db */
+                                result = ido2db_db_query(idi, query2);
+				free(query2);
+                        }
+                        break;
+                case IDO2DB_DBSERVER_DB2:
+                        break;
+                case IDO2DB_DBSERVER_FIREBIRD:
+                        break;
+                case IDO2DB_DBSERVER_FREETDS:
+                        break;
+                case IDO2DB_DBSERVER_INGRES:
+                        break;
+                case IDO2DB_DBSERVER_MSQL:
+                        break;
+                case IDO2DB_DBSERVER_ORACLE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE:
+                        break;
+                case IDO2DB_DBSERVER_SQLITE3:
+                        break;
+                default:
+                        break;
+        }
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+	/* check if we lost connection, and reconnect */
+        if(ido2db_db_reconnect(idi)==IDO_ERROR)
+		return IDO_ERROR;
+
+                        /* use prepared statements and ocilib */
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X1"), (big_uint *) data[0])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X2"), (big_uint *) data[1])) {
+                                return IDO_ERROR;
+                        }
+                        if(!OCI_BindUnsignedBigInt(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X3"), (big_uint *) data[2])) {
+                                return IDO_ERROR;
+                        }
+
+                        /* execute statement */
+                        if(!OCI_Execute(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers)) {
+                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_contactgroupdefinition_contactgroupmembers() execute error\n");
+                                return IDO_ERROR;
+                        }
+
+                        /* commit statement */
+                        OCI_Commit(idi->dbinfo.oci_connection);
+
+                        /* do not free statement yet! */
+#endif
+        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add() end\n");
+
+        return result;
+}
+
 
 
 

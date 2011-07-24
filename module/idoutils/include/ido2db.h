@@ -125,12 +125,19 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_downtimedata_downtime_history;
 	OCI_Statement* oci_statement_contactstatusdata;
 	OCI_Statement* oci_statement_configfilevariables;
+	OCI_Statement* oci_statement_configfilevariables_insert;
+	OCI_Statement* oci_statement_runtimevariables;
 	OCI_Statement* oci_statement_hostdefinition_definition;
+	OCI_Statement* oci_statement_hostdefinition_parenthosts;
+	OCI_Statement* oci_statement_hostdefinition_contactgroups;
 	OCI_Statement* oci_statement_hostdefinition_contacts;
 	OCI_Statement* oci_statement_hostgroupdefinition_definition;
+	OCI_Statement* oci_statement_hostgroupdefinition_hostgroupmembers;
 	OCI_Statement* oci_statement_servicedefinition_definition;
+	OCI_Statement* oci_statement_servicedefinition_contactgroups;
 	OCI_Statement* oci_statement_servicedefinition_contacts;
 	OCI_Statement* oci_statement_servicegroupdefinition_definition;
+	OCI_Statement* oci_statement_servicegroupdefinition_members;
 	OCI_Statement* oci_statement_hostdependencydefinition_definition;
 	OCI_Statement* oci_statement_servicedependencydefinition_definition;
 	OCI_Statement* oci_statement_hostescalationdefinition_definition;
@@ -141,6 +148,7 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_serviceescalationdefinition_contacts;
 	OCI_Statement* oci_statement_commanddefinition_definition;
 	OCI_Statement* oci_statement_timeperiodefinition_definition;
+	OCI_Statement* oci_statement_timeperiodefinition_timeranges;
 	OCI_Statement* oci_statement_contactdefinition_definition;
 	OCI_Statement* oci_statement_contactdefinition_addresses;
 	OCI_Statement* oci_statement_contactdefinition_servicenotificationcommands;
