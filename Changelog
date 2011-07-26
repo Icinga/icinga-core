@@ -8,6 +8,7 @@ ENHANCEMENTS
 * idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
 * idoutils: dump multiline mbufs as bluk inserts, part 1 #1110
 	** configfile/runtime variables, host contacts/parents, service contacts, timeranges, host/service/contactgroup memebers
+* idoutils: remove host and service checks from default data_processing_options as they are not used by icinga-web #1757
 
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
@@ -88,6 +89,8 @@ https://wiki.icinga.org/display/Dev/Changes
 * icinga.cfg config changes
 	** log_archive_path=@LOGDIR@/archives p1_file=@P1FILELOC@/p1.pl debug_file=@LOGDIR@/icinga.debug
 	** enable_embedded_perl=0 enable_environment_macros=0
+* idomod.cfg config changes
+	** data_processing_options=67108669
 	
 
 
