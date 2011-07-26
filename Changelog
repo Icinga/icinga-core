@@ -19,6 +19,10 @@ ENHANCEMENTS
 * classic ui: reduce the header part of status.cgi #1507
 	** &nostatusheader used in frameset menu, info table is smaller
 	** edit menu.html and remove &nostatusheader if old behavior wanted
+* classic ui: authorization for * in cgi.cfg via contactgroups (Stephen Gran) #1752
+	** authorized_contactgroup_for_all_hosts, authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
+	** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
+	** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
