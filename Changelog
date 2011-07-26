@@ -88,11 +88,13 @@ https://wiki.icinga.org/display/Dev/Changes
 	** ownership of cgi and api log dirs is apache user and group
 * cgi.cfg config changes
 	** cgi_log_file=@CGILOGDIR@/icinga-cgi.log cgi_log_archive_path=@CGILOGDIR@
-	** show_partial_hostgroups=0 default_downtime_duration=7200 suppress_maintenance_downtime=0 
+	** show_partial_hostgroups=0 default_downtime_duration=7200 suppress_maintenance_downtime=0
+        ** authorized_contactgroup_for_all_hosts, authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
+        ** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
+        ** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
 * icinga.cfg config changes
 	** log_archive_path=@LOGDIR@/archives p1_file=@P1FILELOC@/p1.pl debug_file=@LOGDIR@/icinga.debug
 	** enable_embedded_perl=0 enable_environment_macros=0
-	
 
 
 1.4.0 - 11/05/2011
