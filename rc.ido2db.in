@@ -45,6 +45,7 @@ Ido2dbBin=@bindir@/@ido2db_name@
 Ido2dbCfgFile=@sysconfdir@/ido2db.cfg
 Ido2dbVarDir=@localstatedir@
 Ido2dbRunFile=$Ido2dbVarDir/ido2db.lock
+Ido2dbSockFile=$Ido2dbVarDir/ido.sock
 Ido2dbLockDir=/var/lock/subsys
 Ido2dbLockFile=@ido2db_name@
 Ido2dbUser=@icinga_user@
@@ -110,11 +111,15 @@ printstatus_ido2db()
 
 killproc_ido2db ()
 {
-
 	kill $2 $Ido2dbPID
 
 }
 
+killproc9_ido2db ()
+{
+        kill -9 $Ido2dbPID
+
+}
 
 pid_ido2db ()
 {
@@ -146,6 +151,8 @@ case "$1" in
 			fi
 		fi
 		printf "Starting $servicename:"
+		# remove leftover sockfile, from a system crash
+		rm -f $Ido2dbSockFile
 		touch $Ido2dbRunFile
 		chown $Ido2dbUser:$Ido2dbGroup $Ido2dbRunFile
 		$Ido2dbBin -c $Ido2dbCfgFile
@@ -165,7 +172,7 @@ case "$1" in
  		# happen, and then the exiting ido2db will remove the
  		# new Ido2dbRunFile, allowing multiple ido2db daemons
  		# to (sooner or later) run - John Sellens
- 		for i in 1 2 3 4 5 6 7 8 9 10 ; do
+ 		for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
  		    if status_ido2db > /dev/null; then
  			printf '.'
  			sleep 1
@@ -175,7 +182,8 @@ case "$1" in
  		done
  		if status_ido2db > /dev/null; then
  		    echo ''
- 		    echo "Warning - $servicename did not exit in a timely manner"
+ 		    echo "Warning - $servicename did not exit in a timely manner. Sending kill -9"
+		    kill9proc_ido2db
  		else
  		    echo "done."
 		    rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile

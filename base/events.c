@@ -403,7 +403,9 @@ void init_timing_loop(void){
 	for(temp_service=service_list;temp_service!=NULL;temp_service=temp_service->next){
 
 		/* update status of all services (scheduled or not) */
-		update_service_status(temp_service,FALSE);
+		/* MF 2011-07-22 this causes a lot of data to be dumped into neb
+		   on startup and may cause IDOUtils to slow down */
+		/* update_service_status(temp_service,FALSE); */
 
 		/* skip most services that shouldn't be scheduled */
 		if(temp_service->should_be_scheduled==FALSE){
@@ -538,7 +540,9 @@ void init_timing_loop(void){
 	for(temp_host=host_list;temp_host!=NULL;temp_host=temp_host->next){
 
 		/* update status of all hosts (scheduled or not) */
-		update_host_status(temp_host,FALSE);
+		/* MF 2011-07-22 this causes a lot of data to be dumped into neb
+		   on startup and may cause IDOUtils to slow down */
+		/* update_host_status(temp_host,FALSE); */
 
 		/* skip most hosts that shouldn't be scheduled */
 		if(temp_host->should_be_scheduled==FALSE){

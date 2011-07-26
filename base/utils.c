@@ -159,6 +159,7 @@ extern int      soft_state_dependencies;
 extern int      retain_state_information;
 extern int      retention_update_interval;
 extern int      use_retained_program_state;
+extern int	dump_retained_host_service_states_to_neb;
 extern int      use_retained_scheduling_info;
 extern int      retention_scheduling_horizon;
 extern unsigned long modified_host_process_attributes;
@@ -4326,6 +4327,7 @@ int reset_variables(void){
 	retain_state_information=FALSE;
 	retention_update_interval=DEFAULT_RETENTION_UPDATE_INTERVAL;
 	use_retained_program_state=TRUE;
+	dump_retained_host_service_states_to_neb=FALSE;
 	use_retained_scheduling_info=FALSE;
 	retention_scheduling_horizon=DEFAULT_RETENTION_SCHEDULING_HORIZON;
 	modified_host_process_attributes=MODATTR_NONE;

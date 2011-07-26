@@ -69,6 +69,7 @@ extern int            test_scheduling;
 extern int            use_large_installation_tweaks;
 
 extern int            use_retained_program_state;
+extern int	      dump_retained_host_service_states_to_neb;
 extern int            use_retained_scheduling_info;
 extern int            retention_scheduling_horizon;
 
@@ -815,8 +816,14 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 						temp_host->last_hard_state_change=temp_host->last_state_change;
 
 					/* update host status */
-					update_host_status(temp_host,FALSE);
-				        }
+					/* MF 2011-07-22: see #1742 - do not dump retained host state into
+					   neb modules, setting aggregated dumps to true. made a config option. */
+					if(dump_retained_host_service_states_to_neb==TRUE){
+						update_host_status(temp_host,FALSE);
+					} else {
+						update_host_status(temp_host,TRUE);
+					}			
+				}
 
 				/* reset vars */
 				was_flapping=FALSE;
@@ -887,8 +894,15 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 						temp_service->last_hard_state_change=temp_service->last_state_change;
 
 					/* update service status */
-					update_service_status(temp_service,FALSE);
-				        }
+                                        /* MF 2011-07-22: see #1742 - do not dump retained service state into
+                                           neb modules, setting aggregated dumps to true. made a config option. */
+                                        if(dump_retained_host_service_states_to_neb==TRUE){
+                                                update_service_status(temp_service,FALSE);
+                                        } else {
+                                                update_service_status(temp_service,TRUE);
+                                        }
+
+				}
 
 				/* reset vars */
 				was_flapping=FALSE;

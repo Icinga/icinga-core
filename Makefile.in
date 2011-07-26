@@ -78,7 +78,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.5.0-dev
+ICINGA_VERSION=1.5.0
 
 CP=@CP@
 
@@ -506,9 +506,11 @@ install-commandmode:
 
 fullinstall:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
-		${MAKE} install install-init install-commandmode install-webconf install-config install-idoutils ;\
+		${MAKE} install install-init install-commandmode install-webconf install-idoutils ;\
+		echo "Run make install-config for installing/overwriting the configs..." ;\
         else \
-		${MAKE} install install-init install-commandmode install-webconf install-config ;\
+		${MAKE} install install-init install-commandmode install-webconf ;\
+		echo "Run make install-config for installing/overwriting the configs..." ;\
         fi
 
 # Uninstall is too destructive if base install directory is /usr, etc.

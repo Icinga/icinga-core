@@ -209,6 +209,13 @@ define command{
 	}
 
 
+# 'check_dummy' command definition
+define command{
+        command_name    check_dummy
+        command_line    $USER1$/check_dummy $ARG1$
+        }
+
+
 
 ################################################################################
 #

@@ -3,7 +3,7 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Program: Icinga
- * Version: 1.5.0-dev
+ * Version: 1.5.0
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
@@ -154,6 +154,7 @@ int             soft_state_dependencies=FALSE;
 int             retain_state_information=FALSE;
 int             retention_update_interval=DEFAULT_RETENTION_UPDATE_INTERVAL;
 int             use_retained_program_state=TRUE;
+int		dump_retained_host_service_states_to_neb=FALSE;
 int             use_retained_scheduling_info=FALSE;
 int             retention_scheduling_horizon=DEFAULT_RETENTION_SCHEDULING_HORIZON;
 unsigned long   modified_host_process_attributes=MODATTR_NONE;

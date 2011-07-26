@@ -140,6 +140,7 @@ extern int      soft_state_dependencies;
 extern int      retain_state_information;
 extern int      retention_update_interval;
 extern int      use_retained_program_state;
+extern int	dump_retained_host_service_states_to_neb;
 extern int      use_retained_scheduling_info;
 extern int      retention_scheduling_horizon;
 extern unsigned long retained_host_attribute_mask;
@@ -712,6 +713,17 @@ int read_main_config_file(char *main_config_file){
 
 			use_retained_program_state=(atoi(value)>0)?TRUE:FALSE;
 		        }
+
+                else if(!strcmp(variable,"dump_retained_host_service_states_to_neb")){
+
+                        if(strlen(value)!=1||value[0]<'0'||value[0]>'1'){
+                                dummy=asprintf(&error_message,"Illegal value for dump_retained_host_service_states_to_neb");
+                                error=TRUE;
+                                break;
+                                }
+
+                        dump_retained_host_service_states_to_neb=(atoi(value)>0)?TRUE:FALSE;
+                        }
 
 		else if(!strcmp(variable,"use_retained_scheduling_info")){
 
