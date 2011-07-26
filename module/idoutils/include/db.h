@@ -162,6 +162,7 @@ int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 void ido2db_ocilib_err_handler(OCI_Error *);
 unsigned long ido2db_oci_sequence_lastid(ido2db_idi *, char *);
 int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *, char *);
+int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text,OCI_Lob **);
 int ido2db_oci_set_trace_event(OCI_Connection *,unsigned int);
 int ido2db_oci_execute_out(OCI_Statement *,char *);
 int ido2db_oci_set_appinfo(OCI_Connection *, char *);

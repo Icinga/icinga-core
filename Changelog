@@ -6,6 +6,8 @@ Icinga 1.5.x Change Log
 
 ENHANCEMENTS
 * idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
+* idoutils: dump multiline mbufs as bluk inserts, part 1 #1110
+	** configfile/runtime variables, host contacts/parents, service contacts, timeranges, host/service/contactgroup memebers
 
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
@@ -26,6 +28,7 @@ ENHANCEMENTS
 * install: add configure option to set log dir and cgi log dir and phpapi log dir #1715
 	** e.g. --with-phpapi-log-dir=/var/log/icinga/api --with-log-dir=/var/log/icinga --with-cgi-log-dir=/var/log/icinga/gui
 	** apache user permissions
+* install: after daemon stop in init script, retry and then issue a kill -9 on the daemon #1747
 
 * config: add easy-to-use config examples and scripts for notifications #1697
 	** advanced notify-by-email
@@ -55,12 +58,14 @@ FIXES
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
 * install: fix icinga.cmd and log dir replacement in icinga-api aubmodule #1573 #1715
 * install: fix DEBUG_LOG_PATH in p1.pl, will now be using configurable log-dir #1715
+* install: do not overwrite config in make fullinstall #1754
 
 * config: deprecate log_external_commands_user #1619
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
 
 * idoutils: do not update start_time of already started downtimes #1658
 * idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
+* idoutils: remove leftover socket file in init-script startup, e.g. from a system crash #1745
 
 CHANGES
 https://wiki.icinga.org/display/Dev/Changes
