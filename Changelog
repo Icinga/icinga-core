@@ -58,6 +58,7 @@ FIXES
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
 * install: fix icinga.cmd and log dir replacement in icinga-api aubmodule #1573 #1715
 * install: fix DEBUG_LOG_PATH in p1.pl, will now be using configurable log-dir #1715
+* install: do not overwrite config in make fullinstall #1754
 
 * config: deprecate log_external_commands_user #1619
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
