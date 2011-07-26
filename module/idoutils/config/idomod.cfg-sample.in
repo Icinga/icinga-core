@@ -179,9 +179,14 @@ reconnect_warning_interval=15
 # http://labs.consol.de/nagios/ndo-data-processing-options/
 # (please note that there is a checkbox for everything!)
 #
-# The default setting will remove the TIMED_EVENT_DATA (67108863 - 2)
+# The default setting will remove everything not used by default.
+#	TIMED_EVENT_DATA 	(-2)
+#	SERVICE_CHECK_DATA 	(-64)
+#	HOST_CHECK_DATA 	(-128)
+#
+# 67108863-(2+64+128) = 67108863-194 = 67108669
 
-data_processing_options=67108861
+data_processing_options=67108669
 
 # If you are planning to use NagVis you may want to use the following setting:
 #
