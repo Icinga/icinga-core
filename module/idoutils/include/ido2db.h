@@ -78,6 +78,7 @@ typedef struct ido2db_dbobject_struct{
 	char *name1;
 	char *name2;
 	int object_type;
+	/* ToDo Change object_id to unsigned long long */
 	unsigned long object_id;
 	struct ido2db_dbobject_struct *nexthash;
         }ido2db_dbobject;
@@ -125,12 +126,19 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_downtimedata_downtime_history;
 	OCI_Statement* oci_statement_contactstatusdata;
 	OCI_Statement* oci_statement_configfilevariables;
+	OCI_Statement* oci_statement_configfilevariables_insert;
+	OCI_Statement* oci_statement_runtimevariables;
 	OCI_Statement* oci_statement_hostdefinition_definition;
+	OCI_Statement* oci_statement_hostdefinition_parenthosts;
+	OCI_Statement* oci_statement_hostdefinition_contactgroups;
 	OCI_Statement* oci_statement_hostdefinition_contacts;
 	OCI_Statement* oci_statement_hostgroupdefinition_definition;
+	OCI_Statement* oci_statement_hostgroupdefinition_hostgroupmembers;
 	OCI_Statement* oci_statement_servicedefinition_definition;
+	OCI_Statement* oci_statement_servicedefinition_contactgroups;
 	OCI_Statement* oci_statement_servicedefinition_contacts;
 	OCI_Statement* oci_statement_servicegroupdefinition_definition;
+	OCI_Statement* oci_statement_servicegroupdefinition_members;
 	OCI_Statement* oci_statement_hostdependencydefinition_definition;
 	OCI_Statement* oci_statement_servicedependencydefinition_definition;
 	OCI_Statement* oci_statement_hostescalationdefinition_definition;
@@ -141,6 +149,7 @@ typedef struct ido2db_dbconninfo_struct{
 	OCI_Statement* oci_statement_serviceescalationdefinition_contacts;
 	OCI_Statement* oci_statement_commanddefinition_definition;
 	OCI_Statement* oci_statement_timeperiodefinition_definition;
+	OCI_Statement* oci_statement_timeperiodefinition_timeranges;
 	OCI_Statement* oci_statement_contactdefinition_definition;
 	OCI_Statement* oci_statement_contactdefinition_addresses;
 	OCI_Statement* oci_statement_contactdefinition_servicenotificationcommands;
@@ -231,6 +240,7 @@ typedef struct ido2db_input_data_info_struct{
 	char *connect_type;
 	int current_input_section;
 	int current_input_data;
+	/* ToDo change *_processed  to unsigned long long */
 	unsigned long bytes_processed;
 	unsigned long lines_processed;
 	unsigned long entries_processed;
@@ -418,6 +428,7 @@ int ido2db_add_input_data_item(ido2db_idi *,int,char *);
 int ido2db_add_input_data_mbuf(ido2db_idi *,int,int,char *);
 
 /* conversion */
+/* ToDo : Add convert_to_unsigned_long_long needed for *_processed fields */
 int ido2db_convert_standard_data_elements(ido2db_idi *,int *,int *,int *,struct timeval *);
 int ido2db_convert_string_to_int(char *,int *);
 int ido2db_convert_string_to_float(char *,float *);

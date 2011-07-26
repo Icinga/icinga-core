@@ -705,8 +705,11 @@ CREATE TABLE eventhandlers (
   early_timeout integer default 0 ,
   execution_time number default 0 ,
   return_code integer default 0 ,
-  output varchar2(2048)
-)tablespace &&DATATBS;
+  output varchar2(2048),
+  long_output clob
+)
+lob (long_output) store as eventhandlers_out_lob(tablespace &&LOBTBS)
+tablespace &&DATATBS;
 
 alter table eventhandlers add constraint eventhandlers_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
@@ -844,8 +847,9 @@ CREATE TABLE hostchecks (
   return_code integer default 0 ,
   output varchar2(2048),
   long_output clob,
-  perfdata varchar2(2048))
+  perfdata clob)
   lob (long_output) store as hostchecks_out_lob(tablespace &&LOBTBS)
+  lob (perfdata) store as hostchecks_perf_lob(tablespace &&LOBTBS)
   tablespace &&DATATBS;
 
 alter table hostchecks add constraint hostchecks PRIMARY KEY  (id)
@@ -1067,7 +1071,7 @@ CREATE TABLE hoststatus (
   status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
   output varchar2(2048),
   long_output clob,
-  perfdata varchar2(2048),
+  perfdata clob,
   current_state integer default 0 ,
   has_been_checked integer default 0 ,
   should_be_scheduled integer default 0 ,
@@ -1110,6 +1114,7 @@ CREATE TABLE hoststatus (
   check_timeperiod_object_id integer default 0 
 )
 lob (long_output) store as hoststatus_out_lob(tablespace &&LOBTBS)
+lob (perfdata) store as hoststatus_perf_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
 alter table hoststatus add constraint hoststatus_pk PRIMARY KEY  (id)
@@ -1148,10 +1153,12 @@ CREATE TABLE logentries (
   entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
   entry_time_usec integer default 0 ,
   logentry_type integer default 0 ,
-  logentry_data varchar2(2048),
+  logentry_data clob,
   realtime_data integer default 0 ,
   inferred_data_extracted integer default 0 
-)tablespace &&DATATBS;
+)
+lob (logentry_data) store as logentries_data_lob(tablespace &&LOBTBS)
+tablespace &&DATATBS;
 
 alter table logentries add constraint logentries_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
@@ -1390,9 +1397,10 @@ CREATE TABLE servicechecks (
   return_code integer default 0 ,
   output varchar2(2048),
   long_output clob,
-  perfdata varchar2(2048)
+  perfdata clob
 )
 lob (long_output) store as servicechecks_out_lob(tablespace &&LOBTBS)
+lob (perfdata) store as servicechecks_perf_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
 alter table servicechecks add constraint servicechecks_pk PRIMARY KEY  (id)
@@ -1606,7 +1614,7 @@ CREATE TABLE servicestatus (
   status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
   output varchar2(2048),
   long_output clob,
-  perfdata varchar2(2048),
+  perfdata clob,
   current_state integer default 0 ,
   has_been_checked integer default 0 ,
   should_be_scheduled integer default 0 ,
@@ -1650,6 +1658,7 @@ CREATE TABLE servicestatus (
   check_timeperiod_object_id integer default 0 
 )
 lob (long_output) store as servicestatus_out_lob(tablespace &&LOBTBS)
+lob (perfdata) store as servicestatus_perf_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
 alter table servicestatus add constraint servicestatus_pk PRIMARY KEY  (id)
