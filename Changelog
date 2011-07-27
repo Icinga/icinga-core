@@ -18,6 +18,7 @@ ENHANCEMENTS
 * classic ui: Add log entries to json output of avail.cgi #1659
 * classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
 * classic ui: add author to comment tooltips in status.cgi #1691
+* classic ui: added view of all unhandled problems #1328
 * classic ui: reduce the header part of status.cgi #1507
 	** &nostatusheader used in frameset menu, info table is smaller
 	** edit menu.html and remove &nostatusheader if old behavior wanted

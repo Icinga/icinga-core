@@ -1066,12 +1066,6 @@ void document_header(int cgi_id, int use_stylesheet){
 	if(cgi_id==HISTOGRAM_CGI_ID || cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID)
 		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
 
-	if(cgi_id == STATUS_CGI_ID) {
-		/* Set everything in a form, so checkboxes can be searched after and checked. */
-		printf("<form name='tableform' id='tableform' action='%s' method='POST'>\n",CMD_CGI);
-		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
-	}
-
 	if(cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID) {
 		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n",url_js_path,SKINNYTIP_JS);
 		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
@@ -1154,11 +1148,6 @@ void document_footer(int cgi_id){
 	if(cgi_id==STATUSWML_CGI_ID) {
 		printf("</wml>\n");
 		return;
-	}
-
-	if(cgi_id == STATUS_CGI_ID) {
-		/* Close the form */
-		printf("</form>\n");
 	}
 
 	/* include user SSI footer */

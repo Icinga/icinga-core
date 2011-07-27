@@ -87,9 +87,12 @@ extern int show_partial_hostgroups;
 #define STYLE_SUMMARY			2
 #define STYLE_GRID			3
 #define STYLE_HOST_DETAIL		4
+#define STYLE_HOST_SERVICE_DETAIL	5
 
 #define HOST_STATUS			0
 #define SERVICE_STATUS			1
+#define NO_STATUS			2	/* only used to determine which
+						   drop down menu to present */
 
 /*  Status data for all Elements */
 typedef struct statusdata_struct{
@@ -236,6 +239,7 @@ int main(void){
 	int regex_i=1,i=0;
 	int len;
 	int host_has_no_service=TRUE;
+	int show_dropdown=NO_STATUS;
 
 	mac = get_global_macros();
 
@@ -380,12 +384,48 @@ int main(void){
 		}
 	}
 
+	// determine which dropdown menu to show
+	if(display_type==DISPLAY_HOSTS) {
+		if(group_style_type==STYLE_HOST_DETAIL || group_style_type==STYLE_HOST_SERVICE_DETAIL )
+			show_dropdown=HOST_STATUS;
+		else
+			show_dropdown=SERVICE_STATUS;
+	}
+	else if(display_type==DISPLAY_SERVICEGROUPS){
+		if(group_style_type==STYLE_HOST_DETAIL)
+			show_dropdown=SERVICE_STATUS;
+		else if(group_style_type==STYLE_OVERVIEW)
+			show_dropdown=NO_STATUS;
+		else if(group_style_type==STYLE_SUMMARY)
+			show_dropdown=NO_STATUS;
+		else if(group_style_type==STYLE_GRID)
+			show_dropdown=NO_STATUS;
+		else
+			show_dropdown=SERVICE_STATUS;
+	}else{
+		if(group_style_type==STYLE_HOST_DETAIL)
+			show_dropdown=HOST_STATUS;
+		else if(group_style_type==STYLE_OVERVIEW)
+			show_dropdown=NO_STATUS;
+		else if(group_style_type==STYLE_SUMMARY)
+			show_dropdown=NO_STATUS;
+		else if(group_style_type==STYLE_GRID)
+			show_dropdown=NO_STATUS;
+		else
+			show_dropdown=SERVICE_STATUS;
+	}
+
+	if (show_dropdown!=NO_STATUS) {
+		printf("<form name='tableform%s' id='tableform%s' action='%s' method='POST'>\n",(show_dropdown==HOST_STATUS)?"host":"service",(show_dropdown==HOST_STATUS)?"host":"service",CMD_CGI);
+		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
+	}
+
 	if(display_header==TRUE){
 
 		/* begin top table */
 		/* network status, hosts/service status totals */
 
-		if(display_status_header==TRUE){
+		if(display_status_header==TRUE && group_style_type!=STYLE_HOST_SERVICE_DETAIL){
 			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
 			printf("<tr>\n");
 
@@ -463,7 +503,7 @@ int main(void){
 		printf("<table border=1 cellpading=0 cellspacing=0 class='linkBox'>\n");
 		printf("<tr><td class='linkBox'>\n");
 
-		if(display_type==DISPLAY_HOSTS){
+		if(display_type==DISPLAY_HOSTS && group_style_type!=STYLE_HOST_SERVICE_DETAIL){
 			printf("<a href='%s?host=%s'>View History For %s</a><br>\n",HISTORY_CGI,(show_all_hosts==TRUE)?"all":url_encode(host_name),(show_all_hosts==TRUE)?"all hosts":"This Host");
 			printf("<a href='%s?host=%s'>View Notifications For %s</a>\n",NOTIFICATIONS_CGI,(show_all_hosts==TRUE)?"all":url_encode(host_name),(show_all_hosts==TRUE)?"All Hosts":"This Host");
 			if(show_all_hosts==FALSE)
@@ -548,35 +588,14 @@ int main(void){
 
 		/* Command table */
 		printf("<td align=right width=50%%>\n");
-		if(display_type==DISPLAY_HOSTS) {
-			if(group_style_type==STYLE_HOST_DETAIL)
-				show_hostcommand_table();
-			else
-				show_servicecommand_table();
-		}
-		else if(display_type==DISPLAY_SERVICEGROUPS){
-			if(group_style_type==STYLE_HOST_DETAIL)
-				show_servicecommand_table();
-			else if(group_style_type==STYLE_OVERVIEW)
-				printf("<br>");
-			else if(group_style_type==STYLE_SUMMARY)
-				printf("<br>");
-			else if(group_style_type==STYLE_GRID)
-				printf("<br>");
-			else
-				show_servicecommand_table();
-		}else{
-			if(group_style_type==STYLE_HOST_DETAIL)
-				show_hostcommand_table();
-			else if(group_style_type==STYLE_OVERVIEW)
-				printf("<br>");
-			else if(group_style_type==STYLE_SUMMARY)
-				printf("<br>");
-			else if(group_style_type==STYLE_GRID)
-				printf("<br>");
-			else
-				show_servicecommand_table();
-		}
+
+		if(show_dropdown==HOST_STATUS)
+			show_hostcommand_table();
+		else if(show_dropdown==SERVICE_STATUS)
+			show_servicecommand_table();
+		else
+			printf("<br>");
+
 		printf("</td>\n");
 		printf("</tr>\n");
 
@@ -615,7 +634,23 @@ int main(void){
 	if(display_type==DISPLAY_HOSTS) {
 		if(group_style_type==STYLE_HOST_DETAIL)
 			show_host_detail();
-		else
+		else if(group_style_type==STYLE_HOST_SERVICE_DETAIL) {
+
+			show_host_detail();
+
+			/* only show service problems of Hosts which are
+			   _NOT_ DOWN or UNREACHABLE */
+			host_status_types=3;
+
+			printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST'>\n",CMD_CGI);
+			printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
+
+			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0><tr><td align=right width=50%%></td><td align=right width=50%%>\n");
+			show_servicecommand_table();
+			printf("</td></tr></table>\n");
+
+			show_service_detail();
+		} else
 			show_service_detail();
 	}
 	else if(display_type==DISPLAY_SERVICEGROUPS){
@@ -809,6 +844,8 @@ int process_cgivars(void){
 				group_style_type=STYLE_GRID;
 			else if(!strcmp(variables[x],"hostdetail"))
 				group_style_type=STYLE_HOST_DETAIL;
+			else if(!strcmp(variables[x],"hostservicedetail"))
+				group_style_type=STYLE_HOST_SERVICE_DETAIL;
 			else
 				group_style_type=STYLE_SERVICE_DETAIL;
 		}
@@ -1385,7 +1422,7 @@ void show_service_detail(void){
 
 		printf("<td valign=top align=left width=33%%>\n");
 
-		if(display_header==TRUE)
+		if(display_header==TRUE && group_style_type!=STYLE_HOST_SERVICE_DETAIL)
 			show_filters();
 
 		printf("</td>");
@@ -1515,7 +1552,7 @@ void show_service_detail(void){
 
 		if (is_authorized_for_read_only(&current_authdata)==FALSE){
 			/* Add checkbox so every service can be checked */
-			printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
+			printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableformservice');isValidForSubmit('tableformservice');\"></TH>\n");
 		}
 
 		printf("</TR>\n");
@@ -1551,6 +1588,10 @@ void show_service_detail(void){
 		/* find the service  */
 		temp_service=find_service(temp_status->host_name,temp_status->svc_description);
 
+		//printf("%s - %s<br>",temp_status->host_name,temp_status->svc_description);
+
+		if (temp_service==NULL)
+			continue;
 
 		if(strcmp(last_host,temp_status->host_name))
 			new_host=TRUE;
@@ -1836,7 +1877,7 @@ void show_service_detail(void){
 
 			/* Checkbox for service(s) */
 			if (is_authorized_for_read_only(&current_authdata)==FALSE)
-				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableform');\" type='checkbox' name='hostservice' value='%s^%s'></TD>\n",status_bg_class,temp_status->host_name,temp_status->svc_description);
+				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableformservice');\" type='checkbox' name='hostservice' value='%s^%s'></TD>\n",status_bg_class,temp_status->host_name,temp_status->svc_description);
 
 			if(enable_splunk_integration==TRUE)
 				display_splunk_service_url(temp_service);
@@ -1880,6 +1921,7 @@ void show_service_detail(void){
 	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
+		printf("</FORM>\n");
 
 		/* if user couldn't see anything, print out some helpful info... */
 		if(total_entries==0 && user_is_authorized_for_statusdata==FALSE)
@@ -2045,7 +2087,7 @@ void show_host_detail(void){
 
 		if (is_authorized_for_read_only(&current_authdata)==FALSE){
 			/* Add a checkbox so every host can be checked */
-			printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableform');isValidForSubmit('tableform');\"></TH>\n");
+			printf("<TH CLASS='status' width='16'><input type='checkbox' value=all onclick=\"checkAll('tableformhost');isValidForSubmit('tableformhost');\"></TH>\n");
 		}
 
 		printf("</TR>\n");
@@ -2235,7 +2277,7 @@ void show_host_detail(void){
 
 				/* Checkbox for host(s) */
 				if (is_authorized_for_read_only(&current_authdata)==FALSE)
-					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableform');\" type='checkbox' name='host' value='%s'></TD>\n",status_bg_class,temp_statusdata->host_name);
+					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableformhost');\" type='checkbox' name='host' value='%s'></TD>\n",status_bg_class,temp_statusdata->host_name);
 
 
 
@@ -2278,6 +2320,7 @@ void show_host_detail(void){
 	if(content_type!=CSV_CONTENT && content_type!=JSON_CONTENT){
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
+		printf("</FORM>\n");
 
 		/* if user couldn't see anything, print out some helpful info... */
 		if(total_entries==0 && user_is_authorized_for_statusdata==FALSE)
@@ -4980,7 +5023,7 @@ void grab_statusdata(void) {
 	temp_hostgroup=find_hostgroup(hostgroup_name);
 	temp_servicegroup=find_servicegroup(servicegroup_name);
 
-	if (group_style_type==STYLE_HOST_DETAIL) {
+	if (group_style_type==STYLE_HOST_DETAIL || group_style_type==STYLE_HOST_SERVICE_DETAIL) {
 
 		for(temp_hoststatus=hoststatus_list;temp_hoststatus!=NULL;temp_hoststatus=temp_hoststatus->next){
 
@@ -5020,7 +5063,8 @@ void grab_statusdata(void) {
 			add_status_data(HOST_STATUS,temp_hoststatus,NULL);
 
 		}
-	} else {
+	}
+	if (group_style_type!=STYLE_HOST_DETAIL || group_style_type==STYLE_HOST_SERVICE_DETAIL) {
 		if(service_filter!=NULL)
 			regcomp(&preg,service_filter,0);
 		if(host_filter!=NULL)
@@ -5898,7 +5942,7 @@ void show_servicecommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_service' onchange='showValue(\"tableformservice\",this.value,%d,%d)' CLASS='DropDownService'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>",CMD_ADD_SVC_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>",CMD_DISABLE_SVC_CHECK,url_images_path,DISABLED_ICON);
@@ -5925,7 +5969,7 @@ void show_servicecommand_table(void){
 		/* Print out the activator for the dropdown (which must be between the body tags */
 		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
-		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
+		printf("try { \n$(\".DropDownService\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
 		printf("});\n");
@@ -5941,7 +5985,7 @@ void show_hostcommand_table(void){
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ' onchange='showValue(this.value,%d,%d)' CLASS='DropDown'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_host' onchange='showValue(\"tableformhost\",this.value,%d,%d)' CLASS='DropDownHost'>",CMD_SCHEDULE_HOST_CHECK,CMD_SCHEDULE_SVC_CHECK);
 			printf("<option value='nothing'>Select command</option>");
 			printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>",CMD_ADD_HOST_COMMENT,url_images_path,COMMENT_ICON);
 			printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>",CMD_DISABLE_HOST_CHECK,url_images_path,DISABLED_ICON);
@@ -5974,7 +6018,7 @@ void show_hostcommand_table(void){
 		/* Print out the activator for the dropdown (which must be between the body tags */
 		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
-		printf("try { \n$(\".DropDown\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
+		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
 		printf("});\n");

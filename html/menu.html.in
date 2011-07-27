@@ -43,10 +43,11 @@
 		</ul>
 		<h2>Problems</h2>
 		<ul>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?host=all&servicestatustypes=28&nostatusheader" target="main">Service Problems</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?host=all&servicestatustypes=28&hoststatustypes=3&serviceprops=42&nostatusheader" target="main">Unhandled Services</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12&nostatusheader" target="main">Host Problems</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12&hostprops=42&nostatusheader" target="main">Unhandled Hosts</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?host=all&servicestatustypes=28&nostatusheader" target="main">Service Problems</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?host=all&servicestatustypes=28&hoststatustypes=3&serviceprops=2097162&nostatusheader" target="main">Unhandled Services</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12&nostatusheader" target="main">Host Problems</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail&hoststatustypes=12&hostprops=2097162&nostatusheader" target="main">Unhandled Hosts</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?hosts=all&style=hostservicedetail&hoststatustypes=12&hostprops=2097162&servicestatustypes=28&serviceprops=2097162&nostatusheader" target="main">All Unhandled Problems</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
 		</ul>
 		<h2>System</h2>
