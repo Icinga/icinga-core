@@ -1961,7 +1961,6 @@ void include_ssi_files(char *cgi_name, int type){
 	char cgi_ssi_file[MAX_INPUT_BUFFER];
 	char raw_cgi_name[MAX_INPUT_BUFFER];
 	char *stripped_cgi_name;
-	int x;
 
 	/* common header or footer */
 	snprintf(common_ssi_file,sizeof(common_ssi_file)-1,"%scommon-%s.ssi",physical_ssi_path,(type==SSI_HEADER)?"header":"footer");
@@ -1973,19 +1972,16 @@ void include_ssi_files(char *cgi_name, int type){
 	stripped_cgi_name=strtok(raw_cgi_name,".");
 	snprintf(cgi_ssi_file,sizeof(cgi_ssi_file)-1,"%s%s-%s.ssi",physical_ssi_path,(stripped_cgi_name==NULL)?"":stripped_cgi_name,(type==SSI_HEADER)?"header":"footer");
 	cgi_ssi_file[sizeof(cgi_ssi_file)-1]='\x0';
-	for(x=0;x<strlen(cgi_ssi_file);x++)
-		cgi_ssi_file[x]=tolower(cgi_ssi_file[x]);
 
 	if(type==SSI_HEADER){
 		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)\nCopyright (c) 2009-2011 Icinga Development Team -->\n", PROGRAM_NAME, PROGRAM_NAME_LC);
 		include_ssi_file(common_ssi_file);
 		include_ssi_file(cgi_ssi_file);
-	        }
-	else{
+	}else{
 		include_ssi_file(cgi_ssi_file);
 		include_ssi_file(common_ssi_file);
 		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)\nCopyright (c) 2009-2011 Icinga Development Team -->\n", PROGRAM_NAME, PROGRAM_NAME_LC);
-	        }
+	}
 
 	return;
 }
