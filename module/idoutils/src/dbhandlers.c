@@ -271,7 +271,9 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	char *es[2];
 #ifdef USE_ORACLE
 	void *data[4];
-	char * fname="get_object_id_with_insert";
+	char *fname="get_object_id_with_insert";
+	const char *sql=NULL;
+	OCI_Statement *st;
 #endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() start\n");
 
@@ -392,8 +394,8 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	 *
 	 * this bad workaround prepares new statement handle at every call
 	 * */
-	OCI_Statement *st=OCI_CreateStatement(idi->dbinfo.oci_connection);
-	const char * sql=OCI_GetSql(idi->dbinfo.oci_statement_objects_insert);
+	st=OCI_CreateStatement(idi->dbinfo.oci_connection);
+	sql=OCI_GetSql(idi->dbinfo.oci_statement_objects_insert);
 	if (!OCI_Prepare(st,MT(sql))){
 		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() extra prepare failed\n");
 		 return IDO_ERROR;
@@ -1840,6 +1842,7 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 #ifdef USE_ORACLE
 	unsigned long n_one=1L;
         void *data[8];
+	OCI_Lob * lob_i;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_logdata() start\n");
 
@@ -1928,7 +1931,7 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 	}
 
 	//bind clob
-	OCI_Lob * lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_logentries_insert() bind clob\n");
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_logentries_insert,":X6",*(char **)data[5],&lob_i);
 	if (result==IDO_OK) {
@@ -4734,6 +4737,7 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE
         void *data[13];
+	OCI_Lob *lob_i;
 #endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_statechangedata() start\n");
@@ -4857,7 +4861,7 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 	}
 
         //bind clob
-	OCI_Lob * lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_statehistory() bind clob\n");
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_statehistory,":X13",*(char **)data[4],&lob_i);
 	if (result==IDO_OK) {
@@ -4905,10 +4909,8 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	int result = IDO_OK;
 	char *es[3];
 	int x = 0;
-#ifdef USE_LIBDBI
 	char *buf = NULL;
 	char *buf1 = NULL;
-#endif
 	char *varname = NULL;
 	char *varvalue = NULL;
 	ido2db_mbuf mbuf;
@@ -6782,8 +6784,8 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
                         if(asprintf(&buf1, "%s SELECT %lu as x1, %lu as x2, %lu as x3 FROM DUAL ",
                                         buf1,
                                         idi->dbinfo.instance_id,
-                                        service_id,
-                                        group_id
+                                        group_id,
+					member_id
                                         )==-1)
                                 buf1=NULL;
 

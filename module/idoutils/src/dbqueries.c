@@ -469,6 +469,11 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
         char * query1 = NULL;
         char * query2 = NULL;
 #endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_i;
+        OCI_Lob *lob_u;
+#endif
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() start\n");
 
         if (idi == NULL)
@@ -629,8 +634,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 	}
 
         //bind clob 2 times,once for update, once for insert to make oracle happy and avoid ora-600 because of double binding
-        OCI_Lob * lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-        OCI_Lob * lob_u=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+        lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+        lob_u=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata() bind clob\n");
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_systemcommanddata,":X12i",*(char **)data[11],&lob_i);
 	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_systemcommanddata,":X12u",*(char **)data[11],&lob_u);
@@ -672,6 +678,11 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
         char * query1 = NULL;
         char * query2 = NULL;
 #endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_i;
+        OCI_Lob *lob_u;
+#endif
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() start\n");
 
         if (idi == NULL)
@@ -879,12 +890,13 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
                         }
 	}
        //bind clobs
-        OCI_Lob * lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-        OCI_Lob * lob_u=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+        lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+        lob_u=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata() bind clob\n");
-       result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_eventhandlerdata,":X18i",*(char **)data[17],&lob_i);
-       if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_eventhandlerdata,":X18u",*(char **)data[17],&lob_u);
-       if (result==IDO_OK) {
+       	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_eventhandlerdata,":X18i",*(char **)data[17],&lob_i);
+       	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_eventhandlerdata,":X18u",*(char **)data[17],&lob_u);
+       	if (result==IDO_OK) {
 		/* execute statement */
 		result=OCI_Execute(idi->dbinfo.oci_statement_eventhandlerdata)?IDO_OK:IDO_ERROR;
 		if(result==IDO_OK) {
@@ -896,9 +908,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata() execute error\n");
 
 		}
-       }else{
-	       ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata() bind clob error\n");
-       }
+       	}else{
+	       	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata() bind clob error\n");
+       	}
 
        	if (lob_i) OCI_LobFree(lob_i);
        	if (lob_u) OCI_LobFree(lob_u);
@@ -920,6 +932,10 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 #ifdef USE_LIBDBI
         char * query1 = NULL;
         char * query2 = NULL;
+#endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_i;
+        OCI_Lob *lob_u;
 #endif
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() start\n");
 
@@ -1071,9 +1087,9 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
                 }
         } else {
 
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_notificationdata, MT(":X10"), *(char **) data[9], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_notificationdata, MT(":X10"), *(char **) data[9], 0)) {
+                        return IDO_ERROR;
+                }
 	}
 
         if(!OCI_BindInt(idi->dbinfo.oci_statement_notificationdata, MT(":X12"), (int *) data[11])) {
@@ -1083,8 +1099,9 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
                       return IDO_ERROR;
         }
         //bind clobs
-        OCI_Lob * lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-        OCI_Lob * lob_u=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+        lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+        lob_u=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata() bind clob");
         result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_notificationdata,":X11i",*(char **)data[10],&lob_i);
         if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_notificationdata,":X11u",*(char **)data[10],&lob_u);
@@ -1417,6 +1434,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_LIBDBI
         char * query1 = NULL;
 #endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_l;
+        OCI_Lob *lob_p;
+#endif
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() start\n");
 
         if (idi == NULL)
@@ -1573,8 +1595,9 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 		}
 	}
 	//bind clob
-	OCI_Lob * lob_l=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_p=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_l=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_p=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() bind clob");
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicechecks,":X18",*(char **)data[17],&lob_l);
 	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicechecks,":X19",*(char **)data[18],&lob_p);
@@ -1613,6 +1636,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_LIBDBI
         char * query1 = NULL;
 #endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_l;
+        OCI_Lob *lob_p;
+#endif
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() start\n");
 
         if (idi == NULL)
@@ -1771,8 +1799,9 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 	}
 
 	//bind clob
-	OCI_Lob * lob_l=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_p=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_l=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_p=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() bind clobs");
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hostchecks,":X22",*(char **)data[21],&lob_l);
 	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hostchecks,":X23",*(char **)data[22],&lob_p);
@@ -2845,6 +2874,13 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
         char * query1 = NULL;
         char * query2 = NULL;
 #endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_li;
+        OCI_Lob *lob_lu;
+        OCI_Lob *lob_pi;
+        OCI_Lob *lob_pu;
+#endif
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() start\n");
 
         if (idi == NULL)
@@ -3114,9 +3150,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                         return IDO_ERROR;
                 }
         } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X4"), *(char **) data[3], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X4"), *(char **) data[3], 0)) {
+                        return IDO_ERROR;
+                }
 	}
 
 	if(!OCI_BindInt(idi->dbinfo.oci_statement_hoststatus, MT(":X7"), (int *) data[6])) {
@@ -3229,18 +3265,18 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                         return IDO_ERROR;
                 }
         } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X42"), *(char **) data[41], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X42"), *(char **) data[41], 0)) {
+                        return IDO_ERROR;
+                }
 	}
         if(*(char **) data[42]==NULL) {
                 if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_hoststatus, ":X43")==IDO_ERROR) {
                         return IDO_ERROR;
                 }
         } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X43"), *(char **) data[42], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X43"), *(char **) data[42], 0)) {
+                        return IDO_ERROR;
+                }
 	}
 	if(!OCI_BindDouble(idi->dbinfo.oci_statement_hoststatus, MT(":X44"), (double *) data[43])) {
 		return IDO_ERROR;
@@ -3253,10 +3289,11 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 	}
 	//bind clob 2 times,once for update, once for insert to make oracle happy and avoid ora-600 because of double binding
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatus() bind clob\n");
-	OCI_Lob * lob_li=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_lu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_pi=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_pu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_li=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_lu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_pi=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_pu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus,":X5i",*(char **)data[4],&lob_pi);
 	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus,":X5u",*(char **)data[4],&lob_pu);
 	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus,":X6i",*(char **)data[5],&lob_pi);
@@ -3298,6 +3335,13 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
         char * query1 = NULL;
         char * query2 = NULL;
 #endif
+#ifdef USE_ORACLE
+        OCI_Lob *lob_li;
+        OCI_Lob *lob_lu;
+        OCI_Lob *lob_pi;
+        OCI_Lob *lob_pu;
+#endif
+
         ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() start\n");
 
         if (idi == NULL)
@@ -3571,9 +3615,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
                         return IDO_ERROR;
                 }
         } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X4"), *(char **) data[3], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X4"), *(char **) data[3], 0)) {
+                        return IDO_ERROR;
+                }
 	}
 
 	if(!OCI_BindInt(idi->dbinfo.oci_statement_servicestatus, MT(":X7"), (int *) data[6])) {
@@ -3689,18 +3733,18 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
                         return IDO_ERROR;
                 }
         } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X43"), *(char **) data[42], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X43"), *(char **) data[42], 0)) {
+                        return IDO_ERROR;
+                }
 	}
         if(*(char **) data[43]==NULL) {
                 if(ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicestatus, ":X44")==IDO_ERROR) {
                         return IDO_ERROR;
                 }
         } else {
-                        if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X44"), *(char **) data[43], 0)) {
-                                return IDO_ERROR;
-                        }
+                if(!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X44"), *(char **) data[43], 0)) {
+                        return IDO_ERROR;
+                }
 	}
 	if(!OCI_BindDouble(idi->dbinfo.oci_statement_servicestatus, MT(":X45"), (double *) data[44])) {
 		return IDO_ERROR;
@@ -3712,10 +3756,11 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 		return IDO_ERROR;
 	}
 	//bind clob 2 times,once for update, once for insert to make oracle happy and avoid ora-600 because of double binding
-	OCI_Lob * lob_li=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_lu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_pi=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
-	OCI_Lob * lob_pu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_li=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_lu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_pi=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+	lob_pu=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatus() bind clobs\n");
 	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus,":X5i",*(char **)data[4],&lob_pi);
 	if (result==IDO_OK) result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus,":X5u",*(char **)data[4],&lob_pu);

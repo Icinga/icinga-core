@@ -39,7 +39,7 @@ extern int ido2db_check_dbd_driver(void);
 
 /* use global dynamic buffer for mutex locks */
 ido_dbuf dbuf;
-static pthread_mutex_t ido2db_dbuf_lock;
+//static pthread_mutex_t ido2db_dbuf_lock;
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 static void *ido2db_thread_worker_exit_handler(void *);
@@ -1186,8 +1186,8 @@ int ido2db_handle_client_connection(int sd){
 	int error=IDO_FALSE;
 
 	int pthread_ret=0;
-	sigset_t newmask;
-	pthread_attr_t attr;
+	//sigset_t newmask;
+	//pthread_attr_t attr;
 
 #ifdef HAVE_SSL
 	SSL *ssl=NULL;
