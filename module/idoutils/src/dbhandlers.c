@@ -7584,8 +7584,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
  
         /* build a multiple insert value array */
-        if(asprintf(&buf1, "INSERT INTO %s (id, instance_id, timeperiod_id, day, start_sec, end_sec) SELECT seq_%s.nextval, x1, x2, x3, x4, x5 from (",
-                        ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
+        if(asprintf(&buf1, "INSERT INTO %s (id, instance_id, timeperiod_id, day, start_sec, end_sec) SELECT seq_timep_timer.nextval, x1, x2, x3, x4, x5 from (",
                         ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES]
                         )==-1)
                 buf1=NULL;
