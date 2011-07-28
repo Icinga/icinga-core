@@ -1715,10 +1715,7 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 	time(&current_time);
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),LONG_DATE_TIME);
 
-	printf("Last Updated: %s ||\n",date_time);
-
-	if(current_authdata!=NULL)
-		printf("Logged in as <i>%s</i> ||\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
+	printf("Last Updated: %s - \n",date_time);
 
 
 	/* don't show in historical (long) listings */
@@ -1733,10 +1730,10 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 		}
 	}
 
-	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A> ||\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
 
-	/* We shouldn't forget from where we come */
-	printf("(Credits to: Nagios&reg; - <A HREF='http://www.nagios.org' TARGET='_new' CLASS='homepageURL'>www.nagios.org</A>)<BR>");
+	if(current_authdata!=NULL)
+		printf("Logged in as <i>%s</i>\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
 
 	/* add here every cgi_id which uses logging, this should limit the testing of write access to the necessary amount */
 	if(use_logging==TRUE && CGI_ID==CMD_CGI_ID) {

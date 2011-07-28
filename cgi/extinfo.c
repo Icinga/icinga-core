@@ -315,7 +315,7 @@ int main(void){
 			if(display_type==DISPLAY_SERVICE_INFO)
 				printf("<A HREF='%s?type=%d&host=%s'>View Information For This Host</A><br>\n",EXTINFO_CGI,DISPLAY_HOST_INFO,url_encode(host_name));
 			if(display_type==DISPLAY_SERVICE_INFO || display_type==DISPLAY_HOST_INFO)
-				printf("<A HREF='%s?host=%s'>View Status Detail For This Host</A><BR>\n",STATUS_CGI,url_encode(host_name));
+				printf("<A HREF='%s?host=%s&nostatusheader'>View Status Detail For This Host</A><BR>\n",STATUS_CGI,url_encode(host_name));
 			if(display_type==DISPLAY_HOST_INFO){
 				printf("<A HREF='%s?host=%s'>View Alert History For This Host</A><BR>\n",HISTORY_CGI,url_encode(host_name));
 #ifdef USE_TRENDS
@@ -344,15 +344,15 @@ int main(void){
 				printf("service=%s'>View Notifications For This Service</A>\n",url_encode(service_desc));
 	                }
 			else if(display_type==DISPLAY_HOSTGROUP_INFO){
-				printf("<A HREF='%s?hostgroup=%s&style=detail'>View Status Detail For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s&style=overview'>View Status Overview For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s&style=grid'>View Status Grid For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
+				printf("<A HREF='%s?hostgroup=%s&style=detail&nostatusheader'>View Status Detail For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
+				printf("<A HREF='%s?hostgroup=%s&style=overview&nostatusheader'>View Status Overview For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
+				printf("<A HREF='%s?hostgroup=%s&style=grid&nostatusheader'>View Status Grid For This Hostgroup</A><BR>\n",STATUS_CGI,url_encode(hostgroup_name));
 				printf("<A HREF='%s?hostgroup=%s'>View Availability For This Hostgroup</A><BR>\n",AVAIL_CGI,url_encode(hostgroup_name));
 	                }
 			else if(display_type==DISPLAY_SERVICEGROUP_INFO){
-				printf("<A HREF='%s?servicegroup=%s&style=detail'>View Status Detail For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s&style=overview'>View Status Overview For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s&style=grid'>View Status Grid For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
+				printf("<A HREF='%s?servicegroup=%s&style=detail&nostatusheader'>View Status Detail For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
+				printf("<A HREF='%s?servicegroup=%s&style=overview&nostatusheader'>View Status Overview For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
+				printf("<A HREF='%s?servicegroup=%s&style=grid&nostatusheader'>View Status Grid For This Servicegroup</A><BR>\n",STATUS_CGI,url_encode(servicegroup_name));
 				printf("<A HREF='%s?servicegroup=%s'>View Availability For This Servicegroup</A><BR>\n",AVAIL_CGI,url_encode(servicegroup_name));
 	                }
 			printf("</TD></TR>\n");
@@ -376,7 +376,7 @@ int main(void){
 					/* print all parent hosts */
 					printf("<DIV CLASS='data'>Parents:</DIV>\n");
 					for(temp_parenthost=temp_host->parent_hosts;temp_parenthost!=NULL;temp_parenthost=temp_parenthost->next)
-						printf("<DIV CLASS='dataTitle'><A HREF='%s?host=%s'>%s</A></DIV>\n",STATUS_CGI, url_encode(temp_parenthost->host_name),temp_parenthost->host_name);
+						printf("<DIV CLASS='dataTitle'><A HREF='%s?host=%s&nostatusheader'>%s</A></DIV>\n",STATUS_CGI, url_encode(temp_parenthost->host_name),temp_parenthost->host_name);
 				}
 
 				/* Hostgroups */
@@ -387,7 +387,7 @@ int main(void){
 						if(found==TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),html_encode((temp_hostgroup->alias!=NULL)?temp_hostgroup->alias:temp_hostgroup->group_name,TRUE));
+						printf("<A HREF='%s?hostgroup=%s&style=overview&nostatusheader'>%s</A>",STATUS_CGI,url_encode(temp_hostgroup->group_name),html_encode((temp_hostgroup->alias!=NULL)?temp_hostgroup->alias:temp_hostgroup->group_name,TRUE));
 						found=TRUE;
 						}
 					}
@@ -439,7 +439,7 @@ int main(void){
 						if(found==TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),html_encode((temp_servicegroup->alias!=NULL)?temp_servicegroup->alias:temp_servicegroup->group_name,TRUE));
+						printf("<A HREF='%s?servicegroup=%s&style=overview&nostatusheader'>%s</A>",STATUS_CGI,url_encode(temp_servicegroup->group_name),html_encode((temp_servicegroup->alias!=NULL)?temp_servicegroup->alias:temp_servicegroup->group_name,TRUE));
 						found=TRUE;
 					        }
                                         }

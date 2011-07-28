@@ -155,7 +155,7 @@ int main(void){
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 			printf("<TR><TD CLASS='linkBox'>\n");
 			if(query_type==FIND_HOST){
-				printf("<A HREF='%s?host=%s'>View Status Detail For %s</A><BR>\n",STATUS_CGI,(find_all==TRUE)?"all":url_encode(query_host_name),(find_all==TRUE)?"All Hosts":"This Host");
+				printf("<A HREF='%s?host=%s&nostatusheader'>View Status Detail For %s</A><BR>\n",STATUS_CGI,(find_all==TRUE)?"all":url_encode(query_host_name),(find_all==TRUE)?"All Hosts":"This Host");
 				printf("<A HREF='%s?host=%s'>View History For %s</A><BR>\n",HISTORY_CGI,(find_all==TRUE)?"all":url_encode(query_host_name),(find_all==TRUE)?"All Hosts":"This Host");
 #ifdef USE_TRENDS
 				if(find_all==FALSE)
