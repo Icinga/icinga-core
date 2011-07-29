@@ -2126,6 +2126,9 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE
+	big_int bytes_processed;
+	big_int lines_processed;
+	big_int entries_processed;
         void *data[5];
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_goodbye() start\n");
@@ -2154,9 +2157,9 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-	big_int bytes_processed=idi->bytes_processed;
-	big_int lines_processed=idi->lines_processed;
-	big_int entries_processed=idi->entries_processed;
+	bytes_processed=idi->bytes_processed;
+	lines_processed=idi->lines_processed;
+	entries_processed=idi->entries_processed;
 	data[0] = (void *) &idi->data_end_time;
         data[1] = (void *) &bytes_processed;
         data[2] = (void *) &lines_processed;
@@ -2206,6 +2209,9 @@ int ido2db_db_checkin(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE
+	big_int bytes_processed;
+	big_int lines_processed;
+	big_int entries_processed;
         void *data[4];
 #endif
 
@@ -2231,9 +2237,9 @@ int ido2db_db_checkin(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-        big_int bytes_processed=idi->bytes_processed;
-        big_int lines_processed=idi->lines_processed;
-        big_int entries_processed=idi->entries_processed;
+        bytes_processed=idi->bytes_processed;
+        lines_processed=idi->lines_processed;
+        entries_processed=idi->entries_processed;
 
         data[0] = (void *) &bytes_processed;
         data[1] = (void *) &lines_processed;
@@ -2664,7 +2670,12 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 	char *buf = NULL;
 	char * fname="ido2db_db_get_latest_data_time";
 	int result = IDO_OK;
+#ifdef USE_ORACLE
+	unsigned int instance_id;
+#endif
+
 	*t = (time_t) 0L;
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() start\n",fname);
 
 	if (idi == NULL || table_name == NULL || field_name == NULL || t == NULL) {
@@ -2695,7 +2706,8 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	unsigned int instance_id=idi->dbinfo.instance_id;
+	instance_id=idi->dbinfo.instance_id;
+
 	idi->dbinfo.oci_statement=OCI_StatementCreate(idi->dbinfo.oci_connection);
 	if (asprintf(&buf,"select max(date2unixts(%s)) from %s where instance_id=:ID",field_name,table_name)==-1){
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:Memory allocation SQL failed\n",fname);
@@ -7110,6 +7122,7 @@ int ido2db_oci_set_trace_event(OCI_Connection *cn,unsigned int trace_level) {
 int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	const dtext *p;
 	int ret;
+	char *binds=NULL;
 	OCI_Connection *cn;
 
 	/* check parameter */
@@ -7124,7 +7137,6 @@ int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	cn=OCI_StatementGetConnection(st);
 
 	/* print binds in Level SQL */
-	char * binds=NULL;
 	binds=malloc(OCI_VARCHAR_SIZE*4);
 	if (binds) {
 		ido2db_oci_print_binds(st,sizeof(binds),(char **)binds);

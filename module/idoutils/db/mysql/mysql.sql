@@ -193,8 +193,7 @@ CREATE TABLE IF NOT EXISTS icinga_contactgroup_members (
   instance_id bigint unsigned default 0,
   contactgroup_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
-  PRIMARY KEY  (contactgroup_member_id),
-  UNIQUE KEY instance_id (contactgroup_id,contact_object_id)
+  PRIMARY KEY  (contactgroup_member_id)
 ) ENGINE=InnoDB  COMMENT='Contactgroup members';
 
 -- --------------------------------------------------------
@@ -611,8 +610,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostgroup_members (
   instance_id bigint unsigned default 0,
   hostgroup_id bigint unsigned default 0,
   host_object_id bigint unsigned default 0,
-  PRIMARY KEY  (hostgroup_member_id),
-  UNIQUE KEY instance_id (hostgroup_id,host_object_id)
+  PRIMARY KEY  (hostgroup_member_id)
 ) ENGINE=InnoDB  COMMENT='Hostgroup members';
 
 -- --------------------------------------------------------
@@ -755,8 +753,7 @@ CREATE TABLE IF NOT EXISTS icinga_host_contactgroups (
   instance_id bigint unsigned default 0,
   host_id bigint unsigned default 0,
   contactgroup_object_id bigint unsigned default 0,
-  PRIMARY KEY  (host_contactgroup_id),
-  UNIQUE KEY instance_id (host_id,contactgroup_object_id)
+  PRIMARY KEY  (host_contactgroup_id)
 ) ENGINE=InnoDB  COMMENT='Host contact groups';
 
 -- --------------------------------------------------------
@@ -784,8 +781,7 @@ CREATE TABLE IF NOT EXISTS icinga_host_parenthosts (
   instance_id bigint unsigned default 0,
   host_id bigint unsigned default 0,
   parent_host_object_id bigint unsigned default 0,
-  PRIMARY KEY  (host_parenthost_id),
-  UNIQUE KEY instance_id (host_id,parent_host_object_id)
+  PRIMARY KEY  (host_parenthost_id)
 ) ENGINE=InnoDB  COMMENT='Parent hosts';
 
 -- --------------------------------------------------------
@@ -928,8 +924,7 @@ CREATE TABLE IF NOT EXISTS icinga_runtimevariables (
   instance_id bigint unsigned default 0,
   varname varchar(64) character set latin1  default '',
   varvalue varchar(255) character set latin1  default '',
-  PRIMARY KEY  (runtimevariable_id),
-  UNIQUE KEY instance_id (instance_id,varname)
+  PRIMARY KEY  (runtimevariable_id)
 ) ENGINE=InnoDB  COMMENT='Runtime variables from the Icinga daemon';
 
 -- --------------------------------------------------------
@@ -1095,8 +1090,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicegroup_members (
   instance_id bigint unsigned default 0,
   servicegroup_id bigint unsigned default 0,
   service_object_id bigint unsigned default 0,
-  PRIMARY KEY  (servicegroup_member_id),
-  UNIQUE KEY instance_id (servicegroup_id,service_object_id)
+  PRIMARY KEY  (servicegroup_member_id)
 ) ENGINE=InnoDB  COMMENT='Servicegroup members';
 
 -- --------------------------------------------------------
@@ -1233,8 +1227,7 @@ CREATE TABLE IF NOT EXISTS icinga_service_contactgroups (
   instance_id bigint unsigned default 0,
   service_id bigint unsigned default 0,
   contactgroup_object_id bigint unsigned default 0,
-  PRIMARY KEY  (service_contactgroup_id),
-  UNIQUE KEY instance_id (service_id,contactgroup_object_id)
+  PRIMARY KEY  (service_contactgroup_id)
 ) ENGINE=InnoDB  COMMENT='Service contact groups';
 
 -- --------------------------------------------------------
@@ -1370,8 +1363,7 @@ CREATE TABLE IF NOT EXISTS icinga_timeperiod_timeranges (
   day smallint default 0,
   start_sec  int default 0,
   end_sec  int default 0,
-  PRIMARY KEY  (timeperiod_timerange_id),
-  UNIQUE KEY instance_id (timeperiod_id,day,start_sec,end_sec)
+  PRIMARY KEY  (timeperiod_timerange_id)
 ) ENGINE=InnoDB  COMMENT='Timeperiod definitions';
 
 

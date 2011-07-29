@@ -224,8 +224,7 @@ CREATE TABLE  icinga_contactgroup_members (
   instance_id bigint default 0,
   contactgroup_id bigint default 0,
   contact_object_id bigint default 0,
-  CONSTRAINT PK_contactgroup_member_id PRIMARY KEY (contactgroup_member_id) ,
-  CONSTRAINT UQ_contactgroup_members UNIQUE (contactgroup_id,contact_object_id)
+  CONSTRAINT PK_contactgroup_member_id PRIMARY KEY (contactgroup_member_id)
 );
 
 -- --------------------------------------------------------
@@ -643,8 +642,7 @@ CREATE TABLE  icinga_hostgroup_members (
   instance_id bigint default 0,
   hostgroup_id bigint default 0,
   host_object_id bigint default 0,
-  CONSTRAINT PK_hostgroup_member_id PRIMARY KEY (hostgroup_member_id) ,
-  CONSTRAINT UQ_hostgroup_members UNIQUE (hostgroup_id,host_object_id)
+  CONSTRAINT PK_hostgroup_member_id PRIMARY KEY (hostgroup_member_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -786,8 +784,7 @@ CREATE TABLE  icinga_host_contactgroups (
   instance_id bigint default 0,
   host_id bigint default 0,
   contactgroup_object_id bigint default 0,
-  CONSTRAINT PK_host_contactgroup_id PRIMARY KEY (host_contactgroup_id) ,
-  CONSTRAINT UQ_host_contactgroups UNIQUE (host_id,contactgroup_object_id)
+  CONSTRAINT PK_host_contactgroup_id PRIMARY KEY (host_contactgroup_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -815,8 +812,7 @@ CREATE TABLE  icinga_host_parenthosts (
   instance_id bigint default 0,
   host_id bigint default 0,
   parent_host_object_id bigint default 0,
-  CONSTRAINT PK_host_parenthost_id PRIMARY KEY (host_parenthost_id) ,
-  CONSTRAINT UQ_host_parenthosts UNIQUE (host_id,parent_host_object_id)
+  CONSTRAINT PK_host_parenthost_id PRIMARY KEY (host_parenthost_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -960,8 +956,7 @@ CREATE TABLE  icinga_runtimevariables (
   instance_id bigint default 0,
   varname TEXT  default '',
   varvalue TEXT  default '',
-  CONSTRAINT PK_runtimevariable_id PRIMARY KEY (runtimevariable_id) ,
-  CONSTRAINT UQ_runtimevariables UNIQUE (instance_id,varname)
+  CONSTRAINT PK_runtimevariable_id PRIMARY KEY (runtimevariable_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1127,8 +1122,7 @@ CREATE TABLE  icinga_servicegroup_members (
   instance_id bigint default 0,
   servicegroup_id bigint default 0,
   service_object_id bigint default 0,
-  CONSTRAINT PK_servicegroup_member_id PRIMARY KEY (servicegroup_member_id) ,
-  CONSTRAINT UQ_servicegroup_members UNIQUE (servicegroup_id,service_object_id)
+  CONSTRAINT PK_servicegroup_member_id PRIMARY KEY (servicegroup_member_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1264,8 +1258,7 @@ CREATE TABLE  icinga_service_contactgroups (
   instance_id bigint default 0,
   service_id bigint default 0,
   contactgroup_object_id bigint default 0,
-  CONSTRAINT PK_service_contactgroup_id PRIMARY KEY (service_contactgroup_id) ,
-  CONSTRAINT UQ_service_contactgroups UNIQUE (service_id,contactgroup_object_id)
+  CONSTRAINT PK_service_contactgroup_id PRIMARY KEY (service_contactgroup_id)
 ) ;
 
 -- --------------------------------------------------------
@@ -1400,8 +1393,7 @@ CREATE TABLE  icinga_timeperiod_timeranges (
   day INTEGER  default 0,
   start_sec INTEGER  default 0,
   end_sec INTEGER  default 0,
-  CONSTRAINT PK_timeperiod_timerange_id PRIMARY KEY (timeperiod_timerange_id) ,
-  CONSTRAINT UQ_timeperiod_timeranges UNIQUE (timeperiod_id,day,start_sec,end_sec)
+  CONSTRAINT PK_timeperiod_timerange_id PRIMARY KEY (timeperiod_timerange_id)
 ) ;
 
 

@@ -76,6 +76,19 @@ alter table logentries drop column d_old;
 alter table eventhandlers add (long_output clob) lob (long_output) store as eventhandlers_out_lob(tablespace &&LOBTBS);
 
 
+-- -----------------------------------------
+-- drop unique keys for multiline inserts
+-- -----------------------------------------
+
+ALTER TABLE timeperiod_timeranges DROP CONSTRAINT timeperiod_timeranges_uq;
+ALTER TABLE host_parenthosts DROP CONSTRAINT host_parenthosts_uq;
+ALTER TABLE host_contactgroups DROP CONSTRAINT host_contactgroups_uq;
+ALTER TABLE service_contactgroups DROP CONSTRAINT service_contactgroups_uq;
+ALTER TABLE hostgroup_members DROP CONSTRAINT hostgroup_members_uq;
+ALTER TABLE servicegroup_members DROP CONSTRAINT servicegroup_members_uq;
+ALTER TABLE contactgroup_members DROP CONSTRAINT contactgroup_members_uq;
+ALTER TABLE runtimevariables DROP CONSTRAINT runtimevariables_uq;
+
 -- --------------------------------------------------------
 -- set trace event procedure
 -- --------------------------------------------------------

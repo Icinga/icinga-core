@@ -39,7 +39,7 @@ extern int ido2db_check_dbd_driver(void);
 
 /* use global dynamic buffer for mutex locks */
 ido_dbuf dbuf;
-static pthread_mutex_t ido2db_dbuf_lock;
+//static pthread_mutex_t ido2db_dbuf_lock;
 
 static void *ido2db_thread_cleanup_exit_handler(void *);
 static void *ido2db_thread_worker_exit_handler(void *);
@@ -1186,8 +1186,8 @@ int ido2db_handle_client_connection(int sd){
 	int error=IDO_FALSE;
 
 	int pthread_ret=0;
-	sigset_t newmask;
-	pthread_attr_t attr;
+	//sigset_t newmask;
+	//pthread_attr_t attr;
 
 #ifdef HAVE_SSL
 	SSL *ssl=NULL;
@@ -1211,16 +1211,17 @@ int ido2db_handle_client_connection(int sd){
 	signal(SIGFPE,ido2db_child_sighandler);
 
 	/* new thread should block all signals */
-	sigfillset(&newmask);
-	pthread_sigmask(SIG_BLOCK,&newmask,NULL);
+	/*sigfillset(&newmask);
+	pthread_sigmask(SIG_BLOCK,&newmask,NULL);*/
 
 	/* set stack size */
-	pthread_attr_init(&attr);
+	/*pthread_attr_init(&attr);
 	if(pthread_attr_setstacksize(&attr, IDO2DB_DEFAULT_THREAD_STACK_SIZE)!=0)
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() pthread_attr_setstacksize with %lu error\n", IDO2DB_DEFAULT_THREAD_STACK_SIZE);
-
+	*/
 	/* create cleanup thread */
-	if ((pthread_ret = pthread_create(&thread_pool[IDO2DB_THREAD_POOL_CLEANER], &attr, ido2db_thread_cleanup, &idi)) != 0) {
+	/*if ((pthread_ret = pthread_create(&thread_pool[IDO2DB_THREAD_POOL_CLEANER], &attr, ido2db_thread_cleanup, &idi)) != 0) {*/
+	if ((pthread_ret = pthread_create(&thread_pool[IDO2DB_THREAD_POOL_CLEANER], NULL, ido2db_thread_cleanup, &idi)) != 0) {
 		syslog(LOG_ERR,"Could not create thread... exiting with error '%s'\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
@@ -1234,8 +1235,8 @@ int ido2db_handle_client_connection(int sd){
 	*/
 
 	/* main thread should unblock all signals */
-	pthread_sigmask(SIG_UNBLOCK,&newmask,NULL);
-	pthread_attr_destroy(&attr);
+	/*pthread_sigmask(SIG_UNBLOCK,&newmask,NULL);
+	pthread_attr_destroy(&attr);*/
 
 	/* initialize input data information */
 	ido2db_idi_init(&idi);
@@ -1255,7 +1256,7 @@ int ido2db_handle_client_connection(int sd){
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() idi.dbinfo.connected is '%d'\n", idi.dbinfo.connected);
 
 			/* terminate threads */
-			terminate_worker_thread();
+			/*terminate_worker_thread();*/
 			terminate_cleanup_thread();
 
 		        /* free memory allocated to dynamic buffer */
@@ -1374,7 +1375,7 @@ int ido2db_handle_client_connection(int sd){
 #endif
 
 	/* terminate threads */
-	terminate_worker_thread();
+	/*terminate_worker_thread();*/
 	terminate_cleanup_thread();
 
 	/* free memory allocated to dynamic buffer */
@@ -2817,7 +2818,7 @@ int ido2db_terminate_threads(void){
         ido2db_db_deinit(&thread_idi);
 
 	/* terminate each thread on its own */
-	result=terminate_worker_thread();
+	/*result=terminate_worker_thread();*/
 	result=terminate_cleanup_thread();
 
 	return IDO_OK;

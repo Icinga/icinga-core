@@ -451,8 +451,6 @@ CREATE TABLE contactgroup_members (
 
 alter table contactgroup_members add constraint contactgroup_members_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
-alter table contactgroup_members add CONSTRAINT contactgroup_members_uq UNIQUE (contactgroup_id,contact_object_id)
-	using index tablespace &&IDXTBS;
 
 -- --------------------------------------------------------
 
@@ -777,8 +775,6 @@ CREATE TABLE host_contactgroups (
 
 alter table host_contactgroups add constraint host_contactgroups_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
-alter table host_contactgroups add CONSTRAINT host_contactgroups_uq UNIQUE (host_id,contactgroup_object_id)
-	using index tablespace &&IDXTBS;
 
 -- --------------------------------------------------------
 
@@ -812,8 +808,6 @@ CREATE TABLE host_parenthosts (
 )tablespace &&DATATBS;
 
 alter table host_parenthosts add constraint host_parenthosts_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-alter table host_parenthosts add CONSTRAINT host_parenthosts_uq UNIQUE (host_id,parent_host_object_id)
 	using index tablespace &&IDXTBS;
 
 
@@ -959,8 +953,6 @@ CREATE TABLE hostgroup_members (
 )tablespace &&DATATBS;
 
 alter table hostgroup_members add constraint hostgroup_members_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-alter table hostgroup_members add CONSTRAINT hostgroup_members_uq UNIQUE (hostgroup_id,host_object_id)
 	using index tablespace &&IDXTBS;
 
 
@@ -1296,8 +1288,6 @@ CREATE TABLE runtimevariables (
 
 alter table runtimevariables add constraint runtimevariables_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
-alter table runtimevariables add CONSTRAINT runtimevariables_uq UNIQUE (instance_id,varname)
-	using index tablespace &&IDXTBS;
 
 
 -- --------------------------------------------------------
@@ -1345,8 +1335,6 @@ CREATE TABLE service_contactgroups (
 )tablespace &&DATATBS;
 
 alter table service_contactgroups add constraint service_contactgroups_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-alter table service_contactgroups add CONSTRAINT service_contactgroups_uq UNIQUE (service_id,contactgroup_object_id)
 	using index tablespace &&IDXTBS;
 
 
@@ -1511,8 +1499,6 @@ CREATE TABLE servicegroup_members (
   service_object_id integer default 0 
 )tablespace &&DATATBS;
 alter table servicegroup_members add constraint servicegroup_members_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-alter table servicegroup_members add CONSTRAINT servicegroup_members_uq UNIQUE (servicegroup_id,service_object_id)
 	using index tablespace &&IDXTBS;
 
 
@@ -1788,8 +1774,6 @@ CREATE TABLE timeperiod_timeranges (
   end_sec integer default 0 
 )tablespace &&DATATBS;
 alter table timeperiod_timeranges add constraint timeperiod_timeranges_pk PRIMARY KEY  (id)
-	using index tablespace &&IDXTBS;
-alter table timeperiod_timeranges add CONSTRAINT timeperiod_timeranges_uq UNIQUE (timeperiod_id,day,start_sec,end_sec)
 	using index tablespace &&IDXTBS;
 
 
