@@ -148,7 +148,7 @@ void show_servicegroup_service_totals_summary(servicegroup *);
 void show_servicegroup_grids(void);
 void show_servicegroup_grid(servicegroup *);
 void show_hostgroup_overviews(void);
-void show_hostgroup_overview(hostgroup *);
+int show_hostgroup_overview(hostgroup *);
 void show_servicegroup_hostgroup_member_overview(hoststatus *,int,void *);
 void show_servicegroup_hostgroup_member_service_status_totals(char *,void *);
 void show_hostgroup_summaries(void);
@@ -3680,13 +3680,12 @@ void show_hostgroup_overviews(void){
 
 				if(current_column==1)
 					printf("<TR>\n");
-				printf("<TD VALIGN=top ALIGN=center>\n");
 
-				show_hostgroup_overview(temp_hostgroup);
+				if(show_hostgroup_overview(temp_hostgroup)==FALSE)
+					continue;
 
 				user_has_seen_something=TRUE;
 
-				printf("</TD>\n");
 				if(current_column==overview_columns)
 					printf("</TR>\n");
 
@@ -3762,7 +3761,7 @@ void show_hostgroup_overviews(void){
 
 
 /* shows an overview of a specific hostgroup... */
-void show_hostgroup_overview(hostgroup *hstgrp){
+int show_hostgroup_overview(hostgroup *hstgrp){
 	hostsmember *temp_member=NULL;
 	host *temp_host=NULL;
 	hoststatus *temp_hoststatus=NULL;
@@ -3772,7 +3771,7 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 
 	/* make sure the user is authorized to view this hostgroup */
 	if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(hstgrp,&current_authdata)==FALSE)
-		return;
+		return FALSE;
 
 	/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
 	if(show_partial_hostgroups==TRUE) {
@@ -3806,13 +3805,14 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 
 	/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
 	if(show_partial_hostgroups==TRUE && partial_hosts==FALSE)
-		return;
+		return FALSE;
 
 	/* print json format */
 	if(content_type==JSON_CONTENT) {
 		printf("{ \"hostgroup_name\": \"%s\",\n",json_encode(hstgrp->group_name));
 		printf("\"members\": [ \n");
 	}else{
+		printf("<TD VALIGN=top ALIGN=center>\n");
 		printf("<DIV CLASS='status'>\n");
 		printf("<A HREF='%s?hostgroup=%s&style=detail&nostatusheader'>%s</A>",STATUS_CGI,url_encode(hstgrp->group_name),hstgrp->alias);
 		printf(" (<A HREF='%s?type=%d&hostgroup=%s'>%s</A>)",EXTINFO_CGI,DISPLAY_HOSTGROUP_INFO,url_encode(hstgrp->group_name),hstgrp->group_name);
@@ -3870,9 +3870,10 @@ void show_hostgroup_overview(hostgroup *hstgrp){
 	else{
 		printf("</table>\n");
 		printf("</DIV>\n");
+		printf("</TD>\n");
 	}
 
-	return;
+	return TRUE;
 }
 
 
