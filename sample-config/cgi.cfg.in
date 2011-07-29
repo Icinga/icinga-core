@@ -187,9 +187,11 @@ use_ssl_authentication=0
 # default, *no one* has access to this unless you choose to
 # not use authorization.  You may use an asterisk (*) to
 # authorize any user who has authenticated to the web server.
+# Alternatively you can specify contactgroups too, starting
+# with Icinga 1.5.0
 
 authorized_for_system_information=icingaadmin
-
+#authorized_contactgroup_for_system_information=
 
 
 # CONFIGURATION INFORMATION ACCESS
@@ -199,9 +201,11 @@ authorized_for_system_information=icingaadmin
 # for the hosts and services they are contacts for. You may use
 # an asterisk (*) to authorize any user who has authenticated
 # to the web server.
+# Alternatively you can specify contactgroups too, starting
+# with Icinga 1.5.0
 
 authorized_for_configuration_information=icingaadmin
-
+#authorized_contactgroup_for_configuration_information=
 
 
 # SYSTEM/PROCESS COMMAND ACCESS
@@ -212,9 +216,11 @@ authorized_for_configuration_information=icingaadmin
 # has access to this unless you choose to not use authorization.
 # You may use an asterisk (*) to authorize any user who has
 # authenticated to the web server.
+# Alternatively you can specify contactgroups too, starting
+# with Icinga 1.5.0
 
 authorized_for_system_commands=icingaadmin
-
+#authorized_contactgroup_for_system_commands=
 
 
 # GLOBAL HOST/SERVICE VIEW ACCESS
@@ -224,11 +230,14 @@ authorized_for_system_commands=icingaadmin
 # for hosts or services that they are contacts for (unless you
 # you choose to not use authorization). You may use an asterisk (*)
 # to authorize any user who has authenticated to the web server.
+# Alternatively you can specify contactgroups too, starting
+# with Icinga 1.5.0
 
 
 authorized_for_all_services=icingaadmin
 authorized_for_all_hosts=icingaadmin
-
+#authorized_contactgroup_for_all_services=
+#authorized_contactgroup_for_all_hosts=
 
 
 # GLOBAL HOST/SERVICE COMMAND ACCESS
@@ -239,10 +248,13 @@ authorized_for_all_hosts=icingaadmin
 # that they are contacts for (unless you you choose to not use
 # authorization).  You may use an asterisk (*) to authorize any
 # user who has authenticated to the web server.
+# Alternatively you can specify contactgroups too, starting
+# with Icinga 1.5.0
 
 authorized_for_all_service_commands=icingaadmin
 authorized_for_all_host_commands=icingaadmin
-
+#authorized_contactgroup_for_all_service_commands=
+#authorized_contactgroup_for_all_host_commands=
 
 
 # READ-ONLY USERS
@@ -250,8 +262,11 @@ authorized_for_all_host_commands=icingaadmin
 # the CGIs.  This will block any service or host commands normally shown
 # on the extinfo CGI pages.  It will also block comments from being shown
 # to read-only users.
+# Alternatively you can specify contactgroups too, starting
+# with Icinga 1.5.0
 
 #authorized_for_read_only=user1,user2
+#authorized_contactgroup_for_read_only=
 
 
 # SHOW ALL SERVICES THE HOST IS AUTHORIZED FOR

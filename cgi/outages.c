@@ -426,7 +426,7 @@ void display_network_outages(void){
 			printf("<TD CLASS='%s'>%d</TD>\n",bg_class,temp_hostoutage->affected_child_services);
 		
 			printf("<TD CLASS='%s'>",bg_class);
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status detail for this host' TITLE='View status detail for this host'></A>\n",STATUS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUS_DETAIL_ICON);
+			printf("<A HREF='%s?host=%s&nostatusheader'><IMG SRC='%s%s' BORDER=0 ALT='View status detail for this host' TITLE='View status detail for this host'></A>\n",STATUS_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUS_DETAIL_ICON);
 #ifdef USE_STATUSMAP
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n",STATUSMAP_CGI,url_encode(temp_hostoutage->hst->name),url_images_path,STATUSMAP_ICON);
 #endif

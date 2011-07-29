@@ -44,6 +44,8 @@ int get_authentication_information(authdata *authinfo){
 	mmapfile *thefile;
 	char *input=NULL;
 	char *temp_ptr;
+	contact *temp_contact;
+	contactgroup *temp_contactgroup;
 
 	if(authinfo==NULL)
 		return ERROR;
@@ -181,6 +183,72 @@ int get_authentication_information(authdata *authinfo){
 				temp_ptr=strtok(NULL,"\n");
 				if(temp_ptr!=NULL)
 					parse_authorization_config_file(temp_ptr, authinfo);
+			}
+			else if ((temp_contact=find_contact(authinfo->username)) != NULL) {
+				if(strstr(input,"authorized_contactgroup_for_all_hosts=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_all_hosts=TRUE;
+				        }
+				}
+				else if(strstr(input,"authorized_contactgroup_for_all_services=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_all_services=TRUE;
+				        }
+				}
+				else if(strstr(input,"authorized_contactgroup_for_system_information=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_system_information=TRUE;
+				        }
+				}
+				else if(strstr(input,"authorized_contactgroup_for_configuration_information=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_configuration_information=TRUE;
+				        }
+				}
+				else if(strstr(input,"authorized_contactgroup_for_all_host_commands=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_all_host_commands=TRUE;
+				        }
+				}
+				else if(strstr(input,"authorized_contactgroup_for_all_service_commands=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_all_service_commands=TRUE;
+				        }
+				}
+				else if(strstr(input,"authorized_contactgroup_for_system_commands=")==input){
+					temp_ptr=strtok(input,"=");
+					while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_system_commands=TRUE;
+				       	}
+				}
+				else if(strstr(input,"authorized_contactgroup_for_read_only=")==input){
+                                        temp_ptr=strtok(input,"=");
+                                        while((temp_ptr=strtok(NULL,","))){
+						temp_contactgroup=find_contactgroup(temp_ptr);
+						if(is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+                                                        authinfo->authorized_for_read_only=TRUE;
+                                	}
+                        	}
 			}
 		}
 

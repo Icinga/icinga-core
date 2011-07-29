@@ -19,9 +19,14 @@ ENHANCEMENTS
 * classic ui: Add log entries to json output of avail.cgi #1659
 * classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
 * classic ui: add author to comment tooltips in status.cgi #1691
+* classic ui: added view of all unhandled problems #1328
 * classic ui: reduce the header part of status.cgi #1507
 	** &nostatusheader used in frameset menu, info table is smaller
 	** edit menu.html and remove &nostatusheader if old behavior wanted
+* classic ui: authorization for * in cgi.cfg via contactgroups (Stephen Gran) #1752
+	** authorized_contactgroup_for_all_hosts, authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
+	** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
+	** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
@@ -54,6 +59,7 @@ FIXES
 * classic ui: fixed: submitting non existent host/service on avail.cgi causes segfault. (M. Luebben) #1700
 * classic ui: fixed: Alert History State filter for HARD/SOFT state not working (Lennart Betz) #1722
 * classic ui: fixed: jquery 1.5.2 triggers memory leak in IE #1740
+* classic ui: fixed: ssi files don't get included if icinga path contains uppercase letters #1716
 
 * install: fix event handlers cmd file location in contrib #1501
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
@@ -85,13 +91,15 @@ https://wiki.icinga.org/display/Dev/Changes
 	** ownership of cgi and api log dirs is apache user and group
 * cgi.cfg config changes
 	** cgi_log_file=@CGILOGDIR@/icinga-cgi.log cgi_log_archive_path=@CGILOGDIR@
-	** show_partial_hostgroups=0 default_downtime_duration=7200 suppress_maintenance_downtime=0 
+	** show_partial_hostgroups=0 default_downtime_duration=7200 suppress_maintenance_downtime=0
+        ** authorized_contactgroup_for_all_hosts, authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
+        ** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
+        ** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
 * icinga.cfg config changes
 	** log_archive_path=@LOGDIR@/archives p1_file=@P1FILELOC@/p1.pl debug_file=@LOGDIR@/icinga.debug
 	** enable_embedded_perl=0 enable_environment_macros=0
 * idomod.cfg config changes
 	** data_processing_options=67108669
-	
 
 
 1.4.0 - 11/05/2011

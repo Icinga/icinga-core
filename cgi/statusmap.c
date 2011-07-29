@@ -556,10 +556,10 @@ void display_page_header(void){
 
 		if(show_all_hosts==FALSE){
 			printf("<a href='%s?host=all&max_width=%d&max_height=%d'>View Status Map For All Hosts</a><BR>",STATUSMAP_CGI,max_image_width,max_image_height);
-			printf("<a href='%s?host=%s'>View Status Detail For This Host</a><BR>\n",STATUS_CGI,url_encode(host_name));
+			printf("<a href='%s?host=%s&nostatusheader'>View Status Detail For This Host</a><BR>\n",STATUS_CGI,url_encode(host_name));
 		        }
-		printf("<a href='%s?host=all'>View Status Detail For All Hosts</a><BR>\n",STATUS_CGI);
-		printf("<a href='%s?hostgroup=all'>View Status Overview For All Hosts</a>\n",STATUS_CGI);
+		printf("<a href='%s?host=all&nostatusheader'>View Status Detail For All Hosts</a><BR>\n",STATUS_CGI);
+		printf("<a href='%s?hostgroup=all&nostatusheader'>View Status Overview For All Hosts</a>\n",STATUS_CGI);
 
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");
@@ -1743,7 +1743,7 @@ void draw_hosts(void){
 
 			/* URL */
 			if(!strcmp(host_name,temp_host->name))
-				printf("href='%s?host=%s' ",STATUS_CGI,url_encode(temp_host->name));
+				printf("href='%s?host=%s&nostatusheader' ",STATUS_CGI,url_encode(temp_host->name));
 			else{
 				printf("href='%s?host=%s&layout=%d&max_width=%d&max_height=%d&proximity_width=%d&proximity_height=%d%s%s%s%s%s",STATUSMAP_CGI,url_encode(temp_host->name),layout_method,max_image_width,max_image_height,proximity_width,proximity_height,(display_header==TRUE)?"":"&noheader",(use_links==FALSE)?"&nolinks":"",(use_text==FALSE)?"&notext":"",(use_highlights==FALSE)?"&nohighlights":"",(display_popups==FALSE)?"&nopopups":"");
 				if(user_supplied_scaling==TRUE)

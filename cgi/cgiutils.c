@@ -1066,12 +1066,6 @@ void document_header(int cgi_id, int use_stylesheet){
 	if(cgi_id==HISTOGRAM_CGI_ID || cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID)
 		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
 
-	if(cgi_id == STATUS_CGI_ID) {
-		/* Set everything in a form, so checkboxes can be searched after and checked. */
-		printf("<form name='tableform' id='tableform' action='%s' method='POST'>\n",CMD_CGI);
-		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
-	}
-
 	if(cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID) {
 		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n",url_js_path,SKINNYTIP_JS);
 		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
@@ -1154,11 +1148,6 @@ void document_footer(int cgi_id){
 	if(cgi_id==STATUSWML_CGI_ID) {
 		printf("</wml>\n");
 		return;
-	}
-
-	if(cgi_id == STATUS_CGI_ID) {
-		/* Close the form */
-		printf("</form>\n");
 	}
 
 	/* include user SSI footer */
@@ -1726,10 +1715,7 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 	time(&current_time);
 	get_time_string(&current_time,date_time,(int)sizeof(date_time),LONG_DATE_TIME);
 
-	printf("Last Updated: %s ||\n",date_time);
-
-	if(current_authdata!=NULL)
-		printf("Logged in as <i>%s</i> ||\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
+	printf("Last Updated: %s - \n",date_time);
 
 
 	/* don't show in historical (long) listings */
@@ -1744,10 +1730,10 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 		}
 	}
 
-	printf("%s %s - <A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>www.icinga.org</A> ||\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
 
-	/* We shouldn't forget from where we come */
-	printf("(Credits to: Nagios&reg; - <A HREF='http://www.nagios.org' TARGET='_new' CLASS='homepageURL'>www.nagios.org</A>)<BR>");
+	if(current_authdata!=NULL)
+		printf("Logged in as <i>%s</i>\n",(!strcmp(current_authdata->username,""))?"?":current_authdata->username);
 
 	/* add here every cgi_id which uses logging, this should limit the testing of write access to the necessary amount */
 	if(use_logging==TRUE && CGI_ID==CMD_CGI_ID) {
@@ -1972,7 +1958,6 @@ void include_ssi_files(char *cgi_name, int type){
 	char cgi_ssi_file[MAX_INPUT_BUFFER];
 	char raw_cgi_name[MAX_INPUT_BUFFER];
 	char *stripped_cgi_name;
-	int x;
 
 	/* common header or footer */
 	snprintf(common_ssi_file,sizeof(common_ssi_file)-1,"%scommon-%s.ssi",physical_ssi_path,(type==SSI_HEADER)?"header":"footer");
@@ -1984,19 +1969,16 @@ void include_ssi_files(char *cgi_name, int type){
 	stripped_cgi_name=strtok(raw_cgi_name,".");
 	snprintf(cgi_ssi_file,sizeof(cgi_ssi_file)-1,"%s%s-%s.ssi",physical_ssi_path,(stripped_cgi_name==NULL)?"":stripped_cgi_name,(type==SSI_HEADER)?"header":"footer");
 	cgi_ssi_file[sizeof(cgi_ssi_file)-1]='\x0';
-	for(x=0;x<strlen(cgi_ssi_file);x++)
-		cgi_ssi_file[x]=tolower(cgi_ssi_file[x]);
 
 	if(type==SSI_HEADER){
 		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)\nCopyright (c) 2009-2011 Icinga Development Team -->\n", PROGRAM_NAME, PROGRAM_NAME_LC);
 		include_ssi_file(common_ssi_file);
 		include_ssi_file(cgi_ssi_file);
-	        }
-	else{
+	}else{
 		include_ssi_file(cgi_ssi_file);
 		include_ssi_file(common_ssi_file);
 		printf("\n<!-- Produced by %s (http://www.%s.org).\nCopyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)\nCopyright (c) 2009-2011 Icinga Development Team -->\n", PROGRAM_NAME, PROGRAM_NAME_LC);
-	        }
+	}
 
 	return;
 }
