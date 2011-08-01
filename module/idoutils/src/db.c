@@ -7168,11 +7168,11 @@ int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	/**
 	 * enable dbms_output, execute statement and retrieve dbms_output lines
 	 */
-	OCI_ServerEnableOutput(cn , 32000, 1, 2000);
+	OCI_ServerEnableOutput(cn , OCI_OUTPUT_BUFFER_SIZE, 1, 2000);
 	ret=OCI_Execute(st);
 	while ((p = OCI_ServerGetOutput(cn)))
 	{
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s DBMSOUT:%s\n",fname,p);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s DBMSOUT:%s\n",fname,p);
 	}
 	/* return execute status */
 	if (!ret) {
@@ -7206,26 +7206,26 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 				 	 "dbms_application_info.set_module(:module,:action);"
 				 	 "end;"))) {
 			 OCI_StatementFree(st);
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Prepare failed:\n",fname);
+			 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Prepare failed:\n",fname);
 			 return IDO_ERROR;
 		 }
 		 /* bind module parameter */
 		 if(!(OCI_BindString(st,MT(":module"),module,0))) {
 		 	 OCI_StatementFree(st);
-		 	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind module failed:\n",fname);
+		 	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind module failed:\n",fname);
 		  	 return IDO_ERROR;
 		 }
 		 app_info=action?strdup(action):"";
 		 /* bind action parameter */
 		 if(!(OCI_BindString(st,MT(":action"),app_info,0))) {
 		  	 OCI_StatementFree(st);
-		  	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind action failed:\n",fname);
+		  	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind action failed:\n",fname);
 		   	 return IDO_ERROR;
 		 }
 		 /* execute statement */
 		 ret=ido2db_oci_execute_out(st,fname);
 		 if (ret!=IDO_OK) {
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:AppInfo execute failed\n",fname);
+			 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:AppInfo execute failed\n",fname);
 		 }
 		 ido2db_oci_statement_free(st,fname);
 		 if (app_info) free(app_info);
@@ -7497,18 +7497,18 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 	}
 
 	if (!OCI_BindLob(st,MT(bindname),*lobp)) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s failed\n",fname,bindname);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s failed\n",fname,bindname);
 		return IDO_ERROR;
 	}
 	len=text?strlen(text):0;
 	if (len==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Null or empty\n",fname,bindname);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Null or empty\n",fname,bindname);
 		OCI_BindSetNull(OCI_GetBind2(st,bindname));
 		return IDO_OK;
 	}
 
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,%lu Bytes requested\n",fname,bindname,len);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%lu Bytes requested\n",fname,bindname,len);
 	while ((len-rc)>0) {
 		if ((len-rc)>chunk) {
 			cb=chunk;
@@ -7517,9 +7517,9 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 		}
 		if (OCI_LobWrite2(*lobp,text+rc,&cb,&bb)) {
 			rc=rc+cb;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n",fname,bindname,cb,rc,len);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n",fname,bindname,cb,rc,len);
 		}else{
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu)\n",fname,bindname,cb,rc,len);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu)\n",fname,bindname,cb,rc,len);
 			break;
 		}
 
