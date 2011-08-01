@@ -5049,7 +5049,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	 val_arr=(char *) malloc(OCI_BINDARRAY_MAX_SIZE*(CONFIG_VARVALUE_SIZE+1));
 
 	 if ((instid_arr ==NULL) ||(fileid_arr ==NULL)||(name_arr ==NULL)||(val_arr ==NULL)){
-		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables_elements()"
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements()"
 				 "  ArrayVars Alloc ERROR, exit\n");
 		 if(instid_arr) free(instid_arr);
 		 if(fileid_arr) free(fileid_arr);
@@ -5057,7 +5057,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 		 if(val_arr) free(val_arr);
 		 return IDO_ERROR;
 	 }
-	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables_elements()"
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements()"
 			 "  ArrayVars OK\n");
 	 /* bind arrays to statement */
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_configfilevariables_insert,MT(":X1"),(uint *)instid_arr,0);
@@ -5125,19 +5125,21 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 		free(es[2]);
 		first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+		//ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "Pos:%d of %d\n",arrsize,OCI_BINDARRAY_MAX_SIZE);
+		if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
+			//ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "Do Commit:%d of %d\n",arrsize,OCI_BINDARRAY_MAX_SIZE);
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_configfilevariables_insert,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_configfilevariables_insert)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_configfilevariables_insert);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables_elements"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements"
 						"(File %lu):so far %d items committed\n",configfile_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables_elements"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements"
 						"(File %lu) ERROR:Rollback %d items\n",configfile_id,arrsize);
 				free(instid_arr);
 				free(fileid_arr);
@@ -5170,17 +5172,17 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_configfilevariables_insert,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_configfilevariables_insert)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_configfilevariables_insert);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables_elements"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements"
 					"(File %lu) %d items finished\n",configfile_id,count);
 				OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables"
 						"(File %lu) ERROR:Rollback %d items\n",configfile_id,arrsize);
 		 }
 	}
 	if (count==0){
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables"
 					"(File %lu) Warning:No items storable\n",configfile_id);
 	}
 
@@ -5259,14 +5261,14 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
        	 val_arr=(char *) malloc(OCI_BINDARRAY_MAX_SIZE*(CONFIG_VARVALUE_SIZE+1));
 
        	 if ((instid_arr ==NULL) ||(name_arr ==NULL)||(val_arr ==NULL)){
-       		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables"
+       		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables"
        				 " ArrayVars Alloc ERROR, exit\n");
        		 if(instid_arr) free(instid_arr);
        		 if(name_arr) free(name_arr);
        		 if(val_arr) free(val_arr);
        		 return IDO_ERROR;
        	 }
-       	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables()"
+       	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables()"
        			 "  ArrayVars OK\n");
        	 /* bind arrays to statement */
        	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_runtimevariables,MT(":X1"),(uint *)instid_arr,0);
@@ -5332,19 +5334,19 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
                 free(buf);
                 first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+		if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_runtimevariables,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_runtimevariables)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_runtimevariables);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables():"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables():"
 						"so far %d items committed\n",count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables()"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables()"
 						"ERROR:Rollback %d items\n",arrsize);
 				free(instid_arr);
 				free(name_arr);
@@ -5362,17 +5364,17 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_runtimevariables,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_runtimevariables)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_runtimevariables);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables()"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables()"
 					" %d items finished\n",count);
 				OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables()"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables()"
 						"ERROR:Rollback %d items\n",arrsize);
 		 }
 	}
 	if (count==0){
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables() Warning:No variables storable\n");
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables() Warning:No variables storable\n");
 	}
 	//cleanup array buffers
 	free(name_arr);
@@ -5749,22 +5751,19 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
        		 memberid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
 
        		 if ((instid_arr ==NULL) ||(hostid_arr ==NULL)||(memberid_arr ==NULL)){
-       			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() parent"
+       			 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition() parent"
        					 "  ArrayVars Alloc ERROR, exit\n");
        			 if(instid_arr) free(instid_arr);
        			 if(hostid_arr) free(hostid_arr);
        			 if(memberid_arr) free(memberid_arr);
        			 return IDO_ERROR;
        		 }
-       		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() parent"
+       		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition() parent"
        				 " ArrayVars OK\n");
        		 /* bind arrays to statement */
        		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts,MT(":X1"),(uint *)instid_arr,0);
        		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts,MT(":X2"),(uint *)hostid_arr,0);
        		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts,MT(":X3"),(uint *)memberid_arr,0);
-
-       		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() parent"
-       				" Binds End\n");
        		arrsize=0;
 
 #endif /* Oracle ocilib specific */
@@ -5808,19 +5807,19 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
                 first=0;
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+                if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_parenthosts,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_parenthosts)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostdefinition_parenthosts);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition parent "
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition parent "
 						"(hostid %lu):so far %d items committed\n",host_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition parent "
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition parent "
 						"(hostid %lu) ERROR:Rollback %d items\n",host_id,arrsize);
 				arrsize=0;
 			}
@@ -5857,19 +5856,19 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_parenthosts,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_parenthosts)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostdefinition_parenthosts);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition parent"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition parent"
 					"(hostid %lu): %d items finished\n",host_id,count);
 
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition parent"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition parent"
 					"(hostid %lu) ERROR:Rollback %d items \n",host_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition parent"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition parent"
 				"(hostid %lu) Warning:No members storable\n",host_id);
 
 	}
@@ -5895,8 +5894,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups,MT(":X1"),(uint *)instid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups,MT(":X2"),(uint *)hostid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups,MT(":X3"),(uint *)memberid_arr,0);
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() contactgroups Binds End\n");
 	arrsize=0;
 
 #endif /* Oracle ocilib specific */
@@ -5940,19 +5937,19 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
                 free(buf);
                 first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+                if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_contactgroups,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_contactgroups)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostdefinition_contactgroups);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contactgroups"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contactgroups"
 						"(hostid %lu):so far %d items committed\n",host_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contactgroups"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contactgroups"
 						"(hostid %lu) ERROR:Rollback %d items\n",host_id,arrsize);
 				arrsize=0;
 			}
@@ -5988,18 +5985,18 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_contactgroups,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_contactgroups)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostdefinition_contactgroups);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contactgroups"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contactgroups"
 					"(hostid %lu): %d items finished\n",host_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contactgroups"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contactgroups"
 					"(hostid %lu) ERROR:Rollback %d items \n",host_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contactgroups"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contactgroups"
 					"(hostid %lu) Warning:No contactgroups storable\n",host_id);
 
 	}
@@ -6025,8 +6022,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contacts,MT(":X1"),(uint *)instid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contacts,MT(":X2"),(uint *)hostid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contacts,MT(":X3"),(uint *)memberid_arr,0);
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() contacts Binds End\n");
 	arrsize=0;
 
 #endif /* Oracle ocilib specific */
@@ -6068,19 +6063,19 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
                 free(buf);
                 first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+		if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_contacts,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_contacts)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostdefinition_contacts);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contacts"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contacts"
 						"(hostid %lu):so far %d items committed\n",host_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contacts"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contacts"
 						"(hostid %lu) ERROR:Rollback %d items\n",host_id,arrsize);
 				arrsize=0;
 			}
@@ -6112,25 +6107,24 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_contacts,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_hostdefinition_contacts)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostdefinition_contacts);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contacts"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contacts"
 					"(hostid %lu): %d items finished\n",host_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contacts"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contacts"
 					"(hostid %lu) ERROR:Rollback %d items \n",host_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition contacts"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition contacts"
 					"(hostid %lu) Warning:No contacts storable\n",host_id);
 
 	}
 
 #endif /* Oracle ocilib specific */
 	if (buf1!= NULL) free(buf1);
-
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() host_contacts end\n");
 	//cleanup array buffers
 
@@ -6289,20 +6283,18 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	 memberid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
 
 	 if ((instid_arr ==NULL) ||(groupid_arr ==NULL)||(memberid_arr ==NULL)){
-		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition() members"
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition() members"
 				 "  ArrayVars Alloc ERROR, exit\n");
 		 if(instid_arr) free(instid_arr);
 		 if(groupid_arr) free(groupid_arr);
 		 if(memberid_arr) free(memberid_arr);
 		 return IDO_ERROR;
 	 }
-	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() members ArrayVars OK\n");
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition() members ArrayVars OK\n");
 	 /* bind arrays to statement */
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,MT(":X1"),(uint *)instid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,MT(":X2"),(uint *)groupid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,MT(":X3"),(uint *)memberid_arr,0);
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition() members Binds End\n");
 	arrsize=0;
 
 #endif /* Oracle ocilib specific */
@@ -6346,19 +6338,19 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
                 first=0;
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+                if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition members "
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition members "
 						"(groupid %lu):so far %d items committed\n",group_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition members"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition members"
 						"(groupid %lu) ERROR:Rollback %d items\n",group_id,arrsize);
 				arrsize=0;
 			}
@@ -6390,18 +6382,18 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition members"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition members"
 					"(groupid %lu): %d items finished\n",group_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition members"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition members"
 					"groupid %lu) ERROR:Rollback %d items \n",group_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition members"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition members"
 					"(grupidid %lu) Warning:No members storable\n",group_id);
 	}
 
@@ -6718,22 +6710,19 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	 memberid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
 
 	 if ((instid_arr ==NULL) ||(serviceid_arr ==NULL)||(memberid_arr ==NULL)){
-		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() contactgroups"
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition() contactgroups"
 				 "  ArrayVars Alloc ERROR, exit\n");
 		 if(instid_arr) free(instid_arr);
 		 if(serviceid_arr) free(serviceid_arr);
 		 if(memberid_arr) free(memberid_arr);
 		 return IDO_ERROR;
 	 }
-	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() contactgroups"
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition() contactgroups"
 			 " ArrayVars OK\n");
 	 /* bind arrays to statement */
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups,MT(":X1"),(uint *)instid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups,MT(":X2"),(uint *)serviceid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups,MT(":X3"),(uint *)memberid_arr,0);
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() contactgroups"
-			" Binds End\n");
 	arrsize=0;
 
 
@@ -6779,19 +6768,19 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
                 free(buf);
                 first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+                if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicedefinition_contactgroups,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_servicedefinition_contactgroups)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_servicedefinition_contactgroups);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contactgroups"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contactgroups"
 						"(serviceid %lu):so far %d items committed\n",service_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contactgroups"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contactgroups"
 						"(hostid %lu) ERROR:Rollback %d items\n",service_id,arrsize);
 				arrsize=0;
 			}
@@ -6823,18 +6812,18 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicedefinition_contactgroups,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_servicedefinition_contactgroups)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_servicedefinition_contactgroups);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contactgroups"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contactgroups"
 					"(hostid %lu): %d items finished\n",service_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contactgroups"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contactgroups"
 					"(hostid %lu) ERROR:Rollback %d items \n",service_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contactgroups"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contactgroups"
 					"(hostid %lu) Warning:No contactgroups storable\n",service_id);
 
 	}
@@ -6862,8 +6851,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contacts,MT(":X1"),(uint *)instid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contacts,MT(":X2"),(uint *)serviceid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contacts,MT(":X3"),(uint *)memberid_arr,0);
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() contacts Binds End\n");
 	arrsize=0;
 
 
@@ -6907,19 +6894,19 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
                 free(buf);
                 first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+		if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicedefinition_contacts,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_servicedefinition_contacts)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_servicedefinition_contacts);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contacts"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contacts"
 						"(hostid %lu):so far %d items committed\n",service_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contacts"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contacts"
 						"(hostid %lu) ERROR:Rollback %d items\n",service_id,arrsize);
 				arrsize=0;
 			}
@@ -6956,18 +6943,18 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicedefinition_contacts,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_servicedefinition_contacts)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_servicedefinition_contacts);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contacts"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contacts"
 					"(hostid %lu): %d items finished\n",service_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contacts"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contacts"
 					"(hostid %lu) ERROR:Rollback %d items \n",service_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition contacts"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition contacts"
 					"(hostid %lu) Warning:No contacts storable\n",service_id);
 
 	}
@@ -7134,22 +7121,19 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	 memberid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
 
 	 if ((instid_arr ==NULL) ||(groupid_arr ==NULL)||(memberid_arr ==NULL)){
-		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition() "
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition() "
 				 "members  ArrayVars Alloc ERROR, exit\n");
 		 if(instid_arr) free(instid_arr);
 		 if(groupid_arr) free(groupid_arr);
 		 if(memberid_arr) free(memberid_arr);
 		 return IDO_ERROR;
 	 }
-	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition()"
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition()"
 			 " members ArrayVars OK\n");
 	 /* bind arrays to statement */
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicegroupdefinition_members,MT(":X1"),(uint *)instid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicegroupdefinition_members,MT(":X2"),(uint *)groupid_arr,0);
 	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicegroupdefinition_members,MT(":X3"),(uint *)memberid_arr,0);
-
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition()"
-			" members Binds End\n");
 	arrsize=0;
 
 #endif /* Oracle ocilib specific */
@@ -7184,7 +7168,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegoupdefinition members "
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition members "
 					"(Pos %lu) Id=%lu group=%lu member=%lu\n",
 					arrsize+count,idi->dbinfo.instance_id,group_id,member_id);
 		/* copy ids to to array */
@@ -7198,19 +7182,19 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
                 first=0;
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+                if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicegroupdefinition_members,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_servicegroupdefinition_members)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_servicegroupdefinition_members);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition members "
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition members "
 						"(groupid %lu):so far %d items committed\n",group_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition members"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition members"
 						"(groupid %lu) ERROR:Rollback %d items\n",group_id,arrsize);
 				arrsize=0;
 			}
@@ -7241,19 +7225,19 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicegroupdefinition_members,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_servicegroupdefinition_members)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_servicegroupdefinition_members);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition members"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition members"
 					"(groupid %lu): %d items finished\n",group_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition members"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition members"
 					"groupid %lu) ERROR:Rollback %d items \n",group_id,arrsize);
 
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition members"
-					"(grupidid %lu) Warning:No members storable\n",group_id);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition members"
+					"(groupid %lu) Warning:No members storable\n",group_id);
 	}
 
 #endif /* Oracle ocilib specific */
@@ -8032,32 +8016,31 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	 /* allocate array buffers based an maximal expected sizes*/
-		 instid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
-		 timeid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
-		 day_arr=(int *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(int));
-		 startsec_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
-		 endsec_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
+	 instid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
+	 timeid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
+	 day_arr=(int *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(int));
+	 startsec_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
+	 endsec_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
 
-		 if ((instid_arr ==NULL) ||(timeid_arr ==NULL)||(day_arr ==NULL)||(startsec_arr ==NULL)||(endsec_arr ==NULL)){
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges()"
-					 "  ArrayVars Alloc ERROR, exit\n");
-			 if(instid_arr) free(instid_arr);
-			 if(timeid_arr) free(timeid_arr);
-			 if(day_arr) free(day_arr);
-			 if(startsec_arr) free(startsec_arr);
-			 if(endsec_arr) free(endsec_arr);
-			 return IDO_ERROR;
-		 }
-		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges()"
-				 " ArrayVars OK\n");
-		 /* bind arrays to statement */
-		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X1"),(uint *)instid_arr,0);
-		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X2"),(uint *)timeid_arr,0);
-		OCI_BindArrayOfInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X3"),(int *)day_arr,0);
-		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X4"),(uint *)startsec_arr,0);
-		OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X5"),(uint *)endsec_arr,0);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges() Binds End\n");
-		arrsize=0;
+	 if ((instid_arr ==NULL) ||(timeid_arr ==NULL)||(day_arr ==NULL)||(startsec_arr ==NULL)||(endsec_arr ==NULL)){
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges()"
+				 "  ArrayVars Alloc ERROR, exit\n");
+		 if(instid_arr) free(instid_arr);
+		 if(timeid_arr) free(timeid_arr);
+		 if(day_arr) free(day_arr);
+		 if(startsec_arr) free(startsec_arr);
+		 if(endsec_arr) free(endsec_arr);
+		 return IDO_ERROR;
+	 }
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges()"
+			 " ArrayVars OK\n");
+	 /* bind arrays to statement */
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X1"),(uint *)instid_arr,0);
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X2"),(uint *)timeid_arr,0);
+	OCI_BindArrayOfInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X3"),(int *)day_arr,0);
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X4"),(uint *)startsec_arr,0);
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,MT(":X5"),(uint *)endsec_arr,0);
+	arrsize=0;
 
 #endif /* Oracle ocilib specific */
 
@@ -8111,19 +8094,19 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 		free(buf);
 		first=0;
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (arrsize==OCI_BINDARRAY_MAX_SIZE) {
+		if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
 			/* array limit being exceeded, need to push to database before continue*/
 			OCI_BindArraySetSize(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,arrsize);
 			if (OCI_Execute(idi->dbinfo.oci_statement_timeperiodefinition_timeranges)) {
 				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_configfilevariables_insert);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges"
 						"(Period %lu):so far %d items committed\n",timeperiod_id,count);
 				arrsize=0;
 				OCI_Commit(idi->dbinfo.oci_connection);
 			}else{
 				/* execute error occured, need rollback and exit */
 				OCI_Rollback(idi->dbinfo.oci_connection);
-				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges"
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges"
 						"(Period %lu) ERROR:Rollback %d items\n",timeperiod_id,arrsize);
 				free(day_arr);
 			 	free(startsec_arr);
@@ -8158,17 +8141,17 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 		OCI_BindArraySetSize(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,arrsize);
 		if (OCI_Execute(idi->dbinfo.oci_statement_timeperiodefinition_timeranges)) {
 			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_timeperiodefinition_timeranges);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges"
 					"(period %lu) %d items finished\n",timeperiod_id,count);
 			OCI_Commit(idi->dbinfo.oci_connection);
 		 }else{
 			OCI_Rollback(idi->dbinfo.oci_connection);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges"
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges"
 					"(period %lu) ERROR:Rollback %d items\n",timeperiod_id,arrsize);
 		 }
 	}
 	if (count==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition_timeranges"
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges"
 				"(period %lu) Warning:No ranges storable\n",timeperiod_id);
 	}
  	//cleanup array buffers
@@ -8631,6 +8614,12 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	ido2db_mbuf mbuf;
 #ifdef USE_ORACLE
         char *seq_name = NULL;
+        /* definitions for array binding */
+	int  arrsize=0;
+	int count=0;
+	unsigned long  *instid_arr;
+	unsigned long  *groupid_arr;
+	unsigned long  *memberid_arr;
 #endif
         void *data[4];
 	int first;
@@ -8713,6 +8702,10 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
                 free(seq_name);
 
 #endif /* Oracle ocilib specific */
+	}else{
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactroupdefinition() "
+				"preeceding ido2db_query_insert_or_update_contactgroupdefinition_definition_add ERROR \n");
+		return IDO_ERROR;
 	}
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -8743,13 +8736,25 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
+        /* allocate array buffers based an maximal expected sizes*/
+	 instid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
+	 groupid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
+	 memberid_arr=(unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE*sizeof(long));
 
-        /* build a multiple insert value array */
-        if(asprintf(&buf1, "INSERT INTO %s (id, instance_id, contactgroup_id, contact_object_id) SELECT seq_%s.nextval, x1, x2, x3 from (",
-                        ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS],
-                        ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS]
-                        )==-1)
-                buf1=NULL;
+	 if ((instid_arr ==NULL) ||(groupid_arr ==NULL)||(memberid_arr ==NULL)){
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition() members"
+				 "  ArrayVars Alloc ERROR, exit\n");
+		 if(instid_arr) free(instid_arr);
+		 if(groupid_arr) free(groupid_arr);
+		 if(memberid_arr) free(memberid_arr);
+		 return IDO_ERROR;
+	 }
+	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition() members ArrayVars OK\n");
+	 /* bind arrays to statement */
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,MT(":X1"),(uint *)instid_arr,0);
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,MT(":X2"),(uint *)groupid_arr,0);
+	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,MT(":X3"),(uint *)memberid_arr,0);
+	arrsize=0;
 
 #endif /* Oracle ocilib specific */
 
@@ -8779,57 +8784,86 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
-                if(first==1) {
-                        if(asprintf(&buf1, "%s SELECT %lu as x1, %lu as x2, %lu as x3 FROM DUAL ",
-                                        buf1,
-                                        idi->dbinfo.instance_id,
-                                        group_id,
-                                        member_id
-                                        )==-1)
-                                buf1=NULL;
-
-                } else {
-                        if(asprintf(&buf1, "%s UNION ALL SELECT %lu, %lu, %lu FROM DUAL ",
-                                        buf1,
-                                        idi->dbinfo.instance_id,
-                                        group_id,
-                                        member_id
-                                        )==-1)
-                                buf1=NULL;
-                }
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition members "
+					"(Pos %lu) Id=%lu group=%lu member=%lu\n",
+					arrsize+count,idi->dbinfo.instance_id,group_id,member_id);
+		/* copy ids to to array */
+		instid_arr[arrsize]=idi->dbinfo.instance_id;
+		groupid_arr[arrsize]=group_id;
+		memberid_arr[arrsize]=member_id;
+		arrsize++;
 #endif /* Oracle ocilib specific */
 
                 free(buf);
                 first=0;
-        }
-#ifdef USE_ORACLE /* Oracle ocilib specific */
 
-        if(asprintf(&buf1, "%s)", buf1)==-1)
-                buf1=NULL;
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+                if (arrsize == OCI_BINDARRAY_MAX_SIZE ) {
+			/* array limit being exceeded, need to push to database before continue*/
+			OCI_BindArraySetSize(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,arrsize);
+			if (OCI_Execute(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers)) {
+				count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers);
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition members "
+						"(groupid %lu):so far %d items committed\n",group_id,count);
+				arrsize=0;
+				OCI_Commit(idi->dbinfo.oci_connection);
+			}else{
+				/* execute error occured, need rollback and exit */
+				OCI_Rollback(idi->dbinfo.oci_connection);
+				ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition members"
+						"(groupid %lu) ERROR:Rollback %d items\n",group_id,arrsize);
+				arrsize=0;
+			}
+
+		}
+#endif /* Oracle ocilib specific */
+
+	}//for
+#ifdef USE_ORACLE /* Oracle ocilib specific */
 
 #endif /* Oracle ocilib specific */
 
-        if(first==0){
-                result=ido2db_db_query(idi, buf1);
+
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
+	 if(first==0){
+	        result=ido2db_db_query(idi, buf1);
                 dbi_result_free(idi->dbinfo.dbi_result);
+	 }
 #endif
+
 
 #ifdef USE_PGSQL /* pgsql */
 
 #endif
-
 #ifdef USE_ORACLE /* Oracle ocilib specific */
+	/* store remaining entries*/
 
-        /* statement handle not re-binded */
-        OCI_StatementFree(idi->dbinfo.oci_statement);
+	if (arrsize>0) {
+		OCI_BindArraySetSize(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,arrsize);
+		if (OCI_Execute(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers)) {
+			count+=OCI_GetAffectedRows(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition members"
+					"(groupid %lu): %d items finished\n",group_id,count);
+			OCI_Commit(idi->dbinfo.oci_connection);
+		 }else{
+			OCI_Rollback(idi->dbinfo.oci_connection);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition members"
+					"groupid %lu) ERROR:Rollback %d items \n",group_id,arrsize);
+
+		 }
+	}
+	if (count==0){
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition members"
+					"(groupid %lu) Warning:No members storable\n",group_id);
+	}
 
 #endif /* Oracle ocilib specific */
-
-        }
-
-        free(buf1);
+	if (buf1!= NULL) free(buf1);
+	//cleanup array buffers
+	free(groupid_arr);
+	free(instid_arr);
+	free(memberid_arr);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition() end\n");
 

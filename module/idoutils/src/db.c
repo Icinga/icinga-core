@@ -5294,7 +5294,7 @@ int ido2db_oci_prepared_statement_configfilevariables_insert(ido2db_idi *idi) {
         char *buf = NULL;
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configfilevariables_insert() start\n");
- 
+ /*
         if(asprintf(&buf,
         		"MERGE INTO %s USING DUAL "
         		"ON (instance_id=:X1 AND configfile_id=:X2 AND varname=:X3) "
@@ -5303,6 +5303,13 @@ int ido2db_oci_prepared_statement_configfilevariables_insert(ido2db_idi *idi) {
 		       "WHEN NOT MATCHED THEN "
 			       "INSERT (id, instance_id, configfile_id, varname, varvalue) "
         			"VALUES (seq_configfilevariables.nextval, :X1, :X2, :X3, :X4)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1) {
+                        buf = NULL;
+        }
+*/
+        if(asprintf(&buf,
+        		"INSERT INTO %s (id, instance_id, configfile_id, varname, varvalue) "
+        		"VALUES (seq_configfilevariables.nextval, :X1, :X2, :X3, :X4)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1) {
                         buf = NULL;
         }
@@ -5474,12 +5481,7 @@ int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ido2db_idi *idi) {
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
         if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (host_id=:X2 AND parent_host_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, host_id, parent_host_object_id) "
+        		"INSERT INTO %s (id, instance_id, host_id, parent_host_object_id) "
         			"VALUES (seq_host_parenthosts.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS]) == -1) {
                         buf = NULL;
@@ -5519,13 +5521,7 @@ int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ido2db_idi *idi) 
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (host_id=:X2 AND contactgroup_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, host_id, contactgroup_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, host_id, contactgroup_object_id) "
         			"VALUES (seq_host_contactgroups.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS]) == -1) {
                         buf = NULL;
@@ -5566,13 +5562,7 @@ int ido2db_oci_prepared_statement_hostdefinition_contacts(ido2db_idi *idi) {
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (instance_id=:X1) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET host_id=:X2, contact_object_id=:X3 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, host_id, contact_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, host_id, contact_object_id) "
         			"VALUES (seq_host_contacts.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTS]) == -1) {
                         buf = NULL;
@@ -5660,13 +5650,7 @@ int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ido2db_id
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (hostgroup_id=:X2 AND host_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, hostgroup_id, host_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, hostgroup_id, host_object_id) "
         			"VALUES (seq_hostgroup_members.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS]) == -1) {
                         buf = NULL;
@@ -5799,13 +5783,7 @@ int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ido2db_idi *id
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (service_id=:X2 AND contactgroup_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, service_id, contactgroup_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, service_id, contactgroup_object_id) "
         			"VALUES (seq_service_contactgroups.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS]) == -1) {
                         buf = NULL;
@@ -5846,13 +5824,7 @@ int ido2db_oci_prepared_statement_servicedefinition_contacts(ido2db_idi *idi) {
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (instance_id=:X1) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET service_id=:X2, contact_object_id=:X3 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, service_id, contact_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, service_id, contact_object_id) "
         			"VALUES (seq_service_contacts.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTS]) == -1) {
                         buf = NULL;
@@ -5943,13 +5915,7 @@ int ido2db_oci_prepared_statement_servicegroupdefinition_members(ido2db_idi *idi
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (servicegroup_id=:X2 AND service_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, servicegroup_id, service_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, servicegroup_id, service_object_id) "
         			"VALUES (seq_servicegroup_members.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS]) == -1) {
                         buf = NULL;
@@ -6483,13 +6449,7 @@ int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ido2db_idi *idi
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (timeperiod_id=:X2 AND day=:X3 AND start_sec=:X4 AND end_sec=:X5) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, timeperiod_id, day, start_sec, end_sec) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, timeperiod_id, day, start_sec, end_sec) "
         			"VALUES (seq_timep_timer.nextval, :X1, :X2, :X3, :X4, :X5)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES]) == -1) {
                         buf = NULL;
@@ -6822,13 +6782,7 @@ int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (contactgroup_id=:X2 AND contact_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, contactgroup_id, contact_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, contactgroup_id, contact_object_id) "
         			"VALUES "
         				"(seq_contactgroup_members.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS]) == -1) {
@@ -6847,6 +6801,11 @@ int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,OCI_BINDARRAY_MAX_SIZE);
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -7312,10 +7271,10 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
     if (count==0) return;
     sprintf(text,"%u BindVars",count);
     i=OCI_BindArrayGetSize(st);
-    if (i>0){
+    if (i>1){
 	    sprintf(text,"%s, Array %u Rows, Binds for first row",text,i);
     }
-    strcat(text,":\n");
+    strcat(text," -->");
     strcpy((char *)outp,text);
     /* loop through bind vars */
     for (i=1;i<=count;i++) {
