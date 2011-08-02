@@ -6,7 +6,6 @@ Icinga 1.5.x Change Log
 
 ENHANCEMENTS
 * core: do not update host/service status during scheduler initialization on startup (idoutils already know that) #1741
-* core: do not dump retained states on startup, re-enable via cfg option (idoutils already know that) #1742
 
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
