@@ -6126,11 +6126,14 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 	if (buf1!= NULL) free(buf1);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() host_contacts end\n");
-	//cleanup array buffers
 
+#ifdef USE_ORACLE
+	//cleanup array buffers
 	free(hostid_arr);
 	free(instid_arr);
 	free(memberid_arr);
+#endif
+
 	/* save custom variables to db */
 	result=ido2db_save_custom_variables(idi,IDO2DB_DBTABLE_CUSTOMVARIABLES,object_id,NULL, -1);
 
@@ -6399,10 +6402,13 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	if (buf1!= NULL) free(buf1);
+
+#ifdef USE_ORACLE
 	//cleanup array buffers
 	free(groupid_arr);
 	free(instid_arr);
 	free(memberid_arr);
+#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition() end\n");
 
@@ -6961,10 +6967,14 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	if (buf1!= NULL) free(buf1);
+
+#ifdef USE_ORACLE
 	//cleanup array buffers
 	free(serviceid_arr);
 	free(instid_arr);
 	free(memberid_arr);
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() service_contacts end\n");
 
 	/* save custom variables to db */
@@ -7242,10 +7252,13 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	if (buf1!= NULL) free(buf1);
+
+#ifdef USE_ORACLE
 	//cleanup array buffers
 	free(groupid_arr);
 	free(instid_arr);
 	free(memberid_arr);
+#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition() end\n");
 
@@ -8860,10 +8873,13 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	if (buf1!= NULL) free(buf1);
+
+#ifdef USE_ORACLE
 	//cleanup array buffers
 	free(groupid_arr);
 	free(instid_arr);
 	free(memberid_arr);
+#endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition() end\n");
 
