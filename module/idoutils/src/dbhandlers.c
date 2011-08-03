@@ -5310,7 +5310,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_runtimevariables"
 				"(Pos %lu) Id=%lu %s=%s\n",
-					arrsize+count,idi->dbinfo.instance_id,es[0],es[1]);
+					arrsize+count,idi->dbinfo.instance_id,es[1],es[2]);
 		/* copy instanceid and configfile_id to array */
 		instid_arr[arrsize]=idi->dbinfo.instance_id;
 

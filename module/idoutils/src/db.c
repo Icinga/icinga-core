@@ -2966,15 +2966,15 @@ int ido2db_check_dbd_driver(void) {
 
 void ido2db_ocilib_err_handler(OCI_Error *err) {
 	OCI_Statement *st=NULL;
-//	OCI_Error *arrerr;
+	OCI_Error *arrerr;
 	const mtext *sql = "";
 	unsigned int  err_type;
 	const char * err_msg;
 	char * errt_msg = NULL;
 	char * buf=NULL;
 	char * binds=NULL;
-//	int arrerrcount=0;
-//	int arrsize=0;
+	int arrerrcount=0;
+	int arrsize=0;
 	unsigned int err_pos=0;
 	err_type = OCI_ErrorGetType(err);
 	err_msg  = OCI_ErrorGetString(err);
@@ -2988,10 +2988,6 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 	if (st) {
 		sql= OCI_GetSql(st);
 		err_pos=OCI_GetSqlErrorPos(st);
-		/* todo needs to be checked,
-		 * OCI_GetBatchErrorCount(st) works not as expected
-		 */
-		/*
 		arrsize=OCI_BindArrayGetSize(st);
 		if (arrsize>0) {
 			arrerrcount=OCI_GetBatchErrorCount(st);
@@ -3004,7 +3000,6 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 				}
 			}
 		}
-		*/
 		if (OCI_GetBindCount(st)>0) {
 			binds=malloc(OCI_VARCHAR_SIZE*16);
 			if (binds==NULL) {
