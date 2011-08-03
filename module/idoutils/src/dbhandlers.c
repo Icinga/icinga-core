@@ -4863,7 +4863,7 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
         //bind clob
 	lob_i=OCI_LobCreate(idi->dbinfo.oci_connection,OCI_CLOB);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_statehistory() bind clob\n");
-	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_statehistory,":X13",*(char **)data[4],&lob_i);
+	result=ido2db_oci_bind_clob(idi->dbinfo.oci_statement_statehistory,":X13",*(char **)data[12],&lob_i);
 	if (result==IDO_OK) {
 	/* execute statement */
 		result=OCI_Execute(idi->dbinfo.oci_statement_statehistory)?IDO_OK:IDO_ERROR;
