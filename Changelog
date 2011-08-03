@@ -62,6 +62,10 @@ FIXES
 * core: Fix typo in configure.in preventing compilation on FreeBSD (thanks sag47) #1732
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
+* classic ui: better handling of writing to cgi.log in cmd.cgi #1161
+* classic ui: fixing tac.cgi header problems with counting and adding pending and descriptions #1505 #1506 #1508
+* classic ui: corrected behaviour of pending states in tac header #1508
+* classic ui: fix counting for services in tac header is wrong #1508
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
 * classic ui: fixed: User can execute host/servicegroup commands even if not authorized for (Sven Nierlein) #1679
 * classic ui: fixed: plugin_output_short didn't get checked properly and caused segfault in status.cgi #1673
@@ -79,10 +83,13 @@ FIXES
 * idoutils: fix ORA-00600 while executing merge #1362
 
 * install: fix event handlers cmd file location in contrib #1501
+* install: icinga.spec should not provide nagios version #1562
+* install: don't include git meta data in upstream tarballs #1562
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
 * install: fix icinga.cmd and log dir replacement in icinga-api aubmodule #1573 #1715
 * install: fix DEBUG_LOG_PATH in p1.pl, will now be using configurable log-dir #1715
 * install: do not overwrite config in make fullinstall #1754
+* install: fix configure should tell if ocilib or libdbi if idoutils enabled in summary #1780
 
 * config: deprecate log_external_commands_user #1619
 
