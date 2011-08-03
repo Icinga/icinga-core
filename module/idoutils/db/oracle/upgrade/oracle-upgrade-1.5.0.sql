@@ -80,6 +80,7 @@ alter table eventhandlers add (long_output clob) lob (long_output) store as even
 -- drop unique keys for multiline inserts
 -- -----------------------------------------
 
+ALTER TABLE configfilevariables DROP CONSTRAINT configfilevar_uq;
 ALTER TABLE timeperiod_timeranges DROP CONSTRAINT timeperiod_timeranges_uq;
 ALTER TABLE host_parenthosts DROP CONSTRAINT host_parenthosts_uq;
 ALTER TABLE host_contactgroups DROP CONSTRAINT host_contactgroups_uq;

@@ -792,6 +792,7 @@ dnl set dummy for ocilib
 OCILIB_LIB=""
 
 USE_IDOUTILS=no
+USE_IDOUTILS_ORACLE=no
 AC_ARG_ENABLE(idoutils,AC_HELP_STRING([--enable-idoutils],[enables database connectivity using idoutils]),USE_IDOUTILS=$enableval,USE_IDOUTILS=no)
 if test x$USE_IDOUTILS = xyes; then
 	if test x$USE_EVENTBROKER = xno; then
@@ -823,6 +824,8 @@ if test x$USE_IDOUTILS = xyes; then
 
 	if test x$USE_OCILIB = xyes; then
 
+		dnl set marker for output
+		USE_IDOUTILS_ORACLE=yes
 		OCILIB_INC="/usr/local/include"
 		OCILIB_LIB="/usr/local/lib"
 
@@ -1078,6 +1081,7 @@ AC_SUBST(INIT_OPTS)
 AC_SUBST(INSTALLPERLSTUFF)
 AC_SUBST(USE_EVENTBROKER)
 AC_SUBST(USE_IDOUTILS)
+AC_SUBST(USE_IDOUTILS_ORACLE)
 
 AC_PATH_PROG(PERL,perl)
 
@@ -1346,7 +1350,11 @@ else
 AC_MSG_RESULT([             Event Broker:  no])
 fi
 if test x$USE_IDOUTILS = xyes; then
-AC_MSG_RESULT([           Build IDOUtils:  yes, instance_name=$IDO_INSTANCE_NAME])
+if test x$USE_IDOUTILS_ORACLE = xyes; then
+AC_MSG_RESULT([           Build IDOUtils:  ocilib, instance_name=$IDO_INSTANCE_NAME])
+else
+AC_MSG_RESULT([           Build IDOUtils:  libdbi, instance_name=$IDO_INSTANCE_NAME])
+fi
 else
 AC_MSG_RESULT([           Build IDOUtils:  no])
 fi

@@ -4085,11 +4085,15 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name,vo
 /* show a summary of hostgroup(s)... */
 void show_hostgroup_summaries(void){
 	hostgroup *temp_hostgroup=NULL;
+	hostsmember *temp_member=NULL;
+	host *temp_host=NULL;
+	hoststatus *temp_hoststatus=NULL;
 	int user_has_seen_something=FALSE;
 	int hostgroup_error=FALSE;
 	int odd=0;
 	char error_text[MAX_INPUT_BUFFER]="";
 	int json_start=TRUE;
+	int partial_hosts=FALSE;	
 
 	if(content_type==JSON_CONTENT) {
 		printf("\"hostgroup_summary\": [\n");
@@ -4109,7 +4113,7 @@ void show_hostgroup_summaries(void){
 
 		printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Status Summary For ");
 		if(show_all_hostgroups==TRUE)
-			printf("All Host Groups");
+			printf("%s",show_partial_hostgroups?"All Host Groups<br>(Partial Hostgroups Enabled)":"All Host Groups");
 		else
 			printf("Host Group '%s'",hostgroup_name);
 		printf("</DIV>\n");
@@ -4139,11 +4143,45 @@ void show_hostgroup_summaries(void){
 
 		/* loop through all hostgroups... */
 		for(temp_hostgroup=hostgroup_list;temp_hostgroup!=NULL;temp_hostgroup=temp_hostgroup->next){
+			partial_hosts=FALSE;
 
 			/* make sure the user is authorized to view this hostgroup */
 			if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
 				continue;
 
+			/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
+			if(show_partial_hostgroups==TRUE) {
+				for(temp_member=temp_hostgroup->members;temp_member!=NULL;temp_member=temp_member->next){
+
+					/* find the host... */
+					temp_host=find_host(temp_member->host_name);
+					if(temp_host==NULL)
+						continue;
+
+					/* only shown in partial hostgroups if user is authorized to view this host */
+					if (is_authorized_for_host(temp_host,&current_authdata)==FALSE)
+						continue;
+
+					/* find the host status */
+					temp_hoststatus=find_hoststatus(temp_host->name);
+					if(temp_hoststatus==NULL)
+						continue;
+
+					/* make sure we will only be displaying hosts of the specified status levels */
+					if(!(host_status_types & temp_hoststatus->status))
+						continue;
+
+					/* make sure we will only be displaying hosts that have the desired properties */
+					if(passes_host_properties_filter(temp_hoststatus)==FALSE)
+						continue;
+
+					partial_hosts=TRUE;
+				}
+			}
+			/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
+			if(show_partial_hostgroups==TRUE && partial_hosts==FALSE)
+				continue;
+ 
 			if(odd==0)
 				odd=1;
 			else
@@ -4268,6 +4306,10 @@ void show_hostgroup_host_totals_summary(hostgroup *temp_hostgroup){
 		/* find the host... */
 		temp_host=find_host(temp_member->host_name);
 		if(temp_host==NULL)
+			continue;
+
+		/* only shown in partial hostgroups if user is authorized to view this host */
+		if (is_authorized_for_host(temp_host,&current_authdata)==FALSE)
 			continue;
 
 		/* find the host status */
@@ -4442,6 +4484,7 @@ void show_hostgroup_service_totals_summary(hostgroup *temp_hostgroup){
 	int services_critical_disabled=0;
 	int services_critical_unacknowledged=0;
 	servicestatus *temp_servicestatus=NULL;
+	service *temp_service=NULL;
 	hoststatus *temp_hoststatus=NULL;
 	host *temp_host=NULL;
 	int problem=FALSE;
@@ -4449,6 +4492,17 @@ void show_hostgroup_service_totals_summary(hostgroup *temp_hostgroup){
 
 	/* check all services... */
 	for(temp_servicestatus=servicestatus_list;temp_servicestatus!=NULL;temp_servicestatus=temp_servicestatus->next){
+
+		/* find the service  */
+		temp_service=find_service(temp_servicestatus->host_name,temp_servicestatus->description);
+
+		/* if we couldn't find the service, go to the next service */
+		if(temp_service==NULL)
+			continue;
+
+		/* make sure user has rights to see this... */
+		if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
+			continue;
 
 		/* find the host this service is associated with */
 		temp_host=find_host(temp_servicestatus->host_name);
@@ -4723,7 +4777,7 @@ void show_hostgroup_grids(void){
 
 		printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Status Grid For ");
 		if(show_all_hostgroups==TRUE)
-			printf("All Host Groups");
+			printf("%s",show_partial_hostgroups?"All Host Groups<br>(Partial Hostgroups Enabled)":"All Host Groups");
 		else
 			printf("Host Group '%s'",hostgroup_name);
 		printf("</DIV>\n");
@@ -4826,6 +4880,45 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 	int current_item;
 	int json_start=TRUE;
 	int json_start2=TRUE;
+	int partial_hosts=FALSE;
+
+	/* make sure the user is authorized to view this hostgroup */
+	if(show_partial_hostgroups==FALSE && is_authorized_for_hostgroup(temp_hostgroup,&current_authdata)==FALSE)
+		return;
+            
+	/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
+	if(show_partial_hostgroups==TRUE) {
+		for(temp_member=temp_hostgroup->members;temp_member!=NULL;temp_member=temp_member->next){
+
+			/* find the host... */
+			temp_host=find_host(temp_member->host_name);
+			if(temp_host==NULL)
+				continue;
+
+			/* only shown in partial hostgroups if user is authorized to view this host */
+			if (is_authorized_for_host(temp_host,&current_authdata)==FALSE)
+				continue;
+
+			/* find the host status */
+			temp_hoststatus=find_hoststatus(temp_host->name);
+			if(temp_hoststatus==NULL)
+				continue;
+
+			/* make sure we will only be displaying hosts of the specified status levels */
+			if(!(host_status_types & temp_hoststatus->status))
+				continue;
+
+			/* make sure we will only be displaying hosts that have the desired properties */
+			if(passes_host_properties_filter(temp_hoststatus)==FALSE)
+				continue;
+
+			partial_hosts=TRUE;
+		}
+	}
+
+	/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
+	if(show_partial_hostgroups==TRUE && partial_hosts==FALSE)
+		return;
 
 	if(content_type==JSON_CONTENT){
 		printf("{ \"hostgroup_name\": \"%s\",\n",json_encode(temp_hostgroup->group_name));
@@ -4939,6 +5032,10 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 		json_start2=TRUE;
 		for(temp_service=service_list;temp_service;temp_service=temp_service->next){
 
+			/* make sure user has rights to see this... */
+	                if(is_authorized_for_service(temp_service,&current_authdata)==FALSE)
+		                continue;
+
 			/* skip this service if it's not associate with the host */
 			if(strcmp(temp_service->host_name,temp_host->name))
 				continue;
@@ -4983,6 +5080,9 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup){
 				current_item++;
 			}
 		}
+		/* Print no matching in case of no services */
+		if(current_item==1)
+			printf("No matching services");
 
 		if(content_type==JSON_CONTENT) {
 			printf(" ] } \n");

@@ -2966,14 +2966,16 @@ int ido2db_check_dbd_driver(void) {
 
 void ido2db_ocilib_err_handler(OCI_Error *err) {
 	OCI_Statement *st=NULL;
+//	OCI_Error *arrerr;
 	const mtext *sql = "";
-    unsigned int  err_type;
-    const char * err_msg;
-    char * errt_msg = NULL;
-    char * buf=NULL;
-    char * binds=NULL;
+	unsigned int  err_type;
+	const char * err_msg;
+	char * errt_msg = NULL;
+	char * buf=NULL;
+	char * binds=NULL;
+//	int arrerrcount=0;
+//	int arrsize=0;
 	unsigned int err_pos=0;
-
 	err_type = OCI_ErrorGetType(err);
 	err_msg  = OCI_ErrorGetString(err);
 	st=OCI_ErrorGetStatement(err);
@@ -2986,6 +2988,20 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 	if (st) {
 		sql= OCI_GetSql(st);
 		err_pos=OCI_GetSqlErrorPos(st);
+/* todo check array error implementation. OCI_BatchErrorCount throws errors */
+/*		arrsize=OCI_BindArrayGetSize(st);
+		if (arrsize>0) {
+			arrerrcount=OCI_GetBatchErrorCount(st);
+			if (arrerrcount>0){
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%d Batch Errors detected\n",arrerrcount);
+				arrerr=OCI_GetBatchError(st);
+				while (arrerr){
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "Error at row %d : %s\n", OCI_ErrorGetRow(arrerr), OCI_ErrorGetString(arrerr));
+					arrerr = OCI_GetBatchError(st);
+				}
+			}
+		}
+*/
 		if (OCI_GetBindCount(st)>0) {
 			binds=malloc(OCI_VARCHAR_SIZE*16);
 			if (binds==NULL) {
@@ -5279,39 +5295,49 @@ int ido2db_oci_prepared_statement_configfilevariables_insert(ido2db_idi *idi) {
  
         char *buf = NULL;
 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
- 
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configfilevariables_insert() start\n");
+ /*
         if(asprintf(&buf,
         		"MERGE INTO %s USING DUAL "
-        			"ON (instance_id=:X1 AND configfile_id=:X2 AND varname=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET varvalue=:X4 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, configfile_id, varname, varvalue) "
+        		"ON (instance_id=:X1 AND configfile_id=:X2 AND varname=:X3) "
+		       "WHEN MATCHED THEN "
+			       "UPDATE SET varvalue=:X4 "
+		       "WHEN NOT MATCHED THEN "
+			       "INSERT (id, instance_id, configfile_id, varname, varvalue) "
         			"VALUES (seq_configfilevariables.nextval, :X1, :X2, :X3, :X4)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1) {
                         buf = NULL;
         }
+*/
+        if(asprintf(&buf,
+        		"INSERT INTO %s (id, instance_id, configfile_id, varname, varvalue) "
+        		"VALUES (seq_configfilevariables.nextval, :X1, :X2, :X3, :X4)",
+                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILEVARIABLES]) == -1) {
+                        buf = NULL;
+        }
 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configvariables_insert() query: %s\n", buf);
  
         if(idi->dbinfo.oci_connection) {
  
                 idi->dbinfo.oci_statement_configfilevariables_insert = OCI_StatementCreate(idi->dbinfo.oci_connection);
- 
                 OCI_AllowRebinding(idi->dbinfo.oci_statement_configfilevariables_insert, 1);
- 
                 if(!OCI_Prepare(idi->dbinfo.oci_statement_configfilevariables_insert, MT(buf))) {
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+                 * array count cannot exceed this value after initial set here, but be lower.
+                 * See ocilib doc module "binding variables and arrays"
+                 */
+                OCI_BindArraySetSize(idi->dbinfo.oci_statement_configfilevariables_insert,OCI_BINDARRAY_MAX_SIZE);
         } else {
                 free(buf);
                 return IDO_ERROR;
         }
         free(buf);
 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_configfilevariables_insert() end\n");
 
         return IDO_OK;
 }
@@ -5322,21 +5348,16 @@ int ido2db_oci_prepared_statement_runtimevariables(ido2db_idi *idi) {
  
         char *buf = NULL;
  
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_runtimevariables() start\n");
  
         if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (instance_id=:X1 AND varname=:X2) "
-        		"WHEN MATCHED THEN UPDATE "
-        			"SET varvalue=:X3 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, varname, varvalue) "
+        		"INSERT INTO %s (id, instance_id, varname, varvalue) "
         			"VALUES (seq_runtimevariables.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES]) == -1) {
                         buf = NULL;
         }
  
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_runtimevariables() query: %s\n", buf);
  
         if(idi->dbinfo.oci_connection) {
  
@@ -5348,13 +5369,18 @@ int ido2db_oci_prepared_statement_runtimevariables(ido2db_idi *idi) {
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+                 * array count cannot exceed this value after initial set here, but be lower.
+                 * See ocilib doc module "binding variables and arrays"
+                 */
+                 OCI_BindArraySetSize(idi->dbinfo.oci_statement_runtimevariables,OCI_BINDARRAY_MAX_SIZE);
         } else {
                 free(buf);
                 return IDO_ERROR;
         }
         free(buf);
 
-        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_runtimevaribles() end\n");
 
         return IDO_OK;
 }
@@ -5457,12 +5483,7 @@ int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ido2db_idi *idi) {
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
         if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (host_id=:X2 AND parent_host_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, host_id, parent_host_object_id) "
+        		"INSERT INTO %s (id, instance_id, host_id, parent_host_object_id) "
         			"VALUES (seq_host_parenthosts.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS]) == -1) {
                         buf = NULL;
@@ -5480,6 +5501,11 @@ int ido2db_oci_prepared_statement_hostdefinition_parenthosts(ido2db_idi *idi) {
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_parenthosts,OCI_BINDARRAY_MAX_SIZE);
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -5497,13 +5523,7 @@ int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ido2db_idi *idi) 
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (host_id=:X2 AND contactgroup_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, host_id, contactgroup_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, host_id, contactgroup_object_id) "
         			"VALUES (seq_host_contactgroups.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS]) == -1) {
                         buf = NULL;
@@ -5521,6 +5541,12 @@ int ido2db_oci_prepared_statement_hostdefinition_contactgroups(ido2db_idi *idi) 
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_contactgroups,OCI_BINDARRAY_MAX_SIZE);
+
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -5538,13 +5564,7 @@ int ido2db_oci_prepared_statement_hostdefinition_contacts(ido2db_idi *idi) {
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (instance_id=:X1) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET host_id=:X2, contact_object_id=:X3 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, host_id, contact_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, host_id, contact_object_id) "
         			"VALUES (seq_host_contacts.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTS]) == -1) {
                         buf = NULL;
@@ -5562,6 +5582,12 @@ int ido2db_oci_prepared_statement_hostdefinition_contacts(ido2db_idi *idi) {
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostdefinition_contacts,OCI_BINDARRAY_MAX_SIZE);
+
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -5626,13 +5652,7 @@ int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ido2db_id
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (hostgroup_id=:X2 AND host_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, hostgroup_id, host_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, hostgroup_id, host_object_id) "
         			"VALUES (seq_hostgroup_members.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS]) == -1) {
                         buf = NULL;
@@ -5650,6 +5670,12 @@ int ido2db_oci_prepared_statement_hostgroupdefinition_hostgroupmembers(ido2db_id
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+ 		 * array count cannot exceed this value after initial set here, but be lower.
+ 		 * See ocilib doc module "binding variables and arrays"
+ 		 */
+ 		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers,OCI_BINDARRAY_MAX_SIZE);
+
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -5759,13 +5785,7 @@ int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ido2db_idi *id
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (service_id=:X2 AND contactgroup_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, service_id, contactgroup_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, service_id, contactgroup_object_id) "
         			"VALUES (seq_service_contactgroups.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS]) == -1) {
                         buf = NULL;
@@ -5783,6 +5803,12 @@ int ido2db_oci_prepared_statement_servicedefinition_contactgroups(ido2db_idi *id
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+ 		 * array count cannot exceed this value after initial set here, but be lower.
+ 		 * See ocilib doc module "binding variables and arrays"
+ 		 */
+ 		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicedefinition_contactgroups,OCI_BINDARRAY_MAX_SIZE);
+
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -5800,13 +5826,7 @@ int ido2db_oci_prepared_statement_servicedefinition_contacts(ido2db_idi *idi) {
 
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (instance_id=:X1) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET service_id=:X2, contact_object_id=:X3 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, service_id, contact_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, service_id, contact_object_id) "
         			"VALUES (seq_service_contacts.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTS]) == -1) {
                         buf = NULL;
@@ -5824,6 +5844,12 @@ int ido2db_oci_prepared_statement_servicedefinition_contacts(ido2db_idi *idi) {
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+ 		 * array count cannot exceed this value after initial set here, but be lower.
+ 		 * See ocilib doc module "binding variables and arrays"
+ 		 */
+ 		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicedefinition_contacts,OCI_BINDARRAY_MAX_SIZE);
+
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -5891,13 +5917,7 @@ int ido2db_oci_prepared_statement_servicegroupdefinition_members(ido2db_idi *idi
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (servicegroup_id=:X2 AND service_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, servicegroup_id, service_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, servicegroup_id, service_object_id) "
         			"VALUES (seq_servicegroup_members.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS]) == -1) {
                         buf = NULL;
@@ -5915,6 +5935,12 @@ int ido2db_oci_prepared_statement_servicegroupdefinition_members(ido2db_idi *idi
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_servicegroupdefinition_members,OCI_BINDARRAY_MAX_SIZE);
+
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -6425,13 +6451,7 @@ int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ido2db_idi *idi
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (timeperiod_id=:X2 AND day=:X3 AND start_sec=:X4 AND end_sec=:X5) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, timeperiod_id, day, start_sec, end_sec) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, timeperiod_id, day, start_sec, end_sec) "
         			"VALUES (seq_timep_timer.nextval, :X1, :X2, :X3, :X4, :X5)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES]) == -1) {
                         buf = NULL;
@@ -6449,6 +6469,11 @@ int ido2db_oci_prepared_statement_timeperiodefinition_timeranges(ido2db_idi *idi
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_timeperiodefinition_timeranges,OCI_BINDARRAY_MAX_SIZE);
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -6759,13 +6784,7 @@ int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido
  
         //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
  
-        if(asprintf(&buf,
-        		"MERGE INTO %s USING DUAL "
-        			"ON (contactgroup_id=:X2 AND contact_object_id=:X3) "
-        		"WHEN MATCHED THEN "
-        			"UPDATE SET instance_id=:X1 "
-        		"WHEN NOT MATCHED THEN "
-        			"INSERT (id, instance_id, contactgroup_id, contact_object_id) "
+        if(asprintf(&buf,"INSERT INTO %s (id, instance_id, contactgroup_id, contact_object_id) "
         			"VALUES "
         				"(seq_contactgroup_members.nextval, :X1, :X2, :X3)",
                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS]) == -1) {
@@ -6784,6 +6803,11 @@ int ido2db_oci_prepared_statement_contactgroupdefinition_contactgroupmembers(ido
                         free(buf);
                         return IDO_ERROR;
                 }
+                /* we will use bind arrays to improve performance
+		 * array count cannot exceed this value after initial set here, but be lower.
+		 * See ocilib doc module "binding variables and arrays"
+		 */
+		 OCI_BindArraySetSize(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers,OCI_BINDARRAY_MAX_SIZE);
         } else {
                 free(buf);
                 return IDO_ERROR;
@@ -7146,11 +7170,11 @@ int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	/**
 	 * enable dbms_output, execute statement and retrieve dbms_output lines
 	 */
-	OCI_ServerEnableOutput(cn , 32000, 1, 2000);
+	OCI_ServerEnableOutput(cn , OCI_OUTPUT_BUFFER_SIZE, 1, 2000);
 	ret=OCI_Execute(st);
 	while ((p = OCI_ServerGetOutput(cn)))
 	{
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s DBMSOUT:%s\n",fname,p);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s DBMSOUT:%s\n",fname,p);
 	}
 	/* return execute status */
 	if (!ret) {
@@ -7184,26 +7208,26 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 				 	 "dbms_application_info.set_module(:module,:action);"
 				 	 "end;"))) {
 			 OCI_StatementFree(st);
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Prepare failed:\n",fname);
+			 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Prepare failed:\n",fname);
 			 return IDO_ERROR;
 		 }
 		 /* bind module parameter */
 		 if(!(OCI_BindString(st,MT(":module"),module,0))) {
 		 	 OCI_StatementFree(st);
-		 	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind module failed:\n",fname);
+		 	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind module failed:\n",fname);
 		  	 return IDO_ERROR;
 		 }
 		 app_info=action?strdup(action):"";
 		 /* bind action parameter */
 		 if(!(OCI_BindString(st,MT(":action"),app_info,0))) {
 		  	 OCI_StatementFree(st);
-		  	 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind action failed:\n",fname);
+		  	 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind action failed:\n",fname);
 		   	 return IDO_ERROR;
 		 }
 		 /* execute statement */
 		 ret=ido2db_oci_execute_out(st,fname);
 		 if (ret!=IDO_OK) {
-			 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:AppInfo execute failed\n",fname);
+			 ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:AppInfo execute failed\n",fname);
 		 }
 		 ido2db_oci_statement_free(st,fname);
 		 if (app_info) free(app_info);
@@ -7247,7 +7271,12 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
     /* get bind count */
     count=OCI_GetBindCount(st);
     if (count==0) return;
-    sprintf(text,"%u BindVars:",count);
+    sprintf(text,"%u BindVars",count);
+    i=OCI_BindArrayGetSize(st);
+    if (i>1){
+	    sprintf(text,"%s, Array %u Rows, Binds for first row",text,i);
+    }
+    strcat(text," -->");
     strcpy((char *)outp,text);
     /* loop through bind vars */
     for (i=1;i<=count;i++) {
@@ -7470,18 +7499,18 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 	}
 
 	if (!OCI_BindLob(st,MT(bindname),*lobp)) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s failed\n",fname,bindname);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s failed\n",fname,bindname);
 		return IDO_ERROR;
 	}
 	len=text?strlen(text):0;
 	if (len==0){
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Null or empty\n",fname,bindname);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Null or empty\n",fname,bindname);
 		OCI_BindSetNull(OCI_GetBind2(st,bindname));
 		return IDO_OK;
 	}
 
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,%lu Bytes requested\n",fname,bindname,len);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%lu Bytes requested\n",fname,bindname,len);
 	while ((len-rc)>0) {
 		if ((len-rc)>chunk) {
 			cb=chunk;
@@ -7490,9 +7519,9 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 		}
 		if (OCI_LobWrite2(*lobp,text+rc,&cb,&bb)) {
 			rc=rc+cb;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n",fname,bindname,cb,rc,len);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n",fname,bindname,cb,rc,len);
 		}else{
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu)\n",fname,bindname,cb,rc,len);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu)\n",fname,bindname,cb,rc,len);
 			break;
 		}
 

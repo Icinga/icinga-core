@@ -365,8 +365,6 @@ CREATE TABLE configfilevariables (
 
 alter table configfilevariables add constraint configfilevar_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
-alter table configfilevariables add constraint configfilevar_uq  UNIQUE (instance_id,configfile_id,varname)
-	using index tablespace &&IDXTBS;
 
 -- --------------------------------------------------------
 

@@ -168,8 +168,6 @@ CREATE TABLE  icinga_configfilevariables (
   varname TEXT  default '',
   varvalue TEXT  default '',
   CONSTRAINT PK_configfilevariable_id PRIMARY KEY (configfilevariable_id) 
-  --UNIQUE (instance_id,configfile_id) 
-  -- varname/varvalue are not unique!
 ) ;
 
 -- --------------------------------------------------------
