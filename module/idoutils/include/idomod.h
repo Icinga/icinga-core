@@ -11,7 +11,7 @@
 
 #define IDOMOD_VERSION "1.5.0-dev"
 #define IDOMOD_NAME "IDOMOD"
-#define IDOMOD_DATE "07-29-2011"
+#define IDOMOD_DATE "08-03-2011"
 
 /************** misc definitions *************/
 

@@ -13,7 +13,7 @@ fi
 CURRENTVERSION=1.5.0-dev
 
 # Last date
-LASTDATE=07-29-2011
+LASTDATE=08-03-2011
 
 if [ "x$1" = "x" ]
 then
