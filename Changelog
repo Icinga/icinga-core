@@ -2,13 +2,15 @@
 Icinga 1.5.x Change Log
 #######################
 
+Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
+
 1.5.0 - 17/08/2011
 
 ENHANCEMENTS
 * core: do not update host/service status during scheduler initialization on startup (idoutils already know that) #1741
 
-* classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
-* classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
+* classic ui: Added option to suppress coloring of hosts/services in maintenance #992
+* classic ui: Added option to show partial hostgroups #1013
 * classic ui: changing drop down menu in status.cgi to jquery-dd #1644
 * classic ui: default downtime duration is configurable in cgi.cfg #1642
 * classic ui: Added ability to combine host and service in one CGI parameter (Aaron Brady) #1633
@@ -49,9 +51,9 @@ ENHANCEMENTS
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
 
 FIXES
-* core: remove duplicated unlinks for check result files with multiple results #1615
+* core: remove duplicated unlinks for check result files with multiple results (Ton Voon) #1615
 * core: fix retain status file over an init script reload #1579
-* core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) #1331
+* core: fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) (Andreas Ericsson) #1331
 * core: make command_check_interval=-1 equal to 5s instead of 60s, targetting as often as possible (Andreas Ericsson) #1651
 * core: fix problem where acknowledgements were getting reset when a hard state change occurred (Ton Voon) #1618
 * core: avoid using global macros when sending notifications (Andreas Ericsson) #1653
@@ -63,7 +65,7 @@ FIXES
 * classic ui: remove sidebar.html inclusion in index.html causing troubles on reload #1632
 * classic ui: fixed: User can execute host/servicegroup commands even if not authorized for (Sven Nierlein) #1679
 * classic ui: fixed: plugin_output_short didn't get checked properly and caused segfault in status.cgi #1673
-* classic ui: fixed: submitting non existent host/service on avail.cgi causes segfault. (M. Luebben) #1700
+* classic ui: fixed: submitting non existent host/service on avail.cgi causes segfault #1700
 * classic ui: fixed: Alert History State filter for HARD/SOFT state not working (Lennart Betz) #1722
 * classic ui: fixed: jquery 1.5.2 triggers memory leak in IE #1740
 * classic ui: fixed: ssi files don't get included if icinga path contains uppercase letters #1716
