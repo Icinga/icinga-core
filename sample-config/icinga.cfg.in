@@ -767,13 +767,10 @@ use_retained_program_state=1
 # DUMP RETAINED HOST SERVICE STATES TO NEB
 # This setting determines wether or not Icinga will dump host
 # and service states based on the values saved in the retention
-# file to the neb modules. As Icinga IDOUtils keeps the host
-# and service state already over reload/restarts, this is
-# intentionally left disabled.
-# Note: Enabling this can cause large dumps to neb on large
-# scale systems and decrease performance.
+# file to the neb modules. If you don't want that, use at your
+# own risk and disable it
 
-dump_retained_host_service_states_to_neb=0
+dump_retained_host_service_states_to_neb=1
 
 
 

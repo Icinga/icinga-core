@@ -5,10 +5,7 @@ Icinga 1.5.x Change Log
 1.5.0 - 17/08/2011
 
 ENHANCEMENTS
-* idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
-* idoutils: dump multiline mbufs as bluk inserts, part 1 #1110
-	** configfile/runtime variables, host contacts/parents, service contacts, timeranges, host/service/contactgroup memebers
-* idoutils: remove host and service checks from default data_processing_options as they are not used by icinga-web #1757
+* core: do not update host/service status during scheduler initialization on startup (idoutils already know that) #1741
 
 * classic ui: Added option to suppress coloring of hosts/services in maintenance (Matthew Brooks) #992
 * classic ui: Added option to show partial hostgroups (Matthew Brooks) #1013
@@ -19,14 +16,23 @@ ENHANCEMENTS
 * classic ui: Add log entries to json output of avail.cgi #1659
 * classic ui: add host urgency sort order in status.cgi (Jochen Bern) #1452
 * classic ui: add author to comment tooltips in status.cgi #1691
-* classic ui: added view of all unhandled problems #1328
 * classic ui: reduce the header part of status.cgi #1507
 	** &nostatusheader used in frameset menu, info table is smaller
-	** edit menu.html and remove &nostatusheader if old behavior wanted
 * classic ui: authorization for * in cgi.cfg via contactgroups (Stephen Gran) #1752
 	** authorized_contactgroup_for_all_hosts, authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
 	** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
 	** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
+* classic ui: add xml output to avail.cgi for direct source of jasper reports #1712
+* classic ui: add combined view of all unhandled hosts and services including the multiple command dropdowns for each #1328
+
+* idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
+* idoutils: dump multiline mbufs as bulk inserts #1110
+	** configfile/runtime variables, host contacts/parents, service contacts, timeranges, host/service/contactgroup memebers
+	** oracle uses bulk arrays binded on prepared insert statements
+* idoutils: remove host and service checks from default data_processing_options as they are not used by icinga-web #1757
+* idoutils: Add logging of bind variable value for oracle #1314
+* idoutils: oracle change perfdata columns to clob #1749
+* idoutils: oracle: change logentry_data type to clob #1750
 
 * install: add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569
 	** only when embedded perl is enabled
@@ -40,6 +46,7 @@ ENHANCEMENTS
 	** advanced notify-by-email
 	** notify-by-jabber, notify-by-twitter examples
 * config: add check_dummy command definitions as example to commands.cfg #1719
+* config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
 
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results #1615
@@ -61,6 +68,14 @@ FIXES
 * classic ui: fixed: jquery 1.5.2 triggers memory leak in IE #1740
 * classic ui: fixed: ssi files don't get included if icinga path contains uppercase letters #1716
 
+* idoutils: do not update start_time of already started downtimes #1658
+* idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
+* idoutils: remove leftover socket file in init-script startup, e.g. from a system crash #1745
+* idoutils: simplify ido2db_get_object_id oracle function #1655
+* idoutils: fix oracle long_output column in eventhandlers missed #1748
+* idoutils: fix oracle ocilib 3.9.2+ fixes causing wrong 4byte->8Byte casts #1751
+* idoutils: fix ORA-00600 while executing merge #1362
+
 * install: fix event handlers cmd file location in contrib #1501
 * install: fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625
 * install: fix icinga.cmd and log dir replacement in icinga-api aubmodule #1573 #1715
@@ -68,11 +83,6 @@ FIXES
 * install: do not overwrite config in make fullinstall #1754
 
 * config: deprecate log_external_commands_user #1619
-* config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
-
-* idoutils: do not update start_time of already started downtimes #1658
-* idoutils: fix started downtime update for table scheduleddowntime in oracle #1658
-* idoutils: remove leftover socket file in init-script startup, e.g. from a system crash #1745
 
 CHANGES
 https://wiki.icinga.org/display/Dev/Changes
