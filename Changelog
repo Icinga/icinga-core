@@ -25,7 +25,7 @@ ENHANCEMENTS
 	** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
 	** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
 * classic ui: add xml output to avail.cgi for direct source of jasper reports #1712
-* classic ui: add combined view of all unhandled hosts and services including the multiple command dropdowns for each #1328
+* classic ui: add combined view of all unhandled hosts and services including the multiple command dropdowns for each (initial idea by Thruk) #1328
 
 * idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
 * idoutils: dump multiline mbufs as bulk inserts #1110
