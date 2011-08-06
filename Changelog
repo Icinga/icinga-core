@@ -53,6 +53,8 @@ ENHANCEMENTS
 * config: add check_dummy command definitions as example to commands.cfg #1719
 * config: tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635
 
+* style: add new ident tools #1617
+
 FIXES
 * core: remove duplicated unlinks for check result files with multiple results (Ton Voon) #1615
 * core: fix retain status file over an init script reload #1579
