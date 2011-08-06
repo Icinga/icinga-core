@@ -27,8 +27,8 @@
 #include "test-stubs.c"
 
 /* Icinga special */
-int log_current_states=TRUE;
-int use_daemon_log=TRUE;
+int log_current_states = TRUE;
+int use_daemon_log = TRUE;
 
 int date_format;
 
@@ -37,7 +37,7 @@ char *saved_dest;
 int my_rename(char *source, char *dest) {
 	saved_source = strdup(source);
 	saved_dest = strdup(dest);
-	if (strcmp(source, "renamefailure")==0) {
+	if (strcmp(source, "renamefailure") == 0) {
 		return ERROR;
 	}
 	return rename(source, dest);
@@ -46,8 +46,7 @@ int my_rename(char *source, char *dest) {
 void update_program_status() {}
 
 int
-main (int argc, char **argv)
-{
+main(int argc, char **argv) {
 	time_t rotation_time;
 	struct stat stat_info, stat_new;
 	char *log_filename_localtime = NULL;
@@ -57,38 +56,38 @@ main (int argc, char **argv)
 	plan_tests(14);
 
 	rotation_time = (time_t)1242949698;
-	t=localtime(&rotation_time);
+	t = localtime(&rotation_time);
 
-	asprintf(&log_filename_localtime,"var/icinga-%02d-%02d-%d-%02d.log", t->tm_mon+1,t->tm_mday,t->tm_year+1900,t->tm_hour);
+	asprintf(&log_filename_localtime, "var/icinga-%02d-%02d-%d-%02d.log", t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
 
-	log_rotation_method=5;
+	log_rotation_method = 5;
 	ok(rotate_log_file(rotation_time) == ERROR, "Got error for a bad log_rotation_method");
 
-	log_file="renamefailure";
-	log_rotation_method=LOG_ROTATION_HOURLY;
+	log_file = "renamefailure";
+	log_rotation_method = LOG_ROTATION_HOURLY;
 	ok(rotate_log_file(rotation_time) == ERROR, "Got an error with rename");
-	ok( strcmp(saved_dest, log_filename_localtime)==0, "Got an hourly rotation" );
+	ok(strcmp(saved_dest, log_filename_localtime) == 0, "Got an hourly rotation");
 
-	log_file="var/icinga.log";
-	log_rotation_method=LOG_ROTATION_HOURLY;
-	ok(system("cp var/icinga.log.dummy var/icinga.log")==0, "Copied in dummy icinga.log for archiving");
+	log_file = "var/icinga.log";
+	log_rotation_method = LOG_ROTATION_HOURLY;
+	ok(system("cp var/icinga.log.dummy var/icinga.log") == 0, "Copied in dummy icinga.log for archiving");
 
 	ok(rotate_log_file(rotation_time) == OK, "Log rotation should work happily");
 
-	ok( system("diff var/icinga.log var/icinga.log.expected > /dev/null")==0, "Got correct contents of icinga.log");
+	ok(system("diff var/icinga.log var/icinga.log.expected > /dev/null") == 0, "Got correct contents of icinga.log");
 
 	asprintf(&temp_command, "diff var/icinga.log.dummy %s", log_filename_localtime);
-	ok( system(temp_command)==0, "icinga log archived correctly" );
+	ok(system(temp_command) == 0, "icinga log archived correctly");
 
 	unlink(log_filename_localtime);
-	ok( system("chmod 777 var/icinga.log")==0, "Changed mode of icinga.log" );
-	ok( stat("var/icinga.log", &stat_info) == 0, "Got stat info for log file" );
-	ok( rotate_log_file(rotation_time) == OK, "Log rotate to check if mode is retained" );
-	ok( stat(log_filename_localtime, &stat_new) == 0, "Got new stat info for archived log file" );
-	ok( stat_info.st_mode == stat_new.st_mode, "Mode for archived file same as original log file" );
+	ok(system("chmod 777 var/icinga.log") == 0, "Changed mode of icinga.log");
+	ok(stat("var/icinga.log", &stat_info) == 0, "Got stat info for log file");
+	ok(rotate_log_file(rotation_time) == OK, "Log rotate to check if mode is retained");
+	ok(stat(log_filename_localtime, &stat_new) == 0, "Got new stat info for archived log file");
+	ok(stat_info.st_mode == stat_new.st_mode, "Mode for archived file same as original log file");
 
-	ok( stat("var/icinga.log", &stat_new) == 0, "Got new stat info for new log file" );
-	ok( stat_info.st_mode == stat_new.st_mode, "Mode for new log file kept same as original log file" );
+	ok(stat("var/icinga.log", &stat_new) == 0, "Got new stat info for new log file");
+	ok(stat_info.st_mode == stat_new.st_mode, "Mode for new log file kept same as original log file");
 
-	return exit_status ();
+	return exit_status();
 }

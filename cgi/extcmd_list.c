@@ -30,18 +30,17 @@
 struct nagios_extcmd {
 	const char *name;
 	int id;
-/*	size_t namelen;
-	int min_args;
-	int (*handler)(struct nagios_extcmd *, int, char **);
-	struct nagios_extcmd *next_handler;
- */
+	/*	size_t namelen;
+		int min_args;
+		int (*handler)(struct nagios_extcmd *, int, char **);
+		struct nagios_extcmd *next_handler;
+	 */
 };
 
 #define CMD_DEF(name, min_args, handler) \
 	{ #name, CMD_ ## name }
 /*	{ #name, sizeof(#name) - 1, CMD_ ## name, min_args, handler, NULL } */
-struct nagios_extcmd in_core_commands[] =
-{
+struct nagios_extcmd in_core_commands[] = {
 	CMD_DEF(NONE, 0, NULL),
 	CMD_DEF(ADD_HOST_COMMENT, 0, NULL),
 	CMD_DEF(DEL_HOST_COMMENT, 0, NULL),
@@ -216,8 +215,7 @@ struct nagios_extcmd in_core_commands[] =
 # define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 #endif
 
-const char *extcmd_get_name(int id)
-{
+const char *extcmd_get_name(int id) {
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(in_core_commands); i++) {
@@ -231,8 +229,7 @@ const char *extcmd_get_name(int id)
 }
 
 #ifdef ECMD_LIST_TESTING
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 	int i, no_handler = 0;
 
 	for (i = 0; i < ARRAY_SIZE(in_core_commands); i++) {
