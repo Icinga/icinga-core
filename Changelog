@@ -25,7 +25,10 @@ ENHANCEMENTS
 	** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
 	** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
 * classic ui: add xml output to avail.cgi for direct source of jasper reports #1712
-* classic ui: add combined view of all unhandled hosts and services including the multiple command dropdowns for each #1328
+* classic ui: add combined view of all unhandled hosts and services including the multiple command dropdowns for each (initial idea by Thruk) #1328
+* classic ui: add "link to this page" to all cgis #1783
+* classic ui: add export icons instead of "export to..." text on cgis supporting it (csv, json, xml, link) #1789
+* classic ui: add highlight_table_rows to status.cgi, can be disabled via cfg option #1777
 
 * idoutils: add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616
 * idoutils: dump multiline mbufs as bulk inserts #1110
@@ -114,6 +117,7 @@ https://wiki.icinga.org/display/Dev/Changes
         ** authorized_contactgroup_for_all_hosts, authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
         ** authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
         ** authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only
+	** highlight_table_rows
 * icinga.cfg config changes
 	** log_archive_path=@LOGDIR@/archives p1_file=@P1FILELOC@/p1.pl debug_file=@LOGDIR@/icinga.debug
 	** enable_embedded_perl=0 enable_environment_macros=0

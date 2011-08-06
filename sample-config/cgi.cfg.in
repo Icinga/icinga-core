@@ -68,6 +68,16 @@ show_context_help=0
 
 
 
+# HIGHLIGHT TABLE ROWS
+# This option allows you to define if table rows in status.cgi
+# will be highlighted or not. 
+# Values: 0 = disables row highlighting
+#	  1 = enables row hhighlighting
+
+highlight_table_rows=1
+
+
+
 # PENDING STATES OPTION
 # This option determines what states should be displayed in the web
 # interface for hosts/services that have not yet been checked.

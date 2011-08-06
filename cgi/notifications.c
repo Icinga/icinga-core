@@ -483,8 +483,13 @@ void display_notifications(void){
 
 			printf("<table border=0 CLASS='notifications'>\n");
 
-	                /* add export to csv link */
-			printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n",get_export_csv_link(NOTIFICATIONS_CGI));
+	                /* add export to csv, json, link */
+        	        printf("<TR><TD colspan='7'>");
+	                printf("<div class='csv_export_link'>");
+	                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_csv_link(NOTIFICATIONS_CGI),url_images_path,EXPORT_CSV_ICON,EXPORT_CSV_ICON_ALT);
+	                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_json_link(NOTIFICATIONS_CGI),url_images_path,EXPORT_JSON_ICON,EXPORT_JSON_ICON_ALT);
+	                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_link(NOTIFICATIONS_CGI),url_images_path,EXPORT_LINK_ICON,EXPORT_LINK_ICON_ALT);
+	                printf("</DIV></TD></TR>\n");
 
 			printf("<tr>\n");
 			printf("<th CLASS='notifications'>Host</th>\n");

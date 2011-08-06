@@ -65,6 +65,8 @@ char            *ping_syntax=NULL;
 char		*csv_delimiter=CSV_DELIMITER;
 char		*csv_data_enclosure=CSV_DATA_ENCLOSURE;
 
+char		highlight_table_rows=TRUE;
+
 char            nagios_check_command[MAX_INPUT_BUFFER]="";
 char            nagios_process_info[MAX_INPUT_BUFFER]="";
 int             nagios_process_state=STATE_OK;
@@ -598,6 +600,9 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"csv_data_enclosure"))
 			csv_data_enclosure=strdup(val);
 
+		else if(!strcmp(var,"highlight_table_rows"))
+			highlight_table_rows=(atoi(val)>0)?TRUE:FALSE;
+
 		}
 
 	/* free memory and close the file */
@@ -1043,6 +1048,10 @@ void document_header(int cgi_id, int use_stylesheet){
 
 		/* functions to handle the checkboxes and dropdown menus */
 		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,CHECKBOX_FUNCTIONS_JS);
+
+		/* include code for highlight table rows */
+		if(highlight_table_rows==TRUE)
+			printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,HIGHLIGHT_TABLE_JS);
 	}
 
 	if(cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID) {
@@ -1781,7 +1790,8 @@ void display_info_table(char *title,int refresh, authdata *current_authdata, int
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
 	}
 
-	if(status_file_creation_time<(current_time-status_update_interval-10))
+	/* must have missed 2 update intervals */
+	if(status_file_creation_time<(current_time-(2*status_update_interval)))
 		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Status data OUTDATED! Last status data update was %d seconds ago!</DIV>",(int)(current_time-status_file_creation_time));
 
 	printf("</TD></TR>\n");
@@ -2355,6 +2365,74 @@ char *get_export_csv_link(char *cgi) {
 
 	return ret;
 }
+
+char *get_export_json_link(char *cgi) {
+        char temp_buffer[MAX_INPUT_BUFFER]="";
+        static char ret[MAX_INPUT_BUFFER]="";
+
+        /* just do stuff if some options are requested */
+        if(getenv("QUERY_STRING")!=NULL){
+                if(strcmp(getenv("QUERY_STRING"),"")) {
+                        snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s",getenv("QUERY_STRING"));
+                        temp_buffer[sizeof(temp_buffer)-1]='\x0';
+                        strip_html_brackets(temp_buffer);
+                        snprintf(ret,sizeof(ret)-1,"%s?%s&jsonoutput",cgi,temp_buffer);
+                        ret[sizeof(ret)-1]='\x0';
+                } else
+                        snprintf(ret,sizeof(ret)-1,"%s?jsonoutput",cgi);
+        } else
+                snprintf(ret,sizeof(ret)-1,"%s?jsonoutput",cgi);
+
+        ret[sizeof(ret)-1]='\x0';
+
+        return ret;
+}
+
+char *get_export_xml_link(char *cgi) {
+        char temp_buffer[MAX_INPUT_BUFFER]="";
+        static char ret[MAX_INPUT_BUFFER]="";
+
+        /* just do stuff if some options are requested */
+        if(getenv("QUERY_STRING")!=NULL){
+                if(strcmp(getenv("QUERY_STRING"),"")) {
+                        snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s",getenv("QUERY_STRING"));
+                        temp_buffer[sizeof(temp_buffer)-1]='\x0';
+                        strip_html_brackets(temp_buffer);
+                        snprintf(ret,sizeof(ret)-1,"%s?%s&xmloutput",cgi,temp_buffer);
+                        ret[sizeof(ret)-1]='\x0';
+                } else
+                        snprintf(ret,sizeof(ret)-1,"%s?xmloutput",cgi);
+        } else
+                snprintf(ret,sizeof(ret)-1,"%s?xmloutput",cgi);
+
+        ret[sizeof(ret)-1]='\x0';
+
+        return ret;
+}
+
+char *get_export_link(char *cgi) {
+        char temp_buffer[MAX_INPUT_BUFFER]="";
+        static char ret[MAX_INPUT_BUFFER]="";
+
+        /* just do stuff if some options are requested */
+        if(getenv("QUERY_STRING")!=NULL){
+                if(strcmp(getenv("QUERY_STRING"),"")) {
+                        snprintf(temp_buffer,sizeof(temp_buffer)-1,"%s",getenv("QUERY_STRING"));
+                        temp_buffer[sizeof(temp_buffer)-1]='\x0';
+                        strip_html_brackets(temp_buffer);
+                        snprintf(ret,sizeof(ret)-1,"%s?%s",cgi,temp_buffer);
+                        ret[sizeof(ret)-1]='\x0';
+                } else
+                        snprintf(ret,sizeof(ret)-1,"%s",cgi);
+        } else
+                snprintf(ret,sizeof(ret)-1,"%s",cgi);
+
+        ret[sizeof(ret)-1]='\x0';
+
+        return ret;
+}
+
+
 
 /**
  * Logging and file functions
