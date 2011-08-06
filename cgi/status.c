@@ -415,7 +415,7 @@ int main(void){
 			show_dropdown=SERVICE_STATUS;
 	}
 
-	if (show_dropdown!=NO_STATUS) {
+	if (show_dropdown!=NO_STATUS && content_type==HTML_CONTENT) {
 		printf("<form name='tableform%s' id='tableform%s' action='%s' method='POST'>\n",(show_dropdown==HOST_STATUS)?"host":"service",(show_dropdown==HOST_STATUS)?"host":"service",CMD_CGI);
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
 	}
@@ -641,13 +641,15 @@ int main(void){
 			/* only show service problems of Hosts which are
 			   _NOT_ DOWN or UNREACHABLE */
 			host_status_types=3;
+		
+			if(content_type==HTML_CONTENT) {
+				printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST'>\n",CMD_CGI);
+				printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
 
-			printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST'>\n",CMD_CGI);
-			printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
-
-			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0><tr><td align=right width=50%%></td><td align=right width=50%%>\n");
-			show_servicecommand_table();
-			printf("</td></tr></table>\n");
+				printf("<table border=0 width=100%% cellspacing=0 cellpadding=0><tr><td align=right width=50%%></td><td align=right width=50%%>\n");
+				show_servicecommand_table();
+				printf("</td></tr></table>\n");
+			}
 
 			show_service_detail();
 		} else
@@ -1474,10 +1476,15 @@ void show_service_detail(void){
 
 		printf("</td>\n");
 
-		/* add export to csv link */
-		printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s' target='_blank'>Export to CSV</a></div></td>\n",get_export_csv_link(STATUS_CGI));
-
-		printf("</tr>\n");
+		/* add export to csv, json, link */
+		printf("<td valign=bottom width=33%%>");
+		printf("<div class='csv_export_link'>");
+		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_csv_link(STATUS_CGI),url_images_path,EXPORT_CSV_ICON,EXPORT_CSV_ICON_ALT);
+		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_json_link(STATUS_CGI),url_images_path,EXPORT_JSON_ICON,EXPORT_JSON_ICON_ALT);
+		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_link(STATUS_CGI),url_images_path,EXPORT_LINK_ICON,EXPORT_LINK_ICON_ALT);
+		printf("</td>\n");
+		
+		printf("</div></tr>\n");
 		printf("</table>\n");
 	}
 
@@ -2016,8 +2023,14 @@ void show_host_detail(void){
 
 		printf("</td>\n");
 
-		/* add export to csv link */
-		printf("<td valign=bottom width=33%%><div class='csv_export_link'><a href='%s' target='_blank'>Export to CSV</a></div></td>\n",get_export_csv_link(STATUS_CGI));
+                /* add export to csv, json, link */
+                printf("<td valign=bottom width=33%%>");
+                printf("<div class='csv_export_link'>");
+                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_csv_link(STATUS_CGI),url_images_path,EXPORT_CSV_ICON,EXPORT_CSV_ICON_ALT);
+                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_json_link(STATUS_CGI),url_images_path,EXPORT_JSON_ICON,EXPORT_JSON_ICON_ALT);
+                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_link(STATUS_CGI),url_images_path,EXPORT_LINK_ICON,EXPORT_LINK_ICON_ALT);
+                printf("</td>\n");
+
 
 		printf("</tr>\n");
 		printf("</table>\n");

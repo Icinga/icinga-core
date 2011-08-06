@@ -249,6 +249,15 @@ extern "C" {
 #define TAC_HEADER_EXECUTION_ICON	"hourglass-exclamation.png"
 #define TAC_HEADER_LATENCY_ICON		"hourglass-arrow.png"
 
+/* icons taken from http://findicons.com */
+#define EXPORT_CSV_ICON			"export_csv.png"
+#define EXPORT_CSV_ICON_ALT		"Export to CSV"
+#define EXPORT_JSON_ICON		"export_json.png"
+#define EXPORT_JSON_ICON_ALT		"Export to JSON"
+#define EXPORT_XML_ICON			"export_xml.png"
+#define EXPORT_XML_ICON_ALT		"Export to XML"
+#define EXPORT_LINK_ICON		"export_link.png"
+#define EXPORT_LINK_ICON_ALT		"Link to this page"
 
 /************************** PLUGIN RETURN VALUES ****************************/
 
@@ -640,6 +649,9 @@ int check_daemon_running(void);
 void print_generic_error_message(char *, char *, int);
 
 char *get_export_csv_link(char *);				/* function to make export csv link XSS save #1275 */
+char *get_export_json_link(char *);
+char *get_export_xml_link(char *);
+char *get_export_link(char *);
 
 int write_to_cgi_log(char *);
 int rotate_cgi_log_file(void);

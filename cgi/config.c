@@ -519,10 +519,10 @@ void display_hosts(void){
 			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		print_export_link();
 
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host Name</TH>");
 		printf("<TH CLASS='data'>Alias/Description</TH>");
@@ -1081,10 +1081,9 @@ void display_hostgroups(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
 
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Group Name</TH>");
 		printf("<TH CLASS='data'>Description</TH>");
@@ -1214,9 +1213,9 @@ void display_servicegroups(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Group Name</TH>");
@@ -1353,9 +1352,9 @@ void display_contacts(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Contact Name</TH>");
@@ -1634,9 +1633,9 @@ void display_contactgroups(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CELLSPACING=3 CELLPADDING=0>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CELLSPACING=3 CELLPADDING=0>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Group Name</TH>\n");
@@ -1776,9 +1775,9 @@ void display_services(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>\n");
@@ -2319,9 +2318,9 @@ void display_timeperiods(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Name</TH>\n");
@@ -2594,9 +2593,9 @@ void display_commands(void){
 			(*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
 		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR><TH CLASS='data'>Command Name</TH><TH CLASS='data'>Command Line</TH></TR>\n");
 	}
@@ -2669,9 +2668,9 @@ void display_servicedependencies(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data' COLSPAN=2>Dependent Service</TH>");
@@ -2824,9 +2823,9 @@ void display_serviceescalations(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>");
@@ -3072,9 +3071,9 @@ void display_hostdependencies(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Dependent Host</TH>");
@@ -3207,9 +3206,9 @@ void display_hostescalations(void){
 		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		print_export_link();
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>");
@@ -3424,9 +3423,9 @@ void display_modules(void){
                         (*to_expand=='\0'?"s":" "),(*to_expand=='\0'?"":escape_string(to_expand)));
 
                 printf("<P><DIV ALIGN=CENTER>\n");
-                printf("<TABLE BORDER=0 CLASS='data'>\n");
-
                 print_export_link();
+
+                printf("<TABLE BORDER=0 CLASS='data'>\n");
 
                 printf("<TR><TH CLASS='data'>Module Name</TH><TH CLASS='data'>Module Type</TH><TH CLASS='data'>Module Path</TH><TH CLASS='data'>Module Args</TH></TR>\n");
         }
@@ -3732,6 +3731,12 @@ void display_options(void){
 
 void print_export_link(void){
 	printf("<TR>\n<td><div class='csv_export_link' style='text-align:left;'>");
-	/* add export to csv link */
-	printf("<a href='%s' target='_blank'>Export to CSV</a></div></td>\n</TR>\n",get_export_csv_link(CONFIG_CGI));
+        /* add export to csv, json, link */
+        printf("<div class='csv_export_link'>");
+        printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_csv_link(CONFIG_CGI),url_images_path,EXPORT_CSV_ICON,EXPORT_CSV_ICON_ALT);
+        printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_json_link(CONFIG_CGI),url_images_path,EXPORT_JSON_ICON,EXPORT_JSON_ICON_ALT);
+        printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_link(CONFIG_CGI),url_images_path,EXPORT_LINK_ICON,EXPORT_LINK_ICON_ALT);
+        printf("</div>\n");
+
+	printf("</td>\n</TR>\n");
 }

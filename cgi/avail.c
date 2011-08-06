@@ -605,6 +605,8 @@ int main(int argc, char **argv){
 		printf("</table>\n");
 		printf("</form>\n");
 
+		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_link(AVAIL_CGI),url_images_path,EXPORT_LINK_ICON,EXPORT_LINK_ICON_ALT);
+
 		printf("</td>\n");
 
 		/* end of top table */
@@ -993,6 +995,15 @@ int main(int argc, char **argv){
 			if(content_type==HTML_CONTENT){
 				get_time_breakdown((time_t)(report_end_time-report_start_time),&days,&hours,&minutes,&seconds);
 				printf("<div align=center class='reportTime'>[ Availability report completed in %d min %d sec ]</div>\n",minutes,seconds);
+
+		                /* add export to csv, json, xml, link */
+		                printf("<div class='csv_export_link' align=right>");
+	        	        printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_csv_link(AVAIL_CGI),url_images_path,EXPORT_CSV_ICON,EXPORT_CSV_ICON_ALT);
+	                	printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_json_link(AVAIL_CGI),url_images_path,EXPORT_JSON_ICON,EXPORT_JSON_ICON_ALT);
+		                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_xml_link(AVAIL_CGI),url_images_path,EXPORT_XML_ICON,EXPORT_XML_ICON_ALT);
+		                printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n",get_export_link(AVAIL_CGI),url_images_path,EXPORT_LINK_ICON,EXPORT_LINK_ICON_ALT);
+	        	        printf("</div>\n");
+
 				printf("<BR><BR>\n");
 			}
 
