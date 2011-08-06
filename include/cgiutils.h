@@ -133,7 +133,8 @@ extern "C" {
 #define JQUERY_MAIN_JS		"jquery-1.6.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
-
+#define HIGHLIGHT_TABLE_JS	"htable.js"
+#define HIGHLIGHT_TABLE_JS_CODE	" onMouseOver=\"javascript:trackTableHighlight(event, '#BBC3BB');\" onMouseOut=\"javascript:highlightTableRow(0);\""
 
 /********************************* ICONS ************************************/
 

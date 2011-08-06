@@ -65,6 +65,8 @@ char            *ping_syntax=NULL;
 char		*csv_delimiter=CSV_DELIMITER;
 char		*csv_data_enclosure=CSV_DATA_ENCLOSURE;
 
+char		highlight_table_rows=TRUE;
+
 char            nagios_check_command[MAX_INPUT_BUFFER]="";
 char            nagios_process_info[MAX_INPUT_BUFFER]="";
 int             nagios_process_state=STATE_OK;
@@ -598,6 +600,9 @@ int read_cgi_config_file(char *filename){
 		else if(!strcmp(var,"csv_data_enclosure"))
 			csv_data_enclosure=strdup(val);
 
+		else if(!strcmp(var,"highlight_table_rows"))
+			highlight_table_rows=(atoi(val)>0)?TRUE:FALSE;
+
 		}
 
 	/* free memory and close the file */
@@ -1043,6 +1048,10 @@ void document_header(int cgi_id, int use_stylesheet){
 
 		/* functions to handle the checkboxes and dropdown menus */
 		printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,CHECKBOX_FUNCTIONS_JS);
+
+		/* include code for highlight table rows */
+		if(highlight_table_rows==TRUE)
+			printf("<script type='text/javascript' src='%s%s'></script>\n",url_js_path,HIGHLIGHT_TABLE_JS);
 	}
 
 	if(cgi_id==STATUSMAP_CGI_ID || cgi_id==TRENDS_CGI_ID) {

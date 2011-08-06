@@ -227,6 +227,8 @@ extern int add_notif_num_soft;
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
+extern char highlight_table_rows;
+
 int CGI_ID=STATUS_CGI_ID;
 
 int main(void){
@@ -1540,7 +1542,11 @@ void show_service_detail(void){
 	} else {
 		/* the main list of services */
 		printf("<DIV ALIGN='center'>\n");
-		printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
+                if(highlight_table_rows==TRUE)
+			printf("<TABLE BORDER=0 width=100%% CLASS='status'%s>\n",HIGHLIGHT_TABLE_JS_CODE);
+		else
+			printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
+
 		printf("<TR>\n");
 
 		printf("<TH CLASS='status'>Host&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (ascending)' TITLE='Sort by host name (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (descending)' TITLE='Sort by host name (descending)'></A></TH>",temp_url,SORT_ASCENDING,SORT_HOSTNAME,url_images_path,UP_ARROW_ICON,temp_url,SORT_DESCENDING,SORT_HOSTNAME,url_images_path,DOWN_ARROW_ICON);
@@ -2083,7 +2089,11 @@ void show_host_detail(void){
 	} else {
 		/* the main list of hosts */
 		printf("<DIV ALIGN='center'>\n");
-		printf("<TABLE BORDER=0 CLASS='status' WIDTH=100%%>\n");
+                if(highlight_table_rows==TRUE)
+			printf("<TABLE BORDER=0 CLASS='status' WIDTH=100%%%s>\n",HIGHLIGHT_TABLE_JS_CODE);
+		else
+			printf("<TABLE BORDER=0 CLASS='status' WIDTH=100%%>\n");
+
 		printf("<TR>\n");
 
 		printf("<TH CLASS='status'>Host&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (ascending)' TITLE='Sort by host name (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (descending)' TITLE='Sort by host name (descending)'></A></TH>",temp_url,SORT_ASCENDING,SORT_HOSTNAME,url_images_path,UP_ARROW_ICON,temp_url,SORT_DESCENDING,SORT_HOSTNAME,url_images_path,DOWN_ARROW_ICON);
