@@ -29,8 +29,7 @@
 #include "tap.h"
 
 int
-main(int argc, char *argv[])
-{
+main(int argc, char *argv[]) {
 	unsigned int rc = 0;
 	unsigned int side_effect = 0;
 
@@ -41,16 +40,16 @@ main(int argc, char *argv[])
 	diag("Returned: %d", rc);
 
 	do {
-		if(1) {
+		if (1) {
 			rc = skip(1, "Testing skipping");
 			continue;
 		}
-		
+
 		side_effect++;
 
 		ok(side_effect == 1, "side_effect checked out");
 
-	} while(0);
+	} while (0);
 
 	diag("Returned: %d", rc);
 

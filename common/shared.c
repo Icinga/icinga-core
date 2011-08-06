@@ -29,8 +29,7 @@
 extern int date_format;
 
 /* fix the problem with strtok() skipping empty options between tokens */
-char *my_strtok(char *buffer, char *tokens)
-{
+char *my_strtok(char *buffer, char *tokens) {
 	char *token_position = NULL;
 	char *sequence_head = NULL;
 	static char *my_strtok_buffer = NULL;
@@ -63,8 +62,7 @@ char *my_strtok(char *buffer, char *tokens)
 
 /* fixes compiler problems under Solaris, since strsep() isn't included */
 /* this code is taken from the glibc source */
-char *my_strsep(char **stringp, const char *delim)
-{
+char *my_strsep(char **stringp, const char *delim) {
 	char *begin, *end;
 
 	begin = *stringp;
@@ -102,8 +100,7 @@ char *my_strsep(char **stringp, const char *delim)
 }
 
 /* open a file read-only via mmap() */
-mmapfile *mmap_fopen(char *filename)
-{
+mmapfile *mmap_fopen(char *filename) {
 	mmapfile *new_mmapfile = NULL;
 	int fd = 0;
 	void *mmap_buf = NULL;
@@ -139,8 +136,8 @@ mmapfile *mmap_fopen(char *filename)
 
 		/* mmap() the file - allocate one extra byte for processing zero-byte files */
 		if ((mmap_buf =
-		     (void *)mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd,
-				  0)) == MAP_FAILED) {
+		            (void *)mmap(0, file_size, PROT_READ, MAP_PRIVATE, fd,
+		                         0)) == MAP_FAILED) {
 			close(fd);
 			my_free(new_mmapfile);
 			return NULL;
@@ -160,8 +157,7 @@ mmapfile *mmap_fopen(char *filename)
 }
 
 /* close a file originally opened via mmap() */
-int mmap_fclose(mmapfile * temp_mmapfile)
-{
+int mmap_fclose(mmapfile * temp_mmapfile) {
 
 	if (temp_mmapfile == NULL)
 		return ERROR;
@@ -181,8 +177,7 @@ int mmap_fclose(mmapfile * temp_mmapfile)
 }
 
 /* gets one line of input from an mmap()'ed file */
-char *mmap_fgets(mmapfile * temp_mmapfile)
-{
+char *mmap_fgets(mmapfile * temp_mmapfile) {
 	char *buf = NULL;
 	unsigned long x = 0L;
 	int len = 0;
@@ -200,7 +195,7 @@ char *mmap_fgets(mmapfile * temp_mmapfile)
 
 	/* find the end of the string (or buffer) */
 	for (x = temp_mmapfile->current_position; x < temp_mmapfile->file_size;
-	     x++) {
+	        x++) {
 		if (*((char *)(temp_mmapfile->mmap_buf) + x) == '\n') {
 			x++;
 			break;
@@ -217,7 +212,7 @@ char *mmap_fgets(mmapfile * temp_mmapfile)
 	/* copy string to newly allocated memory and terminate the string */
 	memcpy(buf,
 	       ((char *)(temp_mmapfile->mmap_buf) +
-		temp_mmapfile->current_position), len);
+	        temp_mmapfile->current_position), len);
 	buf[len] = '\x0';
 
 	/* update the current position */
@@ -230,8 +225,7 @@ char *mmap_fgets(mmapfile * temp_mmapfile)
 }
 
 /* gets one line of input from an mmap()'ed file (may be contained on more than one line in the source file) */
-char *mmap_fgets_multiline(mmapfile * temp_mmapfile)
-{
+char *mmap_fgets_multiline(mmapfile * temp_mmapfile) {
 	char *buf = NULL;
 	char *tempbuf = NULL;
 	char *stripped = NULL;
@@ -263,7 +257,7 @@ char *mmap_fgets_multiline(mmapfile * temp_mmapfile)
 			len = strlen(stripped);
 			len2 = strlen(buf);
 			if ((buf =
-			     (char *)realloc(buf, len + len2 + 1)) == NULL)
+			            (char *)realloc(buf, len + len2 + 1)) == NULL)
 				break;
 			strcat(buf, stripped);
 			len += len2;
@@ -304,8 +298,7 @@ char *mmap_fgets_multiline(mmapfile * temp_mmapfile)
 }
 
 /* strip newline, carriage return, and tab characters from beginning and end of a string */
-void strip(char *buffer)
-{
+void strip(char *buffer) {
 	register int x, z;
 	int len;
 
@@ -316,7 +309,10 @@ void strip(char *buffer)
 	len = (int)strlen(buffer);
 	for (x = len - 1; x >= 0; x--) {
 		switch (buffer[x]) {
-		case ' ': case '\n': case '\r': case '\t':
+		case ' ':
+		case '\n':
+		case '\r':
+		case '\t':
 			buffer[x] = '\x0';
 			continue;
 		}
@@ -334,7 +330,10 @@ void strip(char *buffer)
 	/* NOTE: this is very expensive to do, so avoid it whenever possible */
 	for (x = 0;; x++) {
 		switch (buffer[x]) {
-		case ' ': case '\n': case '\r': case '\t':
+		case ' ':
+		case '\n':
+		case '\r':
+		case '\t':
 			continue;
 		}
 		break;
@@ -355,8 +354,7 @@ void strip(char *buffer)
  *************** HASH FUNCTIONS *******************
  **************************************************/
 /* dual hash function */
-int hashfunc(const char *name1, const char *name2, int hashslots)
-{
+int hashfunc(const char *name1, const char *name2, int hashslots) {
 	unsigned int i, result;
 
 	result = 0;
@@ -376,8 +374,7 @@ int hashfunc(const char *name1, const char *name2, int hashslots)
 
 /* dual hash data comparison */
 int compare_hashdata(const char *val1a, const char *val1b, const char *val2a,
-		     const char *val2b)
-{
+                     const char *val2b) {
 	int result = 0;
 
 	/* NOTE: If hash calculation changes, update the compare_strings() function! */
@@ -411,8 +408,7 @@ int compare_hashdata(const char *val1a, const char *val1b, const char *val2a,
  * date/time string, including timezone
  */
 void get_datetime_string(time_t * raw_time, char *buffer, int buffer_length,
-			 int type)
-{
+                         int type) {
 	time_t t;
 	struct tm *tm_ptr, tm_s;
 	int hour;
@@ -422,9 +418,10 @@ void get_datetime_string(time_t * raw_time, char *buffer, int buffer_length,
 	int day;
 	int year;
 	char *weekdays[7] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
-	char *months[12] =
-	    { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept",
-     "Oct", "Nov", "Dec" };
+	char *months[12] = {
+		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept",
+		"Oct", "Nov", "Dec"
+	};
 	char *tzone = "";
 
 	if (raw_time == NULL)
@@ -453,62 +450,61 @@ void get_datetime_string(time_t * raw_time, char *buffer, int buffer_length,
 	/* ctime() style date/time */
 	if (type == LONG_DATE_TIME)
 		snprintf(buffer, buffer_length, "%s %s %d %02d:%02d:%02d %s %d",
-			 weekdays[tm_ptr->tm_wday], months[tm_ptr->tm_mon], day,
-			 hour, minute, second, tzone, year);
+		         weekdays[tm_ptr->tm_wday], months[tm_ptr->tm_mon], day,
+		         hour, minute, second, tzone, year);
 
 	/* short date/time */
 	else if (type == SHORT_DATE_TIME) {
 		if (date_format == DATE_FORMAT_EURO)
 			snprintf(buffer, buffer_length,
-				 "%02d-%02d-%04d %02d:%02d:%02d", day, month,
-				 year, hour, minute, second);
+			         "%02d-%02d-%04d %02d:%02d:%02d", day, month,
+			         year, hour, minute, second);
 		else if (date_format == DATE_FORMAT_ISO8601
-			 || date_format == DATE_FORMAT_STRICT_ISO8601)
+		         || date_format == DATE_FORMAT_STRICT_ISO8601)
 			snprintf(buffer, buffer_length,
-				 "%04d-%02d-%02d%c%02d:%02d:%02d", year, month,
-				 day,
-				 (date_format ==
-				  DATE_FORMAT_STRICT_ISO8601) ? 'T' : ' ', hour,
-				 minute, second);
+			         "%04d-%02d-%02d%c%02d:%02d:%02d", year, month,
+			         day,
+			         (date_format ==
+			          DATE_FORMAT_STRICT_ISO8601) ? 'T' : ' ', hour,
+			         minute, second);
 		else
 			snprintf(buffer, buffer_length,
-				 "%02d-%02d-%04d %02d:%02d:%02d", month, day,
-				 year, hour, minute, second);
+			         "%02d-%02d-%04d %02d:%02d:%02d", month, day,
+			         year, hour, minute, second);
 	}
 
 	/* short date */
 	else if (type == SHORT_DATE) {
 		if (date_format == DATE_FORMAT_EURO)
 			snprintf(buffer, buffer_length, "%02d-%02d-%04d", day,
-				 month, year);
+			         month, year);
 		else if (date_format == DATE_FORMAT_ISO8601
-			 || date_format == DATE_FORMAT_STRICT_ISO8601)
+		         || date_format == DATE_FORMAT_STRICT_ISO8601)
 			snprintf(buffer, buffer_length, "%04d-%02d-%02d", year,
-				 month, day);
+			         month, day);
 		else
 			snprintf(buffer, buffer_length, "%02d-%02d-%04d", month,
-				 day, year);
+			         day, year);
 	}
 
 	/* expiration date/time for HTTP headers */
 	else if (type == HTTP_DATE_TIME)
 		snprintf(buffer, buffer_length,
-			 "%s, %02d %s %d %02d:%02d:%02d GMT",
-			 weekdays[tm_ptr->tm_wday], day, months[tm_ptr->tm_mon],
-			 year, hour, minute, second);
+		         "%s, %02d %s %d %02d:%02d:%02d GMT",
+		         weekdays[tm_ptr->tm_wday], day, months[tm_ptr->tm_mon],
+		         year, hour, minute, second);
 
 	/* short time */
 	else
 		snprintf(buffer, buffer_length, "%02d:%02d:%02d", hour, minute,
-			 second);
+		         second);
 
 	buffer[buffer_length - 1] = '\x0';
 }
 
 /* get days, hours, minutes, and seconds from a raw time_t format or total seconds */
 void get_time_breakdown(unsigned long raw_time, int *days, int *hours,
-			int *minutes, int *seconds)
-{
+                        int *minutes, int *seconds) {
 	unsigned long temp_time;
 	int temp_days;
 	int temp_hours;
