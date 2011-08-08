@@ -416,7 +416,7 @@ int main(void) {
 	}
 
 	if (show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
-		printf("<form name='tableform%s' id='tableform%s' action='%s' method='POST'>\n", (show_dropdown == HOST_STATUS) ? "host" : "service", (show_dropdown == HOST_STATUS) ? "host" : "service", CMD_CGI);
+		printf("<form name='tableform%s' id='tableform%s' action='%s' method='POST' style='margin:0px'>\n", (show_dropdown == HOST_STATUS) ? "host" : "service", (show_dropdown == HOST_STATUS) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
 	}
 
@@ -641,7 +641,7 @@ int main(void) {
 			host_status_types = 3;
 
 			if (content_type == HTML_CONTENT) {
-				printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST'>\n", CMD_CGI);
+				printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST' style='margin:0px'>\n", CMD_CGI);
 				printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
 
 				printf("<table border=0 width=100%% cellspacing=0 cellpadding=0><tr><td align=right width=50%%></td><td align=right width=50%%>\n");
@@ -1408,10 +1408,7 @@ void show_service_detail(void) {
 
 
 	if (content_type == HTML_CONTENT) {
-
-		printf("<P>\n");
-
-		printf("<table border=0 width=100%%>\n");
+		printf("<table style='margin-top:5px;' border=0 width=100%%>\n");
 		printf("<tr>\n");
 
 		printf("<td valign=top align=left width=33%%>\n");
@@ -1463,19 +1460,17 @@ void show_service_detail(void) {
 		if (service_filter != NULL)
 			printf("<DIV ALIGN=CENTER CLASS='statusSort'>Filtered By Services Matching \'%s\'</DIV>", service_filter);
 
-		printf("<br>");
-
 		printf("</td>\n");
 
 		/* add export to csv, json, link */
 		printf("<td valign=bottom width=33%%>");
-		printf("<div class='csv_export_link'>");
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(STATUS_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(STATUS_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(STATUS_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
-		printf("</td>\n");
+		printf("<div style='padding-right:3px;' class='csv_export_link'>");
+		print_export_link(CSV_CONTENT, STATUS_CGI, NULL);
+		print_export_link(JSON_CONTENT, STATUS_CGI, NULL);
+		print_export_link(HTML_CONTENT, STATUS_CGI, NULL);
+		printf("</div></td>\n");
 
-		printf("</div></tr>\n");
+		printf("</tr>\n");
 		printf("</table>\n");
 	}
 
@@ -1929,7 +1924,7 @@ void show_service_detail(void) {
 		if (total_entries == 0 && user_is_authorized_for_statusdata == FALSE)
 			print_generic_error_message("It appears as though you do not have permission to view information for any of the services you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
 		else
-			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Service Entries Displayed</DIV>\n", total_entries);
+			printf("<DIV CLASS='itemTotalsTitle'>%d Matching Service Entries Displayed</DIV>\n", total_entries);
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1972,9 +1967,7 @@ void show_host_detail(void) {
 
 
 	if (content_type == HTML_CONTENT) {
-		printf("<P>\n");
-
-		printf("<table border=0 width=100%%>\n");
+		printf("<table style='margin-top:5px;' border=0 width=100%%>\n");
 		printf("<tr>\n");
 
 		printf("<td valign=top align=left width=33%%>\n");
@@ -2014,18 +2007,15 @@ void show_host_detail(void) {
 			printf("</DIV>\n");
 		}
 
-		printf("<br>");
-
 		printf("</td>\n");
 
 		/* add export to csv, json, link */
 		printf("<td valign=bottom width=33%%>");
-		printf("<div class='csv_export_link'>");
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(STATUS_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(STATUS_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(STATUS_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
-		printf("</td>\n");
-
+		printf("<div style='padding-right:3px;' class='csv_export_link'>");
+		print_export_link(CSV_CONTENT, STATUS_CGI, NULL);
+		print_export_link(JSON_CONTENT, STATUS_CGI, NULL);
+		print_export_link(HTML_CONTENT, STATUS_CGI, NULL);
+		printf("</div></td>\n");
 
 		printf("</tr>\n");
 		printf("</table>\n");
@@ -2334,7 +2324,7 @@ void show_host_detail(void) {
 		if (total_entries == 0 && user_is_authorized_for_statusdata == FALSE)
 			print_generic_error_message("It appears as though you do not have permission to view information for any of the hosts you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
 		else
-			printf("<BR><DIV CLASS='itemTotalsTitle'>%d Matching Host Entries Displayed</DIV>\n", total_entries);
+			printf("<DIV CLASS='itemTotalsTitle'>%d Matching Host Entries Displayed</DIV>\n", total_entries);
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 

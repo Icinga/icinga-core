@@ -703,10 +703,10 @@ void display_logentries() {
 			printf("<DIV CLASS='logEntries'>\n");
 
 			/* add export to csv, json, link */
-			printf("<div class='csv_export_link'>");
-			printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(SHOWLOG_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-			printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(SHOWLOG_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-			printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(SHOWLOG_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+			printf("<div align=right style='margin-right:1em;' class='csv_export_link'>");
+			print_export_link(CSV_CONTENT, SHOWLOG_CGI, NULL);
+			print_export_link(JSON_CONTENT, SHOWLOG_CGI, NULL);
+			print_export_link(HTML_CONTENT, SHOWLOG_CGI, NULL);
 			printf("</div>\n");
 		}
 

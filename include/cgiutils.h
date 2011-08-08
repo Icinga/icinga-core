@@ -649,10 +649,7 @@ int check_daemon_running(void);
 
 void print_generic_error_message(char *, char *, int);
 
-char *get_export_csv_link(char *);				/* function to make export csv link XSS save #1275 */
-char *get_export_json_link(char *);
-char *get_export_xml_link(char *);
-char *get_export_link(char *);
+void print_export_link(int, char *, char *);			/* print csv, json, xml and html export link */
 
 int write_to_cgi_log(char *);
 int rotate_cgi_log_file(void);

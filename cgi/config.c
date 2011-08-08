@@ -79,8 +79,6 @@ void display_hostescalations(void);
 void display_command_expansion(void);
 void display_modules(void);
 
-void print_export_link(void);
-
 authdata current_authdata;
 
 int display_type = DISPLAY_NONE;
@@ -101,29 +99,10 @@ extern int daemon_check;
 
 int CGI_ID = CONFIG_CGI_ID;
 
-void print_expand_input(int type) {
-	char *seldesc = "";
-
-	if (type == DISPLAY_COMMAND_EXPANSION) return;	/* Has its own form, w/ larger <input> */
-	else if (type == DISPLAY_SERVICES) {
-		seldesc = " Services Named or on Host";
-	} else if (type == DISPLAY_SERVICEDEPENDENCIES) {
-		seldesc = " Dependencies with Host";
-	} else if (type == DISPLAY_SERVICEESCALATIONS) {
-		seldesc = " Escalations on Host";
-	} else if (type == DISPLAY_HOSTDEPENDENCIES) {
-		seldesc = " Dependencies on/of Host";
-	} else if (type == DISPLAY_HOSTESCALATIONS) {
-		seldesc = " Escalations for Host";
-	}
-	printf("<tr><td align=left class='reportSelectSubTitle'>Show Only%s:</td></tr>\n", seldesc);
-	printf("<tr><td align=left class='reportSelectItem'><input type='text' name='expand'\n");
-	printf("value='%s'>", escape_string(to_expand));
-}
-
 int main(void) {
 	int result = OK;
 	mac = get_global_macros();
+	char *seldesc = "";
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -211,11 +190,34 @@ int main(void) {
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			print_expand_input(display_type);
+			if (display_type != DISPLAY_COMMAND_EXPANSION) {
+				if (display_type == DISPLAY_SERVICES) {
+					seldesc = " Services Named or on Host";
+				} else if (display_type == DISPLAY_SERVICEDEPENDENCIES) {
+					seldesc = " Dependencies with Host";
+				} else if (display_type == DISPLAY_SERVICEESCALATIONS) {
+					seldesc = " Escalations on Host";
+				} else if (display_type == DISPLAY_HOSTDEPENDENCIES) {
+					seldesc = " Dependencies on/of Host";
+				} else if (display_type == DISPLAY_HOSTESCALATIONS) {
+					seldesc = " Escalations for Host";
+				}
+				printf("<tr><td align=left class='reportSelectSubTitle'>Show Only%s:</td></tr>\n", seldesc);
+				printf("<tr><td align=left class='reportSelectItem'><input type='text' name='expand'\n");
+				printf("value='%s'>", escape_string(to_expand));
+			}
 
 			printf("<tr><td class='reportSelectItem'><input type='submit' value='Update'></td></tr>\n");
 			printf("</form>\n");
 			printf("</table>\n");
+
+			printf("<div class='csv_export_link'>");
+			if (display_type != DISPLAY_COMMAND_EXPANSION) {
+				print_export_link(CSV_CONTENT, CONFIG_CGI, NULL);
+				print_export_link(JSON_CONTENT, CONFIG_CGI, NULL);
+			}
+			print_export_link(HTML_CONTENT, CONFIG_CGI, NULL);
+			printf("</div>\n");
 		}
 	}
 
@@ -521,12 +523,10 @@ void display_hosts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P><DIV ALIGN=CENTER>\n");
-
-		print_export_link();
+		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
@@ -1057,7 +1057,6 @@ void display_hosts(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1081,13 +1080,10 @@ void display_hostgroups(void) {
 		printf("%sNotes URL%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAction URL%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host Group%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host Group%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
@@ -1188,7 +1184,6 @@ void display_hostgroups(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1213,13 +1208,10 @@ void display_servicegroups(void) {
 		printf("%sAction URL%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service Group%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service Group%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -1320,7 +1312,6 @@ void display_servicegroups(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1352,13 +1343,10 @@ void display_contacts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Contact%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Contact%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE CLASS='data'>\n");
 
@@ -1611,7 +1599,6 @@ void display_contacts(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1633,13 +1620,10 @@ void display_contactgroups(void) {
 		printf("%sContact Members%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Contact Group%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Contact Group%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CELLSPACING=3 CELLPADDING=0>\n");
 
@@ -1714,7 +1698,6 @@ void display_contactgroups(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1775,13 +1758,10 @@ void display_services(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : "s Named or on Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -2283,7 +2263,6 @@ void display_services(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2318,13 +2297,10 @@ void display_timeperiods(void) {
 		printf("%sTimes%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Time Period%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Time Period%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -2575,7 +2551,6 @@ void display_timeperiods(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2595,11 +2570,10 @@ void display_commands(void) {
 		printf("%sCommand Line%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Command%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P><DIV ALIGN=CENTER>\n");
-		print_export_link();
+		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -2643,7 +2617,6 @@ void display_commands(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2668,13 +2641,10 @@ void display_servicedependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service Dependencie%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service Dependencie%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : "s Involving Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -2793,7 +2763,6 @@ void display_servicedependencies(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2823,13 +2792,10 @@ void display_serviceescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Service Escalation%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service Escalation%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : "s on Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -3048,7 +3014,6 @@ void display_serviceescalations(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3071,13 +3036,10 @@ void display_hostdependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host Dependencie%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host Dependencie%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : "s Involving Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -3177,7 +3139,6 @@ void display_hostdependencies(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3206,13 +3167,10 @@ void display_hostescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Host Escalation%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host Escalation%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : "s for Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P>\n");
 		printf("<DIV ALIGN=CENTER>\n");
-
-		print_export_link();
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -3402,7 +3360,6 @@ void display_hostescalations(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3425,11 +3382,10 @@ void display_modules(void) {
 		printf("%sModule Args%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Module%s%s</DIV></P>\n",
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Module%s%s</DIV>\n",
 		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
 
-		printf("<P><DIV ALIGN=CENTER>\n");
-		print_export_link();
+		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 
@@ -3479,7 +3435,6 @@ void display_modules(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
 		printf("</DIV>\n");
-		printf("</P>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3730,16 +3685,4 @@ void display_options(void) {
 	printf("</form>\n");
 
 	return;
-}
-
-void print_export_link(void) {
-	printf("<TR>\n<td><div class='csv_export_link' style='text-align:left;'>");
-	/* add export to csv, json, link */
-	printf("<div class='csv_export_link'>");
-	printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(CONFIG_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-	printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(CONFIG_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-	printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(CONFIG_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
-	printf("</div>\n");
-
-	printf("</td>\n</TR>\n");
 }

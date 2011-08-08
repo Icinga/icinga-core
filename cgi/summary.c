@@ -1625,6 +1625,7 @@ void display_report(void) {
 		printf("<BR>\n");
 
 		printf("<DIV ALIGN=CENTER>\n");
+		printf("<table align=\"CENTER\" border=\"0\"><tr><td>");
 		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>");
 		if (display_type == REPORT_ALERT_TOTALS)
 			printf("Overall Totals");
@@ -1641,9 +1642,9 @@ void display_report(void) {
 
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(SUMMARY_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(SUMMARY_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(SUMMARY_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+		print_export_link(CSV_CONTENT, SUMMARY_CGI, NULL);
+		print_export_link(JSON_CONTENT, SUMMARY_CGI, NULL);
+		print_export_link(HTML_CONTENT, SUMMARY_CGI, NULL);
 		printf("</div>\n");
 	}
 
@@ -1687,9 +1688,10 @@ void display_report(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+		printf("</td></tr></table>");
 		printf("</DIV>\n");
-	else if (content_type == JSON_CONTENT) {
+	} else if (content_type == JSON_CONTENT) {
 		printf("\n]\n");
 		if (display_type != REPORT_ALERT_TOTALS)
 			printf("\n}\n");
@@ -1735,10 +1737,10 @@ void display_recent_alerts(void) {
 		printf("<TR><TD colspan='7'>");
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(SUMMARY_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(SUMMARY_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(SUMMARY_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
-		printf("</div>");
+		print_export_link(CSV_CONTENT, SUMMARY_CGI, NULL);
+		print_export_link(JSON_CONTENT, SUMMARY_CGI, NULL);
+		print_export_link(HTML_CONTENT, SUMMARY_CGI, NULL);
+		printf("</div>\n");
 		printf("</TD></TR>\n");
 
 		printf("<TR><TH CLASS='data'>Time</TH><TH CLASS='data'>Alert Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>State</TH><TH CLASS='data'>State Type</TH><TH CLASS='data'>Information</TH></TR>\n");
@@ -2026,10 +2028,10 @@ void display_top_alerts(void) {
 		printf("<TR><TD colspan='5'>");
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(SUMMARY_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(SUMMARY_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(SUMMARY_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
-		printf("</div>");
+		print_export_link(CSV_CONTENT, SUMMARY_CGI, NULL);
+		print_export_link(JSON_CONTENT, SUMMARY_CGI, NULL);
+		print_export_link(HTML_CONTENT, SUMMARY_CGI, NULL);
+		printf("</div>\n");
 		printf("</TD></TR>\n");
 
 		printf("<TR><TH CLASS='data'>Rank</TH><TH CLASS='data'>Producer Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");

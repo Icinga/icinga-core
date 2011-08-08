@@ -483,9 +483,9 @@ void display_notifications(void) {
 			/* add export to csv, json, link */
 			printf("<TR><TD colspan='7'>");
 			printf("<div class='csv_export_link'>");
-			printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(NOTIFICATIONS_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-			printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(NOTIFICATIONS_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-			printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(NOTIFICATIONS_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+			print_export_link(CSV_CONTENT, NOTIFICATIONS_CGI, NULL);
+			print_export_link(JSON_CONTENT, NOTIFICATIONS_CGI, NULL);
+			print_export_link(HTML_CONTENT, NOTIFICATIONS_CGI, NULL);
 			printf("</DIV></TD></TR>\n");
 
 			printf("<tr>\n");

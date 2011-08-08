@@ -17,7 +17,7 @@ a.homepageURL:Hover { color: #ff3300; }
 
 .itemTotalsTitle { font-size: 8pt; text-align: center; }
 
-.dataTitle { text-align: center; font-weight: bold; font-size: 10pt; margin-bottom: 15px; }
+.dataTitle { text-align: center; font-weight: bold; font-size: 10pt; }
 
 table.data { background-color: #fff; padding: 2; }
 th.data { text-align: left; font-size: 10pt; background-color: #707677; color: #fff; }

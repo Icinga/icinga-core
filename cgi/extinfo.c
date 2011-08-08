@@ -666,8 +666,15 @@ int main(void) {
 
 	}
 
-	if (content_type == HTML_CONTENT)
-		printf("<BR>\n");
+	if (content_type == HTML_CONTENT) {
+		if (display_type == DISPLAY_HOST_INFO || display_type == DISPLAY_SERVICE_INFO) {
+			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+			print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+			print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
+			printf("</DIV>");
+		} else
+			printf("<BR>\n");
+	}
 
 	if (display_type == DISPLAY_HOST_INFO) {
 		if (content_type == CSV_CONTENT) {
@@ -703,9 +710,9 @@ int main(void) {
 
 				/* add export to csv, json, link */
 				printf("<div class='csv_export_link'>");
-				printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(EXTINFO_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-				printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(EXTINFO_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-				printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(EXTINFO_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+				print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
+				print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+				print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 				printf("</div>");
 
 				show_comments(HOST_COMMENT);
@@ -727,11 +734,10 @@ int main(void) {
 
 				/* add export to csv, json, link */
 				printf("<div class='csv_export_link'>");
-				printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(EXTINFO_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-				printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(EXTINFO_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-				printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(EXTINFO_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+				print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
+				print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+				print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 				printf("</div>");
-
 
 				show_downtime(HOST_DOWNTIME);
 				printf("<BR />\n");
@@ -1054,9 +1060,9 @@ void show_process_info(void) {
 
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_csv_link(EXTINFO_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_json_link(EXTINFO_CGI), url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT);
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(EXTINFO_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+		print_export_link(CSV_CONTENT, EXTINFO_CGI, NULL);
+		print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+		print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 		printf("</div>");
 
 		printf("<DIV ALIGN=CENTER>\n");
@@ -2846,17 +2852,22 @@ void show_comments(int type) {
 		}
 	} else {
 		printf("<A NAME=%sCOMMENTS></A>\n", (type == HOST_COMMENT) ? "HOST" : "SERVICE");
-		printf("<DIV CLASS='commentTitle'>%s Comments</DIV>\n", (type == HOST_COMMENT) ? "Host" : "Service");
+		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>%s Comments</DIV></TD><TD width='33%%'>", (type == HOST_COMMENT) ? "Host" : "Service");
+
+		/* add export to csv link */
+		if (display_type != DISPLAY_COMMENTS) {
+			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
+			printf("</DIV>");
+		}
+
+		printf("</TD></TR></TABLE>\n");
 
 		printf("<form name='tableform%scomment' id='tableform%scomment'>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
 		printf("<input type=hidden name=buttonCheckboxChecked>");
 		printf("<input type=hidden name='hiddencmdfield' value=%d>", (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT);
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='comment'>\n");
-
-		/* add export to csv link */
-		if (display_type != DISPLAY_COMMENTS)
-			printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s&csvtype=comment' target='_blank'><img src='%s%s' border=0 alt='%s'></A><a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a></DIV></TD></TR>\n", colspan, get_export_csv_link(EXTINFO_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, get_export_link(EXTINFO_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
 
 		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Comments' onClick=cmd_submit(\'tableform%scomment\') disabled=\"disabled\"></TD></TR>\n", colspan, (type == HOST_COMMENT) ? "host" : "service");
 
@@ -3050,17 +3061,22 @@ void show_downtime(int type) {
 		}
 	} else {
 		printf("<A NAME=%sDOWNTIME></A>\n", (type == HOST_DOWNTIME) ? "HOST" : "SERVICE");
-		printf("<DIV CLASS='downtimeTitle'>Scheduled %s Downtime</DIV>\n", (type == HOST_DOWNTIME) ? "Host" : "Service");
+		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>Scheduled %s Downtime</DIV></TD><TD width='33%%'>", (type == HOST_COMMENT) ? "Host" : "Service");
+
+		/* add export to csv link */
+		if (display_type != DISPLAY_COMMENTS) {
+			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
+			printf("</DIV>");
+		}
+
+		printf("</TD></TR></TABLE>\n");
 
 		printf("<form name='tableform%sdowntime' id='tableform%sdowntime'>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
 		printf("<input type=hidden name=buttonCheckboxChecked>");
 		printf("<input type=hidden name='hiddencmdfield' value=%d>", (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
 
 		printf("<TABLE BORDER=0 CLASS='downtime'>\n");
-
-		/* add export to csv link */
-		if (display_type != DISPLAY_DOWNTIME)
-			printf("<TR><TD colspan='%d'><DIV class='csv_export_link'><A HREF='%s&csvtype=downtime' target='_blank'><img src='%s%s' border=0 alt='%s'></A><a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a></DIV></TD></TR>\n", colspan, get_export_csv_link(EXTINFO_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, get_export_link(EXTINFO_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
 
 		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Downtimes' onClick=cmd_submit(\'tableform%sdowntime\') disabled=\"disabled\"></TD></TR>\n", colspan, (type == HOST_DOWNTIME) ? "host" : "service");
 
@@ -3305,7 +3321,11 @@ void show_scheduling_queue(void) {
 		printf("<TABLE BORDER=0 CLASS='queue'>\n");
 
 		/* add export to csv link */
-		printf("<TR><TD colspan='7'><DIV class='csv_export_link'><A HREF='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></A><a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a></DIV></TD></TR>\n", get_export_csv_link(EXTINFO_CGI), url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, get_export_link(EXTINFO_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+		printf("<TR><TD colspan='7'><DIV class='csv_export_link'>");
+		print_export_link(CSV_CONTENT, EXTINFO_CGI, NULL);
+		print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+		print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
+		printf("</DIV></TD></TR>\n");
 
 		printf("<TR CLASS='queue'>");
 

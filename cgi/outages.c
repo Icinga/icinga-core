@@ -322,14 +322,18 @@ void display_network_outages(void) {
 		printf("%sSERVICES_AFFECTED%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
 		/* display the problem hosts... */
-		printf("<P><DIV ALIGN=CENTER>\n");
-		printf("<DIV CLASS='dataTitle'>Blocking Outages</DIV>\n");
-
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
+		printf("<DIV ALIGN=CENTER>\n");
+		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
 
 		/* add export to csv link */
-		printf("<TR><TD colspan='8'><DIV class='csv_export_link'><A HREF='%s' target='_blank'>Export to CSV</A></DIV></TD></TR>\n", get_export_csv_link(OUTAGES_CGI));
+		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		print_export_link(CSV_CONTENT, OUTAGES_CGI, NULL);
+		print_export_link(JSON_CONTENT, OUTAGES_CGI, NULL);
+		print_export_link(HTML_CONTENT, OUTAGES_CGI, NULL);
 
+		printf("</DIV></TD></TR></TABLE>\n");
+
+		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Severity</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>State</TH><TH CLASS='data'>Notes</TH><TH CLASS='data'>State Duration</TH><TH CLASS='data'># Hosts Affected</TH><TH CLASS='data'># Services Affected</TH><TH CLASS='data'>Actions</TH>\n");
 		printf("</TR>\n");

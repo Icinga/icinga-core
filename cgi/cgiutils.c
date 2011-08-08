@@ -2333,95 +2333,53 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 	return;
 }
 
-/* function to make export csv link XSS save #1275 */
-char *get_export_csv_link(char *cgi) {
-	char temp_buffer[MAX_INPUT_BUFFER] = "";
-	static char ret[MAX_INPUT_BUFFER] = "";
+/** @brief prints export link with little icons
+ *  @param [in] can be \c CSV_CONTENT , \c JSON_CONTENT \c XML_CONTENT or \c HTML_CONTENT
+ *  @param [in] name of cgi as defined in include/cgiutils.h
+ *  @param [in] additional string to add to url (set to NULL if nothing should be added)
+ *  @note takes care that each link is XSS save #1275
+ *
+ *  This function prints a little icon, depending on @ref content_type, which points to
+ *  a new page with the desired content.
+**/
+void print_export_link(int content_type, char *cgi, char *add_to_url) {
+	char stripped_query_string[MAX_INPUT_BUFFER] = "";
+	char link[MAX_INPUT_BUFFER] = "";
+
+	if (cgi == NULL)
+		return;
+
+	strcat(link, cgi);
 
 	/* just do stuff if some options are requested */
-	if (getenv("QUERY_STRING") != NULL) {
-		if (strcmp(getenv("QUERY_STRING"), "")) {
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s", getenv("QUERY_STRING"));
-			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-			strip_html_brackets(temp_buffer);
-			snprintf(ret, sizeof(ret) - 1, "%s?%s&csvoutput", cgi, temp_buffer);
-			ret[sizeof(ret)-1] = '\x0';
-		} else
-			snprintf(ret, sizeof(ret) - 1, "%s?csvoutput", cgi);
-	} else
-		snprintf(ret, sizeof(ret) - 1, "%s?csvoutput", cgi);
+	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		strcpy(stripped_query_string, getenv("QUERY_STRING"));
+		strip_html_brackets(stripped_query_string);
+		strcat(link, "?");
+		strcat(link, stripped_query_string);
+	}
 
-	ret[sizeof(ret)-1] = '\x0';
+	/* add string to url */
+	if (add_to_url != NULL && (strlen(add_to_url) != 0)) {
+		if (strlen(stripped_query_string) != 0)
+			strcat(link, "&");
+		else
+			strcat(link, "?");
+		strcat(link, add_to_url);
+	}
 
-	return ret;
+	/* print formatted link */
+	if (content_type == CSV_CONTENT)
+		printf("<a href='%s%scsvoutput' target='_blank'><img src='%s%s' border=0 alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, EXPORT_CSV_ICON_ALT);
+	else if (content_type == JSON_CONTENT)
+		printf("<a href='%s%sjsonoutput' target='_blank'><img src='%s%s' border=0 alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT, EXPORT_JSON_ICON_ALT);
+	else if (content_type == XML_CONTENT)
+		printf("<a href='%s%sxmloutput' target='_blank'><img src='%s%s' border=0 alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_XML_ICON, EXPORT_XML_ICON_ALT, EXPORT_XML_ICON_ALT);
+	else
+		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s' title='%s'></a>\n", link, url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT, EXPORT_LINK_ICON_ALT);
+
+	return;
 }
-
-char *get_export_json_link(char *cgi) {
-	char temp_buffer[MAX_INPUT_BUFFER] = "";
-	static char ret[MAX_INPUT_BUFFER] = "";
-
-	/* just do stuff if some options are requested */
-	if (getenv("QUERY_STRING") != NULL) {
-		if (strcmp(getenv("QUERY_STRING"), "")) {
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s", getenv("QUERY_STRING"));
-			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-			strip_html_brackets(temp_buffer);
-			snprintf(ret, sizeof(ret) - 1, "%s?%s&jsonoutput", cgi, temp_buffer);
-			ret[sizeof(ret)-1] = '\x0';
-		} else
-			snprintf(ret, sizeof(ret) - 1, "%s?jsonoutput", cgi);
-	} else
-		snprintf(ret, sizeof(ret) - 1, "%s?jsonoutput", cgi);
-
-	ret[sizeof(ret)-1] = '\x0';
-
-	return ret;
-}
-
-char *get_export_xml_link(char *cgi) {
-	char temp_buffer[MAX_INPUT_BUFFER] = "";
-	static char ret[MAX_INPUT_BUFFER] = "";
-
-	/* just do stuff if some options are requested */
-	if (getenv("QUERY_STRING") != NULL) {
-		if (strcmp(getenv("QUERY_STRING"), "")) {
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s", getenv("QUERY_STRING"));
-			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-			strip_html_brackets(temp_buffer);
-			snprintf(ret, sizeof(ret) - 1, "%s?%s&xmloutput", cgi, temp_buffer);
-			ret[sizeof(ret)-1] = '\x0';
-		} else
-			snprintf(ret, sizeof(ret) - 1, "%s?xmloutput", cgi);
-	} else
-		snprintf(ret, sizeof(ret) - 1, "%s?xmloutput", cgi);
-
-	ret[sizeof(ret)-1] = '\x0';
-
-	return ret;
-}
-
-char *get_export_link(char *cgi) {
-	char temp_buffer[MAX_INPUT_BUFFER] = "";
-	static char ret[MAX_INPUT_BUFFER] = "";
-
-	/* just do stuff if some options are requested */
-	if (getenv("QUERY_STRING") != NULL) {
-		if (strcmp(getenv("QUERY_STRING"), "")) {
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s", getenv("QUERY_STRING"));
-			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-			strip_html_brackets(temp_buffer);
-			snprintf(ret, sizeof(ret) - 1, "%s?%s", cgi, temp_buffer);
-			ret[sizeof(ret)-1] = '\x0';
-		} else
-			snprintf(ret, sizeof(ret) - 1, "%s", cgi);
-	} else
-		snprintf(ret, sizeof(ret) - 1, "%s", cgi);
-
-	ret[sizeof(ret)-1] = '\x0';
-
-	return ret;
-}
-
 
 
 /**
