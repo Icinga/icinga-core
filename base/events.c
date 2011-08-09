@@ -1314,7 +1314,7 @@ int event_execution_loop(void) {
 
 				log_debug_info(DEBUGL_EVENTS, 1, "Running event...\n");
 
-#				/* handle the event */
+				/* handle the event */
 				handle_timed_event(temp_event);
 
 				/* reschedule the event if necessary */

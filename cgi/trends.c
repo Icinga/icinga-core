@@ -621,7 +621,7 @@ int main(int argc, char **argv) {
 		printf("</table>\n");
 		printf("</form>\n");
 
-		printf("<a href='%s' target='_blank'><img src='%s%s' border=0 alt='%s'></a>\n", get_export_link(TRENDS_CGI), url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT);
+		print_export_link(HTML_CONTENT, TRENDS_CGI, NULL);
 
 		printf("</td>\n");
 
