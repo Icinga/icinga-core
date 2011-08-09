@@ -4,7 +4,7 @@ Icinga 1.5.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.5.0 - 17/08/2011
+1.5.0 - 24/08/2011
 
 ENHANCEMENTS
 * core: do not update host/service status during scheduler initialization on startup (idoutils already know that) #1741
