@@ -4,7 +4,7 @@
 <title>Optionen CGI-Konfigurationsdatei</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="customobjectvars.html" title="Maßgeschneiderte Objektvariablen">
 <link rel="next" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">
@@ -175,7 +175,7 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>use_authentication=&lt;0/1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>use_authentication=[0/1]</strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
@@ -262,6 +262,15 @@
   System/Prozessbefehle erteilen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_system_information</code> angeben, um
+  statt eines contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
+
   <p><a name="configcgi-authorized_for_system_commands"></a><span class="bold"><strong>Zugang zu System/Prozessbefehlen</strong></span></p>
 
   <div class="informaltable">
@@ -290,6 +299,15 @@
   können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a>-Variable hinzufügen. Mehr Informationen,
   wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_system_commands</code> angeben, um
+  statt eines contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
+
   <p><a name="configcgi-authorized_for_configuration_information"></a><span class="bold"><strong>Zugang zu
   Konfigurationsinformationen</strong></span></p>
 
@@ -317,6 +335,15 @@
   im <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a> ansehen können. Benutzer in dieser Liste können Informationen zu allen
   konfigurierten Hosts, Hostgruppen, Kontakten, Kontaktgruppen, Zeitfenstern und Befehlen ansehen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_configartion_information</code> angeben,
+  um statt eines contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_all_hosts"></a><span class="bold"><strong>Global Host Information Access</strong></span></p>
 
@@ -348,6 +375,15 @@
   <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a>-Variable hinzufügen. Mehr
   Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_hosts</code> angeben, um statt eines
+  contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
+
   <p><a name="configcgi-authorized_for_all_host_commands"></a><span class="bold"><strong>Zugang zu globalen
   Host-Befehlen</strong></span></p>
 
@@ -378,6 +414,15 @@
   Konfigurationsinformationen für alle Hosts oder Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_host_commands</code> angeben, um
+  statt eines contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
+
   <p><a name="configcgi-authorized_for_all_services"></a><span class="bold"><strong>Zugang zu globalen
   Service-Informationen</strong></span></p>
 
@@ -406,6 +451,15 @@
   Befehle für alle Services zu erteilen. Wenn Sie möchten, dass Benutzer auch Befehle für alle Services erteilen können, dann müssen Sie
   diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a>-Variable hinzufügen.
   Mehr Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_services</code> angeben, um statt
+  eines contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_all_service_commands"></a><span class="bold"><strong>Zugang zu globalen
   Service-Befehlen</strong></span></p>
@@ -437,6 +491,15 @@
   Konfigurationsinformationen für alle Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_service_commands</code> angeben, um
+  statt eines contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
+
   <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Zeige alle Services für einen
   berechtigten Host</strong></span></p>
 
@@ -449,7 +512,7 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>show_all_services_host_is_authorized_for=&lt;0|1&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>show_all_services_host_is_authorized_for=[0|1]</strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Beispiel:</p></td>
@@ -463,6 +526,46 @@
   <p>Per Default kann ein Benutzer alle Services eines Hosts sehen, wenn er als Kontakt für den Host autorisiert ist. Durch deaktivieren
   dieser Option muss der Benutzer auch autorisierter Kontakt des Service sein, um diesen ansehen zu können. Bitte beachten Sie, dass diese
   Option keine Auswirkung hat, wenn die Option authorized_for_all_services für den Benutzer gesetzt ist (seit Icinga 1.0.2).</p>
+
+  <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Zugang zu Befehlen und Kommentaren verweigern</strong></span>
+  </p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>authorized_for_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_read_only=icingalook</strong></span>
+          </font></span> </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Nur-Lesen-Zugriff auf die
+  CGIs haben. Dies blockiert jegliche Host- oder Service-Befehle. Es werden auch keine Kommentare angezeigt. Benutzer in dieser Liste sind
+  <span class="emphasis"><em>nicht</em></span> automatisch autorisiert, Befehle für alle Hosts zu erteilen. Benutzer in dieser Liste sind <span class="emphasis"><em>nicht
+  </em></span> automatisch berechtigt, Status- oder Konfigurationsinformationen für alle Hosts anzusehen. Wenn Sie möchten, dass Benutzer
+  auch Status- und Konfigurationsinformationen für alle Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>-Variable hinzufügen. Mehr Informationen, wie man
+  Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_read_only</code> angeben, um statt eines
+  contact eine contactgroup zu autorisieren.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-lock_author_names"></a><span class="bold"><strong>Autorennamen sperren</strong></span></p>
 
@@ -1549,7 +1652,7 @@
   aktive Prüfungen dargestellt werden.</p>
 
   <div class="figure">
-<a name="id2848933"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
+<a name="id1613970"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
 <div class="figure-contents">
     
 
@@ -1604,85 +1707,268 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id2849073"></a>
+  <p><a name="configcgi-default_downtime_duration"></a> <span class="bold"><strong>Default-Ausfallzeit-Dauer setzen</strong></span></p>
 
-  <a class="indexterm" name="id2849085"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>default_downtime_duration=n</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_downtime_duration=7200</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id2849098"></a>
+  <p>Diese Option setzt die Default-Dauer (in Sekunden) von festen und flexiblen Ausfallzeiten. Default ist 7200 Sekunden (2 Stunden).</p>
 
-  <a class="indexterm" name="id2849112"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id2849100"></a>
+  <p><a name="configcgi-suppress_maintenance_downtime"></a> <span class="bold"><strong>Maintenance/Downtime anzeigen</strong></span></p>
 
-  <a class="indexterm" name="id2849140"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>suppress_maintenance_downtime=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>suppress_maintenance_downtime=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id2849153"></a>
+  <p>Die aktuelle Classic-UI-Ansicht zeigt den Status von Hosts zusammen mit Aufmerksamkeit erregenden Farben, selbst wenn der Host/
+  Service sich in einer Ausfallzeit befindet. Dies führt zur Ablenkung von tatsächlich existierenden Problemen durch geplante oder
+  erwartete Ausfälle.
+  Die Option ist per Default deaktiviert, um das alte Verhalten beizubehalten. Falls die Option aktiviert ist, werden die Ausgaben nicht
+  mehr in der regulären Farbe, sondern in grau angezeigt (wie im Pending-Status). Der Status jedoch zeigt weiterhin den tatsächlichen
+  Zustand und das ist beabsichtigt, damit der Benutzer den Zustand sieht, bevor die Ausfallzeit endet. Ein sinnvolles Beispiel dafür ist,
+  dass ein Host/Service wieder online ist, an dem gearbeitet wird.
 
-  <a class="indexterm" name="id2849167"></a>
+  Außerdem werden Hosts in einer geplanten Ausfallzeit in der statusmap.cgi in grau dargestellt.</p>
 
-  <a class="indexterm" name="id2849154"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id2849195"></a>
+  <p><a name="configcgi-show_partial_hostgroups"></a> <span class="bold"><strong>Unvollständige Hostgruppen anzeigen</strong></span></p>
 
-  <a class="indexterm" name="id2849208"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>show_partial_hostgroups=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_partial_hostgroups=1</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id2849196"></a>
+  <p>Per Default (gleichbedeutend mit einer nicht vorhandenen oder deaktivierten Direktive) sieht ein Benutzer eine Hostgruppe und deren
+  Hosts nur, wenn er ein autorisierter Kontakt für <span class="emphasis"><em>alle</em></span> Hosts der jeweiligen Gruppe ist. Das Verhalten kann mit der
+  Direktive <code class="code">show_partial_hostgroups=1</code> geändert werden.</p>
 
-  <a class="indexterm" name="id2849209"></a>
+  <p>Wenn sie aktiviert ist, wird der Hostgruppen-Überblick auch unvollständige Hostgruppen aufführen, bei denen lediglich die Hosts
+  angezeigt werden, für die der Benutzer ein autorisierter Kontakt ist.</p>
 
-  <a class="indexterm" name="id2849251"></a>
+  <p>Außerdem wird der Hinweis "(Partial Hostgroups Enabled)" oberhalb des Hostgruppen-Überblicks angezeigt, damit keine Verwirrung
+  darüber entsteht, ob diese Direktive aktiviert ist oder nicht. Aus Geheimhaltungsgründen werden unvollständige Hostgruppen nicht als
+  solche gekennzeichnet.</p>
 
-  <a class="indexterm" name="id2849252"></a>
+  <p>KOMPATIBILITÄTSHINWEIS: Wie bei jeder Änderung an der Ausgabe der CGIs kann die Aktivierung dieser Direktive die Funktion von
+  Drittanbieter-Tools beeinträchtigen, die sich auf eine bestimmte (Bildschirm-)Struktur verlassen. Wenn Sie auf ein solches Problem stoßen,
+  dann deaktivieren Sie diese Option wieder und ermuntern Sie den/die Entwickler des Programms, statt dessen JSON zur Ermittlung der Daten
+  zu nutzen.</p>
 
-  <a class="indexterm" name="id2849279"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id2849237"></a>
+  <p><a name="configcgi-highlight_table_rows"></a> <span class="bold"><strong>Zeilen in status.cgi hervorheben</strong></span></p>
 
-  <a class="indexterm" name="id2849306"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>highlight_table_rows=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>highlight_table_rows=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id2849320"></a>
+  <p>Mit dieser Option können Zeilen in der status.cgi hervorgehoben werden. Das kann bei vielen Zeilen oder einer hohen
+  Bildschirmauflösung nützlich sein. Werte: 0 = deaktivieren der Hervorhebung, 1 = aktivieren der Hervorhebung (Default).</p>
 
-  <a class="indexterm" name="id2849307"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id2849348"></a>
+  <a class="indexterm" name="id1614591"></a>
 
-  <a class="indexterm" name="id2849362"></a>
+  <a class="indexterm" name="id1614606"></a>
 
-  <a class="indexterm" name="id2849376"></a>
+  <a class="indexterm" name="id1614618"></a>
 
-  <a class="indexterm" name="id2849388"></a>
+  <a class="indexterm" name="id1614631"></a>
 
-  <a class="indexterm" name="id2849402"></a>
+  <a class="indexterm" name="id1614645"></a>
 
-  <a class="indexterm" name="id2849415"></a>
+  <a class="indexterm" name="id1614659"></a>
 
-  <a class="indexterm" name="id2849429"></a>
+  <a class="indexterm" name="id1614672"></a>
 
-  <a class="indexterm" name="id2849442"></a>
+  <a class="indexterm" name="id1614687"></a>
 
-  <a class="indexterm" name="id2849445"></a>
+  <a class="indexterm" name="id1614701"></a>
 
-  <a class="indexterm" name="id2849469"></a>
+  <a class="indexterm" name="id1614714"></a>
 
-  <a class="indexterm" name="id2849484"></a>
+  <a class="indexterm" name="id1614729"></a>
 
-  <a class="indexterm" name="id2849470"></a>
+  <a class="indexterm" name="id1614743"></a>
 
-  <a class="indexterm" name="id2849501"></a>
+  <a class="indexterm" name="id1614757"></a>
 
-  <a class="indexterm" name="id2849510"></a>
+  <a class="indexterm" name="id1614770"></a>
 
-  <a class="indexterm" name="id2849444"></a>
+  <a class="indexterm" name="id1614784"></a>
 
-  <a class="indexterm" name="id2849524"></a>
+  <a class="indexterm" name="id1614797"></a>
 
-  <a class="indexterm" name="id2849564"></a>
+  <a class="indexterm" name="id1614812"></a>
 
-  <a class="indexterm" name="id2849578"></a>
+  <a class="indexterm" name="id1614825"></a>
 
-  <a class="indexterm" name="id2849593"></a>
+  <a class="indexterm" name="id1614840"></a>
 
-  <a class="indexterm" name="id2849606"></a>
+  <a class="indexterm" name="id1614852"></a>
+
+  <a class="indexterm" name="id1614863"></a>
+
+  <a class="indexterm" name="id1614875"></a>
+
+  <a class="indexterm" name="id1614890"></a>
+
+  <a class="indexterm" name="id1614904"></a>
+
+  <a class="indexterm" name="id1614913"></a>
+
+  <a class="indexterm" name="id1614927"></a>
+
+  <a class="indexterm" name="id1614945"></a>
+
+  <a class="indexterm" name="id1614960"></a>
+
+  <a class="indexterm" name="id1614974"></a>
+
+  <a class="indexterm" name="id1614987"></a>
+
+  <a class="indexterm" name="id1615000"></a>
+
+  <a class="indexterm" name="id1615014"></a>
+
+  <a class="indexterm" name="id1615028"></a>
+
+  <a class="indexterm" name="id1615036"></a>
+
+  <a class="indexterm" name="id1615054"></a>
+
+  <a class="indexterm" name="id1615068"></a>
+
+  <a class="indexterm" name="id1615083"></a>
+
+  <a class="indexterm" name="id1615096"></a>
+
+  <a class="indexterm" name="id1615110"></a>
+
+  <a class="indexterm" name="id1615124"></a>
+
+  <a class="indexterm" name="id1615138"></a>
+
+  <a class="indexterm" name="id1615148"></a>
+
+  <a class="indexterm" name="id1615162"></a>
+
+  <a class="indexterm" name="id1615175"></a>
+
+  <a class="indexterm" name="id1615189"></a>
+
+  <a class="indexterm" name="id1615197"></a>
+
+  <a class="indexterm" name="id1615216"></a>
+
+  <a class="indexterm" name="id1615225"></a>
+
+  <a class="indexterm" name="id1615244"></a>
+
+  <a class="indexterm" name="id1615253"></a>
+
+  <a class="indexterm" name="id1615267"></a>
+
+  <a class="indexterm" name="id1615281"></a>
 </div>
 <div class="navfooter">
 <hr>

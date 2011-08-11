@@ -4,7 +4,7 @@
 <title>NSCA</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Additional software">
 <link rel="prev" href="nrpe.html" title="NRPE">
 <link rel="next" href="ch11.html" title="Chapter 11. Development">
@@ -36,7 +36,7 @@
   results are transmitted as well.</p>
 
   <div class="figure">
-<a name="id5763081"></a><p class="title"><b>Figure 10.3. NSCA</b></p>
+<a name="id1530260"></a><p class="title"><b>Figure 10.3. NSCA</b></p>
 <div class="figure-contents">
     
 
@@ -331,21 +331,21 @@
   "host")</p>
 
   <pre class="programlisting"> define service{
-    use                     generic-service   # template to inherit from
-    name                    passive-service   # name of this template
-    active_checks_enabled   0                 # no active checks
-    passive_checks_enabled  1                 # allow passive checks
-    check_command           check_dummy!0     # use "check_dummy", RC=0 (OK)
-    check_period            24x7              # check active all the time
-    check_freshness         0                 # don't check if check result is "stale"
-    register                0                 # this is a template, not a real service
+    use                     generic-service   ; template to inherit from
+    name                    passive-service   ; name of this template
+    active_checks_enabled   0                 ; no active checks
+    passive_checks_enabled  1                 ; allow passive checks
+    check_command           check_dummy!0     ; use "check_dummy", RC=0 (OK)
+    check_period            24x7              ; check active all the time
+    check_freshness         0                 ; don't check if check result is "stale"
+    register                0                 ; this is a template, not a real service
     }</pre>
 <p>Using the template above the service definition might look like</p>
 
   <pre class="programlisting"> define service{
-    use                     passive-service   # template to inherit from
-    host_name               remotehost        # host where send_nsca is located
-    service_description     Diskspace         # service to be checked
+    use                     passive-service   ; template to inherit from
+    host_name               remotehost        ; host where send_nsca is located
+    service_description     Diskspace         ; service to be checked
     }</pre>
 <p>Restart Icinga to include the definitions in your running configuration</p>
 
@@ -363,9 +363,9 @@
   <p>After a short while you should see messages in icinga.log showing that the information submitted was processed. You should see the
   information in the classic UI as well turning the service state from "Pending" to "OK" and containing the data you specified.</p>
 
-  <a class="indexterm" name="id5763781"></a>
+  <a class="indexterm" name="id1530936"></a>
 
-  <a class="indexterm" name="id5763763"></a>
+  <a class="indexterm" name="id1530952"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -4,7 +4,7 @@
 <title>Icinga and IDOUtils Quickstart on FreeBSD</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">
 <link rel="next" href="howtos.html" title="Links to other published Howtos">
@@ -30,6 +30,15 @@
   
 
   <p><span class="bold"><strong><a name="introduction_idoutils_freebsd"></a>Introduction</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Meanwhile there are Icinga packages for most Linux distributions. Unless you need a feature only available in the 
+  current source tree you should consider installing one of these packages.</p></td></tr>
+</table></div>
 
   <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
   monitoring your local machine within 30 minutes.</p>
@@ -185,20 +194,16 @@
   <pre class="programlisting"> #&gt; mkdir ~/src
  #&gt; cd ~/src</pre>
 
-  <p>Either fetch the current icinga-core snapshot from Icinga GIT </p>
-<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-core.git</pre>
-<p>or
-  from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
-
-  <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a> .</p>
+  <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
+  <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
 
   <p><span class="bold"><strong>Compile and install Icinga and IDOUtils</strong></span></p>
 
   <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
   <pre class="programlisting"> #&gt; cd ~/src/ 
- #&gt; tar xvzf icinga-1.4.tar.gz 
- #&gt; cd icinga-1.4</pre>
+ #&gt; tar xvzf icinga-1.5.tar.gz 
+ #&gt; cd icinga-1.5</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -214,6 +219,7 @@
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils CPPFLAGS=-I/usr/local/include \
+    CFLAGS="-I/usr/local/include -L/usr/local/lib" \
     --with-dbi-lib=/usr/local/lib --with-dbi-inc=/usr/local/include</pre>
 
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -224,6 +230,24 @@
 <tr><td align="left" valign="top">
     <p>Appending <span class="emphasis"><em>CPPFLAGS=-I/usr/local/include</em></span> is important for the IDOUtils and the broker modul
     respectively.</p>
+  </td></tr>
+</table></div>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>You should include <code class="literal">CFLAGS=..."</code> like specified above. Otherwise you might get the following lines in
+    <code class="filename">icinga.log</code>:
+    </p>
+<pre class="screen"> Error: Module &#8216;/usr/local/icinga/bin/idomod.o&#8217; is using an old or unspecified version of the event broker API. Module will
+ be unloaded.
+ Event broker module &#8216;/usr/local/icinga/bin/idomod.o&#8217; deinitialized successfully.</pre>
+<p>
+    More details on this error can be found <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top">
+    here</a>.
+    </p>
   </td></tr>
 </table></div>
 
@@ -245,7 +269,17 @@
  #&gt; gmake install-commandmode
  #&gt; gmake install-idoutils</pre>
 <p> or shorter </p>
-<pre class="programlisting"> #&gt; make fullinstall</pre>
+<pre class="programlisting"> #&gt; make fullinstall
+ #&gt; make install-config</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
+  </code> anymore to avoid accidently overwriting of your config files.</p></td></tr>
+</table></div>
 
   <p>The Icinga-API will be installed during "make install" so if you are required to install it manually please try: </p>
 <pre class="programlisting"> #&gt; make install-api</pre>
@@ -514,7 +548,7 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id5654680"></a>
+  <a class="indexterm" name="id1416237"></a>
 </div>
 <div class="navfooter">
 <hr>

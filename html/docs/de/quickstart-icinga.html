@@ -4,7 +4,7 @@
 <title>Icinga-Schnellstart auf Linux</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart.html" title="Schnellstart-Installationsanleitungen">
 <link rel="next" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">
@@ -30,6 +30,15 @@
   
 
   <p><span class="bold"><strong><a name="introduction_quickstart_icinga"></a>Einführung</strong></span></p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Inzwischen gibt es Icinga-Pakete für die meisten Linux-Distributionen. Solange Sie kein Feature benötigen, das
+  lediglich im aktuellen Source-Zweig enthalten ist, sollten Sie die Installation eines dieser Pakete erwägen.</p></td></tr>
+</table></div>
 
   <p>Diese Schnellstartanleitung ist dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von 20 Minuten
   aus dem Quellcode installieren und Ihren lokalen Rechner damit überwachen.</p>
@@ -189,10 +198,7 @@
 
   <pre class="programlisting"> #&gt; cd /usr/src</pre>
 
-  <p>Holen Sie den aktuellen icinga-core-Snapshot aus dem Icinga GIT </p>
-<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-core.git</pre>
-<p>
-  oder von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> .</p>
+  <p>Laden Sie die Sourcen von der <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
   <p>Vergessen Sie nicht die <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios-Plugins</a>.</p>
 
@@ -201,8 +207,8 @@
   <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
   <pre class="programlisting"> #&gt; cd /usr/src/
- #&gt; tar xvzf icinga-1.4.tar.gz
- #&gt; cd icinga-1.4</pre>
+ #&gt; tar xvzf icinga-1.5.tar.gz
+ #&gt; cd icinga-1.5</pre>
 
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
@@ -219,7 +225,18 @@
  #&gt; make install-config 
  #&gt; make install-commandmode </pre>
 <p> oder kürzer </p>
-<pre class="programlisting"> #&gt; make fullinstall</pre>
+<pre class="programlisting"> #&gt; make fullinstall
+ #&gt; make install-config</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>
+  enthalten, um ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p></td></tr>
+</table></div>
+
 
   <p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-Api (nach)installieren möchten, nutzen Sie:
   </p>
@@ -408,9 +425,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id2802122"></a>
+  <a class="indexterm" name="id1566953"></a>
 
-  <a class="indexterm" name="id2802136"></a>
+  <a class="indexterm" name="id1566935"></a>
 </div>
 <div class="navfooter">
 <hr>

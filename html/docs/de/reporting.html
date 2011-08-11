@@ -4,7 +4,7 @@
 <title>Installation des Icinga-Reporting-Pakets mit JasperServer</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
 <link rel="up" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
 <link rel="prev" href="int-mklivestatus.html" title="MKLiveStatus-Integration">
 <link rel="next" href="ch10.html" title="Kapitel 10. weitere Software">
@@ -58,13 +58,13 @@
       <p>Installation über das Binary</p>
 
       <p>Nutzen Sie den JasperServer-ce-linux-installer, angeboten über:<a class="link" href="http://sourceforge.net/projects/jasperserver/files/" target="_top"> Sourceforge</a> mit bereits enthaltener MySQL-Database und
-      Tomcat Server. Die Ausführung des Binaries leitet Sie durch den Installationsprozess.</p>
+      Tomcat-Server. Die Ausführung des Binarys leitet Sie durch den Installationsprozess.</p>
     </li>
 <li class="listitem">
       <p>Installation des WAR-Archives</p>
 
-      <p>Sie können das JasperServer-CE WAR in einen bestehenden Tomcat6 Server integrieren und Ihre bereits angelegte
-      Icinga Datenbank benutzen. Hier wird die WAR-Installation in einen Tomcat6 Server beschreiben. Die offizielle
+      <p>Sie können das JasperServer-CE WAR in einen bestehenden Tomcat6-Server integrieren und Ihre bereits angelegte
+      Icinga-Datenbank benutzen. Hier wird die WAR-Installation in einen Tomcat6- Server beschreiben. Die offizielle
       JasperServer-Installationsanleitung finden Sie <a class="link" href="http://sourceforge.net/projects/jasperserver/files/" target="_top">hier</a>.</p>
     </li>
 </ul></div>
@@ -77,7 +77,7 @@
 
   <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
-  <pre class="programlisting">#&gt; apt-get install tomcat6</pre>
+  <pre class="programlisting"> #&gt; apt-get install tomcat6</pre>
 
   <p><span class="bold"><strong>Installation des JasperServer CE in Ihren Tomcat Server</strong></span></p>
 
@@ -103,12 +103,12 @@
       <p>Download des Icinga-Reporting-Pakets von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">Sourceforge/Icinga</a></p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Oder</strong></span> Benutzen des GIT: Sie können alle Templates und die aktuellen Servletimplementationen
+      <p><span class="bold"><strong>Oder</strong></span> Benutzen des GIT: Sie können alle Templates und die aktuellen Servlet-Implementationen
       herunterladen von: <a class="link" href="git://git.icinga.org/icinga-reports.git/" target="_top">git://git.icinga.org/icinga-reports.git/</a>.</p>
 
       <p>Laden Sie Ihren Klone von icinga-reports.git</p>
 
-      <pre class="programlisting">#&gt; git clone git://git.icinga.org/icinga-reports.git</pre>
+      <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-reports.git</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Oder</strong></span> Download der Software von <a class="link" href="https://git.icinga.org/index?p=icinga-reports.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-reports.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
@@ -119,18 +119,18 @@
 
   <p>Entpacken Sie die heruntergeladene Datei und kopieren Sie diese in Ihr JasperServer-Verzeichnis.</p>
 
-  <pre class="programlisting">#&gt; tar xzvf icinga-reports-xxx.tar.gz
-#&gt; cp icinga-reports/ReportPackage/icinga_report_package.zip /opt/jasperserver/scripts/
-#&gt; cd /opt/jasperserver/scripts/</pre>
+  <pre class="programlisting"> #&gt; tar xzvf icinga-reports-xxx.tar.gz
+ #&gt; cp icinga-reports/ReportPackage/icinga_report_package.zip /opt/jasperserver/scripts/
+ #&gt; cd /opt/jasperserver/scripts/</pre>
 
   <p>Für das Importieren des gesamten Reporting-Pakets benötigen Sie nur ein Kommando: </p>
-<pre class="programlisting">#&gt; ./js-import.sh --input-zip icinga_report_package.zip</pre>
+<pre class="programlisting"> #&gt; ./js-import.sh --input-zip icinga_report_package.zip</pre>
 
   <p>Möchten Sie ein existierendes Repository updaten, benutzen Sie bitte folgendes Kommando: </p>
-<pre class="programlisting">#&gt; ./js-import.sh --input-zip icinga_report_package.zip --update</pre>
+<pre class="programlisting"> #&gt; ./js-import.sh --input-zip icinga_report_package.zip --update</pre>
 
   <p>Das Icinga- Repository können Sie exportieren mit: </p>
-<pre class="programlisting">#&gt; ./js-export.sh --uris /Icinga --output-zip icinga_report_package.zip</pre>
+<pre class="programlisting"> #&gt; ./js-export.sh --uris /Icinga --output-zip icinga_report_package.zip</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -138,33 +138,39 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Falls das Import-Skript fehlschlägt, überprüfen Sie bitte Ihre Angaben zu Benutzer und Passwort in jasperserver.xml. Sie können
-    den Benutzer und das Passwort ändern in der Datei &lt;jasperserver-ce-dir&gt;/scripts/config/js.jdbc.properties.</p>
-</td></tr>
+    <p>Falls das Import-Skript fehlschlägt, überprüfen Sie bitte Ihre Angaben zu Benutzer und Passwort in
+    <code class="filename">jasperserver.xml</code>. Sie können den Benutzer und das Passwort ändern in der Datei
+    &lt;jasperserver-ce-dir&gt;/scripts/config/js.jdbc.properties.</p>
+  </td></tr>
 </table></div>
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Der export-/import-Prozess ist detailliert beschrieben in Kapitel 5.12 des JasperServer CE-Install-Guide</p>
-    </td></tr>
+    <p>Der export-/import-Prozess ist detailliert beschrieben in Kapitel 5.12 des JasperServer CE-Install-Guide</p>
+  </td></tr>
 </table></div>
-<p><span class="bold"><strong>Installieren der JAVA- Klassen für die SLA- Reports</strong></span></p>
 
-  <p>Das automatische Generieren von monatlichen, wöchentlichen und jährlichen Reports setzt die automatische Datumsberechnung für den jeweiligen Bericht voraus.
-  Um dieses Feature nutzen zu können, müssen Sie das icinga-reporting.jar- Archiv ( zu finden unter icinga-reports/ReportClasses/) in das lib- Verzeichnis Ihres Jasperservers installieren (kopieren). Dies sollte unter dem WEB-INF- Verzeichnis Ihrer Installation zu finden sein, z.B. /opt/jasperserver-ce-3.7.1/apache-tomcat/webapps/jasperserver/WEB-INF/lib.
-  Bitte starten Sie nach der Installation Ihren Jasperserver neu!</p>
+  <p><span class="bold"><strong>Installieren der JAVA-Klassen für die SLA-Reports</strong></span></p>
 
+  <p>Das automatische Generieren von monatlichen, wöchentlichen und jährlichen Reports setzt die automatische Datumsberechnung für den
+  jeweiligen Bericht voraus. Um dieses Feature nutzen zu können, müssen Sie das icinga-reporting.jar- Archiv ( zu finden unter
+  <code class="filename">icinga-reports/ReportClasses/</code>) in das lib-Verzeichnis Ihres Jasperservers installieren (kopieren). Dies sollte unter
+  dem WEB-INF-Verzeichnis Ihrer Installation zu finden sein, z.B.
+  <code class="filename">/opt/jasperserver-ce-3.7.1/apache-tomcat/webapps/jasperserver/WEB-INF/lib</code>. Bitte starten Sie nach der Installation
+  Ihren Jasperserver neu!</p>
 
   <p><span class="bold"><strong>Konfigurieren des Quartzscheduler</strong></span></p>
 
   <p>Die Verteilung der Reports erfolgt über den Quartzscheduler. Um die Absenderadresse und Ihre lokalen Gateways zu konfigurieren,
   editieren Sie bitte:</p>
 
-  <p>&lt;tomcat_home&gt;/webapps/jasperserver/WEB-INF/js.quartz.properties und starten Sie Ihren Tomcat neu. </p>
-<pre class="programlisting">service tomcat6 restart or /etc/init.d/tomcat restart</pre>
+  <p>&lt;tomcat_home&gt;<code class="filename">/webapps/jasperserver/WEB-INF/js.quartz.properties</code> und starten Sie Ihren Tomcat neu.
+  </p>
+<pre class="programlisting"> service tomcat6 restart or /etc/init.d/tomcat restart</pre>
 
   <p><span class="bold"><strong>Konfigurieren der Datenbankverbindung</strong></span></p>
 
@@ -172,20 +178,23 @@
 
   <p>Nach erfolgreicher Paketinstallation finden Sie die Datasource hier:</p>
 
-  <p>/root/Icinga/datasource (stellen Sie sicher, dass <span class="bold"><strong>Refine </strong></span>"changed by anyone" eingestellt ist).</p>
+  <p><code class="filename">/root/Icinga/datasource</code> (stellen Sie sicher, dass <span class="bold"><strong>Refine </strong></span>"changed by anyone"
+  eingestellt ist).</p>
 
   <p>- Editieren Sie die existierende Datasource und geben Sie Ihre Verbindungsparameter ein.</p>
 
   <p>- Testen Sie die Konfiguration und speichern Sie die Verbindung.</p>
 
   <p>- Alle Reporte in unserem Paket verwenden diese Datasource und sollten nun ausführbar sein.</p>
-<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Denken Sie daran das Suchfeld zu ändern und setzen Sie die 4 "Dropdowns" auf die folgenden Werte um Ihre Datenquelle zu finden:</p>
+    <p>Denken Sie daran das Suchfeld zu ändern und setzen Sie die vier "Dropdowns" auf die folgenden Werte, um Ihre Datenquelle zu
+    finden:</p>
   </td></tr>
 </table></div>
 
@@ -204,15 +213,16 @@
     </li>
 </ul></div>
 
-  <p>Wenn Sie nun den Suche- Button betätigen, sollten Sie die Datenquellen sehen.</p>
+  <p>Wenn Sie nun den Suche-Button betätigen, sollten Sie die Datenquellen sehen.</p>
 
-  <p><span class="bold"><strong>Unterschiedliche Tabellen- Präfix</strong></span></p>
+  <p><span class="bold"><strong>Unterschiedliche Tabellen-Präfix</strong></span></p>
 
-  <p>Falls Sie Ihren Tabellen- Präfix während der Installation geändert haben, können Sie den existierenden Präfix mit folgendem Skript ersetzen: </p>
+  <p>Falls Sie Ihren Tabellen-Präfix während der Installation geändert haben, können Sie den existierenden Präfix mit folgendem Skript
+  ersetzen:</p>
 
-  <pre class="programlisting">grep -l -r " icinga_" .  | xargs sed -i.BAK -e 's/ icinga_/ /g'
-grep -l -r "icinga_" . | xargs sed -i.BAK -e 's/^icinga_//g'
-find . -iname "*BAK" -exec rm -f {} \;</pre>
+  <pre class="programlisting"> grep -l -r " icinga_" .  | xargs sed -i.BAK -e 's/ icinga_/ /g'
+ grep -l -r "icinga_" . | xargs sed -i.BAK -e 's/^icinga_//g'
+ find . -iname "*BAK" -exec rm -f {} \;</pre>
 
   <p><span class="bold"><strong>Known Bugs:</strong></span> Wenn Sie in Ihrem PDF-Export keine Graphen-Beschriftungen sehen, wechseln Sie von
   OpenJDK zu SUNJava.</p>
@@ -226,7 +236,7 @@ find . -iname "*BAK" -exec rm -f {} \;</pre>
 <tbody><tr>
 <td>
 <div class="figure">
-<a name="id2908681"></a><p class="title"><b>Abbildung 9.1. Icinga-Reporting in Icinga-Web</b></p>
+<a name="id1679192"></a><p class="title"><b>Abbildung 9.1. Icinga-Reporting in Icinga-Web</b></p>
 <div class="figure-contents">
               
 
@@ -237,7 +247,7 @@ find . -iname "*BAK" -exec rm -f {} \;</pre>
 </td>
 <td>
 <div class="figure">
-<a name="id2908684"></a><p class="title"><b>Abbildung 9.2. Icinga-Reporting TOP10 in Icinga-Web</b></p>
+<a name="id1679206"></a><p class="title"><b>Abbildung 9.2. Icinga-Reporting TOP10 in Icinga-Web</b></p>
 <div class="figure-contents">
               
 
@@ -250,21 +260,126 @@ find . -iname "*BAK" -exec rm -f {} \;</pre>
 </table>
   </div>
 
+  <p><span class="bold"><strong>Integration in Icinga-Web</strong></span></p>
+
+  <p><span class="emphasis"><em>Voraussetzungen</em></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>icinga-core</p>
+    </li>
+<li class="listitem">
+      <p>MySQL lauffähig</p>
+    </li>
+<li class="listitem">
+      <p>ido2db-Modul konfiguriert und in die Datenbank schreibend</p>
+    </li>
+<li class="listitem">
+      <p>Icinga-Web installiert</p>
+    </li>
+<li class="listitem">
+      <p>Jasper-Server installiert und lauffähig</p>
+    </li>
+<li class="listitem">
+      <p>icinga-reporting Paket auf dem Jasper-Server installiert</p>
+    </li>
+</ul></div>
+
+  <p><span class="emphasis"><em>Installation</em></span></p>
+
+  <p>Der Reporting-Cronk ist voll in Icinga-Web integriert, so dass Sie nichts zusätzlich installieren müssen.</p>
+
+  <p><span class="emphasis"><em>Konfiguration</em></span></p>
+
+  <p>Abhängig von Ihrer aktuellen Umgebung müssen Sie den Cronk konfigurieren, um den Jasper-Server-Standort und die
+  Benutzerinformationen zu setzen. Die Konfiguration erfolgt im Reporting-Modul:</p>
+<pre class="programlisting"> $ cd app/modules/Reporting/config/
+ $ ls autoload.xml config_handlers.xml module.xml routing.xml
+ $ vi module.xml</pre>
+<pre class="programlisting"> &lt;!-- Jasper configurations --&gt;
+ &lt;setting name="jasperconfig.default"&gt;
+    &lt;ae:parameter name="jasper_url"&gt;http://10.121.0.95:8080/jasperserver&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="jasper_user"&gt;jasperadmin&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="jasper_pass"&gt;jasperadmin&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="tree_root"&gt;/Icinga/reports&lt;/ae:parameter&gt;
+ &lt;/setting&gt;
+ &lt;!-- Custom config if I have more that one --&gt;
+ &lt;!--
+ &lt;setting name="jasperconfig.custom1"&gt;
+    &lt;ae:parameter name="jasper_url"&gt;http://127.0.0.175/jasperserver&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="jasper_user"&gt;custom_user&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="jasper_pass"&gt;custom_passwd&lt;/ae:parameter&gt;
+ &lt;/setting&gt;
+ --&gt;</pre>
+<p>Bitte passen Sie jasperconfig.default an Ihre Umgebung an und ändern Sie die Werte von jasper_url, jasper_user und
+  jasper_pass.</p>
+
+  <p>Sie können mehr als einen Jasper-Server integrieren. Der Konfigurationsname wird später in den Reporting-Cronk inkludiert. Bitte
+  wählen Sie einen eindeutigen Namen für jede Konfiguration.</p>
+
+  <p>Die XML-Konfiguration ist 'prefixed'. Der volle Name für 'jasperconfig.default' lautet modules.reporting.jasperconfig.default. Der
+  lange Name ist die richtige Einstellung für die Nutzung in der Cronks-Konfiguration.</p>
+
+  <p>Der Default <code class="filename">/Icinga/reports</code> ist der Pfad für das Icinga-Reporting-Paket, aber Sie können jeden mit Jasper
+  konfigurierten Report mit Hilfe des Cronks ausführen. Wenn Sie mehrere Benutzer für unterschiedliche Lokationen einrichten möchten, dann
+  müssen Sie mehrere Cronks mit groups_only-Berechtigungen anlegen.</p>
+
+  <p><span class="emphasis"><em>Cronk-Konfiguration</em></span></p>
+
+  <p>Die Jasper-Konfiguration ist erledigt. Sie benötigen nun einen Cronk, dem Sie mitteilen müssen, welche Konfiguration Sie benutzen
+  möchten. Gehen Sie zu Ihrer Cronk-Konfiguration (<code class="filename">cronks.xml</code>) und fügen Sie einen neuen Cronk ähnlich dem Folgenden
+  hinzu:</p>
+
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Die Integration in Icinga-Web ist noch nicht implementiert!</p>
+    <p>Bedingt durch Konfigurationsänderungen zwischen 1.4 und 1.5 gibt es verschiedene Stellen für die Cronk-Einstellungen. Bitte werfen
+    Sie einen Blick in die anderen Dokumente, wo das zu tun ist</p>
   </td></tr>
 </table></div>
+
+  <pre class="programlisting"> &lt;ae:parameter name="icingaJasperReportingMain"&gt;
+    &lt;ae:parameter name="module"&gt;Reporting&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="action"&gt;Cronk.Main&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="description"&gt;Seamless Jasper Integration&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="name"&gt;Reporting&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="categories"&gt;reporting&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="image"&gt;cronks.Weather Could Sun&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="ae:parameter"&gt;
+       &lt;ae:parameter name="jasperconfig"&gt;modules.reporting.jasperconfig.default&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="enable_onthefly"&gt;1&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="enable_repository"&gt;1&lt;/ae:parameter&gt;
+       &lt;ae:parameter name="enable_scheduling"&gt;1&lt;/ae:parameter&gt;
+    &lt;/ae:parameter&gt;
+ &lt;/ae:parameter&gt;</pre>
+
+  <p>Haben Sie den Konfigurations-String bemerkt? Dies ist die Zeichenkette, die Sie in <code class="filename">module.xml</code> im vorigen
+  Abschnitt eingestellt haben.</p>
+
+  <p>Sie können außerdem noch einige Modi für diesen Cronk aktivieren:</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><code class="code">enable_onthefly</code> Der "Reports-im-Fluge-erzeugen" Modus. Er erlaubt Ihnen, Ihre Reports im icinga-web zu erzeugen,
+      Voransichten anzusehen, etc ...</p>
+    </li>
+<li class="listitem">
+      <p><code class="code">enable_repository</code> Eine Repository-Sicht. Wenn Sie geplante Reports habe, die die Ausgaben im Jasper-Server
+      Virtual-Directory erzeugen. Sie können Jasper-Ressourcen herunterladen und eine Vorschau auf Inhalte werden.</p>
+    </li>
+</ul></div>
+
+  <p></p>
 
   <p>Wir geben Ihnen einige Beispiel-Reports an die Hand, ändern Sie diese gern auf Ihre Bedürfnisse :)</p>
 
   <p></p>
 
-  <a class="indexterm" name="id2908749"></a>
+  <a class="indexterm" name="id1679440"></a>
 </div>
 <div class="navfooter">
 <hr>
