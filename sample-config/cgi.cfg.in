@@ -70,11 +70,12 @@ show_context_help=0
 
 # HIGHLIGHT TABLE ROWS
 # This option allows you to define if table rows in status.cgi
-# will be highlighted or not. 
+# will be highlighted or not.
+# THIS IS EXPERIMENTAL. Will be reworked in version 1.6.
 # Values: 0 = disables row highlighting
 #	  1 = enables row hhighlighting
 
-highlight_table_rows=1
+highlight_table_rows=0
 
 
 
