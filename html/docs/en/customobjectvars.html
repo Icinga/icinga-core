@@ -65,6 +65,21 @@
     </li>
 </ul></div>
 
+  <a name="customobjectvars-runtime"></a>
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Custom variables are replaced <span class="emphasis"><em>during runtime</em></span>, neither during the verification phase (icinga -v
+    icinga.cfg) nor during the Icinga start up process so placing them in host names, service descriptions, and several other places
+    of the object definition will lead to an error message during verification like "<code class="literal">&lt;object&gt; contains one or more
+    illegal characters.</code>". Changing the directive "illegal_object_name_chars" will <span class="emphasis"><em>not</em></span> solve this issue.
+    </p>
+  </td></tr>
+</table></div>
+
   <p><span class="bold"><strong>Examples</strong></span></p>
 
   <p>Here's an example of how custom variables can be defined in different types of object definitions:</p>
@@ -162,7 +177,8 @@ define contact{
 
   <p>Custom object variables are <a class="link" href="objectinheritance.html" title="Object Inheritance">inherited</a> just like standard host, service, or
   contact variables.</p>
-  <a class="indexterm" name="id1456379"></a>
+  <a class="indexterm" name="id3502228"></a>
+  <a class="indexterm" name="id3502236"></a>
 </div>
 <div class="navfooter">
 <hr>

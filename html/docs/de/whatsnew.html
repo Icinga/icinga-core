@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Was gibt es Neues in Icinga 1.5</title>
+<title>What's New in Icinga 1.5</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Was gibt es Neues in Icinga 1.5</th></tr>
+<tr><th colspan="3" align="center">What's New in Icinga 1.5</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="about.html">Zurück</a> </td>
@@ -24,114 +24,153 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Was gibt es Neues in Icinga 1.5">
+<div class="section" title="What's New in Icinga 1.5">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="whatsnew"></a>Was gibt es Neues in Icinga 1.5</h2></div></div></div>
+<a name="whatsnew"></a>What's New in Icinga 1.5</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>1.4.0</strong></span></p>
+  <p><span class="bold"><strong>1.5.0</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p><span class="bold"><strong>Enhancements</strong></span></p>
 
   <p><span class="bold"><strong>Icinga-Core:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+      <p>do not update host/service status during scheduler initialization on startup (idoutils already know that) #1741</p>
+    </li></ul></div>
 
-  <p>- re-allow perfdata with empty results being put on perfdata channel, disable via opt-in cfg option</p>
-  <p>- add downtime delete commands made "distributable" by deleting by host group name, host name or start time/comment (Opsview team)</p>
-  <p>- add 'module' as object config, allowing cfg_dir usage loading multiple modules without touching broker_module in icinga.cfg</p>
+  <p><span class="bold"><strong>Classic UI:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>Added option to suppress colouring of hosts/services in maintenance #992</p></li>
+<li class="listitem"><p>Added option to show partial hostgroups #1013</p></li>
+<li class="listitem"><p>changing drop down menu in status.cgi to jquery-dd #1644</p></li>
+<li class="listitem"><p>default downtime duration is configurable in cgi.cfg #1642</p></li>
+<li class="listitem"><p>Added ability to combine host and service in one CGI parameter (Aaron Brady) #1633</p></li>
+<li class="listitem"><p>Changed tac.cgi to distinct between active, passive and disabled properly #1120</p></li>
+<li class="listitem"><p>Add log entries to json output of avail.cgi #1659</p></li>
+<li class="listitem"><p>add host urgency sort order in status.cgi (Jochen Bern) #1452</p></li>
+<li class="listitem"><p>add author to comment tooltips in status.cgi #1691</p></li>
+<li class="listitem"><p>reduce the header part of status.cgi #1507 (&amp;nostatusheader used in frameset menu, info table is smaller)</p></li>
+<li class="listitem"><p>authorization for * in cgi.cfg via contactgroups (Stephen Gran) #1752 (authorized_contactgroup_for_all_hosts,
+      authorized_contactgroup_for_all_services, authorized_contactgroup_for_system_information,
+      authorized_contactgroup_for_configuration_information, authorized_contactgroup_for_all_host_commands,
+      authorized_contactgroup_for_all_service_commands, authorized_contactgroup_for_system_commands, authorized_contactgroup_for_read_only)
+    </p></li>
+<li class="listitem"><p>add xml output to avail.cgi for direct source of jasper reports #1712</p></li>
+<li class="listitem"><p>add combined view of all unhandled hosts and services including the multiple command dropdowns for each (initial idea by Thruk) #1328</p></li>
+<li class="listitem"><p>add "link to this page" to all cgis #1783</p></li>
+<li class="listitem"><p>add export icons instead of "export to..." text on cgis supporting it (csv, json, xml, link) #1789</p></li>
+<li class="listitem"><p>add highlight_table_rows to status.cgi, can be disabled via cfg option #1777</p></li>
+</ul></div>
 
-  <p>- fix: flexible downtime on service hard state change doesn't get triggered/activated</p>
-  <p>- fix: timeperiods daylight saving time problem (Luca Di Stefano)</p>
+  <p><span class="bold"><strong>IDOUtils:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>add update-version-schema for updating the idoutils db schema versions automagically, independant of update-version #1616</p></li>
+<li class="listitem"><p>dump multiline mbufs as bulk inserts #1110 (configfile/runtime variables, host contacts/parents, service contacts,
+      timeranges, host/service/contactgroup members; oracle uses bulk arrays binded on prepared insert statements)</p></li>
+<li class="listitem"><p>remove host and service checks from default data_processing_options as they are not used by icinga-web #1757</p></li>
+<li class="listitem"><p>Oracle: add logging of bind variable value #1314</p></li>
+<li class="listitem"><p>Oracle: change perfdata columns to clob #1749</p></li>
+<li class="listitem"><p>Oracle: change logentry_data type to clob #1750</p></li>
+</ul></div>
 
-  <p><span class="bold"><strong>Icinga IDOUtils: </strong></span></p>
+  <p><span class="bold"><strong>Install:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>add --with-p1-file-dir allowing custom location (default is now $libdir instead of $bindir) #1569 (only when embedded
+      perl is enabled; affects (new_)mini_epn and icinga.cfg</p></li>
+<li class="listitem"><p>add configure option to set log dir and cgi log dir and phpapi log dir #1715 (e.g. 
+      <code class="literal">--with-phpapi-log-dir=/var/log/icinga/api --with-log-dir=/var/log/icinga --with-cgi-log-dir=/var/log/icinga/gui</code>;
+      apache user permissions</p></li>
+<li class="listitem"><p>after daemon stop in init script, retry and then issue a kill -9 on the daemon #1747</p></li>
+</ul></div>
 
-  <p>- add db socket as config option in ido2db.cfg for mysql and postgresql</p>
-  <p>- reduce housekeeping cycle to 3600s, set housekeeping thread startup delay to 300s</p>
-  <p>- introduce schema version and check against that instead of program version</p>
-  <p>- install sample (commented) config in modules/idoutils.cfg using new 'module' object config</p>
-  <p>- fix: update oracle hints in ido2db.cfg with tnsnames.ora and port cfg</p>
-  <p>- fix: idomod: larger buffer size (by Opsview)</p>
-  <p>- fix: rdbms deconnect after connection error</p>
-  <p>- fix: race condition when issuing multiple reloads results in hanging IDO2DB processes</p>
-  <p>- fix: postgresql: integer not big enough for bytes_processed (Stig Sandbeck)</p>
+  <p><span class="bold"><strong>Config:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>add easy-to-use config examples and scripts for notifications #1697 (advanced notify-by-email; notify-by-jabber,
+      notify-by-twitter examples</p></li>
+<li class="listitem"><p>add check_dummy command definitions as example to commands.cfg #1719</p></li>
+<li class="listitem"><p>tune icinga.cfg for performance, enable_environment_macros=0, enable_embedded_perl=0 by default #1635</p></li>
+</ul></div>
 
-  <p><span class="bold"><strong>Icinga Classic UI:</strong></span></p>
+  <p><span class="bold"><strong>Style:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>add new indent tools #1617</p></li></ul></div>
+  </li>
+<li class="listitem">
+<p><span class="bold"><strong>Fixes</strong></span></p>
 
-  <p>- merged reading of logfiles into one function. It's easier now to add enhancements.</p>
-  <p>- adding some more icons to showlog.cgi</p>
-  <p>- adding entry time of comments in tooltip's in status.cgi </p>
-  <p>- searching in the Icinga Logfile</p>
-  <p>- changed print_generic_error() function to support csv output</p>
-  <p>- added parameter to get_log_entries() function to use beginning and end timestamp</p>
-  <p>- show downtime in host detail and service detail view</p>
-  <p>- store cmd.cgi submissions in log</p>
-  <p>- enforce a need for comment for action taken in cmd.cgi</p>
-  <p>- add config option to set start of week (sunday/monday)</p>
-  <p>- allow display of Network Outages for authorized hosts (thx mjbrooks)</p>
-  <p>- remove useless memory allocation when reading logfiles reverse (lifo)</p>
-  <p>- speed up data processing in summary.cgi</p>
-  <p>- add an optional alternative CGI driven view for the top frame (Matthew Brooks)</p>
-  <p>- added json output "&amp;jsonoutput" to nearly all pages in classic ui</p>
-  <p>- allow searching for host display_name normal and via regexp</p>
-  <p>- display host/service dependencies in host/service details in extinfo.cgi</p>
+  <p><span class="bold"><strong>Icinga-Core</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>remove duplicated unlinks for check result files with multiple results (Ton Voon) #1615</p></li>
+<li class="listitem"><p>fix retain status file over an init script reload #1579</p></li>
+<li class="listitem"><p>fix freshness_threshold problem in host checks by using check_interval in HARD or OK state, else retry_interval (like service checks) (Andreas Ericsson) #1331</p></li>
+<li class="listitem"><p>make command_check_interval=-1 equal to 5s instead of 60s, targetting as often as possible (Andreas Ericsson) #1651</p></li>
+<li class="listitem"><p>fix problem where acknowledgements were getting reset when a hard state change occurred (Ton Voon) #1618</p></li>
+<li class="listitem"><p>avoid using global macros when sending notifications (Andreas Ericsson) #1653</p></li>
+<li class="listitem"><p>avoid sending notifications to the wrong contact (Andreas Ericsson) #1654</p></li>
+<li class="listitem"><p>try to avoid a single check being reaped multiple times (Andreas Ericsson) #1652</p></li>
+<li class="listitem"><p>Fix typo in configure.in preventing compilation on FreeBSD (thanks sag47) #1732</p></li>
+</ul></div>
 
-  <p>- fix: tooltip's in status.cgi, not showing messages with carriage return</p>
-  <p>- fix: csv export link to make it XSS save (IE)</p>
-  <p>- fix: cmd.cgi: acknowledgement multiline comment -&gt; command not being processed</p>
-  <p>- fix: statusmap.cgi: fixed XSS vulnerability</p>
-  <p>- fix: display_name survive reconfiguration and is use instead of host_name in classic ui</p>
-  <p>- fix: don't show pause/continue urls on non-refreshable pages</p>
-  <p>- fix: segfaults if no default_user_name= given in cgi.cfg</p>
-  <p>- fix: Prevent statusmap.cgi markup from drawing when host should not be drawn (Matthew Brooks)</p>
+  <p><span class="bold"><strong>Classic UI</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>fix cross site scripting vulnerability in config.cgi on config expander arguments #1605</p></li>
+<li class="listitem"><p>better handling of writing to cgi.log in cmd.cgi #1161</p></li>
+<li class="listitem"><p>fixing tac.cgi header problems with counting and adding pending and descriptions #1505 #1506 #1508</p></li>
+<li class="listitem"><p>corrected behaviour of pending states in tac header #1508</p></li>
+<li class="listitem"><p>fix counting for services in tac header is wrong #1508</p></li>
+<li class="listitem"><p>remove sidebar.html inclusion in index.html causing troubles on reload #1632</p></li>
+<li class="listitem"><p>fixed: User can execute host/servicegroup commands even if not authorized for (Sven Nierlein) #1679</p></li>
+<li class="listitem"><p>fixed: plugin_output_short didn't get checked properly and caused segfault in status.cgi #1673</p></li>
+<li class="listitem"><p>fixed: submitting non existent host/service on avail.cgi causes segfault #1700</p></li>
+<li class="listitem"><p>fixed: Alert History State filter for HARD/SOFT state not working (Lennart Betz) #1722</p></li>
+<li class="listitem"><p>fixed: jquery 1.5.2 triggers memory leak in IE #1740</p></li>
+<li class="listitem"><p>fixed: ssi files don't get included if icinga path contains uppercase letters #1716</p></li>
+</ul></div>
 
-  <p><span class="bold"><strong>Config / Install:</strong></span></p>
+  <p><span class="bold"><strong>Install</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>do not update start_time of already started downtimes #1658</p></li>
+<li class="listitem"><p>fix started downtime update for table scheduleddowntime in oracle #1658</p></li>
+<li class="listitem"><p>remove leftover socket file in init-script startup, e.g. from a system crash #1745</p></li>
+<li class="listitem"><p>simplify ido2db_get_object_id oracle function #1655</p></li>
+<li class="listitem"><p>fix oracle long_output column in eventhandlers missed #1748</p></li>
+<li class="listitem"><p>fix oracle ocilib 3.9.2+ fixes causing wrong 4byte-&gt;8Byte casts #1751</p></li>
+<li class="listitem"><p>fix ORA-00600 while executing merge #1362</p></li>
+</ul></div>
 
-  <p>- config: increase default debug file size to 100M</p> 
-  <p>- install: add --with-ext-cmd-file-dir= to configure, allowing icinga.cmd dir to be altered</p>
-  <p>- fix: install: use *.so instead of *.o for solaris, patch in contrib/solaris/</p>
+  <p><span class="bold"><strong>Classic UI</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>fix event handlers cmd file location in contrib #1501</p></li>
+<li class="listitem"><p>icinga.spec should not provide nagios version #1562</p></li>
+<li class="listitem"><p>don't include git meta data in upstream tarballs #1562</p></li>
+<li class="listitem"><p>fix make install-idoutils overwrites sample - adding idoutils.cfg-sample instead #1625</p></li>
+<li class="listitem"><p>fix icinga.cmd and log dir replacement in icinga-api aubmodule #1573 #1715</p></li>
+<li class="listitem"><p>fix DEBUG_LOG_PATH in p1.pl, will now be using configurable log-dir #1715</p></li>
+<li class="listitem"><p>do not overwrite config in make fullinstall #1754</p></li>
+<li class="listitem"><p>fix configure should tell if ocilib or libdbi if idoutils enabled in summary #1780</p></li>
+</ul></div>
 
-  <p><span class="bold"><strong>Icinga-API:</strong></span></p>
+  <p><span class="bold"><strong>Config</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>deprecate log_external_commands_user #1619</p></li></ul></div>
+  </li>
+</ul></div>
 
-  <p>- SID support for Oracle</p>
-  <p>- Added missing commands</p>
-  <p>- UTF-8 output support (database independent)</p>
-  <p>- Enhanced query data support (fields, joins)</p>
-  <p>- Consistent pending status boolean values</p>
+  <p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
 
-  <p><span class="bold"><strong>Icinga-Web:</strong></span></p>
+  <p>Should you find any issues, please report them to one of the following links:</p>
 
-  <p>- Better check_multi integration</p>
-  <p>- Seamless pending status integration</p>
-  <p>- Seamless integration for alias and display names (Search and display)</p>
-  <p>- LDAP Auth hardening</p>
-  <p>- Privileges for logging data (view based)</p>
-  <p>- Usability changes for buttons, controls, single clicks, etc</p>
-  <p>- Separated refresh settings</p>
-  <p>- check for Icinga being loaded completely</p>
-  <p>- fix: session cookie lifetime</p>
-  <p>- fix: missing commands: remove acknowledgements</p>
-  <p>- Portal view fixes and cronk integration</p>
-  <p>- Typos and translations</p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga-Core</a></p>
 
-  <p><span class="bold"><strong>Icinga-Docs:</strong></span></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga-Web</a></p>
 
-  <p>- provide basic NRPE documentation</p>
-  <p>- add cgiparams / filter properties</p>
-  <p>- reformat several listings (too wide in PDF)</p>
-  <p>- add colours to HTML pages (xsl stylesheet)</p>
-
-<p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
-
-  <p>Bitte berichten Sie Probleme hier:</p>
-
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Problembericht Icinga-Core</a></p>
-
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Problembericht Icinga-Web</a></p>
-
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Problembericht Icinga-API</a></p>
-
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga-API</a></p>
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga-Reporting</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Problembericht Icinga-Docs</a></p>
+  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
 
-  <a class="indexterm" name="id1565834"></a>
+  <a class="indexterm" name="id1648138"></a>
+
 </div>
 <div class="navfooter">
 <hr>
