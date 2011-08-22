@@ -4,7 +4,7 @@
 <title>Icinga with IDOUtils Quickstart</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart-icinga-freebsd.html" title="Icinga Quickstart FreeBSD">
 <link rel="next" href="quickstart-idoutils-freebsd.html" title="Icinga and IDOUtils Quickstart on FreeBSD">
@@ -30,6 +30,15 @@
   
 
   <p><span class="bold"><strong><a name="introduction_idoutils"></a>Introduction</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Meanwhile there are Icinga packages for most Linux distributions. Unless you need a feature only available in the 
+  current source tree you should consider installing one of these packages.</p></td></tr>
+</table></div>
 
   <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
   monitoring your local machine within 30 minutes.</p>
@@ -322,21 +331,16 @@
 
   <pre class="programlisting"> #&gt; cd /usr/src</pre>
 
-  <p>Either fetch the actual icinga-core snapshot from Icinga GIT </p>
-<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-core.git
- #&gt; cd icinga-core
- #&gt; git submodule init
- #&gt; git submodule update</pre>
-<p> or from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a> . Don't
-  forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a></p>
+  <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>. Don't forget to download the
+  <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a></p>
 
   <p><span class="bold"><strong>Compile and Install Icinga with IDOUtils</strong></span></p>
 
   <p>Extract the Icinga source code tarball</p>
 
   <pre class="programlisting"> #&gt; cd /usr/src/ 
- #&gt; tar xvzf icinga-1.4.tar.gz 
- #&gt; cd icinga-1.4</pre>
+ #&gt; tar xvzf icinga-1.5.tar.gz 
+ #&gt; cd icinga-1.5</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -412,7 +416,17 @@
  #&gt; make install-commandmode 
  #&gt; make install-idoutils </pre>
 <p> or shorter </p>
-<pre class="programlisting"> #&gt; make fullinstall</pre>
+<pre class="programlisting"> #&gt; make fullinstall
+ #&gt; make install-config</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
+  </code> anymore to avoid accidently overwriting of your config files.</p></td></tr>
+</table></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -422,7 +436,7 @@
 <tr><td align="left" valign="top">
     <p>Install IDOUtils and applicable event broker modules only using the primary make install target. Do not manually copy and
     overwrite the existing module as this will result in a segfault on icinga core which is using idomod.o directly preventing usage of a
-    temporary copy explicitely. This is useful for <a class="link" href="http://omdistro.org/" target="_top">OMD.</a></p>
+    temporary copy explicitly. This is useful for <a class="link" href="http://omdistro.org/" target="_top">OMD.</a></p>
   </td></tr>
 </table></div>
 
@@ -777,7 +791,7 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id5653719"></a>
+  <a class="indexterm" name="id1415230"></a>
 </div>
 <div class="navfooter">
 <hr>

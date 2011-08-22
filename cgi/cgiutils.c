@@ -65,7 +65,7 @@ char            *ping_syntax = NULL;
 char		*csv_delimiter = CSV_DELIMITER;
 char		*csv_data_enclosure = CSV_DATA_ENCLOSURE;
 
-char		highlight_table_rows = TRUE;
+char		highlight_table_rows = FALSE;
 
 char            nagios_check_command[MAX_INPUT_BUFFER] = "";
 char            nagios_process_info[MAX_INPUT_BUFFER] = "";

@@ -1873,8 +1873,10 @@ void show_service_detail(void) {
 			printf("<TD CLASS='status%s' valign='center'>%s</TD>\n", status_bg_class, temp_status->plugin_output);
 
 			/* Checkbox for service(s) */
-			if (is_authorized_for_read_only(&current_authdata) == FALSE)
-				printf("<TD CLASS='status%s' nowrap align='center'><input onclick=\"isValidForSubmit('tableformservice');\" type='checkbox' name='hostservice' value='%s^%s'></TD>\n", status_bg_class, temp_status->host_name, temp_status->svc_description);
+			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+				printf("<TD CLASS='status%s' nowrap align='center' onClick=\"x=document.getElementById('service_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformservice');\">", status_bg_class, total_entries);
+				printf("<input onClick=\"x=document.getElementById('service_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformservice');\" type='checkbox' id='service_%d' name='hostservice' value='%s^%s'></TD>\n", total_entries, total_entries, temp_status->host_name, temp_status->svc_description);
+			}
 
 			if (enable_splunk_integration == TRUE)
 				display_splunk_service_url(temp_service);
@@ -2274,8 +2276,10 @@ void show_host_detail(void) {
 				printf("<TD CLASS='status%s' valign='center'>%s</TD>\n", status_bg_class, temp_statusdata->plugin_output);
 
 				/* Checkbox for host(s) */
-				if (is_authorized_for_read_only(&current_authdata) == FALSE)
-					printf("<TD CLASS='status%s' valign='center' align='center'><input onClick=\"isValidForSubmit('tableformhost');\" type='checkbox' name='host' value='%s'></TD>\n", status_bg_class, temp_statusdata->host_name);
+				if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+					printf("<TD CLASS='status%s' nowrap align='center' onClick=\"x=document.getElementById('host_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformhost');\">", status_bg_class, total_entries);
+					printf("<input onClick=\"x=document.getElementById('host_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformhost');\" type='checkbox' id='host_%d' name='host' value='%s'></TD>\n", total_entries, total_entries, temp_statusdata->host_name);
+				}
 
 
 

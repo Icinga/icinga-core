@@ -4,7 +4,7 @@
 <title>CGI Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.4 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="customobjectvars.html" title="Custom Object Variables">
 <link rel="next" href="cgiauth.html" title="Authentication And Authorization In The CGIs">
@@ -114,9 +114,13 @@
       <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">Global service command access</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configcgi.html#configcgi-show_all_services_host_is_authorized_for">Show all services a host is authorized for</a></p>
+      <p><a class="link" href="configcgi.html#configcgi-show_all_services_host_is_authorized_for">Show all services a host is authorised for</a></p>
     </li>
 </ul></div>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-authorized_for_read_only">Deny access to commands and comments</a></p>
+    </li></ul></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-lock_author_names">Lock author names</a></p>
@@ -219,6 +223,18 @@
     </li>
 <li class="listitem">
       <p><a class="link" href="configcgi.html#configcgi-show_tac_header_pending">Show Header with Pending Counts</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-default_downtime_duration">Set default downtime duration</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-suppress_maintenance_downtime">Suppress objects in maintaince/downtime state</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-show_partial_hostgroups">Show partial hostgroups</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configcgi.html#configcgi-highlight_table_rows">Highlight rows in status.cgi</a></p>
     </li>
 </ul></div>
 
@@ -334,7 +350,7 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>use_authentication=&lt;0/1&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>use_authentication=[0/1]</strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
@@ -345,11 +361,11 @@
 </table>
   </div>
 
-  <p>This option controls whether or not the CGIs will use the authentication and authorization functionality when determining what
+  <p>This option controls whether or not the CGIs will use the authentication and authorisation functionality when determining what
   information and commands users have access to. We would strongly suggest that you use the authentication functionality for the CGIs. If
-  you decide not to use authentication, make sure to remove the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> to prevent unauthorized
+  you decide not to use authentication, make sure to remove the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> to prevent unauthorised
   users from issuing commands to Icinga. The CGI will not issue commands to Icinga if authentication is disabled, but we would
-  suggest removing it altogether just to be on the safe side. More information on how to setup authentication and configure authorization
+  suggest removing it altogether just to be on the safe side. More information on how to setup authentication and configure authorisation
   for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -357,7 +373,7 @@
       <p>0 = Don't use authentication functionality</p>
     </li>
 <li class="listitem">
-      <p>1 = Use authentication and authorization functionality (default)</p>
+      <p>1 = Use authentication and authorisation functionality (default)</p>
     </li>
 </ul></div>
 
@@ -416,9 +432,18 @@
   </div>
 
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view system/process information in the
-  <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized
+  <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised
   to issue system/process commands. If you want users to be able to issue system/process commands as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a> variable. More information on how to setup
-  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_information
+  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_system_commands"></a> <span class="bold"><strong>System/Process Command Access</strong></span></p>
 
@@ -443,9 +468,18 @@
   </div>
 
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue system/process commands via the
-  <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view
+  <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view
   system/process information. If you want users to be able to view system/process information as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a> variable. More information on how to setup
-  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_commands
+  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_configuration_information"></a> <span class="bold"><strong>Configuration Information
   Access</strong></span></p>
@@ -473,7 +507,16 @@
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view configuration information in the
   <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a>. Users in this list can view information on all configured hosts, host groups,
   services, contacts, contact groups, time periods, and commands. More information on how to setup authentication and configure
-  authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_configuration_information
+  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_all_hosts"></a> <span class="bold"><strong>Global Host Information Access</strong></span></p>
 
@@ -498,10 +541,19 @@
   </div>
 
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view status and configuration
-  information for all hosts. Users in this list are also automatically authorized to view information for all services. Users in this list
-  are <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all hosts or services. If you want users able to issue
+  information for all hosts. Users in this list are also automatically authorised to view information for all services. Users in this list
+  are <span class="emphasis"><em>not</em></span> automatically authorised to issue commands for all hosts or services. If you want users able to issue
   commands for all hosts and services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a> variable. More information on how to setup
-  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_hosts</code> to
+  authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_all_host_commands"></a> <span class="bold"><strong>Global Host Command Access</strong></span></p>
 
@@ -525,11 +577,20 @@
   </div>
 
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue commands for all hosts via the
-  <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are also automatically authorized to issue commands for all services.
-  Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view status or configuration information for all hosts or
+  <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are also automatically authorised to issue commands for all services.
+  Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration information for all hosts or
   services. If you want users able to view status and configuration information for all hosts and services as well, you must add them to the
   <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a> variable. More information on how to setup
-  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_host_commands
+  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_all_services"></a> <span class="bold"><strong>Global Service Information Access</strong></span></p>
 
@@ -553,10 +614,19 @@
   </div>
 
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can view status and configuration
-  information for all services. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view information for all hosts.
-  Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to issue commands for all services. If you want users able to
+  information for all services. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view information for all hosts.
+  Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to issue commands for all services. If you want users able to
   issue commands for all services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a> variable. More information on how to
-  setup authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  setup authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_services</code> to
+  authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-authorized_for_all_service_commands"></a> <span class="bold"><strong>Global Service Command Access
   </strong></span></p>
@@ -582,11 +652,20 @@
   </div>
 
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who can issue commands for all services via the
-  <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to issue
-  commands for all hosts. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorized to view status or configuration
+  <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a>. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to issue
+  commands for all hosts. Users in this list are <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration
   information for all hosts. If you want users able to view status and configuration information for all services as well, you must add them
   to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
-  authentication and configure authorization for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_service_commands
+  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Show All Services A Host Is Authorized
   For</strong></span></p>
@@ -600,7 +679,7 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>show_all_services_host_is_authorized_for=&lt;0|1&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>show_all_services_host_is_authorized_for=[0|1]</strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
@@ -611,9 +690,49 @@
 </table>
   </div>
 
-  <p>By default, a user can see all services on a host, if the user is authorized as contact for the host only. By disabling this option,
-  the user must be an authorized contact for the service too in order to view it. Keep in mind that setting the user in
+  <p>By default, a user can see all services on a host, if the user is authorised as contact for the host only. By disabling this option,
+  the user must be an authorised contact for the service too in order to view it. Keep in mind that setting the user in
   authorized_for_all_services obsoletes this option (included starting with Icinga 1.0.2)</p>
+
+  <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Deny access to commands and comments</strong></span>
+  </p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>authorized_for_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_read_only=icingalook</strong></span>
+          </font></span> </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who have read-only rights in the CGIs. This will
+  block any host or service commands. It will also block comments from being shown to read-only users. Users in this list are
+  <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration information for all hosts. If you want users able to
+  view status and configuration information for all services as well, you must add them to the
+  <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
+  authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_read_only</code> to
+  authorise a contactgroup instead of a contact.</p></td></tr>
+</table></div>
 
   <p><a name="configcgi-lock_author_names"></a> <span class="bold"><strong>Lock Author Names</strong></span></p>
 
@@ -1794,7 +1913,7 @@
   colouring as active checks.</p>
 
   <div class="figure">
-<a name="id5701155"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<a name="id1462878"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
 <div class="figure-contents">
     
 
@@ -1848,85 +1967,270 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id5701299"></a>
+  <p><a name="configcgi-default_downtime_duration"></a> <span class="bold"><strong>Set default downtime duration</strong></span></p>
 
-  <a class="indexterm" name="id5701305"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>default_downtime_duration=n</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_downtime_duration=7200</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5701320"></a>
+  <p>This option defines the default duration (in seconds) of fixed and flexible downtimes. Default is 7200 seconds (2 hours).</p>
 
-  <a class="indexterm" name="id5701331"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.5</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5701344"></a>
+  <p><a name="configcgi-suppress_maintenance_downtime"></a> <span class="bold"><strong>Suppress objects in maintenance/downtime state
+  </strong></span></p>
 
-  <a class="indexterm" name="id5701356"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>suppress_maintenance_downtime=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>suppress_maintenance_downtime=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5701370"></a>
+  <p>The current Classic UI view shows the state of hosts including attention grabbing colours even if the host/service is scheduled for
+  downtime. This tends to distract from discerning which problems really exist between those which were planned or expected.
+  It is disabled by default to maintain the old behaviour, however those wishing to enable it will note that rather than displaying issues
+  in their regular colour, they will be grey (similar to the pending state). The status, however will still display the actual state and
+  this is intended behaviour. This is so the user can use icinga to see what the state is in before the downtime ends. A useful example for
+  this is so it can be seen that a host/service that was being worked on actually came back online.
 
-  <a class="indexterm" name="id5701385"></a>
+  In addition, hosts in scheduled downtime will be grey in the statusmap.cgi.</p>
 
-  <a class="indexterm" name="id5701399"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.5</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5701412"></a>
+  <p><a name="configcgi-show_partial_hostgroups"></a> <span class="bold"><strong>Show partial hostgroups</strong></span></p>
 
-  <a class="indexterm" name="id5701427"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>show_partial_hostgroups=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_partial_hostgroups=1</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5701413"></a>
+  <p>By default (meaning the directive is not present or disabled), a user only sees a hostgroup and the hosts within it if they are an
+  authorised contact for <span class="emphasis"><em>all</em></span> of the hosts of the group. The behaviour can be changed using the directive 
+  <code class="code">show_partial_hostgroups=1</code>.</p>
 
-  <a class="indexterm" name="id5701454"></a>
+  <p>When enabled, the hostgroups overview will show a partial listing of hosts that the user is an authorised contact for within each
+  hostgroup.</p>
 
-  <a class="indexterm" name="id5701466"></a>
+  <p>It will also add the string "(Partial Hostgroups Enabled)" to the top of the Hostgroup Overview to help prevent any confusion over
+  whether the option is in use or not. However for privacy reasons, hostgroups that are only showing a partial listing are not
+  specifically indicated.</p>
 
-  <a class="indexterm" name="id5701481"></a>
+  <p>COMPATIBILITY NOTICE: As with any tweak made to the output of the CGIs, enabling this option may adversely impact third party
+  programs that rely on 'screen scraping' to get their information.  If you encounter such a problem, turn this option back to its
+  default of off and encourage the developer(s) of the program to use JSON for their data needs instead.</p>
 
-  <a class="indexterm" name="id5701468"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.5</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5701507"></a>
+  <p><a name="configcgi-highlight_table_rows"></a> <span class="bold"><strong>Highlight rows in status.cgi</strong></span></p>
 
-  <a class="indexterm" name="id5701522"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>highlight_table_rows=&lt;0|1&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>highlight_table_rows=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id5701508"></a>
+  <p>This option allows you to define if table rows in status.cgi will be highlighted or not. Sometimes with a lot of rows or a large
+  screen resolution it is hard to see which rows you are working on: Values: 0 = disables row highlighting; 1 = enables row highlighting
+  (default).</p>
 
-  <a class="indexterm" name="id5701550"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.5</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id5701537"></a>
+  <a class="indexterm" name="id1463489"></a>
 
-  <a class="indexterm" name="id5701580"></a>
+  <a class="indexterm" name="id1463498"></a>
 
-  <a class="indexterm" name="id5701565"></a>
+  <a class="indexterm" name="id1463509"></a>
 
-  <a class="indexterm" name="id5701605"></a>
+  <a class="indexterm" name="id1463523"></a>
 
-  <a class="indexterm" name="id5701620"></a>
+  <a class="indexterm" name="id1463537"></a>
 
-  <a class="indexterm" name="id5701606"></a>
+  <a class="indexterm" name="id1463550"></a>
 
-  <a class="indexterm" name="id5701647"></a>
+  <a class="indexterm" name="id1463564"></a>
 
-  <a class="indexterm" name="id5701659"></a>
+  <a class="indexterm" name="id1463578"></a>
 
-  <a class="indexterm" name="id5701634"></a>
+  <a class="indexterm" name="id1463591"></a>
 
-  <a class="indexterm" name="id5701661"></a>
+  <a class="indexterm" name="id1463601"></a>
 
-  <a class="indexterm" name="id5701701"></a>
+  <a class="indexterm" name="id1463619"></a>
 
-  <a class="indexterm" name="id5701688"></a>
+  <a class="indexterm" name="id1463633"></a>
 
-  <a class="indexterm" name="id5701717"></a>
+  <a class="indexterm" name="id1463648"></a>
 
-  <a class="indexterm" name="id5701740"></a>
+  <a class="indexterm" name="id1463658"></a>
 
-  <a class="indexterm" name="id5701754"></a>
+  <a class="indexterm" name="id1463671"></a>
 
-  <a class="indexterm" name="id5701768"></a>
+  <a class="indexterm" name="id1463690"></a>
 
-  <a class="indexterm" name="id5701781"></a>
+  <a class="indexterm" name="id1463704"></a>
 
-  <a class="indexterm" name="id5701795"></a>
+  <a class="indexterm" name="id1463717"></a>
 
-  <a class="indexterm" name="id5701808"></a>
+  <a class="indexterm" name="id1463733"></a>
 
-  <a class="indexterm" name="id5701822"></a>
+  <a class="indexterm" name="id1463747"></a>
+
+  <a class="indexterm" name="id1463761"></a>
+
+  <a class="indexterm" name="id1463775"></a>
+
+  <a class="indexterm" name="id1463788"></a>
+
+  <a class="indexterm" name="id1463803"></a>
+
+  <a class="indexterm" name="id1463817"></a>
+
+  <a class="indexterm" name="id1463831"></a>
+
+  <a class="indexterm" name="id1463844"></a>
+
+  <a class="indexterm" name="id1463858"></a>
+
+  <a class="indexterm" name="id1463872"></a>
+
+  <a class="indexterm" name="id1463886"></a>
+
+  <a class="indexterm" name="id1463899"></a>
+
+  <a class="indexterm" name="id1463913"></a>
+
+  <a class="indexterm" name="id1463927"></a>
+
+  <a class="indexterm" name="id1463940"></a>
+
+  <a class="indexterm" name="id1463953"></a>
+
+  <a class="indexterm" name="id1463967"></a>
+
+  <a class="indexterm" name="id1463981"></a>
+
+  <a class="indexterm" name="id1463995"></a>
+
+  <a class="indexterm" name="id1464008"></a>
+
+  <a class="indexterm" name="id1464022"></a>
+
+  <a class="indexterm" name="id1464037"></a>
+
+  <a class="indexterm" name="id1464047"></a>
+
+  <a class="indexterm" name="id1464061"></a>
+
+  <a class="indexterm" name="id1464074"></a>
+
+  <a class="indexterm" name="id1464088"></a>
+
+  <a class="indexterm" name="id1464101"></a>
+
+  <a class="indexterm" name="id1464115"></a>
+
+  <a class="indexterm" name="id1464129"></a>
+
+  <a class="indexterm" name="id1464143"></a>
+
+  <a class="indexterm" name="id1464157"></a>
+
+  <a class="indexterm" name="id1464171"></a>
+
+  <a class="indexterm" name="id1464185"></a>
+
+  <a class="indexterm" name="id1464199"></a>
 </div>
 <div class="navfooter">
 <hr>
