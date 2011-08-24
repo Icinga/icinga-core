@@ -1233,9 +1233,6 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	/* allocate memory for local mac */
 	memset(&mac, 0, sizeof(mac));
 
-	/* clear volatile macros */
-	clear_volatile_macros_r(&mac);
-
 	log_debug_info(DEBUGL_NOTIFICATIONS, 0, "Notification viability test passed.\n");
 
 	/* should the notification number be increased? */
