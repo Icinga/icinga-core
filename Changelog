@@ -65,6 +65,7 @@ FIXES
 * core: avoid sending notifications to the wrong contact (Andreas Ericsson) #1654
 * core: try to avoid a single check being reaped multiple times (Andreas Ericsson) #1652
 * core: Fix typo in configure.in preventing compilation on FreeBSD (thanks sag47) #1732
+* core: plug memory leak with display_name on start/reload #1841
 
 * classic ui: fix cross site scripting vulnerability in config.cgi on config expander arguments #1605
 * classic ui: better handling of writing to cgi.log in cmd.cgi #1161
