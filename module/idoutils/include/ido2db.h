@@ -13,8 +13,8 @@
 #include "utils.h"
 
 #define IDO2DB_NAME "IDO2DB"
-#define IDO2DB_DATE "08-24-2011"
-#define IDO2DB_VERSION "1.5.0"
+#define IDO2DB_DATE "08-25-2011"
+#define IDO2DB_VERSION "1.5.1"
 
 #define IDO2DB_SCHEMA_VERSION "1.5.0"
 
