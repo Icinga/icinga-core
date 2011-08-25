@@ -5294,7 +5294,7 @@ if test x$MAIL_PROG = x; then
 fi
 
 
-HTTP_CONF=no
+HTTPD_CONF=no
 
 # Check whether --with-httpd_conf was given.
 if test "${with_httpd_conf+set}" = set; then :
@@ -6330,12 +6330,17 @@ fi
 		CFLAGS="$CFLAGS -I$OCILIB_INC -DOCI_IMPORT_RUNTIME -DOCI_CHARSET_ANSI"
 		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
 
-				ac_fn_c_check_header_compile "$LINENO" "ocilib.h" "ac_cv_header_ocilib_h" "\"${OCILIB_INC}\"
-"
+				for ac_header in ocilib.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "ocilib.h" "ac_cv_header_ocilib_h" "$ac_includes_default"
 if test "x$ac_cv_header_ocilib_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_OCILIB_H 1
+_ACEOF
 
 fi
 
+done
 
 
 

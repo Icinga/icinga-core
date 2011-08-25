@@ -101,8 +101,8 @@ int CGI_ID = CONFIG_CGI_ID;
 
 int main(void) {
 	int result = OK;
-	mac = get_global_macros();
 	char *seldesc = "";
+	mac = get_global_macros();
 
 	/* get the arguments passed in the URL */
 	process_cgivars();

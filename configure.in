@@ -286,7 +286,7 @@ fi
 AC_SUBST(MAIL_PROG)
 
 dnl Check for location of Apache conf.d directory
-HTTP_CONF=no
+HTTPD_CONF=no
 AC_ARG_WITH(httpd_conf,AC_HELP_STRING([--with-httpd-conf=<path_to_conf>],[sets path to Apache conf.d directory]),HTTPD_CONF=$withval,HTTPD_CONF=no)
 if test x$HTTPD_CONF = xno; then
 	if test -d /etc/httpd/conf.d; then
@@ -853,7 +853,7 @@ if test x$USE_IDOUTILS = xyes; then
 		LDFLAGS="$LDFLAGS -L$OCILIB_LIB"
 
 		dnl check and include ocilib.h
-		AC_CHECK_HEADER(ocilib.h, [], [], ["${OCILIB_INC}"])
+		AC_CHECK_HEADERS(ocilib.h)
 
 		dnl check and include ocilib library, at runtime
 
