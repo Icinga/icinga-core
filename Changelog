@@ -4,6 +4,19 @@ Icinga 1.5.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.5.1 - ??/??/2011
+
+ENHANCEMENTS
+
+FIXES
+* classic ui: fix Localization: Form validation message could be improved (thx Mario Rimann) #1849
+* classic ui: fix wrong titles in list of scheduled downtimes (thx Mario Rimann) #1848
+
+* spec file: re-add processing headers
+
+CHANGES
+
+
 1.5.0 - 24/08/2011
 
 ENHANCEMENTS
