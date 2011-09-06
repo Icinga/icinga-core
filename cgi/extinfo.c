@@ -3061,7 +3061,7 @@ void show_downtime(int type) {
 		}
 	} else {
 		printf("<A NAME=%sDOWNTIME></A>\n", (type == HOST_DOWNTIME) ? "HOST" : "SERVICE");
-		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>Scheduled %s Downtime</DIV></TD><TD width='33%%'>", (type == HOST_COMMENT) ? "Host" : "Service");
+		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>Scheduled %s Downtime</DIV></TD><TD width='33%%'>", (type == HOST_DOWNTIME) ? "Host" : "Service");
 
 		/* add export to csv link */
 		if (display_type != DISPLAY_COMMENTS) {

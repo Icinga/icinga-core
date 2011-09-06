@@ -881,7 +881,7 @@ void print_form_element(int element, int cmd) {
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
 		printf("<TEXTAREA ID=\"com_data\" NAME='com_data' COLS=25 ROWS=2 onkeyup=\"check_input();\">%s</TEXTAREA>", escape_string(comment_data));
-		printf("<BR><DIV ID='com_data_error' class=\"inputError\" style=\"display:none;\">Comment data can't be send empty</DIV>");
+		printf("<BR><DIV ID='com_data_error' class=\"inputError\" style=\"display:none;\">Comment data can't be sent empty</DIV>");
 		printf("</td></tr>\n");
 		break;
 

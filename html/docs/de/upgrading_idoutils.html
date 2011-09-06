@@ -91,6 +91,38 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 
+  <a name="upgrading_idoutils_1.5"></a>
+
+  <p><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.5</strong></span></p>
+
+  <p><span class="bold"><strong>Oracle</strong></span></p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Zum Einsatz von IDOUtils 1.5.0 mit Oracle benötigen Sie OCILIB 3.9.2 - installieren Sie nicht 3.9.0 oder
+  3.9.1, denn diese Version sind fehlerbehaftet.</p></td></tr>
+</table></div>
+
+  <p>Passen Sie <code class="filename">oracle-upgrade-1.5.0.sql</code> an und definieren Sie Ihre Tablespaces ähnlich den folgenden Zeilen. Sie
+  können auch Ihre bestehenden Tablespace-Namen für alle Definitionen benutzen.
+  </p>
+<pre class="programlisting"> /* set real TBS names on which you have quota, no checks are implemented!*/
+ define DATATBS='icinga';
+ define LOBTBS='icinga';
+ define IXTBS='icinga';</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Detailliertere Informationen zu IDOUtils mit Oracle finden Sie in unserer Wiki-HowTo-Serie zu
+  <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p></td></tr>
+</table></div>
+
   <a name="upgrading_idoutils_1.4"></a>
 
   <p><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.4</strong></span></p>
@@ -377,7 +409,7 @@
   <p>Falls Sie vorher etwas an den Keys verändert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in IDOUtils
   1.0RC benutzen, andernfalls wird das Script fehlschlagen.</p>
 
-  <a class="indexterm" name="id1572214"></a>
+  <a class="indexterm" name="id3277525"></a>
 </div>
 <div class="navfooter">
 <hr>

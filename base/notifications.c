@@ -256,6 +256,9 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 		/* free memory allocated to the notification list */
 		free_notification_list();
 
+                /* this gets set in add_notification() */
+                my_free(mac.x[MACRO_NOTIFICATIONRECIPIENTS]);
+
 		/* clear summary macros so they will be regenerated without contact filters when needed next */
 		clear_summary_macros_r(&mac);
 
@@ -1230,9 +1233,6 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	/* allocate memory for local mac */
 	memset(&mac, 0, sizeof(mac));
 
-	/* clear volatile macros */
-	clear_volatile_macros_r(&mac);
-
 	log_debug_info(DEBUGL_NOTIFICATIONS, 0, "Notification viability test passed.\n");
 
 	/* should the notification number be increased? */
@@ -1384,6 +1384,9 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 
 		/* free memory allocated to the notification list */
 		free_notification_list();
+
+		/* this gets set in add_notification() */
+		my_free(mac.x[MACRO_NOTIFICATIONRECIPIENTS]);
 
 		/* clear summary macros so they will be regenerated without contact filters when needednext */
 		clear_summary_macros_r(&mac);

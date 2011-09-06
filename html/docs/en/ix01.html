@@ -24,7 +24,7 @@
 </div>
 <div class="index" title="Index">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id1560457"></a>Index</h2></div></div></div>
+<a name="id2782325"></a>Index</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -375,7 +375,7 @@
 </dt>
 <dt>serviceprops, <a class="indexterm" href="cgiparams.html#cgiparams-serviceprops">Information On CGI parameters</a>
 </dt>
-<dt>servicestates, <a class="indexterm" href="../../../../../"></a>
+<dt>servicestates, <a class="indexterm" href="cgiparams.html#cgiparams-servicestates">Information On CGI parameters</a>
 </dt>
 <dt>servicestatustypes, <a class="indexterm" href="cgiparams.html#cgiparams-servicestatustypes">Information On CGI parameters</a>
 </dt>
@@ -474,6 +474,8 @@
 </dt>
 <dt>Status Map CGI, <a class="indexterm" href="cgis.html#cgis-statusmap_cgi">Icinga Classic UI: Information On The CGIs</a>
 </dt>
+<dt>Status types, <a class="indexterm" href="cgiparams.html#cgiparams-statustypes">Information On CGI parameters</a>
+</dt>
 <dt>Tactical Overview CGI, <a class="indexterm" href="cgis.html#cgis-tac_cgi">Icinga Classic UI: Information On The CGIs</a>
 </dt>
 <dt>Trends CGI, <a class="indexterm" href="cgis.html#cgis-trends_cgi">Icinga Classic UI: Information On The CGIs</a>
@@ -549,6 +551,8 @@
 </dt>
 <dt>Custom Object Variables, <a class="indexterm" href="customobjectvars.html#custom_object_vars">Custom Object Variables</a>
 </dt>
+<dd><dl><dt>Evaluation only at runtime, <a class="indexterm" href="customobjectvars.html#customobjectvars-runtime">Custom Object Variables</a>
+</dt></dl></dd>
 </dl>
 </div>
 <div class="indexdiv">
@@ -604,8 +608,7 @@
 <dd><dl><dt>Developing Plugins For Use With Embedded Perl, <a class="indexterm" href="epnplugins.html#epn_plugins">Developing Plugins For Use With Embedded Perl</a>
 </dt></dl></dd>
 <dt>Embedded Perl Interpreter</dt>
-<dd><dl><dt>Using ..., <a class="indexterm" href="embeddedperl.html#embedded_perl">Using The Embedded Perl
-  Interpreter</a>
+<dd><dl><dt>Using ..., <a class="indexterm" href="embeddedperl.html#embedded_perl">Using The Embedded Perl Interpreter</a>
 </dt></dl></dd>
 <dt>enabled_embedded_perl=</dt>
 <dd><dl><dt>Embedded Perl Interpreter, <a class="indexterm" href="configmain.html#configmain-enable_embedded_perl">Main Configuration File Options</a>
@@ -1059,6 +1062,10 @@
 </dt>
 <dt>Hostgroups, <a class="indexterm" href="objecttricks.html#objecttricks-hostgroup">Time-Saving Tricks For Object Definitions</a>
 </dt>
+<dt>hostprops, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Information On CGI parameters</a>
+</dt>
+<dt>hoststatustypes, <a class="indexterm" href="../../../../../"></a>
+</dt>
 <dt>host_check_timeout=</dt>
 <dd><dl><dt>Host Check Timeout, <a class="indexterm" href="configmain.html#configmain-host_check_timeout">Main Configuration File Options</a>
 </dt></dl></dd>
@@ -1143,7 +1150,9 @@
 </dt>
 <dt>Overview (&lt;= 1.2.x), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro">Introduction to Icinga-Web (up to 1.2.x)</a>
 </dt>
-<dt>Overview (&gt;= 1.3), <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.3">Introduction to Icinga-Web (&gt;= 1.3.x)</a>
+<dt>Overview version 1.3.x/1.4.x, <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.3">Introduction to Icinga-Web (&gt;= 1.3.x)</a>
+</dt>
+<dt>Overview version 1.5.x, <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.5">Introduction to Icinga-Web (&gt;= 1.5.x)</a>
 </dt>
 <dt>Session Cookie Lifetime, <a class="indexterm" href="icinga-web-config.html#configweb-session-lifetime">Configuration Overview of Icinga-Web</a>
 </dt>
@@ -1182,6 +1191,10 @@
 <dt>illegal_object_name_chars=</dt>
 <dd><dl><dt>Illegal Object Name, <a class="indexterm" href="configmain.html#configmain-illegal_object_name_chars">Main Configuration File Options</a>
 </dt></dl></dd>
+<dt>include_dir, <a class="indexterm" href="configobject.html#configobject-include_dir">Object Configuration Overview</a>
+</dt>
+<dt>include_file, <a class="indexterm" href="configobject.html#configobject-include_file">Object Configuration Overview</a>
+</dt>
 <dt>Installation of the Webinterface, <a class="indexterm" href="icinga-web-scratch.html">Installation of the Icinga-Web Frontend</a>
 </dt>
 <dt>Integration Overview, <a class="indexterm" href="integration.html#Icinga_integration">Integration Overview</a>
@@ -1671,6 +1684,12 @@
 </dt>
 <dt>Object Configuration Overview, <a class="indexterm" href="configobject.html#config_object">Object Configuration Overview</a>
 </dt>
+<dd><dl>
+<dt>include_dir, <a class="indexterm" href="configobject.html#configobject-include_dir">Object Configuration Overview</a>
+</dt>
+<dt>include_file, <a class="indexterm" href="configobject.html#configobject-include_file">Object Configuration Overview</a>
+</dt>
+</dl></dd>
 <dt>Object Definitions, <a class="indexterm" href="objectdefinitions.html#object_definitions">Object Definitions</a>
 </dt>
 <dd><dl>
@@ -1917,6 +1936,10 @@
 <dt>Serviceescalation Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-serviceescalation">Serviceescalation Definition</a>
 </dt>
 <dt>Servicegroup Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-servicegroup">Servicegroup Definition</a>
+</dt>
+<dt>serviceprops, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Information On CGI parameters</a>
+</dt>
+<dt>servicestatustypes, <a class="indexterm" href="../../../../../"></a>
 </dt>
 <dt>service_check_timeout=</dt>
 <dd><dl><dt>Service Check Timeout, <a class="indexterm" href="configmain.html#configmain-service_check_timeout">Main Configuration File Options</a>

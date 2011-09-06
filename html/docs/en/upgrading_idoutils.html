@@ -89,6 +89,38 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 
+  <a name="upgrading_idoutils_1.5"></a>
+
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.5</strong></span></p>
+
+  <p><span class="bold"><strong>Oracle</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Using IDOUtils 1.5.0 with Oracle requires at least OCILIB 3.9.2 - don't install 3.9.0 or 3.9.1 as they
+  remain buggy.</p></td></tr>
+</table></div>
+
+  <p>Modify <code class="filename">oracle-upgrade-1.5.0.sql</code> and set the tablespaces for DATA, LOB, and IXT similar to the following lines.
+  You can provide your existing tablespace names for all defines.
+  </p>
+<pre class="programlisting"> /* set real TBS names on which you have quota, no checks are implemented!*/
+ define DATATBS='icinga';
+ define LOBTBS='icinga';
+ define IXTBS='icinga';</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about
+  <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p></td></tr>
+</table></div>
+
   <a name="upgrading_idoutils_1.4"></a>
 
   <p><span class="bold"><strong>Upgrading IDOUtils to 1.4</strong></span></p>
@@ -354,7 +386,7 @@
   <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the
   script will fail.</p>
 
-  <a class="indexterm" name="id1418044"></a>
+  <a class="indexterm" name="id2638017"></a>
 </div>
 <div class="navfooter">
 <hr>
