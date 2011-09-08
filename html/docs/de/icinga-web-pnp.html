@@ -33,7 +33,7 @@
   integrieren möchten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
 
   <div class="figure">
-<a name="id3367674"></a><p class="title"><b>Abbildung 6.79. PNP4Nagios integriert in Icinga-Web</b></p>
+<a name="id1484642"></a><p class="title"><b>Abbildung 6.79. PNP4Nagios integriert in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -138,7 +138,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
       <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
       <p>Editieren von cronks.xml im Unterverzeichnis app/modules/Cronks/config/ unter Icinga-Web und hinzufügen von: </p>
-<pre class="programlisting">&lt;ae:parameter name="gridMyHostView"&gt;
+<pre class="programlisting">&lt;cronk name="gridMyHostView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -149,7 +149,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
     &lt;ae:parameter name="ae:parameter"&gt;
         &lt;ae:parameter name="template"&gt;icinga-my-host-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
-&lt;/ae:parameter&gt;</pre>
+&lt;/cronk&gt;</pre>
     </li>
 </ol></div>
 
@@ -227,7 +227,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
       <p>Editieren von cronks.xml im Unterverzeichnis app/modules/Cronks/config/ unter Icinga-Web und hinzufügen von:</p>
 
-      <pre class="programlisting">&lt;ae:parameter name="gridMyServiceView"&gt;
+      <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -238,7 +238,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
     &lt;ae:parameter name="ae:parameter"&gt;
         &lt;ae:parameter name="template"&gt;icinga-my-service-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
-&lt;/ae:parameter&gt;</pre>
+&lt;/cronk&gt;</pre>
     </li>
 <li class="listitem">
       <p>Verwenden der neuen Grid-Ansicht als Standard-Serviceansicht</p>
@@ -271,7 +271,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p>Das war es auch schon, Sie sind fertig!</p>
 
-  <a class="indexterm" name="id3367942"></a>
+  <a class="indexterm" name="id1484902"></a>
 </div>
 <div class="navfooter">
 <hr>

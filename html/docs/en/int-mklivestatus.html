@@ -54,6 +54,24 @@
       command file (mostly icinga.cmd). "live" is a socket and it will only be present during runtime of the module.</p>
 
       <p><code class="code"> broker_module=/usr/local/icinga/bin/livestatus.o /usr/local/icinga/var/rw/live</code></p>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Starting with Icinga 1.4 you can use the new module definition in one of your object configuration files instead of
+        specifying a broker_module entry:</p>
+
+        <pre class="screen"> define module{
+        module_name    mklivestatus
+        path           /usr/local/icinga/bin/livestatus.o
+        module_type    neb
+        args           /usr/local/icinga/var/rw/live
+        }</pre>
+      </td></tr>
+</table></div>
     </li>
 <li class="listitem">
       <p>Restart Icinga</p>
@@ -74,8 +92,9 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id2749162"></a>
-  <a class="indexterm" name="id2749170"></a>
+  <a class="indexterm" name="id1558541"></a>
+
+  <a class="indexterm" name="id1558550"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -120,17 +120,17 @@
   <p>Entpacken Sie die heruntergeladene Datei und kopieren Sie diese in Ihr JasperServer-Verzeichnis.</p>
 
   <pre class="programlisting"> #&gt; tar xzvf icinga-reports-xxx.tar.gz
- #&gt; cp icinga-reports/ReportPackage/icinga_report_package.zip /opt/jasperserver/scripts/
+ #&gt; cp icinga-reports-&lt;version&gt;/jasperreports/package/icinga-reports.zip /opt/jasperserver/scripts/
  #&gt; cd /opt/jasperserver/scripts/</pre>
 
   <p>Für das Importieren des gesamten Reporting-Pakets benötigen Sie nur ein Kommando: </p>
-<pre class="programlisting"> #&gt; ./js-import.sh --input-zip icinga_report_package.zip</pre>
+<pre class="programlisting"> #&gt; ./js-import.sh --input-zip icinga-reports.zip</pre>
 
   <p>Möchten Sie ein existierendes Repository updaten, benutzen Sie bitte folgendes Kommando: </p>
-<pre class="programlisting"> #&gt; ./js-import.sh --input-zip icinga_report_package.zip --update</pre>
+<pre class="programlisting"> #&gt; ./js-import.sh --input-zip icinga-reports.zip --update</pre>
 
   <p>Das Icinga- Repository können Sie exportieren mit: </p>
-<pre class="programlisting"> #&gt; ./js-export.sh --uris /Icinga --output-zip icinga_report_package.zip</pre>
+<pre class="programlisting"> #&gt; ./js-export.sh --uris /Icinga --output-zip icinga-reports.zip</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -236,7 +236,7 @@
 <tbody><tr>
 <td>
 <div class="figure">
-<a name="id3386362"></a><p class="title"><b>Abbildung 9.1. Icinga-Reporting in Icinga-Web</b></p>
+<a name="id1503235"></a><p class="title"><b>Abbildung 9.1. Icinga-Reporting in Icinga-Web</b></p>
 <div class="figure-contents">
               
 
@@ -247,7 +247,7 @@
 </td>
 <td>
 <div class="figure">
-<a name="id3386392"></a><p class="title"><b>Abbildung 9.2. Icinga-Reporting TOP10 in Icinga-Web</b></p>
+<a name="id1503266"></a><p class="title"><b>Abbildung 9.2. Icinga-Reporting TOP10 in Icinga-Web</b></p>
 <div class="figure-contents">
               
 
@@ -341,7 +341,7 @@
   </td></tr>
 </table></div>
 
-  <pre class="programlisting"> &lt;ae:parameter name="icingaJasperReportingMain"&gt;
+  <pre class="programlisting"> &lt;cronk name="IcingaReportingDefault"&gt;
     &lt;ae:parameter name="module"&gt;Reporting&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;Cronk.Main&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -355,7 +355,7 @@
        &lt;ae:parameter name="enable_repository"&gt;1&lt;/ae:parameter&gt;
        &lt;ae:parameter name="enable_scheduling"&gt;1&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
- &lt;/ae:parameter&gt;</pre>
+ &lt;/cronk&gt;</pre>
 
   <p>Haben Sie den Konfigurations-String bemerkt? Dies ist die Zeichenkette, die Sie in <code class="filename">module.xml</code> im vorigen
   Abschnitt eingestellt haben.</p>
@@ -379,7 +379,7 @@
 
   <p></p>
 
-  <a class="indexterm" name="id3386605"></a>
+  <a class="indexterm" name="id1503492"></a>
 </div>
 <div class="navfooter">
 <hr>

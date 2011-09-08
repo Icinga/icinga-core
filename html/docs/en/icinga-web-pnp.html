@@ -33,7 +33,7 @@
   into the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a>.</p>
 
   <div class="figure">
-<a name="id2731163"></a><p class="title"><b>Figure 6.79. PNP4Nagios integrated in Icinga-Web</b></p>
+<a name="id1540622"></a><p class="title"><b>Figure 6.79. PNP4Nagios integrated in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -137,7 +137,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
       <p>Add the new grid view to the "Data" cronk-container</p>
 
       <p>Edit cronks.xml in directory app/modules/Cronks/config/ under your icinga-web add a section: </p>
-<pre class="programlisting">&lt;ae:parameter name="gridMyHostView"&gt;
+<pre class="programlisting">&lt;cronk name="gridMyHostView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -148,7 +148,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
     &lt;ae:parameter name="ae:parameter"&gt;
         &lt;ae:parameter name="template"&gt;icinga-my-host-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
-&lt;/ae:parameter&gt;</pre>
+&lt;/cronk&gt;</pre>
     </li>
 </ol></div>
 
@@ -226,7 +226,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
       <p>Edit cronks.xml in directory app/modules/Cronks/config/ under your icinga-web add a section:</p>
 
-      <pre class="programlisting">&lt;ae:parameter name="gridMyServiceView"&gt;
+      <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -237,7 +237,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
     &lt;ae:parameter name="ae:parameter"&gt;
         &lt;ae:parameter name="template"&gt;icinga-my-service-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
-&lt;/ae:parameter&gt;</pre>
+&lt;/cronk&gt;</pre>
     </li>
 <li class="listitem">
       <p>Using your new created grid view as default (if you want)</p>
@@ -270,7 +270,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p>That's all, you're done!</p>
 
-  <a class="indexterm" name="id2731426"></a>
+  <a class="indexterm" name="id1540890"></a>
 </div>
 <div class="navfooter">
 <hr>
