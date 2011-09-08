@@ -12,6 +12,8 @@ FIXES
 * classic ui: fix Localization: Form validation message could be improved (thx Mario Rimann) #1849
 * classic ui: fix wrong titles in list of scheduled downtimes (thx Mario Rimann) #1848
 
+* idoutils: idomod: change stacked memory allocation for broker_data IDO_MAX_BUFLEN #1879
+
 * spec file: re-add processing headers
 
 CHANGES
