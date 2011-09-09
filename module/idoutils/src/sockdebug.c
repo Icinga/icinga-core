@@ -11,7 +11,7 @@
 
 #define SOCKDEBUG_VERSION "1.5.1"
 #define SOCKDEBUG_NAME "SOCKDEBUG"
-#define SOCKDEBUG_DATE "08-25-2011"
+#define SOCKDEBUG_DATE "09-09-2011"
 
 
 int cleanup_socket(int, char *);
