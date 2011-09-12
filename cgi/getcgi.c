@@ -38,17 +38,6 @@ void sanitize_cgi_input(char **cgivars) {
 	int x, y, i;
 	int keep;
 
-	/* Added by Ricardo B. 2011-06-16
-	   Somehow on POST the plus gets turned into HEX so we have to convert it back to blank after all parsing is done.
-	*/
-	for (strptr = cgivars[i=0]; strptr != NULL; strptr = cgivars[++i]) {
-
-		for (x = 0, y = 0; strptr[x] != '\x0'; x++) {
-			if (strptr[x] == '+')
-				strptr[x] = ' ';
-		}
-	}
-
 	/* don't strip for now... */
 	return;
 
@@ -109,7 +98,7 @@ unsigned char hex_to_char(char *input) {
 
 
 
-/* unescape hex characters in CGI input */
+/* unescape hex characters and plus in CGI input */
 void unescape_cgi_input(char *input) {
 	int x, y;
 	int len;
@@ -125,6 +114,10 @@ void unescape_cgi_input(char *input) {
 		else if (input[x] == '%') {
 			input[y] = hex_to_char(&input[x+1]);
 			x += 2;
+		// RB 2011-09-08
+		// convert plus as well that it can bu used in service and host names
+		} else if (input[x] == '+') {
+				input[y] = ' ';
 		} else
 			input[y] = input[x];
 	}

@@ -4,6 +4,25 @@ Icinga 1.5.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.5.1 - 09/09/2011
+
+ENHANCEMENTS
+
+FIXES
+* core: free memory allocated notification macros right after sending the notification, not in next notification
+
+* classic ui: fix Localization: Form validation message could be improved (thx Mario Rimann) #1849
+* classic ui: fix wrong titles in list of scheduled downtimes (thx Mario Rimann) #1848
+* classic ui: fix host and service names are not allowed to have a '+' included #1843
+
+* idoutils: idomod: change stacked memory allocation for broker_data IDO_MAX_BUFLEN #1879
+* idoutils: fix idomod should log more verbose on errors, asking for a running ido2db process #1885
+
+* spec file: re-add processing headers
+
+CHANGES
+
+
 1.5.0 - 24/08/2011
 
 ENHANCEMENTS
