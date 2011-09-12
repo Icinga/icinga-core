@@ -468,6 +468,14 @@ default_downtime_duration=7200
 
 
 
+# DEFAULT EXPIERING ACKNOWLEDGEMENT DURATION
+# This option defines the default duration (in seconds) of a expiering
+# acknowledgement. Default is 86400 seconds (1 day).
+
+default_expiering_acknowledgement_duration=86400
+
+
+
 # SHOW LONG PLUGIN OUTPUT IN STATUS OPTION
 # This option allows you to specify the length of status information
 # in output of status.cgi. If you set the value to 1 it shows the

@@ -504,6 +504,10 @@ typedef struct nebstruct_acknowledgement_struct{
 	int             notify_contacts;
 
 	void            *object_ptr;
+
+	/* RB - 2011.09.10
+	Not nice, but the only way at the moment */
+	time_t		end_time;
         }nebstruct_acknowledgement_data;
 
 
