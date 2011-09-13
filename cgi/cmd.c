@@ -52,7 +52,7 @@ extern int  check_external_commands;
 extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
-extern int  default_expiering_acknowledgement_duration;
+extern int  default_expiring_acknowledgement_duration;
 extern int  log_external_commands_user;
 
 extern int  content_type;
@@ -1034,7 +1034,7 @@ void print_form_element(int element, int cmd) {
 		help_text[sizeof(help_text)-1] = '\x0';
 
 		time(&t);
-		t += (unsigned long)default_expiering_acknowledgement_duration;
+		t += (unsigned long)default_expiring_acknowledgement_duration;
 		get_time_string(&t, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
 
 		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");

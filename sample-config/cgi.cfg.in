@@ -468,11 +468,11 @@ default_downtime_duration=7200
 
 
 
-# DEFAULT EXPIERING ACKNOWLEDGEMENT DURATION
-# This option defines the default duration (in seconds) of a expiering
+# DEFAULT EXPIRING ACKNOWLEDGEMENT DURATION
+# This option defines the default duration (in seconds) of a expiring
 # acknowledgement. Default is 86400 seconds (1 day).
 
-default_expiering_acknowledgement_duration=86400
+default_expiring_acknowledgement_duration=86400
 
 
 

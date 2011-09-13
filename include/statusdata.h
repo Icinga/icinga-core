@@ -83,7 +83,6 @@ typedef struct hoststatus_struct{
 	int     notifications_enabled;
 	int     problem_has_been_acknowledged;
 	int     acknowledgement_type;
-	time_t  acknowledgement_end_time;
 	int     current_notification_number;
 #ifdef USE_ST_BASED_ESCAL_RANGES
 	int     current_down_notification_number;
@@ -103,6 +102,7 @@ typedef struct hoststatus_struct{
 	int     obsess_over_host;
 	struct  hoststatus_struct *next;
 	struct  hoststatus_struct *nexthash;
+	time_t  acknowledgement_end_time;
         }hoststatus;
 
 
@@ -138,7 +138,6 @@ typedef struct servicestatus_struct{
 	int     notifications_enabled;
 	int     problem_has_been_acknowledged;
 	int     acknowledgement_type;
-	time_t  acknowledgement_end_time;
 	int     current_notification_number;
 #ifdef USE_ST_BASED_ESCAL_RANGES
 	int     current_warning_notification_number;
@@ -158,6 +157,7 @@ typedef struct servicestatus_struct{
 	int     obsess_over_service;
 	struct  servicestatus_struct *next;
 	struct  servicestatus_struct *nexthash;
+	time_t  acknowledgement_end_time;
         }servicestatus;
 
 

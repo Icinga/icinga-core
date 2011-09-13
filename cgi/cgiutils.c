@@ -147,7 +147,7 @@ int		week_starts_on_monday = FALSE;
 
 int		show_partial_hostgroups = FALSE;
 int		default_downtime_duration = 7200;
-int		default_expiering_acknowledgement_duration = 86400;
+int		default_expiring_acknowledgement_duration = 86400;
 
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
@@ -556,8 +556,8 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "persistent_ack_comments"))
 			persistent_ack_comments = (atoi(val) > 0) ? TRUE : FALSE;
 
-		else if (!strcmp(var, "default_expiering_acknowledgement_duration"))
-			default_expiering_acknowledgement_duration = atoi(val);
+		else if (!strcmp(var, "default_expiring_acknowledgement_duration"))
+			default_expiring_acknowledgement_duration = atoi(val);
 
 		else if (!strcmp(var, "lock_author_names"))
 			lock_author_names = (atoi(val) > 0) ? TRUE : FALSE;
