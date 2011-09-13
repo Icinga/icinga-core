@@ -156,7 +156,7 @@ void show_hostgroup_summary(hostgroup *, int);
 void show_hostgroup_host_totals_summary(hostgroup *);
 void show_hostgroup_service_totals_summary(hostgroup *);
 void show_hostgroup_grids(void);
-void show_hostgroup_grid(hostgroup *);
+int show_hostgroup_grid(hostgroup *);
 
 void show_servicecommand_table(void);
 void show_hostcommand_table(void);
@@ -3216,7 +3216,6 @@ void show_servicegroup_grids(void) {
 	servicegroup *temp_servicegroup = NULL;
 	int user_has_seen_something = FALSE;
 	int servicegroup_error = FALSE;
-	int odd = 0;
 	char error_text[MAX_INPUT_BUFFER] = "";
 	int json_start = TRUE;
 
@@ -3264,11 +3263,6 @@ void show_servicegroup_grids(void) {
 			/* make sure the user is authorized to view at least one host in this servicegroup */
 			if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
 				continue;
-
-			if (odd == 0)
-				odd = 1;
-			else
-				odd = 0;
 
 			if (content_type == JSON_CONTENT) {
 				// always add a comma, except for the first line
@@ -3579,9 +3573,11 @@ void show_hostgroup_overviews(void) {
 				// always add a comma, except for the first line
 				if (json_start == FALSE)
 					printf(",\n");
-				json_start = FALSE;
 
-				show_hostgroup_overview(temp_hostgroup);
+				if(show_hostgroup_overview(temp_hostgroup) == FALSE)
+					continue;
+
+				json_start = FALSE;
 
 				user_has_seen_something = TRUE;
 			}
@@ -3589,14 +3585,8 @@ void show_hostgroup_overviews(void) {
 			temp_hostgroup = find_hostgroup(hostgroup_name);
 			if (temp_hostgroup == NULL)
 				hostgroup_error = TRUE;
-			else {
-				if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) {
-
-					show_hostgroup_overview(temp_hostgroup);
-
-					user_has_seen_something = TRUE;
-				}
-			}
+			else
+				user_has_seen_something = show_hostgroup_overview(temp_hostgroup);
 		}
 	} else {
 		printf("<P>\n");
@@ -3719,12 +3709,7 @@ void show_hostgroup_overviews(void) {
 				printf("<DIV ALIGN=CENTER>\n");
 				printf("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0><TR><TD ALIGN=CENTER>\n");
 
-				if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) {
-
-					show_hostgroup_overview(temp_hostgroup);
-
-					user_has_seen_something = TRUE;
-				}
+				user_has_seen_something = show_hostgroup_overview(temp_hostgroup);
 
 				printf("</TD></TR></TABLE>\n");
 				printf("</DIV>\n");
@@ -4754,7 +4739,6 @@ void show_hostgroup_grids(void) {
 	hostgroup *temp_hostgroup = NULL;
 	int user_has_seen_something = FALSE;
 	int hostgroup_error = FALSE;
-	int odd = 0;
 	char error_text[MAX_INPUT_BUFFER] = "";
 	int json_start = TRUE;
 
@@ -4803,20 +4787,17 @@ void show_hostgroup_grids(void) {
 			if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE)
 				continue;
 
-			if (odd == 0)
-				odd = 1;
-			else
-				odd = 0;
-
 			if (content_type == JSON_CONTENT) {
 				// always add a comma, except for the first line
 				if (json_start == FALSE)
 					printf(",\n");
-				json_start = FALSE;
 			}
 
 			/* show grid for this hostgroup */
-			show_hostgroup_grid(temp_hostgroup);
+			if (show_hostgroup_grid(temp_hostgroup) == FALSE)
+				continue;
+
+			json_start = FALSE;
 
 			user_has_seen_something = TRUE;
 		}
@@ -4828,10 +4809,8 @@ void show_hostgroup_grids(void) {
 		temp_hostgroup = find_hostgroup(hostgroup_name);
 		if (temp_hostgroup == NULL)
 			hostgroup_error = TRUE;
-		else {
-			show_hostgroup_grid(temp_hostgroup);
-			user_has_seen_something = TRUE;
-		}
+		else
+			user_has_seen_something = show_hostgroup_grid(temp_hostgroup);
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -4864,7 +4843,7 @@ void show_hostgroup_grids(void) {
 
 
 /* displays status grid for a specific hostgroup */
-void show_hostgroup_grid(hostgroup *temp_hostgroup) {
+int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 	hostsmember *temp_member;
 	char *status_bg_class = "";
 	char *status = "";
@@ -4883,7 +4862,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup) {
 
 	/* make sure the user is authorized to view this hostgroup */
 	if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE)
-		return;
+		return FALSE;
 
 	/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
 	if (show_partial_hostgroups == TRUE) {
@@ -4917,7 +4896,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup) {
 
 	/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
 	if (show_partial_hostgroups == TRUE && partial_hosts == FALSE)
-		return;
+		return FALSE;
 
 	if (content_type == JSON_CONTENT) {
 		printf("{ \"hostgroup_name\": \"%s\",\n", json_encode(temp_hostgroup->group_name));
@@ -5136,7 +5115,7 @@ void show_hostgroup_grid(hostgroup *temp_hostgroup) {
 		printf("</P>\n");
 	}
 
-	return;
+	return TRUE;
 }
 
 
