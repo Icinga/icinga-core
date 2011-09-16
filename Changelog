@@ -26,6 +26,7 @@ FIXES
 * classic ui: fix host and service names are not allowed to have a '+' included #1843
 
 * idoutils: idomod: change stacked memory allocation for broker_data IDO_MAX_BUFLEN #1879
+* idoutils: fix idomod should log more verbose on errors, asking for a running ido2db process #1885
 
 * spec file: re-add processing headers
 

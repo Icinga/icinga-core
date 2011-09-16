@@ -742,13 +742,13 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 
 				if ((unsigned long)((unsigned long)current_time - idomod_sink_reconnect_warning_interval) > (unsigned long)idomod_sink_last_reconnect_warning) {
 					if (reconnect == IDO_TRUE) {
-						if (asprintf(&temp_buffer, "idomod: Still unable to reconnect to data sink.  %lu items lost, %lu queued items to flush.", sinkbuf.overflow, sinkbuf.items) == -1)
+						if (asprintf(&temp_buffer, "idomod: Still unable to reconnect to data sink.  %lu items lost, %lu queued items to flush. Is ido2db running and processing data?", sinkbuf.overflow, sinkbuf.items) == -1)
 							temp_buffer = NULL;
 					} else if (idomod_sink_connect_attempt == 1) {
-						if (asprintf(&temp_buffer, "idomod: Could not open data sink!  I'll keep trying, but some output may get lost...") == -1)
+						if (asprintf(&temp_buffer, "idomod: Could not open data sink!  I'll keep trying, but some output may get lost. Is ido2db running and processing data?") == -1)
 							temp_buffer = NULL;
 					} else {
-						if (asprintf(&temp_buffer, "idomod: Still unable to connect to data sink.  %lu items lost, %lu queued items to flush.", sinkbuf.overflow, sinkbuf.items) == -1)
+						if (asprintf(&temp_buffer, "idomod: Still unable to connect to data sink.  %lu items lost, %lu queued items to flush. Is ido2db running and processing data?", sinkbuf.overflow, sinkbuf.items) == -1)
 							temp_buffer = NULL;
 					}
 
