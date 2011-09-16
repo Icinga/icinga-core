@@ -107,7 +107,7 @@
 
 /************** COMMON DATA ATTRIBUTES **************/
 
-#define IDO_MAX_DATA_TYPES                           267
+#define IDO_MAX_DATA_TYPES                           268
 
 #define IDO_DATA_NONE                                0
 
@@ -387,4 +387,5 @@
 #define IDO_DATA_LASTSTATE                           265
 
 #define IDO_DATA_HOSTADDRESS6			     266
+#define IDO_DATA_END_TIME			     267    /* ACKNOWLEDGEMENT DATA */
 #endif

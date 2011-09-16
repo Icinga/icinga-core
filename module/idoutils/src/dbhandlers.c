@@ -4552,7 +4552,8 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 	int notify_contacts = 0;
 	unsigned long object_id = 0L;
 	int result = IDO_OK;
-	char *ts[1];
+	unsigned long end_time;
+	char *ts[2];
 	char *es[2];
 	int x = 0;
 #ifdef USE_LIBDBI
@@ -4561,7 +4562,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 #endif
 
 #ifdef USE_ORACLE
-	void *data[11];
+	void *data[12];
 #endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_acknowledgementdata() start\n");
@@ -4579,11 +4580,13 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STICKY], &is_sticky);
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PERSISTENT], &persistent_comment);
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYCONTACTS], &notify_contacts);
+	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_END_TIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_AUTHORNAME]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMENT]);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
+	ts[1] = ido2db_db_timet_to_sql(idi, end_time);
 
 	/* get the object id */
 	if (acknowledgement_type == SERVICE_ACKNOWLEDGEMENT)
@@ -4596,7 +4599,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	/* the data part of the INSERT statement */
-	if (asprintf(&buf1, "(instance_id, entry_time, entry_time_usec, acknowledgement_type, object_id, state, author_name, comment_data, is_sticky, persistent_comment, notify_contacts) VALUES (%lu, %s, %lu, %d, %lu, %d, '%s', '%s', %d, %d, %d)"
+	if (asprintf(&buf1, "(instance_id, entry_time, entry_time_usec, acknowledgement_type, object_id, state, author_name, comment_data, is_sticky, persistent_comment, notify_contacts, end_time) VALUES (%lu, %s, %lu, %d, %lu, %d, '%s', '%s', %d, %d, %d, %s)"
 	             , idi->dbinfo.instance_id
 	             , ts[0]
 	             , tstamp.tv_usec
@@ -4608,6 +4611,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 	             , is_sticky
 	             , persistent_comment
 	             , notify_contacts
+	             , ts[1]
 	            ) == -1)
 		buf1 = NULL;
 
@@ -4646,6 +4650,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 	data[8] = (void *) &is_sticky;
 	data[9] = (void *) &persistent_comment;
 	data[10] = (void *) &notify_contacts;
+	data[11] = (void *) &end_time;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X1"), (uint *) data[0])) {
 		return IDO_ERROR;
@@ -4690,6 +4695,9 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 	if (!OCI_BindInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X11"), (int *) data[10])) {
+		return IDO_ERROR;
+	}
+	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_acknowledgements, MT(":X12"), (uint *) data[11])) { /* unixtimestamp instead of time2sql */
 		return IDO_ERROR;
 	}
 

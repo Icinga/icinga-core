@@ -67,6 +67,7 @@ CREATE TABLE  icinga_acknowledgements (
   is_sticky INTEGER  default 0,
   persistent_comment INTEGER  default 0,
   notify_contacts INTEGER  default 0,
+  end_time timestamp  default '1970-01-01 00:00:00',
   CONSTRAINT PK_acknowledgement_id PRIMARY KEY (acknowledgement_id) 
 ) ;
 
